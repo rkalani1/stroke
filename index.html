@@ -1780,25 +1780,11 @@
                   <div className="space-y-6">
                     {/* Header Section */}
                     <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-lg shadow-lg">
-                      <h1 className="text-3xl font-bold mb-2">Stroke Clinical Trials Directory</h1>
-                      <p className="text-lg opacity-90">Active and Recruiting Studies - Updated 2024</p>
+                      <h1 className="text-3xl font-bold">Stroke Trials and Studies</h1>
                     </div>
 
                     {/* Trial Category Filter Buttons */}
                     <div className="flex flex-wrap gap-2 mb-6">
-                      <button
-                        onClick={() => setTrialsCategory('all')}
-                        className={`px-4 py-2 rounded-full font-medium transition-all ${
-                          trialsCategory === 'all'
-                            ? 'bg-gray-800 text-white shadow-lg'
-                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                        }`}
-                      >
-                        All Trials ({Object.values(trialsData).reduce((acc, cat) => 
-                          acc + (cat.hasSubsections 
-                            ? Object.values(cat.subsections).reduce((a, s) => a + s.trials.length, 0) 
-                            : cat.trials.length), 0)})
-                      </button>
                       {Object.keys(trialsData).map(category => {
                         const categoryData = trialsData[category];
                         const trialCount = categoryData.hasSubsections 
@@ -1815,6 +1801,16 @@
                           }
                         };
                         
+                        const getCategoryName = (cat) => {
+                          switch(cat) {
+                            case 'ischemic': return 'Ischemic Stroke';
+                            case 'ich': return 'Intracerebral Hemorrhage';
+                            case 'rehab': return 'Rehabilitation';
+                            case 'cadasil': return 'CADASIL';
+                            default: return categoryData.title;
+                          }
+                        };
+                        
                         return (
                           <button
                             key={category}
@@ -1825,7 +1821,7 @@
                                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                             }`}
                           >
-                            {categoryData.title.split(' ')[0]} ({trialCount})
+                            {getCategoryName(category)} ({trialCount})
                           </button>
                         );
                       })}
@@ -1833,10 +1829,10 @@
                     
                     {/* Trial Cards */}
                     <div className="space-y-4">
-                      {trialsCategory === 'all' ? (
-                        // Show all trials
-                        Object.entries(trialsData).map(([category, categoryData]) => (
-                          <div key={category} className="space-y-4">
+                      {(() => {
+                        const categoryData = trialsData[trialsCategory];
+                        return (
+                          <div className="space-y-4">
                             <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-gray-300 pb-2">
                               {categoryData.title}
                             </h2>
@@ -1847,46 +1843,18 @@
                                     {subsection.title}
                                   </h3>
                                   {subsection.trials.map((trial, index) => (
-                                    <TrialCard key={index} trial={trial} category={category} />
+                                    <TrialCard key={index} trial={trial} category={trialsCategory} />
                                   ))}
                                 </div>
                               ))
                             ) : (
                               categoryData.trials.map((trial, index) => (
-                                <TrialCard key={index} trial={trial} category={category} />
+                                <TrialCard key={index} trial={trial} category={trialsCategory} />
                               ))
                             )}
                           </div>
-                        ))
-                      ) : (
-                        // Show filtered trials
-                        (() => {
-                          const categoryData = trialsData[trialsCategory];
-                          return (
-                            <div className="space-y-4">
-                              <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-gray-300 pb-2">
-                                {categoryData.title}
-                              </h2>
-                              {categoryData.hasSubsections ? (
-                                Object.entries(categoryData.subsections).map(([subKey, subsection]) => (
-                                  <div key={subKey} className="space-y-4">
-                                    <h3 className="text-xl font-semibold text-gray-700 ml-4">
-                                      {subsection.title}
-                                    </h3>
-                                    {subsection.trials.map((trial, index) => (
-                                      <TrialCard key={index} trial={trial} category={trialsCategory} />
-                                    ))}
-                                  </div>
-                                ))
-                              ) : (
-                                categoryData.trials.map((trial, index) => (
-                                  <TrialCard key={index} trial={trial} category={trialsCategory} />
-                                ))
-                              )}
-                            </div>
-                          );
-                        })()
-                      )}
+                        );
+                      })()}
                     </div>
                   </div>
                 )}
