@@ -14,9 +14,276 @@
     <div id="root"></div>
     
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useEffect } = React;
         const { Calculator, Clock, Brain, AlertTriangle, FileText, CheckCircle } = lucide;
 
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // ++ Integrated Stroke Trials Component
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        const StrokeTrials = () => {
+            const trialsData = {
+                ischemic: {
+                    title: "Ischemic Stroke Studies",
+                    hasSubsections: true,
+                    subsections: {
+                        acute: {
+                            title: "Acute Trials",
+                            trials: [
+                                { name: "SISTER Trial", nct: "NCT05948566", phase: "Phase 2", status: "", description: "TS23 (monoclonal antibody to α2-antiplasmin) for late thrombolysis in acute ischemic stroke patients presenting 4.5-24 hours from last known well", inclusion: ["Age ≥18 years", "Suspected anterior circulation acute ischemic stroke", "NIH Stroke Scale score ≥4 prior to randomization (participant must have a clearly disabling deficit if NIHSS is 4-5)", "Time from last known well: 4.5-24 hours", "Favorable baseline neuroimaging consisting of ALL of the following:", "• ASPECTS ≥6 on CT (or ASPECTS ≥7 on MRI)", "• Favorable perfusion imaging on CTP/MR-PWI consisting of ALL:", "  - Mismatch ratio of penumbra:core >1.2", "  - Mismatch volume >10 cc", "  - Ischemic core volume <70 cc", "Able to receive assigned study drug within 4.5 to 24 hours of stroke onset or last known well", "Informed consent obtained from participant or legally authorized representative", "Study drug administration encouraged within 90 minutes after qualifying perfusion image (allowed up to 120 minutes)"], exclusion: ["Received endovascular treatment with clot engagement (patients with groin puncture but no clot engagement due to spontaneous distal migration are permitted)", "Received or planned to receive intravenous thrombolysis", "Pre-stroke modified Rankin score >2", "Previous treatment with TS23 or known previous allergy to antibody therapy", "Known pregnancy, breastfeeding, or plan to breastfeed within 3 months of receiving TS23", "Positive urine or serum pregnancy test for women of childbearing potential", "Known previous stroke in the past 90 days", "Known previous intracranial hemorrhage, intracranial neoplasm, subarachnoid hemorrhage, or arteriovenous malformation", "Known active diagnosis of intracranial neoplasm", "Clinical presentation suggestive of subarachnoid hemorrhage (even if initial CT scan was normal)", "Surgery or biopsy of parenchymal organ in the past 30 days", "Known trauma with internal injuries or persistent ulcerative wounds in the past 30 days", "Severe head trauma in the past 90 days", "Persistent systolic blood pressure >180mmHg or diastolic blood pressure >105mmHg despite best medical management", "Serious systemic hemorrhage in the past 30 days", "Hereditary or acquired hemorrhagic diathesis or coagulation factor deficiency", "Use of dual antiplatelet agents within 48 hours prior to stroke symptom onset", "International normalized ratio (INR) >1.7 or partial thromboplastin time (PTT) > 2x upper limit of normal", "Use of direct thrombin inhibitors or direct factor Xa inhibitors within past 48 hours unless aPTT, INR, platelet count, ecarin clotting time (ECT), thrombin time (TT), or appropriate factor Xa activity assays are normal", "Glucose <50 mg/dL or >400 mg/dL", "Platelets <100,000/µL", "Known severe renal failure with creatinine >3 mg/dL or glomerular filtration rate <30 mL/min", "Severe contrast allergy that cannot be managed medically", "Suspected cerebral vasculitis based on medical history and CTA/MRA", "Suspected intracranial dissection based on medical history and CTA/MRA", "Intracranial stenosis related to atherosclerosis proximal to intracranial thrombus", "Intracranial stent in place proximal to the intracranial occlusion", "Acute myocardial infarction in past 7 days", "Major surgery (requiring intubation or transfusion) in past 30 days", "Suspicion of aortic dissection on history, examination, or imaging", "Presumed septic embolus; suspicion of bacterial endocarditis", "Life expectancy <90 days", "Currently participating in another investigational drug or device study"] },
+                                { name: "STEP-EVT Trial", nct: "NCT06289985", phase: "Adaptive Platform", status: "", description: "NIH StrokeNet adaptive platform trial optimizing endovascular therapy for mild stroke and medium/distal vessel occlusions", inclusion: ["Age ≥18 years", "Acute ischemic stroke due to large vessel occlusion (LVO) or medium vessel occlusion (MVO)", "Within 24 hours of last known well", "For Low NIHSS Domain:", "• NIHSS 0-5 with ICA or M1 occlusion", "• Disabling symptoms despite low NIHSS", "For Medium/Distal Vessel Occlusion Domain:", "• M2, M3, or M4 occlusion", "• A1, A2, or A3 occlusion", "• P1, P2, or P3 occlusion", "• Appropriate perfusion imaging criteria demonstrating salvageable tissue", "Ability to start EVT within appropriate time window", "Pre-stroke mRS ≤2 (able to live independently)", "Informed consent from patient or legally authorized representative"], exclusion: ["Known pre-existing medical, neurological or psychiatric disease that would confound outcome evaluations", "Known serious, advanced, or terminal illness with life expectancy <6 months", "Unfavorable vascular anatomy limiting endovascular access to occluded artery", "Acute occlusions in multiple vascular territories", "Suspected septic embolus", "Suspected bacterial endocarditis", "Seizure at stroke onset with postictal residual impairments", "Contrast allergy precluding EVT that cannot be adequately pre-medicated", "Chronic total occlusion of target vessel", "Known intracranial dissection", "Known vasculitis", "Known moyamoya disease or syndrome", "Pregnancy or positive pregnancy test", "Currently breastfeeding", "Large core infarct (ASPECTS <3 or core volume >100cc depending on time window)", "Evidence of intracranial hemorrhage on baseline imaging", "Clinical suspicion of subarachnoid hemorrhage despite negative imaging", "Known bleeding diathesis or coagulopathy", "Platelet count <50,000/μL", "INR >3.0", "Blood glucose <50mg/dL", "Refractory hypertension (SBP >185 or DBP >110 despite treatment)", "Currently participating in another interventional clinical trial"] },
+                                { name: "PICASSO Trial", nct: "NCT05611242", phase: "Phase 3 RCT", status: "", description: "Mechanical thrombectomy with vs without acute carotid stenting for tandem lesions", inclusion: ["Age 18-79 years", "Acute ischemic stroke in the anterior circulation", "Tandem lesion consisting of:", "• Proximal carotid artery stenosis 70-100% by NASCET criteria or complete occlusion", "• Intracranial large vessel occlusion (ICA terminus, M1, or proximal M2)", "Within 16 hours from stroke onset or last known well", "Pre-stroke mRS 0-2", "NIHSS ≥4", "For presentation ≤6 hours: ASPECTS ≥7 on non-contrast CT", "For presentation >6-16 hours:", "• ASPECTS ≥7 AND", "• Ischemic core volume <50cc on perfusion imaging", "• Mismatch ratio >1.8", "• Mismatch volume >15cc", "Ability to undergo groin puncture within treatment window", "Informed consent obtained"], exclusion: ["Proximal carotid stenosis secondary to dissection", "Proximal carotid stenosis secondary to vasculitis", "Pre-stroke mRS >2", "Known hemorrhagic diathesis", "Known coagulation factor deficiency", "Absolute contraindications to antiplatelet therapy", "Need for acute therapeutic anticoagulation that cannot be stopped", "Platelet count <100,000/μL", "INR >1.7", "aPTT >1.5x normal", "Blood glucose <50mg/dL or >400mg/dL", "Serum creatinine >3.0mg/dL unless on dialysis", "Evidence of intracranial hemorrhage on baseline CT/MRI", "Clinical suspicion of subarachnoid hemorrhage", "Large territory infarction (>1/3 MCA territory)", "Known severe contrast allergy that cannot be adequately pre-medicated", "Known pregnancy or positive pregnancy test", "Life expectancy <90 days due to comorbid conditions", "Enrollment in another interventional clinical trial", "Previous carotid endarterectomy or carotid stenting on affected side", "Contralateral carotid occlusion", "Intracranial stenosis in addition to the tandem lesion", "Known cardiac source of embolism requiring anticoagulation", "Recent MI within 30 days with ongoing cardiac issues", "Severe or unstable congestive heart failure", "Uncontrolled hypertension (SBP >185 or DBP >110 despite treatment)"] }
+                            ]
+                        },
+                        inpatient: {
+                            title: "Subacute Enrollment",
+                            trials: [
+                                { name: "SCOUTS3 Trial", nct: "NCT06029959", phase: "Interventional", status: "", description: "Multicomponent behavioral package to improve CPAP adherence in stroke with OSA", inclusion: ["Age ≥18 years", "Acute ischemic stroke or intraparenchymal hemorrhage within past 30 days", "Currently admitted to inpatient rehabilitation facility", "Diagnosed with obstructive sleep apnea (OSA) during inpatient rehabilitation stay:", "• AHI ≥5 events/hour on diagnostic sleep study OR", "• REI ≥5 events/hour on home sleep apnea test", "CPAP therapy indicated and prescribed", "Able to provide informed consent in English or Spanish", "Expected to remain in inpatient rehabilitation for ≥3 nights after enrollment", "Cognitive ability to participate in behavioral intervention (MOCA ≥17)", "Has a caregiver/support person who can assist with CPAP use"], exclusion: ["Unable to obtain informed consent", "Incarcerated or prisoner", "Known pregnancy", "Current mechanical ventilation", "Tracheostomy present", "Oxygen requirement >4L/min at rest", "Current PAP use or use within 14 days prior to stroke", "History of pneumothorax", "History of bullous emphysema", "Stroke related to brain tumors", "Stroke related to vascular malformations", "Subarachnoid hemorrhage", "Active sedative drug use interfering with OSA testing or treatment", "Anticipated inpatient rehabilitation length of stay <3 nights", "Unable to tolerate CPAP mask fitting", "Severe claustrophobia preventing CPAP use", "Severe facial/skull deformity preventing mask fit", "Active untreated psychiatric condition affecting participation", "Life expectancy <3 months", "Currently enrolled in another interventional sleep study"] },
+                                { name: "COMA-SABI Study", nct: "NCT05671874", phase: "Observational", status: "", description: "Severe acute brain injury QOL and caregiver outcomes to 12 months (includes stroke/ICH/TBI)", inclusion: ["Age ≥18 years", "Severe acute brain injury including:", "• Ischemic stroke", "• Intracerebral hemorrhage", "• Traumatic brain injury", "• Hypoxic-ischemic encephalopathy", "GCS ≤12 at any point during ICU admission", "ICU admission for ≥48 hours", "Has an identifiable family member or caregiver willing to participate", "Caregiver speaks English or Spanish", "Expected to survive hospitalization per clinical team assessment"], exclusion: ["Pre-existing life expectancy <12 months from non-neurologic condition", "No available family member or caregiver to provide information", "Pre-injury severe cognitive impairment or dementia", "Pre-injury residence in skilled nursing facility", "Prisoner or incarcerated", "Brain death or withdrawal of life support planned within 72 hours", "Previously enrolled in COMA-SABI study"] },
+                                { name: "TESTED", nct: "NCT05911568", phase: "Comparative Effectiveness", status: "", description: "EVT vs medical therapy in LVO with pre-existing disability (mRS 3-4)", inclusion: ["Age ≥18 years", "Pre-stroke mRS 3-4 for at least 3 months prior to index stroke", "Large vessel occlusion:", "• ICA terminus", "• M1 segment of MCA", "• Dominant/co-dominant M2 segment", "Within 24 hours of last known well", "NIHSS ≥6", "ASPECTS ≥3 on non-contrast CT or ≥4 on MRI", "For 6-24 hour window: evidence of salvageable tissue on perfusion imaging", "Able to undergo groin puncture within time window", "Informed consent from patient or legally authorized representative"], exclusion: ["Pre-stroke mRS 0-2 or mRS 5-6", "Life expectancy <6 months from non-stroke condition", "Pre-stroke disability deemed temporary or reversible", "Known pregnancy", "Evidence of intracranial hemorrhage", "Large established infarct (>1/3 MCA territory)", "Bilateral strokes", "Known vasculitis or moyamoya", "Intracranial tumor", "Currently participating in another stroke intervention trial", "Inability to follow up at 90 days"] },
+                                { name: "VERIFY Study", nct: "NCT05338697", phase: "Observational", status: "", description: "Early TMS/MRI/clinical measures to predict upper extremity motor recovery", inclusion: ["Age ≥18 years", "Acute ischemic stroke within 7 days of onset", "Upper extremity weakness (shoulder abduction and/or finger extension ≤4 on MRC scale)", "Able to provide informed consent or has LAR", "Able to participate in study assessments", "Expected to survive at least 90 days"], exclusion: ["Contraindications to TMS:", "• Implanted electronic devices (pacemaker, cochlear implant, etc.)", "• Intracranial metal", "• History of seizures", "• Active psychiatric medication affecting cortical excitability", "Contraindications to MRI", "Unable to complete follow-up visits at 30 and 90 days", "Pre-stroke mRS >2", "Bilateral upper extremity weakness", "Previous stroke affecting motor function", "Other neurological conditions affecting motor function", "Pregnancy"] },
+                                { name: "DISCOVERY Study", nct: "NCT04916210", phase: "Observational", status: "", description: "Cognitive trajectories and biomarkers after stroke (includes AIS/ICH/SAH)", inclusion: ["Age ≥18 years", "Admitted with one of the following:", "• Acute ischemic stroke", "• Intracerebral hemorrhage", "• Aneurysmal subarachnoid hemorrhage", "Radiographic confirmation of stroke diagnosis", "Baseline visit can be completed within 6 weeks of stroke", "Fluent in English or Spanish", "Has study partner who knows patient well (contact ≥1x/week)", "Able to provide informed consent or has LAR", "Expected to survive at least 1 year"], exclusion: ["Pre-stroke dementia diagnosis", "Pre-stroke cognitive impairment interfering with daily activities", "Concurrent enrollment in interventional trial affecting cognition", "Unable to complete study protocol due to:", "• Severe aphasia preventing cognitive testing", "• Severe motor impairment preventing testing", "• Blindness or severe visual impairment", "• Deafness or severe hearing impairment", "Active substance abuse", "Severe psychiatric illness affecting participation", "Terminal illness with life expectancy <1 year", "Previous enrollment in DISCOVERY", "Planned move out of area within study period"] }
+                            ]
+                        },
+                        imaging: {
+                            title: "Imaging Studies",
+                            trials: [
+                                { name: "ESUS Imaging Study", nct: "NCT03820375", phase: "Observational", status: "", description: "Cardiac and intracranial vessel wall MRI to reclassify ESUS", inclusion: ["ESUS diagnosis", "Age ≥18 years", "Within 30 days of index stroke"], exclusion: ["MRI contraindications", "Known stroke etiology"] },
+                                { name: "MOCHA Imaging", nct: "PMC8821414", phase: "Observational", status: "", description: "Automated intracranial vessel-wall analysis for non-stenotic ICAD detection", inclusion: ["Atherosclerotic lesions within the cerebrovascular tree clinically detected based on stenosis presence on clinical luminal imaging", "Presence of two or more atherosclerotic risk factors:", "• Age >50 years for men or >60 years for women", "• Hypertension", "• Diabetes mellitus", "• Hyperlipidemia", "• Obesity", "• Smoking history", "No clinical evidence for other intracranial vasculopathies", "High-resolution MRI vessel wall imaging available"], exclusion: ["Poor MRI image quality limiting vessel wall analysis", "Known intracranial vasculopathy (vasculitis, moyamoya, dissection)", "Unable to undergo MRI scanning", "Contraindications to MRI contrast if required for imaging protocol"] }
+                            ]
+                        }
+                    }
+                },
+                ich: {
+                    title: "Intracerebral Hemorrhage Studies",
+                    hasSubsections: true,
+                    subsections: {
+                        trials: {
+                            title: "Trials",
+                            trials: [
+                                { name: "SATURN Trial", nct: "NCT03936361", phase: "Phase 3", status: "", description: "Statins for intracerebral hemorrhage: Continue vs discontinue after lobar ICH", inclusion: ["Age ≥50 years", "Spontaneous lobar intracerebral hemorrhage confirmed by CT or MRI", "Taking statin therapy at time of ICH onset for ≥1 month", "Modified Rankin Scale ≤4 at time of randomization", "Randomization within 7 days of ICH", "Clinical indication for statin therapy (dyslipidemia, atherosclerotic disease, diabetes)", "Able to provide informed consent or has LAR", "Expected to survive at least 6 months"], exclusion: ["Deep (non-lobar) ICH location", "Secondary causes of ICH:", "• Trauma", "• Known brain tumor", "• Known vascular malformation or aneurysm", "• Hemorrhagic transformation of ischemic stroke", "• Known or suspected CNS vasculitis", "• Coagulopathy (INR >1.5, platelet count <100,000)", "• Drug-related (cocaine, amphetamines)", "Recent MI (<3 months) or unstable angina", "Coronary revascularization within past year", "Diabetes mellitus with prior MI or coronary revascularization", "Clear contraindication to statin discontinuation per treating physician", "Statin-related myopathy or rhabdomyolysis", "Severe hepatic impairment (ALT/AST >3x ULN)", "Life expectancy <6 months from non-ICH condition", "Unable to follow study protocol", "Pregnancy or breastfeeding", "Participation in another interventional trial"] },
+                                { name: "ASPIRE Trial", nct: "NCT03907046", phase: "Phase 3", status: "", description: "Apixaban vs aspirin for stroke prevention after ICH in atrial fibrillation", inclusion: ["Age ≥18 years", "Spontaneous ICH confirmed by CT or MRI", "Non-valvular atrial fibrillation (paroxysmal, persistent, or permanent)", "CHA2DS2-VASc score ≥2", "Randomization 14-180 days after ICH", "Modified Rankin Scale ≤4 at randomization", "Able to take oral medications", "Informed consent obtained"], exclusion: ["Clear indication for anticoagulation other than AF:", "• Mechanical heart valve", "• Recent DVT/PE requiring anticoagulation", "• Left ventricular thrombus", "Left atrial appendage closure device", "Valvular AF (moderate-severe mitral stenosis, mechanical valve)", "Secondary causes of ICH requiring specific treatment", "Creatinine ≥2.5mg/dL or CrCl <25mL/min", "Hepatic insufficiency (Child-Pugh B or C)", "Active bleeding or high bleeding risk condition", "Uncontrolled hypertension (BP ≥180/100 on multiple readings)", "Platelet count <100,000/μL", "Hemoglobin <8g/dL", "Need for dual antiplatelet therapy", "Contraindication to aspirin or apixaban", "Pregnancy or breastfeeding", "Life expectancy <1 year", "Unable to adhere to study protocol", "Participation in another antithrombotic trial"] },
+                                { name: "cAPPricorn-1 Trial", nct: "NCT06393712", phase: "Phase 2", status: "", description: "Intrathecal ALN-APP (mivelsiran) for cerebral amyloid angiopathy", inclusion: ["For sporadic CAA:", "• Age ≥50 years", "• Meets Boston Criteria v2.0 for probable CAA", "• Prior symptomatic lobar ICH ≥90 days ago", "For Dutch-type hereditary CAA:", "• Age ≥30 years", "• Confirmed E693Q APP variant", "• Prior ICH ≥90 days ago (if applicable)", "MRI evidence of CAA (microbleeds, superficial siderosis)", "Modified Rankin Scale ≤4", "Able to undergo lumbar punctures", "Adequate contraception if childbearing potential", "Informed consent obtained"], exclusion: ["ICH within 90 days of screening", "Other cause of ICH identified", "ALT or AST >3× upper limit of normal", "eGFR <30 mL/min/1.73m²", "Platelet count <100,000/μL", "INR >1.5 or aPTT >1.5× ULN", "Contraindication to lumbar puncture", "Active CNS infection or inflammation", "Intrathecal pump or shunt", "Spinal cord compression or injury", "History of chemical or radiation meningitis", "Pregnancy or breastfeeding", "Life expectancy <2 years", "Chronic use of anticoagulation that cannot be stopped for LP", "Prior treatment with gene therapy or oligonucleotide therapy", "Participation in another interventional trial within 30 days"] }
+                            ]
+                        },
+                        observational: {
+                            title: "Observational",
+                            trials: [
+                                { name: "MIRROR Registry", nct: "NCT04494295", phase: "Observational Registry", status: "", description: "Minimally invasive endoscopic ICH evacuation using Aurora Surgiscope System", inclusion: ["Age ≥18 years", "Spontaneous supratentorial ICH confirmed by CT", "ICH volume ≥20mL", "Surgery planned within 24 hours of last known well", "NIHSS >5", "Baseline mRS ≤2", "GCS ≥5", "Ability to undergo general anesthesia", "Informed consent from patient or LAR"], exclusion: ["Secondary ICH due to:", "• Vascular lesion (AVM, aneurysm, dural fistula)", "• Brain tumor", "• Trauma", "• Hemorrhagic transformation of ischemic stroke", "• Moyamoya disease", "Fixed and dilated pupils", "Bilateral extensor posturing", "Infratentorial or brainstem ICH", "Intraventricular hemorrhage as primary pathology", "Life expectancy <6 months from other condition", "Uncorrectable coagulopathy (INR >1.4, platelets <100,000)", "Known pregnancy", "Prisoner or ward of state", "Participation in another interventional trial"] },
+                                { name: "COMA-SABI Study (ICH Cohort)", nct: "NCT05671874", phase: "Observational", status: "", description: "Severe ICH outcomes and caregiver QOL to 12 months", inclusion: ["Age ≥18 years", "Severe intracerebral hemorrhage", "GCS ≤12 at any point during ICU admission", "ICU admission for ≥48 hours", "Has identifiable caregiver willing to participate", "Expected to survive hospitalization"], exclusion: ["Pre-existing life expectancy <12 months", "No available caregiver", "Pre-injury severe cognitive impairment", "Brain death or comfort care within 72 hours"] },
+                                { name: "DISCOVERY Study (ICH Cohort)", nct: "NCT04916210", phase: "Observational", status: "", description: "Cognitive trajectories and biomarkers after ICH", inclusion: ["Age ≥18 years", "Admitted with intracerebral hemorrhage", "Radiographic confirmation of ICH", "Baseline visit within 6 weeks of ICH", "Fluent in English or Spanish", "Has study partner with regular contact", "Expected survival ≥1 year"], exclusion: ["Pre-existing dementia", "Unable to complete cognitive testing", "Concurrent enrollment in cognitive intervention trial", "Active substance abuse", "Severe psychiatric illness", "Terminal illness with life expectancy <1 year"] }
+                            ]
+                        }
+                    }
+                },
+                rehab: {
+                    title: "Rehabilitation",
+                    trials: [
+                        { name: "MR-PICS Study", nct: "NCT06506279", phase: "Phase 2", status: "", description: "Motor Recovery through Plasticity-Inducing Cortical Stimulation using CorTec Brain Interchange System for chronic stroke recovery", inclusion: ["Post-ischemic stroke patients with upper extremity deficit", "Chronic stroke (minimum 6 months post-stroke)", "Age 22-80 years", "Able to participate meaningfully in rehabilitation (Upper Extremity Fugl-Meyer score 25-45)", "Disability measured between 3-4 on modified Rankin Scale", "Minimum 30% preservation of corticospinal tract integrity", "Ability to provide informed consent", "Medically stable and cleared for neurosurgical procedure", "Willingness to comply with study protocol and follow-up visits", "Access to caregiver support during recovery period"], exclusion: ["Seizure disorder or history of seizures", "Contraindications to neurosurgical procedures", "Contraindications to MRI scanning", "Active psychiatric condition that would interfere with participation", "Pregnancy or nursing", "Life expectancy less than 2 years", "Current participation in other interventional clinical trials", "Inability to stop anti-platelet medications 7 days before and 3 days after surgery", "Therapeutic anticoagulation that cannot be safely interrupted", "Active substance abuse or dependence", "Severe cognitive impairment preventing informed consent", "Glenohumeral subluxation, adhesive capsulitis, or upper extremity contractures with associated pain that would limit participation", "Implanted electronic devices incompatible with study procedures", "Prior brain surgery or cranial implants", "Hemorrhagic stroke (intracerebral hemorrhage excluded)", "Bilateral stroke or multiple stroke locations"] }
+                    ]
+                },
+                cadasil: {
+                    title: "CADASIL",
+                    trials: [
+                        { name: "CADASIL Registry", nct: "NCT05567744", phase: "Observational Registry", status: "", description: "Longitudinal registry for genetically confirmed or suspected CADASIL", inclusion: ["Confirmed NOTCH3 mutation or suspected CADASIL", "Age ≥18 years"], exclusion: ["Unable to provide consent"] }
+                    ]
+                }
+            };
+
+            const [currentCategory, setCurrentCategory] = useState('ischemic');
+            const [openTrials, setOpenTrials] = useState({});
+
+            const toggleTrial = (trialId) => {
+                setOpenTrials(prev => ({ ...prev, [trialId]: !prev[trialId] }));
+            };
+
+            const handleTabClick = (category) => {
+                setCurrentCategory(category);
+                setOpenTrials({}); // Reset open trials when changing tabs
+            };
+
+            const data = trialsData[currentCategory];
+
+            const TrialCard = ({ trial, trialId, category }) => {
+                const isOpen = openTrials[trialId];
+                return (
+                    <div className="trial-card">
+                        <div className={`trial-header ${category}`} onClick={() => toggleTrial(trialId)}>
+                            <h3 className="trial-title">{trial.name}</h3>
+                            <div className="trial-badges">
+                                <span className="badge phase">{trial.phase}</span>
+                                {trial.status && <span className="badge status">{trial.status}</span>}
+                            </div>
+                            <p className="trial-description">{trial.description}</p>
+                            {trial.nct.startsWith('NCT') ? (
+                                <button
+                                    className="trial-link-button"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        window.open(`https://clinicaltrials.gov/study/${trial.nct}`, '_blank');
+                                    }}
+                                >
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style={{ marginRight: '6px', verticalAlign: 'middle' }}>
+                                        <path d="M9 4v1H5.5A1.5 1.5 0 0 0 4 6.5v7A1.5 1.5 0 0 0 5.5 15h7a1.5 1.5 0 0 0 1.5-1.5V10h1v3.5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 3 13.5v-7A2.5 2.5 0 0 1 5.5 4H9z" />
+                                        <path d="M8 1h6v6h-1V2.707L7.354 8.354l-.708-.708L12.293 2H8V1z" />
+                                    </svg>
+                                    {trial.nct}
+                                </button>
+                            ) : (
+                                <span style={{ color: '#6b7280', fontSize: '14px' }}>Reference: {trial.nct}</span>
+                            )}
+                        </div>
+                        {isOpen && (
+                            <div className="trial-details open" id={trialId}>
+                                <div className="criteria-grid">
+                                    <div className="criteria-section inclusion">
+                                        <h4>Inclusion Criteria</h4>
+                                        <ul className="criteria-list">
+                                            {trial.inclusion.map((item, index) => <li key={index} dangerouslySetInnerHTML={{ __html: item.replace(/•/g, '&bull;') }}></li>)}
+                                        </ul>
+                                    </div>
+                                    <div className="criteria-section exclusion">
+                                        <h4>Exclusion Criteria</h4>
+                                        <ul className="criteria-list">
+                                            {trial.exclusion.map((item, index) => <li key={index} dangerouslySetInnerHTML={{ __html: item.replace(/•/g, '&bull;') }}></li>)}
+                                        </ul>
+                                    </div>
+                                </div>
+                                {trial.nct.startsWith('NCT') && (
+                                    <div style={{ padding: '15px', background: '#f0f9ff', borderTop: '1px solid #e0e7ff', textAlign: 'center' }}>
+                                        <button
+                                            className="trial-link-button-large"
+                                            onClick={() => window.open(`https://clinicaltrials.gov/study/${trial.nct}`, '_blank')}
+                                        >
+                                            <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" style={{ marginRight: '8px', verticalAlign: 'middle' }}>
+                                                <path d="M9 4v1H5.5A1.5 1.5 0 0 0 4 6.5v7A1.5 1.5 0 0 0 5.5 15h7a1.5 1.5 0 0 0 1.5-1.5V10h1v3.5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 3 13.5v-7A2.5 2.5 0 0 1 5.5 4H9z" />
+                                                <path d="M8 1h6v6h-1V2.707L7.354 8.354l-.708-.708L12.293 2H8V1z" />
+                                            </svg>
+                                            View Full Details: {trial.nct}
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
+            const renderContent = () => {
+                if (!data) return null;
+                return (
+                    <div>
+                        <h2 className="category-title">{data.title}</h2>
+                        {data.hasSubsections ? (
+                            Object.keys(data.subsections).map(subsectionKey => {
+                                const subsection = data.subsections[subsectionKey];
+                                let cssClass = subsectionKey;
+                                if (subsectionKey === 'inpatient') cssClass = 'subacute';
+
+                                return (
+                                    <div key={subsectionKey} className={`subsection-container ${cssClass}`}>
+                                        <h3 className={`section-header ${cssClass}`}>{subsection.title}</h3>
+                                        {subsection.trials.map((trial, index) => {
+                                            const trialId = `${currentCategory}-${subsectionKey}-${index}`;
+                                            return <TrialCard key={trialId} trial={trial} trialId={trialId} category={currentCategory} />;
+                                        })}
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            data.trials.map((trial, index) => {
+                                const trialId = `${currentCategory}-${index}`;
+                                return <TrialCard key={trialId} trial={trial} trialId={trialId} category={currentCategory} />;
+                            })
+                        )}
+                    </div>
+                );
+            };
+
+            return (
+                <div className="stroke-trials-container">
+                    <style>{`
+                        .stroke-trials-container { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; padding: 20px; border-radius: 8px; }
+                        .stroke-trials-container * { box-sizing: border-box; }
+                        .stroke-trials-container .header { background: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+                        .stroke-trials-container .header h1 { color: #1e40af; margin-bottom: 10px; font-size: 2.25rem; }
+                        .stroke-trials-container .header p { color: #666; }
+                        .stroke-trials-container .stats { display: flex; gap: 15px; margin-top: 20px; }
+                        .stroke-trials-container .stat-badge { padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: 500; background: #dbeafe; color: #1e40af; }
+                        .stroke-trials-container .tabs { display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; background: white; padding: 10px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+                        .stroke-trials-container .tab { padding: 10px 20px; border: none; background: #f3f4f6; color: #4b5563; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; white-space: nowrap; transition: all 0.3s; }
+                        .stroke-trials-container .tab:hover { background: #e5e7eb; }
+                        .stroke-trials-container .tab.active { background: #3b82f6; color: white; }
+                        .stroke-trials-container .category-title { font-size: 24px; font-weight: bold; margin-bottom: 20px; color: #1f2937; }
+                        .stroke-trials-container .section-header { font-size: 20px; font-weight: 600; color: #374151; margin: 40px 0 25px 0; padding: 15px 20px; background: #f9fafb; border-left: 4px solid #3b82f6; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); position: relative; }
+                        .stroke-trials-container .section-header.acute { background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%); border-left-color: #dc2626; color: #7f1d1d; }
+                        .stroke-trials-container .section-header.acute::before { content: "⚡"; font-size: 24px; margin-right: 10px; vertical-align: middle; }
+                        .stroke-trials-container .section-header.subacute { background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%); border-left-color: #2563eb; color: #1e3a8a; }
+                        .stroke-trials-container .section-header.subacute::before { content: "🏥"; font-size: 24px; margin-right: 10px; vertical-align: middle; }
+                        .stroke-trials-container .section-header.imaging { background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%); border-left-color: #059669; color: #064e3b; }
+                        .stroke-trials-container .section-header.imaging::before { content: "🔬"; font-size: 24px; margin-right: 10px; vertical-align: middle; }
+                        .stroke-trials-container .section-header.trials { background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%); border-left-color: #d97706; color: #92400e; }
+                        .stroke-trials-container .section-header.trials::before { content: "⚕️"; font-size: 24px; margin-right: 10px; vertical-align: middle; }
+                        .stroke-trials-container .section-header.observational { background: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 100%); border-left-color: #6366f1; color: #3730a3; }
+                        .stroke-trials-container .section-header.observational::before { content: "📊"; font-size: 24px; margin-right: 10px; vertical-align: middle; }
+                        .stroke-trials-container .subsection-container { margin-bottom: 50px; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+                        .stroke-trials-container .subsection-container.acute { border-top: 3px solid #dc2626; }
+                        .stroke-trials-container .subsection-container.subacute { border-top: 3px solid #2563eb; }
+                        .stroke-trials-container .subsection-container.imaging { border-top: 3px solid #059669; }
+                        .stroke-trials-container .subsection-container.trials { border-top: 3px solid #d97706; }
+                        .stroke-trials-container .subsection-container.observational { border-top: 3px solid #6366f1; }
+                        .stroke-trials-container .trial-card { background: white; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.2s; }
+                        .stroke-trials-container .trial-card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+                        .stroke-trials-container .trial-header { padding: 20px; cursor: pointer; border-left: 4px solid; }
+                        .stroke-trials-container .trial-header.ischemic { border-left-color: #3b82f6; background: #eff6ff; }
+                        .stroke-trials-container .trial-header.ich { border-left-color: #ef4444; background: #fef2f2; }
+                        .stroke-trials-container .trial-header.rehab { border-left-color: #10b981; background: #f0fdf4; }
+                        .stroke-trials-container .trial-header.cadasil { border-left-color: #8b5cf6; background: #f5f3ff; }
+                        .stroke-trials-container .trial-title { font-size: 20px; font-weight: 600; margin-bottom: 5px; color: #1f2937; }
+                        .stroke-trials-container .trial-badges { display: flex; gap: 10px; margin-bottom: 10px; }
+                        .stroke-trials-container .badge { padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+                        .stroke-trials-container .badge.phase { background: #e0e7ff; color: #3730a3; }
+                        .stroke-trials-container .badge.status { background: #d1fae5; color: #065f46; }
+                        .stroke-trials-container .trial-description { color: #4b5563; margin-bottom: 10px; }
+                        .stroke-trials-container .trial-link-button { background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; transition: all 0.2s; margin-top: 10px; }
+                        .stroke-trials-container .trial-link-button:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+                        .stroke-trials-container .trial-link-button-large { background: #2563eb; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; transition: all 0.2s; }
+                        .stroke-trials-container .trial-link-button-large:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+                        .stroke-trials-container .trial-details { padding: 20px; background: #f9fafb; border-top: 1px solid #e5e7eb; display: none; }
+                        .stroke-trials-container .trial-details.open { display: block; }
+                        .stroke-trials-container .criteria-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+                        .stroke-trials-container .criteria-section h4 { font-size: 16px; font-weight: 600; margin-bottom: 15px; }
+                        .stroke-trials-container .criteria-section.inclusion h4 { color: #059669; }
+                        .stroke-trials-container .criteria-section.exclusion h4 { color: #dc2626; }
+                        .stroke-trials-container .criteria-list { list-style: none; padding-left: 0;}
+                        .stroke-trials-container .criteria-list li { padding: 5px 0; font-size: 14px; color: #4b5563; position: relative; padding-left: 20px; }
+                        .stroke-trials-container .criteria-list li:before { content: ''; position: absolute; left: 0; top: 12px; width: 4px; height: 4px; border-radius: 50%; }
+                        .stroke-trials-container .inclusion .criteria-list li:before { background: #10b981; }
+                        .stroke-trials-container .exclusion .criteria-list li:before { background: #ef4444; }
+                        @media (max-width: 768px) { .stroke-trials-container .criteria-grid { grid-template-columns: 1fr; } }
+                    `}</style>
+                    <div className="header">
+                        <h1>Stroke Clinical Trials & Studies</h1>
+                        <p>Active studies at UW Medicine / Harborview Medical Center</p>
+                        <div className="stats">
+                            <span className="stat-badge">Active Studies: 16</span>
+                        </div>
+                    </div>
+                    <div className="tabs">
+                        <button className={`tab ${currentCategory === 'ischemic' ? 'active' : ''}`} onClick={() => handleTabClick('ischemic')}>Ischemic Stroke (10)</button>
+                        <button className={`tab ${currentCategory === 'ich' ? 'active' : ''}`} onClick={() => handleTabClick('ich')}>ICH (6)</button>
+                        <button className={`tab ${currentCategory === 'rehab' ? 'active' : ''}`} onClick={() => handleTabClick('rehab')}>Rehab (1)</button>
+                        <button className={`tab ${currentCategory === 'cadasil' ? 'active' : ''}`} onClick={() => handleTabClick('cadasil')}>CADASIL (1)</button>
+                    </div>
+                    <div id="trials-content">
+                        {renderContent()}
+                    </div>
+                </div>
+            );
+        };
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // ++ Main Stroke Clinical Tool Component
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         const StrokeClinicalTool = () => {
           const [activeTab, setActiveTab] = useState('workflow');
           const [patientData, setPatientData] = useState({});
@@ -62,9 +329,6 @@
             cortical: false,
             age: ''
           });
-          const [trialsCategory, setTrialsCategory] = useState('ischemic');
-          const [openTrials, setOpenTrials] = useState({});
-
           const [strokeCodeForm, setStrokeCodeForm] = useState({
             age: '',
             sex: '',
@@ -95,787 +359,9 @@
             { id: 'I', name: 'I - Insular ribbon', checked: true }
           ]);
 
-          
-          // Trials data
-          const trialsData = {
-            ischemic: {
-                title: "Ischemic Stroke Studies",
-                hasSubsections: true,
-                subsections: {
-                    acute: {
-                        title: "Acute Trials",
-                        trials: [
-                            {
-                                name: "SISTER Trial",
-                                nct: "NCT05948566",
-                                phase: "Phase 2",
-                                status: "",
-                                description: "TS23 (monoclonal antibody to α2-antiplasmin) for late thrombolysis in acute ischemic stroke patients presenting 4.5-24 hours from last known well",
-                                inclusion: [
-                                    "Age ≥18 years",
-                                    "Suspected anterior circulation acute ischemic stroke",
-                                    "NIH Stroke Scale score ≥4 prior to randomization (participant must have a clearly disabling deficit if NIHSS is 4-5)",
-                                    "Time from last known well: 4.5-24 hours",
-                                    "Favorable baseline neuroimaging consisting of ALL of the following:",
-                                    "• ASPECTS ≥6 on CT (or ASPECTS ≥7 on MRI)",
-                                    "• Favorable perfusion imaging on CTP/MR-PWI consisting of ALL:",
-                                    "  - Mismatch ratio of penumbra:core >1.2",
-                                    "  - Mismatch volume >10 cc",
-                                    "  - Ischemic core volume <70 cc",
-                                    "Able to receive assigned study drug within 4.5 to 24 hours of stroke onset or last known well",
-                                    "Informed consent obtained from participant or legally authorized representative",
-                                    "Study drug administration encouraged within 90 minutes after qualifying perfusion image (allowed up to 120 minutes)"
-                                ],
-                                exclusion: [
-                                    "Received endovascular treatment with clot engagement (patients with groin puncture but no clot engagement due to spontaneous distal migration are permitted)",
-                                    "Received or planned to receive intravenous thrombolysis",
-                                    "Pre-stroke modified Rankin score >2",
-                                    "Previous treatment with TS23 or known previous allergy to antibody therapy",
-                                    "Known pregnancy, breastfeeding, or plan to breastfeed within 3 months of receiving TS23",
-                                    "Positive urine or serum pregnancy test for women of childbearing potential",
-                                    "Known previous stroke in the past 90 days",
-                                    "Known previous intracranial hemorrhage, intracranial neoplasm, subarachnoid hemorrhage, or arteriovenous malformation",
-                                    "Known active diagnosis of intracranial neoplasm",
-                                    "Clinical presentation suggestive of subarachnoid hemorrhage (even if initial CT scan was normal)",
-                                    "Surgery or biopsy of parenchymal organ in the past 30 days",
-                                    "Known trauma with internal injuries or persistent ulcerative wounds in the past 30 days",
-                                    "Severe head trauma in the past 90 days",
-                                    "Persistent systolic blood pressure >180mmHg or diastolic blood pressure >105mmHg despite best medical management",
-                                    "Serious systemic hemorrhage in the past 30 days",
-                                    "Hereditary or acquired hemorrhagic diathesis or coagulation factor deficiency",
-                                    "Use of dual antiplatelet agents within 48 hours prior to stroke symptom onset",
-                                    "International normalized ratio (INR) >1.7 or partial thromboplastin time (PTT) > 2x upper limit of normal",
-                                    "Use of direct thrombin inhibitors or direct factor Xa inhibitors within past 48 hours unless aPTT, INR, platelet count, ecarin clotting time (ECT), thrombin time (TT), or appropriate factor Xa activity assays are normal",
-                                    "Glucose <50 mg/dL or >400 mg/dL",
-                                    "Platelets <100,000/µL",
-                                    "Known severe renal failure with creatinine >3 mg/dL or glomerular filtration rate <30 mL/min",
-                                    "Severe contrast allergy that cannot be managed medically",
-                                    "Suspected cerebral vasculitis based on medical history and CTA/MRA",
-                                    "Suspected intracranial dissection based on medical history and CTA/MRA",
-                                    "Intracranial stenosis related to atherosclerosis proximal to intracranial thrombus",
-                                    "Intracranial stent in place proximal to the intracranial occlusion",
-                                    "Acute myocardial infarction in past 7 days",
-                                    "Major surgery (requiring intubation or transfusion) in past 30 days",
-                                    "Suspicion of aortic dissection on history, examination, or imaging",
-                                    "Presumed septic embolus; suspicion of bacterial endocarditis",
-                                    "Life expectancy <90 days",
-                                    "Currently participating in another investigational drug or device study"
-                                ]
-                            },
-                            {
-                                name: "STEP-EVT Trial",
-                                nct: "NCT06289985",
-                                phase: "Adaptive Platform",
-                                status: "",
-                                description: "NIH StrokeNet adaptive platform trial optimizing endovascular therapy for mild stroke and medium/distal vessel occlusions",
-                                inclusion: [
-                                    "Age ≥18 years",
-                                    "Acute ischemic stroke due to large vessel occlusion (LVO) or medium vessel occlusion (MVO)",
-                                    "Within 24 hours of last known well",
-                                    "For Low NIHSS Domain:",
-                                    "• NIHSS 0-5 with ICA or M1 occlusion",
-                                    "• Disabling symptoms despite low NIHSS",
-                                    "For Medium/Distal Vessel Occlusion Domain:",
-                                    "• M2, M3, or M4 occlusion",
-                                    "• A1, A2, or A3 occlusion",
-                                    "• P1, P2, or P3 occlusion",
-                                    "• Appropriate perfusion imaging criteria demonstrating salvageable tissue",
-                                    "Ability to start EVT within appropriate time window",
-                                    "Pre-stroke mRS ≤2 (able to live independently)",
-                                    "Informed consent from patient or legally authorized representative"
-                                ],
-                                exclusion: [
-                                    "Known pre-existing medical, neurological or psychiatric disease that would confound outcome evaluations",
-                                    "Known serious, advanced, or terminal illness with life expectancy <6 months",
-                                    "Unfavorable vascular anatomy limiting endovascular access to occluded artery",
-                                    "Acute occlusions in multiple vascular territories",
-                                    "Suspected septic embolus",
-                                    "Suspected bacterial endocarditis",
-                                    "Seizure at stroke onset with postictal residual impairments",
-                                    "Contrast allergy precluding EVT that cannot be adequately pre-medicated",
-                                    "Chronic total occlusion of target vessel",
-                                    "Known intracranial dissection",
-                                    "Known vasculitis",
-                                    "Known moyamoya disease or syndrome",
-                                    "Pregnancy or positive pregnancy test",
-                                    "Currently breastfeeding",
-                                    "Large core infarct (ASPECTS <3 or core volume >100cc depending on time window)",
-                                    "Evidence of intracranial hemorrhage on baseline imaging",
-                                    "Clinical suspicion of subarachnoid hemorrhage despite negative imaging",
-                                    "Known bleeding diathesis or coagulopathy",
-                                    "Platelet count <50,000/μL",
-                                    "INR >3.0",
-                                    "Blood glucose <50mg/dL",
-                                    "Refractory hypertension (SBP >185 or DBP >110 despite treatment)",
-                                    "Currently participating in another interventional clinical trial"
-                                ]
-                            },
-                            {
-                                name: "PICASSO Trial",
-                                nct: "NCT05611242",
-                                phase: "Phase 3 RCT",
-                                status: "",
-                                description: "Mechanical thrombectomy with vs without acute carotid stenting for tandem lesions",
-                                inclusion: [
-                                    "Age 18-79 years",
-                                    "Acute ischemic stroke in the anterior circulation",
-                                    "Tandem lesion consisting of:",
-                                    "• Proximal carotid artery stenosis 70-100% by NASCET criteria or complete occlusion",
-                                    "• Intracranial large vessel occlusion (ICA terminus, M1, or proximal M2)",
-                                    "Within 16 hours from stroke onset or last known well",
-                                    "Pre-stroke mRS 0-2",
-                                    "NIHSS ≥4",
-                                    "For presentation ≤6 hours: ASPECTS ≥7 on non-contrast CT",
-                                    "For presentation >6-16 hours:",
-                                    "• ASPECTS ≥7 AND",
-                                    "• Ischemic core volume <50cc on perfusion imaging",
-                                    "• Mismatch ratio >1.8",
-                                    "• Mismatch volume >15cc",
-                                    "Ability to undergo groin puncture within treatment window",
-                                    "Informed consent obtained"
-                                ],
-                                exclusion: [
-                                    "Proximal carotid stenosis secondary to dissection",
-                                    "Proximal carotid stenosis secondary to vasculitis",
-                                    "Pre-stroke mRS >2",
-                                    "Known hemorrhagic diathesis",
-                                    "Known coagulation factor deficiency",
-                                    "Absolute contraindications to antiplatelet therapy",
-                                    "Need for acute therapeutic anticoagulation that cannot be stopped",
-                                    "Platelet count <100,000/μL",
-                                    "INR >1.7",
-                                    "aPTT >1.5x normal",
-                                    "Blood glucose <50mg/dL or >400mg/dL",
-                                    "Serum creatinine >3.0mg/dL unless on dialysis",
-                                    "Evidence of intracranial hemorrhage on baseline CT/MRI",
-                                    "Clinical suspicion of subarachnoid hemorrhage",
-                                    "Large territory infarction (>1/3 MCA territory)",
-                                    "Known severe contrast allergy that cannot be adequately pre-medicated",
-                                    "Known pregnancy or positive pregnancy test",
-                                    "Life expectancy <90 days due to comorbid conditions",
-                                    "Enrollment in another interventional clinical trial",
-                                    "Previous carotid endarterectomy or carotid stenting on affected side",
-                                    "Contralateral carotid occlusion",
-                                    "Intracranial stenosis in addition to the tandem lesion",
-                                    "Known cardiac source of embolism requiring anticoagulation",
-                                    "Recent MI within 30 days with ongoing cardiac issues",
-                                    "Severe or unstable congestive heart failure",
-                                    "Uncontrolled hypertension (SBP >185 or DBP >110 despite treatment)"
-                                ]
-                            }
-                        ]
-                    },
-                    inpatient: {
-                        title: "Subacute Enrollment",
-                        trials: [
-                            {
-                                name: "SCOUTS3 Trial",
-                                nct: "NCT06029959",
-                                phase: "Interventional",
-                                status: "",
-                                description: "Multicomponent behavioral package to improve CPAP adherence in stroke with OSA",
-                                inclusion: [
-                                    "Age ≥18 years",
-                                    "Acute ischemic stroke or intraparenchymal hemorrhage within past 30 days",
-                                    "Currently admitted to inpatient rehabilitation facility",
-                                    "Diagnosed with obstructive sleep apnea (OSA) during inpatient rehabilitation stay:",
-                                    "• AHI ≥5 events/hour on diagnostic sleep study OR",
-                                    "• REI ≥5 events/hour on home sleep apnea test",
-                                    "CPAP therapy indicated and prescribed",
-                                    "Able to provide informed consent in English or Spanish",
-                                    "Expected to remain in inpatient rehabilitation for ≥3 nights after enrollment",
-                                    "Cognitive ability to participate in behavioral intervention (MOCA ≥17)",
-                                    "Has a caregiver/support person who can assist with CPAP use"
-                                ],
-                                exclusion: [
-                                    "Unable to obtain informed consent",
-                                    "Incarcerated or prisoner",
-                                    "Known pregnancy",
-                                    "Current mechanical ventilation",
-                                    "Tracheostomy present",
-                                    "Oxygen requirement >4L/min at rest",
-                                    "Current PAP use or use within 14 days prior to stroke",
-                                    "History of pneumothorax",
-                                    "History of bullous emphysema",
-                                    "Stroke related to brain tumors",
-                                    "Stroke related to vascular malformations",
-                                    "Subarachnoid hemorrhage",
-                                    "Active sedative drug use interfering with OSA testing or treatment",
-                                    "Anticipated inpatient rehabilitation length of stay <3 nights",
-                                    "Unable to tolerate CPAP mask fitting",
-                                    "Severe claustrophobia preventing CPAP use",
-                                    "Severe facial/skull deformity preventing mask fit",
-                                    "Active untreated psychiatric condition affecting participation",
-                                    "Life expectancy <3 months",
-                                    "Currently enrolled in another interventional sleep study"
-                                ]
-                            },
-                            {
-                                name: "COMA-SABI Study",
-                                nct: "NCT05671874",
-                                phase: "Observational",
-                                status: "",
-                                description: "Severe acute brain injury QOL and caregiver outcomes to 12 months (includes stroke/ICH/TBI)",
-                                inclusion: [
-                                    "Age ≥18 years",
-                                    "Severe acute brain injury including:",
-                                    "• Ischemic stroke",
-                                    "• Intracerebral hemorrhage",
-                                    "• Traumatic brain injury",
-                                    "• Hypoxic-ischemic encephalopathy",
-                                    "GCS ≤12 at any point during ICU admission",
-                                    "ICU admission for ≥48 hours",
-                                    "Has an identifiable family member or caregiver willing to participate",
-                                    "Caregiver speaks English or Spanish",
-                                    "Expected to survive hospitalization per clinical team assessment"
-                                ],
-                                exclusion: [
-                                    "Pre-existing life expectancy <12 months from non-neurologic condition",
-                                    "No available family member or caregiver to provide information",
-                                    "Pre-injury severe cognitive impairment or dementia",
-                                    "Pre-injury residence in skilled nursing facility",
-                                    "Prisoner or incarcerated",
-                                    "Brain death or withdrawal of life support planned within 72 hours",
-                                    "Previously enrolled in COMA-SABI study"
-                                ]
-                            },
-                            {
-                                name: "TESTED",
-                                nct: "NCT05911568",
-                                phase: "Comparative Effectiveness",
-                                status: "",
-                                description: "EVT vs medical therapy in LVO with pre-existing disability (mRS 3-4)",
-                                inclusion: [
-                                    "Age ≥18 years",
-                                    "Pre-stroke mRS 3-4 for at least 3 months prior to index stroke",
-                                    "Large vessel occlusion:",
-                                    "• ICA terminus",
-                                    "• M1 segment of MCA",
-                                    "• Dominant/co-dominant M2 segment",
-                                    "Within 24 hours of last known well",
-                                    "NIHSS ≥6",
-                                    "ASPECTS ≥3 on non-contrast CT or ≥4 on MRI",
-                                    "For 6-24 hour window: evidence of salvageable tissue on perfusion imaging",
-                                    "Able to undergo groin puncture within time window",
-                                    "Informed consent from patient or legally authorized representative"
-                                ],
-                                exclusion: [
-                                    "Pre-stroke mRS 0-2 or mRS 5-6",
-                                    "Life expectancy <6 months from non-stroke condition",
-                                    "Pre-stroke disability deemed temporary or reversible",
-                                    "Known pregnancy",
-                                    "Evidence of intracranial hemorrhage",
-                                    "Large established infarct (>1/3 MCA territory)",
-                                    "Bilateral strokes",
-                                    "Known vasculitis or moyamoya",
-                                    "Intracranial tumor",
-                                    "Currently participating in another stroke intervention trial",
-                                    "Inability to follow up at 90 days"
-                                ]
-                            },
-                            {
-                                name: "VERIFY Study",
-                                nct: "NCT05338697",
-                                phase: "Observational",
-                                status: "",
-                                description: "Early TMS/MRI/clinical measures to predict upper extremity motor recovery",
-                                inclusion: [
-                                    "Age ≥18 years",
-                                    "Acute ischemic stroke within 7 days of onset",
-                                    "Upper extremity weakness (shoulder abduction and/or finger extension ≤4 on MRC scale)",
-                                    "Able to provide informed consent or has LAR",
-                                    "Able to participate in study assessments",
-                                    "Expected to survive at least 90 days"
-                                ],
-                                exclusion: [
-                                    "Contraindications to TMS:",
-                                    "• Implanted electronic devices (pacemaker, cochlear implant, etc.)",
-                                    "• Intracranial metal",
-                                    "• History of seizures",
-                                    "• Active psychiatric medication affecting cortical excitability",
-                                    "Contraindications to MRI",
-                                    "Unable to complete follow-up visits at 30 and 90 days",
-                                    "Pre-stroke mRS >2",
-                                    "Bilateral upper extremity weakness",
-                                    "Previous stroke affecting motor function",
-                                    "Other neurological conditions affecting motor function",
-                                    "Pregnancy"
-                                ]
-                            },
-                            {
-                                name: "DISCOVERY Study",
-                                nct: "NCT04916210",
-                                phase: "Observational",
-                                status: "",
-                                description: "Cognitive trajectories and biomarkers after stroke (includes AIS/ICH/SAH)",
-                                inclusion: [
-                                    "Age ≥18 years",
-                                    "Admitted with one of the following:",
-                                    "• Acute ischemic stroke",
-                                    "• Intracerebral hemorrhage",
-                                    "• Aneurysmal subarachnoid hemorrhage",
-                                    "Radiographic confirmation of stroke diagnosis",
-                                    "Baseline visit can be completed within 6 weeks of stroke",
-                                    "Fluent in English or Spanish",
-                                    "Has study partner who knows patient well (contact ≥1x/week)",
-                                    "Able to provide informed consent or has LAR",
-                                    "Expected to survive at least 1 year"
-                                ],
-                                exclusion: [
-                                    "Pre-stroke dementia diagnosis",
-                                    "Pre-stroke cognitive impairment interfering with daily activities",
-                                    "Concurrent enrollment in interventional trial affecting cognition",
-                                    "Unable to complete study protocol due to:",
-                                    "• Severe aphasia preventing cognitive testing",
-                                    "• Severe motor impairment preventing testing",
-                                    "• Blindness or severe visual impairment",
-                                    "• Deafness or severe hearing impairment",
-                                    "Active substance abuse",
-                                    "Severe psychiatric illness affecting participation",
-                                    "Terminal illness with life expectancy <1 year",
-                                    "Previous enrollment in DISCOVERY",
-                                    "Planned move out of area within study period"
-                                ]
-                            }
-                        ]
-                    },
-                    imaging: {
-                        title: "Imaging Studies",
-                        trials: [
-                            {
-                                name: "ESUS Imaging Study",
-                                nct: "NCT03820375",
-                                phase: "Observational",
-                                status: "",
-                                description: "Cardiac and intracranial vessel wall MRI to reclassify ESUS",
-                                inclusion: [
-                                    "ESUS diagnosis",
-                                    "Age ≥18 years",
-                                    "Within 30 days of index stroke"
-                                ],
-                                exclusion: [
-                                    "MRI contraindications",
-                                    "Known stroke etiology"
-                                ]
-                            },
-                            {
-                                name: "MOCHA Imaging",
-                                nct: "PMC8821414",
-                                phase: "Observational",
-                                status: "",
-                                description: "Automated intracranial vessel-wall analysis for non-stenotic ICAD detection",
-                                inclusion: [
-                                    "Atherosclerotic lesions within the cerebrovascular tree clinically detected based on stenosis presence on clinical luminal imaging",
-                                    "Presence of two or more atherosclerotic risk factors:",
-                                    "• Age >50 years for men or >60 years for women",
-                                    "• Hypertension",
-                                    "• Diabetes mellitus", 
-                                    "• Hyperlipidemia",
-                                    "• Obesity",
-                                    "• Smoking history",
-                                    "No clinical evidence for other intracranial vasculopathies",
-                                    "High-resolution MRI vessel wall imaging available"
-                                ],
-                                exclusion: [
-                                    "Poor MRI image quality limiting vessel wall analysis",
-                                    "Known intracranial vasculopathy (vasculitis, moyamoya, dissection)",
-                                    "Unable to undergo MRI scanning",
-                                    "Contraindications to MRI contrast if required for imaging protocol"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            },
-            ich: {
-                title: "Intracerebral Hemorrhage Studies",
-                hasSubsections: true,
-                subsections: {
-                    trials: {
-                        title: "Trials",
-                        trials: [
-                            {
-                                name: "SATURN Trial",
-                                nct: "NCT03936361",
-                                phase: "Phase 3",
-                                status: "",
-                                description: "Statins for intracerebral hemorrhage: Continue vs discontinue after lobar ICH",
-                                inclusion: [
-                                    "Age ≥50 years",
-                                    "Spontaneous lobar intracerebral hemorrhage confirmed by CT or MRI",
-                                    "Taking statin therapy at time of ICH onset for ≥1 month",
-                                    "Modified Rankin Scale ≤4 at time of randomization",
-                                    "Randomization within 7 days of ICH",
-                                    "Clinical indication for statin therapy (dyslipidemia, atherosclerotic disease, diabetes)",
-                                    "Able to provide informed consent or has LAR",
-                                    "Expected to survive at least 6 months"
-                                ],
-                                exclusion: [
-                                    "Deep (non-lobar) ICH location",
-                                    "Secondary causes of ICH:",
-                                    "• Trauma",
-                                    "• Known brain tumor",
-                                    "• Known vascular malformation or aneurysm",
-                                    "• Hemorrhagic transformation of ischemic stroke",
-                                    "• Known or suspected CNS vasculitis",
-                                    "• Coagulopathy (INR >1.5, platelet count <100,000)",
-                                    "• Drug-related (cocaine, amphetamines)",
-                                    "Recent MI (<3 months) or unstable angina",
-                                    "Coronary revascularization within past year",
-                                    "Diabetes mellitus with prior MI or coronary revascularization",
-                                    "Clear contraindication to statin discontinuation per treating physician",
-                                    "Statin-related myopathy or rhabdomyolysis",
-                                    "Severe hepatic impairment (ALT/AST >3x ULN)",
-                                    "Life expectancy <6 months from non-ICH condition",
-                                    "Unable to follow study protocol",
-                                    "Pregnancy or breastfeeding",
-                                    "Participation in another interventional trial"
-                                ]
-                            },
-                            {
-                                name: "ASPIRE Trial",
-                                nct: "NCT03907046",
-                                phase: "Phase 3",
-                                status: "",
-                                description: "Apixaban vs aspirin for stroke prevention after ICH in atrial fibrillation",
-                                inclusion: [
-                                    "Age ≥18 years",
-                                    "Spontaneous ICH confirmed by CT or MRI",
-                                    "Non-valvular atrial fibrillation (paroxysmal, persistent, or permanent)",
-                                    "CHA2DS2-VASc score ≥2",
-                                    "Randomization 14-180 days after ICH",
-                                    "Modified Rankin Scale ≤4 at randomization",
-                                    "Able to take oral medications",
-                                    "Informed consent obtained"
-                                ],
-                                exclusion: [
-                                    "Clear indication for anticoagulation other than AF:",
-                                    "• Mechanical heart valve",
-                                    "• Recent DVT/PE requiring anticoagulation",
-                                    "• Left ventricular thrombus",
-                                    "Left atrial appendage closure device",
-                                    "Valvular AF (moderate-severe mitral stenosis, mechanical valve)",
-                                    "Secondary causes of ICH requiring specific treatment",
-                                    "Creatinine ≥2.5mg/dL or CrCl <25mL/min",
-                                    "Hepatic insufficiency (Child-Pugh B or C)",
-                                    "Active bleeding or high bleeding risk condition",
-                                    "Uncontrolled hypertension (BP ≥180/100 on multiple readings)",
-                                    "Platelet count <100,000/μL",
-                                    "Hemoglobin <8g/dL",
-                                    "Need for dual antiplatelet therapy",
-                                    "Contraindication to aspirin or apixaban",
-                                    "Pregnancy or breastfeeding",
-                                    "Life expectancy <1 year",
-                                    "Unable to adhere to study protocol",
-                                    "Participation in another antithrombotic trial"
-                                ]
-                            },
-                            {
-                                name: "cAPPricorn-1 Trial",
-                                nct: "NCT06393712",
-                                phase: "Phase 2",
-                                status: "",
-                                description: "Intrathecal ALN-APP (mivelsiran) for cerebral amyloid angiopathy",
-                                inclusion: [
-                                    "For sporadic CAA:",
-                                    "• Age ≥50 years",
-                                    "• Meets Boston Criteria v2.0 for probable CAA",
-                                    "• Prior symptomatic lobar ICH ≥90 days ago",
-                                    "For Dutch-type hereditary CAA:",
-                                    "• Age ≥30 years",
-                                    "• Confirmed E693Q APP variant",
-                                    "• Prior ICH ≥90 days ago (if applicable)",
-                                    "MRI evidence of CAA (microbleeds, superficial siderosis)",
-                                    "Modified Rankin Scale ≤4",
-                                    "Able to undergo lumbar punctures",
-                                    "Adequate contraception if childbearing potential",
-                                    "Informed consent obtained"
-                                ],
-                                exclusion: [
-                                    "ICH within 90 days of screening",
-                                    "Other cause of ICH identified",
-                                    "ALT or AST >3× upper limit of normal",
-                                    "eGFR <30 mL/min/1.73m²",
-                                    "Platelet count <100,000/μL",
-                                    "INR >1.5 or aPTT >1.5× ULN",
-                                    "Contraindication to lumbar puncture",
-                                    "Active CNS infection or inflammation",
-                                    "Intrathecal pump or shunt",
-                                    "Spinal cord compression or injury",
-                                    "History of chemical or radiation meningitis",
-                                    "Pregnancy or breastfeeding",
-                                    "Life expectancy <2 years",
-                                    "Chronic use of anticoagulation that cannot be stopped for LP",
-                                    "Prior treatment with gene therapy or oligonucleotide therapy",
-                                    "Participation in another interventional trial within 30 days"
-                                ]
-                            }
-                        ]
-                    },
-                    observational: {
-                        title: "Observational",
-                        trials: [
-                            {
-                                name: "MIRROR Registry",
-                                nct: "NCT04494295",
-                                phase: "Observational Registry",
-                                status: "",
-                                description: "Minimally invasive endoscopic ICH evacuation using Aurora Surgiscope System",
-                                inclusion: [
-                                    "Age ≥18 years",
-                                    "Spontaneous supratentorial ICH confirmed by CT",
-                                    "ICH volume ≥20mL",
-                                    "Surgery planned within 24 hours of last known well",
-                                    "NIHSS >5",
-                                    "Baseline mRS ≤2",
-                                    "GCS ≥5",
-                                    "Ability to undergo general anesthesia",
-                                    "Informed consent from patient or LAR"
-                                ],
-                                exclusion: [
-                                    "Secondary ICH due to:",
-                                    "• Vascular lesion (AVM, aneurysm, dural fistula)",
-                                    "• Brain tumor",
-                                    "• Trauma",
-                                    "• Hemorrhagic transformation of ischemic stroke",
-                                    "• Moyamoya disease",
-                                    "Fixed and dilated pupils",
-                                    "Bilateral extensor posturing",
-                                    "Infratentorial or brainstem ICH",
-                                    "Intraventricular hemorrhage as primary pathology",
-                                    "Life expectancy <6 months from other condition",
-                                    "Uncorrectable coagulopathy (INR >1.4, platelets <100,000)",
-                                    "Known pregnancy",
-                                    "Prisoner or ward of state",
-                                    "Participation in another interventional trial"
-                                ]
-                            },
-                            {
-                                name: "COMA-SABI Study (ICH Cohort)",
-                                nct: "NCT05671874",
-                                phase: "Observational",
-                                status: "",
-                                description: "Severe ICH outcomes and caregiver QOL to 12 months",
-                                inclusion: [
-                                    "Age ≥18 years",
-                                    "Severe intracerebral hemorrhage",
-                                    "GCS ≤12 at any point during ICU admission",
-                                    "ICU admission for ≥48 hours",
-                                    "Has identifiable caregiver willing to participate",
-                                    "Expected to survive hospitalization"
-                                ],
-                                exclusion: [
-                                    "Pre-existing life expectancy <12 months",
-                                    "No available caregiver",
-                                    "Pre-injury severe cognitive impairment",
-                                    "Brain death or comfort care within 72 hours"
-                                ]
-                            },
-                            {
-                                name: "DISCOVERY Study (ICH Cohort)",
-                                nct: "NCT04916210",
-                                phase: "Observational",
-                                status: "",
-                                description: "Cognitive trajectories and biomarkers after ICH",
-                                inclusion: [
-                                    "Age ≥18 years",
-                                    "Admitted with intracerebral hemorrhage",
-                                    "Radiographic confirmation of ICH",
-                                    "Baseline visit within 6 weeks of ICH",
-                                    "Fluent in English or Spanish",
-                                    "Has study partner with regular contact",
-                                    "Expected survival ≥1 year"
-                                ],
-                                exclusion: [
-                                    "Pre-existing dementia",
-                                    "Unable to complete cognitive testing",
-                                    "Concurrent enrollment in cognitive intervention trial",
-                                    "Active substance abuse",
-                                    "Severe psychiatric illness",
-                                    "Terminal illness with life expectancy <1 year"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            },
-            rehab: {
-                title: "Rehabilitation",
-                trials: [
-                    {
-                        name: "MR-PICS Study",
-                        nct: "NCT06506279",
-                        phase: "Phase 2",
-                        status: "",
-                        description: "Motor Recovery through Plasticity-Inducing Cortical Stimulation using CorTec Brain Interchange System for chronic stroke recovery",
-                        inclusion: [
-                            "Post-ischemic stroke patients with upper extremity deficit",
-                            "Chronic stroke (minimum 6 months post-stroke)",
-                            "Age 22-80 years",
-                            "Able to participate meaningfully in rehabilitation (Upper Extremity Fugl-Meyer score 25-45)",
-                            "Disability measured between 3-4 on modified Rankin Scale",
-                            "Minimum 30% preservation of corticospinal tract integrity",
-                            "Ability to provide informed consent",
-                            "Medically stable and cleared for neurosurgical procedure",
-                            "Willingness to comply with study protocol and follow-up visits",
-                            "Access to caregiver support during recovery period"
-                        ],
-                        exclusion: [
-                            "Seizure disorder or history of seizures",
-                            "Contraindications to neurosurgical procedures",
-                            "Contraindications to MRI scanning",
-                            "Active psychiatric condition that would interfere with participation",
-                            "Pregnancy or nursing",
-                            "Life expectancy less than 2 years",
-                            "Current participation in other interventional clinical trials",
-                            "Inability to stop anti-platelet medications 7 days before and 3 days after surgery",
-                            "Therapeutic anticoagulation that cannot be safely interrupted",
-                            "Active substance abuse or dependence",
-                            "Severe cognitive impairment preventing informed consent",
-                            "Glenohumeral subluxation, adhesive capsulitis, or upper extremity contractures with associated pain that would limit participation",
-                            "Implanted electronic devices incompatible with study procedures",
-                            "Prior brain surgery or cranial implants",
-                            "Hemorrhagic stroke (intracerebral hemorrhage excluded)",
-                            "Bilateral stroke or multiple stroke locations"
-                        ]
-                    }
-                ]
-            },
-            cadasil: {
-                title: "CADASIL",
-                trials: [
-                    {
-                        name: "CADASIL Registry",
-                        nct: "NCT05567744",
-                        phase: "Observational Registry",
-                        status: "",
-                        description: "Longitudinal registry for genetically confirmed or suspected CADASIL",
-                        inclusion: [
-                            "Confirmed NOTCH3 mutation or suspected CADASIL",
-                            "Age ≥18 years"
-                        ],
-                        exclusion: [
-                            "Unable to provide consent"
-                        ]
-                    }
-                ]
-            }
-          };
-
-          // Toggle trial details
-          const toggleTrial = (trialId) => {
-            setOpenTrials(prev => ({
-              ...prev,
-              [trialId]: !prev[trialId]
-            }));
-          };
-
-          // Create trial card component
-          const TrialCard = ({ trial, trialId, category }) => {
-            return (
-              <div className="trial-card">
-                <div className={`trial-header ${category}`} onClick={() => toggleTrial(trialId)}>
-                  <h3 className="trial-title">{trial.name}</h3>
-                  <div className="trial-badges">
-                    <span className="badge phase">{trial.phase}</span>
-                    {trial.status && <span className="badge status">{trial.status}</span>}
-                  </div>
-                  <p className="trial-description">{trial.description}</p>
-                  {trial.nct.startsWith('NCT') ? (
-                    <button 
-                      className="trial-link-button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        window.open(`https://clinicaltrials.gov/study/${trial.nct}`, '_blank');
-                      }}
-                    >
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style={{ marginRight: '6px', verticalAlign: 'middle' }}>
-                        <path d="M9 4v1H5.5A1.5 1.5 0 0 0 4 6.5v7A1.5 1.5 0 0 0 5.5 15h7a1.5 1.5 0 0 0 1.5-1.5V10h1v3.5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 3 13.5v-7A2.5 2.5 0 0 1 5.5 4H9z"/>
-                        <path d="M8 1h6v6h-1V2.707L7.354 8.354l-.708-.708L12.293 2H8V1z"/>
-                      </svg>
-                      {trial.nct}
-                    </button>
-                  ) : (
-                    <span style={{ color: '#6b7280', fontSize: '14px' }}>Reference: {trial.nct}</span>
-                  )}
-                </div>
-                <div className={`trial-details ${openTrials[trialId] ? 'open' : ''}`}>
-                  <div className="criteria-grid">
-                    <div className="criteria-section inclusion">
-                      <h4>Inclusion Criteria</h4>
-                      <ul className="criteria-list">
-                        {trial.inclusion.map((item, idx) => (
-                          <li key={idx}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="criteria-section exclusion">
-                      <h4>Exclusion Criteria</h4>
-                      <ul className="criteria-list">
-                        {trial.exclusion.map((item, idx) => (
-                          <li key={idx}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                  {trial.nct.startsWith('NCT') && (
-                    <div style={{ padding: '15px', background: '#f0f9ff', borderTop: '1px solid #e0e7ff', textAlign: 'center' }}>
-                      <button 
-                        className="trial-link-button-large"
-                        onClick={() => window.open(`https://clinicaltrials.gov/study/${trial.nct}`, '_blank')}
-                      >
-                        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" style={{ marginRight: '8px', verticalAlign: 'middle' }}>
-                          <path d="M9 4v1H5.5A1.5 1.5 0 0 0 4 6.5v7A1.5 1.5 0 0 0 5.5 15h7a1.5 1.5 0 0 0 1.5-1.5V10h1v3.5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 3 13.5v-7A2.5 2.5 0 0 1 5.5 4H9z"/>
-                          <path d="M8 1h6v6h-1V2.707L7.354 8.354l-.708-.708L12.293 2H8V1z"/>
-                        </svg>
-                        View Full Details: {trial.nct}
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          };
-
-          // Render trials content
-          const renderTrialsContent = () => {
-            const data = trialsData[trialsCategory];
-            
-            return (
-              <div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">{data.title}</h2>
-                
-                {data.hasSubsections ? (
-                  // Render subsections for trials with multiple categories
-                  Object.keys(data.subsections).map(subsectionKey => {
-                    const subsection = data.subsections[subsectionKey];
-                    
-                    // Map subsection keys to CSS class names
-                    let cssClass = subsectionKey;
-                    if (subsectionKey === 'inpatient') {
-                      cssClass = 'subacute';
-                    }
-                    
-                    return (
-                      <div key={subsectionKey} className={`subsection-container ${cssClass}`}>
-                        <h3 className={`section-header ${cssClass}`}>{subsection.title}</h3>
-                        {subsection.trials.map((trial, index) => {
-                          const trialId = `${trialsCategory}-${subsectionKey}-${index}`;
-                          return <TrialCard key={trialId} trial={trial} trialId={trialId} category={trialsCategory} />;
-                        })}
-                      </div>
-                    );
-                  })
-                ) : (
-                  // Render regular trials
-                  data.trials.map((trial, index) => {
-                    const trialId = `${trialsCategory}-${index}`;
-                    return <TrialCard key={trialId} trial={trial} trialId={trialId} category={trialsCategory} />;
-                  })
-                )}
-              </div>
-            );
-          };
+          useEffect(() => {
+            lucide.createIcons();
+          }, [activeTab]);
 
           // NIH Stroke Scale items
           const nihssItems = [
@@ -932,9 +418,9 @@
             if (items.age60) score += 1;
             if (items.bp) score += 1;
             if (items.unilateralWeakness) score += 2;
-            if (items.speechDisturbance) score += 1;
-            if (items.duration10) score += 1;
+            else if (items.speechDisturbance) score += 1; // Note: original score counts speech only if no weakness
             if (items.duration60) score += 2;
+            else if (items.duration10) score += 1;
             if (items.diabetes) score += 1;
             return score;
           };
@@ -962,50 +448,38 @@
             if (items.nonsmoker) score += 1;
             if (items.cortical) score += 1;
             
-            // Age points
             const age = parseInt(items.age) || 0;
             if (age >= 18 && age <= 29) score += 5;
             else if (age >= 30 && age <= 39) score += 4;
             else if (age >= 40 && age <= 49) score += 3;
             else if (age >= 50 && age <= 59) score += 2;
             else if (age >= 60 && age <= 69) score += 1;
-            // 70+ years gets 0 points
             
             return score;
           };
 
-          // Create Icon component wrapper
-          const Icon = ({ icon: IconComponent, size = 16 }) => {
-            React.useEffect(() => {
-              lucide.createIcons();
-            }, []);
-            
-            return <i data-lucide={IconComponent} className="w-4 h-4 inline-block"></i>;
-          };
-
           return (
-            <div className="max-w-7xl mx-auto p-6 bg-white">
+            <div className="max-w-7xl mx-auto p-4 sm:p-6 bg-white">
               {/* Header */}
               <div className="mb-6">
-                <h1 className="text-3xl font-bold text-blue-900 mb-2">Acute Stroke Clinical Decision Support</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-2">Acute Stroke Clinical Decision Support</h1>
               </div>
 
               {/* Navigation Tabs */}
               <div className="border-b border-gray-200 mb-6">
-                <nav className="flex space-x-8 overflow-x-auto">
+                <nav className="-mb-px flex space-x-4 sm:space-x-8 overflow-x-auto">
                   {[
                     { id: 'workflow', name: 'Workflow', icon: 'check-circle' },
                     { id: 'nihss', name: 'NIH Stroke Scale', icon: 'brain' },
                     { id: 'imaging', name: 'Imaging & ASPECTS', icon: 'file-text' },
                     { id: 'lytic', name: 'Lytic Eligibility', icon: 'alert-triangle' },
                     { id: 'evt', name: 'EVT Eligibility', icon: 'alert-triangle' },
-                    { id: 'strokecode', name: 'Stroke Code - Pulsara Summary', icon: 'file-text' },
+                    { id: 'strokecode', name: 'Stroke Code Summary', icon: 'file-text' },
                     { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
                     { id: 'trials', name: 'Trials', icon: 'file-text' },
                     { id: 'calculators', name: 'Risk Calculators', icon: 'calculator' },
                     { id: 'protocols', name: 'Management', icon: 'file-text' }
-                  ].map(tab => {
-                    return (
+                  ].map(tab => (
                       <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
@@ -1018,14 +492,12 @@
                         <i data-lucide={tab.icon} className="w-4 h-4"></i>
                         <span>{tab.name}</span>
                       </button>
-                    );
-                  })}
+                    ))}
                 </nav>
               </div>
 
               {/* Content */}
               <div className="space-y-6">
-                {/* Workflow */}
                 {activeTab === 'workflow' && (
                   <div className="space-y-6">
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4">
@@ -1065,18 +537,14 @@
                         </div>
                       </div>
                       
-                      {/* TNK Risk/Benefit Discussion */}
                       <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mt-4">
                         <h3 className="text-lg font-semibold text-purple-800 mb-3">TNK Risk/Benefit Discussion</h3>
                         <p className="text-sm text-gray-700">We recommend a medication called Tenecteplase (TNK), which is a "clot-buster" drug. TNK reduces the risk of being disabled; people who get TNK have an improved chance of recovering without disability than people who don't get the medication. All medications have risks – the main risk is bleeding, up to 4% of people develop bleeding in the brain that leads to new symptoms. Very rarely, people have an allergic reaction. The potential benefits are thought to be higher than the potential risks and we recommend TNK is administered. Time is very important here - the sooner the treatment is started, the higher the likelihood of benefit.</p>
                       </div>
                       
-                      {/* Telestroke Section */}
                       <div className="bg-gray-50 border border-gray-300 rounded-lg p-4 mt-4">
                         <h3 className="text-lg font-semibold text-gray-800 mb-4">Telestroke</h3>
-                        
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                          {/* OSH Transfer */}
                           <div className="bg-white p-3 rounded border">
                             <h4 className="font-semibold text-gray-700 mb-2">OSH Transfer:</h4>
                             <ul className="text-sm space-y-1">
@@ -1088,7 +556,6 @@
                             </ul>
                           </div>
                           
-                          {/* TNK risk/benefit discussion documentation */}
                           <div className="bg-white p-3 rounded border">
                             <h4 className="font-semibold text-gray-700 mb-2">TNK risk/benefit discussion documentation:</h4>
                             <p className="text-sm">After ensuring that there were no evident contraindications, TNK administration was recommended. Potential benefits, potential risks (including a potential risk of sx ICH of up to 4%), and alternatives to treatment were discussed with the OSH provider and patient/family prior to initiating treatment.</p>
@@ -1096,7 +563,6 @@
                         </div>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {/* Post-IV TNK/tPA recommendations */}
                           <div className="bg-white p-3 rounded border">
                             <h4 className="font-semibold text-gray-700 mb-2">Post-IV TNK/tPA recommendations:</h4>
                             <ul className="text-sm space-y-1">
@@ -1114,8 +580,6 @@
                               <li>• Inpatient neurology consultation for further diagnostic evaluation and management</li>
                             </ul>
                           </div>
-                          
-                          {/* MT risk/benefit discussion */}
                           <div className="bg-white p-3 rounded border">
                             <h4 className="font-semibold text-gray-700 mb-2">MT risk/benefit discussion:</h4>
                             <p className="text-sm">Given the presence of a large vascular occlusion, disabling neurological symptoms, and no evident contraindications - the patient will be transferred to HMC for mechanical thrombectomy consideration. Potential benefits, potential risks, and alternatives to treatment were discussed with the OSH provider and patient/family; the neuro-IR team at HMC will obtain informed consent from the patient/family.</p>
@@ -1124,10 +588,8 @@
                       </div>
                     </div>
 
-                    {/* Emergency Contacts */}
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-red-800 mb-3">🚨 Emergency Contacts</h3>
-                      
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="bg-white p-3 rounded border">
                           <h4 className="font-semibold text-red-700 mb-2">Stroke Team</h4>
@@ -1151,7 +613,6 @@
                   </div>
                 )}
 
-                {/* NIH Stroke Scale */}
                 {activeTab === 'nihss' && (
                   <div className="space-y-6">
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
@@ -1200,7 +661,6 @@
                   </div>
                 )}
 
-                {/* Imaging & ASPECTS */}
                 {activeTab === 'imaging' && (
                   <div className="space-y-6">
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
@@ -1247,13 +707,11 @@
                   </div>
                 )}
 
-                {/* Lytic Eligibility */}
                 {activeTab === 'lytic' && (
                   <div className="space-y-6">
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                       <h2 className="text-xl font-semibold text-green-800 mb-4">Lytic Eligibility</h2>
                       
-                      {/* Inclusion Criteria */}
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-green-700 mb-3">✓ Inclusion Criteria</h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
@@ -1284,7 +742,6 @@
                         </div>
                       </div>
 
-                      {/* Major Exclusions */}
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-3">✗ Major Exclusion Criteria</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1314,7 +771,6 @@
                         </div>
                       </div>
 
-                      {/* Lab/Vital Exclusions */}
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-3">Laboratory & Vital Sign Exclusions</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1339,7 +795,6 @@
                         </div>
                       </div>
 
-                      {/* Cautionary Criteria */}
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-yellow-700 mb-3">⚠ Cautionary Criteria</h3>
                         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
@@ -1358,7 +813,6 @@
                         </div>
                       </div>
 
-                      {/* Dosing */}
                       <div className="bg-blue-100 p-4 rounded border border-blue-300">
                         <h3 className="text-lg font-semibold text-blue-800 mb-2">TNK Dosing</h3>
                         <p className="text-lg"><strong>0.25 mg/kg</strong> (maximum dose: 25 mg)</p>
@@ -1368,13 +822,11 @@
                   </div>
                 )}
 
-                {/* EVT Eligibility */}
                 {activeTab === 'evt' && (
                   <div className="space-y-6">
                     <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
                       <h2 className="text-xl font-semibold text-purple-800 mb-4">EVT Eligibility</h2>
                       
-                      {/* Basilar Artery Occlusion */}
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                         <h3 className="text-lg font-semibold text-blue-800 mb-3">Basilar Artery Occlusion</h3>
                         <ul className="text-sm space-y-1">
@@ -1384,16 +836,12 @@
                         </ul>
                       </div>
 
-                      {/* Anterior Circulation Large Vessel Occlusion */}
                       <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
                         <h3 className="text-lg font-semibold text-green-800 mb-4">Anterior Circulation Large Vessel Occlusion</h3>
-                        
                         <div className="mb-4">
                           <p className="text-sm text-gray-700">• Trial evidence principally supports efficacy among adults ≥60 years of age, baseline mRS 0-1, NIHSS≥6 with disabling symptoms</p>
                         </div>
-
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          {/* Early Window */}
                           <div className="bg-white p-4 rounded border">
                             <h4 className="font-semibold text-green-700 mb-3">Early Window (0-6h)</h4>
                             <div className="mb-3">
@@ -1406,8 +854,6 @@
                               <p className="text-sm text-gray-600">• Consider CTP to evaluate if estimated core volume is &lt;70-100cc</p>
                             </div>
                           </div>
-                          
-                          {/* Late Window */}
                           <div className="bg-white p-4 rounded border">
                             <h4 className="font-semibold text-purple-700 mb-3">Late Window (6-24h)</h4>
                             <div className="mb-3">
@@ -1427,7 +873,6 @@
                         </div>
                       </div>
 
-                      {/* Medium Vessel Occlusion */}
                       <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
                         <h3 className="text-lg font-semibold text-orange-800 mb-3">Medium Vessel Occlusion</h3>
                         <ul className="text-sm space-y-1">
@@ -1439,212 +884,99 @@
                   </div>
                 )}
 
-                {/* Stroke Code Form */}
                 {activeTab === 'strokecode' && (
                   <div className="space-y-6">
                     <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
                       <h2 className="text-xl font-semibold text-indigo-800 mb-4">Stroke Code - Pulsara Summary Documentation</h2>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        {/* Left Column */}
                         <div className="space-y-4">
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
-                            <input
-                              type="number"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                              value={strokeCodeForm.age}
-                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, age: e.target.value})}
-                              placeholder="Enter age"
-                            />
+                            <input type="number" className="w-full px-3 py-2 border border-gray-300 rounded-md" value={strokeCodeForm.age} onChange={(e) => setStrokeCodeForm({...strokeCodeForm, age: e.target.value})} placeholder="Enter age"/>
                           </div>
-                          
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Sex</label>
-                            <select
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                              value={strokeCodeForm.sex}
-                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, sex: e.target.value})}
-                            >
+                            <select className="w-full px-3 py-2 border border-gray-300 rounded-md" value={strokeCodeForm.sex} onChange={(e) => setStrokeCodeForm({...strokeCodeForm, sex: e.target.value})}>
                               <option value="">Select...</option>
                               <option value="female">Female</option>
                               <option value="male">Male</option>
                             </select>
                           </div>
-                          
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Past Medical History</label>
-                            <input
-                              type="text"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                              value={strokeCodeForm.hx}
-                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, hx: e.target.value})}
-                              placeholder="e.g., HTN, DM, CAD..."
-                            />
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md" value={strokeCodeForm.hx} onChange={(e) => setStrokeCodeForm({...strokeCodeForm, hx: e.target.value})} placeholder="e.g., HTN, DM, CAD..."/>
                           </div>
-                          
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Presenting Symptoms</label>
-                            <input
-                              type="text"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                              value={strokeCodeForm.sx}
-                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, sx: e.target.value})}
-                              placeholder="e.g., left sided weakness, aphasia..."
-                            />
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md" value={strokeCodeForm.sx} onChange={(e) => setStrokeCodeForm({...strokeCodeForm, sx: e.target.value})} placeholder="e.g., left sided weakness, aphasia..."/>
                           </div>
-                          
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Last Known Well Time</label>
-                            <input
-                              type="text"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                              value={strokeCodeForm.lkw}
-                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, lkw: e.target.value})}
-                              placeholder="HH:MM AM/PM"
-                            />
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md" value={strokeCodeForm.lkw} onChange={(e) => setStrokeCodeForm({...strokeCodeForm, lkw: e.target.value})} placeholder="HH:MM AM/PM"/>
                           </div>
-                          
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Last Known Well Date</label>
-                            <input
-                              type="date"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                              value={strokeCodeForm.lkw_date}
-                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, lkw_date: e.target.value})}
-                            />
+                            <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded-md" value={strokeCodeForm.lkw_date} onChange={(e) => setStrokeCodeForm({...strokeCodeForm, lkw_date: e.target.value})}/>
                           </div>
-                          
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">NIHSS Score</label>
-                            <input
-                              type="number"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                              value={strokeCodeForm.nihss}
-                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, nihss: e.target.value})}
-                              placeholder="0-42"
-                            />
+                            <input type="number" className="w-full px-3 py-2 border border-gray-300 rounded-md" value={strokeCodeForm.nihss} onChange={(e) => setStrokeCodeForm({...strokeCodeForm, nihss: e.target.value})} placeholder="0-42"/>
                           </div>
-                          
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Neurologic Deficit(s)</label>
-                            <input
-                              type="text"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                              value={strokeCodeForm.def}
-                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, def: e.target.value})}
-                              placeholder="Describe deficits..."
-                            />
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md" value={strokeCodeForm.def} onChange={(e) => setStrokeCodeForm({...strokeCodeForm, def: e.target.value})} placeholder="Describe deficits..."/>
                           </div>
                         </div>
-                        
-                        {/* Right Column */}
                         <div className="space-y-4">
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Head CT Findings</label>
-                            <textarea
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                              rows="3"
-                              value={strokeCodeForm.hct}
-                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, hct: e.target.value})}
-                              placeholder="e.g., no acute intracranial process..."
-                            />
+                            <textarea className="w-full px-3 py-2 border border-gray-300 rounded-md" rows="3" value={strokeCodeForm.hct} onChange={(e) => setStrokeCodeForm({...strokeCodeForm, hct: e.target.value})} placeholder="e.g., no acute intracranial process..."/>
                           </div>
-                          
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">CTA Head/Neck Findings</label>
-                            <textarea
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                              rows="3"
-                              value={strokeCodeForm.cta}
-                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, cta: e.target.value})}
-                              placeholder="e.g., right M1 occlusion..."
-                            />
+                            <textarea className="w-full px-3 py-2 border border-gray-300 rounded-md" rows="3" value={strokeCodeForm.cta} onChange={(e) => setStrokeCodeForm({...strokeCodeForm, cta: e.target.value})} placeholder="e.g., right M1 occlusion..."/>
                           </div>
-                          
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">CTP Findings</label>
-                            <textarea
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                              rows="3"
-                              value={strokeCodeForm.ctp}
-                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, ctp: e.target.value})}
-                              placeholder="e.g., core volume 20cc, penumbra 80cc..."
-                            />
+                            <textarea className="w-full px-3 py-2 border border-gray-300 rounded-md" rows="3" value={strokeCodeForm.ctp} onChange={(e) => setStrokeCodeForm({...strokeCodeForm, ctp: e.target.value})} placeholder="e.g., core volume 20cc, penumbra 80cc..."/>
                           </div>
-                          
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">TNK Treatment</label>
-                            <select
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                              value={strokeCodeForm.tnk_rec}
-                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, tnk_rec: e.target.value})}
-                            >
+                            <select className="w-full px-3 py-2 border border-gray-300 rounded-md" value={strokeCodeForm.tnk_rec} onChange={(e) => setStrokeCodeForm({...strokeCodeForm, tnk_rec: e.target.value})}>
                               <option value="">Select...</option>
                               <option value="Not Recommended">Not Recommended</option>
                               <option value="Recommended">Recommended</option>
                             </select>
                           </div>
-                          
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">EVT</label>
-                            <select
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                              value={strokeCodeForm.evt_rec}
-                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, evt_rec: e.target.value})}
-                            >
+                            <select className="w-full px-3 py-2 border border-gray-300 rounded-md" value={strokeCodeForm.evt_rec} onChange={(e) => setStrokeCodeForm({...strokeCodeForm, evt_rec: e.target.value})}>
                               <option value="">Select...</option>
                               <option value="Not Recommended">Not Recommended</option>
                               <option value="Recommended">Recommended</option>
                             </select>
                           </div>
-                          
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Rationale for Treatment Recommendation</label>
-                            <textarea
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                              rows="3"
-                              value={strokeCodeForm.rec_reason}
-                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, rec_reason: e.target.value})}
-                              placeholder="Explain treatment decisions..."
-                            />
+                            <textarea className="w-full px-3 py-2 border border-gray-300 rounded-md" rows="3" value={strokeCodeForm.rec_reason} onChange={(e) => setStrokeCodeForm({...strokeCodeForm, rec_reason: e.target.value})} placeholder="Explain treatment decisions..."/>
                           </div>
                         </div>
                       </div>
                       
-                      {/* TNK Contraindications */}
                       <div className="mb-6">
                         <label className="block text-sm font-medium text-gray-700 mb-2">TNK Contraindications</label>
                         <div className="bg-white p-4 rounded border border-gray-200">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            {[
-                              "ICH or Extensive Infarction on HCT",
-                              "Ischemic Stroke (<3 months)",
-                              "Head Trauma (<3 months)",
-                              "Prior ICH",
-                              "Intracranial (intra-axial) Neoplasm",
-                              "Intracranial/Intraspinal Surgery (<3 months)",
-                              "GI Malignancy",
-                              "GI Hemorrhage (<3 weeks)",
-                              "Suspected SAH, Aortic Dissection, or Infective Endocarditis",
-                              "BP>185/110",
-                              "Active Hemorrhage",
-                              "Anticoagulant Use - Tx Dose LMWH (<24 hours), Direct Xa/Thrombin Inhibitor (<48h)",
-                              "PLT<100K",
-                              "INR>1.7 / PT>15s / PTT>40s",
-                              "Glucose<50mg/dL"
-                            ].map((item) => (
+                            {[ "ICH or Extensive Infarction on HCT", "Ischemic Stroke (<3 months)", "Head Trauma (<3 months)", "Prior ICH", "Intracranial (intra-axial) Neoplasm", "Intracranial/Intraspinal Surgery (<3 months)", "GI Malignancy", "GI Hemorrhage (<3 weeks)", "Suspected SAH, Aortic Dissection, or Infective Endocarditis", "BP>185/110", "Active Hemorrhage", "Anticoagulant Use - Tx Dose LMWH (<24 hours), Direct Xa/Thrombin Inhibitor (<48h)", "PLT<100K", "INR>1.7 / PT>15s / PTT>40s", "Glucose<50mg/dL" ].map((item) => (
                               <label key={item} className="flex items-center space-x-2">
                                 <input
                                   type="checkbox"
                                   className="text-indigo-600"
                                   checked={strokeCodeForm.tnk.includes(item)}
                                   onChange={(e) => {
-                                    if (e.target.checked) {
-                                      setStrokeCodeForm({...strokeCodeForm, tnk: [...strokeCodeForm.tnk, item]});
-                                    } else {
-                                      setStrokeCodeForm({...strokeCodeForm, tnk: strokeCodeForm.tnk.filter(i => i !== item)});
-                                    }
+                                    if (e.target.checked) setStrokeCodeForm({...strokeCodeForm, tnk: [...strokeCodeForm.tnk, item]});
+                                    else setStrokeCodeForm({...strokeCodeForm, tnk: strokeCodeForm.tnk.filter(i => i !== item)});
                                   }}
                                 />
                                 <span className="text-sm">{item}</span>
@@ -1654,7 +986,6 @@
                         </div>
                       </div>
                       
-                      {/* Generated Summary */}
                       <div className="bg-white p-4 rounded border border-gray-200">
                         <h3 className="font-semibold text-gray-800 mb-2">Generated Summary:</h3>
                         <p className="text-sm text-gray-700 whitespace-pre-wrap">
@@ -1662,7 +993,6 @@
                             const hx_str = strokeCodeForm.hx || "no PMH";
                             const tnk_str = strokeCodeForm.tnk.length > 0 ? `. TNK Contraindications: ${strokeCodeForm.tnk.join(", ")}` : "";
                             const ctp_str = strokeCodeForm.ctp || "N/A";
-                            
                             return `${strokeCodeForm.age || "[Age]"} year old ${strokeCodeForm.sex || "[sex]"} with ${hx_str} who presents with ${strokeCodeForm.sx || "[symptoms]"}. Last known well is ${strokeCodeForm.lkw || "[time]"} ${strokeCodeForm.lkw_date || "[date]"}. NIHSS score: ${strokeCodeForm.nihss || "[score]"} and neurologic deficits are: ${strokeCodeForm.def || "[deficits]"}. Head CT: ${strokeCodeForm.hct || "[CT findings]"}. CTA Head/Neck: ${strokeCodeForm.cta || "[CTA findings]"}. CTP: ${ctp_str}${tnk_str}. TNK Treatment: ${strokeCodeForm.tnk_rec || "[recommendation]"}. EVT: ${strokeCodeForm.evt_rec || "[recommendation]"}. Rationale for Treatment Recommendation: ${strokeCodeForm.rec_reason || "[rationale]"}.`;
                           })()}
                         </p>
@@ -1671,16 +1001,13 @@
                   </div>
                 )}
 
-                {/* ICH */}
                 {activeTab === 'ich' && (
                   <div className="space-y-6">
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                       <h2 className="text-xl font-semibold text-red-800 mb-4">ICH Management</h2>
                       
-                      {/* Minimally Invasive Evacuation */}
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                         <h3 className="text-lg font-semibold text-blue-800 mb-3">Minimally Invasive Evacuation (MIE)</h3>
-                        
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           <div className="bg-white p-3 rounded border">
                             <h4 className="font-semibold text-green-600 mb-2">ENRICH Trial Inclusion</h4>
@@ -1693,7 +1020,6 @@
                               <li>• Pre-morbid mRS 0-1</li>
                             </ul>
                           </div>
-                          
                           <div className="bg-white p-3 rounded border">
                             <h4 className="font-semibold text-red-600 mb-2">ENRICH Trial Exclusion</h4>
                             <ul className="text-sm space-y-1">
@@ -1703,7 +1029,6 @@
                             </ul>
                           </div>
                         </div>
-
                         <div className="bg-gray-100 p-3 rounded">
                           <p className="text-sm font-semibold mb-2">ICH Volume Calculation:</p>
                           <p className="text-sm"><strong>ABC/2 Method:</strong></p>
@@ -1716,11 +1041,8 @@
                         </div>
                       </div>
 
-                      {/* Anticoagulation Reversal */}
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">Anticoagulation Reversal</h3>
-                        
-                        {/* Warfarin */}
                         <div className="bg-white p-4 rounded border mb-4">
                           <h4 className="font-semibold text-blue-700 mb-3">Warfarin</h4>
                           <ul className="text-sm space-y-1">
@@ -1728,11 +1050,8 @@
                             <li>• <strong>PCC (KCentra):</strong> 2000 U IV</li>
                           </ul>
                         </div>
-
-                        {/* Direct Oral Anticoagulants (DOACs) */}
                         <div className="bg-white p-4 rounded border mb-4">
                           <h4 className="font-semibold text-purple-700 mb-3">Direct Oral Anticoagulants (DOACs)</h4>
-                          
                           <div className="mb-3">
                             <p className="text-sm font-semibold text-gray-700">Direct Factor Xa Inhibitors:</p>
                             <p className="text-sm text-gray-600 mb-2">Apixaban, Rivaroxaban, Edoxaban</p>
@@ -1740,7 +1059,6 @@
                               <li>• <strong>PCC (KCentra):</strong> 50 IU/kg (max 5000 IU)</li>
                             </ul>
                           </div>
-                          
                           <div>
                             <p className="text-sm font-semibold text-gray-700">Direct Thrombin Inhibitor:</p>
                             <p className="text-sm text-gray-600 mb-2">Dabigatran</p>
@@ -1750,8 +1068,6 @@
                             </ul>
                           </div>
                         </div>
-
-                        {/* Relative Contraindications */}
                         <div className="bg-white p-4 rounded border mb-4">
                           <h4 className="font-semibold text-gray-700 mb-3">Relative contraindications to PCC/FFP:</h4>
                           <ul className="text-sm space-y-1">
@@ -1765,638 +1081,158 @@
                     </div>
                   </div>
                 )}
+                
+                {activeTab === 'trials' && <StrokeTrials />}
 
-                {/* Trials */}
-                                {activeTab === 'trials' && (
-                  <div className="space-y-6">
-                    {/* Trial Category Tabs */}
-                    <div className="flex space-x-4 mb-6 overflow-x-auto bg-gray-50 p-2 rounded-lg">
-                      {Object.keys(trialsData).map(category => {
-                        const categoryData = trialsData[category];
-                        const trialCount = categoryData.hasSubsections 
-                          ? Object.values(categoryData.subsections).reduce((acc, sub) => acc + sub.trials.length, 0)
-                          : categoryData.trials.length;
-                        
-                        return (
-                          <button
-                            key={category}
-                            onClick={() => setTrialsCategory(category)}
-                            className={`px-4 py-2 rounded-md font-medium transition-colors whitespace-nowrap ${
-                              trialsCategory === category
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-white text-gray-700 hover:bg-gray-100'
-                            }`}
-                          >
-                            {categoryData.title.split(' ')[0]} ({trialCount})
-                          </button>
-                        );
-                      })}
-                    </div>
-                    
-                    {/* Trial Content */}
-                    {renderTrialsContent()}
-                  </div>
-                )}
-
-                {/* Risk Calculators */}
                 {activeTab === 'calculators' && (
                   <div className="space-y-6">
-                    {/* Glasgow Coma Scale */}
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-gray-800 mb-3">Glasgow Coma Scale (GCS)</h3>
-                      
                       <div className="text-right mb-4">
                         <span className="text-2xl font-bold text-gray-600">Total Score: {calculateGCS(gcsItems)}</span>
                         <div className="text-sm text-gray-500">Range: 3-15</div>
                       </div>
-                      
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <div className="space-y-2">
                           <h4 className="font-semibold">Eye Opening</h4>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_eye" 
-                              value="4" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, eye: e.target.value})}
-                            />
-                            <span className="text-sm">4 - Spontaneous</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_eye" 
-                              value="3" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, eye: e.target.value})}
-                            />
-                            <span className="text-sm">3 - To sound</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_eye" 
-                              value="2" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, eye: e.target.value})}
-                            />
-                            <span className="text-sm">2 - To pain</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_eye" 
-                              value="1" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, eye: e.target.value})}
-                            />
-                            <span className="text-sm">1 - None</span>
-                          </label>
+                          {[ {val: 4, text: "Spontaneous"}, {val: 3, text: "To sound"}, {val: 2, text: "To pain"}, {val: 1, text: "None"} ].map(item => (
+                            <label key={item.val} className="flex items-center space-x-2"><input type="radio" name="gcs_eye" value={item.val} className="text-gray-600" onChange={(e) => setGcsItems({...gcsItems, eye: e.target.value})}/><span className="text-sm">{item.val} - {item.text}</span></label>
+                          ))}
                         </div>
                         <div className="space-y-2">
                           <h4 className="font-semibold">Verbal Response</h4>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_verbal" 
-                              value="5" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
-                            />
-                            <span className="text-sm">5 - Oriented</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_verbal" 
-                              value="4" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
-                            />
-                            <span className="text-sm">4 - Confused</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_verbal" 
-                              value="3" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
-                            />
-                            <span className="text-sm">3 - Inappropriate</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_verbal" 
-                              value="2" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
-                            />
-                            <span className="text-sm">2 - Incomprehensible</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_verbal" 
-                              value="1" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
-                            />
-                            <span className="text-sm">1 - None</span>
-                          </label>
+                           {[ {val: 5, text: "Oriented"}, {val: 4, text: "Confused"}, {val: 3, text: "Inappropriate"}, {val: 2, text: "Incomprehensible"}, {val: 1, text: "None"} ].map(item => (
+                            <label key={item.val} className="flex items-center space-x-2"><input type="radio" name="gcs_verbal" value={item.val} className="text-gray-600" onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}/><span className="text-sm">{item.val} - {item.text}</span></label>
+                          ))}
                         </div>
                         <div className="space-y-2">
                           <h4 className="font-semibold">Motor Response</h4>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_motor" 
-                              value="6" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
-                            />
-                            <span className="text-sm">6 - Obeying</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_motor" 
-                              value="5" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
-                            />
-                            <span className="text-sm">5 - Localizing</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_motor" 
-                              value="4" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
-                            />
-                            <span className="text-sm">4 - Flexing</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_motor" 
-                              value="3" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
-                            />
-                            <span className="text-sm">3 - Abnormal flexion</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_motor" 
-                              value="2" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
-                            />
-                            <span className="text-sm">2 - Extending</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_motor" 
-                              value="1" 
-                              className="text-gray-600"
-                              onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
-                            />
-                            <span className="text-sm">1 - None</span>
-                          </label>
+                           {[ {val: 6, text: "Obeying"}, {val: 5, text: "Localizing"}, {val: 4, text: "Flexing"}, {val: 3, text: "Abnormal flexion"}, {val: 2, text: "Extending"}, {val: 1, text: "None"} ].map(item => (
+                            <label key={item.val} className="flex items-center space-x-2"><input type="radio" name="gcs_motor" value={item.val} className="text-gray-600" onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}/><span className="text-sm">{item.val} - {item.text}</span></label>
+                          ))}
                         </div>
                       </div>
                     </div>
 
-                    {/* ICH Score */}
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-red-800 mb-3">ICH Score</h3>
-                      
-                      <div className="text-right mb-4">
-                        <span className="text-2xl font-bold text-red-600">Total Score: {calculateICHScore(ichScoreItems)}</span>
-                      </div>
-                      
+                      <div className="text-right mb-4"><span className="text-2xl font-bold text-red-600">Total Score: {calculateICHScore(ichScoreItems)}</span></div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div className="space-y-2">
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-red-600"
-                              checked={ichScoreItems.gcs34}
-                              onChange={(e) => setIchScoreItems({...ichScoreItems, gcs34: e.target.checked})}
-                            />
-                            <span className="text-sm">GCS 3-4 (+2)</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-red-600"
-                              checked={ichScoreItems.gcs512}
-                              onChange={(e) => setIchScoreItems({...ichScoreItems, gcs512: e.target.checked})}
-                            />
-                            <span className="text-sm">GCS 5-12 (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-red-600"
-                              checked={ichScoreItems.age80}
-                              onChange={(e) => setIchScoreItems({...ichScoreItems, age80: e.target.checked})}
-                            />
-                            <span className="text-sm">Age ≥80 (+1)</span>
-                          </label>
+                           {[ {id: 'gcs34', text: 'GCS 3-4 (+2)'}, {id: 'gcs512', text: 'GCS 5-12 (+1)'}, {id: 'age80', text: 'Age ≥80 (+1)'} ].map(item => (
+                            <label key={item.id} className="flex items-center space-x-2"><input type="checkbox" className="text-red-600" checked={ichScoreItems[item.id]} onChange={(e) => setIchScoreItems({...ichScoreItems, [item.id]: e.target.checked})}/><span className="text-sm">{item.text}</span></label>
+                           ))}
                         </div>
                         <div className="space-y-2">
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-red-600"
-                              checked={ichScoreItems.volume30}
-                              onChange={(e) => setIchScoreItems({...ichScoreItems, volume30: e.target.checked})}
-                            />
-                            <span className="text-sm">ICH volume ≥30 cc (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-red-600"
-                              checked={ichScoreItems.ivh}
-                              onChange={(e) => setIchScoreItems({...ichScoreItems, ivh: e.target.checked})}
-                            />
-                            <span className="text-sm">Intraventricular hemorrhage (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-red-600"
-                              checked={ichScoreItems.infratentorial}
-                              onChange={(e) => setIchScoreItems({...ichScoreItems, infratentorial: e.target.checked})}
-                            />
-                            <span className="text-sm">Infratentorial origin (+1)</span>
-                          </label>
+                           {[ {id: 'volume30', text: 'ICH volume ≥30 cc (+1)'}, {id: 'ivh', text: 'Intraventricular hemorrhage (+1)'}, {id: 'infratentorial', text: 'Infratentorial origin (+1)'} ].map(item => (
+                            <label key={item.id} className="flex items-center space-x-2"><input type="checkbox" className="text-red-600" checked={ichScoreItems[item.id]} onChange={(e) => setIchScoreItems({...ichScoreItems, [item.id]: e.target.checked})}/><span className="text-sm">{item.text}</span></label>
+                           ))}
                         </div>
                       </div>
                     </div>
 
-                    {/* ABCD2 */}
                     <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-orange-800 mb-3">ABCD² Score</h3>
-                      
-                      <div className="text-right mb-4">
-                        <span className="text-2xl font-bold text-orange-600">Total Score: {calculateABCD2Score(abcd2Items)}</span>
-                      </div>
-                      
+                      <div className="text-right mb-4"><span className="text-2xl font-bold text-orange-600">Total Score: {calculateABCD2Score(abcd2Items)}</span></div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div className="space-y-2">
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-orange-600"
-                              checked={abcd2Items.age60}
-                              onChange={(e) => setAbcd2Items({...abcd2Items, age60: e.target.checked})}
-                            />
-                            <span className="text-sm">Age ≥60 (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-orange-600"
-                              checked={abcd2Items.bp}
-                              onChange={(e) => setAbcd2Items({...abcd2Items, bp: e.target.checked})}
-                            />
-                            <span className="text-sm">BP: SBP≥140 or DBP≥90 (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-orange-600"
-                              checked={abcd2Items.unilateralWeakness}
-                              onChange={(e) => setAbcd2Items({...abcd2Items, unilateralWeakness: e.target.checked})}
-                            />
-                            <span className="text-sm">Unilateral weakness (+2)</span>
-                          </label>
+                           {[ {id: 'age60', text: 'Age ≥60 (+1)'}, {id: 'bp', text: 'BP: SBP≥140 or DBP≥90 (+1)'}, {id: 'unilateralWeakness', text: 'Unilateral weakness (+2)'} ].map(item => (
+                            <label key={item.id} className="flex items-center space-x-2"><input type="checkbox" className="text-orange-600" checked={abcd2Items[item.id]} onChange={(e) => setAbcd2Items({...abcd2Items, [item.id]: e.target.checked})}/><span className="text-sm">{item.text}</span></label>
+                           ))}
                         </div>
                         <div className="space-y-2">
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-orange-600"
-                              checked={abcd2Items.speechDisturbance}
-                              onChange={(e) => setAbcd2Items({...abcd2Items, speechDisturbance: e.target.checked})}
-                            />
-                            <span className="text-sm">Speech disturbance w/o weakness (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-orange-600"
-                              checked={abcd2Items.duration60}
-                              onChange={(e) => setAbcd2Items({...abcd2Items, duration60: e.target.checked})}
-                            />
-                            <span className="text-sm">Duration ≥60 min (+2)</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-orange-600"
-                              checked={abcd2Items.diabetes}
-                              onChange={(e) => setAbcd2Items({...abcd2Items, diabetes: e.target.checked})}
-                            />
-                            <span className="text-sm">Diabetes mellitus (+1)</span>
-                          </label>
+                          <label className="flex items-center space-x-2"><input type="checkbox" className="text-orange-600" checked={abcd2Items.speechDisturbance} onChange={(e) => setAbcd2Items({...abcd2Items, speechDisturbance: e.target.checked})}/><span className="text-sm">Speech disturbance w/o weakness (+1)</span></label>
+                          <label className="flex items-center space-x-2"><input type="checkbox" className="text-orange-600" checked={abcd2Items.duration60} onChange={(e) => setAbcd2Items({...abcd2Items, duration60: e.target.checked})}/><span className="text-sm">Duration ≥60 min (+2)</span></label>
+                          <label className="flex items-center space-x-2"><input type="checkbox" className="text-orange-600" checked={abcd2Items.duration10} onChange={(e) => setAbcd2Items({...abcd2Items, duration10: e.target.checked})}/><span className="text-sm">Duration 10-59 min (+1)</span></label>
+                          <label className="flex items-center space-x-2"><input type="checkbox" className="text-orange-600" checked={abcd2Items.diabetes} onChange={(e) => setAbcd2Items({...abcd2Items, diabetes: e.target.checked})}/><span className="text-sm">Diabetes mellitus (+1)</span></label>
                         </div>
                       </div>
-
                       <div className="bg-white p-3 rounded border">
                         <h4 className="font-semibold mb-2">2-Day, 7-Day, and 90-Day Stroke Risk</h4>
                         <div className="grid grid-cols-3 gap-4 text-sm">
-                          <div>
-                            <p><strong>0-3:</strong></p>
-                            <p>2-day: 1%</p>
-                            <p>7-day: 1.2%</p>
-                            <p>90-day: 3.1%</p>
-                          </div>
-                          <div>
-                            <p><strong>4-5:</strong></p>
-                            <p>2-day: 4.1%</p>
-                            <p>7-day: 5.9%</p>
-                            <p>90-day: 9.8%</p>
-                          </div>
-                          <div>
-                            <p><strong>6-7:</strong></p>
-                            <p>2-day: 8.1%</p>
-                            <p>7-day: 11.7%</p>
-                            <p>90-day: 17.8%</p>
-                          </div>
+                          <div><p><strong>0-3:</strong></p><p>2-day: 1%</p><p>7-day: 1.2%</p><p>90-day: 3.1%</p></div>
+                          <div><p><strong>4-5:</strong></p><p>2-day: 4.1%</p><p>7-day: 5.9%</p><p>90-day: 9.8%</p></div>
+                          <div><p><strong>6-7:</strong></p><p>2-day: 8.1%</p><p>7-day: 11.7%</p><p>90-day: 17.8%</p></div>
                         </div>
                       </div>
                     </div>
 
-                    {/* CHADS2-VASC */}
                     <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-purple-800 mb-3">CHADS₂-VASc Score</h3>
-                      
-                      <div className="text-right mb-4">
-                        <span className="text-2xl font-bold text-purple-600">Total Score: {calculateCHADS2VascScore(chads2vascItems)}</span>
-                      </div>
-                      
+                      <h3 className="text-lg font-semibold text-purple-800 mb-3">CHA₂DS₂-VASc Score</h3>
+                      <div className="text-right mb-4"><span className="text-2xl font-bold text-purple-600">Total Score: {calculateCHADS2VascScore(chads2vascItems)}</span></div>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-                        <label className="flex items-center space-x-2">
-                          <input 
-                            type="checkbox" 
-                            className="text-purple-600"
-                            checked={chads2vascItems.age65}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, age65: e.target.checked})}
-                          />
-                          <span className="text-sm">Age 65-74 (+1)</span>
-                        </label>
-                        <label className="flex items-center space-x-2">
-                          <input 
-                            type="checkbox" 
-                            className="text-purple-600"
-                            checked={chads2vascItems.age75}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, age75: e.target.checked})}
-                          />
-                          <span className="text-sm">Age ≥75 (+2)</span>
-                        </label>
-                        <label className="flex items-center space-x-2">
-                          <input 
-                            type="checkbox" 
-                            className="text-purple-600"
-                            checked={chads2vascItems.chf}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, chf: e.target.checked})}
-                          />
-                          <span className="text-sm">CHF (+1)</span>
-                        </label>
-                        <label className="flex items-center space-x-2">
-                          <input 
-                            type="checkbox" 
-                            className="text-purple-600"
-                            checked={chads2vascItems.hypertension}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, hypertension: e.target.checked})}
-                          />
-                          <span className="text-sm">Hypertension (+1)</span>
-                        </label>
-                        <label className="flex items-center space-x-2">
-                          <input 
-                            type="checkbox" 
-                            className="text-purple-600"
-                            checked={chads2vascItems.diabetes}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, diabetes: e.target.checked})}
-                          />
-                          <span className="text-sm">Diabetes (+1)</span>
-                        </label>
-                        <label className="flex items-center space-x-2">
-                          <input 
-                            type="checkbox" 
-                            className="text-purple-600"
-                            checked={chads2vascItems.strokeTia}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, strokeTia: e.target.checked})}
-                          />
-                          <span className="text-sm">Stroke/TIA (+2)</span>
-                        </label>
-                        <label className="flex items-center space-x-2">
-                          <input 
-                            type="checkbox" 
-                            className="text-purple-600"
-                            checked={chads2vascItems.vascular}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, vascular: e.target.checked})}
-                          />
-                          <span className="text-sm">Vascular disease (+1)</span>
-                        </label>
-                        <label className="flex items-center space-x-2">
-                          <input 
-                            type="checkbox" 
-                            className="text-purple-600"
-                            checked={chads2vascItems.female}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, female: e.target.checked})}
-                          />
-                          <span className="text-sm">Female sex (+1)</span>
-                        </label>
+                        {[ {id: 'age65', text: 'Age 65-74 (+1)'}, {id: 'age75', text: 'Age ≥75 (+2)'}, {id: 'chf', text: 'CHF (+1)'}, {id: 'hypertension', text: 'Hypertension (+1)'}, {id: 'diabetes', text: 'Diabetes (+1)'}, {id: 'strokeTia', text: 'Stroke/TIA (+2)'}, {id: 'vascular', text: 'Vascular disease (+1)'}, {id: 'female', text: 'Female sex (+1)'} ].map(item => (
+                          <label key={item.id} className="flex items-center space-x-2"><input type="checkbox" className="text-purple-600" checked={chads2vascItems[item.id]} onChange={(e) => setChads2vascItems({...chads2vascItems, [item.id]: e.target.checked})}/><span className="text-sm">{item.text}</span></label>
+                        ))}
                       </div>
-                      
                       <div className="bg-white p-3 rounded border">
                         <h4 className="font-semibold mb-2">Annual Stroke and Thromboembolism Risk</h4>
                         <div className="grid grid-cols-3 gap-4 text-sm">
-                          <div>
-                            <p><strong>Score 0:</strong> 0.8%</p>
-                            <p><strong>Score 1:</strong> 2.0%</p>
-                            <p><strong>Score 2:</strong> 3.7%</p>
-                          </div>
-                          <div>
-                            <p><strong>Score 3:</strong> 5.9%</p>
-                            <p><strong>Score 4:</strong> 9.3%</p>
-                            <p><strong>Score 5:</strong> 15.3%</p>
-                          </div>
-                          <div>
-                            <p><strong>Score 6:</strong> 19.7%</p>
-                            <p><strong>Score 7:</strong> 21.5%</p>
-                            <p><strong>Score 8:</strong> 22.4%</p>
-                            <p><strong>Score 9:</strong> 23.6%</p>
-                          </div>
+                          <div><p><strong>Score 0:</strong> 0.8%</p><p><strong>Score 1:</strong> 2.0%</p><p><strong>Score 2:</strong> 3.7%</p></div>
+                          <div><p><strong>Score 3:</strong> 5.9%</p><p><strong>Score 4:</strong> 9.3%</p><p><strong>Score 5:</strong> 15.3%</p></div>
+                          <div><p><strong>Score 6:</strong> 19.7%</p><p><strong>Score 7:</strong> 21.5%</p><p><strong>Score 8-9:</strong> >22%</p></div>
                         </div>
                       </div>
                     </div>
 
-                    {/* ROPE Score */}
                     <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-teal-800 mb-3">ROPE Score</h3>
-                      
-                      <div className="text-right mb-4">
-                        <span className="text-2xl font-bold text-teal-600">Total Score: {calculateROPEScore(ropeItems)}</span>
-                      </div>
-                      
+                      <div className="text-right mb-4"><span className="text-2xl font-bold text-teal-600">Total Score: {calculateROPEScore(ropeItems)}</span></div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div className="space-y-2">
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-teal-600"
-                              checked={ropeItems.noHypertension}
-                              onChange={(e) => setRopeItems({...ropeItems, noHypertension: e.target.checked})}
-                            />
-                            <span className="text-sm">No history of hypertension (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-teal-600"
-                              checked={ropeItems.noDiabetes}
-                              onChange={(e) => setRopeItems({...ropeItems, noDiabetes: e.target.checked})}
-                            />
-                            <span className="text-sm">No history of diabetes (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-teal-600"
-                              checked={ropeItems.noStrokeTia}
-                              onChange={(e) => setRopeItems({...ropeItems, noStrokeTia: e.target.checked})}
-                            />
-                            <span className="text-sm">No history of stroke or TIA (+1)</span>
-                          </label>
+                           {[ {id: 'noHypertension', text: 'No history of hypertension (+1)'}, {id: 'noDiabetes', text: 'No history of diabetes (+1)'}, {id: 'noStrokeTia', text: 'No history of stroke or TIA (+1)'} ].map(item => (
+                            <label key={item.id} className="flex items-center space-x-2"><input type="checkbox" className="text-teal-600" checked={ropeItems[item.id]} onChange={(e) => setRopeItems({...ropeItems, [item.id]: e.target.checked})}/><span className="text-sm">{item.text}</span></label>
+                           ))}
                         </div>
                         <div className="space-y-2">
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-teal-600"
-                              checked={ropeItems.nonsmoker}
-                              onChange={(e) => setRopeItems({...ropeItems, nonsmoker: e.target.checked})}
-                            />
-                            <span className="text-sm">Nonsmoker (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input 
-                              type="checkbox" 
-                              className="text-teal-600"
-                              checked={ropeItems.cortical}
-                              onChange={(e) => setRopeItems({...ropeItems, cortical: e.target.checked})}
-                            />
-                            <span className="text-sm">Cortical infarct (+1)</span>
-                          </label>
+                           {[ {id: 'nonsmoker', text: 'Nonsmoker (+1)'}, {id: 'cortical', text: 'Cortical infarct (+1)'} ].map(item => (
+                            <label key={item.id} className="flex items-center space-x-2"><input type="checkbox" className="text-teal-600" checked={ropeItems[item.id]} onChange={(e) => setRopeItems({...ropeItems, [item.id]: e.target.checked})}/><span className="text-sm">{item.text}</span></label>
+                           ))}
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Age (years)</label>
-                            <input 
-                              type="number"
-                              className="w-full px-3 py-1 border border-gray-300 rounded-md text-sm"
-                              value={ropeItems.age}
-                              onChange={(e) => setRopeItems({...ropeItems, age: e.target.value})}
-                              placeholder="Enter age"
-                              min="18"
-                              max="100"
-                            />
-                            <div className="text-xs text-gray-500 mt-1">
-                              18-29: +5, 30-39: +4, 40-49: +3, 50-59: +2, 60-69: +1, ≥70: 0
-                            </div>
+                            <input type="number" className="w-full px-3 py-1 border border-gray-300 rounded-md text-sm" value={ropeItems.age} onChange={(e) => setRopeItems({...ropeItems, age: e.target.value})} placeholder="Enter age" min="18" max="100"/>
+                            <div className="text-xs text-gray-500 mt-1">18-29: +5, 30-39: +4, 40-49: +3, 50-59: +2, 60-69: +1, ≥70: 0</div>
                           </div>
                         </div>
                       </div>
-                      
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="bg-white p-3 rounded border">
                           <h4 className="font-semibold mb-2">PFO-attributable fraction</h4>
-                          <div className="text-sm">
-                            <p className={calculateROPEScore(ropeItems) <= 3 ? "font-bold text-teal-600" : ""}><strong>Score 0-3:</strong> 0-23%</p>
-                            <p className={calculateROPEScore(ropeItems) === 4 ? "font-bold text-teal-600" : ""}><strong>Score 4:</strong> 38%</p>
-                            <p className={calculateROPEScore(ropeItems) === 5 ? "font-bold text-teal-600" : ""}><strong>Score 5:</strong> 34%</p>
-                            <p className={calculateROPEScore(ropeItems) === 6 ? "font-bold text-teal-600" : ""}><strong>Score 6:</strong> 62%</p>
-                            <p className={calculateROPEScore(ropeItems) === 7 ? "font-bold text-teal-600" : ""}><strong>Score 7:</strong> 72%</p>
-                            <p className={calculateROPEScore(ropeItems) === 8 ? "font-bold text-teal-600" : ""}><strong>Score 8:</strong> 84%</p>
-                            <p className={calculateROPEScore(ropeItems) >= 9 ? "font-bold text-teal-600" : ""}><strong>Score 9-10:</strong> 88%</p>
-                          </div>
+                           {[ {range: [0,3], val: "0-23%"}, {range: [4,4], val: "38%"}, {range: [5,5], val: "34%"}, {range: [6,6], val: "62%"}, {range: [7,7], val: "72%"}, {range: [8,8], val: "84%"}, {range: [9,10], val: "88%"} ].map(item => (
+                            <p key={item.val} className={calculateROPEScore(ropeItems) >= item.range[0] && calculateROPEScore(ropeItems) <= item.range[1] ? "font-bold text-teal-600 text-sm" : "text-sm"}><strong>Score {item.range[0]===item.range[1] ? item.range[0] : `${item.range[0]}-${item.range[1]}`}:</strong> {item.val}</p>
+                           ))}
                         </div>
                         <div className="bg-white p-3 rounded border">
                           <h4 className="font-semibold mb-2">2-Year Recurrent Stroke/TIA Risk</h4>
-                          <div className="text-sm">
-                            <p className={calculateROPEScore(ropeItems) <= 3 ? "font-bold text-teal-600" : ""}><strong>Score 0-3:</strong> 20%</p>
-                            <p className={calculateROPEScore(ropeItems) === 4 ? "font-bold text-teal-600" : ""}><strong>Score 4:</strong> 12%</p>
-                            <p className={calculateROPEScore(ropeItems) === 5 ? "font-bold text-teal-600" : ""}><strong>Score 5:</strong> 15%</p>
-                            <p className={calculateROPEScore(ropeItems) === 6 ? "font-bold text-teal-600" : ""}><strong>Score 6:</strong> 8%</p>
-                            <p className={calculateROPEScore(ropeItems) === 7 ? "font-bold text-teal-600" : ""}><strong>Score 7:</strong> 6%</p>
-                            <p className={calculateROPEScore(ropeItems) === 8 ? "font-bold text-teal-600" : ""}><strong>Score 8:</strong> 6%</p>
-                            <p className={calculateROPEScore(ropeItems) >= 9 ? "font-bold text-teal-600" : ""}><strong>Score 9-10:</strong> 2%</p>
-                          </div>
+                           {[ {range: [0,3], val: "20%"}, {range: [4,4], val: "12%"}, {range: [5,5], val: "15%"}, {range: [6,6], val: "8%"}, {range: [7,7], val: "6%"}, {range: [8,8], val: "6%"}, {range: [9,10], val: "2%"} ].map(item => (
+                            <p key={item.val} className={calculateROPEScore(ropeItems) >= item.range[0] && calculateROPEScore(ropeItems) <= item.range[1] ? "font-bold text-teal-600 text-sm" : "text-sm"}><strong>Score {item.range[0]===item.range[1] ? item.range[0] : `${item.range[0]}-${item.range[1]}`}:</strong> {item.val}</p>
+                           ))}
                         </div>
                       </div>
                     </div>
 
-                    {/* PASCAL Classification */}
                     <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-indigo-800 mb-3">PASCAL Classification</h3>
-                      
                       <div className="space-y-4">
-                        <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold text-green-700 mb-2">Probable PFO-related stroke:</h4>
-                          <p className="text-sm">RoPE ≥7 + high-grade shunt / ASA</p>
-                        </div>
-                        
-                        <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold text-amber-700 mb-2">Possible PFO-related stroke:</h4>
-                          <ul className="text-sm space-y-1">
-                            <li>• RoPE &lt;7 + high-grade shunt / ASA</li>
-                            <li>• RoPE ≥7 but no high-grade shunt / ASA</li>
-                          </ul>
-                        </div>
-                        
-                        <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold text-red-700 mb-2">Unlikely PFO-related stroke:</h4>
-                          <p className="text-sm">RoPE &lt;7, no high-grade shunt / ASA</p>
-                        </div>
+                        <div className="bg-white p-3 rounded border"><h4 className="font-semibold text-green-700 mb-2">Probable PFO-related stroke:</h4><p className="text-sm">RoPE ≥7 + high-grade shunt / ASA</p></div>
+                        <div className="bg-white p-3 rounded border"><h4 className="font-semibold text-amber-700 mb-2">Possible PFO-related stroke:</h4><ul className="text-sm space-y-1"><li>• RoPE &lt;7 + high-grade shunt / ASA</li><li>• RoPE ≥7 but no high-grade shunt / ASA</li></ul></div>
+                        <div className="bg-white p-3 rounded border"><h4 className="font-semibold text-red-700 mb-2">Unlikely PFO-related stroke:</h4><p className="text-sm">RoPE &lt;7, no high-grade shunt / ASA</p></div>
                       </div>
                     </div>
 
-                    {/* PREVENT 10-year ASCVD Risk */}
                     <div className="bg-rose-50 border border-rose-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-rose-800 mb-3">PREVENT 10-year ASCVD Risk Estimate</h3>
                       <div className="bg-white p-4 rounded border">
-                        <a 
-                          href="https://professional.heart.org/en/guidelines-and-statements/prevent-calculator" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center px-4 py-2 bg-rose-600 text-white rounded-md hover:bg-rose-700 transition-colors text-sm font-medium"
-                        >
-                          Open PREVENT Calculator →
-                        </a>
+                        <a href="https://professional.heart.org/en/guidelines-and-statements/prevent-calculator" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 bg-rose-600 text-white rounded-md hover:bg-rose-700 transition-colors text-sm font-medium">Open PREVENT Calculator →</a>
                       </div>
                     </div>
-
-
                   </div>
                 )}
 
-                {/* Management */}
                 {activeTab === 'protocols' && (
                   <div className="space-y-6">
-                    {/* Blood Pressure Management */}
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-blue-800 mb-3">Blood Pressure Management</h3>
-                      
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div className="bg-white p-3 rounded border">
                           <h4 className="font-semibold text-green-700 mb-2">BP Goals</h4>
@@ -2421,10 +1257,8 @@
                       </div>
                     </div>
 
-                    {/* Post-Lytic Complications */}
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-red-800 mb-3">Post-Lytic ICH Protocol</h3>
-
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="bg-white p-3 rounded border">
                           <h4 className="font-semibold mb-2">Immediate Actions</h4>
@@ -2445,10 +1279,8 @@
                       </div>
                     </div>
 
-                    {/* Angioedema Protocol */}
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-yellow-800 mb-3">Orolingual Angioedema Protocol</h3>
-                      
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="bg-white p-3 rounded border">
                           <h4 className="font-semibold mb-2">Assessment</h4>
@@ -2478,12 +1310,9 @@
           );
         };
 
-        // Render the component
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<StrokeClinicalTool />);
         
-        // Initialize Lucide icons
-        lucide.createIcons();
     </script>
 </body>
 </html>
