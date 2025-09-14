@@ -993,15 +993,15 @@
           };
 
           return (
-            <div className="max-w-7xl mx-auto p-6 bg-white">
+            <div className="max-w-7xl mx-auto p-3 sm:p-6 bg-white">
               {/* Header */}
-              <div className="mb-6">
-                <h1 className="text-3xl font-bold text-blue-900 mb-2">Stroke - CDS</h1>
+              <div className="mb-4 sm:mb-6">
+                <h1 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-2 text-center sm:text-left">Stroke - CDS</h1>
               </div>
 
               {/* Navigation Tabs */}
-              <div className="border-b border-gray-200 mb-6">
-                <nav className="flex justify-between">
+              <div className="border-b border-gray-200 mb-4 sm:mb-6 pb-2">
+                <nav className="flex flex-wrap justify-center gap-2 md:justify-between md:gap-0">
                   {[
                     { id: 'workflow', name: 'Workflow', icon: 'check-circle' },
                     { id: 'nihss', name: 'NIHSS', icon: 'brain' },
@@ -1018,13 +1018,16 @@
                       <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`py-2 px-2 border-b-2 font-medium text-xs flex items-center space-x-1 ${
-                          activeTab === tab.id
-                            ? 'border-blue-500 text-blue-600'
-                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                        }`}
+                        className={`py-2 px-3 border-2 rounded-lg font-medium text-xs flex items-center space-x-1 transition-all
+                          ${activeTab === tab.id
+                            ? 'border-blue-500 bg-blue-50 text-blue-600'
+                            : 'border-gray-300 bg-white text-gray-600 hover:text-gray-800 hover:border-gray-400'
+                          }
+                          sm:py-2 sm:px-2 sm:border-b-2 sm:border-t-0 sm:border-l-0 sm:border-r-0 sm:rounded-none
+                          md:text-xs
+                        `}
                       >
-                        <i data-lucide={tab.icon} className="w-3 h-3"></i>
+                        <i data-lucide={tab.icon} className="w-3 h-3 hidden sm:block"></i>
                         <span>{tab.name}</span>
                       </button>
                     );
@@ -1033,7 +1036,7 @@
               </div>
 
               {/* Content */}
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Workflow */}
                 {activeTab === 'workflow' && (
                   <div className="space-y-6">
