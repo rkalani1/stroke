@@ -118,9 +118,75 @@
         })();
     </script>
 </head>
-<body>
+<body style="margin: 0; padding: 20px; font-family: Arial, sans-serif; background: #f0f0f0;">
+    <!-- This message shows IMMEDIATELY, before any JavaScript -->
+    <div id="pre-load-message" style="max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <h1 style="color: #3B82F6; margin: 0 0 15px 0;">Stroke Clinical Decision Support</h1>
+        <p style="color: #374151; margin: 10px 0;"><strong>Status:</strong> <span id="status-text">Loading JavaScript libraries...</span></p>
+        <div id="progress-bar" style="width: 100%; height: 6px; background: #e5e7eb; border-radius: 3px; margin: 15px 0; overflow: hidden;">
+            <div id="progress-fill" style="width: 0%; height: 100%; background: #3B82F6; transition: width 0.3s;"></div>
+        </div>
+        <div id="error-details" style="display: none; margin-top: 20px; padding: 15px; background: #fee; border-left: 4px solid #dc2626; color: #991b1b;">
+            <strong>Error:</strong> <span id="error-text"></span>
+        </div>
+        <p style="color: #6b7280; font-size: 14px; margin-top: 20px;">If this message persists, try clearing your browser cache (Ctrl+Shift+R or Cmd+Shift+R)</p>
+    </div>
+
     <div id="root"></div>
-    
+
+    <script>
+        // Update progress
+        function updateProgress(percent, message) {
+            document.getElementById('status-text').textContent = message;
+            document.getElementById('progress-fill').style.width = percent + '%';
+        }
+
+        function showError(message) {
+            document.getElementById('error-details').style.display = 'block';
+            document.getElementById('error-text').textContent = message;
+            document.getElementById('progress-fill').style.background = '#dc2626';
+        }
+
+        // Global error handler
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            showError(msg + ' at line ' + lineNo + (error ? ': ' + error.message : ''));
+            console.error('Error:', msg, error);
+            return false;
+        };
+
+        // Check libraries loading
+        updateProgress(10, 'Checking React...');
+        setTimeout(function() {
+            if (typeof React === 'undefined') {
+                showError('React library failed to load. Check internet connection.');
+            } else {
+                updateProgress(33, 'React loaded. Checking ReactDOM...');
+                setTimeout(function() {
+                    if (typeof ReactDOM === 'undefined') {
+                        showError('ReactDOM failed to load.');
+                    } else {
+                        updateProgress(66, 'ReactDOM loaded. Checking Babel...');
+                        setTimeout(function() {
+                            if (typeof Babel === 'undefined') {
+                                showError('Babel transpiler failed to load.');
+                            } else {
+                                updateProgress(100, 'All libraries loaded. Starting application...');
+                            }
+                        }, 500);
+                    }
+                }, 500);
+            }
+        }, 1000);
+
+        // Check if app rendered after 10 seconds
+        setTimeout(function() {
+            var preload = document.getElementById('pre-load-message');
+            if (preload && preload.style.display !== 'none') {
+                showError('Application failed to render after 10 seconds. Try a different browser or check browser console (F12) for errors.');
+            }
+        }, 10000);
+    </script>
+
     <script type="text/babel">
         const { useState, useEffect } = React;
         const { Calculator, Clock, Brain, AlertTriangle, FileText, CheckCircle, Moon, Sun, Download, Copy, Search, Check } = lucide;
