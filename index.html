@@ -2,26 +2,142 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stroke - CDS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Comprehensive clinical decision support tool for stroke management including NIHSS, ASPECTS, and treatment protocols">
+    <meta name="theme-color" content="#3B82F6">
+    <title>Stroke Clinical Decision Support</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        /* Dark mode styles */
+        .dark {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        .dark .bg-white { background-color: #2d3748; }
+        .dark .text-gray-800 { color: #e2e8f0; }
+        .dark .text-gray-700 { color: #cbd5e0; }
+        .dark .text-gray-600 { color: #a0aec0; }
+        .dark .border-gray-200 { border-color: #4a5568; }
+        .dark .bg-gray-50 { background-color: #2d3748; }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px;
+            background-color: #1a202c;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.875rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1a202c transparent transparent transparent;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Touch targets minimum 44px */
+        button, input[type="checkbox"], input[type="radio"], select {
+            min-height: 44px;
+            min-width: 44px;
+        }
+        input[type="checkbox"], input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            margin: 12px;
+        }
+
+        /* Success animation */
+        @keyframes successPulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        .success-pulse {
+            animation: successPulse 0.6s;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #3B82F6;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script>
+        // Dark mode initialization
+        (function() {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
 </head>
 <body>
     <div id="root"></div>
     
     <script type="text/babel">
-        const { useState } = React;
-        const { Calculator, Clock, Brain, AlertTriangle, FileText, CheckCircle } = lucide;
+        const { useState, useEffect } = React;
+        const { Calculator, Clock, Brain, AlertTriangle, FileText, CheckCircle, Moon, Sun, Download, Copy, Search, Check } = lucide;
 
         const StrokeClinicalTool = () => {
-          const [activeTab, setActiveTab] = useState('workflow');
-          const [patientData, setPatientData] = useState({});
-          const [nihssScore, setNihssScore] = useState(0);
-          const [aspectsScore, setAspectsScore] = useState(10);
+          // Load saved data from localStorage
+          const loadFromStorage = (key, defaultValue) => {
+            try {
+              const saved = localStorage.getItem(key);
+              return saved ? JSON.parse(saved) : defaultValue;
+            } catch {
+              return defaultValue;
+            }
+          };
+
+          const [activeTab, setActiveTab] = useState(loadFromStorage('activeTab', 'workflow'));
+          const [patientData, setPatientData] = useState(loadFromStorage('patientData', {}));
+          const [nihssScore, setNihssScore] = useState(loadFromStorage('nihssScore', 0));
+          const [aspectsScore, setAspectsScore] = useState(loadFromStorage('aspectsScore', 10));
+          const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
+          const [searchQuery, setSearchQuery] = useState('');
+          const [showSuccess, setShowSuccess] = useState(false);
+          const [isCalculating, setIsCalculating] = useState(false);
+          const [copiedText, setCopiedText] = useState('');
           const [gcsItems, setGcsItems] = useState({
             eye: 0,
             verbal: 0,
@@ -988,15 +1104,131 @@
             React.useEffect(() => {
               lucide.createIcons();
             }, []);
-            
+
             return <i data-lucide={IconComponent} className="w-4 h-4 inline-block"></i>;
           };
 
+          // Utility Functions
+          const copyToClipboard = (text, label) => {
+            navigator.clipboard.writeText(text).then(() => {
+              setCopiedText(label);
+              setTimeout(() => setCopiedText(''), 2000);
+            });
+          };
+
+          const exportToPDF = () => {
+            const element = document.getElementById('root');
+            const opt = {
+              margin: 0.5,
+              filename: `stroke-assessment-${new Date().toISOString().split('T')[0]}.pdf`,
+              image: { type: 'jpeg', quality: 0.98 },
+              html2canvas: { scale: 2 },
+              jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+          };
+
+          const toggleDarkMode = () => {
+            const newDarkMode = !darkMode;
+            setDarkMode(newDarkMode);
+            localStorage.setItem('darkMode', newDarkMode);
+            if (newDarkMode) {
+              document.documentElement.classList.add('dark');
+            } else {
+              document.documentElement.classList.remove('dark');
+            }
+          };
+
+          const Tooltip = ({ text, children }) => (
+            <span className="tooltip">
+              {children}
+              <span className="tooltiptext">{text}</span>
+            </span>
+          );
+
+          // Save to localStorage whenever state changes
+          useEffect(() => {
+            localStorage.setItem('activeTab', JSON.stringify(activeTab));
+          }, [activeTab]);
+
+          useEffect(() => {
+            localStorage.setItem('patientData', JSON.stringify(patientData));
+          }, [patientData]);
+
+          useEffect(() => {
+            localStorage.setItem('nihssScore', JSON.stringify(nihssScore));
+          }, [nihssScore]);
+
+          useEffect(() => {
+            localStorage.setItem('aspectsScore', JSON.stringify(aspectsScore));
+          }, [aspectsScore]);
+
+          useEffect(() => {
+            localStorage.setItem('gcsItems', JSON.stringify(gcsItems));
+          }, [gcsItems]);
+
+          useEffect(() => {
+            localStorage.setItem('ichScoreItems', JSON.stringify(ichScoreItems));
+          }, [ichScoreItems]);
+
+          useEffect(() => {
+            lucide.createIcons();
+          }, [activeTab, copiedText, darkMode]);
+
           return (
-            <div className="max-w-7xl mx-auto p-3 sm:p-6 bg-white">
+            <div className={`max-w-7xl mx-auto p-3 sm:p-6 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
               {/* Header */}
               <div className="mb-4 sm:mb-6">
-                <h1 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-2 text-center sm:text-left">Stroke - CDS</h1>
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+                  <div className="flex-1">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-1 text-center sm:text-left">
+                      Stroke Clinical Decision Support
+                    </h1>
+                    <p className="text-xs text-gray-500 text-center sm:text-left">
+                      Last Updated: October 2025 • v2.0
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {/* Search Bar */}
+                    <div className="relative hidden md:block">
+                      <input
+                        type="text"
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-8 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        aria-label="Search clinical tools and protocols"
+                      />
+                      <i data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-gray-400"></i>
+                    </div>
+                    {/* Export Button */}
+                    <button
+                      onClick={exportToPDF}
+                      className="flex items-center gap-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
+                      aria-label="Export to PDF"
+                      title="Export current view to PDF"
+                    >
+                      <i data-lucide="download" className="w-4 h-4"></i>
+                      <span className="hidden sm:inline">Export PDF</span>
+                    </button>
+                    {/* Dark Mode Toggle */}
+                    <button
+                      onClick={toggleDarkMode}
+                      className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+                      title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+                    >
+                      <i data-lucide={darkMode ? "sun" : "moon"} className="w-5 h-5"></i>
+                    </button>
+                  </div>
+                </div>
+                {/* Success Notification */}
+                {copiedText && (
+                  <div className="mt-2 p-2 bg-green-100 border border-green-400 text-green-700 rounded-lg text-sm flex items-center gap-2">
+                    <i data-lucide="check" className="w-4 h-4"></i>
+                    <span>{copiedText} copied to clipboard!</span>
+                  </div>
+                )}
               </div>
 
               {/* Navigation Tabs */}
@@ -1046,26 +1278,26 @@
                         <div className="bg-white p-4 rounded border">
                           <h3 className="font-semibold text-red-700 mb-2">Assessment</h3>
                           <ul className="text-sm space-y-1">
-                            <li>• Age, PMH/Meds</li>
-                            <li>• Sx</li>
-                            <li>• LKN</li>
-                            <li>• Presenting & Current BP</li>
-                            <li>• NIHSS (& disabling focal deficits)</li>
+                            <li>• Age, <Tooltip text="Past Medical History">PMH</Tooltip>/Meds</li>
+                            <li>• <Tooltip text="Symptoms">Sx</Tooltip></li>
+                            <li>• <Tooltip text="Last Known Normal - time patient was last seen at baseline">LKN</Tooltip></li>
+                            <li>• Presenting & Current <Tooltip text="Blood Pressure">BP</Tooltip></li>
+                            <li>• <Tooltip text="NIH Stroke Scale - neurological deficit score">NIHSS</Tooltip> (& disabling focal deficits)</li>
                           </ul>
                         </div>
                         <div className="bg-white p-4 rounded border">
                           <h3 className="font-semibold text-red-700 mb-2">Imaging</h3>
                           <ul className="text-sm space-y-1">
-                            <li>• HCT</li>
-                            <li>• CTA H/N</li>
+                            <li>• <Tooltip text="Head CT scan">HCT</Tooltip></li>
+                            <li>• <Tooltip text="CT Angiography of Head and Neck">CTA H/N</Tooltip></li>
                           </ul>
                         </div>
                         <div className="bg-white p-4 rounded border">
                           <h3 className="font-semibold text-red-700 mb-2">Labs</h3>
                           <ul className="text-sm space-y-1">
-                            <li>• BG</li>
-                            <li>• ESP</li>
-                            <li>• CBC/Coags/BMP</li>
+                            <li>• <Tooltip text="Blood Glucose">BG</Tooltip></li>
+                            <li>• <Tooltip text="Emergency Stroke Panel">ESP</Tooltip></li>
+                            <li>• <Tooltip text="Complete Blood Count / Coagulation studies / Basic Metabolic Panel">CBC/Coags/BMP</Tooltip></li>
                           </ul>
                         </div>
                         <div className="bg-white p-4 rounded border">
@@ -1167,9 +1399,21 @@
                 {activeTab === 'nihss' && (
                   <div className="space-y-6">
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                      <h2 className="text-xl font-semibold text-gray-800 mb-4">NIH Stroke Scale</h2>
-                      <div className="text-right mb-4">
+                      <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                        <Tooltip text="National Institutes of Health Stroke Scale - measures stroke severity from 0 (no symptoms) to 42 (severe)">
+                          NIH Stroke Scale
+                        </Tooltip>
+                      </h2>
+                      <div className="flex justify-end items-center gap-2 mb-4">
                         <span className="text-2xl font-bold text-blue-600">Total Score: {nihssScore}</span>
+                        <button
+                          onClick={() => copyToClipboard(`NIHSS: ${nihssScore}`, 'NIHSS Score')}
+                          className="p-2 hover:bg-blue-100 rounded transition-colors"
+                          aria-label="Copy NIHSS score to clipboard"
+                          title="Copy to clipboard"
+                        >
+                          <i data-lucide="copy" className="w-5 h-5 text-blue-600"></i>
+                        </button>
                       </div>
                       
                       <div className="space-y-4">
@@ -1216,11 +1460,23 @@
                 {activeTab === 'imaging' && (
                   <div className="space-y-6">
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                      <h2 className="text-xl font-semibold text-gray-800 mb-4">ASPECTS</h2>
+                      <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                        <Tooltip text="Alberta Stroke Program Early CT Score - assesses early ischemic changes in acute stroke">
+                          ASPECTS
+                        </Tooltip>
+                      </h2>
                       <p className="text-xs text-gray-600 mb-3">Start at 10, subtract 1 for each abnormal region</p>
-                      
-                      <div className="text-right mb-4">
+
+                      <div className="flex justify-end items-center gap-2 mb-4">
                         <span className="text-2xl font-bold text-blue-600">ASPECTS Score: {calculateASPECTS(aspectsRegionState)}</span>
+                        <button
+                          onClick={() => copyToClipboard(`ASPECTS: ${calculateASPECTS(aspectsRegionState)}`, 'ASPECTS Score')}
+                          className="p-2 hover:bg-blue-100 rounded transition-colors"
+                          aria-label="Copy ASPECTS score to clipboard"
+                          title="Copy to clipboard"
+                        >
+                          <i data-lucide="copy" className="w-5 h-5 text-blue-600"></i>
+                        </button>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1867,11 +2123,25 @@
                   <div className="space-y-6">
                     {/* Glasgow Coma Scale */}
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-3">Glasgow Coma Scale (GCS)</h3>
-                      
-                      <div className="text-right mb-4">
-                        <span className="text-2xl font-bold text-gray-600">Total Score: {calculateGCS(gcsItems)}</span>
-                        <div className="text-sm text-gray-500">Range: 3-15</div>
+                      <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                        <Tooltip text="Glasgow Coma Scale - assesses level of consciousness based on eye, verbal, and motor responses">
+                          Glasgow Coma Scale (GCS)
+                        </Tooltip>
+                      </h3>
+
+                      <div className="flex justify-end items-center gap-2 mb-4">
+                        <div className="text-right">
+                          <span className="text-2xl font-bold text-gray-600">Total Score: {calculateGCS(gcsItems)}</span>
+                          <div className="text-sm text-gray-500">Range: 3-15</div>
+                        </div>
+                        <button
+                          onClick={() => copyToClipboard(`GCS: ${calculateGCS(gcsItems)}`, 'GCS Score')}
+                          className="p-2 hover:bg-gray-100 rounded transition-colors"
+                          aria-label="Copy GCS score to clipboard"
+                          title="Copy to clipboard"
+                        >
+                          <i data-lucide="copy" className="w-5 h-5 text-gray-600"></i>
+                        </button>
                       </div>
                       
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -2039,12 +2309,24 @@
 
                     {/* ICH Score */}
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-red-800 mb-3">ICH Score</h3>
-                      
-                      <div className="text-right mb-4">
+                      <h3 className="text-lg font-semibold text-red-800 mb-3">
+                        <Tooltip text="Intracerebral Hemorrhage Score - predicts 30-day mortality after ICH">
+                          ICH Score
+                        </Tooltip>
+                      </h3>
+
+                      <div className="flex justify-end items-center gap-2 mb-4">
                         <span className="text-2xl font-bold text-red-600">Total Score: {calculateICHScore(ichScoreItems)}</span>
+                        <button
+                          onClick={() => copyToClipboard(`ICH Score: ${calculateICHScore(ichScoreItems)}`, 'ICH Score')}
+                          className="p-2 hover:bg-red-100 rounded transition-colors"
+                          aria-label="Copy ICH score to clipboard"
+                          title="Copy to clipboard"
+                        >
+                          <i data-lucide="copy" className="w-5 h-5 text-red-600"></i>
+                        </button>
                       </div>
-                      
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div className="space-y-2">
                           <label className="flex items-center space-x-2">
@@ -2109,10 +2391,22 @@
 
                     {/* ABCD2 */}
                     <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-orange-800 mb-3">ABCD² Score</h3>
-                      
-                      <div className="text-right mb-4">
+                      <h3 className="text-lg font-semibold text-orange-800 mb-3">
+                        <Tooltip text="ABCD² Score - predicts stroke risk after TIA">
+                          ABCD² Score
+                        </Tooltip>
+                      </h3>
+
+                      <div className="flex justify-end items-center gap-2 mb-4">
                         <span className="text-2xl font-bold text-orange-600">Total Score: {calculateABCD2Score(abcd2Items)}</span>
+                        <button
+                          onClick={() => copyToClipboard(`ABCD² Score: ${calculateABCD2Score(abcd2Items)}`, 'ABCD² Score')}
+                          className="p-2 hover:bg-orange-100 rounded transition-colors"
+                          aria-label="Copy ABCD² score to clipboard"
+                          title="Copy to clipboard"
+                        >
+                          <i data-lucide="copy" className="w-5 h-5 text-orange-600"></i>
+                        </button>
                       </div>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -2203,12 +2497,24 @@
 
                     {/* CHADS2-VASC */}
                     <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-purple-800 mb-3">CHADS₂-VASc Score</h3>
-                      
-                      <div className="text-right mb-4">
+                      <h3 className="text-lg font-semibold text-purple-800 mb-3">
+                        <Tooltip text="CHA₂DS₂-VASc Score - predicts stroke risk in atrial fibrillation">
+                          CHADS₂-VASc Score
+                        </Tooltip>
+                      </h3>
+
+                      <div className="flex justify-end items-center gap-2 mb-4">
                         <span className="text-2xl font-bold text-purple-600">Total Score: {calculateCHADS2VascScore(chads2vascItems)}</span>
+                        <button
+                          onClick={() => copyToClipboard(`CHADS₂-VASc: ${calculateCHADS2VascScore(chads2vascItems)}`, 'CHADS₂-VASc Score')}
+                          className="p-2 hover:bg-purple-100 rounded transition-colors"
+                          aria-label="Copy CHADS₂-VASc score to clipboard"
+                          title="Copy to clipboard"
+                        >
+                          <i data-lucide="copy" className="w-5 h-5 text-purple-600"></i>
+                        </button>
                       </div>
-                      
+
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                         <label className="flex items-center space-x-2">
                           <input 
@@ -2309,12 +2615,24 @@
 
                     {/* ROPE Score */}
                     <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-teal-800 mb-3">ROPE Score</h3>
-                      
-                      <div className="text-right mb-4">
+                      <h3 className="text-lg font-semibold text-teal-800 mb-3">
+                        <Tooltip text="Risk of Paradoxical Embolism Score - estimates likelihood that PFO caused stroke">
+                          ROPE Score
+                        </Tooltip>
+                      </h3>
+
+                      <div className="flex justify-end items-center gap-2 mb-4">
                         <span className="text-2xl font-bold text-teal-600">Total Score: {calculateROPEScore(ropeItems)}</span>
+                        <button
+                          onClick={() => copyToClipboard(`ROPE Score: ${calculateROPEScore(ropeItems)}`, 'ROPE Score')}
+                          className="p-2 hover:bg-teal-100 rounded transition-colors"
+                          aria-label="Copy ROPE score to clipboard"
+                          title="Copy to clipboard"
+                        >
+                          <i data-lucide="copy" className="w-5 h-5 text-teal-600"></i>
+                        </button>
                       </div>
-                      
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div className="space-y-2">
                           <label className="flex items-center space-x-2">
