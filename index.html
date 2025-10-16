@@ -13,12 +13,12 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Stroke Clinical Decision Support</title>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js?v=20251015b"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js?v=20251015b"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js?v=20251015b"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js?v=20251015b"></script>
-    <script src="https://cdn.tailwindcss.com?v=20251015b"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js?v=20251015b"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js?v=20251016c"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js?v=20251016c"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js?v=20251016c"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js?v=20251016c"></script>
+    <script src="https://cdn.tailwindcss.com?v=20251016c"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js?v=20251016c"></script>
     <style>
         /* Dark mode styles */
         .dark {
@@ -112,7 +112,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = 'v1.0.5-stable'; // Increment this with each deployment
+            const APP_VERSION = 'v1.0.7-clean'; // Increment this with each deployment
             const storedVersion = localStorage.getItem('app_version');
 
             // If version doesn't match, clear ALL localStorage to prevent crashes
