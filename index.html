@@ -112,8 +112,66 @@
     </script>
 </head>
 <body>
-    <div id="root"></div>
-    
+    <div id="root">
+        <div style="padding: 40px; font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto;">
+            <h1 style="color: #3B82F6;">Loading Stroke Clinical Decision Support...</h1>
+            <p id="loading-status">Initializing application...</p>
+            <div id="error-display" style="display: none; background: #fee; border: 2px solid #c00; padding: 20px; margin-top: 20px; border-radius: 8px;">
+                <h2 style="color: #c00; margin-top: 0;">Error Loading Application</h2>
+                <p id="error-message"></p>
+                <h3>Troubleshooting Steps:</h3>
+                <ol>
+                    <li>Hard refresh: Press Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac)</li>
+                    <li>Clear browser cache and reload</li>
+                    <li>Try a different browser (Chrome, Firefox, Safari)</li>
+                    <li>Disable browser extensions that might block scripts</li>
+                    <li>Check if JavaScript is enabled in your browser</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global error handler
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            document.getElementById('loading-status').style.display = 'none';
+            var errorDiv = document.getElementById('error-display');
+            var errorMsg = document.getElementById('error-message');
+            errorDiv.style.display = 'block';
+            errorMsg.innerHTML = '<strong>JavaScript Error:</strong><br>' + msg + '<br><br>' +
+                '<strong>Location:</strong> ' + url + ' (Line: ' + lineNo + ', Column: ' + columnNo + ')' +
+                (error && error.stack ? '<br><br><strong>Stack:</strong><pre style="overflow: auto;">' + error.stack + '</pre>' : '');
+            return false;
+        };
+
+        // Check if React loaded
+        setTimeout(function() {
+            if (typeof React === 'undefined') {
+                document.getElementById('loading-status').innerHTML =
+                    '<strong style="color: red;">Error: React library failed to load. Check your internet connection.</strong>';
+            } else if (typeof ReactDOM === 'undefined') {
+                document.getElementById('loading-status').innerHTML =
+                    '<strong style="color: red;">Error: ReactDOM library failed to load.</strong>';
+            } else if (typeof Babel === 'undefined') {
+                document.getElementById('loading-status').innerHTML =
+                    '<strong style="color: red;">Error: Babel transpiler failed to load.</strong>';
+            } else {
+                document.getElementById('loading-status').innerHTML = 'Libraries loaded. Starting application...';
+            }
+        }, 2000);
+
+        // Check if app rendered after 5 seconds
+        setTimeout(function() {
+            var root = document.getElementById('root');
+            if (root && root.children.length === 1 && root.children[0].querySelector('#loading-status')) {
+                var errorDiv = document.getElementById('error-display');
+                var errorMsg = document.getElementById('error-message');
+                errorDiv.style.display = 'block';
+                errorMsg.innerHTML = '<strong>Application failed to render.</strong><br>The React application did not start within 5 seconds. This could be a browser compatibility issue.';
+            }
+        }, 5000);
+    </script>
+
     <script type="text/babel">
         const { useState, useEffect } = React;
         const { Calculator, Clock, Brain, AlertTriangle, FileText, CheckCircle, Moon, Sun, Download, Copy, Search, Check } = lucide;
