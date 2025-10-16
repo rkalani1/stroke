@@ -112,7 +112,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = 'v1.0.5-stable'; // Increment this with each deployment
+            const APP_VERSION = 'v1.0.6-mobile'; // Increment this with each deployment
             const storedVersion = localStorage.getItem('app_version');
 
             // If version doesn't match, clear ALL localStorage to prevent crashes
@@ -216,6 +216,9 @@
           // Search
           const [searchResults, setSearchResults] = useState([]);
           const [searchOpen, setSearchOpen] = useState(false);
+
+          // Mobile menu
+          const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
           // Workflow tracking
           const [currentStep, setCurrentStep] = useState(loadFromStorage('currentStep', 0));
@@ -1606,10 +1609,20 @@
               {/* Header */}
               <div className="mb-4 sm:mb-6">
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
-                  <div className="flex-1">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-1 text-center sm:text-left">
-                      Stroke Clinical Decision Support
-                    </h1>
+                  <div className="flex-1 flex items-center gap-3 w-full">
+                    {/* Mobile Menu Button */}
+                    <button
+                      onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                      className="md:hidden p-2 border-2 border-blue-500 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+                      aria-label="Open navigation menu"
+                    >
+                      <i data-lucide={mobileMenuOpen ? "x" : "menu"} className="w-6 h-6 text-blue-600"></i>
+                    </button>
+
+                    <div className="flex-1">
+                      <h1 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-1 text-center sm:text-left">
+                        Stroke Clinical Decision Support
+                      </h1>
                     <div className="flex items-center justify-center sm:justify-start gap-2 text-xs text-gray-500">
                       <span>Last Updated: October 2025 • v2.1</span>
                       {/* Save Status */}
@@ -1720,8 +1733,57 @@
                 )}
               </div>
 
-              {/* Navigation Tabs */}
-              <div className="border-b border-gray-200 mb-4 sm:mb-6 pb-2">
+              {/* Mobile Navigation Menu */}
+              {mobileMenuOpen && (
+                <div className="fixed inset-0 bg-white z-40 md:hidden overflow-y-auto">
+                  <div className="p-4">
+                    <div className="flex items-center justify-between mb-6">
+                      <h2 className="text-xl font-bold text-blue-900">Navigation</h2>
+                      <button
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="p-2 hover:bg-gray-100 rounded-lg"
+                      >
+                        <i data-lucide="x" className="w-6 h-6"></i>
+                      </button>
+                    </div>
+                    <div className="space-y-2">
+                      {[
+                        { id: 'workflow', name: 'Workflow', icon: 'check-circle' },
+                        { id: 'nihss', name: 'NIHSS', icon: 'brain' },
+                        { id: 'imaging', name: 'Imaging', icon: 'file-text' },
+                        { id: 'lytic', name: 'Lytic Eligibility', icon: 'alert-triangle' },
+                        { id: 'evt', name: 'EVT Eligibility', icon: 'alert-triangle' },
+                        { id: 'strokecode', name: 'Stroke Code', icon: 'file-text' },
+                        { id: 'ich', name: 'ICH Management', icon: 'alert-triangle' },
+                        { id: 'trials', name: 'Clinical Trials', icon: 'file-text' },
+                        { id: 'calculators', name: 'Calculators', icon: 'calculator' },
+                        { id: 'protocols', name: 'Management', icon: 'file-text' }
+                      ].map(tab => (
+                        <button
+                          key={tab.id}
+                          onClick={() => {
+                            setActiveTab(tab.id);
+                            setMobileMenuOpen(false);
+                          }}
+                          className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                            activeTab === tab.id
+                              ? 'border-blue-500 bg-blue-50'
+                              : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <i data-lucide={tab.icon} className="w-5 h-5 text-blue-600"></i>
+                            <div className="font-semibold">{tab.name}</div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Navigation Tabs - Hidden on Mobile */}
+              <div className="border-b border-gray-200 mb-4 sm:mb-6 pb-2 hidden md:block">
                 <nav className="flex flex-wrap justify-center gap-2 md:justify-between md:gap-0">
                   {[
                     { id: 'workflow', name: 'Workflow', icon: 'check-circle' },
@@ -1868,19 +1930,62 @@
                   );
                 })()}
 
-                {/* Last Known Well Input */}
+                {/* Last Known Well Input with Quick Entry */}
                 <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
                   <label className="block font-semibold text-blue-900 mb-2">
                     <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
                     Last Known Well Time *
                   </label>
-                  <input
-                    type="datetime-local"
-                    value={lkwTime ? lkwTime.toISOString().slice(0, 16) : ''}
-                    onChange={(e) => e.target.value && setLkwTime(new Date(e.target.value))}
-                    max={currentTime.toISOString().slice(0, 16)}
-                    className="w-full px-4 py-3 border-2 border-blue-300 rounded-lg text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+
+                  {/* Quick Time Entry Buttons */}
+                  <div className="mb-3">
+                    <p className="text-xs text-blue-700 mb-2">Quick entry:</p>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        onClick={() => setLkwTime(new Date())}
+                        className="px-3 py-2 bg-blue-600 text-white rounded text-sm font-medium hover:bg-blue-700 transition-colors"
+                      >
+                        Now
+                      </button>
+                      <button
+                        onClick={() => setLkwTime(new Date(Date.now() - 30*60000))}
+                        className="px-3 py-2 bg-white border-2 border-blue-500 text-blue-700 rounded text-sm font-medium hover:bg-blue-50 transition-colors"
+                      >
+                        30min ago
+                      </button>
+                      <button
+                        onClick={() => setLkwTime(new Date(Date.now() - 60*60000))}
+                        className="px-3 py-2 bg-white border-2 border-blue-500 text-blue-700 rounded text-sm font-medium hover:bg-blue-50 transition-colors"
+                      >
+                        1hr ago
+                      </button>
+                      <button
+                        onClick={() => setLkwTime(new Date(Date.now() - 2*60*60000))}
+                        className="px-3 py-2 bg-white border-2 border-blue-500 text-blue-700 rounded text-sm font-medium hover:bg-blue-50 transition-colors"
+                      >
+                        2hrs ago
+                      </button>
+                      <button
+                        onClick={() => setLkwTime(new Date(Date.now() - 4*60*60000))}
+                        className="px-3 py-2 bg-white border-2 border-blue-500 text-blue-700 rounded text-sm font-medium hover:bg-blue-50 transition-colors"
+                      >
+                        4hrs ago
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Manual Time Entry */}
+                  <div>
+                    <p className="text-xs text-blue-700 mb-1">Or enter manually:</p>
+                    <input
+                      type="datetime-local"
+                      value={lkwTime ? lkwTime.toISOString().slice(0, 16) : ''}
+                      onChange={(e) => e.target.value && setLkwTime(new Date(e.target.value))}
+                      max={currentTime.toISOString().slice(0, 16)}
+                      className="w-full px-4 py-3 border-2 border-blue-300 rounded-lg text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                    />
+                  </div>
+
                   {!lkwTime && (
                     <p className="text-sm text-blue-700 mt-2">⚠️ Enter Last Known Well time to see treatment window eligibility</p>
                   )}
