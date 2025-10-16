@@ -109,19 +109,8 @@
         }
     </style>
     <script>
-        // Version check and clear corrupted data
+        // Dark mode initialization
         (function() {
-            const CURRENT_VERSION = '2025-10-15-v2';
-            const storedVersion = localStorage.getItem('app_version');
-
-            // If version mismatch or no version, clear all data
-            if (storedVersion !== CURRENT_VERSION) {
-                console.log('Version mismatch, clearing localStorage');
-                localStorage.clear();
-                localStorage.setItem('app_version', CURRENT_VERSION);
-            }
-
-            // Dark mode initialization
             const darkMode = localStorage.getItem('darkMode') === 'true';
             if (darkMode) {
                 document.documentElement.classList.add('dark');
@@ -136,10 +125,6 @@
         // Global error handler - only logs to console, no visible UI
         window.onerror = function(msg, url, lineNo, columnNo, error) {
             console.error('Error:', msg, 'at line', lineNo, error);
-            // Show error in console and on page if critical
-            if (msg.includes('is not a function')) {
-                document.getElementById('root').innerHTML = '<div style="padding: 40px; font-family: Arial;"><h1 style="color: red;">Error Loading Application</h1><p>Please clear your browser cache and reload:</p><ol><li>Press Ctrl+Shift+Delete (Windows) or Cmd+Shift+Delete (Mac)</li><li>Select "Cached images and files"</li><li>Click Clear</li><li>Reload this page</li></ol><p style="color: #666;">Error: ' + msg + '</p></div>';
-            }
             return false;
         };
     </script>
