@@ -2,15 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta name="description" content="Comprehensive clinical decision support tool for stroke management including NIHSS, ASPECTS, and treatment protocols">
     <meta name="theme-color" content="#3B82F6">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>Stroke Clinical Decision Support</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -19,22 +13,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        /* Global mobile-friendly styles */
-        * {
-            -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
-            -webkit-touch-callout: none;
-        }
-
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            overflow-x: hidden;
-            -webkit-text-size-adjust: 100%;
-            -moz-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-        }
-
         /* Dark mode styles */
         .dark {
             background-color: #1a202c;
@@ -134,22 +112,7 @@
     </script>
 </head>
 <body>
-    <div id="root">
-        <!-- Loading indicator while React loads -->
-        <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: system-ui, -apple-system, sans-serif;">
-            <div style="text-align: center;">
-                <div style="width: 50px; height: 50px; border: 5px solid #f3f4f6; border-top: 5px solid #3B82F6; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-                <h2 style="color: #3B82F6; margin: 0;">Loading Stroke Clinical Decision Support...</h2>
-                <p style="color: #6b7280; margin-top: 10px; font-size: 14px;">If this message persists, please try clearing your browser cache and reloading.</p>
-            </div>
-        </div>
-        <style>
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-        </style>
-    </div>
+    <div id="root"></div>
     
     <script type="text/babel">
         const { useState, useEffect } = React;
@@ -175,44 +138,29 @@
           const [showSuccess, setShowSuccess] = useState(false);
           const [isCalculating, setIsCalculating] = useState(false);
           const [copiedText, setCopiedText] = useState('');
-
-          // Time tracking
-          const [currentTime, setCurrentTime] = useState(new Date());
-          const [lkwTime, setLkwTime] = useState(loadFromStorage('lkwTime', null) ? new Date(loadFromStorage('lkwTime', null)) : null);
-
-          // Save status
-          const [saveStatus, setSaveStatus] = useState('saved');
-          const [lastSaved, setLastSaved] = useState(null);
-
-          // Search
-          const [searchResults, setSearchResults] = useState([]);
-          const [searchOpen, setSearchOpen] = useState(false);
-
-          // Workflow tracking
-          const [currentStep, setCurrentStep] = useState(loadFromStorage('currentStep', 0));
-          const [completedSteps, setCompletedSteps] = useState(loadFromStorage('completedSteps', []));
-
-          const [gcsItems, setGcsItems] = useState(loadFromStorage('gcsItems', {
+          const [gcsItems, setGcsItems] = useState({
             eye: 0,
             verbal: 0,
             motor: 0
-          }));
-          const [ichScoreItems, setIchScoreItems] = useState(loadFromStorage('ichScoreItems', {
-            gcs: '', // Changed to single field for mutual exclusivity
+          });
+          const [ichScoreItems, setIchScoreItems] = useState({
+            gcs34: false,
+            gcs512: false,
             age80: false,
             volume30: false,
             ivh: false,
             infratentorial: false
-          }));
-          const [abcd2Items, setAbcd2Items] = useState(loadFromStorage('abcd2Items', {
+          });
+          const [abcd2Items, setAbcd2Items] = useState({
             age60: false,
             bp: false,
             unilateralWeakness: false,
             speechDisturbance: false,
-            duration: '', // Changed to single field for mutual exclusivity
+            duration10: false,
+            duration60: false,
             diabetes: false
-          }));
-          const [chads2vascItems, setChads2vascItems] = useState(loadFromStorage('chads2vascItems', {
+          });
+          const [chads2vascItems, setChads2vascItems] = useState({
             chf: false,
             hypertension: false,
             age75: false,
@@ -221,18 +169,19 @@
             vascular: false,
             age65: false,
             female: false
-          }));
-          const [ropeItems, setRopeItems] = useState(loadFromStorage('ropeItems', {
+          });
+          const [ropeItems, setRopeItems] = useState({
             noHypertension: false,
             noDiabetes: false,
             noStrokeTia: false,
             nonsmoker: false,
             cortical: false,
             age: ''
-          }));
+          });
           const [trialsCategory, setTrialsCategory] = useState('ischemic');
 
-          const [strokeCodeForm, setStrokeCodeForm] = useState(loadFromStorage('strokeCodeForm', {
+
+          const [strokeCodeForm, setStrokeCodeForm] = useState({
             age: '',
             sex: '',
             hx: '',
@@ -248,7 +197,7 @@
             tnk_rec: '',
             evt_rec: '',
             rec_reason: ''
-          }));
+          });
           const [aspectsRegionState, setAspectsRegionState] = useState([
             { id: 'M1', name: 'M1 - Anterior MCA cortex', checked: true },
             { id: 'M2', name: 'M2 - MCA cortex lateral to insular ribbon', checked: true },
@@ -1093,8 +1042,8 @@
           // Calculate ICH score
           const calculateICHScore = (items) => {
             let score = 0;
-            if (items.gcs === 'gcs34') score += 2;
-            else if (items.gcs === 'gcs512') score += 1;
+            if (items.gcs34) score += 2;
+            if (items.gcs512) score += 1;
             if (items.age80) score += 1;
             if (items.volume30) score += 1;
             if (items.ivh) score += 1;
@@ -1109,8 +1058,8 @@
             if (items.bp) score += 1;
             if (items.unilateralWeakness) score += 2;
             if (items.speechDisturbance) score += 1;
-            if (items.duration === 'duration10') score += 1;
-            else if (items.duration === 'duration60') score += 2;
+            if (items.duration10) score += 1;
+            if (items.duration60) score += 2;
             if (items.diabetes) score += 1;
             return score;
           };
@@ -1159,62 +1108,6 @@
             return <i data-lucide={IconComponent} className="w-4 h-4 inline-block"></i>;
           };
 
-          // PHI Protection - Data with expiration
-          const PATIENT_DATA_TTL = 24 * 60 * 60 * 1000; // 24 hours
-
-          const saveWithExpiration = (key, data) => {
-            try {
-              const item = {
-                data: data,
-                timestamp: new Date().getTime(),
-                expiresAt: new Date().getTime() + PATIENT_DATA_TTL
-              };
-              localStorage.setItem(key, JSON.stringify(item));
-              setSaveStatus('saved');
-              setLastSaved(new Date());
-            } catch (e) {
-              setSaveStatus('error');
-              console.error('Save failed:', e);
-            }
-          };
-
-          const loadWithExpiration = (key, defaultValue) => {
-            try {
-              const item = JSON.parse(localStorage.getItem(key));
-              if (!item) return defaultValue;
-
-              if (new Date().getTime() > item.expiresAt) {
-                localStorage.removeItem(key);
-                return defaultValue;
-              }
-              return item.data;
-            } catch {
-              return defaultValue;
-            }
-          };
-
-          // Debounce utility
-          const debounce = (func, wait) => {
-            let timeout;
-            return function executedFunction(...args) {
-              const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-              };
-              clearTimeout(timeout);
-              timeout = setTimeout(later, wait);
-            };
-          };
-
-          // Debounced save (will be set up in useEffect)
-          const debouncedSave = React.useCallback(
-            debounce((key, data) => {
-              setSaveStatus('saving');
-              saveWithExpiration(key, data);
-            }, 1000),
-            []
-          );
-
           // Utility Functions
           const copyToClipboard = (text, label) => {
             navigator.clipboard.writeText(text).then(() => {
@@ -1253,292 +1146,34 @@
             </span>
           );
 
-          // Time calculation functions
-          const calculateTimeFromLKW = () => {
-            if (!lkwTime) return null;
-            const diffMs = currentTime - lkwTime;
-            const diffHrs = diffMs / (1000 * 60 * 60);
-            const diffMins = (diffMs / (1000 * 60)) % 60;
-            return { hours: Math.floor(diffHrs), minutes: Math.floor(diffMins), total: diffHrs };
-          };
-
-          const getWindowStatus = (timeFromLKW) => {
-            if (!timeFromLKW) return null;
-            if (timeFromLKW.total <= 4.5) {
-              // TNK eligible up to 4.5 hours
-              if (timeFromLKW.total < 3) {
-                return { color: 'green', message: 'Within TNK window (<3h)', urgent: false, eligible: 'tnk' };
-              } else {
-                return { color: 'yellow', message: 'Extended TNK window (3-4.5h)', urgent: false, eligible: 'tnk' };
-              }
-            } else if (timeFromLKW.total < 6) {
-              return { color: 'orange', message: 'TNK window closed - EVT window (4.5-6h)', urgent: true, eligible: 'evt-early' };
-            } else if (timeFromLKW.total < 24) {
-              return { color: 'red', message: 'Late EVT window (6-24h - needs perfusion imaging)', urgent: true, eligible: 'evt-late' };
-            } else {
-              return { color: 'gray', message: 'Beyond standard treatment window', urgent: false, eligible: 'none' };
-            }
-          };
-
-          // NIHSS validation
-          const isNIHSSComplete = () => {
-            return nihssItems.every(item => patientData[item.id] !== undefined && patientData[item.id] !== '');
-          };
-
-          const getIncompleteNIHSSItems = () => {
-            return nihssItems.filter(item => !patientData[item.id]).map(item => item.name);
-          };
-
-          const getNIHSSInterpretation = (score) => {
-            if (score === 0) return { severity: 'No stroke symptoms', color: 'green', guidance: 'Consider stroke mimics and alternative diagnoses' };
-            if (score <= 4) return { severity: 'Minor stroke', color: 'yellow', guidance: 'Consider EVT if large vessel occlusion present despite low NIHSS' };
-            if (score <= 15) return { severity: 'Moderate stroke', color: 'orange', guidance: 'Candidate for both thrombolysis and EVT if eligible' };
-            if (score <= 20) return { severity: 'Moderate-severe stroke', color: 'red', guidance: 'Aggressive intervention warranted - high benefit potential' };
-            return { severity: 'Severe stroke', color: 'red', guidance: 'All treatment options should be considered - high mortality risk without intervention' };
-          };
-
-          // Treatment validation
-          const validateTreatmentRecommendation = () => {
-            const hasContraindications = strokeCodeForm.tnk && strokeCodeForm.tnk.length > 0;
-            const tnkRecommended = strokeCodeForm.tnk_rec === 'Recommended';
-
-            if (hasContraindications && tnkRecommended) {
-              return {
-                valid: false,
-                message: `⚠️ WARNING: TNK recommended but ${strokeCodeForm.tnk.length} contraindication(s) selected`,
-                severity: 'error'
-              };
-            }
-
-            if (!hasContraindications && strokeCodeForm.tnk_rec === 'Not Recommended') {
-              return {
-                valid: true,
-                message: 'ℹ️ No contraindications selected. Confirm rationale for not recommending TNK.',
-                severity: 'warning'
-              };
-            }
-
-            return { valid: true, message: null, severity: null };
-          };
-
-          // Search function
-          const performSearch = (query) => {
-            if (!query || query.length < 2) {
-              setSearchResults([]);
-              return;
-            }
-
-            const results = [];
-            const lowerQuery = query.toLowerCase();
-
-            // Search in trials
-            Object.entries(trialsData).forEach(([category, data]) => {
-              if (data.hasSubsections) {
-                Object.entries(data.subsections).forEach(([subKey, subsection]) => {
-                  subsection.trials.forEach(trial => {
-                    if (trial.name.toLowerCase().includes(lowerQuery) ||
-                        trial.description.toLowerCase().includes(lowerQuery) ||
-                        trial.nct.toLowerCase().includes(lowerQuery)) {
-                      results.push({
-                        type: 'Clinical Trial',
-                        category: category,
-                        title: trial.name,
-                        description: trial.description.substring(0, 100) + '...',
-                        action: () => {
-                          setActiveTab('trials');
-                          setTrialsCategory(category);
-                          setSearchOpen(false);
-                          setSearchQuery('');
-                        }
-                      });
-                    }
-                  });
-                });
-              }
-            });
-
-            // Search in protocols/calculators
-            const searchableItems = [
-              { name: 'NIHSS', keywords: ['nihss', 'stroke scale', 'neurological'], tab: 'nihss' },
-              { name: 'ASPECTS', keywords: ['aspects', 'imaging', 'ct'], tab: 'imaging' },
-              { name: 'TNK Eligibility', keywords: ['tnk', 'tenecteplase', 'thrombolysis', 'lytic'], tab: 'lytic' },
-              { name: 'EVT Eligibility', keywords: ['evt', 'thrombectomy', 'mechanical', 'endovascular'], tab: 'evt' },
-              { name: 'ICH Management', keywords: ['ich', 'hemorrhage', 'bleeding', 'reversal'], tab: 'ich' },
-              { name: 'GCS Score', keywords: ['gcs', 'glasgow', 'coma', 'consciousness'], tab: 'calculators' },
-              { name: 'ICH Score', keywords: ['ich score', 'hemorrhage score', 'mortality'], tab: 'calculators' },
-              { name: 'ABCD² Score', keywords: ['abcd', 'tia', 'transient'], tab: 'calculators' },
-              { name: 'CHA₂DS₂-VASc', keywords: ['chads', 'afib', 'atrial fibrillation', 'anticoagulation'], tab: 'calculators' },
-              { name: 'ROPE Score', keywords: ['rope', 'pfo', 'paradoxical'], tab: 'calculators' },
-              { name: 'Blood Pressure Management', keywords: ['bp', 'blood pressure', 'labetalol', 'nicardipine'], tab: 'protocols' }
-            ];
-
-            searchableItems.forEach(item => {
-              if (item.name.toLowerCase().includes(lowerQuery) ||
-                  item.keywords.some(k => k.includes(lowerQuery))) {
-                results.push({
-                  type: 'Tool/Protocol',
-                  title: item.name,
-                  description: `Go to ${item.name}`,
-                  action: () => {
-                    setActiveTab(item.tab);
-                    setSearchOpen(false);
-                    setSearchQuery('');
-                  }
-                });
-              }
-            });
-
-            setSearchResults(results.slice(0, 10)); // Limit to 10 results
-          };
-
-          // Reset all data - New Patient
-          const resetAllData = () => {
-            if (!confirm('Start new patient assessment? All current data will be cleared. This cannot be undone.')) {
-              return;
-            }
-
-            // Clear all state
-            setPatientData({});
-            setNihssScore(0);
-            setAspectsScore(10);
-            setLkwTime(null);
-            setStrokeCodeForm({
-              age: '',
-              sex: '',
-              hx: '',
-              sx: '',
-              lkw: '',
-              lkw_date: new Date().toISOString().split('T')[0],
-              nihss: '',
-              def: '',
-              hct: '',
-              cta: '',
-              ctp: '',
-              tnk: [],
-              tnk_rec: '',
-              evt_rec: '',
-              rec_reason: ''
-            });
-            setAspectsRegionState([
-              { id: 'M1', name: 'M1 - Anterior MCA cortex', checked: true },
-              { id: 'M2', name: 'M2 - MCA cortex lateral to insular ribbon', checked: true },
-              { id: 'M3', name: 'M3 - Posterior MCA cortex', checked: true },
-              { id: 'M4', name: 'M4 - Anterior MCA territory immediately superior to M1', checked: true },
-              { id: 'M5', name: 'M5 - Lateral MCA territory immediately superior to M2', checked: true },
-              { id: 'M6', name: 'M6 - Posterior MCA territory immediately superior to M3', checked: true },
-              { id: 'IC', name: 'IC - Internal capsule', checked: true },
-              { id: 'L', name: 'L - Lentiform nucleus', checked: true },
-              { id: 'C', name: 'C - Caudate', checked: true },
-              { id: 'I', name: 'I - Insular ribbon', checked: true }
-            ]);
-            setGcsItems({ eye: 0, verbal: 0, motor: 0 });
-            setIchScoreItems({ gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false });
-            setAbcd2Items({ age60: false, bp: false, unilateralWeakness: false, speechDisturbance: false, duration: '', diabetes: false });
-            setChads2vascItems({ chf: false, hypertension: false, age75: false, diabetes: false, strokeTia: false, vascular: false, age65: false, female: false });
-            setRopeItems({ noHypertension: false, noDiabetes: false, noStrokeTia: false, nonsmoker: false, cortical: false, age: '' });
-            setCurrentStep(0);
-            setCompletedSteps([]);
-
-            // Clear localStorage for patient data
-            const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'ichScoreItems',
-                                   'abcd2Items', 'chads2vascItems', 'ropeItems', 'strokeCodeForm', 'lkwTime',
-                                   'currentStep', 'completedSteps', 'aspectsRegionState'];
-            keysToRemove.forEach(key => localStorage.removeItem(key));
-
-            setActiveTab('workflow');
-            setSaveStatus('saved');
-          };
-
-          // Workflow steps definition
-          const workflowSteps = [
-            { id: 'assessment', name: 'Initial Assessment', tab: 'workflow' },
-            { id: 'nihss', name: 'NIHSS Score', tab: 'nihss' },
-            { id: 'imaging', name: 'Imaging Review', tab: 'imaging' },
-            { id: 'eligibility', name: 'Treatment Eligibility', tab: 'lytic' },
-            { id: 'documentation', name: 'Documentation', tab: 'strokecode' }
-          ];
-
-          // Save to localStorage with expiration whenever state changes
+          // Save to localStorage whenever state changes
           useEffect(() => {
-            debouncedSave('activeTab', activeTab);
+            localStorage.setItem('activeTab', JSON.stringify(activeTab));
           }, [activeTab]);
 
           useEffect(() => {
-            debouncedSave('patientData', patientData);
-            const newScore = calculateNIHSS(patientData);
-            if (newScore !== nihssScore) {
-              setNihssScore(newScore);
-            }
+            localStorage.setItem('patientData', JSON.stringify(patientData));
           }, [patientData]);
 
           useEffect(() => {
-            debouncedSave('nihssScore', nihssScore);
+            localStorage.setItem('nihssScore', JSON.stringify(nihssScore));
           }, [nihssScore]);
 
           useEffect(() => {
-            debouncedSave('aspectsScore', aspectsScore);
+            localStorage.setItem('aspectsScore', JSON.stringify(aspectsScore));
           }, [aspectsScore]);
 
           useEffect(() => {
-            debouncedSave('gcsItems', gcsItems);
+            localStorage.setItem('gcsItems', JSON.stringify(gcsItems));
           }, [gcsItems]);
 
           useEffect(() => {
-            debouncedSave('ichScoreItems', ichScoreItems);
+            localStorage.setItem('ichScoreItems', JSON.stringify(ichScoreItems));
           }, [ichScoreItems]);
 
           useEffect(() => {
-            debouncedSave('abcd2Items', abcd2Items);
-          }, [abcd2Items]);
-
-          useEffect(() => {
-            debouncedSave('chads2vascItems', chads2vascItems);
-          }, [chads2vascItems]);
-
-          useEffect(() => {
-            debouncedSave('ropeItems', ropeItems);
-          }, [ropeItems]);
-
-          useEffect(() => {
-            debouncedSave('strokeCodeForm', strokeCodeForm);
-          }, [strokeCodeForm]);
-
-          useEffect(() => {
-            debouncedSave('aspectsRegionState', aspectsRegionState);
-          }, [aspectsRegionState]);
-
-          useEffect(() => {
-            if (lkwTime) {
-              debouncedSave('lkwTime', lkwTime.toISOString());
-            }
-          }, [lkwTime]);
-
-          useEffect(() => {
-            debouncedSave('currentStep', currentStep);
-          }, [currentStep]);
-
-          useEffect(() => {
-            debouncedSave('completedSteps', completedSteps);
-          }, [completedSteps]);
-
-          // Update current time every minute
-          useEffect(() => {
-            const timer = setInterval(() => setCurrentTime(new Date()), 60000);
-            return () => clearInterval(timer);
-          }, []);
-
-          // Perform search when query changes
-          useEffect(() => {
-            performSearch(searchQuery);
-          }, [searchQuery]);
-
-          // Reinitialize icons when needed
-          useEffect(() => {
-            const timer = setTimeout(() => {
-              lucide.createIcons();
-            }, 100);
-            return () => clearTimeout(timer);
-          }, [activeTab, copiedText, darkMode, searchOpen]);
+            lucide.createIcons();
+          }, [activeTab, copiedText, darkMode]);
 
           return (
             <div className={`max-w-7xl mx-auto p-3 sm:p-6 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
@@ -1549,84 +1184,23 @@
                     <h1 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-1 text-center sm:text-left">
                       Stroke Clinical Decision Support
                     </h1>
-                    <div className="flex items-center justify-center sm:justify-start gap-2 text-xs text-gray-500">
-                      <span>Last Updated: October 2025 • v2.1</span>
-                      {/* Save Status */}
-                      <span className="flex items-center gap-1">
-                        {saveStatus === 'saving' && (
-                          <>
-                            <div className="spinner"></div>
-                            <span className="text-blue-600">Saving...</span>
-                          </>
-                        )}
-                        {saveStatus === 'saved' && lastSaved && (
-                          <>
-                            <i data-lucide="check-circle" className="w-3 h-3 text-green-600"></i>
-                            <span className="text-green-600">Saved {new Date(lastSaved).toLocaleTimeString()}</span>
-                          </>
-                        )}
-                        {saveStatus === 'error' && (
-                          <>
-                            <i data-lucide="alert-circle" className="w-3 h-3 text-red-600"></i>
-                            <span className="text-red-600">Save failed</span>
-                          </>
-                        )}
-                      </span>
-                    </div>
+                    <p className="text-xs text-gray-500 text-center sm:text-left">
+                      Last Updated: October 2025 • v2.0
+                    </p>
                   </div>
                   <div className="flex items-center gap-2">
-                    {/* Search Bar with Results */}
-                    <div className="relative">
+                    {/* Search Bar */}
+                    <div className="relative hidden md:block">
                       <input
                         type="text"
-                        placeholder="Search trials, protocols..."
+                        placeholder="Search..."
                         value={searchQuery}
-                        onChange={(e) => {
-                          setSearchQuery(e.target.value);
-                          setSearchOpen(true);
-                        }}
-                        onFocus={() => setSearchOpen(true)}
-                        onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
-                        className="pl-8 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 md:w-64"
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-8 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         aria-label="Search clinical tools and protocols"
                       />
                       <i data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-gray-400"></i>
-
-                      {/* Search Results Dropdown */}
-                      {searchOpen && searchResults.length > 0 && (
-                        <div className="absolute top-12 left-0 w-96 bg-white shadow-lg rounded-lg border max-h-96 overflow-y-auto z-50">
-                          {searchResults.map((result, index) => (
-                            <button
-                              key={index}
-                              onClick={result.action}
-                              className="w-full text-left p-3 hover:bg-blue-50 border-b transition-colors"
-                            >
-                              <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                  <p className="font-semibold text-sm">{result.title}</p>
-                                  {result.description && (
-                                    <p className="text-xs text-gray-600 mt-1">{result.description}</p>
-                                  )}
-                                </div>
-                                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded ml-2">{result.type}</span>
-                              </div>
-                            </button>
-                          ))}
-                        </div>
-                      )}
                     </div>
-
-                    {/* New Patient Button */}
-                    <button
-                      onClick={resetAllData}
-                      className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-                      aria-label="Start new patient assessment"
-                      title="Clear all data and start new patient"
-                    >
-                      <i data-lucide="user-plus" className="w-4 h-4"></i>
-                      <span className="hidden lg:inline">New Patient</span>
-                    </button>
-
                     {/* Export Button */}
                     <button
                       onClick={exportToPDF}
@@ -1635,9 +1209,8 @@
                       title="Export current view to PDF"
                     >
                       <i data-lucide="download" className="w-4 h-4"></i>
-                      <span className="hidden sm:inline">PDF</span>
+                      <span className="hidden sm:inline">Export PDF</span>
                     </button>
-
                     {/* Dark Mode Toggle */}
                     <button
                       onClick={toggleDarkMode}
@@ -1649,7 +1222,6 @@
                     </button>
                   </div>
                 </div>
-
                 {/* Success Notification */}
                 {copiedText && (
                   <div className="mt-2 p-2 bg-green-100 border border-green-400 text-green-700 rounded-lg text-sm flex items-center gap-2">
@@ -1697,137 +1269,6 @@
 
               {/* Content */}
               <div className="space-y-4 sm:space-y-6">
-                {/* Workflow Progress Tracker */}
-                <div className="bg-white p-4 rounded-lg shadow-md border-2 border-blue-200">
-                  <h3 className="font-bold mb-3 text-lg text-blue-900">Assessment Progress</h3>
-                  <div className="flex items-center justify-between mb-4">
-                    {workflowSteps.map((step, index) => (
-                      <div key={step.id} className="flex items-center flex-1">
-                        <div className="flex flex-col items-center flex-1">
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm ${
-                            completedSteps.includes(step.id)
-                              ? 'bg-green-500 text-white'
-                              : index === currentStep
-                                ? 'bg-blue-500 text-white ring-4 ring-blue-200'
-                                : 'bg-gray-300 text-gray-600'
-                          }`}>
-                            {completedSteps.includes(step.id) ? '✓' : index + 1}
-                          </div>
-                          <span className="text-xs mt-1 text-center font-medium">{step.name}</span>
-                        </div>
-                        {index < workflowSteps.length - 1 && (
-                          <div className={`h-1 flex-1 mx-2 ${
-                            completedSteps.includes(step.id) ? 'bg-green-500' : 'bg-gray-300'
-                          }`} />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex gap-2">
-                    {currentStep > 0 && (
-                      <button
-                        onClick={() => {
-                          const prevStep = workflowSteps[currentStep - 1];
-                          setActiveTab(prevStep.tab);
-                          setCurrentStep(currentStep - 1);
-                        }}
-                        className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
-                      >
-                        ← Previous
-                      </button>
-                    )}
-                    {currentStep < workflowSteps.length - 1 && (
-                      <button
-                        onClick={() => {
-                          if (!completedSteps.includes(workflowSteps[currentStep].id)) {
-                            setCompletedSteps([...completedSteps, workflowSteps[currentStep].id]);
-                          }
-                          const nextStep = workflowSteps[currentStep + 1];
-                          setActiveTab(nextStep.tab);
-                          setCurrentStep(currentStep + 1);
-                        }}
-                        className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                      >
-                        Next: {workflowSteps[currentStep + 1].name} →
-                      </button>
-                    )}
-                    {currentStep === workflowSteps.length - 1 && (
-                      <button
-                        onClick={() => {
-                          setCompletedSteps([...workflowSteps.map(s => s.id)]);
-                          alert('Assessment Complete! Review all tabs and export to PDF if needed.');
-                        }}
-                        className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
-                      >
-                        Complete Assessment ✓
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                {/* Time Window Alert */}
-                {lkwTime && (() => {
-                  const timeFromLKW = calculateTimeFromLKW();
-                  const windowStatus = getWindowStatus(timeFromLKW);
-                  if (!windowStatus) return null;
-
-                  return (
-                    <div className={`p-4 rounded-lg border-2 ${
-                      windowStatus.color === 'green' ? 'bg-green-50 border-green-500' :
-                      windowStatus.color === 'yellow' ? 'bg-yellow-50 border-yellow-500' :
-                      windowStatus.color === 'orange' ? 'bg-orange-50 border-orange-500' :
-                      windowStatus.color === 'red' ? 'bg-red-50 border-red-500' :
-                      'bg-gray-50 border-gray-400'
-                    } ${windowStatus.urgent ? 'animate-pulse' : ''}`}>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <i data-lucide="clock" className="w-8 h-8"></i>
-                          <div>
-                            <p className="font-bold text-2xl">
-                              {timeFromLKW.hours}h {timeFromLKW.minutes}m from Last Known Well
-                            </p>
-                            <p className="text-sm font-semibold mt-1">{windowStatus.message}</p>
-                            {windowStatus.eligible === 'tnk' && (
-                              <p className="text-xs mt-1">✓ Eligible for TNK (≤4.5h) • ✓ Eligible for EVT</p>
-                            )}
-                            {windowStatus.eligible === 'evt-early' && (
-                              <p className="text-xs mt-1">✗ TNK window closed (>4.5h) • ✓ Eligible for EVT</p>
-                            )}
-                            {windowStatus.eligible === 'evt-late' && (
-                              <p className="text-xs mt-1">✗ TNK window closed (>4.5h) • ⚠️ EVT requires perfusion imaging</p>
-                            )}
-                            {windowStatus.eligible === 'none' && (
-                              <p className="text-xs mt-1">✗ TNK window closed • ✗ Standard EVT window closed</p>
-                            )}
-                          </div>
-                        </div>
-                        <div className="text-right text-sm text-gray-600">
-                          <p>LKW: {lkwTime.toLocaleString()}</p>
-                          <p>Current: {currentTime.toLocaleTimeString()}</p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })()}
-
-                {/* Last Known Well Input */}
-                <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
-                  <label className="block font-semibold text-blue-900 mb-2">
-                    <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
-                    Last Known Well Time *
-                  </label>
-                  <input
-                    type="datetime-local"
-                    value={lkwTime ? lkwTime.toISOString().slice(0, 16) : ''}
-                    onChange={(e) => e.target.value && setLkwTime(new Date(e.target.value))}
-                    max={currentTime.toISOString().slice(0, 16)}
-                    className="w-full px-4 py-3 border-2 border-blue-300 rounded-lg text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  {!lkwTime && (
-                    <p className="text-sm text-blue-700 mt-2">⚠️ Enter Last Known Well time to see treatment window eligibility</p>
-                  )}
-                </div>
-
                 {/* Workflow */}
                 {activeTab === 'workflow' && (
                   <div className="space-y-6">
@@ -1963,54 +1404,17 @@
                           NIH Stroke Scale
                         </Tooltip>
                       </h2>
-
-                      {/* Completion Status */}
-                      <div className={`mb-4 p-4 rounded-lg border-2 ${
-                        isNIHSSComplete() ? 'border-green-500 bg-green-50' : 'border-yellow-500 bg-yellow-50'
-                      }`}>
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <span className="text-3xl font-bold text-blue-600">NIHSS: {nihssScore}</span>
-                              {isNIHSSComplete() ? (
-                                <i data-lucide="check-circle" className="w-6 h-6 text-green-600"></i>
-                              ) : (
-                                <span className="text-yellow-600 font-semibold">(Incomplete)</span>
-                              )}
-                            </div>
-                            {!isNIHSSComplete() && (
-                              <p className="text-sm text-yellow-700 mt-2">
-                                ⚠️ Missing {getIncompleteNIHSSItems().length} items: {getIncompleteNIHSSItems().slice(0, 3).join(', ')}
-                                {getIncompleteNIHSSItems().length > 3 && '...'}
-                              </p>
-                            )}
-                          </div>
-                          <button
-                            onClick={() => copyToClipboard(`NIHSS: ${nihssScore}${isNIHSSComplete() ? ' (Complete)' : ' (Incomplete)'}`, 'NIHSS Score')}
-                            className="p-2 hover:bg-blue-100 rounded transition-colors"
-                            aria-label="Copy NIHSS score to clipboard"
-                            title="Copy to clipboard"
-                          >
-                            <i data-lucide="copy" className="w-5 h-5 text-blue-600"></i>
-                          </button>
-                        </div>
+                      <div className="flex justify-end items-center gap-2 mb-4">
+                        <span className="text-2xl font-bold text-blue-600">Total Score: {nihssScore}</span>
+                        <button
+                          onClick={() => copyToClipboard(`NIHSS: ${nihssScore}`, 'NIHSS Score')}
+                          className="p-2 hover:bg-blue-100 rounded transition-colors"
+                          aria-label="Copy NIHSS score to clipboard"
+                          title="Copy to clipboard"
+                        >
+                          <i data-lucide="copy" className="w-5 h-5 text-blue-600"></i>
+                        </button>
                       </div>
-
-                      {/* Clinical Interpretation */}
-                      {isNIHSSComplete() && (() => {
-                        const interpretation = getNIHSSInterpretation(nihssScore);
-                        return (
-                          <div className={`mb-4 p-4 rounded-lg border-2 ${
-                            interpretation.color === 'green' ? 'bg-green-50 border-green-400' :
-                            interpretation.color === 'yellow' ? 'bg-yellow-50 border-yellow-400' :
-                            interpretation.color === 'orange' ? 'bg-orange-50 border-orange-400' :
-                            'bg-red-50 border-red-400'
-                          }`}>
-                            <p className="font-bold text-lg">{interpretation.severity}</p>
-                            <p className="text-sm mt-1">💡 {interpretation.guidance}</p>
-                          </div>
-                        );
-                      })()}
                       
                       <div className="space-y-4">
                         {nihssItems.map((item) => (
@@ -2475,37 +1879,7 @@
                           </div>
                         </div>
                       </div>
-
-                      {/* Treatment Recommendation Validation */}
-                      {(() => {
-                        const validation = validateTreatmentRecommendation();
-                        if (validation.message) {
-                          return (
-                            <div className={`p-4 rounded-lg border-2 mb-4 ${
-                              validation.severity === 'error'
-                                ? 'bg-red-50 border-red-500'
-                                : 'bg-yellow-50 border-yellow-500'
-                            }`}>
-                              <div className="flex items-start gap-2">
-                                <i data-lucide="alert-triangle" className={`w-6 h-6 flex-shrink-0 ${
-                                  validation.severity === 'error' ? 'text-red-600' : 'text-yellow-600'
-                                }`}></i>
-                                <div>
-                                  <p className={`font-semibold ${
-                                    validation.severity === 'error' ? 'text-red-800' : 'text-yellow-800'
-                                  }`}>{validation.message}</p>
-                                  {validation.severity === 'error' && (
-                                    <p className="text-sm text-red-700 mt-1">
-                                      Please review the contraindications list below and ensure your recommendation is correct.
-                                    </p>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        }
-                      })()}
-
+                      
                       {/* TNK Contraindications */}
                       <div className="mb-6">
                         <label className="block text-sm font-medium text-gray-700 mb-2">TNK Contraindications</label>
@@ -2955,38 +2329,24 @@
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div className="space-y-2">
-                          <p className="font-semibold text-sm mb-2">Glasgow Coma Scale:</p>
-                          <label className="flex items-center space-x-2 cursor-pointer">
-                            <input
-                              type="radio"
-                              name="ich_gcs"
+                          <label className="flex items-center space-x-2">
+                            <input 
+                              type="checkbox" 
                               className="text-red-600"
-                              checked={ichScoreItems.gcs === 'gcs34'}
-                              onChange={() => setIchScoreItems({...ichScoreItems, gcs: 'gcs34'})}
+                              checked={ichScoreItems.gcs34}
+                              onChange={(e) => setIchScoreItems({...ichScoreItems, gcs34: e.target.checked})}
                             />
-                            <span className="text-sm">GCS 3-4 (+2 points)</span>
+                            <span className="text-sm">GCS 3-4 (+2)</span>
                           </label>
-                          <label className="flex items-center space-x-2 cursor-pointer">
-                            <input
-                              type="radio"
-                              name="ich_gcs"
+                          <label className="flex items-center space-x-2">
+                            <input 
+                              type="checkbox" 
                               className="text-red-600"
-                              checked={ichScoreItems.gcs === 'gcs512'}
-                              onChange={() => setIchScoreItems({...ichScoreItems, gcs: 'gcs512'})}
+                              checked={ichScoreItems.gcs512}
+                              onChange={(e) => setIchScoreItems({...ichScoreItems, gcs512: e.target.checked})}
                             />
-                            <span className="text-sm">GCS 5-12 (+1 point)</span>
+                            <span className="text-sm">GCS 5-12 (+1)</span>
                           </label>
-                          <label className="flex items-center space-x-2 cursor-pointer">
-                            <input
-                              type="radio"
-                              name="ich_gcs"
-                              className="text-red-600"
-                              checked={ichScoreItems.gcs === ''}
-                              onChange={() => setIchScoreItems({...ichScoreItems, gcs: ''})}
-                            />
-                            <span className="text-sm">GCS 13-15 (0 points)</span>
-                          </label>
-                          <hr className="my-3" />
                           <label className="flex items-center space-x-2">
                             <input 
                               type="checkbox" 
@@ -3081,49 +2441,26 @@
                         </div>
                         <div className="space-y-2">
                           <label className="flex items-center space-x-2">
-                            <input
-                              type="checkbox"
+                            <input 
+                              type="checkbox" 
                               className="text-orange-600"
                               checked={abcd2Items.speechDisturbance}
                               onChange={(e) => setAbcd2Items({...abcd2Items, speechDisturbance: e.target.checked})}
                             />
                             <span className="text-sm">Speech disturbance w/o weakness (+1)</span>
                           </label>
-                          <p className="font-semibold text-sm mt-3 mb-2">Symptom Duration:</p>
-                          <label className="flex items-center space-x-2 cursor-pointer">
-                            <input
-                              type="radio"
-                              name="abcd2_duration"
-                              className="text-orange-600"
-                              checked={abcd2Items.duration === 'duration60'}
-                              onChange={() => setAbcd2Items({...abcd2Items, duration: 'duration60'})}
-                            />
-                            <span className="text-sm">≥60 minutes (+2 points)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 cursor-pointer">
-                            <input
-                              type="radio"
-                              name="abcd2_duration"
-                              className="text-orange-600"
-                              checked={abcd2Items.duration === 'duration10'}
-                              onChange={() => setAbcd2Items({...abcd2Items, duration: 'duration10'})}
-                            />
-                            <span className="text-sm">10-59 minutes (+1 point)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 cursor-pointer">
-                            <input
-                              type="radio"
-                              name="abcd2_duration"
-                              className="text-orange-600"
-                              checked={abcd2Items.duration === ''}
-                              onChange={() => setAbcd2Items({...abcd2Items, duration: ''})}
-                            />
-                            <span className="text-sm">&lt;10 minutes (0 points)</span>
-                          </label>
-                          <hr className="my-3" />
                           <label className="flex items-center space-x-2">
-                            <input
-                              type="checkbox"
+                            <input 
+                              type="checkbox" 
+                              className="text-orange-600"
+                              checked={abcd2Items.duration60}
+                              onChange={(e) => setAbcd2Items({...abcd2Items, duration60: e.target.checked})}
+                            />
+                            <span className="text-sm">Duration ≥60 min (+2)</span>
+                          </label>
+                          <label className="flex items-center space-x-2">
+                            <input 
+                              type="checkbox" 
                               className="text-orange-600"
                               checked={abcd2Items.diabetes}
                               onChange={(e) => setAbcd2Items({...abcd2Items, diabetes: e.target.checked})}
