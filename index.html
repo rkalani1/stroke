@@ -112,7 +112,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = 'v1.0.7-clean'; // Increment this with each deployment
+            const APP_VERSION = 'v1.0.8-quicktime'; // Increment this with each deployment
             const storedVersion = localStorage.getItem('app_version');
 
             // If version doesn't match, clear ALL localStorage to prevent crashes
@@ -1874,6 +1874,49 @@
                     <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
                     Last Known Well Time *
                   </label>
+
+                  {/* Quick Entry Buttons */}
+                  <div className="mb-3">
+                    <p className="text-xs text-blue-700 mb-2">Quick entry:</p>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setLkwTime(new Date())}
+                        className="px-3 py-2 bg-blue-600 text-white rounded text-sm font-medium hover:bg-blue-700"
+                      >
+                        Now
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setLkwTime(new Date(Date.now() - 30*60000))}
+                        className="px-3 py-2 bg-white border-2 border-blue-500 text-blue-700 rounded text-sm font-medium hover:bg-blue-50"
+                      >
+                        30min ago
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setLkwTime(new Date(Date.now() - 60*60000))}
+                        className="px-3 py-2 bg-white border-2 border-blue-500 text-blue-700 rounded text-sm font-medium hover:bg-blue-50"
+                      >
+                        1hr ago
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setLkwTime(new Date(Date.now() - 2*60*60000))}
+                        className="px-3 py-2 bg-white border-2 border-blue-500 text-blue-700 rounded text-sm font-medium hover:bg-blue-50"
+                      >
+                        2hrs ago
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setLkwTime(new Date(Date.now() - 4*60*60000))}
+                        className="px-3 py-2 bg-white border-2 border-blue-500 text-blue-700 rounded text-sm font-medium hover:bg-blue-50"
+                      >
+                        4hrs ago
+                      </button>
+                    </div>
+                  </div>
+
                   <input
                     type="datetime-local"
                     value={lkwTime ? lkwTime.toISOString().slice(0, 16) : ''}
