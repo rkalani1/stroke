@@ -1099,8 +1099,10 @@
             if (items.bp) score += 1;
             if (items.unilateralWeakness) score += 2;
             if (items.speechDisturbance) score += 1;
-            if (items.duration === 'duration10') score += 1;
-            else if (items.duration === 'duration60') score += 2;
+            // Duration scoring: <10min = 0pts, 10-59min = 1pt, ≥60min = 2pts
+            if (items.duration === 'duration_lt10') score += 0;
+            else if (items.duration === 'duration_10to59') score += 1;
+            else if (items.duration === 'duration_gte60') score += 2;
             if (items.diabetes) score += 1;
             return score;
           };
@@ -3143,6 +3145,35 @@
                           <i data-lucide="copy" className="w-5 h-5 text-orange-600"></i>
                         </button>
                       </div>
+
+                      {/* Risk Interpretation */}
+                      {(() => {
+                        const score = calculateABCD2Score(abcd2Items);
+                        let riskLevel = '';
+                        let riskPercent = '';
+                        let bgColor = '';
+
+                        if (score >= 0 && score <= 3) {
+                          riskLevel = 'Low Risk';
+                          riskPercent = '1.0%';
+                          bgColor = 'bg-green-50 border-green-200 text-green-800';
+                        } else if (score >= 4 && score <= 5) {
+                          riskLevel = 'Moderate Risk';
+                          riskPercent = '4.1%';
+                          bgColor = 'bg-yellow-50 border-yellow-200 text-yellow-800';
+                        } else if (score >= 6) {
+                          riskLevel = 'High Risk';
+                          riskPercent = '8.1%';
+                          bgColor = 'bg-red-50 border-red-200 text-red-800';
+                        }
+
+                        return score !== null && (
+                          <div className={`mt-3 p-3 rounded border ${bgColor}`}>
+                            <p className="text-sm font-semibold">{riskLevel}</p>
+                            <p className="text-xs mt-1">{riskPercent} 2-day stroke risk</p>
+                          </div>
+                        );
+                      })()}
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div className="space-y-2">
@@ -3190,18 +3221,18 @@
                               type="radio"
                               name="abcd2_duration"
                               className="text-orange-600"
-                              checked={abcd2Items.duration === 'duration60'}
-                              onChange={() => setAbcd2Items({...abcd2Items, duration: 'duration60'})}
+                              checked={abcd2Items.duration === 'duration_lt10'}
+                              onChange={() => setAbcd2Items({...abcd2Items, duration: 'duration_lt10'})}
                             />
-                            <span className="text-sm">≥60 minutes (+2 points)</span>
+                            <span className="text-sm">&lt;10 minutes (0 points)</span>
                           </label>
                           <label className="flex items-center space-x-2 cursor-pointer">
                             <input
                               type="radio"
                               name="abcd2_duration"
                               className="text-orange-600"
-                              checked={abcd2Items.duration === 'duration10'}
-                              onChange={() => setAbcd2Items({...abcd2Items, duration: 'duration10'})}
+                              checked={abcd2Items.duration === 'duration_10to59'}
+                              onChange={() => setAbcd2Items({...abcd2Items, duration: 'duration_10to59'})}
                             />
                             <span className="text-sm">10-59 minutes (+1 point)</span>
                           </label>
@@ -3210,10 +3241,10 @@
                               type="radio"
                               name="abcd2_duration"
                               className="text-orange-600"
-                              checked={abcd2Items.duration === ''}
-                              onChange={() => setAbcd2Items({...abcd2Items, duration: ''})}
+                              checked={abcd2Items.duration === 'duration_gte60'}
+                              onChange={() => setAbcd2Items({...abcd2Items, duration: 'duration_gte60'})}
                             />
-                            <span className="text-sm">&lt;10 minutes (0 points)</span>
+                            <span className="text-sm">≥60 minutes (+2 points)</span>
                           </label>
                           <hr className="my-3" />
                           <label className="flex items-center space-x-2">
