@@ -192,12 +192,23 @@
         const { Calculator, Clock, Brain, AlertTriangle, FileText, CheckCircle, Moon, Sun, Download, Copy, Search, Check } = lucide;
 
         const StrokeClinicalTool = () => {
-          // Load saved data from localStorage
+          // Load saved data from localStorage with validation
           const loadFromStorage = (key, defaultValue) => {
             try {
               const saved = localStorage.getItem(key);
-              return saved ? JSON.parse(saved) : defaultValue;
-            } catch {
+              if (!saved) return defaultValue;
+
+              const parsed = JSON.parse(saved);
+
+              // Validate that arrays are actually arrays (fix for completedSteps issue)
+              if (Array.isArray(defaultValue) && !Array.isArray(parsed)) {
+                console.warn(`Invalid data type for ${key}, expected array. Resetting to default.`);
+                return defaultValue;
+              }
+
+              return parsed;
+            } catch (e) {
+              console.warn(`Error loading ${key} from localStorage:`, e);
               return defaultValue;
             }
           };
