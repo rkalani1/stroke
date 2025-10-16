@@ -167,7 +167,11 @@
 
           // Time tracking
           const [currentTime, setCurrentTime] = useState(new Date());
-          const [lkwTime, setLkwTime] = useState(loadFromStorage('lkwTime', null) ? new Date(loadFromStorage('lkwTime', null)) : null);
+          const [lkwTime, setLkwTime] = useState(() => {
+            const stored = loadFromStorage('lkwTime', null);
+            // If stored value exists, use it; otherwise default to current time
+            return stored ? new Date(stored) : new Date();
+          });
 
           // Save status
           const [saveStatus, setSaveStatus] = useState('saved');
@@ -1830,20 +1834,35 @@
 
                 {/* Last Known Well Input */}
                 <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
-                  <label className="block font-semibold text-blue-900 mb-2">
-                    <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
-                    Last Known Well Time *
-                  </label>
-                  <input
-                    type="datetime-local"
-                    value={lkwTime ? lkwTime.toISOString().slice(0, 16) : ''}
-                    onChange={(e) => e.target.value && setLkwTime(new Date(e.target.value))}
-                    max={currentTime.toISOString().slice(0, 16)}
-                    className="w-full px-4 py-3 border-2 border-blue-300 rounded-lg text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  {!lkwTime && (
-                    <p className="text-sm text-blue-700 mt-2">⚠️ Enter Last Known Well time to see treatment window eligibility</p>
-                  )}
+                  <div className="flex justify-between items-center mb-2">
+                    <label className="font-semibold text-blue-900">
+                      <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
+                      Last Known Well Time *
+                    </label>
+                    <button
+                      onClick={() => setLkwTime(new Date())}
+                      className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
+                      title="Set to current time"
+                    >
+                      Set to Now
+                    </button>
+                  </div>
+
+                  <div className="flex gap-2 items-center">
+                    <input
+                      type="datetime-local"
+                      value={lkwTime ? lkwTime.toISOString().slice(0, 16) : ''}
+                      onChange={(e) => e.target.value && setLkwTime(new Date(e.target.value))}
+                      max={currentTime.toISOString().slice(0, 16)}
+                      className="flex-1 px-4 py-3 border-2 border-blue-300 rounded-lg text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      style={{colorScheme: 'light'}}
+                    />
+                  </div>
+
+                  <p className="text-xs text-blue-700 mt-2">
+                    <i data-lucide="info" className="w-3 h-3 inline mr-1"></i>
+                    Last time patient was witnessed at neurological baseline
+                  </p>
                 </div>
 
                 {/* Workflow */}
