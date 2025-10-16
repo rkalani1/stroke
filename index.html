@@ -109,8 +109,24 @@
         }
     </style>
     <script>
-        // Dark mode initialization
+        // CRITICAL: Version management and automatic data cleanup
+        // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
+            const APP_VERSION = 'v1.0.5-stable'; // Increment this with each deployment
+            const storedVersion = localStorage.getItem('app_version');
+
+            // If version doesn't match, clear ALL localStorage to prevent crashes
+            if (storedVersion !== APP_VERSION) {
+                console.log('Version change detected (' + storedVersion + ' -> ' + APP_VERSION + '). Clearing localStorage for compatibility.');
+                const darkModeValue = localStorage.getItem('darkMode'); // Preserve dark mode preference
+                localStorage.clear();
+                if (darkModeValue) {
+                    localStorage.setItem('darkMode', darkModeValue);
+                }
+                localStorage.setItem('app_version', APP_VERSION);
+            }
+
+            // Dark mode initialization
             const darkMode = localStorage.getItem('darkMode') === 'true';
             if (darkMode) {
                 document.documentElement.classList.add('dark');
@@ -122,9 +138,33 @@
     <div id="root"></div>
 
     <script>
-        // Global error handler - only logs to console, no visible UI
+        // Enhanced error handler with automatic recovery
         window.onerror = function(msg, url, lineNo, columnNo, error) {
-            console.error('Error:', msg, 'at line', lineNo, error);
+            console.error('Error caught:', msg, 'at line', lineNo);
+
+            // If critical error occurs, clear localStorage and reload ONCE
+            if (msg && (msg.includes('is not a function') || msg.includes('undefined'))) {
+                const hasReloaded = sessionStorage.getItem('error_reload_attempted');
+                if (!hasReloaded) {
+                    console.log('Critical error detected. Clearing data and reloading...');
+                    sessionStorage.setItem('error_reload_attempted', 'true');
+                    localStorage.clear();
+                    window.location.reload();
+                } else {
+                    // If already reloaded once, show error message instead of infinite loop
+                    document.getElementById('root').innerHTML =
+                        '<div style="padding: 40px; font-family: Arial; max-width: 600px; margin: 0 auto;">' +
+                        '<h1 style="color: #dc2626;">Unable to Load Application</h1>' +
+                        '<p style="color: #374151; margin: 20px 0;">A critical error occurred. Please try:</p>' +
+                        '<ol style="color: #374151;">' +
+                        '<li>Use a different browser (Chrome, Firefox, Safari)</li>' +
+                        '<li>Try Incognito/Private mode</li>' +
+                        '<li>Contact support if issue persists</li>' +
+                        '</ol>' +
+                        '<p style="color: #6b7280; font-size: 14px; margin-top: 30px;">Error: ' + msg + '</p>' +
+                        '</div>';
+                }
+            }
             return false;
         };
     </script>
