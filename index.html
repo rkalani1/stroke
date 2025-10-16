@@ -178,13 +178,13 @@
             }
         }, 1000);
 
-        // Check if app rendered after 10 seconds
+        // Check if app rendered after 8 seconds
         setTimeout(function() {
             var preload = document.getElementById('pre-load-message');
             if (preload && preload.style.display !== 'none') {
-                showError('Application failed to render after 10 seconds. Try a different browser or check browser console (F12) for errors.');
+                showError('Application failed to render after 8 seconds. Try a different browser or check browser console (F12) for errors.');
             }
-        }, 10000);
+        }, 8000);
     </script>
 
     <script type="text/babel">
@@ -3560,15 +3560,19 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<StrokeClinicalTool />);
 
-        // Hide loading message and show app
+        // Hide loading message and show app (but ONLY if no errors)
         setTimeout(() => {
           const preload = document.getElementById('pre-load-message');
-          if (preload) {
+          const errorDisplay = document.getElementById('error-details');
+
+          // Only hide loading screen if there are NO errors
+          if (preload && errorDisplay && errorDisplay.style.display === 'none') {
             preload.style.display = 'none';
+            document.body.style.background = ''; // Reset body background
+            document.body.style.padding = '0';   // Reset body padding
           }
-          document.body.style.background = ''; // Reset body background
-          document.body.style.padding = '0';   // Reset body padding
-        }, 100);
+          // If there IS an error, keep the loading screen visible so user can read the error
+        }, 500);
 
         // Initialize Lucide icons
         lucide.createIcons();
