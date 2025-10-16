@@ -1227,12 +1227,15 @@
 
           const getWindowStatus = (timeFromLKW) => {
             if (!timeFromLKW) return null;
-            if (timeFromLKW.total < 3) {
-              return { color: 'green', message: 'Within TNK window (<3h)', urgent: false, eligible: 'tnk' };
-            } else if (timeFromLKW.total < 4.5) {
-              return { color: 'yellow', message: 'Extended TNK window (3-4.5h)', urgent: false, eligible: 'tnk-extended' };
+            if (timeFromLKW.total <= 4.5) {
+              // TNK eligible up to 4.5 hours
+              if (timeFromLKW.total < 3) {
+                return { color: 'green', message: 'Within TNK window (<3h)', urgent: false, eligible: 'tnk' };
+              } else {
+                return { color: 'yellow', message: 'Extended TNK window (3-4.5h)', urgent: false, eligible: 'tnk' };
+              }
             } else if (timeFromLKW.total < 6) {
-              return { color: 'orange', message: 'EVT window (4.5-6h)', urgent: true, eligible: 'evt-early' };
+              return { color: 'orange', message: 'TNK window closed - EVT window (4.5-6h)', urgent: true, eligible: 'evt-early' };
             } else if (timeFromLKW.total < 24) {
               return { color: 'red', message: 'Late EVT window (6-24h - needs perfusion imaging)', urgent: true, eligible: 'evt-late' };
             } else {
@@ -1748,16 +1751,16 @@
                             </p>
                             <p className="text-sm font-semibold mt-1">{windowStatus.message}</p>
                             {windowStatus.eligible === 'tnk' && (
-                              <p className="text-xs mt-1">✓ Eligible for TNK • ✓ Eligible for EVT</p>
-                            )}
-                            {windowStatus.eligible === 'tnk-extended' && (
-                              <p className="text-xs mt-1">⚠️ Extended TNK window (requires additional criteria) • ✓ Eligible for EVT</p>
+                              <p className="text-xs mt-1">✓ Eligible for TNK (≤4.5h) • ✓ Eligible for EVT</p>
                             )}
                             {windowStatus.eligible === 'evt-early' && (
-                              <p className="text-xs mt-1">✗ TNK window closed • ✓ Eligible for EVT</p>
+                              <p className="text-xs mt-1">✗ TNK window closed (>4.5h) • ✓ Eligible for EVT</p>
                             )}
                             {windowStatus.eligible === 'evt-late' && (
-                              <p className="text-xs mt-1">✗ TNK window closed • ⚠️ EVT requires perfusion imaging</p>
+                              <p className="text-xs mt-1">✗ TNK window closed (>4.5h) • ⚠️ EVT requires perfusion imaging</p>
+                            )}
+                            {windowStatus.eligible === 'none' && (
+                              <p className="text-xs mt-1">✗ TNK window closed • ✗ Standard EVT window closed</p>
                             )}
                           </div>
                         </div>
