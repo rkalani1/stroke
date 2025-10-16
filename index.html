@@ -1099,10 +1099,8 @@
             if (items.bp) score += 1;
             if (items.unilateralWeakness) score += 2;
             if (items.speechDisturbance) score += 1;
-            // Duration scoring: <10min = 0pts, 10-59min = 1pt, ≥60min = 2pts
-            if (items.duration === 'duration_lt10') score += 0;
-            else if (items.duration === 'duration_10to59') score += 1;
-            else if (items.duration === 'duration_gte60') score += 2;
+            if (items.duration === 'duration10') score += 1;
+            else if (items.duration === 'duration60') score += 2;
             if (items.diabetes) score += 1;
             return score;
           };
@@ -2081,7 +2079,7 @@
                           ASPECTS
                         </Tooltip>
                       </h2>
-                      <p className="text-xs text-gray-600 mb-3">Score 0-10: Each checked region = 1 point (higher score = less ischemic injury)</p>
+                      <p className="text-xs text-gray-600 mb-3">Start at 10, subtract 1 for each abnormal region</p>
 
                       <div className="flex justify-end items-center gap-2 mb-4">
                         <span className="text-2xl font-bold text-blue-600">ASPECTS Score: {calculateASPECTS(aspectsRegionState)}</span>
@@ -2095,17 +2093,9 @@
                         </button>
                       </div>
 
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
-                        <p className="text-sm font-semibold text-blue-900 mb-1">⚠️ Scoring Instructions:</p>
-                        <p className="text-xs text-blue-800">
-                          Check all <strong>NORMAL/UNAFFECTED regions</strong> (regions WITHOUT early ischemic changes).
-                          Unchecked boxes = abnormal regions. Score = number of checked boxes.
-                        </p>
-                      </div>
-
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-3">
-                          <h3 className="font-semibold">Brain Regions (Check if NORMAL)</h3>
+                          <h3 className="font-semibold">Brain Regions</h3>
                           {aspectsRegionState.map((region, index) => (
                             <label key={region.id} className="flex items-center space-x-2 cursor-pointer">
                               <input
@@ -2252,33 +2242,9 @@
 
                       {/* Dosing */}
                       <div className="bg-blue-100 p-4 rounded border border-blue-300 mb-6">
-                        <h3 className="text-lg font-semibold text-blue-800 mb-2">TNK Dosing Calculator</h3>
-                        <p className="text-sm text-blue-700 mb-3"><strong>Formula:</strong> 0.25 mg/kg (maximum dose: 25 mg)</p>
-
-                        <div className="bg-white p-3 rounded border border-blue-200">
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Patient Weight (kg):</label>
-                          <input
-                            type="number"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md mb-2"
-                            value={strokeCodeForm.patientWeight || ''}
-                            onChange={(e) => setStrokeCodeForm({...strokeCodeForm, patientWeight: e.target.value})}
-                            placeholder="Enter weight in kg"
-                            min="0"
-                            step="0.1"
-                          />
-                          {strokeCodeForm.patientWeight && (
-                            <div className="mt-2 p-2 bg-green-50 border border-green-300 rounded">
-                              <p className="text-sm font-bold text-green-900">
-                                Calculated TNK Dose: {Math.min(strokeCodeForm.patientWeight * 0.25, 25).toFixed(1)} mg
-                              </p>
-                              {strokeCodeForm.patientWeight * 0.25 > 25 && (
-                                <p className="text-xs text-green-700 mt-1">⚠️ Capped at maximum dose of 25 mg</p>
-                              )}
-                            </div>
-                          )}
-                        </div>
-
-                        <p className="text-sm text-blue-700 mt-3">Document safety pause: <code>.UWMSTROKESAFETYPAUSE</code></p>
+                        <h3 className="text-lg font-semibold text-blue-800 mb-2">TNK Dosing</h3>
+                        <p className="text-lg"><strong>0.25 mg/kg</strong> (maximum dose: 25 mg)</p>
+                        <p className="text-sm text-blue-700 mt-2">Document safety pause: <code>.UWMSTROKESAFETYPAUSE</code></p>
                       </div>
 
                       {/* TNK Contraindications Checklist */}
@@ -3177,35 +3143,6 @@
                           <i data-lucide="copy" className="w-5 h-5 text-orange-600"></i>
                         </button>
                       </div>
-
-                      {/* Risk Interpretation */}
-                      {(() => {
-                        const score = calculateABCD2Score(abcd2Items);
-                        let riskLevel = '';
-                        let riskPercent = '';
-                        let bgColor = '';
-
-                        if (score >= 0 && score <= 3) {
-                          riskLevel = 'Low Risk';
-                          riskPercent = '1.0%';
-                          bgColor = 'bg-green-50 border-green-200 text-green-800';
-                        } else if (score >= 4 && score <= 5) {
-                          riskLevel = 'Moderate Risk';
-                          riskPercent = '4.1%';
-                          bgColor = 'bg-yellow-50 border-yellow-200 text-yellow-800';
-                        } else if (score >= 6) {
-                          riskLevel = 'High Risk';
-                          riskPercent = '8.1%';
-                          bgColor = 'bg-red-50 border-red-200 text-red-800';
-                        }
-
-                        return score !== null && (
-                          <div className={`mt-3 p-3 rounded border ${bgColor}`}>
-                            <p className="text-sm font-semibold">{riskLevel}</p>
-                            <p className="text-xs mt-1">{riskPercent} 2-day stroke risk</p>
-                          </div>
-                        );
-                      })()}
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div className="space-y-2">
@@ -3253,18 +3190,18 @@
                               type="radio"
                               name="abcd2_duration"
                               className="text-orange-600"
-                              checked={abcd2Items.duration === 'duration_lt10'}
-                              onChange={() => setAbcd2Items({...abcd2Items, duration: 'duration_lt10'})}
+                              checked={abcd2Items.duration === 'duration60'}
+                              onChange={() => setAbcd2Items({...abcd2Items, duration: 'duration60'})}
                             />
-                            <span className="text-sm">&lt;10 minutes (0 points)</span>
+                            <span className="text-sm">≥60 minutes (+2 points)</span>
                           </label>
                           <label className="flex items-center space-x-2 cursor-pointer">
                             <input
                               type="radio"
                               name="abcd2_duration"
                               className="text-orange-600"
-                              checked={abcd2Items.duration === 'duration_10to59'}
-                              onChange={() => setAbcd2Items({...abcd2Items, duration: 'duration_10to59'})}
+                              checked={abcd2Items.duration === 'duration10'}
+                              onChange={() => setAbcd2Items({...abcd2Items, duration: 'duration10'})}
                             />
                             <span className="text-sm">10-59 minutes (+1 point)</span>
                           </label>
@@ -3273,10 +3210,10 @@
                               type="radio"
                               name="abcd2_duration"
                               className="text-orange-600"
-                              checked={abcd2Items.duration === 'duration_gte60'}
-                              onChange={() => setAbcd2Items({...abcd2Items, duration: 'duration_gte60'})}
+                              checked={abcd2Items.duration === ''}
+                              onChange={() => setAbcd2Items({...abcd2Items, duration: ''})}
                             />
-                            <span className="text-sm">≥60 minutes (+2 points)</span>
+                            <span className="text-sm">&lt;10 minutes (0 points)</span>
                           </label>
                           <hr className="my-3" />
                           <label className="flex items-center space-x-2">
