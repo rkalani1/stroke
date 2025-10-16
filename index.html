@@ -3559,7 +3559,17 @@
         // Render the component
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<StrokeClinicalTool />);
-        
+
+        // Hide loading message and show app
+        setTimeout(() => {
+          const preload = document.getElementById('pre-load-message');
+          if (preload) {
+            preload.style.display = 'none';
+          }
+          document.body.style.background = ''; // Reset body background
+          document.body.style.padding = '0';   // Reset body padding
+        }, 100);
+
         // Initialize Lucide icons
         lucide.createIcons();
     </script>
