@@ -112,7 +112,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = 'v1.0.9-datetime'; // Increment this with each deployment
+            const APP_VERSION = 'v1.1.0-autopop'; // Increment this with each deployment
             const storedVersion = localStorage.getItem('app_version');
 
             // If version doesn't match, clear ALL localStorage to prevent crashes
@@ -207,7 +207,7 @@
 
           // Time tracking
           const [currentTime, setCurrentTime] = useState(new Date());
-          const [lkwTime, setLkwTime] = useState(loadFromStorage('lkwTime', null) ? new Date(loadFromStorage('lkwTime', null)) : null);
+          const [lkwTime, setLkwTime] = useState(loadFromStorage('lkwTime', null) ? new Date(loadFromStorage('lkwTime', null)) : new Date());
 
           // Save status
           const [saveStatus, setSaveStatus] = useState('saved');
@@ -1875,17 +1875,6 @@
                     Last Known Well Time *
                   </label>
 
-                  {/* Set to Now Button */}
-                  <div className="mb-3">
-                    <button
-                      type="button"
-                      onClick={() => setLkwTime(new Date())}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-                    >
-                      Set to Current Time
-                    </button>
-                  </div>
-
                   {/* Separate Date and Time Inputs */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
@@ -1923,10 +1912,6 @@
                       />
                     </div>
                   </div>
-
-                  {!lkwTime && (
-                    <p className="text-sm text-blue-700 mt-2">⚠️ Enter Last Known Well time to see treatment window eligibility</p>
-                  )}
                 </div>
 
                 {/* Workflow */}
