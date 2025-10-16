@@ -155,9 +155,6 @@
           const [currentStep, setCurrentStep] = useState(loadFromStorage('currentStep', 0));
           const [completedSteps, setCompletedSteps] = useState(loadFromStorage('completedSteps', []));
 
-          // PHI warning
-          const [phiWarningDismissed, setPhiWarningDismissed] = useState(loadFromStorage('phiWarningDismissed', false));
-
           const [gcsItems, setGcsItems] = useState(loadFromStorage('gcsItems', {
             eye: 0,
             verbal: 0,
@@ -1484,10 +1481,6 @@
             debouncedSave('completedSteps', completedSteps);
           }, [completedSteps]);
 
-          useEffect(() => {
-            localStorage.setItem('phiWarningDismissed', JSON.stringify(phiWarningDismissed));
-          }, [phiWarningDismissed]);
-
           // Update current time every minute
           useEffect(() => {
             const timer = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -1616,31 +1609,6 @@
                     </button>
                   </div>
                 </div>
-
-                {/* PHI Warning Banner */}
-                {!phiWarningDismissed && (
-                  <div className="mt-3 bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-2">
-                        <i data-lucide="alert-triangle" className="w-5 h-5 text-yellow-600 mt-0.5"></i>
-                        <div>
-                          <p className="text-sm font-semibold text-yellow-800">Privacy Notice</p>
-                          <p className="text-xs text-yellow-700 mt-1">
-                            Do NOT enter patient identifiers (name, MRN, DOB). Data is stored locally in your browser without encryption.
-                            All data automatically expires after 24 hours.
-                          </p>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => setPhiWarningDismissed(true)}
-                        className="text-yellow-600 hover:text-yellow-800 ml-2"
-                        aria-label="Dismiss warning"
-                      >
-                        <i data-lucide="x" className="w-4 h-4"></i>
-                      </button>
-                    </div>
-                  </div>
-                )}
 
                 {/* Success Notification */}
                 {copiedText && (
