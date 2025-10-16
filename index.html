@@ -1261,11 +1261,7 @@
             if (!timeFromLKW) return null;
             if (timeFromLKW.total <= 4.5) {
               // TNK eligible up to and including 4.5 hours
-              if (timeFromLKW.total < 3) {
-                return { color: 'green', message: 'Within TNK window (<3h)', urgent: false, eligible: 'tnk' };
-              } else {
-                return { color: 'yellow', message: 'Extended TNK window (3-4.5h)', urgent: false, eligible: 'tnk' };
-              }
+              return { color: 'green', message: 'Within TNK window (≤4.5h)', urgent: false, eligible: 'tnk' };
             } else if (timeFromLKW.total < 6) {
               return { color: 'orange', message: 'TNK window closed - EVT window (4.5-6h)', urgent: true, eligible: 'evt-early' };
             } else if (timeFromLKW.total < 24) {
