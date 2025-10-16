@@ -229,6 +229,7 @@
             lkw: '',
             lkw_date: new Date().toISOString().split('T')[0],
             nihss: '',
+            aspects: '',
             def: '',
             hct: '',
             cta: '',
@@ -1510,6 +1511,37 @@
             debouncedSave('completedSteps', completedSteps);
           }, [completedSteps]);
 
+          // Auto-populate Documentation form with Workflow data
+          useEffect(() => {
+            if (lkwTime) {
+              const timeStr = lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+              const dateStr = lkwTime.toLocaleDateString('en-US');
+              setStrokeCodeForm(prev => ({
+                ...prev,
+                lkw: timeStr,
+                lkw_date: lkwTime.toISOString().split('T')[0]
+              }));
+            }
+          }, [lkwTime]);
+
+          useEffect(() => {
+            if (nihssScore !== null && nihssScore !== undefined) {
+              setStrokeCodeForm(prev => ({
+                ...prev,
+                nihss: nihssScore.toString()
+              }));
+            }
+          }, [nihssScore]);
+
+          useEffect(() => {
+            if (aspectsScore !== null && aspectsScore !== undefined) {
+              setStrokeCodeForm(prev => ({
+                ...prev,
+                aspects: aspectsScore.toString()
+              }));
+            }
+          }, [aspectsScore]);
+
           // Update current time every minute
           useEffect(() => {
             const timer = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -2209,10 +2241,63 @@
                       </div>
 
                       {/* Dosing */}
-                      <div className="bg-blue-100 p-4 rounded border border-blue-300">
+                      <div className="bg-blue-100 p-4 rounded border border-blue-300 mb-6">
                         <h3 className="text-lg font-semibold text-blue-800 mb-2">TNK Dosing</h3>
                         <p className="text-lg"><strong>0.25 mg/kg</strong> (maximum dose: 25 mg)</p>
                         <p className="text-sm text-blue-700 mt-2">Document safety pause: <code>.UWMSTROKESAFETYPAUSE</code></p>
+                      </div>
+
+                      {/* TNK Contraindications Checklist */}
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <h3 className="text-lg font-semibold text-red-800 mb-3">TNK Contraindications Present (check all that apply)</h3>
+                        <p className="text-sm text-gray-600 mb-3">Select any contraindications present for this patient (auto-saves to Documentation tab):</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {[
+                            "ICH or Extensive Infarction on HCT",
+                            "Ischemic Stroke (<3 months)",
+                            "Intracranial/Intraspinal Surgery (<60 days)",
+                            "Severe Head Trauma (<90 days)",
+                            "Active Internal Bleeding",
+                            "GI Malignancy",
+                            "Recent GI/GU Hemorrhage (<21 days)",
+                            "Suspected SAH",
+                            "Infective Endocarditis",
+                            "SBP >185 or DBP >110 (unresponsive)",
+                            "Platelet Count <100,000",
+                            "Blood Glucose <50 mg/dL",
+                            "INR >1.7 or aPTT >40s",
+                            "Recent DOAC Use (<48h)",
+                            "Treatment-Dose Heparin/LMWH (<24h)",
+                            "Aortic Dissection",
+                            "Intracranial Tumor",
+                            "Other (see notes)"
+                          ].map(contraindication => (
+                            <label key={contraindication} className="flex items-start space-x-2 bg-white p-2 rounded border hover:bg-gray-50 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={strokeCodeForm.tnk.includes(contraindication)}
+                                onChange={(e) => {
+                                  const newTnk = e.target.checked
+                                    ? [...strokeCodeForm.tnk, contraindication]
+                                    : strokeCodeForm.tnk.filter(c => c !== contraindication);
+                                  setStrokeCodeForm({ ...strokeCodeForm, tnk: newTnk });
+                                }}
+                                className="mt-0.5 text-red-600"
+                              />
+                              <span className="text-sm">{contraindication}</span>
+                            </label>
+                          ))}
+                        </div>
+                        {strokeCodeForm.tnk.length > 0 && (
+                          <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded">
+                            <p className="text-sm font-semibold text-red-900">
+                              ⚠️ {strokeCodeForm.tnk.length} contraindication(s) selected
+                            </p>
+                            <p className="text-xs text-red-800 mt-1">
+                              These will be included in your stroke code documentation.
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -2348,34 +2433,57 @@
                             <label className="block text-sm font-medium text-gray-700 mb-1">Last Known Well Time</label>
                             <input
                               type="text"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-blue-50"
                               value={strokeCodeForm.lkw}
                               onChange={(e) => setStrokeCodeForm({...strokeCodeForm, lkw: e.target.value})}
                               placeholder="HH:MM AM/PM"
+                              readOnly
+                              title="Auto-populated from Workflow assessment"
                             />
+                            <p className="text-xs text-blue-600 mt-1">✓ Auto-filled from Workflow tab</p>
                           </div>
-                          
+
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Last Known Well Date</label>
                             <input
                               type="date"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-blue-50"
                               value={strokeCodeForm.lkw_date}
                               onChange={(e) => setStrokeCodeForm({...strokeCodeForm, lkw_date: e.target.value})}
+                              readOnly
+                              title="Auto-populated from Workflow assessment"
                             />
+                            <p className="text-xs text-blue-600 mt-1">✓ Auto-filled from Workflow tab</p>
                           </div>
                           
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">NIHSS Score</label>
                             <input
                               type="number"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-blue-50"
                               value={strokeCodeForm.nihss}
                               onChange={(e) => setStrokeCodeForm({...strokeCodeForm, nihss: e.target.value})}
                               placeholder="0-42"
+                              readOnly
+                              title="Auto-populated from NIHSS assessment"
                             />
+                            <p className="text-xs text-blue-600 mt-1">✓ Auto-filled from NIHSS tab</p>
                           </div>
-                          
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">ASPECTS Score</label>
+                            <input
+                              type="number"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-blue-50"
+                              value={strokeCodeForm.aspects}
+                              onChange={(e) => setStrokeCodeForm({...strokeCodeForm, aspects: e.target.value})}
+                              placeholder="0-10"
+                              readOnly
+                              title="Auto-populated from Imaging assessment"
+                            />
+                            <p className="text-xs text-blue-600 mt-1">✓ Auto-filled from Imaging tab</p>
+                          </div>
+
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Neurologic Deficit(s)</label>
                             <input
@@ -2542,8 +2650,9 @@
                             const hx_str = strokeCodeForm.hx || "no PMH";
                             const tnk_str = strokeCodeForm.tnk.length > 0 ? `. TNK Contraindications: ${strokeCodeForm.tnk.join(", ")}` : "";
                             const ctp_str = strokeCodeForm.ctp || "N/A";
-                            
-                            return `${strokeCodeForm.age || "[Age]"} year old ${strokeCodeForm.sex || "[sex]"} with ${hx_str} who presents with ${strokeCodeForm.sx || "[symptoms]"}. Last known well is ${strokeCodeForm.lkw || "[time]"} ${strokeCodeForm.lkw_date || "[date]"}. NIHSS score: ${strokeCodeForm.nihss || "[score]"} and neurologic deficits are: ${strokeCodeForm.def || "[deficits]"}. Head CT: ${strokeCodeForm.hct || "[CT findings]"}. CTA Head/Neck: ${strokeCodeForm.cta || "[CTA findings]"}. CTP: ${ctp_str}${tnk_str}. TNK Treatment: ${strokeCodeForm.tnk_rec || "[recommendation]"}. EVT: ${strokeCodeForm.evt_rec || "[recommendation]"}. Rationale for Treatment Recommendation: ${strokeCodeForm.rec_reason || "[rationale]"}.`;
+                            const aspects_str = strokeCodeForm.aspects ? ` ASPECTS: ${strokeCodeForm.aspects}.` : "";
+
+                            return `${strokeCodeForm.age || "[Age]"} year old ${strokeCodeForm.sex || "[sex]"} with ${hx_str} who presents with ${strokeCodeForm.sx || "[symptoms]"}. Last known well is ${strokeCodeForm.lkw || "[time]"} ${strokeCodeForm.lkw_date || "[date]"}. NIHSS score: ${strokeCodeForm.nihss || "[score]"} and neurologic deficits are: ${strokeCodeForm.def || "[deficits]"}. Head CT: ${strokeCodeForm.hct || "[CT findings]"}.${aspects_str} CTA Head/Neck: ${strokeCodeForm.cta || "[CTA findings]"}. CTP: ${ctp_str}${tnk_str}. TNK Treatment: ${strokeCodeForm.tnk_rec || "[recommendation]"}. EVT: ${strokeCodeForm.evt_rec || "[recommendation]"}. Rationale for Treatment Recommendation: ${strokeCodeForm.rec_reason || "[rationale]"}.`;
                           })()}
                         </p>
                       </div>
