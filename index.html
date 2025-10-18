@@ -112,7 +112,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = 'v1.2.0-alerts'; // Increment this with each deployment
+            const APP_VERSION = 'v1.3.0-docs'; // Increment this with each deployment
             const storedVersion = localStorage.getItem('app_version');
 
             // If version doesn't match, clear ALL localStorage to prevent crashes
@@ -1663,6 +1663,89 @@
             return () => clearTimeout(timer);
           }, [activeTab, copiedText, darkMode, searchOpen]);
 
+          // Documentation generation functions
+          const generateHPI = () => {
+            const timeFromLKW = calculateTimeFromLKW();
+            const timeElapsed = timeFromLKW ? `${timeFromLKW.hours}h ${timeFromLKW.minutes}m` : 'unknown';
+
+            return `HPI: ${strokeCodeForm.age || '__'} year old ${strokeCodeForm.sex || '__'} with PMH of ${strokeCodeForm.hx || '__'} presenting with ${strokeCodeForm.sx || '__'} starting at ${strokeCodeForm.lkw || '__'} on ${strokeCodeForm.lkw_date || '__'} (${timeElapsed} ago). NIHSS ${strokeCodeForm.nihss || '__'}.
+
+IMAGING:
+- Head CT: ${strokeCodeForm.hct || 'pending'}
+- CTA Head/Neck: ${strokeCodeForm.cta || 'pending'}
+- CTP: ${strokeCodeForm.ctp || 'pending'}
+- ASPECTS: ${strokeCodeForm.aspects || '__'}
+
+ASSESSMENT: Acute ischemic stroke, NIHSS ${strokeCodeForm.nihss || '__'}
+${strokeCodeForm.tnk_rec ? `\nTNK: ${strokeCodeForm.tnk_rec}` : ''}
+${strokeCodeForm.evt_rec ? `EVT: ${strokeCodeForm.evt_rec}` : ''}`;
+          };
+
+          const generateAdmissionOrders = () => {
+            return `ACUTE STROKE ADMISSION ORDERS:
+
+1. Admit to Stroke Unit / Neuro ICU
+2. Vital signs q1h x 24h, then q4h
+3. Continuous telemetry monitoring
+4. NPO until swallow evaluation completed
+5. IV fluids: NS at 75 mL/hr
+6. Maintain SBP <180/105 (or <185/110 if post-tPA)
+7. Blood glucose 140-180 mg/dL
+8. HOB elevated 30 degrees
+9. DVT prophylaxis: SCDs (hold pharmacologic if tPA given)
+10. Aspirin 325mg daily (hold x 24h if tPA given)
+11. Statin therapy: Atorvastatin 80mg daily
+12. Neurology consultation
+13. PT/OT/Speech evaluation
+14. Fall precautions
+
+LABS:
+- CBC, CMP, PT/INR, PTT
+- Lipid panel, HbA1c
+- Troponin, BNP
+- Consider: ESR, CRP if indicated
+
+IMAGING:
+- MRI brain with DWI if not already done
+- Carotid ultrasound
+- Echocardiogram (TTE or TEE)
+
+NIHSS: ${strokeCodeForm.nihss || '__'} - reassess q4h x 24h, then daily`;
+          };
+
+          const generateSignOut = () => {
+            const timeFromLKW = calculateTimeFromLKW();
+            const timeElapsed = timeFromLKW ? `${timeFromLKW.hours}h ${timeFromLKW.minutes}m` : 'unknown';
+
+            return `STROKE SIGN-OUT:
+
+Patient: ${strokeCodeForm.age || '__'}yo ${strokeCodeForm.sex || '__'}
+PMH: ${strokeCodeForm.hx || '__'}
+
+PRESENTATION: ${strokeCodeForm.sx || '__'} starting ${strokeCodeForm.lkw || '__'} on ${strokeCodeForm.lkw_date || '__'} (${timeElapsed} ago)
+
+NIHSS: ${strokeCodeForm.nihss || '__'}
+ASPECTS: ${strokeCodeForm.aspects || '__'}
+
+IMAGING:
+- CT: ${strokeCodeForm.hct || 'pending'}
+- CTA: ${strokeCodeForm.cta || 'pending'}
+- CTP: ${strokeCodeForm.ctp || 'pending'}
+
+TREATMENT:
+${strokeCodeForm.tnk_rec || 'TNK decision pending'}
+${strokeCodeForm.evt_rec || 'EVT decision pending'}
+
+TO DO:
+- Monitor BP goal <180/105
+- Repeat NIHSS q4h
+- Swallow eval when awake
+- MRI brain
+- Carotid ultrasound
+- Echo
+- Start ASA/statin after 24h if tPA given`;
+          };
+
           return (
             <div className={`max-w-7xl mx-auto p-3 sm:p-6 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
               {/* Header */}
@@ -2819,6 +2902,52 @@
 
                             return `${strokeCodeForm.age || "[Age]"} year old ${strokeCodeForm.sex || "[sex]"} with ${hx_str} who presents with ${strokeCodeForm.sx || "[symptoms]"}. Last known well is ${strokeCodeForm.lkw || "[time]"} ${strokeCodeForm.lkw_date || "[date]"}. NIHSS score: ${strokeCodeForm.nihss || "[score]"} and neurologic deficits are: ${strokeCodeForm.def || "[deficits]"}. Head CT: ${strokeCodeForm.hct || "[CT findings]"}.${aspects_str} CTA Head/Neck: ${strokeCodeForm.cta || "[CTA findings]"}. CTP: ${ctp_str}${tnk_str}. TNK Treatment: ${strokeCodeForm.tnk_rec || "[recommendation]"}. EVT: ${strokeCodeForm.evt_rec || "[recommendation]"}. Rationale for Treatment Recommendation: ${strokeCodeForm.rec_reason || "[rationale]"}.`;
                           })()}
+                        </p>
+                      </div>
+
+                      {/* One-Tap Documentation - Copy to Clipboard Buttons */}
+                      <div className="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-lg p-6">
+                        <h3 className="font-bold text-blue-900 mb-4 text-lg flex items-center gap-2">
+                          <i data-lucide="clipboard-copy" className="w-5 h-5"></i>
+                          One-Tap Documentation - Copy to EMR
+                        </h3>
+                        <p className="text-sm text-gray-700 mb-4">
+                          Click any button below to copy formatted documentation directly to your clipboard for pasting into your EMR.
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <button
+                            onClick={() => {
+                              const hpiText = generateHPI();
+                              copyToClipboard(hpiText);
+                            }}
+                            className="flex items-center justify-center gap-2 px-6 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all transform hover:scale-105 shadow-md hover:shadow-lg font-medium"
+                          >
+                            <i data-lucide="file-text" className="w-5 h-5"></i>
+                            Copy HPI/Assessment
+                          </button>
+                          <button
+                            onClick={() => {
+                              const ordersText = generateAdmissionOrders();
+                              copyToClipboard(ordersText);
+                            }}
+                            className="flex items-center justify-center gap-2 px-6 py-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all transform hover:scale-105 shadow-md hover:shadow-lg font-medium"
+                          >
+                            <i data-lucide="clipboard-list" className="w-5 h-5"></i>
+                            Copy Admission Orders
+                          </button>
+                          <button
+                            onClick={() => {
+                              const signOutText = generateSignOut();
+                              copyToClipboard(signOutText);
+                            }}
+                            className="flex items-center justify-center gap-2 px-6 py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all transform hover:scale-105 shadow-md hover:shadow-lg font-medium"
+                          >
+                            <i data-lucide="user-check" className="w-5 h-5"></i>
+                            Copy Sign-Out
+                          </button>
+                        </div>
+                        <p className="text-xs text-gray-600 mt-4 italic">
+                          💡 Tip: All data auto-populates from your assessments in other tabs. Complete those first for best results.
                         </p>
                       </div>
                     </div>
