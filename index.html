@@ -112,7 +112,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = 'v1.4.0-countdown'; // Increment this with each deployment
+            const APP_VERSION = 'v1.4.1-clean-alerts'; // Increment this with each deployment
             const storedVersion = localStorage.getItem('app_version');
 
             // If version doesn't match, clear ALL localStorage to prevent crashes
@@ -1624,31 +1624,10 @@
                   action: 'Consider EVT before 6h window requires perfusion imaging'
                 });
               }
-
-              // Alert if NIHSS incomplete and in treatment window
-              const nihssComplete = nihssItems.every(item => patientData[item.id]);
-              if (!nihssComplete && totalHours < 24) {
-                alerts.push({
-                  id: 'nihss-incomplete',
-                  level: 'warning',
-                  message: '📋 NIHSS assessment incomplete',
-                  action: 'Complete NIHSS to determine treatment eligibility'
-                });
-              }
-
-              // Alert if no CT documented and in treatment window
-              if (totalHours < 24 && (!strokeCodeForm.hct || strokeCodeForm.hct.trim() === '')) {
-                alerts.push({
-                  id: 'no-ct',
-                  level: 'warning',
-                  message: '🔍 No CT documented',
-                  action: 'Document CT findings in Stroke Code tab'
-                });
-              }
             }
 
             setCriticalAlerts(alerts);
-          }, [currentTime, lkwTime, patientData, strokeCodeForm.hct]);
+          }, [currentTime, lkwTime]);
 
           // Perform search when query changes
           useEffect(() => {
