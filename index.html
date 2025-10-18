@@ -112,7 +112,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = 'v1.1.0-autopop'; // Increment this with each deployment
+            const APP_VERSION = 'v1.2.0-alerts'; // Increment this with each deployment
             const storedVersion = localStorage.getItem('app_version');
 
             // If version doesn't match, clear ALL localStorage to prevent crashes
@@ -212,6 +212,9 @@
           // Save status
           const [saveStatus, setSaveStatus] = useState('saved');
           const [lastSaved, setLastSaved] = useState(null);
+
+          // Critical alerts state
+          const [criticalAlerts, setCriticalAlerts] = useState([]);
 
           // Search
           const [searchResults, setSearchResults] = useState([]);
@@ -1588,6 +1591,65 @@
             return () => clearInterval(timer);
           }, []);
 
+          // Monitor critical alerts
+          useEffect(() => {
+            const alerts = [];
+
+            if (lkwTime) {
+              const timeFromLKW = calculateTimeFromLKW();
+              if (!timeFromLKW) return;
+
+              const totalHours = timeFromLKW.total;
+              const remainingToTNK = 4.5 - totalHours;
+              const remainingToEVT = 6 - totalHours;
+
+              // Alert if <30 min to TNK cutoff (4.5h)
+              if (remainingToTNK > 0 && remainingToTNK <= 0.5) {
+                const minsLeft = Math.floor(remainingToTNK * 60);
+                alerts.push({
+                  id: 'tnk-cutoff',
+                  level: 'critical',
+                  message: `⚠️ URGENT: Only ${minsLeft} minutes left for TNK window!`,
+                  action: 'TNK must be given before 4.5h from LKW'
+                });
+              }
+
+              // Alert if <30 min to early EVT cutoff (6h)
+              if (remainingToEVT > 0 && remainingToEVT <= 0.5 && totalHours > 4.5) {
+                const minsLeft = Math.floor(remainingToEVT * 60);
+                alerts.push({
+                  id: 'evt-cutoff',
+                  level: 'critical',
+                  message: `⚠️ URGENT: Only ${minsLeft} minutes left for early EVT window!`,
+                  action: 'Consider EVT before 6h window requires perfusion imaging'
+                });
+              }
+
+              // Alert if NIHSS incomplete and in treatment window
+              const nihssComplete = nihssItems.every(item => patientData[item.id]);
+              if (!nihssComplete && totalHours < 24) {
+                alerts.push({
+                  id: 'nihss-incomplete',
+                  level: 'warning',
+                  message: '📋 NIHSS assessment incomplete',
+                  action: 'Complete NIHSS to determine treatment eligibility'
+                });
+              }
+
+              // Alert if no CT documented and in treatment window
+              if (totalHours < 24 && (!strokeCodeForm.hct || strokeCodeForm.hct.trim() === '')) {
+                alerts.push({
+                  id: 'no-ct',
+                  level: 'warning',
+                  message: '🔍 No CT documented',
+                  action: 'Document CT findings in Stroke Code tab'
+                });
+              }
+            }
+
+            setCriticalAlerts(alerts);
+          }, [currentTime, lkwTime, patientData, strokeCodeForm.hct]);
+
           // Perform search when query changes
           useEffect(() => {
             performSearch(searchQuery);
@@ -1719,6 +1781,41 @@
                   </div>
                 )}
               </div>
+
+              {/* Critical Alerts Banner */}
+              {criticalAlerts.length > 0 && (
+                <div className="mb-4 space-y-2">
+                  {criticalAlerts.map(alert => (
+                    <div
+                      key={alert.id}
+                      className={`p-4 rounded-lg border-2 flex items-start gap-3 ${
+                        alert.level === 'critical'
+                          ? 'bg-red-50 border-red-500 animate-pulse'
+                          : 'bg-yellow-50 border-yellow-500'
+                      }`}
+                    >
+                      <i
+                        data-lucide="alert-triangle"
+                        className={`w-6 h-6 flex-shrink-0 ${
+                          alert.level === 'critical' ? 'text-red-600' : 'text-yellow-600'
+                        }`}
+                      ></i>
+                      <div className="flex-1">
+                        <p className={`font-bold text-lg ${
+                          alert.level === 'critical' ? 'text-red-900' : 'text-yellow-900'
+                        }`}>
+                          {alert.message}
+                        </p>
+                        <p className={`text-sm mt-1 ${
+                          alert.level === 'critical' ? 'text-red-700' : 'text-yellow-700'
+                        }`}>
+                          {alert.action}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* Navigation Tabs */}
               <div className="border-b border-gray-200 mb-4 sm:mb-6 pb-2">
