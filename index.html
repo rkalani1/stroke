@@ -112,7 +112,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = 'v1.4.1-clean-alerts'; // Increment this with each deployment
+            const APP_VERSION = 'v1.5.0-mobile-nav'; // Increment this with each deployment
             const storedVersion = localStorage.getItem('app_version');
 
             // If version doesn't match, clear ALL localStorage to prevent crashes
@@ -1879,8 +1879,8 @@ TO DO:
                 </div>
               )}
 
-              {/* Navigation Tabs */}
-              <div className="border-b border-gray-200 mb-4 sm:mb-6 pb-2">
+              {/* Navigation Tabs - Desktop Only */}
+              <div className="border-b border-gray-200 mb-4 sm:mb-6 pb-2 hidden md:block">
                 <nav className="flex flex-wrap justify-center gap-2 md:justify-between md:gap-0">
                   {[
                     { id: 'workflow', name: 'Workflow', icon: 'check-circle' },
@@ -1916,7 +1916,7 @@ TO DO:
               </div>
 
               {/* Content */}
-              <div className="space-y-4 sm:space-y-6">
+              <div className="space-y-4 sm:space-y-6 pb-24 md:pb-0">
                 {/* Workflow Progress Tracker */}
                 <div className="bg-white p-4 rounded-lg shadow-md border-2 border-blue-200">
                   <h3 className="font-bold mb-3 text-lg text-blue-900">Assessment Progress</h3>
@@ -3983,6 +3983,32 @@ TO DO:
                     </div>
                   </div>
                 )}
+              </div>
+
+              {/* Mobile Bottom Navigation - Only visible on small screens */}
+              <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 shadow-lg z-50 pb-safe">
+                <div className="flex justify-around items-center px-2 py-2">
+                  {[
+                    { id: 'workflow', name: 'Workflow', icon: 'check-circle' },
+                    { id: 'nihss', name: 'NIHSS', icon: 'brain' },
+                    { id: 'imaging', name: 'Imaging', icon: 'image' },
+                    { id: 'lytic', name: 'Lytic', icon: 'droplet' },
+                    { id: 'strokecode', name: 'Docs', icon: 'file-text' }
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all ${
+                        activeTab === tab.id
+                          ? 'text-blue-600 bg-blue-50'
+                          : 'text-gray-600'
+                      }`}
+                    >
+                      <i data-lucide={tab.icon} className="w-6 h-6 mb-1"></i>
+                      <span className="text-xs font-medium">{tab.name}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           );
