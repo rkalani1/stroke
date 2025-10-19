@@ -329,8 +329,12 @@
             tnkRecommended: false,
             evtRecommended: false,
             tnkConsentDiscussed: false,
+            patientFamilyConsent: false,
+            presumedConsent: false,
+            preTNKSafetyPause: false,
             tnkAdminTime: '',
             admitLocation: '',
+            recommendationsText: '',
             recommendations: {
               neuroChecks: false,
               noAntithrombotics: false,
@@ -1443,21 +1447,9 @@
             }
 
             note += `\nRecommendations:\n`;
-            if (telestrokeNote.admitLocation) {
-              note += `• Admit to ${telestrokeNote.admitLocation}\n`;
+            if (telestrokeNote.recommendationsText) {
+              note += `${telestrokeNote.recommendationsText}\n`;
             }
-
-            const recs = telestrokeNote.recommendations;
-            if (recs.neuroChecks) note += `• q1hour neurochecks and VS monitoring\n`;
-            if (recs.noAntithrombotics) note += `• NO antithrombotics/anticoagulants for 24 hour after IV-TNK\n`;
-            if (recs.bpControl) note += `• Maintain BP<180/105 for 24 hours after IV-TNK\n`;
-            if (recs.followUpCT) note += `• HCT 24 hours post-TNK administration\n`;
-            if (recs.mri) note += `• MRI Brain with diffusion weighted imaging\n`;
-            if (recs.ekg) note += `• EKG/telemetry\n`;
-            if (recs.echo) note += `• Transthoracic echocardiogram\n`;
-            if (recs.lipids) note += `• Fasting lipid panel, HgA1c\n`;
-            if (recs.therapies) note += `• PT/OT/SLP evaluations\n`;
-            if (recs.dvtPpx) note += `• SCDs for DVT ppx\n`;
 
             note += `\nRizwan Kalani MD`;
 
@@ -2465,13 +2457,16 @@ TO DO:
                                 placeholder=""
                                 className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                               />
-                              <input
-                                type="text"
-                                value={telestrokeNote.nihssDetails}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, nihssDetails: e.target.value})}
-                                placeholder=""
-                                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                              />
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Neurologic Deficits</label>
+                                <input
+                                  type="text"
+                                  value={telestrokeNote.nihssDetails}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, nihssDetails: e.target.value})}
+                                  placeholder=""
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                />
+                              </div>
                             </div>
                           </div>
 
@@ -2530,7 +2525,7 @@ TO DO:
                                 />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">BP prior to TNK</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Current BP (prior to TNK, if applicable)</label>
                                 <div className="flex gap-2">
                                   <input
                                     type="text"
@@ -2548,37 +2543,15 @@ TO DO:
                                 </div>
                               </div>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                              <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Glucose</label>
-                                <input
-                                  type="text"
-                                  value={telestrokeNote.glucose}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, glucose: e.target.value})}
-                                  placeholder=""
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                />
-                              </div>
-                              <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">PLT/Coags</label>
-                                <input
-                                  type="text"
-                                  value={telestrokeNote.plateletsCoags}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, plateletsCoags: e.target.value})}
-                                  placeholder=""
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                />
-                              </div>
-                              <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Creatinine</label>
-                                <input
-                                  type="text"
-                                  value={telestrokeNote.creatinine}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, creatinine: e.target.value})}
-                                  placeholder=""
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                />
-                              </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Glucose</label>
+                              <input
+                                type="text"
+                                value={telestrokeNote.glucose}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, glucose: e.target.value})}
+                                placeholder=""
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                              />
                             </div>
                           </div>
                         </div>
@@ -2590,16 +2563,6 @@ TO DO:
                             <i data-lucide="image" className="w-5 h-5 text-indigo-600"></i>
                           </div>
                           <div className="space-y-3">
-                            <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                              <input
-                                type="checkbox"
-                                checked={telestrokeNote.imagingReviewed}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, imagingReviewed: e.target.checked})}
-                                className="w-4 h-4"
-                              />
-                              I personally reviewed imaging
-                            </label>
-
                             {/* Non-contrast Head CT */}
                             <div className="bg-gray-50 p-3 rounded border">
                               <h4 className="font-semibold text-gray-700 mb-2">Non-contrast Head CT</h4>
@@ -2621,7 +2584,7 @@ TO DO:
                               <textarea
                                 value={telestrokeNote.ctResults}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, ctResults: e.target.value})}
-                                placeholder="CT Results (e.g., Normal, no early ischemic changes, no hemorrhage)"
+                                placeholder=""
                                 rows="2"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                               />
@@ -2828,25 +2791,7 @@ TO DO:
                               <input
                                 type="checkbox"
                                 checked={telestrokeNote.tnkRecommended}
-                                onChange={(e) => {
-                                  const checked = e.target.checked;
-                                  setTelestrokeNote({
-                                    ...telestrokeNote,
-                                    tnkRecommended: checked,
-                                    recommendations: checked ? {
-                                      neuroChecks: true,
-                                      noAntithrombotics: true,
-                                      bpControl: true,
-                                      followUpCT: true,
-                                      mri: true,
-                                      ekg: true,
-                                      echo: true,
-                                      lipids: true,
-                                      therapies: true,
-                                      dvtPpx: true
-                                    } : telestrokeNote.recommendations
-                                  });
-                                }}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, tnkRecommended: e.target.checked})}
                                 className="w-4 h-4"
                               />
                               TNK Recommended
@@ -2863,9 +2808,43 @@ TO DO:
                                   />
                                   Risks/benefits discussed with patient and family
                                 </label>
-                                <p className="text-xs text-gray-600 ml-6">
-                                  (Includes discussion of 4% risk of symptomatic ICH, benefits, alternatives)
-                                </p>
+                                {telestrokeNote.tnkConsentDiscussed && (
+                                  <div className="bg-white border border-purple-200 rounded-lg p-3 space-y-2">
+                                    <p className="text-sm text-gray-700">
+                                      We recommend a medication called Tenecteplase (TNK), which is a "clot-buster" drug. TNK reduces the risk of being disabled; people who get TNK have an improved chance of recovering without disability than people who don't get the medication. All medications have risks – the main risk is bleeding, up to 4% of people develop bleeding in the brain that leads to new symptoms. Very rarely, people have an allergic reaction. The potential benefits are thought to be higher than the potential risks and we recommend TNK is administered. Time is very important here - the sooner the treatment is started, the higher the likelihood of benefit.
+                                    </p>
+
+                                    <div className="mt-3 space-y-2">
+                                      <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                                        <input
+                                          type="checkbox"
+                                          checked={telestrokeNote.patientFamilyConsent}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, patientFamilyConsent: e.target.checked})}
+                                          className="w-4 h-4"
+                                        />
+                                        Patient/family provides consent
+                                      </label>
+                                      <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                                        <input
+                                          type="checkbox"
+                                          checked={telestrokeNote.presumedConsent}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, presumedConsent: e.target.checked})}
+                                          className="w-4 h-4"
+                                        />
+                                        Presumed consent
+                                      </label>
+                                      <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                                        <input
+                                          type="checkbox"
+                                          checked={telestrokeNote.preTNKSafetyPause}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, preTNKSafetyPause: e.target.checked})}
+                                          className="w-4 h-4"
+                                        />
+                                        Pre-TNK safety pause completed
+                                      </label>
+                                    </div>
+                                  </div>
+                                )}
                                 <div>
                                   <label className="block text-sm font-medium text-gray-700 mb-1">TNK Administration Time</label>
                                   <input
@@ -2951,108 +2930,14 @@ TO DO:
                             <h3 className="text-lg font-bold text-teal-900">7. Recommendations</h3>
                             <i data-lucide="clipboard-check" className="w-5 h-5 text-teal-600"></i>
                           </div>
-                          <div className="space-y-3">
-                            <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">Admit Location</label>
-                              <input
-                                type="text"
-                                value={telestrokeNote.admitLocation}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, admitLocation: e.target.value})}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                              />
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                              <label className="flex items-center gap-2 text-sm">
-                                <input
-                                  type="checkbox"
-                                  checked={telestrokeNote.recommendations.neuroChecks}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, recommendations: {...telestrokeNote.recommendations, neuroChecks: e.target.checked}})}
-                                  className="w-4 h-4"
-                                />
-                                q1h neurochecks & VS monitoring
-                              </label>
-                              <label className="flex items-center gap-2 text-sm">
-                                <input
-                                  type="checkbox"
-                                  checked={telestrokeNote.recommendations.noAntithrombotics}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, recommendations: {...telestrokeNote.recommendations, noAntithrombotics: e.target.checked}})}
-                                  className="w-4 h-4"
-                                />
-                                NO antithrombotics for 24h
-                              </label>
-                              <label className="flex items-center gap-2 text-sm">
-                                <input
-                                  type="checkbox"
-                                  checked={telestrokeNote.recommendations.bpControl}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, recommendations: {...telestrokeNote.recommendations, bpControl: e.target.checked}})}
-                                  className="w-4 h-4"
-                                />
-                                Maintain BP&lt;180/105 x24h
-                              </label>
-                              <label className="flex items-center gap-2 text-sm">
-                                <input
-                                  type="checkbox"
-                                  checked={telestrokeNote.recommendations.followUpCT}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, recommendations: {...telestrokeNote.recommendations, followUpCT: e.target.checked}})}
-                                  className="w-4 h-4"
-                                />
-                                HCT 24h post-TNK
-                              </label>
-                              <label className="flex items-center gap-2 text-sm">
-                                <input
-                                  type="checkbox"
-                                  checked={telestrokeNote.recommendations.mri}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, recommendations: {...telestrokeNote.recommendations, mri: e.target.checked}})}
-                                  className="w-4 h-4"
-                                />
-                                MRI Brain with DWI
-                              </label>
-                              <label className="flex items-center gap-2 text-sm">
-                                <input
-                                  type="checkbox"
-                                  checked={telestrokeNote.recommendations.ekg}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, recommendations: {...telestrokeNote.recommendations, ekg: e.target.checked}})}
-                                  className="w-4 h-4"
-                                />
-                                EKG/telemetry
-                              </label>
-                              <label className="flex items-center gap-2 text-sm">
-                                <input
-                                  type="checkbox"
-                                  checked={telestrokeNote.recommendations.echo}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, recommendations: {...telestrokeNote.recommendations, echo: e.target.checked}})}
-                                  className="w-4 h-4"
-                                />
-                                Transthoracic echo
-                              </label>
-                              <label className="flex items-center gap-2 text-sm">
-                                <input
-                                  type="checkbox"
-                                  checked={telestrokeNote.recommendations.lipids}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, recommendations: {...telestrokeNote.recommendations, lipids: e.target.checked}})}
-                                  className="w-4 h-4"
-                                />
-                                Fasting lipids, HgA1c
-                              </label>
-                              <label className="flex items-center gap-2 text-sm">
-                                <input
-                                  type="checkbox"
-                                  checked={telestrokeNote.recommendations.therapies}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, recommendations: {...telestrokeNote.recommendations, therapies: e.target.checked}})}
-                                  className="w-4 h-4"
-                                />
-                                PT/OT/SLP evaluations
-                              </label>
-                              <label className="flex items-center gap-2 text-sm">
-                                <input
-                                  type="checkbox"
-                                  checked={telestrokeNote.recommendations.dvtPpx}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, recommendations: {...telestrokeNote.recommendations, dvtPpx: e.target.checked}})}
-                                  className="w-4 h-4"
-                                />
-                                SCDs for DVT ppx
-                              </label>
-                            </div>
+                          <div>
+                            <textarea
+                              value={telestrokeNote.recommendationsText}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, recommendationsText: e.target.value})}
+                              placeholder=""
+                              rows="6"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            />
                           </div>
                         </div>
 
