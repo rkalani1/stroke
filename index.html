@@ -336,10 +336,12 @@
             ctaDate: new Date().toISOString().split('T')[0],
             ctaTime: '',
             ctaResults: '',
+            ctpResults: '',
             ekgResults: '',
             diagnosis: '',
             tnkRecommended: false,
             evtRecommended: false,
+            rationale: '',
             tnkConsentDiscussed: false,
             patientFamilyConsent: false,
             presumedConsent: false,
@@ -3080,13 +3082,13 @@ TO DO:
                               <h4 className="font-semibold text-gray-800 text-sm">Pulsara Summary:</h4>
                               <button
                                 onClick={() => {
-                                  const age = patientData.age || "[Age]";
-                                  const sex = patientData.sex || "[sex]";
-                                  const pmh = patientData.pmh || "no PMH";
-                                  const symptoms = patientData.symptoms || "[symptoms]";
-                                  const lkw = patientData.lkw || "[time]";
-                                  const lkwDate = patientData.lkwDate || "[date]";
-                                  const nihss = patientData.nihssTotal || "[score]";
+                                  const age = telestrokeNote.age || "[Age]";
+                                  const sex = telestrokeNote.sex || "[sex]";
+                                  const pmh = telestrokeNote.pmh || "no PMH";
+                                  const symptoms = telestrokeNote.symptoms || "[symptoms]";
+                                  const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
+                                  const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
+                                  const nihss = nihssScore || "[score]";
                                   const ctResults = telestrokeNote.ctResults || "[CT findings]";
                                   const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
                                   const ctpResults = telestrokeNote.ctpResults || "N/A";
@@ -3108,13 +3110,13 @@ TO DO:
                             </div>
                             <p className="text-xs text-gray-700 whitespace-pre-wrap">
                               {(() => {
-                                const age = patientData.age || "[Age]";
-                                const sex = patientData.sex || "[sex]";
-                                const pmh = patientData.pmh || "no PMH";
-                                const symptoms = patientData.symptoms || "[symptoms]";
-                                const lkw = patientData.lkw || "[time]";
-                                const lkwDate = patientData.lkwDate || "[date]";
-                                const nihss = patientData.nihssTotal || "[score]";
+                                const age = telestrokeNote.age || "[Age]";
+                                const sex = telestrokeNote.sex || "[sex]";
+                                const pmh = telestrokeNote.pmh || "no PMH";
+                                const symptoms = telestrokeNote.symptoms || "[symptoms]";
+                                const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
+                                const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
+                                const nihss = nihssScore || "[score]";
                                 const ctResults = telestrokeNote.ctResults || "[CT findings]";
                                 const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
                                 const ctpResults = telestrokeNote.ctpResults || "N/A";
