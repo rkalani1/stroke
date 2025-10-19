@@ -2483,7 +2483,11 @@ TO DO:
                               <input
                                 type="number"
                                 value={telestrokeNote.nihss}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, nihss: e.target.value})}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  setTelestrokeNote({...telestrokeNote, nihss: value});
+                                  setNihssScore(parseInt(value) || 0);
+                                }}
                                 placeholder=""
                                 className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                               />
@@ -3083,12 +3087,13 @@ TO DO:
                               <button
                                 onClick={() => {
                                   const age = telestrokeNote.age || "[Age]";
-                                  const sex = telestrokeNote.sex || "[sex]";
+                                  const sexRaw = telestrokeNote.sex;
+                                  const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '[sex]';
                                   const pmh = telestrokeNote.pmh || "no PMH";
                                   const symptoms = telestrokeNote.symptoms || "[symptoms]";
                                   const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
                                   const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
-                                  const nihss = nihssScore || "[score]";
+                                  const nihss = telestrokeNote.nihss || nihssScore || "[score]";
                                   const ctResults = telestrokeNote.ctResults || "[CT findings]";
                                   const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
                                   const ctpResults = telestrokeNote.ctpResults || "N/A";
@@ -3111,12 +3116,13 @@ TO DO:
                             <p className="text-xs text-gray-700 whitespace-pre-wrap">
                               {(() => {
                                 const age = telestrokeNote.age || "[Age]";
-                                const sex = telestrokeNote.sex || "[sex]";
+                                const sexRaw = telestrokeNote.sex;
+                                const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '[sex]';
                                 const pmh = telestrokeNote.pmh || "no PMH";
                                 const symptoms = telestrokeNote.symptoms || "[symptoms]";
                                 const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
                                 const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
-                                const nihss = nihssScore || "[score]";
+                                const nihss = telestrokeNote.nihss || nihssScore || "[score]";
                                 const ctResults = telestrokeNote.ctResults || "[CT findings]";
                                 const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
                                 const ctpResults = telestrokeNote.ctpResults || "N/A";
