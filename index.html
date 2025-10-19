@@ -3044,6 +3044,194 @@ TO DO:
                           </div>
                         </div>
 
+                        {/* Section 8: Stroke Code Documentation */}
+                        <div className="bg-white border-2 border-indigo-300 rounded-lg p-4 shadow-md mt-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <h3 className="text-lg font-bold text-indigo-900">8. Stroke Code Documentation (Pulsara Summary)</h3>
+                            <i data-lucide="clipboard" className="w-5 h-5 text-indigo-600"></i>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* Left Column */}
+                            <div className="space-y-3">
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                                <input
+                                  type="number"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  value={strokeCodeForm.age}
+                                  onChange={(e) => setStrokeCodeForm({...strokeCodeForm, age: e.target.value})}
+                                  placeholder=""
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Sex</label>
+                                <select
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  value={strokeCodeForm.sex}
+                                  onChange={(e) => setStrokeCodeForm({...strokeCodeForm, sex: e.target.value})}
+                                >
+                                  <option value="">Select...</option>
+                                  <option value="female">Female</option>
+                                  <option value="male">Male</option>
+                                </select>
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Past Medical History</label>
+                                <input
+                                  type="text"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  value={strokeCodeForm.hx}
+                                  onChange={(e) => setStrokeCodeForm({...strokeCodeForm, hx: e.target.value})}
+                                  placeholder=""
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Presenting Symptoms</label>
+                                <input
+                                  type="text"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  value={strokeCodeForm.sx}
+                                  onChange={(e) => setStrokeCodeForm({...strokeCodeForm, sx: e.target.value})}
+                                  placeholder=""
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">NIHSS Score</label>
+                                <input
+                                  type="number"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-blue-50 focus:ring-2 focus:ring-blue-500"
+                                  value={strokeCodeForm.nihss}
+                                  onChange={(e) => setStrokeCodeForm({...strokeCodeForm, nihss: e.target.value})}
+                                  placeholder=""
+                                  readOnly
+                                  title="Auto-populated from NIHSS assessment"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Neurologic Deficit(s)</label>
+                                <input
+                                  type="text"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  value={strokeCodeForm.def}
+                                  onChange={(e) => setStrokeCodeForm({...strokeCodeForm, def: e.target.value})}
+                                  placeholder=""
+                                />
+                              </div>
+                            </div>
+
+                            {/* Right Column */}
+                            <div className="space-y-3">
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Head CT Findings</label>
+                                <textarea
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  rows="2"
+                                  value={strokeCodeForm.hct}
+                                  onChange={(e) => setStrokeCodeForm({...strokeCodeForm, hct: e.target.value})}
+                                  placeholder=""
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">CTA Head/Neck Findings</label>
+                                <textarea
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  rows="2"
+                                  value={strokeCodeForm.cta}
+                                  onChange={(e) => setStrokeCodeForm({...strokeCodeForm, cta: e.target.value})}
+                                  placeholder=""
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">CTP Findings</label>
+                                <textarea
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  rows="2"
+                                  value={strokeCodeForm.ctp}
+                                  onChange={(e) => setStrokeCodeForm({...strokeCodeForm, ctp: e.target.value})}
+                                  placeholder=""
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">TNK Treatment</label>
+                                <select
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  value={strokeCodeForm.tnk_rec}
+                                  onChange={(e) => setStrokeCodeForm({...strokeCodeForm, tnk_rec: e.target.value})}
+                                >
+                                  <option value="">Select...</option>
+                                  <option value="Not Recommended">Not Recommended</option>
+                                  <option value="Recommended">Recommended</option>
+                                </select>
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">EVT</label>
+                                <select
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  value={strokeCodeForm.evt_rec}
+                                  onChange={(e) => setStrokeCodeForm({...strokeCodeForm, evt_rec: e.target.value})}
+                                >
+                                  <option value="">Select...</option>
+                                  <option value="Not Recommended">Not Recommended</option>
+                                  <option value="Recommended">Recommended</option>
+                                </select>
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Rationale for Treatment</label>
+                                <textarea
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  rows="2"
+                                  value={strokeCodeForm.rec_reason}
+                                  onChange={(e) => setStrokeCodeForm({...strokeCodeForm, rec_reason: e.target.value})}
+                                  placeholder=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Generated Summary */}
+                          <div className="mt-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="font-semibold text-gray-800 text-sm">Pulsara Summary:</h4>
+                              <button
+                                onClick={() => {
+                                  const hx_str = strokeCodeForm.hx || "no PMH";
+                                  const tnk_str = strokeCodeForm.tnk.length > 0 ? `. TNK Contraindications: ${strokeCodeForm.tnk.join(", ")}` : "";
+                                  const ctp_str = strokeCodeForm.ctp || "N/A";
+                                  const aspects_str = strokeCodeForm.aspects ? ` ASPECTS: ${strokeCodeForm.aspects}.` : "";
+                                  const summary = `${strokeCodeForm.age || "[Age]"} year old ${strokeCodeForm.sex || "[sex]"} with ${hx_str} who presents with ${strokeCodeForm.sx || "[symptoms]"}. Last known well is ${strokeCodeForm.lkw || "[time]"} ${strokeCodeForm.lkw_date || "[date]"}. NIHSS score: ${strokeCodeForm.nihss || "[score]"} and neurologic deficits are: ${strokeCodeForm.def || "[deficits]"}. Head CT: ${strokeCodeForm.hct || "[CT findings]"}.${aspects_str} CTA Head/Neck: ${strokeCodeForm.cta || "[CTA findings]"}. CTP: ${ctp_str}${tnk_str}. TNK Treatment: ${strokeCodeForm.tnk_rec || "[recommendation]"}. EVT: ${strokeCodeForm.evt_rec || "[recommendation]"}. Rationale for Treatment Recommendation: ${strokeCodeForm.rec_reason || "[rationale]"}.`;
+                                  navigator.clipboard.writeText(summary);
+                                  setCopiedText('stroke-code-summary');
+                                  setTimeout(() => setCopiedText(''), 2000);
+                                }}
+                                className="flex items-center gap-2 px-3 py-1 bg-green-600 text-white text-xs rounded-lg hover:bg-green-700 transition-colors"
+                              >
+                                <i data-lucide={copiedText === 'stroke-code-summary' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                                {copiedText === 'stroke-code-summary' ? 'Copied!' : 'Copy'}
+                              </button>
+                            </div>
+                            <p className="text-xs text-gray-700 whitespace-pre-wrap">
+                              {(() => {
+                                const hx_str = strokeCodeForm.hx || "no PMH";
+                                const tnk_str = strokeCodeForm.tnk.length > 0 ? `. TNK Contraindications: ${strokeCodeForm.tnk.join(", ")}` : "";
+                                const ctp_str = strokeCodeForm.ctp || "N/A";
+                                const aspects_str = strokeCodeForm.aspects ? ` ASPECTS: ${strokeCodeForm.aspects}.` : "";
+                                return `${strokeCodeForm.age || "[Age]"} year old ${strokeCodeForm.sex || "[sex]"} with ${hx_str} who presents with ${strokeCodeForm.sx || "[symptoms]"}. Last known well is ${strokeCodeForm.lkw || "[time]"} ${strokeCodeForm.lkw_date || "[date]"}. NIHSS score: ${strokeCodeForm.nihss || "[score]"} and neurologic deficits are: ${strokeCodeForm.def || "[deficits]"}. Head CT: ${strokeCodeForm.hct || "[CT findings]"}.${aspects_str} CTA Head/Neck: ${strokeCodeForm.cta || "[CTA findings]"}. CTP: ${ctp_str}${tnk_str}. TNK Treatment: ${strokeCodeForm.tnk_rec || "[recommendation]"}. EVT: ${strokeCodeForm.evt_rec || "[recommendation]"}. Rationale for Treatment Recommendation: ${strokeCodeForm.rec_reason || "[rationale]"}.`;
+                              })()}
+                            </p>
+                          </div>
+                        </div>
+
                       </div>
 
                       {/* RIGHT COLUMN - Live Preview & Tools (1/3 width on desktop, full width on mobile) */}
