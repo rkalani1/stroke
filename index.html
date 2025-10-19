@@ -3079,50 +3079,31 @@ TO DO:
                           </div>
                         </div>
 
-                        {/* One-Tap Documentation - Copy to Clipboard Buttons */}
-                        <div className="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-lg p-6">
-                          <h3 className="font-bold text-blue-900 mb-4 text-lg flex items-center gap-2">
-                            <i data-lucide="clipboard-copy" className="w-5 h-5"></i>
-                            One-Tap Documentation - Copy to EMR
-                          </h3>
-                          <p className="text-sm text-gray-700 mb-4">
-                            Click any button below to copy formatted documentation directly to your clipboard for pasting into your EMR.
-                          </p>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <button
-                              onClick={() => {
-                                const hpiText = generateHPI();
-                                copyToClipboard(hpiText);
-                              }}
-                              className="flex items-center justify-center gap-2 px-6 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all transform hover:scale-105 shadow-md hover:shadow-lg font-medium"
-                            >
+                        {/* Telestroke Note - Epic */}
+                        <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4 shadow-md mt-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="font-bold text-gray-800 flex items-center gap-2">
                               <i data-lucide="file-text" className="w-5 h-5"></i>
-                              Copy HPI/Assessment
-                            </button>
+                              Telestroke Note - Epic
+                            </h4>
                             <button
                               onClick={() => {
-                                const ordersText = generateAdmissionOrders();
-                                copyToClipboard(ordersText);
+                                const note = generateTelestrokeNote();
+                                navigator.clipboard.writeText(note);
+                                setCopiedText('encounter-note');
+                                setTimeout(() => setCopiedText(''), 2000);
                               }}
-                              className="flex items-center justify-center gap-2 px-6 py-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all transform hover:scale-105 shadow-md hover:shadow-lg font-medium"
+                              className="flex items-center gap-2 px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors"
                             >
-                              <i data-lucide="clipboard-list" className="w-5 h-5"></i>
-                              Copy Admission Orders
-                            </button>
-                            <button
-                              onClick={() => {
-                                const signOutText = generateSignOut();
-                                copyToClipboard(signOutText);
-                              }}
-                              className="flex items-center justify-center gap-2 px-6 py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all transform hover:scale-105 shadow-md hover:shadow-lg font-medium"
-                            >
-                              <i data-lucide="user-check" className="w-5 h-5"></i>
-                              Copy Sign-Out
+                              <i data-lucide={copiedText === 'encounter-note' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              {copiedText === 'encounter-note' ? 'Copied!' : 'Copy'}
                             </button>
                           </div>
-                          <p className="text-xs text-gray-600 mt-4 italic">
-                            💡 Tip: All data auto-populates from your entries in Sections 1-7 above.
-                          </p>
+                          <div className="bg-white p-3 rounded border border-gray-200 max-h-96 overflow-y-auto">
+                            <pre className="whitespace-pre-wrap text-xs text-gray-800 font-mono">
+                              {generateTelestrokeNote()}
+                            </pre>
+                          </div>
                         </div>
 
                       </div>
@@ -3241,33 +3222,6 @@ TO DO:
                               </span>
                               <span>CT results documented</span>
                             </div>
-                          </div>
-                        </div>
-
-                        {/* Live Note Preview */}
-                        <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4 shadow-md relative z-20">
-                          <div className="flex items-center justify-between mb-3">
-                            <h4 className="font-bold text-gray-800 flex items-center gap-2">
-                              <i data-lucide="file-text" className="w-5 h-5"></i>
-                              Live Note
-                            </h4>
-                            <button
-                              onClick={() => {
-                                const note = generateTelestrokeNote();
-                                navigator.clipboard.writeText(note);
-                                setCopiedText('encounter-note');
-                                setTimeout(() => setCopiedText(''), 2000);
-                              }}
-                              className="flex items-center gap-2 px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors"
-                            >
-                              <i data-lucide={copiedText === 'encounter-note' ? 'check' : 'copy'} className="w-4 h-4"></i>
-                              {copiedText === 'encounter-note' ? 'Copied!' : 'Copy'}
-                            </button>
-                          </div>
-                          <div className="bg-white p-3 rounded border border-gray-200 max-h-96 overflow-y-auto">
-                            <pre className="whitespace-pre-wrap text-xs text-gray-800 font-mono">
-                              {generateTelestrokeNote()}
-                            </pre>
                           </div>
                         </div>
 
