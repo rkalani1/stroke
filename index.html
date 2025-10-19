@@ -2058,13 +2058,8 @@ TO DO:
                 <nav className="flex flex-wrap justify-center gap-2 md:justify-between md:gap-0">
                   {[
                     { id: 'encounter', name: '⚡ Encounter', icon: 'activity' },
-                    { id: 'workflow', name: 'Workflow', icon: 'check-circle' },
-                    { id: 'nihss', name: 'NIHSS', icon: 'brain' },
-                    { id: 'imaging', name: 'Imaging', icon: 'file-text' },
-                    { id: 'lytic', name: 'Lytic', icon: 'alert-triangle' },
-                    { id: 'evt', name: 'EVT', icon: 'alert-triangle' },
                     { id: 'strokecode', name: 'Stroke Code', icon: 'file-text' },
-                    { id: 'documentation', name: 'Documentation', icon: 'file-text' },
+                    { id: 'documentation', name: 'Telestroke Documentation', icon: 'file-text' },
                     { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
                     { id: 'trials', name: 'Trials', icon: 'file-text' },
                     { id: 'calculators', name: 'Calculators', icon: 'calculator' },
@@ -2899,16 +2894,6 @@ TO DO:
                                     <li>• Not recommended for M2-M4 MCA, ACA, and PCA occlusions</li>
                                   </ul>
                                 </div>
-                                <div>
-                                  <h4 className="font-semibold text-blue-700 mb-2">Target Occlusions:</h4>
-                                  <ul className="space-y-1 ml-4">
-                                    <li>• ICA terminus</li>
-                                    <li>• M1, M2 segments (proximal)</li>
-                                    <li>• Basilar artery</li>
-                                    <li>• Consider for M2 distal, M3, M4</li>
-                                    <li>• Consider for A1, A2, P1, P2</li>
-                                  </ul>
-                                </div>
                               </div>
                             </details>
 
@@ -3089,59 +3074,10 @@ TO DO:
 
                       </div>
 
-                    </div>
-                  </div>
-                )}
-                {/* Workflow */}
-                {activeTab === 'workflow' && (
-                  <div className="space-y-6">
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                      <h2 className="text-xl font-semibold text-red-800 mb-4">⚡ Acute Stroke Workflow</h2>
-                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <div className="bg-white p-4 rounded border">
-                          <h3 className="font-semibold text-red-700 mb-2">Assessment</h3>
-                          <ul className="text-sm space-y-1">
-                            <li>• Age, <Tooltip text="Past Medical History">PMH</Tooltip>/Meds</li>
-                            <li>• <Tooltip text="Symptoms">Sx</Tooltip></li>
-                            <li>• <Tooltip text="Last Known Normal - time patient was last seen at baseline">LKN</Tooltip></li>
-                            <li>• Presenting & Current <Tooltip text="Blood Pressure">BP</Tooltip></li>
-                            <li>• <Tooltip text="NIH Stroke Scale - neurological deficit score">NIHSS</Tooltip> (& disabling focal deficits)</li>
-                          </ul>
-                        </div>
-                        <div className="bg-white p-4 rounded border">
-                          <h3 className="font-semibold text-red-700 mb-2">Imaging</h3>
-                          <ul className="text-sm space-y-1">
-                            <li>• <Tooltip text="Head CT scan">HCT</Tooltip></li>
-                            <li>• <Tooltip text="CT Angiography of Head and Neck">CTA H/N</Tooltip></li>
-                          </ul>
-                        </div>
-                        <div className="bg-white p-4 rounded border">
-                          <h3 className="font-semibold text-red-700 mb-2">Labs</h3>
-                          <ul className="text-sm space-y-1">
-                            <li>• <Tooltip text="Blood Glucose">BG</Tooltip></li>
-                            <li>• <Tooltip text="Emergency Stroke Panel">ESP</Tooltip></li>
-                            <li>• <Tooltip text="Complete Blood Count / Coagulation studies / Basic Metabolic Panel">CBC/Coags/BMP</Tooltip></li>
-                          </ul>
-                        </div>
-                        <div className="bg-white p-4 rounded border">
-                          <h3 className="font-semibold text-red-700 mb-2">Tx</h3>
-                          <ul className="text-sm space-y-1">
-                            <li>• Obtain consent (when able)</li>
-                            <li>• Safety Pause for TNK</li>
-                          </ul>
-                        </div>
-                      </div>
-                      
-                      {/* TNK Risk/Benefit Discussion */}
-                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mt-4">
-                        <h3 className="text-lg font-semibold text-purple-800 mb-3">TNK Risk/Benefit Discussion</h3>
-                        <p className="text-sm text-gray-700">We recommend a medication called Tenecteplase (TNK), which is a "clot-buster" drug. TNK reduces the risk of being disabled; people who get TNK have an improved chance of recovering without disability than people who don't get the medication. All medications have risks – the main risk is bleeding, up to 4% of people develop bleeding in the brain that leads to new symptoms. Very rarely, people have an allergic reaction. The potential benefits are thought to be higher than the potential risks and we recommend TNK is administered. Time is very important here - the sooner the treatment is started, the higher the likelihood of benefit.</p>
-                      </div>
-                      
                       {/* Telestroke Section */}
                       <div className="bg-gray-50 border border-gray-300 rounded-lg p-4 mt-4">
                         <h3 className="text-lg font-semibold text-gray-800 mb-4">Telestroke</h3>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           {/* OSH Transfer */}
                           <div className="bg-white p-3 rounded border">
@@ -3154,14 +3090,14 @@ TO DO:
                               <li>• Inform ER/NCCS about acute medical complications or comorbidities, intubation, hemodynamic instability, continuous infusions, and imaging planned on arrival</li>
                             </ul>
                           </div>
-                          
+
                           {/* TNK risk/benefit discussion documentation */}
                           <div className="bg-white p-3 rounded border">
                             <h4 className="font-semibold text-gray-700 mb-2">TNK risk/benefit discussion documentation:</h4>
                             <p className="text-sm">After ensuring that there were no evident contraindications, TNK administration was recommended. Potential benefits, potential risks (including a potential risk of sx ICH of up to 4%), and alternatives to treatment were discussed with the OSH provider and patient/family prior to initiating treatment.</p>
                           </div>
                         </div>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {/* Post-IV TNK/tPA recommendations */}
                           <div className="bg-white p-3 rounded border">
@@ -3181,7 +3117,7 @@ TO DO:
                               <li>• Inpatient neurology consultation for further diagnostic evaluation and management</li>
                             </ul>
                           </div>
-                          
+
                           {/* MT risk/benefit discussion */}
                           <div className="bg-white p-3 rounded border">
                             <h4 className="font-semibold text-gray-700 mb-2">MT risk/benefit discussion:</h4>
@@ -3189,436 +3125,40 @@ TO DO:
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Emergency Contacts */}
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-red-800 mb-3">🚨 Emergency Contacts</h3>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold text-red-700 mb-2">Stroke Team</h4>
-                          <ul className="text-sm space-y-1">
-                            <li><strong>Stroke Phone:</strong> 206-744-6789</li>
-                            <li><strong>STAT Pharmacy:</strong> 4-2241</li>
-                            <li><strong>Neuroradiology:</strong> 4-8484</li>
-                            <li><strong>Paging Operator:</strong> 4-0147</li>
-                          </ul>
-                        </div>
-                        <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold text-green-700 mb-2">Imaging</h4>
-                          <ul className="text-sm space-y-1">
-                            <li><strong>Non-code STAT CT:</strong> 4-7290</li>
-                            <li><strong>Non-code STAT MRI:</strong> 4-2460</li>
-                            <li><strong>Angio Suites:</strong> 4-3381, 4-6506</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                      {/* Emergency Contacts */}
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4 mt-4">
+                        <h3 className="text-lg font-semibold text-red-800 mb-3">🚨 Emergency Contacts</h3>
 
-                {/* NIH Stroke Scale */}
-                {activeTab === 'nihss' && (
-                  <div className="space-y-6">
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                      <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                        <Tooltip text="National Institutes of Health Stroke Scale - measures stroke severity from 0 (no symptoms) to 42 (severe)">
-                          NIH Stroke Scale
-                        </Tooltip>
-                      </h2>
-
-                      {/* Completion Status */}
-                      <div className={`mb-4 p-4 rounded-lg border-2 ${
-                        isNIHSSComplete() ? 'border-green-500 bg-green-50' : 'border-yellow-500 bg-yellow-50'
-                      }`}>
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <span className="text-3xl font-bold text-blue-600">NIHSS: {nihssScore}</span>
-                              {isNIHSSComplete() ? (
-                                <i data-lucide="check-circle" className="w-6 h-6 text-green-600"></i>
-                              ) : (
-                                <span className="text-yellow-600 font-semibold">(Incomplete)</span>
-                              )}
-                            </div>
-                            {!isNIHSSComplete() && (
-                              <p className="text-sm text-yellow-700 mt-2">
-                                ⚠️ Missing {getIncompleteNIHSSItems().length} items: {getIncompleteNIHSSItems().slice(0, 3).join(', ')}
-                                {getIncompleteNIHSSItems().length > 3 && '...'}
-                              </p>
-                            )}
-                          </div>
-                          <button
-                            onClick={() => copyToClipboard(`NIHSS: ${nihssScore}${isNIHSSComplete() ? ' (Complete)' : ' (Incomplete)'}`, 'NIHSS Score')}
-                            className="p-2 hover:bg-blue-100 rounded transition-colors"
-                            aria-label="Copy NIHSS score to clipboard"
-                            title="Copy to clipboard"
-                          >
-                            <i data-lucide="copy" className="w-5 h-5 text-blue-600"></i>
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Clinical Interpretation */}
-                      {isNIHSSComplete() && (() => {
-                        const interpretation = getNIHSSInterpretation(nihssScore);
-                        return (
-                          <div className={`mb-4 p-4 rounded-lg border-2 ${
-                            interpretation.color === 'green' ? 'bg-green-50 border-green-400' :
-                            interpretation.color === 'yellow' ? 'bg-yellow-50 border-yellow-400' :
-                            interpretation.color === 'orange' ? 'bg-orange-50 border-orange-400' :
-                            'bg-red-50 border-red-400'
-                          }`}>
-                            <p className="font-bold text-lg">{interpretation.severity}</p>
-                            <p className="text-sm mt-1">💡 {interpretation.guidance}</p>
-                          </div>
-                        );
-                      })()}
-                      
-                      <div className="space-y-4">
-                        {nihssItems.map((item) => (
-                          <div key={item.id} className="bg-white p-4 rounded border">
-                            <h3 className="font-semibold mb-2">{item.name}</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                              {item.options.map((option, optionIndex) => (
-                                <label key={optionIndex} className="flex items-center space-x-2 cursor-pointer">
-                                  <input
-                                    type="radio"
-                                    name={item.id}
-                                    value={option}
-                                    onChange={(e) => {
-                                      const newData = { ...patientData, [item.id]: e.target.value };
-                                      setPatientData(newData);
-                                      setNihssScore(calculateNIHSS(newData));
-                                    }}
-                                    className="text-blue-600"
-                                  />
-                                  <span className="text-sm">{option}</span>
-                                </label>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="mt-6 p-4 bg-blue-50 rounded border border-blue-200">
-                        <h3 className="font-semibold text-blue-800 mb-2">Score Interpretation</h3>
-                        <div className="text-sm space-y-1">
-                          <p><strong>0:</strong> No stroke symptoms</p>
-                          <p><strong>1-4:</strong> Minor stroke</p>
-                          <p><strong>5-15:</strong> Moderate stroke</p>
-                          <p><strong>16-20:</strong> Moderate to severe stroke</p>
-                          <p><strong>21-42:</strong> Severe stroke</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Imaging & ASPECTS */}
-                {activeTab === 'imaging' && (
-                  <div className="space-y-6">
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                      <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                        <Tooltip text="Alberta Stroke Program Early CT Score - assesses early ischemic changes in acute stroke">
-                          ASPECTS
-                        </Tooltip>
-                      </h2>
-                      <p className="text-xs text-gray-600 mb-3">Start at 10, subtract 1 for each abnormal region</p>
-
-                      <div className="flex justify-end items-center gap-2 mb-4">
-                        <span className="text-2xl font-bold text-blue-600">ASPECTS Score: {calculateASPECTS(aspectsRegionState)}</span>
-                        <button
-                          onClick={() => copyToClipboard(`ASPECTS: ${calculateASPECTS(aspectsRegionState)}`, 'ASPECTS Score')}
-                          className="p-2 hover:bg-blue-100 rounded transition-colors"
-                          aria-label="Copy ASPECTS score to clipboard"
-                          title="Copy to clipboard"
-                        >
-                          <i data-lucide="copy" className="w-5 h-5 text-blue-600"></i>
-                        </button>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-3">
-                          <h3 className="font-semibold">Brain Regions</h3>
-                          {aspectsRegionState.map((region, index) => (
-                            <label key={region.id} className="flex items-center space-x-2 cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={region.checked}
-                                onChange={(e) => {
-                                  const newRegions = [...aspectsRegionState];
-                                  newRegions[index].checked = e.target.checked;
-                                  setAspectsRegionState(newRegions);
-                                }}
-                                className="text-blue-600"
-                              />
-                              <span className="text-sm">{region.name}</span>
-                            </label>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-purple-800 mb-3">PC-ASPECTS</h3>
-                      <p className="text-xs text-gray-600 mb-3">Start at 10. Thalami/cerebellar hemispheres = 1pt each, midbrain/pons = 2pts each</p>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
-                        <div>• Thalami (1 point each)</div>
-                        <div>• Occipital lobes (1 point each)</div>
-                        <div>• Midbrain (2 points)</div>
-                        <div>• Pons (2 points)</div>
-                        <div>• Cerebellar hemispheres (1 point each)</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Lytic Eligibility */}
-                {activeTab === 'lytic' && (
-                  <div className="space-y-6">
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                      <h2 className="text-xl font-semibold text-green-800 mb-4">Lytic Eligibility</h2>
-                      
-                      {/* Inclusion Criteria */}
-                      <div className="mb-6">
-                        <h3 className="text-lg font-semibold text-green-700 mb-3">✓ Inclusion Criteria</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                          <div className="bg-white p-3 rounded border">
-                            <ul className="space-y-1">
-                              <li>• Diagnosis of ischemic stroke causing measurable neurologic deficit</li>
-                              <li>• Age ≥18 years</li>
-                              <li>• Onset of symptoms &lt;3 hours (or &lt;4.5h with additional criteria)</li>
-                            </ul>
-                          </div>
-                          <div className="bg-white p-3 rounded border">
-                            <h4 className="font-semibold text-amber-700 mb-2">3-4.5h Window Additional Criteria:</h4>
-                            <ul className="space-y-1 text-xs">
-                              <li>• Age ≤80 years</li>
-                              <li>• No history of both DM and prior stroke</li>
-                              <li>• NIHSS ≤25</li>
-                              <li>• No oral anticoagulant use</li>
-                            </ul>
-                          </div>
-                          <div className="bg-white p-3 rounded border">
-                            <h4 className="font-semibold text-teal-700 mb-2">WAKE-UP:</h4>
-                            <ul className="space-y-1 text-xs">
-                              <li>• LKN unclear (not awake/known to have had sx for 4.5 hours) + NO LVO</li>
-                              <li>• MRI w/ DWI and T2/FLAIR</li>
-                              <li>• Discuss ↓ certainty in benefit and ↑ hemorrhage risk w/ thrombolysis</li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Major Exclusions */}
-                      <div className="mb-6">
-                        <h3 className="text-lg font-semibold text-red-700 mb-3">✗ Major Exclusion Criteria</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="bg-white p-3 rounded border">
-                            <h4 className="font-semibold mb-2">Imaging Exclusions</h4>
+                            <h4 className="font-semibold text-red-700 mb-2">Stroke Team</h4>
                             <ul className="text-sm space-y-1">
-                              <li>• CT with evidence of hemorrhage</li>
-                              <li>• CT with extensive regions of clear hypoattenuation</li>
-                              <li>• Ischemic injury &gt;1/3 of MCA territory</li>
-                              <li>• Intra-axial, intracranial tumor (extra-axial tumors not absolute contraindication)</li>
-                              <li>• Aortic arch dissection</li>
+                              <li><strong>Stroke Phone:</strong> 206-744-6789</li>
+                              <li><strong>STAT Pharmacy:</strong> 4-2241</li>
+                              <li><strong>Neuroradiology:</strong> 4-8484</li>
+                              <li><strong>Paging Operator:</strong> 4-0147</li>
                             </ul>
                           </div>
                           <div className="bg-white p-3 rounded border">
-                            <h4 className="font-semibold mb-2">Clinical Exclusions</h4>
+                            <h4 className="font-semibold text-green-700 mb-2">Imaging</h4>
                             <ul className="text-sm space-y-1">
-                              <li>• Recent stroke (&lt;90 days)</li>
-                              <li>• Recent severe head trauma (&lt;90 days)</li>
-                              <li>• Recent intracranial/intraspinal surgery (&lt;60 days)</li>
-                              <li>• Active internal bleeding</li>
-                              <li>• GI malignancy</li>
-                              <li>• Recent GI/urinary tract hemorrhage (&lt;21 days)</li>
-                              <li>• Clinical presentation suggestive of SAH (even if HCT normal)</li>
-                              <li>• Presentation consistent with infective endocarditis</li>
+                              <li><strong>Non-code STAT CT:</strong> 4-7290</li>
+                              <li><strong>Non-code STAT MRI:</strong> 4-2460</li>
+                              <li><strong>Angio Suites:</strong> 4-3381, 4-6506</li>
                             </ul>
                           </div>
                         </div>
                       </div>
 
-                      {/* Lab/Vital Exclusions */}
-                      <div className="mb-6">
-                        <h3 className="text-lg font-semibold text-red-700 mb-3">Laboratory & Vital Sign Exclusions</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="bg-white p-3 rounded border">
-                            <h4 className="font-semibold mb-2">Blood Pressure</h4>
-                            <ul className="text-sm space-y-1">
-                              <li>• SBP &gt;185 mmHg</li>
-                              <li>• DBP &gt;110 mmHg</li>
-                              <li>(Unresponsive to meds)</li>
-                            </ul>
-                          </div>
-                          <div className="bg-white p-3 rounded border">
-                            <h4 className="font-semibold mb-2">Laboratory & Anticoagulation</h4>
-                            <ul className="text-sm space-y-1">
-                              <li>• Platelet count &lt;100,000</li>
-                              <li>• Blood glucose &lt;50 mg/dL</li>
-                              <li>• Warfarin use with PT &gt;15s, INR &gt;1.7, or aPTT &gt;40s</li>
-                              <li>• Recent DOAC use (&lt;48h)</li>
-                              <li>• Treatment-dose heparin/LMWH (&lt;24 hours)</li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Cautionary Criteria */}
-                      <div className="mb-6">
-                        <h3 className="text-lg font-semibold text-yellow-700 mb-3">⚠ Cautionary Criteria</h3>
-                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                          <p className="text-sm text-gray-700 mb-3">Consider risks/benefits and discuss with stroke team for:</p>
-                          <ul className="text-sm space-y-1">
-                            <li>• Prior known non-traumatic intracranial hemorrhage</li>
-                            <li>• Vascular malformation unless severe neurological sx (ischemic risk outweighs ICH)</li>
-                            <li>• Pregnancy; risk to fetus and woman unknown—consult OB/GYN ASAP</li>
-                            <li>• Major extra-cranial surgery or trauma within 14 days</li>
-                            <li>• Acute or recent MI (within 3 months), depending on what type of MI</li>
-                            <li>• Acute pericarditis</li>
-                            <li>• Abnormal aPTT, TT, or anti-Xa activity with unknown use of direct thrombin inhibitor or factor Xa inhibitor (may be false positive due to lupus anticoagulant, consider lytic if able to reliably confirm pt is not taking one of these agents)</li>
-                            <li>• Cerebral microbleeds: &gt;10 on prior MRI may increase risk for ICH</li>
-                            <li>• Lecanemab or other Alzheimer's medications with potential risk of amyloid related imaging abnormalities are not recommended but confirm decision with stroke phone and prepare for potential MRI</li>
-                          </ul>
-                        </div>
-                      </div>
-
-                      {/* Dosing */}
-                      <div className="bg-blue-100 p-4 rounded border border-blue-300 mb-6">
-                        <h3 className="text-lg font-semibold text-blue-800 mb-2">TNK Dosing</h3>
-                        <p className="text-lg"><strong>0.25 mg/kg</strong> (maximum dose: 25 mg)</p>
-                        <p className="text-sm text-blue-700 mt-2">Document safety pause: <code>.UWMSTROKESAFETYPAUSE</code></p>
-                      </div>
-
-                      {/* TNK Contraindications Checklist */}
-                      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                        <h3 className="text-lg font-semibold text-red-800 mb-3">TNK Contraindications Present (check all that apply)</h3>
-                        <p className="text-sm text-gray-600 mb-3">Select any contraindications present for this patient (auto-saves to Documentation tab):</p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {[
-                            "ICH or Extensive Infarction on HCT",
-                            "Ischemic Stroke (<3 months)",
-                            "Intracranial/Intraspinal Surgery (<60 days)",
-                            "Severe Head Trauma (<90 days)",
-                            "Active Internal Bleeding",
-                            "GI Malignancy",
-                            "Recent GI/GU Hemorrhage (<21 days)",
-                            "Suspected SAH",
-                            "Infective Endocarditis",
-                            "SBP >185 or DBP >110 (unresponsive)",
-                            "Platelet Count <100,000",
-                            "Blood Glucose <50 mg/dL",
-                            "INR >1.7 or aPTT >40s",
-                            "Recent DOAC Use (<48h)",
-                            "Treatment-Dose Heparin/LMWH (<24h)",
-                            "Aortic Dissection",
-                            "Intracranial Tumor",
-                            "Other (see notes)"
-                          ].map(contraindication => (
-                            <label key={contraindication} className="flex items-start space-x-2 bg-white p-2 rounded border hover:bg-gray-50 cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={strokeCodeForm.tnk.includes(contraindication)}
-                                onChange={(e) => {
-                                  const newTnk = e.target.checked
-                                    ? [...strokeCodeForm.tnk, contraindication]
-                                    : strokeCodeForm.tnk.filter(c => c !== contraindication);
-                                  setStrokeCodeForm({ ...strokeCodeForm, tnk: newTnk });
-                                }}
-                                className="mt-0.5 text-red-600"
-                              />
-                              <span className="text-sm">{contraindication}</span>
-                            </label>
-                          ))}
-                        </div>
-                        {strokeCodeForm.tnk.length > 0 && (
-                          <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded">
-                            <p className="text-sm font-semibold text-red-900">
-                              ⚠️ {strokeCodeForm.tnk.length} contraindication(s) selected
-                            </p>
-                            <p className="text-xs text-red-800 mt-1">
-                              These will be included in your stroke code documentation.
-                            </p>
-                          </div>
-                        )}
-                      </div>
                     </div>
                   </div>
                 )}
+                {/* Workflow */}
 
-                {/* EVT Eligibility */}
-                {activeTab === 'evt' && (
-                  <div className="space-y-6">
-                    <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                      <h2 className="text-xl font-semibold text-purple-800 mb-4">EVT Eligibility</h2>
-                      
-                      {/* Basilar Artery Occlusion */}
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                        <h3 className="text-lg font-semibold text-blue-800 mb-3">Basilar Artery Occlusion</h3>
-                        <ul className="text-sm space-y-1">
-                          <li>• Last known well ≤24 hours</li>
-                          <li>• NIHSS score ≥10</li>
-                          <li>• pc-ASPECTS ≥6</li>
-                        </ul>
-                      </div>
 
-                      {/* Anterior Circulation Large Vessel Occlusion */}
-                      <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-                        <h3 className="text-lg font-semibold text-green-800 mb-4">Anterior Circulation Large Vessel Occlusion</h3>
-                        
-                        <div className="mb-4">
-                          <p className="text-sm text-gray-700">• Trial evidence principally supports efficacy among adults ≥60 years of age, baseline mRS 0-1, NIHSS≥6 with disabling symptoms</p>
-                        </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          {/* Early Window */}
-                          <div className="bg-white p-4 rounded border">
-                            <h4 className="font-semibold text-green-700 mb-3">Early Window (0-6h)</h4>
-                            <div className="mb-3">
-                              <p className="text-sm font-semibold mb-1">ASPECTS 3-10:</p>
-                              <p className="text-sm text-gray-600">• Generally eligible for EVT</p>
-                            </div>
-                            <div className="mb-3">
-                              <p className="text-sm font-semibold mb-1">ASPECTS 0-2:</p>
-                              <p className="text-sm text-gray-600">• Consider in very select cases</p>
-                              <p className="text-sm text-gray-600">• Consider CTP to evaluate if estimated core volume is &lt;70-100cc</p>
-                            </div>
-                          </div>
-                          
-                          {/* Late Window */}
-                          <div className="bg-white p-4 rounded border">
-                            <h4 className="font-semibold text-purple-700 mb-3">Late Window (6-24h)</h4>
-                            <div className="mb-3">
-                              <p className="text-sm font-semibold mb-1">ASPECTS 6-10:</p>
-                              <p className="text-sm text-gray-600">• Generally eligible for EVT</p>
-                            </div>
-                            <div className="mb-3">
-                              <p className="text-sm font-semibold mb-1">ASPECTS 3-5:</p>
-                              <p className="text-sm text-gray-600">• Generally eligible for EVT</p>
-                              <p className="text-sm text-gray-600">• Consider CTP to evaluate if estimated core volume is ≤100cc + mismatch is present</p>
-                            </div>
-                            <div>
-                              <p className="text-sm font-semibold mb-1">ASPECTS 0-2:</p>
-                              <p className="text-sm text-gray-600">• EVT benefit is unclear</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
 
-                      {/* Medium Vessel Occlusion */}
-                      <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                        <h3 className="text-lg font-semibold text-orange-800 mb-3">Medium Vessel Occlusion</h3>
-                        <ul className="text-sm space-y-1">
-                          <li>• Consider in select cases of proximal or dominant M2 segment MCA occlusion within ≤1cm of bifurcation in horizontal segment when there is evidence of salvageable tissue + last known well is ≤24 hours</li>
-                          <li>• Not recommended for M2-M4 MCA, ACA, and PCA occlusions</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                )}
 
                 {/* Stroke Code Form */}
                 {activeTab === 'strokecode' && (
