@@ -195,7 +195,10 @@
             }
           };
 
-          const [activeTab, setActiveTab] = useState(loadFromStorage('activeTab', 'encounter'));
+          const [activeTab, setActiveTab] = useState(() => {
+            const saved = loadFromStorage('activeTab', 'encounter');
+            return saved || 'encounter';
+          });
           const [patientData, setPatientData] = useState(loadFromStorage('patientData', {}));
           const [nihssScore, setNihssScore] = useState(loadFromStorage('nihssScore', 0));
           const [aspectsScore, setAspectsScore] = useState(loadFromStorage('aspectsScore', 10));
@@ -204,6 +207,7 @@
           const [showSuccess, setShowSuccess] = useState(false);
           const [isCalculating, setIsCalculating] = useState(false);
           const [copiedText, setCopiedText] = useState('');
+          const [isMounted, setIsMounted] = useState(false);
 
           // Time tracking
           const [currentTime, setCurrentTime] = useState(new Date());
@@ -1843,15 +1847,31 @@
             performSearch(searchQuery);
           }, [searchQuery]);
 
-          // Initialize icons immediately on mount
+          // Initialize component and icons on mount
           useEffect(() => {
+            // Ensure activeTab is set to encounter on first load
+            const savedTab = localStorage.getItem('activeTab');
+            if (!savedTab || savedTab === 'null' || savedTab === 'undefined') {
+              localStorage.setItem('activeTab', 'encounter');
+              setActiveTab('encounter');
+            }
+
+            // Initialize icons immediately
             lucide.createIcons();
+
+            // Force re-render after initial mount to ensure content displays
+            requestAnimationFrame(() => {
+              setIsMounted(true);
+              lucide.createIcons();
+            });
           }, []);
 
           // Reinitialize icons when needed
           useEffect(() => {
-            lucide.createIcons();
-          }, [activeTab, copiedText, darkMode, searchOpen, mobileMoreOpen]);
+            if (isMounted) {
+              lucide.createIcons();
+            }
+          }, [activeTab, copiedText, darkMode, searchOpen, mobileMoreOpen, isMounted]);
 
           // Documentation generation functions
           const generateHPI = () => {
@@ -2182,7 +2202,7 @@ TO DO:
 
                 {/* CONSOLIDATED ENCOUNTER TAB */}
                 {activeTab === 'encounter' && (
-                  <div className="space-y-4">
+                  <div key="encounter-tab" className="space-y-4">
                     {/* Two-Column Layout: Desktop/Tablet | Single Column: Mobile */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
