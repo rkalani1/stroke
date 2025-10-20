@@ -3179,52 +3179,6 @@ TO DO:
                           </div>
                         </div>
 
-                        {/* Treatment Eligibility Checklist */}
-                        <div className="bg-white border-2 border-blue-300 rounded-lg p-4 shadow-md lg:sticky z-30" style={{top: '28rem'}}>
-                          <h4 className="font-bold text-blue-900 mb-3 flex items-center gap-2">
-                            <i data-lucide="check-square" className="w-5 h-5"></i>
-                            Eligibility Quick Check
-                          </h4>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex items-start gap-2">
-                              <span className={telestrokeNote.age && parseInt(telestrokeNote.age) >= 18 ? 'text-green-600' : 'text-gray-400'}>
-                                {telestrokeNote.age && parseInt(telestrokeNote.age) >= 18 ? '✓' : '○'}
-                              </span>
-                              <span>Age ≥18 years</span>
-                            </div>
-                            <div className="flex items-start gap-2">
-                              <span className={telestrokeNote.noAnticoagulants ? 'text-green-600' : 'text-gray-400'}>
-                                {telestrokeNote.noAnticoagulants ? '✓' : '○'}
-                              </span>
-                              <span>No anticoagulants confirmed</span>
-                            </div>
-                            <div className="flex items-start gap-2">
-                              <span className={telestrokeNote.presentingBP ? 'text-green-600' : 'text-gray-400'}>
-                                {telestrokeNote.presentingBP ? '✓' : '○'}
-                              </span>
-                              <span>BP documented</span>
-                            </div>
-                            <div className="flex items-start gap-2">
-                              <span className={telestrokeNote.glucose ? 'text-green-600' : 'text-gray-400'}>
-                                {telestrokeNote.glucose ? '✓' : '○'}
-                              </span>
-                              <span>Glucose checked</span>
-                            </div>
-                            <div className="flex items-start gap-2">
-                              <span className={telestrokeNote.imagingReviewed ? 'text-green-600' : 'text-gray-400'}>
-                                {telestrokeNote.imagingReviewed ? '✓' : '○'}
-                              </span>
-                              <span>Imaging reviewed</span>
-                            </div>
-                            <div className="flex items-start gap-2">
-                              <span className={telestrokeNote.ctResults ? 'text-green-600' : 'text-gray-400'}>
-                                {telestrokeNote.ctResults ? '✓' : '○'}
-                              </span>
-                              <span>CT results documented</span>
-                            </div>
-                          </div>
-                        </div>
-
                       </div>
 
 
