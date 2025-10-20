@@ -195,10 +195,8 @@
             }
           };
 
-          const [activeTab, setActiveTab] = useState(() => {
-            const saved = loadFromStorage('activeTab', 'encounter');
-            return saved || 'encounter';
-          });
+          // Force activeTab to always start as 'encounter' - load saved value in useEffect after mount
+          const [activeTab, setActiveTab] = useState('encounter');
           const [patientData, setPatientData] = useState(loadFromStorage('patientData', {}));
           const [nihssScore, setNihssScore] = useState(loadFromStorage('nihssScore', 0));
           const [aspectsScore, setAspectsScore] = useState(loadFromStorage('aspectsScore', 10));
@@ -1849,19 +1847,24 @@
 
           // Initialize component and icons on mount
           useEffect(() => {
-            // Ensure activeTab is set to encounter on first load
-            const savedTab = localStorage.getItem('activeTab');
-            if (!savedTab || savedTab === 'null' || savedTab === 'undefined') {
-              localStorage.setItem('activeTab', 'encounter');
-              setActiveTab('encounter');
-            }
-
-            // Initialize icons immediately
+            // Initialize icons immediately on first render
             lucide.createIcons();
 
-            // Force re-render after initial mount to ensure content displays
+            // After icons are initialized, load saved tab if valid
             requestAnimationFrame(() => {
               setIsMounted(true);
+
+              // Load saved tab preference AFTER initial render
+              try {
+                const savedTab = localStorage.getItem('activeTab');
+                const validTabs = ['encounter', 'ich', 'trials', 'calculators'];
+                if (savedTab && savedTab !== 'null' && savedTab !== 'undefined' && validTabs.includes(savedTab.replace(/"/g, ''))) {
+                  setActiveTab(savedTab.replace(/"/g, ''));
+                }
+              } catch (e) {
+                console.warn('Error loading saved tab:', e);
+              }
+
               lucide.createIcons();
             });
           }, []);
