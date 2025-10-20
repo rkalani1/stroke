@@ -1843,12 +1843,14 @@
             performSearch(searchQuery);
           }, [searchQuery]);
 
+          // Initialize icons immediately on mount
+          useEffect(() => {
+            lucide.createIcons();
+          }, []);
+
           // Reinitialize icons when needed
           useEffect(() => {
-            const timer = setTimeout(() => {
-              lucide.createIcons();
-            }, 100);
-            return () => clearTimeout(timer);
+            lucide.createIcons();
           }, [activeTab, copiedText, darkMode, searchOpen, mobileMoreOpen]);
 
           // Documentation generation functions
