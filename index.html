@@ -1857,7 +1857,7 @@
               // Load saved tab preference AFTER initial render
               try {
                 const savedTab = localStorage.getItem('activeTab');
-                const validTabs = ['encounter', 'ich', 'trials', 'calculators'];
+                const validTabs = ['encounter', 'ich', 'trials', 'calculators', 'protocols'];
                 if (savedTab && savedTab !== 'null' && savedTab !== 'undefined' && validTabs.includes(savedTab.replace(/"/g, ''))) {
                   setActiveTab(savedTab.replace(/"/g, ''));
                 }
@@ -4119,9 +4119,10 @@ TO DO:
                 <div className="flex justify-around items-center px-2 py-2">
                   {[
                     { id: 'encounter', name: 'Encounter', icon: 'activity' },
-                    { id: 'nihss', name: 'NIHSS', icon: 'brain' },
-                    { id: 'imaging', name: 'Imaging', icon: 'image' },
-                    { id: 'lytic', name: 'Lytic', icon: 'droplet' }
+                    { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
+                    { id: 'trials', name: 'Trials', icon: 'file-text' },
+                    { id: 'calculators', name: 'Calculators', icon: 'calculator' },
+                    { id: 'protocols', name: 'Management', icon: 'file-text' }
                   ].map((tab) => (
                     <button
                       key={tab.id}
