@@ -209,37 +209,25 @@
           const [showTemplateEditor, setShowTemplateEditor] = useState(false);
           const [editableTemplate, setEditableTemplate] = useState(loadFromStorage('telestrokeTemplate', `Chief complaint: {chiefComplaint}
 Last known well (date/time): {lkwDate} {lkwTime}
-HPI:
-            {age} year old {sex} p/w {symptoms} at {lkwTime}
-
-Relevant PMH:
-            {pmh}
-
+HPI: {age} year old {sex} p/w {symptoms} at {lkwTime}
+Relevant PMH: {pmh}
 Medications: {medications}
 
 Objective:
 Vitals:
 Presenting BP {presentingBP}
 Blood pressure: BP prior to TNK administration: {bpPreTNK} at {bpPreTNKTime}
-
-Labs: Glucose {glucose}, PLT and coags {plateletsCoags}, Cr {creatinine}
-
+Labs: Glucose {glucose}
 Exam: Scores: NIHSS {nihss} - {nihssDetails}
 
 Imaging: I personally reviewed imaging
-Date/time Non-contrast Head CT reviewed: {ctTime}
-Non-contrast Head CT Results: {ctResults}
-
-Date/time CTA reviewed: {ctaDate} {ctaTime}
-CTA Results: {ctaResults}
-
-EKG - {ekgResults}
+Date/time Non-contrast Head CT reviewed: {ctTime}; Non-contrast Head CT Results: {ctResults}
+Date/time CTA reviewed: {ctaDate} {ctaTime}; CTA Results: {ctaResults}
+TelemetrEKG - {ekgResults}
 
 Assessment and Plan:
-{diagnosis}
-
+Suspected Diagnosis: {diagnosis}
 After ensuring that there were no evident contraindications, TNK administration was recommended at {tnkAdminTime}. Potential benefits, potential risks (including a potential risk of sx ICH of up to 4%), and alternatives to treatment were discussed with the patient, patient's wife, and OSH provider. Both the patient and his wife expressed agreement with the recommendation.
-
 TNK was administered at {tnkAdminTime} after a brief time-out.
 
 Recommendations:
@@ -3084,37 +3072,25 @@ TO DO:
                                     if (confirm('Reset to default template? This will lose any customizations.')) {
                                       setEditableTemplate(`Chief complaint: {chiefComplaint}
 Last known well (date/time): {lkwDate} {lkwTime}
-HPI:
-            {age} year old {sex} p/w {symptoms} at {lkwTime}
-
-Relevant PMH:
-            {pmh}
-
+HPI: {age} year old {sex} p/w {symptoms} at {lkwTime}
+Relevant PMH: {pmh}
 Medications: {medications}
 
 Objective:
 Vitals:
 Presenting BP {presentingBP}
 Blood pressure: BP prior to TNK administration: {bpPreTNK} at {bpPreTNKTime}
-
-Labs: Glucose {glucose}, PLT and coags {plateletsCoags}, Cr {creatinine}
-
+Labs: Glucose {glucose}
 Exam: Scores: NIHSS {nihss} - {nihssDetails}
 
 Imaging: I personally reviewed imaging
-Date/time Non-contrast Head CT reviewed: {ctTime}
-Non-contrast Head CT Results: {ctResults}
-
-Date/time CTA reviewed: {ctaDate} {ctaTime}
-CTA Results: {ctaResults}
-
-EKG - {ekgResults}
+Date/time Non-contrast Head CT reviewed: {ctTime}; Non-contrast Head CT Results: {ctResults}
+Date/time CTA reviewed: {ctaDate} {ctaTime}; CTA Results: {ctaResults}
+TelemetrEKG - {ekgResults}
 
 Assessment and Plan:
-{diagnosis}
-
+Suspected Diagnosis: {diagnosis}
 After ensuring that there were no evident contraindications, TNK administration was recommended at {tnkAdminTime}. Potential benefits, potential risks (including a potential risk of sx ICH of up to 4%), and alternatives to treatment were discussed with the patient, patient's wife, and OSH provider. Both the patient and his wife expressed agreement with the recommendation.
-
 TNK was administered at {tnkAdminTime} after a brief time-out.
 
 Recommendations:
