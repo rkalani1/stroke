@@ -206,6 +206,46 @@
           const [isCalculating, setIsCalculating] = useState(false);
           const [copiedText, setCopiedText] = useState('');
           const [isMounted, setIsMounted] = useState(false);
+          const [showTemplateEditor, setShowTemplateEditor] = useState(false);
+          const [editableTemplate, setEditableTemplate] = useState(loadFromStorage('telestrokeTemplate', `Chief complaint: {chiefComplaint}
+Last known well (date/time): {lkwDate} {lkwTime}
+HPI:
+            {age} year old {sex} p/w {symptoms} at {lkwTime}
+
+Relevant PMH:
+            {pmh}
+
+Medications: {medications}
+
+Objective:
+Vitals:
+Presenting BP {presentingBP}
+Blood pressure: BP prior to TNK administration: {bpPreTNK} at {bpPreTNKTime}
+
+Labs: Glucose {glucose}, PLT and coags {plateletsCoags}, Cr {creatinine}
+
+Exam: Scores: NIHSS {nihss} - {nihssDetails}
+
+Imaging: I personally reviewed imaging
+Date/time Non-contrast Head CT reviewed: {ctTime}
+Non-contrast Head CT Results: {ctResults}
+
+Date/time CTA reviewed: {ctaDate} {ctaTime}
+CTA Results: {ctaResults}
+
+EKG - {ekgResults}
+
+Assessment and Plan:
+{diagnosis}
+
+After ensuring that there were no evident contraindications, TNK administration was recommended at {tnkAdminTime}. Potential benefits, potential risks (including a potential risk of sx ICH of up to 4%), and alternatives to treatment were discussed with the patient, patient's wife, and OSH provider. Both the patient and his wife expressed agreement with the recommendation.
+
+TNK was administered at {tnkAdminTime} after a brief time-out.
+
+Recommendations:
+{recommendationsText}
+
+Rizwan Kalani MD`));
 
           // Time tracking
           const [currentTime, setCurrentTime] = useState(new Date());
@@ -1381,6 +1421,41 @@
               return `${displayHour}:${minutes} ${ampm}`;
             };
 
+            // Use the editable template and replace placeholders with actual values
+            let note = editableTemplate;
+
+            // Replace all placeholders with actual values
+            note = note.replace(/{chiefComplaint}/g, telestrokeNote.chiefComplaint || '');
+            note = note.replace(/{lkwDate}/g, formatDate(telestrokeNote.lkwDate));
+            note = note.replace(/{lkwTime}/g, formatTime(telestrokeNote.lkwTime));
+            note = note.replace(/{age}/g, telestrokeNote.age || '');
+            note = note.replace(/{sex}/g, telestrokeNote.sex || '');
+            note = note.replace(/{symptoms}/g, telestrokeNote.symptoms || '');
+            note = note.replace(/{pmh}/g, telestrokeNote.pmh || '');
+            note = note.replace(/{medications}/g, telestrokeNote.medications || '');
+            note = note.replace(/{presentingBP}/g, telestrokeNote.presentingBP || '');
+            note = note.replace(/{bpPreTNK}/g, telestrokeNote.bpPreTNK || '');
+            note = note.replace(/{bpPreTNKTime}/g, formatTime(telestrokeNote.bpPreTNKTime));
+            note = note.replace(/{glucose}/g, telestrokeNote.glucose || '');
+            note = note.replace(/{plateletsCoags}/g, telestrokeNote.plateletsCoags || '');
+            note = note.replace(/{creatinine}/g, telestrokeNote.creatinine || '');
+            note = note.replace(/{nihss}/g, telestrokeNote.nihss || nihssScore || '');
+            note = note.replace(/{nihssDetails}/g, telestrokeNote.nihssDetails || '');
+            note = note.replace(/{ctTime}/g, formatTime(telestrokeNote.ctTime));
+            note = note.replace(/{ctResults}/g, telestrokeNote.ctResults || '');
+            note = note.replace(/{ctaDate}/g, formatDate(telestrokeNote.ctaDate));
+            note = note.replace(/{ctaTime}/g, formatTime(telestrokeNote.ctaTime));
+            note = note.replace(/{ctaResults}/g, telestrokeNote.ctaResults || '');
+            note = note.replace(/{ekgResults}/g, telestrokeNote.ekgResults || '');
+            note = note.replace(/{diagnosis}/g, telestrokeNote.diagnosis || '');
+            note = note.replace(/{tnkAdminTime}/g, formatTime(telestrokeNote.tnkAdminTime));
+            note = note.replace(/{recommendationsText}/g, telestrokeNote.recommendationsText || '');
+
+            return note;
+
+            // OLD TEMPLATE CODE BELOW - kept for reference but not used anymore
+            /*
+
             let note = `Chief complaint: ${telestrokeNote.chiefComplaint}\n`;
             note += `Last known well (date/time): ${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}\n`;
             note += `HPI:\n`;
@@ -1477,6 +1552,7 @@
             note += `\nRizwan Kalani MD`;
 
             return note;
+            */
           };
 
           // Time calculation functions
@@ -1750,6 +1826,10 @@
           useEffect(() => {
             debouncedSave('telestrokeNote', telestrokeNote);
           }, [telestrokeNote]);
+
+          useEffect(() => {
+            debouncedSave('telestrokeTemplate', editableTemplate);
+          }, [editableTemplate]);
 
           useEffect(() => {
             if (lkwTime) {
@@ -2971,19 +3051,95 @@ TO DO:
                               <i data-lucide="file-text" className="w-5 h-5"></i>
                               Telestroke Note - Epic
                             </h4>
-                            <button
-                              onClick={() => {
-                                const note = generateTelestrokeNote();
-                                navigator.clipboard.writeText(note);
-                                setCopiedText('encounter-note');
-                                setTimeout(() => setCopiedText(''), 2000);
-                              }}
-                              className="flex items-center gap-2 px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors"
-                            >
-                              <i data-lucide={copiedText === 'encounter-note' ? 'check' : 'copy'} className="w-4 h-4"></i>
-                              {copiedText === 'encounter-note' ? 'Copied!' : 'Copy'}
-                            </button>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => setShowTemplateEditor(!showTemplateEditor)}
+                                className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
+                              >
+                                <i data-lucide={showTemplateEditor ? 'eye-off' : 'edit'} className="w-4 h-4"></i>
+                                {showTemplateEditor ? 'Hide Editor' : 'Edit Template'}
+                              </button>
+                              <button
+                                onClick={() => {
+                                  const note = generateTelestrokeNote();
+                                  navigator.clipboard.writeText(note);
+                                  setCopiedText('encounter-note');
+                                  setTimeout(() => setCopiedText(''), 2000);
+                                }}
+                                className="flex items-center gap-2 px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors"
+                              >
+                                <i data-lucide={copiedText === 'encounter-note' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                {copiedText === 'encounter-note' ? 'Copied!' : 'Copy'}
+                              </button>
+                            </div>
                           </div>
+
+                          {/* Template Editor */}
+                          {showTemplateEditor && (
+                            <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-4 mb-4">
+                              <div className="flex items-center justify-between mb-2">
+                                <h5 className="font-semibold text-yellow-900">Edit Template</h5>
+                                <button
+                                  onClick={() => {
+                                    if (confirm('Reset to default template? This will lose any customizations.')) {
+                                      setEditableTemplate(`Chief complaint: {chiefComplaint}
+Last known well (date/time): {lkwDate} {lkwTime}
+HPI:
+            {age} year old {sex} p/w {symptoms} at {lkwTime}
+
+Relevant PMH:
+            {pmh}
+
+Medications: {medications}
+
+Objective:
+Vitals:
+Presenting BP {presentingBP}
+Blood pressure: BP prior to TNK administration: {bpPreTNK} at {bpPreTNKTime}
+
+Labs: Glucose {glucose}, PLT and coags {plateletsCoags}, Cr {creatinine}
+
+Exam: Scores: NIHSS {nihss} - {nihssDetails}
+
+Imaging: I personally reviewed imaging
+Date/time Non-contrast Head CT reviewed: {ctTime}
+Non-contrast Head CT Results: {ctResults}
+
+Date/time CTA reviewed: {ctaDate} {ctaTime}
+CTA Results: {ctaResults}
+
+EKG - {ekgResults}
+
+Assessment and Plan:
+{diagnosis}
+
+After ensuring that there were no evident contraindications, TNK administration was recommended at {tnkAdminTime}. Potential benefits, potential risks (including a potential risk of sx ICH of up to 4%), and alternatives to treatment were discussed with the patient, patient's wife, and OSH provider. Both the patient and his wife expressed agreement with the recommendation.
+
+TNK was administered at {tnkAdminTime} after a brief time-out.
+
+Recommendations:
+{recommendationsText}
+
+Rizwan Kalani MD`);
+                                    }
+                                  }}
+                                  className="text-xs px-2 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700"
+                                >
+                                  Reset to Default
+                                </button>
+                              </div>
+                              <p className="text-xs text-yellow-800 mb-2">
+                                Use placeholders like {'{chiefComplaint}'}, {'{age}'}, {'{sex}'}, etc. Changes save automatically.
+                              </p>
+                              <textarea
+                                value={editableTemplate}
+                                onChange={(e) => setEditableTemplate(e.target.value)}
+                                className="w-full h-96 px-3 py-2 border border-yellow-300 rounded-lg font-mono text-xs focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+                                spellCheck="false"
+                              />
+                            </div>
+                          )}
+
                           <div className="bg-white p-3 rounded border border-gray-200 max-h-96 overflow-y-auto">
                             <pre className="whitespace-pre-wrap text-xs text-gray-800 font-mono">
                               {generateTelestrokeNote()}
