@@ -3182,12 +3182,12 @@ Rizwan Kalani MD`);
                                       <span className={`font-bold text-lg ${
                                         tnkRemaining < 0.5 ? 'text-red-600' : tnkRemaining < 1 ? 'text-yellow-600' : 'text-green-600'
                                       }`}>
-                                        {Math.floor(tnkRemaining * 60)} min
+                                        {Math.floor(tnkRemaining)} hrs {Math.floor((tnkRemaining % 1) * 60)} min
                                       </span>
                                     )}
                                     {tnkRemaining <= 0 && (
                                       <span className="text-gray-600 text-xs font-semibold">
-                                        -{Math.floor(Math.abs(tnkRemaining) * 60)} min
+                                        -{Math.floor(Math.abs(tnkRemaining))} hrs {Math.floor((Math.abs(tnkRemaining) % 1) * 60)} min
                                       </span>
                                     )}
                                   </div>
@@ -3221,12 +3221,12 @@ Rizwan Kalani MD`);
                                       <span className={`font-bold text-lg ${
                                         evtEarlyRemaining < 0.5 ? 'text-red-600' : evtEarlyRemaining < 1 ? 'text-yellow-600' : 'text-blue-600'
                                       }`}>
-                                        {Math.floor(evtEarlyRemaining * 60)} min
+                                        {Math.floor(evtEarlyRemaining)} hrs {Math.floor((evtEarlyRemaining % 1) * 60)} min
                                       </span>
                                     )}
                                     {evtEarlyRemaining <= 0 && (
                                       <span className="text-gray-600 text-xs font-semibold">
-                                        -{Math.floor(Math.abs(evtEarlyRemaining) * 60)} min
+                                        -{Math.floor(Math.abs(evtEarlyRemaining))} hrs {Math.floor((Math.abs(evtEarlyRemaining) % 1) * 60)} min
                                       </span>
                                     )}
                                   </div>
