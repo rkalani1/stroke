@@ -2989,6 +2989,7 @@ TO DO:
                                   const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
                                   const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
                                   const nihss = telestrokeNote.nihss || nihssScore || "[score]";
+                                  const nihssDeficits = telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : "";
                                   const ctResults = telestrokeNote.ctResults || "[CT findings]";
                                   const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
                                   const ctpResults = telestrokeNote.ctpResults || "N/A";
@@ -2997,7 +2998,7 @@ TO DO:
                                   const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
                                   const rationale = telestrokeNote.rationale || "[rationale]";
 
-                                  const summary = `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale for Treatment Recommendation: ${rationale}.`;
+                                  const summary = `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale for Treatment Recommendation: ${rationale}.`;
                                   navigator.clipboard.writeText(summary);
                                   setCopiedText('pulsara-summary');
                                   setTimeout(() => setCopiedText(''), 2000);
@@ -3018,6 +3019,7 @@ TO DO:
                                 const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
                                 const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
                                 const nihss = telestrokeNote.nihss || nihssScore || "[score]";
+                                const nihssDeficits = telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : "";
                                 const ctResults = telestrokeNote.ctResults || "[CT findings]";
                                 const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
                                 const ctpResults = telestrokeNote.ctpResults || "N/A";
@@ -3026,7 +3028,7 @@ TO DO:
                                 const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
                                 const rationale = telestrokeNote.rationale || "[rationale]";
 
-                                return `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale for Treatment Recommendation: ${rationale}.`;
+                                return `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale for Treatment Recommendation: ${rationale}.`;
                               })()}
                             </p>
                           </div>
