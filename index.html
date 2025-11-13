@@ -4250,9 +4250,70 @@ Rizwan Kalani MD`);
                 {/* Evidence */}
                 {activeTab === 'evidence' && (
                   <div className="space-y-6">
+                    {/* AFib Section */}
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-3">Evidence-Based Guidelines</h3>
-                      <p className="text-sm text-gray-600">Coming soon: Key clinical trials, guidelines, and evidence summaries for stroke management.</p>
+                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Atrial Fibrillation & Stroke</h3>
+                      <div className="space-y-3">
+                        {/* Document 1 - PDF */}
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                          <div className="flex items-center gap-3 flex-1">
+                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <div className="flex-1">
+                              <h4 className="text-sm font-medium text-gray-900">AC timing after AF-related Stroke</h4>
+                              <p className="text-xs text-gray-500">PDF Document</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <a
+                              href="documents/afib/AC timing after AF-related Stroke.pdf"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              View
+                            </a>
+                            <a
+                              href="documents/afib/AC timing after AF-related Stroke.pdf"
+                              download
+                              className="px-3 py-2 bg-gray-600 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="download" className="w-4 h-4"></i>
+                              Download
+                            </a>
+                          </div>
+                        </div>
+
+                        {/* Document 2 - PPTX */}
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                          <div className="flex items-center gap-3 flex-1">
+                            <i data-lucide="presentation" className="w-6 h-6 text-orange-600"></i>
+                            <div className="flex-1">
+                              <h4 className="text-sm font-medium text-gray-900">AF & secondary stroke prevention July 2024</h4>
+                              <p className="text-xs text-gray-500">PowerPoint Presentation</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <a
+                              href="documents/afib/AF & secondary stroke prevention July 2024.pptx"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              View
+                            </a>
+                            <a
+                              href="documents/afib/AF & secondary stroke prevention July 2024.pptx"
+                              download
+                              className="px-3 py-2 bg-gray-600 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="download" className="w-4 h-4"></i>
+                              Download
+                            </a>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
