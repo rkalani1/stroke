@@ -12,7 +12,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Stroke CDS</title>
+    <title>stroke CDS</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js?v=20251016c"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js?v=20251016c"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js?v=20251016c"></script>
@@ -1925,7 +1925,7 @@ Rizwan Kalani MD`));
               // Load saved tab preference AFTER initial render
               try {
                 const savedTab = localStorage.getItem('activeTab');
-                const validTabs = ['encounter', 'ich', 'trials', 'calculators', 'protocols'];
+                const validTabs = ['encounter', 'ich', 'protocols', 'calculators', 'trials', 'evidence'];
                 if (savedTab && savedTab !== 'null' && savedTab !== 'undefined' && validTabs.includes(savedTab.replace(/"/g, ''))) {
                   setActiveTab(savedTab.replace(/"/g, ''));
                 }
@@ -2197,9 +2197,10 @@ TO DO:
                   {[
                     { id: 'encounter', name: '⚡ Encounter', icon: 'activity' },
                     { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
-                    { id: 'trials', name: 'Trials', icon: 'file-text' },
+                    { id: 'protocols', name: 'Management', icon: 'file-text' },
                     { id: 'calculators', name: 'Calculators', icon: 'calculator' },
-                    { id: 'protocols', name: 'Management', icon: 'file-text' }
+                    { id: 'trials', name: 'Trials', icon: 'file-text' },
+                    { id: 'evidence', name: 'Evidence', icon: 'file-text' }
                   ].map(tab => {
                     return (
                       <button
@@ -4246,6 +4247,16 @@ Rizwan Kalani MD`);
                   </div>
                 )}
 
+                {/* Evidence */}
+                {activeTab === 'evidence' && (
+                  <div className="space-y-6">
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-3">Evidence-Based Guidelines</h3>
+                      <p className="text-sm text-gray-600">Coming soon: Key clinical trials, guidelines, and evidence summaries for stroke management.</p>
+                    </div>
+                  </div>
+                )}
+
               </div>
 
               {/* Mobile Bottom Navigation - Only visible on small screens */}
@@ -4254,9 +4265,10 @@ Rizwan Kalani MD`);
                   {[
                     { id: 'encounter', name: 'Encounter', icon: 'activity' },
                     { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
-                    { id: 'trials', name: 'Trials', icon: 'file-text' },
+                    { id: 'protocols', name: 'Management', icon: 'file-text' },
                     { id: 'calculators', name: 'Calculators', icon: 'calculator' },
-                    { id: 'protocols', name: 'Management', icon: 'file-text' }
+                    { id: 'trials', name: 'Trials', icon: 'file-text' },
+                    { id: 'evidence', name: 'Evidence', icon: 'file-text' }
                   ].map((tab) => (
                     <button
                       key={tab.id}
