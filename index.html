@@ -3493,31 +3493,31 @@ Rizwan Kalani MD`);
 
                 {/* Risk Calculators */}
                 {activeTab === 'calculators' && (
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     {/* Glasgow Coma Scale */}
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                      <h3 className="text-base font-semibold text-gray-800 mb-2">
                         <Tooltip text="Glasgow Coma Scale - assesses level of consciousness based on eye, verbal, and motor responses">
                           Glasgow Coma Scale (GCS)
                         </Tooltip>
                       </h3>
 
-                      <div className="flex justify-end items-center gap-2 mb-4">
+                      <div className="flex justify-end items-center gap-2 mb-3">
                         <div className="text-right">
-                          <span className="text-2xl font-bold text-gray-600">Total Score: {calculateGCS(gcsItems)}</span>
-                          <div className="text-sm text-gray-500">Range: 3-15</div>
+                          <span className="text-xl font-bold text-gray-600">Score: {calculateGCS(gcsItems)}</span>
+                          <div className="text-xs text-gray-500">Range: 3-15</div>
                         </div>
                         <button
                           onClick={() => copyToClipboard(`GCS: ${calculateGCS(gcsItems)}`, 'GCS Score')}
-                          className="p-2 hover:bg-gray-100 rounded transition-colors"
+                          className="p-1.5 hover:bg-gray-100 rounded transition-colors"
                           aria-label="Copy GCS score to clipboard"
                           title="Copy to clipboard"
                         >
-                          <i data-lucide="copy" className="w-5 h-5 text-gray-600"></i>
+                          <i data-lucide="copy" className="w-4 h-4 text-gray-600"></i>
                         </button>
                       </div>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
                         <div className="space-y-2">
                           <h4 className="font-semibold">Eye Opening</h4>
                           <label className="flex items-center space-x-2">
@@ -3681,26 +3681,26 @@ Rizwan Kalani MD`);
                     </div>
 
                     {/* ICH Score */}
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-red-800 mb-3">
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                      <h3 className="text-base font-semibold text-red-800 mb-2">
                         <Tooltip text="Intracerebral Hemorrhage Score - predicts 30-day mortality after ICH">
                           ICH Score
                         </Tooltip>
                       </h3>
 
-                      <div className="flex justify-end items-center gap-2 mb-4">
-                        <span className="text-2xl font-bold text-red-600">Total Score: {calculateICHScore(ichScoreItems)}</span>
+                      <div className="flex justify-end items-center gap-2 mb-3">
+                        <span className="text-xl font-bold text-red-600">Score: {calculateICHScore(ichScoreItems)}</span>
                         <button
                           onClick={() => copyToClipboard(`ICH Score: ${calculateICHScore(ichScoreItems)}`, 'ICH Score')}
-                          className="p-2 hover:bg-red-100 rounded transition-colors"
+                          className="p-1.5 hover:bg-red-100 rounded transition-colors"
                           aria-label="Copy ICH score to clipboard"
                           title="Copy to clipboard"
                         >
-                          <i data-lucide="copy" className="w-5 h-5 text-red-600"></i>
+                          <i data-lucide="copy" className="w-4 h-4 text-red-600"></i>
                         </button>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
                         <div className="space-y-2">
                           <p className="font-semibold text-sm mb-2">Glasgow Coma Scale:</p>
                           <label className="flex items-center space-x-2 cursor-pointer">
@@ -3777,26 +3777,26 @@ Rizwan Kalani MD`);
                     </div>
 
                     {/* ABCD2 */}
-                    <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-orange-800 mb-3">
+                    <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                      <h3 className="text-base font-semibold text-orange-800 mb-2">
                         <Tooltip text="ABCD² Score - predicts stroke risk after TIA">
                           ABCD² Score
                         </Tooltip>
                       </h3>
 
-                      <div className="flex justify-end items-center gap-2 mb-4">
-                        <span className="text-2xl font-bold text-orange-600">Total Score: {calculateABCD2Score(abcd2Items)}</span>
+                      <div className="flex justify-end items-center gap-2 mb-3">
+                        <span className="text-xl font-bold text-orange-600">Score: {calculateABCD2Score(abcd2Items)}</span>
                         <button
                           onClick={() => copyToClipboard(`ABCD² Score: ${calculateABCD2Score(abcd2Items)}`, 'ABCD² Score')}
-                          className="p-2 hover:bg-orange-100 rounded transition-colors"
+                          className="p-1.5 hover:bg-orange-100 rounded transition-colors"
                           aria-label="Copy ABCD² score to clipboard"
                           title="Copy to clipboard"
                         >
-                          <i data-lucide="copy" className="w-5 h-5 text-orange-600"></i>
+                          <i data-lucide="copy" className="w-4 h-4 text-orange-600"></i>
                         </button>
                       </div>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
                         <div className="space-y-2">
                           <label className="flex items-center space-x-2">
                             <input 
@@ -3906,26 +3906,26 @@ Rizwan Kalani MD`);
                     </div>
 
                     {/* CHADS2-VASC */}
-                    <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-purple-800 mb-3">
+                    <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                      <h3 className="text-base font-semibold text-purple-800 mb-2">
                         <Tooltip text="CHA₂DS₂-VASc Score - predicts stroke risk in atrial fibrillation">
                           CHADS₂-VASc Score
                         </Tooltip>
                       </h3>
 
-                      <div className="flex justify-end items-center gap-2 mb-4">
-                        <span className="text-2xl font-bold text-purple-600">Total Score: {calculateCHADS2VascScore(chads2vascItems)}</span>
+                      <div className="flex justify-end items-center gap-2 mb-3">
+                        <span className="text-xl font-bold text-purple-600">Score: {calculateCHADS2VascScore(chads2vascItems)}</span>
                         <button
                           onClick={() => copyToClipboard(`CHADS₂-VASc: ${calculateCHADS2VascScore(chads2vascItems)}`, 'CHADS₂-VASc Score')}
-                          className="p-2 hover:bg-purple-100 rounded transition-colors"
+                          className="p-1.5 hover:bg-purple-100 rounded transition-colors"
                           aria-label="Copy CHADS₂-VASc score to clipboard"
                           title="Copy to clipboard"
                         >
-                          <i data-lucide="copy" className="w-5 h-5 text-purple-600"></i>
+                          <i data-lucide="copy" className="w-4 h-4 text-purple-600"></i>
                         </button>
                       </div>
 
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-2">
                         <label className="flex items-center space-x-2">
                           <input 
                             type="checkbox" 
@@ -4024,26 +4024,26 @@ Rizwan Kalani MD`);
                     </div>
 
                     {/* ROPE Score */}
-                    <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-teal-800 mb-3">
+                    <div className="bg-teal-50 border border-teal-200 rounded-lg p-3">
+                      <h3 className="text-base font-semibold text-teal-800 mb-2">
                         <Tooltip text="Risk of Paradoxical Embolism Score - estimates likelihood that PFO caused stroke">
                           ROPE Score
                         </Tooltip>
                       </h3>
 
-                      <div className="flex justify-end items-center gap-2 mb-4">
-                        <span className="text-2xl font-bold text-teal-600">Total Score: {calculateROPEScore(ropeItems)}</span>
+                      <div className="flex justify-end items-center gap-2 mb-3">
+                        <span className="text-xl font-bold text-teal-600">Score: {calculateROPEScore(ropeItems)}</span>
                         <button
                           onClick={() => copyToClipboard(`ROPE Score: ${calculateROPEScore(ropeItems)}`, 'ROPE Score')}
-                          className="p-2 hover:bg-teal-100 rounded transition-colors"
+                          className="p-1.5 hover:bg-teal-100 rounded transition-colors"
                           aria-label="Copy ROPE score to clipboard"
                           title="Copy to clipboard"
                         >
-                          <i data-lucide="copy" className="w-5 h-5 text-teal-600"></i>
+                          <i data-lucide="copy" className="w-4 h-4 text-teal-600"></i>
                         </button>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
                         <div className="space-y-2">
                           <label className="flex items-center space-x-2">
                             <input 
