@@ -258,9 +258,9 @@ Rizwan Kalani MD`));
           const [completedSteps, setCompletedSteps] = useState(loadFromStorage('completedSteps', []));
 
           const [gcsItems, setGcsItems] = useState(loadFromStorage('gcsItems', {
-            eye: 0,
-            verbal: 0,
-            motor: 0
+            eye: '',
+            verbal: '',
+            motor: ''
           }));
           const [ichScoreItems, setIchScoreItems] = useState(loadFromStorage('ichScoreItems', {
             gcs: '', // Changed to single field for mutual exclusivity
@@ -3521,41 +3521,45 @@ Rizwan Kalani MD`);
                         <div className="space-y-2">
                           <h4 className="font-semibold">Eye Opening</h4>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_eye" 
-                              value="4" 
+                            <input
+                              type="radio"
+                              name="gcs_eye"
+                              value="4"
                               className="text-gray-600"
+                              checked={gcsItems.eye === '4'}
                               onChange={(e) => setGcsItems({...gcsItems, eye: e.target.value})}
                             />
                             <span className="text-sm">4 - Spontaneous</span>
                           </label>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_eye" 
-                              value="3" 
+                            <input
+                              type="radio"
+                              name="gcs_eye"
+                              value="3"
                               className="text-gray-600"
+                              checked={gcsItems.eye === '3'}
                               onChange={(e) => setGcsItems({...gcsItems, eye: e.target.value})}
                             />
                             <span className="text-sm">3 - To sound</span>
                           </label>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_eye" 
-                              value="2" 
+                            <input
+                              type="radio"
+                              name="gcs_eye"
+                              value="2"
                               className="text-gray-600"
+                              checked={gcsItems.eye === '2'}
                               onChange={(e) => setGcsItems({...gcsItems, eye: e.target.value})}
                             />
                             <span className="text-sm">2 - To pain</span>
                           </label>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_eye" 
-                              value="1" 
+                            <input
+                              type="radio"
+                              name="gcs_eye"
+                              value="1"
                               className="text-gray-600"
+                              checked={gcsItems.eye === '1'}
                               onChange={(e) => setGcsItems({...gcsItems, eye: e.target.value})}
                             />
                             <span className="text-sm">1 - None</span>
@@ -3564,51 +3568,56 @@ Rizwan Kalani MD`);
                         <div className="space-y-2">
                           <h4 className="font-semibold">Verbal Response</h4>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_verbal" 
-                              value="5" 
+                            <input
+                              type="radio"
+                              name="gcs_verbal"
+                              value="5"
                               className="text-gray-600"
+                              checked={gcsItems.verbal === '5'}
                               onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
                             />
                             <span className="text-sm">5 - Oriented</span>
                           </label>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_verbal" 
-                              value="4" 
+                            <input
+                              type="radio"
+                              name="gcs_verbal"
+                              value="4"
                               className="text-gray-600"
+                              checked={gcsItems.verbal === '4'}
                               onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
                             />
                             <span className="text-sm">4 - Confused</span>
                           </label>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_verbal" 
-                              value="3" 
+                            <input
+                              type="radio"
+                              name="gcs_verbal"
+                              value="3"
                               className="text-gray-600"
+                              checked={gcsItems.verbal === '3'}
                               onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
                             />
                             <span className="text-sm">3 - Inappropriate</span>
                           </label>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_verbal" 
-                              value="2" 
+                            <input
+                              type="radio"
+                              name="gcs_verbal"
+                              value="2"
                               className="text-gray-600"
+                              checked={gcsItems.verbal === '2'}
                               onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
                             />
                             <span className="text-sm">2 - Incomprehensible</span>
                           </label>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_verbal" 
-                              value="1" 
+                            <input
+                              type="radio"
+                              name="gcs_verbal"
+                              value="1"
                               className="text-gray-600"
+                              checked={gcsItems.verbal === '1'}
                               onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
                             />
                             <span className="text-sm">1 - None</span>
@@ -3617,61 +3626,67 @@ Rizwan Kalani MD`);
                         <div className="space-y-2">
                           <h4 className="font-semibold">Motor Response</h4>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_motor" 
-                              value="6" 
+                            <input
+                              type="radio"
+                              name="gcs_motor"
+                              value="6"
                               className="text-gray-600"
+                              checked={gcsItems.motor === '6'}
                               onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
                             />
                             <span className="text-sm">6 - Obeying</span>
                           </label>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_motor" 
-                              value="5" 
+                            <input
+                              type="radio"
+                              name="gcs_motor"
+                              value="5"
                               className="text-gray-600"
+                              checked={gcsItems.motor === '5'}
                               onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
                             />
                             <span className="text-sm">5 - Localizing</span>
                           </label>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_motor" 
-                              value="4" 
+                            <input
+                              type="radio"
+                              name="gcs_motor"
+                              value="4"
                               className="text-gray-600"
+                              checked={gcsItems.motor === '4'}
                               onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
                             />
                             <span className="text-sm">4 - Flexing</span>
                           </label>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_motor" 
-                              value="3" 
+                            <input
+                              type="radio"
+                              name="gcs_motor"
+                              value="3"
                               className="text-gray-600"
+                              checked={gcsItems.motor === '3'}
                               onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
                             />
                             <span className="text-sm">3 - Abnormal flexion</span>
                           </label>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_motor" 
-                              value="2" 
+                            <input
+                              type="radio"
+                              name="gcs_motor"
+                              value="2"
                               className="text-gray-600"
+                              checked={gcsItems.motor === '2'}
                               onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
                             />
                             <span className="text-sm">2 - Extending</span>
                           </label>
                           <label className="flex items-center space-x-2">
-                            <input 
-                              type="radio" 
-                              name="gcs_motor" 
-                              value="1" 
+                            <input
+                              type="radio"
+                              name="gcs_motor"
+                              value="1"
                               className="text-gray-600"
+                              checked={gcsItems.motor === '1'}
                               onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
                             />
                             <span className="text-sm">1 - None</span>
