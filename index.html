@@ -250,9 +250,6 @@ Rizwan Kalani MD`));
           const [searchResults, setSearchResults] = useState([]);
           const [searchOpen, setSearchOpen] = useState(false);
 
-          // Mobile navigation
-          const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
-
           // Workflow tracking
           const [currentStep, setCurrentStep] = useState(loadFromStorage('currentStep', 0));
           const [completedSteps, setCompletedSteps] = useState(loadFromStorage('completedSteps', []));
@@ -1942,7 +1939,7 @@ Rizwan Kalani MD`));
             if (isMounted) {
               lucide.createIcons();
             }
-          }, [activeTab, copiedText, darkMode, searchOpen, mobileMoreOpen, isMounted]);
+          }, [activeTab, copiedText, darkMode, searchOpen, isMounted]);
 
           // Documentation generation functions
           const generateHPI = () => {
@@ -4378,64 +4375,8 @@ Rizwan Kalani MD`);
                       <span className="text-xs font-medium">{tab.name}</span>
                     </button>
                   ))}
-                  {/* More button */}
-                  <button
-                    onClick={() => setMobileMoreOpen(!mobileMoreOpen)}
-                    className={`flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all ${
-                      mobileMoreOpen ? 'text-blue-600 bg-blue-50' : 'text-gray-600'
-                    }`}
-                  >
-                    <i data-lucide="menu" className="w-6 h-6 mb-1"></i>
-                    <span className="text-xs font-medium">More</span>
-                  </button>
                 </div>
               </div>
-
-              {/* Mobile More Menu - Modal overlay */}
-              {mobileMoreOpen && (
-                <div className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => setMobileMoreOpen(false)}>
-                  <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-2xl max-h-96 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-                    <div className="p-4">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-bold text-gray-900">More Tabs</h3>
-                        <button
-                          onClick={() => setMobileMoreOpen(false)}
-                          className="p-2 hover:bg-gray-100 rounded-lg"
-                        >
-                          <i data-lucide="x" className="w-6 h-6"></i>
-                        </button>
-                      </div>
-                      <div className="grid grid-cols-2 gap-3">
-                        {[
-                          { id: 'workflow', name: 'Workflow', icon: 'check-circle' },
-                          { id: 'evt', name: 'EVT', icon: 'zap' },
-                          { id: 'documentation', name: 'Documentation', icon: 'file-text' },
-                          { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
-                          { id: 'trials', name: 'Trials', icon: 'flask' },
-                          { id: 'calculators', name: 'Calculators', icon: 'calculator' },
-                          { id: 'protocols', name: 'Management', icon: 'clipboard-list' }
-                        ].map((tab) => (
-                          <button
-                            key={tab.id}
-                            onClick={() => {
-                              setActiveTab(tab.id);
-                              setMobileMoreOpen(false);
-                            }}
-                            className={`flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all ${
-                              activeTab === tab.id
-                                ? 'border-blue-500 bg-blue-50 text-blue-600'
-                                : 'border-gray-200 bg-white text-gray-600 hover:border-blue-300'
-                            }`}
-                          >
-                            <i data-lucide={tab.icon} className="w-8 h-8 mb-2"></i>
-                            <span className="text-sm font-medium">{tab.name}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           );
         };
