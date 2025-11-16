@@ -4286,8 +4286,46 @@ Rizwan Kalani MD`);
                 )}
 
                 {/* Evidence */}
-                {activeTab === 'evidence' && (
+                                {activeTab === 'evidence' && (
                   <div className="space-y-6">
+
+
+                    {/* Antiplatelet Therapy Section */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Antiplatelet Therapy</h3>
+                      <div className="space-y-3">
+                        {/* Document 1 - DAPT Minor Stroke-TIA Trials */}
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                          <div className="flex items-center gap-3 flex-1">
+                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <div className="flex-1">
+                              <h4 className="text-sm font-medium text-gray-900">DAPT Minor Stroke-TIA Trials</h4>
+                              <p className="text-xs text-gray-500">PDF Document</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <a
+                              href="documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              View
+                            </a>
+                            <a
+                              href="documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf"
+                              download
+                              className="px-3 py-2 bg-gray-600 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="download" className="w-4 h-4"></i>
+                              Download
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     {/* AFib Section */}
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">Atrial Fibrillation</h3>
@@ -4354,71 +4392,6 @@ Rizwan Kalani MD`);
                       </div>
                     </div>
 
-                    {/* Exam Section */}
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Exam</h3>
-                      <div className="space-y-3">
-                        {/* Document 1 - Differentiating Delirium from Aphasia */}
-                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
-                          <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
-                            <div className="flex-1">
-                              <h4 className="text-sm font-medium text-gray-900">Differentiating Acute Confusional State (Delirium) from Aphasia</h4>
-                              <p className="text-xs text-gray-500">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            <a
-                              href="documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
-                            >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf"
-                              download
-                              className="px-3 py-2 bg-gray-600 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors flex items-center gap-1"
-                            >
-                              <i data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                          </div>
-                        </div>
-
-                        {/* Document 2 - Coma Exam */}
-                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
-                          <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
-                            <div className="flex-1">
-                              <h4 className="text-sm font-medium text-gray-900">Coma Exam</h4>
-                              <p className="text-xs text-gray-500">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            <a
-                              href="documents/exam/coma exam.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
-                            >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/exam/coma exam.pdf"
-                              download
-                              className="px-3 py-2 bg-gray-600 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors flex items-center gap-1"
-                            >
-                              <i data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
                     {/* Cerebral Small Vessel Disease Section */}
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
@@ -4456,77 +4429,6 @@ Rizwan Kalani MD`);
                       </div>
                     </div>
 
-                    {/* Large Artery Disease Section */}
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Large Artery Disease</h3>
-                      <div className="space-y-3">
-                        {/* Document 1 - Symptomatic Cervical Carotid Artery Stenosis */}
-                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
-                          <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
-                            <div className="flex-1">
-                              <h4 className="text-sm font-medium text-gray-900">Symptomatic Cervical Carotid Artery Stenosis</h4>
-                              <p className="text-xs text-gray-500">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            <a
-                              href="documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
-                            >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf"
-                              download
-                              className="px-3 py-2 bg-gray-600 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors flex items-center gap-1"
-                            >
-                              <i data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Epidemiology Section */}
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Epidemiology</h3>
-                      <div className="space-y-3">
-                        {/* Document 1 - Diabetes and stroke */}
-                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
-                          <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
-                            <div className="flex-1">
-                              <h4 className="text-sm font-medium text-gray-900">Diabetes and stroke</h4>
-                              <p className="text-xs text-gray-500">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            <a
-                              href="documents/epidemiology/Diabetes and stroke.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
-                            >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/epidemiology/Diabetes and stroke.pdf"
-                              download
-                              className="px-3 py-2 bg-gray-600 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors flex items-center gap-1"
-                            >
-                              <i data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
                     {/* EVT Section */}
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
@@ -4624,22 +4526,23 @@ Rizwan Kalani MD`);
                       </div>
                     </div>
 
-                    {/* Antiplatelet Therapy Section */}
+
+                    {/* Epidemiology Section */}
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Antiplatelet Therapy</h3>
+                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Epidemiology</h3>
                       <div className="space-y-3">
-                        {/* Document 1 - DAPT Minor Stroke-TIA Trials */}
+                        {/* Document 1 - Diabetes and stroke */}
                         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
                             <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
-                              <h4 className="text-sm font-medium text-gray-900">DAPT Minor Stroke-TIA Trials</h4>
+                              <h4 className="text-sm font-medium text-gray-900">Diabetes and stroke</h4>
                               <p className="text-xs text-gray-500">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex gap-2">
                             <a
-                              href="documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf"
+                              href="documents/epidemiology/Diabetes and stroke.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
@@ -4648,7 +4551,111 @@ Rizwan Kalani MD`);
                               View
                             </a>
                             <a
-                              href="documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf"
+                              href="documents/epidemiology/Diabetes and stroke.pdf"
+                              download
+                              className="px-3 py-2 bg-gray-600 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="download" className="w-4 h-4"></i>
+                              Download
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    {/* Exam Section */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Exam</h3>
+                      <div className="space-y-3">
+                        {/* Document 1 - Differentiating Delirium from Aphasia */}
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                          <div className="flex items-center gap-3 flex-1">
+                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <div className="flex-1">
+                              <h4 className="text-sm font-medium text-gray-900">Differentiating Acute Confusional State (Delirium) from Aphasia</h4>
+                              <p className="text-xs text-gray-500">PDF Document</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <a
+                              href="documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              View
+                            </a>
+                            <a
+                              href="documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf"
+                              download
+                              className="px-3 py-2 bg-gray-600 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="download" className="w-4 h-4"></i>
+                              Download
+                            </a>
+                          </div>
+                        </div>
+
+                        {/* Document 2 - Coma Exam */}
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                          <div className="flex items-center gap-3 flex-1">
+                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <div className="flex-1">
+                              <h4 className="text-sm font-medium text-gray-900">Coma Exam</h4>
+                              <p className="text-xs text-gray-500">PDF Document</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <a
+                              href="documents/exam/coma exam.pdf"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              View
+                            </a>
+                            <a
+                              href="documents/exam/coma exam.pdf"
+                              download
+                              className="px-3 py-2 bg-gray-600 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="download" className="w-4 h-4"></i>
+                              Download
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    {/* Large Artery Disease Section */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Large Artery Disease</h3>
+                      <div className="space-y-3">
+                        {/* Document 1 - Symptomatic Cervical Carotid Artery Stenosis */}
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                          <div className="flex items-center gap-3 flex-1">
+                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <div className="flex-1">
+                              <h4 className="text-sm font-medium text-gray-900">Symptomatic Cervical Carotid Artery Stenosis</h4>
+                              <p className="text-xs text-gray-500">PDF Document</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <a
+                              href="documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              View
+                            </a>
+                            <a
+                              href="documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf"
                               download
                               className="px-3 py-2 bg-gray-600 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors flex items-center gap-1"
                             >
