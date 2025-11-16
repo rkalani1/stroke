@@ -2197,7 +2197,8 @@ TO DO:
                     { id: 'protocols', name: 'Management', icon: 'file-text' },
                     { id: 'calculators', name: 'Calculators', icon: 'calculator' },
                     { id: 'trials', name: 'Trials', icon: 'file-text' },
-                    { id: 'evidence', name: 'Evidence', icon: 'file-text' }
+                    { id: 'evidence', name: 'Evidence', icon: 'file-text' },
+                    { id: 'regional', name: 'Regional Hospitals', icon: 'map' }
                   ].map(tab => {
                     return (
                       <button
@@ -4349,6 +4350,30 @@ Rizwan Kalani MD`);
                   </div>
                 )}
 
+                {/* Regional Hospitals */}
+                {activeTab === 'regional' && (
+                  <div className="space-y-4">
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                        <i data-lucide="map" className="w-5 h-5"></i>
+                        Regional Stroke Center Map
+                      </h3>
+                      <p className="text-sm text-gray-600 mb-4">
+                        Interactive map showing stroke center certifications across Washington, Idaho, Alaska, Montana, and Wyoming.
+                        Includes CSC, TSC, PSC, and ASR certified facilities with UW Medicine telestroke network partners.
+                      </p>
+                      <div className="w-full" style={{height: 'calc(100vh - 280px)', minHeight: '500px'}}>
+                        <iframe
+                          src="https://rkalani1.github.io/telestroke-expansion-map/"
+                          className="w-full h-full border-0 rounded-lg"
+                          title="Regional Stroke Center Map"
+                          allow="geolocation"
+                        ></iframe>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
               </div>
 
               {/* Mobile Bottom Navigation - Only visible on small screens */}
@@ -4360,7 +4385,8 @@ Rizwan Kalani MD`);
                     { id: 'protocols', name: 'Management', icon: 'file-text' },
                     { id: 'calculators', name: 'Calculators', icon: 'calculator' },
                     { id: 'trials', name: 'Trials', icon: 'file-text' },
-                    { id: 'evidence', name: 'Evidence', icon: 'file-text' }
+                    { id: 'evidence', name: 'Evidence', icon: 'file-text' },
+                    { id: 'regional', name: 'Hospitals', icon: 'map' }
                   ].map((tab) => (
                     <button
                       key={tab.id}
