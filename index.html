@@ -4591,6 +4591,122 @@ Rizwan Kalani MD`);
                       </div>
                     </details>
 
+                    {/* HAS-BLED Score */}
+                    <details className="bg-pink-50 border border-pink-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-pink-800 hover:bg-pink-100 rounded-lg flex items-center justify-between">
+                        <span>HAS-BLED Score</span>
+                        <span className="text-sm font-normal text-pink-600">Score: {calculateHASBLEDScore(hasbledItems)}</span>
+                      </summary>
+                      <div className="p-4">
+                        <div className="flex justify-end items-center gap-2 mb-3">
+                          <span className="text-xl font-bold text-pink-600">Score: {calculateHASBLEDScore(hasbledItems)}</span>
+                          <button
+                            onClick={() => copyToClipboard(`HAS-BLED: ${calculateHASBLEDScore(hasbledItems)}`, 'HAS-BLED Score')}
+                            className="p-1.5 hover:bg-pink-100 rounded transition-colors"
+                            aria-label="Copy HAS-BLED score to clipboard"
+                            title="Copy to clipboard"
+                          >
+                            <i data-lucide="copy" className="w-4 h-4 text-pink-600"></i>
+                          </button>
+                        </div>
+
+                        <div className="space-y-2 mb-4">
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.hypertension}
+                              onChange={(e) => setHasbledItems({...hasbledItems, hypertension: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>H</strong>ypertension (uncontrolled SBP &gt;160) (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.renalDisease}
+                              onChange={(e) => setHasbledItems({...hasbledItems, renalDisease: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>A</strong>bnormal renal function (dialysis, transplant, Cr &gt;2.6) (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.liverDisease}
+                              onChange={(e) => setHasbledItems({...hasbledItems, liverDisease: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>A</strong>bnormal liver function (cirrhosis, bilirubin &gt;2x, AST/ALT &gt;3x) (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.stroke}
+                              onChange={(e) => setHasbledItems({...hasbledItems, stroke: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>S</strong>troke history (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.bleeding}
+                              onChange={(e) => setHasbledItems({...hasbledItems, bleeding: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>B</strong>leeding history or predisposition (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.labileINR}
+                              onChange={(e) => setHasbledItems({...hasbledItems, labileINR: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>L</strong>abile INR (TTR &lt;60%) (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.elderly}
+                              onChange={(e) => setHasbledItems({...hasbledItems, elderly: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>E</strong>lderly (age &gt;65) (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.drugs}
+                              onChange={(e) => setHasbledItems({...hasbledItems, drugs: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>D</strong>rugs (antiplatelet agents, NSAIDs) (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.alcohol}
+                              onChange={(e) => setHasbledItems({...hasbledItems, alcohol: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>D</strong> (cont.) Alcohol use (≥8 drinks/week) (+1)</span>
+                          </label>
+                        </div>
+
+                        <div className="bg-white p-3 rounded border">
+                          <h4 className="font-semibold text-pink-700 mb-2">Annual Bleeding Risk</h4>
+                          <div className="text-sm space-y-1">
+                            <p className={calculateHASBLEDScore(hasbledItems) === 0 ? "font-bold text-pink-600" : ""}><strong>Score 0:</strong> 1.13% per year</p>
+                            <p className={calculateHASBLEDScore(hasbledItems) === 1 ? "font-bold text-pink-600" : ""}><strong>Score 1:</strong> 1.02% per year</p>
+                            <p className={calculateHASBLEDScore(hasbledItems) === 2 ? "font-bold text-pink-600" : ""}><strong>Score 2:</strong> 1.88% per year</p>
+                            <p className={calculateHASBLEDScore(hasbledItems) >= 3 ? "font-bold text-pink-600" : ""}><strong>Score ≥3:</strong> 3.74% per year (high risk)</p>
+                          </div>
+                          <p className="text-xs text-gray-600 mt-2 italic">High risk (≥3) indicates need for more frequent monitoring and caution with anticoagulation, but should not automatically exclude from treatment.</p>
+                        </div>
+                      </div>
+                    </details>
+
                     {/* ROPE Score */}
                     <details className="bg-teal-50 border border-teal-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-teal-800 hover:bg-teal-100 rounded-lg flex items-center justify-between">
@@ -4731,21 +4847,82 @@ Rizwan Kalani MD`);
                       </div>
                     </details>
 
-                    {/* PREVENT 10-year ASCVD Risk */}
-                    <details className="bg-rose-50 border border-rose-200 rounded-lg">
-                      <summary className="cursor-pointer p-3 font-semibold text-rose-800 hover:bg-rose-100 rounded-lg">
-                        PREVENT 10-year ASCVD Risk Estimate
+
+                    {/* RCVS2 Score */}
+                    <details className="bg-cyan-50 border border-cyan-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-cyan-800 hover:bg-cyan-100 rounded-lg flex items-center justify-between">
+                        <span>RCVS² Score</span>
+                        <span className="text-sm font-normal text-cyan-600">Score: {calculateRCVS2Score(rcvs2Items)}</span>
                       </summary>
                       <div className="p-4">
-                        <div className="bg-white p-4 rounded border">
-                        <a 
-                          href="https://professional.heart.org/en/guidelines-and-statements/prevent-calculator" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center px-4 py-2 bg-rose-600 text-white rounded-md hover:bg-rose-700 transition-colors text-sm font-medium"
-                        >
-                          Open PREVENT Calculator →
-                        </a>
+                        <div className="flex justify-end items-center gap-2 mb-3">
+                          <span className="text-xl font-bold text-cyan-600">Score: {calculateRCVS2Score(rcvs2Items)}</span>
+                          <button
+                            onClick={() => copyToClipboard(`RCVS² Score: ${calculateRCVS2Score(rcvs2Items)}`, 'RCVS² Score')}
+                            className="p-1.5 hover:bg-cyan-100 rounded transition-colors"
+                            aria-label="Copy RCVS² score to clipboard"
+                            title="Copy to clipboard"
+                          >
+                            <i data-lucide="copy" className="w-4 h-4 text-cyan-600"></i>
+                          </button>
+                        </div>
+
+                        <div className="space-y-2 mb-4">
+                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-cyan-600"
+                              checked={rcvs2Items.recurrentTCH}
+                              onChange={(e) => setRcvs2Items({...rcvs2Items, recurrentTCH: e.target.checked})}
+                            />
+                            <span className="text-sm">Recurrent thunderclap headaches (+5)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-cyan-600"
+                              checked={rcvs2Items.carotidInvolvement}
+                              onChange={(e) => setRcvs2Items({...rcvs2Items, carotidInvolvement: e.target.checked})}
+                            />
+                            <span className="text-sm">Intracranial carotid artery involvement (+3)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-cyan-600"
+                              checked={rcvs2Items.vasoconstrictiveTrigger}
+                              onChange={(e) => setRcvs2Items({...rcvs2Items, vasoconstrictiveTrigger: e.target.checked})}
+                            />
+                            <span className="text-sm">Vasoconstrictive trigger exposure (+2)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-cyan-600"
+                              checked={rcvs2Items.female}
+                              onChange={(e) => setRcvs2Items({...rcvs2Items, female: e.target.checked})}
+                            />
+                            <span className="text-sm">Female sex (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-cyan-600"
+                              checked={rcvs2Items.sah}
+                              onChange={(e) => setRcvs2Items({...rcvs2Items, sah: e.target.checked})}
+                            />
+                            <span className="text-sm">Subarachnoid hemorrhage on imaging (-2)</span>
+                          </label>
+                        </div>
+
+                        <div className="bg-white p-3 rounded border">
+                          <h4 className="font-semibold text-cyan-700 mb-2">RCVS Probability</h4>
+                          <div className="text-sm space-y-1">
+                            <p className={calculateRCVS2Score(rcvs2Items) < 2 ? "font-bold text-cyan-600" : ""}><strong>Score &lt;2:</strong> Low probability of RCVS</p>
+                            <p className={calculateRCVS2Score(rcvs2Items) >= 2 && calculateRCVS2Score(rcvs2Items) <= 4 ? "font-bold text-cyan-600" : ""}><strong>Score 2-4:</strong> Intermediate probability</p>
+                            <p className={calculateRCVS2Score(rcvs2Items) >= 5 ? "font-bold text-cyan-600" : ""}><strong>Score ≥5:</strong> High probability of RCVS</p>
+                          </div>
+                          <p className="text-xs text-gray-600 mt-2 italic">RCVS² score helps distinguish RCVS from other causes of thunderclap headache. Consider vascular imaging and repeat imaging in 2-4 weeks if high suspicion.</p>
                         </div>
                       </div>
                     </details>
@@ -4915,197 +5092,21 @@ Rizwan Kalani MD`);
                       </div>
                     </details>
 
-                    {/* HAS-BLED Score */}
-                    <details className="bg-pink-50 border border-pink-200 rounded-lg">
-                      <summary className="cursor-pointer p-3 font-semibold text-pink-800 hover:bg-pink-100 rounded-lg flex items-center justify-between">
-                        <span>HAS-BLED Score</span>
-                        <span className="text-sm font-normal text-pink-600">Score: {calculateHASBLEDScore(hasbledItems)}</span>
+                    {/* PREVENT 10-year ASCVD Risk */}
+                    <details className="bg-rose-50 border border-rose-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-rose-800 hover:bg-rose-100 rounded-lg">
+                        PREVENT 10-year ASCVD Risk Estimate
                       </summary>
                       <div className="p-4">
-                        <div className="flex justify-end items-center gap-2 mb-3">
-                          <span className="text-xl font-bold text-pink-600">Score: {calculateHASBLEDScore(hasbledItems)}</span>
-                          <button
-                            onClick={() => copyToClipboard(`HAS-BLED: ${calculateHASBLEDScore(hasbledItems)}`, 'HAS-BLED Score')}
-                            className="p-1.5 hover:bg-pink-100 rounded transition-colors"
-                            aria-label="Copy HAS-BLED score to clipboard"
-                            title="Copy to clipboard"
-                          >
-                            <i data-lucide="copy" className="w-4 h-4 text-pink-600"></i>
-                          </button>
-                        </div>
-
-                        <div className="space-y-2 mb-4">
-                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="text-pink-600"
-                              checked={hasbledItems.hypertension}
-                              onChange={(e) => setHasbledItems({...hasbledItems, hypertension: e.target.checked})}
-                            />
-                            <span className="text-sm"><strong>H</strong>ypertension (uncontrolled SBP &gt;160) (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="text-pink-600"
-                              checked={hasbledItems.renalDisease}
-                              onChange={(e) => setHasbledItems({...hasbledItems, renalDisease: e.target.checked})}
-                            />
-                            <span className="text-sm"><strong>A</strong>bnormal renal function (dialysis, transplant, Cr &gt;2.6) (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="text-pink-600"
-                              checked={hasbledItems.liverDisease}
-                              onChange={(e) => setHasbledItems({...hasbledItems, liverDisease: e.target.checked})}
-                            />
-                            <span className="text-sm"><strong>A</strong>bnormal liver function (cirrhosis, bilirubin &gt;2x, AST/ALT &gt;3x) (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="text-pink-600"
-                              checked={hasbledItems.stroke}
-                              onChange={(e) => setHasbledItems({...hasbledItems, stroke: e.target.checked})}
-                            />
-                            <span className="text-sm"><strong>S</strong>troke history (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="text-pink-600"
-                              checked={hasbledItems.bleeding}
-                              onChange={(e) => setHasbledItems({...hasbledItems, bleeding: e.target.checked})}
-                            />
-                            <span className="text-sm"><strong>B</strong>leeding history or predisposition (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="text-pink-600"
-                              checked={hasbledItems.labileINR}
-                              onChange={(e) => setHasbledItems({...hasbledItems, labileINR: e.target.checked})}
-                            />
-                            <span className="text-sm"><strong>L</strong>abile INR (TTR &lt;60%) (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="text-pink-600"
-                              checked={hasbledItems.elderly}
-                              onChange={(e) => setHasbledItems({...hasbledItems, elderly: e.target.checked})}
-                            />
-                            <span className="text-sm"><strong>E</strong>lderly (age &gt;65) (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="text-pink-600"
-                              checked={hasbledItems.drugs}
-                              onChange={(e) => setHasbledItems({...hasbledItems, drugs: e.target.checked})}
-                            />
-                            <span className="text-sm"><strong>D</strong>rugs (antiplatelet agents, NSAIDs) (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="text-pink-600"
-                              checked={hasbledItems.alcohol}
-                              onChange={(e) => setHasbledItems({...hasbledItems, alcohol: e.target.checked})}
-                            />
-                            <span className="text-sm"><strong>D</strong> (cont.) Alcohol use (≥8 drinks/week) (+1)</span>
-                          </label>
-                        </div>
-
-                        <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold text-pink-700 mb-2">Annual Bleeding Risk</h4>
-                          <div className="text-sm space-y-1">
-                            <p className={calculateHASBLEDScore(hasbledItems) === 0 ? "font-bold text-pink-600" : ""}><strong>Score 0:</strong> 1.13% per year</p>
-                            <p className={calculateHASBLEDScore(hasbledItems) === 1 ? "font-bold text-pink-600" : ""}><strong>Score 1:</strong> 1.02% per year</p>
-                            <p className={calculateHASBLEDScore(hasbledItems) === 2 ? "font-bold text-pink-600" : ""}><strong>Score 2:</strong> 1.88% per year</p>
-                            <p className={calculateHASBLEDScore(hasbledItems) >= 3 ? "font-bold text-pink-600" : ""}><strong>Score ≥3:</strong> 3.74% per year (high risk)</p>
-                          </div>
-                          <p className="text-xs text-gray-600 mt-2 italic">High risk (≥3) indicates need for more frequent monitoring and caution with anticoagulation, but should not automatically exclude from treatment.</p>
-                        </div>
-                      </div>
-                    </details>
-
-                    {/* RCVS2 Score */}
-                    <details className="bg-cyan-50 border border-cyan-200 rounded-lg">
-                      <summary className="cursor-pointer p-3 font-semibold text-cyan-800 hover:bg-cyan-100 rounded-lg flex items-center justify-between">
-                        <span>RCVS² Score</span>
-                        <span className="text-sm font-normal text-cyan-600">Score: {calculateRCVS2Score(rcvs2Items)}</span>
-                      </summary>
-                      <div className="p-4">
-                        <div className="flex justify-end items-center gap-2 mb-3">
-                          <span className="text-xl font-bold text-cyan-600">Score: {calculateRCVS2Score(rcvs2Items)}</span>
-                          <button
-                            onClick={() => copyToClipboard(`RCVS² Score: ${calculateRCVS2Score(rcvs2Items)}`, 'RCVS² Score')}
-                            className="p-1.5 hover:bg-cyan-100 rounded transition-colors"
-                            aria-label="Copy RCVS² score to clipboard"
-                            title="Copy to clipboard"
-                          >
-                            <i data-lucide="copy" className="w-4 h-4 text-cyan-600"></i>
-                          </button>
-                        </div>
-
-                        <div className="space-y-2 mb-4">
-                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="text-cyan-600"
-                              checked={rcvs2Items.recurrentTCH}
-                              onChange={(e) => setRcvs2Items({...rcvs2Items, recurrentTCH: e.target.checked})}
-                            />
-                            <span className="text-sm">Recurrent thunderclap headaches (+5)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="text-cyan-600"
-                              checked={rcvs2Items.carotidInvolvement}
-                              onChange={(e) => setRcvs2Items({...rcvs2Items, carotidInvolvement: e.target.checked})}
-                            />
-                            <span className="text-sm">Intracranial carotid artery involvement (+3)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="text-cyan-600"
-                              checked={rcvs2Items.vasoconstrictiveTrigger}
-                              onChange={(e) => setRcvs2Items({...rcvs2Items, vasoconstrictiveTrigger: e.target.checked})}
-                            />
-                            <span className="text-sm">Vasoconstrictive trigger exposure (+2)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="text-cyan-600"
-                              checked={rcvs2Items.female}
-                              onChange={(e) => setRcvs2Items({...rcvs2Items, female: e.target.checked})}
-                            />
-                            <span className="text-sm">Female sex (+1)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="text-cyan-600"
-                              checked={rcvs2Items.sah}
-                              onChange={(e) => setRcvs2Items({...rcvs2Items, sah: e.target.checked})}
-                            />
-                            <span className="text-sm">Subarachnoid hemorrhage on imaging (-2)</span>
-                          </label>
-                        </div>
-
-                        <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold text-cyan-700 mb-2">RCVS Probability</h4>
-                          <div className="text-sm space-y-1">
-                            <p className={calculateRCVS2Score(rcvs2Items) < 2 ? "font-bold text-cyan-600" : ""}><strong>Score &lt;2:</strong> Low probability of RCVS</p>
-                            <p className={calculateRCVS2Score(rcvs2Items) >= 2 && calculateRCVS2Score(rcvs2Items) <= 4 ? "font-bold text-cyan-600" : ""}><strong>Score 2-4:</strong> Intermediate probability</p>
-                            <p className={calculateRCVS2Score(rcvs2Items) >= 5 ? "font-bold text-cyan-600" : ""}><strong>Score ≥5:</strong> High probability of RCVS</p>
-                          </div>
-                          <p className="text-xs text-gray-600 mt-2 italic">RCVS² score helps distinguish RCVS from other causes of thunderclap headache. Consider vascular imaging and repeat imaging in 2-4 weeks if high suspicion.</p>
+                        <div className="bg-white p-4 rounded border">
+                        <a 
+                          href="https://professional.heart.org/en/guidelines-and-statements/prevent-calculator" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center px-4 py-2 bg-rose-600 text-white rounded-md hover:bg-rose-700 transition-colors text-sm font-medium"
+                        >
+                          Open PREVENT Calculator →
+                        </a>
                         </div>
                       </div>
                     </details>
