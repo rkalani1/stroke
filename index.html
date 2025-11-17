@@ -1675,6 +1675,41 @@ Rizwan Kalani MD`));
               }
             });
 
+            // Search in Evidence documents
+            const evidenceDocuments = [
+              { title: 'DAPT Minor Stroke-TIA Trials', section: 'Antiplatelet Therapy', keywords: ['dapt', 'antiplatelet', 'tia', 'minor stroke'] },
+              { title: 'Timing of Anticoagulation after AF-Related Stroke', section: 'Risk Factors', keywords: ['anticoagulation', 'atrial fibrillation', 'afib', 'timing'] },
+              { title: 'Atrial Fibrillation & Secondary Stroke Prevention', section: 'Risk Factors', keywords: ['afib', 'atrial fibrillation', 'prevention'] },
+              { title: 'Diabetes and stroke', section: 'Risk Factors', keywords: ['diabetes', 'risk factor', 'dm'] },
+              { title: 'Lipids and Cerebrovascular Disease', section: 'Risk Factors', keywords: ['lipids', 'cholesterol', 'statins', 'ldl'] },
+              { title: 'Lacunar Stroke', section: 'Cerebral Small Vessel Disease', keywords: ['lacunar', 'small vessel', 'csvd'] },
+              { title: 'Symptomatic Cervical Carotid Artery Stenosis', section: 'Large Artery Disease', keywords: ['carotid', 'stenosis', 'endarterectomy', 'cea', 'cas'] },
+              { title: 'Differentiating Acute Confusional State (Delirium) from Aphasia', section: 'Exam', keywords: ['delirium', 'aphasia', 'confusion', 'exam'] },
+              { title: 'Coma Exam', section: 'Exam', keywords: ['coma', 'exam', 'consciousness'] },
+              { title: 'Large Core Anteior Circulation LVO EVT Trials', section: 'EVT', keywords: ['large core', 'lvo', 'thrombectomy', 'evt'] },
+              { title: 'Basilar Artery Occlusion EVT Trials', section: 'EVT', keywords: ['basilar', 'posterior circulation', 'evt'] },
+              { title: 'MeVO & Distal Vessel Occlusion EVT Trials', section: 'EVT', keywords: ['mevo', 'distal', 'medium vessel'] },
+              { title: 'Unruptured Cerebral Aneurysms', section: 'Aneurysms & Vascular Malformations', keywords: ['aneurysm', 'unruptured', 'sah'] },
+              { title: 'Interpretation of Clinical Trials', section: 'EBM', keywords: ['ebm', 'clinical trials', 'evidence', 'statistics'] }
+            ];
+
+            evidenceDocuments.forEach(doc => {
+              if (doc.title.toLowerCase().includes(lowerQuery) ||
+                  doc.section.toLowerCase().includes(lowerQuery) ||
+                  doc.keywords.some(k => k.toLowerCase().includes(lowerQuery))) {
+                results.push({
+                  type: 'Evidence',
+                  title: doc.title,
+                  description: `${doc.section} section`,
+                  action: () => {
+                    setActiveTab('evidence');
+                    setSearchOpen(false);
+                    setSearchQuery('');
+                  }
+                });
+              }
+            });
+
             setSearchResults(results.slice(0, 10)); // Limit to 10 results
           };
 
@@ -2073,7 +2108,7 @@ TO DO:
                     <div className="relative">
                       <input
                         type="text"
-                        placeholder="Search trials, protocols..."
+                        placeholder="Search trials, calculators, evidence..."
                         value={searchQuery}
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
