@@ -251,6 +251,7 @@ Rizwan Kalani MD`));
           const [searchResults, setSearchResults] = useState([]);
           const [searchOpen, setSearchOpen] = useState(false);
           const [evidenceFilter, setEvidenceFilter] = useState('');
+          const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
 
           // Workflow tracking
           const [currentStep, setCurrentStep] = useState(loadFromStorage('currentStep', 0));
@@ -2081,6 +2082,64 @@ TO DO:
 - Start ASA/statin after 24h if tPA given`;
           };
 
+          // Keyboard shortcuts
+          React.useEffect(() => {
+            const handleKeyDown = (e) => {
+              // Ignore if user is typing in an input/textarea
+              if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+                return;
+              }
+
+              // Cmd/Ctrl + K: Open search
+              if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                setSearchOpen(true);
+                document.querySelector('input[placeholder*="Search"]')?.focus();
+              }
+
+              // Escape: Close search/modals
+              if (e.key === 'Escape') {
+                setSearchOpen(false);
+              }
+
+              // Number keys 1-6 for tab navigation
+              const tabMap = {
+                '1': 'encounter',
+                '2': 'ich',
+                '3': 'protocols',
+                '4': 'calculators',
+                '5': 'trials',
+                '6': 'evidence'
+              };
+
+              if (tabMap[e.key] && !e.metaKey && !e.ctrlKey && !e.altKey) {
+                e.preventDefault();
+                setActiveTab(tabMap[e.key]);
+              }
+
+              // Ctrl/Cmd + E: Export to PDF
+              if ((e.metaKey || e.ctrlKey) && e.key === 'e') {
+                e.preventDefault();
+                handleExportPDF();
+              }
+
+              // Ctrl/Cmd + D: Toggle dark mode
+              if ((e.metaKey || e.ctrlKey) && e.key === 'd') {
+                e.preventDefault();
+                toggleDarkMode();
+              }
+
+              // ? key: Show keyboard shortcuts help
+              if (e.key === '?' && !e.metaKey && !e.ctrlKey) {
+                e.preventDefault();
+                setShowKeyboardHelp(prev => !prev);
+              }
+            };
+
+            window.addEventListener('keydown', handleKeyDown);
+            return () => window.removeEventListener('keydown', handleKeyDown);
+          }, []);
+
           return (
             <div className={`max-w-7xl mx-auto p-3 sm:p-6 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
               {/* Header */}
@@ -2199,6 +2258,84 @@ TO DO:
                   </div>
                 )}
               </div>
+
+              {/* Keyboard Shortcuts Help Modal */}
+              {showKeyboardHelp && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={() => setShowKeyboardHelp(false)}>
+                  <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex justify-between items-center mb-4">
+                      <h2 className="text-2xl font-bold text-gray-900">Keyboard Shortcuts</h2>
+                      <button
+                        onClick={() => setShowKeyboardHelp(false)}
+                        className="text-gray-500 hover:text-gray-700"
+                        aria-label="Close keyboard shortcuts"
+                      >
+                        <i data-lucide="x" className="w-6 h-6"></i>
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-3">
+                        <h3 className="font-semibold text-gray-800 mb-2">Navigation</h3>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">Encounter Tab</span>
+                          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">1</kbd>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">ICH Tab</span>
+                          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">2</kbd>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">Management Tab</span>
+                          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">3</kbd>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">Calculators Tab</span>
+                          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">4</kbd>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">Trials Tab</span>
+                          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">5</kbd>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">Evidence Tab</span>
+                          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">6</kbd>
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        <h3 className="font-semibold text-gray-800 mb-2">Actions</h3>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">Open Search</span>
+                          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">⌘K / Ctrl+K</kbd>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">Export to PDF</span>
+                          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">⌘E / Ctrl+E</kbd>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">Toggle Dark Mode</span>
+                          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">⌘D / Ctrl+D</kbd>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">Close Modals</span>
+                          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">Esc</kbd>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">Show This Help</span>
+                          <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">?</kbd>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-6 text-center">
+                      <button
+                        onClick={() => setShowKeyboardHelp(false)}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        Got it!
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Critical Alerts Banner */}
               {criticalAlerts.length > 0 && (
