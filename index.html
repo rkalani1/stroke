@@ -368,6 +368,26 @@ Rizwan Kalani MD`));
             cortical: false,
             age: ''
           }));
+          const [huntHessGrade, setHuntHessGrade] = useState(loadFromStorage('huntHessGrade', ''));
+          const [wfnsGrade, setWfnsGrade] = useState(loadFromStorage('wfnsGrade', ''));
+          const [hasbledItems, setHasbledItems] = useState(loadFromStorage('hasbledItems', {
+            hypertension: false,
+            renalDisease: false,
+            liverDisease: false,
+            stroke: false,
+            bleeding: false,
+            labileINR: false,
+            elderly: false,
+            drugs: false,
+            alcohol: false
+          }));
+          const [rcvs2Items, setRcvs2Items] = useState(loadFromStorage('rcvs2Items', {
+            recurrentTCH: false,
+            carotidInvolvement: false,
+            vasoconstrictiveTrigger: false,
+            female: false,
+            sah: false
+          }));
           const [trialsCategory, setTrialsCategory] = useState('ischemic');
 
           const [strokeCodeForm, setStrokeCodeForm] = useState(loadFromStorage('strokeCodeForm', {
@@ -1349,7 +1369,7 @@ Rizwan Kalani MD`));
             if (items.noStrokeTia) score += 1;
             if (items.nonsmoker) score += 1;
             if (items.cortical) score += 1;
-            
+
             // Age points
             const age = parseInt(items.age) || 0;
             if (age >= 18 && age <= 29) score += 5;
@@ -1358,7 +1378,33 @@ Rizwan Kalani MD`));
             else if (age >= 50 && age <= 59) score += 2;
             else if (age >= 60 && age <= 69) score += 1;
             // 70+ years gets 0 points
-            
+
+            return score;
+          };
+
+          // Calculate HAS-BLED score
+          const calculateHASBLEDScore = (items) => {
+            let score = 0;
+            if (items.hypertension) score += 1;
+            if (items.renalDisease) score += 1;
+            if (items.liverDisease) score += 1;
+            if (items.stroke) score += 1;
+            if (items.bleeding) score += 1;
+            if (items.labileINR) score += 1;
+            if (items.elderly) score += 1;
+            if (items.drugs) score += 1;
+            if (items.alcohol) score += 1;
+            return score;
+          };
+
+          // Calculate RCVS2 score
+          const calculateRCVS2Score = (items) => {
+            let score = 0;
+            if (items.recurrentTCH) score += 5;
+            if (items.carotidInvolvement) score += 3;
+            if (items.vasoconstrictiveTrigger) score += 2;
+            if (items.female) score += 1;
+            if (items.sah) score -= 2;
             return score;
           };
 
@@ -1769,6 +1815,10 @@ Rizwan Kalani MD`));
               { name: 'CHA₂DS₂-VASc', keywords: ['chads', 'afib', 'atrial fibrillation', 'anticoagulation'], tab: 'calculators' },
               { name: 'ROPE Score', keywords: ['rope', 'pfo', 'paradoxical'], tab: 'calculators' },
               { name: 'Modified Rankin Scale (mRS)', keywords: ['mrs', 'rankin', 'disability', 'outcome', 'functional status'], tab: 'calculators' },
+              { name: 'Hunt and Hess Scale', keywords: ['hunt', 'hess', 'sah', 'subarachnoid', 'hemorrhage', 'grading'], tab: 'calculators' },
+              { name: 'WFNS Scale', keywords: ['wfns', 'world federation', 'neurosurgical', 'sah', 'subarachnoid'], tab: 'calculators' },
+              { name: 'HAS-BLED Score', keywords: ['hasbled', 'has-bled', 'bleeding', 'risk', 'anticoagulation'], tab: 'calculators' },
+              { name: 'RCVS² Score', keywords: ['rcvs', 'rcvs2', 'vasoconstriction', 'thunderclap', 'headache'], tab: 'calculators' },
               { name: 'Blood Pressure Management', keywords: ['bp', 'blood pressure', 'labetalol', 'nicardipine'], tab: 'protocols' }
             ];
 
@@ -1877,16 +1927,22 @@ Rizwan Kalani MD`));
               { id: 'PCA-R', name: 'Right Occipital Lobe (PCA Territory)', checked: true, points: 1 }
             ]);
             setGcsItems({ eye: 0, verbal: 0, motor: 0 });
+            setMrsScore('');
             setIchScoreItems({ gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false });
             setAbcd2Items({ age60: false, bp: false, unilateralWeakness: false, speechDisturbance: false, duration: '', diabetes: false });
             setChads2vascItems({ chf: false, hypertension: false, age75: false, diabetes: false, strokeTia: false, vascular: false, age65: false, female: false });
             setRopeItems({ noHypertension: false, noDiabetes: false, noStrokeTia: false, nonsmoker: false, cortical: false, age: '' });
+            setHuntHessGrade('');
+            setWfnsGrade('');
+            setHasbledItems({ hypertension: false, renalDisease: false, liverDisease: false, stroke: false, bleeding: false, labileINR: false, elderly: false, drugs: false, alcohol: false });
+            setRcvs2Items({ recurrentTCH: false, carotidInvolvement: false, vasoconstrictiveTrigger: false, female: false, sah: false });
             setCurrentStep(0);
             setCompletedSteps([]);
 
             // Clear localStorage for patient data
-            const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'ichScoreItems',
-                                   'abcd2Items', 'chads2vascItems', 'ropeItems', 'strokeCodeForm', 'lkwTime',
+            const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',
+                                   'abcd2Items', 'chads2vascItems', 'ropeItems', 'huntHessGrade', 'wfnsGrade',
+                                   'hasbledItems', 'rcvs2Items', 'strokeCodeForm', 'lkwTime',
                                    'currentStep', 'completedSteps', 'aspectsRegionState', 'pcAspectsRegions'];
             keysToRemove.forEach(key => localStorage.removeItem(key));
 
@@ -1929,6 +1985,10 @@ Rizwan Kalani MD`));
           }, [gcsItems]);
 
           useEffect(() => {
+            debouncedSave('mrsScore', mrsScore);
+          }, [mrsScore]);
+
+          useEffect(() => {
             debouncedSave('ichScoreItems', ichScoreItems);
           }, [ichScoreItems]);
 
@@ -1943,6 +2003,22 @@ Rizwan Kalani MD`));
           useEffect(() => {
             debouncedSave('ropeItems', ropeItems);
           }, [ropeItems]);
+
+          useEffect(() => {
+            debouncedSave('huntHessGrade', huntHessGrade);
+          }, [huntHessGrade]);
+
+          useEffect(() => {
+            debouncedSave('wfnsGrade', wfnsGrade);
+          }, [wfnsGrade]);
+
+          useEffect(() => {
+            debouncedSave('hasbledItems', hasbledItems);
+          }, [hasbledItems]);
+
+          useEffect(() => {
+            debouncedSave('rcvs2Items', rcvs2Items);
+          }, [rcvs2Items]);
 
           useEffect(() => {
             debouncedSave('strokeCodeForm', strokeCodeForm);
@@ -4670,6 +4746,366 @@ Rizwan Kalani MD`);
                         >
                           Open PREVENT Calculator →
                         </a>
+                        </div>
+                      </div>
+                    </details>
+
+                    {/* Hunt and Hess Scale / WFNS Scale */}
+                    <details className="bg-amber-50 border border-amber-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-amber-800 hover:bg-amber-100 rounded-lg flex items-center justify-between">
+                        <span>Hunt and Hess / WFNS Scale (SAH Grading)</span>
+                        <span className="text-sm font-normal text-amber-600">H&H: {huntHessGrade || 'Not Selected'} | WFNS: {wfnsGrade || 'Not Selected'}</span>
+                      </summary>
+                      <div className="p-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {/* Hunt and Hess Scale */}
+                          <div className="space-y-3">
+                            <h4 className="text-base font-semibold text-amber-800 mb-2">Hunt and Hess Scale</h4>
+                            <div className="space-y-2">
+                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name="huntHess"
+                                  value="1"
+                                  checked={huntHessGrade === '1'}
+                                  onChange={(e) => setHuntHessGrade(e.target.value)}
+                                  className="mt-1 text-amber-600"
+                                />
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-900">Grade 1</div>
+                                  <div className="text-sm text-gray-600">Asymptomatic or mild headache</div>
+                                </div>
+                              </label>
+                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name="huntHess"
+                                  value="2"
+                                  checked={huntHessGrade === '2'}
+                                  onChange={(e) => setHuntHessGrade(e.target.value)}
+                                  className="mt-1 text-amber-600"
+                                />
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-900">Grade 2</div>
+                                  <div className="text-sm text-gray-600">Moderate-severe headache, nuchal rigidity, no deficit (except CN palsy)</div>
+                                </div>
+                              </label>
+                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name="huntHess"
+                                  value="3"
+                                  checked={huntHessGrade === '3'}
+                                  onChange={(e) => setHuntHessGrade(e.target.value)}
+                                  className="mt-1 text-amber-600"
+                                />
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-900">Grade 3</div>
+                                  <div className="text-sm text-gray-600">Drowsiness, confusion, or mild focal deficit</div>
+                                </div>
+                              </label>
+                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name="huntHess"
+                                  value="4"
+                                  checked={huntHessGrade === '4'}
+                                  onChange={(e) => setHuntHessGrade(e.target.value)}
+                                  className="mt-1 text-amber-600"
+                                />
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-900">Grade 4</div>
+                                  <div className="text-sm text-gray-600">Stupor, moderate-severe hemiparesis</div>
+                                </div>
+                              </label>
+                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name="huntHess"
+                                  value="5"
+                                  checked={huntHessGrade === '5'}
+                                  onChange={(e) => setHuntHessGrade(e.target.value)}
+                                  className="mt-1 text-amber-600"
+                                />
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-900">Grade 5</div>
+                                  <div className="text-sm text-gray-600">Deep coma, decerebrate rigidity, moribund</div>
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+
+                          {/* WFNS Scale */}
+                          <div className="space-y-3">
+                            <h4 className="text-base font-semibold text-amber-800 mb-2">WFNS Scale</h4>
+                            <div className="space-y-2">
+                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name="wfns"
+                                  value="1"
+                                  checked={wfnsGrade === '1'}
+                                  onChange={(e) => setWfnsGrade(e.target.value)}
+                                  className="mt-1 text-amber-600"
+                                />
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-900">Grade 1</div>
+                                  <div className="text-sm text-gray-600">GCS 15, no motor deficit</div>
+                                </div>
+                              </label>
+                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name="wfns"
+                                  value="2"
+                                  checked={wfnsGrade === '2'}
+                                  onChange={(e) => setWfnsGrade(e.target.value)}
+                                  className="mt-1 text-amber-600"
+                                />
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-900">Grade 2</div>
+                                  <div className="text-sm text-gray-600">GCS 13-14, no motor deficit</div>
+                                </div>
+                              </label>
+                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name="wfns"
+                                  value="3"
+                                  checked={wfnsGrade === '3'}
+                                  onChange={(e) => setWfnsGrade(e.target.value)}
+                                  className="mt-1 text-amber-600"
+                                />
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-900">Grade 3</div>
+                                  <div className="text-sm text-gray-600">GCS 13-14, with motor deficit</div>
+                                </div>
+                              </label>
+                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name="wfns"
+                                  value="4"
+                                  checked={wfnsGrade === '4'}
+                                  onChange={(e) => setWfnsGrade(e.target.value)}
+                                  className="mt-1 text-amber-600"
+                                />
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-900">Grade 4</div>
+                                  <div className="text-sm text-gray-600">GCS 7-12, with or without motor deficit</div>
+                                </div>
+                              </label>
+                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name="wfns"
+                                  value="5"
+                                  checked={wfnsGrade === '5'}
+                                  onChange={(e) => setWfnsGrade(e.target.value)}
+                                  className="mt-1 text-amber-600"
+                                />
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-900">Grade 5</div>
+                                  <div className="text-sm text-gray-600">GCS 3-6, with or without motor deficit</div>
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </details>
+
+                    {/* HAS-BLED Score */}
+                    <details className="bg-pink-50 border border-pink-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-pink-800 hover:bg-pink-100 rounded-lg flex items-center justify-between">
+                        <span>HAS-BLED Score</span>
+                        <span className="text-sm font-normal text-pink-600">Score: {calculateHASBLEDScore(hasbledItems)}</span>
+                      </summary>
+                      <div className="p-4">
+                        <div className="flex justify-end items-center gap-2 mb-3">
+                          <span className="text-xl font-bold text-pink-600">Score: {calculateHASBLEDScore(hasbledItems)}</span>
+                          <button
+                            onClick={() => copyToClipboard(`HAS-BLED: ${calculateHASBLEDScore(hasbledItems)}`, 'HAS-BLED Score')}
+                            className="p-1.5 hover:bg-pink-100 rounded transition-colors"
+                            aria-label="Copy HAS-BLED score to clipboard"
+                            title="Copy to clipboard"
+                          >
+                            <i data-lucide="copy" className="w-4 h-4 text-pink-600"></i>
+                          </button>
+                        </div>
+
+                        <div className="space-y-2 mb-4">
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.hypertension}
+                              onChange={(e) => setHasbledItems({...hasbledItems, hypertension: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>H</strong>ypertension (uncontrolled SBP &gt;160) (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.renalDisease}
+                              onChange={(e) => setHasbledItems({...hasbledItems, renalDisease: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>A</strong>bnormal renal function (dialysis, transplant, Cr &gt;2.6) (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.liverDisease}
+                              onChange={(e) => setHasbledItems({...hasbledItems, liverDisease: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>A</strong>bnormal liver function (cirrhosis, bilirubin &gt;2x, AST/ALT &gt;3x) (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.stroke}
+                              onChange={(e) => setHasbledItems({...hasbledItems, stroke: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>S</strong>troke history (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.bleeding}
+                              onChange={(e) => setHasbledItems({...hasbledItems, bleeding: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>B</strong>leeding history or predisposition (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.labileINR}
+                              onChange={(e) => setHasbledItems({...hasbledItems, labileINR: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>L</strong>abile INR (TTR &lt;60%) (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.elderly}
+                              onChange={(e) => setHasbledItems({...hasbledItems, elderly: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>E</strong>lderly (age &gt;65) (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.drugs}
+                              onChange={(e) => setHasbledItems({...hasbledItems, drugs: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>D</strong>rugs (antiplatelet agents, NSAIDs) (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-pink-600"
+                              checked={hasbledItems.alcohol}
+                              onChange={(e) => setHasbledItems({...hasbledItems, alcohol: e.target.checked})}
+                            />
+                            <span className="text-sm"><strong>D</strong> (cont.) Alcohol use (≥8 drinks/week) (+1)</span>
+                          </label>
+                        </div>
+
+                        <div className="bg-white p-3 rounded border">
+                          <h4 className="font-semibold text-pink-700 mb-2">Annual Bleeding Risk</h4>
+                          <div className="text-sm space-y-1">
+                            <p className={calculateHASBLEDScore(hasbledItems) === 0 ? "font-bold text-pink-600" : ""}><strong>Score 0:</strong> 1.13% per year</p>
+                            <p className={calculateHASBLEDScore(hasbledItems) === 1 ? "font-bold text-pink-600" : ""}><strong>Score 1:</strong> 1.02% per year</p>
+                            <p className={calculateHASBLEDScore(hasbledItems) === 2 ? "font-bold text-pink-600" : ""}><strong>Score 2:</strong> 1.88% per year</p>
+                            <p className={calculateHASBLEDScore(hasbledItems) >= 3 ? "font-bold text-pink-600" : ""}><strong>Score ≥3:</strong> 3.74% per year (high risk)</p>
+                          </div>
+                          <p className="text-xs text-gray-600 mt-2 italic">High risk (≥3) indicates need for more frequent monitoring and caution with anticoagulation, but should not automatically exclude from treatment.</p>
+                        </div>
+                      </div>
+                    </details>
+
+                    {/* RCVS2 Score */}
+                    <details className="bg-cyan-50 border border-cyan-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-cyan-800 hover:bg-cyan-100 rounded-lg flex items-center justify-between">
+                        <span>RCVS² Score</span>
+                        <span className="text-sm font-normal text-cyan-600">Score: {calculateRCVS2Score(rcvs2Items)}</span>
+                      </summary>
+                      <div className="p-4">
+                        <div className="flex justify-end items-center gap-2 mb-3">
+                          <span className="text-xl font-bold text-cyan-600">Score: {calculateRCVS2Score(rcvs2Items)}</span>
+                          <button
+                            onClick={() => copyToClipboard(`RCVS² Score: ${calculateRCVS2Score(rcvs2Items)}`, 'RCVS² Score')}
+                            className="p-1.5 hover:bg-cyan-100 rounded transition-colors"
+                            aria-label="Copy RCVS² score to clipboard"
+                            title="Copy to clipboard"
+                          >
+                            <i data-lucide="copy" className="w-4 h-4 text-cyan-600"></i>
+                          </button>
+                        </div>
+
+                        <div className="space-y-2 mb-4">
+                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-cyan-600"
+                              checked={rcvs2Items.recurrentTCH}
+                              onChange={(e) => setRcvs2Items({...rcvs2Items, recurrentTCH: e.target.checked})}
+                            />
+                            <span className="text-sm">Recurrent thunderclap headaches (+5)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-cyan-600"
+                              checked={rcvs2Items.carotidInvolvement}
+                              onChange={(e) => setRcvs2Items({...rcvs2Items, carotidInvolvement: e.target.checked})}
+                            />
+                            <span className="text-sm">Intracranial carotid artery involvement (+3)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-cyan-600"
+                              checked={rcvs2Items.vasoconstrictiveTrigger}
+                              onChange={(e) => setRcvs2Items({...rcvs2Items, vasoconstrictiveTrigger: e.target.checked})}
+                            />
+                            <span className="text-sm">Vasoconstrictive trigger exposure (+2)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-cyan-600"
+                              checked={rcvs2Items.female}
+                              onChange={(e) => setRcvs2Items({...rcvs2Items, female: e.target.checked})}
+                            />
+                            <span className="text-sm">Female sex (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2 p-2 hover:bg-cyan-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="text-cyan-600"
+                              checked={rcvs2Items.sah}
+                              onChange={(e) => setRcvs2Items({...rcvs2Items, sah: e.target.checked})}
+                            />
+                            <span className="text-sm">Subarachnoid hemorrhage on imaging (-2)</span>
+                          </label>
+                        </div>
+
+                        <div className="bg-white p-3 rounded border">
+                          <h4 className="font-semibold text-cyan-700 mb-2">RCVS Probability</h4>
+                          <div className="text-sm space-y-1">
+                            <p className={calculateRCVS2Score(rcvs2Items) < 2 ? "font-bold text-cyan-600" : ""}><strong>Score &lt;2:</strong> Low probability of RCVS</p>
+                            <p className={calculateRCVS2Score(rcvs2Items) >= 2 && calculateRCVS2Score(rcvs2Items) <= 4 ? "font-bold text-cyan-600" : ""}><strong>Score 2-4:</strong> Intermediate probability</p>
+                            <p className={calculateRCVS2Score(rcvs2Items) >= 5 ? "font-bold text-cyan-600" : ""}><strong>Score ≥5:</strong> High probability of RCVS</p>
+                          </div>
+                          <p className="text-xs text-gray-600 mt-2 italic">RCVS² score helps distinguish RCVS from other causes of thunderclap headache. Consider vascular imaging and repeat imaging in 2-4 weeks if high suspicion.</p>
                         </div>
                       </div>
                     </details>
