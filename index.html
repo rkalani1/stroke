@@ -108,6 +108,29 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+        .focus\:not-sr-only:focus {
+            position: static;
+            width: auto;
+            height: auto;
+            padding: inherit;
+            margin: inherit;
+            overflow: visible;
+            clip: auto;
+            white-space: normal;
+        }
     </style>
     <script>
         // CRITICAL: Version management and automatic data cleanup
@@ -2141,9 +2164,17 @@ TO DO:
           }, []);
 
           return (
-            <div className={`max-w-7xl mx-auto p-3 sm:p-6 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
+            <div className={`max-w-7xl mx-auto p-3 sm:p-6 ${darkMode ? 'bg-gray-900' : 'bg-white'}`} role="main">
+              {/* Skip Navigation Link for Screen Readers */}
+              <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg"
+              >
+                Skip to main content
+              </a>
+
               {/* Header */}
-              <div className="mb-4 sm:mb-6">
+              <div className="mb-4 sm:mb-6" role="banner">
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
                   <div className="flex-1">
                     <h1 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-1 text-center sm:text-left">
@@ -2339,7 +2370,7 @@ TO DO:
 
               {/* Critical Alerts Banner */}
               {criticalAlerts.length > 0 && (
-                <div className="mb-4 space-y-2">
+                <div className="mb-4 space-y-2" role="alert" aria-live="assertive" aria-atomic="true">
                   {criticalAlerts.map(alert => (
                     <div
                       key={alert.id}
@@ -2394,8 +2425,8 @@ TO DO:
               </div>
 
               {/* Navigation Tabs - Desktop Only */}
-              <div className="border-b border-gray-200 mb-4 sm:mb-6 pb-2 hidden md:block">
-                <nav className="flex flex-wrap justify-center gap-2 md:justify-between md:gap-0">
+              <div className="border-b border-gray-200 mb-4 sm:mb-6 pb-2 hidden md:block" role="navigation" aria-label="Main navigation">
+                <nav className="flex flex-wrap justify-center gap-2 md:justify-between md:gap-0" role="tablist">
                   {[
                     { id: 'encounter', name: '⚡ Encounter', icon: 'activity' },
                     { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
@@ -2433,7 +2464,7 @@ TO DO:
               </div>
 
               {/* Content */}
-              <div className="space-y-4 sm:space-y-6 pb-24 md:pb-0">
+              <div id="main-content" className="space-y-4 sm:space-y-6 pb-24 md:pb-0" role="region" aria-label="Main content area">
 
                 {/* CONSOLIDATED ENCOUNTER TAB */}
                 {activeTab === 'encounter' && (
