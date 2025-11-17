@@ -131,6 +131,55 @@
             clip: auto;
             white-space: normal;
         }
+
+        /* Print styles */
+        @media print {
+            /* Hide unnecessary elements */
+            button, .no-print, [data-lucide="search"], .dark-mode-toggle,
+            nav, .breadcrumb, .keyboard-help, .mobile-nav {
+                display: none !important;
+            }
+
+            /* Optimize for print */
+            body {
+                background: white;
+                color: black;
+                font-size: 12pt;
+            }
+
+            /* Page breaks */
+            .page-break {
+                page-break-after: always;
+            }
+
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+
+            /* Show URLs for links */
+            a[href]:after {
+                content: " (" attr(href) ")";
+                font-size: 0.8em;
+                color: #666;
+            }
+
+            /* Optimize tables and calculators for print */
+            table, .calculator, .score-card {
+                page-break-inside: avoid;
+            }
+
+            /* Remove shadows and unnecessary styling */
+            * {
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
+
+            /* Ensure good contrast */
+            .bg-gray-50, .bg-blue-50, .bg-green-50, .bg-yellow-50, .bg-red-50 {
+                background: white !important;
+                border: 1px solid #ddd !important;
+            }
+        }
     </style>
     <script>
         // CRITICAL: Version management and automatic data cleanup
