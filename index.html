@@ -260,6 +260,7 @@ Rizwan Kalani MD`));
             verbal: '',
             motor: ''
           }));
+          const [mrsScore, setMrsScore] = useState(loadFromStorage('mrsScore', ''));
           const [ichScoreItems, setIchScoreItems] = useState(loadFromStorage('ichScoreItems', {
             gcs: '', // Changed to single field for mutual exclusivity
             age80: false,
@@ -1665,6 +1666,7 @@ Rizwan Kalani MD`));
               { name: 'ABCD² Score', keywords: ['abcd', 'tia', 'transient'], tab: 'calculators' },
               { name: 'CHA₂DS₂-VASc', keywords: ['chads', 'afib', 'atrial fibrillation', 'anticoagulation'], tab: 'calculators' },
               { name: 'ROPE Score', keywords: ['rope', 'pfo', 'paradoxical'], tab: 'calculators' },
+              { name: 'Modified Rankin Scale (mRS)', keywords: ['mrs', 'rankin', 'disability', 'outcome', 'functional status'], tab: 'calculators' },
               { name: 'Blood Pressure Management', keywords: ['bp', 'blood pressure', 'labetalol', 'nicardipine'], tab: 'protocols' }
             ];
 
@@ -3472,6 +3474,155 @@ Rizwan Kalani MD`);
                           </ul>
                         </div>
                       </div>
+                    </div>
+
+                    {/* Modified Rankin Scale (mRS) */}
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                      <h3 className="text-base font-semibold text-gray-800 mb-2">
+                        <Tooltip text="Modified Rankin Scale - measures degree of disability or dependence in daily activities after stroke">
+                          Modified Rankin Scale (mRS)
+                        </Tooltip>
+                      </h3>
+
+                      <div className="flex justify-end items-center gap-2 mb-3">
+                        <div className="text-right">
+                          <span className="text-xl font-bold text-gray-600">
+                            Score: {mrsScore || 'Not Selected'}
+                          </span>
+                          <div className="text-xs text-gray-500">Range: 0-6</div>
+                        </div>
+                        {mrsScore && (
+                          <button
+                            onClick={() => copyToClipboard(`mRS: ${mrsScore}`, 'mRS Score')}
+                            className="p-1.5 hover:bg-gray-100 rounded transition-colors"
+                            aria-label="Copy mRS score to clipboard"
+                            title="Copy to clipboard"
+                          >
+                            <i data-lucide="copy" className="w-4 h-4 text-gray-600"></i>
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="mrs"
+                            value="0"
+                            checked={mrsScore === '0'}
+                            onChange={(e) => setMrsScore(e.target.value)}
+                            className="mt-1 text-blue-600"
+                          />
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900">0 - No symptoms</div>
+                            <div className="text-sm text-gray-600">Completely recovered; no residual symptoms</div>
+                          </div>
+                        </label>
+
+                        <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="mrs"
+                            value="1"
+                            checked={mrsScore === '1'}
+                            onChange={(e) => setMrsScore(e.target.value)}
+                            className="mt-1 text-blue-600"
+                          />
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900">1 - No significant disability</div>
+                            <div className="text-sm text-gray-600">Able to carry out all usual duties and activities despite some symptoms</div>
+                          </div>
+                        </label>
+
+                        <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="mrs"
+                            value="2"
+                            checked={mrsScore === '2'}
+                            onChange={(e) => setMrsScore(e.target.value)}
+                            className="mt-1 text-blue-600"
+                          />
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900">2 - Slight disability</div>
+                            <div className="text-sm text-gray-600">Unable to carry out all previous activities but able to look after own affairs without assistance</div>
+                          </div>
+                        </label>
+
+                        <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="mrs"
+                            value="3"
+                            checked={mrsScore === '3'}
+                            onChange={(e) => setMrsScore(e.target.value)}
+                            className="mt-1 text-blue-600"
+                          />
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900">3 - Moderate disability</div>
+                            <div className="text-sm text-gray-600">Requires some help, but able to walk without assistance</div>
+                          </div>
+                        </label>
+
+                        <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="mrs"
+                            value="4"
+                            checked={mrsScore === '4'}
+                            onChange={(e) => setMrsScore(e.target.value)}
+                            className="mt-1 text-blue-600"
+                          />
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900">4 - Moderately severe disability</div>
+                            <div className="text-sm text-gray-600">Unable to walk without assistance and unable to attend to own bodily needs without assistance</div>
+                          </div>
+                        </label>
+
+                        <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="mrs"
+                            value="5"
+                            checked={mrsScore === '5'}
+                            onChange={(e) => setMrsScore(e.target.value)}
+                            className="mt-1 text-blue-600"
+                          />
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900">5 - Severe disability</div>
+                            <div className="text-sm text-gray-600">Bedridden, incontinent, and requires constant nursing care and attention</div>
+                          </div>
+                        </label>
+
+                        <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="mrs"
+                            value="6"
+                            checked={mrsScore === '6'}
+                            onChange={(e) => setMrsScore(e.target.value)}
+                            className="mt-1 text-blue-600"
+                          />
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900">6 - Dead</div>
+                          </div>
+                        </label>
+                      </div>
+
+                      {mrsScore && (
+                        <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                          <p className="text-sm font-semibold text-blue-900 mb-1">Clinical Interpretation:</p>
+                          <p className="text-sm text-blue-800">
+                            {mrsScore === '0' && 'Excellent outcome - Complete recovery with no residual deficits'}
+                            {mrsScore === '1' && 'Good outcome - Minor symptoms that do not interfere with lifestyle'}
+                            {mrsScore === '2' && 'Fair outcome - Some restriction in lifestyle but retains capacity for independent living'}
+                            {mrsScore === '3' && 'Moderate outcome - Significant lifestyle restriction; requires some assistance'}
+                            {mrsScore === '4' && 'Moderately severe outcome - Clearly dependent; requires assistance with basic activities'}
+                            {mrsScore === '5' && 'Severe outcome - Totally dependent; requires constant care'}
+                            {mrsScore === '6' && 'Death'}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
