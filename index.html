@@ -249,6 +249,7 @@ Rizwan Kalani MD`));
           // Search
           const [searchResults, setSearchResults] = useState([]);
           const [searchOpen, setSearchOpen] = useState(false);
+          const [evidenceFilter, setEvidenceFilter] = useState('');
 
           // Workflow tracking
           const [currentStep, setCurrentStep] = useState(loadFromStorage('currentStep', 0));
@@ -1609,6 +1610,14 @@ Rizwan Kalani MD`));
           };
 
           // Search function
+          // Helper function to check if evidence section matches filter
+          const evidenceSectionMatches = (sectionTitle, documentTitles) => {
+            if (!evidenceFilter) return true;
+            const filter = evidenceFilter.toLowerCase();
+            if (sectionTitle.toLowerCase().includes(filter)) return true;
+            return documentTitles.some(title => title.toLowerCase().includes(filter));
+          };
+
           const performSearch = (query) => {
             if (!query || query.length < 2) {
               setSearchResults([]);
@@ -4324,7 +4333,37 @@ Rizwan Kalani MD`);
                                 {activeTab === 'evidence' && (
                   <div className="space-y-6">
 
+                    {/* Evidence Filter */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="Filter evidence documents..."
+                          value={evidenceFilter}
+                          onChange={(e) => setEvidenceFilter(e.target.value)}
+                          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          aria-label="Filter evidence documents"
+                        />
+                        <i data-lucide="search" className="w-5 h-5 absolute left-3 top-2.5 text-gray-400"></i>
+                        {evidenceFilter && (
+                          <button
+                            onClick={() => setEvidenceFilter('')}
+                            className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                            aria-label="Clear filter"
+                          >
+                            <i data-lucide="x" className="w-5 h-5"></i>
+                          </button>
+                        )}
+                      </div>
+                      {evidenceFilter && (
+                        <p className="text-sm text-gray-600 mt-2">
+                          Filtering by: <span className="font-semibold">{evidenceFilter}</span>
+                        </p>
+                      )}
+                    </div>
+
                     {/* Aneurysms & Vascular Malformations Section */}
+                    {evidenceSectionMatches('Aneurysms & Vascular Malformations', ['Unruptured Cerebral Aneurysms']) && (
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">Aneurysms & Vascular Malformations</h3>
                       <div className="space-y-3">
@@ -4359,8 +4398,10 @@ Rizwan Kalani MD`);
                         </div>
                       </div>
                     </div>
+                    )}
 
                     {/* Antiplatelet Therapy Section */}
+                    {evidenceSectionMatches('Antiplatelet Therapy', ['DAPT Minor Stroke-TIA Trials']) && (
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">Antiplatelet Therapy</h3>
                       <div className="space-y-3">
@@ -4395,8 +4436,10 @@ Rizwan Kalani MD`);
                         </div>
                       </div>
                     </div>
+                    )}
 
                     {/* Cerebral Small Vessel Disease Section */}
+                    {evidenceSectionMatches('Cerebral Small Vessel Disease', ['Lacunar Stroke']) && (
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">Cerebral Small Vessel Disease</h3>
                       <div className="space-y-3">
@@ -4431,8 +4474,10 @@ Rizwan Kalani MD`);
                         </div>
                       </div>
                     </div>
+                    )}
 
                     {/* EBM Section */}
+                    {evidenceSectionMatches('EBM', ['Interpretation of Clinical Trials']) && (
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">EBM</h3>
                       <div className="space-y-3">
@@ -4467,8 +4512,10 @@ Rizwan Kalani MD`);
                         </div>
                       </div>
                     </div>
+                    )}
 
                     {/* EVT Section */}
+                    {evidenceSectionMatches('EVT', ['Large Core Anteior Circulation LVO EVT Trials', 'Basilar Artery Occlusion EVT Trials', 'MeVO & Distal Vessel Occlusion EVT Trials']) && (
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">EVT</h3>
                       <div className="space-y-3">
@@ -4563,9 +4610,10 @@ Rizwan Kalani MD`);
                         </div>
                       </div>
                     </div>
-
+                    )}
 
                     {/* Risk Factors Section */}
+                    {evidenceSectionMatches('Risk Factors', ['Timing of Anticoagulation after AF-Related Stroke', 'Atrial Fibrillation & Secondary Stroke Prevention', 'Diabetes and stroke', 'Lipids and Cerebrovascular Disease']) && (
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">Risk Factors</h3>
                       <div className="space-y-3">
@@ -4690,9 +4738,10 @@ Rizwan Kalani MD`);
                         </div>
                       </div>
                     </div>
-
+                    )}
 
                     {/* Exam Section */}
+                    {evidenceSectionMatches('Exam', ['Differentiating Acute Confusional State (Delirium) from Aphasia', 'Coma Exam']) && (
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">Exam</h3>
                       <div className="space-y-3">
@@ -4757,9 +4806,10 @@ Rizwan Kalani MD`);
                         </div>
                       </div>
                     </div>
-
+                    )}
 
                     {/* Large Artery Disease Section */}
+                    {evidenceSectionMatches('Large Artery Disease', ['Symptomatic Cervical Carotid Artery Stenosis']) && (
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">Large Artery Disease</h3>
                       <div className="space-y-3">
@@ -4793,6 +4843,36 @@ Rizwan Kalani MD`);
                           </div>
                         </div>
                       </div>
+                    </div>
+                    )}
+
+                    {/* External Resources */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <h3 className="text-lg font-semibold text-blue-900 mb-3">External Resources</h3>
+                      <p className="text-sm text-gray-700 mb-4">Additional evidence-based resources:</p>
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <a
+                          href="https://www.openevidence.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
+                        >
+                          <i data-lucide="external-link" className="w-5 h-5"></i>
+                          <span>OpenEvidence</span>
+                        </a>
+                        <a
+                          href="https://www.uptodate.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
+                        >
+                          <i data-lucide="external-link" className="w-5 h-5"></i>
+                          <span>UpToDate</span>
+                        </a>
+                      </div>
+                      <p className="text-xs text-gray-600 mt-3">
+                        <i className="text-blue-600">Note: These links will open the website in your browser. On mobile devices with the apps installed, they should automatically open in the respective apps.</i>
+                      </p>
                     </div>
                   </div>
                 )}
