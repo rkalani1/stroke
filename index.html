@@ -2232,6 +2232,27 @@ TO DO:
                 </div>
               )}
 
+              {/* Breadcrumb Navigation */}
+              <div className="mb-4 flex items-center gap-2 text-sm text-gray-600">
+                <button
+                  onClick={() => setActiveTab('encounter')}
+                  className="hover:text-blue-600 transition-colors flex items-center gap-1"
+                  aria-label="Go to home"
+                >
+                  <i data-lucide="home" className="w-4 h-4"></i>
+                  <span>Home</span>
+                </button>
+                <i data-lucide="chevron-right" className="w-4 h-4 text-gray-400"></i>
+                <span className="font-semibold text-gray-900">
+                  {activeTab === 'encounter' && 'Encounter'}
+                  {activeTab === 'ich' && 'ICH Score'}
+                  {activeTab === 'protocols' && 'Management Protocols'}
+                  {activeTab === 'calculators' && 'Calculators'}
+                  {activeTab === 'trials' && 'Clinical Trials'}
+                  {activeTab === 'evidence' && 'Evidence Documents'}
+                </span>
+              </div>
+
               {/* Navigation Tabs - Desktop Only */}
               <div className="border-b border-gray-200 mb-4 sm:mb-6 pb-2 hidden md:block">
                 <nav className="flex flex-wrap justify-center gap-2 md:justify-between md:gap-0">
