@@ -2633,6 +2633,40 @@ TO DO:
                 {/* CONSOLIDATED ENCOUNTER TAB */}
                 {activeTab === 'encounter' && (
                   <div key="encounter-tab" className="space-y-4">
+                    {/* Quick Links */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <h3 className="text-lg font-semibold text-blue-900 mb-3">Quick Links</h3>
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <a
+                          href="https://us-app.pulsara.com/user/login"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
+                        >
+                          <i data-lucide="external-link" className="w-5 h-5"></i>
+                          <span>Pulsara</span>
+                        </a>
+                        <a
+                          href="https://urldefense.com/v3/__https:/imaging.visitnow.org/studies__;!!K-Hz7m0Vt54!nECcOahuNh21d0jzlVH-mSie_Il2fvDWCKseicWktKKQwdj4xk9XfAX2s8QyVGAs0n-NvzXDLAHKDw%24"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
+                        >
+                          <i data-lucide="external-link" className="w-5 h-5"></i>
+                          <span>Teladoc Imaging</span>
+                        </a>
+                        <a
+                          href="https://intranet.neurology.uw.edu/telestroke-provider-resources/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
+                        >
+                          <i data-lucide="external-link" className="w-5 h-5"></i>
+                          <span>Telestroke Provider Resources</span>
+                        </a>
+                      </div>
+                    </div>
+
                     {/* Last Known Well Input */}
                     <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
                       <label className="block font-semibold text-blue-900 mb-2">
