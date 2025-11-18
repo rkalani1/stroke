@@ -1506,8 +1506,8 @@ Rizwan Kalani MD`));
           // Email document link
           const emailDocument = (title, url) => {
             const fullUrl = window.location.origin + window.location.pathname + url;
-            const subject = encodeURIComponent(`Stroke Resource: ${title}`);
-            const body = encodeURIComponent(`I found this useful stroke reference:\n\n${title}\n\nLink: ${fullUrl}\n\nShared from the Stroke Clinical Decision Support Tool`);
+            const subject = encodeURIComponent(title);
+            const body = encodeURIComponent(fullUrl);
             window.location.href = `mailto:?subject=${subject}&body=${body}`;
           };
 
