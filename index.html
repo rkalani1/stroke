@@ -1875,6 +1875,7 @@ Rizwan Kalani MD`));
               { title: 'Atrial Fibrillation & Secondary Stroke Prevention', section: 'Risk Factors', keywords: ['afib', 'atrial fibrillation', 'prevention'] },
               { title: 'Diabetes and stroke', section: 'Risk Factors', keywords: ['diabetes', 'risk factor', 'dm'] },
               { title: 'Lipids and Cerebrovascular Disease', section: 'Risk Factors', keywords: ['lipids', 'cholesterol', 'statins', 'ldl'] },
+              { title: 'WAKE-UP Trial', section: 'Thrombolytic Therapy', keywords: ['wake-up', 'thrombolysis', 'tpa', 'alteplase', 'mri'] },
               { title: 'Lacunar Stroke', section: 'Cerebral Small Vessel Disease', keywords: ['lacunar', 'small vessel', 'csvd'] },
               { title: 'Symptomatic Cervical Carotid Artery Stenosis', section: 'Large Artery Disease', keywords: ['carotid', 'stenosis', 'endarterectomy', 'cea', 'cas'] },
               { title: 'Differentiating Acute Confusional State (Delirium) from Aphasia', section: 'Exam', keywords: ['delirium', 'aphasia', 'confusion', 'exam'] },
@@ -5791,6 +5792,36 @@ Rizwan Kalani MD`);
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    )}
+
+                    {/* Thrombolytic Therapy Section */}
+                    {evidenceSectionMatches('Thrombolytic Therapy', ['WAKE-UP Trial']) && (
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Thrombolytic Therapy</h3>
+                      <div className="space-y-3">
+                        {/* WAKE-UP Trial */}
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                          <div className="flex items-center gap-3 flex-1">
+                            <i data-lucide="external-link" className="w-6 h-6 text-blue-600"></i>
+                            <div className="flex-1">
+                              <h4 className="text-sm font-medium text-gray-900">WAKE-UP Trial</h4>
+                              <p className="text-xs text-gray-500">External Link - New England Journal of Medicine</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <a
+                              href="https://www.nejm.org/doi/full/10.1056/NEJMoa1804355"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="external-link" className="w-4 h-4"></i>
+                              Open Link
+                            </a>
                           </div>
                         </div>
                       </div>
