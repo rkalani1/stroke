@@ -1481,6 +1481,36 @@ Rizwan Kalani MD`));
             });
           };
 
+          // Share document using Web Share API
+          const shareDocument = async (title, url) => {
+            const fullUrl = window.location.origin + window.location.pathname + url;
+            if (navigator.share) {
+              try {
+                await navigator.share({
+                  title: `Stroke Resource: ${title}`,
+                  text: `Check out this stroke reference: ${title}`,
+                  url: fullUrl
+                });
+              } catch (err) {
+                if (err.name !== 'AbortError') {
+                  // If share fails, fallback to copy
+                  copyToClipboard(fullUrl, title);
+                }
+              }
+            } else {
+              // Fallback to copy if Web Share API not supported
+              copyToClipboard(fullUrl, title);
+            }
+          };
+
+          // Email document link
+          const emailDocument = (title, url) => {
+            const fullUrl = window.location.origin + window.location.pathname + url;
+            const subject = encodeURIComponent(`Stroke Resource: ${title}`);
+            const body = encodeURIComponent(`I found this useful stroke reference:\n\n${title}\n\nLink: ${fullUrl}\n\nShared from the Stroke Clinical Decision Support Tool`);
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+          };
+
           const exportToPDF = () => {
             const element = document.getElementById('root');
             const opt = {
@@ -5264,7 +5294,7 @@ Rizwan Kalani MD`);
                               <p className="text-xs text-gray-500">PDF Document</p>
                             </div>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex flex-wrap gap-2">
                             <a
                               href="documents/aneurysms/Unruptured Cerebral Aneurysms.pdf"
                               target="_blank"
@@ -5282,6 +5312,30 @@ Rizwan Kalani MD`);
                               <i data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
+                            <button
+                              onClick={() => shareDocument('Unruptured Cerebral Aneurysms', 'documents/aneurysms/Unruptured Cerebral Aneurysms.pdf')}
+                              className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                              title="Share this document"
+                            >
+                              <i data-lucide="share-2" className="w-4 h-4"></i>
+                              Share
+                            </button>
+                            <button
+                              onClick={() => copyToClipboard(window.location.origin + window.location.pathname + 'documents/aneurysms/Unruptured Cerebral Aneurysms.pdf', 'Unruptured Cerebral Aneurysms')}
+                              className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
+                              title="Copy link to clipboard"
+                            >
+                              <i data-lucide={copiedText === 'Unruptured Cerebral Aneurysms' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              {copiedText === 'Unruptured Cerebral Aneurysms' ? 'Copied!' : 'Copy'}
+                            </button>
+                            <button
+                              onClick={() => emailDocument('Unruptured Cerebral Aneurysms', 'documents/aneurysms/Unruptured Cerebral Aneurysms.pdf')}
+                              className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              title="Email this document"
+                            >
+                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              Email
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -5302,7 +5356,7 @@ Rizwan Kalani MD`);
                               <p className="text-xs text-gray-500">PDF Document</p>
                             </div>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex flex-wrap gap-2">
                             <a
                               href="documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf"
                               target="_blank"
@@ -5320,6 +5374,30 @@ Rizwan Kalani MD`);
                               <i data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
+                            <button
+                              onClick={() => shareDocument('DAPT Minor Stroke-TIA Trials', 'documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf')}
+                              className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                              title="Share this document"
+                            >
+                              <i data-lucide="share-2" className="w-4 h-4"></i>
+                              Share
+                            </button>
+                            <button
+                              onClick={() => copyToClipboard(window.location.origin + window.location.pathname + 'documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf', 'DAPT Minor Stroke-TIA Trials')}
+                              className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
+                              title="Copy link to clipboard"
+                            >
+                              <i data-lucide={copiedText === 'DAPT Minor Stroke-TIA Trials' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              {copiedText === 'DAPT Minor Stroke-TIA Trials' ? 'Copied!' : 'Copy'}
+                            </button>
+                            <button
+                              onClick={() => emailDocument('DAPT Minor Stroke-TIA Trials', 'documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf')}
+                              className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              title="Email this document"
+                            >
+                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              Email
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -5340,7 +5418,7 @@ Rizwan Kalani MD`);
                               <p className="text-xs text-gray-500">PDF Document</p>
                             </div>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex flex-wrap gap-2">
                             <a
                               href="documents/csvd/Lacunar Stroke 7.13.22.pdf"
                               target="_blank"
@@ -5358,6 +5436,30 @@ Rizwan Kalani MD`);
                               <i data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
+                            <button
+                              onClick={() => shareDocument('Lacunar Stroke', 'documents/csvd/Lacunar Stroke 7.13.22.pdf')}
+                              className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                              title="Share this document"
+                            >
+                              <i data-lucide="share-2" className="w-4 h-4"></i>
+                              Share
+                            </button>
+                            <button
+                              onClick={() => copyToClipboard(window.location.origin + window.location.pathname + 'documents/csvd/Lacunar Stroke 7.13.22.pdf', 'Lacunar Stroke')}
+                              className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
+                              title="Copy link to clipboard"
+                            >
+                              <i data-lucide={copiedText === 'Lacunar Stroke' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              {copiedText === 'Lacunar Stroke' ? 'Copied!' : 'Copy'}
+                            </button>
+                            <button
+                              onClick={() => emailDocument('Lacunar Stroke', 'documents/csvd/Lacunar Stroke 7.13.22.pdf')}
+                              className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              title="Email this document"
+                            >
+                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              Email
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -5378,7 +5480,7 @@ Rizwan Kalani MD`);
                               <p className="text-xs text-gray-500">PDF Document</p>
                             </div>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex flex-wrap gap-2">
                             <a
                               href="documents/ebm/Interpretation of Clinical Trials.pdf"
                               target="_blank"
@@ -5396,6 +5498,30 @@ Rizwan Kalani MD`);
                               <i data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
+                            <button
+                              onClick={() => shareDocument('Interpretation of Clinical Trials', 'documents/ebm/Interpretation of Clinical Trials.pdf')}
+                              className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                              title="Share this document"
+                            >
+                              <i data-lucide="share-2" className="w-4 h-4"></i>
+                              Share
+                            </button>
+                            <button
+                              onClick={() => copyToClipboard(window.location.origin + window.location.pathname + 'documents/ebm/Interpretation of Clinical Trials.pdf', 'Interpretation of Clinical Trials')}
+                              className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
+                              title="Copy link to clipboard"
+                            >
+                              <i data-lucide={copiedText === 'Interpretation of Clinical Trials' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              {copiedText === 'Interpretation of Clinical Trials' ? 'Copied!' : 'Copy'}
+                            </button>
+                            <button
+                              onClick={() => emailDocument('Interpretation of Clinical Trials', 'documents/ebm/Interpretation of Clinical Trials.pdf')}
+                              className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              title="Email this document"
+                            >
+                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              Email
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -5416,7 +5542,7 @@ Rizwan Kalani MD`);
                               <p className="text-xs text-gray-500">PDF Document</p>
                             </div>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex flex-wrap gap-2">
                             <a
                               href="documents/evt/Large Core Anteior Circulation LVO EVT Trials.pdf"
                               target="_blank"
@@ -5434,6 +5560,30 @@ Rizwan Kalani MD`);
                               <i data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
+                            <button
+                              onClick={() => shareDocument('Large Core Anteior Circulation LVO EVT Trials', 'documents/evt/Large Core Anteior Circulation LVO EVT Trials.pdf')}
+                              className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                              title="Share this document"
+                            >
+                              <i data-lucide="share-2" className="w-4 h-4"></i>
+                              Share
+                            </button>
+                            <button
+                              onClick={() => copyToClipboard(window.location.origin + window.location.pathname + 'documents/evt/Large Core Anteior Circulation LVO EVT Trials.pdf', 'Large Core Anteior Circulation LVO EVT Trials')}
+                              className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
+                              title="Copy link to clipboard"
+                            >
+                              <i data-lucide={copiedText === 'Large Core Anteior Circulation LVO EVT Trials' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              {copiedText === 'Large Core Anteior Circulation LVO EVT Trials' ? 'Copied!' : 'Copy'}
+                            </button>
+                            <button
+                              onClick={() => emailDocument('Large Core Anteior Circulation LVO EVT Trials', 'documents/evt/Large Core Anteior Circulation LVO EVT Trials.pdf')}
+                              className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              title="Email this document"
+                            >
+                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              Email
+                            </button>
                           </div>
                         </div>
 
@@ -5446,7 +5596,7 @@ Rizwan Kalani MD`);
                               <p className="text-xs text-gray-500">PDF Document</p>
                             </div>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex flex-wrap gap-2">
                             <a
                               href="documents/evt/Basilar Artery Occlusion EVT Trials.pdf"
                               target="_blank"
@@ -5464,6 +5614,30 @@ Rizwan Kalani MD`);
                               <i data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
+                            <button
+                              onClick={() => shareDocument('Basilar Artery Occlusion EVT Trials', 'documents/evt/Basilar Artery Occlusion EVT Trials.pdf')}
+                              className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                              title="Share this document"
+                            >
+                              <i data-lucide="share-2" className="w-4 h-4"></i>
+                              Share
+                            </button>
+                            <button
+                              onClick={() => copyToClipboard(window.location.origin + window.location.pathname + 'documents/evt/Basilar Artery Occlusion EVT Trials.pdf', 'Basilar Artery Occlusion EVT Trials')}
+                              className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
+                              title="Copy link to clipboard"
+                            >
+                              <i data-lucide={copiedText === 'Basilar Artery Occlusion EVT Trials' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              {copiedText === 'Basilar Artery Occlusion EVT Trials' ? 'Copied!' : 'Copy'}
+                            </button>
+                            <button
+                              onClick={() => emailDocument('Basilar Artery Occlusion EVT Trials', 'documents/evt/Basilar Artery Occlusion EVT Trials.pdf')}
+                              className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              title="Email this document"
+                            >
+                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              Email
+                            </button>
                           </div>
                         </div>
 
@@ -5476,7 +5650,7 @@ Rizwan Kalani MD`);
                               <p className="text-xs text-gray-500">PDF Document</p>
                             </div>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex flex-wrap gap-2">
                             <a
                               href="documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf"
                               target="_blank"
@@ -5494,6 +5668,30 @@ Rizwan Kalani MD`);
                               <i data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
+                            <button
+                              onClick={() => shareDocument('MeVO & Distal Vessel Occlusion EVT Trials', 'documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf')}
+                              className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                              title="Share this document"
+                            >
+                              <i data-lucide="share-2" className="w-4 h-4"></i>
+                              Share
+                            </button>
+                            <button
+                              onClick={() => copyToClipboard(window.location.origin + window.location.pathname + 'documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf', 'MeVO & Distal Vessel Occlusion EVT Trials')}
+                              className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
+                              title="Copy link to clipboard"
+                            >
+                              <i data-lucide={copiedText === 'MeVO & Distal Vessel Occlusion EVT Trials' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              {copiedText === 'MeVO & Distal Vessel Occlusion EVT Trials' ? 'Copied!' : 'Copy'}
+                            </button>
+                            <button
+                              onClick={() => emailDocument('MeVO & Distal Vessel Occlusion EVT Trials', 'documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf')}
+                              className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              title="Email this document"
+                            >
+                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              Email
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -5519,7 +5717,7 @@ Rizwan Kalani MD`);
                                   <p className="text-xs text-gray-500">PDF Document</p>
                                 </div>
                               </div>
-                              <div className="flex gap-2">
+                              <div className="flex flex-wrap gap-2">
                                 <a
                                   href="documents/afib/AC timing after AF-related Stroke.pdf"
                                   target="_blank"
@@ -5537,6 +5735,30 @@ Rizwan Kalani MD`);
                                   <i data-lucide="download" className="w-4 h-4"></i>
                                   Download
                                 </a>
+                                <button
+                                  onClick={() => shareDocument('AC timing after AF-related Stroke', 'documents/afib/AC timing after AF-related Stroke.pdf')}
+                                  className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                                  title="Share this document"
+                                >
+                                  <i data-lucide="share-2" className="w-4 h-4"></i>
+                                  Share
+                                </button>
+                                <button
+                                  onClick={() => copyToClipboard(window.location.origin + window.location.pathname + 'documents/afib/AC timing after AF-related Stroke.pdf', 'AC timing after AF-related Stroke')}
+                                  className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
+                                  title="Copy link to clipboard"
+                                >
+                                  <i data-lucide={copiedText === 'AC timing after AF-related Stroke' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                  {copiedText === 'AC timing after AF-related Stroke' ? 'Copied!' : 'Copy'}
+                                </button>
+                                <button
+                                  onClick={() => emailDocument('AC timing after AF-related Stroke', 'documents/afib/AC timing after AF-related Stroke.pdf')}
+                                  className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                                  title="Email this document"
+                                >
+                                  <i data-lucide="mail" className="w-4 h-4"></i>
+                                  Email
+                                </button>
                               </div>
                             </div>
 
@@ -5549,7 +5771,7 @@ Rizwan Kalani MD`);
                                   <p className="text-xs text-gray-500">PDF Document</p>
                                 </div>
                               </div>
-                              <div className="flex gap-2">
+                              <div className="flex flex-wrap gap-2">
                                 <a
                                   href="documents/afib/AF & secondary stroke prevention July 2024.pdf"
                                   target="_blank"
@@ -5567,6 +5789,30 @@ Rizwan Kalani MD`);
                                   <i data-lucide="download" className="w-4 h-4"></i>
                                   Download
                                 </a>
+                                <button
+                                  onClick={() => shareDocument('AF & secondary stroke prevention July 2024', 'documents/afib/AF & secondary stroke prevention July 2024.pdf')}
+                                  className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                                  title="Share this document"
+                                >
+                                  <i data-lucide="share-2" className="w-4 h-4"></i>
+                                  Share
+                                </button>
+                                <button
+                                  onClick={() => copyToClipboard(window.location.origin + window.location.pathname + 'documents/afib/AF & secondary stroke prevention July 2024.pdf', 'AF & secondary stroke prevention July 2024')}
+                                  className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
+                                  title="Copy link to clipboard"
+                                >
+                                  <i data-lucide={copiedText === 'AF & secondary stroke prevention July 2024' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                  {copiedText === 'AF & secondary stroke prevention July 2024' ? 'Copied!' : 'Copy'}
+                                </button>
+                                <button
+                                  onClick={() => emailDocument('AF & secondary stroke prevention July 2024', 'documents/afib/AF & secondary stroke prevention July 2024.pdf')}
+                                  className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                                  title="Email this document"
+                                >
+                                  <i data-lucide="mail" className="w-4 h-4"></i>
+                                  Email
+                                </button>
                               </div>
                             </div>
 
@@ -5625,7 +5871,7 @@ Rizwan Kalani MD`);
                               <p className="text-xs text-gray-500">PDF Document</p>
                             </div>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex flex-wrap gap-2">
                             <a
                               href="documents/epidemiology/Diabetes and stroke.pdf"
                               target="_blank"
@@ -5643,6 +5889,30 @@ Rizwan Kalani MD`);
                               <i data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
+                            <button
+                              onClick={() => shareDocument('Diabetes and stroke', 'documents/epidemiology/Diabetes and stroke.pdf')}
+                              className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                              title="Share this document"
+                            >
+                              <i data-lucide="share-2" className="w-4 h-4"></i>
+                              Share
+                            </button>
+                            <button
+                              onClick={() => copyToClipboard(window.location.origin + window.location.pathname + 'documents/epidemiology/Diabetes and stroke.pdf', 'Diabetes and stroke')}
+                              className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
+                              title="Copy link to clipboard"
+                            >
+                              <i data-lucide={copiedText === 'Diabetes and stroke' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              {copiedText === 'Diabetes and stroke' ? 'Copied!' : 'Copy'}
+                            </button>
+                            <button
+                              onClick={() => emailDocument('Diabetes and stroke', 'documents/epidemiology/Diabetes and stroke.pdf')}
+                              className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              title="Email this document"
+                            >
+                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              Email
+                            </button>
                           </div>
                         </div>
 
@@ -5655,7 +5925,7 @@ Rizwan Kalani MD`);
                               <p className="text-xs text-gray-500">PDF Document</p>
                             </div>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex flex-wrap gap-2">
                             <a
                               href="documents/epidemiology/Lipids and Cerebrovascular Disease.pdf"
                               target="_blank"
@@ -5673,6 +5943,30 @@ Rizwan Kalani MD`);
                               <i data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
+                            <button
+                              onClick={() => shareDocument('Lipids and Cerebrovascular Disease', 'documents/epidemiology/Lipids and Cerebrovascular Disease.pdf')}
+                              className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                              title="Share this document"
+                            >
+                              <i data-lucide="share-2" className="w-4 h-4"></i>
+                              Share
+                            </button>
+                            <button
+                              onClick={() => copyToClipboard(window.location.origin + window.location.pathname + 'documents/epidemiology/Lipids and Cerebrovascular Disease.pdf', 'Lipids and Cerebrovascular Disease')}
+                              className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
+                              title="Copy link to clipboard"
+                            >
+                              <i data-lucide={copiedText === 'Lipids and Cerebrovascular Disease' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              {copiedText === 'Lipids and Cerebrovascular Disease' ? 'Copied!' : 'Copy'}
+                            </button>
+                            <button
+                              onClick={() => emailDocument('Lipids and Cerebrovascular Disease', 'documents/epidemiology/Lipids and Cerebrovascular Disease.pdf')}
+                              className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              title="Email this document"
+                            >
+                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              Email
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -5693,7 +5987,7 @@ Rizwan Kalani MD`);
                               <p className="text-xs text-gray-500">PDF Document</p>
                             </div>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex flex-wrap gap-2">
                             <a
                               href="documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf"
                               target="_blank"
@@ -5711,6 +6005,30 @@ Rizwan Kalani MD`);
                               <i data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
+                            <button
+                              onClick={() => shareDocument('Differentiating Acute Confusional State (Delirium) from Aphasia', 'documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf')}
+                              className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                              title="Share this document"
+                            >
+                              <i data-lucide="share-2" className="w-4 h-4"></i>
+                              Share
+                            </button>
+                            <button
+                              onClick={() => copyToClipboard(window.location.origin + window.location.pathname + 'documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf', 'Differentiating Acute Confusional State (Delirium) from Aphasia')}
+                              className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
+                              title="Copy link to clipboard"
+                            >
+                              <i data-lucide={copiedText === 'Differentiating Acute Confusional State (Delirium) from Aphasia' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              {copiedText === 'Differentiating Acute Confusional State (Delirium) from Aphasia' ? 'Copied!' : 'Copy'}
+                            </button>
+                            <button
+                              onClick={() => emailDocument('Differentiating Acute Confusional State (Delirium) from Aphasia', 'documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf')}
+                              className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              title="Email this document"
+                            >
+                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              Email
+                            </button>
                           </div>
                         </div>
 
@@ -5723,7 +6041,7 @@ Rizwan Kalani MD`);
                               <p className="text-xs text-gray-500">PDF Document</p>
                             </div>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex flex-wrap gap-2">
                             <a
                               href="documents/exam/coma exam.pdf"
                               target="_blank"
@@ -5741,6 +6059,30 @@ Rizwan Kalani MD`);
                               <i data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
+                            <button
+                              onClick={() => shareDocument('coma exam', 'documents/exam/coma exam.pdf')}
+                              className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                              title="Share this document"
+                            >
+                              <i data-lucide="share-2" className="w-4 h-4"></i>
+                              Share
+                            </button>
+                            <button
+                              onClick={() => copyToClipboard(window.location.origin + window.location.pathname + 'documents/exam/coma exam.pdf', 'coma exam')}
+                              className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
+                              title="Copy link to clipboard"
+                            >
+                              <i data-lucide={copiedText === 'coma exam' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              {copiedText === 'coma exam' ? 'Copied!' : 'Copy'}
+                            </button>
+                            <button
+                              onClick={() => emailDocument('coma exam', 'documents/exam/coma exam.pdf')}
+                              className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              title="Email this document"
+                            >
+                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              Email
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -5761,7 +6103,7 @@ Rizwan Kalani MD`);
                               <p className="text-xs text-gray-500">PDF Document</p>
                             </div>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex flex-wrap gap-2">
                             <a
                               href="documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf"
                               target="_blank"
@@ -5779,6 +6121,30 @@ Rizwan Kalani MD`);
                               <i data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
+                            <button
+                              onClick={() => shareDocument('Symptomatic Cervical Carotid Artery Stenosis', 'documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf')}
+                              className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                              title="Share this document"
+                            >
+                              <i data-lucide="share-2" className="w-4 h-4"></i>
+                              Share
+                            </button>
+                            <button
+                              onClick={() => copyToClipboard(window.location.origin + window.location.pathname + 'documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf', 'Symptomatic Cervical Carotid Artery Stenosis')}
+                              className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
+                              title="Copy link to clipboard"
+                            >
+                              <i data-lucide={copiedText === 'Symptomatic Cervical Carotid Artery Stenosis' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              {copiedText === 'Symptomatic Cervical Carotid Artery Stenosis' ? 'Copied!' : 'Copy'}
+                            </button>
+                            <button
+                              onClick={() => emailDocument('Symptomatic Cervical Carotid Artery Stenosis', 'documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf')}
+                              className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              title="Email this document"
+                            >
+                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              Email
+                            </button>
                           </div>
                         </div>
                       </div>
