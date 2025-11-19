@@ -1881,11 +1881,11 @@ Rizwan Kalani MD`));
               { title: 'Symptomatic Cervical Carotid Artery Stenosis', section: 'Large Artery Disease', keywords: ['carotid', 'stenosis', 'endarterectomy', 'cea', 'cas'] },
               { title: 'Differentiating Acute Confusional State (Delirium) from Aphasia', section: 'Exam', keywords: ['delirium', 'aphasia', 'confusion', 'exam'] },
               { title: 'Coma Exam', section: 'Exam', keywords: ['coma', 'exam', 'consciousness'] },
-              { title: 'Large Core Anteior Circulation LVO EVT Trials', section: 'EVT', keywords: ['large core', 'lvo', 'thrombectomy', 'evt'] },
-              { title: 'Basilar Artery Occlusion EVT Trials', section: 'EVT', keywords: ['basilar', 'posterior circulation', 'evt'] },
-              { title: 'MeVO & Distal Vessel Occlusion EVT Trials', section: 'EVT', keywords: ['mevo', 'distal', 'medium vessel'] },
+              { title: 'Large Core Anteior Circulation LVO EVT Trials', section: 'Endovascular Therapy', keywords: ['large core', 'lvo', 'thrombectomy', 'evt'] },
+              { title: 'Basilar Artery Occlusion EVT Trials', section: 'Endovascular Therapy', keywords: ['basilar', 'posterior circulation', 'evt'] },
+              { title: 'MeVO & Distal Vessel Occlusion EVT Trials', section: 'Endovascular Therapy', keywords: ['mevo', 'distal', 'medium vessel'] },
               { title: 'Unruptured Cerebral Aneurysms', section: 'Aneurysms & Vascular Malformations', keywords: ['aneurysm', 'unruptured', 'sah'] },
-              { title: 'Interpretation of Clinical Trials', section: 'EBM', keywords: ['ebm', 'clinical trials', 'evidence', 'statistics'] }
+              { title: 'Interpretation of Clinical Trials', section: 'Critical Appraisal', keywords: ['ebm', 'clinical trials', 'evidence', 'statistics', 'critical appraisal'] }
             ];
 
             evidenceDocuments.forEach(doc => {
@@ -5314,9 +5314,12 @@ Rizwan Kalani MD`);
 
                     {/* Aneurysms & Vascular Malformations Section */}
                     {evidenceSectionMatches('Aneurysms & Vascular Malformations', ['Unruptured Cerebral Aneurysms']) && (
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Aneurysms & Vascular Malformations</h3>
-                      <div className="space-y-3">
+                    <details className="bg-white border border-gray-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-gray-800 hover:bg-gray-50 rounded-lg flex items-center justify-between text-lg">
+                        <span>Aneurysms & Vascular Malformations</span>
+                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                      </summary>
+                      <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - Unruptured Cerebral Aneurysms */}
                         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
@@ -5355,14 +5358,17 @@ Rizwan Kalani MD`);
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </details>
                     )}
 
                     {/* Antiplatelet Therapy Section */}
                     {evidenceSectionMatches('Antiplatelet Therapy', ['DAPT Minor Stroke-TIA Trials']) && (
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Antiplatelet Therapy</h3>
-                      <div className="space-y-3">
+                    <details className="bg-white border border-gray-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-gray-800 hover:bg-gray-50 rounded-lg flex items-center justify-between text-lg">
+                        <span>Antiplatelet Therapy</span>
+                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                      </summary>
+                      <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - DAPT Minor Stroke-TIA Trials */}
                         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
@@ -5401,14 +5407,17 @@ Rizwan Kalani MD`);
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </details>
                     )}
 
                     {/* Cerebral Small Vessel Disease Section */}
                     {evidenceSectionMatches('Cerebral Small Vessel Disease', ['Lacunar Stroke']) && (
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Cerebral Small Vessel Disease</h3>
-                      <div className="space-y-3">
+                    <details className="bg-white border border-gray-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-gray-800 hover:bg-gray-50 rounded-lg flex items-center justify-between text-lg">
+                        <span>Cerebral Small Vessel Disease</span>
+                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                      </summary>
+                      <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - Lacunar Stroke */}
                         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
@@ -5447,14 +5456,17 @@ Rizwan Kalani MD`);
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </details>
                     )}
 
                     {/* EBM Section */}
                     {evidenceSectionMatches('EBM', ['Interpretation of Clinical Trials']) && (
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-4">EBM</h3>
-                      <div className="space-y-3">
+                    <details className="bg-white border border-gray-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-gray-800 hover:bg-gray-50 rounded-lg flex items-center justify-between text-lg">
+                        <span>Critical Appraisal</span>
+                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                      </summary>
+                      <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - Interpretation of Clinical Trials */}
                         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
@@ -5493,14 +5505,17 @@ Rizwan Kalani MD`);
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </details>
                     )}
 
                     {/* EVT Section */}
                     {evidenceSectionMatches('EVT', ['Large Core Anteior Circulation LVO EVT Trials', 'Basilar Artery Occlusion EVT Trials', 'MeVO & Distal Vessel Occlusion EVT Trials']) && (
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-4">EVT</h3>
-                      <div className="space-y-3">
+                    <details className="bg-white border border-gray-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-gray-800 hover:bg-gray-50 rounded-lg flex items-center justify-between text-lg">
+                        <span>Endovascular Therapy</span>
+                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                      </summary>
+                      <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - Large Core Anterior Circulation LVO EVT Trials */}
                         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
@@ -5615,14 +5630,17 @@ Rizwan Kalani MD`);
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </details>
                     )}
 
                     {/* Risk Factors Section */}
                     {evidenceSectionMatches('Risk Factors', ['Timing of Anticoagulation after AF-Related Stroke', 'Atrial Fibrillation & Secondary Stroke Prevention', 'Diabetes and stroke', 'Lipids and Cerebrovascular Disease']) && (
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Risk Factors</h3>
-                      <div className="space-y-4">
+                    <details className="bg-white border border-gray-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-gray-800 hover:bg-gray-50 rounded-lg flex items-center justify-between text-lg">
+                        <span>Risk Factors</span>
+                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                      </summary>
+                      <div className="space-y-4 p-4 pt-0">
 
                         {/* Atrial Fibrillation Subsection */}
                         <div className="border-l-4 border-purple-500 pl-4">
@@ -5826,14 +5844,17 @@ Rizwan Kalani MD`);
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </details>
                     )}
 
                     {/* Thrombolytic Therapy Section */}
                     {evidenceSectionMatches('Thrombolytic Therapy', ['Thrombolytic Therapy 4.5-24h RCTs', 'WAKE-UP Trial']) && (
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Thrombolytic Therapy</h3>
-                      <div className="space-y-3">
+                    <details className="bg-white border border-gray-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-gray-800 hover:bg-gray-50 rounded-lg flex items-center justify-between text-lg">
+                        <span>Thrombolytic Therapy</span>
+                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                      </summary>
+                      <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - Thrombolytic Therapy 4.5-24h RCTs */}
                         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
@@ -5894,14 +5915,17 @@ Rizwan Kalani MD`);
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </details>
                     )}
 
                     {/* Exam Section */}
                     {evidenceSectionMatches('Exam', ['Differentiating Acute Confusional State (Delirium) from Aphasia', 'Coma Exam']) && (
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Exam</h3>
-                      <div className="space-y-3">
+                    <details className="bg-white border border-gray-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-gray-800 hover:bg-gray-50 rounded-lg flex items-center justify-between text-lg">
+                        <span>Exam</span>
+                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                      </summary>
+                      <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - Differentiating Delirium from Aphasia */}
                         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
@@ -5978,14 +6002,17 @@ Rizwan Kalani MD`);
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </details>
                     )}
 
                     {/* Large Artery Disease Section */}
                     {evidenceSectionMatches('Large Artery Disease', ['Symptomatic Cervical Carotid Artery Stenosis']) && (
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-4">Large Artery Disease</h3>
-                      <div className="space-y-3">
+                    <details className="bg-white border border-gray-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-gray-800 hover:bg-gray-50 rounded-lg flex items-center justify-between text-lg">
+                        <span>Large Artery Disease</span>
+                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                      </summary>
+                      <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - Symptomatic Cervical Carotid Artery Stenosis */}
                         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
@@ -6024,7 +6051,7 @@ Rizwan Kalani MD`);
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </details>
                     )}
                   </div>
                 )}
