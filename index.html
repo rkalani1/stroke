@@ -95,6 +95,18 @@
             }
         }
 
+        /* Fix for date and time inputs on mobile */
+        @media (max-width: 640px) {
+            input[type="date"],
+            input[type="time"] {
+                max-width: 100%;
+                min-width: 0;
+                font-size: 16px !important; /* Prevents zoom on iOS */
+                padding-left: 8px !important;
+                padding-right: 8px !important;
+            }
+        }
+
         /* Dark mode styles */
         .dark {
             background-color: #1a202c;
@@ -2766,7 +2778,7 @@ TO DO:
 
                       {/* Separate Date and Time Inputs */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
+                        <div className="min-w-0">
                           <label className="block text-sm font-medium text-blue-900 mb-1">Date</label>
                           <input
                             type="date"
@@ -2781,10 +2793,11 @@ TO DO:
                               }
                             }}
                             max={currentTime.toISOString().split('T')[0]}
-                            className="w-full px-4 py-3 border-2 border-blue-300 rounded-lg text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-2 sm:px-4 py-3 border-2 border-blue-300 rounded-lg text-base sm:text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-full"
+                            style={{boxSizing: 'border-box'}}
                           />
                         </div>
-                        <div>
+                        <div className="min-w-0">
                           <label className="block text-sm font-medium text-blue-900 mb-1">Time</label>
                           <input
                             type="time"
@@ -2797,7 +2810,8 @@ TO DO:
                                 setLkwTime(newDate);
                               }
                             }}
-                            className="w-full px-4 py-3 border-2 border-blue-300 rounded-lg text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-2 sm:px-4 py-3 border-2 border-blue-300 rounded-lg text-base sm:text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-full"
+                            style={{boxSizing: 'border-box'}}
                           />
                         </div>
                       </div>
