@@ -1965,6 +1965,7 @@ Rizwan Kalani MD`));
               { title: 'Thrombolytic Therapy 4.5-24h RCTs', section: 'Thrombolytic Therapy', keywords: ['thrombolysis', 'tpa', 'alteplase', 'rct', 'extended window', '4.5-24h'] },
               { title: 'Lacunar Stroke', section: 'Cerebral Small Vessel Disease', keywords: ['lacunar', 'small vessel', 'csvd'] },
               { title: 'Symptomatic Cervical Carotid Artery Stenosis', section: 'Large Artery Disease', keywords: ['carotid', 'stenosis', 'endarterectomy', 'cea', 'cas'] },
+              { title: 'CREST-2 Trial', section: 'Large Artery Disease', keywords: ['crest', 'crest-2', 'carotid', 'stenting', 'endarterectomy', 'cea', 'cas', 'asymptomatic'] },
               { title: 'Differentiating Acute Confusional State (Delirium) from Aphasia', section: 'Exam', keywords: ['delirium', 'aphasia', 'confusion', 'exam'] },
               { title: 'Coma Exam', section: 'Exam', keywords: ['coma', 'exam', 'consciousness'] },
               { title: 'Large Core Anteior Circulation LVO EVT Trials', section: 'Endovascular Therapy', keywords: ['large core', 'lvo', 'thrombectomy', 'evt'] },
@@ -6094,7 +6095,7 @@ Rizwan Kalani MD`);
                     )}
 
                     {/* Large Artery Disease Section */}
-                    {evidenceSectionMatches('Large Artery Disease', ['Symptomatic Cervical Carotid Artery Stenosis']) && (
+                    {evidenceSectionMatches('Large Artery Disease', ['Symptomatic Cervical Carotid Artery Stenosis', 'CREST-2 Trial']) && (
                     <details className="bg-white border border-gray-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-gray-800 hover:bg-gray-50 rounded-lg flex items-center justify-between text-lg">
                         <span>Large Artery Disease</span>
@@ -6130,6 +6131,43 @@ Rizwan Kalani MD`);
                             </a>
                             <button
                               onClick={() => emailDocument('Symptomatic Cervical Carotid Artery Stenosis', 'documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf')}
+                              className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              title="Email this document"
+                            >
+                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              Email
+                            </button>
+                          </div>
+                        </div>
+                        {/* Document 2 - CREST-2 Trial */}
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                          <div className="flex items-center gap-3 flex-1">
+                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <div className="flex-1">
+                              <h4 className="text-sm font-medium text-gray-900">CREST-2 Trial (December 2025)</h4>
+                              <p className="text-xs text-gray-500">PDF Document</p>
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            <a
+                              href="documents/lad/CREST-2 Trial - Dec 2025.pdf"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              View
+                            </a>
+                            <a
+                              href="documents/lad/CREST-2 Trial - Dec 2025.pdf"
+                              download
+                              className="px-3 py-2 bg-gray-600 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="download" className="w-4 h-4"></i>
+                              Download
+                            </a>
+                            <button
+                              onClick={() => emailDocument('CREST-2 Trial (December 2025)', 'documents/lad/CREST-2 Trial - Dec 2025.pdf')}
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
