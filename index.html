@@ -1881,7 +1881,8 @@ Rizwan Kalani MD`));
               { title: 'Basilar Artery Occlusion EVT Trials', section: 'Endovascular Therapy', keywords: ['basilar', 'posterior circulation', 'evt'] },
               { title: 'MeVO & Distal Vessel Occlusion EVT Trials', section: 'Endovascular Therapy', keywords: ['mevo', 'distal', 'medium vessel'] },
               { title: 'Unruptured Cerebral Aneurysms', section: 'Aneurysms & Vascular Malformations', keywords: ['aneurysm', 'unruptured', 'sah'] },
-              { title: 'Interpretation of Clinical Trials', section: 'Critical Appraisal', keywords: ['ebm', 'clinical trials', 'evidence', 'statistics', 'critical appraisal'] }
+              { title: 'Interpretation of Clinical Trials', section: 'Critical Appraisal', keywords: ['ebm', 'clinical trials', 'evidence', 'statistics', 'critical appraisal'] },
+              { title: 'CEBM Oxford Resources', section: 'Critical Appraisal', keywords: ['cebm', 'oxford', 'ebm', 'evidence-based medicine', 'critical appraisal', 'study designs', 'levels of evidence'] }
             ];
 
             evidenceDocuments.forEach(doc => {
@@ -5495,7 +5496,7 @@ Rizwan Kalani MD`);
                     )}
 
                     {/* EBM Section */}
-                    {evidenceSectionMatches('EBM', ['Interpretation of Clinical Trials']) && (
+                    {evidenceSectionMatches('EBM', ['Interpretation of Clinical Trials', 'CEBM Oxford Resources']) && (
                     <details className="bg-white border border-gray-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-gray-800 hover:bg-gray-50 rounded-lg flex items-center justify-between text-lg">
                         <span>Critical Appraisal</span>
@@ -5537,6 +5538,27 @@ Rizwan Kalani MD`);
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
+                          </div>
+                        </div>
+                        {/* External Link - CEBM Oxford Resources */}
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                          <div className="flex items-center gap-3 flex-1">
+                            <i data-lucide="external-link" className="w-6 h-6 text-blue-600"></i>
+                            <div className="flex-1">
+                              <h4 className="text-sm font-medium text-gray-900">CEBM Oxford Resources</h4>
+                              <p className="text-xs text-gray-500">Centre for Evidence-Based Medicine - University of Oxford</p>
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            <a
+                              href="https://www.cebm.ox.ac.uk/resources"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
+                            >
+                              <i data-lucide="external-link" className="w-4 h-4"></i>
+                              Visit
+                            </a>
                           </div>
                         </div>
                       </div>
