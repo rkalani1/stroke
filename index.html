@@ -383,7 +383,7 @@
     </script>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState, useEffect, useRef } = React;
         const { Calculator, Clock, Brain, AlertTriangle, FileText, CheckCircle, Moon, Sun, Download, Copy, Search, Check } = lucide;
 
         const StrokeClinicalTool = () => {
@@ -484,6 +484,19 @@ Rizwan Kalani MD`));
 
           // Emergency Contacts FAB state
           const [fabExpanded, setFabExpanded] = useState(false);
+
+          // ============================================
+          // SIGN-OUT / HANDOFF FEATURE
+          // ============================================
+          // PHI-free patient summaries for shift handoff
+          const [signOutPatients, setSignOutPatients] = useState(loadFromStorage('signOutPatients', []));
+          const [showSignOutModal, setShowSignOutModal] = useState(false);
+          const [showSignOutManager, setShowSignOutManager] = useState(false);
+          const [signOutToast, setSignOutToast] = useState('');
+
+          // Ref and state for Part 6 (Treatment Decision) scroll visibility
+          const treatmentDecisionRef = useRef(null);
+          const [showSmartPhrases, setShowSmartPhrases] = useState(false);
 
           const [gcsItems, setGcsItems] = useState(loadFromStorage('gcsItems', {
             eye: '',
@@ -1115,8 +1128,8 @@ Rizwan Kalani MD`));
                                     "Spontaneous supratentorial ICH confirmed by CT",
                                     "ICH symptom onset ≤2 hours before treatment",
                                     "Hematoma volume 2-60 mL",
-                                    "No or small intraventricular hemorrhage (≤5 mL)",
-                                    "Glasgow Coma Scale ≥9",
+                                    "Intraventricular hemorrhage (IVH) score ≤7",
+                                    "Glasgow Coma Scale ≥8",
                                     "Able to receive study drug within 2 hours of symptom onset",
                                     "Informed consent from patient or legally authorized representative"
                                 ],
@@ -1129,9 +1142,9 @@ Rizwan Kalani MD`));
                                     "• Brain tumor",
                                     "• Hemorrhagic conversion of ischemic stroke",
                                     "• Dural venous sinus thrombosis",
-                                    "Infratentorial (brainstem, cerebellar) hemorrhage",
+                                    "Brainstem hemorrhage excluded; cerebellar hemorrhage permitted",
                                     "Planned surgical evacuation within 24 hours",
-                                    "Pre-existing severe disability (mRS >3)",
+                                    "Pre-existing severe disability (mRS >2)",
                                     "Known allergy to rFVIIa",
                                     "History of thromboembolic disease within 30 days",
                                     "Pregnancy",
@@ -1490,14 +1503,19 @@ Rizwan Kalani MD`));
                 { id: 'noAnticoag', label: 'Not on anticoagulants', field: 'noAnticoagulants', evaluate: (data) => {
                     return data.telestrokeNote?.noAnticoagulants === true;
                   }, required: true },
-                { id: 'gcs', label: 'GCS ≥9 (not deeply comatose)', field: 'gcs', evaluate: (data) => {
+                { id: 'gcs', label: 'GCS ≥8 (not deeply comatose)', field: 'gcs', evaluate: (data) => {
                     const gcs = parseInt(data.gcsScore);
-                    return !isNaN(gcs) && gcs >= 9;
+                    return !isNaN(gcs) && gcs >= 8;
+                  }, required: true },
+                { id: 'premorbidMRS', label: 'Pre-stroke mRS ≤2', field: 'premorbidMRS', evaluate: (data) => {
+                    const mrs = parseInt(data.telestrokeNote?.premorbidMRS);
+                    return !isNaN(mrs) && mrs <= 2;
                   }, required: true }
               ],
               exclusionFlags: [
                 { id: 'onAnticoag', label: 'On anticoagulation', field: 'onAnticoag' },
-                { id: 'largeIVH', label: 'Significant IVH', field: 'largeIVH' },
+                { id: 'largeIVH', label: 'IVH score >7', field: 'largeIVH' },
+                { id: 'brainstem', label: 'Brainstem hemorrhage', field: 'brainstemICH' },
                 { id: 'secondary', label: 'Secondary ICH (trauma, AVM, tumor)', field: 'secondaryICH' }
               ]
             },
@@ -2316,6 +2334,263 @@ Rizwan Kalani MD`));
             }
           };
 
+          // ============================================
+          // SIGN-OUT / HANDOFF FUNCTIONS
+          // ============================================
+
+          // Generate PHI-free patient identifier
+          const generateSignOutPatientId = () => {
+            const count = signOutPatients.length + 1;
+            return `Pt ${count}`;
+          };
+
+          // Create PHI-free sign-out entry from current patient data
+          const createSignOutEntry = (customLabel = '') => {
+            const age = telestrokeNote.age || '';
+            const sex = telestrokeNote.sex || '';
+            const diagnosis = telestrokeNote.diagnosis || telestrokeNote.chiefComplaint || '';
+            const nihss = telestrokeNote.nihss || nihssScore || '';
+            const aspects = aspectsScore !== 10 ? aspectsScore : '';
+
+            // Vessel occlusion
+            let vessel = '';
+            const vessels = telestrokeNote.vesselOcclusion || [];
+            if (vessels.length > 0) {
+              vessel = vessels.join(', ');
+            } else if (telestrokeNote.ctaResults) {
+              const cta = telestrokeNote.ctaResults.toLowerCase();
+              if (cta.includes('m1')) vessel = 'M1';
+              else if (cta.includes('m2')) vessel = 'M2';
+              else if (cta.includes('ica')) vessel = 'ICA';
+              else if (cta.includes('basilar')) vessel = 'Basilar';
+            }
+
+            // Time from LKW
+            let timeFromLKW = '';
+            const timeCalc = calculateTimeFromLKW();
+            if (timeCalc) {
+              timeFromLKW = `${timeCalc.hours}h ${timeCalc.minutes}m`;
+            }
+
+            // Treatment
+            let treatment = [];
+            if (telestrokeNote.tnkRecommended) treatment.push('TNK given');
+            if (telestrokeNote.evtRecommended) treatment.push('EVT recommended');
+            if (treatment.length === 0 && telestrokeNote.medications) {
+              const meds = telestrokeNote.medications.toLowerCase();
+              if (meds.includes('asa') || meds.includes('aspirin')) treatment.push('ASA');
+              if (meds.includes('plavix') || meds.includes('clopidogrel')) treatment.push('Plavix');
+            }
+
+            // Pending items
+            let pending = [];
+            if (telestrokeNote.evtRecommended && !telestrokeNote.transferAccepted) pending.push('CSC transfer');
+            if (telestrokeNote.tnkRecommended) pending.push('Post-tPA imaging');
+
+            // Status/disposition
+            let status = '';
+            if (telestrokeNote.transferAccepted) status = 'Transferred to CSC';
+            else if (telestrokeNote.disposition) status = telestrokeNote.disposition;
+
+            return {
+              id: Date.now().toString(),
+              timestamp: new Date().toISOString(),
+              label: customLabel || generateSignOutPatientId(),
+              demographics: age && sex ? `${age}${sex}` : '',
+              diagnosis: diagnosis,
+              nihss: nihss,
+              aspects: aspects,
+              vessel: vessel,
+              timeFromLKW: timeFromLKW,
+              treatment: treatment.join(', '),
+              pending: pending,
+              status: status
+            };
+          };
+
+          // Add current patient to sign-out list
+          const addToSignOut = (customLabel = '') => {
+            const entry = createSignOutEntry(customLabel);
+            setSignOutPatients(prev => [...prev, entry]);
+            saveWithExpiration('signOutPatients', [...signOutPatients, entry]);
+            showSignOutNotification('Patient added to sign-out');
+            return entry;
+          };
+
+          // Update sign-out entry
+          const updateSignOutEntry = (id, updates) => {
+            setSignOutPatients(prev => {
+              const updated = prev.map(p => p.id === id ? { ...p, ...updates } : p);
+              saveWithExpiration('signOutPatients', updated);
+              return updated;
+            });
+          };
+
+          // Remove sign-out entry
+          const removeSignOutEntry = (id) => {
+            setSignOutPatients(prev => {
+              const updated = prev.filter(p => p.id !== id);
+              saveWithExpiration('signOutPatients', updated);
+              return updated;
+            });
+          };
+
+          // Clear all sign-outs
+          const clearAllSignOuts = () => {
+            setSignOutPatients([]);
+            localStorage.removeItem('signOutPatients');
+          };
+
+          // Generate formatted sign-out text for sharing
+          const generateSignOutText = () => {
+            if (signOutPatients.length === 0) {
+              return 'No patients in sign-out list.';
+            }
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', {
+              month: 'short', day: 'numeric', year: 'numeric'
+            });
+            const timeStr = now.toLocaleTimeString('en-US', {
+              hour: '2-digit', minute: '2-digit'
+            });
+
+            let text = `STROKE SIGN-OUT - ${dateStr} ${timeStr}\n`;
+            text += `---\n`;
+
+            signOutPatients.forEach((pt, index) => {
+              // Header line: Label (demographics, vessel): key findings
+              let header = pt.label;
+              if (pt.demographics) {
+                header += ` (${pt.demographics}`;
+                if (pt.vessel) header += `, ${pt.vessel}`;
+                header += `)`;
+              }
+              if (pt.diagnosis) header += `: ${pt.diagnosis}`;
+              text += `${header}\n`;
+
+              // Key findings
+              let findings = [];
+              if (pt.nihss) findings.push(`NIHSS ${pt.nihss}`);
+              if (pt.aspects) findings.push(`ASPECTS ${pt.aspects}`);
+              if (pt.vessel && !pt.demographics) findings.push(pt.vessel);
+              if (findings.length > 0) {
+                text += `- Findings: ${findings.join(', ')}\n`;
+              }
+
+              // Treatment
+              if (pt.treatment) {
+                text += `- Tx: ${pt.treatment}`;
+                if (pt.timeFromLKW) text += ` (${pt.timeFromLKW} from LKW)`;
+                text += `\n`;
+              }
+
+              // Pending
+              if (pt.pending && pt.pending.length > 0) {
+                text += `- Pending: ${pt.pending.join(', ')}\n`;
+              }
+
+              // Status
+              if (pt.status) {
+                text += `- Status: ${pt.status}\n`;
+              }
+
+              text += `\n`;
+            });
+
+            text += `---\n`;
+            text += `[Generated by UW Stroke Tool]`;
+
+            return text;
+          };
+
+          // Copy sign-out to clipboard
+          const copySignOutToClipboard = async () => {
+            const text = generateSignOutText();
+            try {
+              await navigator.clipboard.writeText(text);
+              showSignOutNotification('Sign-out copied to clipboard');
+              return true;
+            } catch (err) {
+              console.error('Failed to copy:', err);
+              showSignOutNotification('Failed to copy');
+              return false;
+            }
+          };
+
+          // Share sign-out using native share API
+          const shareSignOut = async () => {
+            const text = generateSignOutText();
+            if (navigator.share) {
+              try {
+                await navigator.share({
+                  title: 'Stroke Sign-Out',
+                  text: text
+                });
+                return true;
+              } catch (err) {
+                if (err.name !== 'AbortError') {
+                  // Fallback to copy
+                  return await copySignOutToClipboard();
+                }
+              }
+            } else {
+              // Fallback to copy
+              return await copySignOutToClipboard();
+            }
+          };
+
+          // Show toast notification for sign-out actions
+          const showSignOutNotification = (message) => {
+            setSignOutToast(message);
+            setTimeout(() => setSignOutToast(''), 2500);
+          };
+
+          // Generate single patient sign-out for quick copy
+          const generateSinglePatientSignOut = () => {
+            const entry = createSignOutEntry('Current');
+            let text = '';
+
+            let header = entry.label;
+            if (entry.demographics) {
+              header += ` (${entry.demographics}`;
+              if (entry.vessel) header += `, ${entry.vessel}`;
+              header += `)`;
+            }
+            if (entry.diagnosis) header += `: ${entry.diagnosis}`;
+            text += `${header}\n`;
+
+            let findings = [];
+            if (entry.nihss) findings.push(`NIHSS ${entry.nihss}`);
+            if (entry.aspects) findings.push(`ASPECTS ${entry.aspects}`);
+            if (findings.length > 0) {
+              text += `- Findings: ${findings.join(', ')}\n`;
+            }
+
+            if (entry.treatment) {
+              text += `- Tx: ${entry.treatment}`;
+              if (entry.timeFromLKW) text += ` (${entry.timeFromLKW} from LKW)`;
+              text += `\n`;
+            }
+
+            if (entry.pending && entry.pending.length > 0) {
+              text += `- Pending: ${entry.pending.join(', ')}\n`;
+            }
+
+            if (entry.status) {
+              text += `- Status: ${entry.status}\n`;
+            }
+
+            return text;
+          };
+
+          // Persist sign-out patients to localStorage
+          React.useEffect(() => {
+            if (signOutPatients.length > 0) {
+              saveWithExpiration('signOutPatients', signOutPatients);
+            }
+          }, [signOutPatients]);
+
           // Persist shift patients to localStorage
           React.useEffect(() => {
             if (shiftPatients.length > 0) {
@@ -3003,6 +3278,26 @@ Rizwan Kalani MD`));
             setTrialEligibility(results);
           }, [telestrokeNote, strokeCodeForm, aspectsScore, nihssScore, mrsScore, lkwTime, currentTime]);
 
+          // Monitor scroll position for Part 6 (Treatment Decision) visibility
+          useEffect(() => {
+            const handleScroll = () => {
+              if (treatmentDecisionRef.current && activeTab === 'encounter') {
+                const rect = treatmentDecisionRef.current.getBoundingClientRect();
+                // Show smart phrases when Part 6 is at or above 80% of viewport height from top
+                const isVisible = rect.top <= window.innerHeight * 0.8;
+                setShowSmartPhrases(isVisible);
+              } else {
+                setShowSmartPhrases(false);
+              }
+            };
+
+            window.addEventListener('scroll', handleScroll);
+            // Initial check
+            handleScroll();
+
+            return () => window.removeEventListener('scroll', handleScroll);
+          }, [activeTab]);
+
           // Monitor critical alerts
           useEffect(() => {
             const alerts = [];
@@ -3638,8 +3933,147 @@ TO DO:
                           <i data-lucide="clipboard-list" className="w-4 h-4"></i>
                         </button>
                       )}
+
+                      {/* PHI-Free Sign-Out Button */}
+                      <div className="relative">
+                        <button
+                          onClick={() => setShowSignOutManager(!showSignOutManager)}
+                          className={`p-1.5 rounded transition-colors ${
+                            showSignOutManager
+                              ? 'bg-orange-100 text-orange-700'
+                              : 'text-orange-600 hover:bg-orange-100'
+                          }`}
+                          title="Manage shift sign-outs"
+                        >
+                          <i data-lucide="send" className="w-4 h-4"></i>
+                        </button>
+                        {signOutPatients.length > 0 && (
+                          <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center pointer-events-none">
+                            {signOutPatients.length}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
+
+                  {/* Sign-Out Manager Panel */}
+                  {showSignOutManager && (
+                    <div className="mt-3 pt-3 border-t border-blue-200">
+                      <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-semibold text-orange-900 flex items-center gap-2">
+                            <i data-lucide="send" className="w-4 h-4"></i>
+                            Shift Sign-Out (PHI-Free)
+                          </h4>
+                          <div className="flex gap-1">
+                            {signOutPatients.length > 0 && (
+                              <>
+                                <button
+                                  onClick={copySignOutToClipboard}
+                                  className="px-2 py-1 text-xs bg-orange-600 text-white rounded hover:bg-orange-700 flex items-center gap-1"
+                                >
+                                  <i data-lucide="copy" className="w-3 h-3"></i>
+                                  Copy All
+                                </button>
+                                <button
+                                  onClick={shareSignOut}
+                                  className="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center gap-1"
+                                >
+                                  <i data-lucide="share-2" className="w-3 h-3"></i>
+                                  Share
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Add Current Patient to Sign-Out */}
+                        {telestrokeNote.age && (
+                          <div className="mb-2">
+                            <button
+                              onClick={() => {
+                                const label = prompt('Enter patient nickname (e.g., "MCA patient", "TIA obs"):', generateSignOutPatientId());
+                                if (label !== null) {
+                                  addToSignOut(label || generateSignOutPatientId());
+                                }
+                              }}
+                              className="w-full px-3 py-2 text-sm bg-white border border-orange-300 rounded-lg hover:bg-orange-50 flex items-center justify-center gap-2"
+                            >
+                              <i data-lucide="plus" className="w-4 h-4"></i>
+                              Add Current Patient to Sign-Out
+                            </button>
+                          </div>
+                        )}
+
+                        {/* Sign-Out List */}
+                        {signOutPatients.length === 0 ? (
+                          <p className="text-sm text-orange-700 italic text-center py-2">
+                            No patients in sign-out list yet
+                          </p>
+                        ) : (
+                          <div className="space-y-2 max-h-48 overflow-y-auto">
+                            {signOutPatients.map((pt, idx) => (
+                              <div key={pt.id} className="bg-white rounded border border-orange-200 p-2">
+                                <div className="flex items-start justify-between">
+                                  <div className="flex-1 min-w-0">
+                                    <div className="font-medium text-sm text-gray-900 truncate">
+                                      {pt.label}
+                                      {pt.demographics && <span className="text-gray-500 ml-1">({pt.demographics})</span>}
+                                    </div>
+                                    <div className="text-xs text-gray-600 truncate">
+                                      {pt.diagnosis || 'No diagnosis'}
+                                      {pt.nihss && ` | NIHSS ${pt.nihss}`}
+                                    </div>
+                                    {pt.status && (
+                                      <div className="text-xs text-blue-600 mt-0.5">{pt.status}</div>
+                                    )}
+                                  </div>
+                                  <button
+                                    onClick={() => removeSignOutEntry(pt.id)}
+                                    className="ml-2 p-1 text-red-500 hover:bg-red-50 rounded"
+                                    title="Remove from sign-out"
+                                  >
+                                    <i data-lucide="x" className="w-3 h-3"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Actions */}
+                        {signOutPatients.length > 0 && (
+                          <div className="mt-2 pt-2 border-t border-orange-200 flex justify-between items-center">
+                            <button
+                              onClick={() => {
+                                if (confirm('Clear all sign-out entries?')) {
+                                  clearAllSignOuts();
+                                }
+                              }}
+                              className="text-xs text-red-600 hover:underline"
+                            >
+                              Clear All
+                            </button>
+                            <span className="text-xs text-orange-600">
+                              {signOutPatients.length} patient{signOutPatients.length !== 1 ? 's' : ''}
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Preview */}
+                        {signOutPatients.length > 0 && (
+                          <details className="mt-2">
+                            <summary className="text-xs text-orange-700 cursor-pointer hover:underline">
+                              Preview sign-out text
+                            </summary>
+                            <pre className="mt-2 p-2 bg-white border border-orange-200 rounded text-xs font-mono whitespace-pre-wrap max-h-40 overflow-y-auto">
+                              {generateSignOutText()}
+                            </pre>
+                          </details>
+                        )}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Quick Trial Alert - Only show if there's a highly eligible trial */}
                   {Object.values(trialEligibility).some(t => t?.status === 'eligible') && (
@@ -4128,184 +4562,6 @@ TO DO:
                         </a>
                       </div>
                     </div>
-
-                    {/* Scenario Templates */}
-                    <details className="bg-yellow-50 border border-yellow-200 rounded-lg">
-                      <summary className="cursor-pointer p-3 font-semibold text-yellow-800 hover:bg-yellow-100 rounded-lg">
-                        ⚡ Quick Scenario Templates (Click to expand)
-                      </summary>
-                      <div className="p-3">
-                        <p className="text-xs text-gray-600 mb-2">Pre-fill common scenarios for faster documentation:</p>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                          <button
-                            onClick={() => {
-                              const lkw = new Date(currentTime);
-                              lkw.setMinutes(lkw.getMinutes() - 90);
-                              setLkwTime(lkw);
-                              setTelestrokeNote({
-                                ...telestrokeNote,
-                                symptoms: 'acute onset right-sided weakness and aphasia',
-                                nihss: '14',
-                                nihssDetails: 'R hemiparesis, global aphasia, R facial droop',
-                                diagnosis: 'Acute ischemic stroke, left MCA territory'
-                              });
-                              setNihssScore(14);
-                              setAspectsScore(9);
-                            }}
-                            className="px-3 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-lg text-xs font-medium transition border border-green-300"
-                          >
-                            🟢 Acute MCA (TNK candidate)
-                          </button>
-                          <button
-                            onClick={() => {
-                              const lkw = new Date(currentTime);
-                              lkw.setHours(lkw.getHours() - 8);
-                              setLkwTime(lkw);
-                              setTelestrokeNote({
-                                ...telestrokeNote,
-                                symptoms: 'acute onset left-sided weakness',
-                                nihss: '16',
-                                nihssDetails: 'L hemiplegia, L neglect, dysarthria',
-                                diagnosis: 'Acute ischemic stroke, right MCA territory, LVO',
-                                ctaResults: 'Right M1 occlusion, no tandem lesion',
-                                ctpResults: 'Large penumbra with small core, mismatch ratio >2.0'
-                              });
-                              setNihssScore(16);
-                              setAspectsScore(7);
-                            }}
-                            className="px-3 py-2 bg-purple-100 hover:bg-purple-200 text-purple-800 rounded-lg text-xs font-medium transition border border-purple-300"
-                          >
-                            🟣 Late Window LVO (EVT candidate)
-                          </button>
-                          <button
-                            onClick={() => {
-                              const lkw = new Date(currentTime);
-                              lkw.setHours(lkw.getHours() - 12);
-                              setLkwTime(null);
-                              setTelestrokeNote({
-                                ...telestrokeNote,
-                                symptoms: 'woke up with left-sided weakness, last seen normal before sleep',
-                                nihss: '8',
-                                nihssDetails: 'L arm weakness, L facial droop',
-                                diagnosis: 'Acute ischemic stroke, wake-up stroke',
-                                lkwUnknown: true
-                              });
-                              setNihssScore(8);
-                            }}
-                            className="px-3 py-2 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded-lg text-xs font-medium transition border border-blue-300"
-                          >
-                            🔵 Wake-Up Stroke
-                          </button>
-                          <button
-                            onClick={() => {
-                              const lkw = new Date(currentTime);
-                              lkw.setMinutes(lkw.getMinutes() - 45);
-                              setLkwTime(lkw);
-                              setTelestrokeNote({
-                                ...telestrokeNote,
-                                symptoms: 'transient right arm weakness, resolved',
-                                nihss: '0',
-                                nihssDetails: 'Exam normal, symptoms resolved',
-                                diagnosis: 'TIA, right arm weakness, resolved'
-                              });
-                              setNihssScore(0);
-                              setAspectsScore(10);
-                            }}
-                            className="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg text-xs font-medium transition border border-gray-300"
-                          >
-                            ⚪ TIA (Resolved)
-                          </button>
-                          <button
-                            onClick={() => {
-                              const lkw = new Date(currentTime);
-                              lkw.setMinutes(lkw.getMinutes() - 30);
-                              setLkwTime(lkw);
-                              setTelestrokeNote({
-                                ...telestrokeNote,
-                                symptoms: 'headache, dizziness, feeling unwell',
-                                nihss: '0',
-                                nihssDetails: 'Non-focal exam',
-                                diagnosis: 'Stroke mimic, likely migraine vs metabolic',
-                                ctResults: 'No acute intracranial abnormality'
-                              });
-                              setNihssScore(0);
-                              setAspectsScore(10);
-                            }}
-                            className="px-3 py-2 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-lg text-xs font-medium transition border border-amber-300"
-                          >
-                            🟡 Stroke Mimic
-                          </button>
-                          <button
-                            onClick={() => {
-                              const lkw = new Date(currentTime);
-                              lkw.setMinutes(lkw.getMinutes() - 60);
-                              setLkwTime(lkw);
-                              setTelestrokeNote({
-                                ...telestrokeNote,
-                                symptoms: 'acute onset vertigo, diplopia, ataxia',
-                                nihss: '4',
-                                nihssDetails: 'Gaze palsy, limb ataxia',
-                                diagnosis: 'Acute ischemic stroke, posterior circulation',
-                                ctaResults: 'Basilar artery patent, possible PCA occlusion'
-                              });
-                              setNihssScore(4);
-                            }}
-                            className="px-3 py-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 rounded-lg text-xs font-medium transition border border-indigo-300"
-                          >
-                            🔷 Posterior Circulation
-                          </button>
-                          <button
-                            onClick={() => {
-                              const lkw = new Date(currentTime);
-                              lkw.setMinutes(lkw.getMinutes() - 120);
-                              setLkwTime(lkw);
-                              setTelestrokeNote({
-                                ...telestrokeNote,
-                                symptoms: 'acute onset aphasia with mild right-sided weakness',
-                                nihss: '5',
-                                nihssDetails: 'Expressive aphasia, mild R arm drift',
-                                diagnosis: 'Acute ischemic stroke, mild-moderate severity',
-                                ctaResults: 'M2 occlusion (dominant branch)',
-                                ctpResults: 'Small core, moderate penumbra'
-                              });
-                              setNihssScore(5);
-                              setAspectsScore(8);
-                            }}
-                            className="px-3 py-2 bg-teal-100 hover:bg-teal-200 text-teal-800 rounded-lg text-xs font-medium transition border border-teal-300"
-                          >
-                            🟢 M2/MeVO (STEP candidate)
-                          </button>
-                          <button
-                            onClick={() => {
-                              setLkwTime(null);
-                              setTelestrokeNote({
-                                ...telestrokeNote,
-                                age: '',
-                                sex: '',
-                                symptoms: '',
-                                nihss: '',
-                                nihssDetails: '',
-                                diagnosis: '',
-                                ctResults: '',
-                                ctaResults: '',
-                                ctpResults: '',
-                                presentingBP: '',
-                                glucose: '',
-                                inr: '',
-                                weight: '',
-                                tnkRecommended: false,
-                                evtRecommended: false
-                              });
-                              setNihssScore(0);
-                              setAspectsScore(10);
-                            }}
-                            className="px-3 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-lg text-xs font-medium transition border border-red-300"
-                          >
-                            🔴 Clear All
-                          </button>
-                        </div>
-                      </div>
-                    </details>
 
                     {/* Last Known Well Input */}
                     <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
@@ -5106,7 +5362,7 @@ TO DO:
                         </div>
 
                         {/* Section 6: Treatment Decision */}
-                        <div className="bg-white border-2 border-orange-300 rounded-lg p-4 shadow-md">
+                        <div ref={treatmentDecisionRef} className="bg-white border-2 border-orange-300 rounded-lg p-4 shadow-md">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-orange-900">6. Treatment Decision</h3>
                             <i data-lucide="zap" className="w-5 h-5 text-orange-600"></i>
@@ -5740,7 +5996,7 @@ TO DO:
                               <i data-lucide="file-text" className="w-5 h-5"></i>
                               Telestroke Note - Epic
                             </h4>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 flex-wrap">
                               <button
                                 onClick={() => setShowTemplateEditor(!showTemplateEditor)}
                                 className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
@@ -5760,7 +6016,21 @@ TO DO:
                                 className="flex items-center gap-2 px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors"
                               >
                                 <i data-lucide={copiedText === 'encounter-note' ? 'check' : 'copy'} className="w-4 h-4"></i>
-                                {copiedText === 'encounter-note' ? 'Copied!' : 'Copy'}
+                                {copiedText === 'encounter-note' ? 'Copied!' : 'Copy Note'}
+                              </button>
+                              {/* Copy Sign-Out Button */}
+                              <button
+                                onClick={() => {
+                                  const signOutText = generateSinglePatientSignOut();
+                                  navigator.clipboard.writeText(signOutText);
+                                  setCopiedText('sign-out');
+                                  setTimeout(() => setCopiedText(''), 2000);
+                                }}
+                                className="flex items-center gap-2 px-3 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 transition-colors"
+                                title="Copy PHI-free sign-out summary for this patient"
+                              >
+                                <i data-lucide={copiedText === 'sign-out' ? 'check' : 'send'} className="w-4 h-4"></i>
+                                {copiedText === 'sign-out' ? 'Copied!' : 'Copy Sign-Out'}
                               </button>
                             </div>
                           </div>
@@ -6148,13 +6418,6 @@ Rizwan Kalani MD`);
                                     })
                                 )}
                               </div>
-
-                              {/* Footer Reminder */}
-                              <div className="bg-indigo-50 p-2 text-center border-t border-indigo-200">
-                                <p className="text-xs text-indigo-700 font-medium">
-                                  ⚠️ Consider trials for EVERY patient!
-                                </p>
-                              </div>
                             </div>
                           );
                         })()}
@@ -6322,93 +6585,96 @@ Rizwan Kalani MD`);
                         {/* ============================================ */}
                         {/* SMART PHRASE LIBRARY                        */}
                         {/* Quick-copy documentation templates          */}
+                        {/* Only visible when scrolled to Part 6        */}
                         {/* ============================================ */}
-                        <details className="bg-white border-2 border-teal-200 rounded-lg shadow-md overflow-hidden">
-                          <summary className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white p-3 cursor-pointer hover:from-teal-600 hover:to-cyan-600 transition-colors">
-                            <span className="font-bold text-sm flex items-center gap-2">
-                              📋 Smart Phrases
-                              <span className="text-xs opacity-75">(click to expand)</span>
-                            </span>
-                          </summary>
+                        {showSmartPhrases && (
+                          <details className="bg-white border-2 border-teal-200 rounded-lg shadow-md overflow-hidden">
+                            <summary className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white p-3 cursor-pointer hover:from-teal-600 hover:to-cyan-600 transition-colors">
+                              <span className="font-bold text-sm flex items-center gap-2">
+                                📋 Smart Phrases
+                                <span className="text-xs opacity-75">(click to expand)</span>
+                              </span>
+                            </summary>
 
-                          <div className="p-3 space-y-2 max-h-80 overflow-y-auto">
-                            {/* Generate from Current Data */}
-                            <div className="space-y-2 mb-3">
-                              <p className="text-xs font-semibold text-gray-600 uppercase">From Current Patient</p>
-                              <button
-                                onClick={() => {
-                                  const text = generateHPI();
-                                  navigator.clipboard.writeText(text);
-                                  setCopiedText('HPI copied!');
-                                  setTimeout(() => setCopiedText(''), 2000);
-                                }}
-                                className="w-full p-2 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded text-left text-xs transition-colors"
-                              >
-                                <span className="font-medium text-teal-700">HPI + Assessment</span>
-                                <p className="text-gray-500 truncate">Auto-generated from form data</p>
-                              </button>
-                              <button
-                                onClick={() => {
-                                  const text = generateAdmissionOrders();
-                                  navigator.clipboard.writeText(text);
-                                  setCopiedText('Orders copied!');
-                                  setTimeout(() => setCopiedText(''), 2000);
-                                }}
-                                className="w-full p-2 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded text-left text-xs transition-colors"
-                              >
-                                <span className="font-medium text-teal-700">Admission Orders</span>
-                                <p className="text-gray-500 truncate">Standard stroke admission order set</p>
-                              </button>
-                              <button
-                                onClick={() => {
-                                  const text = generateSignOut();
-                                  navigator.clipboard.writeText(text);
-                                  setCopiedText('Sign-out copied!');
-                                  setTimeout(() => setCopiedText(''), 2000);
-                                }}
-                                className="w-full p-2 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded text-left text-xs transition-colors"
-                              >
-                                <span className="font-medium text-teal-700">Stroke Sign-Out</span>
-                                <p className="text-gray-500 truncate">Concise handoff summary</p>
-                              </button>
-                            </div>
-
-                            {/* Common Phrases */}
-                            <div className="space-y-2 border-t pt-3">
-                              <p className="text-xs font-semibold text-gray-600 uppercase">Common Phrases</p>
-
-                              {[
-                                { label: 'TNK Eligible', text: 'Patient meets criteria for IV thrombolysis. Risks and benefits discussed including ~3% risk of symptomatic ICH, ~40% chance of significant improvement. Patient/family agree to proceed.' },
-                                { label: 'TNK Not Indicated', text: 'IV thrombolysis not indicated: [outside window / NIHSS minor and non-disabling / anticoagulation / contraindication]. Will proceed with supportive care and secondary prevention.' },
-                                { label: 'EVT Recommendation', text: 'Large vessel occlusion identified. Patient is a candidate for mechanical thrombectomy. Transferred to comprehensive stroke center for endovascular evaluation.' },
-                                { label: 'Stroke Mimic', text: 'Clinical presentation initially concerning for acute stroke, however imaging and clinical evaluation more consistent with stroke mimic. Consider: [seizure with Todd paralysis / complex migraine / functional neurological disorder / peripheral etiology].' },
-                                { label: 'TIA Workup', text: 'Transient ischemic attack with complete symptom resolution. ABCD2 score: __. Plan: MRI brain with DWI, vessel imaging, cardiac monitoring, lipid panel, HbA1c. Start dual antiplatelet therapy (aspirin + clopidogrel) for 21 days if no contraindication.' },
-                                { label: 'Wake-up Stroke', text: 'Patient with wake-up stroke, symptoms discovered at __ upon awakening. Last known well: __ (prior evening). Will obtain MRI with DWI to assess for DWI-FLAIR mismatch. If favorable mismatch, may be candidate for thrombolysis per WAKE-UP trial criteria.' },
-                                { label: 'Late Window', text: 'Patient presenting in extended window (>6 hours). CTP demonstrates favorable perfusion profile with small core and significant penumbra. Meets criteria for EVT consideration per DAWN/DEFUSE-3 extended window protocols.' },
-                                { label: 'Swallow Precautions', text: 'NPO until formal swallow evaluation completed by speech therapy. Risk of aspiration pneumonia in acute stroke patients. Will reassess diet orders after evaluation.' },
-                                { label: 'BP Management Post-TNK', text: 'Post-thrombolysis BP management: Maintain SBP <180 and DBP <105 for 24 hours. If persistent hypertension, initiate IV labetalol or nicardipine drip. Avoid SBP <100 to maintain cerebral perfusion.' },
-                                { label: 'Secondary Prevention', text: 'Secondary stroke prevention initiated: High-intensity statin (atorvastatin 80mg), antiplatelet therapy (aspirin 81mg daily after 24h if received tPA), BP goal optimization, glucose control, smoking cessation counseling, lifestyle modifications discussed.' }
-                              ].map((phrase, idx) => (
+                            <div className="p-3 space-y-2 max-h-80 overflow-y-auto">
+                              {/* Generate from Current Data */}
+                              <div className="space-y-2 mb-3">
+                                <p className="text-xs font-semibold text-gray-600 uppercase">From Current Patient</p>
                                 <button
-                                  key={idx}
                                   onClick={() => {
-                                    navigator.clipboard.writeText(phrase.text);
-                                    setCopiedText(`${phrase.label} copied!`);
+                                    const text = generateHPI();
+                                    navigator.clipboard.writeText(text);
+                                    setCopiedText('HPI copied!');
                                     setTimeout(() => setCopiedText(''), 2000);
                                   }}
-                                  className="w-full p-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded text-left text-xs transition-colors"
+                                  className="w-full p-2 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded text-left text-xs transition-colors"
                                 >
-                                  <span className="font-medium text-gray-700">{phrase.label}</span>
-                                  <p className="text-gray-500 truncate">{phrase.text.substring(0, 60)}...</p>
+                                  <span className="font-medium text-teal-700">HPI + Assessment</span>
+                                  <p className="text-gray-500 truncate">Auto-generated from form data</p>
                                 </button>
-                              ))}
-                            </div>
-                          </div>
+                                <button
+                                  onClick={() => {
+                                    const text = generateAdmissionOrders();
+                                    navigator.clipboard.writeText(text);
+                                    setCopiedText('Orders copied!');
+                                    setTimeout(() => setCopiedText(''), 2000);
+                                  }}
+                                  className="w-full p-2 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded text-left text-xs transition-colors"
+                                >
+                                  <span className="font-medium text-teal-700">Admission Orders</span>
+                                  <p className="text-gray-500 truncate">Standard stroke admission order set</p>
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    const text = generateSignOut();
+                                    navigator.clipboard.writeText(text);
+                                    setCopiedText('Sign-out copied!');
+                                    setTimeout(() => setCopiedText(''), 2000);
+                                  }}
+                                  className="w-full p-2 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded text-left text-xs transition-colors"
+                                >
+                                  <span className="font-medium text-teal-700">Stroke Sign-Out</span>
+                                  <p className="text-gray-500 truncate">Concise handoff summary</p>
+                                </button>
+                              </div>
 
-                          <div className="bg-teal-50 p-2 text-center border-t border-teal-200">
-                            <p className="text-xs text-teal-700">Click any phrase to copy</p>
-                          </div>
-                        </details>
+                              {/* Common Phrases */}
+                              <div className="space-y-2 border-t pt-3">
+                                <p className="text-xs font-semibold text-gray-600 uppercase">Common Phrases</p>
+
+                                {[
+                                  { label: 'TNK Eligible', text: 'Patient meets criteria for IV thrombolysis. Risks and benefits discussed including ~3% risk of symptomatic ICH, ~40% chance of significant improvement. Patient/family agree to proceed.' },
+                                  { label: 'TNK Not Indicated', text: 'IV thrombolysis not indicated: [outside window / NIHSS minor and non-disabling / anticoagulation / contraindication]. Will proceed with supportive care and secondary prevention.' },
+                                  { label: 'EVT Recommendation', text: 'Large vessel occlusion identified. Patient is a candidate for mechanical thrombectomy. Transferred to comprehensive stroke center for endovascular evaluation.' },
+                                  { label: 'Stroke Mimic', text: 'Clinical presentation initially concerning for acute stroke, however imaging and clinical evaluation more consistent with stroke mimic. Consider: [seizure with Todd paralysis / complex migraine / functional neurological disorder / peripheral etiology].' },
+                                  { label: 'TIA Workup', text: 'Transient ischemic attack with complete symptom resolution. ABCD2 score: __. Plan: MRI brain with DWI, vessel imaging, cardiac monitoring, lipid panel, HbA1c. Start dual antiplatelet therapy (aspirin + clopidogrel) for 21 days if no contraindication.' },
+                                  { label: 'Wake-up Stroke', text: 'Patient with wake-up stroke, symptoms discovered at __ upon awakening. Last known well: __ (prior evening). Will obtain MRI with DWI to assess for DWI-FLAIR mismatch. If favorable mismatch, may be candidate for thrombolysis per WAKE-UP trial criteria.' },
+                                  { label: 'Late Window', text: 'Patient presenting in extended window (>6 hours). CTP demonstrates favorable perfusion profile with small core and significant penumbra. Meets criteria for EVT consideration per DAWN/DEFUSE-3 extended window protocols.' },
+                                  { label: 'Swallow Precautions', text: 'NPO until formal swallow evaluation completed by speech therapy. Risk of aspiration pneumonia in acute stroke patients. Will reassess diet orders after evaluation.' },
+                                  { label: 'BP Management Post-TNK', text: 'Post-thrombolysis BP management: Maintain SBP <180 and DBP <105 for 24 hours. If persistent hypertension, initiate IV labetalol or nicardipine drip. Avoid SBP <100 to maintain cerebral perfusion.' },
+                                  { label: 'Secondary Prevention', text: 'Secondary stroke prevention initiated: High-intensity statin (atorvastatin 80mg), antiplatelet therapy (aspirin 81mg daily after 24h if received tPA), BP goal optimization, glucose control, smoking cessation counseling, lifestyle modifications discussed.' }
+                                ].map((phrase, idx) => (
+                                  <button
+                                    key={idx}
+                                    onClick={() => {
+                                      navigator.clipboard.writeText(phrase.text);
+                                      setCopiedText(`${phrase.label} copied!`);
+                                      setTimeout(() => setCopiedText(''), 2000);
+                                    }}
+                                    className="w-full p-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded text-left text-xs transition-colors"
+                                  >
+                                    <span className="font-medium text-gray-700">{phrase.label}</span>
+                                    <p className="text-gray-500 truncate">{phrase.text.substring(0, 60)}...</p>
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="bg-teal-50 p-2 text-center border-t border-teal-200">
+                              <p className="text-xs text-teal-700">Click any phrase to copy</p>
+                            </div>
+                          </details>
+                        )}
 
                       </div>
 
@@ -6490,9 +6756,9 @@ Rizwan Kalani MD`);
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           <div className="bg-white p-3 rounded border">
-                            <h4 className="font-semibold text-green-600 mb-2">ENRICH Trial Inclusion</h4>
+                            <h4 className="font-semibold text-green-600 mb-2">ENRICH Trial Inclusion (NCT02880878)</h4>
                             <ul className="text-sm space-y-1">
-                              <li>• Spontaneous supratentorial lobar ICH</li>
+                              <li>• Spontaneous supratentorial lobar or basal ganglia ICH</li>
                               <li>• ICH onset ≤24 hours</li>
                               <li>• Age 18-80 years</li>
                               <li>• GCS 5-14 and NIHSS ≥6</li>
@@ -6500,7 +6766,7 @@ Rizwan Kalani MD`);
                               <li>• Pre-morbid mRS 0-1</li>
                             </ul>
                           </div>
-                          
+
                           <div className="bg-white p-3 rounded border">
                             <h4 className="font-semibold text-red-600 mb-2">ENRICH Trial Exclusion</h4>
                             <ul className="text-sm space-y-1">
@@ -9246,6 +9512,16 @@ Rizwan Kalani MD`);
                   </div>
                 )}
               </div>
+
+              {/* Sign-Out Toast Notification */}
+              {signOutToast && (
+                <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-50 animate-fadeIn">
+                  <div className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
+                    <i data-lucide="check-circle" className="w-4 h-4 text-green-400"></i>
+                    <span className="text-sm font-medium">{signOutToast}</span>
+                  </div>
+                </div>
+              )}
 
               {/* Mobile Bottom Navigation - Only visible on small screens */}
               <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 shadow-lg z-50 pb-safe">
