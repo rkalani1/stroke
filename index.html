@@ -4709,9 +4709,88 @@ Rizwan Kalani MD`);
                 {/* ICH */}
                 {activeTab === 'ich' && (
                   <div className="space-y-6">
+                    {/* ============================================ */}
+                    {/* ICH-SPECIFIC TRIAL ELIGIBILITY PANEL         */}
+                    {/* Shows ICH-relevant trials for current patient */}
+                    {/* ============================================ */}
+                    {telestrokeNote.age && (
+                      <div className="bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-300 rounded-lg p-4 shadow-md">
+                        <div className="flex items-center justify-between mb-3">
+                          <h2 className="text-lg font-bold text-red-900 flex items-center gap-2">
+                            🔬 ICH Trial Eligibility - Current Patient
+                          </h2>
+                          <div className="text-sm text-red-700">
+                            {telestrokeNote.age}{telestrokeNote.sex || '?'} | GCS {telestrokeNote.gcs || '?'} | NIHSS {nihssScore || '?'}
+                          </div>
+                        </div>
+                        <p className="text-sm text-red-700 mb-3">Trials relevant for intracerebral hemorrhage patients:</p>
+
+                        {/* ICH-Relevant Trial Cards */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {/* ASPIRE Trial Card */}
+                          {(() => {
+                            const aspireResult = trialEligibility['ASPIRE'];
+                            if (!aspireResult) return null;
+                            const statusStyles = {
+                              eligible: 'bg-green-100 border-green-500',
+                              needs_info: 'bg-yellow-100 border-yellow-500',
+                              not_eligible: 'bg-gray-100 border-gray-400',
+                              pending: 'bg-blue-100 border-blue-400'
+                            };
+                            const statusLabels = {
+                              eligible: '🟢 Potentially Eligible',
+                              needs_info: '🟡 Needs More Info',
+                              not_eligible: '⚪ Not Eligible',
+                              pending: '🔵 Pending Evaluation'
+                            };
+                            return (
+                              <div className={`p-3 rounded-lg border-2 ${statusStyles[aspireResult.status]}`}>
+                                <div className="flex justify-between items-start mb-2">
+                                  <h3 className="font-bold text-gray-900">ASPIRE Trial</h3>
+                                  <span className="text-xs">{statusLabels[aspireResult.status]}</span>
+                                </div>
+                                <p className="text-xs text-gray-600 mb-2">Antiplatelet after spontaneous ICH</p>
+                                <div className="text-xs space-y-1">
+                                  <p className="font-semibold">Key Criteria:</p>
+                                  <ul className="ml-2 space-y-0.5">
+                                    <li>• Age 18-85</li>
+                                    <li>• Spontaneous ICH 14-180 days prior</li>
+                                    <li>• mRS ≤4</li>
+                                    <li>• Indication for antiplatelet</li>
+                                  </ul>
+                                </div>
+                              </div>
+                            );
+                          })()}
+
+                          {/* ENRICH Quick Reference */}
+                          <div className="p-3 rounded-lg border-2 bg-blue-50 border-blue-300">
+                            <div className="flex justify-between items-start mb-2">
+                              <h3 className="font-bold text-gray-900">ENRICH/MIE Criteria</h3>
+                              <span className="text-xs text-blue-600">📋 Reference</span>
+                            </div>
+                            <p className="text-xs text-gray-600 mb-2">Minimally invasive evacuation</p>
+                            <div className="text-xs space-y-1">
+                              <p className="font-semibold">Quick Check:</p>
+                              <ul className="ml-2 space-y-0.5">
+                                <li>• Supratentorial lobar ICH</li>
+                                <li>• ≤24h from onset</li>
+                                <li>• Age 18-80, GCS 5-14</li>
+                                <li>• Volume 30-80 cc</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        <p className="text-xs text-red-600 mt-3 italic">
+                          💡 Tip: See detailed ENRICH criteria in the MIE section below
+                        </p>
+                      </div>
+                    )}
+
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                       <h2 className="text-xl font-semibold text-red-800 mb-4">ICH Management</h2>
-                      
+
                       {/* Minimally Invasive Evacuation */}
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                         <h3 className="text-lg font-semibold text-blue-800 mb-3">Minimally Invasive Evacuation (MIE)</h3>
@@ -4809,6 +4888,96 @@ Rizwan Kalani MD`);
                       <h1 className="text-3xl font-bold">Stroke Trials and Studies</h1>
                     </div>
 
+                    {/* ============================================ */}
+                    {/* CURRENT PATIENT ELIGIBILITY PANEL            */}
+                    {/* Shows eligibility status for current patient */}
+                    {/* ============================================ */}
+                    {telestrokeNote.age && (
+                      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border-2 border-indigo-300 rounded-lg p-4 shadow-md">
+                        <div className="flex items-center justify-between mb-3">
+                          <h2 className="text-lg font-bold text-indigo-900 flex items-center gap-2">
+                            🔬 Current Patient Trial Eligibility
+                          </h2>
+                          <div className="text-sm text-indigo-700">
+                            {telestrokeNote.age}{telestrokeNote.sex || '?'} | NIHSS {telestrokeNote.nihss || nihssScore || '?'} | {(() => {
+                              const tf = calculateTimeFromLKW();
+                              return tf ? `${tf.hours}h ${tf.minutes}m from LKW` : 'LKW not set';
+                            })()}
+                          </div>
+                        </div>
+
+                        {/* Eligibility Grid */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                          {Object.entries(trialEligibility)
+                            .sort(([, a], [, b]) => {
+                              const order = { eligible: 0, needs_info: 1, not_eligible: 2, pending: 3 };
+                              return (order[a?.status] || 3) - (order[b?.status] || 3);
+                            })
+                            .map(([trialId, result]) => {
+                              if (!result) return null;
+                              const config = TRIAL_ELIGIBILITY_CONFIG[trialId];
+                              if (!config) return null;
+
+                              const statusStyles = {
+                                eligible: 'bg-green-100 border-green-500 text-green-800',
+                                needs_info: 'bg-yellow-100 border-yellow-500 text-yellow-800',
+                                not_eligible: 'bg-gray-100 border-gray-400 text-gray-600',
+                                pending: 'bg-blue-100 border-blue-400 text-blue-700'
+                              };
+                              const statusIcons = {
+                                eligible: '🟢',
+                                needs_info: '🟡',
+                                not_eligible: '⚪',
+                                pending: '🔵'
+                              };
+
+                              return (
+                                <div
+                                  key={trialId}
+                                  className={`p-3 rounded-lg border-2 ${statusStyles[result.status]} cursor-pointer hover:shadow-md transition-shadow`}
+                                  onClick={() => setExpandedTrial(expandedTrial === trialId ? null : trialId)}
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <span className="font-semibold text-sm">{config.name}</span>
+                                    <span>{statusIcons[result.status]}</span>
+                                  </div>
+                                  <p className="text-xs mt-1 opacity-80">{config.quickDescription.substring(0, 40)}...</p>
+                                  <div className="flex items-center gap-2 mt-2 text-xs">
+                                    <span>✓{result.metCount}</span>
+                                    <span>?{result.unknownCount}</span>
+                                    <span>✗{result.notMetCount}</span>
+                                  </div>
+
+                                  {/* Expanded Details */}
+                                  {expandedTrial === trialId && (
+                                    <div className="mt-3 pt-3 border-t border-current border-opacity-20 text-xs">
+                                      <p className="font-semibold mb-1">Key Criteria:</p>
+                                      {result.criteria.slice(0, 5).map((c, i) => (
+                                        <div key={i} className="flex items-center gap-1">
+                                          <span>{c.status === 'met' ? '✓' : c.status === 'not_met' ? '✗' : '?'}</span>
+                                          <span className={c.status === 'not_met' ? 'line-through' : ''}>{c.label}</span>
+                                        </div>
+                                      ))}
+                                      {result.criteria.length > 5 && (
+                                        <p className="text-xs opacity-70 mt-1">+{result.criteria.length - 5} more criteria</p>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                        </div>
+
+                        {/* Legend */}
+                        <div className="flex items-center gap-4 mt-3 pt-3 border-t border-indigo-200 text-xs text-indigo-700">
+                          <span>🟢 Potentially Eligible</span>
+                          <span>🟡 Needs More Info</span>
+                          <span>⚪ Not Eligible</span>
+                          <span className="ml-auto">Click card for details</span>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Trial Category Filter Buttons */}
                     <div className="flex flex-wrap gap-2 mb-6">
                       {Object.keys(trialsData).map(category => {
@@ -4888,6 +5057,85 @@ Rizwan Kalani MD`);
                 {/* Risk Calculators */}
                 {activeTab === 'calculators' && (
                   <div className="space-y-4">
+                    {/* ============================================ */}
+                    {/* CALCULATOR TRIAL PROMPTS                     */}
+                    {/* Shows trial relevance after scoring          */}
+                    {/* ============================================ */}
+                    {(nihssScore || telestrokeNote.age) && (
+                      <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border-2 border-purple-300 rounded-lg p-4 shadow-md">
+                        <div className="flex items-center justify-between mb-2">
+                          <h2 className="text-lg font-bold text-purple-900 flex items-center gap-2">
+                            🔬 Score → Trial Implications
+                          </h2>
+                          {telestrokeNote.age && (
+                            <span className="text-sm text-purple-700">
+                              Current: {telestrokeNote.age}{telestrokeNote.sex || '?'} | NIHSS {nihssScore || '?'}
+                            </span>
+                          )}
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                          {/* NIHSS-based prompts */}
+                          {nihssScore !== null && nihssScore !== undefined && (
+                            <div className="bg-white rounded p-3 border">
+                              <h3 className="font-semibold text-purple-800 mb-2">NIHSS = {nihssScore}</h3>
+                              <ul className="space-y-1 text-xs text-gray-700">
+                                {nihssScore >= 6 && (
+                                  <li className="text-green-700">
+                                    🟢 <strong>SISTER eligible</strong>: NIHSS ≥6 threshold met
+                                  </li>
+                                )}
+                                {nihssScore <= 5 && (
+                                  <li className="text-yellow-700">
+                                    🟡 <strong>STEP mild arm</strong>: Check for LVO (ICA/M1/basilar)
+                                  </li>
+                                )}
+                                {nihssScore > 8 && (
+                                  <li className="text-blue-700">
+                                    🔵 <strong>STEP MeVO arm</strong>: Check for M2/M3 occlusion
+                                  </li>
+                                )}
+                                {nihssScore < 6 && (
+                                  <li className="text-gray-600">
+                                    ⚪ SISTER: NIHSS ≥6 required (current: {nihssScore})
+                                  </li>
+                                )}
+                              </ul>
+                            </div>
+                          )}
+                          {/* GCS-based prompts */}
+                          {(() => {
+                            const gcs = calculateGCS(gcsItems);
+                            if (gcs === 0) return null;
+                            return (
+                              <div className="bg-white rounded p-3 border">
+                                <h3 className="font-semibold text-purple-800 mb-2">GCS = {gcs}</h3>
+                                <ul className="space-y-1 text-xs text-gray-700">
+                                  {gcs >= 5 && gcs <= 14 && (
+                                    <li className="text-blue-700">
+                                      🔵 <strong>ENRICH range</strong>: GCS 5-14 for MIE consideration
+                                    </li>
+                                  )}
+                                  {gcs > 14 && (
+                                    <li className="text-gray-600">
+                                      ⚪ ENRICH: GCS 5-14 required (current: {gcs})
+                                    </li>
+                                  )}
+                                  {gcs < 5 && (
+                                    <li className="text-gray-600">
+                                      ⚪ GCS too low for most trial eligibility
+                                    </li>
+                                  )}
+                                </ul>
+                              </div>
+                            );
+                          })()}
+                        </div>
+                        <p className="text-xs text-purple-600 mt-2 italic">
+                          💡 These are quick prompts only. Full eligibility requires complete patient assessment.
+                        </p>
+                      </div>
+                    )}
+
                     {/* Glasgow Coma Scale */}
                     <details className="bg-gray-50 border border-gray-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-gray-800 hover:bg-gray-100 rounded-lg flex items-center justify-between">
@@ -6107,6 +6355,80 @@ Rizwan Kalani MD`);
                 {/* Management */}
                 {activeTab === 'protocols' && (
                   <div className="space-y-6">
+                    {/* ============================================ */}
+                    {/* PROTOCOL-TRIAL CONNECTION PANEL              */}
+                    {/* Links protocols to relevant clinical trials  */}
+                    {/* ============================================ */}
+                    <div className="bg-gradient-to-r from-teal-50 to-cyan-50 border-2 border-teal-300 rounded-lg p-4 shadow-md">
+                      <div className="flex items-center justify-between mb-3">
+                        <h2 className="text-lg font-bold text-teal-900 flex items-center gap-2">
+                          🔗 Protocol → Trial Connection
+                        </h2>
+                        {telestrokeNote.age && (
+                          <span className="text-sm text-teal-700">
+                            Current: {telestrokeNote.age}{telestrokeNote.sex || '?'} | NIHSS {nihssScore || '?'}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm text-teal-700 mb-3">Remember to consider clinical trials when applying protocols:</p>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        {/* Thrombolysis Protocol → Trials */}
+                        <div className="bg-white rounded p-3 border">
+                          <h3 className="font-semibold text-teal-800 text-sm mb-2">Thrombolysis Protocols</h3>
+                          <ul className="space-y-1 text-xs text-gray-700">
+                            <li>→ <strong>SISTER</strong>: Late window (4.5-24h), no TNK/EVT</li>
+                            <li>→ <strong>TESTED</strong>: TNK vs alteplase comparison</li>
+                            <li className="text-gray-500 italic">If pt ineligible for standard lytics, check trial options</li>
+                          </ul>
+                        </div>
+                        {/* EVT Protocol → Trials */}
+                        <div className="bg-white rounded p-3 border">
+                          <h3 className="font-semibold text-teal-800 text-sm mb-2">EVT/Thrombectomy</h3>
+                          <ul className="space-y-1 text-xs text-gray-700">
+                            <li>→ <strong>STEP</strong>: Mild LVO or MeVO patients</li>
+                            <li>→ <strong>SATURN</strong>: Tandem occlusions</li>
+                            <li className="text-gray-500 italic">Consider trials for borderline EVT candidates</li>
+                          </ul>
+                        </div>
+                        {/* BP/ICH Protocol → Trials */}
+                        <div className="bg-white rounded p-3 border">
+                          <h3 className="font-semibold text-teal-800 text-sm mb-2">ICH Management</h3>
+                          <ul className="space-y-1 text-xs text-gray-700">
+                            <li>→ <strong>ASPIRE</strong>: Antiplatelet after ICH</li>
+                            <li>→ <strong>ENRICH</strong>: Minimally invasive evacuation</li>
+                            <li className="text-gray-500 italic">See ICH tab for detailed criteria</li>
+                          </ul>
+                        </div>
+                      </div>
+                      {/* Current patient trial status */}
+                      {telestrokeNote.age && (
+                        <div className="mt-3 pt-3 border-t border-teal-200">
+                          <div className="flex items-center gap-4 text-sm">
+                            <span className="font-semibold text-teal-800">Current Patient Eligibility:</span>
+                            {(() => {
+                              const summary = getTrialEligibilitySummary();
+                              return (
+                                <span className="flex items-center gap-3">
+                                  {summary.eligible > 0 && (
+                                    <span className="text-green-700">🟢 {summary.eligible} potentially eligible</span>
+                                  )}
+                                  {summary.needsInfo > 0 && (
+                                    <span className="text-yellow-700">🟡 {summary.needsInfo} need more info</span>
+                                  )}
+                                  <button
+                                    onClick={() => setActiveTab('trials')}
+                                    className="text-teal-600 hover:text-teal-800 underline"
+                                  >
+                                    View details →
+                                  </button>
+                                </span>
+                              );
+                            })()}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
                     {/* Blood Pressure Management */}
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-blue-800 mb-3">Blood Pressure Management</h3>
