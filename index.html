@@ -1877,6 +1877,73 @@ Rizwan Kalani MD`));
             return counts;
           };
 
+          // Generate trial eligibility text for notes (Pulsara, Epic)
+          const getTrialEligibilityForNote = () => {
+            const eligibleTrials = [];
+            const needsInfoTrials = [];
+
+            Object.entries(trialEligibility).forEach(([trialId, result]) => {
+              if (!result) return;
+              const config = TRIAL_ELIGIBILITY_CONFIG[trialId];
+              if (!config) return;
+
+              if (result.status === 'eligible') {
+                eligibleTrials.push(config.name.replace(' Trial', ''));
+              } else if (result.status === 'needs_info') {
+                needsInfoTrials.push(config.name.replace(' Trial', ''));
+              }
+            });
+
+            if (eligibleTrials.length === 0 && needsInfoTrials.length === 0) {
+              return 'Clinical Trial Screening: No trial eligibility identified.';
+            }
+
+            let text = 'Clinical Trial Screening: ';
+            if (eligibleTrials.length > 0) {
+              text += `Potentially eligible for ${eligibleTrials.join(', ')}. `;
+            }
+            if (needsInfoTrials.length > 0) {
+              text += `May qualify for ${needsInfoTrials.join(', ')} (additional info needed).`;
+            }
+            return text.trim();
+          };
+
+          // Generate shift sign-out summary for handoffs
+          const generateShiftSignOut = () => {
+            if (shiftPatients.length === 0) {
+              return 'No patients tracked in this shift.';
+            }
+
+            let signOut = `SHIFT SIGN-OUT SUMMARY\n`;
+            signOut += `Generated: ${new Date().toLocaleString()}\n`;
+            signOut += `Total Patients: ${shiftPatients.length}\n\n`;
+
+            shiftPatients.forEach((patient, index) => {
+              signOut += `─────────────────────────────────────\n`;
+              signOut += `${index + 1}. ${patient.summary?.fullLabel || 'Unknown Patient'}\n`;
+              signOut += `   Time: ${new Date(patient.timestamp).toLocaleTimeString()}\n`;
+
+              // Trial status
+              if (patient.trialSummary?.eligible > 0) {
+                signOut += `   ⚠️ TRIAL ELIGIBLE: ${patient.trialSummary.eligible} potential match(es)\n`;
+              }
+
+              // Key data
+              if (patient.formState?.telestrokeNote) {
+                const note = patient.formState.telestrokeNote;
+                if (note.diagnosis) signOut += `   Dx: ${note.diagnosis}\n`;
+                if (note.tnkRecommended) signOut += `   TNK: Recommended\n`;
+                if (note.evtRecommended) signOut += `   EVT: Recommended\n`;
+              }
+              signOut += '\n';
+            });
+
+            signOut += `─────────────────────────────────────\n`;
+            signOut += `END OF SHIFT SIGN-OUT\n`;
+
+            return signOut;
+          };
+
           // Save current patient to shift list
           const saveCurrentPatientToShift = () => {
             const patientId = currentPatientId || generatePatientId();
@@ -3256,6 +3323,22 @@ TO DO:
                           <i data-lucide="bookmark-plus" className="w-4 h-4"></i>
                         </button>
                       )}
+
+                      {/* Shift Sign-Out Button */}
+                      {shiftPatients.length > 0 && (
+                        <button
+                          onClick={() => {
+                            const signOut = generateShiftSignOut();
+                            navigator.clipboard.writeText(signOut);
+                            setCopiedText('Shift sign-out copied!');
+                            setTimeout(() => setCopiedText(''), 2000);
+                          }}
+                          className="p-1.5 text-purple-600 hover:bg-purple-100 rounded transition-colors"
+                          title="Copy shift sign-out summary"
+                        >
+                          <i data-lucide="clipboard-list" className="w-4 h-4"></i>
+                        </button>
+                      )}
                     </div>
                   </div>
 
@@ -4235,7 +4318,8 @@ TO DO:
                                   const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
                                   const rationale = telestrokeNote.rationale || "[rationale]";
 
-                                  const summary = `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale for Treatment Recommendation: ${rationale}.`;
+                                  const trialText = getTrialEligibilityForNote();
+                                  const summary = `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale for Treatment Recommendation: ${rationale}. ${trialText}`;
                                   navigator.clipboard.writeText(summary);
                                   setCopiedText('pulsara-summary');
                                   setTimeout(() => setCopiedText(''), 2000);
@@ -4265,7 +4349,8 @@ TO DO:
                                 const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
                                 const rationale = telestrokeNote.rationale || "[rationale]";
 
-                                return `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale for Treatment Recommendation: ${rationale}.`;
+                                const trialText = getTrialEligibilityForNote();
+                                return `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale for Treatment Recommendation: ${rationale}. ${trialText}`;
                               })()}
                             </p>
                           </div>
@@ -4288,7 +4373,9 @@ TO DO:
                               </button>
                               <button
                                 onClick={() => {
-                                  const note = generateTelestrokeNote();
+                                  let note = generateTelestrokeNote();
+                                  // Append trial eligibility screening
+                                  note += `\n\n${getTrialEligibilityForNote()}`;
                                   navigator.clipboard.writeText(note);
                                   setCopiedText('encounter-note');
                                   setTimeout(() => setCopiedText(''), 2000);
