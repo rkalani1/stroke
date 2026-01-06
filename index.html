@@ -537,6 +537,12 @@ Rizwan Kalani MD`));
             lkwTime: '',
             age: '',
             sex: 'M',
+            weight: '', // kg - for TNK dosing
+            height: '', // cm - for BMI/contrast dosing
+            lastDOACDose: '', // date/time of last DOAC for thrombolysis eligibility
+            lastDOACType: '', // apixaban, rivaroxaban, dabigatran, edoxaban
+            arrivalTime: '', // ED arrival for DTN calculation
+            strokeAlertTime: '', // Stroke team activation time
             symptoms: '',
             pmh: '',
             medications: '',
@@ -551,6 +557,11 @@ Rizwan Kalani MD`));
             glucose: '',
             plateletsCoags: '',
             creatinine: '',
+            inr: '', // actual INR value for contraindication check
+            ptt: '', // PTT value
+            plateletCount: '', // actual platelet count (not just notes)
+            allergies: '', // including contrast, iodine
+            contrastAllergy: false,
             nihss: '',
             nihssDetails: '',
             imagingReviewed: true,
@@ -1031,6 +1042,40 @@ Rizwan Kalani MD`));
                                     "Prior treatment with gene therapy or oligonucleotide therapy",
                                     "Participation in another interventional trial within 30 days"
                                 ]
+                            },
+                            {
+                                name: "FASTEST Trial",
+                                nct: "NCT03496883",
+                                phase: "Phase 3",
+                                status: "Actively recruiting",
+                                description: "Recombinant Factor VIIa (rFVIIa) for acute ICH within 2 hours of symptom onset to prevent hematoma expansion",
+                                inclusion: [
+                                    "Age 18-80 years",
+                                    "Spontaneous supratentorial ICH confirmed by CT",
+                                    "ICH symptom onset ≤2 hours before treatment",
+                                    "Hematoma volume 2-60 mL",
+                                    "No or small intraventricular hemorrhage (≤5 mL)",
+                                    "Glasgow Coma Scale ≥9",
+                                    "Able to receive study drug within 2 hours of symptom onset",
+                                    "Informed consent from patient or legally authorized representative"
+                                ],
+                                exclusion: [
+                                    "On anticoagulation therapy (warfarin, DOAC, heparin)",
+                                    "Known coagulopathy",
+                                    "Secondary ICH:",
+                                    "• Trauma",
+                                    "• Known vascular malformation (AVM, aneurysm)",
+                                    "• Brain tumor",
+                                    "• Hemorrhagic conversion of ischemic stroke",
+                                    "• Dural venous sinus thrombosis",
+                                    "Infratentorial (brainstem, cerebellar) hemorrhage",
+                                    "Planned surgical evacuation within 24 hours",
+                                    "Pre-existing severe disability (mRS >3)",
+                                    "Known allergy to rFVIIa",
+                                    "History of thromboembolic disease within 30 days",
+                                    "Pregnancy",
+                                    "Life expectancy <3 months from pre-existing condition"
+                                ]
                             }
                         ]
                     },
@@ -1349,6 +1394,50 @@ Rizwan Kalani MD`));
               ],
               exclusionFlags: [
                 { id: 'mechValve', label: 'Mechanical heart valve', field: 'mechValve' }
+              ]
+            },
+            FASTEST: {
+              id: 'FASTEST',
+              name: 'FASTEST Trial',
+              nct: 'NCT03496883',
+              category: 'ich',
+              quickDescription: 'rFVIIa within 2 hours of ICH onset for hematoma expansion prevention',
+              lookingFor: [
+                'Acute ICH within 2 HOURS of symptom onset',
+                'Hematoma volume 2-60 mL',
+                'Not on anticoagulants',
+                'Age 18-80'
+              ],
+              keyCriteria: [
+                { id: 'age', label: 'Age 18-80', field: 'age', evaluate: (data) => {
+                    const age = parseInt(data.telestrokeNote?.age || data.strokeCodeForm?.age);
+                    return age >= 18 && age <= 80;
+                  }, required: true },
+                { id: 'ichConfirmed', label: 'ICH confirmed on imaging', field: 'diagnosis', evaluate: (data) => {
+                    const dx = (data.telestrokeNote?.diagnosis || data.strokeCodeForm?.diagnosis || '').toLowerCase();
+                    const ct = (data.telestrokeNote?.ctResults || data.strokeCodeForm?.ctResults || '').toLowerCase();
+                    return dx.includes('ich') || dx.includes('hemorrhage') || ct.includes('hemorrhage') || ct.includes('bleed');
+                  }, required: true },
+                { id: 'timeWindow', label: 'Within 2h of onset', field: 'lkw', evaluate: (data) => {
+                    const hrs = data.hoursFromLKW;
+                    return hrs !== null && hrs <= 2;
+                  }, required: true },
+                { id: 'volume', label: 'Hematoma 2-60 mL', field: 'ichVolume', evaluate: (data) => {
+                    const vol = parseFloat(data.ichVolume);
+                    return !isNaN(vol) && vol >= 2 && vol <= 60;
+                  }, required: true },
+                { id: 'noAnticoag', label: 'Not on anticoagulants', field: 'noAnticoagulants', evaluate: (data) => {
+                    return data.telestrokeNote?.noAnticoagulants === true;
+                  }, required: true },
+                { id: 'gcs', label: 'GCS ≥9 (not deeply comatose)', field: 'gcs', evaluate: (data) => {
+                    const gcs = parseInt(data.gcsScore);
+                    return !isNaN(gcs) && gcs >= 9;
+                  }, required: true }
+              ],
+              exclusionFlags: [
+                { id: 'onAnticoag', label: 'On anticoagulation', field: 'onAnticoag' },
+                { id: 'largeIVH', label: 'Significant IVH', field: 'largeIVH' },
+                { id: 'secondary', label: 'Secondary ICH (trauma, AVM, tumor)', field: 'secondaryICH' }
               ]
             },
             VERIFY: {
@@ -1756,6 +1845,143 @@ Rizwan Kalani MD`));
             if (items.female) score += 1;
             if (items.sah) score -= 2;
             return score;
+          };
+
+          // =================================================================
+          // TNK DOSING CALCULATOR (0.25 mg/kg, max 25 mg)
+          // =================================================================
+          const calculateTNKDose = (weightKg) => {
+            const weight = parseFloat(weightKg);
+            if (isNaN(weight) || weight <= 0) return null;
+
+            // TNK dosing: 0.25 mg/kg, maximum 25 mg
+            const rawDose = weight * 0.25;
+            const finalDose = Math.min(rawDose, 25);
+
+            // Pre-calculated doses for common weight ranges
+            const doseTable = [
+              { minWeight: 0, maxWeight: 59.9, dose: 'Variable (0.25 mg/kg)', vial: 'Calculate' },
+              { minWeight: 60, maxWeight: 69.9, dose: '15-17.5 mg', vial: '3-3.5 mL' },
+              { minWeight: 70, maxWeight: 79.9, dose: '17.5-20 mg', vial: '3.5-4 mL' },
+              { minWeight: 80, maxWeight: 89.9, dose: '20-22.5 mg', vial: '4-4.5 mL' },
+              { minWeight: 90, maxWeight: 99.9, dose: '22.5-25 mg', vial: '4.5-5 mL' },
+              { minWeight: 100, maxWeight: Infinity, dose: '25 mg (MAX)', vial: '5 mL' }
+            ];
+
+            return {
+              weightKg: weight,
+              calculatedDose: finalDose.toFixed(1),
+              isMaxDose: rawDose >= 25,
+              doseTable
+            };
+          };
+
+          // =================================================================
+          // 4-FACTOR PCC (KCENTRA) DOSING CALCULATOR
+          // =================================================================
+          const calculate4FPCC = (weightKg, inr) => {
+            const weight = parseFloat(weightKg);
+            const inrValue = parseFloat(inr);
+            if (isNaN(weight) || weight <= 0) return null;
+
+            let unitsPerKg;
+            let description;
+
+            if (isNaN(inrValue) || inrValue < 2) {
+              unitsPerKg = 25;
+              description = 'INR <2 or unknown';
+            } else if (inrValue >= 2 && inrValue <= 4) {
+              unitsPerKg = 25;
+              description = 'INR 2-4';
+            } else if (inrValue > 4 && inrValue <= 6) {
+              unitsPerKg = 35;
+              description = 'INR 4-6';
+            } else {
+              unitsPerKg = 50;
+              description = 'INR >6';
+            }
+
+            const totalDose = Math.min(weight * unitsPerKg, 5000); // Max 5000 IU
+
+            return {
+              weightKg: weight,
+              inr: inrValue || 'unknown',
+              unitsPerKg,
+              totalDose: Math.round(totalDose),
+              isMaxDose: weight * unitsPerKg >= 5000,
+              description
+            };
+          };
+
+          // =================================================================
+          // CONTRAINDICATION DETECTION
+          // =================================================================
+          const detectContraindications = (data) => {
+            const alerts = [];
+
+            // Glucose check
+            const glucose = parseFloat(data.telestrokeNote?.glucose);
+            if (!isNaN(glucose)) {
+              if (glucose < 50) {
+                alerts.push({ severity: 'critical', label: 'Hypoglycemia', message: `Glucose ${glucose} mg/dL - Correct before thrombolysis`, field: 'glucose' });
+              } else if (glucose > 400) {
+                alerts.push({ severity: 'critical', label: 'Hyperglycemia', message: `Glucose ${glucose} mg/dL - Correct before thrombolysis`, field: 'glucose' });
+              }
+            }
+
+            // INR check
+            const inr = parseFloat(data.telestrokeNote?.inr);
+            if (!isNaN(inr) && inr > 1.7) {
+              alerts.push({ severity: 'critical', label: 'Elevated INR', message: `INR ${inr.toFixed(1)} >1.7 - tPA/TNK CONTRAINDICATED`, field: 'inr' });
+            }
+
+            // Platelet check
+            const platelets = parseFloat(data.telestrokeNote?.plateletCount);
+            if (!isNaN(platelets) && platelets < 100000) {
+              alerts.push({ severity: 'critical', label: 'Low Platelets', message: `${platelets.toLocaleString()}/μL <100,000 - tPA/TNK CONTRAINDICATED`, field: 'plateletCount' });
+            }
+
+            // BP check (parse from string like "185/110")
+            const bp = data.telestrokeNote?.presentingBP || '';
+            const bpMatch = bp.match(/(\d+)\s*\/\s*(\d+)/);
+            if (bpMatch) {
+              const systolic = parseInt(bpMatch[1]);
+              const diastolic = parseInt(bpMatch[2]);
+              if (systolic > 185 || diastolic > 110) {
+                alerts.push({ severity: 'warning', label: 'Elevated BP', message: `${systolic}/${diastolic} exceeds 185/110 - Must lower before tPA/TNK`, field: 'presentingBP' });
+              }
+            }
+
+            // DOAC check
+            if (data.telestrokeNote?.lastDOACType && data.telestrokeNote?.lastDOACDose) {
+              const lastDose = new Date(data.telestrokeNote.lastDOACDose);
+              const now = new Date();
+              const hoursSinceDose = (now - lastDose) / (1000 * 60 * 60);
+              if (hoursSinceDose < 48) {
+                alerts.push({ severity: 'warning', label: 'Recent DOAC', message: `${data.telestrokeNote.lastDOACType} within ${hoursSinceDose.toFixed(0)}h - Check drug-specific assay`, field: 'lastDOACDose' });
+              }
+            }
+
+            // Age + NIHSS check (SPAN-100)
+            const age = parseInt(data.telestrokeNote?.age);
+            const nihss = parseInt(data.telestrokeNote?.nihss);
+            if (!isNaN(age) && !isNaN(nihss) && (age + nihss >= 100)) {
+              alerts.push({ severity: 'info', label: 'SPAN-100', message: `Age ${age} + NIHSS ${nihss} = ${age + nihss} ≥100 - Higher sICH risk`, field: 'nihss' });
+            }
+
+            // Time window check
+            const lkwDate = data.telestrokeNote?.lkwDate;
+            const lkwTime = data.telestrokeNote?.lkwTime;
+            if (lkwDate && lkwTime) {
+              const lkw = new Date(`${lkwDate}T${lkwTime}`);
+              const now = new Date();
+              const hoursFromLKW = (now - lkw) / (1000 * 60 * 60);
+              if (hoursFromLKW > 4.5 && data.telestrokeNote?.tnkRecommended) {
+                alerts.push({ severity: 'warning', label: 'Late Window', message: `${hoursFromLKW.toFixed(1)}h from LKW - Verify imaging criteria`, field: 'lkwTime' });
+              }
+            }
+
+            return alerts;
           };
 
           // Create Icon component wrapper
@@ -3626,6 +3852,46 @@ TO DO:
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                               />
                             </div>
+
+                            {/* DOAC Status for thrombolysis eligibility */}
+                            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 space-y-2">
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-amber-800">💊 Anticoagulation Status</span>
+                                <span className="text-xs text-amber-600">(Critical for thrombolysis)</span>
+                              </div>
+                              <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                  <label className="block text-xs text-gray-600 mb-1">DOAC Type</label>
+                                  <select
+                                    value={telestrokeNote.lastDOACType}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, lastDOACType: e.target.value})}
+                                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                                  >
+                                    <option value="">None / Unknown</option>
+                                    <option value="apixaban">Apixaban (Eliquis)</option>
+                                    <option value="rivaroxaban">Rivaroxaban (Xarelto)</option>
+                                    <option value="dabigatran">Dabigatran (Pradaxa)</option>
+                                    <option value="edoxaban">Edoxaban (Savaysa)</option>
+                                    <option value="warfarin">Warfarin (check INR)</option>
+                                    <option value="heparin">Heparin (check PTT)</option>
+                                  </select>
+                                </div>
+                                <div>
+                                  <label className="block text-xs text-gray-600 mb-1">Last Dose (date/time)</label>
+                                  <input
+                                    type="datetime-local"
+                                    value={telestrokeNote.lastDOACDose}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, lastDOACDose: e.target.value})}
+                                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                                  />
+                                </div>
+                              </div>
+                              {telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== 'warfarin' && telestrokeNote.lastDOACType !== 'heparin' && (
+                                <div className="text-xs text-amber-700 bg-amber-100 p-2 rounded">
+                                  ⚠️ DOACs within 48h may contraindicate thrombolysis. Consider drug-specific assays (anti-Xa, dTT).
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
 
@@ -3740,15 +4006,47 @@ TO DO:
                                 </div>
                               </div>
                             </div>
-                            <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">Glucose</label>
-                              <input
-                                type="text"
-                                value={telestrokeNote.glucose}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, glucose: e.target.value})}
-                                placeholder=""
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                              />
+                            <div className="grid grid-cols-3 gap-3">
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Glucose</label>
+                                <div className="flex items-center">
+                                  <input
+                                    type="number"
+                                    value={telestrokeNote.glucose}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, glucose: e.target.value})}
+                                    placeholder=""
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    min="0"
+                                  />
+                                  <span className="ml-1 text-xs text-gray-500">mg/dL</span>
+                                </div>
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">INR</label>
+                                <input
+                                  type="number"
+                                  value={telestrokeNote.inr}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, inr: e.target.value})}
+                                  placeholder=""
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  step="0.1"
+                                  min="0"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Platelets</label>
+                                <div className="flex items-center">
+                                  <input
+                                    type="number"
+                                    value={telestrokeNote.plateletCount}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, plateletCount: e.target.value})}
+                                    placeholder=""
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    min="0"
+                                  />
+                                  <span className="ml-1 text-xs text-gray-500">/μL</span>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -3933,6 +4231,68 @@ TO DO:
                             <h3 className="text-lg font-bold text-orange-900">6. Treatment Decision</h3>
                             <i data-lucide="zap" className="w-5 h-5 text-orange-600"></i>
                           </div>
+
+                          {/* Active Contraindication Alerts */}
+                          {(() => {
+                            const contraindications = detectContraindications({
+                              telestrokeNote
+                            });
+                            if (contraindications.length === 0) return null;
+
+                            const criticalAlerts = contraindications.filter(c => c.severity === 'critical');
+                            const warningAlerts = contraindications.filter(c => c.severity === 'warning');
+                            const infoAlerts = contraindications.filter(c => c.severity === 'info');
+
+                            return (
+                              <div className="mb-3 space-y-2">
+                                {criticalAlerts.length > 0 && (
+                                  <div className="bg-red-100 border-2 border-red-400 rounded-lg p-3">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-red-700 font-bold">🚨 CRITICAL CONTRAINDICATION{criticalAlerts.length > 1 ? 'S' : ''}</span>
+                                    </div>
+                                    <ul className="space-y-1">
+                                      {criticalAlerts.map((alert, idx) => (
+                                        <li key={idx} className="text-sm text-red-800 flex items-start gap-2">
+                                          <span className="text-red-500">•</span>
+                                          <span><strong>{alert.label}:</strong> {alert.message}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+
+                                {warningAlerts.length > 0 && (
+                                  <div className="bg-amber-50 border-2 border-amber-400 rounded-lg p-3">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-amber-700 font-bold">⚠️ CAUTION{warningAlerts.length > 1 ? 'S' : ''}</span>
+                                    </div>
+                                    <ul className="space-y-1">
+                                      {warningAlerts.map((alert, idx) => (
+                                        <li key={idx} className="text-sm text-amber-800 flex items-start gap-2">
+                                          <span className="text-amber-500">•</span>
+                                          <span><strong>{alert.label}:</strong> {alert.message}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+
+                                {infoAlerts.length > 0 && (
+                                  <div className="bg-blue-50 border border-blue-300 rounded-lg p-2">
+                                    <ul className="space-y-1">
+                                      {infoAlerts.map((alert, idx) => (
+                                        <li key={idx} className="text-sm text-blue-800 flex items-start gap-2">
+                                          <span className="text-blue-500">ℹ️</span>
+                                          <span>{alert.message}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })()}
+
                           <div className="space-y-3">
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-1">Diagnosis</label>
@@ -4068,6 +4428,57 @@ TO DO:
 
                             {telestrokeNote.tnkRecommended && (
                               <div className="bg-green-50 border border-green-200 rounded-lg p-3 space-y-3">
+                                {/* TNK Dosing Calculator */}
+                                <div className="bg-white border border-green-300 rounded-lg p-3 space-y-2">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-sm font-semibold text-green-800">💉 TNK Dosing Calculator</span>
+                                    <span className="text-xs text-gray-500">0.25 mg/kg, max 25 mg</span>
+                                  </div>
+
+                                  <div className="flex items-center gap-3">
+                                    <label className="text-sm text-gray-700">Weight:</label>
+                                    <input
+                                      type="number"
+                                      value={telestrokeNote.weight}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, weight: e.target.value})}
+                                      placeholder="kg"
+                                      className="w-20 px-2 py-1 border border-gray-300 rounded text-sm"
+                                      min="0"
+                                      step="0.1"
+                                    />
+                                    <span className="text-xs text-gray-500">kg</span>
+                                  </div>
+
+                                  {(() => {
+                                    const doseCalc = calculateTNKDose(telestrokeNote.weight);
+                                    if (!doseCalc) {
+                                      return (
+                                        <div className="text-sm text-amber-600 bg-amber-50 px-2 py-1 rounded">
+                                          ⚠️ Enter patient weight to calculate TNK dose
+                                        </div>
+                                      );
+                                    }
+                                    return (
+                                      <div className={`p-2 rounded ${doseCalc.isMaxDose ? 'bg-amber-100 border border-amber-300' : 'bg-green-100 border border-green-300'}`}>
+                                        <div className="flex items-center justify-between">
+                                          <span className="text-lg font-bold text-green-800">
+                                            TNK Dose: {doseCalc.calculatedDose} mg
+                                          </span>
+                                          {doseCalc.isMaxDose && (
+                                            <span className="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded font-medium">
+                                              MAX DOSE
+                                            </span>
+                                          )}
+                                        </div>
+                                        <div className="text-xs text-gray-600 mt-1">
+                                          {doseCalc.weightKg} kg × 0.25 mg/kg = {(doseCalc.weightKg * 0.25).toFixed(1)} mg
+                                          {doseCalc.isMaxDose && ' → capped at 25 mg'}
+                                        </div>
+                                      </div>
+                                    );
+                                  })()}
+                                </div>
+
                                 <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                                   <input
                                     type="checkbox"
