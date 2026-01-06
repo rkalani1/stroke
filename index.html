@@ -181,6 +181,15 @@
             animation: successPulse 0.6s;
         }
 
+        /* Fade in animation for FAB */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.2s ease-out forwards;
+        }
+
         /* Loading spinner */
         .spinner {
             border: 3px solid #f3f4f6;
@@ -265,6 +274,51 @@
                 background: white !important;
                 border: 1px solid #ddd !important;
             }
+        }
+
+        /* Safe area insets for notched devices */
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 0);
+        }
+        .mb-safe {
+            margin-bottom: env(safe-area-inset-bottom, 0);
+        }
+
+        /* FAB positioning with safe area */
+        @media (max-width: 768px) {
+            .fixed.bottom-20 {
+                bottom: calc(5rem + env(safe-area-inset-bottom, 0));
+            }
+        }
+
+        /* Better mobile touch feedback */
+        @media (max-width: 640px) {
+            button, a {
+                -webkit-tap-highlight-color: rgba(59, 130, 246, 0.2);
+            }
+
+            /* Larger touch targets for mobile */
+            .touch-target {
+                min-height: 48px;
+                min-width: 48px;
+            }
+
+            /* Prevent text selection on interactive elements */
+            button, .btn, [role="button"] {
+                -webkit-user-select: none;
+                user-select: none;
+            }
+        }
+
+        /* Smooth scrolling for the entire app */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Better focus visibility for accessibility */
+        :focus-visible {
+            outline: 2px solid #3B82F6;
+            outline-offset: 2px;
         }
     </style>
     <script>
@@ -427,6 +481,9 @@ Rizwan Kalani MD`));
 
           // Trial Screening Sidebar state
           const [expandedTrial, setExpandedTrial] = useState(null);
+
+          // Emergency Contacts FAB state
+          const [fabExpanded, setFabExpanded] = useState(false);
 
           const [gcsItems, setGcsItems] = useState(loadFromStorage('gcsItems', {
             eye: '',
@@ -4349,7 +4406,7 @@ TO DO:
                             <h3 className="text-lg font-bold text-blue-900">1. Patient Info</h3>
                             <i data-lucide="user" className="w-5 h-5 text-blue-600"></i>
                           </div>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
                               <input
@@ -4373,8 +4430,25 @@ TO DO:
                             </div>
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Weight
+                                <span className="ml-1 text-xs text-orange-600 font-normal">(TNK dosing)</span>
+                              </label>
+                              <div className="flex items-center">
+                                <input
+                                  type="number"
+                                  value={telestrokeNote.weight}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, weight: e.target.value})}
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  placeholder=""
+                                  min="0"
+                                />
+                                <span className="ml-1 text-xs text-gray-500">kg</span>
+                              </div>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Pre-stroke mRS
-                                <span className="ml-1 text-xs text-blue-600 font-normal">(for trials)</span>
+                                <span className="ml-1 text-xs text-blue-600 font-normal">(trials)</span>
                               </label>
                               <select
                                 value={telestrokeNote.premorbidMRS}
@@ -4391,6 +4465,17 @@ TO DO:
                               </select>
                             </div>
                           </div>
+                          {/* Auto TNK Dose Display */}
+                          {telestrokeNote.weight && calculateTNKDose(telestrokeNote.weight) && (
+                            <div className="mt-2 bg-orange-50 border border-orange-200 rounded-lg p-2 flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <span className="text-orange-800 font-medium">💉 TNK Dose:</span>
+                                <span className="text-lg font-bold text-orange-700">{calculateTNKDose(telestrokeNote.weight).calculatedDose} mg</span>
+                                <span className="text-sm text-orange-600">({calculateTNKDose(telestrokeNote.weight).volume})</span>
+                              </div>
+                              <span className="text-xs text-orange-500">0.25 mg/kg, max 25 mg</span>
+                            </div>
+                          )}
                           <div className="mt-3">
                             <label className="block text-sm font-medium text-gray-700 mb-1">Chief Complaint</label>
                             <input
@@ -4682,6 +4767,116 @@ TO DO:
                                   />
                                   <span className="ml-1 text-xs text-gray-500">/μL</span>
                                 </div>
+                              </div>
+                            </div>
+
+                            {/* Critical Timestamps for DTN/DTP */}
+                            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                              <h4 className="font-semibold text-yellow-800 mb-2">⏱️ Critical Timestamps</h4>
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <div>
+                                  <label className="block text-xs font-medium text-gray-600 mb-1">Door Time (ED Arrival)</label>
+                                  <input
+                                    type="time"
+                                    value={telestrokeNote.doorTime || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, doorTime: e.target.value})}
+                                    className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-yellow-500"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-medium text-gray-600 mb-1">CT Time</label>
+                                  <input
+                                    type="time"
+                                    value={telestrokeNote.ctTime || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, ctTime: e.target.value})}
+                                    className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-yellow-500"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-medium text-gray-600 mb-1">Needle Time (TNK)</label>
+                                  <input
+                                    type="time"
+                                    value={telestrokeNote.needleTime || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, needleTime: e.target.value})}
+                                    className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-yellow-500"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-medium text-gray-600 mb-1">Puncture Time (EVT)</label>
+                                  <input
+                                    type="time"
+                                    value={telestrokeNote.punctureTime || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, punctureTime: e.target.value})}
+                                    className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-yellow-500"
+                                  />
+                                </div>
+                              </div>
+
+                              {/* DTN/DTP Auto-Calculation */}
+                              {(telestrokeNote.doorTime && (telestrokeNote.needleTime || telestrokeNote.punctureTime)) && (
+                                <div className="mt-3 grid grid-cols-2 gap-3">
+                                  {telestrokeNote.needleTime && (() => {
+                                    const [doorH, doorM] = telestrokeNote.doorTime.split(':').map(Number);
+                                    const [needleH, needleM] = telestrokeNote.needleTime.split(':').map(Number);
+                                    let dtn = (needleH * 60 + needleM) - (doorH * 60 + doorM);
+                                    if (dtn < 0) dtn += 1440; // Handle midnight crossing
+                                    const isGood = dtn <= 60;
+                                    return (
+                                      <div className={`p-2 rounded text-center ${isGood ? 'bg-green-100 border border-green-300' : 'bg-red-100 border border-red-300'}`}>
+                                        <span className="block text-xs text-gray-600">Door-to-Needle</span>
+                                        <span className={`text-xl font-bold ${isGood ? 'text-green-800' : 'text-red-800'}`}>
+                                          {dtn} min
+                                        </span>
+                                        <span className="block text-xs text-gray-500">{isGood ? '✓ Goal ≤60 min' : '⚠ Goal ≤60 min'}</span>
+                                      </div>
+                                    );
+                                  })()}
+                                  {telestrokeNote.punctureTime && (() => {
+                                    const [doorH, doorM] = telestrokeNote.doorTime.split(':').map(Number);
+                                    const [punctureH, punctureM] = telestrokeNote.punctureTime.split(':').map(Number);
+                                    let dtp = (punctureH * 60 + punctureM) - (doorH * 60 + doorM);
+                                    if (dtp < 0) dtp += 1440; // Handle midnight crossing
+                                    const isGood = dtp <= 90;
+                                    return (
+                                      <div className={`p-2 rounded text-center ${isGood ? 'bg-green-100 border border-green-300' : 'bg-red-100 border border-red-300'}`}>
+                                        <span className="block text-xs text-gray-600">Door-to-Puncture</span>
+                                        <span className={`text-xl font-bold ${isGood ? 'text-green-800' : 'text-red-800'}`}>
+                                          {dtp} min
+                                        </span>
+                                        <span className="block text-xs text-gray-500">{isGood ? '✓ Goal ≤90 min' : '⚠ Goal ≤90 min'}</span>
+                                      </div>
+                                    );
+                                  })()}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Additional Labs */}
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Creatinine</label>
+                                <div className="flex items-center">
+                                  <input
+                                    type="number"
+                                    value={telestrokeNote.creatinine || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, creatinine: e.target.value})}
+                                    placeholder=""
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    step="0.1"
+                                    min="0"
+                                  />
+                                  <span className="ml-1 text-xs text-gray-500">mg/dL</span>
+                                </div>
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Platelets/Coags</label>
+                                <input
+                                  type="text"
+                                  value={telestrokeNote.plateletsCoags || ''}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, plateletsCoags: e.target.value})}
+                                  placeholder="e.g., pending, WNL"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                />
                               </div>
                             </div>
                           </div>
@@ -5470,50 +5665,6 @@ TO DO:
                           </div>
                         </div>
 
-                        {/* Emergency Contacts */}
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mt-4">
-                          <h3 className="text-lg font-semibold text-red-800 mb-3">🚨 Emergency Contacts</h3>
-
-                          <div className="space-y-4">
-                            <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-red-700 mb-2">Stroke Team</h4>
-                              <ul className="text-sm space-y-1">
-                                <li><strong>Stroke Phone:</strong> <a href="tel:+12067446789" className="text-blue-600 hover:underline">206-744-6789</a></li>
-                                <li><strong>STAT Pharmacy:</strong> <a href="tel:+12067442241" className="text-blue-600 hover:underline">206-744-2241</a></li>
-                                <li><strong>Paging Operator:</strong> <a href="tel:+12067440147" className="text-blue-600 hover:underline">206-744-0147</a></li>
-                              </ul>
-                            </div>
-                            <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-blue-700 mb-2">Neuroradiology</h4>
-                              <div className="text-sm space-y-2">
-                                <div>
-                                  <p className="font-semibold text-gray-700">HMC Neuro Radiology:</p>
-                                  <ul className="ml-3 space-y-1">
-                                    <li><strong>HMC Stroke RAD HOTLINE</strong> (0800-1700 weekdays only): <a href="tel:+12067448484" className="text-blue-600 hover:underline">206-744-8484</a></li>
-                                    <li><strong>Non-urgent:</strong> HMC RAD Reading Room for All: <a href="tel:+12067446741" className="text-blue-600 hover:underline">206-744-6741</a></li>
-                                  </ul>
-                                </div>
-                                <div>
-                                  <p className="font-semibold text-gray-700">UW Montlake:</p>
-                                  <ul className="ml-3 space-y-1">
-                                    <li><strong>UW Reading Room Coordinator</strong> (Days 0800-1700): <a href="tel:+12065974249" className="text-blue-600 hover:underline">206-597-4249</a></li>
-                                    <li><strong>UW Neuro Rad Fellow</strong> (Days 0700-1900): <a href="tel:+12065987959" className="text-blue-600 hover:underline">206-598-7959</a></li>
-                                    <li><strong>UW Neuro Rad Resident</strong> (Evenings 1700-0700): <a href="tel:+12065982068" className="text-blue-600 hover:underline">206-598-2068</a></li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-green-700 mb-2">STAT Imaging and Angio</h4>
-                              <ul className="text-sm space-y-1">
-                                <li><strong>Non-code STAT CT:</strong> <a href="tel:+12067447290" className="text-blue-600 hover:underline">206-744-7290</a></li>
-                                <li><strong>Non-code STAT MRI:</strong> <a href="tel:+12067442460" className="text-blue-600 hover:underline">206-744-2460</a></li>
-                                <li><strong>Angio Suites:</strong> <a href="tel:+12067443381" className="text-blue-600 hover:underline">206-744-3381</a>, <a href="tel:+12067446506" className="text-blue-600 hover:underline">206-744-6506</a></li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-
                         {/* Section 8: Pulsara Summary */}
                         <div className="bg-white border-2 border-indigo-300 rounded-lg p-4 shadow-md mt-4">
                           <div className="flex items-center justify-between mb-3">
@@ -6008,6 +6159,257 @@ Rizwan Kalani MD`);
                           );
                         })()}
 
+                        {/* ============================================ */}
+                        {/* RISK SCORES - SEDAN & DRAGON                 */}
+                        {/* Auto-calculated prognostic scores            */}
+                        {/* ============================================ */}
+                        {(() => {
+                          // Only show if we have at least NIHSS and Age (minimum for scoring)
+                          if (!nihssScore || !telestrokeNote.age) return null;
+
+                          // SEDAN Score: Predicts symptomatic ICH after thrombolysis
+                          // Blood Sugar >8 mmol/L (144 mg/dL) = 1pt
+                          // Early infarct signs = 1pt
+                          // Hyperdense artery sign = 1pt
+                          // Age >75 = 1pt
+                          // NIHSS ≥10 = 1pt
+                          const glucoseMgDl = parseFloat(telestrokeNote.glucose);
+                          const glucoseHigh = !isNaN(glucoseMgDl) && glucoseMgDl > 144;
+                          const ageNum = parseInt(telestrokeNote.age);
+                          const ageOver75 = ageNum > 75;
+                          const nihssHigh = nihssScore >= 10;
+                          // Early infarct signs and hyperdense artery would need checkboxes - default unknown
+                          const hasEarlyInfarct = telestrokeNote.ctResults?.toLowerCase().includes('early infarct') ||
+                                                  telestrokeNote.ctResults?.toLowerCase().includes('hypodensity') ||
+                                                  aspectsScore < 10;
+                          const hasHyperdense = telestrokeNote.ctResults?.toLowerCase().includes('hyperdense') ||
+                                               telestrokeNote.ctResults?.toLowerCase().includes('dense mca');
+
+                          const sedanScore = (glucoseHigh ? 1 : 0) +
+                                            (hasEarlyInfarct ? 1 : 0) +
+                                            (hasHyperdense ? 1 : 0) +
+                                            (ageOver75 ? 1 : 0) +
+                                            (nihssHigh ? 1 : 0);
+
+                          // SEDAN sICH Risk interpretation
+                          const sedanRisk = sedanScore <= 1 ? { pct: '1-2%', color: 'green', label: 'Low' } :
+                                           sedanScore === 2 ? { pct: '4%', color: 'yellow', label: 'Moderate' } :
+                                           sedanScore === 3 ? { pct: '8%', color: 'orange', label: 'High' } :
+                                           { pct: '12-17%', color: 'red', label: 'Very High' };
+
+                          // DRAGON Score: Predicts 3-month good outcome after IV thrombolysis
+                          // D: Dense MCA/early infarct: 0 (neither), 1 (either), 2 (both)
+                          // R: mRS >1 premorbid = 1pt
+                          // A: Age 65-79 = 1pt, ≥80 = 2pt
+                          // G: Glucose >8 mmol/L (144 mg/dL) = 1pt
+                          // O: Onset to treatment >90 min = 1pt
+                          // N: NIHSS 0-4 = 0, 5-9 = 1, 10-15 = 2, >15 = 3
+                          const dScore = (hasHyperdense && hasEarlyInfarct) ? 2 : (hasHyperdense || hasEarlyInfarct) ? 1 : 0;
+                          const rScore = parseInt(telestrokeNote.premorbidMRS) > 1 ? 1 : 0;
+                          const aScore = ageNum >= 80 ? 2 : ageNum >= 65 ? 1 : 0;
+                          const gScore = glucoseHigh ? 1 : 0;
+                          // Onset to treatment - estimate from LKW if available
+                          const timeFromLKW = calculateTimeFromLKW();
+                          const oScore = (timeFromLKW && timeFromLKW.total > 1.5) ? 1 : 0; // >90 min
+                          const nScore = nihssScore > 15 ? 3 : nihssScore >= 10 ? 2 : nihssScore >= 5 ? 1 : 0;
+
+                          const dragonScore = dScore + rScore + aScore + gScore + oScore + nScore;
+
+                          // DRAGON interpretation
+                          const dragonOutcome = dragonScore <= 3 ? { good: '≥75%', color: 'green', label: 'Good prognosis' } :
+                                               dragonScore <= 6 ? { good: '39-75%', color: 'yellow', label: 'Moderate prognosis' } :
+                                               { good: '<39%', color: 'red', label: 'Poor prognosis' };
+
+                          return (
+                            <div className="bg-white border-2 border-amber-200 rounded-lg shadow-md overflow-hidden">
+                              {/* Header */}
+                              <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white p-3">
+                                <h4 className="font-bold text-sm flex items-center gap-2">
+                                  📊 Thrombolysis Risk Scores
+                                </h4>
+                              </div>
+
+                              <div className="p-3 space-y-3">
+                                {/* SEDAN Score */}
+                                <div className={`p-3 rounded-lg border-2 ${
+                                  sedanRisk.color === 'green' ? 'bg-green-50 border-green-300' :
+                                  sedanRisk.color === 'yellow' ? 'bg-yellow-50 border-yellow-300' :
+                                  sedanRisk.color === 'orange' ? 'bg-orange-50 border-orange-300' :
+                                  'bg-red-50 border-red-300'
+                                }`}>
+                                  <div className="flex items-center justify-between mb-2">
+                                    <div>
+                                      <span className="font-bold text-gray-800">SEDAN</span>
+                                      <span className="ml-2 text-2xl font-bold">{sedanScore}/5</span>
+                                    </div>
+                                    <div className="text-right">
+                                      <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                                        sedanRisk.color === 'green' ? 'bg-green-200 text-green-800' :
+                                        sedanRisk.color === 'yellow' ? 'bg-yellow-200 text-yellow-800' :
+                                        sedanRisk.color === 'orange' ? 'bg-orange-200 text-orange-800' :
+                                        'bg-red-200 text-red-800'
+                                      }`}>
+                                        sICH Risk: {sedanRisk.pct}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div className="text-xs text-gray-600 space-y-0.5">
+                                    <div className="flex items-center gap-1">
+                                      <span>{glucoseHigh ? '✓' : '○'}</span>
+                                      <span className={glucoseHigh ? 'font-medium' : ''}>Glucose &gt;144 mg/dL</span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <span>{hasEarlyInfarct ? '✓' : '○'}</span>
+                                      <span className={hasEarlyInfarct ? 'font-medium' : ''}>Early infarct signs</span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <span>{hasHyperdense ? '✓' : '○'}</span>
+                                      <span className={hasHyperdense ? 'font-medium' : ''}>Hyperdense artery</span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <span>{ageOver75 ? '✓' : '○'}</span>
+                                      <span className={ageOver75 ? 'font-medium' : ''}>Age &gt;75</span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <span>{nihssHigh ? '✓' : '○'}</span>
+                                      <span className={nihssHigh ? 'font-medium' : ''}>NIHSS ≥10</span>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* DRAGON Score */}
+                                <div className={`p-3 rounded-lg border-2 ${
+                                  dragonOutcome.color === 'green' ? 'bg-green-50 border-green-300' :
+                                  dragonOutcome.color === 'yellow' ? 'bg-yellow-50 border-yellow-300' :
+                                  'bg-red-50 border-red-300'
+                                }`}>
+                                  <div className="flex items-center justify-between mb-2">
+                                    <div>
+                                      <span className="font-bold text-gray-800">DRAGON</span>
+                                      <span className="ml-2 text-2xl font-bold">{dragonScore}/10</span>
+                                    </div>
+                                    <div className="text-right">
+                                      <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                                        dragonOutcome.color === 'green' ? 'bg-green-200 text-green-800' :
+                                        dragonOutcome.color === 'yellow' ? 'bg-yellow-200 text-yellow-800' :
+                                        'bg-red-200 text-red-800'
+                                      }`}>
+                                        Good outcome: {dragonOutcome.good}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <p className="text-xs text-gray-500 italic">{dragonOutcome.label} for 3-month mRS 0-2</p>
+                                  <div className="mt-2 text-xs text-gray-600 grid grid-cols-2 gap-1">
+                                    <span><span className="font-semibold">D</span>ense/Early: {dScore}</span>
+                                    <span>m<span className="font-semibold">R</span>S &gt;1: {rScore}</span>
+                                    <span><span className="font-semibold">A</span>ge: {aScore}</span>
+                                    <span><span className="font-semibold">G</span>lucose: {gScore}</span>
+                                    <span><span className="font-semibold">O</span>nset &gt;90m: {oScore}</span>
+                                    <span><span className="font-semibold">N</span>IHSS: {nScore}</span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="bg-amber-50 p-2 text-center border-t border-amber-200">
+                                <p className="text-xs text-amber-700">
+                                  SEDAN: sICH risk | DRAGON: 3-month outcome
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })()}
+
+                        {/* ============================================ */}
+                        {/* SMART PHRASE LIBRARY                        */}
+                        {/* Quick-copy documentation templates          */}
+                        {/* ============================================ */}
+                        <details className="bg-white border-2 border-teal-200 rounded-lg shadow-md overflow-hidden">
+                          <summary className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white p-3 cursor-pointer hover:from-teal-600 hover:to-cyan-600 transition-colors">
+                            <span className="font-bold text-sm flex items-center gap-2">
+                              📋 Smart Phrases
+                              <span className="text-xs opacity-75">(click to expand)</span>
+                            </span>
+                          </summary>
+
+                          <div className="p-3 space-y-2 max-h-80 overflow-y-auto">
+                            {/* Generate from Current Data */}
+                            <div className="space-y-2 mb-3">
+                              <p className="text-xs font-semibold text-gray-600 uppercase">From Current Patient</p>
+                              <button
+                                onClick={() => {
+                                  const text = generateHPI();
+                                  navigator.clipboard.writeText(text);
+                                  setCopiedText('HPI copied!');
+                                  setTimeout(() => setCopiedText(''), 2000);
+                                }}
+                                className="w-full p-2 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded text-left text-xs transition-colors"
+                              >
+                                <span className="font-medium text-teal-700">HPI + Assessment</span>
+                                <p className="text-gray-500 truncate">Auto-generated from form data</p>
+                              </button>
+                              <button
+                                onClick={() => {
+                                  const text = generateAdmissionOrders();
+                                  navigator.clipboard.writeText(text);
+                                  setCopiedText('Orders copied!');
+                                  setTimeout(() => setCopiedText(''), 2000);
+                                }}
+                                className="w-full p-2 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded text-left text-xs transition-colors"
+                              >
+                                <span className="font-medium text-teal-700">Admission Orders</span>
+                                <p className="text-gray-500 truncate">Standard stroke admission order set</p>
+                              </button>
+                              <button
+                                onClick={() => {
+                                  const text = generateSignOut();
+                                  navigator.clipboard.writeText(text);
+                                  setCopiedText('Sign-out copied!');
+                                  setTimeout(() => setCopiedText(''), 2000);
+                                }}
+                                className="w-full p-2 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded text-left text-xs transition-colors"
+                              >
+                                <span className="font-medium text-teal-700">Stroke Sign-Out</span>
+                                <p className="text-gray-500 truncate">Concise handoff summary</p>
+                              </button>
+                            </div>
+
+                            {/* Common Phrases */}
+                            <div className="space-y-2 border-t pt-3">
+                              <p className="text-xs font-semibold text-gray-600 uppercase">Common Phrases</p>
+
+                              {[
+                                { label: 'TNK Eligible', text: 'Patient meets criteria for IV thrombolysis. Risks and benefits discussed including ~3% risk of symptomatic ICH, ~40% chance of significant improvement. Patient/family agree to proceed.' },
+                                { label: 'TNK Not Indicated', text: 'IV thrombolysis not indicated: [outside window / NIHSS minor and non-disabling / anticoagulation / contraindication]. Will proceed with supportive care and secondary prevention.' },
+                                { label: 'EVT Recommendation', text: 'Large vessel occlusion identified. Patient is a candidate for mechanical thrombectomy. Transferred to comprehensive stroke center for endovascular evaluation.' },
+                                { label: 'Stroke Mimic', text: 'Clinical presentation initially concerning for acute stroke, however imaging and clinical evaluation more consistent with stroke mimic. Consider: [seizure with Todd paralysis / complex migraine / functional neurological disorder / peripheral etiology].' },
+                                { label: 'TIA Workup', text: 'Transient ischemic attack with complete symptom resolution. ABCD2 score: __. Plan: MRI brain with DWI, vessel imaging, cardiac monitoring, lipid panel, HbA1c. Start dual antiplatelet therapy (aspirin + clopidogrel) for 21 days if no contraindication.' },
+                                { label: 'Wake-up Stroke', text: 'Patient with wake-up stroke, symptoms discovered at __ upon awakening. Last known well: __ (prior evening). Will obtain MRI with DWI to assess for DWI-FLAIR mismatch. If favorable mismatch, may be candidate for thrombolysis per WAKE-UP trial criteria.' },
+                                { label: 'Late Window', text: 'Patient presenting in extended window (>6 hours). CTP demonstrates favorable perfusion profile with small core and significant penumbra. Meets criteria for EVT consideration per DAWN/DEFUSE-3 extended window protocols.' },
+                                { label: 'Swallow Precautions', text: 'NPO until formal swallow evaluation completed by speech therapy. Risk of aspiration pneumonia in acute stroke patients. Will reassess diet orders after evaluation.' },
+                                { label: 'BP Management Post-TNK', text: 'Post-thrombolysis BP management: Maintain SBP <180 and DBP <105 for 24 hours. If persistent hypertension, initiate IV labetalol or nicardipine drip. Avoid SBP <100 to maintain cerebral perfusion.' },
+                                { label: 'Secondary Prevention', text: 'Secondary stroke prevention initiated: High-intensity statin (atorvastatin 80mg), antiplatelet therapy (aspirin 81mg daily after 24h if received tPA), BP goal optimization, glucose control, smoking cessation counseling, lifestyle modifications discussed.' }
+                              ].map((phrase, idx) => (
+                                <button
+                                  key={idx}
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(phrase.text);
+                                    setCopiedText(`${phrase.label} copied!`);
+                                    setTimeout(() => setCopiedText(''), 2000);
+                                  }}
+                                  className="w-full p-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded text-left text-xs transition-colors"
+                                >
+                                  <span className="font-medium text-gray-700">{phrase.label}</span>
+                                  <p className="text-gray-500 truncate">{phrase.text.substring(0, 60)}...</p>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="bg-teal-50 p-2 text-center border-t border-teal-200">
+                            <p className="text-xs text-teal-700">Click any phrase to copy</p>
+                          </div>
+                        </details>
+
                       </div>
 
 
@@ -6075,29 +6477,7 @@ Rizwan Kalani MD`);
                               </div>
                             );
                           })()}
-
-                          {/* ENRICH Quick Reference */}
-                          <div className="p-3 rounded-lg border-2 bg-blue-50 border-blue-300">
-                            <div className="flex justify-between items-start mb-2">
-                              <h3 className="font-bold text-gray-900">ENRICH/MIE Criteria</h3>
-                              <span className="text-xs text-blue-600">📋 Reference</span>
-                            </div>
-                            <p className="text-xs text-gray-600 mb-2">Minimally invasive evacuation</p>
-                            <div className="text-xs space-y-1">
-                              <p className="font-semibold">Quick Check:</p>
-                              <ul className="ml-2 space-y-0.5">
-                                <li>• Supratentorial lobar ICH</li>
-                                <li>• ≤24h from onset</li>
-                                <li>• Age 18-80, GCS 5-14</li>
-                                <li>• Volume 30-80 cc</li>
-                              </ul>
-                            </div>
-                          </div>
                         </div>
-
-                        <p className="text-xs text-red-600 mt-3 italic">
-                          💡 Tip: See detailed ENRICH criteria in the MIE section below
-                        </p>
                       </div>
                     )}
 
@@ -6188,6 +6568,21 @@ Rizwan Kalani MD`);
                             <li>• IPH not considered survivable</li>
                           </ul>
                         </div>
+                      </div>
+
+                      {/* ICH Prognostic Scores - Quick Link to Calculators */}
+                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-lg font-semibold text-purple-800">ICH Prognostic Scores</h3>
+                          <button
+                            onClick={() => setActiveTab('calculators')}
+                            className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
+                          >
+                            <i data-lucide="calculator" className="w-4 h-4"></i>
+                            Open Calculators
+                          </button>
+                        </div>
+                        <p className="text-sm text-gray-600 mt-2">ICH Score, Fisher Scale, Hunt & Hess → Calculators tab</p>
                       </div>
                     </div>
                   </div>
@@ -8726,6 +9121,130 @@ Rizwan Kalani MD`);
                   </div>
                 )}
 
+              </div>
+
+              {/* Emergency Contacts FAB - Floating Action Button */}
+              <div className="fixed z-50 bottom-20 md:bottom-6 right-4">
+                {/* Expanded Contact Panel */}
+                {fabExpanded && (
+                  <div className="absolute bottom-16 right-0 w-72 bg-white rounded-lg shadow-2xl border-2 border-red-300 overflow-hidden animate-fadeIn">
+                    <div className="bg-gradient-to-r from-red-600 to-rose-500 text-white px-4 py-2 font-bold flex items-center justify-between">
+                      <span className="flex items-center gap-2">
+                        <i data-lucide="phone-call" className="w-4 h-4"></i>
+                        Quick Contacts
+                      </span>
+                      <button
+                        onClick={() => setFabExpanded(false)}
+                        className="hover:bg-red-700 rounded p-1 transition-colors"
+                        aria-label="Close contacts"
+                      >
+                        <i data-lucide="x" className="w-4 h-4"></i>
+                      </button>
+                    </div>
+                    <div className="divide-y divide-gray-100">
+                      {/* Stroke Team */}
+                      <a
+                        href="tel:+12067446789"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-colors"
+                        onClick={() => setFabExpanded(false)}
+                      >
+                        <div className="bg-red-100 rounded-full p-2">
+                          <i data-lucide="phone" className="w-5 h-5 text-red-600"></i>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900 text-sm">Stroke Phone</div>
+                          <div className="text-xs text-gray-500">206-744-6789</div>
+                        </div>
+                        <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
+                      </a>
+                      {/* Pharmacy */}
+                      <a
+                        href="tel:+12067442241"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition-colors"
+                        onClick={() => setFabExpanded(false)}
+                      >
+                        <div className="bg-orange-100 rounded-full p-2">
+                          <i data-lucide="pill" className="w-5 h-5 text-orange-600"></i>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900 text-sm">STAT Pharmacy</div>
+                          <div className="text-xs text-gray-500">206-744-2241</div>
+                        </div>
+                        <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
+                      </a>
+                      {/* Neuroradiology */}
+                      <a
+                        href="tel:+12067448484"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors"
+                        onClick={() => setFabExpanded(false)}
+                      >
+                        <div className="bg-blue-100 rounded-full p-2">
+                          <i data-lucide="scan" className="w-5 h-5 text-blue-600"></i>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900 text-sm">Stroke RAD Hotline</div>
+                          <div className="text-xs text-gray-500">206-744-8484 (Weekdays 8-5)</div>
+                        </div>
+                        <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
+                      </a>
+                      {/* Angio Suite */}
+                      <a
+                        href="tel:+12067443381"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-purple-50 transition-colors"
+                        onClick={() => setFabExpanded(false)}
+                      >
+                        <div className="bg-purple-100 rounded-full p-2">
+                          <i data-lucide="activity" className="w-5 h-5 text-purple-600"></i>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900 text-sm">Angio Suite</div>
+                          <div className="text-xs text-gray-500">206-744-3381</div>
+                        </div>
+                        <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
+                      </a>
+                      {/* STAT CT */}
+                      <a
+                        href="tel:+12067447290"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-green-50 transition-colors"
+                        onClick={() => setFabExpanded(false)}
+                      >
+                        <div className="bg-green-100 rounded-full p-2">
+                          <i data-lucide="circle-dot" className="w-5 h-5 text-green-600"></i>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900 text-sm">STAT CT</div>
+                          <div className="text-xs text-gray-500">206-744-7290</div>
+                        </div>
+                        <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
+                      </a>
+                    </div>
+                    <div className="bg-gray-50 px-4 py-2 text-xs text-gray-500 text-center">
+                      Tap number to call directly
+                    </div>
+                  </div>
+                )}
+
+                {/* FAB Button */}
+                <button
+                  onClick={() => setFabExpanded(!fabExpanded)}
+                  className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 ${
+                    fabExpanded
+                      ? 'bg-gray-600 hover:bg-gray-700 rotate-45'
+                      : 'bg-gradient-to-br from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 animate-pulse'
+                  }`}
+                  aria-label={fabExpanded ? "Close emergency contacts" : "Open emergency contacts"}
+                  aria-expanded={fabExpanded}
+                  title="Emergency Contacts"
+                >
+                  <i data-lucide={fabExpanded ? "x" : "phone"} className="w-6 h-6 text-white"></i>
+                </button>
+
+                {/* Tooltip when collapsed */}
+                {!fabExpanded && (
+                  <div className="absolute bottom-16 right-0 bg-gray-900 text-white text-xs py-1 px-2 rounded whitespace-nowrap opacity-0 hover:opacity-100 pointer-events-none transition-opacity hidden md:block">
+                    Quick Contacts
+                  </div>
+                )}
               </div>
 
               {/* Mobile Bottom Navigation - Only visible on small screens */}
