@@ -5973,45 +5973,79 @@ TO DO:
                               const checklist = telestrokeNote.tnkContraindicationChecklist || {};
 
                               const absoluteContraindications = [
+                                // Imaging Exclusions
+                                { id: 'currentICH', label: 'CT with evidence of hemorrhage', note: null },
+                                { id: 'extensiveHypoattenuation', label: 'CT with extensive regions of clear hypoattenuation', note: null },
+                                { id: 'largeInfarct', label: 'Ischemic injury >1/3 of MCA territory', note: null },
+                                { id: 'intracranialTumor', label: 'Intra-axial intracranial tumor', note: 'extra-axial not absolute' },
+                                { id: 'aorticDissection', label: 'Aortic arch dissection', note: null },
+                                // Clinical Exclusions
+                                { id: 'recentStroke', label: 'Recent stroke', note: '<90 days' },
+                                { id: 'recentHeadTrauma', label: 'Recent severe head trauma', note: '<90 days' },
+                                { id: 'recentIntracranialSurgery', label: 'Recent intracranial/intraspinal surgery', note: '<60 days' },
                                 { id: 'activeInternalBleeding', label: 'Active internal bleeding', note: null },
-                                { id: 'recentIntracranialSurgery', label: 'Recent intracranial/spinal surgery, head trauma, or stroke', note: '<3 months' },
-                                { id: 'intracranialNeoplasm', label: 'Intracranial neoplasm, AVM, or aneurysm', note: null },
-                                { id: 'knownBleedingDiathesis', label: 'Known bleeding diathesis', note: null },
-                                { id: 'severeUncontrolledHTN', label: 'Severe uncontrolled hypertension', note: 'despite treatment' },
-                                { id: 'currentICH', label: 'Current intracranial hemorrhage on imaging', note: null }
+                                { id: 'giMalignancy', label: 'GI malignancy', note: null },
+                                { id: 'sahPresentation', label: 'Clinical presentation suggestive of SAH', note: 'even if CT normal' },
+                                { id: 'infectiveEndocarditis', label: 'Presentation consistent with infective endocarditis', note: null },
+                                // Lab/Vital Exclusions
+                                { id: 'severeUncontrolledHTN', label: 'SBP >185 or DBP >110 mmHg', note: 'unresponsive to treatment' },
+                                { id: 'lowPlatelets', label: 'Platelet count <100,000', note: null },
+                                { id: 'lowGlucose', label: 'Blood glucose <50 mg/dL', note: null },
+                                { id: 'warfarinElevatedINR', label: 'Warfarin use with PT >15s, INR >1.7, or aPTT >40s', note: null },
+                                { id: 'recentDOAC', label: 'Recent DOAC use', note: '<48h' },
+                                { id: 'recentHeparin', label: 'Treatment-dose heparin/LMWH', note: '<24 hours' }
                               ];
 
                               const relativeContraindications = [
-                                { id: 'recentMajorSurgery', label: 'Recent major surgery', note: '<14 days' },
-                                { id: 'recentGIGUBleeding', label: 'Recent GI/GU bleeding', note: '<21 days' },
+                                // Cautionary - Consider risks/benefits
+                                { id: 'priorICH', label: 'Prior known non-traumatic intracranial hemorrhage', note: null },
+                                { id: 'vascularMalformation', label: 'Intracranial vascular malformation', note: 'unless severe neuro sx' },
+                                { id: 'intracranialAneurysm', label: 'Intracranial aneurysm', note: null },
+                                { id: 'knownBleedingDiathesis', label: 'Known bleeding diathesis', note: null },
+                                { id: 'pregnancy', label: 'Pregnancy', note: 'consult OB/GYN ASAP' },
+                                { id: 'recentMajorSurgery', label: 'Major extracranial surgery or trauma', note: '<14 days' },
+                                { id: 'recentGIGUBleeding', label: 'Recent GI/urinary tract hemorrhage', note: '<21 days' },
+                                { id: 'recentMI', label: 'Acute or recent MI', note: '<3 months, depends on type' },
+                                { id: 'acutePericarditis', label: 'Acute pericarditis', note: null },
                                 { id: 'recentArterialPuncture', label: 'Recent arterial puncture at non-compressible site', note: '<7 days' },
                                 { id: 'recentLumbarPuncture', label: 'Recent lumbar puncture', note: '<7 days' },
-                                { id: 'pregnancy', label: 'Pregnancy', note: 'consult OB/GYN' },
                                 { id: 'seizureAtOnset', label: 'Seizure at onset with postictal deficits', note: 'consider stroke mimic' },
-                                { id: 'lowPlatelets', label: 'Platelet count <100,000', note: null },
-                                { id: 'elevatedINR', label: 'INR >1.7', note: null },
-                                { id: 'elevatedPTT', label: 'PTT >40s', note: null },
-                                { id: 'abnormalGlucose', label: 'Blood glucose <50 or >400 mg/dL', note: 'correct before treatment' },
-                                { id: 'recentDOAC', label: 'DOAC use within 48h', note: 'unless reversal confirmed' }
+                                { id: 'abnormalCoagUnknown', label: 'Abnormal aPTT, TT, or anti-Xa with unknown anticoagulant use', note: null },
+                                { id: 'cerebralMicrobleeds', label: 'Cerebral microbleeds >10 on prior MRI', note: 'increased ICH risk' },
+                                { id: 'lecanemab', label: 'Lecanemab or other Alzheimer medications', note: 'ARIA risk' },
+                                { id: 'highGlucose', label: 'Blood glucose >400 mg/dL', note: 'correct before treatment' }
                               ];
 
                               const autoDetected = {};
                               const glucoseVal = parseFloat(telestrokeNote.glucose);
-                              if (!isNaN(glucoseVal) && (glucoseVal < 50 || glucoseVal > 400)) autoDetected.abnormalGlucose = true;
+                              if (!isNaN(glucoseVal) && glucoseVal < 50) autoDetected.lowGlucose = true;
+                              if (!isNaN(glucoseVal) && glucoseVal > 400) autoDetected.highGlucose = true;
                               const inrVal = parseFloat(telestrokeNote.inr);
-                              if (!isNaN(inrVal) && inrVal > 1.7) autoDetected.elevatedINR = true;
+                              if (!isNaN(inrVal) && inrVal > 1.7) autoDetected.warfarinElevatedINR = true;
                               const pttVal = parseFloat(telestrokeNote.ptt);
-                              if (!isNaN(pttVal) && pttVal > 40) autoDetected.elevatedPTT = true;
+                              if (!isNaN(pttVal) && pttVal > 40) autoDetected.warfarinElevatedINR = true;
                               const plateletsVal = parseFloat(telestrokeNote.plateletCount);
                               if (!isNaN(plateletsVal) && plateletsVal < 100000) autoDetected.lowPlatelets = true;
                               const bpVal = telestrokeNote.presentingBP || '';
                               const bpMatchVal = bpVal.match(/(\d+)\s*\/\s*(\d+)/);
                               if (bpMatchVal && (parseInt(bpMatchVal[1]) > 185 || parseInt(bpMatchVal[2]) > 110)) autoDetected.severeUncontrolledHTN = true;
-                              if (telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== '' && telestrokeNote.lastDOACType !== 'none') {
+                              // DOAC detection
+                              if (telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== '' && telestrokeNote.lastDOACType !== 'none' && telestrokeNote.lastDOACType !== 'warfarin' && telestrokeNote.lastDOACType !== 'heparin') {
                                 if (telestrokeNote.lastDOACDose) {
                                   const hoursSinceDOAC = (new Date() - new Date(telestrokeNote.lastDOACDose)) / (1000 * 60 * 60);
                                   if (hoursSinceDOAC < 48) autoDetected.recentDOAC = true;
                                 } else { autoDetected.recentDOAC = true; }
+                              }
+                              // Heparin detection
+                              if (telestrokeNote.lastDOACType === 'heparin') {
+                                if (telestrokeNote.lastDOACDose) {
+                                  const hoursSinceHeparin = (new Date() - new Date(telestrokeNote.lastDOACDose)) / (1000 * 60 * 60);
+                                  if (hoursSinceHeparin < 24) autoDetected.recentHeparin = true;
+                                } else { autoDetected.recentHeparin = true; }
+                              }
+                              // Warfarin with elevated INR
+                              if (telestrokeNote.lastDOACType === 'warfarin' && !isNaN(inrVal) && inrVal > 1.7) {
+                                autoDetected.warfarinElevatedINR = true;
                               }
 
                               const absoluteChecked = absoluteContraindications.filter(c => checklist[c.id] || autoDetected[c.id]);
