@@ -4037,6 +4037,25 @@ TO DO:
                               </div>
                             </details>
 
+                            {/* Contextual Trial Consideration Hint */}
+                            {(() => {
+                              const eligibleTrials = Object.entries(trialEligibility)
+                                .filter(([_, t]) => t?.status === 'eligible' || t?.status === 'needs_info');
+                              if (eligibleTrials.length === 0) return null;
+                              return (
+                                <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
+                                  <div className="flex items-center gap-2 text-sm">
+                                    <span className="text-indigo-700 font-medium">🔬 Trial Consideration:</span>
+                                    <span className="text-indigo-600">
+                                      {eligibleTrials.filter(([_, t]) => t?.status === 'eligible').length > 0
+                                        ? `Patient may qualify for ${eligibleTrials.filter(([_, t]) => t?.status === 'eligible').map(([id]) => TRIAL_ELIGIBILITY_CONFIG[id]?.name.replace(' Trial', '')).join(', ')}`
+                                        : 'Check trial eligibility in sidebar →'}
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            })()}
+
                             <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                               <input
                                 type="checkbox"
