@@ -181,6 +181,38 @@
             animation: successPulse 0.6s;
         }
 
+        /* Alert flash animation for thrombolysis window */
+        @keyframes alertFlash {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+                transform: scale(1);
+            }
+            25% {
+                box-shadow: 0 0 20px 10px rgba(239, 68, 68, 0.6);
+                transform: scale(1.02);
+            }
+            50% {
+                box-shadow: 0 0 30px 15px rgba(239, 68, 68, 0.4);
+                transform: scale(1.01);
+            }
+            75% {
+                box-shadow: 0 0 20px 10px rgba(239, 68, 68, 0.6);
+                transform: scale(1.02);
+            }
+        }
+        .alert-flash {
+            animation: alertFlash 1s ease-in-out infinite;
+        }
+
+        /* Pulse animation for urgent countdown */
+        @keyframes urgentPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .urgent-pulse {
+            animation: urgentPulse 0.5s ease-in-out infinite;
+        }
+
         /* Fade in animation for FAB */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px) scale(0.95); }
@@ -325,7 +357,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = 'v2.1.0-encounter-enhancements'; // Increment this with each deployment
+            const APP_VERSION = 'v2.2.0-dtn-tracker'; // Increment this with each deployment
             const storedVersion = localStorage.getItem('app_version');
 
             // If version doesn't match, clear ALL localStorage to prevent crashes
@@ -453,6 +485,12 @@ Rizwan Kalani MD`));
           // Time tracking
           const [currentTime, setCurrentTime] = useState(new Date());
           const [lkwTime, setLkwTime] = useState(loadFromStorage('lkwTime', null) ? new Date(loadFromStorage('lkwTime', null)) : new Date());
+
+          // Thrombolysis window alert state
+          const [alertsMuted, setAlertsMuted] = useState(localStorage.getItem('thrombolysisAlertsMuted') === 'true');
+          const [lastAlertPlayed, setLastAlertPlayed] = useState(null);
+          const [alertFlashing, setAlertFlashing] = useState(false);
+          const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
           // Save status
           const [saveStatus, setSaveStatus] = useState('saved');
@@ -617,6 +655,13 @@ Rizwan Kalani MD`));
             lastDOACType: '', // apixaban, rivaroxaban, dabigatran, edoxaban
             arrivalTime: '', // ED arrival for DTN calculation
             strokeAlertTime: '', // Stroke team activation time
+            // DTN Time Metrics - all ISO datetime strings
+            dtnEdArrival: '', // ED Arrival time (door)
+            dtnStrokeAlert: '', // Stroke Alert called
+            dtnCtStarted: '', // CT scan started
+            dtnCtRead: '', // CT read/cleared for TNK
+            dtnTnkOrdered: '', // TNK ordered
+            dtnTnkAdministered: '', // TNK administered (needle time)
             symptoms: '',
             pmh: '',
             medications: '',
@@ -658,6 +703,30 @@ Rizwan Kalani MD`));
             tnkAdminTime: '',
             admitLocation: '',
             recommendationsText: '',
+            // Thrombolysis Contraindication Checklist
+            tnkContraindicationChecklist: {
+              // Absolute Contraindications
+              activeInternalBleeding: false,
+              recentIntracranialSurgery: false, // <3 months: intracranial/spinal surgery, head trauma, or stroke
+              intracranialNeoplasm: false, // neoplasm, AVM, or aneurysm
+              knownBleedingDiathesis: false,
+              severeUncontrolledHTN: false, // despite treatment
+              currentICH: false, // on imaging
+              // Relative Contraindications
+              recentMajorSurgery: false, // <14 days
+              recentGIGUBleeding: false, // <21 days
+              recentArterialPuncture: false, // <7 days at non-compressible site
+              recentLumbarPuncture: false, // <7 days
+              pregnancy: false,
+              seizureAtOnset: false, // with postictal deficits
+              lowPlatelets: false, // <100,000
+              elevatedINR: false, // >1.7
+              elevatedPTT: false, // >40s
+              abnormalGlucose: false, // <50 or >400 mg/dL
+              recentDOAC: false // within 48h unless reversal confirmed
+            },
+            tnkContraindicationReviewed: false,
+            tnkContraindicationReviewTime: '',
             recommendations: {
               neuroChecks: false,
               noAntithrombotics: false,
@@ -1956,6 +2025,70 @@ Rizwan Kalani MD`));
           };
 
           // =================================================================
+          // BP THRESHOLD CHECKER FOR THROMBOLYSIS
+          // =================================================================
+          const getBPThresholdStatus = (bpString) => {
+            if (!bpString || typeof bpString !== 'string') {
+              return { status: 'unknown', systolic: null, diastolic: null };
+            }
+
+            const bpMatch = bpString.match(/(\d+)\s*\/\s*(\d+)/);
+            if (!bpMatch) {
+              return { status: 'unknown', systolic: null, diastolic: null };
+            }
+
+            const systolic = parseInt(bpMatch[1]);
+            const diastolic = parseInt(bpMatch[2]);
+
+            if (isNaN(systolic) || isNaN(diastolic)) {
+              return { status: 'unknown', systolic: null, diastolic: null };
+            }
+
+            // Thresholds for TNK/tPA eligibility
+            const MAX_SBP = 185;
+            const MAX_DBP = 110;
+            const BORDERLINE_SBP_LOW = 175;
+            const BORDERLINE_DBP_LOW = 105;
+
+            let status = 'ok';
+            let message = 'OK for lysis';
+            let badgeClass = 'bg-green-100 text-green-800 border-green-300';
+            let icon = String.fromCharCode(0x2713); // checkmark
+
+            // Check if too high (absolute contraindication)
+            if (systolic > MAX_SBP || diastolic > MAX_DBP) {
+              status = 'too_high';
+              message = 'Too high for TNK';
+              badgeClass = 'bg-red-100 text-red-800 border-red-300';
+              icon = String.fromCharCode(0x1F6AB); // prohibited sign
+            }
+            // Check if borderline
+            else if ((systolic >= BORDERLINE_SBP_LOW && systolic <= MAX_SBP) ||
+                     (diastolic >= BORDERLINE_DBP_LOW && diastolic <= MAX_DBP)) {
+              status = 'borderline';
+              message = 'Borderline';
+              badgeClass = 'bg-yellow-100 text-yellow-800 border-yellow-300';
+              icon = String.fromCharCode(0x26A0); // warning sign
+            }
+
+            // Calculate how much to lower if too high
+            const sbpToLower = Math.max(0, systolic - MAX_SBP);
+            const dbpToLower = Math.max(0, diastolic - MAX_DBP);
+
+            return {
+              status,
+              systolic,
+              diastolic,
+              message,
+              badgeClass,
+              icon,
+              sbpToLower,
+              dbpToLower,
+              needsLowering: sbpToLower > 0 || dbpToLower > 0
+            };
+          };
+
+          // =================================================================
           // 4-FACTOR PCC (KCENTRA) DOSING CALCULATOR
           // =================================================================
           const calculate4FPCC = (weightKg, inr) => {
@@ -1990,6 +2123,117 @@ Rizwan Kalani MD`));
               isMaxDose: weight * unitsPerKg >= 5000,
               description
             };
+          };
+
+          // =================================================================
+          // DTN (DOOR-TO-NEEDLE) TIME CALCULATIONS
+          // =================================================================
+          const calculateDTNMetrics = () => {
+            const metrics = {
+              doorToCT: null,
+              doorToNeedle: null,
+              ctToNeedle: null,
+              timestamps: {}
+            };
+
+            // Parse timestamps
+            const edArrival = telestrokeNote.dtnEdArrival ? new Date(telestrokeNote.dtnEdArrival) : null;
+            const ctStarted = telestrokeNote.dtnCtStarted ? new Date(telestrokeNote.dtnCtStarted) : null;
+            const ctRead = telestrokeNote.dtnCtRead ? new Date(telestrokeNote.dtnCtRead) : null;
+            const tnkAdmin = telestrokeNote.dtnTnkAdministered ? new Date(telestrokeNote.dtnTnkAdministered) : null;
+
+            metrics.timestamps = {
+              edArrival,
+              strokeAlert: telestrokeNote.dtnStrokeAlert ? new Date(telestrokeNote.dtnStrokeAlert) : null,
+              ctStarted,
+              ctRead,
+              tnkOrdered: telestrokeNote.dtnTnkOrdered ? new Date(telestrokeNote.dtnTnkOrdered) : null,
+              tnkAdmin
+            };
+
+            // Door-to-CT: ED Arrival → CT started
+            if (edArrival && ctStarted) {
+              const diffMs = ctStarted - edArrival;
+              const diffMins = Math.round(diffMs / (1000 * 60));
+              metrics.doorToCT = diffMins;
+            }
+
+            // Door-to-Needle (DTN): ED Arrival → TNK administered
+            if (edArrival && tnkAdmin) {
+              const diffMs = tnkAdmin - edArrival;
+              const diffMins = Math.round(diffMs / (1000 * 60));
+              metrics.doorToNeedle = diffMins;
+            }
+
+            // CT-to-Needle: CT read → TNK administered
+            if (ctRead && tnkAdmin) {
+              const diffMs = tnkAdmin - ctRead;
+              const diffMins = Math.round(diffMs / (1000 * 60));
+              metrics.ctToNeedle = diffMins;
+            }
+
+            return metrics;
+          };
+
+          // Get DTN benchmark status and color
+          const getDTNBenchmark = (dtnMinutes) => {
+            if (dtnMinutes === null) return null;
+            if (dtnMinutes <= 45) {
+              return {
+                status: 'excellent',
+                color: 'green',
+                label: 'Excellent',
+                target: 45,
+                delta: dtnMinutes - 45
+              };
+            } else if (dtnMinutes <= 60) {
+              return {
+                status: 'good',
+                color: 'yellow',
+                label: 'Good',
+                target: 60,
+                delta: dtnMinutes - 45 // Compare to ideal target
+              };
+            } else {
+              return {
+                status: 'needs_improvement',
+                color: 'red',
+                label: 'Needs Improvement',
+                target: 60,
+                delta: dtnMinutes - 60
+              };
+            }
+          };
+
+          // Format DTN metrics for Epic note
+          const formatDTNForNote = () => {
+            const metrics = calculateDTNMetrics();
+            if (!metrics.doorToNeedle) return '';
+
+            const benchmark = getDTNBenchmark(metrics.doorToNeedle);
+            let noteText = '\nTime Metrics:\n';
+
+            if (metrics.doorToCT !== null) {
+              noteText += `Door-to-CT: ${metrics.doorToCT} minutes\n`;
+            }
+            noteText += `Door-to-Needle (DTN): ${metrics.doorToNeedle} minutes`;
+
+            if (benchmark) {
+              noteText += ` (${benchmark.label}`;
+              if (benchmark.delta > 0) {
+                noteText += `, +${benchmark.delta} min over ${benchmark.target} min target`;
+              } else if (benchmark.delta < 0) {
+                noteText += `, ${Math.abs(benchmark.delta)} min under ${benchmark.target} min target`;
+              }
+              noteText += ')';
+            }
+            noteText += '\n';
+
+            if (metrics.ctToNeedle !== null) {
+              noteText += `CT-to-Needle: ${metrics.ctToNeedle} minutes\n`;
+            }
+
+            return noteText;
           };
 
           // =================================================================
@@ -2747,6 +2991,29 @@ Rizwan Kalani MD`));
             note = note.replace(/{tnkAdminTime}/g, formatTime(telestrokeNote.tnkAdminTime));
             note = note.replace(/{recommendationsText}/g, telestrokeNote.recommendationsText || '');
 
+            // Add DTN metrics if TNK was administered
+            if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) {
+              note += formatDTNForNote();
+            }
+
+            // Add contraindication review status if reviewed
+            if (telestrokeNote.tnkContraindicationReviewed) {
+              note += `\nThrombolysis Contraindication Review: Completed at ${telestrokeNote.tnkContraindicationReviewTime}. `;
+              const checklist = telestrokeNote.tnkContraindicationChecklist || {};
+              const absoluteKeys = ['activeInternalBleeding', 'recentIntracranialSurgery', 'intracranialNeoplasm', 'knownBleedingDiathesis', 'severeUncontrolledHTN', 'currentICH'];
+              const relativeKeys = ['recentMajorSurgery', 'recentGIGUBleeding', 'recentArterialPuncture', 'recentLumbarPuncture', 'pregnancy', 'seizureAtOnset', 'lowPlatelets', 'elevatedINR', 'elevatedPTT', 'abnormalGlucose', 'recentDOAC'];
+              const absoluteChecked = absoluteKeys.filter(k => checklist[k]);
+              const relativeChecked = relativeKeys.filter(k => checklist[k]);
+              if (absoluteChecked.length === 0 && relativeChecked.length === 0) {
+                note += 'No absolute or relative contraindications identified.';
+              } else if (absoluteChecked.length > 0) {
+                note += `Absolute contraindication(s) identified: ${absoluteChecked.length}. TNK contraindicated.`;
+              } else if (relativeChecked.length > 0) {
+                note += `${relativeChecked.length} relative contraindication(s) identified. Clinical judgment applied.`;
+              }
+              note += '\n';
+            }
+
             return note;
 
             // OLD TEMPLATE CODE BELOW - kept for reference but not used anymore
@@ -3256,6 +3523,119 @@ Rizwan Kalani MD`));
             const timer = setInterval(() => setCurrentTime(new Date()), 60000);
             return () => clearInterval(timer);
           }, []);
+
+          // ============================================================
+          // THROMBOLYSIS WINDOW TIMER & AUDIBLE ALERTS
+          // ============================================================
+
+          // Web Audio API alert function
+          const playAlertTone = (alertType) => {
+            if (alertsMuted) return;
+
+            try {
+              const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+              const oscillator = audioContext.createOscillator();
+              const gainNode = audioContext.createGain();
+
+              oscillator.connect(gainNode);
+              gainNode.connect(audioContext.destination);
+
+              // Different tones for different alert types
+              const toneConfigs = {
+                'warning-30': { freq: 440, duration: 0.3, repeat: 2 },   // A4 - two beeps for 30 min warning
+                'warning-15': { freq: 523, duration: 0.3, repeat: 3 },   // C5 - three beeps for 15 min warning
+                'window-closed': { freq: 659, duration: 0.5, repeat: 4 } // E5 - four beeps for window closed
+              };
+
+              const config = toneConfigs[alertType] || toneConfigs['warning-30'];
+
+              // Play repeating tones
+              let currentTime = audioContext.currentTime;
+              for (let i = 0; i < config.repeat; i++) {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+
+                osc.frequency.setValueAtTime(config.freq, currentTime);
+                osc.type = 'sine';
+
+                gain.gain.setValueAtTime(0, currentTime);
+                gain.gain.linearRampToValueAtTime(0.3, currentTime + 0.05);
+                gain.gain.linearRampToValueAtTime(0.3, currentTime + config.duration - 0.1);
+                gain.gain.linearRampToValueAtTime(0, currentTime + config.duration);
+
+                osc.start(currentTime);
+                osc.stop(currentTime + config.duration);
+
+                currentTime += config.duration + 0.15; // Gap between beeps
+              }
+            } catch (e) {
+              console.log('Audio alert not supported:', e);
+            }
+          };
+
+          // Toggle mute and persist to localStorage
+          const toggleAlertMute = () => {
+            const newMuted = !alertsMuted;
+            setAlertsMuted(newMuted);
+            localStorage.setItem('thrombolysisAlertsMuted', newMuted.toString());
+          };
+
+          // Second-level timer for elapsed time and alert checking
+          useEffect(() => {
+            if (!lkwTime) return;
+
+            const checkAlertsAndUpdate = () => {
+              const now = new Date();
+              const diffMs = now - lkwTime;
+              const diffMinutes = diffMs / (1000 * 60);
+              const remainingMinutes = (4.5 * 60) - diffMinutes; // Minutes until 4.5h window closes
+
+              setElapsedSeconds(Math.floor(diffMs / 1000));
+              setCurrentTime(now);
+
+              // Only check alerts if tab is visible and LKW is set
+              if (document.hidden || !lkwTime) return;
+
+              // Check for alert thresholds (within 30 seconds of the threshold)
+              const alertThresholds = [
+                { id: 'warning-30', minutesRemaining: 30, played: false },
+                { id: 'warning-15', minutesRemaining: 15, played: false },
+                { id: 'window-closed', minutesRemaining: 0, played: false }
+              ];
+
+              for (const threshold of alertThresholds) {
+                // Check if we're within 30 seconds of this threshold
+                const diff = Math.abs(remainingMinutes - threshold.minutesRemaining);
+                if (diff < 0.5 && lastAlertPlayed !== threshold.id && remainingMinutes >= -1) {
+                  // Play alert and flash
+                  setLastAlertPlayed(threshold.id);
+                  playAlertTone(threshold.id);
+                  setAlertFlashing(true);
+
+                  // Stop flashing after 10 seconds
+                  setTimeout(() => setAlertFlashing(false), 10000);
+                  break;
+                }
+              }
+            };
+
+            // Initial check
+            checkAlertsAndUpdate();
+
+            // Update every second for precise timing
+            const timer = setInterval(checkAlertsAndUpdate, 1000);
+
+            return () => clearInterval(timer);
+          }, [lkwTime, alertsMuted, lastAlertPlayed]);
+
+          // Reset last alert when LKW changes
+          useEffect(() => {
+            setLastAlertPlayed(null);
+            setAlertFlashing(false);
+          }, [lkwTime]);
 
           // =================================================================
           // TRIAL ELIGIBILITY - Auto-update when form data changes
@@ -4383,8 +4763,36 @@ TO DO:
                               value={telestrokeNote.presentingBP}
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, presentingBP: e.target.value})}
                               placeholder="120/80"
-                              className="w-full px-2 py-1 border-2 border-gray-300 rounded text-lg font-bold text-center"
+                              className={`w-full px-2 py-1 border-2 rounded text-lg font-bold text-center ${
+                                (() => {
+                                  const bpStatus = getBPThresholdStatus(telestrokeNote.presentingBP);
+                                  if (bpStatus.status === 'too_high') return 'border-red-500 bg-red-50';
+                                  if (bpStatus.status === 'borderline') return 'border-yellow-500 bg-yellow-50';
+                                  if (bpStatus.status === 'ok') return 'border-green-500 bg-green-50';
+                                  return 'border-gray-300';
+                                })()
+                              }`}
                             />
+                            {/* BP Threshold Badge */}
+                            {(() => {
+                              const bpStatus = getBPThresholdStatus(telestrokeNote.presentingBP);
+                              if (bpStatus.status === 'unknown') return null;
+                              return (
+                                <div className={`mt-1 px-2 py-0.5 rounded text-xs font-semibold border text-center ${bpStatus.badgeClass}`}>
+                                  {bpStatus.icon} {bpStatus.message}
+                                </div>
+                              );
+                            })()}
+                            {/* Quick BP Math - how much to lower */}
+                            {(() => {
+                              const bpStatus = getBPThresholdStatus(telestrokeNote.presentingBP);
+                              if (!bpStatus.needsLowering) return null;
+                              return (
+                                <div className="mt-1 text-xs text-red-700 font-medium text-center">
+                                  Lower by {bpStatus.sbpToLower}/{bpStatus.dbpToLower} mmHg
+                                </div>
+                              );
+                            })()}
                           </div>
                         </div>
                       </div>
@@ -4956,23 +5364,61 @@ TO DO:
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                               <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Presenting BP</label>
-                                <input
-                                  type="text"
-                                  value={telestrokeNote.presentingBP}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, presentingBP: e.target.value})}
-                                  placeholder=""
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                />
+                                <div className="flex items-center gap-2">
+                                  <input
+                                    type="text"
+                                    value={telestrokeNote.presentingBP}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, presentingBP: e.target.value})}
+                                    placeholder="185/110"
+                                    className={`flex-1 px-3 py-2 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                                      (() => {
+                                        const bpStatus = getBPThresholdStatus(telestrokeNote.presentingBP);
+                                        if (bpStatus.status === 'too_high') return 'border-red-400 bg-red-50';
+                                        if (bpStatus.status === 'borderline') return 'border-yellow-400 bg-yellow-50';
+                                        if (bpStatus.status === 'ok') return 'border-green-400 bg-green-50';
+                                        return 'border-gray-300';
+                                      })()
+                                    }`}
+                                  />
+                                  {/* Inline BP Status Badge */}
+                                  {(() => {
+                                    const bpStatus = getBPThresholdStatus(telestrokeNote.presentingBP);
+                                    if (bpStatus.status === 'unknown') return null;
+                                    return (
+                                      <span className={`px-2 py-1 rounded text-xs font-bold border whitespace-nowrap ${bpStatus.badgeClass}`}>
+                                        {bpStatus.icon} {bpStatus.message}
+                                      </span>
+                                    );
+                                  })()}
+                                </div>
+                                {/* Quick BP Math - how much to lower */}
+                                {(() => {
+                                  const bpStatus = getBPThresholdStatus(telestrokeNote.presentingBP);
+                                  if (!bpStatus.needsLowering) return null;
+                                  return (
+                                    <div className="mt-1 px-2 py-1 bg-red-100 border border-red-300 rounded text-xs text-red-800 font-medium">
+                                      Need to lower by {bpStatus.sbpToLower}/{bpStatus.dbpToLower} mmHg to reach 185/110
+                                    </div>
+                                  );
+                                })()}
                               </div>
                               <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Current BP (prior to TNK, if applicable)</label>
-                                <div className="flex gap-2">
+                                <div className="flex items-center gap-2">
                                   <input
                                     type="text"
                                     value={telestrokeNote.bpPreTNK}
                                     onChange={(e) => setTelestrokeNote({...telestrokeNote, bpPreTNK: e.target.value})}
-                                    placeholder=""
-                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    placeholder="185/110"
+                                    className={`flex-1 px-3 py-2 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                                      (() => {
+                                        const bpStatus = getBPThresholdStatus(telestrokeNote.bpPreTNK);
+                                        if (bpStatus.status === 'too_high') return 'border-red-400 bg-red-50';
+                                        if (bpStatus.status === 'borderline') return 'border-yellow-400 bg-yellow-50';
+                                        if (bpStatus.status === 'ok') return 'border-green-400 bg-green-50';
+                                        return 'border-gray-300';
+                                      })()
+                                    }`}
                                   />
                                   <input
                                     type="time"
@@ -4980,9 +5426,36 @@ TO DO:
                                     onChange={(e) => setTelestrokeNote({...telestrokeNote, bpPreTNKTime: e.target.value})}
                                     className="w-24 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                                   />
+                                  {/* Inline BP Status Badge for Pre-TNK BP */}
+                                  {(() => {
+                                    const bpStatus = getBPThresholdStatus(telestrokeNote.bpPreTNK);
+                                    if (bpStatus.status === 'unknown') return null;
+                                    return (
+                                      <span className={`px-2 py-1 rounded text-xs font-bold border whitespace-nowrap ${bpStatus.badgeClass}`}>
+                                        {bpStatus.icon} {bpStatus.message}
+                                      </span>
+                                    );
+                                  })()}
                                 </div>
+                                {/* Quick BP Math for Pre-TNK BP */}
+                                {(() => {
+                                  const bpStatus = getBPThresholdStatus(telestrokeNote.bpPreTNK);
+                                  if (!bpStatus.needsLowering) return null;
+                                  return (
+                                    <div className="mt-1 px-2 py-1 bg-red-100 border border-red-300 rounded text-xs text-red-800 font-medium">
+                                      Need to lower by {bpStatus.sbpToLower}/{bpStatus.dbpToLower} mmHg to reach 185/110
+                                    </div>
+                                  );
+                                })()}
                               </div>
                             </div>
+                            {/* Post-TNK BP Target Reminder */}
+                            {(telestrokeNote.tnkRecommended || telestrokeNote.dtnTnkAdministered) && (
+                              <div className="mt-2 px-3 py-2 bg-blue-50 border-l-4 border-blue-500 rounded-r text-sm">
+                                <span className="font-bold text-blue-800">Post-TNK Target:</span>
+                                <span className="text-blue-700 ml-2">&lt;180/105 for 24 hours after thrombolysis</span>
+                              </div>
+                            )}
                             <div className="grid grid-cols-3 gap-3">
                               <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Glucose</label>
@@ -5644,6 +6117,147 @@ TO DO:
                               </div>
                             </details>
 
+                            {/* ========== THROMBOLYSIS CONTRAINDICATION CHECKLIST ========== */}
+                            {(() => {
+                              const checklist = telestrokeNote.tnkContraindicationChecklist || {};
+
+                              const absoluteContraindications = [
+                                { id: 'activeInternalBleeding', label: 'Active internal bleeding', note: null },
+                                { id: 'recentIntracranialSurgery', label: 'Recent intracranial/spinal surgery, head trauma, or stroke', note: '<3 months' },
+                                { id: 'intracranialNeoplasm', label: 'Intracranial neoplasm, AVM, or aneurysm', note: null },
+                                { id: 'knownBleedingDiathesis', label: 'Known bleeding diathesis', note: null },
+                                { id: 'severeUncontrolledHTN', label: 'Severe uncontrolled hypertension', note: 'despite treatment' },
+                                { id: 'currentICH', label: 'Current intracranial hemorrhage on imaging', note: null }
+                              ];
+
+                              const relativeContraindications = [
+                                { id: 'recentMajorSurgery', label: 'Recent major surgery', note: '<14 days' },
+                                { id: 'recentGIGUBleeding', label: 'Recent GI/GU bleeding', note: '<21 days' },
+                                { id: 'recentArterialPuncture', label: 'Recent arterial puncture at non-compressible site', note: '<7 days' },
+                                { id: 'recentLumbarPuncture', label: 'Recent lumbar puncture', note: '<7 days' },
+                                { id: 'pregnancy', label: 'Pregnancy', note: 'consult OB/GYN' },
+                                { id: 'seizureAtOnset', label: 'Seizure at onset with postictal deficits', note: 'consider stroke mimic' },
+                                { id: 'lowPlatelets', label: 'Platelet count <100,000', note: null },
+                                { id: 'elevatedINR', label: 'INR >1.7', note: null },
+                                { id: 'elevatedPTT', label: 'PTT >40s', note: null },
+                                { id: 'abnormalGlucose', label: 'Blood glucose <50 or >400 mg/dL', note: 'correct before treatment' },
+                                { id: 'recentDOAC', label: 'DOAC use within 48h', note: 'unless reversal confirmed' }
+                              ];
+
+                              const autoDetected = {};
+                              const glucoseVal = parseFloat(telestrokeNote.glucose);
+                              if (!isNaN(glucoseVal) && (glucoseVal < 50 || glucoseVal > 400)) autoDetected.abnormalGlucose = true;
+                              const inrVal = parseFloat(telestrokeNote.inr);
+                              if (!isNaN(inrVal) && inrVal > 1.7) autoDetected.elevatedINR = true;
+                              const pttVal = parseFloat(telestrokeNote.ptt);
+                              if (!isNaN(pttVal) && pttVal > 40) autoDetected.elevatedPTT = true;
+                              const plateletsVal = parseFloat(telestrokeNote.plateletCount);
+                              if (!isNaN(plateletsVal) && plateletsVal < 100000) autoDetected.lowPlatelets = true;
+                              const bpVal = telestrokeNote.presentingBP || '';
+                              const bpMatchVal = bpVal.match(/(\d+)\s*\/\s*(\d+)/);
+                              if (bpMatchVal && (parseInt(bpMatchVal[1]) > 185 || parseInt(bpMatchVal[2]) > 110)) autoDetected.severeUncontrolledHTN = true;
+                              if (telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== '' && telestrokeNote.lastDOACType !== 'none') {
+                                if (telestrokeNote.lastDOACDose) {
+                                  const hoursSinceDOAC = (new Date() - new Date(telestrokeNote.lastDOACDose)) / (1000 * 60 * 60);
+                                  if (hoursSinceDOAC < 48) autoDetected.recentDOAC = true;
+                                } else { autoDetected.recentDOAC = true; }
+                              }
+
+                              const absoluteChecked = absoluteContraindications.filter(c => checklist[c.id] || autoDetected[c.id]);
+                              const relativeChecked = relativeContraindications.filter(c => checklist[c.id] || autoDetected[c.id]);
+
+                              let badgeColor, badgeText, badgeIcon;
+                              if (absoluteChecked.length > 0) { badgeColor = 'bg-red-500 text-white'; badgeText = 'Absolute CI (' + absoluteChecked.length + ')'; badgeIcon = 'X'; }
+                              else if (relativeChecked.length > 0) { badgeColor = 'bg-amber-500 text-white'; badgeText = relativeChecked.length + ' relative'; badgeIcon = '!'; }
+                              else if (telestrokeNote.tnkContraindicationReviewed) { badgeColor = 'bg-green-500 text-white'; badgeText = 'No contraindications'; badgeIcon = 'check'; }
+                              else { badgeColor = 'bg-gray-400 text-white'; badgeText = 'Not reviewed'; badgeIcon = '?'; }
+
+                              const updateChecklistItem = (id, value) => setTelestrokeNote({...telestrokeNote, tnkContraindicationChecklist: {...telestrokeNote.tnkContraindicationChecklist, [id]: value}});
+
+                              const clearAllAndProceed = () => {
+                                const clearedChecklist = {};
+                                [...absoluteContraindications, ...relativeContraindications].forEach(c => { clearedChecklist[c.id] = false; });
+                                setTelestrokeNote({...telestrokeNote, tnkContraindicationChecklist: clearedChecklist, tnkContraindicationReviewed: true, tnkContraindicationReviewTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }), tnkRecommended: true});
+                              };
+
+                              return (
+                                <details className="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-300 rounded-lg" open={!telestrokeNote.tnkContraindicationReviewed}>
+                                  <summary className="cursor-pointer p-3 font-semibold text-orange-900 hover:bg-orange-100 rounded-lg flex items-center justify-between">
+                                    <span>TNK Contraindication Checklist (AHA Guidelines)</span>
+                                    <span className={'px-3 py-1 rounded-full text-xs font-bold ' + badgeColor}>
+                                      {badgeIcon === 'check' && <span>&#10003; </span>}
+                                      {badgeIcon === '!' && <span>&#9888; </span>}
+                                      {badgeIcon === 'X' && <span>&#10007; </span>}
+                                      {badgeText}
+                                    </span>
+                                  </summary>
+                                  <div className="p-4 space-y-4">
+                                    <div className="bg-red-100 border border-red-300 rounded-lg p-3">
+                                      <h4 className="font-bold text-red-800 mb-3 flex items-center gap-2">
+                                        <span className="bg-red-600 text-white px-2 py-0.5 rounded text-xs">ABSOLUTE</span>
+                                        Contraindications - TNK is contraindicated if ANY checked
+                                      </h4>
+                                      <div className="space-y-2">
+                                        {absoluteContraindications.map(item => {
+                                          const isAutoDetected = autoDetected[item.id];
+                                          const isChecked = checklist[item.id] || isAutoDetected;
+                                          return (
+                                            <label key={item.id} className={'flex items-start gap-2 p-2 rounded cursor-pointer transition ' + (isChecked ? 'bg-red-200' : 'hover:bg-red-50')}>
+                                              <input type="checkbox" checked={isChecked} onChange={(e) => updateChecklistItem(item.id, e.target.checked)} className="w-4 h-4 mt-0.5 accent-red-600" />
+                                              <div className="flex-1">
+                                                <span className={'text-sm ' + (isChecked ? 'text-red-900 font-semibold' : 'text-gray-800')}>{item.label}</span>
+                                                {item.note && <span className="text-xs text-red-600 ml-1">({item.note})</span>}
+                                                {isAutoDetected && <span className="ml-2 text-xs bg-red-500 text-white px-1.5 py-0.5 rounded">Auto-detected</span>}
+                                              </div>
+                                            </label>
+                                          );
+                                        })}
+                                      </div>
+                                    </div>
+                                    <div className="bg-amber-50 border border-amber-300 rounded-lg p-3">
+                                      <h4 className="font-bold text-amber-800 mb-3 flex items-center gap-2">
+                                        <span className="bg-amber-500 text-white px-2 py-0.5 rounded text-xs">RELATIVE</span>
+                                        Contraindications - Use clinical judgment
+                                      </h4>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                        {relativeContraindications.map(item => {
+                                          const isAutoDetected = autoDetected[item.id];
+                                          const isChecked = checklist[item.id] || isAutoDetected;
+                                          return (
+                                            <label key={item.id} className={'flex items-start gap-2 p-2 rounded cursor-pointer transition ' + (isChecked ? 'bg-amber-200' : 'hover:bg-amber-100')}>
+                                              <input type="checkbox" checked={isChecked} onChange={(e) => updateChecklistItem(item.id, e.target.checked)} className="w-4 h-4 mt-0.5 accent-amber-600" />
+                                              <div className="flex-1">
+                                                <span className={'text-sm ' + (isChecked ? 'text-amber-900 font-semibold' : 'text-gray-800')}>{item.label}</span>
+                                                {item.note && <span className="text-xs text-amber-600 block">({item.note})</span>}
+                                                {isAutoDetected && <span className="ml-2 text-xs bg-amber-500 text-white px-1.5 py-0.5 rounded">Auto-detected</span>}
+                                              </div>
+                                            </label>
+                                          );
+                                        })}
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center justify-between pt-2 border-t border-orange-200">
+                                      <div className="text-sm text-gray-600">
+                                        {telestrokeNote.tnkContraindicationReviewed && <span className="text-green-700">Reviewed at {telestrokeNote.tnkContraindicationReviewTime}</span>}
+                                      </div>
+                                      <div className="flex gap-2">
+                                        {absoluteChecked.length === 0 && (
+                                          <button onClick={clearAllAndProceed} className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition flex items-center gap-2">
+                                            <span>&#10003;</span> All reviewed - Proceed with TNK
+                                          </button>
+                                        )}
+                                        {absoluteChecked.length > 0 && (
+                                          <div className="px-4 py-2 bg-red-100 text-red-800 rounded-lg font-semibold border border-red-300">
+                                            &#10007; TNK Contraindicated - {absoluteChecked.length} absolute CI{absoluteChecked.length > 1 ? 's' : ''}
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </details>
+                              );
+                            })()}
+
                             {/* Contextual Trial Consideration Hint */}
                             {(() => {
                               const eligibleTrials = Object.entries(trialEligibility)
@@ -5783,6 +6397,250 @@ TO DO:
                                 </div>
                               </div>
                             )}
+
+                            {/* Time Metrics Section - DTN Tracker (Collapsible) */}
+                            <details className="bg-purple-50 border-2 border-purple-300 rounded-lg" open={telestrokeNote.tnkRecommended}>
+                              <summary className="cursor-pointer p-3 font-semibold text-purple-800 hover:bg-purple-100 rounded-lg flex items-center justify-between">
+                                <span className="flex items-center gap-2">
+                                  <i data-lucide="timer" className="w-4 h-4"></i>
+                                  Time Metrics (DTN Tracker)
+                                </span>
+                                {(() => {
+                                  const metrics = calculateDTNMetrics();
+                                  if (metrics.doorToNeedle !== null) {
+                                    const benchmark = getDTNBenchmark(metrics.doorToNeedle);
+                                    return (
+                                      <span className={`px-2 py-1 rounded text-xs font-bold ${
+                                        benchmark.color === 'green' ? 'bg-green-500 text-white' :
+                                        benchmark.color === 'yellow' ? 'bg-yellow-500 text-white' :
+                                        'bg-red-500 text-white'
+                                      }`}>
+                                        DTN: {metrics.doorToNeedle} min
+                                      </span>
+                                    );
+                                  }
+                                  return null;
+                                })()}
+                              </summary>
+                              <div className="p-4 space-y-4">
+                                {/* Timestamp capture fields */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                  {/* ED Arrival (Door) */}
+                                  <div className="bg-white p-3 rounded-lg border border-purple-200">
+                                    <div className="flex items-center justify-between mb-2">
+                                      <label className="text-sm font-medium text-gray-700">ED Arrival (Door)</label>
+                                      <button
+                                        type="button"
+                                        onClick={() => setTelestrokeNote({...telestrokeNote, dtnEdArrival: new Date().toISOString().slice(0, 16)})}
+                                        className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                      >
+                                        Now
+                                      </button>
+                                    </div>
+                                    <input
+                                      type="datetime-local"
+                                      value={telestrokeNote.dtnEdArrival || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnEdArrival: e.target.value})}
+                                      className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-purple-500"
+                                    />
+                                  </div>
+
+                                  {/* Stroke Alert Called */}
+                                  <div className="bg-white p-3 rounded-lg border border-purple-200">
+                                    <div className="flex items-center justify-between mb-2">
+                                      <label className="text-sm font-medium text-gray-700">Stroke Alert Called</label>
+                                      <button
+                                        type="button"
+                                        onClick={() => setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: new Date().toISOString().slice(0, 16)})}
+                                        className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                      >
+                                        Now
+                                      </button>
+                                    </div>
+                                    <input
+                                      type="datetime-local"
+                                      value={telestrokeNote.dtnStrokeAlert || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: e.target.value})}
+                                      className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-purple-500"
+                                    />
+                                  </div>
+
+                                  {/* CT Scan Started */}
+                                  <div className="bg-white p-3 rounded-lg border border-purple-200">
+                                    <div className="flex items-center justify-between mb-2">
+                                      <label className="text-sm font-medium text-gray-700">CT Scan Started</label>
+                                      <button
+                                        type="button"
+                                        onClick={() => setTelestrokeNote({...telestrokeNote, dtnCtStarted: new Date().toISOString().slice(0, 16)})}
+                                        className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                      >
+                                        Now
+                                      </button>
+                                    </div>
+                                    <input
+                                      type="datetime-local"
+                                      value={telestrokeNote.dtnCtStarted || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnCtStarted: e.target.value})}
+                                      className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-purple-500"
+                                    />
+                                  </div>
+
+                                  {/* CT Read/Cleared for TNK */}
+                                  <div className="bg-white p-3 rounded-lg border border-purple-200">
+                                    <div className="flex items-center justify-between mb-2">
+                                      <label className="text-sm font-medium text-gray-700">CT Read/Cleared for TNK</label>
+                                      <button
+                                        type="button"
+                                        onClick={() => setTelestrokeNote({...telestrokeNote, dtnCtRead: new Date().toISOString().slice(0, 16)})}
+                                        className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                      >
+                                        Now
+                                      </button>
+                                    </div>
+                                    <input
+                                      type="datetime-local"
+                                      value={telestrokeNote.dtnCtRead || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnCtRead: e.target.value})}
+                                      className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-purple-500"
+                                    />
+                                  </div>
+
+                                  {/* TNK Ordered */}
+                                  <div className="bg-white p-3 rounded-lg border border-purple-200">
+                                    <div className="flex items-center justify-between mb-2">
+                                      <label className="text-sm font-medium text-gray-700">TNK Ordered</label>
+                                      <button
+                                        type="button"
+                                        onClick={() => setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: new Date().toISOString().slice(0, 16)})}
+                                        className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                      >
+                                        Now
+                                      </button>
+                                    </div>
+                                    <input
+                                      type="datetime-local"
+                                      value={telestrokeNote.dtnTnkOrdered || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: e.target.value})}
+                                      className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-purple-500"
+                                    />
+                                  </div>
+
+                                  {/* TNK Administered (Needle Time) */}
+                                  <div className="bg-white p-3 rounded-lg border-2 border-green-400">
+                                    <div className="flex items-center justify-between mb-2">
+                                      <label className="text-sm font-bold text-green-700">TNK Administered (Needle)</label>
+                                      <button
+                                        type="button"
+                                        onClick={() => setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: new Date().toISOString().slice(0, 16)})}
+                                        className="px-2 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition-colors"
+                                      >
+                                        Now
+                                      </button>
+                                    </div>
+                                    <input
+                                      type="datetime-local"
+                                      value={telestrokeNote.dtnTnkAdministered || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: e.target.value})}
+                                      className="w-full px-2 py-1 border border-green-300 rounded text-sm focus:ring-2 focus:ring-green-500"
+                                    />
+                                  </div>
+                                </div>
+
+                                {/* Auto-calculated Time Metrics */}
+                                {(() => {
+                                  const metrics = calculateDTNMetrics();
+                                  const hasSomeData = metrics.doorToCT !== null || metrics.doorToNeedle !== null || metrics.ctToNeedle !== null;
+
+                                  if (!hasSomeData) {
+                                    return (
+                                      <div className="text-center text-gray-500 text-sm py-2">
+                                        Enter timestamps above to calculate time metrics
+                                      </div>
+                                    );
+                                  }
+
+                                  return (
+                                    <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-4 border-2 border-purple-300">
+                                      <h5 className="font-bold text-purple-900 mb-3 flex items-center gap-2">
+                                        <i data-lucide="bar-chart-2" className="w-4 h-4"></i>
+                                        Calculated Intervals
+                                      </h5>
+                                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                        {/* Door-to-CT */}
+                                        <div className="bg-white p-3 rounded-lg border border-blue-200 text-center">
+                                          <p className="text-xs text-gray-600 mb-1">Door-to-CT</p>
+                                          <p className="text-2xl font-bold text-blue-600">
+                                            {metrics.doorToCT !== null ? `${metrics.doorToCT} min` : '--'}
+                                          </p>
+                                          <p className="text-xs text-gray-500">Target: &lt;25 min</p>
+                                        </div>
+
+                                        {/* Door-to-Needle (DTN) */}
+                                        {metrics.doorToNeedle !== null && (() => {
+                                          const benchmark = getDTNBenchmark(metrics.doorToNeedle);
+                                          return (
+                                            <div className={`p-3 rounded-lg border-2 text-center ${
+                                              benchmark.color === 'green' ? 'bg-green-100 border-green-500' :
+                                              benchmark.color === 'yellow' ? 'bg-yellow-100 border-yellow-500' :
+                                              'bg-red-100 border-red-500'
+                                            }`}>
+                                              <p className="text-xs text-gray-700 mb-1 font-semibold">Door-to-Needle (DTN)</p>
+                                              <p className={`text-3xl font-bold ${
+                                                benchmark.color === 'green' ? 'text-green-700' :
+                                                benchmark.color === 'yellow' ? 'text-yellow-700' :
+                                                'text-red-700'
+                                              }`}>
+                                                {metrics.doorToNeedle} min
+                                              </p>
+                                              <p className={`text-sm font-semibold ${
+                                                benchmark.color === 'green' ? 'text-green-600' :
+                                                benchmark.color === 'yellow' ? 'text-yellow-600' :
+                                                'text-red-600'
+                                              }`}>
+                                                {benchmark.label}
+                                              </p>
+                                              {benchmark.delta !== 0 && (
+                                                <p className="text-xs text-gray-600 mt-1">
+                                                  {benchmark.delta > 0
+                                                    ? `+${benchmark.delta} min over ${benchmark.target} min target`
+                                                    : `${Math.abs(benchmark.delta)} min under target`}
+                                                </p>
+                                              )}
+                                            </div>
+                                          );
+                                        })()}
+                                        {metrics.doorToNeedle === null && (
+                                          <div className="bg-white p-3 rounded-lg border border-gray-200 text-center">
+                                            <p className="text-xs text-gray-600 mb-1">Door-to-Needle (DTN)</p>
+                                            <p className="text-2xl font-bold text-gray-400">--</p>
+                                            <p className="text-xs text-gray-500">Target: &lt;45 min</p>
+                                          </div>
+                                        )}
+
+                                        {/* CT-to-Needle */}
+                                        <div className="bg-white p-3 rounded-lg border border-blue-200 text-center">
+                                          <p className="text-xs text-gray-600 mb-1">CT-to-Needle</p>
+                                          <p className="text-2xl font-bold text-blue-600">
+                                            {metrics.ctToNeedle !== null ? `${metrics.ctToNeedle} min` : '--'}
+                                          </p>
+                                          <p className="text-xs text-gray-500">Target: &lt;20 min</p>
+                                        </div>
+                                      </div>
+
+                                      {/* Benchmark Legend */}
+                                      <div className="mt-3 pt-3 border-t border-purple-200">
+                                        <p className="text-xs text-gray-600 text-center">
+                                          DTN Benchmarks:
+                                          <span className="ml-2 px-2 py-0.5 bg-green-500 text-white rounded">≤45 min = Excellent</span>
+                                          <span className="ml-1 px-2 py-0.5 bg-yellow-500 text-white rounded">46-60 min = Good</span>
+                                          <span className="ml-1 px-2 py-0.5 bg-red-500 text-white rounded">&gt;60 min = Needs Improvement</span>
+                                        </p>
+                                      </div>
+                                    </div>
+                                  );
+                                })()}
+                              </div>
+                            </details>
 
                             {/* EVT Eligibility (Collapsible) */}
                             <details className="bg-blue-50 border border-blue-200 rounded-lg">
@@ -6117,23 +6975,120 @@ Rizwan Kalani MD`);
                           </div>
                         </div>
 
-                        {/* Treatment Window Countdown */}
+                        {/* Treatment Window Countdown - Enhanced with Elapsed Timer & Audible Alerts */}
                         {(() => {
                           const timeFromLKW = calculateTimeFromLKW();
                           if (!timeFromLKW) return null;
 
                           const totalHours = timeFromLKW.total;
+                          const totalMinutes = totalHours * 60;
                           const tnkRemaining = 4.5 - totalHours;
+                          const tnkRemainingMinutes = tnkRemaining * 60;
                           const evtEarlyRemaining = 6 - totalHours;
                           const evtLateRemaining = 24 - totalHours;
 
+                          // Calculate elapsed time with seconds precision
+                          const elapsedHours = Math.floor(elapsedSeconds / 3600);
+                          const elapsedMins = Math.floor((elapsedSeconds % 3600) / 60);
+                          const elapsedSecs = elapsedSeconds % 60;
+
+                          // Determine color based on elapsed time
+                          const getElapsedColor = () => {
+                            if (totalHours < 3) return 'from-green-500 to-green-600';
+                            if (totalHours < 4) return 'from-yellow-500 to-yellow-600';
+                            if (totalHours < 4.5) return 'from-orange-500 to-orange-600';
+                            return 'from-red-600 to-red-700';
+                          };
+
+                          const getTextColor = () => {
+                            if (totalHours < 3) return 'text-green-100';
+                            if (totalHours < 4) return 'text-yellow-100';
+                            if (totalHours < 4.5) return 'text-orange-100';
+                            return 'text-red-100';
+                          };
+
                           return (
-                            <div className="bg-white p-4 rounded-lg shadow-md border-2 border-blue-300 lg:sticky lg:top-40 z-30">
+                            <div className={`bg-white p-4 rounded-lg shadow-lg border-2 ${
+                              alertFlashing ? 'border-red-500 alert-flash' : 'border-blue-400'
+                            } lg:sticky lg:top-40 z-30`}>
+
+                              {/* Header with Mute Toggle */}
                               <div className="flex items-center justify-between mb-3">
                                 <h4 className="font-bold text-lg text-blue-900 flex items-center gap-2">
                                   <i data-lucide="clock" className="w-5 h-5"></i>
-                                  Treatment Window Countdown
+                                  Treatment Windows
                                 </h4>
+                                <button
+                                  onClick={toggleAlertMute}
+                                  className={`p-2 rounded-full transition-colors ${
+                                    alertsMuted
+                                      ? 'bg-gray-200 text-gray-500 hover:bg-gray-300'
+                                      : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+                                  }`}
+                                  title={alertsMuted ? 'Unmute alerts' : 'Mute alerts'}
+                                >
+                                  {alertsMuted ? (
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                      <path d="m11 5-6 6h-4v6h4l6 6v-18z"></path>
+                                      <line x1="23" y1="9" x2="17" y2="15"></line>
+                                      <line x1="17" y1="9" x2="23" y2="15"></line>
+                                    </svg>
+                                  ) : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                                    </svg>
+                                  )}
+                                </button>
+                              </div>
+
+                              {/* ============================================ */}
+                              {/* PROMINENT ELAPSED TIMER FROM LKW             */}
+                              {/* ============================================ */}
+                              <div className={`bg-gradient-to-r ${getElapsedColor()} rounded-xl p-4 mb-4 text-white shadow-md ${
+                                totalHours >= 4 && totalHours < 4.5 ? 'urgent-pulse' : ''
+                              }`}>
+                                <div className="text-center">
+                                  <p className={`text-xs font-medium ${getTextColor()} opacity-90 uppercase tracking-wide`}>
+                                    Time Elapsed from LKW
+                                  </p>
+                                  <div className="text-4xl font-mono font-bold mt-1 tracking-tight">
+                                    {elapsedHours}h {elapsedMins.toString().padStart(2, '0')}m {elapsedSecs.toString().padStart(2, '0')}s
+                                  </div>
+                                  <p className={`text-xs mt-1 ${getTextColor()} opacity-75`}>
+                                    LKW: {lkwTime ? new Date(lkwTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '--:--'}
+                                  </p>
+                                </div>
+
+                                {/* Countdown to TNK window closure */}
+                                {tnkRemaining > 0 && (
+                                  <div className={`mt-3 pt-3 border-t border-white/30 text-center ${
+                                    tnkRemainingMinutes <= 30 ? 'urgent-pulse' : ''
+                                  }`}>
+                                    <p className="text-xs opacity-80 uppercase tracking-wide">TNK Window Closes In</p>
+                                    <div className={`text-2xl font-bold ${
+                                      tnkRemainingMinutes <= 15 ? 'text-yellow-200' : 'text-white'
+                                    }`}>
+                                      {Math.floor(tnkRemainingMinutes / 60)}h {Math.floor(tnkRemainingMinutes % 60)}m
+                                    </div>
+                                    {tnkRemainingMinutes <= 30 && (
+                                      <p className="text-xs text-yellow-200 font-semibold mt-1 animate-pulse">
+                                        {tnkRemainingMinutes <= 15 ? 'CRITICAL - Less than 15 min remaining!' : 'Less than 30 min remaining'}
+                                      </p>
+                                    )}
+                                  </div>
+                                )}
+
+                                {/* Window closed message */}
+                                {tnkRemaining <= 0 && (
+                                  <div className="mt-3 pt-3 border-t border-white/30 text-center">
+                                    <p className="text-lg font-bold text-white/90">TNK Window Closed</p>
+                                    <p className="text-xs text-white/70">
+                                      {Math.abs(Math.floor(tnkRemainingMinutes / 60))}h {Math.abs(Math.floor(tnkRemainingMinutes % 60))}m ago
+                                    </p>
+                                  </div>
+                                )}
                               </div>
 
                               <div className="space-y-3">
@@ -6146,19 +7101,19 @@ Rizwan Kalani MD`);
                                   <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center gap-2">
                                       <span className="font-semibold text-sm">
-                                        {tnkRemaining > 0 ? '💉 TNK' : '⏱️ TNK Closed'}
+                                        {tnkRemaining > 0 ? 'TNK (Thrombolysis)' : 'TNK Closed'}
                                       </span>
                                     </div>
                                     {tnkRemaining > 0 && (
                                       <span className={`font-bold text-lg ${
                                         tnkRemaining < 0.5 ? 'text-red-600' : tnkRemaining < 1 ? 'text-yellow-600' : 'text-green-600'
                                       }`}>
-                                        {Math.floor(tnkRemaining)} hrs {Math.floor((tnkRemaining % 1) * 60)} min
+                                        {Math.floor(tnkRemaining)}h {Math.floor((tnkRemaining % 1) * 60)}m left
                                       </span>
                                     )}
                                     {tnkRemaining <= 0 && (
                                       <span className="text-gray-600 text-xs font-semibold">
-                                        -{Math.floor(Math.abs(tnkRemaining))} hrs {Math.floor((Math.abs(tnkRemaining) % 1) * 60)} min
+                                        -{Math.floor(Math.abs(tnkRemaining))}h {Math.floor((Math.abs(tnkRemaining) % 1) * 60)}m
                                       </span>
                                     )}
                                   </div>
@@ -6185,19 +7140,19 @@ Rizwan Kalani MD`);
                                   <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center gap-2">
                                       <span className="font-semibold text-sm">
-                                        {evtEarlyRemaining > 0 ? '🧠 EVT (Early)' : '⏱️ Early EVT Closed'}
+                                        {evtEarlyRemaining > 0 ? 'EVT (Early Window)' : 'Early EVT Closed'}
                                       </span>
                                     </div>
                                     {evtEarlyRemaining > 0 && (
                                       <span className={`font-bold text-lg ${
                                         evtEarlyRemaining < 0.5 ? 'text-red-600' : evtEarlyRemaining < 1 ? 'text-yellow-600' : 'text-blue-600'
                                       }`}>
-                                        {Math.floor(evtEarlyRemaining)} hrs {Math.floor((evtEarlyRemaining % 1) * 60)} min
+                                        {Math.floor(evtEarlyRemaining)}h {Math.floor((evtEarlyRemaining % 1) * 60)}m left
                                       </span>
                                     )}
                                     {evtEarlyRemaining <= 0 && (
                                       <span className="text-gray-600 text-xs font-semibold">
-                                        -{Math.floor(Math.abs(evtEarlyRemaining))} hrs {Math.floor((Math.abs(evtEarlyRemaining) % 1) * 60)} min
+                                        -{Math.floor(Math.abs(evtEarlyRemaining))}h {Math.floor((Math.abs(evtEarlyRemaining) % 1) * 60)}m
                                       </span>
                                     )}
                                   </div>
@@ -6212,7 +7167,7 @@ Rizwan Kalani MD`);
                                       style={{ width: `${Math.max(0, Math.min(100, (totalHours / 6) * 100))}%` }}
                                     ></div>
                                   </div>
-                                  <p className="text-xs mt-1 text-gray-600">0-6h</p>
+                                  <p className="text-xs mt-1 text-gray-600">0-6h from LKW</p>
                                 </div>
 
                                 {/* Late EVT Window (6-24h) */}
@@ -6223,12 +7178,12 @@ Rizwan Kalani MD`);
                                     <div className="flex items-center justify-between mb-2">
                                       <div className="flex items-center gap-2">
                                         <span className="font-semibold text-sm">
-                                          {evtLateRemaining > 0 ? '🧠 EVT (Late)' : '⏱️ EVT Closed'}
+                                          {evtLateRemaining > 0 ? 'EVT (Extended Window)' : 'All Windows Closed'}
                                         </span>
                                       </div>
                                       {evtLateRemaining > 0 && (
                                         <span className="font-bold text-lg text-purple-600">
-                                          {Math.floor(evtLateRemaining)} hrs {Math.floor((evtLateRemaining % 1) * 60)} min
+                                          {Math.floor(evtLateRemaining)}h {Math.floor((evtLateRemaining % 1) * 60)}m left
                                         </span>
                                       )}
                                       {evtLateRemaining <= 0 && (
@@ -6244,8 +7199,23 @@ Rizwan Kalani MD`);
                                         style={{ width: `${Math.max(0, Math.min(100, (totalHours / 24) * 100))}%` }}
                                       ></div>
                                     </div>
-                                    <p className="text-xs mt-1 text-gray-600">6-24h</p>
+                                    <p className="text-xs mt-1 text-gray-600">6-24h (perfusion imaging required)</p>
                                   </div>
+                                )}
+                              </div>
+
+                              {/* Alert status indicator */}
+                              <div className="mt-3 pt-3 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500">
+                                <span>
+                                  Alerts: {alertsMuted ? 'Muted' : 'Active'}
+                                  {!alertsMuted && tnkRemaining > 0 && tnkRemaining < 0.5 && ' (30m, 15m, 0m)'}
+                                </span>
+                                {lastAlertPlayed && (
+                                  <span className="text-orange-600 font-medium">
+                                    Last: {lastAlertPlayed === 'warning-30' ? '30m warning' :
+                                           lastAlertPlayed === 'warning-15' ? '15m warning' :
+                                           'Window closed'}
+                                  </span>
                                 )}
                               </div>
                             </div>
