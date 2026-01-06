@@ -651,7 +651,7 @@ Rizwan Kalani MD`));
             affectedSide: '', // L or R for laterality
             weight: '', // kg - for TNK dosing
             height: '', // cm - for BMI/contrast dosing
-            lastDOACDose: '', // date/time of last DOAC for thrombolysis eligibility
+            lastDOACDose: new Date().toISOString().slice(0, 16), // date/time of last anticoagulant - auto-populated with current time
             lastDOACType: '', // apixaban, rivaroxaban, dabigatran, edoxaban
             arrivalTime: '', // ED arrival for DTN calculation
             strokeAlertTime: '', // Stroke team activation time
@@ -4654,43 +4654,6 @@ TO DO:
                           </div>
                         </div>
 
-                        {/* Quick LKW Buttons */}
-                        <div className="space-y-2">
-                          <p className="text-xs text-gray-500">Quick Set:</p>
-                          <div className="grid grid-cols-4 gap-1">
-                            {[15, 30, 60, 90, 120, 180, 240, 360].map(mins => (
-                              <button
-                                key={mins}
-                                onClick={() => {
-                                  const now = new Date();
-                                  now.setMinutes(now.getMinutes() - mins);
-                                  setTelestrokeNote({
-                                    ...telestrokeNote,
-                                    lkwDate: now.toISOString().split('T')[0],
-                                    lkwTime: now.toTimeString().slice(0, 5)
-                                  });
-                                }}
-                                className="py-2 px-1 bg-blue-100 hover:bg-blue-200 rounded text-xs font-medium text-blue-800"
-                              >
-                                {mins < 60 ? `${mins}m` : `${mins/60}h`}
-                              </button>
-                            ))}
-                          </div>
-                          <button
-                            onClick={() => {
-                              setTelestrokeNote({
-                                ...telestrokeNote,
-                                lkwDate: '',
-                                lkwTime: '',
-                                lkwUnknown: true
-                              });
-                            }}
-                            className="w-full py-2 bg-amber-100 hover:bg-amber-200 rounded text-sm font-medium text-amber-800"
-                          >
-                            ❓ Unknown / Wake-up Stroke
-                          </button>
-                        </div>
-
                         {/* Time from LKW Display */}
                         {telestrokeNote.lkwDate && telestrokeNote.lkwTime && (
                           <div className={`text-center p-3 rounded-lg ${
@@ -5018,32 +4981,6 @@ TO DO:
                         </div>
                       </div>
 
-                      {/* Quick LKW Buttons */}
-                      <div className="mt-3">
-                        <label className="block text-sm font-medium text-blue-900 mb-2">Quick Set (minutes ago):</label>
-                        <div className="flex flex-wrap gap-2">
-                          {[15, 30, 60, 90, 120, 180, 240, 360].map(mins => (
-                            <button
-                              key={mins}
-                              onClick={() => {
-                                const lkw = new Date(currentTime);
-                                lkw.setMinutes(lkw.getMinutes() - mins);
-                                setLkwTime(lkw);
-                              }}
-                              className="px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded-lg text-sm font-medium transition"
-                            >
-                              {mins < 60 ? `${mins}m` : `${mins/60}h`}
-                            </button>
-                          ))}
-                          <button
-                            onClick={() => setLkwTime(null)}
-                            className="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg text-sm font-medium transition"
-                          >
-                            Unknown
-                          </button>
-                        </div>
-                      </div>
-
                       {/* Time from LKW Display */}
                       {lkwTime && (
                         <div className="mt-3 bg-blue-100 rounded-lg p-3 text-center">
@@ -5198,7 +5135,7 @@ TO DO:
                               </div>
                               <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                  <label className="block text-xs text-gray-600 mb-1">DOAC Type</label>
+                                  <label className="block text-xs text-gray-600 mb-1">Anticoagulant Type</label>
                                   <select
                                     value={telestrokeNote.lastDOACType}
                                     onChange={(e) => setTelestrokeNote({...telestrokeNote, lastDOACType: e.target.value})}
@@ -5270,31 +5207,6 @@ TO DO:
                                   placeholder="e.g., R hemiparesis, aphasia"
                                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                                 />
-                              </div>
-                            </div>
-
-                            {/* Quick NIHSS Buttons */}
-                            <div className="mb-3">
-                              <label className="block text-xs text-gray-500 mb-1">Quick Set:</label>
-                              <div className="flex flex-wrap gap-2">
-                                {[0, 2, 4, 6, 8, 10, 14, 18, 22, 25].map(score => (
-                                  <button
-                                    key={score}
-                                    onClick={() => {
-                                      setTelestrokeNote({...telestrokeNote, nihss: score.toString()});
-                                      setNihssScore(score);
-                                    }}
-                                    className={`px-3 py-1 rounded-lg text-sm font-medium transition ${
-                                      score === 0 ? 'bg-green-100 hover:bg-green-200 text-green-800' :
-                                      score <= 4 ? 'bg-blue-100 hover:bg-blue-200 text-blue-800' :
-                                      score <= 15 ? 'bg-yellow-100 hover:bg-yellow-200 text-yellow-800' :
-                                      score <= 20 ? 'bg-orange-100 hover:bg-orange-200 text-orange-800' :
-                                      'bg-red-100 hover:bg-red-200 text-red-800'
-                                    }`}
-                                  >
-                                    {score}
-                                  </button>
-                                ))}
                               </div>
                             </div>
 
