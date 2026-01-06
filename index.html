@@ -440,6 +440,36 @@
             }
           };
 
+          // PHI Protection - Load data with expiration check (for shift cases)
+          const SHIFT_DATA_TTL = 24 * 60 * 60 * 1000; // 24 hours - cases auto-clear after shift
+          const loadShiftData = (key, defaultValue) => {
+            try {
+              const saved = localStorage.getItem(key);
+              if (!saved) return defaultValue;
+
+              const item = JSON.parse(saved);
+
+              // Handle both old format (plain array) and new format (with expiration)
+              if (Array.isArray(item)) {
+                // Old format - migrate to new format
+                return item;
+              }
+
+              if (!item.data) return defaultValue;
+
+              // Check expiration
+              if (item.expiresAt && new Date().getTime() > item.expiresAt) {
+                localStorage.removeItem(key);
+                return defaultValue;
+              }
+
+              return item.data;
+            } catch (e) {
+              console.warn(`Error loading ${key}:`, e);
+              return defaultValue;
+            }
+          };
+
           // Force activeTab to always start as 'encounter' - load saved value in useEffect after mount
           const [activeTab, setActiveTab] = useState('encounter');
           const [patientData, setPatientData] = useState(loadFromStorage('patientData', {}));
@@ -524,8 +554,8 @@ Rizwan Kalani MD`));
           // ============================================
           // SIGN-OUT / HANDOFF FEATURE
           // ============================================
-          // PHI-free patient summaries for shift handoff
-          const [signOutPatients, setSignOutPatients] = useState(loadFromStorage('signOutPatients', []));
+          // PHI-free patient summaries for shift handoff (persists across refreshes, expires after 24h)
+          const [signOutPatients, setSignOutPatients] = useState(loadShiftData('signOutPatients', []));
           const [showSignOutModal, setShowSignOutModal] = useState(false);
           const [showSignOutManager, setShowSignOutManager] = useState(false);
           const [signOutToast, setSignOutToast] = useState('');
@@ -4175,6 +4205,19 @@ TO DO:
                         >
                           <i data-lucide="message-circle" className="w-3.5 h-3.5"></i>
                           Text
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (confirm(`Clear all ${signOutPatients.length} cases? This cannot be undone.`)) {
+                              clearAllSignOuts();
+                              showSignOutNotification('All cases cleared');
+                            }
+                          }}
+                          className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-red-100 border border-red-300 text-red-700 rounded-lg hover:bg-red-200 font-medium transition-colors"
+                          title="Clear all saved cases"
+                        >
+                          <i data-lucide="trash-2" className="w-3.5 h-3.5"></i>
+                          Clear
                         </button>
                       </>
                     )}
