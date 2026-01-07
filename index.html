@@ -3605,8 +3605,9 @@ Rizwan Kalani MD`));
           };
 
           // Second-level timer for elapsed time and alert checking
+          // Only runs on encounter tab to prevent re-renders on other tabs
           useEffect(() => {
-            if (!lkwTime) return;
+            if (!lkwTime || activeTab !== 'encounter') return;
 
             const checkAlertsAndUpdate = () => {
               const now = new Date();
@@ -3650,7 +3651,7 @@ Rizwan Kalani MD`));
             const timer = setInterval(checkAlertsAndUpdate, 1000);
 
             return () => clearInterval(timer);
-          }, [lkwTime, alertsMuted, lastAlertPlayed]);
+          }, [lkwTime, alertsMuted, lastAlertPlayed, activeTab]);
 
           // Reset last alert when LKW changes
           useEffect(() => {
