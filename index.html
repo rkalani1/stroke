@@ -7177,7 +7177,7 @@ Rizwan Kalani MD`);
 
                                   {/* Expanded Details */}
                                   {expandedTrial === trialId && (
-                                    <div className="mt-3 pt-3 border-t border-current border-opacity-20 text-xs">
+                                    <div className="mt-3 pt-3 border-t border-current border-opacity-20 text-xs" onClick={(e) => e.stopPropagation()}>
                                       <p className="font-semibold mb-1">Key Criteria:</p>
                                       {result.criteria.slice(0, 5).map((c, i) => (
                                         <div key={i} className="flex items-center gap-1">
