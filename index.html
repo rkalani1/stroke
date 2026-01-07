@@ -1773,8 +1773,6 @@ Rizwan Kalani MD`));
 
           // Create trial card component
           const TrialCard = ({ trial, category }) => {
-            const [isExpanded, setIsExpanded] = React.useState(false);
-            
             const getCategoryColor = (cat) => {
               switch(cat) {
                 case 'ischemic': return 'bg-blue-600 text-white';
@@ -1784,7 +1782,7 @@ Rizwan Kalani MD`));
                 default: return 'bg-gray-600 text-white';
               }
             };
-            
+
             const getCategoryBorderColor = (cat) => {
               switch(cat) {
                 case 'ischemic': return 'border-blue-200';
@@ -1794,13 +1792,10 @@ Rizwan Kalani MD`));
                 default: return 'border-gray-200';
               }
             };
-            
+
             return (
-              <div className={`bg-white rounded-lg shadow-md overflow-hidden border-2 ${getCategoryBorderColor(category)} hover:shadow-lg transition-shadow`}>
-                <div 
-                  className={`${getCategoryColor(category)} p-4 cursor-pointer`}
-                  onClick={() => setIsExpanded(!isExpanded)}
-                >
+              <details className={`bg-white rounded-lg shadow-md overflow-hidden border-2 ${getCategoryBorderColor(category)} hover:shadow-lg transition-shadow`}>
+                <summary className={`${getCategoryColor(category)} p-4 cursor-pointer list-none`}>
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       <h3 className="text-xl font-bold mb-2">{trial.name}</h3>
@@ -1817,10 +1812,10 @@ Rizwan Kalani MD`));
                       <p className="text-white text-opacity-95">{trial.description}</p>
                     </div>
                     <div className="ml-4">
-                      <svg 
-                        className={`w-6 h-6 transform transition-transform ${isExpanded ? 'rotate-180' : ''}`} 
-                        fill="none" 
-                        stroke="currentColor" 
+                      <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
                         viewBox="0 0 24 24"
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -1829,7 +1824,7 @@ Rizwan Kalani MD`));
                   </div>
                   <div className="mt-3 flex items-center">
                     {trial.nct.startsWith('NCT') ? (
-                      <button 
+                      <button
                         className="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center"
                         onClick={(e) => {
                           e.stopPropagation();
@@ -1845,50 +1840,48 @@ Rizwan Kalani MD`));
                       <span className="text-sm opacity-90">Reference: {trial.nct}</span>
                     )}
                   </div>
-                </div>
-                
-                {isExpanded && (
-                  <div className="bg-gray-50 p-4 border-t-2 border-gray-200">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="font-bold text-green-700 mb-3 text-lg">✓ Inclusion Criteria</h4>
-                        <ul className="space-y-2">
-                          {trial.inclusion.map((item, idx) => (
-                            <li key={idx} className="flex items-start">
-                              <span className="text-green-500 mr-2 mt-1">•</span>
-                              <span className="text-gray-700 text-sm">{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-red-700 mb-3 text-lg">✗ Exclusion Criteria</h4>
-                        <ul className="space-y-2">
-                          {trial.exclusion.map((item, idx) => (
-                            <li key={idx} className="flex items-start">
-                              <span className="text-red-500 mr-2 mt-1">•</span>
-                              <span className="text-gray-700 text-sm">{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                </summary>
+
+                <div className="bg-gray-50 p-4 border-t-2 border-gray-200">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-bold text-green-700 mb-3 text-lg">✓ Inclusion Criteria</h4>
+                      <ul className="space-y-2">
+                        {trial.inclusion.map((item, idx) => (
+                          <li key={idx} className="flex items-start">
+                            <span className="text-green-500 mr-2 mt-1">•</span>
+                            <span className="text-gray-700 text-sm">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    {trial.nct.startsWith('NCT') && (
-                      <div className="mt-6 pt-4 border-t border-gray-200 text-center">
-                        <button 
-                          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center"
-                          onClick={() => window.open(`https://clinicaltrials.gov/study/${trial.nct}`, '_blank')}
-                        >
-                          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                          </svg>
-                          View Full Details on ClinicalTrials.gov
-                        </button>
-                      </div>
-                    )}
+                    <div>
+                      <h4 className="font-bold text-red-700 mb-3 text-lg">✗ Exclusion Criteria</h4>
+                      <ul className="space-y-2">
+                        {trial.exclusion.map((item, idx) => (
+                          <li key={idx} className="flex items-start">
+                            <span className="text-red-500 mr-2 mt-1">•</span>
+                            <span className="text-gray-700 text-sm">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                )}
-              </div>
+                  {trial.nct.startsWith('NCT') && (
+                    <div className="mt-6 pt-4 border-t border-gray-200 text-center">
+                      <button
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center"
+                        onClick={() => window.open(`https://clinicaltrials.gov/study/${trial.nct}`, '_blank')}
+                      >
+                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        View Full Details on ClinicalTrials.gov
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </details>
             );
           };
 
