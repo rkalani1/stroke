@@ -6731,7 +6731,10 @@ Rizwan Kalani MD`);
                                         >
                                           {/* Trial Header - Clickable */}
                                           <button
-                                            onClick={() => setExpandedTrial(isExpanded ? null : trialId)}
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              setExpandedTrial(prev => prev === trialId ? null : trialId);
+                                            }}
                                             className="w-full p-3 text-left hover:bg-opacity-75 transition-colors"
                                           >
                                             <div className="flex items-start justify-between gap-2">
@@ -7162,7 +7165,10 @@ Rizwan Kalani MD`);
                                 <div
                                   key={trialId}
                                   className={`p-3 rounded-lg border-2 ${statusStyles[result.status]} cursor-pointer hover:shadow-md transition-shadow`}
-                                  onClick={() => setExpandedTrial(expandedTrial === trialId ? null : trialId)}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setExpandedTrial(prev => prev === trialId ? null : trialId);
+                                  }}
                                 >
                                   <div className="flex items-center justify-between">
                                     <span className="font-semibold text-sm">{config.name}</span>
