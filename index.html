@@ -7162,41 +7162,37 @@ Rizwan Kalani MD`);
                               };
 
                               return (
-                                <div
+                                <details
                                   key={trialId}
-                                  className={`p-3 rounded-lg border-2 ${statusStyles[result.status]} cursor-pointer hover:shadow-md transition-shadow`}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setExpandedTrial(prev => prev === trialId ? null : trialId);
-                                  }}
+                                  className={`p-3 rounded-lg border-2 ${statusStyles[result.status]} hover:shadow-md transition-shadow`}
                                 >
-                                  <div className="flex items-center justify-between">
-                                    <span className="font-semibold text-sm">{config.name}</span>
-                                    <span>{statusIcons[result.status]}</span>
-                                  </div>
-                                  <p className="text-xs mt-1 opacity-80">{config.quickDescription.substring(0, 40)}...</p>
-                                  <div className="flex items-center gap-2 mt-2 text-xs">
-                                    <span>✓{result.metCount}</span>
-                                    <span>?{result.unknownCount}</span>
-                                    <span>✗{result.notMetCount}</span>
-                                  </div>
+                                  <summary className="cursor-pointer list-none">
+                                    <div className="flex items-center justify-between">
+                                      <span className="font-semibold text-sm">{config.name}</span>
+                                      <span>{statusIcons[result.status]}</span>
+                                    </div>
+                                    <p className="text-xs mt-1 opacity-80">{config.quickDescription.substring(0, 40)}...</p>
+                                    <div className="flex items-center gap-2 mt-2 text-xs">
+                                      <span>✓{result.metCount}</span>
+                                      <span>?{result.unknownCount}</span>
+                                      <span>✗{result.notMetCount}</span>
+                                    </div>
+                                  </summary>
 
                                   {/* Expanded Details */}
-                                  {expandedTrial === trialId && (
-                                    <div className="mt-3 pt-3 border-t border-current border-opacity-20 text-xs" onClick={(e) => e.stopPropagation()}>
-                                      <p className="font-semibold mb-1">Key Criteria:</p>
-                                      {result.criteria.slice(0, 5).map((c, i) => (
-                                        <div key={i} className="flex items-center gap-1">
-                                          <span>{c.status === 'met' ? '✓' : c.status === 'not_met' ? '✗' : '?'}</span>
-                                          <span className={c.status === 'not_met' ? 'line-through' : ''}>{c.label}</span>
-                                        </div>
-                                      ))}
-                                      {result.criteria.length > 5 && (
-                                        <p className="text-xs opacity-70 mt-1">+{result.criteria.length - 5} more criteria</p>
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
+                                  <div className="mt-3 pt-3 border-t border-current border-opacity-20 text-xs">
+                                    <p className="font-semibold mb-1">Key Criteria:</p>
+                                    {result.criteria.slice(0, 5).map((c, i) => (
+                                      <div key={i} className="flex items-center gap-1">
+                                        <span>{c.status === 'met' ? '✓' : c.status === 'not_met' ? '✗' : '?'}</span>
+                                        <span className={c.status === 'not_met' ? 'line-through' : ''}>{c.label}</span>
+                                      </div>
+                                    ))}
+                                    {result.criteria.length > 5 && (
+                                      <p className="text-xs opacity-70 mt-1">+{result.criteria.length - 5} more criteria</p>
+                                    )}
+                                  </div>
+                                </details>
                               );
                             })}
                         </div>
