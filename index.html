@@ -548,6 +548,17 @@ Rizwan Kalani MD`));
           // Trial Screening Sidebar state
           const [expandedTrial, setExpandedTrial] = useState(null);
 
+          // Collapsible Timer Sidebar state (default: expanded on desktop, collapsed on mobile)
+          const [timerSidebarCollapsed, setTimerSidebarCollapsed] = useState(() => {
+            const saved = localStorage.getItem('timerSidebarCollapsed');
+            if (saved !== null) return saved === 'true';
+            return window.innerWidth < 1024; // collapsed by default on mobile/tablet
+          });
+
+          // Sub-tab navigation for combined tabs
+          const [ichManagementSubTab, setIchManagementSubTab] = useState('ich'); // 'ich' | 'management'
+          const [calcRefsSubTab, setCalcRefsSubTab] = useState('calculators'); // 'calculators' | 'references'
+
           // Emergency Contacts FAB state
           const [fabExpanded, setFabExpanded] = useState(false);
 
@@ -3418,6 +3429,11 @@ Rizwan Kalani MD`));
             debouncedSave('activeTab', activeTab);
           }, [activeTab]);
 
+          // Persist timer sidebar collapse state
+          useEffect(() => {
+            localStorage.setItem('timerSidebarCollapsed', timerSidebarCollapsed);
+          }, [timerSidebarCollapsed]);
+
           useEffect(() => {
             debouncedSave('patientData', patientData);
             const newScore = calculateNIHSS(patientData);
@@ -4018,6 +4034,19 @@ TO DO:
                       <span className="hidden sm:inline">Share</span>
                     </button>
 
+                    {/* Regional Hospitals Button */}
+                    <a
+                      href="https://rkalani1.github.io/telestroke-expansion-map/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
+                      aria-label="Regional Hospitals Map"
+                      title="Open Regional Hospitals Map"
+                    >
+                      <i data-lucide="map-pin" className="w-4 h-4"></i>
+                      <span className="hidden lg:inline">Regional Hospitals</span>
+                    </a>
+
                     {/* Dark Mode Toggle */}
                     <button
                       onClick={toggleDarkMode}
@@ -4398,38 +4427,43 @@ TO DO:
                 </span>
               </div>
 
-              {/* Navigation Tabs - Desktop Only */}
+              {/* Navigation Tabs - Desktop Only - 4 Consolidated Tabs */}
               <div className="border-b border-gray-200 mb-4 sm:mb-6 pb-2 hidden md:block" role="navigation" aria-label="Main navigation">
-                <nav className="flex flex-wrap justify-center gap-2 md:justify-between md:gap-0" role="tablist">
+                <nav className="flex flex-wrap justify-center gap-2 md:justify-around md:gap-0" role="tablist">
                   {[
                     { id: 'encounter', name: '⚡ Encounter', icon: 'activity' },
-                    { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
-                    { id: 'protocols', name: 'Management', icon: 'file-text' },
-                    { id: 'calculators', name: 'Calculators', icon: 'calculator' },
-                    { id: 'trials', name: 'Trials', icon: 'file-text' },
-                    { id: 'evidence', name: 'References', icon: 'file-text' },
-                    { id: 'regional', name: 'Regional Hospitals', icon: 'map' }
+                    { id: 'ich-management', name: 'ICH & Management', icon: 'alert-triangle' },
+                    { id: 'trials', name: 'Trials', icon: 'clipboard-list' },
+                    { id: 'calc-refs', name: 'Calculators & Refs', icon: 'calculator' }
                   ].map(tab => {
+                    // Map combined tabs to check active state
+                    const isActive = tab.id === 'ich-management'
+                      ? (activeTab === 'ich' || activeTab === 'protocols')
+                      : tab.id === 'calc-refs'
+                        ? (activeTab === 'calculators' || activeTab === 'evidence')
+                        : activeTab === tab.id;
                     return (
                       <button
                         key={tab.id}
                         onClick={() => {
-                          if (tab.id === 'regional') {
-                            window.open('https://rkalani1.github.io/telestroke-expansion-map/', '_blank');
+                          if (tab.id === 'ich-management') {
+                            setActiveTab('ich');
+                          } else if (tab.id === 'calc-refs') {
+                            setActiveTab('calculators');
                           } else {
                             setActiveTab(tab.id);
                           }
                         }}
-                        className={`py-2 px-3 border-2 rounded-lg font-medium text-xs flex items-center space-x-1 transition-all
-                          ${activeTab === tab.id
+                        className={`py-2 px-4 border-2 rounded-lg font-medium text-sm flex items-center space-x-2 transition-all
+                          ${isActive
                             ? 'border-blue-500 bg-blue-50 text-blue-600'
                             : 'border-gray-300 bg-white text-gray-600 hover:text-gray-800 hover:border-gray-400'
                           }
-                          sm:py-2 sm:px-2 sm:border-b-2 sm:border-t-0 sm:border-l-0 sm:border-r-0 sm:rounded-none
-                          md:text-xs
                         `}
+                        role="tab"
+                        aria-selected={isActive}
                       >
-                        <i data-lucide={tab.icon} className="w-3 h-3 hidden sm:block"></i>
+                        <i data-lucide={tab.icon} className="w-4 h-4"></i>
                         <span>{tab.name}</span>
                       </button>
                     );
@@ -6444,41 +6478,59 @@ Rizwan Kalani MD`);
                           };
 
                           return (
-                            <div className={`bg-white p-4 rounded-lg shadow-lg border-2 ${
+                            <div className={`bg-white rounded-lg shadow-lg border-2 ${
                               alertFlashing ? 'border-red-500 alert-flash' : 'border-blue-400'
-                            } lg:sticky lg:top-40 z-30`}>
+                            } lg:sticky lg:top-40 z-30 transition-all duration-300 ${
+                              timerSidebarCollapsed ? 'p-2' : 'p-4'
+                            }`}>
 
-                              {/* Header with Mute Toggle */}
-                              <div className="flex items-center justify-between mb-3">
-                                <h4 className="font-bold text-lg text-blue-900 flex items-center gap-2">
-                                  <i data-lucide="clock" className="w-5 h-5"></i>
-                                  Treatment Windows
-                                </h4>
+                              {/* Header with Collapse Toggle and Mute Toggle */}
+                              <div className={`flex items-center justify-between ${timerSidebarCollapsed ? '' : 'mb-3'}`}>
                                 <button
-                                  onClick={toggleAlertMute}
-                                  className={`p-2 rounded-full transition-colors ${
-                                    alertsMuted
-                                      ? 'bg-gray-200 text-gray-500 hover:bg-gray-300'
-                                      : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
-                                  }`}
-                                  title={alertsMuted ? 'Unmute alerts' : 'Mute alerts'}
+                                  onClick={() => setTimerSidebarCollapsed(!timerSidebarCollapsed)}
+                                  className="font-bold text-lg text-blue-900 flex items-center gap-2 hover:text-blue-700 transition-colors"
+                                  title={timerSidebarCollapsed ? 'Expand timer' : 'Collapse timer'}
                                 >
-                                  {alertsMuted ? (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                      <path d="m11 5-6 6h-4v6h4l6 6v-18z"></path>
-                                      <line x1="23" y1="9" x2="17" y2="15"></line>
-                                      <line x1="17" y1="9" x2="23" y2="15"></line>
-                                    </svg>
+                                  <i data-lucide={timerSidebarCollapsed ? 'chevron-right' : 'chevron-down'} className="w-4 h-4"></i>
+                                  <i data-lucide="clock" className="w-5 h-5"></i>
+                                  {timerSidebarCollapsed ? (
+                                    <span className="text-sm font-mono">
+                                      {elapsedHours}h {elapsedMins.toString().padStart(2, '0')}m
+                                    </span>
                                   ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                                      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                                    </svg>
+                                    <span>Treatment Windows</span>
                                   )}
                                 </button>
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    onClick={toggleAlertMute}
+                                    className={`p-2 rounded-full transition-colors ${
+                                      alertsMuted
+                                        ? 'bg-gray-200 text-gray-500 hover:bg-gray-300'
+                                        : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+                                    }`}
+                                    title={alertsMuted ? 'Unmute alerts' : 'Mute alerts'}
+                                  >
+                                    {alertsMuted ? (
+                                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="m11 5-6 6h-4v6h4l6 6v-18z"></path>
+                                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                                      </svg>
+                                    ) : (
+                                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                                      </svg>
+                                    )}
+                                  </button>
+                                </div>
                               </div>
 
+                              {/* Collapsible Content */}
+                              {!timerSidebarCollapsed && (
+                                <>
                               {/* ============================================ */}
                               {/* PROMINENT ELAPSED TIMER FROM LKW             */}
                               {/* ============================================ */}
@@ -6654,6 +6706,8 @@ Rizwan Kalani MD`);
                                   </span>
                                 )}
                               </div>
+                                </>
+                              )}
                             </div>
                           );
                         })()}
@@ -6937,66 +6991,37 @@ Rizwan Kalani MD`);
 
 
 
-                {/* ICH */}
-                {activeTab === 'ich' && (
+                {/* ICH & Management Combined Tab */}
+                {(activeTab === 'ich' || activeTab === 'protocols') && (
                   <div className="space-y-6">
-                    {/* ============================================ */}
-                    {/* ICH-SPECIFIC TRIAL ELIGIBILITY PANEL         */}
-                    {/* Shows ICH-relevant trials for current patient */}
-                    {/* ============================================ */}
-                    {telestrokeNote.age && (
-                      <div className="bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-300 rounded-lg p-4 shadow-md">
-                        <div className="flex items-center justify-between mb-3">
-                          <h2 className="text-lg font-bold text-red-900 flex items-center gap-2">
-                            🔬 ICH Trial Eligibility - Current Patient
-                          </h2>
-                          <div className="text-sm text-red-700">
-                            {telestrokeNote.age}{telestrokeNote.sex || '?'} | GCS {telestrokeNote.gcs || '?'} | NIHSS {nihssScore || '?'}
-                          </div>
-                        </div>
-                        <p className="text-sm text-red-700 mb-3">Trials relevant for intracerebral hemorrhage patients:</p>
+                    {/* Sub-Navigation for ICH & Management */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-2 flex gap-2">
+                      <button
+                        onClick={() => setActiveTab('ich')}
+                        className={`flex-1 py-2 px-4 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 ${
+                          activeTab === 'ich'
+                            ? 'bg-red-500 text-white shadow-md'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        <i data-lucide="alert-triangle" className="w-4 h-4"></i>
+                        ICH Management
+                      </button>
+                      <button
+                        onClick={() => setActiveTab('protocols')}
+                        className={`flex-1 py-2 px-4 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 ${
+                          activeTab === 'protocols'
+                            ? 'bg-blue-500 text-white shadow-md'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        <i data-lucide="file-text" className="w-4 h-4"></i>
+                        Ischemic Stroke Management
+                      </button>
+                    </div>
 
-                        {/* ICH-Relevant Trial Cards */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {/* ASPIRE Trial Card */}
-                          {(() => {
-                            const aspireResult = trialEligibility['ASPIRE'];
-                            if (!aspireResult) return null;
-                            const statusStyles = {
-                              eligible: 'bg-green-100 border-green-500',
-                              needs_info: 'bg-yellow-100 border-yellow-500',
-                              not_eligible: 'bg-gray-100 border-gray-400',
-                              pending: 'bg-blue-100 border-blue-400'
-                            };
-                            const statusLabels = {
-                              eligible: '🟢 Potentially Eligible',
-                              needs_info: '🟡 Needs More Info',
-                              not_eligible: '⚪ Not Eligible',
-                              pending: '🔵 Pending Evaluation'
-                            };
-                            return (
-                              <div className={`p-3 rounded-lg border-2 ${statusStyles[aspireResult.status]}`}>
-                                <div className="flex justify-between items-start mb-2">
-                                  <h3 className="font-bold text-gray-900">ASPIRE Trial</h3>
-                                  <span className="text-xs">{statusLabels[aspireResult.status]}</span>
-                                </div>
-                                <p className="text-xs text-gray-600 mb-2">Antiplatelet after spontaneous ICH</p>
-                                <div className="text-xs space-y-1">
-                                  <p className="font-semibold">Key Criteria:</p>
-                                  <ul className="ml-2 space-y-0.5">
-                                    <li>• Age 18-85</li>
-                                    <li>• Spontaneous ICH 14-180 days prior</li>
-                                    <li>• mRS ≤4</li>
-                                    <li>• Indication for antiplatelet</li>
-                                  </ul>
-                                </div>
-                              </div>
-                            );
-                          })()}
-                        </div>
-                      </div>
-                    )}
-
+                    {/* ICH Content */}
+                    {activeTab === 'ich' && (
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                       <h2 className="text-xl font-semibold text-red-800 mb-4">ICH Management</h2>
 
@@ -7101,11 +7126,101 @@ Rizwan Kalani MD`);
                         <p className="text-sm text-gray-600 mt-2">ICH Score, Fisher Scale, Hunt & Hess → Calculators tab</p>
                       </div>
                     </div>
+                    )}
+                    {/* End of ICH Content */}
+
+                    {/* Ischemic Stroke Management Content */}
+                    {activeTab === 'protocols' && (
+                      <div className="space-y-6">
+                        {/* Blood Pressure Management */}
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-blue-800 mb-3">Blood Pressure Management</h3>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-green-700 mb-2">BP Goals</h4>
+                              <ul className="text-sm space-y-1">
+                                <li><strong>Ischemic stroke:</strong> SBP &lt;220, DBP &lt;120</li>
+                                <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
+                                <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105</li>
+                                <li><strong>After thrombectomy:</strong> SBP &lt;180, DBP &lt;105</li>
+                                <li><strong>ICH:</strong> SBP &lt;160, DBP &lt;105</li>
+                              </ul>
+                            </div>
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-blue-700 mb-2">Acute Treatment</h4>
+                              <ul className="text-sm space-y-1">
+                                <li><strong>Labetalol:</strong> 10 mg IV q15min</li>
+                                <li>Increase to 20mg, then 40mg, then 60mg</li>
+                                <li>Max total dose: 300mg in 2 hours</li>
+                                <li><strong>Alternative:</strong> Nicardipine 5 mg/hr IV</li>
+                                <li>Titrate by 2.5 mg/hr q15min</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Post-Lytic Complications */}
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-red-800 mb-3">Post-Lytic ICH Protocol</h3>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold mb-2">Immediate Actions</h4>
+                              <ol className="text-sm space-y-1 list-decimal list-inside">
+                                <li>STAT non-contrast CT head</li>
+                                <li>Emergency hemorrhage panel</li>
+                                <li>Type & cross</li>
+                                <li>Notify patient's family</li>
+                              </ol>
+                            </div>
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold mb-2">Reversal</h4>
+                              <ul className="text-sm space-y-1">
+                                <li><strong>Cryoprecipitate:</strong> 10 units IV</li>
+                                <li><strong>Platelets:</strong> 6 units IV</li>
+                                <li><strong>TXA:</strong> 1g IV over 10 min</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Orolingual Angioedema Protocol */}
+                        <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-yellow-800 mb-3">Orolingual Angioedema Protocol</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-yellow-700 mb-2">Risk Factors</h4>
+                              <ul className="text-sm space-y-1">
+                                <li>• ACE inhibitor use</li>
+                                <li>• Insular cortex involvement</li>
+                                <li>• Frontal operculum stroke</li>
+                              </ul>
+                            </div>
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-yellow-700 mb-2">Treatment</h4>
+                              <ul className="text-sm space-y-1">
+                                <li><strong>Stop tPA infusion</strong> if running</li>
+                                <li><strong>Methylprednisolone:</strong> 125 mg IV</li>
+                                <li><strong>Diphenhydramine:</strong> 50 mg IV</li>
+                                <li><strong>Ranitidine:</strong> 50 mg IV</li>
+                                <li><strong>Epinephrine:</strong> 0.1% if severe</li>
+                                <li><strong>Consider Berinert:</strong> 20 IU/kg (C1 esterase inhibitor)</li>
+                                <li><strong>Supportive Care</strong></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {/* End of Ischemic Stroke Management Content */}
+
                   </div>
                 )}
+                {/* End of ICH & Management Combined Tab */}
 
                 {/* Trials */}
-                                {activeTab === 'trials' && (
+                {activeTab === 'trials' && (
                   <div className="space-y-6">
                     {/* Header Section */}
                     <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-lg shadow-lg">
@@ -7277,8 +7392,39 @@ Rizwan Kalani MD`);
                   </div>
                 )}
 
-                {/* Risk Calculators */}
-                {activeTab === 'calculators' && (
+                {/* ============================================ */}
+                {/* CALCULATORS & REFERENCES COMBINED TAB       */}
+                {/* ============================================ */}
+                {(activeTab === 'calculators' || activeTab === 'evidence') && (
+                  <div className="space-y-6">
+                    {/* Sub-Navigation for Calculators & References */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-2 flex gap-2">
+                      <button
+                        onClick={() => setActiveTab('calculators')}
+                        className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                          activeTab === 'calculators'
+                            ? 'bg-purple-600 text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        <i data-lucide="calculator" className="w-4 h-4"></i>
+                        Calculators
+                      </button>
+                      <button
+                        onClick={() => setActiveTab('evidence')}
+                        className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                          activeTab === 'evidence'
+                            ? 'bg-purple-600 text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        <i data-lucide="book-open" className="w-4 h-4"></i>
+                        References & Evidence
+                      </button>
+                    </div>
+
+                    {/* Calculators Content */}
+                    {activeTab === 'calculators' && (
                   <div className="space-y-4">
                     {/* ============================================ */}
                     {/* CALCULATOR TRIAL PROMPTS                     */}
@@ -8572,169 +8718,10 @@ Rizwan Kalani MD`);
                       </div>
                     </details>
 
-                  </div>
-                )}
+                    )}
 
-                {/* Management */}
-                {activeTab === 'protocols' && (
-                  <div className="space-y-6">
-                    {/* ============================================ */}
-                    {/* PROTOCOL-TRIAL CONNECTION PANEL              */}
-                    {/* Links protocols to relevant clinical trials  */}
-                    {/* ============================================ */}
-                    <div className="bg-gradient-to-r from-teal-50 to-cyan-50 border-2 border-teal-300 rounded-lg p-4 shadow-md">
-                      <div className="flex items-center justify-between mb-3">
-                        <h2 className="text-lg font-bold text-teal-900 flex items-center gap-2">
-                          🔗 Protocol → Trial Connection
-                        </h2>
-                        {telestrokeNote.age && (
-                          <span className="text-sm text-teal-700">
-                            Current: {telestrokeNote.age}{telestrokeNote.sex || '?'} | NIHSS {nihssScore || '?'}
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-sm text-teal-700 mb-3">Remember to consider clinical trials when applying protocols:</p>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        {/* Thrombolysis Protocol → Trials */}
-                        <div className="bg-white rounded p-3 border">
-                          <h3 className="font-semibold text-teal-800 text-sm mb-2">Thrombolysis Protocols</h3>
-                          <ul className="space-y-1 text-xs text-gray-700">
-                            <li>→ <strong>SISTER</strong>: Late window (4.5-24h), no TNK/EVT</li>
-                            <li>→ <strong>TESTED</strong>: TNK vs alteplase comparison</li>
-                            <li className="text-gray-500 italic">If pt ineligible for standard lytics, check trial options</li>
-                          </ul>
-                        </div>
-                        {/* EVT Protocol → Trials */}
-                        <div className="bg-white rounded p-3 border">
-                          <h3 className="font-semibold text-teal-800 text-sm mb-2">EVT/Thrombectomy</h3>
-                          <ul className="space-y-1 text-xs text-gray-700">
-                            <li>→ <strong>STEP</strong>: Mild LVO or MeVO patients</li>
-                            <li>→ <strong>SATURN</strong>: Tandem occlusions</li>
-                            <li className="text-gray-500 italic">Consider trials for borderline EVT candidates</li>
-                          </ul>
-                        </div>
-                        {/* BP/ICH Protocol → Trials */}
-                        <div className="bg-white rounded p-3 border">
-                          <h3 className="font-semibold text-teal-800 text-sm mb-2">ICH Management</h3>
-                          <ul className="space-y-1 text-xs text-gray-700">
-                            <li>→ <strong>ASPIRE</strong>: Antiplatelet after ICH</li>
-                            <li>→ <strong>ENRICH</strong>: Minimally invasive evacuation</li>
-                            <li className="text-gray-500 italic">See ICH tab for detailed criteria</li>
-                          </ul>
-                        </div>
-                      </div>
-                      {/* Current patient trial status */}
-                      {telestrokeNote.age && (
-                        <div className="mt-3 pt-3 border-t border-teal-200">
-                          <div className="flex items-center gap-4 text-sm">
-                            <span className="font-semibold text-teal-800">Current Patient Eligibility:</span>
-                            {(() => {
-                              const summary = getTrialEligibilitySummary();
-                              return (
-                                <span className="flex items-center gap-3">
-                                  {summary.eligible > 0 && (
-                                    <span className="text-green-700">🟢 {summary.eligible} potentially eligible</span>
-                                  )}
-                                  {summary.needsInfo > 0 && (
-                                    <span className="text-yellow-700">🟡 {summary.needsInfo} need more info</span>
-                                  )}
-                                  <button
-                                    onClick={() => setActiveTab('trials')}
-                                    className="text-teal-600 hover:text-teal-800 underline"
-                                  >
-                                    View details →
-                                  </button>
-                                </span>
-                              );
-                            })()}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Blood Pressure Management */}
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-blue-800 mb-3">Blood Pressure Management</h3>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold text-green-700 mb-2">BP Goals</h4>
-                          <ul className="text-sm space-y-1">
-                            <li><strong>Ischemic stroke:</strong> SBP &lt;220, DBP &lt;120</li>
-                            <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
-                            <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105</li>
-                            <li><strong>After thrombectomy:</strong> SBP &lt;180, DBP &lt;105</li>
-                            <li><strong>ICH:</strong> SBP &lt;160, DBP &lt;105</li>
-                          </ul>
-                        </div>
-                        <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold text-blue-700 mb-2">Acute Treatment</h4>
-                          <ul className="text-sm space-y-1">
-                            <li><strong>Labetalol:</strong> 10 mg IV q15min</li>
-                            <li>Increase to 20mg, then 40mg, then 60mg</li>
-                            <li>Max total dose: 300mg in 2 hours</li>
-                            <li><strong>Alternative:</strong> Nicardipine 5 mg/hr IV</li>
-                            <li>Titrate by 2.5 mg/hr q15min</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Post-Lytic Complications */}
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-red-800 mb-3">Post-Lytic ICH Protocol</h3>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold mb-2">Immediate Actions</h4>
-                          <ol className="text-sm space-y-1 list-decimal list-inside">
-                            <li>STAT non-contrast CT head</li>
-                            <li>Emergency hemorrhage panel</li>
-                            <li>Type & cross</li>
-                            <li>Notify patient's family</li>
-                          </ol>
-                        </div>
-                        <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold mb-2">Reversal Agents</h4>
-                          <ul className="text-sm space-y-1">
-                            <li><strong>Cryoprecipitate:</strong> 2 pools over 10-30 min</li>
-                            <li><strong>Tranexamic acid:</strong> 1g IV infused over 10 minutes</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Angioedema Protocol */}
-                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-yellow-800 mb-3">Orolingual Angioedema Protocol</h3>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold mb-2">Assessment</h4>
-                          <ul className="text-sm space-y-1">
-                            <li>• Maintain airway</li>
-                            <li>• Hold ACE inhibitors</li>
-                            <li>• Consider intubation if severe</li>
-                          </ul>
-                        </div>
-                        <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold mb-2">Treatment</h4>
-                          <ul className="text-sm space-y-1">
-                            <li><strong>Methylprednisolone:</strong> 125 mg IV</li>
-                            <li><strong>Diphenhydramine:</strong> 50 mg IV</li>
-                            <li><strong>Famotidine:</strong> 20 mg IV</li>
-                            <li><strong>Epinephrine:</strong> 0.1% if severe</li>
-                            <li><strong>Consider Berinert:</strong> 20 IU/kg (C1 esterase inhibitor)</li>
-                            <li><strong>Supportive Care</strong></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Evidence */}
-                                {activeTab === 'evidence' && (
+                    {/* References & Evidence Content */}
+                    {activeTab === 'evidence' && (
                   <div className="space-y-6">
 
                     {/* Evidence Filter */}
@@ -9636,6 +9623,10 @@ Rizwan Kalani MD`);
                   </div>
                 )}
 
+                  </div>
+                )}
+                {/* End Calculators & References Combined Tab */}
+
               </div>
 
               {/* Emergency Contacts FAB - Floating Action Button */}
@@ -9772,37 +9763,44 @@ Rizwan Kalani MD`);
                 </div>
               )}
 
-              {/* Mobile Bottom Navigation - Only visible on small screens */}
+              {/* Mobile Bottom Navigation - Only visible on small screens - 4 Consolidated Tabs */}
               <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 shadow-lg z-50 pb-safe">
                 <div className="flex justify-around items-center px-2 py-2">
                   {[
                     { id: 'encounter', name: 'Encounter', icon: 'activity' },
-                    { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
-                    { id: 'protocols', name: 'Management', icon: 'file-text' },
-                    { id: 'calculators', name: 'Calculators', icon: 'calculator' },
-                    { id: 'trials', name: 'Trials', icon: 'file-text' },
-                    { id: 'evidence', name: 'References', icon: 'file-text' },
-                    { id: 'regional', name: 'Hospitals', icon: 'map' }
-                  ].map((tab) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => {
-                        if (tab.id === 'regional') {
-                          window.open('https://rkalani1.github.io/telestroke-expansion-map/', '_blank');
-                        } else {
-                          setActiveTab(tab.id);
-                        }
-                      }}
-                      className={`flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all ${
-                        activeTab === tab.id
-                          ? 'text-blue-600 bg-blue-50'
-                          : 'text-gray-600'
-                      }`}
-                    >
-                      <i data-lucide={tab.icon} className="w-6 h-6 mb-1"></i>
-                      <span className="text-xs font-medium">{tab.name}</span>
-                    </button>
-                  ))}
+                    { id: 'ich-management', name: 'ICH & Mgmt', icon: 'alert-triangle' },
+                    { id: 'trials', name: 'Trials', icon: 'clipboard-list' },
+                    { id: 'calc-refs', name: 'Calc & Refs', icon: 'calculator' }
+                  ].map((tab) => {
+                    // Map combined tabs to check active state
+                    const isActive = tab.id === 'ich-management'
+                      ? (activeTab === 'ich' || activeTab === 'protocols')
+                      : tab.id === 'calc-refs'
+                        ? (activeTab === 'calculators' || activeTab === 'evidence')
+                        : activeTab === tab.id;
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => {
+                          if (tab.id === 'ich-management') {
+                            setActiveTab('ich');
+                          } else if (tab.id === 'calc-refs') {
+                            setActiveTab('calculators');
+                          } else {
+                            setActiveTab(tab.id);
+                          }
+                        }}
+                        className={`flex flex-col items-center justify-center px-3 py-2 rounded-lg transition-all ${
+                          isActive
+                            ? 'text-blue-600 bg-blue-50'
+                            : 'text-gray-600'
+                        }`}
+                      >
+                        <i data-lucide={tab.icon} className="w-6 h-6 mb-1"></i>
+                        <span className="text-xs font-medium">{tab.name}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
