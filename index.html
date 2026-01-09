@@ -3960,6 +3960,19 @@ TO DO:
                     </h1>
                   </div>
                   <div className="flex items-center gap-2">
+                    {/* Regional Hospitals Button */}
+                    <a
+                      href="https://rkalani1.github.io/telestroke-expansion-map/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
+                      aria-label="Regional Hospitals Map"
+                      title="Open Regional Hospitals Map"
+                    >
+                      <i data-lucide="map-pin" className="w-4 h-4"></i>
+                      <span>Regional Hospitals</span>
+                    </a>
+
                     {/* Search Bar with Results */}
                     <div className="relative">
                       <input
@@ -4033,19 +4046,6 @@ TO DO:
                       <i data-lucide="share-2" className="w-4 h-4"></i>
                       <span className="hidden sm:inline">Share</span>
                     </button>
-
-                    {/* Regional Hospitals Button */}
-                    <a
-                      href="https://rkalani1.github.io/telestroke-expansion-map/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
-                      aria-label="Regional Hospitals Map"
-                      title="Open Regional Hospitals Map"
-                    >
-                      <i data-lucide="map-pin" className="w-4 h-4"></i>
-                      <span className="hidden lg:inline">Regional Hospitals</span>
-                    </a>
 
                     {/* Dark Mode Toggle */}
                     <button
@@ -4432,7 +4432,7 @@ TO DO:
                 <nav className="flex flex-wrap justify-center gap-2 md:justify-around md:gap-0" role="tablist">
                   {[
                     { id: 'encounter', name: '⚡ Encounter', icon: 'activity' },
-                    { id: 'ich-management', name: 'ICH & Management', icon: 'alert-triangle' },
+                    { id: 'ich-management', name: 'Management', icon: 'file-text' },
                     { id: 'trials', name: 'Trials', icon: 'clipboard-list' },
                     { id: 'calc-refs', name: 'Calculators & Refs', icon: 'calculator' }
                   ].map(tab => {
@@ -4447,7 +4447,7 @@ TO DO:
                         key={tab.id}
                         onClick={() => {
                           if (tab.id === 'ich-management') {
-                            setActiveTab('ich');
+                            setActiveTab('protocols');
                           } else if (tab.id === 'calc-refs') {
                             setActiveTab('calculators');
                           } else {
@@ -6991,22 +6991,11 @@ Rizwan Kalani MD`);
 
 
 
-                {/* ICH & Management Combined Tab */}
+                {/* Management Combined Tab */}
                 {(activeTab === 'ich' || activeTab === 'protocols') && (
                   <div className="space-y-6">
-                    {/* Sub-Navigation for ICH & Management */}
+                    {/* Sub-Navigation for Management */}
                     <div className="bg-white border border-gray-200 rounded-lg p-2 flex gap-2">
-                      <button
-                        onClick={() => setActiveTab('ich')}
-                        className={`flex-1 py-2 px-4 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 ${
-                          activeTab === 'ich'
-                            ? 'bg-red-500 text-white shadow-md'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        <i data-lucide="alert-triangle" className="w-4 h-4"></i>
-                        ICH Management
-                      </button>
                       <button
                         onClick={() => setActiveTab('protocols')}
                         className={`flex-1 py-2 px-4 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 ${
@@ -7017,6 +7006,17 @@ Rizwan Kalani MD`);
                       >
                         <i data-lucide="file-text" className="w-4 h-4"></i>
                         Ischemic Stroke Management
+                      </button>
+                      <button
+                        onClick={() => setActiveTab('ich')}
+                        className={`flex-1 py-2 px-4 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 ${
+                          activeTab === 'ich'
+                            ? 'bg-red-500 text-white shadow-md'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        <i data-lucide="alert-triangle" className="w-4 h-4"></i>
+                        ICH Management
                       </button>
                     </div>
 
@@ -7111,20 +7111,6 @@ Rizwan Kalani MD`);
                         </div>
                       </div>
 
-                      {/* ICH Prognostic Scores - Quick Link to Calculators */}
-                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
-                        <div className="flex items-center justify-between">
-                          <h3 className="text-lg font-semibold text-purple-800">ICH Prognostic Scores</h3>
-                          <button
-                            onClick={() => setActiveTab('calculators')}
-                            className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
-                          >
-                            <i data-lucide="calculator" className="w-4 h-4"></i>
-                            Open Calculators
-                          </button>
-                        </div>
-                        <p className="text-sm text-gray-600 mt-2">ICH Score, Fisher Scale, Hunt & Hess → Calculators tab</p>
-                      </div>
                     </div>
                     )}
                     {/* End of ICH Content */}
@@ -9769,7 +9755,7 @@ Rizwan Kalani MD`);
                 <div className="flex justify-around items-center px-2 py-2">
                   {[
                     { id: 'encounter', name: 'Encounter', icon: 'activity' },
-                    { id: 'ich-management', name: 'ICH & Mgmt', icon: 'alert-triangle' },
+                    { id: 'ich-management', name: 'Management', icon: 'file-text' },
                     { id: 'trials', name: 'Trials', icon: 'clipboard-list' },
                     { id: 'calc-refs', name: 'Calc & Refs', icon: 'calculator' }
                   ].map((tab) => {
@@ -9784,7 +9770,7 @@ Rizwan Kalani MD`);
                         key={tab.id}
                         onClick={() => {
                           if (tab.id === 'ich-management') {
-                            setActiveTab('ich');
+                            setActiveTab('protocols');
                           } else if (tab.id === 'calc-refs') {
                             setActiveTab('calculators');
                           } else {
