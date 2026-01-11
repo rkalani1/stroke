@@ -696,6 +696,198 @@ Rizwan Kalani MD`));
           const [transcriptText, setTranscriptText] = useState('');
           const recognitionRef = React.useRef(null);
 
+          // Intelligent transcript parsing function
+          const parseTranscriptAndPopulate = (text, currentNote) => {
+            const updates = {};
+            const lowerText = text.toLowerCase();
+
+            // Parse NIHSS score - look for patterns like "NIHSS is 12", "NIHSS of 5", "NIHSS score 8", "NIHSS 15"
+            const nihssPatterns = [
+              /nihss\s*(?:is|of|score|equals?)?\s*(\d{1,2})/i,
+              /(?:score|scored)\s*(?:a|an)?\s*(\d{1,2})\s*(?:on|for)?\s*(?:the)?\s*nihss/i,
+              /(\d{1,2})\s*(?:on|for)\s*(?:the)?\s*nihss/i
+            ];
+            for (const pattern of nihssPatterns) {
+              const match = text.match(pattern);
+              if (match && parseInt(match[1]) <= 42) {
+                updates.nihss = match[1];
+                break;
+              }
+            }
+
+            // Parse Age and Sex
+            const agePatterns = [
+              /(\d{1,3})\s*[-\s]?(?:year|yr|y\.?o\.?|years?)[\s-]*old/i,
+              /age\s*(?:is|of)?\s*(\d{1,3})/i,
+              /(\d{2,3})\s*(?:year|yr)/i
+            ];
+            for (const pattern of agePatterns) {
+              const match = text.match(pattern);
+              if (match && parseInt(match[1]) >= 18 && parseInt(match[1]) <= 120) {
+                updates.age = match[1];
+                break;
+              }
+            }
+
+            // Parse Sex
+            if (/\b(?:male|man|gentleman|he|his)\b/i.test(text) && !/\bfemale\b/i.test(text)) {
+              updates.sex = 'M';
+            } else if (/\b(?:female|woman|lady|she|her)\b/i.test(text) && !/\bmale\b/i.test(text)) {
+              updates.sex = 'F';
+            }
+
+            // Parse neurological deficits - look for common deficit terms
+            const deficitTerms = [
+              'hemiparesis', 'hemiplegia', 'weakness', 'paralysis',
+              'aphasia', 'dysarthria', 'dysphasia', 'speech difficulty',
+              'facial droop', 'facial weakness', 'facial palsy',
+              'gaze deviation', 'gaze preference', 'eye deviation',
+              'neglect', 'inattention', 'extinction',
+              'ataxia', 'dysmetria', 'coordination',
+              'sensory loss', 'numbness', 'tingling', 'paresthesia',
+              'visual field', 'hemianopia', 'quadrantanopia', 'vision loss',
+              'arm drift', 'leg drift', 'pronator drift',
+              'left sided', 'right sided', 'bilateral',
+              'dense', 'mild', 'moderate', 'severe'
+            ];
+            const foundDeficits = [];
+            const sentences = text.split(/[.!?]+/);
+            for (const sentence of sentences) {
+              const sentenceLower = sentence.toLowerCase();
+              let hasDeficit = false;
+              for (const term of deficitTerms) {
+                if (sentenceLower.includes(term)) {
+                  hasDeficit = true;
+                  break;
+                }
+              }
+              if (hasDeficit && sentence.trim().length > 5 && sentence.trim().length < 200) {
+                // Extract the relevant part mentioning deficits
+                const deficitMatch = sentence.match(/(?:has|with|showing|demonstrates?|presents?\s+with|exam\s+shows?|found|noted?|observed?)?\s*([^.]*(?:weakness|paresis|plegia|aphasia|dysarthria|droop|neglect|drift|numbness|ataxia|gaze|vision|sensory)[^.]*)/i);
+                if (deficitMatch) {
+                  foundDeficits.push(deficitMatch[1].trim());
+                }
+              }
+            }
+            if (foundDeficits.length > 0) {
+              // Combine with existing deficits if any
+              const existingDeficits = currentNote.deficits ? currentNote.deficits.split(/[,;]/).map(d => d.trim()).filter(Boolean) : [];
+              const allDeficits = [...new Set([...existingDeficits, ...foundDeficits])];
+              updates.deficits = allDeficits.slice(0, 5).join(', '); // Limit to 5 items
+            }
+
+            // Parse working diagnosis
+            const diagnosisPatterns = [
+              /(?:diagnosis|dx|impression|assessment)\s*(?:is|of|:)?\s*([^.]+(?:stroke|tia|ischemic|hemorrhagic|mimic|infarct)[^.]*)/i,
+              /(?:this|appears?|looks?|seems?)\s*(?:like|to be)\s*(?:a|an)?\s*([^.]*(?:stroke|tia|ischemic|hemorrhagic|mimic|infarct)[^.]*)/i,
+              /(?:acute|subacute)?\s*(ischemic\s+stroke|hemorrhagic\s+stroke|intracerebral\s+hemorrhage|tia|transient\s+ischemic\s+attack|stroke\s+mimic)/i,
+              /(?:concerning|suspicious|consistent)\s+(?:for|with)\s+([^.]+)/i
+            ];
+            for (const pattern of diagnosisPatterns) {
+              const match = text.match(pattern);
+              if (match) {
+                updates.workingDiagnosis = match[1].trim().substring(0, 100);
+                break;
+              }
+            }
+
+            // Parse imaging findings
+            const imagingPatterns = [
+              /(?:ct|cat\s*scan|cta|ctp|mri|mra|imaging|head\s+ct|brain\s+ct)\s*(?:shows?|demonstrates?|reveals?|indicates?|findings?|is|was|:)\s*([^.]+)/i,
+              /(?:on\s+)?(?:the\s+)?(?:ct|cta|ctp|mri)\s*[:,]?\s*([^.]+(?:no\s+hemorrhage|hemorrhage|infarct|occlusion|stenosis|normal|acute|chronic)[^.]*)/i,
+              /(no\s+(?:acute\s+)?(?:hemorrhage|bleeding|ich|intracranial\s+hemorrhage))/i,
+              /(large\s+vessel\s+occlusion|lvo|m1|m2|ica|basilar|occlusion)/i,
+              /(aspects?\s*(?:score|of)?\s*\d+)/i
+            ];
+            const foundImaging = [];
+            for (const pattern of imagingPatterns) {
+              const match = text.match(pattern);
+              if (match) {
+                foundImaging.push(match[1].trim());
+              }
+            }
+            if (foundImaging.length > 0) {
+              const existingImaging = currentNote.imaging ? currentNote.imaging.split(/[.;]/).map(i => i.trim()).filter(Boolean) : [];
+              const allImaging = [...new Set([...existingImaging, ...foundImaging])];
+              updates.imaging = allImaging.slice(0, 4).join('. ');
+            }
+
+            // Parse recommendations
+            const recommendPatterns = [
+              /(?:i\s+)?(?:recommend|suggest|advise|would\s+recommend|would\s+suggest)\s+(?:that\s+)?([^.]+)/i,
+              /(?:my\s+)?recommendation\s*(?:is|would\s+be)?\s*(?:to|:)?\s*([^.]+)/i,
+              /(?:please|should|need\s+to|going\s+to|will|let's)\s+(give\s+t[np][ak]|administer\s+t[np][ak]|start\s+heparin|call\s+interventional|activate\s+cath|transfer|admit)/i,
+              /(give\s+t[np][ak]|tpa|tnk|tenecteplase|alteplase|thrombolysis)/i,
+              /(thrombectomy|intervention|mechanical\s+thrombectomy|endovascular)/i,
+              /(admit\s+to|transfer\s+to|send\s+to)/i
+            ];
+            const foundRecs = [];
+            for (const pattern of recommendPatterns) {
+              const match = text.match(pattern);
+              if (match) {
+                foundRecs.push(match[1].trim());
+              }
+            }
+            if (foundRecs.length > 0) {
+              const existingRecs = currentNote.recommendationsText ? currentNote.recommendationsText.split(/[.;]/).map(r => r.trim()).filter(Boolean) : [];
+              const allRecs = [...new Set([...existingRecs, ...foundRecs])];
+              updates.recommendationsText = allRecs.join('. ');
+            }
+
+            // Parse brief history - look for history-related phrases
+            const historyPatterns = [
+              /(?:patient|pt|he|she)\s+(?:was|woke\s+up|presented|came\s+in|noticed|developed|had|experienced)\s+([^.]+(?:symptom|weakness|speech|vision|numbness|headache|dizz)[^.]*)/i,
+              /(?:history|hpi|presentation)\s*(?:is|of|:)?\s*([^.]+)/i,
+              /(?:last\s+known\s+well|lkw|onset|started|began)\s+([^.]+)/i,
+              /(?:woke\s+up\s+with|found\s+with|witnessed)\s+([^.]+)/i
+            ];
+            for (const pattern of historyPatterns) {
+              const match = text.match(pattern);
+              if (match && !currentNote.briefHistory) {
+                updates.briefHistory = match[1].trim().substring(0, 300);
+                break;
+              }
+            }
+
+            // Parse calling site - match against known sites
+            const siteNames = [
+              'HMC', 'Harborview', 'UWMC', 'UW Medical Center', 'Northwest',
+              'Astria', 'Sunnyside', 'Cascade', 'Leavenworth', 'Columbia Basin', 'Ephrata',
+              'Confluence', 'Wenatchee', 'Island Health', 'Anacortes', 'Lourdes', 'Pasco',
+              'Mason General', 'Shelton', 'Snoqualmie', 'St. Joseph', 'Lewiston',
+              'PeaceHealth', 'Friday Harbor', 'Ketchikan', 'Bellingham', 'Sedro Woolley',
+              'Petersburg', 'Trios', 'Kennewick'
+            ];
+            if (!currentNote.callingSite) {
+              for (const site of siteNames) {
+                if (lowerText.includes(site.toLowerCase())) {
+                  // Map to the full site name
+                  if (site === 'HMC' || site === 'Harborview') updates.callingSite = 'HMC';
+                  else if (site === 'UWMC' || site === 'UW Medical Center') updates.callingSite = 'UWMC-ML';
+                  else if (site === 'Northwest') updates.callingSite = 'UWM Northwest';
+                  else if (site === 'Sunnyside' || site === 'Astria') updates.callingSite = 'Astria Sunnyside';
+                  else if (site === 'Leavenworth' || site === 'Cascade') updates.callingSite = 'Cascade Medical – Leavenworth';
+                  else if (site === 'Ephrata' || site === 'Columbia Basin') updates.callingSite = 'Columbia Basin-Ephrata';
+                  else if (site === 'Wenatchee' || site === 'Confluence') updates.callingSite = 'Confluence Health – Wenatchee';
+                  else if (site === 'Anacortes' || site === 'Island Health') updates.callingSite = 'Island Health – Anacortes';
+                  else if (site === 'Pasco' || site === 'Lourdes') updates.callingSite = 'Lourdes Health – Pasco';
+                  else if (site === 'Shelton' || site === 'Mason General') updates.callingSite = 'Mason General Hospital – Shelton';
+                  else if (site === 'Snoqualmie') updates.callingSite = 'Snoqualmie Valley – Snoqualmie';
+                  else if (site === 'Lewiston' || site === 'St. Joseph') updates.callingSite = 'St. Joseph Regional Medical Center – Lewiston, Idaho';
+                  else if (site === 'Friday Harbor') updates.callingSite = 'PeaceHealth Island - Friday Harbor';
+                  else if (site === 'Ketchikan') updates.callingSite = 'PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska';
+                  else if (site === 'Bellingham') updates.callingSite = 'PeaceHealth St. Joseph Medical Center – Bellingham';
+                  else if (site === 'Sedro Woolley') updates.callingSite = 'PeaceHealth United General Medical Center – Sedro Woolley';
+                  else if (site === 'Petersburg') updates.callingSite = 'Petersburg, AK';
+                  else if (site === 'Kennewick' || site === 'Trios') updates.callingSite = 'Trios Health – Kennewick';
+                  break;
+                }
+              }
+            }
+
+            return updates;
+          };
+
           // Telestroke Documentation State
           const [telestrokeNote, setTelestrokeNote] = useState(loadFromStorage('telestrokeNote', {
             // Calling Site for Telephone Consults
@@ -5128,6 +5320,12 @@ TO DO:
                                       if (event.results[i].isFinal) {
                                         finalTranscript += transcript + ' ';
                                         setTranscriptText(finalTranscript);
+
+                                        // Parse the new transcript and auto-populate fields
+                                        const updates = parseTranscriptAndPopulate(finalTranscript, telestrokeNote);
+                                        if (Object.keys(updates).length > 0) {
+                                          setTelestrokeNote(prev => ({...prev, ...updates}));
+                                        }
                                       } else {
                                         interimTranscript += transcript;
                                       }
@@ -5162,25 +5360,37 @@ TO DO:
                               <i data-lucide={isTranscribing ? 'mic-off' : 'mic'} className="w-5 h-5"></i>
                               {isTranscribing ? '🔴 Recording... Click to Stop' : '🎙️ Start Voice Transcription'}
                             </button>
+                            {isTranscribing && (
+                              <div className="mt-2 text-xs text-gray-600 bg-gray-100 rounded-lg p-2">
+                                <span className="font-medium">🤖 Auto-detecting:</span> Age, sex, NIHSS, deficits, diagnosis, imaging, recommendations, site name
+                              </div>
+                            )}
                             {transcriptText && (
-                              <div className="mt-3">
-                                <div className="flex items-center justify-between mb-1">
-                                  <label className="block text-sm font-medium text-gray-700">Conversation Transcript</label>
+                              <details className="mt-3">
+                                <summary className="cursor-pointer text-sm font-medium text-gray-700 flex items-center justify-between">
+                                  <span>📝 Raw Transcript ({transcriptText.split(' ').length} words)</span>
                                   <button
-                                    onClick={() => setTranscriptText('')}
-                                    className="text-xs text-red-600 hover:text-red-800"
+                                    onClick={(e) => { e.preventDefault(); setTranscriptText(''); }}
+                                    className="text-xs text-red-600 hover:text-red-800 ml-2"
                                   >
                                     Clear
                                   </button>
-                                </div>
+                                </summary>
                                 <textarea
                                   value={transcriptText}
-                                  onChange={(e) => setTranscriptText(e.target.value)}
-                                  rows="4"
-                                  className="w-full px-3 py-2 border border-blue-300 rounded-lg bg-blue-50 focus:ring-2 focus:ring-blue-500 text-sm"
+                                  onChange={(e) => {
+                                    setTranscriptText(e.target.value);
+                                    // Re-parse on manual edit
+                                    const updates = parseTranscriptAndPopulate(e.target.value, telestrokeNote);
+                                    if (Object.keys(updates).length > 0) {
+                                      setTelestrokeNote(prev => ({...prev, ...updates}));
+                                    }
+                                  }}
+                                  rows="3"
+                                  className="w-full mt-2 px-3 py-2 border border-blue-300 rounded-lg bg-blue-50 focus:ring-2 focus:ring-blue-500 text-xs"
                                   placeholder="Transcript will appear here..."
                                 />
-                              </div>
+                              </details>
                             )}
                           </div>
 
@@ -5296,7 +5506,6 @@ TO DO:
                                   (telestrokeNote.deficits ? `\nDeficits: ${telestrokeNote.deficits}` : '') + `\n\n` +
                                   `IMAGING:\n${telestrokeNote.imaging || 'Not documented'}\n\n` +
                                   `RECOMMENDATIONS:\n${telestrokeNote.recommendationsText || 'None'}\n\n` +
-                                  (transcriptText ? `--- CONVERSATION TRANSCRIPT ---\n${transcriptText}\n\n` : '') +
                                   `Rizwan Kalani MD\n` +
                                   `${new Date().toLocaleString()}`;
                                 navigator.clipboard.writeText(note);
@@ -5308,19 +5517,38 @@ TO DO:
                               <i data-lucide="copy" className="w-4 h-4"></i>
                               {copiedText === 'telephone-note' ? 'Copied!' : 'Copy Telephone Note'}
                             </button>
-                            {transcriptText && (
+                            <div className="flex gap-2">
+                              {transcriptText && (
+                                <button
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(transcriptText);
+                                    setCopiedText('transcript-only');
+                                    setTimeout(() => setCopiedText(''), 2000);
+                                  }}
+                                  className="flex-1 px-4 py-2 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
+                                >
+                                  <i data-lucide="file-text" className="w-4 h-4"></i>
+                                  {copiedText === 'transcript-only' ? 'Copied!' : 'Copy Raw Transcript'}
+                                </button>
+                              )}
                               <button
                                 onClick={() => {
-                                  navigator.clipboard.writeText(transcriptText);
-                                  setCopiedText('transcript-only');
-                                  setTimeout(() => setCopiedText(''), 2000);
+                                  // Re-parse transcript to populate fields
+                                  if (transcriptText) {
+                                    const updates = parseTranscriptAndPopulate(transcriptText, {});
+                                    if (Object.keys(updates).length > 0) {
+                                      setTelestrokeNote(prev => ({...prev, ...updates}));
+                                    }
+                                  }
                                 }}
-                                className="w-full px-4 py-2 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
+                                className={`${transcriptText ? 'flex-1' : 'w-full'} px-4 py-2 bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition-colors font-medium flex items-center justify-center gap-2 text-sm`}
+                                disabled={!transcriptText}
+                                title="Re-analyze transcript and populate fields"
                               >
-                                <i data-lucide="file-text" className="w-4 h-4"></i>
-                                {copiedText === 'transcript-only' ? 'Copied!' : 'Copy Transcript Only'}
+                                <i data-lucide="sparkles" className="w-4 h-4"></i>
+                                Re-parse Transcript
                               </button>
-                            )}
+                            </div>
                           </div>
                         </div>
                       </div>
