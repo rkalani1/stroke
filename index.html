@@ -556,7 +556,7 @@ Rizwan Kalani MD`));
           });
 
           // ============================================
-          // CONSULTATION TYPE: Telephone, UW Consult, Video Telestroke
+          // CONSULTATION TYPE: Telephone, Video Telestroke
           // ============================================
           const [consultationType, setConsultationType] = useState(loadFromStorage('consultationType', 'videoTelestroke'));
 
@@ -690,203 +690,6 @@ Rizwan Kalani MD`));
             { id: 'PCA-L', name: 'Left Occipital Lobe (PCA Territory)', checked: true, points: 1 },
             { id: 'PCA-R', name: 'Right Occipital Lobe (PCA Territory)', checked: true, points: 1 }
           ]));
-
-          // Voice Transcription State for Telephone Consults
-          const [isTranscribing, setIsTranscribing] = useState(false);
-          const [transcriptText, setTranscriptText] = useState('');
-          const recognitionRef = React.useRef(null);
-
-          // Intelligent transcript parsing function
-          const parseTranscriptAndPopulate = (text, currentNote) => {
-            const updates = {};
-            const lowerText = text.toLowerCase();
-
-            // Parse NIHSS score - look for patterns like "NIHSS is 12", "NIHSS of 5", "NIHSS score 8", "NIHSS 15"
-            const nihssPatterns = [
-              /nihss\s*(?:is|of|score|equals?)?\s*(\d{1,2})/i,
-              /(?:score|scored)\s*(?:a|an)?\s*(\d{1,2})\s*(?:on|for)?\s*(?:the)?\s*nihss/i,
-              /(\d{1,2})\s*(?:on|for)\s*(?:the)?\s*nihss/i
-            ];
-            for (const pattern of nihssPatterns) {
-              const match = text.match(pattern);
-              if (match && parseInt(match[1]) <= 42) {
-                updates.nihss = match[1];
-                break;
-              }
-            }
-
-            // Parse Age and Sex
-            const agePatterns = [
-              /(\d{1,3})\s*[-\s]?(?:year|yr|y\.?o\.?|years?)[\s-]*old/i,
-              /age\s*(?:is|of)?\s*(\d{1,3})/i,
-              /(\d{2,3})\s*(?:year|yr)/i
-            ];
-            for (const pattern of agePatterns) {
-              const match = text.match(pattern);
-              if (match && parseInt(match[1]) >= 18 && parseInt(match[1]) <= 120) {
-                updates.age = match[1];
-                break;
-              }
-            }
-
-            // Parse Sex
-            if (/\b(?:male|man|gentleman|he|his)\b/i.test(text) && !/\bfemale\b/i.test(text)) {
-              updates.sex = 'M';
-            } else if (/\b(?:female|woman|lady|she|her)\b/i.test(text) && !/\bmale\b/i.test(text)) {
-              updates.sex = 'F';
-            }
-
-            // Parse neurological deficits - look for common deficit terms
-            const deficitTerms = [
-              'hemiparesis', 'hemiplegia', 'weakness', 'paralysis',
-              'aphasia', 'dysarthria', 'dysphasia', 'speech difficulty',
-              'facial droop', 'facial weakness', 'facial palsy',
-              'gaze deviation', 'gaze preference', 'eye deviation',
-              'neglect', 'inattention', 'extinction',
-              'ataxia', 'dysmetria', 'coordination',
-              'sensory loss', 'numbness', 'tingling', 'paresthesia',
-              'visual field', 'hemianopia', 'quadrantanopia', 'vision loss',
-              'arm drift', 'leg drift', 'pronator drift',
-              'left sided', 'right sided', 'bilateral',
-              'dense', 'mild', 'moderate', 'severe'
-            ];
-            const foundDeficits = [];
-            const sentences = text.split(/[.!?]+/);
-            for (const sentence of sentences) {
-              const sentenceLower = sentence.toLowerCase();
-              let hasDeficit = false;
-              for (const term of deficitTerms) {
-                if (sentenceLower.includes(term)) {
-                  hasDeficit = true;
-                  break;
-                }
-              }
-              if (hasDeficit && sentence.trim().length > 5 && sentence.trim().length < 200) {
-                // Extract the relevant part mentioning deficits
-                const deficitMatch = sentence.match(/(?:has|with|showing|demonstrates?|presents?\s+with|exam\s+shows?|found|noted?|observed?)?\s*([^.]*(?:weakness|paresis|plegia|aphasia|dysarthria|droop|neglect|drift|numbness|ataxia|gaze|vision|sensory)[^.]*)/i);
-                if (deficitMatch) {
-                  foundDeficits.push(deficitMatch[1].trim());
-                }
-              }
-            }
-            if (foundDeficits.length > 0) {
-              // Combine with existing deficits if any
-              const existingDeficits = currentNote.deficits ? currentNote.deficits.split(/[,;]/).map(d => d.trim()).filter(Boolean) : [];
-              const allDeficits = [...new Set([...existingDeficits, ...foundDeficits])];
-              updates.deficits = allDeficits.slice(0, 5).join(', '); // Limit to 5 items
-            }
-
-            // Parse working diagnosis
-            const diagnosisPatterns = [
-              /(?:diagnosis|dx|impression|assessment)\s*(?:is|of|:)?\s*([^.]+(?:stroke|tia|ischemic|hemorrhagic|mimic|infarct)[^.]*)/i,
-              /(?:this|appears?|looks?|seems?)\s*(?:like|to be)\s*(?:a|an)?\s*([^.]*(?:stroke|tia|ischemic|hemorrhagic|mimic|infarct)[^.]*)/i,
-              /(?:acute|subacute)?\s*(ischemic\s+stroke|hemorrhagic\s+stroke|intracerebral\s+hemorrhage|tia|transient\s+ischemic\s+attack|stroke\s+mimic)/i,
-              /(?:concerning|suspicious|consistent)\s+(?:for|with)\s+([^.]+)/i
-            ];
-            for (const pattern of diagnosisPatterns) {
-              const match = text.match(pattern);
-              if (match) {
-                updates.workingDiagnosis = match[1].trim().substring(0, 100);
-                break;
-              }
-            }
-
-            // Parse imaging findings
-            const imagingPatterns = [
-              /(?:ct|cat\s*scan|cta|ctp|mri|mra|imaging|head\s+ct|brain\s+ct)\s*(?:shows?|demonstrates?|reveals?|indicates?|findings?|is|was|:)\s*([^.]+)/i,
-              /(?:on\s+)?(?:the\s+)?(?:ct|cta|ctp|mri)\s*[:,]?\s*([^.]+(?:no\s+hemorrhage|hemorrhage|infarct|occlusion|stenosis|normal|acute|chronic)[^.]*)/i,
-              /(no\s+(?:acute\s+)?(?:hemorrhage|bleeding|ich|intracranial\s+hemorrhage))/i,
-              /(large\s+vessel\s+occlusion|lvo|m1|m2|ica|basilar|occlusion)/i,
-              /(aspects?\s*(?:score|of)?\s*\d+)/i
-            ];
-            const foundImaging = [];
-            for (const pattern of imagingPatterns) {
-              const match = text.match(pattern);
-              if (match) {
-                foundImaging.push(match[1].trim());
-              }
-            }
-            if (foundImaging.length > 0) {
-              const existingImaging = currentNote.imaging ? currentNote.imaging.split(/[.;]/).map(i => i.trim()).filter(Boolean) : [];
-              const allImaging = [...new Set([...existingImaging, ...foundImaging])];
-              updates.imaging = allImaging.slice(0, 4).join('. ');
-            }
-
-            // Parse recommendations
-            const recommendPatterns = [
-              /(?:i\s+)?(?:recommend|suggest|advise|would\s+recommend|would\s+suggest)\s+(?:that\s+)?([^.]+)/i,
-              /(?:my\s+)?recommendation\s*(?:is|would\s+be)?\s*(?:to|:)?\s*([^.]+)/i,
-              /(?:please|should|need\s+to|going\s+to|will|let's)\s+(give\s+t[np][ak]|administer\s+t[np][ak]|start\s+heparin|call\s+interventional|activate\s+cath|transfer|admit)/i,
-              /(give\s+t[np][ak]|tpa|tnk|tenecteplase|alteplase|thrombolysis)/i,
-              /(thrombectomy|intervention|mechanical\s+thrombectomy|endovascular)/i,
-              /(admit\s+to|transfer\s+to|send\s+to)/i
-            ];
-            const foundRecs = [];
-            for (const pattern of recommendPatterns) {
-              const match = text.match(pattern);
-              if (match) {
-                foundRecs.push(match[1].trim());
-              }
-            }
-            if (foundRecs.length > 0) {
-              const existingRecs = currentNote.recommendationsText ? currentNote.recommendationsText.split(/[.;]/).map(r => r.trim()).filter(Boolean) : [];
-              const allRecs = [...new Set([...existingRecs, ...foundRecs])];
-              updates.recommendationsText = allRecs.join('. ');
-            }
-
-            // Parse brief history - look for history-related phrases
-            const historyPatterns = [
-              /(?:patient|pt|he|she)\s+(?:was|woke\s+up|presented|came\s+in|noticed|developed|had|experienced)\s+([^.]+(?:symptom|weakness|speech|vision|numbness|headache|dizz)[^.]*)/i,
-              /(?:history|hpi|presentation)\s*(?:is|of|:)?\s*([^.]+)/i,
-              /(?:last\s+known\s+well|lkw|onset|started|began)\s+([^.]+)/i,
-              /(?:woke\s+up\s+with|found\s+with|witnessed)\s+([^.]+)/i
-            ];
-            for (const pattern of historyPatterns) {
-              const match = text.match(pattern);
-              if (match && !currentNote.briefHistory) {
-                updates.briefHistory = match[1].trim().substring(0, 300);
-                break;
-              }
-            }
-
-            // Parse calling site - match against known sites
-            const siteNames = [
-              'HMC', 'Harborview', 'UWMC', 'UW Medical Center', 'Northwest',
-              'Astria', 'Sunnyside', 'Cascade', 'Leavenworth', 'Columbia Basin', 'Ephrata',
-              'Confluence', 'Wenatchee', 'Island Health', 'Anacortes', 'Lourdes', 'Pasco',
-              'Mason General', 'Shelton', 'Snoqualmie', 'St. Joseph', 'Lewiston',
-              'PeaceHealth', 'Friday Harbor', 'Ketchikan', 'Bellingham', 'Sedro Woolley',
-              'Petersburg', 'Trios', 'Kennewick'
-            ];
-            if (!currentNote.callingSite) {
-              for (const site of siteNames) {
-                if (lowerText.includes(site.toLowerCase())) {
-                  // Map to the full site name
-                  if (site === 'HMC' || site === 'Harborview') updates.callingSite = 'HMC';
-                  else if (site === 'UWMC' || site === 'UW Medical Center') updates.callingSite = 'UWMC-ML';
-                  else if (site === 'Northwest') updates.callingSite = 'UWM Northwest';
-                  else if (site === 'Sunnyside' || site === 'Astria') updates.callingSite = 'Astria Sunnyside';
-                  else if (site === 'Leavenworth' || site === 'Cascade') updates.callingSite = 'Cascade Medical – Leavenworth';
-                  else if (site === 'Ephrata' || site === 'Columbia Basin') updates.callingSite = 'Columbia Basin-Ephrata';
-                  else if (site === 'Wenatchee' || site === 'Confluence') updates.callingSite = 'Confluence Health – Wenatchee';
-                  else if (site === 'Anacortes' || site === 'Island Health') updates.callingSite = 'Island Health – Anacortes';
-                  else if (site === 'Pasco' || site === 'Lourdes') updates.callingSite = 'Lourdes Health – Pasco';
-                  else if (site === 'Shelton' || site === 'Mason General') updates.callingSite = 'Mason General Hospital – Shelton';
-                  else if (site === 'Snoqualmie') updates.callingSite = 'Snoqualmie Valley – Snoqualmie';
-                  else if (site === 'Lewiston' || site === 'St. Joseph') updates.callingSite = 'St. Joseph Regional Medical Center – Lewiston, Idaho';
-                  else if (site === 'Friday Harbor') updates.callingSite = 'PeaceHealth Island - Friday Harbor';
-                  else if (site === 'Ketchikan') updates.callingSite = 'PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska';
-                  else if (site === 'Bellingham') updates.callingSite = 'PeaceHealth St. Joseph Medical Center – Bellingham';
-                  else if (site === 'Sedro Woolley') updates.callingSite = 'PeaceHealth United General Medical Center – Sedro Woolley';
-                  else if (site === 'Petersburg') updates.callingSite = 'Petersburg, AK';
-                  else if (site === 'Kennewick' || site === 'Trios') updates.callingSite = 'Trios Health – Kennewick';
-                  break;
-                }
-              }
-            }
-
-            return updates;
-          };
 
           // Telestroke Documentation State
           const [telestrokeNote, setTelestrokeNote] = useState(loadFromStorage('telestrokeNote', {
@@ -2128,6 +1931,40 @@ Rizwan Kalani MD`));
           // Trial eligibility state
           const [trialEligibility, setTrialEligibility] = useState({});
 
+          // Selected trial for navigation from Encounter to Trials tab
+          const [selectedTrialId, setSelectedTrialId] = useState(null);
+
+          // Navigate to Trials tab with specific trial selected
+          const navigateToTrial = (trialId) => {
+            const config = TRIAL_ELIGIBILITY_CONFIG[trialId];
+            if (!config) return;
+
+            setSelectedTrialId(trialId);
+            setActiveTab('trials');
+
+            // Create the same slug used in TrialCard from the trial name
+            const trialSlug = config.name.toLowerCase()
+              .replace(/\s+trial$/i, '')
+              .replace(/[^a-z0-9]/g, '-')
+              .replace(/-+/g, '-')
+              .replace(/^-|-$/g, '');
+
+            // Scroll to trial after tab switch
+            setTimeout(() => {
+              const trialElement = document.getElementById(`trial-${trialSlug}`);
+              if (trialElement) {
+                // Open the details element if closed
+                trialElement.open = true;
+                trialElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Add highlight effect
+                trialElement.classList.add('ring-4', 'ring-blue-400', 'ring-opacity-75');
+                setTimeout(() => {
+                  trialElement.classList.remove('ring-4', 'ring-blue-400', 'ring-opacity-75');
+                }, 2000);
+              }
+            }, 150);
+          };
+
           // Toggle trial details
 
           // Create trial card component
@@ -2152,8 +1989,18 @@ Rizwan Kalani MD`));
               }
             };
 
+            // Create a slug-friendly ID from the trial name
+            const trialSlug = trial.name.toLowerCase()
+              .replace(/\s+trial$/i, '')
+              .replace(/[^a-z0-9]/g, '-')
+              .replace(/-+/g, '-')
+              .replace(/^-|-$/g, '');
+
             return (
-              <details className={`bg-white rounded-lg shadow-md overflow-hidden border-2 ${getCategoryBorderColor(category)} hover:shadow-lg transition-shadow`}>
+              <details
+                id={`trial-${trialSlug}`}
+                className={`bg-white rounded-lg shadow-md overflow-hidden border-2 ${getCategoryBorderColor(category)} hover:shadow-lg transition-shadow`}
+              >
                 <summary className={`${getCategoryColor(category)} p-4 cursor-pointer list-none`}>
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
@@ -4842,17 +4689,6 @@ TO DO:
                           Telephone
                         </button>
                         <button
-                          onClick={() => setConsultationType('uwConsult')}
-                          className={`flex-1 min-w-[120px] px-4 py-3 rounded-lg font-medium transition-all ${
-                            consultationType === 'uwConsult'
-                              ? 'bg-purple-600 text-white shadow-md'
-                              : 'bg-white text-slate-700 border border-slate-300 hover:bg-purple-50 hover:border-purple-300'
-                          }`}
-                        >
-                          <i data-lucide="building-2" className="w-4 h-4 inline mr-2"></i>
-                          UW Consult
-                        </button>
-                        <button
                           onClick={() => setConsultationType('videoTelestroke')}
                           className={`flex-1 min-w-[120px] px-4 py-3 rounded-lg font-medium transition-all ${
                             consultationType === 'videoTelestroke'
@@ -4868,9 +4704,6 @@ TO DO:
                       <div className="mt-3 text-sm text-slate-600">
                         {consultationType === 'telephone' && (
                           <span><strong>Telephone Consult:</strong> Brief phone consultation - minimal documentation</span>
-                        )}
-                        {consultationType === 'uwConsult' && (
-                          <span><strong>UW Inpatient Consult:</strong> Secondary prevention focus, stroke workup checklist</span>
                         )}
                         {consultationType === 'videoTelestroke' && (
                           <span><strong>Video Telestroke:</strong> Full acute stroke evaluation with complete documentation</span>
@@ -4922,8 +4755,63 @@ TO DO:
                     </div>
                     )}
 
-                    {/* Last Known Well Input - Show for Video Telestroke and UW Consult */}
-                    {(consultationType === 'videoTelestroke' || consultationType === 'uwConsult') && (
+                    {/* Calling Site Dropdown - Show for Video Telestroke */}
+                    {consultationType === 'videoTelestroke' && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <label className="block text-sm font-medium text-blue-900 mb-1">
+                        <i data-lucide="map-pin" className="w-4 h-4 inline mr-1"></i>
+                        Calling Site
+                      </label>
+                      <select
+                        value={telestrokeNote.callingSite}
+                        onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSite: e.target.value, callingSiteOther: e.target.value === 'Other' ? telestrokeNote.callingSiteOther : ''})}
+                        className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">-- Select Site --</option>
+                        <optgroup label="UW Sites">
+                          <option value="HMC">HMC</option>
+                          <option value="UWMC-ML">UWMC-ML</option>
+                          <option value="UWM Northwest">UWM Northwest</option>
+                        </optgroup>
+                        <optgroup label="Video Partner Sites">
+                          <option value="Astria Sunnyside">Astria Sunnyside</option>
+                          <option value="Cascade Medical – Leavenworth">Cascade Medical – Leavenworth</option>
+                          <option value="Columbia Basin-Ephrata">Columbia Basin-Ephrata</option>
+                          <option value="Confluence Health – Wenatchee">Confluence Health – Wenatchee</option>
+                          <option value="Island Health – Anacortes">Island Health – Anacortes</option>
+                          <option value="Lourdes Health – Pasco">Lourdes Health – Pasco</option>
+                          <option value="Mason General Hospital – Shelton">Mason General Hospital – Shelton</option>
+                          <option value="Snoqualmie Valley – Snoqualmie">Snoqualmie Valley – Snoqualmie</option>
+                          <option value="St. Joseph Regional Medical Center – Lewiston, Idaho">St. Joseph Regional Medical Center – Lewiston, Idaho</option>
+                        </optgroup>
+                        <optgroup label="PeaceHealth Sites">
+                          <option value="PeaceHealth Island - Friday Harbor">PeaceHealth Island - Friday Harbor</option>
+                          <option value="PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska">PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska</option>
+                          <option value="PeaceHealth St. Joseph Medical Center – Bellingham">PeaceHealth St. Joseph Medical Center – Bellingham</option>
+                          <option value="PeaceHealth United General Medical Center – Sedro Woolley">PeaceHealth United General Medical Center – Sedro Woolley</option>
+                        </optgroup>
+                        <optgroup label="Alaska Sites">
+                          <option value="Petersburg, AK">Petersburg, AK</option>
+                        </optgroup>
+                        <optgroup label="Tri-Cities">
+                          <option value="Trios Health – Kennewick">Trios Health – Kennewick</option>
+                        </optgroup>
+                        <option value="Other">Other (specify below)</option>
+                      </select>
+                      {telestrokeNote.callingSite === 'Other' && (
+                        <input
+                          type="text"
+                          value={telestrokeNote.callingSiteOther}
+                          onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSiteOther: e.target.value})}
+                          className="w-full mt-2 px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          placeholder="Enter site name..."
+                        />
+                      )}
+                    </div>
+                    )}
+
+                    {/* Last Known Well Input - Show for Video Telestroke */}
+                    {consultationType === 'videoTelestroke' && (
                     <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
                       <label className="block font-semibold text-blue-900 mb-2">
                         <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
@@ -5291,111 +5179,6 @@ TO DO:
                             )}
                           </div>
 
-                          {/* Voice Transcription Button */}
-                          <div className="mb-4">
-                            <button
-                              onClick={() => {
-                                if (isTranscribing) {
-                                  // Stop transcription
-                                  if (recognitionRef.current) {
-                                    recognitionRef.current.stop();
-                                  }
-                                  setIsTranscribing(false);
-                                } else {
-                                  // Start transcription
-                                  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                                    alert('Voice transcription is not supported in this browser. Please use Chrome or Edge.');
-                                    return;
-                                  }
-                                  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                                  const recognition = new SpeechRecognition();
-                                  recognition.continuous = true;
-                                  recognition.interimResults = true;
-                                  recognition.lang = 'en-US';
-
-                                  let finalTranscript = transcriptText;
-
-                                  recognition.onresult = (event) => {
-                                    let interimTranscript = '';
-                                    for (let i = event.resultIndex; i < event.results.length; i++) {
-                                      const transcript = event.results[i][0].transcript;
-                                      if (event.results[i].isFinal) {
-                                        finalTranscript += transcript + ' ';
-                                        setTranscriptText(finalTranscript);
-
-                                        // Parse the new transcript and auto-populate fields
-                                        const updates = parseTranscriptAndPopulate(finalTranscript, telestrokeNote);
-                                        if (Object.keys(updates).length > 0) {
-                                          setTelestrokeNote(prev => ({...prev, ...updates}));
-                                        }
-                                      } else {
-                                        interimTranscript += transcript;
-                                      }
-                                    }
-                                  };
-
-                                  recognition.onerror = (event) => {
-                                    console.error('Speech recognition error:', event.error);
-                                    if (event.error !== 'no-speech') {
-                                      setIsTranscribing(false);
-                                    }
-                                  };
-
-                                  recognition.onend = () => {
-                                    // Auto-restart if still transcribing (handles browser timeout)
-                                    if (isTranscribing) {
-                                      recognition.start();
-                                    }
-                                  };
-
-                                  recognitionRef.current = recognition;
-                                  recognition.start();
-                                  setIsTranscribing(true);
-                                }
-                              }}
-                              className={`w-full px-4 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${
-                                isTranscribing
-                                  ? 'bg-red-600 text-white hover:bg-red-700 animate-pulse'
-                                  : 'bg-blue-600 text-white hover:bg-blue-700'
-                              }`}
-                            >
-                              <i data-lucide={isTranscribing ? 'mic-off' : 'mic'} className="w-5 h-5"></i>
-                              {isTranscribing ? '🔴 Recording... Click to Stop' : '🎙️ Start Voice Transcription'}
-                            </button>
-                            {isTranscribing && (
-                              <div className="mt-2 text-xs text-gray-600 bg-gray-100 rounded-lg p-2">
-                                <span className="font-medium">🤖 Auto-detecting:</span> Age, sex, NIHSS, deficits, diagnosis, imaging, recommendations, site name
-                              </div>
-                            )}
-                            {transcriptText && (
-                              <details className="mt-3">
-                                <summary className="cursor-pointer text-sm font-medium text-gray-700 flex items-center justify-between">
-                                  <span>📝 Raw Transcript ({transcriptText.split(' ').length} words)</span>
-                                  <button
-                                    onClick={(e) => { e.preventDefault(); setTranscriptText(''); }}
-                                    className="text-xs text-red-600 hover:text-red-800 ml-2"
-                                  >
-                                    Clear
-                                  </button>
-                                </summary>
-                                <textarea
-                                  value={transcriptText}
-                                  onChange={(e) => {
-                                    setTranscriptText(e.target.value);
-                                    // Re-parse on manual edit
-                                    const updates = parseTranscriptAndPopulate(e.target.value, telestrokeNote);
-                                    if (Object.keys(updates).length > 0) {
-                                      setTelestrokeNote(prev => ({...prev, ...updates}));
-                                    }
-                                  }}
-                                  rows="3"
-                                  className="w-full mt-2 px-3 py-2 border border-blue-300 rounded-lg bg-blue-50 focus:ring-2 focus:ring-blue-500 text-xs"
-                                  placeholder="Transcript will appear here..."
-                                />
-                              </details>
-                            )}
-                          </div>
-
                           <div className="border-t border-amber-200 pt-4"></div>
 
                           {/* Patient Demographics */}
@@ -5519,38 +5302,6 @@ TO DO:
                               <i data-lucide="copy" className="w-4 h-4"></i>
                               {copiedText === 'telephone-note' ? 'Copied!' : 'Copy Telephone Note'}
                             </button>
-                            <div className="flex gap-2">
-                              {transcriptText && (
-                                <button
-                                  onClick={() => {
-                                    navigator.clipboard.writeText(transcriptText);
-                                    setCopiedText('transcript-only');
-                                    setTimeout(() => setCopiedText(''), 2000);
-                                  }}
-                                  className="flex-1 px-4 py-2 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
-                                >
-                                  <i data-lucide="file-text" className="w-4 h-4"></i>
-                                  {copiedText === 'transcript-only' ? 'Copied!' : 'Copy Raw Transcript'}
-                                </button>
-                              )}
-                              <button
-                                onClick={() => {
-                                  // Re-parse transcript to populate fields
-                                  if (transcriptText) {
-                                    const updates = parseTranscriptAndPopulate(transcriptText, {});
-                                    if (Object.keys(updates).length > 0) {
-                                      setTelestrokeNote(prev => ({...prev, ...updates}));
-                                    }
-                                  }
-                                }}
-                                className={`${transcriptText ? 'flex-1' : 'w-full'} px-4 py-2 bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition-colors font-medium flex items-center justify-center gap-2 text-sm`}
-                                disabled={!transcriptText}
-                                title="Re-analyze transcript and populate fields"
-                              >
-                                <i data-lucide="sparkles" className="w-4 h-4"></i>
-                                Re-parse Transcript
-                              </button>
-                            </div>
                           </div>
                         </div>
                       </div>
@@ -5559,7 +5310,7 @@ TO DO:
                     {/* ============================================ */}
                     {/* FULL ENCOUNTER FORM - Video Telestroke & UW Consult */}
                     {/* ============================================ */}
-                    {(consultationType === 'videoTelestroke' || consultationType === 'uwConsult') && (
+                    {consultationType === 'videoTelestroke' && (
                     <>
                     {/* Two-Column Layout: Desktop/Tablet | Single Column: Mobile */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -7935,7 +7686,16 @@ Rizwan Kalani MD`);
                                               )}
 
                                               {/* Quick Actions */}
-                                              <div className="mt-3 flex gap-2">
+                                              <div className="mt-3 flex flex-wrap gap-2">
+                                                <button
+                                                  onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    navigateToTrial(trialId);
+                                                  }}
+                                                  className="text-xs bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700 font-medium transition-colors"
+                                                >
+                                                  View in Trials Tab →
+                                                </button>
                                                 {config.nct && (
                                                   <a
                                                     href={`https://clinicaltrials.gov/study/${config.nct}`}
@@ -7943,7 +7703,7 @@ Rizwan Kalani MD`);
                                                     rel="noopener noreferrer"
                                                     className="text-xs text-indigo-600 hover:underline font-medium"
                                                   >
-                                                    View on ClinicalTrials.gov →
+                                                    ClinicalTrials.gov →
                                                   </a>
                                                 )}
                                               </div>
@@ -10878,9 +10638,87 @@ Rizwan Kalani MD`);
                 {/* ============================================ */}
                 {activeTab === 'trials' && (
                   <div className="space-y-6">
-                    {/* Header Section */}
-                    <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-lg shadow-lg">
-                      <h1 className="text-3xl font-bold">Stroke Trials and Studies</h1>
+                    {/* Header Section with Patient Summary */}
+                    <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-6 rounded-lg shadow-lg">
+                      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                        <div>
+                          <h1 className="text-3xl font-bold flex items-center gap-3">
+                            🔬 Clinical Trials
+                          </h1>
+                          <p className="text-blue-100 mt-1">Active trials your patient may qualify for</p>
+                        </div>
+
+                        {/* Patient Summary Bar */}
+                        {telestrokeNote.age && (
+                          <div className="bg-white bg-opacity-15 backdrop-blur-sm rounded-lg px-4 py-3">
+                            <div className="flex flex-wrap items-center gap-3 text-sm">
+                              <span className="flex items-center gap-1">
+                                <i data-lucide="user" className="w-4 h-4"></i>
+                                <strong>{telestrokeNote.age}{telestrokeNote.sex || '?'}</strong>
+                              </span>
+                              <span className="text-white text-opacity-50">|</span>
+                              <span className="flex items-center gap-1">
+                                <span className="font-medium">NIHSS:</span>
+                                <strong className={`px-2 py-0.5 rounded ${
+                                  parseInt(telestrokeNote.nihss || nihssScore) >= 10 ? 'bg-red-500' :
+                                  parseInt(telestrokeNote.nihss || nihssScore) >= 5 ? 'bg-yellow-500' :
+                                  'bg-green-500'
+                                }`}>
+                                  {telestrokeNote.nihss || nihssScore || '?'}
+                                </strong>
+                              </span>
+                              <span className="text-white text-opacity-50">|</span>
+                              <span className="flex items-center gap-1">
+                                <i data-lucide="clock" className="w-4 h-4"></i>
+                                <strong>{(() => {
+                                  const tf = calculateTimeFromLKW();
+                                  return tf ? `${tf.hours}h ${tf.minutes}m` : 'LKW not set';
+                                })()}</strong>
+                                <span className="text-xs text-white text-opacity-70">from LKW</span>
+                              </span>
+                              {telestrokeNote.vesselOcclusion?.length > 0 && (
+                                <>
+                                  <span className="text-white text-opacity-50">|</span>
+                                  <span className="flex items-center gap-1">
+                                    <span className="font-medium">Occlusion:</span>
+                                    <strong>{telestrokeNote.vesselOcclusion.join(', ')}</strong>
+                                  </span>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Eligibility Summary Stats */}
+                      {telestrokeNote.age && Object.keys(trialEligibility).length > 0 && (
+                        <div className="mt-4 pt-4 border-t border-white border-opacity-20 flex flex-wrap gap-4">
+                          {(() => {
+                            const eligibleCount = Object.values(trialEligibility).filter(t => t?.status === 'eligible').length;
+                            const needsInfoCount = Object.values(trialEligibility).filter(t => t?.status === 'needs_info').length;
+                            const notEligibleCount = Object.values(trialEligibility).filter(t => t?.status === 'not_eligible').length;
+                            return (
+                              <>
+                                <div className="flex items-center gap-2 bg-green-500 bg-opacity-30 px-3 py-1.5 rounded-full">
+                                  <span className="w-3 h-3 bg-green-400 rounded-full"></span>
+                                  <span className="font-semibold">{eligibleCount}</span>
+                                  <span className="text-green-100">Potentially Eligible</span>
+                                </div>
+                                <div className="flex items-center gap-2 bg-yellow-500 bg-opacity-30 px-3 py-1.5 rounded-full">
+                                  <span className="w-3 h-3 bg-yellow-400 rounded-full"></span>
+                                  <span className="font-semibold">{needsInfoCount}</span>
+                                  <span className="text-yellow-100">Needs More Info</span>
+                                </div>
+                                <div className="flex items-center gap-2 bg-gray-500 bg-opacity-30 px-3 py-1.5 rounded-full">
+                                  <span className="w-3 h-3 bg-gray-400 rounded-full"></span>
+                                  <span className="font-semibold">{notEligibleCount}</span>
+                                  <span className="text-gray-100">Not Eligible</span>
+                                </div>
+                              </>
+                            );
+                          })()}
+                        </div>
+                      )}
                     </div>
 
                     {/* ============================================ */}
@@ -10891,14 +10729,9 @@ Rizwan Kalani MD`);
                       <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border-2 border-indigo-300 rounded-lg p-4 shadow-md">
                         <div className="flex items-center justify-between mb-3">
                           <h2 className="text-lg font-bold text-indigo-900 flex items-center gap-2">
-                            🔬 Current Patient Trial Eligibility
+                            📋 Eligibility Details by Trial
                           </h2>
-                          <div className="text-sm text-indigo-700">
-                            {telestrokeNote.age}{telestrokeNote.sex || '?'} | NIHSS {telestrokeNote.nihss || nihssScore || '?'} | {(() => {
-                              const tf = calculateTimeFromLKW();
-                              return tf ? `${tf.hours}h ${tf.minutes}m from LKW` : 'LKW not set';
-                            })()}
-                          </div>
+                          <span className="text-sm text-indigo-600">Click a trial for full criteria</span>
                         </div>
 
                         {/* Eligibility Grid */}
