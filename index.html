@@ -5139,95 +5139,90 @@ TO DO:
                           </div>
                         </div>
 
-                        {/* Section 1: Calling Site + LKW */}
-                        <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-4 shadow-md">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {/* Calling Site */}
-                            <div>
-                              <label className="block text-sm font-medium text-amber-900 mb-1">
-                                <i data-lucide="map-pin" className="w-4 h-4 inline mr-1"></i>
-                                Calling Site
-                              </label>
-                              <select
-                                value={telestrokeNote.callingSite}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSite: e.target.value, callingSiteOther: e.target.value === 'Other' ? telestrokeNote.callingSiteOther : ''})}
-                                className="w-full px-3 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                              >
-                                <option value="">-- Select Site --</option>
-                                <optgroup label="UW Sites">
-                                  <option value="HMC">HMC</option>
-                                  <option value="UWMC-ML">UWMC-ML</option>
-                                  <option value="UWM Northwest">UWM Northwest</option>
-                                </optgroup>
-                                <optgroup label="Partner Sites">
-                                  <option value="Astria Sunnyside">Astria Sunnyside</option>
-                                  <option value="Cascade Medical – Leavenworth">Cascade Medical – Leavenworth</option>
-                                  <option value="Columbia Basin-Ephrata">Columbia Basin-Ephrata</option>
-                                  <option value="Confluence Health – Wenatchee">Confluence Health – Wenatchee</option>
-                                  <option value="Island Health – Anacortes">Island Health – Anacortes</option>
-                                  <option value="Lourdes Health – Pasco">Lourdes Health – Pasco</option>
-                                  <option value="Mason General Hospital – Shelton">Mason General Hospital – Shelton</option>
-                                  <option value="Snoqualmie Valley – Snoqualmie">Snoqualmie Valley – Snoqualmie</option>
-                                  <option value="St. Joseph Regional Medical Center – Lewiston, Idaho">St. Joseph Regional Medical Center – Lewiston, Idaho</option>
-                                  <option value="PeaceHealth Island - Friday Harbor">PeaceHealth Island - Friday Harbor</option>
-                                  <option value="PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska">PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska</option>
-                                  <option value="PeaceHealth St. Joseph Medical Center – Bellingham">PeaceHealth St. Joseph Medical Center – Bellingham</option>
-                                  <option value="PeaceHealth United General Medical Center – Sedro Woolley">PeaceHealth United General Medical Center – Sedro Woolley</option>
-                                  <option value="Petersburg, AK">Petersburg, AK</option>
-                                  <option value="Trios Health – Kennewick">Trios Health – Kennewick</option>
-                                </optgroup>
-                                <option value="Other">Other (specify below)</option>
-                              </select>
-                              {telestrokeNote.callingSite === 'Other' && (
-                                <input
-                                  type="text"
-                                  value={telestrokeNote.callingSiteOther}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSiteOther: e.target.value})}
-                                  className="w-full mt-2 px-3 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                                  placeholder="Enter site name..."
-                                />
-                              )}
-                            </div>
+                        {/* Section 1a: Calling Site */}
+                        <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4 shadow-md">
+                          <label className="block text-sm font-medium text-blue-900 mb-1">
+                            <i data-lucide="map-pin" className="w-4 h-4 inline mr-1"></i>
+                            Calling Site
+                          </label>
+                          <select
+                            value={telestrokeNote.callingSite}
+                            onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSite: e.target.value, callingSiteOther: e.target.value === 'Other' ? telestrokeNote.callingSiteOther : ''})}
+                            className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          >
+                            <option value="">-- Select Site --</option>
+                            <optgroup label="UW Sites">
+                              <option value="HMC">HMC</option>
+                              <option value="UWMC-ML">UWMC-ML</option>
+                              <option value="UWM Northwest">UWM Northwest</option>
+                            </optgroup>
+                            <optgroup label="Partner Sites">
+                              <option value="Astria Sunnyside">Astria Sunnyside</option>
+                              <option value="Cascade Medical – Leavenworth">Cascade Medical – Leavenworth</option>
+                              <option value="Columbia Basin-Ephrata">Columbia Basin-Ephrata</option>
+                              <option value="Confluence Health – Wenatchee">Confluence Health – Wenatchee</option>
+                              <option value="Island Health – Anacortes">Island Health – Anacortes</option>
+                              <option value="Lourdes Health – Pasco">Lourdes Health – Pasco</option>
+                              <option value="Mason General Hospital – Shelton">Mason General Hospital – Shelton</option>
+                              <option value="Snoqualmie Valley – Snoqualmie">Snoqualmie Valley – Snoqualmie</option>
+                              <option value="St. Joseph Regional Medical Center – Lewiston, Idaho">St. Joseph Regional Medical Center – Lewiston, Idaho</option>
+                              <option value="PeaceHealth Island - Friday Harbor">PeaceHealth Island - Friday Harbor</option>
+                              <option value="PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska">PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska</option>
+                              <option value="PeaceHealth St. Joseph Medical Center – Bellingham">PeaceHealth St. Joseph Medical Center – Bellingham</option>
+                              <option value="PeaceHealth United General Medical Center – Sedro Woolley">PeaceHealth United General Medical Center – Sedro Woolley</option>
+                              <option value="Petersburg, AK">Petersburg, AK</option>
+                              <option value="Trios Health – Kennewick">Trios Health – Kennewick</option>
+                            </optgroup>
+                            <option value="Other">Other (specify below)</option>
+                          </select>
+                          {telestrokeNote.callingSite === 'Other' && (
+                            <input
+                              type="text"
+                              value={telestrokeNote.callingSiteOther}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSiteOther: e.target.value})}
+                              className="w-full mt-2 px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                              placeholder="Enter site name..."
+                            />
+                          )}
+                        </div>
 
-                            {/* LKW Time */}
-                            <div>
-                              <label className="block text-sm font-medium text-amber-900 mb-1">
-                                <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
-                                Last Known Well
-                              </label>
-                              <div className="grid grid-cols-2 gap-2">
-                                <input
-                                  type="date"
-                                  value={lkwTime ? `${lkwTime.getFullYear()}-${String(lkwTime.getMonth() + 1).padStart(2, '0')}-${String(lkwTime.getDate()).padStart(2, '0')}` : ''}
-                                  onChange={(e) => {
-                                    if (e.target.value) {
-                                      // Parse as local date to avoid timezone issues
-                                      const [year, month, day] = e.target.value.split('-').map(Number);
-                                      const newDate = new Date(year, month - 1, day); // month is 0-indexed
-                                      if (lkwTime) {
-                                        newDate.setHours(lkwTime.getHours(), lkwTime.getMinutes());
-                                      }
-                                      setLkwTime(newDate);
-                                    }
-                                  }}
-                                  max={`${currentTime.getFullYear()}-${String(currentTime.getMonth() + 1).padStart(2, '0')}-${String(currentTime.getDate()).padStart(2, '0')}`}
-                                  className="w-full px-2 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                                />
-                                <input
-                                  type="time"
-                                  value={lkwTime ? lkwTime.toTimeString().slice(0, 5) : ''}
-                                  onChange={(e) => {
-                                    if (e.target.value) {
-                                      const [hours, minutes] = e.target.value.split(':');
-                                      const newDate = lkwTime ? new Date(lkwTime) : new Date();
-                                      newDate.setHours(parseInt(hours), parseInt(minutes));
-                                      setLkwTime(newDate);
-                                    }
-                                  }}
-                                  className="w-full px-2 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                                />
-                              </div>
-                            </div>
+                        {/* Section 1b: Last Known Well */}
+                        <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-4 shadow-md">
+                          <label className="block text-sm font-medium text-amber-900 mb-1">
+                            <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
+                            Last Known Well
+                          </label>
+                          <div className="grid grid-cols-2 gap-2">
+                            <input
+                              type="date"
+                              value={lkwTime ? `${lkwTime.getFullYear()}-${String(lkwTime.getMonth() + 1).padStart(2, '0')}-${String(lkwTime.getDate()).padStart(2, '0')}` : ''}
+                              onChange={(e) => {
+                                if (e.target.value) {
+                                  // Parse as local date to avoid timezone issues
+                                  const [year, month, day] = e.target.value.split('-').map(Number);
+                                  const newDate = new Date(year, month - 1, day); // month is 0-indexed
+                                  if (lkwTime) {
+                                    newDate.setHours(lkwTime.getHours(), lkwTime.getMinutes());
+                                  }
+                                  setLkwTime(newDate);
+                                }
+                              }}
+                              max={`${currentTime.getFullYear()}-${String(currentTime.getMonth() + 1).padStart(2, '0')}-${String(currentTime.getDate()).padStart(2, '0')}`}
+                              className="w-full px-2 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500"
+                            />
+                            <input
+                              type="time"
+                              value={lkwTime ? lkwTime.toTimeString().slice(0, 5) : ''}
+                              onChange={(e) => {
+                                if (e.target.value) {
+                                  const [hours, minutes] = e.target.value.split(':');
+                                  const newDate = lkwTime ? new Date(lkwTime) : new Date();
+                                  newDate.setHours(parseInt(hours), parseInt(minutes));
+                                  setLkwTime(newDate);
+                                }
+                              }}
+                              className="w-full px-2 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500"
+                            />
                           </div>
                         </div>
 
@@ -5604,6 +5599,8 @@ TO DO:
                                 <li>• <strong>TESTED</strong> – EVT in pre-existing disability (mRS 3-4)</li>
                                 <li>• <strong>VERIFY</strong> – TMS/MRI to predict motor recovery</li>
                                 <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-stroke</li>
+                                <li>• <strong>ESUS Imaging</strong> – Cardiac/vessel wall MRI for ESUS</li>
+                                <li>• <strong>MOCHA Imaging</strong> – Intracranial vessel-wall analysis for ICAD</li>
                               </ul>
                             </div>
                           )}
@@ -5614,7 +5611,9 @@ TO DO:
                                 <li>• <strong>FASTEST</strong> – rFVIIa within 2h for hematoma expansion</li>
                                 <li>• <strong>SATURN</strong> – Statin continuation vs stop after lobar ICH</li>
                                 <li>• <strong>ASPIRE</strong> – Apixaban vs aspirin post-ICH with AF</li>
-                                <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-stroke</li>
+                                <li>• <strong>cAPPricorn-1</strong> – Intrathecal mivelsiran for CAA</li>
+                                <li>• <strong>MIRROR Registry</strong> – Minimally invasive ICH evacuation</li>
+                                <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-ICH</li>
                               </ul>
                             </div>
                           )}
@@ -6829,6 +6828,8 @@ TO DO:
                                     <li>• <strong>TESTED</strong> – EVT in pre-existing disability (mRS 3-4)</li>
                                     <li>• <strong>VERIFY</strong> – TMS/MRI to predict motor recovery</li>
                                     <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-stroke</li>
+                                    <li>• <strong>ESUS Imaging</strong> – Cardiac/vessel wall MRI for ESUS</li>
+                                    <li>• <strong>MOCHA Imaging</strong> – Intracranial vessel-wall analysis for ICAD</li>
                                   </ul>
                                 </div>
                               )}
@@ -6839,7 +6840,9 @@ TO DO:
                                     <li>• <strong>FASTEST</strong> – rFVIIa within 2h for hematoma expansion</li>
                                     <li>• <strong>SATURN</strong> – Statin continuation vs stop after lobar ICH</li>
                                     <li>• <strong>ASPIRE</strong> – Apixaban vs aspirin post-ICH with AF</li>
-                                    <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-stroke</li>
+                                    <li>• <strong>cAPPricorn-1</strong> – Intrathecal mivelsiran for CAA</li>
+                                    <li>• <strong>MIRROR Registry</strong> – Minimally invasive ICH evacuation</li>
+                                    <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-ICH</li>
                                   </ul>
                                 </div>
                               )}
@@ -8192,6 +8195,109 @@ Rizwan Kalani MD`);
                             </div>
                           );
                         })()}
+
+                        {/* ============================================ */}
+                        {/* DETAILED CLINICAL TRIAL INFORMATION         */}
+                        {/* Expanded descriptions for Video Telestroke  */}
+                        {/* ============================================ */}
+                        {consultationType === 'videoTelestroke' && telestrokeNote.diagnosisCategory && (
+                          <details className="bg-white border-2 border-indigo-200 rounded-lg shadow-md overflow-hidden">
+                            <summary className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white p-3 cursor-pointer hover:from-indigo-600 hover:to-purple-600 transition-colors">
+                              <span className="font-bold text-sm flex items-center gap-2">
+                                🔬 Clinical Trial Details
+                                <span className="text-xs opacity-75">(click to expand full descriptions)</span>
+                              </span>
+                            </summary>
+
+                            <div className="p-4 space-y-4 max-h-96 overflow-y-auto">
+                              {telestrokeNote.diagnosisCategory === 'ischemic' && (
+                                <div className="space-y-3">
+                                  <h4 className="font-bold text-indigo-800 border-b pb-2">Active Ischemic Stroke Trials</h4>
+
+                                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                                    <p className="font-semibold text-blue-800">SISTER Trial (NCT05948566)</p>
+                                    <p className="text-sm text-gray-700">TS23 (monoclonal antibody to α2-antiplasmin) for late thrombolysis in acute ischemic stroke patients presenting 4.5-24 hours from last known well. Anterior circulation, NIHSS ≥4, favorable perfusion imaging (mismatch ratio &gt;1.2, core &lt;70cc). No IV thrombolysis or EVT with clot engagement.</p>
+                                  </div>
+
+                                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                                    <p className="font-semibold text-blue-800">STEP-EVT Trial (NCT06289985)</p>
+                                    <p className="text-sm text-gray-700">NIH StrokeNet adaptive platform trial optimizing endovascular therapy for mild stroke (NIHSS 0-5 with LVO) and medium/distal vessel occlusions (M2, M3, A1-A3, P1-P3). Within 24 hours, pre-stroke mRS ≤2.</p>
+                                  </div>
+
+                                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                                    <p className="font-semibold text-blue-800">PICASSO Trial (NCT05611242)</p>
+                                    <p className="text-sm text-gray-700">Mechanical thrombectomy with vs without acute carotid stenting for tandem lesions. Age 18-79, tandem lesion (carotid stenosis 70-100% + intracranial LVO), within 16 hours, NIHSS ≥4, ASPECTS ≥7.</p>
+                                  </div>
+
+                                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                                    <p className="font-semibold text-blue-800">TESTED Trial (NCT05911568)</p>
+                                    <p className="text-sm text-gray-700">EVT vs medical therapy in LVO patients with pre-existing disability (mRS 3-4 for ≥3 months). Within 24 hours, NIHSS ≥6, ASPECTS ≥3. Includes ICA terminus, M1, dominant M2.</p>
+                                  </div>
+
+                                  <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+                                    <p className="font-semibold text-green-800">VERIFY Study (NCT05338697) - Observational</p>
+                                    <p className="text-sm text-gray-700">Early TMS/MRI/clinical measures to predict upper extremity motor recovery. Acute ischemic stroke within 7 days with upper extremity weakness. Pre-stroke mRS ≤2. Inpatient enrollment opportunity.</p>
+                                  </div>
+
+                                  <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+                                    <p className="font-semibold text-green-800">DISCOVERY Study (NCT04916210) - Observational</p>
+                                    <p className="text-sm text-gray-700">Cognitive trajectories and biomarkers after stroke (includes AIS/ICH/SAH). Baseline visit within 6 weeks, fluent in English/Spanish, needs study partner with regular contact.</p>
+                                  </div>
+
+                                  <div className="bg-purple-50 p-3 rounded-lg border border-purple-200">
+                                    <p className="font-semibold text-purple-800">ESUS Imaging Study (NCT03820375) - Observational</p>
+                                    <p className="text-sm text-gray-700">Cardiac and intracranial vessel wall MRI to reclassify ESUS. Within 30 days of index stroke, age ≥18, ESUS diagnosis. Helps identify occult cardioembolic or atherosclerotic sources.</p>
+                                  </div>
+
+                                  <div className="bg-purple-50 p-3 rounded-lg border border-purple-200">
+                                    <p className="font-semibold text-purple-800">MOCHA Imaging (PMC8821414) - Observational</p>
+                                    <p className="text-sm text-gray-700">Automated intracranial vessel-wall analysis for non-stenotic ICAD detection. Patients with atherosclerotic risk factors (age &gt;50/60, HTN, DM, hyperlipidemia, obesity, smoking). High-resolution MRI vessel wall imaging required.</p>
+                                  </div>
+                                </div>
+                              )}
+
+                              {telestrokeNote.diagnosisCategory === 'ich' && (
+                                <div className="space-y-3">
+                                  <h4 className="font-bold text-red-800 border-b pb-2">Active ICH Trials</h4>
+
+                                  <div className="bg-red-50 p-3 rounded-lg border border-red-200">
+                                    <p className="font-semibold text-red-800">FASTEST Trial (NCT03496883)</p>
+                                    <p className="text-sm text-gray-700">Recombinant Factor VIIa (rFVIIa) for acute ICH within 2 HOURS of symptom onset to prevent hematoma expansion. Age 18-80, hematoma volume 2-60 mL, IVH score ≤7, GCS ≥8, not on anticoagulation. Very narrow time window.</p>
+                                  </div>
+
+                                  <div className="bg-red-50 p-3 rounded-lg border border-red-200">
+                                    <p className="font-semibold text-red-800">SATURN Trial (NCT03936361)</p>
+                                    <p className="text-sm text-gray-700">Statin continuation vs discontinuation after LOBAR ICH. Age ≥50, must already be on statin therapy at ICH onset. Randomization within 7 days. Excludes deep/basal ganglia ICH, recent MI.</p>
+                                  </div>
+
+                                  <div className="bg-red-50 p-3 rounded-lg border border-red-200">
+                                    <p className="font-semibold text-red-800">ASPIRE Trial (NCT03907046)</p>
+                                    <p className="text-sm text-gray-700">Apixaban vs aspirin for stroke prevention after ICH in patients with atrial fibrillation. Randomization 14-180 days post-ICH, CHA2DS2-VASc ≥2, mRS ≤4. Excludes mechanical valves, recent DVT/PE.</p>
+                                  </div>
+
+                                  <div className="bg-orange-50 p-3 rounded-lg border border-orange-200">
+                                    <p className="font-semibold text-orange-800">cAPPricorn-1 Trial (NCT06393712)</p>
+                                    <p className="text-sm text-gray-700">Intrathecal ALN-APP (mivelsiran) for cerebral amyloid angiopathy. Sporadic CAA (age ≥50, Boston Criteria v2.0) or Dutch-type hereditary CAA (age ≥30, E693Q APP variant). Prior symptomatic lobar ICH ≥90 days ago. Requires lumbar punctures.</p>
+                                  </div>
+
+                                  <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+                                    <p className="font-semibold text-green-800">MIRROR Registry (NCT04494295) - Observational</p>
+                                    <p className="text-sm text-gray-700">Minimally invasive endoscopic ICH evacuation using Aurora Surgiscope System. Spontaneous supratentorial ICH ≥20mL, surgery within 24 hours, NIHSS &gt;5, baseline mRS ≤2, GCS ≥5.</p>
+                                  </div>
+
+                                  <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+                                    <p className="font-semibold text-green-800">DISCOVERY Study - ICH Cohort (NCT04916210) - Observational</p>
+                                    <p className="text-sm text-gray-700">Cognitive trajectories and biomarkers after ICH. Baseline visit within 6 weeks, fluent in English/Spanish, needs study partner with regular contact. Expected survival ≥1 year.</p>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+
+                            <div className="bg-indigo-50 p-2 text-center border-t border-indigo-200">
+                              <p className="text-xs text-indigo-700">For full eligibility criteria, visit the Trials tab or ClinicalTrials.gov</p>
+                            </div>
+                          </details>
+                        )}
 
 
                         {/* ============================================ */}
