@@ -5112,189 +5112,553 @@ TO DO:
                     )}
 
                     {/* ============================================ */}
-                    {/* TELEPHONE CONSULT - Simplified Quick Form */}
+                    {/* TELEPHONE CONSULT - Enhanced Clinical Form  */}
                     {/* ============================================ */}
                     {consultationType === 'telephone' && (
                       <div className="space-y-4">
-                        <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-4 shadow-md">
-                          <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-lg font-bold text-amber-900">📞 Telephone Consult</h3>
-                          </div>
 
-                          {/* Calling Site Dropdown */}
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Calling Site</label>
-                            <select
-                              value={telestrokeNote.callingSite}
-                              onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSite: e.target.value, callingSiteOther: e.target.value === 'Other' ? telestrokeNote.callingSiteOther : ''})}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                            >
-                              <option value="">-- Select Site --</option>
-                              <optgroup label="UW Sites">
-                                <option value="HMC">HMC</option>
-                                <option value="UWMC-ML">UWMC-ML</option>
-                                <option value="UWM Northwest">UWM Northwest</option>
-                              </optgroup>
-                              <optgroup label="Video Partner Sites">
-                                <option value="Astria Sunnyside">Astria Sunnyside</option>
-                                <option value="Cascade Medical – Leavenworth">Cascade Medical – Leavenworth</option>
-                                <option value="Columbia Basin-Ephrata">Columbia Basin-Ephrata</option>
-                                <option value="Confluence Health – Wenatchee">Confluence Health – Wenatchee</option>
-                                <option value="Island Health – Anacortes">Island Health – Anacortes</option>
-                                <option value="Lourdes Health – Pasco">Lourdes Health – Pasco</option>
-                                <option value="Mason General Hospital – Shelton">Mason General Hospital – Shelton</option>
-                                <option value="Snoqualmie Valley – Snoqualmie">Snoqualmie Valley – Snoqualmie</option>
-                                <option value="St. Joseph Regional Medical Center – Lewiston, Idaho">St. Joseph Regional Medical Center – Lewiston, Idaho</option>
-                              </optgroup>
-                              <optgroup label="PeaceHealth Sites">
-                                <option value="PeaceHealth Island - Friday Harbor">PeaceHealth Island - Friday Harbor</option>
-                                <option value="PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska">PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska</option>
-                                <option value="PeaceHealth St. Joseph Medical Center – Bellingham">PeaceHealth St. Joseph Medical Center – Bellingham</option>
-                                <option value="PeaceHealth United General Medical Center – Sedro Woolley">PeaceHealth United General Medical Center – Sedro Woolley</option>
-                              </optgroup>
-                              <optgroup label="Alaska Sites">
-                                <option value="Petersburg, AK">Petersburg, AK</option>
-                              </optgroup>
-                              <optgroup label="Tri-Cities">
-                                <option value="Trios Health – Kennewick">Trios Health – Kennewick</option>
-                              </optgroup>
-                              <option value="Other">Other (specify below)</option>
-                            </select>
-                            {telestrokeNote.callingSite === 'Other' && (
-                              <input
-                                type="text"
-                                value={telestrokeNote.callingSiteOther}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSiteOther: e.target.value})}
-                                className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                                placeholder="Enter site name..."
-                              />
+                        {/* Header with LKW Timer */}
+                        <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg p-4 shadow-lg">
+                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <h3 className="text-xl font-bold">📞 Telephone Consult</h3>
+                            {lkwTime && (
+                              <div className="bg-white/20 rounded-lg px-4 py-2 text-center">
+                                <span className="text-2xl font-bold">
+                                  {(() => {
+                                    const tf = calculateTimeFromLKW();
+                                    return tf ? `${tf.hours}h ${tf.minutes}m` : '--:--';
+                                  })()}
+                                </span>
+                                <span className="text-sm ml-2 opacity-90">from LKW</span>
+                              </div>
                             )}
                           </div>
+                        </div>
 
-                          <div className="border-t border-amber-200 pt-4"></div>
-
-                          {/* Patient Demographics */}
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                        {/* Section 1: Calling Site + LKW */}
+                        <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-4 shadow-md">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* Calling Site */}
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                              <label className="block text-sm font-medium text-amber-900 mb-1">
+                                <i data-lucide="map-pin" className="w-4 h-4 inline mr-1"></i>
+                                Calling Site
+                              </label>
+                              <select
+                                value={telestrokeNote.callingSite}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSite: e.target.value, callingSiteOther: e.target.value === 'Other' ? telestrokeNote.callingSiteOther : ''})}
+                                className="w-full px-3 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500"
+                              >
+                                <option value="">-- Select Site --</option>
+                                <optgroup label="UW Sites">
+                                  <option value="HMC">HMC</option>
+                                  <option value="UWMC-ML">UWMC-ML</option>
+                                  <option value="UWM Northwest">UWM Northwest</option>
+                                </optgroup>
+                                <optgroup label="Partner Sites">
+                                  <option value="Astria Sunnyside">Astria Sunnyside</option>
+                                  <option value="Cascade Medical – Leavenworth">Cascade Medical – Leavenworth</option>
+                                  <option value="Columbia Basin-Ephrata">Columbia Basin-Ephrata</option>
+                                  <option value="Confluence Health – Wenatchee">Confluence Health – Wenatchee</option>
+                                  <option value="Island Health – Anacortes">Island Health – Anacortes</option>
+                                  <option value="Lourdes Health – Pasco">Lourdes Health – Pasco</option>
+                                  <option value="Mason General Hospital – Shelton">Mason General Hospital – Shelton</option>
+                                  <option value="Snoqualmie Valley – Snoqualmie">Snoqualmie Valley – Snoqualmie</option>
+                                  <option value="St. Joseph Regional Medical Center – Lewiston, Idaho">St. Joseph Regional Medical Center – Lewiston, Idaho</option>
+                                  <option value="PeaceHealth Island - Friday Harbor">PeaceHealth Island - Friday Harbor</option>
+                                  <option value="PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska">PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska</option>
+                                  <option value="PeaceHealth St. Joseph Medical Center – Bellingham">PeaceHealth St. Joseph Medical Center – Bellingham</option>
+                                  <option value="PeaceHealth United General Medical Center – Sedro Woolley">PeaceHealth United General Medical Center – Sedro Woolley</option>
+                                  <option value="Petersburg, AK">Petersburg, AK</option>
+                                  <option value="Trios Health – Kennewick">Trios Health – Kennewick</option>
+                                </optgroup>
+                                <option value="Other">Other (specify below)</option>
+                              </select>
+                              {telestrokeNote.callingSite === 'Other' && (
+                                <input
+                                  type="text"
+                                  value={telestrokeNote.callingSiteOther}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSiteOther: e.target.value})}
+                                  className="w-full mt-2 px-3 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500"
+                                  placeholder="Enter site name..."
+                                />
+                              )}
+                            </div>
+
+                            {/* LKW Time */}
+                            <div>
+                              <label className="block text-sm font-medium text-amber-900 mb-1">
+                                <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
+                                Last Known Well
+                              </label>
+                              <div className="grid grid-cols-2 gap-2">
+                                <input
+                                  type="date"
+                                  value={lkwTime ? lkwTime.toISOString().split('T')[0] : ''}
+                                  onChange={(e) => {
+                                    if (e.target.value) {
+                                      const newDate = new Date(e.target.value);
+                                      if (lkwTime) {
+                                        newDate.setHours(lkwTime.getHours(), lkwTime.getMinutes());
+                                      }
+                                      setLkwTime(newDate);
+                                    }
+                                  }}
+                                  max={currentTime.toISOString().split('T')[0]}
+                                  className="w-full px-2 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500"
+                                />
+                                <input
+                                  type="time"
+                                  value={lkwTime ? lkwTime.toTimeString().slice(0, 5) : ''}
+                                  onChange={(e) => {
+                                    if (e.target.value) {
+                                      const [hours, minutes] = e.target.value.split(':');
+                                      const newDate = lkwTime ? new Date(lkwTime) : new Date();
+                                      newDate.setHours(parseInt(hours), parseInt(minutes));
+                                      setLkwTime(newDate);
+                                    }
+                                  }}
+                                  className="w-full px-2 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Section 2: Patient Info + History */}
+                        <div className="bg-white border-2 border-purple-300 rounded-lg p-4 shadow-md">
+                          <h4 className="text-md font-bold text-purple-900 mb-3 flex items-center gap-2">
+                            <i data-lucide="user" className="w-4 h-4"></i>
+                            Patient Info & History
+                          </h4>
+
+                          {/* Demographics Row */}
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+                            <div>
+                              <label className="block text-xs font-medium text-gray-600 mb-1">Age</label>
                               <input
                                 type="number"
                                 value={telestrokeNote.age}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, age: e.target.value})}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
                               />
                             </div>
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">Sex</label>
+                              <label className="block text-xs font-medium text-gray-600 mb-1">Sex</label>
                               <select
                                 value={telestrokeNote.sex}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, sex: e.target.value})}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
                               >
                                 <option value="M">M</option>
                                 <option value="F">F</option>
                               </select>
                             </div>
-                            <div className="col-span-2">
-                              <label className="block text-sm font-medium text-gray-700 mb-1">Presumptive/Working Diagnosis</label>
+                            <div>
+                              <label className="block text-xs font-medium text-gray-600 mb-1">Weight (kg)</label>
                               <input
-                                type="text"
-                                value={telestrokeNote.workingDiagnosis}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, workingDiagnosis: e.target.value})}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                                placeholder="e.g., Acute ischemic stroke, TIA, Stroke mimic..."
+                                type="number"
+                                value={telestrokeNote.weight}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, weight: e.target.value})}
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs font-medium text-gray-600 mb-1">Pre-stroke mRS</label>
+                              <select
+                                value={telestrokeNote.premorbidMRS}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, premorbidMRS: e.target.value})}
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
+                              >
+                                <option value="">--</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          {/* TNK Dose Display */}
+                          {telestrokeNote.weight && calculateTNKDose(telestrokeNote.weight) && (
+                            <div className="mb-3 bg-orange-50 border border-orange-200 rounded-lg p-2 flex items-center justify-between text-sm">
+                              <span className="text-orange-800 font-medium">💉 TNK Dose: <span className="font-bold">{calculateTNKDose(telestrokeNote.weight).calculatedDose} mg</span></span>
+                              <span className="text-xs text-orange-600">{calculateTNKDose(telestrokeNote.weight).volume}</span>
+                            </div>
+                          )}
+
+                          {/* Presenting Symptoms & PMH */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                            <div>
+                              <label className="block text-xs font-medium text-gray-600 mb-1">Presenting Symptoms</label>
+                              <textarea
+                                value={telestrokeNote.symptoms}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, symptoms: e.target.value})}
+                                rows="2"
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs font-medium text-gray-600 mb-1">Relevant PMH</label>
+                              <textarea
+                                value={telestrokeNote.pmh}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, pmh: e.target.value})}
+                                rows="2"
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
                               />
                             </div>
                           </div>
 
-                          {/* Brief History */}
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Brief History</label>
-                            <textarea
-                              value={telestrokeNote.briefHistory}
-                              onChange={(e) => setTelestrokeNote({...telestrokeNote, briefHistory: e.target.value})}
-                              rows="3"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                              placeholder="Brief history of present illness..."
+                          {/* Medications */}
+                          <div className="mb-3">
+                            <label className="block text-xs font-medium text-gray-600 mb-1">Medications</label>
+                            <input
+                              type="text"
+                              value={telestrokeNote.medications}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, medications: e.target.value})}
+                              className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
                             />
                           </div>
 
-                          {/* NIHSS and Deficits side by side */}
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                          {/* Anticoagulation Status */}
+                          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                            <span className="text-sm font-medium text-amber-800">💊 Anticoagulation Status</span>
+                            <div className="grid grid-cols-2 gap-3 mt-2">
+                              <div>
+                                <label className="block text-xs text-gray-600 mb-1">Anticoagulant Type</label>
+                                <select
+                                  value={telestrokeNote.lastDOACType}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, lastDOACType: e.target.value})}
+                                  className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500"
+                                >
+                                  <option value="">None / Unknown</option>
+                                  <option value="apixaban">Apixaban (Eliquis)</option>
+                                  <option value="rivaroxaban">Rivaroxaban (Xarelto)</option>
+                                  <option value="dabigatran">Dabigatran (Pradaxa)</option>
+                                  <option value="edoxaban">Edoxaban (Savaysa)</option>
+                                  <option value="warfarin">Warfarin (check INR)</option>
+                                  <option value="heparin">Heparin UFH (check PTT)</option>
+                                  <option value="lmwh">LMWH / Enoxaparin</option>
+                                </select>
+                              </div>
+                              <div>
+                                <label className="block text-xs text-gray-600 mb-1">Last Dose</label>
+                                <input
+                                  type="datetime-local"
+                                  value={telestrokeNote.lastDOACDose}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, lastDOACDose: e.target.value})}
+                                  className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500"
+                                />
+                              </div>
+                            </div>
+                            {/* Show anticoagulant info if selected */}
+                            {telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType] && (
+                              <div className="mt-2 bg-orange-50 border border-orange-200 rounded p-2 text-xs">
+                                <div className="flex justify-between">
+                                  <span className="font-medium">{ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].name}</span>
+                                  <span className="text-orange-700">t½: {ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].halfLife}</span>
+                                </div>
+                                <div className="text-orange-700 mt-1">TNK: {ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].thrombolysisThreshold}</div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Section 3: NIHSS */}
+                        <div className="bg-white border-2 border-red-300 rounded-lg p-4 shadow-md">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-md font-bold text-red-900 flex items-center gap-2">
+                              <i data-lucide="brain" className="w-4 h-4"></i>
+                              NIHSS Examination
+                            </h4>
+                            <span className="text-2xl font-bold text-red-600">Score: {nihssScore}</span>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">NIHSS</label>
+                              <label className="block text-xs text-gray-600 mb-1">NIHSS Score (0-42)</label>
                               <input
                                 type="number"
                                 value={telestrokeNote.nihss}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, nihss: e.target.value})}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                                placeholder="Score (0-42)"
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  setTelestrokeNote({...telestrokeNote, nihss: value});
+                                  setNihssScore(parseInt(value) || 0);
+                                }}
                                 min="0"
                                 max="42"
+                                className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg text-xl font-bold text-center focus:ring-2 focus:ring-red-500"
                               />
                             </div>
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">Deficits</label>
+                              <label className="block text-xs text-gray-600 mb-1">Neurologic Deficits</label>
                               <input
                                 type="text"
-                                value={telestrokeNote.deficits}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, deficits: e.target.value})}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                                placeholder="e.g., L hemiparesis, dysarthria, gaze preference..."
+                                value={telestrokeNote.nihssDetails}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, nihssDetails: e.target.value})}
+                                placeholder="e.g., R hemiparesis, aphasia, gaze deviation"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
                               />
                             </div>
                           </div>
 
-                          {/* Imaging */}
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Imaging</label>
+                          {/* NIHSS Severity */}
+                          {nihssScore > 0 && (
+                            <div className={`mt-2 p-2 rounded-lg text-center text-sm font-medium ${
+                              nihssScore <= 4 ? 'bg-green-100 text-green-800' :
+                              nihssScore <= 15 ? 'bg-yellow-100 text-yellow-800' :
+                              nihssScore <= 20 ? 'bg-orange-100 text-orange-800' :
+                              'bg-red-100 text-red-800'
+                            }`}>
+                              {nihssScore <= 4 ? 'Minor Stroke' :
+                               nihssScore <= 15 ? 'Moderate Stroke' :
+                               nihssScore <= 20 ? 'Moderate-Severe Stroke' :
+                               'Severe Stroke'}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Section 4: Vitals & Labs */}
+                        <div className="bg-white border-2 border-green-300 rounded-lg p-4 shadow-md">
+                          <h4 className="text-md font-bold text-green-900 mb-3 flex items-center gap-2">
+                            <i data-lucide="activity" className="w-4 h-4"></i>
+                            Vitals & Labs
+                          </h4>
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div>
+                              <label className="block text-xs text-gray-600 mb-1">BP</label>
+                              <input
+                                type="text"
+                                value={telestrokeNote.presentingBP}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, presentingBP: e.target.value})}
+                                placeholder="120/80"
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-gray-600 mb-1">Glucose</label>
+                              <input
+                                type="text"
+                                value={telestrokeNote.glucose}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, glucose: e.target.value})}
+                                placeholder="mg/dL"
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-gray-600 mb-1">INR</label>
+                              <input
+                                type="text"
+                                value={telestrokeNote.inr}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, inr: e.target.value})}
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-gray-600 mb-1">Platelets</label>
+                              <input
+                                type="text"
+                                value={telestrokeNote.platelets}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, platelets: e.target.value})}
+                                placeholder="K/uL"
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Section 5: Imaging */}
+                        <div className="bg-white border-2 border-cyan-300 rounded-lg p-4 shadow-md">
+                          <h4 className="text-md font-bold text-cyan-900 mb-3 flex items-center gap-2">
+                            <i data-lucide="scan" className="w-4 h-4"></i>
+                            Imaging Review
+                          </h4>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                              <label className="block text-xs text-gray-600 mb-1">CT Head</label>
+                              <textarea
+                                value={telestrokeNote.ctResults}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, ctResults: e.target.value})}
+                                rows="2"
+                                placeholder="No acute hemorrhage, early ischemic changes..."
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-gray-600 mb-1">CTA Head/Neck</label>
+                              <textarea
+                                value={telestrokeNote.ctaResults}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, ctaResults: e.target.value})}
+                                rows="2"
+                                placeholder="LVO location, vessel patency..."
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500"
+                              />
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-3 mt-3">
+                            <div>
+                              <label className="block text-xs text-gray-600 mb-1">ASPECTS</label>
+                              <input
+                                type="number"
+                                value={aspectsScore}
+                                onChange={(e) => setAspectsScore(parseInt(e.target.value) || 0)}
+                                min="0"
+                                max="10"
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-gray-600 mb-1">CTP</label>
+                              <input
+                                type="text"
+                                value={telestrokeNote.ctpResults}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, ctpResults: e.target.value})}
+                                placeholder="Core/penumbra, mismatch..."
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Section 6: Treatment Decision */}
+                        <div className="bg-white border-2 border-orange-300 rounded-lg p-4 shadow-md">
+                          <h4 className="text-md font-bold text-orange-900 mb-3 flex items-center gap-2">
+                            <i data-lucide="clipboard-check" className="w-4 h-4"></i>
+                            Treatment Decision
+                          </h4>
+                          <div className="grid grid-cols-2 gap-4 mb-3">
+                            <label className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg cursor-pointer hover:bg-blue-100">
+                              <input
+                                type="checkbox"
+                                checked={telestrokeNote.tnkRecommended}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, tnkRecommended: e.target.checked})}
+                                className="w-5 h-5 rounded border-2 border-blue-400 text-blue-600"
+                              />
+                              <span className="font-semibold text-blue-800">TNK Recommended</span>
+                            </label>
+                            <label className="flex items-center gap-2 p-3 bg-purple-50 border border-purple-200 rounded-lg cursor-pointer hover:bg-purple-100">
+                              <input
+                                type="checkbox"
+                                checked={telestrokeNote.evtRecommended}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, evtRecommended: e.target.checked})}
+                                className="w-5 h-5 rounded border-2 border-purple-400 text-purple-600"
+                              />
+                              <span className="font-semibold text-purple-800">EVT Recommended</span>
+                            </label>
+                          </div>
+                          <div>
+                            <label className="block text-xs text-gray-600 mb-1">Rationale / Recommendations</label>
                             <textarea
-                              value={telestrokeNote.imaging}
-                              onChange={(e) => setTelestrokeNote({...telestrokeNote, imaging: e.target.value})}
-                              rows="2"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                              placeholder="CT/CTA/CTP/MRI findings or pending studies..."
+                              value={telestrokeNote.rationale}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, rationale: e.target.value})}
+                              rows="3"
+                              placeholder="Treatment rationale and recommendations..."
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                             />
+                          </div>
+                        </div>
+
+                        {/* Section 7: Output Buttons */}
+                        <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4 shadow-md space-y-3">
+                          <h4 className="text-md font-bold text-gray-800 mb-3">📋 Copy Notes</h4>
+
+                          {/* Pulsara Summary */}
+                          <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="font-semibold text-indigo-800 text-sm">Pulsara Summary</span>
+                              <button
+                                onClick={() => {
+                                  const age = telestrokeNote.age || "[Age]";
+                                  const sexRaw = telestrokeNote.sex;
+                                  const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '[sex]';
+                                  const pmh = telestrokeNote.pmh || "no PMH";
+                                  const symptoms = telestrokeNote.symptoms || "[symptoms]";
+                                  const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
+                                  const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
+                                  const nihss = telestrokeNote.nihss || nihssScore || "[score]";
+                                  const nihssDeficits = telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : "";
+                                  const ctResults = telestrokeNote.ctResults || "[CT findings]";
+                                  const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
+                                  const ctpResults = telestrokeNote.ctpResults || "N/A";
+                                  const aspectsStr = aspectsScore ? ` ASPECTS: ${aspectsScore}.` : "";
+                                  const tnkStatus = telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
+                                  const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
+                                  const rationale = telestrokeNote.rationale || "[rationale]";
+
+                                  const summary = `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale for Treatment Recommendation: ${rationale}.`;
+                                  navigator.clipboard.writeText(summary);
+                                  setCopiedText('tel-pulsara');
+                                  setTimeout(() => setCopiedText(''), 2000);
+                                }}
+                                className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors"
+                              >
+                                <i data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                {copiedText === 'tel-pulsara' ? 'Copied!' : 'Copy Pulsara'}
+                              </button>
+                            </div>
+                            <p className="text-xs text-gray-600 whitespace-pre-wrap">
+                              {(() => {
+                                const age = telestrokeNote.age || "[Age]";
+                                const sexRaw = telestrokeNote.sex;
+                                const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '[sex]';
+                                const pmh = telestrokeNote.pmh || "no PMH";
+                                const symptoms = telestrokeNote.symptoms || "[symptoms]";
+                                const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
+                                const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
+                                const nihss = telestrokeNote.nihss || nihssScore || "[score]";
+                                const nihssDeficits = telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : "";
+                                const ctResults = telestrokeNote.ctResults || "[CT findings]";
+                                const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
+                                const ctpResults = telestrokeNote.ctpResults || "N/A";
+                                const aspectsStr = aspectsScore ? ` ASPECTS: ${aspectsScore}.` : "";
+                                const tnkStatus = telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
+                                const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
+                                const rationale = telestrokeNote.rationale || "[rationale]";
+                                return `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale: ${rationale}.`;
+                              })()}
+                            </p>
                           </div>
 
-                          {/* Recommendations */}
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Recommendations / Notes</label>
-                            <textarea
-                              value={telestrokeNote.recommendationsText}
-                              onChange={(e) => setTelestrokeNote({...telestrokeNote, recommendationsText: e.target.value})}
-                              rows="4"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                              placeholder="Enter recommendations..."
-                            />
-                          </div>
-                          <div className="mt-4 pt-4 border-t border-amber-200 space-y-3">
-                            <button
-                              onClick={() => {
-                                const siteName = telestrokeNote.callingSite === 'Other'
-                                  ? telestrokeNote.callingSiteOther
-                                  : telestrokeNote.callingSite;
-                                const note = `TELEPHONE CONSULT\n\n` +
-                                  `Site: ${siteName || 'Not specified'}\n` +
-                                  `Patient: ${telestrokeNote.age}yo ${telestrokeNote.sex}\n` +
-                                  `Working Diagnosis: ${telestrokeNote.workingDiagnosis || 'Not specified'}\n\n` +
-                                  `BRIEF HISTORY:\n${telestrokeNote.briefHistory || 'Not documented'}\n\n` +
-                                  `NIHSS: ${telestrokeNote.nihss || 'N/A'}` +
-                                  (telestrokeNote.deficits ? `\nDeficits: ${telestrokeNote.deficits}` : '') + `\n\n` +
-                                  `IMAGING:\n${telestrokeNote.imaging || 'Not documented'}\n\n` +
-                                  `RECOMMENDATIONS:\n${telestrokeNote.recommendationsText || 'None'}\n\n` +
-                                  `Rizwan Kalani MD\n` +
-                                  `${new Date().toLocaleString()}`;
-                                navigator.clipboard.writeText(note);
-                                setCopiedText('telephone-note');
-                                setTimeout(() => setCopiedText(''), 2000);
-                              }}
-                              className="w-full px-4 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium flex items-center justify-center gap-2"
-                            >
-                              <i data-lucide="copy" className="w-4 h-4"></i>
-                              {copiedText === 'telephone-note' ? 'Copied!' : 'Copy Telephone Note'}
-                            </button>
-                          </div>
+                          {/* Brief Note Button */}
+                          <button
+                            onClick={() => {
+                              const siteName = telestrokeNote.callingSite === 'Other' ? telestrokeNote.callingSiteOther : telestrokeNote.callingSite;
+                              const timeFromLKW = calculateTimeFromLKW();
+                              const timeDisplay = timeFromLKW ? `${timeFromLKW.hours}h ${timeFromLKW.minutes}m from LKW` : '';
+
+                              const note = `TELEPHONE CONSULT\n\n` +
+                                `Site: ${siteName || 'Not specified'}\n` +
+                                `Patient: ${telestrokeNote.age || '?'}yo ${telestrokeNote.sex || '?'}\n` +
+                                `LKW: ${lkwTime ? lkwTime.toLocaleString() : 'Not specified'}${timeDisplay ? ` (${timeDisplay})` : ''}\n\n` +
+                                `PRESENTATION:\n${telestrokeNote.symptoms || 'Not documented'}\n` +
+                                `PMH: ${telestrokeNote.pmh || 'Not documented'}\n` +
+                                `Medications: ${telestrokeNote.medications || 'Not documented'}\n` +
+                                (telestrokeNote.lastDOACType ? `Anticoagulation: ${telestrokeNote.lastDOACType}${telestrokeNote.lastDOACDose ? `, last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()}` : ''}\n` : '') +
+                                `\nNIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}${telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : ''}\n` +
+                                `\nVITALS/LABS:\n` +
+                                `BP: ${telestrokeNote.presentingBP || 'N/A'}, Glucose: ${telestrokeNote.glucose || 'N/A'}, INR: ${telestrokeNote.inr || 'N/A'}, Plt: ${telestrokeNote.platelets || 'N/A'}\n` +
+                                `\nIMAGING:\n` +
+                                `CT Head: ${telestrokeNote.ctResults || 'Not documented'}\n` +
+                                `CTA: ${telestrokeNote.ctaResults || 'Not documented'}\n` +
+                                (aspectsScore ? `ASPECTS: ${aspectsScore}\n` : '') +
+                                (telestrokeNote.ctpResults ? `CTP: ${telestrokeNote.ctpResults}\n` : '') +
+                                `\nTREATMENT DECISION:\n` +
+                                `TNK: ${telestrokeNote.tnkRecommended ? 'RECOMMENDED' : 'Not recommended'}\n` +
+                                `EVT: ${telestrokeNote.evtRecommended ? 'RECOMMENDED' : 'Not recommended'}\n` +
+                                `\nRATIONALE/RECOMMENDATIONS:\n${telestrokeNote.rationale || 'None documented'}\n\n` +
+                                `Rizwan Kalani MD\n` +
+                                `${new Date().toLocaleString()}`;
+                              navigator.clipboard.writeText(note);
+                              setCopiedText('telephone-note');
+                              setTimeout(() => setCopiedText(''), 2000);
+                            }}
+                            className="w-full px-4 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium flex items-center justify-center gap-2"
+                          >
+                            <i data-lucide="copy" className="w-4 h-4"></i>
+                            {copiedText === 'telephone-note' ? 'Copied!' : 'Copy Full Telephone Note'}
+                          </button>
                         </div>
                       </div>
                     )}
@@ -7117,74 +7481,6 @@ TO DO:
                               <h4 className="font-semibold text-gray-700 mb-2">MT risk/benefit discussion:</h4>
                               <p className="text-sm">Given the presence of a large vascular occlusion, disabling neurological symptoms, and no evident contraindications - the patient will be transferred to HMC for mechanical thrombectomy consideration. Potential benefits, potential risks, and alternatives to treatment were discussed with the OSH provider and patient/family; the neuro-IR team at HMC will obtain informed consent from the patient/family.</p>
                             </div>
-                          </div>
-                        </div>
-
-                        {/* Section 8: Pulsara Summary */}
-                        <div className="bg-white border-2 border-indigo-300 rounded-lg p-4 shadow-md mt-4">
-                          <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-lg font-bold text-indigo-900">8. Pulsara Summary</h3>
-                            <i data-lucide="clipboard" className="w-5 h-5 text-indigo-600"></i>
-                          </div>
-
-                          {/* Auto-Generated Summary */}
-                          <div className="mt-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
-                            <div className="flex items-center justify-between mb-2">
-                              <h4 className="font-semibold text-gray-800 text-sm">Pulsara Summary:</h4>
-                              <button
-                                onClick={() => {
-                                  const age = telestrokeNote.age || "[Age]";
-                                  const sexRaw = telestrokeNote.sex;
-                                  const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '[sex]';
-                                  const pmh = telestrokeNote.pmh || "no PMH";
-                                  const symptoms = telestrokeNote.symptoms || "[symptoms]";
-                                  const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
-                                  const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
-                                  const nihss = telestrokeNote.nihss || nihssScore || "[score]";
-                                  const nihssDeficits = telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : "";
-                                  const ctResults = telestrokeNote.ctResults || "[CT findings]";
-                                  const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
-                                  const ctpResults = telestrokeNote.ctpResults || "N/A";
-                                  const aspectsStr = aspectsScore ? ` ASPECTS: ${aspectsScore}.` : "";
-                                  const tnkStatus = telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
-                                  const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
-                                  const rationale = telestrokeNote.rationale || "[rationale]";
-
-                                  const trialText = getTrialEligibilityForNote();
-                                  const summary = `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale for Treatment Recommendation: ${rationale}. ${trialText}`;
-                                  navigator.clipboard.writeText(summary);
-                                  setCopiedText('pulsara-summary');
-                                  setTimeout(() => setCopiedText(''), 2000);
-                                }}
-                                className="flex items-center gap-2 px-3 py-1 bg-green-600 text-white text-xs rounded-lg hover:bg-green-700 transition-colors"
-                              >
-                                <i data-lucide={copiedText === 'pulsara-summary' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                                {copiedText === 'pulsara-summary' ? 'Copied!' : 'Copy'}
-                              </button>
-                            </div>
-                            <p className="text-xs text-gray-700 whitespace-pre-wrap">
-                              {(() => {
-                                const age = telestrokeNote.age || "[Age]";
-                                const sexRaw = telestrokeNote.sex;
-                                const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '[sex]';
-                                const pmh = telestrokeNote.pmh || "no PMH";
-                                const symptoms = telestrokeNote.symptoms || "[symptoms]";
-                                const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
-                                const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
-                                const nihss = telestrokeNote.nihss || nihssScore || "[score]";
-                                const nihssDeficits = telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : "";
-                                const ctResults = telestrokeNote.ctResults || "[CT findings]";
-                                const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
-                                const ctpResults = telestrokeNote.ctpResults || "N/A";
-                                const aspectsStr = aspectsScore ? ` ASPECTS: ${aspectsScore}.` : "";
-                                const tnkStatus = telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
-                                const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
-                                const rationale = telestrokeNote.rationale || "[rationale]";
-
-                                const trialText = getTrialEligibilityForNote();
-                                return `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale for Treatment Recommendation: ${rationale}. ${trialText}`;
-                              })()}
-                            </p>
                           </div>
                         </div>
 
