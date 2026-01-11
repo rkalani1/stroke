@@ -3744,10 +3744,12 @@ Rizwan Kalani MD`));
             if (lkwTime) {
               const timeStr = lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
               const dateStr = lkwTime.toLocaleDateString('en-US');
+              // Use local date format to avoid timezone issues
+              const localDateStr = `${lkwTime.getFullYear()}-${String(lkwTime.getMonth() + 1).padStart(2, '0')}-${String(lkwTime.getDate()).padStart(2, '0')}`;
               setStrokeCodeForm(prev => ({
                 ...prev,
                 lkw: timeStr,
-                lkw_date: lkwTime.toISOString().split('T')[0]
+                lkw_date: localDateStr
               }));
             }
           }, [lkwTime]);
@@ -4816,17 +4818,19 @@ TO DO:
                           <label className="block text-sm font-medium text-blue-900 mb-1">Date</label>
                           <input
                             type="date"
-                            value={lkwTime ? lkwTime.toISOString().split('T')[0] : ''}
+                            value={lkwTime ? `${lkwTime.getFullYear()}-${String(lkwTime.getMonth() + 1).padStart(2, '0')}-${String(lkwTime.getDate()).padStart(2, '0')}` : ''}
                             onChange={(e) => {
                               if (e.target.value) {
-                                const newDate = new Date(e.target.value);
+                                // Parse as local date to avoid timezone issues
+                                const [year, month, day] = e.target.value.split('-').map(Number);
+                                const newDate = new Date(year, month - 1, day); // month is 0-indexed
                                 if (lkwTime) {
                                   newDate.setHours(lkwTime.getHours(), lkwTime.getMinutes());
                                 }
                                 setLkwTime(newDate);
                               }
                             }}
-                            max={currentTime.toISOString().split('T')[0]}
+                            max={`${currentTime.getFullYear()}-${String(currentTime.getMonth() + 1).padStart(2, '0')}-${String(currentTime.getDate()).padStart(2, '0')}`}
                             className="w-full px-2 sm:px-4 py-3 border-2 border-blue-300 rounded-lg text-base sm:text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-full"
                             style={{boxSizing: 'border-box'}}
                           />
@@ -5194,17 +5198,19 @@ TO DO:
                               <div className="grid grid-cols-2 gap-2">
                                 <input
                                   type="date"
-                                  value={lkwTime ? lkwTime.toISOString().split('T')[0] : ''}
+                                  value={lkwTime ? `${lkwTime.getFullYear()}-${String(lkwTime.getMonth() + 1).padStart(2, '0')}-${String(lkwTime.getDate()).padStart(2, '0')}` : ''}
                                   onChange={(e) => {
                                     if (e.target.value) {
-                                      const newDate = new Date(e.target.value);
+                                      // Parse as local date to avoid timezone issues
+                                      const [year, month, day] = e.target.value.split('-').map(Number);
+                                      const newDate = new Date(year, month - 1, day); // month is 0-indexed
                                       if (lkwTime) {
                                         newDate.setHours(lkwTime.getHours(), lkwTime.getMinutes());
                                       }
                                       setLkwTime(newDate);
                                     }
                                   }}
-                                  max={currentTime.toISOString().split('T')[0]}
+                                  max={`${currentTime.getFullYear()}-${String(currentTime.getMonth() + 1).padStart(2, '0')}-${String(currentTime.getDate()).padStart(2, '0')}`}
                                   className="w-full px-2 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500"
                                 />
                                 <input
