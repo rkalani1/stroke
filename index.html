@@ -691,12 +691,22 @@ Rizwan Kalani MD`));
             { id: 'PCA-R', name: 'Right Occipital Lobe (PCA Territory)', checked: true, points: 1 }
           ]));
 
+          // Voice Transcription State for Telephone Consults
+          const [isTranscribing, setIsTranscribing] = useState(false);
+          const [transcriptText, setTranscriptText] = useState('');
+          const recognitionRef = React.useRef(null);
+
           // Telestroke Documentation State
           const [telestrokeNote, setTelestrokeNote] = useState(loadFromStorage('telestrokeNote', {
             // Calling Site for Telephone Consults
             callingSite: '',
             callingSiteOther: '', // Free text when "Other" is selected
-            chiefComplaint: '',
+            // Telephone consult specific fields
+            workingDiagnosis: '', // Presumptive/working diagnosis
+            briefHistory: '', // Brief history of present illness
+            deficits: '', // Frank neurological deficits
+            imaging: '', // Imaging summary
+            chiefComplaint: '', // Legacy field, kept for backward compatibility
             lkwDate: new Date().toISOString().split('T')[0],
             lkwTime: new Date().toTimeString().slice(0, 5), // Auto-populate with current time
             lkwUnknown: false, // Wake-up stroke / unknown onset
@@ -5087,6 +5097,96 @@ TO DO:
                             )}
                           </div>
 
+                          {/* Voice Transcription Button */}
+                          <div className="mb-4">
+                            <button
+                              onClick={() => {
+                                if (isTranscribing) {
+                                  // Stop transcription
+                                  if (recognitionRef.current) {
+                                    recognitionRef.current.stop();
+                                  }
+                                  setIsTranscribing(false);
+                                } else {
+                                  // Start transcription
+                                  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                                    alert('Voice transcription is not supported in this browser. Please use Chrome or Edge.');
+                                    return;
+                                  }
+                                  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                                  const recognition = new SpeechRecognition();
+                                  recognition.continuous = true;
+                                  recognition.interimResults = true;
+                                  recognition.lang = 'en-US';
+
+                                  let finalTranscript = transcriptText;
+
+                                  recognition.onresult = (event) => {
+                                    let interimTranscript = '';
+                                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                                      const transcript = event.results[i][0].transcript;
+                                      if (event.results[i].isFinal) {
+                                        finalTranscript += transcript + ' ';
+                                        setTranscriptText(finalTranscript);
+                                      } else {
+                                        interimTranscript += transcript;
+                                      }
+                                    }
+                                  };
+
+                                  recognition.onerror = (event) => {
+                                    console.error('Speech recognition error:', event.error);
+                                    if (event.error !== 'no-speech') {
+                                      setIsTranscribing(false);
+                                    }
+                                  };
+
+                                  recognition.onend = () => {
+                                    // Auto-restart if still transcribing (handles browser timeout)
+                                    if (isTranscribing) {
+                                      recognition.start();
+                                    }
+                                  };
+
+                                  recognitionRef.current = recognition;
+                                  recognition.start();
+                                  setIsTranscribing(true);
+                                }
+                              }}
+                              className={`w-full px-4 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${
+                                isTranscribing
+                                  ? 'bg-red-600 text-white hover:bg-red-700 animate-pulse'
+                                  : 'bg-blue-600 text-white hover:bg-blue-700'
+                              }`}
+                            >
+                              <i data-lucide={isTranscribing ? 'mic-off' : 'mic'} className="w-5 h-5"></i>
+                              {isTranscribing ? '🔴 Recording... Click to Stop' : '🎙️ Start Voice Transcription'}
+                            </button>
+                            {transcriptText && (
+                              <div className="mt-3">
+                                <div className="flex items-center justify-between mb-1">
+                                  <label className="block text-sm font-medium text-gray-700">Conversation Transcript</label>
+                                  <button
+                                    onClick={() => setTranscriptText('')}
+                                    className="text-xs text-red-600 hover:text-red-800"
+                                  >
+                                    Clear
+                                  </button>
+                                </div>
+                                <textarea
+                                  value={transcriptText}
+                                  onChange={(e) => setTranscriptText(e.target.value)}
+                                  rows="4"
+                                  className="w-full px-3 py-2 border border-blue-300 rounded-lg bg-blue-50 focus:ring-2 focus:ring-blue-500 text-sm"
+                                  placeholder="Transcript will appear here..."
+                                />
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="border-t border-amber-200 pt-4"></div>
+
+                          {/* Patient Demographics */}
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
@@ -5109,28 +5209,68 @@ TO DO:
                               </select>
                             </div>
                             <div className="col-span-2">
-                              <label className="block text-sm font-medium text-gray-700 mb-1">Chief Complaint</label>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Presumptive/Working Diagnosis</label>
                               <input
                                 type="text"
-                                value={telestrokeNote.chiefComplaint}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, chiefComplaint: e.target.value})}
+                                value={telestrokeNote.workingDiagnosis}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, workingDiagnosis: e.target.value})}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                                placeholder="Reason for call..."
+                                placeholder="e.g., Acute ischemic stroke, TIA, Stroke mimic..."
                               />
                             </div>
                           </div>
+
+                          {/* Brief History */}
                           <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Quick NIHSS (if applicable)</label>
-                            <input
-                              type="number"
-                              value={telestrokeNote.nihss}
-                              onChange={(e) => setTelestrokeNote({...telestrokeNote, nihss: e.target.value})}
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Brief History</label>
+                            <textarea
+                              value={telestrokeNote.briefHistory}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, briefHistory: e.target.value})}
+                              rows="3"
                               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                              placeholder="Enter NIHSS score..."
-                              min="0"
-                              max="42"
+                              placeholder="Brief history of present illness..."
                             />
                           </div>
+
+                          {/* NIHSS and Deficits side by side */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">NIHSS</label>
+                              <input
+                                type="number"
+                                value={telestrokeNote.nihss}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, nihss: e.target.value})}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
+                                placeholder="Score (0-42)"
+                                min="0"
+                                max="42"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Deficits</label>
+                              <input
+                                type="text"
+                                value={telestrokeNote.deficits}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, deficits: e.target.value})}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
+                                placeholder="e.g., L hemiparesis, dysarthria, gaze preference..."
+                              />
+                            </div>
+                          </div>
+
+                          {/* Imaging */}
+                          <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Imaging</label>
+                            <textarea
+                              value={telestrokeNote.imaging}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, imaging: e.target.value})}
+                              rows="2"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
+                              placeholder="CT/CTA/CTP/MRI findings or pending studies..."
+                            />
+                          </div>
+
+                          {/* Recommendations */}
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Recommendations / Notes</label>
                             <textarea
@@ -5141,7 +5281,7 @@ TO DO:
                               placeholder="Enter recommendations..."
                             />
                           </div>
-                          <div className="mt-4 pt-4 border-t border-amber-200">
+                          <div className="mt-4 pt-4 border-t border-amber-200 space-y-3">
                             <button
                               onClick={() => {
                                 const siteName = telestrokeNote.callingSite === 'Other'
@@ -5150,9 +5290,13 @@ TO DO:
                                 const note = `TELEPHONE CONSULT\n\n` +
                                   `Site: ${siteName || 'Not specified'}\n` +
                                   `Patient: ${telestrokeNote.age}yo ${telestrokeNote.sex}\n` +
-                                  `Chief Complaint: ${telestrokeNote.chiefComplaint || 'Not specified'}\n` +
-                                  `NIHSS: ${telestrokeNote.nihss || 'N/A'}\n\n` +
-                                  `Recommendations:\n${telestrokeNote.recommendationsText || 'None'}\n\n` +
+                                  `Working Diagnosis: ${telestrokeNote.workingDiagnosis || 'Not specified'}\n\n` +
+                                  `BRIEF HISTORY:\n${telestrokeNote.briefHistory || 'Not documented'}\n\n` +
+                                  `NIHSS: ${telestrokeNote.nihss || 'N/A'}` +
+                                  (telestrokeNote.deficits ? `\nDeficits: ${telestrokeNote.deficits}` : '') + `\n\n` +
+                                  `IMAGING:\n${telestrokeNote.imaging || 'Not documented'}\n\n` +
+                                  `RECOMMENDATIONS:\n${telestrokeNote.recommendationsText || 'None'}\n\n` +
+                                  (transcriptText ? `--- CONVERSATION TRANSCRIPT ---\n${transcriptText}\n\n` : '') +
                                   `Rizwan Kalani MD\n` +
                                   `${new Date().toLocaleString()}`;
                                 navigator.clipboard.writeText(note);
@@ -5164,6 +5308,19 @@ TO DO:
                               <i data-lucide="copy" className="w-4 h-4"></i>
                               {copiedText === 'telephone-note' ? 'Copied!' : 'Copy Telephone Note'}
                             </button>
+                            {transcriptText && (
+                              <button
+                                onClick={() => {
+                                  navigator.clipboard.writeText(transcriptText);
+                                  setCopiedText('transcript-only');
+                                  setTimeout(() => setCopiedText(''), 2000);
+                                }}
+                                className="w-full px-4 py-2 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
+                              >
+                                <i data-lucide="file-text" className="w-4 h-4"></i>
+                                {copiedText === 'transcript-only' ? 'Copied!' : 'Copy Transcript Only'}
+                              </button>
+                            )}
                           </div>
                         </div>
                       </div>
