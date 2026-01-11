@@ -5538,10 +5538,9 @@ TO DO:
                           {/* Diagnosis Category Selector */}
                           <div className="flex flex-wrap gap-2 mb-3">
                             {[
-                              { value: 'ischemic', label: 'Ischemic Stroke/TIA', color: 'blue', icon: 'activity' },
-                              { value: 'ich', label: 'ICH', color: 'red', icon: 'alert-triangle' },
-                              { value: 'mimic', label: 'Stroke Mimic', color: 'amber', icon: 'eye-off' },
-                              { value: 'other', label: 'Other', color: 'gray', icon: 'help-circle' }
+                              { value: 'ischemic', label: 'Ischemic Stroke or TIA', color: 'blue', icon: 'activity' },
+                              { value: 'ich', label: 'Intracranial Hemorrhage', color: 'red', icon: 'alert-triangle' },
+                              { value: 'mimic', label: 'Stroke Mimic/Other', color: 'amber', icon: 'eye-off' }
                             ].map(option => {
                               const isSelected = telestrokeNote.diagnosisCategory === option.value;
                               return (
@@ -5556,7 +5555,7 @@ TO DO:
                                     } else if (newCategory === 'ich') {
                                       newDiagnosis = 'Intracerebral hemorrhage (ICH)';
                                     } else if (newCategory === 'mimic') {
-                                      newDiagnosis = 'Stroke mimic';
+                                      newDiagnosis = 'Stroke mimic/other';
                                     }
                                     setTelestrokeNote({
                                       ...telestrokeNote,
@@ -6752,10 +6751,9 @@ TO DO:
                               {/* Diagnosis Category Selector */}
                               <div className="flex flex-wrap gap-2 mb-2">
                                 {[
-                                  { value: 'ischemic', label: 'Ischemic Stroke/TIA', color: 'blue', icon: 'activity' },
-                                  { value: 'ich', label: 'ICH', color: 'red', icon: 'alert-triangle' },
-                                  { value: 'mimic', label: 'Stroke Mimic', color: 'amber', icon: 'eye-off' },
-                                  { value: 'other', label: 'Other', color: 'gray', icon: 'help-circle' }
+                                  { value: 'ischemic', label: 'Ischemic Stroke or TIA', color: 'blue', icon: 'activity' },
+                                  { value: 'ich', label: 'Intracranial Hemorrhage', color: 'red', icon: 'alert-triangle' },
+                                  { value: 'mimic', label: 'Stroke Mimic/Other', color: 'amber', icon: 'eye-off' }
                                 ].map(option => {
                                   const isSelected = telestrokeNote.diagnosisCategory === option.value;
                                   return (
