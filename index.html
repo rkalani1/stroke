@@ -5594,77 +5594,29 @@ TO DO:
                             />
                           )}
 
-                          {/* Trial Eligibility Panel - Show for Ischemic or ICH */}
-                          {(telestrokeNote.diagnosisCategory === 'ischemic' || telestrokeNote.diagnosisCategory === 'ich') && (
-                            <div className={`mt-3 p-3 rounded-lg border ${
-                              telestrokeNote.diagnosisCategory === 'ischemic'
-                                ? 'bg-blue-50 border-blue-200'
-                                : 'bg-red-50 border-red-200'
-                            }`}>
-                              <div className="flex items-center gap-2 mb-2">
-                                <i data-lucide="flask-conical" className="w-4 h-4 text-indigo-600"></i>
-                                <span className="font-semibold text-sm text-gray-800">Potential Trial Eligibility</span>
-                              </div>
-
-                              {(() => {
-                                const eligibleTrials = [];
-                                const needsInfoTrials = [];
-
-                                Object.entries(trialEligibility).forEach(([trialId, result]) => {
-                                  if (!result) return;
-                                  const config = TRIAL_ELIGIBILITY_CONFIG[trialId];
-                                  if (!config) return;
-                                  if (config.category !== telestrokeNote.diagnosisCategory) return;
-
-                                  if (result.status === 'eligible') {
-                                    eligibleTrials.push({ id: trialId, name: config.name, desc: config.quickDescription });
-                                  } else if (result.status === 'needs_info') {
-                                    needsInfoTrials.push({ id: trialId, name: config.name, desc: config.quickDescription });
-                                  }
-                                });
-
-                                if (eligibleTrials.length === 0 && needsInfoTrials.length === 0) {
-                                  return (
-                                    <p className="text-sm text-gray-600">
-                                      No trial matches yet. Complete clinical data above to check eligibility.
-                                    </p>
-                                  );
-                                }
-
-                                return (
-                                  <div className="space-y-2">
-                                    {eligibleTrials.map(trial => (
-                                      <div key={trial.id} className="flex items-start gap-2 text-sm">
-                                        <span className="text-green-600 font-bold">✓</span>
-                                        <div>
-                                          <span className="font-semibold text-green-800">{trial.name}</span>
-                                          <p className="text-gray-600 text-xs">{trial.desc}</p>
-                                        </div>
-                                      </div>
-                                    ))}
-                                    {needsInfoTrials.map(trial => (
-                                      <div key={trial.id} className="flex items-start gap-2 text-sm">
-                                        <span className="text-amber-600 font-bold">?</span>
-                                        <div>
-                                          <span className="font-semibold text-amber-800">{trial.name}</span>
-                                          <span className="text-gray-500 text-xs ml-1">(needs more info)</span>
-                                          <p className="text-gray-600 text-xs">{trial.desc}</p>
-                                        </div>
-                                      </div>
-                                    ))}
-                                    <button
-                                      onClick={() => {
-                                        setTrialsCategory(telestrokeNote.diagnosisCategory);
-                                        setActiveTab('trials');
-                                      }}
-                                      className="mt-2 text-xs text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
-                                    >
-                                      <i data-lucide="external-link" className="w-3 h-3"></i>
-                                      View all {telestrokeNote.diagnosisCategory === 'ischemic' ? 'ischemic' : 'ICH'} trials →
-                                    </button>
-                                  </div>
-                                );
-                              })()}
+                          {/* Active Trials List - Show for Ischemic or ICH */}
+                          {telestrokeNote.diagnosisCategory === 'ischemic' && (
+                            <div className="mt-3 text-sm">
+                              <div className="font-medium text-gray-700 mb-1">Active Ischemic Stroke Trials:</div>
+                              <ul className="text-gray-600 space-y-0.5 ml-4">
+                                <li>• <strong>SISTER</strong> – Late thrombolysis (4.5-24h), no TNK/EVT</li>
+                                <li>• <strong>STEP-EVT</strong> – Mild LVO or medium/distal vessel occlusions</li>
+                                <li>• <strong>PICASSO</strong> – Tandem lesion (carotid + intracranial LVO)</li>
+                                <li>• <strong>TESTED</strong> – EVT in pre-existing disability (mRS 3-4)</li>
+                                <li>• <strong>VERIFY</strong> – TMS/MRI to predict motor recovery</li>
+                                <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-stroke</li>
+                              </ul>
+                            </div>
+                          )}
+                          {telestrokeNote.diagnosisCategory === 'ich' && (
+                            <div className="mt-3 text-sm">
+                              <div className="font-medium text-gray-700 mb-1">Active ICH Trials:</div>
+                              <ul className="text-gray-600 space-y-0.5 ml-4">
+                                <li>• <strong>FASTEST</strong> – rFVIIa within 2h for hematoma expansion</li>
+                                <li>• <strong>SATURN</strong> – Statin continuation vs stop after lobar ICH</li>
+                                <li>• <strong>ASPIRE</strong> – Apixaban vs aspirin post-ICH with AF</li>
+                                <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-stroke</li>
+                              </ul>
                             </div>
                           )}
                         </div>
@@ -6868,77 +6820,29 @@ TO DO:
                                 </div>
                               )}
 
-                              {/* Trial Eligibility Panel - Show for Ischemic or ICH */}
-                              {(telestrokeNote.diagnosisCategory === 'ischemic' || telestrokeNote.diagnosisCategory === 'ich') && (
-                                <div className={`mt-3 p-3 rounded-lg border ${
-                                  telestrokeNote.diagnosisCategory === 'ischemic'
-                                    ? 'bg-blue-50 border-blue-200'
-                                    : 'bg-red-50 border-red-200'
-                                }`}>
-                                  <div className="flex items-center gap-2 mb-2">
-                                    <i data-lucide="flask-conical" className="w-4 h-4 text-indigo-600"></i>
-                                    <span className="font-semibold text-sm text-gray-800">Potential Trial Eligibility</span>
-                                  </div>
-
-                                  {(() => {
-                                    const eligibleTrials = [];
-                                    const needsInfoTrials = [];
-
-                                    Object.entries(trialEligibility).forEach(([trialId, result]) => {
-                                      if (!result) return;
-                                      const config = TRIAL_ELIGIBILITY_CONFIG[trialId];
-                                      if (!config) return;
-                                      if (config.category !== telestrokeNote.diagnosisCategory) return;
-
-                                      if (result.status === 'eligible') {
-                                        eligibleTrials.push({ id: trialId, name: config.name, desc: config.quickDescription });
-                                      } else if (result.status === 'needs_info') {
-                                        needsInfoTrials.push({ id: trialId, name: config.name, desc: config.quickDescription });
-                                      }
-                                    });
-
-                                    if (eligibleTrials.length === 0 && needsInfoTrials.length === 0) {
-                                      return (
-                                        <p className="text-sm text-gray-600">
-                                          No trial matches yet. Complete clinical data above to check eligibility.
-                                        </p>
-                                      );
-                                    }
-
-                                    return (
-                                      <div className="space-y-2">
-                                        {eligibleTrials.map(trial => (
-                                          <div key={trial.id} className="flex items-start gap-2 text-sm">
-                                            <span className="text-green-600 font-bold">✓</span>
-                                            <div>
-                                              <span className="font-semibold text-green-800">{trial.name}</span>
-                                              <p className="text-gray-600 text-xs">{trial.desc}</p>
-                                            </div>
-                                          </div>
-                                        ))}
-                                        {needsInfoTrials.map(trial => (
-                                          <div key={trial.id} className="flex items-start gap-2 text-sm">
-                                            <span className="text-amber-600 font-bold">?</span>
-                                            <div>
-                                              <span className="font-semibold text-amber-800">{trial.name}</span>
-                                              <span className="text-gray-500 text-xs ml-1">(needs more info)</span>
-                                              <p className="text-gray-600 text-xs">{trial.desc}</p>
-                                            </div>
-                                          </div>
-                                        ))}
-                                        <button
-                                          onClick={() => {
-                                            setTrialsCategory(telestrokeNote.diagnosisCategory);
-                                            setActiveTab('trials');
-                                          }}
-                                          className="mt-2 text-xs text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
-                                        >
-                                          <i data-lucide="external-link" className="w-3 h-3"></i>
-                                          View all {telestrokeNote.diagnosisCategory === 'ischemic' ? 'ischemic' : 'ICH'} trials →
-                                        </button>
-                                      </div>
-                                    );
-                                  })()}
+                              {/* Active Trials List - Show for Ischemic or ICH */}
+                              {telestrokeNote.diagnosisCategory === 'ischemic' && (
+                                <div className="mt-3 text-sm">
+                                  <div className="font-medium text-gray-700 mb-1">Active Ischemic Stroke Trials:</div>
+                                  <ul className="text-gray-600 space-y-0.5 ml-4">
+                                    <li>• <strong>SISTER</strong> – Late thrombolysis (4.5-24h), no TNK/EVT</li>
+                                    <li>• <strong>STEP-EVT</strong> – Mild LVO or medium/distal vessel occlusions</li>
+                                    <li>• <strong>PICASSO</strong> – Tandem lesion (carotid + intracranial LVO)</li>
+                                    <li>• <strong>TESTED</strong> – EVT in pre-existing disability (mRS 3-4)</li>
+                                    <li>• <strong>VERIFY</strong> – TMS/MRI to predict motor recovery</li>
+                                    <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-stroke</li>
+                                  </ul>
+                                </div>
+                              )}
+                              {telestrokeNote.diagnosisCategory === 'ich' && (
+                                <div className="mt-3 text-sm">
+                                  <div className="font-medium text-gray-700 mb-1">Active ICH Trials:</div>
+                                  <ul className="text-gray-600 space-y-0.5 ml-4">
+                                    <li>• <strong>FASTEST</strong> – rFVIIa within 2h for hematoma expansion</li>
+                                    <li>• <strong>SATURN</strong> – Statin continuation vs stop after lobar ICH</li>
+                                    <li>• <strong>ASPIRE</strong> – Apixaban vs aspirin post-ICH with AF</li>
+                                    <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-stroke</li>
+                                  </ul>
                                 </div>
                               )}
                             </div>
