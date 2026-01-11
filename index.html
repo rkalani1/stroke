@@ -4132,7 +4132,7 @@ Rizwan Kalani MD`));
               try {
                 const savedTab = localStorage.getItem('activeTab');
                 // 3 Consolidated Tabs - internal values that map to combined tabs
-                const validTabs = ['encounter', 'ich', 'protocols', 'calculators', 'evidence'];
+                const validTabs = ['encounter', 'ich', 'protocols', 'calculators', 'evidence', 'trials'];
                 if (savedTab && savedTab !== 'null' && savedTab !== 'undefined' && validTabs.includes(savedTab.replace(/"/g, ''))) {
                   setActiveTab(savedTab.replace(/"/g, ''));
                 }
@@ -4770,16 +4770,18 @@ TO DO:
                   {activeTab === 'protocols' && 'Management Protocols'}
                   {activeTab === 'calculators' && 'Calculators'}
                   {activeTab === 'evidence' && 'References'}
+                  {activeTab === 'trials' && 'Clinical Trials'}
                 </span>
               </div>
 
-              {/* Navigation Tabs - Desktop Only - 3 Consolidated Tabs (Trials moved to sidebar) */}
+              {/* Navigation Tabs - Desktop Only - 4 Tabs including Trials */}
               <div className="border-b border-gray-200 mb-4 sm:mb-6 pb-2 hidden md:block" role="navigation" aria-label="Main navigation">
                 <nav className="flex flex-wrap justify-center gap-2 md:justify-around md:gap-0" role="tablist">
                   {[
                     { id: 'encounter', name: '⚡ Encounter', icon: 'activity' },
                     { id: 'ich-management', name: 'Management', icon: 'file-text' },
-                    { id: 'calc-refs', name: 'Calculators & Refs', icon: 'calculator' }
+                    { id: 'calc-refs', name: 'Calculators & Refs', icon: 'calculator' },
+                    { id: 'trials', name: '🔬 Trials', icon: 'flask-conical' }
                   ].map(tab => {
                     // Map combined tabs to check active state
                     const isActive = tab.id === 'ich-management'
@@ -10870,6 +10872,582 @@ Rizwan Kalani MD`);
                 )}
                 {/* End Calculators & References Combined Tab */}
 
+                {/* ============================================ */}
+                {/* CLINICAL TRIALS TAB                          */}
+                {/* ============================================ */}
+                {activeTab === 'trials' && (
+                  <div className="space-y-6">
+                    {/* Header */}
+                    <div className="bg-gradient-to-r from-indigo-600 to-purple-700 text-white rounded-lg p-6 shadow-lg">
+                      <div className="flex items-center gap-3 mb-2">
+                        <i data-lucide="flask-conical" className="w-8 h-8"></i>
+                        <h2 className="text-2xl font-bold">Active Clinical Trials</h2>
+                      </div>
+                      <p className="text-indigo-100">
+                        Ongoing stroke trials available for patient enrollment. Patient eligibility is automatically screened based on entered data.
+                      </p>
+                    </div>
+
+                    {/* Patient Eligibility Summary */}
+                    {Object.keys(trialEligibility).length > 0 && (
+                      <div className="bg-white border-2 border-indigo-200 rounded-lg p-4">
+                        <h3 className="font-bold text-lg text-indigo-900 mb-3 flex items-center gap-2">
+                          <i data-lucide="user-check" className="w-5 h-5"></i>
+                          Patient Eligibility Screening
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
+                            <div className="text-2xl font-bold text-green-600">
+                              {Object.values(trialEligibility).filter(t => t?.status === 'eligible').length}
+                            </div>
+                            <div className="text-sm text-green-700">Potentially Eligible</div>
+                          </div>
+                          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-center">
+                            <div className="text-2xl font-bold text-yellow-600">
+                              {Object.values(trialEligibility).filter(t => t?.status === 'needs_info').length}
+                            </div>
+                            <div className="text-sm text-yellow-700">Needs More Info</div>
+                          </div>
+                          <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center">
+                            <div className="text-2xl font-bold text-gray-600">
+                              {Object.values(trialEligibility).filter(t => t?.status === 'not_eligible').length}
+                            </div>
+                            <div className="text-sm text-gray-700">Not Eligible</div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Ischemic Stroke Trials */}
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-bold text-blue-900 flex items-center gap-2 border-b-2 border-blue-200 pb-2">
+                        <i data-lucide="brain" className="w-6 h-6"></i>
+                        Ischemic Stroke Trials
+                      </h3>
+
+                      {/* SISTER Trial */}
+                      <div className={`bg-white rounded-lg border-2 shadow-md overflow-hidden ${
+                        trialEligibility.SISTER?.status === 'eligible' ? 'border-green-400' :
+                        trialEligibility.SISTER?.status === 'needs_info' ? 'border-yellow-400' : 'border-gray-200'
+                      }`}>
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 border-b">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h4 className="font-bold text-lg text-gray-900">SISTER Trial</h4>
+                              <p className="text-sm text-gray-600">Late Thrombolysis for Anterior Circulation Stroke</p>
+                              <a href="https://clinicaltrials.gov/study/NCT05948566" target="_blank" rel="noopener noreferrer"
+                                className="text-xs text-blue-600 hover:underline flex items-center gap-1 mt-1">
+                                <i data-lucide="external-link" className="w-3 h-3"></i>
+                                NCT05948566
+                              </a>
+                            </div>
+                            {trialEligibility.SISTER && (
+                              <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                trialEligibility.SISTER.status === 'eligible' ? 'bg-green-100 text-green-700' :
+                                trialEligibility.SISTER.status === 'needs_info' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-gray-100 text-gray-600'
+                              }`}>
+                                {trialEligibility.SISTER.status === 'eligible' ? '✓ May Qualify' :
+                                 trialEligibility.SISTER.status === 'needs_info' ? '? Needs Info' : '✗ Not Eligible'}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="p-4 space-y-3">
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Looking For:</h5>
+                            <ul className="text-sm text-gray-600 list-disc list-inside space-y-1">
+                              <li>Anterior circulation stroke</li>
+                              <li>Late presenter (4.5-24h from LKW)</li>
+                              <li>NOT getting TNK or EVT</li>
+                              <li>Has salvageable tissue on CTP (mismatch profile)</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Key Inclusion Criteria:</h5>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                              <div className="bg-blue-50 rounded p-2">Age ≥18</div>
+                              <div className="bg-blue-50 rounded p-2">NIHSS ≥6 (or 4-5 if disabling)</div>
+                              <div className="bg-blue-50 rounded p-2">Pre-stroke mRS ≤2</div>
+                              <div className="bg-blue-50 rounded p-2">ASPECTS ≥6</div>
+                              <div className="bg-blue-50 rounded p-2">4.5-24h from LKW</div>
+                              <div className="bg-blue-50 rounded p-2">No IV TNK</div>
+                              <div className="bg-blue-50 rounded p-2">No EVT planned</div>
+                              <div className="bg-blue-50 rounded p-2">CTP mismatch</div>
+                            </div>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-red-700 mb-1">Key Exclusions:</h5>
+                            <div className="text-xs text-gray-600">Prior stroke &lt;90d, Prior ICH, On anticoagulation</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* STEP-EVT Trial */}
+                      <div className={`bg-white rounded-lg border-2 shadow-md overflow-hidden ${
+                        trialEligibility.STEP?.status === 'eligible' ? 'border-green-400' :
+                        trialEligibility.STEP?.status === 'needs_info' ? 'border-yellow-400' : 'border-gray-200'
+                      }`}>
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 border-b">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h4 className="font-bold text-lg text-gray-900">STEP-EVT Trial</h4>
+                              <p className="text-sm text-gray-600">Adaptive Platform for Mild LVO or Medium/Distal Vessel Occlusions</p>
+                              <a href="https://clinicaltrials.gov/study/NCT06289985" target="_blank" rel="noopener noreferrer"
+                                className="text-xs text-blue-600 hover:underline flex items-center gap-1 mt-1">
+                                <i data-lucide="external-link" className="w-3 h-3"></i>
+                                NCT06289985
+                              </a>
+                            </div>
+                            {trialEligibility.STEP && (
+                              <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                trialEligibility.STEP.status === 'eligible' ? 'bg-green-100 text-green-700' :
+                                trialEligibility.STEP.status === 'needs_info' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-gray-100 text-gray-600'
+                              }`}>
+                                {trialEligibility.STEP.status === 'eligible' ? '✓ May Qualify' :
+                                 trialEligibility.STEP.status === 'needs_info' ? '? Needs Info' : '✗ Not Eligible'}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="p-4 space-y-3">
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Looking For (Two Domains):</h5>
+                            <ul className="text-sm text-gray-600 list-disc list-inside space-y-1">
+                              <li><strong>Domain 1:</strong> Low NIHSS (0-5) with ICA or M1 occlusion</li>
+                              <li><strong>Domain 2:</strong> Medium/Distal Vessel Occlusion (M2/M3/M4, A1-A3, P1-P3)</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Key Inclusion Criteria:</h5>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                              <div className="bg-blue-50 rounded p-2">Age ≥18</div>
+                              <div className="bg-blue-50 rounded p-2">Within 24h from LKW</div>
+                              <div className="bg-blue-50 rounded p-2">Pre-stroke mRS ≤2</div>
+                              <div className="bg-blue-50 rounded p-2">LVO or MeVO present</div>
+                            </div>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-red-700 mb-1">Key Exclusions:</h5>
+                            <div className="text-xs text-gray-600">Pregnancy, Evidence of hemorrhage</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* PICASSO Trial */}
+                      <div className={`bg-white rounded-lg border-2 shadow-md overflow-hidden ${
+                        trialEligibility.PICASSO?.status === 'eligible' ? 'border-green-400' :
+                        trialEligibility.PICASSO?.status === 'needs_info' ? 'border-yellow-400' : 'border-gray-200'
+                      }`}>
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 border-b">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h4 className="font-bold text-lg text-gray-900">PICASSO Trial</h4>
+                              <p className="text-sm text-gray-600">Tandem Lesion: Carotid Stenosis + Intracranial LVO</p>
+                              <a href="https://clinicaltrials.gov/study/NCT05611242" target="_blank" rel="noopener noreferrer"
+                                className="text-xs text-blue-600 hover:underline flex items-center gap-1 mt-1">
+                                <i data-lucide="external-link" className="w-3 h-3"></i>
+                                NCT05611242
+                              </a>
+                            </div>
+                            {trialEligibility.PICASSO && (
+                              <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                trialEligibility.PICASSO.status === 'eligible' ? 'bg-green-100 text-green-700' :
+                                trialEligibility.PICASSO.status === 'needs_info' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-gray-100 text-gray-600'
+                              }`}>
+                                {trialEligibility.PICASSO.status === 'eligible' ? '✓ May Qualify' :
+                                 trialEligibility.PICASSO.status === 'needs_info' ? '? Needs Info' : '✗ Not Eligible'}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="p-4 space-y-3">
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Looking For:</h5>
+                            <ul className="text-sm text-gray-600 list-disc list-inside space-y-1">
+                              <li>Tandem lesion (carotid + intracranial)</li>
+                              <li>Extracranial ICA stenosis 70-100%</li>
+                              <li>Plus intracranial LVO (ICA-T, M1, proximal M2)</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Key Inclusion Criteria:</h5>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                              <div className="bg-blue-50 rounded p-2">Age 18-79</div>
+                              <div className="bg-blue-50 rounded p-2">Within 16h from LKW</div>
+                              <div className="bg-blue-50 rounded p-2">NIHSS ≥4</div>
+                              <div className="bg-blue-50 rounded p-2">Pre-stroke mRS 0-2</div>
+                              <div className="bg-blue-50 rounded p-2">ASPECTS ≥7</div>
+                              <div className="bg-blue-50 rounded p-2">Tandem lesion present</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* TESTED Trial */}
+                      <div className={`bg-white rounded-lg border-2 shadow-md overflow-hidden ${
+                        trialEligibility.TESTED?.status === 'eligible' ? 'border-green-400' :
+                        trialEligibility.TESTED?.status === 'needs_info' ? 'border-yellow-400' : 'border-gray-200'
+                      }`}>
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 border-b">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h4 className="font-bold text-lg text-gray-900">TESTED</h4>
+                              <p className="text-sm text-gray-600">EVT in Patients with Pre-Existing Disability (mRS 3-4)</p>
+                              <a href="https://clinicaltrials.gov/study/NCT05911568" target="_blank" rel="noopener noreferrer"
+                                className="text-xs text-blue-600 hover:underline flex items-center gap-1 mt-1">
+                                <i data-lucide="external-link" className="w-3 h-3"></i>
+                                NCT05911568
+                              </a>
+                            </div>
+                            {trialEligibility.TESTED && (
+                              <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                trialEligibility.TESTED.status === 'eligible' ? 'bg-green-100 text-green-700' :
+                                trialEligibility.TESTED.status === 'needs_info' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-gray-100 text-gray-600'
+                              }`}>
+                                {trialEligibility.TESTED.status === 'eligible' ? '✓ May Qualify' :
+                                 trialEligibility.TESTED.status === 'needs_info' ? '? Needs Info' : '✗ Not Eligible'}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="p-4 space-y-3">
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Looking For:</h5>
+                            <ul className="text-sm text-gray-600 list-disc list-inside space-y-1">
+                              <li>Patient with EXISTING disability (mRS 3-4)</li>
+                              <li>LVO stroke within 24h</li>
+                              <li>ASPECTS ≥3</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Key Inclusion Criteria:</h5>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                              <div className="bg-blue-50 rounded p-2">Age ≥18</div>
+                              <div className="bg-blue-50 rounded p-2">Pre-stroke mRS 3-4</div>
+                              <div className="bg-blue-50 rounded p-2">NIHSS ≥6</div>
+                              <div className="bg-blue-50 rounded p-2">Within 24h from LKW</div>
+                              <div className="bg-blue-50 rounded p-2">ASPECTS ≥3</div>
+                              <div className="bg-blue-50 rounded p-2">LVO (ICA, M1, M2)</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* VERIFY Study */}
+                      <div className={`bg-white rounded-lg border-2 shadow-md overflow-hidden ${
+                        trialEligibility.VERIFY?.status === 'eligible' ? 'border-green-400' :
+                        trialEligibility.VERIFY?.status === 'needs_info' ? 'border-yellow-400' : 'border-gray-200'
+                      }`}>
+                        <div className="bg-gradient-to-r from-green-50 to-teal-50 p-4 border-b">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <h4 className="font-bold text-lg text-gray-900">VERIFY Study</h4>
+                                <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded">Observational</span>
+                              </div>
+                              <p className="text-sm text-gray-600">TMS/MRI to Predict Motor Recovery</p>
+                              <a href="https://clinicaltrials.gov/study/NCT05338697" target="_blank" rel="noopener noreferrer"
+                                className="text-xs text-blue-600 hover:underline flex items-center gap-1 mt-1">
+                                <i data-lucide="external-link" className="w-3 h-3"></i>
+                                NCT05338697
+                              </a>
+                            </div>
+                            {trialEligibility.VERIFY && (
+                              <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                trialEligibility.VERIFY.status === 'eligible' ? 'bg-green-100 text-green-700' :
+                                trialEligibility.VERIFY.status === 'needs_info' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-gray-100 text-gray-600'
+                              }`}>
+                                {trialEligibility.VERIFY.status === 'eligible' ? '✓ May Qualify' :
+                                 trialEligibility.VERIFY.status === 'needs_info' ? '? Needs Info' : '✗ Not Eligible'}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="p-4 space-y-3">
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Looking For:</h5>
+                            <ul className="text-sm text-gray-600 list-disc list-inside space-y-1">
+                              <li>Acute ischemic stroke within 7 days</li>
+                              <li>Upper extremity weakness</li>
+                              <li>Inpatient enrollment opportunity</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Key Inclusion Criteria:</h5>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs">
+                              <div className="bg-green-50 rounded p-2">Age ≥18</div>
+                              <div className="bg-green-50 rounded p-2">Pre-stroke mRS ≤2</div>
+                              <div className="bg-green-50 rounded p-2">Upper extremity weakness</div>
+                            </div>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-red-700 mb-1">Key Exclusions:</h5>
+                            <div className="text-xs text-gray-600">History of seizures, Implanted devices (pacemaker, etc.)</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* DISCOVERY Study */}
+                      <div className={`bg-white rounded-lg border-2 shadow-md overflow-hidden ${
+                        trialEligibility.DISCOVERY?.status === 'eligible' ? 'border-green-400' :
+                        trialEligibility.DISCOVERY?.status === 'needs_info' ? 'border-yellow-400' : 'border-gray-200'
+                      }`}>
+                        <div className="bg-gradient-to-r from-green-50 to-teal-50 p-4 border-b">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <h4 className="font-bold text-lg text-gray-900">DISCOVERY Study</h4>
+                                <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded">Observational</span>
+                              </div>
+                              <p className="text-sm text-gray-600">Cognitive Trajectories Post-Stroke</p>
+                              <a href="https://clinicaltrials.gov/study/NCT04916210" target="_blank" rel="noopener noreferrer"
+                                className="text-xs text-blue-600 hover:underline flex items-center gap-1 mt-1">
+                                <i data-lucide="external-link" className="w-3 h-3"></i>
+                                NCT04916210
+                              </a>
+                            </div>
+                            {trialEligibility.DISCOVERY && (
+                              <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                trialEligibility.DISCOVERY.status === 'eligible' ? 'bg-green-100 text-green-700' :
+                                trialEligibility.DISCOVERY.status === 'needs_info' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-gray-100 text-gray-600'
+                              }`}>
+                                {trialEligibility.DISCOVERY.status === 'eligible' ? '✓ May Qualify' :
+                                 trialEligibility.DISCOVERY.status === 'needs_info' ? '? Needs Info' : '✗ Not Eligible'}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="p-4 space-y-3">
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Looking For:</h5>
+                            <ul className="text-sm text-gray-600 list-disc list-inside space-y-1">
+                              <li>Any stroke type (AIS, ICH, SAH)</li>
+                              <li>Baseline visit within 6 weeks</li>
+                              <li>Able to complete cognitive testing</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Key Inclusion Criteria:</h5>
+                            <div className="grid grid-cols-2 gap-2 text-xs">
+                              <div className="bg-green-50 rounded p-2">Age ≥18</div>
+                              <div className="bg-green-50 rounded p-2">Stroke confirmed</div>
+                            </div>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-red-700 mb-1">Key Exclusions:</h5>
+                            <div className="text-xs text-gray-600">Pre-existing dementia</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* ICH Trials */}
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-bold text-red-900 flex items-center gap-2 border-b-2 border-red-200 pb-2">
+                        <i data-lucide="droplet" className="w-6 h-6"></i>
+                        Intracerebral Hemorrhage (ICH) Trials
+                      </h3>
+
+                      {/* SATURN Trial */}
+                      <div className={`bg-white rounded-lg border-2 shadow-md overflow-hidden ${
+                        trialEligibility.SATURN?.status === 'eligible' ? 'border-green-400' :
+                        trialEligibility.SATURN?.status === 'needs_info' ? 'border-yellow-400' : 'border-gray-200'
+                      }`}>
+                        <div className="bg-gradient-to-r from-red-50 to-orange-50 p-4 border-b">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h4 className="font-bold text-lg text-gray-900">SATURN Trial</h4>
+                              <p className="text-sm text-gray-600">Statin Continuation vs Discontinuation After Lobar ICH</p>
+                              <a href="https://clinicaltrials.gov/study/NCT03936361" target="_blank" rel="noopener noreferrer"
+                                className="text-xs text-blue-600 hover:underline flex items-center gap-1 mt-1">
+                                <i data-lucide="external-link" className="w-3 h-3"></i>
+                                NCT03936361
+                              </a>
+                            </div>
+                            {trialEligibility.SATURN && (
+                              <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                trialEligibility.SATURN.status === 'eligible' ? 'bg-green-100 text-green-700' :
+                                trialEligibility.SATURN.status === 'needs_info' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-gray-100 text-gray-600'
+                              }`}>
+                                {trialEligibility.SATURN.status === 'eligible' ? '✓ May Qualify' :
+                                 trialEligibility.SATURN.status === 'needs_info' ? '? Needs Info' : '✗ Not Eligible'}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="p-4 space-y-3">
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Looking For:</h5>
+                            <ul className="text-sm text-gray-600 list-disc list-inside space-y-1">
+                              <li>Lobar ICH (NOT deep/basal ganglia)</li>
+                              <li>Already on statin therapy at ICH onset</li>
+                              <li>Age ≥50</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Key Inclusion Criteria:</h5>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                              <div className="bg-red-50 rounded p-2">Age ≥50</div>
+                              <div className="bg-red-50 rounded p-2">Lobar ICH location</div>
+                              <div className="bg-red-50 rounded p-2">On statin at onset</div>
+                              <div className="bg-red-50 rounded p-2">mRS ≤4 at randomization</div>
+                            </div>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-red-700 mb-1">Key Exclusions:</h5>
+                            <div className="text-xs text-gray-600">Deep/non-lobar ICH, Recent MI &lt;3 months</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* ASPIRE Trial */}
+                      <div className={`bg-white rounded-lg border-2 shadow-md overflow-hidden ${
+                        trialEligibility.ASPIRE?.status === 'eligible' ? 'border-green-400' :
+                        trialEligibility.ASPIRE?.status === 'needs_info' ? 'border-yellow-400' : 'border-gray-200'
+                      }`}>
+                        <div className="bg-gradient-to-r from-red-50 to-orange-50 p-4 border-b">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h4 className="font-bold text-lg text-gray-900">ASPIRE Trial</h4>
+                              <p className="text-sm text-gray-600">Apixaban vs Aspirin Post-ICH in Atrial Fibrillation</p>
+                              <a href="https://clinicaltrials.gov/study/NCT03907046" target="_blank" rel="noopener noreferrer"
+                                className="text-xs text-blue-600 hover:underline flex items-center gap-1 mt-1">
+                                <i data-lucide="external-link" className="w-3 h-3"></i>
+                                NCT03907046
+                              </a>
+                            </div>
+                            {trialEligibility.ASPIRE && (
+                              <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                trialEligibility.ASPIRE.status === 'eligible' ? 'bg-green-100 text-green-700' :
+                                trialEligibility.ASPIRE.status === 'needs_info' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-gray-100 text-gray-600'
+                              }`}>
+                                {trialEligibility.ASPIRE.status === 'eligible' ? '✓ May Qualify' :
+                                 trialEligibility.ASPIRE.status === 'needs_info' ? '? Needs Info' : '✗ Not Eligible'}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="p-4 space-y-3">
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Looking For:</h5>
+                            <ul className="text-sm text-gray-600 list-disc list-inside space-y-1">
+                              <li>ICH patient with atrial fibrillation</li>
+                              <li>Randomize 14-180 days post-ICH</li>
+                              <li>CHA₂DS₂-VASc ≥2</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Key Inclusion Criteria:</h5>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                              <div className="bg-red-50 rounded p-2">Age ≥18</div>
+                              <div className="bg-red-50 rounded p-2">ICH confirmed</div>
+                              <div className="bg-red-50 rounded p-2">Atrial fibrillation</div>
+                              <div className="bg-red-50 rounded p-2">mRS ≤4</div>
+                            </div>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-red-700 mb-1">Key Exclusions:</h5>
+                            <div className="text-xs text-gray-600">Mechanical heart valve</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* FASTEST Trial */}
+                      <div className={`bg-white rounded-lg border-2 shadow-md overflow-hidden ${
+                        trialEligibility.FASTEST?.status === 'eligible' ? 'border-green-400' :
+                        trialEligibility.FASTEST?.status === 'needs_info' ? 'border-yellow-400' : 'border-gray-200'
+                      }`}>
+                        <div className="bg-gradient-to-r from-red-50 to-orange-50 p-4 border-b">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h4 className="font-bold text-lg text-gray-900">FASTEST Trial</h4>
+                              <p className="text-sm text-gray-600">rFVIIa Within 2 Hours of ICH Onset</p>
+                              <a href="https://clinicaltrials.gov/study/NCT03496883" target="_blank" rel="noopener noreferrer"
+                                className="text-xs text-blue-600 hover:underline flex items-center gap-1 mt-1">
+                                <i data-lucide="external-link" className="w-3 h-3"></i>
+                                NCT03496883
+                              </a>
+                            </div>
+                            {trialEligibility.FASTEST && (
+                              <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                trialEligibility.FASTEST.status === 'eligible' ? 'bg-green-100 text-green-700' :
+                                trialEligibility.FASTEST.status === 'needs_info' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-gray-100 text-gray-600'
+                              }`}>
+                                {trialEligibility.FASTEST.status === 'eligible' ? '✓ May Qualify' :
+                                 trialEligibility.FASTEST.status === 'needs_info' ? '? Needs Info' : '✗ Not Eligible'}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="p-4 space-y-3">
+                          <div className="bg-amber-50 border border-amber-300 rounded-lg p-3 mb-2">
+                            <div className="flex items-center gap-2 text-amber-800 font-semibold text-sm">
+                              <i data-lucide="clock" className="w-4 h-4"></i>
+                              Critical Time Window: Within 2 HOURS of symptom onset
+                            </div>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Looking For:</h5>
+                            <ul className="text-sm text-gray-600 list-disc list-inside space-y-1">
+                              <li>Acute ICH within 2 hours of symptom onset</li>
+                              <li>Hematoma volume 2-60 mL</li>
+                              <li>Not on anticoagulants</li>
+                              <li>Age 18-80</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-gray-700 mb-1">Key Inclusion Criteria:</h5>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                              <div className="bg-red-50 rounded p-2">Age 18-80</div>
+                              <div className="bg-red-50 rounded p-2">ICH confirmed</div>
+                              <div className="bg-red-50 rounded p-2">Within 2h of onset</div>
+                              <div className="bg-red-50 rounded p-2">Hematoma 2-60 mL</div>
+                              <div className="bg-red-50 rounded p-2">Not on anticoagulants</div>
+                              <div className="bg-red-50 rounded p-2">GCS ≥8</div>
+                              <div className="bg-red-50 rounded p-2">Pre-stroke mRS ≤2</div>
+                            </div>
+                          </div>
+                          <div>
+                            <h5 className="font-semibold text-sm text-red-700 mb-1">Key Exclusions:</h5>
+                            <div className="text-xs text-gray-600">On anticoagulation, IVH score &gt;7, Brainstem hemorrhage, Secondary ICH (trauma, AVM, tumor)</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Trial Contact Info */}
+                    <div className="bg-gradient-to-r from-slate-50 to-slate-100 border border-slate-200 rounded-lg p-4">
+                      <h4 className="font-bold text-slate-800 mb-2 flex items-center gap-2">
+                        <i data-lucide="info" className="w-5 h-5"></i>
+                        Trial Enrollment Information
+                      </h4>
+                      <p className="text-sm text-slate-600 mb-3">
+                        For trial enrollment inquiries, contact the UW Stroke Research Team or the local site coordinator at the patient's hospital.
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        <a href="tel:+12067446789" className="inline-flex items-center gap-1 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                          <i data-lucide="phone" className="w-4 h-4"></i>
+                          Stroke Research
+                        </a>
+                        <a href="mailto:stroketrials@uw.edu" className="inline-flex items-center gap-1 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                          <i data-lucide="mail" className="w-4 h-4"></i>
+                          Email Team
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {/* End Clinical Trials Tab */}
+
               </div>
 
               {/* Emergency Contacts FAB - Floating Action Button */}
@@ -11006,13 +11584,14 @@ Rizwan Kalani MD`);
                 </div>
               )}
 
-              {/* Mobile Bottom Navigation - Only visible on small screens - 3 Consolidated Tabs (Trials in sidebar) */}
+              {/* Mobile Bottom Navigation - Only visible on small screens - 4 Tabs including Trials */}
               <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 shadow-lg z-50 pb-safe">
-                <div className="flex justify-around items-center px-2 py-2">
+                <div className="flex justify-around items-center px-1 py-2">
                   {[
                     { id: 'encounter', name: 'Encounter', icon: 'activity' },
-                    { id: 'ich-management', name: 'Management', icon: 'file-text' },
-                    { id: 'calc-refs', name: 'Calc & Refs', icon: 'calculator' }
+                    { id: 'ich-management', name: 'Mgmt', icon: 'file-text' },
+                    { id: 'calc-refs', name: 'Calc', icon: 'calculator' },
+                    { id: 'trials', name: 'Trials', icon: 'flask-conical' }
                   ].map((tab) => {
                     // Map combined tabs to check active state
                     const isActive = tab.id === 'ich-management'
