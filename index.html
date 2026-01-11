@@ -4703,19 +4703,10 @@ TO DO:
                           Video Telestroke
                         </button>
                       </div>
-                      {/* Type description */}
-                      <div className="mt-3 text-sm text-slate-600">
-                        {consultationType === 'telephone' && (
-                          <span><strong>Telephone Consult:</strong> Brief phone consultation - minimal documentation</span>
-                        )}
-                        {consultationType === 'videoTelestroke' && (
-                          <span><strong>Video Telestroke:</strong> Full acute stroke evaluation with complete documentation</span>
-                        )}
-                      </div>
                     </div>
 
-                    {/* Quick Links - Only show for Video Telestroke */}
-                    {consultationType === 'videoTelestroke' && (
+                    {/* Quick Links - Show for both consultation types */}
+                    {consultationType && (
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <div className="flex flex-col sm:flex-row gap-3">
                         <a
