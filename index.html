@@ -2644,37 +2644,6 @@ Rizwan Kalani MD`));
             return counts;
           };
 
-          // Generate trial eligibility text for notes (Pulsara, Epic)
-          const getTrialEligibilityForNote = () => {
-            const eligibleTrials = [];
-            const needsInfoTrials = [];
-
-            Object.entries(trialEligibility).forEach(([trialId, result]) => {
-              if (!result) return;
-              const config = TRIAL_ELIGIBILITY_CONFIG[trialId];
-              if (!config) return;
-
-              if (result.status === 'eligible') {
-                eligibleTrials.push(config.name.replace(' Trial', ''));
-              } else if (result.status === 'needs_info') {
-                needsInfoTrials.push(config.name.replace(' Trial', ''));
-              }
-            });
-
-            if (eligibleTrials.length === 0 && needsInfoTrials.length === 0) {
-              return 'Clinical Trial Screening: No trial eligibility identified.';
-            }
-
-            let text = 'Clinical Trial Screening: ';
-            if (eligibleTrials.length > 0) {
-              text += `Potentially eligible for ${eligibleTrials.join(', ')}. `;
-            }
-            if (needsInfoTrials.length > 0) {
-              text += `May qualify for ${needsInfoTrials.join(', ')} (additional info needed).`;
-            }
-            return text.trim();
-          };
-
           // Generate shift sign-out summary for handoffs
           const generateShiftSignOut = () => {
             if (shiftPatients.length === 0) {
@@ -7041,25 +7010,6 @@ TO DO:
                               );
                             })()}
 
-                            {/* Contextual Trial Consideration Hint */}
-                            {(() => {
-                              const eligibleTrials = Object.entries(trialEligibility)
-                                .filter(([_, t]) => t?.status === 'eligible' || t?.status === 'needs_info');
-                              if (eligibleTrials.length === 0) return null;
-                              return (
-                                <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
-                                  <div className="flex items-center gap-2 text-sm">
-                                    <span className="text-indigo-700 font-medium">🔬 Trial Consideration:</span>
-                                    <span className="text-indigo-600">
-                                      {eligibleTrials.filter(([_, t]) => t?.status === 'eligible').length > 0
-                                        ? `Patient may qualify for ${eligibleTrials.filter(([_, t]) => t?.status === 'eligible').map(([id]) => TRIAL_ELIGIBILITY_CONFIG[id]?.name.replace(' Trial', '')).join(', ')}`
-                                        : 'Check trial eligibility in sidebar →'}
-                                    </span>
-                                  </div>
-                                </div>
-                              );
-                            })()}
-
                             <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                               <input
                                 type="checkbox"
@@ -7605,9 +7555,7 @@ TO DO:
                               </button>
                               <button
                                 onClick={() => {
-                                  let note = generateTelestrokeNote();
-                                  // Append trial eligibility screening
-                                  note += `\n\n${getTrialEligibilityForNote()}`;
+                                  const note = generateTelestrokeNote();
                                   navigator.clipboard.writeText(note);
                                   setCopiedText('encounter-note');
                                   setTimeout(() => setCopiedText(''), 2000);
