@@ -11661,16 +11661,12 @@ Clinician Name`);
                 {/* FAB Button */}
                 <button
                   onClick={() => setFabExpanded(!fabExpanded)}
-                  className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 ${
-                    fabExpanded
-                      ? 'bg-gray-600 hover:bg-gray-700 rotate-45'
-                      : 'bg-gradient-to-br from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 animate-pulse'
-                  }`}
-                  aria-label={fabExpanded ? "Close emergency contacts" : "Open emergency contacts"}
+                  className="w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 bg-gradient-to-br from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 animate-pulse"
+                  aria-label="Toggle emergency contacts"
                   aria-expanded={fabExpanded}
                   title="Emergency Contacts"
                 >
-                  <i data-lucide={fabExpanded ? "x" : "phone"} className="w-6 h-6 text-white"></i>
+                  <i data-lucide="phone" className="w-6 h-6 text-white"></i>
                 </button>
 
                 {/* Tooltip when collapsed */}
