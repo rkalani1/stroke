@@ -21,10 +21,9 @@ Example:
 }
 ```
 
-If `config.local.json` is missing, institution links are disabled. Invalid JSON shows a warning in the About/Settings panel.
+If `config.local.json` is missing, institution links are disabled. Invalid JSON shows a warning in the Privacy & Settings card in Encounter.
 
 ## Deep links
-- `#/home`
 - `#/encounter`
 - `#/ich`
 - `#/management`

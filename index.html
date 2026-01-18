@@ -75,18 +75,11 @@
             padding: 0.35rem;
         }
 
-        .home-hero {
-            background: linear-gradient(130deg, rgba(37, 99, 235, 0.12), rgba(14, 116, 144, 0.08));
-            border-color: rgba(37, 99, 235, 0.2);
-        }
-
-        .quick-card,
         .tool-card {
             box-shadow: var(--card-shadow);
             border-color: rgba(15, 23, 42, 0.08);
             transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
         }
-        .quick-card:hover,
         .tool-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 16px 36px rgba(15, 23, 42, 0.14);
@@ -128,11 +121,6 @@
             border-color: rgba(148, 163, 184, 0.2);
             box-shadow: 0 10px 24px rgba(2, 6, 23, 0.35);
         }
-        .dark .home-hero {
-            background: linear-gradient(130deg, rgba(59, 130, 246, 0.2), rgba(14, 116, 144, 0.12));
-            border-color: rgba(148, 163, 184, 0.2);
-        }
-        .dark .quick-card,
         .dark .tool-card {
             border-color: rgba(148, 163, 184, 0.2);
             box-shadow: 0 16px 30px rgba(2, 6, 23, 0.4);
@@ -511,7 +499,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = 'v2.3.1-home-tools-privacy'; // Increment this with each deployment
+            const APP_VERSION = 'v2.3.2'; // Increment this with each deployment
             const STORAGE_PREFIX = 'strokeApp:';
             const LEGACY_KEYS = [
                 'app_version',
@@ -852,13 +840,13 @@
           : DEFAULT_TTL_HOURS;
         const INITIAL_STORAGE_EXPIRED = applyStorageExpiration(initialTtlHours);
 
-        const VALID_TABS = ['home', 'encounter', 'ich', 'protocols', 'calculators', 'trials', 'evidence', 'tools'];
+        const VALID_TABS = ['encounter', 'ich', 'protocols', 'calculators', 'trials', 'evidence', 'tools'];
 
         const parseHashRoute = (hash) => {
-          if (!hash) return null;
+          if (!hash) return { tab: 'encounter', tool: null };
           const cleaned = hash.replace(/^#\/?/, '').trim();
           if (!cleaned) {
-            return { tab: 'home', tool: null };
+            return { tab: 'encounter', tool: null };
           }
           const parts = cleaned.split('/').filter(Boolean);
           const root = parts[0];
@@ -866,7 +854,7 @@
 
           switch (root) {
             case 'home':
-              return { tab: 'home', tool: null };
+              return { tab: 'encounter', tool: null };
             case 'encounter':
               return { tab: 'encounter', tool: null };
             case 'ich':
@@ -892,8 +880,6 @@
 
         const buildHashRoute = (tab, tool) => {
           switch (tab) {
-            case 'home':
-              return '#/home';
             case 'encounter':
               return '#/encounter';
             case 'ich':
@@ -911,7 +897,7 @@
               if (tool === 'map') return '#/tools/map';
               return '#/tools';
             default:
-              return '#/home';
+              return '#/encounter';
           }
         };
 
@@ -1159,7 +1145,7 @@ Clinician Name`;
             }
           };
 
-          const [activeTab, setActiveTab] = useState('home');
+          const [activeTab, setActiveTab] = useState('encounter');
           const [activeToolsView, setActiveToolsView] = useState(null);
           const [routeReady, setRouteReady] = useState(false);
           const [notice, setNotice] = useState(null);
@@ -3611,7 +3597,7 @@ Clinician Name`;
 
           const navigateTo = (tab, options = {}) => {
             const { tool = null, clearSearch = false } = options;
-            const nextTab = tab || 'home';
+            const nextTab = tab || 'encounter';
 
             setActiveTab(nextTab);
             if (nextTab === 'tools') {
@@ -4128,7 +4114,7 @@ Clinician Name`;
 
             clearAllAppStorage();
             resetAppStateToDefaults({ resetDarkMode: true });
-            navigateTo('home');
+            navigateTo('encounter');
             showNotice('Local data cleared.', 'success');
           };
 
@@ -4555,7 +4541,7 @@ Clinician Name`;
           useEffect(() => {
             if (!storageExpired) return;
             resetAppStateToDefaults({ resetDarkMode: true });
-            navigateTo('home');
+            navigateTo('encounter');
             showNotice('Stored data expired and was cleared.', 'warning', { timeoutMs: 6000 });
           }, []);
 
@@ -4567,7 +4553,7 @@ Clinician Name`;
             if (expired) {
               setStorageExpired(true);
               resetAppStateToDefaults({ resetDarkMode: true });
-              navigateTo('home');
+              navigateTo('encounter');
               showNotice('Stored data expired and was cleared.', 'warning', { timeoutMs: 6000 });
             }
           }, [ttlHours, storageExpired, configLoaded]);
@@ -4579,7 +4565,7 @@ Clinician Name`;
             const resolveRoute = () => {
               if (storageExpired && !hasHandledExpiredRef.current) {
                 hasHandledExpiredRef.current = true;
-                setActiveTab('home');
+                setActiveTab('encounter');
                 setActiveToolsView(null);
                 return;
               }
@@ -4594,7 +4580,7 @@ Clinician Name`;
                 setActiveTab(savedTab);
                 setActiveToolsView(null);
               } else {
-                setActiveTab('home');
+                setActiveTab('encounter');
                 setActiveToolsView(null);
               }
             };
@@ -4751,12 +4737,11 @@ TO DO:
                 setSearchOpen(false);
               }
 
-              // Number keys 1-6 for tab navigation
-              // 3 Consolidated Tabs: Encounter, Management, Calculators & Refs
+              // Number keys for tab navigation
               const tabMap = {
                 '1': 'encounter',
-                '2': 'ich',         // Maps to Management tab
-                '3': 'calculators'  // Maps to Calculators & Refs tab
+                '2': 'protocols',
+                '3': 'calculators'
               };
 
               if (tabMap[e.key] && !e.metaKey && !e.ctrlKey && !e.altKey) {
@@ -4804,56 +4789,8 @@ TO DO:
           const toolsList = [toolsCatalog.clinic, toolsCatalog.map];
           const activeTool = activeToolsView ? toolsCatalog[activeToolsView] : null;
           const ttlDisplayHours = appConfig.ttlHoursOverride || DEFAULT_TTL_HOURS;
-          const showDocumentActions = activeTab !== 'home';
+          const showDocumentActions = true;
           const showEncounterActions = activeTab === 'encounter';
-
-          const quickStartItems = [
-            {
-              title: 'Telestroke Encounter',
-              description: 'Start the encounter workflow',
-              action: () => navigateTo('encounter')
-            },
-            {
-              title: 'ICH / Reversal',
-              description: 'ICH management and reversal guidance',
-              action: () => navigateTo('ich')
-            },
-            {
-              title: 'Thrombolysis / Lytic Eligibility',
-              description: 'Eligibility checks and timing',
-              action: () => navigateTo('encounter')
-            },
-            {
-              title: 'EVT / Thrombectomy Eligibility',
-              description: 'EVT criteria and timing windows',
-              action: () => navigateTo('encounter')
-            },
-            {
-              title: 'NIHSS',
-              description: 'NIH Stroke Scale scoring',
-              action: () => navigateTo('encounter')
-            },
-            {
-              title: 'Calculators Hub',
-              description: 'Risk scores and calculators',
-              action: () => navigateTo('calculators')
-            },
-            {
-              title: 'Trials',
-              description: 'Clinical trials and studies',
-              action: () => navigateTo('trials')
-            },
-            {
-              title: 'Tools: Clinic Questions',
-              description: 'Embedded clinic checklist',
-              action: () => navigateTo('tools', { tool: 'clinic' })
-            },
-            {
-              title: 'Tools: Regional Map',
-              description: 'Embedded coverage map',
-              action: () => navigateTo('tools', { tool: 'map' })
-            }
-          ];
 
           return (
             <div className="relative">
@@ -4875,50 +4812,48 @@ TO DO:
                     </h1>
                   </div>
                   <div className="flex w-full flex-col items-center justify-center gap-2 sm:w-auto sm:items-end sm:justify-end">
-                    {activeTab !== 'home' && (
-                      <div className="relative w-full sm:w-auto">
-                        <input
-                          type="text"
-                          placeholder="Search trials, calculators, evidence..."
-                          value={searchQuery}
-                          onChange={(e) => {
-                            setSearchQuery(e.target.value);
-                            setSearchOpen(true);
-                            setSearchContext('header');
-                          }}
-                          onFocus={() => {
-                            setSearchOpen(true);
-                            setSearchContext('header');
-                          }}
-                          onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
-                          className="pl-8 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-48 md:w-64"
-                          aria-label="Search clinical tools and protocols"
-                        />
-                        <i data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-gray-400"></i>
+                    <div className="relative w-full sm:w-auto">
+                      <input
+                        type="text"
+                        placeholder="Search trials, calculators, evidence..."
+                        value={searchQuery}
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value);
+                          setSearchOpen(true);
+                          setSearchContext('header');
+                        }}
+                        onFocus={() => {
+                          setSearchOpen(true);
+                          setSearchContext('header');
+                        }}
+                        onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
+                        className="pl-8 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-48 md:w-64"
+                        aria-label="Search clinical tools and protocols"
+                      />
+                      <i data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-gray-400"></i>
 
-                        {searchOpen && searchContext === 'header' && searchResults.length > 0 && (
-                          <div className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white shadow-lg rounded-lg border max-h-96 overflow-y-auto z-50">
-                            {searchResults.map((result, index) => (
-                              <button
-                                key={index}
-                                onClick={result.action}
-                                className="w-full text-left p-3 hover:bg-blue-50 border-b transition-colors"
-                              >
-                                <div className="flex items-start justify-between">
-                                  <div className="flex-1">
-                                    <p className="font-semibold text-sm">{result.title}</p>
-                                    {result.description && (
-                                      <p className="text-xs text-gray-600 mt-1">{result.description}</p>
-                                    )}
-                                  </div>
-                                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded ml-2">{result.type}</span>
+                      {searchOpen && searchContext === 'header' && searchResults.length > 0 && (
+                        <div className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white shadow-lg rounded-lg border max-h-96 overflow-y-auto z-50">
+                          {searchResults.map((result, index) => (
+                            <button
+                              key={index}
+                              onClick={result.action}
+                              className="w-full text-left p-3 hover:bg-blue-50 border-b transition-colors"
+                            >
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <p className="font-semibold text-sm">{result.title}</p>
+                                  {result.description && (
+                                    <p className="text-xs text-gray-600 mt-1">{result.description}</p>
+                                  )}
                                 </div>
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    )}
+                                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded ml-2">{result.type}</span>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
 
                     <div className="flex w-full flex-wrap items-center justify-center gap-2 sm:w-auto sm:justify-end">
                       {showEncounterActions && (
@@ -5088,11 +5023,11 @@ TO DO:
                           <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">1</kbd>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-700">Management Tab</span>
+                          <span className="text-gray-700">Ischemic Stroke Tab</span>
                           <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">2</kbd>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-700">Calculators & Refs Tab</span>
+                          <span className="text-gray-700">Calculators Tab</span>
                           <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">3</kbd>
                         </div>
                       </div>
@@ -5359,10 +5294,9 @@ TO DO:
               <div className="mb-4 sm:mb-6 hidden md:block app-nav" role="navigation" aria-label="Main navigation">
                 <nav className="flex flex-wrap justify-center gap-2 md:justify-around md:gap-0" role="tablist">
                   {[
-                    { id: 'home', name: 'Home', icon: 'home' },
                     { id: 'encounter', name: '⚡ Encounter', icon: 'activity' },
                     { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
-                    { id: 'protocols', name: 'Management', icon: 'file-text' },
+                    { id: 'protocols', name: 'Ischemic Stroke', icon: 'file-text' },
                     { id: 'calculators', name: 'Calculators', icon: 'calculator' },
                     { id: 'trials', name: 'Trials', icon: 'file-text' },
                     { id: 'evidence', name: 'References', icon: 'file-text' },
@@ -5389,104 +5323,6 @@ TO DO:
 
               {/* Content */}
               <div id="main-content" className="space-y-4 sm:space-y-6 pb-24 md:pb-0" role="region" aria-label="Main content area">
-
-                {/* Home */}
-                {activeTab === 'home' && (
-                  <div className="space-y-6">
-                    <div className="home-hero border rounded-2xl p-4 sm:p-6">
-                      <div className="flex flex-col gap-2">
-                        <h2 className="text-2xl font-semibold text-blue-900">Home</h2>
-                        <p className="text-sm text-blue-800">
-                          Search or jump straight into a workflow with Quick Start.
-                        </p>
-                      </div>
-                      <div className="mt-4">
-                        <div className="relative">
-                          <input
-                            type="text"
-                            placeholder="Search trials, calculators, evidence..."
-                            value={searchQuery}
-                            onChange={(e) => {
-                              setSearchQuery(e.target.value);
-                              setSearchOpen(true);
-                              setSearchContext('home');
-                            }}
-                            onFocus={() => {
-                              setSearchOpen(true);
-                              setSearchContext('home');
-                            }}
-                            onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
-                            className="w-full pl-10 pr-4 py-3 border border-blue-200 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            aria-label="Search clinical tools and protocols"
-                          />
-                          <i data-lucide="search" className="w-5 h-5 absolute left-3 top-3.5 text-gray-400"></i>
-
-                          {searchOpen && searchContext === 'home' && searchResults.length > 0 && (
-                            <div className="absolute top-14 left-0 right-0 bg-white shadow-lg rounded-lg border max-h-80 overflow-y-auto z-50">
-                              {searchResults.map((result, index) => (
-                                <button
-                                  key={index}
-                                  onClick={result.action}
-                                  className="w-full text-left p-3 hover:bg-blue-50 border-b transition-colors"
-                                >
-                                  <div className="flex items-start justify-between">
-                                    <div className="flex-1">
-                                      <p className="font-semibold text-sm">{result.title}</p>
-                                      {result.description && (
-                                        <p className="text-xs text-gray-600 mt-1">{result.description}</p>
-                                      )}
-                                    </div>
-                                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded ml-2">{result.type}</span>
-                                  </div>
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-3">Quick Start</h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {quickStartItems.map((item, index) => (
-                          <button
-                            key={`${item.title}-${index}`}
-                            onClick={item.action}
-                            className="quick-card text-left p-4 bg-white border rounded-2xl"
-                          >
-                            <div className="text-base font-semibold text-gray-900">{item.title}</div>
-                            <div className="text-sm text-gray-600 mt-1">{item.description}</div>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm text-gray-700">
-                      Patient identifiers should not be entered. Data stored locally only if your browser stores it.
-                    </div>
-
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wide">About / Settings</h3>
-                      </div>
-                      <div className="space-y-2 text-sm text-gray-700">
-                        <p>Local-only tool. Use the clear button to remove stored data.</p>
-                        <p>Local data auto-clears after {ttlDisplayHours} hours of inactivity.</p>
-                        {configError && (
-                          <div className="text-xs text-red-700 bg-red-50 border border-red-200 rounded p-2">
-                            Warning: {configError}
-                          </div>
-                        )}
-                        {!configError && (
-                          <p className="text-xs text-gray-600">
-                            Institution links load from <span className="font-mono">config.local.json</span> when provided.
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
 
                 {/* Tools */}
                 {activeTab === 'tools' && (
@@ -5645,6 +5481,27 @@ TO DO:
                           Institution links disabled (add config.local.json).
                         </p>
                       )}
+                    </div>
+
+                    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-sm font-semibold text-slate-800 uppercase tracking-wide">Privacy & Settings</h3>
+                      </div>
+                      <div className="space-y-2 text-sm text-slate-700">
+                        <p>Patient identifiers should not be entered. Data stored locally only if your browser stores it.</p>
+                        <p>Local-only tool. Use the clear button to remove stored data.</p>
+                        <p>Local data auto-clears after {ttlDisplayHours} hours of inactivity.</p>
+                        {configError && (
+                          <div className="text-xs text-red-700 bg-red-50 border border-red-200 rounded p-2">
+                            Warning: {configError}
+                          </div>
+                        )}
+                        {!configError && (
+                          <p className="text-xs text-slate-600">
+                            Institution links load from <span className="font-mono">config.local.json</span> when provided.
+                          </p>
+                        )}
+                      </div>
                     </div>
 
                     {/* Calling Site Dropdown - Show for Video Telestroke */}
@@ -11813,10 +11670,9 @@ Clinician Name`);
             <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 shadow-lg z-50 pb-safe">
               <div className="flex flex-nowrap items-center gap-2 px-2 py-2 overflow-x-auto no-scrollbar">
                 {[
-                  { id: 'home', name: 'Home', icon: 'home' },
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },
                   { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
-                  { id: 'protocols', name: 'Management', icon: 'file-text' },
+                  { id: 'protocols', name: 'Ischemic Stroke', icon: 'file-text' },
                   { id: 'calculators', name: 'Calculators', icon: 'calculator' },
                   { id: 'trials', name: 'Trials', icon: 'file-text' },
                   { id: 'evidence', name: 'References', icon: 'file-text' },
