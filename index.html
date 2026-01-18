@@ -14,6 +14,9 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Stroke Toolkit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:wght@400;500;600&display=swap" rel="stylesheet">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js?v=20251016c"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js?v=20251016c"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js?v=20251016c"></script>
@@ -21,6 +24,137 @@
     <script src="https://cdn.tailwindcss.com?v=20251016c"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js?v=20251016c"></script>
     <style>
+        :root {
+            --app-bg: #f5f7fb;
+            --app-bg-accent: #e8eef8;
+            --shell-bg: rgba(255, 255, 255, 0.92);
+            --shell-border: rgba(15, 23, 42, 0.08);
+            --shell-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
+            --panel-bg: rgba(255, 255, 255, 0.86);
+            --panel-border: rgba(15, 23, 42, 0.08);
+            --card-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+            --accent: #2563eb;
+            --accent-soft: #dbeafe;
+            --text-strong: #0f172a;
+            --text-muted: #475569;
+        }
+
+        body {
+            font-family: "Manrope", "Segoe UI", sans-serif;
+            background: radial-gradient(1200px circle at 10% -10%, var(--app-bg-accent), transparent 55%),
+                        linear-gradient(160deg, var(--app-bg) 0%, #f8fafc 45%, #eef2f7 100%);
+            color: var(--text-strong);
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: "Newsreader", "Times New Roman", serif;
+            letter-spacing: -0.01em;
+        }
+
+        .app-shell {
+            background: var(--shell-bg);
+            border: 1px solid var(--shell-border);
+            box-shadow: var(--shell-shadow);
+            border-radius: 24px;
+            backdrop-filter: blur(12px);
+        }
+
+        .app-header {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+            border-radius: 18px;
+            padding: 1rem;
+        }
+
+        .app-nav {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--panel-border);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+            border-radius: 18px;
+            padding: 0.35rem;
+        }
+
+        .home-hero {
+            background: linear-gradient(130deg, rgba(37, 99, 235, 0.12), rgba(14, 116, 144, 0.08));
+            border-color: rgba(37, 99, 235, 0.2);
+        }
+
+        .quick-card,
+        .tool-card {
+            box-shadow: var(--card-shadow);
+            border-color: rgba(15, 23, 42, 0.08);
+            transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+        }
+        .quick-card:hover,
+        .tool-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.14);
+            border-color: rgba(37, 99, 235, 0.25);
+        }
+
+        .tab-pill {
+            border: none !important;
+            background: transparent;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+        .tab-pill.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+        }
+        .tab-pill.inactive {
+            color: var(--text-muted);
+        }
+        .tab-pill.inactive:hover {
+            background: rgba(148, 163, 184, 0.2);
+            color: var(--text-strong);
+        }
+
+        .dark body {
+            background: radial-gradient(1000px circle at 20% -20%, rgba(30, 58, 138, 0.35), transparent 60%),
+                        linear-gradient(160deg, #0f172a 0%, #111827 55%, #0b1120 100%);
+            color: #e2e8f0;
+        }
+        .dark .app-shell {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: rgba(148, 163, 184, 0.15);
+            box-shadow: 0 18px 40px rgba(2, 6, 23, 0.45);
+        }
+        .dark .app-header,
+        .dark .app-nav {
+            background: rgba(15, 23, 42, 0.65);
+            border-color: rgba(148, 163, 184, 0.2);
+            box-shadow: 0 10px 24px rgba(2, 6, 23, 0.35);
+        }
+        .dark .home-hero {
+            background: linear-gradient(130deg, rgba(59, 130, 246, 0.2), rgba(14, 116, 144, 0.12));
+            border-color: rgba(148, 163, 184, 0.2);
+        }
+        .dark .quick-card,
+        .dark .tool-card {
+            border-color: rgba(148, 163, 184, 0.2);
+            box-shadow: 0 16px 30px rgba(2, 6, 23, 0.4);
+        }
+        .dark .tab-pill.inactive {
+            color: #cbd5f5;
+        }
+
+        @media (max-width: 640px) {
+            .app-shell {
+                border-radius: 0;
+                border: none;
+                box-shadow: none;
+            }
+            .app-header {
+                padding: 0.75rem;
+            }
+            .app-nav {
+                padding: 0.25rem;
+            }
+        }
+
         /* Mobile overflow fix - prevent horizontal scroll */
         html, body {
             overflow-x: hidden;
@@ -4722,7 +4856,7 @@ TO DO:
           ];
 
           return (
-            <div className={`max-w-7xl mx-auto p-3 sm:p-6 overflow-x-hidden ${darkMode ? 'bg-gray-900' : 'bg-white'}`} role="main">
+            <div className="app-shell max-w-7xl mx-auto p-3 sm:p-6 overflow-x-hidden" role="main">
               {/* Skip Navigation Link for Screen Readers */}
               <a
                 href="#main-content"
@@ -4732,7 +4866,7 @@ TO DO:
               </a>
 
               {/* Header */}
-              <div className="mb-4 sm:mb-6" role="banner">
+              <div className="mb-4 sm:mb-6 app-header" role="banner">
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
                   <div className="flex-1">
                     <h1 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-1 text-center sm:text-left">
@@ -5221,7 +5355,7 @@ TO DO:
 
 
               {/* Navigation Tabs - Desktop Only - 3 Tabs */}
-              <div className="border-b border-gray-200 mb-4 sm:mb-6 pb-2 hidden md:block" role="navigation" aria-label="Main navigation">
+              <div className="mb-4 sm:mb-6 hidden md:block app-nav" role="navigation" aria-label="Main navigation">
                 <nav className="flex flex-wrap justify-center gap-2 md:justify-around md:gap-0" role="tablist">
                   {[
                     { id: 'home', name: 'Home', icon: 'home' },
@@ -5240,12 +5374,7 @@ TO DO:
                         onClick={() => {
                           navigateTo(tab.id);
                         }}
-                        className={`py-2 px-4 border-2 rounded-lg font-medium text-sm flex items-center space-x-2 transition-all
-                          ${isActive
-                            ? 'border-blue-500 bg-blue-50 text-blue-600'
-                            : 'border-gray-300 bg-white text-gray-600 hover:text-gray-800 hover:border-gray-400'
-                          }
-                        `}
+                        className={`tab-pill py-2 px-4 text-sm flex items-center space-x-2 transition-all ${isActive ? 'active' : 'inactive'}`}
                         role="tab"
                         aria-selected={isActive}
                       >
@@ -5263,7 +5392,7 @@ TO DO:
                 {/* Home */}
                 {activeTab === 'home' && (
                   <div className="space-y-6">
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 sm:p-6">
+                    <div className="home-hero border rounded-2xl p-4 sm:p-6">
                       <div className="flex flex-col gap-2">
                         <h2 className="text-2xl font-semibold text-blue-900">Home</h2>
                         <p className="text-sm text-blue-800">
@@ -5323,7 +5452,7 @@ TO DO:
                           <button
                             key={`${item.title}-${index}`}
                             onClick={item.action}
-                            className="text-left p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-sm transition-all"
+                            className="quick-card text-left p-4 bg-white border rounded-2xl"
                           >
                             <div className="text-base font-semibold text-gray-900">{item.title}</div>
                             <div className="text-sm text-gray-600 mt-1">{item.description}</div>
@@ -5363,7 +5492,7 @@ TO DO:
                   <div className="space-y-4">
                     {!activeTool && (
                       <div className="space-y-4">
-                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                        <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4">
                           <h2 className="text-2xl font-semibold text-gray-900">Tools</h2>
                           <p className="text-sm text-gray-600 mt-1">
                             Embedded utilities for clinic questions and regional coverage.
@@ -5374,7 +5503,7 @@ TO DO:
                             <button
                               key={tool.id}
                               onClick={() => navigateTo('tools', { tool: tool.id })}
-                              className="text-left p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-sm transition-all"
+                              className="tool-card text-left p-4 bg-white border rounded-2xl"
                             >
                               <div className="text-lg font-semibold text-gray-900">{tool.title}</div>
                               <p className="text-sm text-gray-600 mt-1">{tool.description}</p>
@@ -5424,7 +5553,7 @@ TO DO:
                           </div>
                         )}
 
-                        <div className="tool-iframe-wrapper border border-gray-200 rounded-lg overflow-hidden bg-white">
+                        <div className="tool-iframe-wrapper border border-gray-200 rounded-2xl overflow-hidden bg-white">
                           <iframe
                             src={activeTool.url}
                             title={activeTool.title}
