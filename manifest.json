@@ -1,6 +1,6 @@
 {
-  "name": "Stroke Toolkit",
-  "short_name": "Stroke Toolkit",
+  "name": "Stroke CDS",
+  "short_name": "Stroke CDS",
   "description": "Clinical decision support toolkit for stroke management with calculators, protocols, and evidence-based resources",
   "start_url": "/stroke/#/encounter",
   "display": "standalone",
