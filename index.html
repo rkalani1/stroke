@@ -8958,54 +8958,6 @@ Clinician Name`);
                 {/* Management Combined Tab (Ischemic, ICH, Calculators, References) */}
                 {(activeTab === 'ich' || activeTab === 'protocols' || activeTab === 'calculators' || activeTab === 'evidence') && (
                   <div className="space-y-6">
-                    {/* Sub-Navigation for Management */}
-                    <div className="bg-white border border-gray-200 rounded-lg p-2 flex flex-wrap gap-2">
-                      <button
-                        onClick={() => setActiveTab('protocols')}
-                        className={`flex-1 min-w-[120px] py-2 px-3 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 ${
-                          activeTab === 'protocols'
-                            ? 'bg-blue-500 text-white shadow-md'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        <i data-lucide="file-text" className="w-4 h-4"></i>
-                        Ischemic
-                      </button>
-                      <button
-                        onClick={() => setActiveTab('ich')}
-                        className={`flex-1 min-w-[120px] py-2 px-3 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 ${
-                          activeTab === 'ich'
-                            ? 'bg-red-500 text-white shadow-md'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        <i data-lucide="alert-triangle" className="w-4 h-4"></i>
-                        ICH
-                      </button>
-                      <button
-                        onClick={() => setActiveTab('calculators')}
-                        className={`flex-1 min-w-[120px] py-2 px-3 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 ${
-                          activeTab === 'calculators'
-                            ? 'bg-purple-500 text-white shadow-md'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        <i data-lucide="calculator" className="w-4 h-4"></i>
-                        Calculators
-                      </button>
-                      <button
-                        onClick={() => setActiveTab('evidence')}
-                        className={`flex-1 min-w-[120px] py-2 px-3 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 ${
-                          activeTab === 'evidence'
-                            ? 'bg-green-500 text-white shadow-md'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        <i data-lucide="book-open" className="w-4 h-4"></i>
-                        References
-                      </button>
-                    </div>
-
                     {/* ICH Content */}
                     {activeTab === 'ich' && (
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4">
