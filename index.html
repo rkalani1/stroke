@@ -4856,7 +4856,8 @@ TO DO:
           ];
 
           return (
-            <div className="app-shell max-w-7xl mx-auto p-3 sm:p-6 overflow-x-hidden" role="main">
+            <div className="relative">
+              <div className="app-shell max-w-7xl mx-auto p-3 sm:p-6 overflow-x-hidden" role="main">
               {/* Skip Navigation Link for Screen Readers */}
               <a
                 href="#main-content"
@@ -11806,38 +11807,39 @@ Clinician Name`);
                   </div>
                 </div>
               )}
+            </div>
 
-              {/* Mobile Bottom Navigation - Only visible on small screens - 3 Tabs */}
-              <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 shadow-lg z-50 pb-safe">
-                <div className="flex flex-nowrap items-center gap-2 px-2 py-2 overflow-x-auto no-scrollbar">
-                  {[
-                    { id: 'home', name: 'Home', icon: 'home' },
-                    { id: 'encounter', name: 'Encounter', icon: 'activity' },
-                    { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
-                    { id: 'protocols', name: 'Management', icon: 'file-text' },
-                    { id: 'calculators', name: 'Calculators', icon: 'calculator' },
-                    { id: 'trials', name: 'Trials', icon: 'file-text' },
-                    { id: 'evidence', name: 'References', icon: 'file-text' },
-                    { id: 'tools', name: 'Tools', icon: 'wrench' }
-                  ].map((tab) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => {
-                        navigateTo(tab.id);
-                      }}
-                      className={`flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all flex-shrink-0 ${
-                        activeTab === tab.id
-                          ? 'text-blue-600 bg-blue-50'
-                          : 'text-gray-600'
-                      }`}
-                    >
-                      <i data-lucide={tab.icon} className="w-6 h-6 mb-1"></i>
-                      <span className="text-xs font-medium">{tab.name}</span>
-                    </button>
-                  ))}
-                </div>
+            {/* Mobile Bottom Navigation - Only visible on small screens - 3 Tabs */}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 shadow-lg z-50 pb-safe">
+              <div className="flex flex-nowrap items-center gap-2 px-2 py-2 overflow-x-auto no-scrollbar">
+                {[
+                  { id: 'home', name: 'Home', icon: 'home' },
+                  { id: 'encounter', name: 'Encounter', icon: 'activity' },
+                  { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
+                  { id: 'protocols', name: 'Management', icon: 'file-text' },
+                  { id: 'calculators', name: 'Calculators', icon: 'calculator' },
+                  { id: 'trials', name: 'Trials', icon: 'file-text' },
+                  { id: 'evidence', name: 'References', icon: 'file-text' },
+                  { id: 'tools', name: 'Tools', icon: 'wrench' }
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => {
+                      navigateTo(tab.id);
+                    }}
+                    className={`flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all flex-shrink-0 ${
+                      activeTab === tab.id
+                        ? 'text-blue-600 bg-blue-50'
+                        : 'text-gray-600'
+                    }`}
+                  >
+                    <i data-lucide={tab.icon} className="w-6 h-6 mb-1"></i>
+                    <span className="text-xs font-medium">{tab.name}</span>
+                  </button>
+                ))}
               </div>
             </div>
+          </div>
           );
         };
 
