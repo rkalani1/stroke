@@ -1153,7 +1153,6 @@ Clinician Name`;
           const [toolLoadErrors, setToolLoadErrors] = useState({ clinic: false, map: false });
           const [actionsOpen, setActionsOpen] = useState(false);
           const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null });
-          const [configError, setConfigError] = useState('');
           const [configLoaded, setConfigLoaded] = useState(false);
           const [ttlHours, setTtlHours] = useState(DEFAULT_TTL_HOURS);
 
@@ -4526,7 +4525,6 @@ Clinician Name`;
               .catch((err) => {
                 if (cancelled) return;
                 console.warn('Config load failed:', err);
-                setConfigError('Invalid config.local.json');
                 removeKey('ttlHoursOverride');
                 setTtlHours(DEFAULT_TTL_HOURS);
                 setConfigLoaded(true);
@@ -5451,12 +5449,11 @@ TO DO:
                       </div>
                     </div>
 
-                    {/* Resources */}
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-sm font-semibold text-blue-900 uppercase tracking-wide">Resources</h3>
-                      </div>
-                      {appConfig.institutionLinks.length > 0 ? (
+                    {appConfig.institutionLinks.length > 0 && (
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-sm font-semibold text-blue-900 uppercase tracking-wide">Resources</h3>
+                        </div>
                         <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
                           {appConfig.institutionLinks.map((link, index) => (
                             <a
@@ -5476,33 +5473,8 @@ TO DO:
                             </a>
                           ))}
                         </div>
-                      ) : (
-                        <p className="text-sm text-blue-800">
-                          Institution links disabled (add config.local.json).
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-sm font-semibold text-slate-800 uppercase tracking-wide">Privacy & Settings</h3>
                       </div>
-                      <div className="space-y-2 text-sm text-slate-700">
-                        <p>Patient identifiers should not be entered. Data stored locally only if your browser stores it.</p>
-                        <p>Local-only tool. Use the clear button to remove stored data.</p>
-                        <p>Local data auto-clears after {ttlDisplayHours} hours of inactivity.</p>
-                        {configError && (
-                          <div className="text-xs text-red-700 bg-red-50 border border-red-200 rounded p-2">
-                            Warning: {configError}
-                          </div>
-                        )}
-                        {!configError && (
-                          <p className="text-xs text-slate-600">
-                            Institution links load from <span className="font-mono">config.local.json</span> when provided.
-                          </p>
-                        )}
-                      </div>
-                    </div>
+                    )}
 
                     {/* Calling Site Dropdown - Show for Video Telestroke */}
                     {consultationType === 'videoTelestroke' && (
