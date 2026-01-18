@@ -437,6 +437,14 @@
         .mb-safe {
             margin-bottom: env(safe-area-inset-bottom, 0);
         }
+        .mobile-nav-padding {
+            padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0));
+        }
+        @media (min-width: 768px) {
+            .mobile-nav-padding {
+                padding-bottom: 0;
+            }
+        }
 
         /* FAB positioning with safe area */
         @media (max-width: 768px) {
@@ -5320,7 +5328,7 @@ TO DO:
               </div>
 
               {/* Content */}
-              <div id="main-content" className="space-y-4 sm:space-y-6 pb-24 md:pb-0" role="region" aria-label="Main content area">
+              <div id="main-content" className="space-y-4 sm:space-y-6 mobile-nav-padding" role="region" aria-label="Main content area">
 
                 {/* Tools */}
                 {activeTab === 'tools' && (
