@@ -445,13 +445,19 @@
                 padding-bottom: 0;
             }
         }
-
-        /* FAB positioning with safe area */
-        @media (max-width: 768px) {
-            .fixed.bottom-20 {
-                bottom: calc(5rem + env(safe-area-inset-bottom, 0));
+        .fab-offset {
+            bottom: calc(var(--mobile-nav-offset, 0px) + 1.5rem);
+        }
+        @media (min-width: 768px) {
+            .fab-offset {
+                bottom: 1.5rem;
             }
         }
+        .fab-layer {
+            z-index: 60;
+        }
+
+        /* FAB positioning with safe area */
 
         /* Better mobile touch feedback */
         @media (max-width: 640px) {
@@ -11552,7 +11558,7 @@ Clinician Name`);
               </div>
 
               {/* Emergency Contacts FAB - Floating Action Button */}
-              <div className="fixed z-50 bottom-20 md:bottom-6 right-4">
+              <div className="fixed right-4 fab-offset fab-layer">
                 {/* Expanded Contact Panel */}
                 {fabExpanded && (
                   <div className="absolute bottom-16 right-0 w-72 bg-white rounded-lg shadow-2xl border-2 border-red-300 overflow-hidden animate-fadeIn">
