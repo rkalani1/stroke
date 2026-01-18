@@ -4793,6 +4793,24 @@ TO DO:
             }
           };
           const toolsList = [toolsCatalog.clinic, toolsCatalog.map];
+          const encounterQuickLinks = [
+            { label: 'Pulsara', url: 'https://us-app.pulsara.com/user/login' },
+            { label: 'Teladoc Imaging', url: 'https://urldefense.com/v3/__https:/imaging.visitnow.org/studies__;!!K-Hz7m0Vt54!nECcOahuNh21d0jzlVH-mSie_Il2fvDWCKseicWktKKQwdj4xk9XfAX2s8QyVGAs0n-NvzXDLAHKDw%24' },
+            { label: 'Telestroke Provider Resources', url: 'https://intranet.neurology.uw.edu/telestroke-provider-resources/' },
+            { label: 'UW Medicine', url: 'https://access.uwmedicine.org/logon/LogonPoint/tmindex.html' }
+          ];
+          const quickLinks = [...encounterQuickLinks, ...appConfig.institutionLinks].reduce((acc, link) => {
+            if (!link || !link.url) return acc;
+            const normalizedUrl = String(link.url).trim();
+            if (!normalizedUrl || acc.seen.has(normalizedUrl)) return acc;
+            acc.seen.add(normalizedUrl);
+            acc.items.push({
+              label: String(link.label || 'Resource').trim() || 'Resource',
+              url: normalizedUrl,
+              note: link.note ? String(link.note).trim() : ''
+            });
+            return acc;
+          }, { items: [], seen: new Set() }).items;
           const activeTool = activeToolsView ? toolsCatalog[activeToolsView] : null;
           const ttlDisplayHours = appConfig.ttlHoursOverride || DEFAULT_TTL_HOURS;
           const showDocumentActions = true;
@@ -5457,13 +5475,13 @@ TO DO:
                       </div>
                     </div>
 
-                    {appConfig.institutionLinks.length > 0 && (
+                    {quickLinks.length > 0 && (
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-3">
-                          <h3 className="text-sm font-semibold text-blue-900 uppercase tracking-wide">Resources</h3>
+                          <h3 className="text-sm font-semibold text-blue-900 uppercase tracking-wide">Quick Links</h3>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
-                          {appConfig.institutionLinks.map((link, index) => (
+                          {quickLinks.map((link, index) => (
                             <a
                               key={`${link.label}-${index}`}
                               href={link.url}
@@ -5473,7 +5491,7 @@ TO DO:
                             >
                               <i data-lucide="external-link" className="w-5 h-5"></i>
                               <div className="flex flex-col">
-                                <span>{link.label || 'Resource'}</span>
+                                <span>{link.label}</span>
                                 {link.note && (
                                   <span className="text-xs text-blue-700">{link.note}</span>
                                 )}

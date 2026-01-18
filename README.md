@@ -8,21 +8,6 @@ A client-side clinical decision support toolkit for stroke management with encou
 - Local data auto-expires after 12 hours of inactivity.
 - Use the "Clear local data" button in the header to wipe stored data.
 
-## Local configuration
-Create `config.local.json` next to `index.html` (ignored by git). Start from `config.example.json`.
-
-Example:
-```json
-{
-  "institutionLinks": [
-    { "label": "Intranet stroke protocol", "url": "https://...", "note": "optional" }
-  ],
-  "ttlHoursOverride": 8
-}
-```
-
-If `config.local.json` is missing, institution links are disabled. Invalid JSON shows a warning in the Privacy & Settings card in Encounter.
-
 ## Deep links
 - `#/encounter`
 - `#/ich`
