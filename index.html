@@ -438,7 +438,7 @@
             margin-bottom: env(safe-area-inset-bottom, 0);
         }
         .mobile-nav-padding {
-            padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0));
+            padding-bottom: var(--mobile-nav-offset, 5.5rem);
         }
         @media (min-width: 768px) {
             .mobile-nav-padding {
@@ -490,7 +490,7 @@
         }
         @media (max-width: 640px) {
             .tool-iframe-wrapper {
-                height: calc(100vh - 320px);
+                height: calc(100vh - 320px - var(--mobile-nav-offset, 0px));
                 min-height: 320px;
             }
         }
@@ -4482,6 +4482,28 @@ Clinician Name`;
           useEffect(() => {
             performSearch(searchQuery);
           }, [searchQuery]);
+
+          // Keep mobile bottom nav offset in sync so content isn't obscured
+          useEffect(() => {
+            const updateMobileNavOffset = () => {
+              const nav = document.getElementById('mobile-bottom-nav');
+              const height = nav ? nav.offsetHeight : 0;
+              document.documentElement.style.setProperty('--mobile-nav-offset', `${height}px`);
+            };
+
+            const scheduleUpdate = () => {
+              window.requestAnimationFrame(updateMobileNavOffset);
+            };
+
+            scheduleUpdate();
+            window.addEventListener('resize', scheduleUpdate);
+            window.addEventListener('orientationchange', scheduleUpdate);
+
+            return () => {
+              window.removeEventListener('resize', scheduleUpdate);
+              window.removeEventListener('orientationchange', scheduleUpdate);
+            };
+          }, []);
 
           // Load optional local config (ignored if missing)
           useEffect(() => {
@@ -11665,7 +11687,7 @@ Clinician Name`);
             </div>
 
             {/* Mobile Bottom Navigation - Only visible on small screens - 3 Tabs */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 shadow-lg z-50 pb-safe">
+            <div id="mobile-bottom-nav" className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 shadow-lg z-50 pb-safe">
               <div className="flex flex-nowrap items-center gap-2 px-2 py-2 overflow-x-auto no-scrollbar">
                 {[
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },
