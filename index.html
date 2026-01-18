@@ -11557,136 +11557,137 @@ Clinician Name`);
 
               </div>
 
-              {/* Emergency Contacts FAB - Floating Action Button */}
-              <div className="fixed right-4 fab-offset fab-layer">
-                {/* Expanded Contact Panel */}
-                {fabExpanded && (
-                  <div className="absolute bottom-16 right-0 w-72 bg-white rounded-lg shadow-2xl border-2 border-red-300 overflow-hidden animate-fadeIn">
-                    <div className="bg-gradient-to-r from-red-600 to-rose-500 text-white px-4 py-2 font-bold flex items-center justify-between">
-                      <span className="flex items-center gap-2">
-                        <i data-lucide="phone-call" className="w-4 h-4"></i>
-                        Quick Contacts
-                      </span>
-                      <button
-                        onClick={() => setFabExpanded(false)}
-                        className="hover:bg-red-700 rounded p-1 transition-colors"
-                        aria-label="Close contacts"
-                      >
-                        <i data-lucide="x" className="w-4 h-4"></i>
-                      </button>
-                    </div>
-                    <div className="divide-y divide-gray-100">
-                      {/* Stroke Team */}
-                      <a
-                        href="tel:+12067446789"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-colors"
-                        onClick={() => setFabExpanded(false)}
-                      >
-                        <div className="bg-red-100 rounded-full p-2">
-                          <i data-lucide="phone" className="w-5 h-5 text-red-600"></i>
-                        </div>
-                        <div>
-                          <div className="font-semibold text-gray-900 text-sm">Stroke Phone</div>
-                          <div className="text-xs text-gray-500">206-744-6789</div>
-                        </div>
-                        <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
-                      </a>
-                      {/* Pharmacy */}
-                      <a
-                        href="tel:+12067442241"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition-colors"
-                        onClick={() => setFabExpanded(false)}
-                      >
-                        <div className="bg-orange-100 rounded-full p-2">
-                          <i data-lucide="pill" className="w-5 h-5 text-orange-600"></i>
-                        </div>
-                        <div>
-                          <div className="font-semibold text-gray-900 text-sm">STAT Pharmacy</div>
-                          <div className="text-xs text-gray-500">206-744-2241</div>
-                        </div>
-                        <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
-                      </a>
-                      {/* Neuroradiology */}
-                      <a
-                        href="tel:+12067448484"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors"
-                        onClick={() => setFabExpanded(false)}
-                      >
-                        <div className="bg-blue-100 rounded-full p-2">
-                          <i data-lucide="scan" className="w-5 h-5 text-blue-600"></i>
-                        </div>
-                        <div>
-                          <div className="font-semibold text-gray-900 text-sm">Stroke RAD Hotline</div>
-                          <div className="text-xs text-gray-500">206-744-8484 (Weekdays 8-5)</div>
-                        </div>
-                        <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
-                      </a>
-                      {/* Angio Suite */}
-                      <a
-                        href="tel:+12067443381"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-purple-50 transition-colors"
-                        onClick={() => setFabExpanded(false)}
-                      >
-                        <div className="bg-purple-100 rounded-full p-2">
-                          <i data-lucide="activity" className="w-5 h-5 text-purple-600"></i>
-                        </div>
-                        <div>
-                          <div className="font-semibold text-gray-900 text-sm">Angio Suite</div>
-                          <div className="text-xs text-gray-500">206-744-3381</div>
-                        </div>
-                        <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
-                      </a>
-                      {/* STAT CT */}
-                      <a
-                        href="tel:+12067447290"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-green-50 transition-colors"
-                        onClick={() => setFabExpanded(false)}
-                      >
-                        <div className="bg-green-100 rounded-full p-2">
-                          <i data-lucide="circle-dot" className="w-5 h-5 text-green-600"></i>
-                        </div>
-                        <div>
-                          <div className="font-semibold text-gray-900 text-sm">STAT CT</div>
-                          <div className="text-xs text-gray-500">206-744-7290</div>
-                        </div>
-                        <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
-                      </a>
-                    </div>
-                    <div className="bg-gray-50 px-4 py-2 text-xs text-gray-500 text-center">
-                      Tap number to call directly
-                    </div>
+            </div>
+
+            {/* Emergency Contacts FAB - Floating Action Button */}
+            <div className="fixed right-4 fab-offset fab-layer">
+              {/* Expanded Contact Panel */}
+              {fabExpanded && (
+                <div className="absolute bottom-16 right-0 w-72 bg-white rounded-lg shadow-2xl border-2 border-red-300 overflow-hidden animate-fadeIn">
+                  <div className="bg-gradient-to-r from-red-600 to-rose-500 text-white px-4 py-2 font-bold flex items-center justify-between">
+                    <span className="flex items-center gap-2">
+                      <i data-lucide="phone-call" className="w-4 h-4"></i>
+                      Quick Contacts
+                    </span>
+                    <button
+                      onClick={() => setFabExpanded(false)}
+                      className="hover:bg-red-700 rounded p-1 transition-colors"
+                      aria-label="Close contacts"
+                    >
+                      <i data-lucide="x" className="w-4 h-4"></i>
+                    </button>
                   </div>
-                )}
-
-                {/* FAB Button */}
-                <button
-                  onClick={() => setFabExpanded(!fabExpanded)}
-                  className="w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 bg-gradient-to-br from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 animate-pulse"
-                  aria-label="Toggle emergency contacts"
-                  aria-expanded={fabExpanded}
-                  title="Emergency Contacts"
-                >
-                  <i data-lucide="phone" className="w-6 h-6 text-white"></i>
-                </button>
-
-                {/* Tooltip when collapsed */}
-                {!fabExpanded && (
-                  <div className="absolute bottom-16 right-0 bg-gray-900 text-white text-xs py-1 px-2 rounded whitespace-nowrap opacity-0 hover:opacity-100 pointer-events-none transition-opacity hidden md:block">
-                    Quick Contacts
+                  <div className="divide-y divide-gray-100">
+                    {/* Stroke Team */}
+                    <a
+                      href="tel:+12067446789"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-colors"
+                      onClick={() => setFabExpanded(false)}
+                    >
+                      <div className="bg-red-100 rounded-full p-2">
+                        <i data-lucide="phone" className="w-5 h-5 text-red-600"></i>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900 text-sm">Stroke Phone</div>
+                        <div className="text-xs text-gray-500">206-744-6789</div>
+                      </div>
+                      <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
+                    </a>
+                    {/* Pharmacy */}
+                    <a
+                      href="tel:+12067442241"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition-colors"
+                      onClick={() => setFabExpanded(false)}
+                    >
+                      <div className="bg-orange-100 rounded-full p-2">
+                        <i data-lucide="pill" className="w-5 h-5 text-orange-600"></i>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900 text-sm">STAT Pharmacy</div>
+                        <div className="text-xs text-gray-500">206-744-2241</div>
+                      </div>
+                      <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
+                    </a>
+                    {/* Neuroradiology */}
+                    <a
+                      href="tel:+12067448484"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors"
+                      onClick={() => setFabExpanded(false)}
+                    >
+                      <div className="bg-blue-100 rounded-full p-2">
+                        <i data-lucide="scan" className="w-5 h-5 text-blue-600"></i>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900 text-sm">Stroke RAD Hotline</div>
+                        <div className="text-xs text-gray-500">206-744-8484 (Weekdays 8-5)</div>
+                      </div>
+                      <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
+                    </a>
+                    {/* Angio Suite */}
+                    <a
+                      href="tel:+12067443381"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-purple-50 transition-colors"
+                      onClick={() => setFabExpanded(false)}
+                    >
+                      <div className="bg-purple-100 rounded-full p-2">
+                        <i data-lucide="activity" className="w-5 h-5 text-purple-600"></i>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900 text-sm">Angio Suite</div>
+                        <div className="text-xs text-gray-500">206-744-3381</div>
+                      </div>
+                      <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
+                    </a>
+                    {/* STAT CT */}
+                    <a
+                      href="tel:+12067447290"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-green-50 transition-colors"
+                      onClick={() => setFabExpanded(false)}
+                    >
+                      <div className="bg-green-100 rounded-full p-2">
+                        <i data-lucide="circle-dot" className="w-5 h-5 text-green-600"></i>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900 text-sm">STAT CT</div>
+                        <div className="text-xs text-gray-500">206-744-7290</div>
+                      </div>
+                      <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
+                    </a>
                   </div>
-                )}
-              </div>
-
-              {/* Sign-Out Toast Notification */}
-              {signOutToast && (
-                <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-50 animate-fadeIn">
-                  <div className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
-                    <i data-lucide="check-circle" className="w-4 h-4 text-green-400"></i>
-                    <span className="text-sm font-medium">{signOutToast}</span>
+                  <div className="bg-gray-50 px-4 py-2 text-xs text-gray-500 text-center">
+                    Tap number to call directly
                   </div>
                 </div>
               )}
+
+              {/* FAB Button */}
+              <button
+                onClick={() => setFabExpanded(!fabExpanded)}
+                className="w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 bg-gradient-to-br from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 animate-pulse"
+                aria-label="Toggle emergency contacts"
+                aria-expanded={fabExpanded}
+                title="Emergency Contacts"
+              >
+                <i data-lucide="phone" className="w-6 h-6 text-white"></i>
+              </button>
+
+              {/* Tooltip when collapsed */}
+              {!fabExpanded && (
+                <div className="absolute bottom-16 right-0 bg-gray-900 text-white text-xs py-1 px-2 rounded whitespace-nowrap opacity-0 hover:opacity-100 pointer-events-none transition-opacity hidden md:block">
+                  Quick Contacts
+                </div>
+              )}
             </div>
+
+            {/* Sign-Out Toast Notification */}
+            {signOutToast && (
+              <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-50 animate-fadeIn">
+                <div className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
+                  <i data-lucide="check-circle" className="w-4 h-4 text-green-400"></i>
+                  <span className="text-sm font-medium">{signOutToast}</span>
+                </div>
+              </div>
+            )}
 
             {/* Mobile Bottom Navigation - Only visible on small screens - 3 Tabs */}
             <div id="mobile-bottom-nav" className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 shadow-lg z-50 pb-safe">
