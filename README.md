@@ -1,4 +1,4 @@
-# Stroke CDS
+# Stroke
 
 A client-side clinical decision support toolkit for stroke management with encounter workflows, calculators, protocols, trials, and evidence references.
 
