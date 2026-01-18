@@ -4810,13 +4810,13 @@ TO DO:
             clinic: {
               id: 'clinic',
               title: 'Clinic Questions / Follow-up Checklist',
-              description: 'Embedded checklist for follow-up encounters',
+              description: '',
               url: 'https://rkalani1.github.io/stroke-clinic-q/'
             },
             map: {
               id: 'map',
               title: 'Telestroke Coverage / Regional Map',
-              description: 'Interactive regional coverage map',
+              description: '',
               url: 'https://rkalani1.github.io/telestroke-expansion-map/'
             }
           };
@@ -5383,9 +5383,6 @@ TO DO:
                       <div className="space-y-4">
                         <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4">
                           <h2 className="text-2xl font-semibold text-gray-900">Tools</h2>
-                          <p className="text-sm text-gray-600 mt-1">
-                            Embedded utilities for clinic questions and regional coverage.
-                          </p>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           {toolsList.map((tool) => (
@@ -5395,7 +5392,9 @@ TO DO:
                               className="tool-card text-left p-4 bg-white border rounded-2xl"
                             >
                               <div className="text-lg font-semibold text-gray-900">{tool.title}</div>
-                              <p className="text-sm text-gray-600 mt-1">{tool.description}</p>
+                              {tool.description && (
+                                <p className="text-sm text-gray-600 mt-1">{tool.description}</p>
+                              )}
                             </button>
                           ))}
                         </div>
@@ -5407,7 +5406,9 @@ TO DO:
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                           <div>
                             <h2 className="text-xl font-semibold text-gray-900">{activeTool.title}</h2>
-                            <p className="text-sm text-gray-600">{activeTool.description}</p>
+                            {activeTool.description && (
+                              <p className="text-sm text-gray-600">{activeTool.description}</p>
+                            )}
                           </div>
                           <div className="flex items-center gap-2">
                             <a
