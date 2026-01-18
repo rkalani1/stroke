@@ -8371,6 +8371,63 @@ TO DO:
                           </div>
                         </div>
 
+                        {/* Pulsara Summary */}
+                        <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 mt-4">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-semibold text-indigo-800 text-sm">Pulsara Summary</span>
+                            <button
+                              onClick={() => {
+                                const age = telestrokeNote.age || "[Age]";
+                                const sexRaw = telestrokeNote.sex;
+                                const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '[sex]';
+                                const pmh = telestrokeNote.pmh || "no PMH";
+                                const symptoms = telestrokeNote.symptoms || "[symptoms]";
+                                const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
+                                const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
+                                const nihss = telestrokeNote.nihss || nihssScore || "[score]";
+                                const nihssDeficits = telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : "";
+                                const ctResults = telestrokeNote.ctResults || "[CT findings]";
+                                const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
+                                const ctpResults = telestrokeNote.ctpResults || "N/A";
+                                const aspectsStr = aspectsScore ? ` ASPECTS: ${aspectsScore}.` : "";
+                                const tnkStatus = telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
+                                const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
+                                const rationale = telestrokeNote.rationale || "[rationale]";
+
+                                const summary = `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale for Treatment Recommendation: ${rationale}.`;
+                                navigator.clipboard.writeText(summary);
+                                setCopiedText('tel-pulsara');
+                                setTimeout(() => setCopiedText(''), 2000);
+                              }}
+                              className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors"
+                            >
+                              <i data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              {copiedText === 'tel-pulsara' ? 'Copied!' : 'Copy Pulsara'}
+                            </button>
+                          </div>
+                          <p className="text-xs text-gray-600 whitespace-pre-wrap">
+                            {(() => {
+                              const age = telestrokeNote.age || "[Age]";
+                              const sexRaw = telestrokeNote.sex;
+                              const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '[sex]';
+                              const pmh = telestrokeNote.pmh || "no PMH";
+                              const symptoms = telestrokeNote.symptoms || "[symptoms]";
+                              const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
+                              const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
+                              const nihss = telestrokeNote.nihss || nihssScore || "[score]";
+                              const nihssDeficits = telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : "";
+                              const ctResults = telestrokeNote.ctResults || "[CT findings]";
+                              const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
+                              const ctpResults = telestrokeNote.ctpResults || "N/A";
+                              const aspectsStr = aspectsScore ? ` ASPECTS: ${aspectsScore}.` : "";
+                              const tnkStatus = telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
+                              const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
+                              const rationale = telestrokeNote.rationale || "[rationale]";
+                              return `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale: ${rationale}.`;
+                            })()}
+                          </p>
+                        </div>
+
                         {/* Telestroke Note - Epic */}
                         <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4 shadow-md mt-4">
                           <div className="flex items-center justify-between mb-3">
