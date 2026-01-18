@@ -13,7 +13,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>stroke</title>
+    <title>Stroke Toolkit</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js?v=20251016c"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js?v=20251016c"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js?v=20251016c"></script>
@@ -352,27 +352,131 @@
             outline: 2px solid #3B82F6;
             outline-offset: 2px;
         }
+
+        /* Tools iframe sizing */
+        .tool-iframe-wrapper {
+            height: calc(100vh - 260px);
+            min-height: 360px;
+        }
+        @media (max-width: 640px) {
+            .tool-iframe-wrapper {
+                height: calc(100vh - 320px);
+                min-height: 320px;
+            }
+        }
     </style>
     <script>
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = 'v2.3.0-consult-types'; // Increment this with each deployment
-            const storedVersion = localStorage.getItem('app_version');
+            const APP_VERSION = 'v2.3.1-home-tools-privacy'; // Increment this with each deployment
+            const STORAGE_PREFIX = 'strokeApp:';
+            const LEGACY_KEYS = [
+                'app_version',
+                'darkMode',
+                'activeTab',
+                'patientData',
+                'nihssScore',
+                'aspectsScore',
+                'gcsItems',
+                'mrsScore',
+                'ichScoreItems',
+                'abcd2Items',
+                'chads2vascItems',
+                'ropeItems',
+                'huntHessGrade',
+                'wfnsGrade',
+                'hasbledItems',
+                'rcvs2Items',
+                'strokeCodeForm',
+                'lkwTime',
+                'currentStep',
+                'completedSteps',
+                'aspectsRegionState',
+                'pcAspectsRegions',
+                'telestrokeNote',
+                'telestrokeTemplate',
+                'thrombolysisAlertsMuted',
+                'timerSidebarCollapsed',
+                'shiftPatients',
+                'currentPatientId',
+                'signOutPatients',
+                'consultationType',
+                'ttlHoursOverride',
+                'lastUpdated',
+                'legacyMigrated'
+            ];
+            const LEGACY_SESSION_KEYS = ['error_reload_attempted'];
 
-            // If version doesn't match, clear ALL localStorage to prevent crashes
-            if (storedVersion !== APP_VERSION) {
-                console.log('Version change detected (' + storedVersion + ' -> ' + APP_VERSION + '). Clearing localStorage for compatibility.');
-                const darkModeValue = localStorage.getItem('darkMode'); // Preserve dark mode preference
-                localStorage.clear();
-                if (darkModeValue) {
-                    localStorage.setItem('darkMode', darkModeValue);
+            const parseStoredValue = (raw) => {
+                if (raw === null || raw === undefined) return null;
+                try {
+                    return JSON.parse(raw);
+                } catch {
+                    return raw;
                 }
-                localStorage.setItem('app_version', APP_VERSION);
+            };
+
+            const getStoredValue = (key) => {
+                const namespaced = localStorage.getItem(STORAGE_PREFIX + key);
+                if (namespaced !== null) {
+                    return parseStoredValue(namespaced);
+                }
+                return parseStoredValue(localStorage.getItem(key));
+            };
+
+            const setStoredValue = (key, value) => {
+                try {
+                    localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(value));
+                } catch (e) {
+                    console.warn('Failed to write storage key:', key, e);
+                }
+            };
+
+            const clearAppStorage = () => {
+                try {
+                    Object.keys(localStorage).forEach((key) => {
+                        if (key.startsWith(STORAGE_PREFIX)) {
+                            localStorage.removeItem(key);
+                        }
+                    });
+                    LEGACY_KEYS.forEach((key) => localStorage.removeItem(key));
+                    Object.keys(sessionStorage).forEach((key) => {
+                        if (key.startsWith(STORAGE_PREFIX)) {
+                            sessionStorage.removeItem(key);
+                        }
+                    });
+                    LEGACY_SESSION_KEYS.forEach((key) => sessionStorage.removeItem(key));
+                } catch (e) {
+                    console.warn('Storage clear failed:', e);
+                }
+            };
+
+            window.strokeAppStorage = {
+                prefix: STORAGE_PREFIX,
+                legacyKeys: LEGACY_KEYS,
+                legacySessionKeys: LEGACY_SESSION_KEYS,
+                getStoredValue,
+                setStoredValue,
+                clearAppStorage
+            };
+
+            const storedVersion = getStoredValue('app_version');
+            const storedDarkMode = getStoredValue('darkMode') === true;
+
+            // If version doesn't match, clear app storage to prevent crashes
+            if (storedVersion && storedVersion !== APP_VERSION) {
+                console.log('Version change detected (' + storedVersion + ' -> ' + APP_VERSION + '). Clearing app storage for compatibility.');
+                clearAppStorage();
+                if (storedDarkMode) {
+                    setStoredValue('darkMode', true);
+                }
             }
 
+            setStoredValue('app_version', APP_VERSION);
+
             // Dark mode initialization
-            const darkMode = localStorage.getItem('darkMode') === 'true';
+            const darkMode = getStoredValue('darkMode') === true;
             if (darkMode) {
                 document.documentElement.classList.add('dark');
             }
@@ -392,8 +496,22 @@
                 const hasReloaded = sessionStorage.getItem('error_reload_attempted');
                 if (!hasReloaded) {
                     console.log('Critical error detected. Clearing data and reloading...');
-                    sessionStorage.setItem('error_reload_attempted', 'true');
-                    localStorage.clear();
+                    try {
+                        sessionStorage.setItem('error_reload_attempted', 'true');
+                    } catch (e) {
+                        console.warn('Unable to set session flag:', e);
+                    }
+                    if (window.strokeAppStorage && typeof window.strokeAppStorage.clearAppStorage === 'function') {
+                        window.strokeAppStorage.clearAppStorage();
+                    } else {
+                        localStorage.clear();
+                        sessionStorage.clear();
+                    }
+                    try {
+                        sessionStorage.setItem('error_reload_attempted', 'true');
+                    } catch (e) {
+                        console.warn('Unable to reset session flag:', e);
+                    }
                     window.location.reload();
                 } else {
                     // If already reloaded once, show error message instead of infinite loop
@@ -418,71 +536,245 @@
         const { useState, useEffect, useRef } = React;
         const { Calculator, Clock, Brain, AlertTriangle, FileText, CheckCircle, Moon, Sun, Download, Copy, Search, Check } = lucide;
 
-        const StrokeClinicalTool = () => {
-          // Load saved data from localStorage with validation
-          const loadFromStorage = (key, defaultValue) => {
-            try {
-              const saved = localStorage.getItem(key);
-              if (!saved) return defaultValue;
+        const STORAGE_PREFIX = (window.strokeAppStorage && window.strokeAppStorage.prefix) || 'strokeApp:';
+        const LEGACY_KEYS = (window.strokeAppStorage && window.strokeAppStorage.legacyKeys) || [
+          'app_version',
+          'darkMode',
+          'activeTab',
+          'patientData',
+          'nihssScore',
+          'aspectsScore',
+          'gcsItems',
+          'mrsScore',
+          'ichScoreItems',
+          'abcd2Items',
+          'chads2vascItems',
+          'ropeItems',
+          'huntHessGrade',
+          'wfnsGrade',
+          'hasbledItems',
+          'rcvs2Items',
+          'strokeCodeForm',
+          'lkwTime',
+          'currentStep',
+          'completedSteps',
+          'aspectsRegionState',
+          'pcAspectsRegions',
+          'telestrokeNote',
+          'telestrokeTemplate',
+          'thrombolysisAlertsMuted',
+          'timerSidebarCollapsed',
+          'shiftPatients',
+          'currentPatientId',
+          'signOutPatients',
+          'consultationType',
+          'ttlHoursOverride',
+          'lastUpdated',
+          'legacyMigrated'
+        ];
+        const LEGACY_SESSION_KEYS = (window.strokeAppStorage && window.strokeAppStorage.legacySessionKeys) || ['error_reload_attempted'];
+        const DEFAULT_TTL_HOURS = 12;
+        const LAST_UPDATED_KEY = 'lastUpdated';
+        const LEGACY_MIGRATION_KEY = 'legacyMigrated';
 
-              const parsed = JSON.parse(saved);
+        const parseStoredValue = (raw) => {
+          if (raw === null || raw === undefined) return null;
+          try {
+            return JSON.parse(raw);
+          } catch {
+            return raw;
+          }
+        };
 
-              // Validate that arrays are actually arrays (fix for completedSteps issue)
-              if (Array.isArray(defaultValue) && !Array.isArray(parsed)) {
-                console.warn(`Invalid data type for ${key}, expected array. Resetting to default.`);
-                return defaultValue;
-              }
-
-              return parsed;
-            } catch (e) {
-              console.warn(`Error loading ${key} from localStorage:`, e);
-              return defaultValue;
+        const normalizeStoredValue = (value, fallback) => {
+          if (value === undefined || value === null || value === 'undefined' || value === 'null') {
+            return fallback;
+          }
+          if (typeof value === 'object' && value !== null && 'data' in value && 'expiresAt' in value) {
+            if (typeof value.expiresAt === 'number' && Date.now() > value.expiresAt) {
+              return fallback;
             }
-          };
+            return value.data;
+          }
+          return value;
+        };
 
-          // PHI Protection - Load data with expiration check (for shift cases)
-          const SHIFT_DATA_TTL = 24 * 60 * 60 * 1000; // 24 hours - cases auto-clear after shift
-          const loadShiftData = (key, defaultValue) => {
-            try {
-              const saved = localStorage.getItem(key);
-              if (!saved) return defaultValue;
+        const getKey = (name, fallback) => {
+          const namespaced = localStorage.getItem(STORAGE_PREFIX + name);
+          if (namespaced !== null) {
+            return normalizeStoredValue(parseStoredValue(namespaced), fallback);
+          }
+          const legacy = localStorage.getItem(name);
+          if (legacy !== null) {
+            return normalizeStoredValue(parseStoredValue(legacy), fallback);
+          }
+          return fallback;
+        };
 
-              const item = JSON.parse(saved);
+        const touchLastUpdated = () => {
+          try {
+            localStorage.setItem(STORAGE_PREFIX + LAST_UPDATED_KEY, JSON.stringify(Date.now()));
+          } catch (e) {
+            console.warn('Failed to update lastUpdated:', e);
+          }
+        };
 
-              // Handle both old format (plain array) and new format (with expiration)
-              if (Array.isArray(item)) {
-                // Old format - migrate to new format
-                return item;
-              }
+        const setKey = (name, value, options = {}) => {
+          try {
+            localStorage.setItem(STORAGE_PREFIX + name, JSON.stringify(value));
+            if (!options.skipLastUpdated && name !== LAST_UPDATED_KEY) {
+              touchLastUpdated();
+            }
+          } catch (e) {
+            console.warn('Failed to save key:', name, e);
+          }
+        };
 
-              if (!item.data) return defaultValue;
+        const removeKey = (name) => {
+          localStorage.removeItem(STORAGE_PREFIX + name);
+          localStorage.removeItem(name);
+        };
 
-              // Check expiration
-              if (item.expiresAt && new Date().getTime() > item.expiresAt) {
+        const clearAllAppStorage = () => {
+          if (window.strokeAppStorage && typeof window.strokeAppStorage.clearAppStorage === 'function') {
+            window.strokeAppStorage.clearAppStorage();
+            return;
+          }
+          try {
+            Object.keys(localStorage).forEach((key) => {
+              if (key.startsWith(STORAGE_PREFIX)) {
                 localStorage.removeItem(key);
-                return defaultValue;
               }
+            });
+            LEGACY_KEYS.forEach((key) => localStorage.removeItem(key));
+            Object.keys(sessionStorage).forEach((key) => {
+              if (key.startsWith(STORAGE_PREFIX)) {
+                sessionStorage.removeItem(key);
+              }
+            });
+            LEGACY_SESSION_KEYS.forEach((key) => sessionStorage.removeItem(key));
+          } catch (e) {
+            console.warn('Storage clear failed:', e);
+          }
+        };
 
-              return item.data;
-            } catch (e) {
-              console.warn(`Error loading ${key}:`, e);
-              return defaultValue;
-            }
-          };
+        const migrateLegacyStorage = () => {
+          try {
+            const migrated = localStorage.getItem(STORAGE_PREFIX + LEGACY_MIGRATION_KEY);
+            if (migrated) return;
+            LEGACY_KEYS.forEach((key) => {
+              const legacyValue = localStorage.getItem(key);
+              if (legacyValue === null) return;
+              const parsed = parseStoredValue(legacyValue);
+              const normalized = normalizeStoredValue(parsed, undefined);
+              if (normalized !== undefined) {
+                localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(normalized));
+              }
+              localStorage.removeItem(key);
+            });
+            localStorage.setItem(STORAGE_PREFIX + LEGACY_MIGRATION_KEY, JSON.stringify(true));
+          } catch (e) {
+            console.warn('Legacy storage migration failed:', e);
+          }
+        };
 
-          // Force activeTab to always start as 'encounter' - load saved value in useEffect after mount
-          const [activeTab, setActiveTab] = useState('encounter');
-          const [patientData, setPatientData] = useState(loadFromStorage('patientData', {}));
-          const [nihssScore, setNihssScore] = useState(loadFromStorage('nihssScore', 0));
-          const [aspectsScore, setAspectsScore] = useState(loadFromStorage('aspectsScore', 10));
-          const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
-          const [searchQuery, setSearchQuery] = useState('');
-          const [showSuccess, setShowSuccess] = useState(false);
-          const [isCalculating, setIsCalculating] = useState(false);
-          const [copiedText, setCopiedText] = useState('');
-          const [isMounted, setIsMounted] = useState(false);
-          const [showTemplateEditor, setShowTemplateEditor] = useState(false);
-          const [editableTemplate, setEditableTemplate] = useState(loadFromStorage('telestrokeTemplate', `Chief complaint: {chiefComplaint}
+        const parseLastUpdated = (value) => {
+          if (typeof value === 'number' && Number.isFinite(value)) return value;
+          if (typeof value === 'string') {
+            const numeric = Number(value);
+            if (Number.isFinite(numeric)) return numeric;
+            const parsedDate = Date.parse(value);
+            if (!Number.isNaN(parsedDate)) return parsedDate;
+          }
+          return null;
+        };
+
+        const applyStorageExpiration = (ttlHours) => {
+          const lastUpdatedRaw = getKey(LAST_UPDATED_KEY, null);
+          const lastUpdated = parseLastUpdated(lastUpdatedRaw);
+          if (!lastUpdated || !Number.isFinite(ttlHours) || ttlHours <= 0) {
+            return false;
+          }
+          const ttlMs = ttlHours * 60 * 60 * 1000;
+          if (Date.now() - lastUpdated > ttlMs) {
+            clearAllAppStorage();
+            return true;
+          }
+          return false;
+        };
+
+        migrateLegacyStorage();
+        const storedTtlOverride = getKey('ttlHoursOverride', null);
+        const initialTtlHours = Number.isFinite(storedTtlOverride) && storedTtlOverride > 0
+          ? storedTtlOverride
+          : DEFAULT_TTL_HOURS;
+        const INITIAL_STORAGE_EXPIRED = applyStorageExpiration(initialTtlHours);
+
+        const VALID_TABS = ['home', 'encounter', 'ich', 'protocols', 'calculators', 'trials', 'evidence', 'tools'];
+
+        const parseHashRoute = (hash) => {
+          if (!hash) return null;
+          const cleaned = hash.replace(/^#\/?/, '').trim();
+          if (!cleaned) {
+            return { tab: 'home', tool: null };
+          }
+          const parts = cleaned.split('/').filter(Boolean);
+          const root = parts[0];
+          const sub = parts[1];
+
+          switch (root) {
+            case 'home':
+              return { tab: 'home', tool: null };
+            case 'encounter':
+              return { tab: 'encounter', tool: null };
+            case 'ich':
+              return { tab: 'ich', tool: null };
+            case 'management':
+            case 'protocols':
+              return { tab: 'protocols', tool: null };
+            case 'calculators':
+              return { tab: 'calculators', tool: null };
+            case 'trials':
+              return { tab: 'trials', tool: null };
+            case 'evidence':
+              return { tab: 'evidence', tool: null };
+            case 'tools':
+              return {
+                tab: 'tools',
+                tool: sub === 'clinic' ? 'clinic' : sub === 'map' ? 'map' : null
+              };
+            default:
+              return null;
+          }
+        };
+
+        const buildHashRoute = (tab, tool) => {
+          switch (tab) {
+            case 'home':
+              return '#/home';
+            case 'encounter':
+              return '#/encounter';
+            case 'ich':
+              return '#/ich';
+            case 'protocols':
+              return '#/management';
+            case 'calculators':
+              return '#/calculators';
+            case 'trials':
+              return '#/trials';
+            case 'evidence':
+              return '#/evidence';
+            case 'tools':
+              if (tool === 'clinic') return '#/tools/clinic';
+              if (tool === 'map') return '#/tools/map';
+              return '#/tools';
+            default:
+              return '#/home';
+          }
+        };
+
+        const StrokeClinicalTool = () => {
+          const defaultTelestrokeTemplate = `Chief complaint: {chiefComplaint}
 Last known well (date/time): {lkwDate} {lkwTime}
 HPI: {age} year old {sex} p/w {symptoms} at {lkwTime}
 Relevant PMH: {pmh}
@@ -508,14 +800,255 @@ TNK was administered at {tnkAdminTime} after a brief time-out.
 Recommendations:
 {recommendationsText}
 
-Rizwan Kalani MD`));
+Clinician Name`;
+
+          const getDefaultStrokeCodeForm = () => ({
+            age: '',
+            sex: '',
+            hx: '',
+            sx: '',
+            lkw: '',
+            lkw_date: new Date().toISOString().split('T')[0],
+            nihss: '',
+            aspects: '',
+            def: '',
+            hct: '',
+            cta: '',
+            ctp: '',
+            tnk: [],
+            tnk_rec: '',
+            evt_rec: '',
+            rec_reason: ''
+          });
+
+          const getDefaultAspectsRegionState = () => ([
+            { id: 'M1', name: 'M1 - Anterior MCA cortex', checked: true },
+            { id: 'M2', name: 'M2 - MCA cortex lateral to insular ribbon', checked: true },
+            { id: 'M3', name: 'M3 - Posterior MCA cortex', checked: true },
+            { id: 'M4', name: 'M4 - Anterior MCA territory immediately superior to M1', checked: true },
+            { id: 'M5', name: 'M5 - Lateral MCA territory immediately superior to M2', checked: true },
+            { id: 'M6', name: 'M6 - Posterior MCA territory immediately superior to M3', checked: true },
+            { id: 'IC', name: 'IC - Internal capsule', checked: true },
+            { id: 'L', name: 'L - Lentiform nucleus', checked: true },
+            { id: 'C', name: 'C - Caudate', checked: true },
+            { id: 'I', name: 'I - Insular ribbon', checked: true }
+          ]);
+
+          const getDefaultPcAspectsRegions = () => ([
+            { id: 'THAL', name: 'Thalami (bilateral)', checked: true, points: 1 },
+            { id: 'MIDBRAIN', name: 'Midbrain', checked: true, points: 2 },
+            { id: 'PONS', name: 'Pons', checked: true, points: 2 },
+            { id: 'MEDULLA', name: 'Medulla', checked: true, points: 1 },
+            { id: 'CEREBELLUM-L', name: 'Left Cerebellar Hemisphere', checked: true, points: 1 },
+            { id: 'CEREBELLUM-R', name: 'Right Cerebellar Hemisphere', checked: true, points: 1 },
+            { id: 'PCA-L', name: 'Left Occipital Lobe (PCA Territory)', checked: true, points: 1 },
+            { id: 'PCA-R', name: 'Right Occipital Lobe (PCA Territory)', checked: true, points: 1 }
+          ]);
+
+          const getDefaultTelestrokeNote = () => ({
+            // Calling Site for Telephone Consults
+            callingSite: '',
+            callingSiteOther: '',
+            // Telephone consult specific fields
+            workingDiagnosis: '',
+            briefHistory: '',
+            deficits: '',
+            imaging: '',
+            chiefComplaint: '',
+            lkwDate: new Date().toISOString().split('T')[0],
+            lkwTime: new Date().toTimeString().slice(0, 5),
+            lkwUnknown: false,
+            age: '',
+            sex: 'M',
+            affectedSide: '',
+            weight: '',
+            height: '',
+            lastDOACDose: new Date().toISOString().slice(0, 16),
+            lastDOACType: '',
+            arrivalTime: '',
+            strokeAlertTime: '',
+            // DTN Time Metrics
+            dtnEdArrival: '',
+            dtnStrokeAlert: '',
+            dtnCtStarted: '',
+            dtnCtRead: '',
+            dtnTnkOrdered: '',
+            dtnTnkAdministered: '',
+            symptoms: '',
+            pmh: '',
+            medications: '',
+            noAnticoagulants: false,
+            premorbidMRS: '',
+            vesselOcclusion: [],
+            presentingBP: '',
+            bpPreTNK: '',
+            bpPreTNKTime: '',
+            glucose: '',
+            plateletsCoags: '',
+            creatinine: '',
+            inr: '',
+            ptt: '',
+            plateletCount: '',
+            platelets: '',
+            allergies: '',
+            contrastAllergy: false,
+            nihss: '',
+            nihssDetails: '',
+            imagingReviewed: true,
+            ctDate: new Date().toISOString().split('T')[0],
+            ctTime: '',
+            ctResults: '',
+            ctaDate: new Date().toISOString().split('T')[0],
+            ctaTime: '',
+            ctaResults: '',
+            ctpResults: '',
+            ekgResults: '',
+            wakeUpStrokeWorkflow: {
+              mriAvailable: null,
+              dwi: {
+                positiveForLesion: false,
+                lesionVolume: ''
+              },
+              flair: {
+                noMarkedHyperintensity: false
+              },
+              ageEligible: false,
+              nihssEligible: false,
+              extendCriteria: {
+                nihss4to26: false,
+                premorbidMRSLt2: false,
+                ischemicCoreLte70: false,
+                mismatchRatioGte1_2: false,
+                timeWindow4_5to9h: false
+              },
+              imagingRecommendation: '',
+              wakeUpEligible: null,
+              extendEligible: null
+            },
+            diagnosis: '',
+            diagnosisCategory: '',
+            tnkRecommended: false,
+            evtRecommended: false,
+            rationale: '',
+            tnkConsentDiscussed: false,
+            patientFamilyConsent: false,
+            presumedConsent: false,
+            preTNKSafetyPause: false,
+            tnkAdminTime: '',
+            admitLocation: '',
+            recommendationsText: '',
+            transferAccepted: false,
+            disposition: '',
+            doorTime: '',
+            needleTime: '',
+            punctureTime: '',
+            tnkContraindicationChecklist: {
+              activeInternalBleeding: false,
+              recentIntracranialSurgery: false,
+              intracranialNeoplasm: false,
+              knownBleedingDiathesis: false,
+              severeUncontrolledHTN: false,
+              currentICH: false,
+              recentMajorSurgery: false,
+              recentGIGUBleeding: false,
+              recentArterialPuncture: false,
+              recentLumbarPuncture: false,
+              pregnancy: false,
+              seizureAtOnset: false,
+              lowPlatelets: false,
+              elevatedINR: false,
+              elevatedPTT: false,
+              abnormalGlucose: false,
+              recentDOAC: false
+            },
+            tnkContraindicationReviewed: false,
+            tnkContraindicationReviewTime: '',
+            recommendations: {
+              neuroChecks: false,
+              noAntithrombotics: false,
+              bpControl: false,
+              followUpCT: false,
+              mri: false,
+              ekg: false,
+              echo: false,
+              lipids: false,
+              therapies: false,
+              dvtPpx: false,
+              neuroConsult: false
+            }
+          });
+
+          // Load saved data from localStorage with validation
+          const loadFromStorage = (key, defaultValue) => {
+            try {
+              const saved = getKey(key, undefined);
+              if (saved === undefined || saved === null) return defaultValue;
+
+              // Validate that arrays are actually arrays (fix for completedSteps issue)
+              if (Array.isArray(defaultValue) && !Array.isArray(saved)) {
+                console.warn(`Invalid data type for ${key}, expected array. Resetting to default.`);
+                return defaultValue;
+              }
+
+              return saved;
+            } catch (e) {
+              console.warn(`Error loading ${key} from localStorage:`, e);
+              return defaultValue;
+            }
+          };
+
+          // PHI Protection - shift handoff data expires after 24 hours
+          const SHIFT_DATA_TTL_MS = 24 * 60 * 60 * 1000;
+
+          const loadShiftData = (key, defaultValue) => {
+            try {
+              return getKey(key, defaultValue);
+            } catch (e) {
+              console.warn(`Error loading ${key}:`, e);
+              return defaultValue;
+            }
+          };
+
+          const saveShiftData = (key, value) => {
+            try {
+              setKey(key, { data: value, expiresAt: Date.now() + SHIFT_DATA_TTL_MS });
+            } catch (e) {
+              console.warn(`Error saving ${key}:`, e);
+            }
+          };
+
+          const [activeTab, setActiveTab] = useState('home');
+          const [activeToolsView, setActiveToolsView] = useState(null);
+          const [routeReady, setRouteReady] = useState(false);
+          const [notice, setNotice] = useState(null);
+          const [storageExpired, setStorageExpired] = useState(INITIAL_STORAGE_EXPIRED);
+          const [toolLoadErrors, setToolLoadErrors] = useState({ clinic: false, map: false });
+          const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null });
+          const [configError, setConfigError] = useState('');
+          const [configLoaded, setConfigLoaded] = useState(false);
+          const [ttlHours, setTtlHours] = useState(DEFAULT_TTL_HOURS);
+
+          const [patientData, setPatientData] = useState(loadFromStorage('patientData', {}));
+          const [nihssScore, setNihssScore] = useState(loadFromStorage('nihssScore', 0));
+          const [aspectsScore, setAspectsScore] = useState(loadFromStorage('aspectsScore', 10));
+          const [darkMode, setDarkMode] = useState(getKey('darkMode', false) === true);
+          const [searchQuery, setSearchQuery] = useState('');
+          const [showSuccess, setShowSuccess] = useState(false);
+          const [isCalculating, setIsCalculating] = useState(false);
+          const [copiedText, setCopiedText] = useState('');
+          const [isMounted, setIsMounted] = useState(false);
+          const [showTemplateEditor, setShowTemplateEditor] = useState(false);
+          const [editableTemplate, setEditableTemplate] = useState(loadFromStorage('telestrokeTemplate', defaultTelestrokeTemplate));
 
           // Time tracking
           const [currentTime, setCurrentTime] = useState(new Date());
-          const [lkwTime, setLkwTime] = useState(loadFromStorage('lkwTime', null) ? new Date(loadFromStorage('lkwTime', null)) : new Date());
+          const [lkwTime, setLkwTime] = useState(() => {
+            const storedLkwTime = loadFromStorage('lkwTime', null);
+            return storedLkwTime ? new Date(storedLkwTime) : new Date();
+          });
 
           // Thrombolysis window alert state
-          const [alertsMuted, setAlertsMuted] = useState(localStorage.getItem('thrombolysisAlertsMuted') === 'true');
+          const [alertsMuted, setAlertsMuted] = useState(getKey('thrombolysisAlertsMuted', false) === true);
           const [lastAlertPlayed, setLastAlertPlayed] = useState(null);
           const [alertFlashing, setAlertFlashing] = useState(false);
           const [elapsedSeconds, setElapsedSeconds] = useState(0);
@@ -530,6 +1063,7 @@ Rizwan Kalani MD`));
           // Search
           const [searchResults, setSearchResults] = useState([]);
           const [searchOpen, setSearchOpen] = useState(false);
+          const [searchContext, setSearchContext] = useState('header');
           const [evidenceFilter, setEvidenceFilter] = useState('');
           const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
 
@@ -547,8 +1081,8 @@ Rizwan Kalani MD`));
 
           // Collapsible Timer Sidebar state (default: expanded on desktop, collapsed on mobile)
           const [timerSidebarCollapsed, setTimerSidebarCollapsed] = useState(() => {
-            const saved = localStorage.getItem('timerSidebarCollapsed');
-            if (saved !== null) return saved === 'true';
+            const saved = getKey('timerSidebarCollapsed', null);
+            if (saved !== null && saved !== undefined) return saved === true;
             return window.innerWidth < 1024; // collapsed by default on mobile/tablet
           });
 
@@ -638,184 +1172,14 @@ Rizwan Kalani MD`));
           }));
           const [trialsCategory, setTrialsCategory] = useState('ischemic');
 
-          const [strokeCodeForm, setStrokeCodeForm] = useState(loadFromStorage('strokeCodeForm', {
-            age: '',
-            sex: '',
-            hx: '',
-            sx: '',
-            lkw: '',
-            lkw_date: new Date().toISOString().split('T')[0],
-            nihss: '',
-            aspects: '',
-            def: '',
-            hct: '',
-            cta: '',
-            ctp: '',
-            tnk: [],
-            tnk_rec: '',
-            evt_rec: '',
-            rec_reason: ''
-          }));
-          const [aspectsRegionState, setAspectsRegionState] = useState([
-            { id: 'M1', name: 'M1 - Anterior MCA cortex', checked: true },
-            { id: 'M2', name: 'M2 - MCA cortex lateral to insular ribbon', checked: true },
-            { id: 'M3', name: 'M3 - Posterior MCA cortex', checked: true },
-            { id: 'M4', name: 'M4 - Anterior MCA territory immediately superior to M1', checked: true },
-            { id: 'M5', name: 'M5 - Lateral MCA territory immediately superior to M2', checked: true },
-            { id: 'M6', name: 'M6 - Posterior MCA territory immediately superior to M3', checked: true },
-            { id: 'IC', name: 'IC - Internal capsule', checked: true },
-            { id: 'L', name: 'L - Lentiform nucleus', checked: true },
-            { id: 'C', name: 'C - Caudate', checked: true },
-            { id: 'I', name: 'I - Insular ribbon', checked: true }
-          ]);
+          const [strokeCodeForm, setStrokeCodeForm] = useState(loadFromStorage('strokeCodeForm', getDefaultStrokeCodeForm()));
+          const [aspectsRegionState, setAspectsRegionState] = useState(loadFromStorage('aspectsRegionState', getDefaultAspectsRegionState()));
 
           // PC-ASPECTS regions state
-          const [pcAspectsRegions, setPcAspectsRegions] = useState(loadFromStorage('pcAspectsRegions', [
-            { id: 'THAL', name: 'Thalami (bilateral)', checked: true, points: 1 },
-            { id: 'MIDBRAIN', name: 'Midbrain', checked: true, points: 2 },
-            { id: 'PONS', name: 'Pons', checked: true, points: 2 },
-            { id: 'MEDULLA', name: 'Medulla', checked: true, points: 1 },
-            { id: 'CEREBELLUM-L', name: 'Left Cerebellar Hemisphere', checked: true, points: 1 },
-            { id: 'CEREBELLUM-R', name: 'Right Cerebellar Hemisphere', checked: true, points: 1 },
-            { id: 'PCA-L', name: 'Left Occipital Lobe (PCA Territory)', checked: true, points: 1 },
-            { id: 'PCA-R', name: 'Right Occipital Lobe (PCA Territory)', checked: true, points: 1 }
-          ]));
+          const [pcAspectsRegions, setPcAspectsRegions] = useState(loadFromStorage('pcAspectsRegions', getDefaultPcAspectsRegions()));
 
           // Telestroke Documentation State
-          const [telestrokeNote, setTelestrokeNote] = useState(loadFromStorage('telestrokeNote', {
-            // Calling Site for Telephone Consults
-            callingSite: '',
-            callingSiteOther: '', // Free text when "Other" is selected
-            // Telephone consult specific fields
-            workingDiagnosis: '', // Presumptive/working diagnosis
-            briefHistory: '', // Brief history of present illness
-            deficits: '', // Frank neurological deficits
-            imaging: '', // Imaging summary
-            chiefComplaint: '', // Legacy field, kept for backward compatibility
-            lkwDate: new Date().toISOString().split('T')[0],
-            lkwTime: new Date().toTimeString().slice(0, 5), // Auto-populate with current time
-            lkwUnknown: false, // Wake-up stroke / unknown onset
-            age: '',
-            sex: 'M',
-            affectedSide: '', // L or R for laterality
-            weight: '', // kg - for TNK dosing
-            height: '', // cm - for BMI/contrast dosing
-            lastDOACDose: new Date().toISOString().slice(0, 16), // date/time of last anticoagulant - auto-populated with current time
-            lastDOACType: '', // apixaban, rivaroxaban, dabigatran, edoxaban
-            arrivalTime: '', // ED arrival for DTN calculation
-            strokeAlertTime: '', // Stroke team activation time
-            // DTN Time Metrics - all ISO datetime strings
-            dtnEdArrival: '', // ED Arrival time (door)
-            dtnStrokeAlert: '', // Stroke Alert called
-            dtnCtStarted: '', // CT scan started
-            dtnCtRead: '', // CT read/cleared for TNK
-            dtnTnkOrdered: '', // TNK ordered
-            dtnTnkAdministered: '', // TNK administered (needle time)
-            symptoms: '',
-            pmh: '',
-            medications: '',
-            noAnticoagulants: false,
-            // NEW: Pre-stroke functional status for trial eligibility
-            premorbidMRS: '',
-            // NEW: Vessel occlusion for STEP and other trials
-            vesselOcclusion: [], // Array of: ICA, M1, M2, M3, M4, A1, A2, A3, P1, P2, P3
-            presentingBP: '',
-            bpPreTNK: '',
-            bpPreTNKTime: '',
-            glucose: '',
-            plateletsCoags: '',
-            creatinine: '',
-            inr: '', // actual INR value for contraindication check
-            ptt: '', // PTT value
-            plateletCount: '', // actual platelet count (not just notes)
-            allergies: '', // including contrast, iodine
-            contrastAllergy: false,
-            nihss: '',
-            nihssDetails: '',
-            imagingReviewed: true,
-            ctDate: new Date().toISOString().split('T')[0],
-            ctTime: '',
-            ctResults: '',
-            ctaDate: new Date().toISOString().split('T')[0],
-            ctaTime: '',
-            ctaResults: '',
-            ctpResults: '',
-            ekgResults: '',
-            // Wake-up Stroke / Unknown LKW Workflow Fields
-            wakeUpStrokeWorkflow: {
-              mriAvailable: null, // true = MRI available, false = CTP only
-              // WAKE-UP Trial Criteria (MRI-guided)
-              dwi: {
-                positiveForLesion: false,
-                lesionVolume: ''
-              },
-              flair: {
-                noMarkedHyperintensity: false
-              },
-              ageEligible: false, // 18-80 years
-              nihssEligible: false, // ≤25
-              // EXTEND Trial Criteria (Perfusion Imaging)
-              extendCriteria: {
-                nihss4to26: false,
-                premorbidMRSLt2: false,
-                ischemicCoreLte70: false,
-                mismatchRatioGte1_2: false,
-                timeWindow4_5to9h: false
-              },
-              imagingRecommendation: '', // Auto-populated based on criteria
-              wakeUpEligible: null, // null=unknown, true=eligible, false=not eligible
-              extendEligible: null
-            },
-            diagnosis: '',
-            diagnosisCategory: '', // 'ischemic', 'ich', or 'other'
-            tnkRecommended: false,
-            evtRecommended: false,
-            rationale: '',
-            tnkConsentDiscussed: false,
-            patientFamilyConsent: false,
-            presumedConsent: false,
-            preTNKSafetyPause: false,
-            tnkAdminTime: '',
-            admitLocation: '',
-            recommendationsText: '',
-            // Thrombolysis Contraindication Checklist
-            tnkContraindicationChecklist: {
-              // Absolute Contraindications
-              activeInternalBleeding: false,
-              recentIntracranialSurgery: false, // <3 months: intracranial/spinal surgery, head trauma, or stroke
-              intracranialNeoplasm: false, // neoplasm, AVM, or aneurysm
-              knownBleedingDiathesis: false,
-              severeUncontrolledHTN: false, // despite treatment
-              currentICH: false, // on imaging
-              // Relative Contraindications
-              recentMajorSurgery: false, // <14 days
-              recentGIGUBleeding: false, // <21 days
-              recentArterialPuncture: false, // <7 days at non-compressible site
-              recentLumbarPuncture: false, // <7 days
-              pregnancy: false,
-              seizureAtOnset: false, // with postictal deficits
-              lowPlatelets: false, // <100,000
-              elevatedINR: false, // >1.7
-              elevatedPTT: false, // >40s
-              abnormalGlucose: false, // <50 or >400 mg/dL
-              recentDOAC: false // within 48h unless reversal confirmed
-            },
-            tnkContraindicationReviewed: false,
-            tnkContraindicationReviewTime: '',
-            recommendations: {
-              neuroChecks: false,
-              noAntithrombotics: false,
-              bpControl: false,
-              followUpCT: false,
-              mri: false,
-              ekg: false,
-              echo: false,
-              lipids: false,
-              therapies: false,
-              dvtPpx: false,
-              neuroConsult: false
-            }
-          }));
+          const [telestrokeNote, setTelestrokeNote] = useState(loadFromStorage('telestrokeNote', getDefaultTelestrokeNote()));
 
 
           // Trials data
@@ -2534,17 +2898,10 @@ Rizwan Kalani MD`));
             return <i data-lucide={IconComponent} className="w-4 h-4 inline-block"></i>;
           };
 
-          // PHI Protection - Data with expiration
-          const PATIENT_DATA_TTL = 24 * 60 * 60 * 1000; // 24 hours
-
+          // Privacy: Persist app data and update lastUpdated (TTL handled globally)
           const saveWithExpiration = (key, data) => {
             try {
-              const item = {
-                data: data,
-                timestamp: new Date().getTime(),
-                expiresAt: new Date().getTime() + PATIENT_DATA_TTL
-              };
-              localStorage.setItem(key, JSON.stringify(item));
+              setKey(key, data);
               setSaveStatus('saved');
               setLastSaved(new Date());
             } catch (e) {
@@ -2555,15 +2912,9 @@ Rizwan Kalani MD`));
 
           const loadWithExpiration = (key, defaultValue) => {
             try {
-              const item = JSON.parse(localStorage.getItem(key));
-              if (!item) return defaultValue;
-
-              if (new Date().getTime() > item.expiresAt) {
-                localStorage.removeItem(key);
-                return defaultValue;
-              }
-              return item.data;
-            } catch {
+              return loadFromStorage(key, defaultValue);
+            } catch (e) {
+              console.warn('Load failed:', e);
               return defaultValue;
             }
           };
@@ -2590,7 +2941,7 @@ Rizwan Kalani MD`));
             []
           );
 
-          // ============================================
+          // ====================================
           // SHIFT MANAGEMENT FUNCTIONS
           // ============================================
 
@@ -2843,7 +3194,7 @@ Rizwan Kalani MD`));
           const addToSignOut = (customLabel = '') => {
             const entry = createSignOutEntry(customLabel);
             setSignOutPatients(prev => [...prev, entry]);
-            saveWithExpiration('signOutPatients', [...signOutPatients, entry]);
+            saveShiftData('signOutPatients', [...signOutPatients, entry]);
             showSignOutNotification('Patient added to sign-out');
             return entry;
           };
@@ -2852,7 +3203,7 @@ Rizwan Kalani MD`));
           const updateSignOutEntry = (id, updates) => {
             setSignOutPatients(prev => {
               const updated = prev.map(p => p.id === id ? { ...p, ...updates } : p);
-              saveWithExpiration('signOutPatients', updated);
+              saveShiftData('signOutPatients', updated);
               return updated;
             });
           };
@@ -2861,7 +3212,7 @@ Rizwan Kalani MD`));
           const removeSignOutEntry = (id) => {
             setSignOutPatients(prev => {
               const updated = prev.filter(p => p.id !== id);
-              saveWithExpiration('signOutPatients', updated);
+              saveShiftData('signOutPatients', updated);
               return updated;
             });
           };
@@ -2869,7 +3220,7 @@ Rizwan Kalani MD`));
           // Clear all sign-outs
           const clearAllSignOuts = () => {
             setSignOutPatients([]);
-            localStorage.removeItem('signOutPatients');
+            removeKey('signOutPatients');
           };
 
           // Generate formatted sign-out text for sharing
@@ -2930,7 +3281,7 @@ Rizwan Kalani MD`));
             });
 
             text += `---\n`;
-            text += `[Generated by UW Stroke Tool]`;
+            text += `[Generated by Stroke Toolkit]`;
 
             return text;
           };
@@ -3018,7 +3369,7 @@ Rizwan Kalani MD`));
           // Persist sign-out patients to localStorage
           React.useEffect(() => {
             if (signOutPatients.length > 0) {
-              saveWithExpiration('signOutPatients', signOutPatients);
+              saveShiftData('signOutPatients', signOutPatients);
             }
           }, [signOutPatients]);
 
@@ -3031,9 +3382,108 @@ Rizwan Kalani MD`));
 
           React.useEffect(() => {
             if (currentPatientId) {
-              localStorage.setItem('currentPatientId', currentPatientId);
+              setKey('currentPatientId', currentPatientId);
             }
           }, [currentPatientId]);
+          const noticeTimeoutRef = React.useRef(null);
+          const hasHandledExpiredRef = React.useRef(false);
+
+          const showNotice = (message, type = 'info', options = {}) => {
+            const { timeoutMs = 4000, persist = false } = options;
+            if (noticeTimeoutRef.current) {
+              clearTimeout(noticeTimeoutRef.current);
+            }
+            setNotice({ message, type });
+            if (!persist) {
+              noticeTimeoutRef.current = setTimeout(() => {
+                setNotice(null);
+              }, timeoutMs);
+            }
+          };
+
+          const resetAppStateToDefaults = (options = {}) => {
+            const { resetDarkMode = false } = options;
+
+            setPatientData({});
+            setNihssScore(0);
+            setAspectsScore(10);
+            setLkwTime(new Date());
+            setStrokeCodeForm(getDefaultStrokeCodeForm());
+            setAspectsRegionState(getDefaultAspectsRegionState());
+            setPcAspectsRegions(getDefaultPcAspectsRegions());
+            setGcsItems({ eye: '', verbal: '', motor: '' });
+            setMrsScore('');
+            setIchScoreItems({ gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false });
+            setAbcd2Items({ age60: false, bp: false, unilateralWeakness: false, speechDisturbance: false, duration: '', diabetes: false });
+            setChads2vascItems({ chf: false, hypertension: false, age75: false, diabetes: false, strokeTia: false, vascular: false, age65: false, female: false });
+            setRopeItems({ noHypertension: false, noDiabetes: false, noStrokeTia: false, nonsmoker: false, cortical: false, age: '' });
+            setHuntHessGrade('');
+            setWfnsGrade('');
+            setHasbledItems({ hypertension: false, renalDisease: false, liverDisease: false, stroke: false, bleeding: false, labileINR: false, elderly: false, drugs: false, alcohol: false });
+            setRcvs2Items({ recurrentTCH: false, carotidInvolvement: false, vasoconstrictiveTrigger: false, female: false, sah: false });
+            setCurrentStep(0);
+            setCompletedSteps([]);
+            setShiftPatients([]);
+            setCurrentPatientId(null);
+            setShowPatientSwitcher(false);
+            setSignOutPatients([]);
+            setShowSignOutModal(false);
+            setShowSignOutManager(false);
+            setSignOutToast('');
+            setConsultationType('videoTelestroke');
+            setIchManagementSubTab('ich');
+            setCalcRefsSubTab('calculators');
+            setFabExpanded(false);
+            setAlertsMuted(false);
+            setLastAlertPlayed(null);
+            setAlertFlashing(false);
+            setElapsedSeconds(0);
+            setTimerSidebarCollapsed(window.innerWidth < 1024);
+            setTelestrokeNote(getDefaultTelestrokeNote());
+            setEditableTemplate(defaultTelestrokeTemplate);
+            setShowTemplateEditor(false);
+            setSearchQuery('');
+            setSearchResults([]);
+            setSearchOpen(false);
+            setSearchContext('header');
+            setEvidenceFilter('');
+            setShowKeyboardHelp(false);
+            setShowSmartPhrases(false);
+            setCopiedText('');
+            setShowSuccess(false);
+            setIsCalculating(false);
+            setCriticalAlerts([]);
+            setTrialsCategory('ischemic');
+            setToolLoadErrors({ clinic: false, map: false });
+            setSaveStatus('saved');
+            setLastSaved(null);
+            setActiveToolsView(null);
+            setNotice(null);
+
+            if (resetDarkMode) {
+              setDarkMode(false);
+              document.documentElement.classList.remove('dark');
+            }
+          };
+
+          const navigateTo = (tab, options = {}) => {
+            const { tool = null, clearSearch = false } = options;
+            const nextTab = tab || 'home';
+
+            setActiveTab(nextTab);
+            if (nextTab === 'tools') {
+              setActiveToolsView(tool);
+            } else {
+              setActiveToolsView(null);
+            }
+
+            if (clearSearch) {
+              setSearchQuery('');
+              setSearchResults([]);
+              setSearchOpen(false);
+              setSearchContext('header');
+            }
+          };
 
           // Utility Functions
           const copyToClipboard = (text, label) => {
@@ -3088,7 +3538,7 @@ Rizwan Kalani MD`));
           const toggleDarkMode = () => {
             const newDarkMode = !darkMode;
             setDarkMode(newDarkMode);
-            localStorage.setItem('darkMode', newDarkMode);
+            setKey('darkMode', newDarkMode, { skipLastUpdated: true });
             if (newDarkMode) {
               document.documentElement.classList.add('dark');
             } else {
@@ -3098,8 +3548,8 @@ Rizwan Kalani MD`));
 
           const handleShare = async () => {
             const shareData = {
-              title: 'Stroke Clinical Decision Support',
-              text: 'Comprehensive clinical decision support tool for stroke management',
+              title: 'Stroke Toolkit',
+              text: 'Clinical decision support toolkit for stroke management',
               url: window.location.href
             };
 
@@ -3299,7 +3749,7 @@ Rizwan Kalani MD`));
               note += `${telestrokeNote.recommendationsText}\n`;
             }
 
-            note += `\nRizwan Kalani MD`;
+            note += `\nClinician Name`;
 
             return note;
             */
@@ -3405,11 +3855,8 @@ Rizwan Kalani MD`));
                         title: trial.name,
                         description: trial.description.substring(0, 100) + '...',
                         action: () => {
-                          // Navigate to trials tab
-                          setActiveTab('trials');
                           setTrialsCategory(category);
-                          setSearchOpen(false);
-                          setSearchQuery('');
+                          navigateTo('trials', { clearSearch: true });
                         }
                       });
                     }
@@ -3420,10 +3867,10 @@ Rizwan Kalani MD`));
 
             // Search in protocols/calculators
             const searchableItems = [
-              { name: 'NIHSS', keywords: ['nihss', 'stroke scale', 'neurological'], tab: 'nihss' },
-              { name: 'ASPECTS', keywords: ['aspects', 'imaging', 'ct'], tab: 'imaging' },
-              { name: 'TNK Eligibility', keywords: ['tnk', 'tenecteplase', 'thrombolysis', 'lytic'], tab: 'lytic' },
-              { name: 'EVT Eligibility', keywords: ['evt', 'thrombectomy', 'mechanical', 'endovascular'], tab: 'evt' },
+              { name: 'NIHSS', keywords: ['nihss', 'stroke scale', 'neurological'], tab: 'encounter' },
+              { name: 'ASPECTS', keywords: ['aspects', 'imaging', 'ct'], tab: 'encounter' },
+              { name: 'TNK Eligibility', keywords: ['tnk', 'tenecteplase', 'thrombolysis', 'lytic'], tab: 'encounter' },
+              { name: 'EVT Eligibility', keywords: ['evt', 'thrombectomy', 'mechanical', 'endovascular'], tab: 'encounter' },
               { name: 'ICH Management', keywords: ['ich', 'hemorrhage', 'bleeding', 'reversal'], tab: 'ich' },
               { name: 'GCS Score', keywords: ['gcs', 'glasgow', 'coma', 'consciousness'], tab: 'calculators' },
               { name: 'ICH Score', keywords: ['ich score', 'hemorrhage score', 'mortality'], tab: 'calculators' },
@@ -3446,9 +3893,7 @@ Rizwan Kalani MD`));
                   title: item.name,
                   description: `Go to ${item.name}`,
                   action: () => {
-                    setActiveTab(item.tab);
-                    setSearchOpen(false);
-                    setSearchQuery('');
+                    navigateTo(item.tab, { clearSearch: true });
                   }
                 });
               }
@@ -3486,9 +3931,7 @@ Rizwan Kalani MD`));
                   title: doc.title,
                   description: `${doc.section} section`,
                   action: () => {
-                    setActiveTab('evidence');
-                    setSearchOpen(false);
-                    setSearchQuery('');
+                    navigateTo('evidence', { clearSearch: true });
                   }
                 });
               }
@@ -3508,45 +3951,9 @@ Rizwan Kalani MD`));
             setNihssScore(0);
             setAspectsScore(10);
             setLkwTime(null);
-            setStrokeCodeForm({
-              age: '',
-              sex: '',
-              hx: '',
-              sx: '',
-              lkw: '',
-              lkw_date: new Date().toISOString().split('T')[0],
-              nihss: '',
-              def: '',
-              hct: '',
-              cta: '',
-              ctp: '',
-              tnk: [],
-              tnk_rec: '',
-              evt_rec: '',
-              rec_reason: ''
-            });
-            setAspectsRegionState([
-              { id: 'M1', name: 'M1 - Anterior MCA cortex', checked: true },
-              { id: 'M2', name: 'M2 - MCA cortex lateral to insular ribbon', checked: true },
-              { id: 'M3', name: 'M3 - Posterior MCA cortex', checked: true },
-              { id: 'M4', name: 'M4 - Anterior MCA territory immediately superior to M1', checked: true },
-              { id: 'M5', name: 'M5 - Lateral MCA territory immediately superior to M2', checked: true },
-              { id: 'M6', name: 'M6 - Posterior MCA territory immediately superior to M3', checked: true },
-              { id: 'IC', name: 'IC - Internal capsule', checked: true },
-              { id: 'L', name: 'L - Lentiform nucleus', checked: true },
-              { id: 'C', name: 'C - Caudate', checked: true },
-              { id: 'I', name: 'I - Insular ribbon', checked: true }
-            ]);
-            setPcAspectsRegions([
-              { id: 'THAL', name: 'Thalami (bilateral)', checked: true, points: 1 },
-              { id: 'MIDBRAIN', name: 'Midbrain', checked: true, points: 2 },
-              { id: 'PONS', name: 'Pons', checked: true, points: 2 },
-              { id: 'MEDULLA', name: 'Medulla', checked: true, points: 1 },
-              { id: 'CEREBELLUM-L', name: 'Left Cerebellar Hemisphere', checked: true, points: 1 },
-              { id: 'CEREBELLUM-R', name: 'Right Cerebellar Hemisphere', checked: true, points: 1 },
-              { id: 'PCA-L', name: 'Left Occipital Lobe (PCA Territory)', checked: true, points: 1 },
-              { id: 'PCA-R', name: 'Right Occipital Lobe (PCA Territory)', checked: true, points: 1 }
-            ]);
+            setStrokeCodeForm(getDefaultStrokeCodeForm());
+            setAspectsRegionState(getDefaultAspectsRegionState());
+            setPcAspectsRegions(getDefaultPcAspectsRegions());
             setGcsItems({ eye: 0, verbal: 0, motor: 0 });
             setMrsScore('');
             setIchScoreItems({ gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false });
@@ -3560,15 +3967,26 @@ Rizwan Kalani MD`));
             setCurrentStep(0);
             setCompletedSteps([]);
 
-            // Clear localStorage for patient data
+            // Clear stored patient data
             const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',
                                    'abcd2Items', 'chads2vascItems', 'ropeItems', 'huntHessGrade', 'wfnsGrade',
                                    'hasbledItems', 'rcvs2Items', 'strokeCodeForm', 'lkwTime',
                                    'currentStep', 'completedSteps', 'aspectsRegionState', 'pcAspectsRegions'];
-            keysToRemove.forEach(key => localStorage.removeItem(key));
+            keysToRemove.forEach((key) => removeKey(key));
 
-            setActiveTab('encounter');
+            navigateTo('encounter');
             setSaveStatus('saved');
+          };
+
+          const handleClearLocalData = () => {
+            if (!confirm('This clears locally stored app data on this device.')) {
+              return;
+            }
+
+            clearAllAppStorage();
+            resetAppStateToDefaults({ resetDarkMode: true });
+            navigateTo('home');
+            showNotice('Local data cleared.', 'success');
           };
 
           // Workflow steps definition
@@ -3580,14 +3998,14 @@ Rizwan Kalani MD`));
             { id: 'documentation', name: 'Documentation', tab: 'encounter' }
           ];
 
-          // Save to localStorage with expiration whenever state changes
+          // Save to local storage whenever state changes
           useEffect(() => {
             debouncedSave('activeTab', activeTab);
           }, [activeTab]);
 
           // Persist timer sidebar collapse state
           useEffect(() => {
-            localStorage.setItem('timerSidebarCollapsed', timerSidebarCollapsed);
+            setKey('timerSidebarCollapsed', timerSidebarCollapsed, { skipLastUpdated: true });
           }, [timerSidebarCollapsed]);
 
           // Persist consultation type
@@ -3787,7 +4205,7 @@ Rizwan Kalani MD`));
           const toggleAlertMute = () => {
             const newMuted = !alertsMuted;
             setAlertsMuted(newMuted);
-            localStorage.setItem('thrombolysisAlertsMuted', newMuted.toString());
+            setKey('thrombolysisAlertsMuted', newMuted, { skipLastUpdated: true });
           };
 
           // Second-level timer for elapsed time and alert checking
@@ -3929,37 +4347,148 @@ Rizwan Kalani MD`));
             performSearch(searchQuery);
           }, [searchQuery]);
 
-          // Initialize component and icons on mount
+          // Load optional local config (ignored if missing)
           useEffect(() => {
-            // Initialize icons immediately on first render
+            let cancelled = false;
+
+            fetch('config.local.json', { cache: 'no-store' })
+              .then((response) => {
+                if (response.status === 404) {
+                  if (!cancelled) {
+                    removeKey('ttlHoursOverride');
+                    setTtlHours(DEFAULT_TTL_HOURS);
+                    setConfigLoaded(true);
+                  }
+                  return null;
+                }
+                if (!response.ok) {
+                  throw new Error('Config fetch failed');
+                }
+                return response.json();
+              })
+              .then((data) => {
+                if (cancelled || !data) return;
+                if (typeof data !== 'object' || Array.isArray(data)) {
+                  throw new Error('Config format invalid');
+                }
+                const links = Array.isArray(data.institutionLinks) ? data.institutionLinks : [];
+                const sanitizedLinks = links
+                  .filter((link) => link && typeof link === 'object')
+                  .map((link) => ({
+                    label: String(link.label || '').trim(),
+                    url: String(link.url || '').trim(),
+                    note: String(link.note || '').trim()
+                  }))
+                  .filter((link) => link.url);
+                const ttlOverride = typeof data.ttlHoursOverride === 'number' &&
+                  Number.isFinite(data.ttlHoursOverride) &&
+                  data.ttlHoursOverride > 0
+                  ? data.ttlHoursOverride
+                  : null;
+                setAppConfig({ institutionLinks: sanitizedLinks, ttlHoursOverride: ttlOverride });
+                if (ttlOverride) {
+                  setTtlHours(ttlOverride);
+                  setKey('ttlHoursOverride', ttlOverride, { skipLastUpdated: true });
+                } else {
+                  removeKey('ttlHoursOverride');
+                }
+                setConfigLoaded(true);
+              })
+              .catch((err) => {
+                if (cancelled) return;
+                console.warn('Config load failed:', err);
+                setConfigError('Invalid config.local.json');
+                removeKey('ttlHoursOverride');
+                setTtlHours(DEFAULT_TTL_HOURS);
+                setConfigLoaded(true);
+              });
+
+            return () => {
+              cancelled = true;
+            };
+          }, []);
+
+          // If storage expired on load, notify and reset visual state
+          useEffect(() => {
+            if (!storageExpired) return;
+            resetAppStateToDefaults({ resetDarkMode: true });
+            navigateTo('home');
+            showNotice('Stored data expired and was cleared.', 'warning', { timeoutMs: 6000 });
+          }, []);
+
+          // Apply TTL override once config is loaded
+          useEffect(() => {
+            if (storageExpired || !configLoaded) return;
+            if (ttlHours === DEFAULT_TTL_HOURS) return;
+            const expired = applyStorageExpiration(ttlHours);
+            if (expired) {
+              setStorageExpired(true);
+              resetAppStateToDefaults({ resetDarkMode: true });
+              navigateTo('home');
+              showNotice('Stored data expired and was cleared.', 'warning', { timeoutMs: 6000 });
+            }
+          }, [ttlHours, storageExpired, configLoaded]);
+
+          // Initialize component, routing, and icons on mount
+          useEffect(() => {
             lucide.createIcons();
 
-            // After icons are initialized, load saved tab if valid
+            const resolveRoute = () => {
+              if (storageExpired && !hasHandledExpiredRef.current) {
+                hasHandledExpiredRef.current = true;
+                setActiveTab('home');
+                setActiveToolsView(null);
+                return;
+              }
+              const parsed = parseHashRoute(window.location.hash);
+              if (parsed && VALID_TABS.includes(parsed.tab)) {
+                setActiveTab(parsed.tab);
+                setActiveToolsView(parsed.tool);
+                return;
+              }
+              const savedTab = getKey('activeTab', null);
+              if (savedTab && VALID_TABS.includes(savedTab)) {
+                setActiveTab(savedTab);
+                setActiveToolsView(null);
+              } else {
+                setActiveTab('home');
+                setActiveToolsView(null);
+              }
+            };
+
+            resolveRoute();
+            setRouteReady(true);
+
             requestAnimationFrame(() => {
               setIsMounted(true);
-
-              // Load saved tab preference AFTER initial render
-              try {
-                const savedTab = localStorage.getItem('activeTab');
-                // 3 Consolidated Tabs - internal values that map to combined tabs
-                const validTabs = ['encounter', 'ich', 'protocols', 'calculators', 'evidence', 'trials'];
-                if (savedTab && savedTab !== 'null' && savedTab !== 'undefined' && validTabs.includes(savedTab.replace(/"/g, ''))) {
-                  setActiveTab(savedTab.replace(/"/g, ''));
-                }
-              } catch (e) {
-                console.warn('Error loading saved tab:', e);
-              }
-
               lucide.createIcons();
             });
+
+            window.addEventListener('hashchange', resolveRoute);
+            return () => window.removeEventListener('hashchange', resolveRoute);
           }, []);
+
+          // Keep hash in sync with the active view
+          useEffect(() => {
+            if (!routeReady) return;
+            const nextHash = buildHashRoute(activeTab, activeToolsView);
+            if (window.location.hash !== nextHash) {
+              window.location.hash = nextHash;
+            }
+          }, [activeTab, activeToolsView, routeReady]);
+
+          useEffect(() => {
+            if (activeToolsView) {
+              setToolLoadErrors((prev) => ({ ...prev, [activeToolsView]: false }));
+            }
+          }, [activeToolsView]);
 
           // Reinitialize icons when needed
           useEffect(() => {
             if (isMounted) {
               lucide.createIcons();
             }
-          }, [activeTab, copiedText, darkMode, searchOpen, isMounted]);
+          }, [activeTab, activeToolsView, copiedText, darkMode, notice, searchOpen, isMounted]);
 
           // Documentation generation functions
           const generateHPI = () => {
@@ -4066,6 +4595,7 @@ TO DO:
               if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
                 e.preventDefault();
                 setSearchOpen(true);
+                setSearchContext('header');
                 document.querySelector('input[placeholder*="Search"]')?.focus();
               }
 
@@ -4084,7 +4614,7 @@ TO DO:
 
               if (tabMap[e.key] && !e.metaKey && !e.ctrlKey && !e.altKey) {
                 e.preventDefault();
-                setActiveTab(tabMap[e.key]);
+                navigateTo(tabMap[e.key]);
               }
 
               // Ctrl/Cmd + E: Export to PDF
@@ -4110,6 +4640,72 @@ TO DO:
             return () => window.removeEventListener('keydown', handleKeyDown);
           }, []);
 
+          const toolsCatalog = {
+            clinic: {
+              id: 'clinic',
+              title: 'Clinic Questions / Follow-up Checklist',
+              description: 'Embedded checklist for follow-up encounters',
+              url: 'https://rkalani1.github.io/stroke-clinic-q/'
+            },
+            map: {
+              id: 'map',
+              title: 'Telestroke Coverage / Regional Map',
+              description: 'Interactive regional coverage map',
+              url: 'https://rkalani1.github.io/telestroke-expansion-map/'
+            }
+          };
+          const toolsList = [toolsCatalog.clinic, toolsCatalog.map];
+          const activeTool = activeToolsView ? toolsCatalog[activeToolsView] : null;
+          const ttlDisplayHours = appConfig.ttlHoursOverride || DEFAULT_TTL_HOURS;
+
+          const quickStartItems = [
+            {
+              title: 'Telestroke Encounter',
+              description: 'Start the encounter workflow',
+              action: () => navigateTo('encounter')
+            },
+            {
+              title: 'ICH / Reversal',
+              description: 'ICH management and reversal guidance',
+              action: () => navigateTo('ich')
+            },
+            {
+              title: 'Thrombolysis / Lytic Eligibility',
+              description: 'Eligibility checks and timing',
+              action: () => navigateTo('encounter')
+            },
+            {
+              title: 'EVT / Thrombectomy Eligibility',
+              description: 'EVT criteria and timing windows',
+              action: () => navigateTo('encounter')
+            },
+            {
+              title: 'NIHSS',
+              description: 'NIH Stroke Scale scoring',
+              action: () => navigateTo('encounter')
+            },
+            {
+              title: 'Calculators Hub',
+              description: 'Risk scores and calculators',
+              action: () => navigateTo('calculators')
+            },
+            {
+              title: 'Trials',
+              description: 'Clinical trials and studies',
+              action: () => navigateTo('trials')
+            },
+            {
+              title: 'Tools: Clinic Questions',
+              description: 'Embedded clinic checklist',
+              action: () => navigateTo('tools', { tool: 'clinic' })
+            },
+            {
+              title: 'Tools: Regional Map',
+              description: 'Embedded coverage map',
+              action: () => navigateTo('tools', { tool: 'map' })
+            }
+          ];
+
           return (
             <div className={`max-w-7xl mx-auto p-3 sm:p-6 overflow-x-hidden ${darkMode ? 'bg-gray-900' : 'bg-white'}`} role="main">
               {/* Skip Navigation Link for Screen Readers */}
@@ -4125,7 +4721,7 @@ TO DO:
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
                   <div className="flex-1">
                     <h1 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-1 text-center sm:text-left">
-                      Stroke
+                      Stroke Toolkit
                     </h1>
                   </div>
                   <div className="flex w-full flex-wrap items-center justify-center gap-2 sm:w-auto sm:justify-end">
@@ -4138,8 +4734,12 @@ TO DO:
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
                           setSearchOpen(true);
+                          setSearchContext('header');
                         }}
-                        onFocus={() => setSearchOpen(true)}
+                        onFocus={() => {
+                          setSearchOpen(true);
+                          setSearchContext('header');
+                        }}
                         onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
                         className="pl-8 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-48 md:w-64"
                         aria-label="Search clinical tools and protocols"
@@ -4147,7 +4747,7 @@ TO DO:
                       <i data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-gray-400"></i>
 
                       {/* Search Results Dropdown */}
-                      {searchOpen && searchResults.length > 0 && (
+                      {searchOpen && searchContext === 'header' && searchResults.length > 0 && (
                         <div className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white shadow-lg rounded-lg border max-h-96 overflow-y-auto z-50">
                           {searchResults.map((result, index) => (
                             <button
@@ -4205,6 +4805,17 @@ TO DO:
                       <span className="hidden lg:inline">New Patient</span>
                     </button>
 
+                    {/* Clear Local Data Button */}
+                    <button
+                      onClick={handleClearLocalData}
+                      className="flex items-center gap-2 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
+                      aria-label="Clear local data"
+                      title="Clear locally stored app data"
+                    >
+                      <i data-lucide="trash-2" className="w-4 h-4"></i>
+                      <span>Clear local data</span>
+                    </button>
+
                     {/* Export Button */}
                     <button
                       onClick={exportToPDF}
@@ -4238,6 +4849,32 @@ TO DO:
                     </button>
                   </div>
                 </div>
+
+                {notice && (
+                  <div className={`mt-2 p-3 rounded-lg border text-sm flex items-center gap-2 ${
+                    notice.type === 'success'
+                      ? 'bg-green-100 border-green-400 text-green-700'
+                      : notice.type === 'warning'
+                      ? 'bg-yellow-100 border-yellow-400 text-yellow-800'
+                      : notice.type === 'error'
+                      ? 'bg-red-100 border-red-400 text-red-700'
+                      : 'bg-blue-100 border-blue-400 text-blue-700'
+                  }`}>
+                    <i
+                      data-lucide={
+                        notice.type === 'success'
+                          ? 'check-circle'
+                          : notice.type === 'warning'
+                          ? 'alert-triangle'
+                          : notice.type === 'error'
+                          ? 'x-circle'
+                          : 'info'
+                      }
+                      className="w-4 h-4"
+                    ></i>
+                    <span>{notice.message}</span>
+                  </div>
+                )}
 
                 {/* Success Notification */}
                 {copiedText && (
@@ -4540,45 +5177,54 @@ TO DO:
               {/* Breadcrumb Navigation */}
               <div className="mb-4 flex items-center gap-2 text-sm text-gray-600">
                 <button
-                  onClick={() => setActiveTab('encounter')}
+                  onClick={() => navigateTo('home')}
                   className="hover:text-blue-600 transition-colors flex items-center gap-1"
                   aria-label="Go to home"
                 >
                   <i data-lucide="home" className="w-4 h-4"></i>
                   <span>Home</span>
                 </button>
-                <i data-lucide="chevron-right" className="w-4 h-4 text-gray-400"></i>
-                <span className="font-semibold text-gray-900">
-                  {activeTab === 'encounter' && 'Encounter'}
-                  {activeTab === 'ich' && 'Management → ICH'}
-                  {activeTab === 'protocols' && 'Management → Ischemic'}
-                  {activeTab === 'calculators' && 'Management → Calculators'}
-                  {activeTab === 'evidence' && 'Management → References'}
-                  {activeTab === 'trials' && 'Clinical Trials'}
-                </span>
+                {activeTab !== 'home' && (
+                  <>
+                    <i data-lucide="chevron-right" className="w-4 h-4 text-gray-400"></i>
+                    <span className="font-semibold text-gray-900">
+                      {activeTab === 'encounter' && 'Encounter'}
+                      {activeTab === 'ich' && 'ICH / Reversal'}
+                      {activeTab === 'protocols' && 'Management Protocols'}
+                      {activeTab === 'calculators' && 'Calculators'}
+                      {activeTab === 'trials' && 'Clinical Trials'}
+                      {activeTab === 'evidence' && 'References'}
+                      {activeTab === 'tools' && (
+                        activeToolsView === 'clinic'
+                          ? 'Tools: Clinic Questions'
+                          : activeToolsView === 'map'
+                          ? 'Tools: Regional Map'
+                          : 'Tools'
+                      )}
+                    </span>
+                  </>
+                )}
               </div>
 
               {/* Navigation Tabs - Desktop Only - 3 Tabs */}
               <div className="border-b border-gray-200 mb-4 sm:mb-6 pb-2 hidden md:block" role="navigation" aria-label="Main navigation">
                 <nav className="flex flex-wrap justify-center gap-2 md:justify-around md:gap-0" role="tablist">
                   {[
+                    { id: 'home', name: 'Home', icon: 'home' },
                     { id: 'encounter', name: '⚡ Encounter', icon: 'activity' },
-                    { id: 'management', name: 'Management', icon: 'file-text' },
-                    { id: 'trials', name: '🔬 Trials', icon: 'flask-conical' }
+                    { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
+                    { id: 'protocols', name: 'Management', icon: 'file-text' },
+                    { id: 'calculators', name: 'Calculators', icon: 'calculator' },
+                    { id: 'trials', name: 'Trials', icon: 'file-text' },
+                    { id: 'evidence', name: 'References', icon: 'file-text' },
+                    { id: 'tools', name: 'Tools', icon: 'wrench' }
                   ].map(tab => {
-                    // Map combined tabs to check active state
-                    const isActive = tab.id === 'management'
-                      ? (activeTab === 'ich' || activeTab === 'protocols' || activeTab === 'calculators' || activeTab === 'evidence')
-                      : activeTab === tab.id;
+                    const isActive = activeTab === tab.id;
                     return (
                       <button
                         key={tab.id}
                         onClick={() => {
-                          if (tab.id === 'management') {
-                            setActiveTab('protocols');
-                          } else {
-                            setActiveTab(tab.id);
-                          }
+                          navigateTo(tab.id);
                         }}
                         className={`py-2 px-4 border-2 rounded-lg font-medium text-sm flex items-center space-x-2 transition-all
                           ${isActive
@@ -4599,6 +5245,197 @@ TO DO:
 
               {/* Content */}
               <div id="main-content" className="space-y-4 sm:space-y-6 pb-24 md:pb-0" role="region" aria-label="Main content area">
+
+                {/* Home */}
+                {activeTab === 'home' && (
+                  <div className="space-y-6">
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 sm:p-6">
+                      <div className="flex flex-col gap-2">
+                        <h2 className="text-2xl font-semibold text-blue-900">Home</h2>
+                        <p className="text-sm text-blue-800">
+                          Search or jump straight into a workflow with Quick Start.
+                        </p>
+                      </div>
+                      <div className="mt-4">
+                        <div className="relative">
+                          <input
+                            type="text"
+                            placeholder="Search trials, calculators, evidence..."
+                            value={searchQuery}
+                            onChange={(e) => {
+                              setSearchQuery(e.target.value);
+                              setSearchOpen(true);
+                              setSearchContext('home');
+                            }}
+                            onFocus={() => {
+                              setSearchOpen(true);
+                              setSearchContext('home');
+                            }}
+                            onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
+                            className="w-full pl-10 pr-4 py-3 border border-blue-200 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            aria-label="Search clinical tools and protocols"
+                          />
+                          <i data-lucide="search" className="w-5 h-5 absolute left-3 top-3.5 text-gray-400"></i>
+
+                          {searchOpen && searchContext === 'home' && searchResults.length > 0 && (
+                            <div className="absolute top-14 left-0 right-0 bg-white shadow-lg rounded-lg border max-h-80 overflow-y-auto z-50">
+                              {searchResults.map((result, index) => (
+                                <button
+                                  key={index}
+                                  onClick={result.action}
+                                  className="w-full text-left p-3 hover:bg-blue-50 border-b transition-colors"
+                                >
+                                  <div className="flex items-start justify-between">
+                                    <div className="flex-1">
+                                      <p className="font-semibold text-sm">{result.title}</p>
+                                      {result.description && (
+                                        <p className="text-xs text-gray-600 mt-1">{result.description}</p>
+                                      )}
+                                    </div>
+                                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded ml-2">{result.type}</span>
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">Quick Start</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {quickStartItems.map((item, index) => (
+                          <button
+                            key={`${item.title}-${index}`}
+                            onClick={item.action}
+                            className="text-left p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-sm transition-all"
+                          >
+                            <div className="text-base font-semibold text-gray-900">{item.title}</div>
+                            <div className="text-sm text-gray-600 mt-1">{item.description}</div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm text-gray-700">
+                      Patient identifiers should not be entered. Data stored locally only if your browser stores it.
+                    </div>
+
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wide">About / Settings</h3>
+                      </div>
+                      <div className="space-y-2 text-sm text-gray-700">
+                        <p>Local-only tool. Use the clear button to remove stored data.</p>
+                        <p>Local data auto-clears after {ttlDisplayHours} hours of inactivity.</p>
+                        {configError && (
+                          <div className="text-xs text-red-700 bg-red-50 border border-red-200 rounded p-2">
+                            Warning: {configError}
+                          </div>
+                        )}
+                        {!configError && (
+                          <p className="text-xs text-gray-600">
+                            Institution links load from <span className="font-mono">config.local.json</span> when provided.
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Tools */}
+                {activeTab === 'tools' && (
+                  <div className="space-y-4">
+                    {!activeTool && (
+                      <div className="space-y-4">
+                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                          <h2 className="text-2xl font-semibold text-gray-900">Tools</h2>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Embedded utilities for clinic questions and regional coverage.
+                          </p>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {toolsList.map((tool) => (
+                            <button
+                              key={tool.id}
+                              onClick={() => navigateTo('tools', { tool: tool.id })}
+                              className="text-left p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-sm transition-all"
+                            >
+                              <div className="text-lg font-semibold text-gray-900">{tool.title}</div>
+                              <p className="text-sm text-gray-600 mt-1">{tool.description}</p>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {activeTool && (
+                      <div className="space-y-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                          <div>
+                            <h2 className="text-xl font-semibold text-gray-900">{activeTool.title}</h2>
+                            <p className="text-sm text-gray-600">{activeTool.description}</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <a
+                              href={activeTool.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                            >
+                              Open in new tab
+                            </a>
+                            <button
+                              onClick={() => navigateTo('tools')}
+                              className="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+                            >
+                              Back to Tools
+                            </button>
+                          </div>
+                        </div>
+
+                        {toolLoadErrors[activeTool.id] && (
+                          <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800">
+                            Unable to load the embedded tool.{' '}
+                            <a
+                              href={activeTool.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="underline"
+                            >
+                              Open it directly
+                            </a>
+                            .
+                          </div>
+                        )}
+
+                        <div className="tool-iframe-wrapper border border-gray-200 rounded-lg overflow-hidden bg-white">
+                          <iframe
+                            src={activeTool.url}
+                            title={activeTool.title}
+                            className="w-full h-full"
+                            loading="lazy"
+                            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+                            onError={() => setToolLoadErrors((prev) => ({ ...prev, [activeTool.id]: true }))}
+                          ></iframe>
+                        </div>
+
+                        <div className="text-xs text-gray-500">
+                          Having trouble loading the embed? Open directly:{' '}
+                          <a
+                            href={activeTool.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline"
+                          >
+                            {activeTool.url}
+                          </a>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* CONSOLIDATED ENCOUNTER TAB */}
                 {activeTab === 'encounter' && (
@@ -4634,49 +5471,37 @@ TO DO:
                       </div>
                     </div>
 
-                    {/* Quick Links - Show for both consultation types */}
-                    {consultationType && (
+                    {/* Resources */}
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <div className="flex flex-col sm:flex-row gap-3">
-                        <a
-                          href="https://us-app.pulsara.com/user/login"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
-                        >
-                          <i data-lucide="external-link" className="w-5 h-5"></i>
-                          <span>Pulsara</span>
-                        </a>
-                        <a
-                          href="https://urldefense.com/v3/__https:/imaging.visitnow.org/studies__;!!K-Hz7m0Vt54!nECcOahuNh21d0jzlVH-mSie_Il2fvDWCKseicWktKKQwdj4xk9XfAX2s8QyVGAs0n-NvzXDLAHKDw%24"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
-                        >
-                          <i data-lucide="external-link" className="w-5 h-5"></i>
-                          <span>Teladoc Imaging</span>
-                        </a>
-                        <a
-                          href="https://intranet.neurology.uw.edu/telestroke-provider-resources/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
-                        >
-                          <i data-lucide="external-link" className="w-5 h-5"></i>
-                          <span>Telestroke Provider Resources</span>
-                        </a>
-                        <a
-                          href="https://access.uwmedicine.org/logon/LogonPoint/tmindex.html"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
-                        >
-                          <i data-lucide="external-link" className="w-5 h-5"></i>
-                          <span>UW Medicine</span>
-                        </a>
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-sm font-semibold text-blue-900 uppercase tracking-wide">Resources</h3>
                       </div>
+                      {appConfig.institutionLinks.length > 0 ? (
+                        <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
+                          {appConfig.institutionLinks.map((link, index) => (
+                            <a
+                              key={`${link.label}-${index}`}
+                              href={link.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
+                            >
+                              <i data-lucide="external-link" className="w-5 h-5"></i>
+                              <div className="flex flex-col">
+                                <span>{link.label || 'Resource'}</span>
+                                {link.note && (
+                                  <span className="text-xs text-blue-700">{link.note}</span>
+                                )}
+                              </div>
+                            </a>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-blue-800">
+                          Institution links disabled (add config.local.json).
+                        </p>
+                      )}
                     </div>
-                    )}
 
                     {/* Calling Site Dropdown - Show for Video Telestroke */}
                     {consultationType === 'videoTelestroke' && (
@@ -5672,7 +6497,7 @@ TO DO:
                                 `TNK: ${telestrokeNote.tnkRecommended ? 'RECOMMENDED' : 'Not recommended'}\n` +
                                 `EVT: ${telestrokeNote.evtRecommended ? 'RECOMMENDED' : 'Not recommended'}\n` +
                                 `\nRATIONALE/RECOMMENDATIONS:\n${telestrokeNote.rationale || 'None documented'}\n\n` +
-                                `Rizwan Kalani MD\n` +
+                                `Clinician Name\n` +
                                 `${new Date().toLocaleString()}`;
                               navigator.clipboard.writeText(note);
                               setCopiedText('telephone-note');
@@ -5688,7 +6513,7 @@ TO DO:
                     )}
 
                     {/* ============================================ */}
-                    {/* FULL ENCOUNTER FORM - Video Telestroke & UW Consult */}
+                    {/* FULL ENCOUNTER FORM - Video Telestroke & Consult */}
                     {/* ============================================ */}
                     {consultationType === 'videoTelestroke' && (
                     <>
@@ -7590,7 +8415,7 @@ TNK was administered at {tnkAdminTime} after a brief time-out.
 Recommendations:
 {recommendationsText}
 
-Rizwan Kalani MD`);
+Clinician Name`);
                                     }
                                   }}
                                   className="text-xs px-2 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700"
@@ -10889,37 +11714,32 @@ Rizwan Kalani MD`);
 
               {/* Mobile Bottom Navigation - Only visible on small screens - 3 Tabs */}
               <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 shadow-lg z-50 pb-safe">
-                <div className="flex justify-around items-center px-1 py-2">
+                <div className="flex flex-wrap justify-around items-center gap-1 px-2 py-2">
                   {[
+                    { id: 'home', name: 'Home', icon: 'home' },
                     { id: 'encounter', name: 'Encounter', icon: 'activity' },
-                    { id: 'management', name: 'Mgmt', icon: 'file-text' },
-                    { id: 'trials', name: 'Trials', icon: 'flask-conical' }
-                  ].map((tab) => {
-                    // Map combined tabs to check active state
-                    const isActive = tab.id === 'management'
-                      ? (activeTab === 'ich' || activeTab === 'protocols' || activeTab === 'calculators' || activeTab === 'evidence')
-                      : activeTab === tab.id;
-                    return (
-                      <button
-                        key={tab.id}
-                        onClick={() => {
-                          if (tab.id === 'management') {
-                            setActiveTab('protocols');
-                          } else {
-                            setActiveTab(tab.id);
-                          }
-                        }}
-                        className={`flex flex-col items-center justify-center px-3 py-2 rounded-lg transition-all ${
-                          isActive
-                            ? 'text-blue-600 bg-blue-50'
-                            : 'text-gray-600'
-                        }`}
-                      >
-                        <i data-lucide={tab.icon} className="w-6 h-6 mb-1"></i>
-                        <span className="text-xs font-medium">{tab.name}</span>
-                      </button>
-                    );
-                  })}
+                    { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
+                    { id: 'protocols', name: 'Management', icon: 'file-text' },
+                    { id: 'calculators', name: 'Calculators', icon: 'calculator' },
+                    { id: 'trials', name: 'Trials', icon: 'file-text' },
+                    { id: 'evidence', name: 'References', icon: 'file-text' },
+                    { id: 'tools', name: 'Tools', icon: 'wrench' }
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => {
+                        navigateTo(tab.id);
+                      }}
+                      className={`flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all ${
+                        activeTab === tab.id
+                          ? 'text-blue-600 bg-blue-50'
+                          : 'text-gray-600'
+                      }`}
+                    >
+                      <i data-lucide={tab.icon} className="w-6 h-6 mb-1"></i>
+                      <span className="text-xs font-medium">{tab.name}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
