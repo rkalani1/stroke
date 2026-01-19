@@ -4,7 +4,6 @@ A client-side clinical decision support toolkit for stroke management with encou
 
 ## V2 Features
 - Shift case list at the top of Encounter plus the shift taskboard.
-- Clipboard packs for fast copy/paste from Encounter.
 - Pinned references with personal notes, plus global search across content.
 - Clinical question tracker, teaching case builder, and question-of-the-day.
 - Panic screen and lock indicator in the header.
@@ -12,7 +11,6 @@ A client-side clinical decision support toolkit for stroke management with encou
 
 ## Quick Usage
 - Use the top search (press `/`) to jump to calculators, references, and more.
-- Encounter includes Clipboard Packs for quick copy.
 - Shift cases are saved in the top bar; Shift tab is the rounding board.
 
 ## Privacy & Safety
