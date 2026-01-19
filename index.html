@@ -3512,11 +3512,28 @@ Clinician Name`;
 
           // Create Icon component wrapper
           const Icon = ({ icon: IconComponent, size = 16 }) => {
+            const ref = useRef(null);
+            
             React.useEffect(() => {
-              lucide.createIcons();
-            }, []);
+              if (ref.current) {
+                // Scope icon creation to this specific container to prevent global DOM conflicts
+                lucide.createIcons({
+                  root: ref.current,
+                  nameAttr: 'data-lucide',
+                  attrs: {
+                    class: `w-4 h-4 inline-block`
+                  }
+                });
+              }
+            }, [IconComponent]);
 
-            return <i data-lucide={IconComponent} className="w-4 h-4 inline-block"></i>;
+            // Use a span wrapper to protect the icon from React reconciliation issues
+            // Lucide will replace the <i> inside this span
+            return (
+              <span ref={ref} className="inline-flex items-center justify-center">
+                <i data-lucide={IconComponent} className="w-4 h-4 inline-block"></i>
+              </span>
+            );
           };
 
           // Privacy: Persist app data and update lastUpdated (TTL handled globally)
