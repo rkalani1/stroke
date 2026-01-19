@@ -1045,6 +1045,7 @@
             lastActiveTab: 'encounter',
             lastActiveTool: null,
             lastShiftBoardId: null,
+            lastManagementSubTab: 'ich',
             legacyMigratedAt: null,
             searchHighlightId: null,
             panicArmed: false,
@@ -1243,13 +1244,26 @@
           : DEFAULT_TTL_HOURS;
         const INITIAL_STORAGE_EXPIRED = applyStorageExpiration(initialTtlHours);
 
+        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'calculators', 'references'];
+        const LEGACY_MANAGEMENT_TABS = {
+          ich: 'ich',
+          protocols: 'ischemic',
+          calculators: 'calculators',
+          evidence: 'references'
+        };
+
+        const normalizeManagementSubTab = (value) => {
+          if (!value) return null;
+          const normalized = String(value).toLowerCase();
+          if (MANAGEMENT_SUBTABS.includes(normalized)) return normalized;
+          if (LEGACY_MANAGEMENT_TABS[normalized]) return LEGACY_MANAGEMENT_TABS[normalized];
+          return null;
+        };
+
         const VALID_TABS = [
           'encounter',
-          'ich',
-          'protocols',
-          'calculators',
+          'management',
           'trials',
-          'evidence',
           'tools',
           'shift',
           'questions',
@@ -1271,17 +1285,15 @@
               return { tab: 'encounter', tool: null };
             case 'encounter':
               return { tab: 'encounter', tool: null };
-            case 'ich':
-              return { tab: 'ich', tool: null };
             case 'management':
+              return { tab: 'management', tool: null, sub: normalizeManagementSubTab(sub) };
+            case 'ich':
             case 'protocols':
-              return { tab: 'protocols', tool: null };
             case 'calculators':
-              return { tab: 'calculators', tool: null };
+            case 'evidence':
+              return { tab: 'management', tool: null, sub: LEGACY_MANAGEMENT_TABS[root] };
             case 'trials':
               return { tab: 'trials', tool: null };
-            case 'evidence':
-              return { tab: 'evidence', tool: null };
             case 'tools':
               return {
                 tab: 'tools',
@@ -1298,20 +1310,24 @@
           }
         };
 
-        const buildHashRoute = (tab, tool) => {
+        const buildHashRoute = (tab, tool, sub) => {
           switch (tab) {
             case 'encounter':
               return '#/encounter';
+            case 'management': {
+              const managementSub = normalizeManagementSubTab(sub);
+              return managementSub ? `#/management/${managementSub}` : '#/management';
+            }
             case 'ich':
-              return '#/ich';
+              return '#/management/ich';
             case 'protocols':
-              return '#/management';
+              return '#/management/ischemic';
             case 'calculators':
-              return '#/calculators';
+              return '#/management/calculators';
             case 'trials':
               return '#/trials';
             case 'evidence':
-              return '#/evidence';
+              return '#/management/references';
             case 'tools':
               if (tool === 'clinic') return '#/tools/clinic';
               if (tool === 'map') return '#/tools/map';
@@ -1582,7 +1598,19 @@ Clinician Name`;
             });
           };
 
-          const [activeTab, setActiveTab] = useState(appData.uiState.lastActiveTab || 'encounter');
+          const initialActiveTab = (() => {
+            const storedTab = appData.uiState.lastActiveTab || 'encounter';
+            if (LEGACY_MANAGEMENT_TABS[storedTab]) return 'management';
+            return storedTab;
+          })();
+          const initialManagementSubTab = (() => {
+            const storedSubTab = normalizeManagementSubTab(appData.uiState.lastManagementSubTab);
+            if (storedSubTab) return storedSubTab;
+            const legacySubTab = LEGACY_MANAGEMENT_TABS[appData.uiState.lastActiveTab];
+            return legacySubTab || 'ich';
+          })();
+
+          const [activeTab, setActiveTab] = useState(initialActiveTab);
           const [activeToolsView, setActiveToolsView] = useState(null);
           const [routeReady, setRouteReady] = useState(false);
           const [notice, setNotice] = useState(null);
@@ -1635,11 +1663,6 @@ Clinician Name`;
           const [pinnedDraft, setPinnedDraft] = useState({ title: '', url: '', tagsText: '', notes: '' });
           const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
           const [panicActive, setPanicActive] = useState(false);
-          const [isLocked, setIsLocked] = useState(settings.appLockEnabled);
-          const [lockPinInput, setLockPinInput] = useState('');
-          const [lockPinConfirm, setLockPinConfirm] = useState('');
-          const [lockError, setLockError] = useState('');
-          const lastActivityRef = useRef(Date.now());
           const [deidWarnings, setDeidWarnings] = useState({});
           const [wipeConfirmText, setWipeConfirmText] = useState('');
 
@@ -1667,9 +1690,7 @@ Clinician Name`;
           // ============================================
           const [consultationType, setConsultationType] = useState(loadFromStorage('consultationType', 'videoTelestroke'));
 
-          // Sub-tab navigation for combined tabs
-          const [ichManagementSubTab, setIchManagementSubTab] = useState('ich'); // 'ich' | 'management'
-          const [calcRefsSubTab, setCalcRefsSubTab] = useState('calculators'); // 'calculators' | 'references'
+          const [managementSubTab, setManagementSubTab] = useState(initialManagementSubTab);
 
           // Emergency Contacts FAB state
           const [fabExpanded, setFabExpanded] = useState(false);
@@ -4933,71 +4954,9 @@ Clinician Name`;
             setPinnedDraft({ title: '', url: '', tagsText: '', notes: '' });
           };
 
-          const handleSetPin = async () => {
-            if (!lockPinInput || lockPinInput.length < 4) {
-              setLockError('PIN must be at least 4 digits.');
-              return;
-            }
-            if (lockPinInput !== lockPinConfirm) {
-              setLockError('PIN entries do not match.');
-              return;
-            }
-            const derived = await derivePinHash(lockPinInput);
-            updateAppData((prev) => ({
-              ...prev,
-              settings: {
-                ...prev.settings,
-                appLockEnabled: true,
-                appLockSalt: derived.salt,
-                appLockHash: derived.hash
-              }
-            }));
-            setLockPinInput('');
-            setLockPinConfirm('');
-            setLockError('');
-            setIsLocked(false);
-            showNotice('App lock enabled.', 'success');
-          };
-
-          const handleDisableLock = () => {
-            updateAppData((prev) => ({
-              ...prev,
-              settings: {
-                ...prev.settings,
-                appLockEnabled: false,
-                appLockSalt: null,
-                appLockHash: null
-              }
-            }));
-            setIsLocked(false);
-            showNotice('App lock disabled.', 'success');
-          };
-
-          const handleUnlock = async () => {
-            if (!settings.appLockEnabled) {
-              setIsLocked(false);
-              return;
-            }
-            const valid = await verifyPinHash(lockPinInput, settings.appLockSalt, settings.appLockHash);
-            if (valid) {
-              setIsLocked(false);
-              setLockPinInput('');
-              setLockError('');
-              lastActivityRef.current = Date.now();
-              return;
-            }
-            setLockError('Incorrect PIN.');
-          };
-
           const handlePanicToggle = () => {
             if (!panicActive) {
               setPanicActive(true);
-              return;
-            }
-            if (settings.appLockEnabled) {
-              setPanicActive(false);
-              setIsLocked(true);
-              setLockError('');
               return;
             }
             setPanicActive(false);
@@ -5074,8 +5033,7 @@ Clinician Name`;
             setShowSignOutManager(false);
             setSignOutToast('');
             setConsultationType('videoTelestroke');
-            setIchManagementSubTab('ich');
-            setCalcRefsSubTab('calculators');
+            setManagementSubTab('ich');
             setFabExpanded(false);
             setAlertsMuted(false);
             setLastAlertPlayed(null);
@@ -5103,10 +5061,6 @@ Clinician Name`;
             setActiveToolsView(null);
             setNotice(null);
             setPanicActive(false);
-            setIsLocked(false);
-            setLockPinInput('');
-            setLockPinConfirm('');
-            setLockError('');
             setDeidWarnings({});
 
             if (resetDarkMode) {
@@ -5116,8 +5070,23 @@ Clinician Name`;
           };
 
           const navigateTo = (tab, options = {}) => {
-            const { tool = null, clearSearch = false } = options;
-            const nextTab = tab || 'encounter';
+            const { tool = null, clearSearch = false, subTab = null } = options;
+            const rawTab = tab || 'encounter';
+            const legacySubTab = LEGACY_MANAGEMENT_TABS[rawTab];
+            let nextTab = rawTab;
+
+            if (legacySubTab) {
+              nextTab = 'management';
+            } else if (!VALID_TABS.includes(nextTab)) {
+              nextTab = 'encounter';
+            }
+
+            let nextManagementSubTab = managementSubTab;
+            if (nextTab === 'management') {
+              const resolvedSubTab = normalizeManagementSubTab(subTab) || legacySubTab || managementSubTab || 'ich';
+              nextManagementSubTab = resolvedSubTab;
+              setManagementSubTab(resolvedSubTab);
+            }
 
             setActiveTab(nextTab);
             if (nextTab === 'tools') {
@@ -5131,7 +5100,8 @@ Clinician Name`;
               uiState: {
                 ...prev.uiState,
                 lastActiveTab: nextTab,
-                lastActiveTool: nextTab === 'tools' ? tool : null
+                lastActiveTool: nextTab === 'tools' ? tool : null,
+                lastManagementSubTab: nextTab === 'management' ? nextManagementSubTab : prev.uiState.lastManagementSubTab
               }
             }));
 
@@ -5210,11 +5180,6 @@ Clinician Name`;
             const noun = nouns[Math.floor(Math.random() * nouns.length)];
             const code = Math.floor(Math.random() * 90 + 10);
             return `${adj}-${noun}-${code}`;
-          };
-
-          const generatePatientNumber = () => {
-            const num = Math.floor(Math.random() * 1000000);
-            return String(num).padStart(6, '0');
           };
 
           const formatElapsed = (seconds) => {
@@ -5613,24 +5578,24 @@ Clinician Name`;
               }
             });
 
-            // Search in protocols/calculators
+            // Search in management tools
             const searchableItems = [
               { name: 'NIHSS', keywords: ['nihss', 'stroke scale', 'neurological'], tab: 'encounter' },
               { name: 'ASPECTS', keywords: ['aspects', 'imaging', 'ct'], tab: 'encounter' },
               { name: 'TNK Eligibility', keywords: ['tnk', 'tenecteplase', 'thrombolysis', 'lytic'], tab: 'encounter' },
               { name: 'EVT Eligibility', keywords: ['evt', 'thrombectomy', 'mechanical', 'endovascular'], tab: 'encounter' },
-              { name: 'ICH Management', keywords: ['ich', 'hemorrhage', 'bleeding', 'reversal'], tab: 'ich' },
-              { name: 'GCS Score', keywords: ['gcs', 'glasgow', 'coma', 'consciousness'], tab: 'calculators' },
-              { name: 'ICH Score', keywords: ['ich score', 'hemorrhage score', 'mortality'], tab: 'calculators' },
-              { name: 'ABCD² Score', keywords: ['abcd', 'tia', 'transient'], tab: 'calculators' },
-              { name: 'CHA₂DS₂-VASc', keywords: ['chads', 'afib', 'atrial fibrillation', 'anticoagulation'], tab: 'calculators' },
-              { name: 'ROPE Score', keywords: ['rope', 'pfo', 'paradoxical'], tab: 'calculators' },
-              { name: 'Modified Rankin Scale (mRS)', keywords: ['mrs', 'rankin', 'disability', 'outcome', 'functional status'], tab: 'calculators' },
-              { name: 'Hunt and Hess Scale', keywords: ['hunt', 'hess', 'sah', 'subarachnoid', 'hemorrhage', 'grading'], tab: 'calculators' },
-              { name: 'WFNS Scale', keywords: ['wfns', 'world federation', 'neurosurgical', 'sah', 'subarachnoid'], tab: 'calculators' },
-              { name: 'HAS-BLED Score', keywords: ['hasbled', 'has-bled', 'bleeding', 'risk', 'anticoagulation'], tab: 'calculators' },
-              { name: 'RCVS² Score', keywords: ['rcvs', 'rcvs2', 'vasoconstriction', 'thunderclap', 'headache'], tab: 'calculators' },
-              { name: 'Blood Pressure Management', keywords: ['bp', 'blood pressure', 'labetalol', 'nicardipine'], tab: 'protocols' }
+              { name: 'ICH Management', keywords: ['ich', 'hemorrhage', 'bleeding', 'reversal'], tab: 'management', subTab: 'ich' },
+              { name: 'GCS Score', keywords: ['gcs', 'glasgow', 'coma', 'consciousness'], tab: 'management', subTab: 'calculators' },
+              { name: 'ICH Score', keywords: ['ich score', 'hemorrhage score', 'mortality'], tab: 'management', subTab: 'calculators' },
+              { name: 'ABCD² Score', keywords: ['abcd', 'tia', 'transient'], tab: 'management', subTab: 'calculators' },
+              { name: 'CHA₂DS₂-VASc', keywords: ['chads', 'afib', 'atrial fibrillation', 'anticoagulation'], tab: 'management', subTab: 'calculators' },
+              { name: 'ROPE Score', keywords: ['rope', 'pfo', 'paradoxical'], tab: 'management', subTab: 'calculators' },
+              { name: 'Modified Rankin Scale (mRS)', keywords: ['mrs', 'rankin', 'disability', 'outcome', 'functional status'], tab: 'management', subTab: 'calculators' },
+              { name: 'Hunt and Hess Scale', keywords: ['hunt', 'hess', 'sah', 'subarachnoid', 'hemorrhage', 'grading'], tab: 'management', subTab: 'calculators' },
+              { name: 'WFNS Scale', keywords: ['wfns', 'world federation', 'neurosurgical', 'sah', 'subarachnoid'], tab: 'management', subTab: 'calculators' },
+              { name: 'HAS-BLED Score', keywords: ['hasbled', 'has-bled', 'bleeding', 'risk', 'anticoagulation'], tab: 'management', subTab: 'calculators' },
+              { name: 'RCVS² Score', keywords: ['rcvs', 'rcvs2', 'vasoconstriction', 'thunderclap', 'headache'], tab: 'management', subTab: 'calculators' },
+              { name: 'Blood Pressure Management', keywords: ['bp', 'blood pressure', 'labetalol', 'nicardipine'], tab: 'management', subTab: 'ischemic' }
             ];
 
             searchableItems.forEach(item => {
@@ -5641,7 +5606,7 @@ Clinician Name`;
                   title: item.name,
                   description: `Go to ${item.name}`,
                   action: () => {
-                    navigateTo(item.tab, { clearSearch: true });
+                    navigateTo(item.tab, { clearSearch: true, subTab: item.subTab });
                   }
                 });
               }
@@ -5679,7 +5644,7 @@ Clinician Name`;
                   title: doc.title,
                   description: `${doc.section} section`,
                   action: () => {
-                    navigateTo('evidence', { clearSearch: true });
+                    navigateTo('management', { clearSearch: true, subTab: 'references' });
                   }
                 });
               }
@@ -5694,7 +5659,7 @@ Clinician Name`;
                   description: ref.personalNotes ? 'Pinned note' : 'Pinned link',
                   action: () => {
                     setSearchHighlight(`pin-${ref.id}`);
-                    navigateTo('evidence', { clearSearch: true });
+                    navigateTo('management', { clearSearch: true, subTab: 'references' });
                   }
                 });
               }
@@ -6216,42 +6181,7 @@ Clinician Name`;
               return () => clearTimeout(timer);
             }
             return undefined;
-          }, [appData.uiState.searchHighlightId, activeTab]);
-
-          useEffect(() => {
-            if (!settings.appLockEnabled) {
-              setIsLocked(false);
-              return;
-            }
-            const markActivity = () => {
-              lastActivityRef.current = Date.now();
-            };
-            window.addEventListener('mousemove', markActivity);
-            window.addEventListener('keydown', markActivity);
-            window.addEventListener('touchstart', markActivity);
-            window.addEventListener('scroll', markActivity, { passive: true });
-            return () => {
-              window.removeEventListener('mousemove', markActivity);
-              window.removeEventListener('keydown', markActivity);
-              window.removeEventListener('touchstart', markActivity);
-              window.removeEventListener('scroll', markActivity);
-            };
-          }, [settings.appLockEnabled]);
-
-          useEffect(() => {
-            if (!settings.appLockEnabled) return undefined;
-            const timeoutMinutes = settings.appLockTimeoutMinutes || 10;
-            const interval = setInterval(() => {
-              if (isLocked) return;
-              const idleMs = Date.now() - lastActivityRef.current;
-              if (idleMs > timeoutMinutes * 60000) {
-                setIsLocked(true);
-                setLockPinInput('');
-                setLockError('');
-              }
-            }, 10000);
-            return () => clearInterval(interval);
-          }, [settings.appLockEnabled, settings.appLockTimeoutMinutes, isLocked]);
+          }, [appData.uiState.searchHighlightId, activeTab, managementSubTab]);
 
           useEffect(() => {
             if (!activeWorkSession) return undefined;
@@ -6415,19 +6345,39 @@ Clinician Name`;
               if (parsed && VALID_TABS.includes(parsed.tab)) {
                 setActiveTab(parsed.tab);
                 setActiveToolsView(parsed.tool);
+                if (parsed.tab === 'management') {
+                  const resolvedSubTab = normalizeManagementSubTab(parsed.sub) ||
+                    normalizeManagementSubTab(appData.uiState.lastManagementSubTab) ||
+                    'ich';
+                  setManagementSubTab(resolvedSubTab);
+                }
                 if (parsed.tab === 'teaching' && parsed.sub) {
                   setFeaturedTeachingCase(parsed.sub);
                 }
                 return;
               }
               const savedTab = appData.uiState.lastActiveTab || getKey('activeTab', null);
-              if (savedTab && VALID_TABS.includes(savedTab)) {
-                setActiveTab(savedTab);
-                setActiveToolsView(null);
-              } else {
-                setActiveTab('encounter');
-                setActiveToolsView(null);
+              if (savedTab) {
+                if (LEGACY_MANAGEMENT_TABS[savedTab]) {
+                  setActiveTab('management');
+                  setManagementSubTab(LEGACY_MANAGEMENT_TABS[savedTab]);
+                  setActiveToolsView(null);
+                  return;
+                }
+                if (savedTab === 'management') {
+                  setActiveTab('management');
+                  setManagementSubTab(normalizeManagementSubTab(appData.uiState.lastManagementSubTab) || 'ich');
+                  setActiveToolsView(null);
+                  return;
+                }
+                if (VALID_TABS.includes(savedTab)) {
+                  setActiveTab(savedTab);
+                  setActiveToolsView(null);
+                  return;
+                }
               }
+              setActiveTab('encounter');
+              setActiveToolsView(null);
             };
 
             resolveRoute();
@@ -6447,11 +6397,11 @@ Clinician Name`;
             if (!routeReady) return;
             const nextHash = activeTab === 'teaching' && featuredTeachingId
               ? `#/teaching/${featuredTeachingId}`
-              : buildHashRoute(activeTab, activeToolsView);
+              : buildHashRoute(activeTab, activeToolsView, managementSubTab);
             if (window.location.hash !== nextHash) {
               window.location.hash = nextHash;
             }
-          }, [activeTab, activeToolsView, routeReady, featuredTeachingId]);
+          }, [activeTab, activeToolsView, routeReady, featuredTeachingId, managementSubTab]);
 
           useEffect(() => {
             if (activeToolsView) {
@@ -6462,6 +6412,17 @@ Clinician Name`;
           useEffect(() => {
             setActionsOpen(false);
           }, [activeTab, activeToolsView]);
+
+          useEffect(() => {
+            if (activeTab !== 'management') return;
+            updateAppData((prev) => ({
+              ...prev,
+              uiState: {
+                ...prev.uiState,
+                lastManagementSubTab: managementSubTab
+              }
+            }));
+          }, [activeTab, managementSubTab]);
 
           // Reinitialize icons when needed
           useEffect(() => {
@@ -6594,14 +6555,15 @@ TO DO:
 
               // Number keys for tab navigation
               const tabMap = {
-                '1': 'encounter',
-                '2': 'protocols',
-                '3': 'calculators'
+                '1': { tab: 'encounter' },
+                '2': { tab: 'management', subTab: 'ischemic' },
+                '3': { tab: 'management', subTab: 'calculators' }
               };
 
               if (tabMap[e.key] && !e.metaKey && !e.ctrlKey && !e.altKey) {
                 e.preventDefault();
-                navigateTo(tabMap[e.key]);
+                const target = tabMap[e.key];
+                navigateTo(target.tab, { subTab: target.subTab });
               }
 
               // Ctrl/Cmd + E: Export to PDF
@@ -6704,7 +6666,8 @@ TO DO:
                     openTeachingCasePrintView(featured);
                   } }
                 ];
-              case 'evidence':
+              case 'management':
+                if (managementSubTab !== 'references') return [];
                 return [
                   { id: 'add-pin', label: 'Add Pin', onClick: () => document.getElementById('pinned-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) },
                   { id: 'view-pinned', label: 'View Pinned', onClick: () => document.getElementById('pinned-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
@@ -6715,11 +6678,8 @@ TO DO:
           })();
           const mobilePrimaryTabs = [
             { id: 'encounter', name: 'Encounter', icon: 'activity' },
-            { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
-            { id: 'protocols', name: 'Ischemic', icon: 'file-text' },
-            { id: 'calculators', name: 'Calcs', icon: 'calculator' },
+            { id: 'management', name: 'Manage', icon: 'layers' },
             { id: 'trials', name: 'Trials', icon: 'file-text' },
-            { id: 'evidence', name: 'Refs', icon: 'file-text' },
             { id: 'tools', name: 'Tools', icon: 'wrench' }
           ];
           const mobileMoreTabs = [
@@ -6730,7 +6690,7 @@ TO DO:
 
           return (
             <div className="relative">
-              <div className="app-shell max-w-7xl mx-auto p-4 sm:p-8 overflow-x-hidden" role="main" aria-hidden={panicActive || isLocked}>
+              <div className="app-shell max-w-7xl mx-auto p-4 sm:p-8 overflow-x-hidden" role="main" aria-hidden={panicActive}>
               {/* Skip Navigation Link for Screen Readers */}
               <a
                 href="#main-content"
@@ -6751,7 +6711,7 @@ TO DO:
                     <div className="relative w-full sm:w-auto">
                       <input
                         type="text"
-                        placeholder="Search trials, calculators, references..."
+                        placeholder="Search trials, management tools, references..."
                         value={searchQuery}
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
@@ -6764,7 +6724,7 @@ TO DO:
                         }}
                         onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
                         className="pl-8 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-48 md:w-64"
-                        aria-label="Search clinical tools and protocols"
+                        aria-label="Search trials, management tools, and references"
                       />
                       <i data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-gray-400"></i>
 
@@ -6803,55 +6763,6 @@ TO DO:
                     </div>
 
                     <div className="flex w-full flex-wrap items-center justify-center gap-2 sm:justify-end">
-                      <div className="flex flex-wrap items-center gap-2 px-2 py-1 bg-white border border-gray-200 rounded-lg shadow-sm">
-                        <select
-                          value={workSessionCategory}
-                          onChange={(e) => setWorkSessionCategory(e.target.value)}
-                          className="text-xs border border-gray-200 rounded px-2 py-1"
-                          aria-label="Work session category"
-                        >
-                          <option value="stroke code">Stroke code</option>
-                          <option value="routine consult">Routine consult</option>
-                          <option value="family meeting">Family meeting</option>
-                          <option value="documentation">Documentation</option>
-                          <option value="other">Other</option>
-                        </select>
-                        <input
-                          type="text"
-                          value={workSessionNote}
-                          onChange={(e) => setWorkSessionNote(e.target.value)}
-                          placeholder="De-ID note"
-                          className="hidden sm:block text-xs border border-gray-200 rounded px-2 py-1"
-                        />
-                        <button
-                          onClick={activeWorkSession ? stopWorkSession : startWorkSession}
-                          className={`px-2 py-1 text-xs rounded font-semibold ${
-                            activeWorkSession ? 'bg-red-600 text-white' : 'bg-green-600 text-white'
-                          }`}
-                          aria-label={activeWorkSession ? 'Stop timer' : 'Start timer'}
-                        >
-                          {activeWorkSession ? 'Stop' : 'Start'}
-                        </button>
-                        <span className="text-xs font-mono text-gray-600">
-                          {formatElapsed(activeWorkSession ? workSessionElapsed : 0)}
-                        </span>
-                      </div>
-
-                      <button
-                        onClick={() => setIsLocked(true)}
-                        className={`px-2 py-2 rounded-lg border text-xs font-semibold ${
-                          settings.appLockEnabled
-                            ? isLocked
-                              ? 'bg-red-600 text-white border-red-600'
-                              : 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                            : 'bg-gray-100 text-gray-600 border-gray-200'
-                        }`}
-                        aria-label="Lock status"
-                        title={settings.appLockEnabled ? (isLocked ? 'Locked' : 'Unlocked') : 'Lock disabled'}
-                      >
-                        <i data-lucide={isLocked ? 'lock' : 'unlock'} className="w-4 h-4"></i>
-                      </button>
-
                       <button
                         onClick={handlePanicToggle}
                         className="px-2 py-2 rounded-lg border border-red-200 text-red-700 bg-red-50 hover:bg-red-100"
@@ -7007,13 +6918,6 @@ TO DO:
                   </div>
                 )}
 
-                {settings.deidMode && (
-                  <div className="mt-2 p-2 bg-blue-50 border border-blue-200 text-blue-800 rounded-lg text-xs flex items-center gap-2">
-                    <i data-lucide="shield" className="w-4 h-4"></i>
-                    <span>No identifiers. Use aliases for patients and sites.</span>
-                  </div>
-                )}
-
                 {Object.keys(deidWarnings).length > 0 && (
                   <div className="mt-2 p-2 bg-amber-50 border border-amber-200 text-amber-800 rounded-lg text-xs">
                     <div className="flex items-center gap-2 font-semibold">
@@ -7054,11 +6958,11 @@ TO DO:
                           <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">1</kbd>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-700">Ischemic Stroke Tab</span>
+                          <span className="text-gray-700">Management (Ischemic) Tab</span>
                           <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">2</kbd>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-700">Calculators Tab</span>
+                          <span className="text-gray-700">Management (Calculators) Tab</span>
                           <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-sm font-mono">3</kbd>
                         </div>
                       </div>
@@ -7381,11 +7285,8 @@ TO DO:
                 <nav className="flex flex-wrap justify-center gap-2 md:justify-around md:gap-0" role="tablist">
                   {[
                     { id: 'encounter', name: '⚡ Encounter', icon: 'activity' },
-                    { id: 'ich', name: 'ICH', icon: 'alert-triangle' },
-                    { id: 'protocols', name: 'Ischemic Stroke', icon: 'file-text' },
-                    { id: 'calculators', name: 'Calculators', icon: 'calculator' },
+                    { id: 'management', name: 'Management', icon: 'layers' },
                     { id: 'trials', name: 'Trials', icon: 'file-text' },
-                    { id: 'evidence', name: 'References', icon: 'file-text' },
                     { id: 'tools', name: 'Tools', icon: 'wrench' },
                     { id: 'shift', name: 'Shift', icon: 'clipboard-list' },
                     { id: 'questions', name: 'Questions', icon: 'help-circle' },
@@ -8123,28 +8024,6 @@ TO DO:
                           Video Telestroke
                         </button>
                       </div>
-                    </div>
-
-                    <div className="bg-white border border-slate-200 rounded-lg p-4">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <label className="text-sm font-semibold text-slate-700 uppercase tracking-wide">
-                          Patient Number
-                        </label>
-                        <button
-                          type="button"
-                          onClick={() => setTelestrokeNote({ ...telestrokeNote, alias: generatePatientNumber() })}
-                          className="px-3 py-1.5 text-xs bg-slate-900 text-white rounded-lg hover:bg-slate-800"
-                        >
-                          Generate Number
-                        </button>
-                      </div>
-                      <input
-                        type="text"
-                        value={telestrokeNote.alias}
-                        onChange={(e) => setTelestrokeNote({ ...telestrokeNote, alias: e.target.value })}
-                        placeholder="Patient number"
-                        className="mt-2 w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                      />
                     </div>
 
                     {quickLinks.length > 0 && (
@@ -11671,10 +11550,33 @@ Clinician Name`);
 
 
                 {/* Management Combined Tab (Ischemic, ICH, Calculators, References) */}
-                {(activeTab === 'ich' || activeTab === 'protocols' || activeTab === 'calculators' || activeTab === 'evidence') && (
+                {activeTab === 'management' && (
                   <div className="space-y-6">
+                    <div className="bg-white border border-gray-200 rounded-xl p-2 flex flex-wrap gap-2">
+                      {[
+                        { id: 'ich', label: 'ICH', icon: 'alert-triangle' },
+                        { id: 'ischemic', label: 'Ischemic Stroke', icon: 'activity' },
+                        { id: 'calculators', label: 'Calculators', icon: 'calculator' },
+                        { id: 'references', label: 'References', icon: 'book-open' }
+                      ].map((tab) => {
+                        const isActive = managementSubTab === tab.id;
+                        return (
+                          <button
+                            key={tab.id}
+                            onClick={() => setManagementSubTab(tab.id)}
+                            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              isActive ? 'bg-blue-600 text-white' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                            }`}
+                          >
+                            <i data-lucide={tab.icon} className="w-4 h-4"></i>
+                            <span>{tab.label}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
                     {/* ICH Content */}
-                    {activeTab === 'ich' && (
+                    {managementSubTab === 'ich' && (
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                       <h2 className="text-xl font-semibold text-red-800 mb-4">ICH Management</h2>
 
@@ -11769,7 +11671,7 @@ Clinician Name`);
                     {/* End of ICH Content */}
 
                     {/* Ischemic Stroke Management Content */}
-                    {activeTab === 'protocols' && (
+                    {managementSubTab === 'ischemic' && (
                       <div className="space-y-6">
                         {/* Blood Pressure Management */}
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -11856,7 +11758,7 @@ Clinician Name`);
                     {/* End of Ischemic Stroke Management Content */}
 
                     {/* Calculators Content */}
-                    {activeTab === 'calculators' && (
+                    {managementSubTab === 'calculators' && (
                   <div className="space-y-4">
                     {/* ============================================ */}
                     {/* CALCULATOR TRIAL PROMPTS                     */}
@@ -13154,7 +13056,7 @@ Clinician Name`);
                     )}
 
                     {/* References & Evidence Content */}
-                    {activeTab === 'evidence' && (
+                    {managementSubTab === 'references' && (
                   <div className="space-y-6">
 
                     <div id="pinned-section" className="bg-white border border-gray-200 rounded-lg p-4 space-y-3">
@@ -14786,45 +14688,13 @@ Clinician Name`);
                 <div className="text-center space-y-3 px-6">
                   <div className="text-sm uppercase tracking-wide text-slate-300">Panic Screen</div>
                   <h2 className="text-2xl font-semibold">Screen hidden</h2>
-                  <p className="text-sm text-slate-300">
-                    {settings.appLockEnabled ? 'PIN required to exit.' : 'Press the panic button again to return.'}
-                  </p>
+                  <p className="text-sm text-slate-300">Press the panic button again to return.</p>
                   <button
                     onClick={handlePanicToggle}
                     className="px-4 py-2 bg-white text-slate-900 rounded-lg text-sm font-semibold"
                   >
                     Exit
                   </button>
-                </div>
-              </div>
-            )}
-
-            {isLocked && (
-              <div className="fixed inset-0 z-[110] flex items-center justify-center overlay-screen lock-screen">
-                <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm">
-                  <div className="flex items-center gap-2 text-slate-900 mb-2">
-                    <i data-lucide="lock" className="w-5 h-5"></i>
-                    <h2 className="text-lg font-semibold">App Locked</h2>
-                  </div>
-                  <p className="text-xs text-slate-500 mb-4">Enter your PIN to unlock.</p>
-                  <input
-                    type="password"
-                    value={lockPinInput}
-                    onChange={(e) => setLockPinInput(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg"
-                    placeholder="PIN"
-                  />
-                  {lockError && (
-                    <div className="mt-2 text-xs text-red-600">{lockError}</div>
-                  )}
-                  <div className="mt-4 flex items-center justify-end gap-2">
-                    <button
-                      onClick={handleUnlock}
-                      className="px-3 py-2 bg-slate-900 text-white rounded-lg text-sm font-semibold"
-                    >
-                      Unlock
-                    </button>
-                  </div>
                 </div>
               </div>
             )}
