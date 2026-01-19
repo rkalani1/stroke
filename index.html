@@ -514,18 +514,6 @@
             outline-offset: 2px;
         }
 
-        /* Tools iframe sizing */
-        .tool-iframe-wrapper {
-            height: calc(100vh - 260px);
-            min-height: 360px;
-        }
-        @media (max-width: 640px) {
-            .tool-iframe-wrapper {
-                height: calc(100vh - 320px - var(--mobile-nav-offset, 0px));
-                min-height: 320px;
-            }
-        }
-
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -1027,10 +1015,8 @@
           workload: [],
           clinicalQuestions: [],
           teachingCases: [],
-          pinnedReferences: [],
           uiState: {
             lastActiveTab: 'encounter',
-            lastActiveTool: null,
             lastShiftBoardId: null,
             lastManagementSubTab: 'ich',
             legacyMigratedAt: null,
@@ -1051,13 +1037,13 @@
             uiState: { ...base.uiState, ...(incoming && incoming.uiState ? incoming.uiState : {}) },
             encounter: { ...base.encounter, ...(incoming && incoming.encounter ? incoming.encounter : {}) }
           };
+          delete merged.pinnedReferences;
           merged.macros = ensureArray(merged.macros, []);
           merged.shiftBoards = ensureArray(merged.shiftBoards, []);
           merged.caseLog = ensureArray(merged.caseLog, []);
           merged.workload = ensureArray(merged.workload, []);
           merged.clinicalQuestions = ensureArray(merged.clinicalQuestions, []);
           merged.teachingCases = ensureArray(merged.teachingCases, []);
-          merged.pinnedReferences = ensureArray(merged.pinnedReferences, []);
           merged.encounter.clipboardPacks = ensureArray(merged.encounter.clipboardPacks, getDefaultClipboardPacks());
           return merged;
         };
@@ -1250,15 +1236,14 @@
           'encounter',
           'management',
           'trials',
-          'tools',
           'questions'
         ];
 
         const parseHashRoute = (hash) => {
-          if (!hash) return { tab: 'encounter', tool: null };
+          if (!hash) return { tab: 'encounter' };
           const cleaned = hash.replace(/^#\/?/, '').trim();
           if (!cleaned) {
-            return { tab: 'encounter', tool: null };
+            return { tab: 'encounter' };
           }
           const parts = cleaned.split('/').filter(Boolean);
           const root = parts[0];
@@ -1266,31 +1251,26 @@
 
           switch (root) {
             case 'home':
-              return { tab: 'encounter', tool: null };
+              return { tab: 'encounter' };
             case 'encounter':
-              return { tab: 'encounter', tool: null };
+              return { tab: 'encounter' };
             case 'management':
-              return { tab: 'management', tool: null, sub: normalizeManagementSubTab(sub) };
+              return { tab: 'management', sub: normalizeManagementSubTab(sub) };
             case 'ich':
             case 'protocols':
             case 'calculators':
             case 'evidence':
-              return { tab: 'management', tool: null, sub: LEGACY_MANAGEMENT_TABS[root] };
+              return { tab: 'management', sub: LEGACY_MANAGEMENT_TABS[root] };
             case 'trials':
-              return { tab: 'trials', tool: null };
-            case 'tools':
-              return {
-                tab: 'tools',
-                tool: sub === 'clinic' ? 'clinic' : sub === 'map' ? 'map' : null
-              };
+              return { tab: 'trials' };
             case 'questions':
-              return { tab: 'questions', tool: null };
+              return { tab: 'questions' };
             default:
               return null;
           }
         };
 
-        const buildHashRoute = (tab, tool, sub) => {
+        const buildHashRoute = (tab, sub) => {
           switch (tab) {
             case 'encounter':
               return '#/encounter';
@@ -1308,10 +1288,6 @@
               return '#/trials';
             case 'evidence':
               return '#/management/references';
-            case 'tools':
-              if (tool === 'clinic') return '#/tools/clinic';
-              if (tool === 'map') return '#/tools/map';
-              return '#/tools';
             case 'questions':
               return '#/questions';
             default:
@@ -1587,11 +1563,9 @@ Clinician Name`;
           })();
 
           const [activeTab, setActiveTab] = useState(initialActiveTab);
-          const [activeToolsView, setActiveToolsView] = useState(null);
           const [routeReady, setRouteReady] = useState(false);
           const [notice, setNotice] = useState(null);
           const [storageExpired, setStorageExpired] = useState(INITIAL_STORAGE_EXPIRED);
-          const [toolLoadErrors, setToolLoadErrors] = useState({ clinic: false, map: false });
           const [actionsOpen, setActionsOpen] = useState(false);
           const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
           const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null });
@@ -1635,8 +1609,6 @@ Clinician Name`;
           const [searchOpen, setSearchOpen] = useState(false);
           const [searchContext, setSearchContext] = useState('header');
           const [evidenceFilter, setEvidenceFilter] = useState('');
-          const [pinnedFilter, setPinnedFilter] = useState('');
-          const [pinnedDraft, setPinnedDraft] = useState({ title: '', url: '', tagsText: '', notes: '' });
           const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
           const [deidWarnings, setDeidWarnings] = useState({});
           const [wipeConfirmText, setWipeConfirmText] = useState('');
@@ -1735,7 +1707,6 @@ Clinician Name`;
           const workloadSessions = appData.workload || [];
           const clinicalQuestions = appData.clinicalQuestions || [];
           const teachingCases = appData.teachingCases || [];
-          const pinnedReferences = appData.pinnedReferences || [];
           const clipboardPacks = appData.encounter.clipboardPacks || getDefaultClipboardPacks();
           const activeShiftBoardId = appData.uiState.lastShiftBoardId || (shiftBoards[0] ? shiftBoards[0].id : null);
           const activeShiftBoard = shiftBoards.find((board) => board.id === activeShiftBoardId) || null;
@@ -4866,69 +4837,6 @@ Clinician Name`;
             }));
           };
 
-          const isReferencePinned = (url) => {
-            return pinnedReferences.some((ref) => ref.url === url);
-          };
-
-          const pinReference = (title, url) => {
-            if (!url) return;
-            if (isReferencePinned(url)) {
-              showNotice('Reference already pinned.', 'info');
-              return;
-            }
-            const entry = {
-              id: generateId('pin'),
-              title: title || 'Reference',
-              url,
-              tags: [],
-              personalNotes: '',
-              createdAt: toIsoString(),
-              updatedAt: toIsoString()
-            };
-            updateAppData((prev) => ({
-              ...prev,
-              pinnedReferences: [entry, ...prev.pinnedReferences]
-            }));
-            showNotice('Reference pinned.', 'success');
-          };
-
-          const updatePinnedReference = (id, updates) => {
-            updateAppData((prev) => ({
-              ...prev,
-              pinnedReferences: prev.pinnedReferences.map((ref) => ref.id === id
-                ? { ...ref, ...updates, updatedAt: toIsoString() }
-                : ref)
-            }));
-          };
-
-          const unpinReference = (id) => {
-            updateAppData((prev) => ({
-              ...prev,
-              pinnedReferences: prev.pinnedReferences.filter((ref) => ref.id !== id)
-            }));
-          };
-
-          const addCustomPinnedReference = () => {
-            if (!pinnedDraft.url.trim()) {
-              showNotice('URL is required to pin a custom reference.', 'warning');
-              return;
-            }
-            const entry = {
-              id: generateId('pin'),
-              title: pinnedDraft.title.trim() || pinnedDraft.url.trim(),
-              url: pinnedDraft.url.trim(),
-              tags: normalizeTags(pinnedDraft.tagsText),
-              personalNotes: pinnedDraft.notes.trim(),
-              createdAt: toIsoString(),
-              updatedAt: toIsoString()
-            };
-            updateAppData((prev) => ({
-              ...prev,
-              pinnedReferences: [entry, ...prev.pinnedReferences]
-            }));
-            setPinnedDraft({ title: '', url: '', tagsText: '', notes: '' });
-          };
-
           // Persist sign-out patients to localStorage
           React.useEffect(() => {
             if (signOutPatients.length > 0) {
@@ -5025,7 +4933,6 @@ Clinician Name`;
             setToolLoadErrors({ clinic: false, map: false });
             setSaveStatus('saved');
             setLastSaved(null);
-            setActiveToolsView(null);
             setNotice(null);
             setDeidWarnings({});
 
@@ -5036,7 +4943,7 @@ Clinician Name`;
           };
 
           const navigateTo = (tab, options = {}) => {
-            const { tool = null, clearSearch = false, subTab = null } = options;
+            const { clearSearch = false, subTab = null } = options;
             const rawTab = tab || 'encounter';
             const legacySubTab = LEGACY_MANAGEMENT_TABS[rawTab];
             let nextTab = rawTab;
@@ -5055,18 +4962,12 @@ Clinician Name`;
             }
 
             setActiveTab(nextTab);
-            if (nextTab === 'tools') {
-              setActiveToolsView(tool);
-            } else {
-              setActiveToolsView(null);
-            }
 
             updateAppData((prev) => ({
               ...prev,
               uiState: {
                 ...prev.uiState,
                 lastActiveTab: nextTab,
-                lastActiveTool: nextTab === 'tools' ? tool : null,
                 lastManagementSubTab: nextTab === 'management' ? nextManagementSubTab : prev.uiState.lastManagementSubTab
               }
             }));
@@ -5610,21 +5511,6 @@ Clinician Name`;
                   title: doc.title,
                   description: `${doc.section} section`,
                   action: () => {
-                    navigateTo('management', { clearSearch: true, subTab: 'references' });
-                  }
-                });
-              }
-            });
-
-            pinnedReferences.forEach((ref) => {
-              const haystack = [ref.title, ref.personalNotes, ...(ref.tags || [])].join(' ').toLowerCase();
-              if (haystack.includes(lowerQuery)) {
-                results.push({
-                  type: 'Pinned Reference',
-                  title: ref.title,
-                  description: ref.personalNotes ? 'Pinned note' : 'Pinned link',
-                  action: () => {
-                    setSearchHighlight(`pin-${ref.id}`);
                     navigateTo('management', { clearSearch: true, subTab: 'references' });
                   }
                 });
@@ -6289,13 +6175,11 @@ Clinician Name`;
               if (storageExpired && !hasHandledExpiredRef.current) {
                 hasHandledExpiredRef.current = true;
                 setActiveTab('encounter');
-                setActiveToolsView(null);
                 return;
               }
               const parsed = parseHashRoute(window.location.hash);
               if (parsed && VALID_TABS.includes(parsed.tab)) {
                 setActiveTab(parsed.tab);
-                setActiveToolsView(parsed.tool);
                 if (parsed.tab === 'management') {
                   const resolvedSubTab = normalizeManagementSubTab(parsed.sub) ||
                     normalizeManagementSubTab(appData.uiState.lastManagementSubTab) ||
@@ -6309,23 +6193,19 @@ Clinician Name`;
                 if (LEGACY_MANAGEMENT_TABS[savedTab]) {
                   setActiveTab('management');
                   setManagementSubTab(LEGACY_MANAGEMENT_TABS[savedTab]);
-                  setActiveToolsView(null);
                   return;
                 }
                 if (savedTab === 'management') {
                   setActiveTab('management');
                   setManagementSubTab(normalizeManagementSubTab(appData.uiState.lastManagementSubTab) || 'ich');
-                  setActiveToolsView(null);
                   return;
                 }
                 if (VALID_TABS.includes(savedTab)) {
                   setActiveTab(savedTab);
-                  setActiveToolsView(null);
                   return;
                 }
               }
               setActiveTab('encounter');
-              setActiveToolsView(null);
             };
 
             resolveRoute();
@@ -6343,21 +6223,15 @@ Clinician Name`;
           // Keep hash in sync with the active view
           useEffect(() => {
             if (!routeReady) return;
-            const nextHash = buildHashRoute(activeTab, activeToolsView, managementSubTab);
+            const nextHash = buildHashRoute(activeTab, managementSubTab);
             if (window.location.hash !== nextHash) {
               window.location.hash = nextHash;
             }
-          }, [activeTab, activeToolsView, routeReady, managementSubTab]);
-
-          useEffect(() => {
-            if (activeToolsView) {
-              setToolLoadErrors((prev) => ({ ...prev, [activeToolsView]: false }));
-            }
-          }, [activeToolsView]);
+          }, [activeTab, routeReady, managementSubTab]);
 
           useEffect(() => {
             setActionsOpen(false);
-          }, [activeTab, activeToolsView]);
+          }, [activeTab]);
 
           useEffect(() => {
             if (activeTab !== 'management') return;
@@ -6375,7 +6249,7 @@ Clinician Name`;
             if (isMounted) {
               lucide.createIcons();
             }
-          }, [activeTab, activeToolsView, copiedText, darkMode, notice, searchOpen, actionsOpen, isMounted]);
+          }, [activeTab, copiedText, darkMode, notice, searchOpen, actionsOpen, isMounted]);
 
           // Documentation generation functions
           const generateHPI = () => {
@@ -6535,21 +6409,10 @@ TO DO:
             return () => window.removeEventListener('keydown', handleKeyDown);
           }, []);
 
-          const toolsCatalog = {
-            clinic: {
-              id: 'clinic',
-              title: 'Clinic Questions / Follow-up Checklist',
-              description: '',
-              url: 'https://rkalani1.github.io/stroke-clinic-q/'
-            },
-            map: {
-              id: 'map',
-              title: 'Telestroke Coverage / Regional Map',
-              description: '',
-              url: 'https://rkalani1.github.io/telestroke-expansion-map/'
-            }
-          };
-          const toolsList = [toolsCatalog.clinic, toolsCatalog.map];
+          const topLinks = [
+            { label: 'Clinic Questions / Follow-up Checklist', url: 'https://rkalani1.github.io/stroke-clinic-q/' },
+            { label: 'Telestroke Coverage / Regional Map', url: 'https://rkalani1.github.io/telestroke-expansion-map/' }
+          ];
           const encounterQuickLinks = [
             { label: 'Pulsara', url: 'https://us-app.pulsara.com/user/login' },
             { label: 'Teladoc Imaging', url: 'https://urldefense.com/v3/__https:/imaging.visitnow.org/studies__;!!K-Hz7m0Vt54!nECcOahuNh21d0jzlVH-mSie_Il2fvDWCKseicWktKKQwdj4xk9XfAX2s8QyVGAs0n-NvzXDLAHKDw%24' },
@@ -6568,7 +6431,6 @@ TO DO:
             });
             return acc;
           }, { items: [], seen: new Set() }).items;
-          const activeTool = activeToolsView ? toolsCatalog[activeToolsView] : null;
           const ttlDisplayHours = appConfig.ttlHoursOverride || DEFAULT_TTL_HOURS;
           const showDocumentActions = true;
           const showEncounterActions = activeTab === 'encounter';
@@ -6591,12 +6453,6 @@ TO DO:
                   { id: 'new-question', label: 'New Question', onClick: () => document.getElementById('question-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) },
                   { id: 'export-questions', label: 'Export', onClick: exportQuestionsJson }
                 ];
-              case 'management':
-                if (managementSubTab !== 'references') return [];
-                return [
-                  { id: 'add-pin', label: 'Add Pin', onClick: () => document.getElementById('pinned-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) },
-                  { id: 'view-pinned', label: 'View Pinned', onClick: () => document.getElementById('pinned-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
-                ];
               default:
                 return [];
             }
@@ -6604,8 +6460,7 @@ TO DO:
           const mobilePrimaryTabs = [
             { id: 'encounter', name: 'Encounter', icon: 'activity' },
             { id: 'management', name: 'Manage', icon: 'layers' },
-            { id: 'trials', name: 'Trials', icon: 'file-text' },
-            { id: 'tools', name: 'Tools', icon: 'wrench' }
+            { id: 'trials', name: 'Trials', icon: 'file-text' }
           ];
           const mobileMoreTabs = [
             { id: 'questions', name: 'Questions', icon: 'help-circle' }
@@ -6795,6 +6650,25 @@ TO DO:
                     )}
                   </div>
                 </div>
+
+                {topLinks.length > 0 && (
+                  <div className="mt-2 bg-indigo-50 border border-indigo-200 rounded-lg p-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {topLinks.map((link) => (
+                        <a
+                          key={link.url}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-3 py-2 bg-white border border-indigo-200 rounded-lg text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors"
+                        >
+                          <i data-lucide="external-link" className="w-4 h-4"></i>
+                          <span>{link.label}</span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {notice && (
                   <div className={`mt-2 p-3 rounded-lg border text-sm flex items-center gap-2 ${
@@ -7199,7 +7073,6 @@ TO DO:
                     { id: 'encounter', name: '⚡ Encounter', icon: 'activity' },
                     { id: 'management', name: 'Management', icon: 'layers' },
                     { id: 'trials', name: 'Trials', icon: 'file-text' },
-                    { id: 'tools', name: 'Tools', icon: 'wrench' },
                     { id: 'questions', name: 'Questions', icon: 'help-circle' }
                   ].map(tab => {
                     const isActive = activeTab === tab.id;
@@ -7223,100 +7096,6 @@ TO DO:
 
               {/* Content */}
               <div id="main-content" className="space-y-6 sm:space-y-8 mobile-nav-padding" role="region" aria-label="Main content area">
-
-                {/* Tools */}
-                {activeTab === 'tools' && (
-                  <div className="space-y-4">
-                    {!activeTool && (
-                      <div className="space-y-4">
-                        <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4">
-                          <h2 className="text-2xl font-semibold text-gray-900">Tools</h2>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          {toolsList.map((tool) => (
-                            <button
-                              key={tool.id}
-                              onClick={() => navigateTo('tools', { tool: tool.id })}
-                              className="tool-card text-left p-4 bg-white border rounded-2xl"
-                            >
-                              <div className="text-lg font-semibold text-gray-900">{tool.title}</div>
-                              {tool.description && (
-                                <p className="text-sm text-gray-600 mt-1">{tool.description}</p>
-                              )}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {activeTool && (
-                      <div className="space-y-3">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                          <div>
-                            <h2 className="text-xl font-semibold text-gray-900">{activeTool.title}</h2>
-                            {activeTool.description && (
-                              <p className="text-sm text-gray-600">{activeTool.description}</p>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <a
-                              href={activeTool.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-                            >
-                              Open in new tab
-                            </a>
-                            <button
-                              onClick={() => navigateTo('tools')}
-                              className="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
-                            >
-                              Back to Tools
-                            </button>
-                          </div>
-                        </div>
-
-                        {toolLoadErrors[activeTool.id] && (
-                          <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800">
-                            Unable to load the embedded tool.{' '}
-                            <a
-                              href={activeTool.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="underline"
-                            >
-                              Open it directly
-                            </a>
-                            .
-                          </div>
-                        )}
-
-                        <div className="tool-iframe-wrapper border border-gray-200 rounded-2xl overflow-hidden bg-white">
-                          <iframe
-                            src={activeTool.url}
-                            title={activeTool.title}
-                            className="w-full h-full"
-                            loading="lazy"
-                            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
-                            onError={() => setToolLoadErrors((prev) => ({ ...prev, [activeTool.id]: true }))}
-                          ></iframe>
-                        </div>
-
-                        <div className="text-xs text-gray-500">
-                          Having trouble loading the embed? Open directly:{' '}
-                          <a
-                            href={activeTool.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="underline"
-                          >
-                            {activeTool.url}
-                          </a>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
 
                 {/* Clinical Questions */}
                 {activeTab === 'questions' && (
@@ -12506,119 +12285,6 @@ Clinician Name`);
                     {managementSubTab === 'references' && (
                   <div className="space-y-6">
 
-                    <div id="pinned-section" className="bg-white border border-gray-200 rounded-lg p-4 space-y-3">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <div>
-                          <h3 className="text-lg font-semibold text-gray-900">Pinned References</h3>
-                          <p className="text-xs text-gray-500">Personal layer for quick access and notes.</p>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => document.getElementById('pinned-add-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                          className="px-3 py-1.5 text-xs bg-blue-600 text-white rounded-lg"
-                        >
-                          Add custom link
-                        </button>
-                      </div>
-                      <input
-                        type="text"
-                        placeholder="Filter pinned references..."
-                        value={pinnedFilter}
-                        onChange={(e) => setPinnedFilter(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      />
-                      {pinnedReferences.length === 0 && (
-                        <p className="text-xs text-gray-500">No pinned references yet.</p>
-                      )}
-                      {pinnedReferences.length > 0 && (
-                        <div className="space-y-2">
-                          {pinnedReferences
-                            .filter((ref) => {
-                              const haystack = [ref.title, ref.personalNotes, ...(ref.tags || [])].join(' ').toLowerCase();
-                              return !pinnedFilter || haystack.includes(pinnedFilter.toLowerCase());
-                            })
-                            .map((ref) => (
-                              <div key={ref.id} id={`pin-${ref.id}`} className="border border-gray-200 rounded-lg p-3">
-                                <div className="flex flex-wrap items-center justify-between gap-2">
-                                  <div>
-                                    <a href={ref.url} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-blue-700 hover:underline">
-                                      {ref.title}
-                                    </a>
-                                    {ref.tags?.length > 0 && (
-                                      <div className="text-xs text-gray-500">Tags: {ref.tags.join(', ')}</div>
-                                    )}
-                                  </div>
-                                  <div className="flex items-center gap-2">
-                                    <button
-                                      onClick={() => copyPlainText(ref.url).then(() => setCopiedText('Pinned link'))}
-                                      className="px-2 py-1 text-xs border border-gray-200 rounded"
-                                    >
-                                      Copy link
-                                    </button>
-                                    <button
-                                      onClick={() => unpinReference(ref.id)}
-                                      className="px-2 py-1 text-xs border border-red-200 text-red-600 rounded"
-                                    >
-                                      Unpin
-                                    </button>
-                                  </div>
-                                </div>
-                                <textarea
-                                  value={ref.personalNotes || ''}
-                                  onChange={(e) => updatePinnedReference(ref.id, { personalNotes: e.target.value })}
-                                  placeholder="Personal notes"
-                                  rows="3"
-                                  className="mt-2 w-full px-2 py-1 text-xs border border-gray-200 rounded"
-                                />
-                              </div>
-                            ))}
-                        </div>
-                      )}
-
-                      <div id="pinned-add-form" className="border border-dashed border-gray-300 rounded-lg p-3">
-                        <h4 className="text-sm font-semibold text-gray-700 mb-2">Add custom reference</h4>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                          <input
-                            type="text"
-                            value={pinnedDraft.title}
-                            onChange={(e) => setPinnedDraft((prev) => ({ ...prev, title: e.target.value }))}
-                            placeholder="Title"
-                            className="px-3 py-2 border border-gray-200 rounded text-sm"
-                          />
-                          <input
-                            type="url"
-                            value={pinnedDraft.url}
-                            onChange={(e) => setPinnedDraft((prev) => ({ ...prev, url: e.target.value }))}
-                            placeholder="https://"
-                            className="px-3 py-2 border border-gray-200 rounded text-sm"
-                          />
-                          <input
-                            type="text"
-                            value={pinnedDraft.tagsText}
-                            onChange={(e) => setPinnedDraft((prev) => ({ ...prev, tagsText: e.target.value }))}
-                            placeholder="Tags (comma-separated)"
-                            className="px-3 py-2 border border-gray-200 rounded text-sm"
-                          />
-                          <input
-                            type="text"
-                            value={pinnedDraft.notes}
-                            onChange={(e) => setPinnedDraft((prev) => ({ ...prev, notes: e.target.value }))}
-                            placeholder="Notes"
-                            className="px-3 py-2 border border-gray-200 rounded text-sm"
-                          />
-                        </div>
-                        <div className="mt-2">
-                          <button
-                            type="button"
-                            onClick={addCustomPinnedReference}
-                            className="px-3 py-2 text-xs bg-blue-600 text-white rounded-lg"
-                          >
-                            Pin reference
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
                     {/* Evidence Filter */}
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <div className="relative">
@@ -12660,14 +12326,6 @@ Clinician Name`);
                           <i data-lucide="external-link" className="w-5 h-5"></i>
                           <span>OpenEvidence</span>
                         </a>
-                        <button
-                          onClick={() => pinReference('OpenEvidence', 'https://www.openevidence.com')}
-                          className="px-3 py-3 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                          title="Pin reference"
-                        >
-                          <i data-lucide="pin" className="w-4 h-4"></i>
-                          Pin
-                        </button>
                       </div>
                       <div className="flex items-center gap-2">
                         <a
@@ -12679,14 +12337,6 @@ Clinician Name`);
                           <i data-lucide="external-link" className="w-5 h-5"></i>
                           <span>UpToDate</span>
                         </a>
-                        <button
-                          onClick={() => pinReference('UpToDate', 'https://www.uptodate.com')}
-                          className="px-3 py-3 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                          title="Pin reference"
-                        >
-                          <i data-lucide="pin" className="w-4 h-4"></i>
-                          Pin
-                        </button>
                       </div>
                       <div className="flex items-center gap-2">
                         <a
@@ -12698,14 +12348,6 @@ Clinician Name`);
                           <i data-lucide="external-link" className="w-5 h-5"></i>
                           <span>Asta (Ai2)</span>
                         </a>
-                        <button
-                          onClick={() => pinReference('Asta (Ai2)', 'https://asta.allen.ai/chat')}
-                          className="px-3 py-3 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                          title="Pin reference"
-                        >
-                          <i data-lucide="pin" className="w-4 h-4"></i>
-                          Pin
-                        </button>
                       </div>
                     </div>
 
@@ -12751,14 +12393,6 @@ Clinician Name`);
                             >
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
-                            </button>
-                            <button
-                              onClick={() => pinReference('Unruptured Cerebral Aneurysms', 'documents/aneurysms/Unruptured Cerebral Aneurysms.pdf')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
                             </button>
                           </div>
                         </div>
@@ -12809,14 +12443,6 @@ Clinician Name`);
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
-                            <button
-                              onClick={() => pinReference('DAPT Minor Stroke-TIA Trials', 'documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
-                            </button>
                           </div>
                         </div>
                         {/* Document 2 - DAPT After Ischemic Stroke-TIA */}
@@ -12853,14 +12479,6 @@ Clinician Name`);
                             >
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
-                            </button>
-                            <button
-                              onClick={() => pinReference('DAPT After Ischemic Stroke-TIA', 'documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
                             </button>
                           </div>
                         </div>
@@ -12911,14 +12529,6 @@ Clinician Name`);
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
-                            <button
-                              onClick={() => pinReference('Lacunar Stroke', 'documents/csvd/Lacunar Stroke 7.13.22.pdf')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
-                            </button>
                           </div>
                         </div>
                       </div>
@@ -12968,14 +12578,6 @@ Clinician Name`);
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
-                            <button
-                              onClick={() => pinReference('Interpretation of Clinical Trials', 'documents/ebm/Interpretation of Clinical Trials.pdf')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
-                            </button>
                           </div>
                         </div>
                         {/* External Link - CEBM Oxford Resources */}
@@ -12997,14 +12599,6 @@ Clinician Name`);
                               <i data-lucide="external-link" className="w-4 h-4"></i>
                               Visit
                             </a>
-                            <button
-                              onClick={() => pinReference('CEBM Oxford Resources', 'https://www.cebm.ox.ac.uk/resources')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
-                            </button>
                           </div>
                         </div>
                       </div>
@@ -13054,14 +12648,6 @@ Clinician Name`);
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
-                            <button
-                              onClick={() => pinReference('Large Core Anterior Circulation LVO EVT Trials', 'documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
-                            </button>
                           </div>
                         </div>
 
@@ -13100,14 +12686,6 @@ Clinician Name`);
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
-                            <button
-                              onClick={() => pinReference('Basilar Artery Occlusion EVT Trials', 'documents/evt/Basilar Artery Occlusion EVT Trials.pdf')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
-                            </button>
                           </div>
                         </div>
 
@@ -13145,14 +12723,6 @@ Clinician Name`);
                             >
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
-                            </button>
-                            <button
-                              onClick={() => pinReference('MeVO & Distal Vessel Occlusion EVT Trials', 'documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
                             </button>
                           </div>
                         </div>
@@ -13208,14 +12778,6 @@ Clinician Name`);
                                   <i data-lucide="mail" className="w-4 h-4"></i>
                                   Email
                                 </button>
-                                <button
-                                  onClick={() => pinReference('AC timing after AF-related Stroke', 'documents/afib/AC timing after AF-related Stroke.pdf')}
-                                  className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                                  title="Pin reference"
-                                >
-                                  <i data-lucide="pin" className="w-4 h-4"></i>
-                                  Pin
-                                </button>
                               </div>
                             </div>
 
@@ -13254,14 +12816,6 @@ Clinician Name`);
                                   <i data-lucide="mail" className="w-4 h-4"></i>
                                   Email
                                 </button>
-                                <button
-                                  onClick={() => pinReference('AF & secondary stroke prevention July 2024', 'documents/afib/AF & secondary stroke prevention July 2024.pdf')}
-                                  className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                                  title="Pin reference"
-                                >
-                                  <i data-lucide="pin" className="w-4 h-4"></i>
-                                  Pin
-                                </button>
                               </div>
                             </div>
 
@@ -13284,14 +12838,6 @@ Clinician Name`);
                                   <i data-lucide="external-link" className="w-4 h-4"></i>
                                   Open Link
                                 </a>
-                                <button
-                                  onClick={() => pinReference('2023 AHA AFib Guidelines', 'https://www.ahajournals.org/doi/10.1161/CIR.0000000000001193')}
-                                  className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                                  title="Pin reference"
-                                >
-                                  <i data-lucide="pin" className="w-4 h-4"></i>
-                                  Pin
-                                </button>
                               </div>
                             </div>
 
@@ -13314,14 +12860,6 @@ Clinician Name`);
                                   <i data-lucide="external-link" className="w-4 h-4"></i>
                                   Open Link
                                 </a>
-                                <button
-                                  onClick={() => pinReference('2024 ESC AFib Guidelines', 'https://academic.oup.com/eurheartj/article/45/36/3314/7738779')}
-                                  className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                                  title="Pin reference"
-                                >
-                                  <i data-lucide="pin" className="w-4 h-4"></i>
-                                  Pin
-                                </button>
                               </div>
                             </div>
                           </div>
@@ -13362,14 +12900,6 @@ Clinician Name`);
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
-                            <button
-                              onClick={() => pinReference('Diabetes and stroke', 'documents/epidemiology/Diabetes and stroke.pdf')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
-                            </button>
                           </div>
                         </div>
 
@@ -13407,14 +12937,6 @@ Clinician Name`);
                             >
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
-                            </button>
-                            <button
-                              onClick={() => pinReference('Lipids and Cerebrovascular Disease', 'documents/epidemiology/Lipids and Cerebrovascular Disease.pdf')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
                             </button>
                           </div>
                         </div>
@@ -13465,14 +12987,6 @@ Clinician Name`);
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
-                            <button
-                              onClick={() => pinReference('Thrombolytic Therapy 4.5-24h RCTs', 'documents/thrombolytic/Thrombolytic Therapy 4.5-24h RCTs.pdf')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
-                            </button>
                           </div>
                         </div>
 
@@ -13495,14 +13009,6 @@ Clinician Name`);
                               <i data-lucide="external-link" className="w-4 h-4"></i>
                               Open Link
                             </a>
-                            <button
-                              onClick={() => pinReference('WAKE-UP Trial', 'https://www.nejm.org/doi/full/10.1056/NEJMoa1804355')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
-                            </button>
                           </div>
                         </div>
                       </div>
@@ -13552,14 +13058,6 @@ Clinician Name`);
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
-                            <button
-                              onClick={() => pinReference('Differentiating Acute Confusional State (Delirium) from Aphasia', 'documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
-                            </button>
                           </div>
                         </div>
 
@@ -13597,14 +13095,6 @@ Clinician Name`);
                             >
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
-                            </button>
-                            <button
-                              onClick={() => pinReference('Coma Exam', 'documents/exam/coma exam.pdf')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
                             </button>
                           </div>
                         </div>
@@ -13655,14 +13145,6 @@ Clinician Name`);
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
-                            <button
-                              onClick={() => pinReference('Symptomatic Cervical Carotid Artery Stenosis', 'documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
-                            </button>
                           </div>
                         </div>
                         {/* Document 2 - CREST-2 Trial */}
@@ -13699,14 +13181,6 @@ Clinician Name`);
                             >
                               <i data-lucide="mail" className="w-4 h-4"></i>
                               Email
-                            </button>
-                            <button
-                              onClick={() => pinReference('CREST-2 Trial (December 2025)', 'documents/lad/CREST-2 Trial - Dec 2025.pdf')}
-                              className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1"
-                              title="Pin reference"
-                            >
-                              <i data-lucide="pin" className="w-4 h-4"></i>
-                              Pin
                             </button>
                           </div>
                         </div>
