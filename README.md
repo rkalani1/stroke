@@ -6,7 +6,6 @@ A client-side clinical decision support toolkit for stroke management with encou
 - Shift case list at the top of Encounter.
 - Clinic checklist and telestroke map links at the top of the page.
 - Global search across management tools, trials, and references.
-- Clinical question tracker.
 - Mobile bottom navigation and sticky action bar per tab.
 
 ## Quick Usage
@@ -32,4 +31,3 @@ A client-side clinical decision support toolkit for stroke management with encou
 - `#/management/calculators`
 - `#/management/references`
 - `#/trials`
-- `#/questions`
