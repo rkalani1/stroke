@@ -6,7 +6,6 @@ A client-side clinical decision support toolkit for stroke management with encou
 - Shift case list at the top of Encounter plus the shift taskboard.
 - Pinned references with personal notes, plus global search across content.
 - Clinical question tracker, teaching case builder, and question-of-the-day.
-- Panic screen button in the header.
 - Mobile bottom navigation and sticky action bar per tab.
 
 ## Quick Usage

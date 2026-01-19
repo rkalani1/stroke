@@ -477,14 +477,6 @@
                 box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
             }
         }
-        .overlay-screen {
-            backdrop-filter: blur(6px);
-        }
-        .lock-screen {
-            background: radial-gradient(800px circle at 20% 0%, rgba(148, 163, 184, 0.25), transparent 60%),
-                        linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96));
-        }
-
         /* FAB positioning with safe area */
 
         /* Better mobile touch feedback */
@@ -1023,11 +1015,6 @@
           deidMode: true,
           allowFreeTextStorage: false,
           ttlHoursOverride: null,
-          appLockEnabled: false,
-          appLockTimeoutMinutes: 10,
-          appLockSalt: null,
-          appLockHash: null,
-          panicHotkey: 'Ctrl+Shift+P',
           preferredRole: 'consult'
         });
 
@@ -1048,7 +1035,6 @@
             lastManagementSubTab: 'ich',
             legacyMigratedAt: null,
             searchHighlightId: null,
-            panicArmed: false,
             featuredTeachingId: null
           },
           encounter: {
@@ -1662,7 +1648,6 @@ Clinician Name`;
           const [pinnedFilter, setPinnedFilter] = useState('');
           const [pinnedDraft, setPinnedDraft] = useState({ title: '', url: '', tagsText: '', notes: '' });
           const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
-          const [panicActive, setPanicActive] = useState(false);
           const [deidWarnings, setDeidWarnings] = useState({});
           const [wipeConfirmText, setWipeConfirmText] = useState('');
 
@@ -4954,14 +4939,6 @@ Clinician Name`;
             setPinnedDraft({ title: '', url: '', tagsText: '', notes: '' });
           };
 
-          const handlePanicToggle = () => {
-            if (!panicActive) {
-              setPanicActive(true);
-              return;
-            }
-            setPanicActive(false);
-          };
-
           // Persist sign-out patients to localStorage
           React.useEffect(() => {
             if (signOutPatients.length > 0) {
@@ -5060,7 +5037,6 @@ Clinician Name`;
             setLastSaved(null);
             setActiveToolsView(null);
             setNotice(null);
-            setPanicActive(false);
             setDeidWarnings({});
 
             if (resetDarkMode) {
@@ -6578,12 +6554,6 @@ TO DO:
                 toggleDarkMode();
               }
 
-              // Ctrl/Cmd + Shift + P: Panic screen
-              if ((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === 'P' || e.key === 'p')) {
-                e.preventDefault();
-                handlePanicToggle();
-              }
-
               // ? key: Show keyboard shortcuts help
               if (e.key === '?' && !e.metaKey && !e.ctrlKey) {
                 e.preventDefault();
@@ -6690,7 +6660,7 @@ TO DO:
 
           return (
             <div className="relative">
-              <div className="app-shell max-w-7xl mx-auto p-4 sm:p-8 overflow-x-hidden" role="main" aria-hidden={panicActive}>
+              <div className="app-shell max-w-7xl mx-auto p-4 sm:p-8 overflow-x-hidden" role="main">
               {/* Skip Navigation Link for Screen Readers */}
               <a
                 href="#main-content"
@@ -6760,17 +6730,6 @@ TO DO:
                           ))}
                         </div>
                       )}
-                    </div>
-
-                    <div className="flex w-full flex-wrap items-center justify-center gap-2 sm:justify-end">
-                      <button
-                        onClick={handlePanicToggle}
-                        className="px-2 py-2 rounded-lg border border-red-200 text-red-700 bg-red-50 hover:bg-red-100"
-                        aria-label="Panic screen"
-                        title="Panic screen"
-                      >
-                        <i data-lucide="eye-off" className="w-4 h-4"></i>
-                      </button>
                     </div>
 
                     <div className="flex w-full flex-wrap items-center justify-center gap-2 sm:w-auto sm:justify-end">
@@ -14683,21 +14642,6 @@ Clinician Name`);
               </div>
             )}
 
-            {panicActive && (
-              <div className="fixed inset-0 z-[100] bg-slate-900 text-white flex items-center justify-center overlay-screen">
-                <div className="text-center space-y-3 px-6">
-                  <div className="text-sm uppercase tracking-wide text-slate-300">Panic Screen</div>
-                  <h2 className="text-2xl font-semibold">Screen hidden</h2>
-                  <p className="text-sm text-slate-300">Press the panic button again to return.</p>
-                  <button
-                    onClick={handlePanicToggle}
-                    className="px-4 py-2 bg-white text-slate-900 rounded-lg text-sm font-semibold"
-                  >
-                    Exit
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
           );
         };
