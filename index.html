@@ -558,7 +558,6 @@
                 'timerSidebarCollapsed',
                 'shiftPatients',
                 'currentPatientId',
-                'signOutPatients',
                 'consultationType',
                 'ttlHoursOverride',
                 'lastUpdated',
@@ -730,7 +729,6 @@
           'timerSidebarCollapsed',
           'shiftPatients',
           'currentPatientId',
-          'signOutPatients',
           'consultationType',
           'ttlHoursOverride',
           'lastUpdated',
@@ -1071,39 +1069,6 @@
             next.settings.ttlHoursOverride = Number(legacyTtl);
           }
 
-          const legacySignOut = getKey('signOutPatients', null);
-          if (Array.isArray(legacySignOut) && legacySignOut.length > 0 && next.shiftBoards.length === 0) {
-            const boardId = generateId('board');
-            next.shiftBoards = [
-              {
-                id: boardId,
-                name: 'Legacy Sign-Out',
-                createdAt: toIsoString(),
-                updatedAt: toIsoString(),
-                archived: false,
-                patients: legacySignOut.map((entry) => ({
-                  id: generateId('pt'),
-                  alias: entry.label || 'Legacy',
-                  label: entry.demographics || '',
-                  location: entry.status || '',
-                  problemSummary: entry.diagnosis || '',
-                  tasks: ensureArray(entry.pending, []).map((item) => ({
-                    id: generateId('task'),
-                    text: item,
-                    priority: 'med',
-                    owner: 'me',
-                    dueAt: null,
-                    status: 'todo',
-                    createdAt: toIsoString(),
-                    completedAt: null
-                  })),
-                  pendingResults: [],
-                  freeNotes: entry.treatment || ''
-                }))
-              }
-            ];
-            next.uiState.lastShiftBoardId = boardId;
-          }
 
           next.uiState.legacyMigratedAt = toIsoString();
           return next;
@@ -1636,15 +1601,6 @@ Clinician Name`;
 
           // Emergency Contacts FAB state
           const [fabExpanded, setFabExpanded] = useState(false);
-
-          // ============================================
-          // SIGN-OUT / HANDOFF FEATURE
-          // ============================================
-          // PHI-free patient summaries for shift handoff (persists across refreshes, expires after 24h)
-          const [signOutPatients, setSignOutPatients] = useState(loadShiftData('signOutPatients', []));
-          const [showSignOutModal, setShowSignOutModal] = useState(false);
-          const [showSignOutManager, setShowSignOutManager] = useState(false);
-          const [signOutToast, setSignOutToast] = useState('');
 
           const [selectedPackId, setSelectedPackId] = useState(appData.encounter.clipboardPacks?.[0]?.id || 'telestroke-consult');
           const [shiftFilterDueToday, setShiftFilterDueToday] = useState(false);
@@ -3633,42 +3589,6 @@ Clinician Name`;
             return counts;
           };
 
-          // Generate shift sign-out summary for handoffs
-          const generateShiftSignOut = () => {
-            if (shiftPatients.length === 0) {
-              return 'No patients tracked in this shift.';
-            }
-
-            let signOut = `SHIFT SIGN-OUT SUMMARY\n`;
-            signOut += `Generated: ${new Date().toLocaleString()}\n`;
-            signOut += `Total Patients: ${shiftPatients.length}\n\n`;
-
-            shiftPatients.forEach((patient, index) => {
-              signOut += `─────────────────────────────────────\n`;
-              signOut += `${index + 1}. ${patient.summary?.fullLabel || 'Unknown Patient'}\n`;
-              signOut += `   Time: ${new Date(patient.timestamp).toLocaleTimeString()}\n`;
-
-              // Trial status
-              if (patient.trialSummary?.eligible > 0) {
-                signOut += `   ⚠️ TRIAL ELIGIBLE: ${patient.trialSummary.eligible} potential match(es)\n`;
-              }
-
-              // Key data
-              if (patient.formState?.telestrokeNote) {
-                const note = patient.formState.telestrokeNote;
-                if (note.diagnosis) signOut += `   Dx: ${note.diagnosis}\n`;
-                if (note.tnkRecommended) signOut += `   TNK: Recommended\n`;
-                if (note.evtRecommended) signOut += `   EVT: Recommended\n`;
-              }
-              signOut += '\n';
-            });
-
-            signOut += `─────────────────────────────────────\n`;
-            signOut += `END OF SHIFT SIGN-OUT\n`;
-
-            return signOut;
-          };
-
           // Save current patient to shift list
           const saveCurrentPatientToShift = () => {
             const patientId = currentPatientId || generatePatientId();
@@ -3752,256 +3672,6 @@ Clinician Name`;
             if (currentPatientId === patientId) {
               setCurrentPatientId(null);
             }
-          };
-
-          // ============================================
-          // SIGN-OUT / HANDOFF FUNCTIONS
-          // ============================================
-
-          // Generate PHI-free patient identifier
-          const generateSignOutPatientId = () => {
-            const count = signOutPatients.length + 1;
-            return `Pt ${count}`;
-          };
-
-          // Create PHI-free sign-out entry from current patient data
-          const createSignOutEntry = (customLabel = '') => {
-            const age = telestrokeNote.age || '';
-            const sex = telestrokeNote.sex || '';
-            const diagnosis = telestrokeNote.diagnosis || telestrokeNote.chiefComplaint || '';
-            const nihss = telestrokeNote.nihss || nihssScore || '';
-            const aspects = aspectsScore !== 10 ? aspectsScore : '';
-
-            // Vessel occlusion
-            let vessel = '';
-            const vessels = telestrokeNote.vesselOcclusion || [];
-            if (vessels.length > 0) {
-              vessel = vessels.join(', ');
-            } else if (telestrokeNote.ctaResults) {
-              const cta = telestrokeNote.ctaResults.toLowerCase();
-              if (cta.includes('m1')) vessel = 'M1';
-              else if (cta.includes('m2')) vessel = 'M2';
-              else if (cta.includes('ica')) vessel = 'ICA';
-              else if (cta.includes('basilar')) vessel = 'Basilar';
-            }
-
-            // Time from LKW
-            let timeFromLKW = '';
-            const timeCalc = calculateTimeFromLKW();
-            if (timeCalc) {
-              timeFromLKW = `${timeCalc.hours}h ${timeCalc.minutes}m`;
-            }
-
-            // Treatment
-            let treatment = [];
-            if (telestrokeNote.tnkRecommended) treatment.push('TNK given');
-            if (telestrokeNote.evtRecommended) treatment.push('EVT recommended');
-            if (treatment.length === 0 && telestrokeNote.medications) {
-              const meds = telestrokeNote.medications.toLowerCase();
-              if (meds.includes('asa') || meds.includes('aspirin')) treatment.push('ASA');
-              if (meds.includes('plavix') || meds.includes('clopidogrel')) treatment.push('Plavix');
-            }
-
-            // Pending items
-            let pending = [];
-            if (telestrokeNote.evtRecommended && !telestrokeNote.transferAccepted) pending.push('CSC transfer');
-            if (telestrokeNote.tnkRecommended) pending.push('Post-tPA imaging');
-
-            // Status/disposition
-            let status = '';
-            if (telestrokeNote.transferAccepted) status = 'Transferred to CSC';
-            else if (telestrokeNote.disposition) status = telestrokeNote.disposition;
-
-            return {
-              id: Date.now().toString(),
-              timestamp: new Date().toISOString(),
-              label: customLabel || telestrokeNote.alias || generateSignOutPatientId(),
-              demographics: age && sex ? `${age}${sex}` : '',
-              diagnosis: diagnosis,
-              nihss: nihss,
-              aspects: aspects,
-              vessel: vessel,
-              timeFromLKW: timeFromLKW,
-              treatment: treatment.join(', '),
-              pending: pending,
-              status: status
-            };
-          };
-
-          // Add current patient to sign-out list
-          const addToSignOut = (customLabel = '') => {
-            const entry = createSignOutEntry(customLabel);
-            setSignOutPatients(prev => [...prev, entry]);
-            saveShiftData('signOutPatients', [...signOutPatients, entry]);
-            showSignOutNotification('Patient added to sign-out');
-            return entry;
-          };
-
-          // Update sign-out entry
-          const updateSignOutEntry = (id, updates) => {
-            setSignOutPatients(prev => {
-              const updated = prev.map(p => p.id === id ? { ...p, ...updates } : p);
-              saveShiftData('signOutPatients', updated);
-              return updated;
-            });
-          };
-
-          // Remove sign-out entry
-          const removeSignOutEntry = (id) => {
-            setSignOutPatients(prev => {
-              const updated = prev.filter(p => p.id !== id);
-              saveShiftData('signOutPatients', updated);
-              return updated;
-            });
-          };
-
-          // Clear all sign-outs
-          const clearAllSignOuts = () => {
-            setSignOutPatients([]);
-            removeKey('signOutPatients');
-          };
-
-          // Generate formatted sign-out text for sharing
-          const generateSignOutText = () => {
-            if (signOutPatients.length === 0) {
-              return 'No patients in sign-out list.';
-            }
-
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('en-US', {
-              month: 'short', day: 'numeric', year: 'numeric'
-            });
-            const timeStr = now.toLocaleTimeString('en-US', {
-              hour: '2-digit', minute: '2-digit'
-            });
-
-            let text = `STROKE SIGN-OUT - ${dateStr} ${timeStr}\n`;
-            text += `---\n`;
-
-            signOutPatients.forEach((pt, index) => {
-              // Header line: Label (demographics, vessel): key findings
-              let header = pt.label;
-              if (pt.demographics) {
-                header += ` (${pt.demographics}`;
-                if (pt.vessel) header += `, ${pt.vessel}`;
-                header += `)`;
-              }
-              if (pt.diagnosis) header += `: ${pt.diagnosis}`;
-              text += `${header}\n`;
-
-              // Key findings
-              let findings = [];
-              if (pt.nihss) findings.push(`NIHSS ${pt.nihss}`);
-              if (pt.aspects) findings.push(`ASPECTS ${pt.aspects}`);
-              if (pt.vessel && !pt.demographics) findings.push(pt.vessel);
-              if (findings.length > 0) {
-                text += `- Findings: ${findings.join(', ')}\n`;
-              }
-
-              // Treatment
-              if (pt.treatment) {
-                text += `- Tx: ${pt.treatment}`;
-                if (pt.timeFromLKW) text += ` (${pt.timeFromLKW} from LKW)`;
-                text += `\n`;
-              }
-
-              // Pending
-              if (pt.pending && pt.pending.length > 0) {
-                text += `- Pending: ${pt.pending.join(', ')}\n`;
-              }
-
-              // Status
-              if (pt.status) {
-                text += `- Status: ${pt.status}\n`;
-              }
-
-              text += `\n`;
-            });
-
-            text += `---\n`;
-            text += `[Generated by Stroke]`;
-
-            return text;
-          };
-
-          // Copy sign-out to clipboard
-          const copySignOutToClipboard = async () => {
-            const text = generateSignOutText();
-            try {
-              await navigator.clipboard.writeText(text);
-              showSignOutNotification('Sign-out copied to clipboard');
-              return true;
-            } catch (err) {
-              console.error('Failed to copy:', err);
-              showSignOutNotification('Failed to copy');
-              return false;
-            }
-          };
-
-          // Share sign-out using native share API
-          const shareSignOut = async () => {
-            const text = generateSignOutText();
-            if (navigator.share) {
-              try {
-                await navigator.share({
-                  title: 'Stroke Sign-Out',
-                  text: text
-                });
-                return true;
-              } catch (err) {
-                if (err.name !== 'AbortError') {
-                  // Fallback to copy
-                  return await copySignOutToClipboard();
-                }
-              }
-            } else {
-              // Fallback to copy
-              return await copySignOutToClipboard();
-            }
-          };
-
-          // Show toast notification for sign-out actions
-          const showSignOutNotification = (message) => {
-            setSignOutToast(message);
-            setTimeout(() => setSignOutToast(''), 2500);
-          };
-
-          // Generate single patient sign-out for quick copy
-          const generateSinglePatientSignOut = () => {
-            const entry = createSignOutEntry('Current');
-            let text = '';
-
-            let header = entry.label;
-            if (entry.demographics) {
-              header += ` (${entry.demographics}`;
-              if (entry.vessel) header += `, ${entry.vessel}`;
-              header += `)`;
-            }
-            if (entry.diagnosis) header += `: ${entry.diagnosis}`;
-            text += `${header}\n`;
-
-            let findings = [];
-            if (entry.nihss) findings.push(`NIHSS ${entry.nihss}`);
-            if (entry.aspects) findings.push(`ASPECTS ${entry.aspects}`);
-            if (findings.length > 0) {
-              text += `- Findings: ${findings.join(', ')}\n`;
-            }
-
-            if (entry.treatment) {
-              text += `- Tx: ${entry.treatment}`;
-              if (entry.timeFromLKW) text += ` (${entry.timeFromLKW} from LKW)`;
-              text += `\n`;
-            }
-
-            if (entry.pending && entry.pending.length > 0) {
-              text += `- Pending: ${entry.pending.join(', ')}\n`;
-            }
-
-            if (entry.status) {
-              text += `- Status: ${entry.status}\n`;
-            }
-
-            return text;
           };
 
           const extractTemplateVariables = (text) => {
@@ -4867,13 +4537,6 @@ Clinician Name`;
             }));
           };
 
-          // Persist sign-out patients to localStorage
-          React.useEffect(() => {
-            if (signOutPatients.length > 0) {
-              saveShiftData('signOutPatients', signOutPatients);
-            }
-          }, [signOutPatients]);
-
           // Persist shift patients to localStorage
           React.useEffect(() => {
             if (shiftPatients.length > 0) {
@@ -4933,10 +4596,6 @@ Clinician Name`;
             setShiftPatients([]);
             setCurrentPatientId(null);
             setShowPatientSwitcher(false);
-            setSignOutPatients([]);
-            setShowSignOutModal(false);
-            setShowSignOutManager(false);
-            setSignOutToast('');
             setConsultationType('videoTelestroke');
             setManagementSubTab('ich');
             setFabExpanded(false);
@@ -6322,43 +5981,6 @@ IMAGING:
 NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
           };
 
-          const generateSignOut = () => {
-            const timeFromLKW = calculateTimeFromLKW();
-            const timeElapsed = timeFromLKW ? `${timeFromLKW.hours}h ${timeFromLKW.minutes}m` : 'unknown';
-            const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '__';
-            const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : '__';
-            const sexDisplay = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '__';
-            const nihssDisplay = telestrokeNote.nihss || nihssScore || '__';
-
-            return `STROKE SIGN-OUT:
-
-Patient: ${telestrokeNote.age || '__'}yo ${sexDisplay}
-PMH: ${telestrokeNote.pmh || '__'}
-
-PRESENTATION: ${telestrokeNote.symptoms || '__'} starting ${lkw} on ${lkwDate} (${timeElapsed} ago)
-
-NIHSS: ${nihssDisplay}
-ASPECTS: ${aspectsScore || '__'}
-
-IMAGING:
-- CT: ${telestrokeNote.ctResults || 'pending'}
-- CTA: ${telestrokeNote.ctaResults || 'pending'}
-- CTP: ${telestrokeNote.ctpResults || 'pending'}
-
-TREATMENT:
-${telestrokeNote.tnkRecommended ? 'TNK: Recommended' : 'TNK: Not Recommended'}
-${telestrokeNote.evtRecommended ? 'EVT: Recommended' : 'EVT: Not Recommended'}
-
-TO DO:
-- Monitor BP goal <180/105
-- Repeat NIHSS q4h
-- Swallow eval when awake
-- MRI brain
-- Carotid ultrasound
-- Echo
-- Start ASA/statin after 24h if tPA given`;
-          };
-
           // Keyboard shortcuts
           React.useEffect(() => {
             const handleKeyDown = (e) => {
@@ -6873,193 +6495,6 @@ TO DO:
                   ))}
                 </div>
               )}
-
-              {/* ============================================ */}
-              {/* SHIFT CASE LIST - Always visible at top     */}
-              {/* Shows all cases with one-click sign-out     */}
-              {/* ============================================ */}
-              <div className="mb-4 bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-lg shadow-sm overflow-hidden">
-                {/* Case List Header */}
-                <div className="flex items-center justify-between px-3 py-2 bg-slate-100 border-b border-slate-200">
-                  <div className="flex items-center gap-2">
-                    <i data-lucide="clipboard-list" className="w-4 h-4 text-slate-600"></i>
-                    <span className="font-semibold text-sm text-slate-700">Shift Cases</span>
-                    {signOutPatients.length > 0 && (
-                      <span className="px-2 py-0.5 text-xs bg-blue-600 text-white rounded-full font-medium">
-                        {signOutPatients.length}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {signOutPatients.length > 0 && (
-                      <>
-                        <button
-                          onClick={copySignOutToClipboard}
-                          className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 font-medium transition-colors"
-                          title="Copy all cases to clipboard"
-                        >
-                          <i data-lucide="copy" className="w-3.5 h-3.5"></i>
-                          Copy All
-                        </button>
-                        <button
-                          onClick={() => {
-                            const text = generateSignOutText();
-                            const subject = encodeURIComponent('Stroke Sign-Out');
-                            const body = encodeURIComponent(text);
-                            window.location.href = `mailto:?subject=${subject}&body=${body}`;
-                          }}
-                          className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium transition-colors"
-                          title="Email all cases"
-                        >
-                          <i data-lucide="mail" className="w-3.5 h-3.5"></i>
-                          Email
-                        </button>
-                        <button
-                          onClick={shareSignOut}
-                          className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors"
-                          title="Share via text/message"
-                        >
-                          <i data-lucide="message-circle" className="w-3.5 h-3.5"></i>
-                          Text
-                        </button>
-                        <button
-                          onClick={() => {
-                            if (confirm(`Clear all ${signOutPatients.length} cases? This cannot be undone.`)) {
-                              clearAllSignOuts();
-                              showSignOutNotification('All cases cleared');
-                            }
-                          }}
-                          className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-red-100 border border-red-300 text-red-700 rounded-lg hover:bg-red-200 font-medium transition-colors"
-                          title="Clear all saved cases"
-                        >
-                          <i data-lucide="trash-2" className="w-3.5 h-3.5"></i>
-                          Clear
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                {/* Case List - Horizontal scrollable */}
-                <div className="p-3">
-                  {signOutPatients.length === 0 ? (
-                    <div className="text-center py-4 text-slate-500">
-                      <p className="text-sm">No cases saved yet</p>
-                      <p className="text-xs mt-1">Create an encounter and enter data below</p>
-                    </div>
-                  ) : (
-                    <div className="flex flex-wrap gap-2">
-                      {signOutPatients.map((pt, idx) => (
-                        <div
-                          key={pt.id}
-                          className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors cursor-pointer group"
-                          onClick={() => {
-                            // Find matching shift patient and switch to it
-                            const matchingPatient = shiftPatients.find(sp =>
-                              sp.summary.shortLabel === pt.label ||
-                              (sp.data.telestrokeNote.age === pt.demographics?.match(/\d+/)?.[0])
-                            );
-                            if (matchingPatient) {
-                              switchToPatient(matchingPatient.id);
-                            }
-                          }}
-                          title="Click to view this case"
-                        >
-                          <div className="flex-1 min-w-0">
-                            <div className="font-medium text-sm text-slate-900">
-                              {pt.label}
-                              {pt.demographics && <span className="text-slate-500 ml-1">({pt.demographics})</span>}
-                            </div>
-                            <div className="text-xs text-slate-600 truncate max-w-[200px]">
-                              {pt.nihss && `NIHSS ${pt.nihss}`}
-                              {pt.nihss && pt.vessel && ' • '}
-                              {pt.vessel}
-                              {(pt.nihss || pt.vessel) && pt.treatment && ' • '}
-                              {pt.treatment}
-                            </div>
-                          </div>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              removeSignOutEntry(pt.id);
-                            }}
-                            className="p-1 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded opacity-0 group-hover:opacity-100 transition-opacity"
-                            title="Remove from case list"
-                          >
-                            <i data-lucide="x" className="w-3.5 h-3.5"></i>
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Current Patient Actions */}
-                  <div className="mt-3 pt-3 border-t border-slate-200 flex flex-wrap items-center gap-2">
-                    {telestrokeNote.age ? (
-                      <>
-                        <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-100 border border-blue-200 rounded-lg text-sm">
-                          <span className="text-blue-700 font-medium">Current:</span>
-                          <span className="text-blue-900 font-semibold">
-                            {telestrokeNote.age}{telestrokeNote.sex || '?'}
-                            {(telestrokeNote.vesselOcclusion || []).length > 0 && ` ${telestrokeNote.vesselOcclusion[0]}`}
-                          </span>
-                          <span className="text-blue-600">
-                            {telestrokeNote.nihss || nihssScore ? `NIHSS ${telestrokeNote.nihss || nihssScore}` : ''}
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => {
-                            const label = prompt('Enter case nickname (e.g., "MCA patient", "TIA obs"):', generateSignOutPatientId());
-                            if (label !== null) {
-                              addToSignOut(label || generateSignOutPatientId());
-                            }
-                          }}
-                          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-medium transition-colors"
-                        >
-                          <i data-lucide="save" className="w-4 h-4"></i>
-                          Save Case
-                        </button>
-                        <button
-                          onClick={startNewPatient}
-                          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-slate-600 text-white rounded-lg hover:bg-slate-700 font-medium transition-colors"
-                        >
-                          <i data-lucide="user-plus" className="w-4 h-4"></i>
-                          New Patient
-                        </button>
-                      </>
-                    ) : (
-                      signOutPatients.length > 0 && (
-                        <div className="flex items-center gap-3">
-                          <button
-                            onClick={() => {
-                              if (confirm('Clear all saved cases?')) {
-                                clearAllSignOuts();
-                              }
-                            }}
-                            className="text-xs text-red-600 hover:underline"
-                          >
-                            Clear All
-                          </button>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </div>
-
-                {/* Expandable Sign-Out Preview */}
-                {signOutPatients.length > 0 && (
-                  <details className="border-t border-slate-200">
-                    <summary className="px-3 py-2 text-xs text-slate-600 cursor-pointer hover:bg-slate-50 flex items-center gap-2">
-                      <i data-lucide="eye" className="w-3 h-3"></i>
-                      Preview sign-out text
-                    </summary>
-                    <pre className="p-3 bg-white text-xs font-mono whitespace-pre-wrap max-h-48 overflow-y-auto border-t border-slate-100">
-                      {generateSignOutText()}
-                    </pre>
-                  </details>
-                )}
-              </div>
-
 
               {/* Navigation Tabs - Desktop Only - 3 Tabs */}
               <div className="mb-4 sm:mb-6 hidden md:block app-nav" role="navigation" aria-label="Main navigation">
@@ -10071,20 +9506,6 @@ TO DO:
                                 <i data-lucide={copiedText === 'encounter-note' ? 'check' : 'copy'} className="w-4 h-4"></i>
                                 {copiedText === 'encounter-note' ? 'Copied!' : 'Copy Note'}
                               </button>
-                              {/* Copy Sign-Out Button */}
-                              <button
-                                onClick={() => {
-                                  const signOutText = generateSinglePatientSignOut();
-                                  navigator.clipboard.writeText(signOutText);
-                                  setCopiedText('sign-out');
-                                  setTimeout(() => setCopiedText(''), 2000);
-                                }}
-                                className="flex items-center gap-2 px-3 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 transition-colors"
-                                title="Copy PHI-free sign-out summary for this patient"
-                              >
-                                <i data-lucide={copiedText === 'sign-out' ? 'check' : 'send'} className="w-4 h-4"></i>
-                                {copiedText === 'sign-out' ? 'Copied!' : 'Copy Sign-Out'}
-                              </button>
                             </div>
                           </div>
 
@@ -10582,18 +10003,6 @@ Clinician Name`);
                                 >
                                   <span className="font-medium text-teal-700">Admission Orders</span>
                                   <p className="text-gray-500 truncate">Standard stroke admission order set</p>
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    const text = generateSignOut();
-                                    navigator.clipboard.writeText(text);
-                                    setCopiedText('Sign-out copied!');
-                                    setTimeout(() => setCopiedText(''), 2000);
-                                  }}
-                                  className="w-full p-2 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded text-left text-xs transition-colors"
-                                >
-                                  <span className="font-medium text-teal-700">Stroke Sign-Out</span>
-                                  <p className="text-gray-500 truncate">Concise handoff summary</p>
                                 </button>
                               </div>
 
@@ -13509,16 +12918,6 @@ Clinician Name`);
                 </div>
               )}
             </div>
-
-            {/* Sign-Out Toast Notification */}
-            {signOutToast && (
-              <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-50 animate-fadeIn">
-                <div className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
-                  <i data-lucide="check-circle" className="w-4 h-4 text-green-400"></i>
-                  <span className="text-sm font-medium">{signOutToast}</span>
-                </div>
-              </div>
-            )}
 
             {/* Mobile Bottom Navigation - Only visible on small screens - 3 Tabs */}
             <div id="mobile-bottom-nav" className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 shadow-lg z-50 pb-safe">
