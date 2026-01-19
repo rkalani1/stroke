@@ -6452,11 +6452,27 @@ TO DO:
 
               {/* Header */}
               <div className="mb-4 sm:mb-6 app-header" role="banner">
-                <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
-                  <div className="flex-1">
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
+                  <div className="flex-1 w-full sm:w-auto">
                     <h1 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-1 text-center sm:text-left">
                       Stroke
                     </h1>
+                    {topLinks.length > 0 && (
+                      <div className="mt-2 flex flex-wrap items-center gap-2 justify-center sm:justify-start">
+                        {topLinks.map((link) => (
+                          <a
+                            key={link.url}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
+                          >
+                            <i data-lucide="external-link" className="w-4 h-4"></i>
+                            <span>{link.label}</span>
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <div className="flex w-full flex-col items-center justify-center gap-2 sm:w-auto sm:items-end sm:justify-end">
                     <div className="relative w-full sm:w-auto">
@@ -6525,19 +6541,6 @@ TO DO:
                           <span className="hidden lg:inline">New Patient</span>
                         </button>
                       )}
-
-                      {topLinks.map((link) => (
-                        <a
-                          key={link.url}
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
-                        >
-                          <i data-lucide="external-link" className="w-4 h-4"></i>
-                          <span>{link.label}</span>
-                        </a>
-                      ))}
 
                       <div className="hidden sm:flex items-center gap-2">
                         {showDocumentActions && (
