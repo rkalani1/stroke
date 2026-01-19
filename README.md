@@ -5,7 +5,7 @@ A client-side clinical decision support toolkit for stroke management with encou
 ## V2 Features
 - Shift case list at the top of Encounter.
 - Pinned references with personal notes, plus global search across content.
-- Clinical question tracker, teaching case builder, and question-of-the-day.
+- Clinical question tracker.
 - Mobile bottom navigation and sticky action bar per tab.
 
 ## Quick Usage
@@ -34,4 +34,3 @@ A client-side clinical decision support toolkit for stroke management with encou
 - `#/tools/clinic`
 - `#/tools/map`
 - `#/questions`
-- `#/teaching`

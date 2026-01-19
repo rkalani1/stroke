@@ -1251,8 +1251,7 @@
           'management',
           'trials',
           'tools',
-          'questions',
-          'teaching'
+          'questions'
         ];
 
         const parseHashRoute = (hash) => {
@@ -1286,8 +1285,6 @@
               };
             case 'questions':
               return { tab: 'questions', tool: null };
-            case 'teaching':
-              return { tab: 'teaching', tool: null, sub };
             default:
               return null;
           }
@@ -1317,8 +1314,6 @@
               return '#/tools';
             case 'questions':
               return '#/questions';
-            case 'teaching':
-              return '#/teaching';
             default:
               return '#/encounter';
           }
@@ -5651,21 +5646,6 @@ Clinician Name`;
               }
             });
 
-            teachingCases.forEach((item) => {
-              const haystack = [item.title, item.vignetteText, ...(item.keyPoints || [])].join(' ').toLowerCase();
-              if (haystack.includes(lowerQuery)) {
-                results.push({
-                  type: 'Teaching',
-                  title: item.title,
-                  description: 'Teaching case',
-                  action: () => {
-                    setSearchHighlight(`teach-${item.id}`);
-                    navigateTo('teaching', { clearSearch: true });
-                  }
-                });
-              }
-            });
-
             setSearchResults(results.slice(0, 10)); // Limit to 10 results
           };
 
@@ -6322,9 +6302,6 @@ Clinician Name`;
                     'ich';
                   setManagementSubTab(resolvedSubTab);
                 }
-                if (parsed.tab === 'teaching' && parsed.sub) {
-                  setFeaturedTeachingCase(parsed.sub);
-                }
                 return;
               }
               const savedTab = appData.uiState.lastActiveTab || getKey('activeTab', null);
@@ -6366,13 +6343,11 @@ Clinician Name`;
           // Keep hash in sync with the active view
           useEffect(() => {
             if (!routeReady) return;
-            const nextHash = activeTab === 'teaching' && featuredTeachingId
-              ? `#/teaching/${featuredTeachingId}`
-              : buildHashRoute(activeTab, activeToolsView, managementSubTab);
+            const nextHash = buildHashRoute(activeTab, activeToolsView, managementSubTab);
             if (window.location.hash !== nextHash) {
               window.location.hash = nextHash;
             }
-          }, [activeTab, activeToolsView, routeReady, featuredTeachingId, managementSubTab]);
+          }, [activeTab, activeToolsView, routeReady, managementSubTab]);
 
           useEffect(() => {
             if (activeToolsView) {
@@ -6616,14 +6591,6 @@ TO DO:
                   { id: 'new-question', label: 'New Question', onClick: () => document.getElementById('question-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) },
                   { id: 'export-questions', label: 'Export', onClick: exportQuestionsJson }
                 ];
-              case 'teaching':
-                return [
-                  { id: 'new-teaching', label: 'New Case', onClick: () => document.getElementById('teaching-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) },
-                  { id: 'export-teaching', label: 'Export PDF', onClick: () => {
-                    const featured = teachingCases.find((item) => item.id === featuredTeachingId) || teachingCases[0];
-                    openTeachingCasePrintView(featured);
-                  } }
-                ];
               case 'management':
                 if (managementSubTab !== 'references') return [];
                 return [
@@ -6641,8 +6608,7 @@ TO DO:
             { id: 'tools', name: 'Tools', icon: 'wrench' }
           ];
           const mobileMoreTabs = [
-            { id: 'questions', name: 'Questions', icon: 'help-circle' },
-            { id: 'teaching', name: 'Teaching', icon: 'graduation-cap' }
+            { id: 'questions', name: 'Questions', icon: 'help-circle' }
           ];
 
           return (
@@ -7234,8 +7200,7 @@ TO DO:
                     { id: 'management', name: 'Management', icon: 'layers' },
                     { id: 'trials', name: 'Trials', icon: 'file-text' },
                     { id: 'tools', name: 'Tools', icon: 'wrench' },
-                    { id: 'questions', name: 'Questions', icon: 'help-circle' },
-                    { id: 'teaching', name: 'Teaching', icon: 'graduation-cap' }
+                    { id: 'questions', name: 'Questions', icon: 'help-circle' }
                   ].map(tab => {
                     const isActive = activeTab === tab.id;
                     return (
@@ -7470,144 +7435,6 @@ TO DO:
                           </div>
                         );
                       })}
-                    </div>
-                  </div>
-                )}
-
-                {/* Teaching */}
-                {activeTab === 'teaching' && (
-                  <div className="space-y-4">
-                    <div id="teaching-form" className="bg-white border border-gray-200 rounded-2xl p-4 space-y-3">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <h2 className="text-xl font-semibold text-gray-900">Teaching Case Builder</h2>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <button
-                            onClick={createTeachingFromEncounter}
-                            className="px-3 py-1.5 text-xs bg-blue-600 text-white rounded-lg"
-                          >
-                            From Encounter
-                          </button>
-                        </div>
-                      </div>
-                      <input
-                        type="text"
-                        value={teachingDraft.title}
-                        onChange={(e) => setTeachingDraft((prev) => ({ ...prev, title: e.target.value }))}
-                        placeholder="Case title"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      />
-                      <textarea
-                        value={teachingDraft.vignetteText}
-                        onChange={(e) => setTeachingDraft((prev) => ({ ...prev, vignetteText: e.target.value }))}
-                        placeholder="Vignette (de-identified)"
-                        rows="4"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      />
-                      <textarea
-                        value={teachingDraft.keyPointsText}
-                        onChange={(e) => setTeachingDraft((prev) => ({ ...prev, keyPointsText: e.target.value }))}
-                        placeholder="Key points (one per line)"
-                        rows="3"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      />
-                      <div className="border border-gray-200 rounded-lg p-3 space-y-2">
-                        <h4 className="text-sm font-semibold text-gray-700">Optional MCQ</h4>
-                        <input
-                          type="text"
-                          value={teachingDraft.questionPrompt}
-                          onChange={(e) => setTeachingDraft((prev) => ({ ...prev, questionPrompt: e.target.value }))}
-                          placeholder="Question prompt"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                        />
-                        <textarea
-                          value={teachingDraft.questionOptionsText}
-                          onChange={(e) => setTeachingDraft((prev) => ({ ...prev, questionOptionsText: e.target.value }))}
-                          placeholder="Options (one per line)"
-                          rows="3"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                        />
-                        <input
-                          type="number"
-                          min="0"
-                          value={teachingDraft.questionCorrectIndex}
-                          onChange={(e) => setTeachingDraft((prev) => ({ ...prev, questionCorrectIndex: e.target.value }))}
-                          placeholder="Correct option index (0-based)"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                        />
-                        <textarea
-                          value={teachingDraft.questionExplanation}
-                          onChange={(e) => setTeachingDraft((prev) => ({ ...prev, questionExplanation: e.target.value }))}
-                          placeholder="Explanation"
-                          rows="2"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                        />
-                      </div>
-                      <button
-                        onClick={saveTeachingDraft}
-                        className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-sm font-semibold"
-                      >
-                        Save teaching case
-                      </button>
-                      <p className="text-xs text-gray-500">Use Print / Save PDF from the case card to export.</p>
-                    </div>
-
-                    <div className="bg-white border border-gray-200 rounded-2xl p-4 space-y-3">
-                      <h3 className="text-lg font-semibold text-gray-900">Question of the Day</h3>
-                      {featuredTeachingId ? (
-                        (() => {
-                          const featured = teachingCases.find((item) => item.id === featuredTeachingId);
-                          if (!featured) return <p className="text-sm text-gray-500">No featured case selected.</p>;
-                          return (
-                            <div className="border border-gray-200 rounded-lg p-3">
-                              <div className="text-sm font-semibold text-gray-900">{featured.title}</div>
-                              <pre className="mt-2 text-xs whitespace-pre-wrap">{featured.vignetteText}</pre>
-                              <button
-                                onClick={() => openTeachingCasePrintView(featured)}
-                                className="mt-3 px-3 py-1.5 text-xs border border-gray-300 rounded-lg"
-                              >
-                                Print / Save PDF
-                              </button>
-                            </div>
-                          );
-                        })()
-                      ) : (
-                        <p className="text-sm text-gray-500">Select a teaching case to feature.</p>
-                      )}
-                    </div>
-
-                    <div className="bg-white border border-gray-200 rounded-2xl p-4 space-y-3">
-                      <h3 className="text-lg font-semibold text-gray-900">Teaching Cases</h3>
-                      {teachingCases.length === 0 && (
-                        <p className="text-sm text-gray-500">No teaching cases yet.</p>
-                      )}
-                      {teachingCases.map((item) => (
-                        <div key={item.id} id={`teach-${item.id}`} className="border border-gray-200 rounded-lg p-3">
-                          <div className="flex flex-wrap items-center justify-between gap-2">
-                            <div className="text-sm font-semibold text-gray-900">{item.title}</div>
-                            <div className="flex flex-wrap items-center gap-2">
-                              <button
-                                onClick={() => setFeaturedTeachingCase(item.id)}
-                                className="px-2 py-1 text-xs border border-gray-200 rounded"
-                              >
-                                Feature
-                              </button>
-                              <button
-                                onClick={() => openTeachingCasePrintView(item)}
-                                className="px-2 py-1 text-xs border border-gray-200 rounded"
-                              >
-                                Print
-                              </button>
-                              <button
-                                onClick={() => deleteTeachingCase(item.id)}
-                                className="px-2 py-1 text-xs border border-red-200 text-red-600 rounded"
-                              >
-                                Delete
-                              </button>
-                            </div>
-                          </div>
-                          <pre className="mt-2 text-xs whitespace-pre-wrap">{item.vignetteText}</pre>
-                        </div>
-                      ))}
                     </div>
                   </div>
                 )}
