@@ -1727,6 +1727,23 @@ Clinician Name`;
             ivh: false,
             infratentorial: false
           }));
+          const [ichVolumeParams, setIchVolumeParams] = useState({ a: '', b: '', c: '' });
+
+          useEffect(() => {
+            const { a, b, c } = ichVolumeParams;
+            if (a && b && c) {
+              const vol = (parseFloat(a) * parseFloat(b) * parseFloat(c)) / 2;
+              if (!isNaN(vol)) {
+                setIchScoreItems(prev => {
+                  const isHigh = vol >= 30;
+                  if (prev.volume30 !== isHigh) {
+                    return { ...prev, volume30: isHigh };
+                  }
+                  return prev;
+                });
+              }
+            }
+          }, [ichVolumeParams]);
           const [abcd2Items, setAbcd2Items] = useState(loadFromStorage('abcd2Items', {
             age60: false,
             bp: false,
@@ -11178,6 +11195,49 @@ Clinician Name`);
                           </label>
                         </div>
                         <div className="space-y-2">
+                          <div className="bg-white p-3 rounded border border-red-100 mb-2">
+                            <p className="text-xs font-semibold text-gray-500 mb-2">Visual ABC/2 Volume Calculator</p>
+                            <div className="grid grid-cols-3 gap-2 mb-2">
+                              <div>
+                                <label className="text-xs text-gray-400 block mb-1">A (cm)</label>
+                                <input
+                                  type="number"
+                                  className="w-full p-1 text-sm border rounded focus:ring-1 focus:ring-red-500 outline-none"
+                                  placeholder="0.0"
+                                  value={ichVolumeParams.a}
+                                  onChange={(e) => setIchVolumeParams({...ichVolumeParams, a: e.target.value})}
+                                />
+                              </div>
+                              <div>
+                                <label className="text-xs text-gray-400 block mb-1">B (cm)</label>
+                                <input
+                                  type="number"
+                                  className="w-full p-1 text-sm border rounded focus:ring-1 focus:ring-red-500 outline-none"
+                                  placeholder="0.0"
+                                  value={ichVolumeParams.b}
+                                  onChange={(e) => setIchVolumeParams({...ichVolumeParams, b: e.target.value})}
+                                />
+                              </div>
+                              <div>
+                                <label className="text-xs text-gray-400 block mb-1">C (cm)</label>
+                                <input
+                                  type="number"
+                                  className="w-full p-1 text-sm border rounded focus:ring-1 focus:ring-red-500 outline-none"
+                                  placeholder="0.0"
+                                  value={ichVolumeParams.c}
+                                  onChange={(e) => setIchVolumeParams({...ichVolumeParams, c: e.target.value})}
+                                />
+                              </div>
+                            </div>
+                            {(ichVolumeParams.a && ichVolumeParams.b && ichVolumeParams.c) && (
+                              <div className="flex justify-between items-center text-sm border-t border-red-50 pt-2 mt-1">
+                                <span className="text-gray-500 text-xs">Calculated Volume:</span>
+                                <span className="font-bold text-red-600">
+                                  {((parseFloat(ichVolumeParams.a) * parseFloat(ichVolumeParams.b) * parseFloat(ichVolumeParams.c)) / 2).toFixed(1)} cc
+                                </span>
+                              </div>
+                            )}
+                          </div>
                           <label className="flex items-center space-x-2">
                             <input 
                               type="checkbox" 
