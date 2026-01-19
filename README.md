@@ -3,14 +3,14 @@
 A client-side clinical decision support toolkit for stroke management with encounter workflows, calculators, protocols, trials, and evidence references.
 
 ## V2 Features
-- Shift case list at the top of Encounter plus the shift taskboard.
+- Shift case list at the top of Encounter.
 - Pinned references with personal notes, plus global search across content.
 - Clinical question tracker, teaching case builder, and question-of-the-day.
 - Mobile bottom navigation and sticky action bar per tab.
 
 ## Quick Usage
 - Use the top search (press `/`) to jump to management tools, references, and more.
-- Shift cases are saved in the top bar; Shift tab is the rounding board.
+- Shift cases are saved in the top bar.
 
 ## Privacy & Safety
 - Local-only: entered data stays in your browser and is not transmitted by the app.
@@ -33,6 +33,5 @@ A client-side clinical decision support toolkit for stroke management with encou
 - `#/tools`
 - `#/tools/clinic`
 - `#/tools/map`
-- `#/shift`
 - `#/questions`
 - `#/teaching`
