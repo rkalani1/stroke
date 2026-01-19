@@ -6390,8 +6390,8 @@ TO DO:
           }, []);
 
           const topLinks = [
-            { label: 'Clinic Questions / Follow-up Checklist', url: 'https://rkalani1.github.io/stroke-clinic-q/' },
-            { label: 'Telestroke Coverage / Regional Map', url: 'https://rkalani1.github.io/telestroke-expansion-map/' }
+            { label: 'Clinic Checklist', url: 'https://rkalani1.github.io/stroke-clinic-q/' },
+            { label: 'Regional Hospitals', url: 'https://rkalani1.github.io/telestroke-expansion-map/' }
           ];
           const encounterQuickLinks = [
             { label: 'Pulsara', url: 'https://us-app.pulsara.com/user/login' },
@@ -6526,15 +6526,18 @@ TO DO:
                         </button>
                       )}
 
-                      <button
-                        onClick={handleClearLocalData}
-                        className="flex items-center gap-2 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
-                        aria-label="Clear local data"
-                        title="Clear locally stored app data"
-                      >
-                        <i data-lucide="trash-2" className="w-4 h-4"></i>
-                        <span>Clear local data</span>
-                      </button>
+                      {topLinks.map((link) => (
+                        <a
+                          key={link.url}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
+                        >
+                          <i data-lucide="external-link" className="w-4 h-4"></i>
+                          <span>{link.label}</span>
+                        </a>
+                      ))}
 
                       <div className="hidden sm:flex items-center gap-2">
                         {showDocumentActions && (
@@ -6568,6 +6571,16 @@ TO DO:
                           <i data-lucide={darkMode ? "sun" : "moon"} className="w-5 h-5"></i>
                         </button>
                       </div>
+
+                      <button
+                        onClick={handleClearLocalData}
+                        className="flex items-center gap-2 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
+                        aria-label="Clear local data"
+                        title="Clear locally stored app data"
+                      >
+                        <i data-lucide="trash-2" className="w-4 h-4"></i>
+                        <span>Clear local data</span>
+                      </button>
 
                       <button
                         onClick={() => setActionsOpen((prev) => !prev)}
@@ -6623,25 +6636,6 @@ TO DO:
                     )}
                   </div>
                 </div>
-
-                {topLinks.length > 0 && (
-                  <div className="mt-2 bg-indigo-50 border border-indigo-200 rounded-lg p-3">
-                    <div className="flex flex-wrap items-center gap-2">
-                      {topLinks.map((link) => (
-                        <a
-                          key={link.url}
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-3 py-2 bg-white border border-indigo-200 rounded-lg text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors"
-                        >
-                          <i data-lucide="external-link" className="w-4 h-4"></i>
-                          <span>{link.label}</span>
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
 
                 {notice && (
                   <div className={`mt-2 p-3 rounded-lg border text-sm flex items-center gap-2 ${
