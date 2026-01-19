@@ -6457,16 +6457,6 @@ TO DO:
               return false;
             }
           });
-          const actionBarActions = (() => {
-            switch (activeTab) {
-              case 'encounter':
-                return [
-                  { id: 'copy-note', label: 'Copy Note', onClick: () => copyToClipboard(generateTelestrokeNote(), 'Note') }
-                ];
-              default:
-                return [];
-            }
-          })();
           const mobilePrimaryTabs = [
             { id: 'encounter', name: 'Encounter', icon: 'activity' },
             { id: 'management', name: 'Manage', icon: 'layers' },
@@ -13397,26 +13387,6 @@ Clinician Name`);
                 {/* End Clinical Trials Tab */}
 
               </div>
-
-              {actionBarActions.length > 0 && (
-                <div
-                  id="action-bar"
-                  className="fixed left-0 right-0 md:sticky md:top-4 z-40 px-4 action-bar-shadow"
-                  style={{ bottom: 'calc(var(--mobile-nav-offset, 0px) + 0.5rem)' }}
-                >
-                  <div className="max-w-5xl mx-auto bg-white border border-gray-200 rounded-2xl px-3 py-2 flex flex-wrap items-center justify-center gap-2">
-                    {actionBarActions.map((action) => (
-                      <button
-                        key={action.id}
-                        onClick={action.onClick}
-                        className="px-3 py-2 text-xs font-semibold rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100"
-                      >
-                        {action.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
 
             </div>
 
