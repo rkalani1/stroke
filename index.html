@@ -1714,7 +1714,6 @@ Clinician Name`;
             tagsText: '',
             urgency: 'med'
           });
-          const [feedbackDraft, setFeedbackDraft] = useState({ message: '', includeCaseContext: false });
           const [questionDrafts, setQuestionDrafts] = useState({});
           const [teachingDraft, setTeachingDraft] = useState({
             title: '',
@@ -5022,63 +5021,6 @@ Clinician Name`;
             ];
           };
 
-          const buildFeedbackPayload = () => {
-            const message = feedbackDraft.message ? feedbackDraft.message.trim() : '';
-            const lines = [
-              `Timestamp: ${new Date().toLocaleString()}`,
-              `App version: ${APP_VERSION}`,
-              `Route: ${window.location.hash || '#/encounter'}`,
-              `Consultation type: ${consultationType}`,
-              `Role preset: ${settings.preferredRole || 'consult'}`,
-              `User agent: ${navigator.userAgent}`
-            ];
-
-            if (feedbackDraft.includeCaseContext) {
-              const fields = getHandoffSummaryFields();
-              lines.push('');
-              lines.push('Case context (no identifiers)');
-              lines.push(`Diagnosis: ${fields.diagnosis}`);
-              lines.push(`NIHSS: ${fields.nihss}`);
-              lines.push(`${fields.onsetLabel}: ${fields.onsetTime}`);
-              lines.push(`TNK: ${telestrokeNote.tnkRecommended ? 'recommended' : 'not recommended'}`);
-              lines.push(`EVT: ${telestrokeNote.evtRecommended ? 'recommended' : 'not recommended'}`);
-            }
-
-            if (message) {
-              return `${message}\n\n---\n${lines.join('\n')}`;
-            }
-            return `Feedback\n\n---\n${lines.join('\n')}`;
-          };
-
-          const buildPatientHandout = () => {
-            const diagnosis = telestrokeNote.diagnosisCategory === 'ich'
-              ? 'brain bleed (hemorrhagic stroke)'
-              : telestrokeNote.diagnosisCategory === 'ischemic'
-                ? 'blocked blood vessel (ischemic stroke)'
-                : 'stroke-like symptoms';
-            const meds = telestrokeNote.medications || 'your medication list';
-            return [
-              'Stroke Education Summary',
-              '',
-              `Today you were evaluated for ${diagnosis}.`,
-              '',
-              'Call 911 immediately if any of these return or worsen:',
-              '- New weakness on one side',
-              '- Trouble speaking or understanding',
-              '- Sudden vision loss',
-              '- Severe headache or confusion',
-              '',
-              'What to do next:',
-              '- Take medications as prescribed',
-              `- Review medications: ${meds}`,
-              '- Follow up with your care team',
-              '',
-              'Questions to ask:',
-              '- What was the final diagnosis?',
-              '- What follow-up tests are needed?',
-              '- When should I return to the ER?'
-            ].join('\n');
-          };
 
           const sanitizeTelestrokeNoteForStorage = (note) => {
             if (shouldPersistFreeText) return note;
@@ -7761,33 +7703,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             Add contact
                           </button>
                         </div>
-                      </div>
-                    </details>
-
-                    <details className="bg-white border border-slate-200 rounded-lg">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
-                        <span>Patient Education Handout</span>
-                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="p-4 space-y-2">
-                        <div className="flex flex-wrap items-center justify-between gap-2">
-                          <p className="text-sm text-slate-600">Copy or print a plain-language summary for the patient/family.</p>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const handout = buildPatientHandout();
-                              navigator.clipboard.writeText(handout);
-                              setCopiedText('patient-handout');
-                              setTimeout(() => setCopiedText(''), 2000);
-                            }}
-                            className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700"
-                          >
-                            {copiedText === 'patient-handout' ? 'Copied!' : 'Copy handout'}
-                          </button>
-                        </div>
-                        <pre className="whitespace-pre-wrap text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-lg p-3">
-                          {buildPatientHandout()}
-                        </pre>
                       </div>
                     </details>
 
@@ -11653,7 +11568,6 @@ Clinician Name`);
                       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
                         <div>
                           <p className="text-xs uppercase tracking-wide text-slate-500 font-semibold">Handoff Summary</p>
-                          <p className="text-sm text-slate-600">Phone-friendly snapshot for rapid sign-out.</p>
                         </div>
                         <button
                           type="button"
@@ -11912,48 +11826,6 @@ Clinician Name`);
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </details>
-
-                    <details id="feedback-section" className="bg-white border border-slate-200 rounded-lg">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
-                        <span>Feedback & ideas</span>
-                        <span className="text-xs text-slate-500">Copy payload</span>
-                      </summary>
-                      <div className="p-4 space-y-3">
-                        <textarea
-                          value={feedbackDraft.message}
-                          onChange={(e) => setFeedbackDraft({ ...feedbackDraft, message: e.target.value })}
-                          rows="4"
-                          placeholder="What's missing, confusing, or slowing you down?"
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
-                        />
-                        <label className="flex items-center gap-2 text-xs text-slate-600">
-                          <input
-                            type="checkbox"
-                            checked={feedbackDraft.includeCaseContext}
-                            onChange={(e) => setFeedbackDraft({ ...feedbackDraft, includeCaseContext: e.target.checked })}
-                            className="w-4 h-4"
-                          />
-                          Include case context (no identifiers)
-                        </label>
-                        <div className="flex flex-wrap gap-2">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const payload = buildFeedbackPayload();
-                              navigator.clipboard.writeText(payload);
-                              setCopiedText('feedback');
-                              setTimeout(() => setCopiedText(''), 2000);
-                            }}
-                            className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700"
-                          >
-                            {copiedText === 'feedback' ? 'Copied!' : 'Copy feedback'}
-                          </button>
-                        </div>
-                        <pre className="whitespace-pre-wrap text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded-lg p-3">
-                          {buildFeedbackPayload()}
-                        </pre>
                       </div>
                     </details>
                   </div>
