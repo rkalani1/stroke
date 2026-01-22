@@ -642,7 +642,8 @@
                 legacySessionKeys: LEGACY_SESSION_KEYS,
                 getStoredValue,
                 setStoredValue,
-                clearAppStorage
+                clearAppStorage,
+                appVersion: APP_VERSION
             };
 
             const storedVersion = getStoredValue('app_version');
@@ -720,6 +721,7 @@
         const { useState, useEffect, useRef } = React;
         const { Calculator, Clock, Brain, AlertTriangle, FileText, CheckCircle, Moon, Sun, Download, Copy, Search, Check, Info } = lucide;
 
+        const APP_VERSION = (window.strokeAppStorage && window.strokeAppStorage.appVersion) || 'unknown';
         const STORAGE_PREFIX = (window.strokeAppStorage && window.strokeAppStorage.prefix) || 'strokeApp:';
         const APP_DATA_KEY = (window.strokeAppStorage && window.strokeAppStorage.appDataKey) || 'stroke.appData.v2';
         const LEGACY_KEYS = (window.strokeAppStorage && window.strokeAppStorage.legacyKeys) || [
