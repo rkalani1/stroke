@@ -107,6 +107,28 @@
             color: var(--text-strong);
         }
 
+        .compact .p-4 { padding: 0.75rem !important; }
+        .compact .p-3 { padding: 0.5rem !important; }
+        .compact .gap-4 { gap: 0.75rem !important; }
+        .compact .gap-3 { gap: 0.5rem !important; }
+        .compact .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.75rem !important; }
+        .compact .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem !important; }
+
+        .lightweight body {
+            background: #f8fafc;
+        }
+        .lightweight .app-shell,
+        .lightweight .app-header,
+        .lightweight .app-nav,
+        .lightweight .tool-card {
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+        }
+        .lightweight * {
+            animation: none !important;
+            transition: none !important;
+        }
+
         .dark body {
             background: radial-gradient(1000px circle at 20% -20%, rgba(30, 58, 138, 0.35), transparent 60%),
                         linear-gradient(160deg, #0f172a 0%, #111827 55%, #0b1120 100%);
@@ -739,6 +761,22 @@
         const LAST_UPDATED_KEY = 'lastUpdated';
         const LEGACY_MIGRATION_KEY = 'legacyMigrated';
         const APP_DATA_SCHEMA_VERSION = 1;
+        const DEFAULT_CONTACTS = [
+          { id: 'stroke-phone', label: 'Stroke Phone', phone: '206-744-6789', note: '' },
+          { id: 'stat-pharmacy', label: 'STAT Pharmacy', phone: '206-744-2241', note: '' },
+          { id: 'rad-hotline', label: 'Stroke RAD Hotline', phone: '206-744-8484', note: 'Weekdays 8-5' },
+          { id: 'angio-suite', label: 'Angio Suite', phone: '206-744-3381', note: '' },
+          { id: 'stat-ct', label: 'STAT CT', phone: '206-744-7290', note: '' }
+        ];
+        const DEFAULT_PINNED_TOOLS = [
+          'patient-info-section',
+          'lkw-section',
+          'nihss-section',
+          'vitals-section',
+          'treatment-decision',
+          'time-metrics-section',
+          'recommendations-section'
+        ];
 
         const parseStoredValue = (raw) => {
           if (raw === null || raw === undefined) return null;
@@ -872,6 +910,10 @@
           }
         };
 
+        const getSpeechRecognition = () => {
+          return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+        };
+
         const copyWithSectionHeaders = async (sections) => {
           const content = sections
             .filter(section => section && section.body && section.body.trim())
@@ -997,12 +1039,20 @@
           }
         ]);
 
-        const getDefaultSettings = () => ({
-          deidMode: true,
-          allowFreeTextStorage: false,
-          ttlHoursOverride: null,
-          preferredRole: 'consult'
-        });
+          const getDefaultSettings = () => ({
+            deidMode: true,
+            allowFreeTextStorage: false,
+            ttlHoursOverride: null,
+            preferredRole: 'consult',
+            defaultConsultationType: 'videoTelestroke',
+            compactMode: false,
+            lightweightMode: false,
+            tabletSplit: false,
+            quickLinks: [],
+            quickNote: '',
+            contacts: DEFAULT_CONTACTS,
+            pinnedTools: DEFAULT_PINNED_TOOLS
+          });
 
         const getDefaultAppData = () => ({
           schemaVersion: APP_DATA_SCHEMA_VERSION,
@@ -1341,6 +1391,8 @@ Clinician Name`;
             lkwDate: new Date().toISOString().split('T')[0],
             lkwTime: new Date().toTimeString().slice(0, 5),
             lkwUnknown: false,
+            discoveryDate: '',
+            discoveryTime: '',
             age: '',
             sex: 'M',
             affectedSide: '',
@@ -1421,6 +1473,20 @@ Clinician Name`;
             admitLocation: '',
             recommendationsText: '',
             transferAccepted: false,
+            transferRationale: '',
+            transferChecklist: {
+              imagingShared: false,
+              transferCenterCalled: false,
+              acceptingPhysicianNotified: false,
+              transportArranged: false,
+              etaConfirmed: false,
+              bpGoalsCommunicated: false
+            },
+            transferImagingShareMethod: '',
+            transferImagingShareLink: '',
+            transportMode: '',
+            transportEta: '',
+            transportNotes: '',
             disposition: '',
             doorTime: '',
             needleTime: '',
@@ -1446,6 +1512,7 @@ Clinician Name`;
             },
             tnkContraindicationReviewed: false,
             tnkContraindicationReviewTime: '',
+            decisionLog: [],
             recommendations: {
               neuroChecks: false,
               noAntithrombotics: false,
@@ -1525,10 +1592,17 @@ Clinician Name`;
           const [activeTab, setActiveTab] = useState(initialActiveTab);
           const [routeReady, setRouteReady] = useState(false);
           const [notice, setNotice] = useState(null);
+          const [clearUndo, setClearUndo] = useState(null);
           const [storageExpired, setStorageExpired] = useState(INITIAL_STORAGE_EXPIRED);
           const [actionsOpen, setActionsOpen] = useState(false);
           const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
-          const [caseSummaryCollapsed, setCaseSummaryCollapsed] = useState(() => window.innerWidth < 640);
+          const [caseSummaryCollapsed, setCaseSummaryCollapsed] = useState(() => {
+            const saved = getKey('caseSummaryCollapsed', null);
+            if (saved !== null && saved !== undefined) return saved === true;
+            return window.innerWidth < 640;
+          });
+          const [showAdvanced, setShowAdvanced] = useState(() => getKey('showAdvanced', false) === true);
+          const [dictationState, setDictationState] = useState({ activeField: null, supported: false, error: '' });
           const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null });
           const [configLoaded, setConfigLoaded] = useState(false);
           const [ttlHours, setTtlHours] = useState(settings.ttlHoursOverride || DEFAULT_TTL_HOURS);
@@ -1596,7 +1670,7 @@ Clinician Name`;
           // ============================================
           // CONSULTATION TYPE: Telephone, Video Telestroke
           // ============================================
-          const [consultationType, setConsultationType] = useState(loadFromStorage('consultationType', 'videoTelestroke'));
+          const [consultationType, setConsultationType] = useState(loadFromStorage('consultationType', settings.defaultConsultationType || 'videoTelestroke'));
 
           const [managementSubTab, setManagementSubTab] = useState(initialManagementSubTab);
 
@@ -1638,6 +1712,7 @@ Clinician Name`;
             tagsText: '',
             urgency: 'med'
           });
+          const [feedbackDraft, setFeedbackDraft] = useState({ message: '', includeCaseContext: false });
           const [questionDrafts, setQuestionDrafts] = useState({});
           const [teachingDraft, setTeachingDraft] = useState({
             title: '',
@@ -1669,6 +1744,15 @@ Clinician Name`;
           const macroImportRef = useRef(null);
           const backupImportRef = useRef(null);
           const caseLogImportRef = useRef(null);
+          const dictationRef = useRef(null);
+          const decisionStateRef = useRef({
+            tnkRecommended: false,
+            evtRecommended: false,
+            transferAccepted: false,
+            tnkContraindicationReviewed: false,
+            tnkConsentDiscussed: false,
+            tnkAdminTime: ''
+          });
           const [showSmartPhrases, setShowSmartPhrases] = useState(false);
 
           const [gcsItems, setGcsItems] = useState(loadFromStorage('gcsItems', {
@@ -3431,7 +3515,7 @@ Clinician Name`;
               const systolic = parseInt(bpMatch[1]);
               const diastolic = parseInt(bpMatch[2]);
               if (systolic > 185 || diastolic > 110) {
-                alerts.push({ severity: 'warning', label: 'Elevated BP', message: `${systolic}/${diastolic} exceeds 185/110 - Must lower before tPA/TNK`, field: 'presentingBP' });
+                alerts.push({ severity: 'warning', label: 'Elevated BP', message: `${systolic}/${diastolic} exceeds 185/110 - Must lower before TNK`, field: 'presentingBP' });
               }
             }
 
@@ -3532,6 +3616,8 @@ Clinician Name`;
             debounce((key, data) => {
               setSaveStatus('saving');
               saveWithExpiration(key, data);
+              setSaveStatus('saved');
+              setLastSaved(Date.now());
             }, 1000),
             []
           );
@@ -3661,10 +3747,7 @@ Clinician Name`;
               saveCurrentPatientToShift();
             }
 
-            // Clear form for new patient
-            resetAllData();
-            setCurrentPatientId(generatePatientId());
-            setShowPatientSwitcher(false);
+            clearCurrentCase({ generateNewId: true });
           };
 
           // Remove patient from shift list
@@ -4556,6 +4639,7 @@ Clinician Name`;
           }, [appData]);
 
           const noticeTimeoutRef = React.useRef(null);
+          const clearUndoTimeoutRef = React.useRef(null);
           const hasHandledExpiredRef = React.useRef(false);
 
           const showNotice = (message, type = 'info', options = {}) => {
@@ -4597,7 +4681,7 @@ Clinician Name`;
             setShiftPatients([]);
             setCurrentPatientId(null);
             setShowPatientSwitcher(false);
-            setConsultationType('videoTelestroke');
+            setConsultationType(getDefaultSettings().defaultConsultationType || 'videoTelestroke');
             setManagementSubTab('ich');
             setFabExpanded(false);
             setAlertsMuted(false);
@@ -4693,20 +4777,322 @@ Clinician Name`;
             }));
           };
 
+          const stopDictation = () => {
+            if (dictationRef.current) {
+              try {
+                dictationRef.current.stop();
+              } catch (e) {
+                // ignore stop errors
+              }
+            }
+            setDictationState((prev) => ({ ...prev, activeField: null }));
+          };
+
+          const startDictation = (fieldKey, onResult) => {
+            const SpeechRecognition = getSpeechRecognition();
+            if (!SpeechRecognition) {
+              setDictationState((prev) => ({ ...prev, supported: false, error: 'Speech recognition not supported' }));
+              return;
+            }
+
+            if (dictationRef.current) {
+              stopDictation();
+            }
+
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onresult = (event) => {
+              const transcript = event.results?.[0]?.[0]?.transcript;
+              if (transcript) {
+                onResult(transcript);
+              }
+            };
+
+            recognition.onerror = (event) => {
+              setDictationState((prev) => ({ ...prev, error: event.error || 'Dictation error' }));
+            };
+
+            recognition.onend = () => {
+              setDictationState((prev) => ({ ...prev, activeField: null }));
+            };
+
+            dictationRef.current = recognition;
+            setDictationState((prev) => ({ ...prev, activeField: fieldKey, supported: true, error: '' }));
+            recognition.start();
+          };
+
+          const addDecisionLogEntry = (label, detail = '') => {
+            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            setTelestrokeNote((prev) => ({
+              ...prev,
+              decisionLog: [
+                { id: generateId('decision'), label, detail, time },
+                ...(prev.decisionLog || [])
+              ]
+            }));
+          };
+
+          const appendMedication = (medication) => {
+            setTelestrokeNote((prev) => {
+              const current = (prev.medications || '').trim();
+              const next = current ? `${current}, ${medication}` : medication;
+              return { ...prev, medications: next };
+            });
+          };
+
+          const renderDictationButton = (fieldKey, onResult) => {
+            const isActive = dictationState.activeField === fieldKey;
+            const isSupported = dictationState.supported;
+            return (
+              <button
+                type="button"
+                onClick={() => {
+                  if (!isSupported) return;
+                  if (isActive) {
+                    stopDictation();
+                    return;
+                  }
+                  startDictation(fieldKey, onResult);
+                }}
+                className={`ml-2 inline-flex items-center gap-1 text-xs font-semibold ${
+                  isSupported ? 'text-blue-700 hover:text-blue-900' : 'text-gray-400'
+                }`}
+                title={isSupported ? (isActive ? 'Stop dictation' : 'Start dictation') : 'Dictation not supported'}
+                aria-pressed={isActive}
+              >
+                <i data-lucide={isActive ? 'mic-off' : 'mic'} className="w-4 h-4"></i>
+                {isActive ? 'Stop' : 'Dictate'}
+              </button>
+            );
+          };
+
+          const updateQuickLinks = (links) => {
+            updateSettings({ quickLinks: links });
+          };
+
+          const updateContacts = (contacts) => {
+            updateSettings({ contacts });
+          };
+
+          const updatePinnedTools = (tools) => {
+            updateSettings({ pinnedTools: tools });
+          };
+
+          const applyRolePreset = (role) => {
+            const preset = rolePresets[role];
+            if (!preset) return;
+            setConsultationType(preset.consultationType);
+            setShowAdvanced(preset.showAdvanced);
+          };
+
+          const formatDateTimeDisplay = (value) => {
+            if (!value) return '';
+            const parsed = value instanceof Date ? value : new Date(value);
+            if (Number.isNaN(parsed.getTime())) return String(value);
+            return parsed.toLocaleString('en-US', {
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+          };
+
+          const buildTransferDecisionText = (decision, reason = '') => {
+            const age = telestrokeNote.age || '?';
+            const sex = telestrokeNote.sex || '?';
+            const nihss = telestrokeNote.nihss || nihssScore || '?';
+            const reference = getReferenceTime();
+            const onsetLabel = reference ? reference.label : 'LKW';
+            const onsetTime = reference ? formatDateTimeDisplay(reference.time) : 'unknown';
+            const decisionLabel = decision === 'accept' ? 'Transfer accepted' : 'Transfer declined';
+            const detail = reason ? `Reason: ${reason}` : 'Reason: clinical criteria not met';
+            return `${decisionLabel} for ${age}yo ${sex}, NIHSS ${nihss}. ${onsetLabel} ${onsetTime}. ${detail}.`;
+          };
+
+          const getHandoffSummaryFields = () => {
+            const age = telestrokeNote.age || '--';
+            const sex = telestrokeNote.sex || '--';
+            const nihss = telestrokeNote.nihss || nihssScore || '--';
+            const nihssDetails = telestrokeNote.nihssDetails || '';
+            const diagnosis = telestrokeNote.diagnosis
+              || (telestrokeNote.diagnosisCategory === 'ischemic'
+                ? 'Suspected acute ischemic stroke'
+                : telestrokeNote.diagnosisCategory === 'ich'
+                  ? 'Intracerebral hemorrhage (ICH)'
+                  : telestrokeNote.diagnosisCategory === 'mimic'
+                    ? 'Stroke mimic'
+                    : 'Diagnosis pending');
+            const reference = getReferenceTime();
+            const onsetLabel = reference ? reference.label : 'Onset';
+            const onsetTime = reference ? formatDateTimeDisplay(reference.time) : 'Unknown';
+            const timeFrom = calculateTimeFromLKW();
+            const elapsed = timeFrom ? `${timeFrom.hours}h ${timeFrom.minutes}m` : 'Unknown';
+            const imagingSummaryParts = [
+              `CT: ${telestrokeNote.ctResults || 'pending'}`,
+              `CTA: ${telestrokeNote.ctaResults || 'pending'}`
+            ];
+            if (telestrokeNote.ctpResults) {
+              imagingSummaryParts.push(`CTP: ${telestrokeNote.ctpResults}`);
+            }
+            const imagingSummary = imagingSummaryParts.join('; ');
+            const tnkDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
+            const tnkStatus = telestrokeNote.tnkRecommended
+              ? `TNK recommended${tnkDose ? ` (${tnkDose.calculatedDose} mg)` : ''}`
+              : 'TNK not recommended';
+            const evtStatus = telestrokeNote.evtRecommended ? 'EVT recommended' : 'EVT not recommended';
+            const disposition = telestrokeNote.disposition || '';
+            const transferStatus = telestrokeNote.transferAccepted
+              ? 'Transfer accepted'
+              : telestrokeNote.transferRationale
+                ? 'Transfer declined'
+                : '';
+            const transportDetails = telestrokeNote.transportMode
+              ? `${telestrokeNote.transportMode}${telestrokeNote.transportEta ? ` ETA ${formatDateTimeDisplay(telestrokeNote.transportEta)}` : ''}`
+              : '';
+            const imagingShare = telestrokeNote.transferImagingShareMethod
+              ? `${telestrokeNote.transferImagingShareMethod}${telestrokeNote.transferImagingShareLink ? ` (${telestrokeNote.transferImagingShareLink})` : ''}`
+              : '';
+
+            return {
+              age,
+              sex,
+              nihss,
+              nihssDetails,
+              diagnosis,
+              onsetLabel,
+              onsetTime,
+              elapsed,
+              imagingSummary,
+              tnkStatus,
+              evtStatus,
+              disposition,
+              transferStatus,
+              transportDetails,
+              imagingShare
+            };
+          };
+
+          const buildHandoffSummary = () => {
+            const fields = getHandoffSummaryFields();
+            const summaryLines = [
+              'Handoff Summary',
+              `Age/Sex: ${fields.age}${fields.sex ? ` ${fields.sex}` : ''}`,
+              `Dx: ${fields.diagnosis}`,
+              `${fields.onsetLabel}: ${fields.onsetTime}${fields.elapsed && fields.elapsed !== 'Unknown' ? ` (${fields.elapsed} elapsed)` : ''}`,
+              `NIHSS: ${fields.nihss}${fields.nihssDetails ? ` (${fields.nihssDetails})` : ''}`,
+              `Imaging: ${fields.imagingSummary}`,
+              `Plan: ${fields.tnkStatus}; ${fields.evtStatus}`
+            ];
+            if (fields.disposition) summaryLines.push(`Disposition: ${fields.disposition}`);
+            if (fields.transferStatus) summaryLines.push(fields.transferStatus);
+            if (fields.transportDetails) summaryLines.push(`Transport: ${fields.transportDetails}`);
+            if (fields.imagingShare) summaryLines.push(`Imaging share: ${fields.imagingShare}`);
+            if (telestrokeNote.rationale) summaryLines.push(`Rationale: ${telestrokeNote.rationale}`);
+            if (telestrokeNote.recommendationsText) summaryLines.push(`Recommendations: ${telestrokeNote.recommendationsText}`);
+            return summaryLines.filter(Boolean).join('\n');
+          };
+
+          const getSafetyChecks = () => {
+            const hasOnset = Boolean(getReferenceTime());
+            const hasNihss = Boolean(telestrokeNote.nihss || nihssScore);
+            const hasBP = Boolean(telestrokeNote.presentingBP);
+            const hasGlucose = Boolean(telestrokeNote.glucose);
+            const hasCT = Boolean(telestrokeNote.ctResults);
+            const hasCTA = Boolean(telestrokeNote.ctaResults);
+            const hasWeight = !telestrokeNote.tnkRecommended || Boolean(telestrokeNote.weight);
+            const tnkChecklist = !telestrokeNote.tnkRecommended || telestrokeNote.tnkContraindicationReviewed;
+            const consent = !telestrokeNote.tnkRecommended || telestrokeNote.tnkConsentDiscussed;
+
+            return [
+              { id: 'onset', label: 'Onset time documented', complete: hasOnset },
+              { id: 'nihss', label: 'NIHSS documented', complete: hasNihss },
+              { id: 'bp', label: 'BP documented', complete: hasBP },
+              { id: 'glucose', label: 'Glucose documented', complete: hasGlucose },
+              { id: 'ct', label: 'CT results documented', complete: hasCT },
+              { id: 'cta', label: 'CTA results documented (if obtained)', complete: hasCTA },
+              { id: 'weight', label: 'Weight documented (if TNK)', complete: hasWeight },
+              { id: 'tnkChecklist', label: 'TNK contraindications reviewed', complete: tnkChecklist },
+              { id: 'consent', label: 'TNK consent discussed', complete: consent }
+            ];
+          };
+
+          const buildFeedbackPayload = () => {
+            const message = feedbackDraft.message ? feedbackDraft.message.trim() : '';
+            const lines = [
+              `Timestamp: ${new Date().toLocaleString()}`,
+              `App version: ${APP_VERSION}`,
+              `Route: ${window.location.hash || '#/encounter'}`,
+              `Consultation type: ${consultationType}`,
+              `Role preset: ${settings.preferredRole || 'consult'}`,
+              `User agent: ${navigator.userAgent}`
+            ];
+
+            if (feedbackDraft.includeCaseContext) {
+              const fields = getHandoffSummaryFields();
+              lines.push('');
+              lines.push('Case context (no identifiers)');
+              lines.push(`Diagnosis: ${fields.diagnosis}`);
+              lines.push(`NIHSS: ${fields.nihss}`);
+              lines.push(`${fields.onsetLabel}: ${fields.onsetTime}`);
+              lines.push(`TNK: ${telestrokeNote.tnkRecommended ? 'recommended' : 'not recommended'}`);
+              lines.push(`EVT: ${telestrokeNote.evtRecommended ? 'recommended' : 'not recommended'}`);
+            }
+
+            if (message) {
+              return `${message}\n\n---\n${lines.join('\n')}`;
+            }
+            return `Feedback\n\n---\n${lines.join('\n')}`;
+          };
+
+          const buildPatientHandout = () => {
+            const diagnosis = telestrokeNote.diagnosisCategory === 'ich'
+              ? 'brain bleed (hemorrhagic stroke)'
+              : telestrokeNote.diagnosisCategory === 'ischemic'
+                ? 'blocked blood vessel (ischemic stroke)'
+                : 'stroke-like symptoms';
+            const meds = telestrokeNote.medications || 'your medication list';
+            return [
+              'Stroke Education Summary',
+              '',
+              `Today you were evaluated for ${diagnosis}.`,
+              '',
+              'Call 911 immediately if any of these return or worsen:',
+              '- New weakness on one side',
+              '- Trouble speaking or understanding',
+              '- Sudden vision loss',
+              '- Severe headache or confusion',
+              '',
+              'What to do next:',
+              '- Take medications as prescribed',
+              `- Review medications: ${meds}`,
+              '- Follow up with your care team',
+              '',
+              'Questions to ask:',
+              '- What was the final diagnosis?',
+              '- What follow-up tests are needed?',
+              '- When should I return to the ER?'
+            ].join('\n');
+          };
+
           const sanitizeTelestrokeNoteForStorage = (note) => {
             if (shouldPersistFreeText) return note;
             const allowedKeys = [
               'alias', 'age', 'sex', 'weight', 'nihss', 'aspects', 'vesselOcclusion', 'diagnosisCategory',
-              'lkwDate', 'lkwTime', 'arrivalTime', 'strokeAlertTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
+              'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'arrivalTime', 'strokeAlertTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
               'presentingBP', 'bpPreTNK', 'bpPreTNKTime',
               'glucose', 'plateletCount', 'inr', 'ptt', 'creatinine',
               'tnkRecommended', 'evtRecommended', 'tnkContraindicationChecklist',
               'tnkContraindicationReviewed', 'tnkContraindicationReviewTime', 'tnkConsentDiscussed',
               'patientFamilyConsent', 'presumedConsent', 'preTNKSafetyPause',
-              'imagingReviewed', 'transferAccepted', 'disposition',
+              'imagingReviewed', 'transferAccepted', 'transferRationale', 'transferChecklist', 'disposition',
+              'transferImagingShareMethod', 'transferImagingShareLink', 'transportMode', 'transportEta', 'transportNotes',
               'lastDOACType', 'lastDOACDose',
               'dtnEdArrival', 'dtnStrokeAlert', 'dtnCtStarted', 'dtnCtRead',
-              'dtnTnkOrdered', 'dtnTnkAdministered'
+              'dtnTnkOrdered', 'dtnTnkAdministered',
+              'decisionLog'
             ];
             return allowedKeys.reduce((acc, key) => {
               if (note && Object.prototype.hasOwnProperty.call(note, key)) {
@@ -5026,12 +5412,36 @@ Clinician Name`;
           };
 
           // Time calculation functions
-          const calculateTimeFromLKW = () => {
+          const getDiscoveryDateTime = () => {
+            if (!telestrokeNote.discoveryDate || !telestrokeNote.discoveryTime) return null;
+            const [year, month, day] = telestrokeNote.discoveryDate.split('-').map(Number);
+            const [hours, minutes] = telestrokeNote.discoveryTime.split(':').map(Number);
+            if (!year || !month || !day || Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+            return new Date(year, month - 1, day, hours, minutes);
+          };
+
+          const getReferenceTime = () => {
+            if (telestrokeNote.lkwUnknown) {
+              const discovery = getDiscoveryDateTime();
+              if (!discovery) return null;
+              return { time: discovery, label: 'Discovery' };
+            }
             if (!lkwTime) return null;
-            const diffMs = currentTime - lkwTime;
+            return { time: lkwTime, label: 'LKW' };
+          };
+
+          const calculateTimeFromLKW = () => {
+            const reference = getReferenceTime();
+            if (!reference) return null;
+            const diffMs = currentTime - reference.time;
             const diffHrs = diffMs / (1000 * 60 * 60);
             const diffMins = (diffMs / (1000 * 60)) % 60;
-            return { hours: Math.floor(diffHrs), minutes: Math.floor(diffMins), total: diffHrs };
+            return {
+              hours: Math.floor(diffHrs),
+              minutes: Math.floor(diffMins),
+              total: diffHrs,
+              label: reference.label
+            };
           };
 
           const getWindowStatus = (timeFromLKW) => {
@@ -5052,6 +5462,92 @@ Clinician Name`;
             }
           };
 
+          const scrollToSection = (id) => {
+            const target = document.getElementById(id);
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          };
+
+          const getNextBestAction = () => {
+            const timeFrom = calculateTimeFromLKW();
+            const nihss = parseInt(telestrokeNote.nihss) || nihssScore || 0;
+
+            if (!telestrokeNote.age || !telestrokeNote.symptoms) {
+              return {
+                title: 'Capture core details',
+                detail: 'Enter age and presenting symptoms to drive recommendations.',
+                action: () => scrollToSection('patient-info-section'),
+                cta: 'Go to Patient Info'
+              };
+            }
+            if (!telestrokeNote.lkwUnknown && !lkwTime) {
+              return {
+                title: 'Set last known well',
+                detail: 'Time from onset is required to determine treatment windows.',
+                action: () => scrollToSection('lkw-section'),
+                cta: 'Set LKW'
+              };
+            }
+            if (telestrokeNote.lkwUnknown && (!telestrokeNote.discoveryDate || !telestrokeNote.discoveryTime)) {
+              return {
+                title: 'Set discovery time',
+                detail: 'Use discovery time to estimate treatment windows when LKW is unknown.',
+                action: () => scrollToSection('lkw-section'),
+                cta: 'Set discovery time'
+              };
+            }
+            if (!telestrokeNote.nihss && !isNIHSSComplete()) {
+              return {
+                title: 'Enter NIHSS score',
+                detail: 'Use quick entry or guided NIHSS to calculate severity.',
+                action: () => scrollToSection('nihss-section'),
+                cta: 'Enter NIHSS'
+              };
+            }
+            if (!telestrokeNote.presentingBP) {
+              return {
+                title: 'Add presenting BP',
+                detail: 'BP drives TNK eligibility and safety checks.',
+                action: () => scrollToSection('vitals-section'),
+                cta: 'Enter BP'
+              };
+            }
+            if (timeFrom && timeFrom.total <= 4.5 && !telestrokeNote.tnkContraindicationReviewed) {
+              return {
+                title: 'Review TNK contraindications',
+                detail: 'Complete the contraindication checklist before recommending TNK.',
+                action: () => scrollToSection('tnk-contraindications'),
+                cta: 'Review contraindications'
+              };
+            }
+            if (timeFrom && timeFrom.total <= 4.5 && !telestrokeNote.tnkRecommended && nihss >= 4) {
+              return {
+                title: 'Consider TNK',
+                detail: 'Patient appears within TNK window. Confirm eligibility and document decision.',
+                action: () => scrollToSection('treatment-decision'),
+                cta: 'Review treatment'
+              };
+            }
+            if (telestrokeNote.tnkRecommended && !telestrokeNote.tnkAdminTime) {
+              return {
+                title: 'Document TNK administration time',
+                detail: 'Capture administration time to calculate DTN and QA metrics.',
+                action: () => scrollToSection('time-metrics-section'),
+                cta: 'Add TNK time'
+              };
+            }
+            if (!telestrokeNote.recommendationsText) {
+              return {
+                title: 'Finalize recommendations',
+                detail: 'Complete the recommendation summary for handoff and documentation.',
+                action: () => scrollToSection('recommendations-section'),
+                cta: 'Add recommendations'
+              };
+            }
+            return null;
+          };
+
           // NIHSS validation
           const isNIHSSComplete = () => {
             return nihssItems.every(item => patientData[item.id] !== undefined && patientData[item.id] !== '');
@@ -5067,6 +5563,18 @@ Clinician Name`;
             if (score <= 15) return { severity: 'Moderate stroke', color: 'orange', guidance: 'Candidate for both thrombolysis and EVT if eligible' };
             if (score <= 20) return { severity: 'Moderate-severe stroke', color: 'red', guidance: 'Aggressive intervention warranted - high benefit potential' };
             return { severity: 'Severe stroke', color: 'red', guidance: 'All treatment options should be considered - high mortality risk without intervention' };
+          };
+
+          const applyNihssAllNormal = () => {
+            const newData = {};
+            nihssItems.forEach((item) => {
+              const normalOption = item.options.find((opt) => opt.includes('(0)')) || item.options[0];
+              newData[item.id] = normalOption;
+            });
+            setPatientData(newData);
+            const newScore = calculateNIHSS(newData);
+            setNihssScore(newScore);
+            setTelestrokeNote({ ...telestrokeNote, nihss: newScore.toString() });
           };
 
           // Treatment validation
@@ -5210,13 +5718,77 @@ Clinician Name`;
             setSearchResults(results.slice(0, 10)); // Limit to 10 results
           };
 
-          // Reset all data - New Patient
-          const resetAllData = () => {
-            if (!confirm('Start new patient assessment? All current data will be cleared. This cannot be undone.')) {
-              return;
-            }
+          const CLEAR_UNDO_WINDOW_MS = 30000;
 
-            // Clear all state
+          const buildCaseSnapshot = () => ({
+            telestrokeNote: { ...telestrokeNote },
+            strokeCodeForm: { ...strokeCodeForm },
+            patientData: { ...patientData },
+            lkwTime: lkwTime ? lkwTime.toISOString() : null,
+            nihssScore,
+            aspectsScore,
+            mrsScore,
+            gcsItems: { ...gcsItems },
+            ichScoreItems: { ...ichScoreItems },
+            abcd2Items: { ...abcd2Items },
+            chads2vascItems: { ...chads2vascItems },
+            ropeItems: { ...ropeItems },
+            huntHessGrade,
+            wfnsGrade,
+            hasbledItems: { ...hasbledItems },
+            rcvs2Items: { ...rcvs2Items },
+            currentStep,
+            completedSteps: Array.isArray(completedSteps) ? [...completedSteps] : [],
+            aspectsRegionState: Array.isArray(aspectsRegionState)
+              ? aspectsRegionState.map((item) => ({ ...item }))
+              : [],
+            pcAspectsRegions: Array.isArray(pcAspectsRegions)
+              ? pcAspectsRegions.map((item) => ({ ...item }))
+              : [],
+            consultationType,
+            currentPatientId
+          });
+
+          const restoreCaseSnapshot = (snapshot) => {
+            if (!snapshot) return;
+            const note = snapshot.telestrokeNote || getDefaultTelestrokeNote();
+            setTelestrokeNote(note);
+            setStrokeCodeForm(snapshot.strokeCodeForm || getDefaultStrokeCodeForm());
+            setPatientData(snapshot.patientData || {});
+            setLkwTime(snapshot.lkwTime ? new Date(snapshot.lkwTime) : null);
+            setNihssScore(snapshot.nihssScore || 0);
+            setAspectsScore(Number.isFinite(snapshot.aspectsScore) ? snapshot.aspectsScore : 10);
+            setMrsScore(snapshot.mrsScore || '');
+            setGcsItems(snapshot.gcsItems || { eye: 0, verbal: 0, motor: 0 });
+            setIchScoreItems(snapshot.ichScoreItems || { gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false });
+            setAbcd2Items(snapshot.abcd2Items || { age60: false, bp: false, unilateralWeakness: false, speechDisturbance: false, duration: '', diabetes: false });
+            setChads2vascItems(snapshot.chads2vascItems || { chf: false, hypertension: false, age75: false, diabetes: false, strokeTia: false, vascular: false, age65: false, female: false });
+            setRopeItems(snapshot.ropeItems || { noHypertension: false, noDiabetes: false, noStrokeTia: false, nonsmoker: false, cortical: false, age: '' });
+            setHuntHessGrade(snapshot.huntHessGrade || '');
+            setWfnsGrade(snapshot.wfnsGrade || '');
+            setHasbledItems(snapshot.hasbledItems || { hypertension: false, renalDisease: false, liverDisease: false, stroke: false, bleeding: false, labileINR: false, elderly: false, drugs: false, alcohol: false });
+            setRcvs2Items(snapshot.rcvs2Items || { recurrentTCH: false, carotidInvolvement: false, vasoconstrictiveTrigger: false, female: false, sah: false });
+            setCurrentStep(Number.isFinite(snapshot.currentStep) ? snapshot.currentStep : 0);
+            setCompletedSteps(Array.isArray(snapshot.completedSteps) ? snapshot.completedSteps : []);
+            setAspectsRegionState(Array.isArray(snapshot.aspectsRegionState) && snapshot.aspectsRegionState.length
+              ? snapshot.aspectsRegionState
+              : getDefaultAspectsRegionState());
+            setPcAspectsRegions(Array.isArray(snapshot.pcAspectsRegions) && snapshot.pcAspectsRegions.length
+              ? snapshot.pcAspectsRegions
+              : getDefaultPcAspectsRegions());
+            setConsultationType(snapshot.consultationType || settings.defaultConsultationType || 'videoTelestroke');
+            setCurrentPatientId(snapshot.currentPatientId || null);
+            decisionStateRef.current = {
+              tnkRecommended: note.tnkRecommended,
+              evtRecommended: note.evtRecommended,
+              transferAccepted: note.transferAccepted,
+              tnkContraindicationReviewed: note.tnkContraindicationReviewed,
+              tnkConsentDiscussed: note.tnkConsentDiscussed,
+              tnkAdminTime: note.tnkAdminTime
+            };
+          };
+
+          const resetCaseState = () => {
             setPatientData({});
             setNihssScore(0);
             setAspectsScore(10);
@@ -5236,16 +5808,58 @@ Clinician Name`;
             setRcvs2Items({ recurrentTCH: false, carotidInvolvement: false, vasoconstrictiveTrigger: false, female: false, sah: false });
             setCurrentStep(0);
             setCompletedSteps([]);
+            setConsultationType(settings.defaultConsultationType || 'videoTelestroke');
+            setTelestrokeNote(getDefaultTelestrokeNote());
 
-            // Clear stored patient data
             const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',
-                                   'abcd2Items', 'chads2vascItems', 'ropeItems', 'huntHessGrade', 'wfnsGrade',
-                                   'hasbledItems', 'rcvs2Items', 'strokeCodeForm', 'lkwTime',
-                                   'currentStep', 'completedSteps', 'aspectsRegionState', 'pcAspectsRegions'];
+                                  'abcd2Items', 'chads2vascItems', 'ropeItems', 'huntHessGrade', 'wfnsGrade',
+                                  'hasbledItems', 'rcvs2Items', 'strokeCodeForm', 'lkwTime',
+                                  'currentStep', 'completedSteps', 'aspectsRegionState', 'pcAspectsRegions',
+                                  'telestrokeNote', 'consultationType'];
             keysToRemove.forEach((key) => removeKey(key));
 
             navigateTo('encounter');
             setSaveStatus('saved');
+          };
+
+          const clearCurrentCase = (options = {}) => {
+            const { generateNewId = false } = options;
+            if (!confirm('Start a new case? Current inputs will be cleared. You can undo for 30 seconds.')) {
+              return;
+            }
+            const snapshot = buildCaseSnapshot();
+            resetCaseState();
+            if (generateNewId) {
+              setCurrentPatientId(generatePatientId());
+            }
+            setShowPatientSwitcher(false);
+            setClearUndo({ snapshot, expiresAt: Date.now() + CLEAR_UNDO_WINDOW_MS });
+            if (clearUndoTimeoutRef.current) {
+              clearTimeout(clearUndoTimeoutRef.current);
+            }
+            clearUndoTimeoutRef.current = setTimeout(() => {
+              setClearUndo(null);
+            }, CLEAR_UNDO_WINDOW_MS);
+            showNotice('Case cleared. Undo available for 30 seconds.', 'info');
+          };
+
+          const handleUndoClearCase = () => {
+            if (!clearUndo || !clearUndo.snapshot) return;
+            restoreCaseSnapshot(clearUndo.snapshot);
+            setClearUndo(null);
+            if (clearUndoTimeoutRef.current) {
+              clearTimeout(clearUndoTimeoutRef.current);
+              clearUndoTimeoutRef.current = null;
+            }
+            showNotice('Case restored.', 'success');
+          };
+
+          // Reset all data - New Patient
+          const resetAllData = () => {
+            if (!confirm('Start new patient assessment? All current data will be cleared. This cannot be undone.')) {
+              return;
+            }
+            resetCaseState();
           };
 
           const handleClearLocalData = () => {
@@ -5305,6 +5919,42 @@ Clinician Name`;
           useEffect(() => {
             setKey('timerSidebarCollapsed', timerSidebarCollapsed, { skipLastUpdated: true });
           }, [timerSidebarCollapsed]);
+
+          useEffect(() => {
+            setKey('caseSummaryCollapsed', caseSummaryCollapsed, { skipLastUpdated: true });
+          }, [caseSummaryCollapsed]);
+
+          useEffect(() => {
+            setKey('showAdvanced', showAdvanced, { skipLastUpdated: true });
+          }, [showAdvanced]);
+
+          useEffect(() => {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            setDictationState((prev) => ({ ...prev, supported: Boolean(SpeechRecognition) }));
+          }, []);
+
+          useEffect(() => {
+            if (!('serviceWorker' in navigator)) return;
+            navigator.serviceWorker.register('service-worker.js').catch((err) => {
+              console.warn('Service worker registration failed:', err);
+            });
+          }, []);
+
+          useEffect(() => {
+            document.documentElement.classList.toggle('compact', settings.compactMode === true);
+            document.documentElement.classList.toggle('lightweight', settings.lightweightMode === true);
+          }, [settings.compactMode, settings.lightweightMode]);
+
+          useEffect(() => {
+            decisionStateRef.current = {
+              tnkRecommended: telestrokeNote.tnkRecommended,
+              evtRecommended: telestrokeNote.evtRecommended,
+              transferAccepted: telestrokeNote.transferAccepted,
+              tnkContraindicationReviewed: telestrokeNote.tnkContraindicationReviewed,
+              tnkConsentDiscussed: telestrokeNote.tnkConsentDiscussed,
+              tnkAdminTime: telestrokeNote.tnkAdminTime
+            };
+          }, []);
 
           // Persist consultation type
           useEffect(() => {
@@ -5382,6 +6032,43 @@ Clinician Name`;
           useEffect(() => {
             debouncedSave('telestrokeNote', sanitizeTelestrokeNoteForStorage(telestrokeNote));
           }, [telestrokeNote, settings.allowFreeTextStorage]);
+
+          useEffect(() => {
+            const prev = decisionStateRef.current;
+            if (!prev.tnkRecommended && telestrokeNote.tnkRecommended) {
+              addDecisionLogEntry('TNK recommended');
+            }
+            if (!prev.evtRecommended && telestrokeNote.evtRecommended) {
+              addDecisionLogEntry('EVT recommended');
+            }
+            if (!prev.transferAccepted && telestrokeNote.transferAccepted) {
+              addDecisionLogEntry('Transfer accepted');
+            }
+            if (!prev.tnkContraindicationReviewed && telestrokeNote.tnkContraindicationReviewed) {
+              addDecisionLogEntry('TNK contraindications reviewed', telestrokeNote.tnkContraindicationReviewTime || '');
+            }
+            if (!prev.tnkConsentDiscussed && telestrokeNote.tnkConsentDiscussed) {
+              addDecisionLogEntry('TNK consent discussed');
+            }
+            if (prev.tnkAdminTime !== telestrokeNote.tnkAdminTime && telestrokeNote.tnkAdminTime) {
+              addDecisionLogEntry('TNK administered', telestrokeNote.tnkAdminTime);
+            }
+            decisionStateRef.current = {
+              tnkRecommended: telestrokeNote.tnkRecommended,
+              evtRecommended: telestrokeNote.evtRecommended,
+              transferAccepted: telestrokeNote.transferAccepted,
+              tnkContraindicationReviewed: telestrokeNote.tnkContraindicationReviewed,
+              tnkConsentDiscussed: telestrokeNote.tnkConsentDiscussed,
+              tnkAdminTime: telestrokeNote.tnkAdminTime
+            };
+          }, [
+            telestrokeNote.tnkRecommended,
+            telestrokeNote.evtRecommended,
+            telestrokeNote.transferAccepted,
+            telestrokeNote.tnkContraindicationReviewed,
+            telestrokeNote.tnkConsentDiscussed,
+            telestrokeNote.tnkAdminTime
+          ]);
 
           // Auto-switch trial category when diagnosis category changes
           useEffect(() => {
@@ -6066,7 +6753,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
             { label: 'Telestroke Provider Resources', url: 'https://intranet.neurology.uw.edu/telestroke-provider-resources/' },
             { label: 'UW Medicine', url: 'https://access.uwmedicine.org/logon/LogonPoint/tmindex.html' }
           ];
-          const quickLinks = [...encounterQuickLinks, ...appConfig.institutionLinks].reduce((acc, link) => {
+          const userQuickLinks = Array.isArray(settings.quickLinks) ? settings.quickLinks : [];
+          const quickLinks = [...encounterQuickLinks, ...userQuickLinks, ...appConfig.institutionLinks].reduce((acc, link) => {
             if (!link || !link.url) return acc;
             const normalizedUrl = String(link.url).trim();
             if (!normalizedUrl || acc.seen.has(normalizedUrl)) return acc;
@@ -6095,9 +6783,45 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
             { id: 'trials', name: 'Trials', icon: 'file-text' }
           ];
           const mobileMoreTabs = [];
-          const timeFromLKW = telestrokeNote.lkwUnknown ? null : calculateTimeFromLKW();
+          const quickContacts = Array.isArray(settings.contacts) && settings.contacts.length
+            ? settings.contacts
+            : DEFAULT_CONTACTS;
+          const toolShortcuts = [
+            { id: 'patient-info-section', label: 'Patient Info' },
+            { id: 'lkw-section', label: 'LKW / Discovery' },
+            { id: 'nihss-section', label: 'NIHSS' },
+            { id: 'vitals-section', label: 'Vitals' },
+            { id: 'treatment-decision', label: 'Treatment' },
+            { id: 'time-metrics-section', label: 'DTN / DTP' },
+            { id: 'recommendations-section', label: 'Recommendations' },
+            { id: 'handoff-section', label: 'Handoff' },
+            { id: 'safety-section', label: 'Safety' },
+            { id: 'case-log-section', label: 'Case Log' }
+          ];
+          const roleOptions = [
+            { value: 'consult', label: 'Consult' },
+            { value: 'attending', label: 'Attending' },
+            { value: 'ed', label: 'ED' },
+            { value: 'icu', label: 'ICU' },
+            { value: 'transfer', label: 'Transfer' }
+          ];
+          const rolePresets = {
+            consult: { consultationType: 'videoTelestroke', showAdvanced: true },
+            attending: { consultationType: 'videoTelestroke', showAdvanced: true },
+            ed: { consultationType: 'telephone', showAdvanced: false },
+            icu: { consultationType: 'telephone', showAdvanced: true },
+            transfer: { consultationType: 'videoTelestroke', showAdvanced: true }
+          };
+          const pinnedTools = Array.isArray(settings.pinnedTools) && settings.pinnedTools.length
+            ? settings.pinnedTools
+            : DEFAULT_PINNED_TOOLS;
+          const tabletSplitEnabled = settings.tabletSplit === true;
+          const timeFromLKW = calculateTimeFromLKW();
+          const caseLogAnalytics = getCaseLogAnalytics();
+          const safetyChecks = getSafetyChecks();
+          const safetyChecksCompleted = safetyChecks.filter((item) => item.complete).length;
           const windowStatus = telestrokeNote.lkwUnknown
-            ? { color: 'gray', message: 'LKW unknown' }
+            ? { color: 'gray', message: timeFromLKW ? 'Discovery-based timing' : 'LKW unknown' }
             : getWindowStatus(timeFromLKW) || { color: 'gray', message: 'Set LKW time' };
           const windowToneClass = {
             green: 'bg-emerald-100 text-emerald-800 border-emerald-200',
@@ -6106,8 +6830,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
             red: 'bg-red-100 text-red-800 border-red-200',
             gray: 'bg-slate-100 text-slate-700 border-slate-200'
           }[windowStatus.color] || 'bg-slate-100 text-slate-700 border-slate-200';
+          const onsetLabel = timeFromLKW?.label || (telestrokeNote.lkwUnknown ? 'Discovery' : 'LKW');
           const lkwDisplay = telestrokeNote.lkwUnknown
-            ? 'Unknown'
+            ? (timeFromLKW ? `${telestrokeNote.discoveryDate || ''} ${telestrokeNote.discoveryTime || ''}`.trim() || 'Unknown' : 'Unknown')
             : lkwTime
               ? lkwTime.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
               : 'Not set';
@@ -6211,6 +6936,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           ))}
                         </div>
+                      )}
+                    </div>
+                    <div className="text-xs text-gray-500 flex items-center gap-2">
+                      <span className={saveStatus === 'saving' ? 'text-amber-600' : 'text-emerald-600'}>
+                        {saveStatus === 'saving' ? 'Saving...' : 'Saved'}
+                      </span>
+                      {lastSaved && (
+                        <span>
+                          {new Date(lastSaved).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
                       )}
                     </div>
 
@@ -6349,6 +7084,22 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                   </div>
                 )}
 
+                {clearUndo && (
+                  <div className="mt-2 p-3 rounded-lg border border-blue-200 bg-blue-50 text-blue-900 text-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <i data-lucide="rotate-ccw" className="w-4 h-4"></i>
+                      <span>Case cleared. Undo available for 30 seconds.</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleUndoClearCase}
+                      className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700"
+                    >
+                      Undo
+                    </button>
+                  </div>
+                )}
+
                 {/* Success Notification */}
                 {copiedText && (
                   <div className="mt-2 p-2 bg-green-100 border border-green-400 text-green-700 rounded-lg text-sm flex items-center gap-2">
@@ -6399,7 +7150,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-300">LKW</p>
                         <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{lkwDisplay}</p>
                         {lkwElapsed && (
-                          <p className="text-xs text-slate-500 dark:text-slate-300">({lkwElapsed})</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-300">({lkwElapsed} from {onsetLabel})</p>
                         )}
                       </div>
                       <div className={`rounded-lg border px-3 py-2 ${windowToneClass}`}>
@@ -6425,7 +7176,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-300">LKW</p>
                         <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{lkwDisplay}</p>
                         {lkwElapsed && (
-                          <p className="text-xs text-slate-500 dark:text-slate-300">({lkwElapsed} from LKW)</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-300">({lkwElapsed} from {onsetLabel})</p>
                         )}
                       </div>
                       <div className={`rounded-lg border px-3 py-2 ${windowToneClass}`}>
@@ -6629,9 +7380,24 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                   <div key="encounter-tab" className="space-y-4">
                     {/* Consultation Type Selector */}
                     <div className="bg-gradient-to-r from-slate-50 to-slate-100 border border-slate-200 rounded-lg p-4">
-                      <label className="block font-semibold text-slate-700 mb-3 text-sm uppercase tracking-wide">
-                        Consultation Type
-                      </label>
+                      <div className="flex items-center justify-between mb-3">
+                        <label className="block font-semibold text-slate-700 text-sm uppercase tracking-wide">
+                          Consultation Type
+                        </label>
+                        <button
+                          onClick={() => setShowAdvanced((prev) => !prev)}
+                          className={`text-xs font-semibold px-3 py-1 rounded-full border ${
+                            showAdvanced
+                              ? 'bg-blue-600 text-white border-blue-600'
+                              : 'bg-white text-slate-600 border-slate-300'
+                          }`}
+                          type="button"
+                          aria-pressed={showAdvanced}
+                          title={showAdvanced ? 'Hide advanced sections' : 'Show advanced sections'}
+                        >
+                          {showAdvanced ? 'Advanced On' : 'Advanced Off'}
+                        </button>
+                      </div>
                       <div className="flex flex-wrap gap-2">
                         <button
                           onClick={() => setConsultationType('telephone')}
@@ -6657,6 +7423,49 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </button>
                       </div>
                     </div>
+
+                    {(() => {
+                      const nextAction = getNextBestAction();
+                      if (!nextAction) return null;
+                      return (
+                        <div className="bg-white border-2 border-blue-200 rounded-lg p-4 shadow-sm">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                            <div>
+                              <p className="text-xs uppercase tracking-wide text-blue-600 font-semibold">Next Best Action</p>
+                              <p className="text-lg font-bold text-blue-900">{nextAction.title}</p>
+                              <p className="text-sm text-slate-600 mt-1">{nextAction.detail}</p>
+                            </div>
+                            <button
+                              onClick={nextAction.action}
+                              className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                            >
+                              {nextAction.cta}
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {pinnedTools.length > 0 && (
+                      <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                        <p className="text-xs uppercase tracking-wide text-slate-500 font-semibold mb-2">Pinned Tools</p>
+                        <div className="flex flex-wrap gap-2">
+                          {pinnedTools.map((toolId) => {
+                            const tool = toolShortcuts.find((item) => item.id === toolId);
+                            if (!tool) return null;
+                            return (
+                              <button
+                                key={tool.id}
+                                onClick={() => scrollToSection(tool.id)}
+                                className="px-3 py-1.5 bg-white border border-slate-200 rounded-full text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                              >
+                                {tool.label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
 
                     {quickLinks.length > 0 && (
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -6684,6 +7493,300 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
                       </div>
                     )}
+
+                    <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wide">Quick Note</h3>
+                      </div>
+                      <textarea
+                        value={settings.quickNote || ''}
+                        onChange={(e) => updateSettings({ quickNote: e.target.value })}
+                        rows="3"
+                        placeholder="Personal reminders, common phrases, or quick checklist items..."
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <details className="bg-white border border-slate-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
+                        <span>Workspace Settings</span>
+                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                      </summary>
+                      <div className="p-4 space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                            <input
+                              type="checkbox"
+                              checked={settings.compactMode === true}
+                              onChange={(e) => updateSettings({ compactMode: e.target.checked })}
+                              className="w-4 h-4"
+                            />
+                            Compact mode
+                          </label>
+                          <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                            <input
+                              type="checkbox"
+                              checked={settings.lightweightMode === true}
+                              onChange={(e) => updateSettings({ lightweightMode: e.target.checked })}
+                              className="w-4 h-4"
+                            />
+                            Lightweight mode
+                          </label>
+                          <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                            <input
+                              type="checkbox"
+                              checked={settings.tabletSplit === true}
+                              onChange={(e) => updateSettings({ tabletSplit: e.target.checked })}
+                              className="w-4 h-4"
+                            />
+                            Split view on tablet
+                          </label>
+                          <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                            <input
+                              type="checkbox"
+                              checked={showAdvanced === true}
+                              onChange={(e) => setShowAdvanced(e.target.checked)}
+                              className="w-4 h-4"
+                            />
+                            Show advanced sections
+                          </label>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1">Role preset</label>
+                            <select
+                              value={settings.preferredRole || 'consult'}
+                              onChange={(e) => updateSettings({ preferredRole: e.target.value })}
+                              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                            >
+                              {roleOptions.map((role) => (
+                                <option key={role.value} value={role.value}>{role.label}</option>
+                              ))}
+                            </select>
+                            <button
+                              type="button"
+                              onClick={() => applyRolePreset(settings.preferredRole || 'consult')}
+                              className="mt-2 text-xs font-semibold text-blue-700 hover:text-blue-900"
+                            >
+                              Apply preset to current case
+                            </button>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1">Default consultation type</label>
+                            <select
+                              value={settings.defaultConsultationType || 'videoTelestroke'}
+                              onChange={(e) => updateSettings({ defaultConsultationType: e.target.value })}
+                              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                            >
+                              <option value="videoTelestroke">Video Telestroke</option>
+                              <option value="telephone">Telephone</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold text-slate-800 mb-2">Pinned tools</h4>
+                          <div className="space-y-2">
+                            {toolShortcuts.map((tool) => {
+                              const isPinned = pinnedTools.includes(tool.id);
+                              const index = pinnedTools.indexOf(tool.id);
+                              return (
+                                <div key={tool.id} className="flex items-center gap-2 text-sm">
+                                  <input
+                                    type="checkbox"
+                                    checked={isPinned}
+                                    onChange={() => {
+                                      const next = isPinned
+                                        ? pinnedTools.filter((id) => id !== tool.id)
+                                        : [...pinnedTools, tool.id];
+                                      updatePinnedTools(next);
+                                    }}
+                                    className="w-4 h-4"
+                                  />
+                                  <span className="flex-1">{tool.label}</span>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      if (index <= 0) return;
+                                      const next = [...pinnedTools];
+                                      [next[index - 1], next[index]] = [next[index], next[index - 1]];
+                                      updatePinnedTools(next);
+                                    }}
+                                    className="text-xs text-slate-500 hover:text-slate-700"
+                                  >
+                                    Up
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      if (index === -1 || index >= pinnedTools.length - 1) return;
+                                      const next = [...pinnedTools];
+                                      [next[index + 1], next[index]] = [next[index], next[index + 1]];
+                                      updatePinnedTools(next);
+                                    }}
+                                    className="text-xs text-slate-500 hover:text-slate-700"
+                                  >
+                                    Down
+                                  </button>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold text-slate-800 mb-2">Quick links</h4>
+                          <div className="space-y-2">
+                            {(settings.quickLinks || []).map((link, index) => (
+                              <div key={`${link.label || 'link'}-${index}`} className="grid grid-cols-1 md:grid-cols-4 gap-2">
+                                <input
+                                  type="text"
+                                  value={link.label || ''}
+                                  onChange={(e) => {
+                                    const next = [...(settings.quickLinks || [])];
+                                    next[index] = { ...next[index], label: e.target.value };
+                                    updateQuickLinks(next);
+                                  }}
+                                  placeholder="Label"
+                                  className="px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                                />
+                                <input
+                                  type="text"
+                                  value={link.url || ''}
+                                  onChange={(e) => {
+                                    const next = [...(settings.quickLinks || [])];
+                                    next[index] = { ...next[index], url: e.target.value };
+                                    updateQuickLinks(next);
+                                  }}
+                                  placeholder="URL"
+                                  className="px-3 py-2 border border-slate-300 rounded-lg text-sm md:col-span-2"
+                                />
+                                <div className="flex items-center gap-2">
+                                  <input
+                                    type="text"
+                                    value={link.note || ''}
+                                    onChange={(e) => {
+                                      const next = [...(settings.quickLinks || [])];
+                                      next[index] = { ...next[index], note: e.target.value };
+                                      updateQuickLinks(next);
+                                    }}
+                                    placeholder="Note"
+                                    className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const next = [...(settings.quickLinks || [])];
+                                      next.splice(index, 1);
+                                      updateQuickLinks(next);
+                                    }}
+                                    className="text-xs text-red-600 hover:text-red-800"
+                                  >
+                                    Remove
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => updateQuickLinks([...(settings.quickLinks || []), { label: '', url: '', note: '' }])}
+                            className="mt-2 text-xs font-semibold text-blue-700 hover:text-blue-900"
+                          >
+                            Add quick link
+                          </button>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold text-slate-800 mb-2">Quick contacts</h4>
+                          <div className="space-y-2">
+                            {(settings.contacts || []).map((contact, index) => (
+                              <div key={`${contact.id || contact.label || 'contact'}-${index}`} className="grid grid-cols-1 md:grid-cols-4 gap-2">
+                                <input
+                                  type="text"
+                                  value={contact.label || ''}
+                                  onChange={(e) => {
+                                    const next = [...(settings.contacts || [])];
+                                    next[index] = { ...next[index], label: e.target.value };
+                                    updateContacts(next);
+                                  }}
+                                  placeholder="Label"
+                                  className="px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                                />
+                                <input
+                                  type="text"
+                                  value={contact.phone || ''}
+                                  onChange={(e) => {
+                                    const next = [...(settings.contacts || [])];
+                                    next[index] = { ...next[index], phone: e.target.value };
+                                    updateContacts(next);
+                                  }}
+                                  placeholder="Phone"
+                                  className="px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                                />
+                                <input
+                                  type="text"
+                                  value={contact.note || ''}
+                                  onChange={(e) => {
+                                    const next = [...(settings.contacts || [])];
+                                    next[index] = { ...next[index], note: e.target.value };
+                                    updateContacts(next);
+                                  }}
+                                  placeholder="Note"
+                                  className="px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const next = [...(settings.contacts || [])];
+                                    next.splice(index, 1);
+                                    updateContacts(next);
+                                  }}
+                                  className="text-xs text-red-600 hover:text-red-800"
+                                >
+                                  Remove
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => updateContacts([...(settings.contacts || []), { id: generateId('contact'), label: '', phone: '', note: '' }])}
+                            className="mt-2 text-xs font-semibold text-blue-700 hover:text-blue-900"
+                          >
+                            Add contact
+                          </button>
+                        </div>
+                      </div>
+                    </details>
+
+                    <details className="bg-white border border-slate-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
+                        <span>Patient Education Handout</span>
+                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                      </summary>
+                      <div className="p-4 space-y-2">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <p className="text-sm text-slate-600">Copy or print a plain-language summary for the patient/family.</p>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const handout = buildPatientHandout();
+                              navigator.clipboard.writeText(handout);
+                              setCopiedText('patient-handout');
+                              setTimeout(() => setCopiedText(''), 2000);
+                            }}
+                            className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700"
+                          >
+                            {copiedText === 'patient-handout' ? 'Copied!' : 'Copy handout'}
+                          </button>
+                        </div>
+                        <pre className="whitespace-pre-wrap text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-lg p-3">
+                          {buildPatientHandout()}
+                        </pre>
+                      </div>
+                    </details>
 
                     {/* Calling Site Dropdown - Show for Video Telestroke */}
                     {consultationType === 'videoTelestroke' && (
@@ -6740,11 +7843,23 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                     {/* Last Known Well Input - Show for Video Telestroke */}
                     {consultationType === 'videoTelestroke' && (
-                    <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
-                      <label className="block font-semibold text-blue-900 mb-2">
-                        <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
-                        Last Known Well Time *
-                      </label>
+                    <div id="lkw-section" className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="block font-semibold text-blue-900">
+                          <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
+                          Last Known Well Time *
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const now = new Date();
+                            setLkwTime(now);
+                          }}
+                          className="text-xs font-semibold text-blue-700 hover:text-blue-900"
+                        >
+                          Use Now
+                        </button>
+                      </div>
 
                       {/* Separate Date and Time Inputs */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -6794,12 +7909,58 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <input
                             type="checkbox"
                             checked={telestrokeNote.lkwUnknown}
-                            onChange={(e) => setTelestrokeNote({...telestrokeNote, lkwUnknown: e.target.checked})}
+                            onChange={(e) => {
+                              const nextValue = e.target.checked;
+                              setTelestrokeNote({
+                                ...telestrokeNote,
+                                lkwUnknown: nextValue,
+                                discoveryDate: nextValue ? (telestrokeNote.discoveryDate || new Date().toISOString().split('T')[0]) : telestrokeNote.discoveryDate,
+                                discoveryTime: nextValue ? (telestrokeNote.discoveryTime || new Date().toTimeString().slice(0, 5)) : telestrokeNote.discoveryTime
+                              });
+                            }}
                             className="w-5 h-5 rounded border-2 border-purple-400 text-purple-600 focus:ring-purple-500"
                           />
                           <span className="font-semibold text-purple-800">Wake-up Stroke / Unknown LKW</span>
                         </label>
                       </div>
+
+                      {telestrokeNote.lkwUnknown && (
+                        <div className="mt-3 bg-purple-50 border border-purple-200 rounded-lg p-3">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm font-semibold text-purple-800">Discovery Time</span>
+                            <button
+                              onClick={() => setTelestrokeNote({
+                                ...telestrokeNote,
+                                discoveryDate: new Date().toISOString().split('T')[0],
+                                discoveryTime: new Date().toTimeString().slice(0, 5)
+                              })}
+                              className="text-xs font-semibold text-purple-700 hover:text-purple-900"
+                              type="button"
+                            >
+                              Use Now
+                            </button>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <input
+                              type="date"
+                              value={telestrokeNote.discoveryDate}
+                              onChange={(e) => setTelestrokeNote({ ...telestrokeNote, discoveryDate: e.target.value })}
+                              className="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                            />
+                            <input
+                              type="time"
+                              value={telestrokeNote.discoveryTime}
+                              onChange={(e) => setTelestrokeNote({ ...telestrokeNote, discoveryTime: e.target.value })}
+                              className="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                            />
+                          </div>
+                          {timeFromLKW && (
+                            <p className="text-xs text-purple-700 mt-2">
+                              {timeFromLKW.hours}h {timeFromLKW.minutes}m from discovery
+                            </p>
+                          )}
+                        </div>
+                      )}
 
                       {/* Wake-up Stroke Decision Tree Panel */}
                       {telestrokeNote.lkwUnknown && (
@@ -7148,7 +8309,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         {/* Section 2: Patient Info + History */}
-                        <div className="bg-white border-2 border-purple-300 rounded-lg p-4 shadow-md">
+                        <div id="patient-info-section" className="bg-white border-2 border-purple-300 rounded-lg p-4 shadow-md">
                           <h4 className="text-md font-bold text-purple-900 mb-3 flex items-center gap-2">
                             <i data-lucide="user" className="w-4 h-4"></i>
                             Patient Info & History
@@ -7214,7 +8375,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           {/* Presenting Symptoms & PMH */}
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                             <div>
-                              <label className="block text-xs font-medium text-gray-600 mb-1">Presenting Symptoms</label>
+                              <div className="flex items-center justify-between mb-1">
+                                <label className="block text-xs font-medium text-gray-600">Presenting Symptoms</label>
+                                {renderDictationButton('symptoms', (text) => {
+                                  setTelestrokeNote((prev) => ({
+                                    ...prev,
+                                    symptoms: prev.symptoms ? `${prev.symptoms} ${text}` : text
+                                  }));
+                                })}
+                              </div>
                               <textarea
                                 value={telestrokeNote.symptoms}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, symptoms: e.target.value})}
@@ -7223,7 +8392,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               />
                             </div>
                             <div>
-                              <label className="block text-xs font-medium text-gray-600 mb-1">Relevant PMH</label>
+                              <div className="flex items-center justify-between mb-1">
+                                <label className="block text-xs font-medium text-gray-600">Relevant PMH</label>
+                                {renderDictationButton('pmh', (text) => {
+                                  setTelestrokeNote((prev) => ({
+                                    ...prev,
+                                    pmh: prev.pmh ? `${prev.pmh} ${text}` : text
+                                  }));
+                                })}
+                              </div>
                               <textarea
                                 value={telestrokeNote.pmh}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, pmh: e.target.value})}
@@ -7242,6 +8419,18 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, medications: e.target.value})}
                               className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
                             />
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              {['Aspirin', 'Clopidogrel', 'Statin', 'Warfarin', 'Apixaban'].map((med) => (
+                                <button
+                                  key={med}
+                                  type="button"
+                                  onClick={() => appendMedication(med)}
+                                  className="px-2 py-1 text-xs font-semibold rounded-full border border-purple-200 text-purple-700 hover:bg-purple-50"
+                                >
+                                  + {med}
+                                </button>
+                              ))}
+                            </div>
                           </div>
 
                           {/* Anticoagulation Status */}
@@ -7273,6 +8462,32 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   onChange={(e) => setTelestrokeNote({...telestrokeNote, lastDOACDose: e.target.value})}
                                   className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500"
                                 />
+                                <div className="flex flex-wrap gap-2 mt-2">
+                                  <button
+                                    type="button"
+                                    onClick={() => setTelestrokeNote({...telestrokeNote, lastDOACDose: new Date().toISOString().slice(0, 16)})}
+                                    className="px-2 py-1 text-xs font-semibold rounded-full border border-amber-200 text-amber-700 hover:bg-amber-50"
+                                  >
+                                    Dose now
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const past = new Date(Date.now() - (49 * 60 * 60 * 1000));
+                                      setTelestrokeNote({...telestrokeNote, lastDOACDose: past.toISOString().slice(0, 16)});
+                                    }}
+                                    className="px-2 py-1 text-xs font-semibold rounded-full border border-amber-200 text-amber-700 hover:bg-amber-50"
+                                  >
+                                    &gt;48h ago
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setTelestrokeNote({...telestrokeNote, lastDOACDose: ''})}
+                                    className="px-2 py-1 text-xs font-semibold rounded-full border border-amber-200 text-amber-700 hover:bg-amber-50"
+                                  >
+                                    Unknown
+                                  </button>
+                                </div>
                               </div>
                             </div>
                             {/* Show anticoagulant info if selected */}
@@ -7289,7 +8504,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         {/* Section 3: NIHSS */}
-                        <div className="bg-white border-2 border-red-300 rounded-lg p-4 shadow-md">
+                        <div id="nihss-section" className="bg-white border-2 border-red-300 rounded-lg p-4 shadow-md">
                           <div className="flex items-center justify-between mb-3">
                             <h4 className="text-md font-bold text-red-900 flex items-center gap-2">
                               <i data-lucide="brain" className="w-4 h-4"></i>
@@ -7343,7 +8558,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         {/* Section 4: Vitals & Labs */}
-                        <div className="bg-white border-2 border-green-300 rounded-lg p-4 shadow-md">
+                        <div id="vitals-section" className="bg-white border-2 border-green-300 rounded-lg p-4 shadow-md">
                           <h4 className="text-md font-bold text-green-900 mb-3 flex items-center gap-2">
                             <i data-lucide="activity" className="w-4 h-4"></i>
                             Vitals & Labs
@@ -7445,7 +8660,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         {/* Section 6: Diagnosis & Trial Eligibility */}
-                        <div className="bg-white border-2 border-teal-300 rounded-lg p-4 shadow-md">
+                        <div id="recommendations-section" className="bg-white border-2 border-teal-300 rounded-lg p-4 shadow-md">
                           <h4 className="text-md font-bold text-teal-900 mb-3 flex items-center gap-2">
                             <i data-lucide="stethoscope" className="w-4 h-4"></i>
                             Working Diagnosis
@@ -7687,10 +8902,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     {consultationType === 'videoTelestroke' && (
                     <>
                     {/* Two-Column Layout: Desktop/Tablet | Single Column: Mobile */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div className={`grid grid-cols-1 ${tabletSplitEnabled ? 'md:grid-cols-3' : 'lg:grid-cols-3'} gap-4`}>
 
                       {/* LEFT COLUMN - Data Entry (2/3 width on desktop) */}
-                      <div className="lg:col-span-2 space-y-4">
+                      <div className={`${tabletSplitEnabled ? 'md:col-span-2' : 'lg:col-span-2'} space-y-4`}>
 
                         {/* Section 1: Patient Info */}
                         <div className="bg-white border-2 border-blue-300 rounded-lg p-4 shadow-md">
@@ -7951,7 +9166,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                           {/* Quick NIHSS Entry */}
                           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3">
-                            <p className="text-sm font-medium text-gray-700 mb-2">Quick Entry:</p>
+                            <div className="flex items-center justify-between mb-2">
+                              <p className="text-sm font-medium text-gray-700">Quick Entry:</p>
+                              <button
+                                type="button"
+                                onClick={applyNihssAllNormal}
+                                className="text-xs font-semibold text-blue-700 hover:text-blue-900"
+                              >
+                                All normal (0)
+                              </button>
+                            </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                               <div>
                                 <label className="block text-xs text-gray-500 mb-1">NIHSS Score (0-42)</label>
@@ -8083,6 +9307,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     </div>
                                   );
                                 })()}
+                                {(() => {
+                                  const bpStatus = getBPThresholdStatus(telestrokeNote.presentingBP);
+                                  if (bpStatus.status !== 'too_high') return null;
+                                  return (
+                                    <div className="mt-2 px-2 py-1 bg-red-50 border border-red-200 rounded text-xs text-red-700">
+                                      TNK should be held until BP is controlled below 185/110.
+                                    </div>
+                                  );
+                                })()}
                               </div>
                               <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Current BP (prior to TNK, if applicable)</label>
@@ -8186,7 +9419,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <h4 className="font-semibold text-yellow-800 mb-2">⏱️ Critical Timestamps</h4>
                               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                 <div>
-                                  <label className="block text-xs font-medium text-gray-600 mb-1">Door Time (ED Arrival)</label>
+                                  <div className="flex items-center justify-between mb-1">
+                                    <label className="block text-xs font-medium text-gray-600">Door Time (ED Arrival)</label>
+                                    <button
+                                      type="button"
+                                      onClick={() => setTelestrokeNote({...telestrokeNote, doorTime: new Date().toTimeString().slice(0, 5)})}
+                                      className="text-[10px] font-semibold text-yellow-800 hover:text-yellow-900"
+                                    >
+                                      Now
+                                    </button>
+                                  </div>
                                   <input
                                     type="time"
                                     value={telestrokeNote.doorTime || ''}
@@ -8195,7 +9437,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   />
                                 </div>
                                 <div>
-                                  <label className="block text-xs font-medium text-gray-600 mb-1">CT Time</label>
+                                  <div className="flex items-center justify-between mb-1">
+                                    <label className="block text-xs font-medium text-gray-600">CT Time</label>
+                                    <button
+                                      type="button"
+                                      onClick={() => setTelestrokeNote({...telestrokeNote, ctTime: new Date().toTimeString().slice(0, 5)})}
+                                      className="text-[10px] font-semibold text-yellow-800 hover:text-yellow-900"
+                                    >
+                                      Now
+                                    </button>
+                                  </div>
                                   <input
                                     type="time"
                                     value={telestrokeNote.ctTime || ''}
@@ -8204,7 +9455,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   />
                                 </div>
                                 <div>
-                                  <label className="block text-xs font-medium text-gray-600 mb-1">Needle Time (TNK)</label>
+                                  <div className="flex items-center justify-between mb-1">
+                                    <label className="block text-xs font-medium text-gray-600">Needle Time (TNK)</label>
+                                    <button
+                                      type="button"
+                                      onClick={() => setTelestrokeNote({...telestrokeNote, needleTime: new Date().toTimeString().slice(0, 5)})}
+                                      className="text-[10px] font-semibold text-yellow-800 hover:text-yellow-900"
+                                    >
+                                      Now
+                                    </button>
+                                  </div>
                                   <input
                                     type="time"
                                     value={telestrokeNote.needleTime || ''}
@@ -8213,7 +9473,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   />
                                 </div>
                                 <div>
-                                  <label className="block text-xs font-medium text-gray-600 mb-1">Puncture Time (EVT)</label>
+                                  <div className="flex items-center justify-between mb-1">
+                                    <label className="block text-xs font-medium text-gray-600">Puncture Time (EVT)</label>
+                                    <button
+                                      type="button"
+                                      onClick={() => setTelestrokeNote({...telestrokeNote, punctureTime: new Date().toTimeString().slice(0, 5)})}
+                                      className="text-[10px] font-semibold text-yellow-800 hover:text-yellow-900"
+                                    >
+                                      Now
+                                    </button>
+                                  </div>
                                   <input
                                     type="time"
                                     value={telestrokeNote.punctureTime || ''}
@@ -8260,6 +9529,39 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   })()}
                                 </div>
                               )}
+
+                              {telestrokeNote.doorTime && (() => {
+                                const [doorH, doorM] = telestrokeNote.doorTime.split(':').map(Number);
+                                const nowH = currentTime.getHours();
+                                const nowM = currentTime.getMinutes();
+                                let minutesSinceDoor = (nowH * 60 + nowM) - (doorH * 60 + doorM);
+                                if (minutesSinceDoor < 0) minutesSinceDoor += 1440;
+                                const tnkRemaining = 60 - minutesSinceDoor;
+                                const evtRemaining = 90 - minutesSinceDoor;
+                                return (
+                                  <div className="mt-3 bg-white border border-yellow-200 rounded-lg p-3">
+                                    <p className="text-xs font-semibold text-yellow-800 mb-2">Live Timers (from door time)</p>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-center">
+                                      <div className={`p-2 rounded border ${
+                                        tnkRemaining >= 0 ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'
+                                      }`}>
+                                        <p className="text-xs font-medium">TNK goal (60 min)</p>
+                                        <p className="text-lg font-bold">
+                                          {tnkRemaining >= 0 ? `${tnkRemaining} min left` : `${Math.abs(tnkRemaining)} min over`}
+                                        </p>
+                                      </div>
+                                      <div className={`p-2 rounded border ${
+                                        evtRemaining >= 0 ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'
+                                      }`}>
+                                        <p className="text-xs font-medium">EVT goal (90 min)</p>
+                                        <p className="text-lg font-bold">
+                                          {evtRemaining >= 0 ? `${evtRemaining} min left` : `${Math.abs(evtRemaining)} min over`}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })()}
                             </div>
 
                           </div>
@@ -8289,6 +9591,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   placeholder="Time reviewed"
                                   className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                                 />
+                              </div>
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="text-xs font-medium text-gray-600">CT Results</span>
+                                {renderDictationButton('ctResults', (text) => {
+                                  setTelestrokeNote((prev) => ({
+                                    ...prev,
+                                    ctResults: prev.ctResults ? `${prev.ctResults} ${text}` : text
+                                  }));
+                                })}
                               </div>
                               <textarea
                                 value={telestrokeNote.ctResults}
@@ -8432,6 +9743,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                                 />
                               </div>
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="text-xs font-medium text-gray-600">CTA Results</span>
+                                {renderDictationButton('ctaResults', (text) => {
+                                  setTelestrokeNote((prev) => ({
+                                    ...prev,
+                                    ctaResults: prev.ctaResults ? `${prev.ctaResults} ${text}` : text
+                                  }));
+                                })}
+                              </div>
                               <textarea
                                 value={telestrokeNote.ctaResults}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, ctaResults: e.target.value})}
@@ -8489,7 +9809,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         {/* Section 6: Treatment Decision */}
-                        <div ref={treatmentDecisionRef} className="bg-white border-2 border-orange-300 rounded-lg p-4 shadow-md">
+                        <div id="treatment-decision" ref={treatmentDecisionRef} className="bg-white border-2 border-orange-300 rounded-lg p-4 shadow-md">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-orange-900">6. Treatment Decision</h3>
                             <i data-lucide="zap" className="w-5 h-5 text-orange-600"></i>
@@ -8663,6 +9983,35 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             );
                           })()}
 
+                          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="text-sm font-semibold text-slate-700">Decision Log</h4>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const label = prompt('Decision label (e.g., TNK held, transfer declined)');
+                                  if (!label) return;
+                                  addDecisionLogEntry(label.trim());
+                                }}
+                                className="text-xs font-semibold text-blue-700 hover:text-blue-900"
+                              >
+                                Add timestamp
+                              </button>
+                            </div>
+                            {(telestrokeNote.decisionLog || []).length > 0 ? (
+                              <ul className="space-y-1 text-xs text-slate-700">
+                                {telestrokeNote.decisionLog.slice(0, 6).map((entry) => (
+                                  <li key={entry.id} className="flex items-center justify-between">
+                                    <span className="font-medium">{entry.label}{entry.detail ? ` — ${entry.detail}` : ''}</span>
+                                    <span className="text-slate-500">{entry.time}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <p className="text-xs text-slate-500">No decisions logged yet.</p>
+                            )}
+                          </div>
+
                           <div className="space-y-3">
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-2">Diagnosis</label>
@@ -8738,7 +10087,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               )}
 
                               {/* Active Trials List - Show for Ischemic or ICH */}
-                              {telestrokeNote.diagnosisCategory === 'ischemic' && (
+                              {showAdvanced && telestrokeNote.diagnosisCategory === 'ischemic' && (
                                 <div className="mt-3 text-sm">
                                   <div className="font-medium text-gray-700 mb-1">Active Ischemic Stroke Trials:</div>
                                   <ul className="text-gray-600 space-y-0.5 ml-4">
@@ -8753,7 +10102,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   </ul>
                                 </div>
                               )}
-                              {telestrokeNote.diagnosisCategory === 'ich' && (
+                              {showAdvanced && telestrokeNote.diagnosisCategory === 'ich' && (
                                 <div className="mt-3 text-sm">
                                   <div className="font-medium text-gray-700 mb-1">Active ICH Trials:</div>
                                   <ul className="text-gray-600 space-y-0.5 ml-4">
@@ -8769,6 +10118,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
 
                             {/* Lytic Eligibility Criteria (Collapsible) */}
+                            {showAdvanced && (
                             <details className="bg-green-50 border border-green-200 rounded-lg">
                               <summary className="cursor-pointer p-3 font-semibold text-green-800 hover:bg-green-100 rounded-lg">
                                 ✓ Lytic Eligibility Criteria (Click to expand)
@@ -8801,6 +10151,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 </div>
                               </div>
                             </details>
+                            )}
 
                             {/* ========== TNK CONTRAINDICATIONS ========== */}
                             {(() => {
@@ -8900,7 +10251,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               };
 
                               return (
-                                <details className="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-300 rounded-lg">
+                                <details id="tnk-contraindications" className="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-300 rounded-lg">
                                   <summary className="cursor-pointer p-3 font-semibold text-orange-900 hover:bg-orange-100 rounded-lg flex items-center justify-between">
                                     <span>TNK Contraindications</span>
                                     <span className={'px-3 py-1 rounded-full text-xs font-bold ' + badgeColor}>
@@ -8911,6 +10262,35 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     </span>
                                   </summary>
                                   <div className="p-4 space-y-4">
+                                    {absoluteChecked.length > 0 && (
+                                      <div className="bg-red-50 border border-red-300 rounded-lg p-3 text-sm text-red-800">
+                                        <strong>Absolute contraindications detected.</strong> TNK should not be given unless these are ruled out or overridden.
+                                      </div>
+                                    )}
+                                    {telestrokeNote.tnkRecommended && absoluteChecked.length > 0 && (
+                                      <div className="bg-red-100 border border-red-300 rounded-lg p-3 text-sm text-red-800">
+                                        <strong>Warning:</strong> TNK is marked recommended while absolute contraindications are present.
+                                      </div>
+                                    )}
+                                    <div className="flex flex-wrap items-center justify-between gap-2 bg-white border border-orange-200 rounded-lg px-3 py-2">
+                                      <div className="text-sm text-orange-800">
+                                        <strong>Review status:</strong>{' '}
+                                        {telestrokeNote.tnkContraindicationReviewed
+                                          ? `Reviewed at ${telestrokeNote.tnkContraindicationReviewTime || '—'}`
+                                          : 'Not reviewed'}
+                                      </div>
+                                      <button
+                                        type="button"
+                                        onClick={() => setTelestrokeNote({
+                                          ...telestrokeNote,
+                                          tnkContraindicationReviewed: true,
+                                          tnkContraindicationReviewTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                                        })}
+                                        className="px-3 py-1.5 bg-orange-600 text-white rounded-lg text-xs font-semibold hover:bg-orange-700"
+                                      >
+                                        Mark Reviewed
+                                      </button>
+                                    </div>
                                     <div className="bg-red-100 border border-red-300 rounded-lg p-3">
                                       <h4 className="font-bold text-red-800 mb-3 flex items-center gap-2">
                                         <span className="bg-red-600 text-white px-2 py-0.5 rounded text-xs">ABSOLUTE</span>
@@ -9125,7 +10505,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             )}
 
                             {/* Time Metrics Section - DTN Tracker (Collapsible) */}
-                            <details className="bg-purple-50 border-2 border-purple-300 rounded-lg" open={telestrokeNote.tnkRecommended}>
+                            <details id="time-metrics-section" className="bg-purple-50 border-2 border-purple-300 rounded-lg" open={telestrokeNote.tnkRecommended}>
                               <summary className="cursor-pointer p-3 font-semibold text-purple-800 hover:bg-purple-100 rounded-lg flex items-center justify-between">
                                 <span className="flex items-center gap-2">
                                   <i data-lucide="timer" className="w-4 h-4"></i>
@@ -9426,6 +10806,12 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <div>
                               <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
                                 <label className="block text-sm font-medium text-gray-700">Rationale for Recommendation</label>
+                                {renderDictationButton('rationale', (text) => {
+                                  setTelestrokeNote((prev) => ({
+                                    ...prev,
+                                    rationale: prev.rationale ? `${prev.rationale} ${text}` : text
+                                  }));
+                                })}
                               </div>
                               <textarea
                                 value={telestrokeNote.rationale}
@@ -9439,12 +10825,21 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         {/* Section 7: Recommendations */}
-                        <div className="bg-white border-2 border-teal-300 rounded-lg p-4 shadow-md">
+                        <div id="recommendations-section" className="bg-white border-2 border-teal-300 rounded-lg p-4 shadow-md">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-teal-900">7. Recommendations</h3>
                             <i data-lucide="clipboard-check" className="w-5 h-5 text-teal-600"></i>
                           </div>
                           <div>
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-sm font-medium text-gray-700">Recommendation Summary</span>
+                              {renderDictationButton('recommendationsText', (text) => {
+                                setTelestrokeNote((prev) => ({
+                                  ...prev,
+                                  recommendationsText: prev.recommendationsText ? `${prev.recommendationsText} ${text}` : text
+                                }));
+                              })}
+                            </div>
                             <textarea
                               value={telestrokeNote.recommendationsText}
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, recommendationsText: e.target.value})}
@@ -9519,14 +10914,135 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             {/* OSH Transfer */}
                             <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-gray-700 mb-2">OSH Transfer:</h4>
-                              <ul className="text-sm space-y-1">
-                                <li>• BP treatment target</li>
-                                <li>• AP tx (IS)</li>
-                                <li>• Type of transport</li>
-                                <li>• ETA</li>
-                                <li>• Inform ER/NCCS about acute medical complications or comorbidities, intubation, hemodynamic instability, continuous infusions, and imaging planned on arrival</li>
-                              </ul>
+                              <h4 className="font-semibold text-gray-700 mb-2">Transfer Checklist</h4>
+                              <div className="space-y-2 text-sm">
+                                {[
+                                  { id: 'imagingShared', label: 'Imaging shared with receiving team' },
+                                  { id: 'transferCenterCalled', label: 'Transfer center notified' },
+                                  { id: 'acceptingPhysicianNotified', label: 'Accepting physician notified' },
+                                  { id: 'transportArranged', label: 'Transport arranged' },
+                                  { id: 'etaConfirmed', label: 'ETA confirmed' },
+                                  { id: 'bpGoalsCommunicated', label: 'BP goals communicated' }
+                                ].map((item) => (
+                                  <label key={item.id} className="flex items-center gap-2">
+                                    <input
+                                      type="checkbox"
+                                      checked={telestrokeNote.transferChecklist?.[item.id] || false}
+                                      onChange={(e) => setTelestrokeNote({
+                                        ...telestrokeNote,
+                                        transferChecklist: {
+                                          ...(telestrokeNote.transferChecklist || {}),
+                                          [item.id]: e.target.checked
+                                        }
+                                      })}
+                                      className="w-4 h-4"
+                                    />
+                                    <span>{item.label}</span>
+                                  </label>
+                                ))}
+                              </div>
+                              <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div>
+                                  <label className="block text-xs font-medium text-gray-600 mb-1">Image sharing method</label>
+                                  <select
+                                    value={telestrokeNote.transferImagingShareMethod || ''}
+                                    onChange={(e) => setTelestrokeNote({ ...telestrokeNote, transferImagingShareMethod: e.target.value })}
+                                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                                  >
+                                    <option value="">-- Select --</option>
+                                    <option value="PACS push">PACS push</option>
+                                    <option value="PowerShare">PowerShare</option>
+                                    <option value="LifeImage">LifeImage</option>
+                                    <option value="Cloud link">Cloud link</option>
+                                    <option value="CD/USB">CD/USB</option>
+                                    <option value="Other">Other</option>
+                                  </select>
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-medium text-gray-600 mb-1">Image share link / accession</label>
+                                  <input
+                                    type="text"
+                                    value={telestrokeNote.transferImagingShareLink || ''}
+                                    onChange={(e) => setTelestrokeNote({ ...telestrokeNote, transferImagingShareLink: e.target.value })}
+                                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Link, accession, or ID"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-medium text-gray-600 mb-1">Transport mode</label>
+                                  <select
+                                    value={telestrokeNote.transportMode || ''}
+                                    onChange={(e) => setTelestrokeNote({ ...telestrokeNote, transportMode: e.target.value })}
+                                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                                  >
+                                    <option value="">-- Select --</option>
+                                    <option value="Ground">Ground</option>
+                                    <option value="Air">Air</option>
+                                    <option value="Private">Private</option>
+                                    <option value="Pending">Pending</option>
+                                  </select>
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-medium text-gray-600 mb-1">ETA (time)</label>
+                                  <input
+                                    type="datetime-local"
+                                    value={telestrokeNote.transportEta || ''}
+                                    onChange={(e) => setTelestrokeNote({ ...telestrokeNote, transportEta: e.target.value })}
+                                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                                  />
+                                </div>
+                              </div>
+                              <div className="mt-3">
+                                <label className="block text-xs font-medium text-gray-600 mb-1">Transport notes</label>
+                                <textarea
+                                  value={telestrokeNote.transportNotes || ''}
+                                  onChange={(e) => setTelestrokeNote({ ...telestrokeNote, transportNotes: e.target.value })}
+                                  rows="2"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                                  placeholder="Air/ground contact, staging, or special considerations"
+                                />
+                              </div>
+                              <div className="mt-3">
+                                <label className="block text-xs font-medium text-gray-600 mb-1">Transfer decision note</label>
+                                <textarea
+                                  value={telestrokeNote.transferRationale || ''}
+                                  onChange={(e) => setTelestrokeNote({ ...telestrokeNote, transferRationale: e.target.value })}
+                                  rows="3"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                                  placeholder="Auto-generate or type the transfer decision note..."
+                                />
+                              </div>
+                              <div className="mt-2 flex flex-wrap gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const reason = prompt('Reason for accepting transfer (optional)');
+                                    const note = buildTransferDecisionText('accept', reason || '');
+                                    setTelestrokeNote({ ...telestrokeNote, transferAccepted: true, transferRationale: note });
+                                    navigator.clipboard.writeText(note);
+                                    setCopiedText('transfer-accept');
+                                    setTimeout(() => setCopiedText(''), 2000);
+                                  }}
+                                  className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-semibold hover:bg-green-700"
+                                >
+                                  {copiedText === 'transfer-accept' ? 'Copied!' : 'Accept + copy'}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const reason = prompt('Reason for declining transfer');
+                                    if (!reason) return;
+                                    const note = buildTransferDecisionText('decline', reason);
+                                    setTelestrokeNote({ ...telestrokeNote, transferAccepted: false, transferRationale: note });
+                                    navigator.clipboard.writeText(note);
+                                    setCopiedText('transfer-decline');
+                                    setTimeout(() => setCopiedText(''), 2000);
+                                  }}
+                                  className="px-3 py-2 bg-red-600 text-white rounded-lg text-xs font-semibold hover:bg-red-700"
+                                >
+                                  {copiedText === 'transfer-decline' ? 'Copied!' : 'Decline + copy'}
+                                </button>
+                              </div>
                             </div>
 
                             {/* TNK risk/benefit discussion documentation */}
@@ -9658,7 +11174,7 @@ Clinician Name`);
                       </div>
 
                       {/* RIGHT COLUMN - Live Preview & Tools (1/3 width on desktop, full width on mobile) */}
-                      <div className="lg:col-span-1 space-y-4">
+                      <div className={`${tabletSplitEnabled ? 'md:col-span-1' : 'lg:col-span-1'} space-y-4`}>
 
                         {/* Treatment Window Countdown - Enhanced with Elapsed Timer & Audible Alerts */}
                         {(() => {
@@ -9753,15 +11269,26 @@ Clinician Name`);
                                 totalHours >= 4 && totalHours < 4.5 ? 'urgent-pulse' : ''
                               }`}>
                                 <div className="text-center">
-                                  <p className={`text-xs font-medium ${getTextColor()} opacity-90 uppercase tracking-wide`}>
-                                    Time Elapsed from LKW
-                                  </p>
-                                  <div className="text-4xl font-mono font-bold mt-1 tracking-tight">
-                                    {elapsedHours}h {elapsedMins.toString().padStart(2, '0')}m {elapsedSecs.toString().padStart(2, '0')}s
-                                  </div>
-                                  <p className={`text-xs mt-1 ${getTextColor()} opacity-75`}>
-                                    LKW: {lkwTime ? new Date(lkwTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '--:--'}
-                                  </p>
+                                  {(() => {
+                                    const onsetLabel = timeFromLKW?.label || 'LKW';
+                                    const discoveryTime = getDiscoveryDateTime();
+                                    const onsetTimeDisplay = telestrokeNote.lkwUnknown
+                                      ? (discoveryTime ? discoveryTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--')
+                                      : (lkwTime ? new Date(lkwTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--');
+                                    return (
+                                      <>
+                                        <p className={`text-xs font-medium ${getTextColor()} opacity-90 uppercase tracking-wide`}>
+                                          Time Elapsed from {onsetLabel}
+                                        </p>
+                                        <div className="text-4xl font-mono font-bold mt-1 tracking-tight">
+                                          {elapsedHours}h {elapsedMins.toString().padStart(2, '0')}m {elapsedSecs.toString().padStart(2, '0')}s
+                                        </div>
+                                        <p className={`text-xs mt-1 ${getTextColor()} opacity-75`}>
+                                          {onsetLabel}: {onsetTimeDisplay}
+                                        </p>
+                                      </>
+                                    );
+                                  })()}
                                 </div>
 
                                 {/* Countdown to TNK window closure */}
@@ -10119,6 +11646,313 @@ Clinician Name`);
                     </div>
                     </>
                     )}
+                    <div id="handoff-section" className="bg-white border-2 border-slate-200 rounded-lg p-4 shadow-sm">
+                      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                        <div>
+                          <p className="text-xs uppercase tracking-wide text-slate-500 font-semibold">Handoff Summary</p>
+                          <p className="text-sm text-slate-600">Phone-friendly snapshot for rapid sign-out.</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const summary = buildHandoffSummary();
+                            navigator.clipboard.writeText(summary);
+                            setCopiedText('handoff-summary');
+                            setTimeout(() => setCopiedText(''), 2000);
+                          }}
+                          className="px-3 py-2 bg-slate-900 text-white rounded-lg text-xs font-semibold hover:bg-slate-800"
+                        >
+                          {copiedText === 'handoff-summary' ? 'Copied!' : 'Copy handoff'}
+                        </button>
+                      </div>
+                      {(() => {
+                        const fields = getHandoffSummaryFields();
+                        const cards = [
+                          { label: 'Dx', value: fields.diagnosis },
+                          { label: 'Age/Sex', value: `${fields.age} ${fields.sex}`.trim() },
+                          { label: fields.onsetLabel, value: `${fields.onsetTime}${fields.elapsed && fields.elapsed !== 'Unknown' ? ` (${fields.elapsed})` : ''}` },
+                          { label: 'NIHSS', value: `${fields.nihss}${fields.nihssDetails ? ` (${fields.nihssDetails})` : ''}` },
+                          { label: 'Imaging', value: fields.imagingSummary },
+                          { label: 'Plan', value: `${fields.tnkStatus}; ${fields.evtStatus}` }
+                        ];
+                        if (fields.disposition) {
+                          cards.push({ label: 'Disposition', value: fields.disposition });
+                        }
+                        if (fields.transferStatus || fields.transportDetails) {
+                          const transferValue = [
+                            fields.transferStatus,
+                            fields.transportDetails ? `Transport: ${fields.transportDetails}` : ''
+                          ].filter(Boolean).join(' | ');
+                          cards.push({ label: 'Transfer', value: transferValue });
+                        }
+                        if (fields.imagingShare) {
+                          cards.push({ label: 'Imaging share', value: fields.imagingShare });
+                        }
+                        return (
+                          <>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              {cards.map((card) => (
+                                <div key={card.label} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                                  <p className="text-[11px] uppercase tracking-wide text-slate-500">{card.label}</p>
+                                  <p className="text-sm font-semibold text-slate-900">{card.value || '--'}</p>
+                                </div>
+                              ))}
+                            </div>
+                            <details className="mt-3 bg-slate-50 border border-slate-200 rounded-lg">
+                              <summary className="cursor-pointer px-3 py-2 text-xs font-semibold text-slate-700">Full handoff text</summary>
+                              <div className="px-3 pb-3">
+                                <pre className="whitespace-pre-wrap text-xs text-slate-700">{buildHandoffSummary()}</pre>
+                              </div>
+                            </details>
+                          </>
+                        );
+                      })()}
+                    </div>
+
+                    <details id="safety-section" className="bg-white border border-slate-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
+                        <span>Safety checks</span>
+                        <span className="text-xs text-slate-500">{safetyChecksCompleted}/{safetyChecks.length} complete</span>
+                      </summary>
+                      <div className="p-4 space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          {safetyChecks.map((check) => (
+                            <div key={check.id} className={`flex items-center gap-2 p-2 rounded-lg border ${
+                              check.complete ? 'bg-green-50 border-green-200 text-green-800' : 'bg-amber-50 border-amber-200 text-amber-800'
+                            }`}>
+                              <span className="text-xs font-bold">{check.complete ? '✓' : '!'}</span>
+                              <span className="text-sm">{check.label}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <div>
+                          <p className="text-xs uppercase tracking-wide text-slate-500 font-semibold">Common pitfalls</p>
+                          <ul className="text-sm text-slate-700 space-y-1 mt-2">
+                            <li>• Confirm onset vs discovery time before finalizing window eligibility.</li>
+                            <li>• Verify weight and BP control before TNK dosing.</li>
+                            <li>• Recheck glucose and anticoagulant timing if presentation is atypical.</li>
+                            <li>• Document CTA/CTP impressions or explicitly note if not obtained.</li>
+                            <li>• Capture consent discussion and contraindication review timing.</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </details>
+
+                    {(showAdvanced || telestrokeNote.diagnosisCategory === 'mimic') && (
+                      <details className="bg-white border border-slate-200 rounded-lg">
+                        <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
+                          <span>Stroke mimic FAQ</span>
+                          <span className="text-xs text-slate-500">Quick differentiators</span>
+                        </summary>
+                        <div className="p-4 space-y-3 text-sm text-slate-700">
+                          {[
+                            { q: 'When should I suspect a mimic?', a: 'Rapidly resolving deficits, inconsistent exam, or normal imaging despite severe symptoms.' },
+                            { q: 'Seizure vs stroke?', a: 'Consider Todd paralysis if witnessed seizure, postictal confusion, or EEG support.' },
+                            { q: 'Migraine vs stroke?', a: 'Positive visual/aura symptoms and headache history favor migraine; deficits often march.' },
+                            { q: 'Metabolic causes?', a: 'Check glucose, electrolytes, and intoxication if symptoms are diffuse or fluctuating.' },
+                            { q: 'Functional symptoms?', a: 'Look for incongruent weakness patterns, Hoover sign, or variability with distraction.' }
+                          ].map((item) => (
+                            <div key={item.q} className="border border-slate-200 rounded-lg p-3 bg-slate-50">
+                              <p className="font-semibold text-slate-800">{item.q}</p>
+                              <p className="mt-1">{item.a}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </details>
+                    )}
+
+                    <details id="case-log-section" className="bg-white border border-slate-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
+                        <span>Case log & performance</span>
+                        <span className="text-xs text-slate-500">{caseLog.length} logged</span>
+                      </summary>
+                      <div className="p-4 space-y-4">
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            onClick={saveEncounterToCaseLog}
+                            className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700"
+                          >
+                            Save current case
+                          </button>
+                          <button
+                            type="button"
+                            onClick={exportCaseLogCsv}
+                            className="px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                          >
+                            Export CSV
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => exportCaseLogJson('subset')}
+                            className="px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                          >
+                            Export JSON
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                            <p className="text-xs uppercase tracking-wide text-slate-500">Total cases</p>
+                            <p className="text-2xl font-bold text-slate-900">{caseLog.length}</p>
+                          </div>
+                          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                            <p className="text-xs uppercase tracking-wide text-slate-500">Median door-to-CT</p>
+                            <p className="text-2xl font-bold text-slate-900">
+                              {caseLogAnalytics.medians.doorToCT !== null ? `${caseLogAnalytics.medians.doorToCT} min` : '--'}
+                            </p>
+                          </div>
+                          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                            <p className="text-xs uppercase tracking-wide text-slate-500">Median door-to-needle</p>
+                            <p className="text-2xl font-bold text-slate-900">
+                              {caseLogAnalytics.medians.doorToNeedle !== null ? `${caseLogAnalytics.medians.doorToNeedle} min` : '--'}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                          <p className="text-xs uppercase tracking-wide text-slate-500 font-semibold mb-2">Monthly trend</p>
+                          {(() => {
+                            const months = Object.keys(caseLogAnalytics.byMonth || {}).sort();
+                            if (!months.length) {
+                              return <p className="text-sm text-slate-500">No case log data yet.</p>;
+                            }
+                            const maxTotal = Math.max(...months.map((month) => caseLogAnalytics.byMonth[month].total), 1);
+                            return (
+                              <div className="space-y-2">
+                                {months.map((month) => {
+                                  const stats = caseLogAnalytics.byMonth[month];
+                                  const width = Math.round((stats.total / maxTotal) * 100);
+                                  return (
+                                    <div key={month} className="flex items-center gap-2 text-xs text-slate-600">
+                                      <span className="w-16">{month}</span>
+                                      <div className="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
+                                        <div className="h-2 bg-blue-500 rounded-full" style={{ width: `${width}%` }}></div>
+                                      </div>
+                                      <span className="w-10 text-right">{stats.total}</span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            );
+                          })()}
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="bg-white border border-slate-200 rounded-lg p-3">
+                            <p className="text-xs uppercase tracking-wide text-slate-500 font-semibold mb-2">Recent cases</p>
+                            {caseLog.length === 0 ? (
+                              <p className="text-sm text-slate-500">No cases logged yet.</p>
+                            ) : (
+                              <ul className="space-y-2 text-sm text-slate-700">
+                                {caseLog.slice(0, 5).map((entry) => (
+                                  <li key={entry.id} className="flex items-center justify-between gap-2">
+                                    <span className="font-medium">{entry.caseType || 'Case'} • NIHSS {entry.nihss || '--'}</span>
+                                    <span className="text-xs text-slate-500">{entry.createdAt ? entry.createdAt.slice(0, 10) : ''}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                          <div className="bg-white border border-slate-200 rounded-lg p-3">
+                            <p className="text-xs uppercase tracking-wide text-slate-500 font-semibold mb-2">Quick add</p>
+                            <div className="space-y-2">
+                              <div className="grid grid-cols-2 gap-2">
+                                <select
+                                  value={caseLogDraft.caseType}
+                                  onChange={(e) => setCaseLogDraft({ ...caseLogDraft, caseType: e.target.value })}
+                                  className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm"
+                                >
+                                  <option value="AIS">AIS</option>
+                                  <option value="ICH">ICH</option>
+                                  <option value="TIA">TIA</option>
+                                  <option value="other">Other</option>
+                                </select>
+                                <input
+                                  type="number"
+                                  value={caseLogDraft.nihss}
+                                  onChange={(e) => setCaseLogDraft({ ...caseLogDraft, nihss: e.target.value })}
+                                  placeholder="NIHSS"
+                                  className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm"
+                                />
+                              </div>
+                              <div className="grid grid-cols-2 gap-2">
+                                <select
+                                  value={caseLogDraft.thrombolysis}
+                                  onChange={(e) => setCaseLogDraft({ ...caseLogDraft, thrombolysis: e.target.value })}
+                                  className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm"
+                                >
+                                  <option value="none">No lytics</option>
+                                  <option value="TNK">TNK</option>
+                                  <option value="tPA">tPA</option>
+                                </select>
+                                <select
+                                  value={caseLogDraft.evt}
+                                  onChange={(e) => setCaseLogDraft({ ...caseLogDraft, evt: e.target.value })}
+                                  className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm"
+                                >
+                                  <option value="no">EVT: no</option>
+                                  <option value="yes">EVT: yes</option>
+                                </select>
+                              </div>
+                              <input
+                                type="text"
+                                value={caseLogDraft.tagsText}
+                                onChange={(e) => setCaseLogDraft({ ...caseLogDraft, tagsText: e.target.value })}
+                                placeholder="Tags (optional)"
+                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm"
+                              />
+                              <button
+                                type="button"
+                                onClick={saveCaseLogDraft}
+                                className="w-full px-3 py-2 bg-slate-900 text-white rounded-lg text-xs font-semibold hover:bg-slate-800"
+                              >
+                                Add to case log
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </details>
+
+                    <details id="feedback-section" className="bg-white border border-slate-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
+                        <span>Feedback & ideas</span>
+                        <span className="text-xs text-slate-500">Copy payload</span>
+                      </summary>
+                      <div className="p-4 space-y-3">
+                        <textarea
+                          value={feedbackDraft.message}
+                          onChange={(e) => setFeedbackDraft({ ...feedbackDraft, message: e.target.value })}
+                          rows="4"
+                          placeholder="What's missing, confusing, or slowing you down?"
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                        />
+                        <label className="flex items-center gap-2 text-xs text-slate-600">
+                          <input
+                            type="checkbox"
+                            checked={feedbackDraft.includeCaseContext}
+                            onChange={(e) => setFeedbackDraft({ ...feedbackDraft, includeCaseContext: e.target.checked })}
+                            className="w-4 h-4"
+                          />
+                          Include case context (no identifiers)
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const payload = buildFeedbackPayload();
+                              navigator.clipboard.writeText(payload);
+                              setCopiedText('feedback');
+                              setTimeout(() => setCopiedText(''), 2000);
+                            }}
+                            className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700"
+                          >
+                            {copiedText === 'feedback' ? 'Copied!' : 'Copy feedback'}
+                          </button>
+                        </div>
+                        <pre className="whitespace-pre-wrap text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded-lg p-3">
+                          {buildFeedbackPayload()}
+                        </pre>
+                      </div>
+                    </details>
                   </div>
                 )}
                 {/* Workflow */}
@@ -12830,81 +14664,31 @@ Clinician Name`);
                     </button>
                   </div>
                   <div className="divide-y divide-gray-100">
-                    {/* Stroke Team */}
-                    <a
-                      href="tel:+12067446789"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-colors"
-                      onClick={() => setFabExpanded(false)}
-                    >
-                      <div className="bg-red-100 rounded-full p-2">
-                        <i data-lucide="phone" className="w-5 h-5 text-red-600"></i>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900 text-sm">Stroke Phone</div>
-                        <div className="text-xs text-gray-500">206-744-6789</div>
-                      </div>
-                      <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
-                    </a>
-                    {/* Pharmacy */}
-                    <a
-                      href="tel:+12067442241"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition-colors"
-                      onClick={() => setFabExpanded(false)}
-                    >
-                      <div className="bg-orange-100 rounded-full p-2">
-                        <i data-lucide="pill" className="w-5 h-5 text-orange-600"></i>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900 text-sm">STAT Pharmacy</div>
-                        <div className="text-xs text-gray-500">206-744-2241</div>
-                      </div>
-                      <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
-                    </a>
-                    {/* Neuroradiology */}
-                    <a
-                      href="tel:+12067448484"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors"
-                      onClick={() => setFabExpanded(false)}
-                    >
-                      <div className="bg-blue-100 rounded-full p-2">
-                        <i data-lucide="scan" className="w-5 h-5 text-blue-600"></i>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900 text-sm">Stroke RAD Hotline</div>
-                        <div className="text-xs text-gray-500">206-744-8484 (Weekdays 8-5)</div>
-                      </div>
-                      <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
-                    </a>
-                    {/* Angio Suite */}
-                    <a
-                      href="tel:+12067443381"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-purple-50 transition-colors"
-                      onClick={() => setFabExpanded(false)}
-                    >
-                      <div className="bg-purple-100 rounded-full p-2">
-                        <i data-lucide="activity" className="w-5 h-5 text-purple-600"></i>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900 text-sm">Angio Suite</div>
-                        <div className="text-xs text-gray-500">206-744-3381</div>
-                      </div>
-                      <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
-                    </a>
-                    {/* STAT CT */}
-                    <a
-                      href="tel:+12067447290"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-green-50 transition-colors"
-                      onClick={() => setFabExpanded(false)}
-                    >
-                      <div className="bg-green-100 rounded-full p-2">
-                        <i data-lucide="circle-dot" className="w-5 h-5 text-green-600"></i>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900 text-sm">STAT CT</div>
-                        <div className="text-xs text-gray-500">206-744-7290</div>
-                      </div>
-                      <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
-                    </a>
+                    {quickContacts.map((contact) => {
+                      const rawPhone = contact.phone || '';
+                      const digits = rawPhone.replace(/[^\d+]/g, '');
+                      const telHref = digits ? `tel:${digits.startsWith('+') ? digits : `+1${digits}`}` : '#';
+                      return (
+                        <a
+                          key={contact.id || contact.label}
+                          href={telHref}
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-colors"
+                          onClick={() => setFabExpanded(false)}
+                        >
+                          <div className="bg-red-100 rounded-full p-2">
+                            <i data-lucide="phone" className="w-5 h-5 text-red-600"></i>
+                          </div>
+                          <div>
+                            <div className="font-semibold text-gray-900 text-sm">{contact.label || 'Contact'}</div>
+                            <div className="text-xs text-gray-500">
+                              {contact.phone || 'Add phone'}
+                              {contact.note ? ` (${contact.note})` : ''}
+                            </div>
+                          </div>
+                          <i data-lucide="external-link" className="w-4 h-4 text-gray-400 ml-auto"></i>
+                        </a>
+                      );
+                    })}
                   </div>
                   <div className="bg-gray-50 px-4 py-2 text-xs text-gray-500 text-center">
                     Tap number to call directly
