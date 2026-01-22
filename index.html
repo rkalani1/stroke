@@ -1835,6 +1835,7 @@ Clinician Name`;
             sah: false
           }));
           const [trialsCategory, setTrialsCategory] = useState('ischemic');
+          const [toolLoadErrors, setToolLoadErrors] = useState({ clinic: false, map: false });
 
           const [strokeCodeForm, setStrokeCodeForm] = useState(loadFromStorage('strokeCodeForm', getDefaultStrokeCodeForm()));
           const [aspectsRegionState, setAspectsRegionState] = useState(loadFromStorage('aspectsRegionState', getDefaultAspectsRegionState()));
