@@ -6176,17 +6176,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </div>
 
                     <div className="flex w-full flex-wrap items-center justify-center gap-2 sm:w-auto sm:justify-end">
-                      {showEncounterActions && (
-                        <button
-                          onClick={resetAllData}
-                          className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-                          aria-label="Start new patient assessment"
-                          title="Clear all data and start new patient"
-                        >
-                          <i data-lucide="user-plus" className="w-4 h-4"></i>
-                          <span className="hidden lg:inline">New Patient</span>
-                        </button>
-                      )}
+                      <button
+                        onClick={startNewPatient}
+                        className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                        aria-label="Start new case"
+                        title="Start a new case (clears current inputs)"
+                      >
+                        <i data-lucide="user-plus" className="w-4 h-4"></i>
+                        <span className="hidden lg:inline">Start Case</span>
+                      </button>
 
                       <div className="hidden sm:flex items-center gap-2">
                         {showDocumentActions && (
