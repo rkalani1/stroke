@@ -4689,9 +4689,14 @@ Clinician Name`;
 
           const scrollToSection = (id) => {
             const target = document.getElementById(id);
-            if (target) {
-              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (!target) return;
+            const headerOffset = 24;
+            const top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+            window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+            if (!target.hasAttribute('tabindex')) {
+              target.setAttribute('tabindex', '-1');
             }
+            target.focus({ preventScroll: true });
           };
 
           const getNextBestAction = () => {
