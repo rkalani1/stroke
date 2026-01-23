@@ -10873,16 +10873,6 @@ Clinician Name`);
                             </div>
                           ))}
                         </div>
-                        <div>
-                          <p className="text-xs uppercase tracking-wide text-slate-500 font-semibold">Common pitfalls</p>
-                          <ul className="text-sm text-slate-700 space-y-1 mt-2">
-                            <li>• Confirm onset vs discovery time before finalizing window eligibility.</li>
-                            <li>• Verify weight and BP control before TNK dosing.</li>
-                            <li>• Recheck glucose and anticoagulant timing if presentation is atypical.</li>
-                            <li>• Document CTA/CTP impressions or explicitly note if not obtained.</li>
-                            <li>• Capture consent discussion and contraindication review timing.</li>
-                          </ul>
-                        </div>
                       </div>
                     </details>
 
