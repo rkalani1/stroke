@@ -6406,8 +6406,10 @@ Clinician Name`;
           // Load optional local config (ignored if missing)
           useEffect(() => {
             let cancelled = false;
+            const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+            const configUrl = isLocalhost ? 'config.local.json' : 'config.example.json';
 
-            fetch('config.local.json', { cache: 'no-store' })
+            fetch(configUrl, { cache: 'no-store' })
               .then((response) => {
                 if (response.status === 404) {
                   if (!cancelled) {
