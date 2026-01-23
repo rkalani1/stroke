@@ -10115,60 +10115,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             {/* OSH Transfer */}
                             <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-gray-700 mb-2">Transfer Checklist</h4>
-                              <div className="space-y-2 text-sm">
-                                {[
-                                  { id: 'imagingShared', label: 'Imaging shared with receiving team' },
-                                  { id: 'transferCenterCalled', label: 'Transfer center notified' },
-                                  { id: 'acceptingPhysicianNotified', label: 'Accepting physician notified' },
-                                  { id: 'transportArranged', label: 'Transport arranged' },
-                                  { id: 'etaConfirmed', label: 'ETA confirmed' },
-                                  { id: 'bpGoalsCommunicated', label: 'BP goals communicated' }
-                                ].map((item) => (
-                                  <label key={item.id} className="flex items-center gap-2">
-                                    <input
-                                      type="checkbox"
-                                      checked={telestrokeNote.transferChecklist?.[item.id] || false}
-                                      onChange={(e) => setTelestrokeNote({
-                                        ...telestrokeNote,
-                                        transferChecklist: {
-                                          ...(telestrokeNote.transferChecklist || {}),
-                                          [item.id]: e.target.checked
-                                        }
-                                      })}
-                                      className="w-4 h-4"
-                                    />
-                                    <span>{item.label}</span>
-                                  </label>
-                                ))}
-                              </div>
-                              <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <div>
-                                  <label className="block text-xs font-medium text-gray-600 mb-1">Image sharing method</label>
-                                  <select
-                                    value={telestrokeNote.transferImagingShareMethod || ''}
-                                    onChange={(e) => setTelestrokeNote({ ...telestrokeNote, transferImagingShareMethod: e.target.value })}
-                                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
-                                  >
-                                    <option value="">-- Select --</option>
-                                    <option value="PACS push">PACS push</option>
-                                    <option value="PowerShare">PowerShare</option>
-                                    <option value="LifeImage">LifeImage</option>
-                                    <option value="Cloud link">Cloud link</option>
-                                    <option value="CD/USB">CD/USB</option>
-                                    <option value="Other">Other</option>
-                                  </select>
-                                </div>
-                                <div>
-                                  <label className="block text-xs font-medium text-gray-600 mb-1">Image share link / accession</label>
-                                  <input
-                                    type="text"
-                                    value={telestrokeNote.transferImagingShareLink || ''}
-                                    onChange={(e) => setTelestrokeNote({ ...telestrokeNote, transferImagingShareLink: e.target.value })}
-                                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Link, accession, or ID"
-                                  />
-                                </div>
+                              <h4 className="font-semibold text-gray-700 mb-2">Transfer</h4>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
                                   <label className="block text-xs font-medium text-gray-600 mb-1">Transport mode</label>
                                   <select
