@@ -4913,6 +4913,7 @@ Clinician Name`;
               { title: 'DAPT After Ischemic Stroke-TIA', section: 'Antiplatelet Therapy', keywords: ['dapt', 'antiplatelet', 'duration', 'ischemic stroke', 'tia', 'sammpris', 'chance', 'point', 'thales', 'inspires', 'icad'] },
               { title: 'Timing of Anticoagulation after AF-Related Stroke', section: 'Risk Factors', keywords: ['anticoagulation', 'atrial fibrillation', 'afib', 'timing'] },
               { title: 'Atrial Fibrillation & Secondary Stroke Prevention', section: 'Risk Factors', keywords: ['afib', 'atrial fibrillation', 'prevention'] },
+              { title: 'AFib Stroke Epidemiology', section: 'Risk Factors', keywords: ['afib', 'atrial fibrillation', 'epidemiology', 'stroke', 'epi'] },
               { title: 'Diabetes and stroke', section: 'Risk Factors', keywords: ['diabetes', 'risk factor', 'dm'] },
               { title: 'Lipids and Cerebrovascular Disease', section: 'Risk Factors', keywords: ['lipids', 'cholesterol', 'statins', 'ldl'] },
               { title: 'WAKE-UP Trial', section: 'Thrombolytic Therapy', keywords: ['wake-up', 'thrombolysis', 'tpa', 'alteplase', 'mri'] },
@@ -13139,7 +13140,7 @@ Clinician Name`);
                     )}
 
                     {/* Risk Factors Section */}
-                    {evidenceSectionMatches('Risk Factors', ['Timing of Anticoagulation after AF-Related Stroke', 'Atrial Fibrillation & Secondary Stroke Prevention', 'Diabetes and stroke', 'Lipids and Cerebrovascular Disease']) && (
+                    {evidenceSectionMatches('Risk Factors', ['Timing of Anticoagulation after AF-Related Stroke', 'Atrial Fibrillation & Secondary Stroke Prevention', 'AFib Stroke Epidemiology', 'Diabetes and stroke', 'Lipids and Cerebrovascular Disease']) && (
                     <details className="bg-white border border-gray-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-gray-800 hover:bg-gray-50 rounded-lg flex items-center justify-between text-lg">
                         <span>Risk Factors</span>
@@ -13268,6 +13269,44 @@ Clinician Name`);
                                   <i data-lucide="external-link" className="w-4 h-4"></i>
                                   Open Link
                                 </a>
+                              </div>
+                            </div>
+
+                            {/* Document 5 - AFib Stroke Epidemiology Presentation */}
+                            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                              <div className="flex items-center gap-3 flex-1">
+                                <i data-lucide="presentation" className="w-6 h-6 text-orange-600"></i>
+                                <div className="flex-1">
+                                  <h5 className="text-sm font-medium text-gray-900">AFib Stroke Epidemiology</h5>
+                                  <p className="text-xs text-gray-500">PowerPoint Presentation</p>
+                                </div>
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                <a
+                                  href="documents/afib/AFib stroke Epi519_1.27.26.pptx"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
+                                >
+                                  <i data-lucide="eye" className="w-4 h-4"></i>
+                                  View
+                                </a>
+                                <a
+                                  href="documents/afib/AFib stroke Epi519_1.27.26.pptx"
+                                  download
+                                  className="px-3 py-2 bg-gray-600 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors flex items-center gap-1"
+                                >
+                                  <i data-lucide="download" className="w-4 h-4"></i>
+                                  Download
+                                </a>
+                                <button
+                                  onClick={() => emailDocument('AFib Stroke Epidemiology', 'documents/afib/AFib stroke Epi519_1.27.26.pptx')}
+                                  className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                                  title="Email this document"
+                                >
+                                  <i data-lucide="mail" className="w-4 h-4"></i>
+                                  Email
+                                </button>
                               </div>
                             </div>
                           </div>
