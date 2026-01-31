@@ -209,6 +209,7 @@
           }
         };
 
+
         const importJSON = (file) => {
           return new Promise((resolve, reject) => {
             if (!file) {
@@ -292,28 +293,20 @@
             deidMode: true,
             allowFreeTextStorage: false,
             ttlHoursOverride: null,
-
             defaultConsultationType: 'videoTelestroke',
-
-
             contacts: DEFAULT_CONTACTS,
-
           });
 
         const getDefaultAppData = () => ({
           schemaVersion: APP_DATA_SCHEMA_VERSION,
           settings: getDefaultSettings(),
-
           shiftBoards: [],
-
-
           uiState: {
             lastActiveTab: 'encounter',
             lastShiftBoardId: null,
             lastManagementSubTab: 'ich',
             legacyMigratedAt: null,
             searchHighlightId: null,
-
           },
           encounter: {
             clipboardPacks: getDefaultClipboardPacks(),
@@ -330,10 +323,7 @@
             encounter: { ...base.encounter, ...(incoming && incoming.encounter ? incoming.encounter : {}) }
           };
           delete merged.pinnedReferences;
-
           merged.shiftBoards = ensureArray(merged.shiftBoards, []);
-
-
           merged.encounter.clipboardPacks = ensureArray(merged.encounter.clipboardPacks, getDefaultClipboardPacks());
           return merged;
         };
@@ -844,7 +834,6 @@ Clinician Name`;
             return window.innerWidth < 640;
           });
           const [showAdvanced, setShowAdvanced] = useState(() => getKey('showAdvanced', false) === true);
-
           const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null });
           const [configLoaded, setConfigLoaded] = useState(false);
           const [ttlHours, setTtlHours] = useState(settings.ttlHoursOverride || DEFAULT_TTL_HOURS);
@@ -858,7 +847,6 @@ Clinician Name`;
           const [isCalculating, setIsCalculating] = useState(false);
           const [copiedText, setCopiedText] = useState('');
           const [isMounted, setIsMounted] = useState(false);
-
           const [editableTemplate, setEditableTemplate] = useState(loadFromStorage('telestrokeTemplate', defaultTelestrokeTemplate));
 
           // Time tracking
@@ -919,22 +907,20 @@ Clinician Name`;
           // Emergency Contacts FAB state
           const [fabExpanded, setFabExpanded] = useState(false);
 
+          const [selectedPackId, setSelectedPackId] = useState(appData.encounter.clipboardPacks?.[0]?.id || 'telestroke-consult');
+          const [shiftFilterDueToday, setShiftFilterDueToday] = useState(false);
+          const [shiftFilterPendingOnly, setShiftFilterPendingOnly] = useState(false);
+          const [showArchivedBoards, setShowArchivedBoards] = useState(false);
+          const [shiftDrafts, setShiftDrafts] = useState({});
 
           const shiftBoards = appData.shiftBoards || [];
-
-
+          const clipboardPacks = appData.encounter.clipboardPacks || getDefaultClipboardPacks();
           const activeShiftBoardId = appData.uiState.lastShiftBoardId || (shiftBoards[0] ? shiftBoards[0].id : null);
           const activeShiftBoard = shiftBoards.find((board) => board.id === activeShiftBoardId) || null;
 
-          const clipboardPacks = appData.encounter?.clipboardPacks || getDefaultClipboardPacks();
-          const [selectedPackId, setSelectedPackId] = useState(clipboardPacks[0]?.id || 'telestroke-consult');
-
           // Ref and state for Part 6 (Treatment Decision) scroll visibility
           const treatmentDecisionRef = useRef(null);
-
           const backupImportRef = useRef(null);
-
-
           const decisionStateRef = useRef({
             tnkRecommended: false,
             evtRecommended: false,
@@ -943,7 +929,6 @@ Clinician Name`;
             tnkConsentDiscussed: false,
             tnkAdminTime: ''
           });
-
 
           const [gcsItems, setGcsItems] = useState(loadFromStorage('gcsItems', {
             eye: '',
@@ -3216,11 +3201,6 @@ Clinician Name`;
             return text.trim();
           };
 
-          const normalizeTags = (text) => {
-            if (!text) return [];
-            return text.split(',').map((tag) => tag.trim()).filter(Boolean);
-          };
-
 
           // Persist shift patients to localStorage
           React.useEffect(() => {
@@ -3376,6 +3356,7 @@ Clinician Name`;
             }));
           };
 
+
           const addDecisionLogEntry = (label, detail = '') => {
             const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
             setTelestrokeNote((prev) => ({
@@ -3396,12 +3377,10 @@ Clinician Name`;
           };
 
 
-            updateSettings({ quickLinks: links });
-
-
           const updateContacts = (contacts) => {
             updateSettings({ contacts });
           };
+
 
           const applyRolePreset = (role) => {
             const preset = rolePresets[role];
@@ -4732,6 +4711,7 @@ Clinician Name`;
             setTrialEligibility(results);
           }, [telestrokeNote, strokeCodeForm, aspectsScore, nihssScore, mrsScore, lkwTime]);
 
+          // Monitor scroll position for Part 6 (Treatment Decision) visibility
 
           // Monitor critical alerts
           useEffect(() => {
@@ -4809,22 +4789,6 @@ Clinician Name`;
             });
             setDeidWarnings(nextWarnings);
           }, [settings.deidMode, telestrokeNote, strokeCodeForm]);
-
-          useEffect(() => {
-            const highlightId = appData.uiState.searchHighlightId;
-            if (!highlightId) return;
-            const element = document.getElementById(highlightId);
-            if (element) {
-              element.classList.add('highlight-pulse');
-              element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              const timer = setTimeout(() => {
-                element.classList.remove('highlight-pulse');
-                setSearchHighlight(null);
-              }, 1800);
-              return () => clearTimeout(timer);
-            }
-            return undefined;
-          }, [appData.uiState.searchHighlightId, activeTab, managementSubTab]);
 
 
           useEffect(() => {
@@ -5231,7 +5195,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
             { id: 'recommendations-section', label: 'Recommendations' },
             { id: 'handoff-section', label: 'Handoff' },
             { id: 'safety-section', label: 'Safety' },
-
           ];
           const roleOptions = [
             { value: 'consult', label: 'Consult' },
@@ -5247,9 +5210,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
             icu: { consultationType: 'telephone', showAdvanced: true },
             transfer: { consultationType: 'videoTelestroke', showAdvanced: true }
           };
-
           const timeFromLKW = calculateTimeFromLKW();
-
           const safetyChecks = getSafetyChecks();
           const safetyChecksCompleted = safetyChecks.filter((item) => item.complete).length;
           const windowStatus = telestrokeNote.lkwUnknown
@@ -5686,6 +5647,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                 </div>
               )}
 
+
               {/* Critical Alerts Banner */}
               {criticalAlerts.length > 0 && (
                 <div className="mb-4 space-y-2" role="alert" aria-live="assertive" aria-atomic="true">
@@ -5821,6 +5783,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
                       );
                     })()}
+
+
                     {quickLinks.length > 0 && (
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-3">
