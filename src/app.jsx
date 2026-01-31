@@ -3292,14 +3292,12 @@ Clinician Name`;
             setTimerSidebarCollapsed(window.innerWidth < 1024);
             setTelestrokeNote(getDefaultTelestrokeNote());
             setEditableTemplate(defaultTelestrokeTemplate);
-            setShowTemplateEditor(false);
             setSearchQuery('');
             setSearchResults([]);
             setSearchOpen(false);
             setSearchContext('header');
             setEvidenceFilter('');
             setShowKeyboardHelp(false);
-            setShowSmartPhrases(false);
             setCopiedText('');
             setShowSuccess(false);
             setIsCalculating(false);
@@ -4734,25 +4732,6 @@ Clinician Name`;
             setTrialEligibility(results);
           }, [telestrokeNote, strokeCodeForm, aspectsScore, nihssScore, mrsScore, lkwTime]);
 
-          // Monitor scroll position for Part 6 (Treatment Decision) visibility
-          useEffect(() => {
-            const handleScroll = () => {
-              if (treatmentDecisionRef.current && activeTab === 'encounter') {
-                const rect = treatmentDecisionRef.current.getBoundingClientRect();
-                // Show smart phrases when Part 6 is at or above 80% of viewport height from top
-                const isVisible = rect.top <= window.innerHeight * 0.8;
-                setShowSmartPhrases(isVisible);
-              } else {
-                setShowSmartPhrases(false);
-              }
-            };
-
-            window.addEventListener('scroll', handleScroll);
-            // Initial check
-            handleScroll();
-
-            return () => window.removeEventListener('scroll', handleScroll);
-          }, [activeTab]);
 
           // Monitor critical alerts
           useEffect(() => {
@@ -4875,10 +4854,6 @@ Clinician Name`;
             setSelectedPackId(clipboardPacks[0]?.id || 'telestroke-consult');
           }, [clipboardPacks, selectedPackId]);
 
-          useEffect(() => {
-            if (!settings.preferredRole) return;
-            setCaseLogDraft((prev) => ({ ...prev, role: settings.preferredRole }));
-          }, [settings.preferredRole]);
 
           // Keep mobile bottom nav offset in sync so content isn't obscured
           useEffect(() => {
