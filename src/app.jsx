@@ -757,7 +757,11 @@ Clinician Name`;
               therapies: false,
               dvtPpx: false,
               neuroConsult: false
-            }
+            },
+            // Phase 2: Guided Clinical Pathway fields
+            ichBPManaged: false,
+            ichReversalOrdered: false,
+            ichNeurosurgeryConsulted: false
           });
 
           // Load saved data from localStorage with validation
@@ -833,6 +837,9 @@ Clinician Name`;
             if (saved !== null && saved !== undefined) return saved === true;
             return window.innerWidth < 640;
           });
+          // Phase 2: Guided Clinical Pathway UI state
+          const [pathwayCollapsed, setPathwayCollapsed] = useState(false);
+          const [guidelineRecsExpanded, setGuidelineRecsExpanded] = useState(false);
           const [showAdvanced, setShowAdvanced] = useState(() => getKey('showAdvanced', false) === true);
           const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null });
           const [configLoaded, setConfigLoaded] = useState(false);
@@ -2017,6 +2024,589 @@ Clinician Name`;
                 { id: 'preDementia', label: 'Pre-existing dementia', field: 'preDementia' }
               ]
             }
+          };
+
+          // =================================================================
+          // GUIDELINE RECOMMENDATIONS KNOWLEDGE BASE
+          // Evidence-based recommendations from current stroke guidelines
+          // =================================================================
+          const GUIDELINE_RECOMMENDATIONS = {
+            // ---------------------------------------------------------------
+            // BLOOD PRESSURE MANAGEMENT
+            // ---------------------------------------------------------------
+            bp_pre_tnk: {
+              id: 'bp_pre_tnk',
+              category: 'Blood Pressure',
+              title: 'Pre-thrombolysis BP target',
+              recommendation: 'Maintain BP <185/110 mmHg before and during IV thrombolysis administration.',
+              detail: 'Use IV labetalol 10-20 mg or nicardipine 5 mg/hr (titrate by 2.5 mg/hr q5-15 min, max 15 mg/hr). If BP cannot be maintained <185/110, thrombolysis is contraindicated.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              medications: ['Labetalol 10-20 mg IV', 'Nicardipine 5 mg/hr IV'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('lvo');
+                const timeFrom = data.timeFromLKW;
+                const inWindow = timeFrom && timeFrom.total <= 4.5;
+                return isIschemic && (inWindow || data.telestrokeNote?.tnkRecommended);
+              }
+            },
+            bp_post_tnk: {
+              id: 'bp_post_tnk',
+              category: 'Blood Pressure',
+              title: 'Post-thrombolysis BP target',
+              recommendation: 'Maintain BP <180/105 mmHg for 24 hours after IV thrombolysis.',
+              detail: 'Monitor BP every 15 minutes for 2 hours, then every 30 minutes for 6 hours, then hourly for 16 hours.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              medications: ['Labetalol IV PRN', 'Nicardipine infusion'],
+              conditions: (data) => {
+                return !!data.telestrokeNote?.tnkAdminTime;
+              }
+            },
+            bp_post_evt: {
+              id: 'bp_post_evt',
+              category: 'Blood Pressure',
+              title: 'Post-EVT BP management (Class III: Harm)',
+              recommendation: 'Do NOT target SBP <140 mmHg after successful EVT reperfusion. Maintain SBP <180/105.',
+              detail: 'ENCHANTED2/MT and OPTIMAL-BP trials demonstrated that intensive BP lowering (SBP <140) post-EVT was associated with worse functional outcomes (Class III: Harm). Standard target SBP <180/105 is recommended.',
+              classOfRec: 'III',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              caveats: 'Based on ENCHANTED2/MT (2023) and OPTIMAL-BP (2024). Applies to successful reperfusion (mTICI 2b-3).',
+              conditions: (data) => {
+                return !!data.telestrokeNote?.evtRecommended;
+              }
+            },
+            bp_ich_acute: {
+              id: 'bp_ich_acute',
+              category: 'Blood Pressure',
+              title: 'ICH acute BP target',
+              recommendation: 'Target SBP 130-150 mmHg within 2 hours of ICH onset. Initiate rapid treatment for SBP >150.',
+              detail: 'Nicardipine infusion preferred for reliable titration. Avoid SBP <130 (risk of renal AKI). Maintain target for at least 24 hours.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              medications: ['Nicardipine 5 mg/hr IV (titrate to 15 mg/hr)', 'Labetalol 10-20 mg IV bolus PRN'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+              }
+            },
+            bp_ischemic_no_lysis: {
+              id: 'bp_ischemic_no_lysis',
+              category: 'Blood Pressure',
+              title: 'Ischemic stroke BP (no thrombolysis)',
+              recommendation: 'Permissive hypertension: treat only if BP >220/120 mmHg in first 24-48 hours. Lower by 15% in first 24 hours if treating.',
+              detail: 'For patients not receiving thrombolysis or EVT, aggressive BP lowering may worsen ischemic penumbra. After 24-48h, initiate oral antihypertensives to target <130/80 for secondary prevention.',
+              classOfRec: 'I',
+              levelOfEvidence: 'C-EO',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('lvo');
+                return isIschemic && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // THROMBOLYSIS
+            // ---------------------------------------------------------------
+            tnk_standard: {
+              id: 'tnk_standard',
+              category: 'Thrombolysis',
+              title: 'IV thrombolysis: TNK or alteplase',
+              recommendation: 'Administer TNK 0.25 mg/kg (max 25 mg) single IV bolus OR alteplase 0.9 mg/kg (max 90 mg, 10% bolus + 60 min infusion) within 4.5 hours of symptom onset.',
+              detail: 'TNK is now listed as equivalent to alteplase for anterior LVO (Class I). TNK is preferred at many centers due to single-bolus dosing, especially when transfer for EVT is anticipated.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              medications: ['TNK 0.25 mg/kg IV bolus (max 25 mg)', 'Alteplase 0.9 mg/kg IV (max 90 mg)'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('lvo');
+                const timeFrom = data.timeFromLKW;
+                return isIschemic && timeFrom && timeFrom.total <= 4.5;
+              }
+            },
+            tnk_extended_imaging: {
+              id: 'tnk_extended_imaging',
+              category: 'Thrombolysis',
+              title: 'Extended window thrombolysis (4.5-9h)',
+              recommendation: 'Consider IV thrombolysis in 4.5-9 hour window when advanced imaging (MRI DWI-FLAIR mismatch or CT perfusion) shows salvageable tissue.',
+              detail: 'Based on EXTEND/WAKE-UP trial criteria: DWI lesion with no corresponding FLAIR hyperintensity, or CT perfusion mismatch with core <70mL and mismatch ratio >1.2.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('lvo');
+                const timeFrom = data.timeFromLKW;
+                return isIschemic && timeFrom && timeFrom.total > 4.5 && timeFrom.total <= 9;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // ENDOVASCULAR THERAPY (EVT)
+            // ---------------------------------------------------------------
+            evt_standard: {
+              id: 'evt_standard',
+              category: 'EVT',
+              title: 'EVT for LVO within 6 hours',
+              recommendation: 'EVT recommended for anterior LVO (ICA, M1) within 6 hours of onset with NIHSS >= 6 and ASPECTS >= 6.',
+              detail: 'Do not delay transfer for TNK response. Administer TNK at spoke and transfer immediately for EVT evaluation.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              conditions: (data) => {
+                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                const timeFrom = data.timeFromLKW;
+                const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
+                  /ica|m1|mca/i.test(v)
+                );
+                return nihss >= 6 && timeFrom && timeFrom.total <= 6 && hasLVO;
+              }
+            },
+            evt_late_window: {
+              id: 'evt_late_window',
+              category: 'EVT',
+              title: 'EVT late window (6-24h)',
+              recommendation: 'EVT may be beneficial 6-24 hours from onset for anterior LVO with favorable perfusion imaging (NIHSS >= 6, age <80 preferred).',
+              detail: 'Based on DAWN/DEFUSE-3 criteria. Requires CT perfusion or MRI DWI/perfusion showing target mismatch. Age >= 80 requires NIHSS >= 10.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              conditions: (data) => {
+                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                const timeFrom = data.timeFromLKW;
+                const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
+                  /ica|m1|mca/i.test(v)
+                );
+                return nihss >= 6 && timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && hasLVO;
+              }
+            },
+            evt_large_core: {
+              id: 'evt_large_core',
+              category: 'EVT',
+              title: 'EVT for large ischemic core (ASPECTS 3-5)',
+              recommendation: 'EVT can be beneficial for anterior LVO with ASPECTS 3-5 within 24 hours when NIHSS >= 6.',
+              detail: 'Based on SELECT2, RESCUE-Japan LIMIT, and ANGEL-ASPECT (2023). Despite larger infarcts, EVT still provides benefit. Discuss prognosis with family.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              caveats: 'Higher rates of sICH and mortality than standard-core EVT. Goals-of-care discussion recommended.',
+              conditions: (data) => {
+                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                const aspects = data.aspectsScore;
+                const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
+                  /ica|m1|mca/i.test(v)
+                );
+                return nihss >= 6 && aspects >= 3 && aspects <= 5 && hasLVO;
+              }
+            },
+            evt_basilar: {
+              id: 'evt_basilar',
+              category: 'EVT',
+              title: 'EVT for basilar artery occlusion',
+              recommendation: 'EVT is recommended for basilar artery occlusion within 24 hours of symptom onset.',
+              detail: 'Based on ATTENTION and BAOCHE trials (2023). Benefit demonstrated up to 24 hours. Consider in posterior circulation strokes with significant deficit.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              conditions: (data) => {
+                const timeFrom = data.timeFromLKW;
+                const hasBasilar = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
+                  /basilar/i.test(v)
+                );
+                return hasBasilar && timeFrom && timeFrom.total <= 24;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // ANTITHROMBOTIC THERAPY
+            // ---------------------------------------------------------------
+            dapt_minor_stroke: {
+              id: 'dapt_minor_stroke',
+              category: 'Antithrombotic',
+              title: 'DAPT for minor stroke/TIA',
+              recommendation: 'Dual antiplatelet therapy (aspirin + clopidogrel) for 21 days in minor ischemic stroke (NIHSS <= 3) or high-risk TIA, then transition to single antiplatelet.',
+              detail: 'Start within 24 hours of onset. Loading dose: ASA 325 mg + clopidogrel 300 mg, then ASA 81 mg + clopidogrel 75 mg daily for 21 days. Based on CHANCE/POINT trials.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
+              reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
+              medications: ['ASA 325 mg load then 81 mg daily', 'Clopidogrel 300 mg load then 75 mg daily x 21 days'],
+              conditions: (data) => {
+                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
+                return isIschemic && nihss <= 3 && !data.telestrokeNote?.tnkRecommended;
+              }
+            },
+            anticoag_af_timing: {
+              id: 'anticoag_af_timing',
+              category: 'Antithrombotic',
+              title: 'Early DOAC initiation in AF-related stroke',
+              recommendation: 'Initiate DOAC early after AF-related ischemic stroke based on infarct severity: minor stroke within 48 hours, moderate stroke day 3-5, severe/large stroke day 6-14.',
+              detail: 'Based on CATALYST meta-analysis (ELAN, OPTIMAS, TIMING, START pooled data). No increased risk of symptomatic ICH with early DOAC initiation vs delayed. Individual timing should consider hemorrhagic transformation on imaging. DOAC preferred over warfarin (Class I, LOE A).',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Secondary Stroke Prevention 2021 + CATALYST Meta-Analysis 2025',
+              reference: 'Fischer U et al. Lancet Neurol. 2025. CATALYST: Collaboration for Antithrombotic Timing After Acute Ischaemic Stroke.',
+              medications: ['Apixaban 5 mg BID (preferred)', 'Rivaroxaban 20 mg daily', 'Edoxaban 60 mg daily', 'Dabigatran 150 mg BID'],
+              caveats: 'Timing categories per CATALYST: minor (NIHSS <8, small infarct) 48h; moderate (NIHSS 8-15) day 3-5; severe (NIHSS >15 or large infarct) day 6-14. Reassess imaging before starting if any concern for hemorrhagic transformation.',
+              conditions: (data) => {
+                const meds = (data.telestrokeNote?.medications || '').toLowerCase();
+                const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
+                const hasAF = pmh.includes('afib') || pmh.includes('atrial fib') || pmh.includes('a-fib') || pmh.includes('af ') ||
+                              meds.includes('apixaban') || meds.includes('rivaroxaban') || meds.includes('eliquis') || meds.includes('xarelto') ||
+                              meds.includes('warfarin') || meds.includes('coumadin') || meds.includes('dabigatran') || meds.includes('pradaxa') ||
+                              meds.includes('edoxaban') || meds.includes('savaysa');
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isIschemic = dx.includes('ischemic') || dx.includes('stroke');
+                return isIschemic && hasAF;
+              }
+            },
+            sicas_dapt: {
+              id: 'sicas_dapt',
+              category: 'Antithrombotic',
+              title: 'Symptomatic intracranial atherosclerosis (sICAS) DAPT',
+              recommendation: 'DAPT (aspirin + clopidogrel) for 90 days for severe symptomatic intracranial stenosis (70-99%), then aspirin 325 mg monotherapy.',
+              detail: 'Do NOT offer intracranial stenting as initial treatment (Class III). Add high-intensity statin with LDL target <70 mg/dL. Based on SAMMPRIS trial evidence.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-R',
+              guideline: 'AAN Intracranial Atherosclerosis Practice Advisory 2022 (reaffirmed 2025)',
+              reference: 'AAN Practice Advisory 2022. Reaffirmed 2025.',
+              medications: ['ASA 325 mg daily (after 90-day DAPT)', 'Clopidogrel 75 mg daily x 90 days', 'High-intensity statin'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
+                return dx.includes('intracranial') || dx.includes('icas') || cta.includes('intracranial stenosis') || cta.includes('icas');
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // STATIN THERAPY
+            // ---------------------------------------------------------------
+            statin_ischemic: {
+              id: 'statin_ischemic',
+              category: 'Statin',
+              title: 'High-intensity statin for ischemic stroke',
+              recommendation: 'Initiate high-intensity statin therapy (atorvastatin 40-80 mg or rosuvastatin 20-40 mg) with LDL target <70 mg/dL.',
+              detail: 'Add ezetimibe if LDL not at goal on max statin. Consider PCSK9 inhibitor if still not at goal. Start during hospitalization.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
+              reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
+              medications: ['Atorvastatin 80 mg daily', 'Rosuvastatin 20-40 mg daily', 'Ezetimibe 10 mg if LDL not at goal'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia') || dx.includes('lvo');
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // ANTICOAGULATION REVERSAL (ICH)
+            // ---------------------------------------------------------------
+            reversal_warfarin: {
+              id: 'reversal_warfarin',
+              category: 'Reversal',
+              title: 'Warfarin reversal in ICH',
+              recommendation: 'Administer IV Vitamin K 10 mg + 4-factor PCC (KCentra) for ICH on warfarin. Target INR <1.5 within 4 hours.',
+              detail: 'PCC preferred over FFP (faster, lower volume, more predictable reversal). Recheck INR at 30-60 minutes. Repeat PCC if INR remains elevated.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              medications: ['Vitamin K 10 mg IV over 20 min', '4F-PCC (KCentra) 25-50 IU/kg based on INR'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const meds = (data.telestrokeNote?.medications || '').toLowerCase();
+                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const onWarfarin = meds.includes('warfarin') || meds.includes('coumadin');
+                return isICH && onWarfarin;
+              }
+            },
+            reversal_dabigatran: {
+              id: 'reversal_dabigatran',
+              category: 'Reversal',
+              title: 'Dabigatran reversal in ICH',
+              recommendation: 'Administer idarucizumab (Praxbind) 5g IV (2 x 2.5g) for ICH on dabigatran.',
+              detail: 'If idarucizumab unavailable, use 4F-PCC 50 IU/kg. Reversal is immediate with idarucizumab.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              medications: ['Idarucizumab (Praxbind) 5g IV', 'Alt: 4F-PCC 50 IU/kg if unavailable'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const meds = (data.telestrokeNote?.medications || '').toLowerCase();
+                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const onDabigatran = meds.includes('dabigatran') || meds.includes('pradaxa');
+                return isICH && onDabigatran;
+              }
+            },
+            reversal_xa_inhibitor: {
+              id: 'reversal_xa_inhibitor',
+              category: 'Reversal',
+              title: 'Factor Xa inhibitor reversal in ICH',
+              recommendation: 'Administer andexanet alfa or 4F-PCC 50 IU/kg for ICH on apixaban/rivaroxaban/edoxaban.',
+              detail: 'Andexanet alfa (Andexxa) if available: low-dose bolus 400 mg then 480 mg infusion (rivaroxaban >7h or apixaban), high-dose 800 mg then 960 mg (rivaroxaban <7h). If unavailable, use 4F-PCC 50 IU/kg.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              medications: ['Andexanet alfa (Andexxa) per dosing protocol', '4F-PCC 50 IU/kg if andexanet unavailable'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const meds = (data.telestrokeNote?.medications || '').toLowerCase();
+                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const onXaInhibitor = meds.includes('apixaban') || meds.includes('eliquis') ||
+                                      meds.includes('rivaroxaban') || meds.includes('xarelto') ||
+                                      meds.includes('edoxaban') || meds.includes('savaysa');
+                return isICH && onXaInhibitor;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // DISPOSITION & TRANSFER
+            // ---------------------------------------------------------------
+            transfer_evt: {
+              id: 'transfer_evt',
+              category: 'Disposition',
+              title: 'Transfer for EVT evaluation',
+              recommendation: 'Transfer LVO patients to EVT-capable center immediately. Do NOT wait for clinical response to IV thrombolysis before initiating transfer.',
+              detail: 'Administer TNK at spoke site (if eligible) and initiate transfer simultaneously. Time-to-reperfusion is the critical metric.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              conditions: (data) => {
+                const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
+                  /ica|m1|mca|basilar/i.test(v)
+                );
+                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                return hasLVO && nihss >= 6;
+              }
+            },
+            cerebellar_ich_surgery: {
+              id: 'cerebellar_ich_surgery',
+              category: 'Disposition',
+              title: 'Cerebellar ICH: surgical evacuation',
+              recommendation: 'Urgent surgical evacuation for cerebellar ICH >15 mL with neurological deterioration, brainstem compression, or obstructive hydrocephalus.',
+              detail: 'EVD alone insufficient for large cerebellar hemorrhages. Suboccipital craniectomy recommended. Transfer to neurosurgical center emergently.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const ct = (data.telestrokeNote?.ctResults || '').toLowerCase();
+                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const isCerebellar = ct.includes('cerebell') || dx.includes('cerebell') || ct.includes('posterior fossa');
+                return isICH && isCerebellar;
+              }
+            },
+            decompressive_craniectomy: {
+              id: 'decompressive_craniectomy',
+              category: 'Disposition',
+              title: 'Decompressive craniectomy for malignant MCA infarction',
+              recommendation: 'Consider decompressive craniectomy within 48 hours for malignant MCA infarction in patients age <60 with deteriorating neurological status despite medical therapy.',
+              detail: 'Based on pooled analysis of DECIMAL, DESTINY, HAMLET trials. Reduces mortality from ~78% to ~22%. Discuss functional outcomes and goals of care with family.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              conditions: (data) => {
+                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                const age = parseInt(data.telestrokeNote?.age) || 0;
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isIschemic = dx.includes('ischemic') || dx.includes('mca') || dx.includes('malignant');
+                return isIschemic && nihss >= 15 && age > 0 && age < 60;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // SECONDARY PREVENTION
+            // ---------------------------------------------------------------
+            carotid_intervention: {
+              id: 'carotid_intervention',
+              category: 'Secondary Prevention',
+              title: 'Carotid intervention for symptomatic stenosis',
+              recommendation: 'Carotid endarterectomy (CEA) or stenting within 2 weeks for symptomatic carotid stenosis 70-99%. Consider for 50-69% based on patient factors.',
+              detail: 'CEA preferred if age >70 and suitable anatomy. CAS reasonable if high surgical risk. Benefit diminishes if delayed beyond 2 weeks.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
+              reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
+              conditions: (data) => {
+                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
+                return cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('occlus'));
+              }
+            },
+            pfo_closure: {
+              id: 'pfo_closure',
+              category: 'Secondary Prevention',
+              title: 'PFO closure for cryptogenic stroke',
+              recommendation: 'PFO closure is recommended for patients age 18-60 with cryptogenic ischemic stroke and high-risk PFO features (atrial septal aneurysm, large shunt).',
+              detail: 'Based on CLOSE, RESPECT, REDUCE trials. Also antiplatelet therapy. Anticoagulation if concurrent DVT/PE.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
+              reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const age = parseInt(data.telestrokeNote?.age) || 0;
+                return (dx.includes('cryptogenic') || dx.includes('pfo') || dx.includes('esus')) && age >= 18 && age <= 60;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // SUPPORTIVE CARE
+            // ---------------------------------------------------------------
+            dysphagia_screen: {
+              id: 'dysphagia_screen',
+              category: 'Supportive Care',
+              title: 'Dysphagia screening',
+              recommendation: 'Keep patient NPO until formal dysphagia screening is passed. Screen before any oral intake including medications.',
+              detail: 'Use validated bedside screening tool (e.g., Yale Swallow Protocol, 3-oz water test). SLP evaluation for failed screens. Aspiration pneumonia is a leading cause of post-stroke mortality.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('hemorrhag');
+              }
+            },
+            vte_prophylaxis: {
+              id: 'vte_prophylaxis',
+              category: 'Supportive Care',
+              title: 'VTE prophylaxis',
+              recommendation: 'Intermittent pneumatic compression (IPC) on admission. Add pharmacologic prophylaxis (LMWH or UFH) after 24-48 hours in immobile patients.',
+              detail: 'For ischemic stroke post-TNK: delay pharmacologic VTE prophylaxis 24 hours. For ICH: IPC immediately; consider pharmacologic prophylaxis after 24-48h if hematoma stable.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA Systemic Complications of Acute Stroke 2024',
+              reference: 'AHA Scientific Statement 2024. DOI: 10.1161/STR.0000000000000477',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('hemorrhag');
+              }
+            },
+            glycemic_management: {
+              id: 'glycemic_management',
+              category: 'Glycemic',
+              title: 'Glycemic management (Class III: Harm for intensive insulin)',
+              recommendation: 'Target glucose 140-180 mg/dL. Do NOT use IV insulin to target 80-130 mg/dL (Class III: Harm). Treat hypoglycemia <60 mg/dL emergently.',
+              detail: 'SHINE trial demonstrated no benefit and increased hypoglycemia with intensive glucose control (80-130). Subcutaneous insulin sliding scale preferred for mild hyperglycemia.',
+              classOfRec: 'III',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              conditions: (data) => {
+                const glucose = parseInt(data.telestrokeNote?.glucose) || 0;
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isStroke = dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich');
+                return isStroke && (glucose > 180 || glucose < 60 || glucose === 0);
+              }
+            },
+            fever_management: {
+              id: 'fever_management',
+              category: 'Supportive Care',
+              title: 'Fever management',
+              recommendation: 'Treat fever (>38C) with acetaminophen and identify source. Maintain normothermia.',
+              detail: 'Fever worsens outcomes in stroke. Search for UTI, pneumonia, line infection. Induced hypothermia not recommended outside clinical trials.',
+              classOfRec: 'I',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA Systemic Complications of Acute Stroke 2024',
+              reference: 'AHA Scientific Statement 2024. DOI: 10.1161/STR.0000000000000477',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('hemorrhag');
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // GOALS OF CARE
+            // ---------------------------------------------------------------
+            goc_ich: {
+              id: 'goc_ich',
+              category: 'Goals of Care',
+              title: 'Goals-of-care discussion in ICH',
+              recommendation: 'Initiate goals-of-care discussion for ICH Score >= 3. Avoid early DNR orders that may limit aggressive care in first 24-48 hours.',
+              detail: 'Self-fulfilling prophecy of early care withdrawal is well-documented in ICH. Recommend full care for minimum 24-48 hours while prognostic picture clarifies. ICH Score is for prognostication, not to determine treatment limits.',
+              classOfRec: 'I',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA/ASA Spontaneous ICH 2022 + AHA Palliative Care in Stroke 2024',
+              reference: 'Greenberg SM et al. Stroke. 2022. DOI: 10.1161/STR.0000000000000407; AHA 2024. DOI: 10.1161/STR.0000000000000479',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const ichScore = data.ichScore || 0;
+                return isICH && ichScore >= 3;
+              }
+            }
+          };
+
+          // =================================================================
+          // CLINICAL PATHWAY DEFINITIONS
+          // Type-specific step sequences for guided encounter workflow
+          // =================================================================
+          const CLINICAL_PATHWAY_STEPS = {
+            shared: [
+              { id: 'patient-info', label: 'Patient Info', section: 'patient-info-section', check: (d) => !!(d.telestrokeNote?.age && d.telestrokeNote?.symptoms) },
+              { id: 'lkw', label: 'Last Known Well', section: 'lkw-section', check: (d) => !!(d.lkwTime || d.telestrokeNote?.lkwUnknown) },
+              { id: 'nihss', label: 'NIHSS', section: 'nihss-section', check: (d) => !!(d.telestrokeNote?.nihss || d.nihssComplete) },
+              { id: 'vitals', label: 'Vitals/Labs', section: 'vitals-section', check: (d) => !!d.telestrokeNote?.presentingBP },
+              { id: 'imaging', label: 'Imaging', section: 'imaging-section', check: (d) => !!d.telestrokeNote?.ctResults },
+              { id: 'diagnosis', label: 'Diagnosis', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.diagnosis }
+            ],
+            ischemic: [
+              { id: 'tnk-contraindications', label: 'TNK Screen', section: 'tnk-contraindications', check: (d) => !!d.telestrokeNote?.tnkContraindicationReviewed,
+                skip: (d) => { const t = d.timeFromLKW; return t && t.total > 4.5; } },
+              { id: 'tnk-decision', label: 'TNK Decision', section: 'treatment-decision', check: (d) => d.telestrokeNote?.tnkRecommended === true || d.telestrokeNote?.tnkRecommended === false,
+                skip: (d) => { const t = d.timeFromLKW; return t && t.total > 4.5; } },
+              { id: 'evt-eval', label: 'EVT Evaluation', section: 'treatment-decision', check: (d) => d.telestrokeNote?.evtRecommended === true || d.telestrokeNote?.evtRecommended === false },
+              { id: 'tnk-admin', label: 'TNK Admin', section: 'time-metrics-section', check: (d) => !!d.telestrokeNote?.tnkAdminTime,
+                skip: (d) => !d.telestrokeNote?.tnkRecommended },
+              { id: 'transfer', label: 'Transfer', section: 'transfer-section', check: (d) => !!d.telestrokeNote?.transferAccepted || !!d.telestrokeNote?.disposition,
+                skip: (d) => !d.telestrokeNote?.evtRecommended && !(d.telestrokeNote?.vesselOcclusion || []).some(v => /ica|m1|mca|basilar/i.test(v)) },
+              { id: 'recommendations', label: 'Recommendations', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.recommendationsText }
+            ],
+            ich: [
+              { id: 'ich-bp', label: 'BP Management', section: 'vitals-section', check: (d) => !!d.telestrokeNote?.ichBPManaged },
+              { id: 'ich-reversal', label: 'Anticoag Reversal', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.ichReversalOrdered,
+                skip: (d) => !!d.telestrokeNote?.noAnticoagulants },
+              { id: 'ich-neurosurg', label: 'Neurosurgery', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.ichNeurosurgeryConsulted },
+              { id: 'recommendations', label: 'Recommendations', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.recommendationsText }
+            ],
+            mimic: [
+              { id: 'alt-workup', label: 'Alternative Workup', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.diagnosis },
+              { id: 'disposition', label: 'Disposition', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.disposition || !!d.telestrokeNote?.recommendationsText }
+            ]
+          };
+
+          const getPathwayForDiagnosis = (diagnosis) => {
+            if (!diagnosis) return 'shared';
+            const dx = diagnosis.toLowerCase();
+            if (dx.includes('mimic') || dx.includes('non-stroke') || dx.includes('seizure') || dx.includes('migraine') || dx.includes('conversion') || dx.includes('bell')) return 'mimic';
+            if (dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral') || dx.includes('bleed')) return 'ich';
+            if (dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia') || dx.includes('lvo') || dx.includes('occlusion')) return 'ischemic';
+            return 'shared';
           };
 
           // =================================================================
@@ -3287,6 +3877,8 @@ Clinician Name`;
             setSaveStatus('saved');
             setLastSaved(null);
             setNotice(null);
+            setPathwayCollapsed(false);
+            setGuidelineRecsExpanded(false);
             setDeidWarnings({});
 
             if (resetDarkMode) {
@@ -3921,80 +4513,106 @@ Clinician Name`;
           const getNextBestAction = () => {
             const timeFrom = calculateTimeFromLKW();
             const nihss = parseInt(telestrokeNote.nihss) || nihssScore || 0;
+            const dx = (telestrokeNote.diagnosis || '').toLowerCase();
+            const pathwayType = getPathwayForDiagnosis(telestrokeNote.diagnosis);
 
-            if (!telestrokeNote.age || !telestrokeNote.symptoms) {
-              return {
-                title: 'Capture core details',
-                detail: 'Enter age and presenting symptoms to drive recommendations.',
-                action: () => scrollToSection('patient-info-section'),
-                cta: 'Go to Patient Info'
+            // Build data context for pathway step checks
+            const pathwayData = {
+              telestrokeNote,
+              lkwTime,
+              nihssScore,
+              nihssComplete: isNIHSSComplete(),
+              aspectsScore,
+              timeFromLKW: timeFrom,
+              ichScore: typeof calculateICHScore === 'function' ? calculateICHScore(ichScoreItems) : 0
+            };
+
+            // Determine applicable steps: shared + type-specific
+            const sharedSteps = CLINICAL_PATHWAY_STEPS.shared;
+            const typeSteps = CLINICAL_PATHWAY_STEPS[pathwayType] || [];
+            const allSteps = [...sharedSteps, ...typeSteps];
+
+            // Filter out skipped steps and compute progress
+            const activeSteps = allSteps.filter(step => !step.skip || !step.skip(pathwayData));
+            const completedCount = activeSteps.filter(step => step.check(pathwayData)).length;
+            const totalSteps = activeSteps.length;
+            const percentage = totalSteps > 0 ? Math.round((completedCount / totalSteps) * 100) : 0;
+
+            // Determine current phase label
+            let phase = 'Assessment';
+            if (pathwayType !== 'shared') {
+              if (completedCount === totalSteps) {
+                phase = 'Complete';
+              } else if (completedCount > sharedSteps.filter(s => !s.skip || !s.skip(pathwayData)).length) {
+                phase = pathwayType === 'ischemic' ? 'Ischemic Pathway' : pathwayType === 'ich' ? 'ICH Pathway' : 'Workup';
+              } else {
+                phase = 'Initial Assessment';
+              }
+            }
+
+            // Find the first incomplete step
+            const nextStep = activeSteps.find(step => !step.check(pathwayData));
+
+            // Build the action for the next incomplete step
+            let action = null;
+            if (nextStep) {
+              const stepActions = {
+                'patient-info': { title: 'Capture core details', detail: 'Enter age and presenting symptoms to drive recommendations.', cta: 'Go to Patient Info' },
+                'lkw': { title: 'Set last known well', detail: 'Time from onset is required to determine treatment windows.', cta: 'Set LKW' },
+                'nihss': { title: 'Enter NIHSS score', detail: 'Use quick entry or guided NIHSS to calculate severity.', cta: 'Enter NIHSS' },
+                'vitals': { title: 'Add presenting BP', detail: 'BP drives TNK eligibility and safety checks.', cta: 'Enter BP' },
+                'imaging': { title: 'Review imaging', detail: 'Document CT/CTA findings to determine treatment pathway.', cta: 'Add imaging' },
+                'diagnosis': { title: 'Set diagnosis', detail: 'Establish working diagnosis to activate type-specific pathway.', cta: 'Set diagnosis' },
+                'tnk-contraindications': { title: 'Review TNK contraindications', detail: 'Complete the contraindication checklist before recommending TNK.', cta: 'Review contraindications' },
+                'tnk-decision': { title: 'TNK decision', detail: 'Patient is within TNK window. Confirm eligibility and document decision.', cta: 'Review treatment' },
+                'evt-eval': { title: 'Evaluate for EVT', detail: 'Assess LVO, NIHSS, and imaging for thrombectomy candidacy.', cta: 'Evaluate EVT' },
+                'tnk-admin': { title: 'Document TNK administration', detail: 'Capture administration time for DTN metrics.', cta: 'Add TNK time' },
+                'transfer': { title: 'Arrange transfer', detail: 'Coordinate transfer to EVT-capable center for LVO.', cta: 'Transfer checklist' },
+                'recommendations': { title: 'Finalize recommendations', detail: 'Complete the recommendation summary for handoff and documentation.', cta: 'Add recommendations' },
+                'ich-bp': { title: 'ICH: Manage blood pressure', detail: 'Target SBP 130-150 within 2 hours (AHA/ASA 2022 ICH). Initiate nicardipine or labetalol.', cta: 'Manage BP' },
+                'ich-reversal': { title: 'ICH: Anticoagulation reversal', detail: 'Patient may be on anticoagulation. Review and order reversal agents.', cta: 'Order reversal' },
+                'ich-neurosurg': { title: 'ICH: Neurosurgery evaluation', detail: 'Document neurosurgery consultation for surgical candidacy assessment.', cta: 'Consult neurosurgery' },
+                'alt-workup': { title: 'Alternative workup', detail: 'Document alternative diagnosis and appropriate workup.', cta: 'Document workup' },
+                'disposition': { title: 'Determine disposition', detail: 'Set disposition plan for stroke mimic.', cta: 'Set disposition' }
+              };
+              const stepAction = stepActions[nextStep.id] || { title: nextStep.label, detail: 'Complete this step to advance the pathway.', cta: 'Go' };
+              action = {
+                ...stepAction,
+                action: () => scrollToSection(nextStep.section),
+                stepId: nextStep.id
               };
             }
-            if (!telestrokeNote.lkwUnknown && !lkwTime) {
-              return {
-                title: 'Set last known well',
-                detail: 'Time from onset is required to determine treatment windows.',
-                action: () => scrollToSection('lkw-section'),
-                cta: 'Set LKW'
-              };
-            }
-            if (telestrokeNote.lkwUnknown && (!telestrokeNote.discoveryDate || !telestrokeNote.discoveryTime)) {
-              return {
-                title: 'Set discovery time',
-                detail: 'Use discovery time to estimate treatment windows when LKW is unknown.',
-                action: () => scrollToSection('lkw-section'),
-                cta: 'Set discovery time'
-              };
-            }
-            if (!telestrokeNote.nihss && !isNIHSSComplete()) {
-              return {
-                title: 'Enter NIHSS score',
-                detail: 'Use quick entry or guided NIHSS to calculate severity.',
-                action: () => scrollToSection('nihss-section'),
-                cta: 'Enter NIHSS'
-              };
-            }
-            if (!telestrokeNote.presentingBP) {
-              return {
-                title: 'Add presenting BP',
-                detail: 'BP drives TNK eligibility and safety checks.',
-                action: () => scrollToSection('vitals-section'),
-                cta: 'Enter BP'
-              };
-            }
-            if (timeFrom && timeFrom.total <= 4.5 && !telestrokeNote.tnkContraindicationReviewed) {
-              return {
-                title: 'Review TNK contraindications',
-                detail: 'Complete the contraindication checklist before recommending TNK.',
-                action: () => scrollToSection('tnk-contraindications'),
-                cta: 'Review contraindications'
-              };
-            }
-            if (timeFrom && timeFrom.total <= 4.5 && !telestrokeNote.tnkRecommended && nihss >= 4) {
-              return {
-                title: 'Consider TNK',
-                detail: 'Patient appears within TNK window. Confirm eligibility and document decision.',
-                action: () => scrollToSection('treatment-decision'),
-                cta: 'Review treatment'
-              };
-            }
-            if (telestrokeNote.tnkRecommended && !telestrokeNote.tnkAdminTime) {
-              return {
-                title: 'Document TNK administration time',
-                detail: 'Capture administration time to calculate DTN and QA metrics.',
-                action: () => scrollToSection('time-metrics-section'),
-                cta: 'Add TNK time'
-              };
-            }
-            if (!telestrokeNote.recommendationsText) {
-              return {
-                title: 'Finalize recommendations',
-                detail: 'Complete the recommendation summary for handoff and documentation.',
-                action: () => scrollToSection('recommendations-section'),
-                cta: 'Add recommendations'
-              };
-            }
-            return null;
+
+            // Return enriched object with progress metadata
+            return {
+              ...action,
+              progress: {
+                completedCount,
+                totalSteps,
+                percentage,
+                phase,
+                steps: activeSteps.map(step => ({
+                  id: step.id,
+                  label: step.label,
+                  completed: step.check(pathwayData)
+                }))
+              }
+            };
+          };
+
+          // Get guideline recommendations matching current patient data
+          const getContextualRecommendations = () => {
+            const timeFrom = calculateTimeFromLKW();
+            const data = {
+              telestrokeNote,
+              nihssScore,
+              aspectsScore,
+              timeFromLKW: timeFrom,
+              ichScore: typeof calculateICHScore === 'function' ? calculateICHScore(ichScoreItems) : 0
+            };
+            return Object.values(GUIDELINE_RECOMMENDATIONS).filter(rec => {
+              try { return rec.conditions(data); } catch { return false; }
+            });
           };
 
           // NIHSS validation
@@ -5763,23 +6381,76 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </div>
 
                     {(() => {
-                      const nextAction = getNextBestAction();
-                      if (!nextAction) return null;
+                      const nba = getNextBestAction();
+                      if (!nba || !nba.progress) return null;
+                      const { progress } = nba;
+                      const isComplete = progress.percentage === 100;
+                      const barColor = isComplete ? 'bg-green-500' : progress.percentage >= 60 ? 'bg-blue-500' : 'bg-amber-500';
+                      const phaseColor = isComplete ? 'text-green-700' : 'text-blue-700';
+
                       return (
-                        <div className="bg-white border-2 border-blue-200 rounded-lg p-4 shadow-sm">
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                            <div>
-                              <p className="text-xs uppercase tracking-wide text-blue-600 font-semibold">Next Best Action</p>
-                              <p className="text-lg font-bold text-blue-900">{nextAction.title}</p>
-                              <p className="text-sm text-slate-600 mt-1">{nextAction.detail}</p>
+                        <div className="bg-white border-2 border-blue-200 rounded-lg shadow-sm overflow-hidden">
+                          {/* Progress bar */}
+                          <div className="px-4 pt-3 pb-2">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className={`text-xs font-bold uppercase tracking-wide ${phaseColor}`}>{progress.phase}</span>
+                              <span className="text-xs font-semibold text-slate-500">{progress.completedCount}/{progress.totalSteps} steps ({progress.percentage}%)</span>
                             </div>
-                            <button
-                              onClick={nextAction.action}
-                              className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-                            >
-                              {nextAction.cta}
-                            </button>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div className={`${barColor} h-2 rounded-full transition-all duration-500`} style={{ width: `${progress.percentage}%` }}></div>
+                            </div>
                           </div>
+
+                          {/* Step pills */}
+                          <div className="px-4 pb-2">
+                            <button
+                              onClick={() => setPathwayCollapsed(!pathwayCollapsed)}
+                              className="text-xs text-slate-500 hover:text-slate-700 font-medium mb-1"
+                              type="button"
+                            >
+                              {pathwayCollapsed ? 'Show steps' : 'Hide steps'}
+                            </button>
+                            {!pathwayCollapsed && (
+                              <div className="flex flex-wrap gap-1.5 mt-1">
+                                {progress.steps.map((step) => (
+                                  <span
+                                    key={step.id}
+                                    className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                                      step.completed
+                                        ? 'bg-green-100 text-green-800'
+                                        : 'bg-gray-100 text-gray-600'
+                                    }`}
+                                  >
+                                    {step.completed ? '\u2713 ' : ''}{step.label}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* NBA action card */}
+                          {!isComplete && nba.title && (
+                            <div className="border-t border-blue-100 px-4 py-3 bg-blue-50/50">
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                                <div>
+                                  <p className="text-xs uppercase tracking-wide text-blue-600 font-semibold">Next Best Action</p>
+                                  <p className="text-lg font-bold text-blue-900">{nba.title}</p>
+                                  <p className="text-sm text-slate-600 mt-1">{nba.detail}</p>
+                                </div>
+                                <button
+                                  onClick={nba.action}
+                                  className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors shrink-0"
+                                >
+                                  {nba.cta}
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                          {isComplete && (
+                            <div className="border-t border-green-100 px-4 py-3 bg-green-50/50">
+                              <p className="text-sm font-semibold text-green-800">All pathway steps complete. Review recommendations and finalize documentation.</p>
+                            </div>
+                          )}
                         </div>
                       );
                     })()}
@@ -8131,6 +8802,33 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               )}
                             </div>
 
+                            {/* ICH Pathway Checkboxes */}
+                            {telestrokeNote.diagnosisCategory === 'ich' && (
+                              <div className="bg-red-50 border border-red-300 rounded-lg p-3">
+                                <h4 className="text-sm font-bold text-red-800 mb-2 uppercase tracking-wide">ICH Pathway Checklist</h4>
+                                <div className="space-y-2">
+                                  {[
+                                    { field: 'ichBPManaged', label: 'BP managed (SBP 130-150 target)', detail: 'AHA/ASA ICH 2022' },
+                                    { field: 'ichReversalOrdered', label: 'Anticoag reversal ordered (if applicable)', detail: 'Skip if no anticoagulants', skipIf: telestrokeNote.noAnticoagulants },
+                                    { field: 'ichNeurosurgeryConsulted', label: 'Neurosurgery consulted/evaluated', detail: 'Surgical candidacy assessed' }
+                                  ].filter(item => !item.skipIf).map(item => (
+                                    <label key={item.field} className="flex items-start gap-2 cursor-pointer">
+                                      <input
+                                        type="checkbox"
+                                        checked={telestrokeNote[item.field] || false}
+                                        onChange={(e) => setTelestrokeNote({ ...telestrokeNote, [item.field]: e.target.checked })}
+                                        className="mt-0.5 rounded border-red-300 text-red-600 focus:ring-red-500"
+                                      />
+                                      <div>
+                                        <span className="text-sm font-medium text-red-900">{item.label}</span>
+                                        <span className="text-xs text-red-600 block">{item.detail}</span>
+                                      </div>
+                                    </label>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
                             {/* Lytic Eligibility Criteria (Collapsible) */}
                             {showAdvanced && (
                             <details className="bg-green-50 border border-green-200 rounded-lg">
@@ -8831,6 +9529,111 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
                         </div>
+
+                        {/* Guideline Recommendations Panel */}
+                        {(() => {
+                          const recs = getContextualRecommendations();
+                          if (recs.length === 0) return null;
+
+                          // Group by category
+                          const grouped = {};
+                          recs.forEach(rec => {
+                            if (!grouped[rec.category]) grouped[rec.category] = [];
+                            grouped[rec.category].push(rec);
+                          });
+
+                          const classColors = {
+                            'I': 'bg-green-600 text-white',
+                            'IIa': 'bg-blue-500 text-white',
+                            'IIb': 'bg-amber-500 text-white',
+                            'III': 'bg-red-600 text-white'
+                          };
+
+                          return (
+                            <div className="bg-white border-2 border-indigo-300 rounded-lg shadow-md">
+                              <details open={guidelineRecsExpanded} onToggle={(e) => setGuidelineRecsExpanded(e.target.open)}>
+                                <summary className="cursor-pointer p-4 font-semibold text-indigo-900 hover:bg-indigo-50 rounded-lg flex items-center justify-between">
+                                  <span className="flex items-center gap-2">
+                                    <i data-lucide="book-open" className="w-5 h-5 text-indigo-600"></i>
+                                    Guideline Recommendations ({recs.length})
+                                  </span>
+                                  <span className="text-xs text-indigo-500 font-normal">Evidence-based, auto-matched to patient data</span>
+                                </summary>
+                                <div className="p-4 pt-0 space-y-4">
+                                  {Object.entries(grouped).map(([category, catRecs]) => (
+                                    <div key={category}>
+                                      <h4 className="text-sm font-bold text-indigo-800 uppercase tracking-wide mb-2 border-b border-indigo-100 pb-1">{category}</h4>
+                                      <div className="space-y-2">
+                                        {catRecs.map(rec => (
+                                          <div key={rec.id} className="bg-indigo-50/50 border border-indigo-100 rounded-lg p-3">
+                                            <div className="flex items-start gap-2">
+                                              <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold shrink-0 ${classColors[rec.classOfRec] || 'bg-gray-500 text-white'}`}>
+                                                {rec.classOfRec}/{rec.levelOfEvidence}
+                                              </span>
+                                              <div className="flex-1 min-w-0">
+                                                <p className="text-sm font-semibold text-gray-900">{rec.title}</p>
+                                                <p className="text-sm text-gray-700 mt-0.5">{rec.recommendation}</p>
+                                                {rec.medications && rec.medications.length > 0 && (
+                                                  <div className="mt-1.5 flex flex-wrap gap-1">
+                                                    {rec.medications.map((med, i) => (
+                                                      <span key={i} className="inline-block px-2 py-0.5 bg-white border border-indigo-200 rounded text-xs text-indigo-800">{med}</span>
+                                                    ))}
+                                                  </div>
+                                                )}
+                                                {rec.caveats && (
+                                                  <p className="text-xs text-amber-700 mt-1 italic">{rec.caveats}</p>
+                                                )}
+                                                <p className="text-xs text-gray-500 mt-1">{rec.guideline}</p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </details>
+                            </div>
+                          );
+                        })()}
+
+                        {/* Trial Eligibility Quick Badge */}
+                        {(() => {
+                          const allTrials = Object.keys(TRIAL_ELIGIBILITY_CONFIG);
+                          if (allTrials.length === 0) return null;
+                          const patientDataForTrials = { telestrokeNote, nihssScore, aspectsScore, patientData };
+                          let eligibleCount = 0;
+                          let needsInfoCount = 0;
+                          allTrials.forEach(trialId => {
+                            const result = evaluateTrialEligibility(trialId, patientDataForTrials);
+                            if (result) {
+                              if (result.status === 'eligible') eligibleCount++;
+                              else if (result.status === 'needs_info') needsInfoCount++;
+                            }
+                          });
+                          if (eligibleCount === 0 && needsInfoCount === 0) return null;
+                          return (
+                            <div className="bg-purple-50 border border-purple-200 rounded-lg px-4 py-2 flex items-center justify-between">
+                              <div className="flex items-center gap-3 text-sm">
+                                <i data-lucide="flask-conical" className="w-4 h-4 text-purple-600"></i>
+                                <span className="font-medium text-purple-900">Clinical Trials:</span>
+                                {eligibleCount > 0 && (
+                                  <span className="px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-bold">{eligibleCount} eligible</span>
+                                )}
+                                {needsInfoCount > 0 && (
+                                  <span className="px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs font-bold">{needsInfoCount} needs info</span>
+                                )}
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => navigateTo('trials')}
+                                className="text-xs font-semibold text-purple-700 hover:text-purple-900"
+                              >
+                                View Trials →
+                              </button>
+                            </div>
+                          );
+                        })()}
 
                         {/* Section 7: Recommendations */}
                         <div id="recommendations-section" className="bg-white border-2 border-teal-300 rounded-lg p-4 shadow-md">
@@ -9686,6 +10489,131 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
                       </div>
 
+                      {/* Hematoma Expansion Prevention */}
+                      <div className="mb-6">
+                        <h3 className="text-lg font-semibold text-red-700 mb-4">Hematoma Expansion Prevention</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="bg-white p-4 rounded border">
+                            <h4 className="font-semibold text-red-600 mb-2">Blood Pressure Target</h4>
+                            <ul className="text-sm space-y-1">
+                              <li>• <strong>Target SBP 130-150 mmHg</strong> within 2 hours</li>
+                              <li>• Avoid SBP &lt;130 (renal AKI risk)</li>
+                              <li>• Nicardipine infusion preferred (reliable titration)</li>
+                              <li>• Maintain target for at least 24 hours</li>
+                              <li className="text-gray-500 italic text-xs mt-1">Class I, LOE A — AHA/ASA ICH 2022</li>
+                            </ul>
+                          </div>
+                          <div className="bg-white p-4 rounded border">
+                            <h4 className="font-semibold text-red-600 mb-2">Expansion Risk Factors</h4>
+                            <ul className="text-sm space-y-1">
+                              <li>• Spot sign on CTA</li>
+                              <li>• Anticoagulant use</li>
+                              <li>• Time from onset &lt;3 hours</li>
+                              <li>• Large initial volume (&gt;30 mL)</li>
+                              <li>• Irregular hematoma shape</li>
+                              <li>• Blend sign on NCCT</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* IVH and Hydrocephalus */}
+                      <div className="mb-6">
+                        <h3 className="text-lg font-semibold text-red-700 mb-4">IVH &amp; Hydrocephalus Management</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="bg-white p-4 rounded border">
+                            <h4 className="font-semibold text-orange-600 mb-2">EVD Indications</h4>
+                            <ul className="text-sm space-y-1">
+                              <li>• GCS &le;8 with IVH and hydrocephalus</li>
+                              <li>• Obstructive hydrocephalus from IVH</li>
+                              <li>• Cerebellar ICH with 4th ventricle compression</li>
+                              <li>• Used for ICP monitoring and CSF drainage</li>
+                            </ul>
+                          </div>
+                          <div className="bg-white p-4 rounded border">
+                            <h4 className="font-semibold text-orange-600 mb-2">IVH-Specific Management</h4>
+                            <ul className="text-sm space-y-1">
+                              <li>• Intraventricular alteplase may be considered (CLEAR III)</li>
+                              <li>• Dose: alteplase 1 mg q8h via EVD</li>
+                              <li>• Goal: accelerate clot resolution, reduce shunt dependency</li>
+                              <li className="text-gray-500 italic text-xs mt-1">Class IIb, LOE B-R — AHA/ASA ICH 2022</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* ICH Disposition & Goals of Care */}
+                      <div className="mb-6">
+                        <h3 className="text-lg font-semibold text-red-700 mb-4">ICH Disposition &amp; Goals of Care</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="bg-white p-4 rounded border">
+                            <h4 className="font-semibold text-teal-600 mb-2">Surgical Indications</h4>
+                            <ul className="text-sm space-y-1">
+                              <li>• <strong>Cerebellar ICH &gt;15 mL:</strong> urgent surgical evacuation</li>
+                              <li>• Lobar ICH 30-80 mL: consider MIE (ENRICH criteria)</li>
+                              <li>• GCS deterioration by &ge;2 points</li>
+                              <li>• New pupil asymmetry or brainstem signs</li>
+                              <li>• Obstructive hydrocephalus unresponsive to EVD</li>
+                              <li className="text-gray-500 italic text-xs mt-1">Class I, LOE B-NR — AHA/ASA ICH 2022</li>
+                            </ul>
+                          </div>
+                          <div className="bg-white p-4 rounded border">
+                            <h4 className="font-semibold text-teal-600 mb-2">Goals-of-Care Triggers</h4>
+                            <ul className="text-sm space-y-1">
+                              <li>• <strong>ICH Score &ge;3:</strong> initiate GOC discussion</li>
+                              <li>• Avoid early DNR orders limiting aggressive care</li>
+                              <li>• Full care recommended for minimum 24-48h</li>
+                              <li>• Self-fulfilling prophecy of withdrawal is well-documented</li>
+                              <li>• Palliative care consult for symptom management</li>
+                              <li className="text-gray-500 italic text-xs mt-1">Class I, LOE C-LD — AHA/ASA ICH 2022 + AHA Palliative 2024</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Seizure Management in ICH */}
+                      <div className="mb-6">
+                        <h3 className="text-lg font-semibold text-red-700 mb-4">Seizure Management in ICH</h3>
+                        <div className="bg-white p-4 rounded border">
+                          <ul className="text-sm space-y-1">
+                            <li>• Treat clinical seizures with antiseizure medication (ASM)</li>
+                            <li>• <strong>7-day prophylactic ASM</strong> may be considered for lobar ICH</li>
+                            <li>• <strong>No routine long-term seizure prophylaxis</strong> (Class III)</li>
+                            <li>• Continuous EEG monitoring for unexplained decrease in consciousness</li>
+                            <li>• Preferred agents: levetiracetam 500-1000 mg IV/PO BID or lacosamide 200 mg IV/PO BID</li>
+                            <li className="text-gray-500 italic text-xs mt-1">Class IIb (7-day prophylaxis), Class III (routine long-term) — AHA/ASA ICH 2022</li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* Supportive Care Bundle */}
+                      <div className="mb-6">
+                        <h3 className="text-lg font-semibold text-red-700 mb-4">ICH Supportive Care Bundle</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="bg-white p-4 rounded border">
+                            <h4 className="font-semibold text-gray-700 mb-2">Standard Orders</h4>
+                            <ul className="text-sm space-y-1">
+                              <li>• NPO until dysphagia screen passed</li>
+                              <li>• IPC on admission for VTE prophylaxis</li>
+                              <li>• Pharmacologic VTE ppx after 24-48h (stable hematoma)</li>
+                              <li>• Glucose target 140-180 (no intensive insulin)</li>
+                              <li>• Acetaminophen for temp &gt;38°C</li>
+                              <li>• HOB 30 degrees</li>
+                            </ul>
+                          </div>
+                          <div className="bg-white p-4 rounded border">
+                            <h4 className="font-semibold text-gray-700 mb-2">Monitoring</h4>
+                            <ul className="text-sm space-y-1">
+                              <li>• Neuro checks q1h x 24h, then q2h</li>
+                              <li>• Continuous telemetry</li>
+                              <li>• Repeat CT at 6h or with any neurological change</li>
+                              <li>• Daily CBC, BMP, coags if on reversal</li>
+                              <li>• Early PT/OT/SLP once medically stable</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                     )}
                     {/* End of ICH Content */}
@@ -9768,6 +10696,149 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li><strong>Epinephrine:</strong> 0.1% if severe</li>
                                 <li><strong>Consider Berinert:</strong> 20 IU/kg (C1 esterase inhibitor)</li>
                                 <li><strong>Supportive Care</strong></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Antiplatelet Loading Protocol */}
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-green-800 mb-3">Antiplatelet Loading Protocol</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-green-700 mb-2">Minor Stroke / TIA (NIHSS &le; 3)</h4>
+                              <ul className="text-sm space-y-1">
+                                <li><strong>DAPT x 21 days:</strong></li>
+                                <li>• ASA 325 mg load → 81 mg daily</li>
+                                <li>• Clopidogrel 300 mg load → 75 mg daily</li>
+                                <li>• Then single antiplatelet after 21 days</li>
+                                <li className="text-gray-500 italic text-xs mt-1">Class I, LOE A (CHANCE/POINT) — AHA/ASA 2021</li>
+                              </ul>
+                            </div>
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-green-700 mb-2">Moderate-Severe Stroke (no lysis)</h4>
+                              <ul className="text-sm space-y-1">
+                                <li><strong>Single antiplatelet:</strong></li>
+                                <li>• ASA 325 mg within 24-48h of onset</li>
+                                <li>• If post-TNK: delay ASA 24 hours</li>
+                                <li>• If AF: transition to DOAC per CATALYST timing</li>
+                                <li className="text-gray-500 italic text-xs mt-1">Class I, LOE A — AHA/ASA 2021</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* DOAC Timing in AF-Stroke (CATALYST) */}
+                        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-purple-800 mb-3">DOAC Initiation in AF-Stroke (CATALYST Meta-Analysis)</h3>
+                          <div className="bg-white p-3 rounded border mb-3">
+                            <p className="text-sm text-gray-700 mb-2">Based on the CATALYST meta-analysis (pooled data from ELAN, OPTIMAS, TIMING, START), early DOAC initiation is safe and non-inferior to delayed initiation.</p>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
+                              <div className="bg-green-50 p-2 rounded border border-green-200 text-center">
+                                <p className="text-xs font-bold text-green-700 uppercase">Minor Stroke</p>
+                                <p className="text-xs text-gray-500">NIHSS &lt;8, small infarct</p>
+                                <p className="text-lg font-bold text-green-800 mt-1">Within 48h</p>
+                              </div>
+                              <div className="bg-amber-50 p-2 rounded border border-amber-200 text-center">
+                                <p className="text-xs font-bold text-amber-700 uppercase">Moderate Stroke</p>
+                                <p className="text-xs text-gray-500">NIHSS 8-15</p>
+                                <p className="text-lg font-bold text-amber-800 mt-1">Day 3-5</p>
+                              </div>
+                              <div className="bg-red-50 p-2 rounded border border-red-200 text-center">
+                                <p className="text-xs font-bold text-red-700 uppercase">Severe Stroke</p>
+                                <p className="text-xs text-gray-500">NIHSS &gt;15 or large infarct</p>
+                                <p className="text-lg font-bold text-red-800 mt-1">Day 6-14</p>
+                              </div>
+                            </div>
+                            <p className="text-xs text-gray-500 mt-2 italic">Fischer U et al. Lancet Neurol. 2025. CATALYST Collaboration. Reassess imaging before DOAC start if concern for hemorrhagic transformation.</p>
+                          </div>
+                          <div className="bg-white p-3 rounded border">
+                            <h4 className="font-semibold text-purple-700 mb-2">Preferred DOACs</h4>
+                            <ul className="text-sm space-y-1">
+                              <li>• <strong>Apixaban</strong> 5 mg BID (2.5 mg if age &ge;80, weight &le;60 kg, or Cr &ge;1.5)</li>
+                              <li>• <strong>Rivaroxaban</strong> 20 mg daily (15 mg if CrCl 15-50)</li>
+                              <li>• <strong>Edoxaban</strong> 60 mg daily (30 mg if CrCl 15-50 or weight &le;60 kg)</li>
+                              <li>• <strong>Dabigatran</strong> 150 mg BID (110 mg if age &ge;80)</li>
+                              <li className="text-gray-500 italic text-xs mt-1">DOAC preferred over warfarin (Class I, LOE A) — AHA/ASA 2021</li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        {/* Statin Initiation */}
+                        <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-indigo-800 mb-3">Statin Initiation</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-indigo-700 mb-2">High-Intensity Statin (LDL &lt;70)</h4>
+                              <ul className="text-sm space-y-1">
+                                <li>• <strong>Atorvastatin 80 mg</strong> daily (preferred)</li>
+                                <li>• <strong>Rosuvastatin 20-40 mg</strong> daily</li>
+                                <li>• Start during hospitalization</li>
+                                <li>• Add ezetimibe 10 mg if LDL not at goal</li>
+                                <li>• Consider PCSK9i if still above target</li>
+                                <li className="text-gray-500 italic text-xs mt-1">Class I, LOE A — AHA/ASA 2021</li>
+                              </ul>
+                            </div>
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-amber-700 mb-2">Special Considerations</h4>
+                              <ul className="text-sm space-y-1">
+                                <li>• sICAS (70-99%): high-intensity + LDL &lt;70 (Class I)</li>
+                                <li>• Lobar ICH: caution — SATURN trial pending</li>
+                                <li>• Check LFTs at baseline, recheck 4-12 weeks</li>
+                                <li>• Do not discontinue statin for mild transaminase elevation (&lt;3x ULN)</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Post-EVT Management */}
+                        <div className="bg-violet-50 border border-violet-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-violet-800 mb-3">Post-EVT Management</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-violet-700 mb-2">Blood Pressure</h4>
+                              <ul className="text-sm space-y-1">
+                                <li>• SBP &lt;180/105 (standard target)</li>
+                                <li className="text-red-700 font-semibold">• Do NOT target SBP &lt;140 (Class III: Harm)</li>
+                                <li>• Based on ENCHANTED2/MT + OPTIMAL-BP</li>
+                                <li>• Monitor q15 min x 2h, then q30 min x 6h</li>
+                              </ul>
+                            </div>
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-violet-700 mb-2">Post-Procedure Care</h4>
+                              <ul className="text-sm space-y-1">
+                                <li>• Groin check q15 min x 4, q30 min x 4, then q1h</li>
+                                <li>• Bed rest per protocol (typically 2-6h)</li>
+                                <li>• Follow-up imaging: CT/CTA at 24h or if neuro change</li>
+                                <li>• Antiplatelet: ASA 325 mg within 24h if no hemorrhagic conversion</li>
+                                <li>• Neuro checks q1h x 24h minimum</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Ischemic Stroke Disposition Criteria */}
+                        <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-teal-800 mb-3">Disposition Criteria</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-teal-700 mb-2">ICU Admission Criteria</h4>
+                              <ul className="text-sm space-y-1">
+                                <li>• Post-TNK (24h monitoring minimum)</li>
+                                <li>• Post-EVT</li>
+                                <li>• NIHSS &ge; 15 (malignant edema risk)</li>
+                                <li>• Basilar artery occlusion</li>
+                                <li>• Labile BP requiring IV infusion</li>
+                                <li>• Airway compromise</li>
+                              </ul>
+                            </div>
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-teal-700 mb-2">Transfer Indications</h4>
+                              <ul className="text-sm space-y-1">
+                                <li>• LVO requiring EVT (immediate)</li>
+                                <li>• Consider hemicraniectomy (age &lt;60, large MCA)</li>
+                                <li>• Complex neurovascular condition</li>
+                                <li>• Do NOT delay transfer for TNK response</li>
                               </ul>
                             </div>
                           </div>
