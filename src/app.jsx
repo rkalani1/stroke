@@ -838,7 +838,7 @@ Clinician Name`;
             return window.innerWidth < 640;
           });
           // Phase 2: Guided Clinical Pathway UI state
-          const [pathwayCollapsed, setPathwayCollapsed] = useState(false);
+          const [pathwayCollapsed, setPathwayCollapsed] = useState(true);
           const [guidelineRecsExpanded, setGuidelineRecsExpanded] = useState(false);
           const [showAdvanced, setShowAdvanced] = useState(() => getKey('showAdvanced', false) === true);
           const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null });
@@ -3877,7 +3877,7 @@ Clinician Name`;
             setSaveStatus('saved');
             setLastSaved(null);
             setNotice(null);
-            setPathwayCollapsed(false);
+            setPathwayCollapsed(true);
             setGuidelineRecsExpanded(false);
             setDeidWarnings({});
 
@@ -6394,39 +6394,41 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <div className="px-4 pt-3 pb-2">
                             <div className="flex items-center justify-between mb-1">
                               <span className={`text-xs font-bold uppercase tracking-wide ${phaseColor}`}>{progress.phase}</span>
-                              <span className="text-xs font-semibold text-slate-500">{progress.completedCount}/{progress.totalSteps} steps ({progress.percentage}%)</span>
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs font-semibold text-slate-500">{progress.completedCount}/{progress.totalSteps} steps ({progress.percentage}%)</span>
+                                <button
+                                  onClick={() => setPathwayCollapsed(!pathwayCollapsed)}
+                                  className="text-xs text-blue-500 hover:text-blue-700"
+                                  type="button"
+                                >
+                                  {pathwayCollapsed ? 'details' : 'hide'}
+                                </button>
+                              </div>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
                               <div className={`${barColor} h-2 rounded-full transition-all duration-500`} style={{ width: `${progress.percentage}%` }}></div>
                             </div>
                           </div>
 
-                          {/* Step pills */}
+                          {/* Step pills — only visible when expanded */}
+                          {!pathwayCollapsed && (
                           <div className="px-4 pb-2">
-                            <button
-                              onClick={() => setPathwayCollapsed(!pathwayCollapsed)}
-                              className="text-xs text-slate-500 hover:text-slate-700 font-medium mb-1"
-                              type="button"
-                            >
-                              {pathwayCollapsed ? 'Show steps' : 'Hide steps'}
-                            </button>
-                            {!pathwayCollapsed && (
-                              <div className="flex flex-wrap gap-1.5 mt-1">
-                                {progress.steps.map((step) => (
-                                  <span
-                                    key={step.id}
-                                    className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                                      step.completed
-                                        ? 'bg-green-100 text-green-800'
-                                        : 'bg-gray-100 text-gray-600'
-                                    }`}
-                                  >
-                                    {step.completed ? '\u2713 ' : ''}{step.label}
-                                  </span>
-                                ))}
-                              </div>
-                            )}
+                            <div className="flex flex-wrap gap-1.5">
+                              {progress.steps.map((step) => (
+                                <span
+                                  key={step.id}
+                                  className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                                    step.completed
+                                      ? 'bg-green-100 text-green-800'
+                                      : 'bg-gray-100 text-gray-600'
+                                  }`}
+                                >
+                                  {step.completed ? '\u2713 ' : ''}{step.label}
+                                </span>
+                              ))}
+                            </div>
                           </div>
+                          )}
 
                           {/* NBA action card */}
                           {!isComplete && nba.title && (
