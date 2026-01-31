@@ -926,6 +926,8 @@ Clinician Name`;
           const activeShiftBoardId = appData.uiState.lastShiftBoardId || (shiftBoards[0] ? shiftBoards[0].id : null);
           const activeShiftBoard = shiftBoards.find((board) => board.id === activeShiftBoardId) || null;
 
+          const clipboardPacks = appData.encounter?.clipboardPacks || getDefaultClipboardPacks();
+          const [selectedPackId, setSelectedPackId] = useState(clipboardPacks[0]?.id || 'telestroke-consult');
 
           // Ref and state for Part 6 (Treatment Decision) scroll visibility
           const treatmentDecisionRef = useRef(null);
