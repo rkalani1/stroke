@@ -952,7 +952,13 @@ Clinician Name`;
               serumSodium: '',
               serumOsmolality: '',
               sodiumTarget: '',
-              correctionRate: ''
+              correctionRate: '',
+              baselineNa: '',
+              baselineNaTime: '',
+              repeatNa: '',
+              repeatNaTime: '',
+              weight: '',
+              mannitolOsmGap: ''
             },
             // Nutritional Support
             nutritionalSupport: {
@@ -13083,9 +13089,11 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 </div>
                               </div>
 
-                              {/* Osmotic Therapy */}
-                              <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
-                                <h4 className="font-semibold text-slate-800 mb-2">Osmotic Therapy Decision Tree</h4>
+                              {/* Osmotic Therapy + Na Correction Rate Safety Calculator */}
+                              <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 space-y-3">
+                                <h4 className="font-semibold text-slate-800 mb-2">Osmotic Therapy &amp; Sodium Correction Safety</h4>
+
+                                {/* Agent & Indication Row */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                   <div className="space-y-2">
                                     <select value={(telestrokeNote.osmoticTherapy || {}).agentUsed || ''}
@@ -13113,6 +13121,238 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     <p><strong>HTS 23.4%:</strong> central line only; for refractory herniation</p>
                                   </div>
                                 </div>
+
+                                {/* Sodium Correction Rate Calculator */}
+                                {((telestrokeNote.osmoticTherapy || {}).agentUsed || '').includes('hts') && (
+                                  <div className="bg-white border border-indigo-200 rounded-lg p-3 space-y-3">
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-sm font-bold text-indigo-800">Na+ Correction Rate Calculator</span>
+                                      <span className="text-xs text-gray-500">ODS/CPM Safety Monitor</span>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-600 mb-0.5">Baseline Na+ (mEq/L)</label>
+                                        <div className="flex items-center gap-1">
+                                          <input type="number" step="0.1"
+                                            value={(telestrokeNote.osmoticTherapy || {}).baselineNa || ''}
+                                            onChange={(e) => setTelestrokeNote({...telestrokeNote, osmoticTherapy: {...(telestrokeNote.osmoticTherapy || {}), baselineNa: e.target.value}})}
+                                            placeholder="e.g. 138"
+                                            className="w-full px-2 py-1 border border-gray-300 rounded text-sm" />
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-600 mb-0.5">Baseline Time</label>
+                                        <input type="time"
+                                          value={(telestrokeNote.osmoticTherapy || {}).baselineNaTime || ''}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, osmoticTherapy: {...(telestrokeNote.osmoticTherapy || {}), baselineNaTime: e.target.value}})}
+                                          className="w-full px-2 py-1 border border-gray-300 rounded text-sm" />
+                                      </div>
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-600 mb-0.5">Repeat Na+ (mEq/L)</label>
+                                        <input type="number" step="0.1"
+                                          value={(telestrokeNote.osmoticTherapy || {}).repeatNa || ''}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, osmoticTherapy: {...(telestrokeNote.osmoticTherapy || {}), repeatNa: e.target.value}})}
+                                          placeholder="e.g. 148"
+                                          className="w-full px-2 py-1 border border-gray-300 rounded text-sm" />
+                                      </div>
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-600 mb-0.5">Repeat Time</label>
+                                        <input type="time"
+                                          value={(telestrokeNote.osmoticTherapy || {}).repeatNaTime || ''}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, osmoticTherapy: {...(telestrokeNote.osmoticTherapy || {}), repeatNaTime: e.target.value}})}
+                                          className="w-full px-2 py-1 border border-gray-300 rounded text-sm" />
+                                      </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-2">
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-600 mb-0.5">Na+ Target (mEq/L)</label>
+                                        <input type="number" step="1"
+                                          value={(telestrokeNote.osmoticTherapy || {}).sodiumTarget || ''}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, osmoticTherapy: {...(telestrokeNote.osmoticTherapy || {}), sodiumTarget: e.target.value}})}
+                                          placeholder="e.g. 150"
+                                          className="w-full px-2 py-1 border border-gray-300 rounded text-sm" />
+                                      </div>
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-600 mb-0.5">Serum Osmolality (mOsm/kg)</label>
+                                        <input type="number" step="1"
+                                          value={(telestrokeNote.osmoticTherapy || {}).serumOsmolality || ''}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, osmoticTherapy: {...(telestrokeNote.osmoticTherapy || {}), serumOsmolality: e.target.value}})}
+                                          placeholder="e.g. 295"
+                                          className="w-full px-2 py-1 border border-gray-300 rounded text-sm" />
+                                      </div>
+                                    </div>
+
+                                    {/* Correction Rate Output */}
+                                    {(() => {
+                                      const osm = telestrokeNote.osmoticTherapy || {};
+                                      const baseNa = parseFloat(osm.baselineNa);
+                                      const repNa = parseFloat(osm.repeatNa);
+                                      const baseT = osm.baselineNaTime;
+                                      const repT = osm.repeatNaTime;
+                                      const target = parseFloat(osm.sodiumTarget);
+                                      const osmVal = parseFloat(osm.serumOsmolality);
+
+                                      if (isNaN(baseNa) || isNaN(repNa) || !baseT || !repT) return (
+                                        <p className="text-xs text-gray-500 italic">Enter baseline and repeat Na+ values with times to calculate correction rate.</p>
+                                      );
+
+                                      // Calculate hours between measurements
+                                      const [bH, bM] = baseT.split(':').map(Number);
+                                      const [rH, rM] = repT.split(':').map(Number);
+                                      let hoursElapsed = (rH + rM / 60) - (bH + bM / 60);
+                                      if (hoursElapsed <= 0) hoursElapsed += 24; // crossed midnight
+                                      if (hoursElapsed < 0.1) return <p className="text-xs text-red-600">Times too close — check entries.</p>;
+
+                                      const naDelta = repNa - baseNa;
+                                      const ratePerHour = naDelta / hoursElapsed;
+                                      const projected24h = ratePerHour * 24;
+                                      const projectedFrom0 = (hoursElapsed > 0) ? (naDelta / hoursElapsed) * 24 : 0;
+
+                                      // ODS risk thresholds
+                                      const isRapid = Math.abs(projected24h) > 10;
+                                      const isDangerous = Math.abs(projected24h) > 12;
+                                      const isSlow = Math.abs(projected24h) < 4 && naDelta > 0;
+                                      const osmHigh = !isNaN(osmVal) && osmVal > 320;
+
+                                      // Hours remaining to reach target at current rate
+                                      const hoursToTarget = (!isNaN(target) && ratePerHour > 0 && target > repNa) ? ((target - repNa) / ratePerHour) : null;
+
+                                      return (
+                                        <div className="space-y-2">
+                                          <div className={'rounded-lg p-3 ' + (isDangerous ? 'bg-red-100 border-2 border-red-400' : isRapid ? 'bg-amber-100 border-2 border-amber-400' : 'bg-green-100 border border-green-300')}>
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+                                              <div>
+                                                <p className="text-xs text-gray-600">Change</p>
+                                                <p className="text-lg font-bold">{naDelta > 0 ? '+' : ''}{naDelta.toFixed(1)} mEq/L</p>
+                                                <p className="text-xs text-gray-500">in {hoursElapsed.toFixed(1)}h</p>
+                                              </div>
+                                              <div>
+                                                <p className="text-xs text-gray-600">Rate</p>
+                                                <p className="text-lg font-bold">{ratePerHour > 0 ? '+' : ''}{ratePerHour.toFixed(2)} mEq/L/h</p>
+                                              </div>
+                                              <div>
+                                                <p className="text-xs text-gray-600">Projected 24h</p>
+                                                <p className={'text-lg font-bold ' + (isDangerous ? 'text-red-700' : isRapid ? 'text-amber-700' : 'text-green-700')}>
+                                                  {projected24h > 0 ? '+' : ''}{projected24h.toFixed(1)} mEq/L
+                                                </p>
+                                              </div>
+                                              <div>
+                                                <p className="text-xs text-gray-600">Current Na+</p>
+                                                <p className="text-lg font-bold">{repNa} mEq/L</p>
+                                                {!isNaN(target) && <p className="text-xs text-gray-500">Target: {target}</p>}
+                                              </div>
+                                            </div>
+
+                                            {/* Safety Alerts */}
+                                            {isDangerous && (
+                                              <div className="mt-2 p-2 bg-red-200 rounded text-sm text-red-900 font-bold text-center animate-pulse">
+                                                &#9888; ODS/CPM RISK: Projected correction &gt;12 mEq/L/24h — SLOW or STOP infusion. Consider DDAVP 2 mcg IV q8h to re-lower Na+.
+                                              </div>
+                                            )}
+                                            {isRapid && !isDangerous && (
+                                              <div className="mt-2 p-2 bg-amber-200 rounded text-sm text-amber-900 font-semibold text-center">
+                                                &#9888; Approaching ODS threshold (&gt;10 mEq/L/24h). Reduce HTS rate. Recheck Na+ in 2h. Max safe: 8 mEq/L/24h preferred.
+                                              </div>
+                                            )}
+                                            {isSlow && (
+                                              <div className="mt-2 p-2 bg-blue-100 rounded text-xs text-blue-800 text-center">
+                                                Correction rate slow (&lt;4 mEq/L/24h). Consider increasing infusion rate if clinically indicated.
+                                              </div>
+                                            )}
+                                          </div>
+
+                                          {hoursToTarget !== null && (
+                                            <p className="text-xs text-indigo-700 text-center">At current rate, target of {target} mEq/L reached in ~{hoursToTarget.toFixed(1)} hours ({(hoursToTarget / 24).toFixed(1)} days)</p>
+                                          )}
+
+                                          {osmHigh && (
+                                            <div className="bg-amber-50 border border-amber-300 rounded px-2 py-1 text-xs text-amber-800 text-center">
+                                              &#9888; Serum osmolality {osmVal} mOsm/kg (&gt;320) — hold Mannitol. HTS may continue with caution.
+                                            </div>
+                                          )}
+
+                                          {/* Safe correction guide */}
+                                          <div className="bg-gray-50 rounded p-2 text-xs text-gray-700">
+                                            <p className="font-semibold mb-1">Safe Correction Limits (NCS/AAN):</p>
+                                            <div className="grid grid-cols-3 gap-2 text-center">
+                                              <div className="bg-green-50 rounded p-1">
+                                                <p className="font-bold text-green-800">&le;8 mEq/L</p>
+                                                <p>per 24h (preferred)</p>
+                                              </div>
+                                              <div className="bg-amber-50 rounded p-1">
+                                                <p className="font-bold text-amber-800">8-10 mEq/L</p>
+                                                <p>per 24h (acceptable)</p>
+                                              </div>
+                                              <div className="bg-red-50 rounded p-1">
+                                                <p className="font-bold text-red-800">&gt;10 mEq/L</p>
+                                                <p>per 24h (ODS risk)</p>
+                                              </div>
+                                            </div>
+                                            <p className="mt-1 text-gray-500">If overcorrected: DDAVP 2 mcg IV q8h + D5W infusion to re-lower Na+. Target reversal to &le;8 mEq/L/24h from baseline.</p>
+                                          </div>
+                                        </div>
+                                      );
+                                    })()}
+                                  </div>
+                                )}
+
+                                {/* Mannitol Osmolality Safety */}
+                                {(telestrokeNote.osmoticTherapy || {}).agentUsed === 'mannitol-20' && (
+                                  <div className="bg-white border border-amber-200 rounded-lg p-3">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-sm font-bold text-amber-800">Mannitol Safety Monitoring</span>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-2">
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-600 mb-0.5">Serum Osmolality (mOsm/kg)</label>
+                                        <input type="number" step="1"
+                                          value={(telestrokeNote.osmoticTherapy || {}).serumOsmolality || ''}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, osmoticTherapy: {...(telestrokeNote.osmoticTherapy || {}), serumOsmolality: e.target.value}})}
+                                          placeholder="e.g. 295"
+                                          className="w-full px-2 py-1 border border-gray-300 rounded text-sm" />
+                                      </div>
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-600 mb-0.5">Osmol Gap (calculated - measured)</label>
+                                        <input type="number" step="1"
+                                          value={(telestrokeNote.osmoticTherapy || {}).mannitolOsmGap || ''}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, osmoticTherapy: {...(telestrokeNote.osmoticTherapy || {}), mannitolOsmGap: e.target.value}})}
+                                          placeholder="e.g. 10"
+                                          className="w-full px-2 py-1 border border-gray-300 rounded text-sm" />
+                                      </div>
+                                    </div>
+                                    {(() => {
+                                      const osmVal = parseFloat((telestrokeNote.osmoticTherapy || {}).serumOsmolality);
+                                      const gapVal = parseFloat((telestrokeNote.osmoticTherapy || {}).mannitolOsmGap);
+                                      if (isNaN(osmVal) && isNaN(gapVal)) return <p className="text-xs text-gray-500 mt-1">Enter osmolality and gap to assess safety. Check q6h with BMP.</p>;
+                                      return (
+                                        <div className="mt-2 space-y-1">
+                                          {!isNaN(osmVal) && osmVal > 320 && (
+                                            <div className="bg-red-100 border border-red-300 rounded px-2 py-1 text-xs text-red-800 font-bold">
+                                              &#9888; Osmolality {osmVal} &gt;320 — HOLD mannitol. Risk of renal injury.
+                                            </div>
+                                          )}
+                                          {!isNaN(osmVal) && osmVal <= 320 && osmVal > 300 && (
+                                            <div className="bg-amber-50 border border-amber-200 rounded px-2 py-1 text-xs text-amber-700">
+                                              Osmolality {osmVal} — approaching limit. Recheck in 4-6h.
+                                            </div>
+                                          )}
+                                          {!isNaN(osmVal) && osmVal <= 300 && (
+                                            <div className="bg-green-50 border border-green-200 rounded px-2 py-1 text-xs text-green-700">
+                                              Osmolality {osmVal} — safe to continue mannitol.
+                                            </div>
+                                          )}
+                                          {!isNaN(gapVal) && gapVal > 20 && (
+                                            <div className="bg-red-100 border border-red-300 rounded px-2 py-1 text-xs text-red-800 font-bold">
+                                              &#9888; Osmol gap {gapVal} &gt;20 — mannitol accumulation. HOLD and reassess.
+                                            </div>
+                                          )}
+                                        </div>
+                                      );
+                                    })()}
+                                  </div>
+                                )}
                               </div>
 
                               {/* Nutritional Support */}
@@ -14095,8 +14335,26 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 if (osm.agentUsed) {
                                   note += `\nOSMOTIC THERAPY:\n`;
                                   note += `- Agent: ${osm.agentUsed}${osm.indication ? ` for ${osm.indication.replace(/-/g, ' ')}` : ''}.\n`;
-                                  if (osm.serumSodium) note += `- Na: ${osm.serumSodium}, target: ${osm.sodiumTarget || 'not set'}.\n`;
-                                  if (osm.serumOsmolality) note += `- Osm: ${osm.serumOsmolality}.\n`;
+                                  if (osm.baselineNa) note += `- Baseline Na+: ${osm.baselineNa} mEq/L${osm.baselineNaTime ? ` at ${osm.baselineNaTime}` : ''}.\n`;
+                                  if (osm.repeatNa) note += `- Repeat Na+: ${osm.repeatNa} mEq/L${osm.repeatNaTime ? ` at ${osm.repeatNaTime}` : ''}.\n`;
+                                  if (osm.baselineNa && osm.repeatNa && osm.baselineNaTime && osm.repeatNaTime) {
+                                    const bNa = parseFloat(osm.baselineNa);
+                                    const rNa = parseFloat(osm.repeatNa);
+                                    const [bHn, bMn] = osm.baselineNaTime.split(':').map(Number);
+                                    const [rHn, rMn] = osm.repeatNaTime.split(':').map(Number);
+                                    let hrsE = (rHn + rMn / 60) - (bHn + bMn / 60);
+                                    if (hrsE <= 0) hrsE += 24;
+                                    if (hrsE > 0.1 && !isNaN(bNa) && !isNaN(rNa)) {
+                                      const delta = rNa - bNa;
+                                      const proj24 = (delta / hrsE) * 24;
+                                      note += `- Na+ correction: ${delta > 0 ? '+' : ''}${delta.toFixed(1)} mEq/L in ${hrsE.toFixed(1)}h (projected 24h: ${proj24 > 0 ? '+' : ''}${proj24.toFixed(1)} mEq/L).`;
+                                      if (Math.abs(proj24) > 10) note += ` ⚠ EXCEEDS SAFE LIMIT (>10 mEq/L/24h).`;
+                                      note += '\n';
+                                    }
+                                  }
+                                  if (osm.sodiumTarget) note += `- Na+ target: ${osm.sodiumTarget} mEq/L.\n`;
+                                  if (osm.serumOsmolality) note += `- Serum osmolality: ${osm.serumOsmolality} mOsm/kg${parseFloat(osm.serumOsmolality) > 320 ? ' (>320 — hold mannitol)' : ''}.\n`;
+                                  if (osm.mannitolOsmGap && parseFloat(osm.mannitolOsmGap) > 20) note += `- Osmol gap: ${osm.mannitolOsmGap} (>20 — mannitol accumulation).\n`;
                                 }
 
                                 // Nutritional Support
