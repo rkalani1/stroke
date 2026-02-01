@@ -1700,20 +1700,6 @@ Clinician Name`;
               },
               monitoring: 'Anti-Xa level (calibrated for rivaroxaban)'
             },
-            edoxaban: {
-              name: 'Edoxaban (Savaysa)',
-              class: 'Direct Factor Xa Inhibitor',
-              halfLife: '10-14 hours',
-              halfLifeNote: 'Prolonged in renal impairment',
-              thrombolysisThreshold: '48 hours since last dose',
-              thrombolysisNote: 'Consider anti-Xa level if <48h - thrombolysis may be given if anti-Xa <30 ng/mL',
-              ichReversal: {
-                primary: '4-Factor PCC (Kcentra) 50 IU/kg (max 5000 IU)',
-                alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Andexxa (andexanet alfa) is NOT recommended due to cost, availability, and thrombosis risk'
-              },
-              monitoring: 'Anti-Xa level (calibrated for edoxaban)'
-            },
             dabigatran: {
               name: 'Dabigatran (Pradaxa)',
               class: 'Direct Thrombin Inhibitor',
@@ -2297,15 +2283,14 @@ Clinician Name`;
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021 + CATALYST Meta-Analysis 2025',
               reference: 'Fischer U et al. Lancet Neurol. 2025. CATALYST: Collaboration for Antithrombotic Timing After Acute Ischaemic Stroke.',
-              medications: ['Apixaban 5 mg BID (preferred)', 'Rivaroxaban 20 mg daily', 'Edoxaban 60 mg daily', 'Dabigatran 150 mg BID'],
+              medications: ['Apixaban 5 mg BID (preferred)', 'Rivaroxaban 20 mg daily', 'Dabigatran 150 mg BID'],
               caveats: 'Timing categories per CATALYST: minor (NIHSS <8, small infarct) 48h; moderate (NIHSS 8-15) day 3-5; severe (NIHSS >15 or large infarct) day 6-14. Reassess imaging before starting if any concern for hemorrhagic transformation.',
               conditions: (data) => {
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
                 const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
                 const hasAF = pmh.includes('afib') || pmh.includes('atrial fib') || pmh.includes('a-fib') || pmh.includes('af ') ||
                               meds.includes('apixaban') || meds.includes('rivaroxaban') || meds.includes('eliquis') || meds.includes('xarelto') ||
-                              meds.includes('warfarin') || meds.includes('coumadin') || meds.includes('dabigatran') || meds.includes('pradaxa') ||
-                              meds.includes('edoxaban') || meds.includes('savaysa');
+                              meds.includes('warfarin') || meds.includes('coumadin') || meds.includes('dabigatran') || meds.includes('pradaxa');
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const isIschemic = dx.includes('ischemic') || dx.includes('stroke');
                 return isIschemic && hasAF;
@@ -2394,7 +2379,7 @@ Clinician Name`;
               id: 'reversal_xa_inhibitor',
               category: 'Reversal',
               title: 'Factor Xa inhibitor reversal in ICH',
-              recommendation: 'Administer andexanet alfa or 4F-PCC 50 IU/kg for ICH on apixaban/rivaroxaban/edoxaban.',
+              recommendation: 'Administer andexanet alfa or 4F-PCC 50 IU/kg for ICH on apixaban/rivaroxaban.',
               detail: 'Andexanet alfa (Andexxa) if available: low-dose bolus 400 mg then 480 mg infusion (rivaroxaban >7h or apixaban), high-dose 800 mg then 960 mg (rivaroxaban <7h). If unavailable, use 4F-PCC 50 IU/kg.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
@@ -2406,8 +2391,7 @@ Clinician Name`;
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
                 const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
                 const onXaInhibitor = meds.includes('apixaban') || meds.includes('eliquis') ||
-                                      meds.includes('rivaroxaban') || meds.includes('xarelto') ||
-                                      meds.includes('edoxaban') || meds.includes('savaysa');
+                                      meds.includes('rivaroxaban') || meds.includes('xarelto');
                 return isICH && onXaInhibitor;
               }
             },
@@ -7441,7 +7425,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   <option value="apixaban">Apixaban (Eliquis)</option>
                                   <option value="rivaroxaban">Rivaroxaban (Xarelto)</option>
                                   <option value="dabigatran">Dabigatran (Pradaxa)</option>
-                                  <option value="edoxaban">Edoxaban (Savaysa)</option>
                                   <option value="warfarin">Warfarin (check INR)</option>
                                   <option value="heparin">Heparin UFH (check PTT)</option>
                                   <option value="lmwh">LMWH / Enoxaparin</option>
@@ -7652,170 +7635,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                         </div>
 
-                        {/* Section 6: Diagnosis & Trial Eligibility */}
-                        <div id="recommendations-section" className="bg-white border-2 border-teal-300 rounded-lg p-4 shadow-md">
-                          <h4 className="text-md font-bold text-teal-900 mb-3 flex items-center gap-2">
-                            <i data-lucide="stethoscope" className="w-4 h-4"></i>
-                            Working Diagnosis
-                          </h4>
-
-                          {/* Diagnosis Category Selector */}
-                          <div className="flex flex-wrap gap-2 mb-3">
-                            {[
-                              { value: 'ischemic', label: 'Ischemic Stroke or TIA', color: 'blue', icon: 'activity' },
-                              { value: 'ich', label: 'Intracranial Hemorrhage', color: 'red', icon: 'alert-triangle' },
-                              { value: 'sah', label: 'SAH', color: 'purple', icon: 'zap' },
-                              { value: 'cvt', label: 'CVT', color: 'indigo', icon: 'git-branch' },
-                              { value: 'mimic', label: 'Stroke Mimic/Other', color: 'amber', icon: 'eye-off' }
-                            ].map(option => {
-                              const isSelected = telestrokeNote.diagnosisCategory === option.value;
-                              const colorMap = {
-                                blue: 'bg-blue-500 text-white border-blue-500',
-                                red: 'bg-red-500 text-white border-red-500',
-                                purple: 'bg-purple-500 text-white border-purple-500',
-                                indigo: 'bg-indigo-500 text-white border-indigo-500',
-                                amber: 'bg-amber-500 text-white border-amber-500'
-                              };
-                              return (
-                                <button
-                                  key={option.value}
-                                  type="button"
-                                  onClick={() => {
-                                    const newCategory = option.value;
-                                    let newDiagnosis = '';
-                                    if (newCategory === 'ischemic') {
-                                      newDiagnosis = 'Suspected acute ischemic stroke';
-                                    } else if (newCategory === 'ich') {
-                                      newDiagnosis = 'Intracerebral hemorrhage (ICH)';
-                                    } else if (newCategory === 'sah') {
-                                      newDiagnosis = 'Subarachnoid hemorrhage (SAH)';
-                                    } else if (newCategory === 'cvt') {
-                                      newDiagnosis = 'Cerebral venous thrombosis (CVT)';
-                                    } else if (newCategory === 'mimic') {
-                                      newDiagnosis = 'Stroke mimic/other';
-                                    }
-                                    setTelestrokeNote({
-                                      ...telestrokeNote,
-                                      diagnosisCategory: newCategory,
-                                      diagnosis: newDiagnosis
-                                    });
-                                  }}
-                                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all border-2 ${
-                                    isSelected
-                                      ? (colorMap[option.color] || 'bg-gray-500 text-white border-gray-500')
-                                      : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
-                                  }`}
-                                >
-                                  <i data-lucide={option.icon} className="w-4 h-4"></i>
-                                  {option.label}
-                                </button>
-                              );
-                            })}
-                          </div>
-
-                          {/* Free text for Other */}
-                          {telestrokeNote.diagnosisCategory === 'other' && (
-                            <input
-                              type="text"
-                              value={telestrokeNote.diagnosis}
-                              onChange={(e) => setTelestrokeNote({...telestrokeNote, diagnosis: e.target.value})}
-                              placeholder="Specify diagnosis..."
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 mb-3"
-                            />
-                          )}
-
-                          {/* Active Trials List - Show for Ischemic or ICH */}
-                          {telestrokeNote.diagnosisCategory === 'ischemic' && (
-                            <div className="mt-3 text-sm">
-                              <div className="font-medium text-gray-700 mb-1">Active Ischemic Stroke Trials:</div>
-                              <ul className="text-gray-600 space-y-0.5 ml-4">
-                                <li>• <strong>SISTER</strong> – Late thrombolysis (4.5-24h), no TNK/EVT</li>
-                                <li>• <strong>STEP-EVT</strong> – Mild LVO or medium/distal vessel occlusions</li>
-                                <li>• <strong>PICASSO</strong> – Tandem lesion (carotid + intracranial LVO)</li>
-                                <li>• <strong>TESTED</strong> – EVT in pre-existing disability (mRS 3-4)</li>
-                                <li>• <strong>VERIFY</strong> – TMS/MRI to predict motor recovery</li>
-                                <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-stroke</li>
-                                <li>• <strong>ESUS Imaging</strong> – Cardiac/vessel wall MRI for ESUS</li>
-                                <li>• <strong>MOCHA Imaging</strong> – Intracranial vessel-wall analysis for ICAD</li>
-                              </ul>
-                            </div>
-                          )}
-                          {telestrokeNote.diagnosisCategory === 'ich' && (
-                            <div className="mt-3 text-sm">
-                              <div className="font-medium text-gray-700 mb-1">Active ICH Trials:</div>
-                              <ul className="text-gray-600 space-y-0.5 ml-4">
-                                <li>• <strong>FASTEST</strong> – rFVIIa within 2h for hematoma expansion</li>
-                                <li>• <strong>SATURN</strong> – Statin continuation vs stop after lobar ICH</li>
-                                <li>• <strong>ASPIRE</strong> – Apixaban vs aspirin post-ICH with AF</li>
-                                <li>• <strong>cAPPricorn-1</strong> – Intrathecal mivelsiran for CAA</li>
-                                <li>• <strong>MIRROR Registry</strong> – Minimally invasive ICH evacuation</li>
-                                <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-ICH</li>
-                              </ul>
-                            </div>
-                          )}
-                          {telestrokeNote.diagnosisCategory === 'sah' && (
-                            <div className="mt-3 text-sm bg-purple-50 border border-purple-200 rounded-lg p-2">
-                              <div className="font-medium text-purple-800 mb-1">SAH Key Actions (2023 AHA/ASA):</div>
-                              <ul className="text-purple-700 space-y-0.5 ml-4">
-                                <li>• <strong>Nimodipine</strong> – 60 mg q4h x 21 days (Class I, LOE A)</li>
-                                <li>• <strong>BP Target</strong> – SBP &lt;160 pre-securing</li>
-                                <li>• <strong>Aneurysm securing</strong> – Within 24h (clip vs coil)</li>
-                                <li>• <strong>EVD</strong> – For hydrocephalus or poor-grade (HH 3-5)</li>
-                                <li>• <strong>Euvolemia</strong> – Isotonic fluids; avoid triple-H</li>
-                              </ul>
-                            </div>
-                          )}
-                          {telestrokeNote.diagnosisCategory === 'cvt' && (
-                            <div className="mt-3 text-sm bg-indigo-50 border border-indigo-200 rounded-lg p-2">
-                              <div className="font-medium text-indigo-800 mb-1">CVT Key Actions (2024 AHA):</div>
-                              <ul className="text-indigo-700 space-y-0.5 ml-4">
-                                <li>• <strong>Anticoagulation</strong> – LMWH even with hemorrhage (Class I)</li>
-                                <li>• <strong>ICP monitoring</strong> – Acetazolamide, LP drainage if needed</li>
-                                <li>• <strong>Seizure prophylaxis</strong> – If supratentorial lesion</li>
-                                <li>• <strong>Thrombophilia workup</strong> – Especially young/unprovoked</li>
-                                <li>• <strong>Long-term AC</strong> – VKA 3-12 mo or DOAC if mild</li>
-                              </ul>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Section 7: Treatment Decision */}
-                        <div className="bg-white border-2 border-orange-300 rounded-lg p-4 shadow-md">
-                          <h4 className="text-md font-bold text-orange-900 mb-3 flex items-center gap-2">
-                            <i data-lucide="clipboard-check" className="w-4 h-4"></i>
-                            Treatment Decision
-                          </h4>
-                          <div className="grid grid-cols-2 gap-4 mb-3">
-                            <label className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg cursor-pointer hover:bg-blue-100">
-                              <input
-                                type="checkbox"
-                                checked={telestrokeNote.tnkRecommended}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, tnkRecommended: e.target.checked})}
-                                className="w-5 h-5 rounded border-2 border-blue-400 text-blue-600"
-                              />
-                              <span className="font-semibold text-blue-800">TNK Recommended</span>
-                            </label>
-                            <label className="flex items-center gap-2 p-3 bg-purple-50 border border-purple-200 rounded-lg cursor-pointer hover:bg-purple-100">
-                              <input
-                                type="checkbox"
-                                checked={telestrokeNote.evtRecommended}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, evtRecommended: e.target.checked})}
-                                className="w-5 h-5 rounded border-2 border-purple-400 text-purple-600"
-                              />
-                              <span className="font-semibold text-purple-800">EVT Recommended</span>
-                            </label>
-                          </div>
-                          <div>
-                            <label className="block text-xs text-gray-600 mb-1">Rationale / Recommendations</label>
-                            <textarea
-                              value={telestrokeNote.rationale}
-                              onChange={(e) => setTelestrokeNote({...telestrokeNote, rationale: e.target.value})}
-                              rows="3"
-                              placeholder="Treatment rationale and recommendations..."
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                            />
-                          </div>
-                        </div>
 
                         {/* Section 7: Output Buttons */}
                         <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4 shadow-md space-y-3">
@@ -8074,8 +7893,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     <option value="apixaban">Apixaban (Eliquis)</option>
                                     <option value="rivaroxaban">Rivaroxaban (Xarelto)</option>
                                     <option value="dabigatran">Dabigatran (Pradaxa)</option>
-                                    <option value="edoxaban">Edoxaban (Savaysa)</option>
-                                    <option value="warfarin">Warfarin (check INR)</option>
+                                      <option value="warfarin">Warfarin (check INR)</option>
                                     <option value="heparin">Heparin UFH (check PTT)</option>
                                     <option value="lmwh">LMWH / Enoxaparin</option>
                                   </select>
@@ -11189,7 +11007,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           
                           <div className="mb-3">
                             <p className="text-sm font-semibold text-gray-700">Direct Factor Xa Inhibitors:</p>
-                            <p className="text-sm text-gray-600 mb-2">Apixaban, Rivaroxaban, Edoxaban</p>
+                            <p className="text-sm text-gray-600 mb-2">Apixaban, Rivaroxaban</p>
                             <ul className="text-sm space-y-1">
                               <li>• <strong>PCC (KCentra):</strong> 50 IU/kg (max 5000 IU)</li>
                             </ul>
@@ -11485,7 +11303,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <ul className="text-sm space-y-1">
                               <li>• <strong>Apixaban</strong> 5 mg BID (2.5 mg if age &ge;80, weight &le;60 kg, or Cr &ge;1.5)</li>
                               <li>• <strong>Rivaroxaban</strong> 20 mg daily (15 mg if CrCl 15-50)</li>
-                              <li>• <strong>Edoxaban</strong> 60 mg daily (30 mg if CrCl 15-50 or weight &le;60 kg)</li>
                               <li>• <strong>Dabigatran</strong> 150 mg BID (110 mg if age &ge;80)</li>
                               <li className="text-gray-500 italic text-xs mt-1">DOAC preferred over warfarin (Class I, LOE A) — AHA/ASA 2021</li>
                             </ul>
@@ -11545,32 +11362,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                         </div>
 
-                        {/* Ischemic Stroke Disposition Criteria */}
-                        <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
-                          <h3 className="text-lg font-semibold text-teal-800 mb-3">Disposition Criteria</h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-teal-700 mb-2">ICU Admission Criteria</h4>
-                              <ul className="text-sm space-y-1">
-                                <li>• Post-TNK (24h monitoring minimum)</li>
-                                <li>• Post-EVT</li>
-                                <li>• NIHSS &ge; 15 (malignant edema risk)</li>
-                                <li>• Basilar artery occlusion</li>
-                                <li>• Labile BP requiring IV infusion</li>
-                                <li>• Airway compromise</li>
-                              </ul>
-                            </div>
-                            <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-teal-700 mb-2">Transfer Indications</h4>
-                              <ul className="text-sm space-y-1">
-                                <li>• LVO requiring EVT (immediate)</li>
-                                <li>• Consider hemicraniectomy (age &lt;60, large MCA)</li>
-                                <li>• Complex neurovascular condition</li>
-                                <li>• Do NOT delay transfer for TNK response</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
 
                       </div>
                     )}
