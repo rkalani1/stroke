@@ -4587,6 +4587,25 @@ Clinician Name`;
           // =================================================================
           // TNK DOSING CALCULATOR (0.25 mg/kg, max 25 mg)
           // =================================================================
+          // =================================================================
+          // COCKCROFT-GAULT CrCl CALCULATOR
+          // =================================================================
+          const calculateCrCl = (age, weight, sex, creatinine) => {
+            const a = parseFloat(age);
+            const w = parseFloat(weight);
+            const cr = parseFloat(creatinine);
+            if (!a || !w || !cr || a <= 0 || w <= 0 || cr <= 0) return null;
+            const sexFactor = (sex === 'F') ? 0.85 : 1.0;
+            const crcl = ((140 - a) * w * sexFactor) / (72 * cr);
+            return {
+              value: Math.round(crcl * 10) / 10,
+              isLow: crcl < 30,
+              isBorderline: crcl >= 30 && crcl < 50,
+              renalCategory: crcl < 15 ? 'severe-dialysis' : crcl < 30 ? 'severe' : crcl < 50 ? 'moderate' : crcl < 90 ? 'mild' : 'normal',
+              label: crcl < 15 ? 'Severe (consider dialysis)' : crcl < 30 ? 'Severe (<30)' : crcl < 50 ? 'Moderate (30-49)' : crcl < 90 ? 'Mild (50-89)' : 'Normal (≥90)'
+            };
+          };
+
           const calculateTNKDose = (weightKg) => {
             const weight = parseFloat(weightKg);
             if (isNaN(weight) || weight <= 0) return null;
@@ -5962,7 +5981,10 @@ Clinician Name`;
             const labs = [];
             if (telestrokeNote.glucose) labs.push(`Glucose ${telestrokeNote.glucose}`);
             if (telestrokeNote.plateletsCoags) labs.push(`PLT and coags ${telestrokeNote.plateletsCoags}`);
-            if (telestrokeNote.creatinine) labs.push(`Cr ${telestrokeNote.creatinine}`);
+            if (telestrokeNote.creatinine) {
+              const autoCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
+              labs.push(`Cr ${telestrokeNote.creatinine}${autoCrCl ? ` (CrCl ${autoCrCl.value} mL/min — ${autoCrCl.label})` : ''}`);
+            }
             note += labs.join(', ') + `\n`;
 
             note += `Exam: Scores: NIHSS ${telestrokeNote.nihss}`;
@@ -8557,6 +8579,17 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               />
                             </div>
                             <div>
+                              <label className="block text-xs font-medium text-gray-600 mb-1">Cr (mg/dL)</label>
+                              <input
+                                type="number"
+                                step="0.1"
+                                value={telestrokeNote.creatinine}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, creatinine: e.target.value})}
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
+                                placeholder="e.g. 1.2"
+                              />
+                            </div>
+                            <div>
                               <label className="block text-xs font-medium text-gray-600 mb-1">Pre-stroke mRS</label>
                               <select
                                 value={telestrokeNote.premorbidMRS}
@@ -8573,6 +8606,20 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </select>
                             </div>
                           </div>
+
+                          {/* Auto-calculated CrCl Display */}
+                          {(() => {
+                            const crcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
+                            if (!crcl) return null;
+                            const colorClass = crcl.isLow ? 'bg-red-50 border-red-200 text-red-800' : crcl.isBorderline ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-green-50 border-green-200 text-green-800';
+                            return (
+                              <div className={`mb-3 border rounded-lg p-2 flex items-center justify-between text-sm ${colorClass}`}>
+                                <span className="font-medium">CrCl (Cockcroft-Gault): <span className="font-bold">{crcl.value} mL/min</span> — {crcl.label}</span>
+                                {crcl.isLow && <span className="text-xs font-semibold px-2 py-0.5 bg-red-200 rounded-full">Renal dose adjustment required</span>}
+                                {crcl.isBorderline && <span className="text-xs font-semibold px-2 py-0.5 bg-amber-200 rounded-full">Check DOAC dosing</span>}
+                              </div>
+                            );
+                          })()}
 
                           {/* TNK Dose Display */}
                           {telestrokeNote.weight && calculateTNKDose(telestrokeNote.weight) && (
@@ -12089,44 +12136,93 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     )}
                                   </div>
 
-                                  {/* DOAC Dose Reduction Criteria */}
-                                  <div className="bg-white border border-blue-200 rounded p-2">
-                                    <h5 className="text-xs font-semibold text-blue-700 mb-1">DOAC Dose Reduction Checker</h5>
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                                      <div>
-                                        <label className="text-xs text-gray-600">DOAC Agent</label>
-                                        <select value={(telestrokeNote.drugInteractions || {}).doacDoseReductionCriteria || ''}
-                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, drugInteractions: {...(telestrokeNote.drugInteractions || {}), doacDoseReductionCriteria: e.target.value}})}
-                                          className="w-full px-2 py-1 border border-gray-300 rounded text-xs">
-                                          <option value="">Select DOAC</option>
-                                          <option value="apixaban">Apixaban</option>
-                                          <option value="rivaroxaban">Rivaroxaban</option>
-                                          <option value="dabigatran">Dabigatran</option>
-                                          <option value="edoxaban">Edoxaban</option>
-                                        </select>
+                                  {/* DOAC Dose Reduction Criteria — Dynamic Renal Safety Engine */}
+                                  {(() => {
+                                    const patientCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
+                                    const crclVal = patientCrCl ? patientCrCl.value : null;
+                                    const patientAge = parseFloat(telestrokeNote.age) || 0;
+                                    const patientWt = parseFloat(telestrokeNote.weight) || 0;
+                                    const patientCr = parseFloat(telestrokeNote.creatinine) || 0;
+                                    const selectedDoac = (telestrokeNote.drugInteractions || {}).doacDoseReductionCriteria || '';
+
+                                    // Apixaban: count dose-reduction criteria (age ≥80, wt ≤60kg, Cr ≥1.5)
+                                    const apixReductionCount = (patientAge >= 80 ? 1 : 0) + (patientWt > 0 && patientWt <= 60 ? 1 : 0) + (patientCr >= 1.5 ? 1 : 0);
+                                    const apixNeedsReduction = apixReductionCount >= 2;
+
+                                    return (
+                                      <div className="bg-white border border-blue-200 rounded p-2">
+                                        <h5 className="text-xs font-semibold text-blue-700 mb-1">DOAC Dose Reduction Checker {crclVal !== null && <span className="font-normal text-gray-500">(Patient CrCl: {crclVal} mL/min)</span>}</h5>
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                          <div>
+                                            <label className="text-xs text-gray-600">DOAC Agent</label>
+                                            <select value={selectedDoac}
+                                              onChange={(e) => setTelestrokeNote({...telestrokeNote, drugInteractions: {...(telestrokeNote.drugInteractions || {}), doacDoseReductionCriteria: e.target.value}})}
+                                              className="w-full px-2 py-1 border border-gray-300 rounded text-xs">
+                                              <option value="">Select DOAC</option>
+                                              <option value="apixaban">Apixaban</option>
+                                              <option value="rivaroxaban">Rivaroxaban</option>
+                                              <option value="dabigatran">Dabigatran</option>
+                                              <option value="edoxaban">Edoxaban</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                        {selectedDoac === 'apixaban' && (
+                                          <div className={`mt-1 p-2 rounded text-xs ${apixNeedsReduction ? 'bg-red-100 border border-red-300 text-red-800' : 'bg-green-50 border border-green-200 text-green-800'}`}>
+                                            {apixNeedsReduction ? (
+                                              <><strong>DOSE REDUCTION REQUIRED:</strong> Apixaban <strong>2.5mg BID</strong>. Patient meets ≥2 of 3 criteria: {patientAge >= 80 ? 'age ≥80' : ''}{patientWt > 0 && patientWt <= 60 ? `${patientAge >= 80 ? ', ' : ''}wt ≤60kg` : ''}{patientCr >= 1.5 ? `${(patientAge >= 80 || (patientWt > 0 && patientWt <= 60)) ? ', ' : ''}Cr ≥1.5` : ''} ({apixReductionCount}/3 criteria met). ARISTOTLE.</>
+                                            ) : patientAge > 0 || patientWt > 0 || patientCr > 0 ? (
+                                              <><strong>Standard dose: Apixaban 5mg BID.</strong> Patient has {apixReductionCount}/3 reduction criteria{apixReductionCount === 1 ? ' — do NOT reduce for single criterion' : ''}. (ARISTOTLE)</>
+                                            ) : (
+                                              <>Apixaban 2.5mg BID if ≥2 of: age ≥80, weight ≤60kg, Cr ≥1.5. <strong>Do NOT reduce dose for single criterion</strong> (ARISTOTLE).</>
+                                            )}
+                                          </div>
+                                        )}
+                                        {selectedDoac === 'rivaroxaban' && (
+                                          <div className={`mt-1 p-2 rounded text-xs ${crclVal !== null && crclVal < 15 ? 'bg-red-100 border border-red-300 text-red-800' : crclVal !== null && crclVal <= 50 ? 'bg-amber-100 border border-amber-200 text-amber-800' : 'bg-green-50 border border-green-200 text-green-800'}`}>
+                                            {crclVal !== null && crclVal < 15 ? (
+                                              <><strong>AVOID:</strong> Rivaroxaban contraindicated with CrCl &lt;15 mL/min (patient: {crclVal}).</>
+                                            ) : crclVal !== null && crclVal <= 50 ? (
+                                              <><strong>DOSE REDUCTION:</strong> Rivaroxaban <strong>15mg daily</strong> (CrCl {crclVal} mL/min, range 15-50). Take with evening meal. (ROCKET-AF)</>
+                                            ) : crclVal !== null ? (
+                                              <><strong>Standard dose: Rivaroxaban 20mg daily</strong> with evening meal (CrCl {crclVal} mL/min). (ROCKET-AF)</>
+                                            ) : (
+                                              <>Rivaroxaban 15mg daily if CrCl 15-50. Avoid if CrCl &lt;15. Take with evening meal (ROCKET-AF).</>
+                                            )}
+                                          </div>
+                                        )}
+                                        {selectedDoac === 'dabigatran' && (
+                                          <div className={`mt-1 p-2 rounded text-xs ${crclVal !== null && crclVal < 15 ? 'bg-red-100 border border-red-300 text-red-800' : crclVal !== null && crclVal < 30 ? 'bg-amber-100 border border-amber-200 text-amber-800' : 'bg-green-50 border border-green-200 text-green-800'}`}>
+                                            {crclVal !== null && crclVal < 15 ? (
+                                              <><strong>AVOID:</strong> Dabigatran not recommended with CrCl &lt;15 mL/min (patient: {crclVal}).</>
+                                            ) : crclVal !== null && crclVal < 30 ? (
+                                              <><strong>DOSE REDUCTION:</strong> Dabigatran <strong>75mg BID</strong> (CrCl {crclVal} mL/min). Idarucizumab available for reversal. (RE-LY, RE-VERSE AD)</>
+                                            ) : crclVal !== null && crclVal < 50 ? (
+                                              <><strong>Consider reduced dose:</strong> Dabigatran 75mg BID per FDA labeling for CrCl 30-49 with high bleed risk, or 150mg BID if standard risk (CrCl {crclVal} mL/min). (RE-LY)</>
+                                            ) : crclVal !== null ? (
+                                              <><strong>Standard dose: Dabigatran 150mg BID</strong> (CrCl {crclVal} mL/min). (RE-LY)</>
+                                            ) : (
+                                              <>Dabigatran 75mg BID if CrCl 15-30. Avoid if CrCl &lt;15. Idarucizumab for reversal (RE-LY, RE-VERSE AD).</>
+                                            )}
+                                          </div>
+                                        )}
+                                        {selectedDoac === 'edoxaban' && (
+                                          <div className={`mt-1 p-2 rounded text-xs ${crclVal !== null && crclVal > 95 ? 'bg-red-100 border border-red-300 text-red-800' : crclVal !== null && crclVal < 15 ? 'bg-red-100 border border-red-300 text-red-800' : crclVal !== null && crclVal <= 50 ? 'bg-amber-100 border border-amber-200 text-amber-800' : 'bg-green-50 border border-green-200 text-green-800'}`}>
+                                            {crclVal !== null && crclVal > 95 ? (
+                                              <><strong>AVOID:</strong> Edoxaban has <strong>reduced efficacy</strong> with CrCl &gt;95 mL/min (patient: {crclVal}). Use alternative DOAC. (ENGAGE AF-TIMI 48)</>
+                                            ) : crclVal !== null && crclVal < 15 ? (
+                                              <><strong>AVOID:</strong> Edoxaban not recommended with CrCl &lt;15 mL/min (patient: {crclVal}).</>
+                                            ) : crclVal !== null && crclVal <= 50 ? (
+                                              <><strong>DOSE REDUCTION:</strong> Edoxaban <strong>30mg daily</strong> (CrCl {crclVal} mL/min). Also reduce if wt ≤60kg or concomitant P-gp inhibitor. (ENGAGE AF-TIMI 48)</>
+                                            ) : crclVal !== null ? (
+                                              <><strong>Standard dose: Edoxaban 60mg daily</strong> (CrCl {crclVal} mL/min). (ENGAGE AF-TIMI 48)</>
+                                            ) : (
+                                              <>Edoxaban 30mg daily if CrCl 15-50 or weight ≤60kg or concomitant P-gp inhibitor. Avoid if CrCl &gt;95 (reduced efficacy, ENGAGE AF-TIMI 48).</>
+                                            )}
+                                          </div>
+                                        )}
                                       </div>
-                                    </div>
-                                    {(telestrokeNote.drugInteractions || {}).doacDoseReductionCriteria === 'apixaban' && (
-                                      <div className="mt-1 p-1 bg-blue-50 rounded text-xs text-blue-700">
-                                        Apixaban 2.5mg BID if ≥2 of: age ≥80, weight ≤60kg, Cr ≥1.5. <strong>Do NOT reduce dose for single criterion</strong> (ARISTOTLE).
-                                      </div>
-                                    )}
-                                    {(telestrokeNote.drugInteractions || {}).doacDoseReductionCriteria === 'rivaroxaban' && (
-                                      <div className="mt-1 p-1 bg-blue-50 rounded text-xs text-blue-700">
-                                        Rivaroxaban 15mg daily if CrCl 15-50. Avoid if CrCl &lt;15. Take with evening meal (ROCKET-AF).
-                                      </div>
-                                    )}
-                                    {(telestrokeNote.drugInteractions || {}).doacDoseReductionCriteria === 'dabigatran' && (
-                                      <div className="mt-1 p-1 bg-blue-50 rounded text-xs text-blue-700">
-                                        Dabigatran 75mg BID if CrCl 15-30. Avoid if CrCl &lt;15. Idarucizumab for reversal (RE-LY, RE-VERSE AD).
-                                      </div>
-                                    )}
-                                    {(telestrokeNote.drugInteractions || {}).doacDoseReductionCriteria === 'edoxaban' && (
-                                      <div className="mt-1 p-1 bg-blue-50 rounded text-xs text-blue-700">
-                                        Edoxaban 30mg daily if CrCl 15-50 or weight ≤60kg or concomitant P-gp inhibitor. Avoid if CrCl &gt;95 (reduced efficacy, ENGAGE AF-TIMI 48).
-                                      </div>
-                                    )}
-                                  </div>
+                                    );
+                                  })()}
                                 </div>
                               </div>
 
@@ -16638,6 +16734,87 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       </div>
                     </details>
 
+                    {/* Cockcroft-Gault CrCl Calculator */}
+                    <details className="bg-indigo-50 border border-indigo-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-indigo-800 hover:bg-indigo-100 rounded-lg flex items-center justify-between">
+                        <span>Creatinine Clearance (Cockcroft-Gault)</span>
+                      </summary>
+                      <div className="p-4">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+                          <div>
+                            <label className="text-xs text-gray-600">Age</label>
+                            <input type="number" value={(telestrokeNote.crclCalc || {}).age || telestrokeNote.age || ''}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, crclCalc: {...(telestrokeNote.crclCalc || {}), age: e.target.value}})}
+                              className="w-full px-2 py-1 border border-gray-300 rounded text-sm" placeholder="years" />
+                          </div>
+                          <div>
+                            <label className="text-xs text-gray-600">Weight (kg)</label>
+                            <input type="number" value={(telestrokeNote.crclCalc || {}).weight || telestrokeNote.weight || ''}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, crclCalc: {...(telestrokeNote.crclCalc || {}), weight: e.target.value}})}
+                              className="w-full px-2 py-1 border border-gray-300 rounded text-sm" placeholder="kg" />
+                          </div>
+                          <div>
+                            <label className="text-xs text-gray-600">Sex</label>
+                            <select value={(telestrokeNote.crclCalc || {}).sex || telestrokeNote.sex || 'M'}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, crclCalc: {...(telestrokeNote.crclCalc || {}), sex: e.target.value}})}
+                              className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                              <option value="M">Male</option>
+                              <option value="F">Female</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="text-xs text-gray-600">Serum Cr (mg/dL)</label>
+                            <input type="number" step="0.1" value={(telestrokeNote.crclCalc || {}).cr || telestrokeNote.creatinine || ''}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, crclCalc: {...(telestrokeNote.crclCalc || {}), cr: e.target.value}})}
+                              className="w-full px-2 py-1 border border-gray-300 rounded text-sm" placeholder="mg/dL" />
+                          </div>
+                        </div>
+                        {(() => {
+                          const result = calculateCrCl(
+                            (telestrokeNote.crclCalc || {}).age || telestrokeNote.age,
+                            (telestrokeNote.crclCalc || {}).weight || telestrokeNote.weight,
+                            (telestrokeNote.crclCalc || {}).sex || telestrokeNote.sex,
+                            (telestrokeNote.crclCalc || {}).cr || telestrokeNote.creatinine
+                          );
+                          if (!result) return <p className="text-xs text-gray-500 italic">Enter age, weight, sex, and creatinine to calculate.</p>;
+                          const colorClass = result.isLow ? 'bg-red-100 border-red-300' : result.isBorderline ? 'bg-amber-100 border-amber-300' : 'bg-green-100 border-green-300';
+                          return (
+                            <div className={`p-3 rounded-lg border ${colorClass}`}>
+                              <p className="text-lg font-bold">CrCl: {result.value} mL/min</p>
+                              <p className="text-sm font-medium">{result.label}</p>
+                              <div className="mt-2 text-xs space-y-1">
+                                {result.renalCategory === 'severe-dialysis' && <p className="text-red-700 font-semibold">Avoid DOACs. Consider warfarin or consult nephrology.</p>}
+                                {result.renalCategory === 'severe' && (
+                                  <div className="text-red-700">
+                                    <p><strong>Apixaban:</strong> 5mg BID (2.5mg BID if also age ≥80 or wt ≤60kg). Apixaban is the only DOAC with data in ESRD.</p>
+                                    <p><strong>Rivaroxaban:</strong> 15mg daily (avoid if CrCl &lt;15).</p>
+                                    <p><strong>Dabigatran:</strong> 75mg BID (avoid if CrCl &lt;15). Idarucizumab available for reversal.</p>
+                                    <p><strong>Edoxaban:</strong> 30mg daily (avoid if CrCl &lt;15).</p>
+                                    <p><strong>Enoxaparin:</strong> 1 mg/kg SC <strong>daily</strong> (not BID). Check anti-Xa levels.</p>
+                                  </div>
+                                )}
+                                {result.renalCategory === 'moderate' && (
+                                  <div className="text-amber-700">
+                                    <p><strong>Apixaban:</strong> Standard 5mg BID (2.5mg BID if 2 of 3: age ≥80, wt ≤60kg, Cr ≥1.5).</p>
+                                    <p><strong>Rivaroxaban:</strong> 15mg daily for AF (20mg if CrCl &gt;50).</p>
+                                    <p><strong>Dabigatran:</strong> 150mg BID preferred; 110mg BID if high bleed risk. Consider 75mg BID if CrCl 30-49 per FDA.</p>
+                                    <p><strong>Edoxaban:</strong> 30mg daily.</p>
+                                    <p><strong>Enoxaparin:</strong> Standard dosing; monitor anti-Xa if prolonged use.</p>
+                                  </div>
+                                )}
+                                {(result.renalCategory === 'mild' || result.renalCategory === 'normal') && (
+                                  <p className="text-green-700">Standard DOAC and enoxaparin dosing. No renal adjustment needed. {result.renalCategory === 'normal' && 'Note: Edoxaban 60mg — avoid if CrCl >95 (reduced efficacy, ENGAGE AF).'}</p>
+                                )}
+                              </div>
+                              <button onClick={() => copyToClipboard(`CrCl (Cockcroft-Gault): ${result.value} mL/min — ${result.label}`, 'CrCl')}
+                                className="mt-2 px-2 py-1 bg-gray-200 rounded text-xs hover:bg-gray-300">Copy</button>
+                            </div>
+                          );
+                        })()}
+                        <p className="text-xs text-gray-500 mt-2">Cockcroft-Gault: CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × Cr). Uses actual body weight. For obesity, consider adjusted body weight or cystatin C-based eGFR.</p>
+                      </div>
+                    </details>
+
                     {/* Weight-Based Enoxaparin Dosing */}
                     <details className="bg-teal-50 border border-teal-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-teal-800 hover:bg-teal-100 rounded-lg flex items-center justify-between">
@@ -16653,15 +16830,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                           <div>
                             <label className="text-xs text-gray-600">CrCl (mL/min)</label>
-                            <input type="number" value={(telestrokeNote.enoxCalc || {}).crCl || ''}
+                            <input type="number" value={(telestrokeNote.enoxCalc || {}).crCl || (() => { const c = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine); return c ? c.value : ''; })() || ''}
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, enoxCalc: {...(telestrokeNote.enoxCalc || {}), crCl: e.target.value}})}
-                              className="w-full px-2 py-1 border border-gray-300 rounded text-sm" placeholder="mL/min" />
+                              className="w-full px-2 py-1 border border-gray-300 rounded text-sm" placeholder="mL/min (auto from demographics)" />
                           </div>
                         </div>
                         {(() => {
+                          const autoCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
                           const result = calculateEnoxaparinDose(
                             (telestrokeNote.enoxCalc || {}).weightKg || telestrokeNote.weight,
-                            (telestrokeNote.enoxCalc || {}).crCl
+                            (telestrokeNote.enoxCalc || {}).crCl || (autoCrCl ? autoCrCl.value : '')
                           );
                           if (!result) return null;
                           return (
