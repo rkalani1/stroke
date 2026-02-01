@@ -7587,7 +7587,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
                             />
                             <div className="flex flex-wrap gap-2 mt-2">
-                              {['Aspirin', 'Clopidogrel', 'Statin', 'Warfarin', 'Apixaban'].map((med) => (
+                              {['Aspirin', 'Clopidogrel', 'Warfarin', 'Apixaban'].map((med) => (
                                 <button
                                   key={med}
                                   type="button"
