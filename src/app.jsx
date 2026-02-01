@@ -7826,6 +7826,164 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
 
+                        {/* Section 6: Treatment Decision */}
+                        <div className="bg-white border-2 border-purple-300 rounded-lg p-4 shadow-md">
+                          <h4 className="text-md font-bold text-purple-900 mb-3 flex items-center gap-2">
+                            <i data-lucide="stethoscope" className="w-4 h-4"></i>
+                            Treatment Decision
+                          </h4>
+                          <div className="space-y-3">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Suspected Diagnosis</label>
+                              <select
+                                value={telestrokeNote.diagnosis}
+                                onChange={(e) => {
+                                  const newDx = e.target.value;
+                                  const category = newDx.toLowerCase().includes('ich') || newDx.toLowerCase().includes('hemorrhag') ? 'ich' : newDx.toLowerCase().includes('ischemic') || newDx.toLowerCase().includes('lvo') ? 'ischemic' : '';
+                                  setTelestrokeNote({...telestrokeNote, diagnosis: newDx, diagnosisCategory: category});
+                                }}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                              >
+                                <option value="">-- Select Diagnosis --</option>
+                                <optgroup label="Ischemic Stroke">
+                                  <option value="Acute Ischemic Stroke">Acute Ischemic Stroke</option>
+                                  <option value="Acute Ischemic Stroke - LVO">Acute Ischemic Stroke - LVO</option>
+                                  <option value="Minor Ischemic Stroke">Minor Ischemic Stroke</option>
+                                  <option value="TIA">TIA</option>
+                                </optgroup>
+                                <optgroup label="Hemorrhagic">
+                                  <option value="Intracerebral Hemorrhage (ICH)">Intracerebral Hemorrhage (ICH)</option>
+                                  <option value="Subarachnoid Hemorrhage (SAH)">Subarachnoid Hemorrhage (SAH)</option>
+                                </optgroup>
+                                <optgroup label="Other">
+                                  <option value="Cerebral Venous Thrombosis (CVT)">Cerebral Venous Thrombosis (CVT)</option>
+                                  <option value="Cervical Artery Dissection">Cervical Artery Dissection</option>
+                                  <option value="Stroke Mimic">Stroke Mimic</option>
+                                  <option value="Other">Other</option>
+                                </optgroup>
+                              </select>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                              <label className="flex items-center gap-2 p-2 bg-green-50 border border-green-200 rounded-lg cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={telestrokeNote.tnkRecommended}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, tnkRecommended: e.target.checked})}
+                                  className="w-4 h-4 text-green-600"
+                                />
+                                <span className="text-sm font-medium text-green-800">TNK Recommended</span>
+                              </label>
+                              <label className="flex items-center gap-2 p-2 bg-blue-50 border border-blue-200 rounded-lg cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={telestrokeNote.evtRecommended}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, evtRecommended: e.target.checked})}
+                                  className="w-4 h-4 text-blue-600"
+                                />
+                                <span className="text-sm font-medium text-blue-800">EVT Recommended</span>
+                              </label>
+                            </div>
+
+                            {telestrokeNote.tnkRecommended && (
+                              <div>
+                                <label className="block text-xs text-gray-600 mb-1">TNK Admin Time</label>
+                                <input
+                                  type="time"
+                                  value={telestrokeNote.tnkAdminTime || ''}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, tnkAdminTime: e.target.value})}
+                                  className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
+                                />
+                              </div>
+                            )}
+
+                            <div>
+                              <label className="block text-xs text-gray-600 mb-1">Rationale</label>
+                              <textarea
+                                value={telestrokeNote.rationale}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, rationale: e.target.value})}
+                                rows="2"
+                                placeholder="Clinical rationale for treatment recommendation..."
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-xs text-gray-600 mb-1">Disposition</label>
+                              <select
+                                value={telestrokeNote.disposition || ''}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, disposition: e.target.value})}
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
+                              >
+                                <option value="">-- Select --</option>
+                                <option value="Admit to Neuro ICU">Admit to Neuro ICU</option>
+                                <option value="Admit to Stroke Unit">Admit to Stroke Unit</option>
+                                <option value="Admit to Floor">Admit to Floor</option>
+                                <option value="Transfer to CSC">Transfer to Comprehensive Stroke Center</option>
+                                <option value="Transfer to PSC">Transfer to Primary Stroke Center</option>
+                                <option value="Observation">Observation</option>
+                                <option value="Discharge">Discharge</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Section 6b: Recommendations */}
+                        <div className="bg-white border-2 border-teal-300 rounded-lg p-4 shadow-md">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-md font-bold text-teal-900 flex items-center gap-2">
+                              <i data-lucide="clipboard-check" className="w-4 h-4"></i>
+                              Recommendations
+                            </h4>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const recs = getContextualRecommendations();
+                                const age = telestrokeNote.age || '[Age]';
+                                const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '[sex]';
+                                const dx = telestrokeNote.diagnosis || '[Diagnosis]';
+                                let note = `TELEPHONE CONSULTATION NOTE\nDate: ${new Date().toLocaleDateString()}\n\n`;
+                                note += `HPI: ${age} year old ${sex}`;
+                                if (telestrokeNote.pmh) note += ` with PMH of ${telestrokeNote.pmh}`;
+                                note += ` presenting with ${telestrokeNote.symptoms || '[symptoms]'}.\n`;
+                                if (lkwTime) note += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
+                                note += `\nNIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n`;
+                                if (telestrokeNote.presentingBP) note += `BP: ${telestrokeNote.presentingBP}\n`;
+                                note += `\nIMAGING:\n`;
+                                if (telestrokeNote.ctResults) note += `CT Head: ${telestrokeNote.ctResults}\n`;
+                                if (telestrokeNote.ctaResults) note += `CTA: ${telestrokeNote.ctaResults}\n`;
+                                if (telestrokeNote.ctpResults) note += `CTP: ${telestrokeNote.ctpResults}\n`;
+                                if (aspectsScore) note += `ASPECTS: ${aspectsScore}\n`;
+                                note += `\nASSESSMENT: ${dx}\n\nPLAN:\n`;
+                                if (telestrokeNote.tnkRecommended) {
+                                  note += `- TNK 0.25 mg/kg IV bolus (max 25 mg) recommended`;
+                                  if (telestrokeNote.tnkAdminTime) note += ` at ${telestrokeNote.tnkAdminTime}`;
+                                  note += `.\n`;
+                                } else { note += `- IV TNK: Not recommended.\n`; }
+                                if (telestrokeNote.evtRecommended) note += `- EVT: Recommended.\n`;
+                                if (telestrokeNote.rationale) note += `- Rationale: ${telestrokeNote.rationale}\n`;
+                                if (telestrokeNote.disposition) note += `\nDISPOSITION: ${telestrokeNote.disposition}\n`;
+                                if (recs.length > 0) {
+                                  note += `\nGUIDELINE-BASED RECOMMENDATIONS:\n`;
+                                  recs.forEach(rec => { note += `- ${rec.title}: ${rec.recommendation} [Class ${rec.classOfRec}, LOE ${rec.levelOfEvidence}]\n`; });
+                                }
+                                setTelestrokeNote({...telestrokeNote, recommendationsText: note});
+                              }}
+                              className="flex items-center gap-2 px-3 py-1.5 bg-teal-600 text-white text-xs font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                            >
+                              <i data-lucide="file-text" className="w-3 h-3"></i>
+                              Generate Auto-Note
+                            </button>
+                          </div>
+                          <textarea
+                            value={telestrokeNote.recommendationsText}
+                            onChange={(e) => setTelestrokeNote({...telestrokeNote, recommendationsText: e.target.value})}
+                            placeholder="Click 'Generate Auto-Note' or type recommendations..."
+                            rows="5"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 text-sm"
+                          />
+                        </div>
+
                         {/* Section 7: Output Buttons */}
                         <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4 shadow-md space-y-3">
                           <h4 className="text-md font-bold text-gray-800 mb-3">📋 Copy Notes</h4>
