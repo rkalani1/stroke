@@ -9045,6 +9045,22 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   note += `\nGUIDELINE-BASED RECOMMENDATIONS:\n`;
                                   recs.forEach(rec => { note += `- ${rec.title}: ${rec.recommendation} [Class ${rec.classOfRec}, LOE ${rec.levelOfEvidence}]\n`; });
                                 }
+                                // Trial eligibility auto-match
+                                const trialResults = Object.values(trialEligibility).filter(Boolean);
+                                const eligibleTrials = trialResults.filter(t => t.status === 'eligible');
+                                const needsInfoTrials = trialResults.filter(t => t.status === 'needs_info');
+                                if (eligibleTrials.length > 0 || needsInfoTrials.length > 0) {
+                                  note += `\nCLINICAL TRIAL ELIGIBILITY:\n`;
+                                  eligibleTrials.forEach(t => {
+                                    const cfg = TRIAL_ELIGIBILITY_CONFIG[t.trialId];
+                                    note += `- ELIGIBLE: ${t.trialName} (${cfg?.nct || ''}) — ${t.quickDescription}. Criteria met: ${t.metCount}/${t.criteria.length}.\n`;
+                                  });
+                                  needsInfoTrials.forEach(t => {
+                                    const cfg = TRIAL_ELIGIBILITY_CONFIG[t.trialId];
+                                    const missing = t.criteria.filter(c => c.status === 'unknown').map(c => c.label).join(', ');
+                                    note += `- NEEDS INFO: ${t.trialName} (${cfg?.nct || ''}) — missing: ${missing}.\n`;
+                                  });
+                                }
                                 setTelestrokeNote({...telestrokeNote, recommendationsText: note});
                               }}
                               className="flex items-center gap-2 px-3 py-1.5 bg-teal-600 text-white text-xs font-medium rounded-lg hover:bg-teal-700 transition-colors"
@@ -10498,7 +10514,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 { id: 'abnormalCoagUnknown', label: 'Abnormal aPTT, TT, or anti-Xa with unknown anticoagulant use', note: null },
                                 { id: 'cerebralMicrobleeds', label: 'Cerebral microbleeds >10 on prior MRI', note: 'increased ICH risk' },
                                 { id: 'lecanemab', label: 'Lecanemab or other Alzheimer medications', note: 'ARIA risk' },
-                                { id: 'highGlucose', label: 'Blood glucose >400 mg/dL', note: 'correct before treatment' }
+                                { id: 'highGlucose', label: 'Blood glucose >400 mg/dL', note: 'correct before treatment' },
+                                { id: 'severeRenalFailure', label: 'Severe renal failure (Cr >3 or CrCl <25)', note: 'increased bleeding risk' }
                               ];
 
                               const autoDetected = {};
@@ -10532,6 +10549,27 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               if (telestrokeNote.lastDOACType === 'warfarin' && !isNaN(inrVal) && inrVal > 1.7) {
                                 autoDetected.warfarinElevatedINR = true;
                               }
+                              // Creatinine / severe renal failure
+                              const crVal = parseFloat(telestrokeNote.creatinine);
+                              const patCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
+                              if ((!isNaN(crVal) && crVal > 3) || (patCrCl && patCrCl.value < 25)) {
+                                autoDetected.severeRenalFailure = true;
+                              }
+                              // Pregnancy from pregnancy stroke flag
+                              if (telestrokeNote.pregnancyStroke) {
+                                autoDetected.pregnancy = true;
+                              }
+                              // Medication text scan for anticoagulants
+                              const medsText = (telestrokeNote.medications || '').toLowerCase();
+                              if (/warfarin|coumadin|jantoven/.test(medsText) && !isNaN(inrVal) && inrVal > 1.7) {
+                                autoDetected.warfarinElevatedINR = true;
+                              }
+                              if (/apixaban|eliquis|rivaroxaban|xarelto|dabigatran|pradaxa|edoxaban|savaysa/.test(medsText)) {
+                                autoDetected.recentDOAC = true;
+                              }
+                              if (/enoxaparin|lovenox|heparin/.test(medsText)) {
+                                autoDetected.recentHeparin = true;
+                              }
 
                               const absoluteChecked = absoluteContraindications.filter(c => checklist[c.id] || autoDetected[c.id]);
                               const relativeChecked = relativeContraindications.filter(c => checklist[c.id] || autoDetected[c.id]);
@@ -10550,7 +10588,35 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 setTelestrokeNote({...telestrokeNote, tnkContraindicationChecklist: clearedChecklist, tnkContraindicationReviewed: true, tnkContraindicationReviewTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }), tnkRecommended: true});
                               };
 
+                              // Auto-detected items for prominent banner
+                              const autoDetectedItems = Object.keys(autoDetected);
+                              const autoAbsolute = absoluteContraindications.filter(c => autoDetected[c.id]);
+                              const autoRelative = relativeContraindications.filter(c => autoDetected[c.id]);
+
                               return (
+                                <>
+                                {autoAbsolute.length > 0 && (
+                                  <div className="bg-red-100 border-2 border-red-400 rounded-lg p-3 animate-pulse">
+                                    <div className="flex items-center gap-2 mb-1">
+                                      <span className="bg-red-600 text-white px-2 py-0.5 rounded text-xs font-bold">AUTO-DETECTED</span>
+                                      <span className="text-sm font-bold text-red-900">TNK Contraindication{autoAbsolute.length > 1 ? 's' : ''} Found From Patient Data</span>
+                                    </div>
+                                    <ul className="text-xs text-red-800 space-y-0.5 ml-2">
+                                      {autoAbsolute.map(c => <li key={c.id}>&#10007; <strong>{c.label}</strong>{c.note ? ` (${c.note})` : ''}</li>)}
+                                    </ul>
+                                  </div>
+                                )}
+                                {autoAbsolute.length === 0 && autoRelative.length > 0 && (
+                                  <div className="bg-amber-100 border-2 border-amber-400 rounded-lg p-3">
+                                    <div className="flex items-center gap-2 mb-1">
+                                      <span className="bg-amber-500 text-white px-2 py-0.5 rounded text-xs font-bold">AUTO-DETECTED</span>
+                                      <span className="text-sm font-bold text-amber-900">{autoRelative.length} Relative Contraindication{autoRelative.length > 1 ? 's' : ''} — Use Clinical Judgment</span>
+                                    </div>
+                                    <ul className="text-xs text-amber-800 space-y-0.5 ml-2">
+                                      {autoRelative.map(c => <li key={c.id}>&#9888; {c.label}{c.note ? ` (${c.note})` : ''}</li>)}
+                                    </ul>
+                                  </div>
+                                )}
                                 <details id="tnk-contraindications" className="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-300 rounded-lg">
                                   <summary className="cursor-pointer p-3 font-semibold text-orange-900 hover:bg-orange-100 rounded-lg flex items-center justify-between">
                                     <span>TNK Contraindications</span>
@@ -10654,6 +10720,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     </div>
                                   </div>
                                 </details>
+                                </>
                               );
                             })()}
 
@@ -11185,41 +11252,120 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           );
                         })()}
 
-                        {/* Trial Eligibility Quick Badge */}
+                        {/* Trial Eligibility Auto-Matcher */}
                         {(() => {
-                          const allTrials = Object.keys(TRIAL_ELIGIBILITY_CONFIG);
-                          if (allTrials.length === 0) return null;
-                          const patientDataForTrials = { telestrokeNote, nihssScore, aspectsScore, patientData };
-                          let eligibleCount = 0;
-                          let needsInfoCount = 0;
-                          allTrials.forEach(trialId => {
-                            const result = evaluateTrialEligibility(trialId, patientDataForTrials);
-                            if (result) {
-                              if (result.status === 'eligible') eligibleCount++;
-                              else if (result.status === 'needs_info') needsInfoCount++;
-                            }
-                          });
-                          if (eligibleCount === 0 && needsInfoCount === 0) return null;
+                          const allTrialIds = Object.keys(TRIAL_ELIGIBILITY_CONFIG);
+                          if (allTrialIds.length === 0) return null;
+
+                          // Use the pre-computed trialEligibility state (updated by useEffect)
+                          const results = Object.values(trialEligibility).filter(Boolean);
+                          if (results.length === 0) return null;
+
+                          const eligible = results.filter(r => r.status === 'eligible');
+                          const needsInfo = results.filter(r => r.status === 'needs_info');
+                          const notEligible = results.filter(r => r.status === 'not_eligible');
+
+                          // Sort: eligible first, then needs_info, then not_eligible
+                          const sorted = [...eligible, ...needsInfo, ...notEligible];
+
+                          const hasMatches = eligible.length > 0 || needsInfo.length > 0;
+
                           return (
-                            <div className="bg-purple-50 border border-purple-200 rounded-lg px-4 py-2 flex items-center justify-between">
-                              <div className="flex items-center gap-3 text-sm">
-                                <i data-lucide="flask-conical" className="w-4 h-4 text-purple-600"></i>
-                                <span className="font-medium text-purple-900">Clinical Trials:</span>
-                                {eligibleCount > 0 && (
-                                  <span className="px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-bold">{eligibleCount} eligible</span>
-                                )}
-                                {needsInfoCount > 0 && (
-                                  <span className="px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs font-bold">{needsInfoCount} needs info</span>
+                            <details className={'border-2 rounded-lg ' + (eligible.length > 0 ? 'bg-green-50 border-green-300' : needsInfo.length > 0 ? 'bg-purple-50 border-purple-300' : 'bg-gray-50 border-gray-300')} open={hasMatches}>
+                              <summary className="cursor-pointer p-3 font-semibold hover:bg-opacity-70 rounded-lg flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  <i data-lucide="flask-conical" className="w-5 h-5 text-purple-600"></i>
+                                  <span className={eligible.length > 0 ? 'text-green-900' : 'text-purple-900'}>Trial Eligibility Auto-Matcher</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  {eligible.length > 0 && <span className="px-2 py-0.5 bg-green-600 text-white rounded-full text-xs font-bold">{eligible.length} eligible</span>}
+                                  {needsInfo.length > 0 && <span className="px-2 py-0.5 bg-amber-500 text-white rounded-full text-xs font-bold">{needsInfo.length} needs info</span>}
+                                  {notEligible.length > 0 && <span className="px-2 py-0.5 bg-gray-400 text-white rounded-full text-xs font-bold">{notEligible.length} not eligible</span>}
+                                </div>
+                              </summary>
+                              <div className="p-3 space-y-2">
+                                <p className="text-xs text-gray-600 mb-2">Auto-compared against patient data (age, NIHSS, LKW, imaging, diagnosis). Criteria update in real-time as you enter data.</p>
+                                {sorted.map(trial => {
+                                  const config = TRIAL_ELIGIBILITY_CONFIG[trial.trialId];
+                                  if (!config) return null;
+                                  const statusColor = trial.status === 'eligible' ? 'border-green-400 bg-green-50' : trial.status === 'needs_info' ? 'border-amber-400 bg-amber-50' : 'border-gray-300 bg-gray-50';
+                                  const statusBadge = trial.status === 'eligible' ? 'bg-green-600 text-white' : trial.status === 'needs_info' ? 'bg-amber-500 text-white' : 'bg-gray-400 text-white';
+                                  const statusLabel = trial.status === 'eligible' ? '&#10003; Eligible' : trial.status === 'needs_info' ? '? Needs Info' : '&#10007; Not Eligible';
+                                  const unknownCriteria = trial.criteria.filter(c => c.status === 'unknown');
+                                  const metCriteria = trial.criteria.filter(c => c.status === 'met');
+                                  const notMetCriteria = trial.criteria.filter(c => c.status === 'not_met');
+
+                                  return (
+                                    <details key={trial.trialId} className={'border rounded-lg ' + statusColor} open={trial.status === 'eligible' || trial.status === 'needs_info'}>
+                                      <summary className="cursor-pointer px-3 py-2 flex items-center justify-between text-sm">
+                                        <div className="flex items-center gap-2 min-w-0">
+                                          <span className={'px-2 py-0.5 rounded text-xs font-bold whitespace-nowrap ' + statusBadge} dangerouslySetInnerHTML={{__html: statusLabel}}></span>
+                                          <span className="font-semibold truncate">{config.name}</span>
+                                          <span className="text-xs text-gray-500 hidden sm:inline">({config.nct})</span>
+                                        </div>
+                                        <span className="text-xs text-gray-500 whitespace-nowrap ml-2">{metCriteria.length}/{trial.criteria.length} met</span>
+                                      </summary>
+                                      <div className="px-3 pb-3 space-y-2">
+                                        <p className="text-xs text-gray-700 italic">{config.quickDescription}</p>
+
+                                        {/* Criteria checklist */}
+                                        <div className="space-y-1">
+                                          {trial.criteria.map(c => (
+                                            <div key={c.id} className="flex items-center gap-2 text-xs">
+                                              {c.status === 'met' && <span className="text-green-600 font-bold w-4 text-center">&#10003;</span>}
+                                              {c.status === 'not_met' && <span className="text-red-600 font-bold w-4 text-center">&#10007;</span>}
+                                              {c.status === 'unknown' && <span className="text-gray-400 font-bold w-4 text-center">&#9679;</span>}
+                                              <span className={c.status === 'met' ? 'text-green-800' : c.status === 'not_met' ? 'text-red-800 line-through' : 'text-gray-600'}>
+                                                {c.label}{c.required ? '' : ' (optional)'}
+                                              </span>
+                                            </div>
+                                          ))}
+                                        </div>
+
+                                        {/* Exclusion flags */}
+                                        {trial.exclusions.length > 0 && (
+                                          <div className="bg-red-50 border border-red-200 rounded px-2 py-1">
+                                            <span className="text-xs font-bold text-red-700">Exclusion triggered:</span>
+                                            {trial.exclusions.map(e => (
+                                              <span key={e.id} className="text-xs text-red-700 ml-1">&#10007; {e.label}</span>
+                                            ))}
+                                          </div>
+                                        )}
+
+                                        {/* Missing data hint */}
+                                        {unknownCriteria.length > 0 && (
+                                          <div className="bg-amber-50 border border-amber-200 rounded px-2 py-1.5">
+                                            <span className="text-xs font-semibold text-amber-800">Missing data to determine eligibility:</span>
+                                            <div className="flex flex-wrap gap-1 mt-1">
+                                              {unknownCriteria.map(c => (
+                                                <span key={c.id} className="text-xs bg-amber-200 text-amber-900 px-1.5 py-0.5 rounded">{c.label}</span>
+                                              ))}
+                                            </div>
+                                          </div>
+                                        )}
+
+                                        {/* Actions */}
+                                        <div className="flex gap-2 pt-1">
+                                          <button type="button" onClick={() => navigateToTrial(trial.trialId)} className="text-xs font-semibold text-purple-700 hover:text-purple-900 underline">
+                                            View full trial details →
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </details>
+                                  );
+                                })}
+
+                                {/* Looking For summary for eligible trials */}
+                                {eligible.length > 0 && (
+                                  <div className="bg-green-100 border border-green-300 rounded-lg p-2 mt-2">
+                                    <p className="text-xs font-bold text-green-800 mb-1">&#10003; Patient may qualify for {eligible.length} trial{eligible.length > 1 ? 's' : ''} — consider discussing enrollment</p>
+                                    {eligible.map(t => (
+                                      <p key={t.trialId} className="text-xs text-green-700">&#8226; <strong>{t.trialName}:</strong> {t.quickDescription}</p>
+                                    ))}
+                                  </div>
                                 )}
                               </div>
-                              <button
-                                type="button"
-                                onClick={() => navigateTo('trials')}
-                                className="text-xs font-semibold text-purple-700 hover:text-purple-900"
-                              >
-                                View Trials →
-                              </button>
-                            </div>
+                            </details>
                           );
                         })()}
 
@@ -13962,6 +14108,23 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   };
                                   dcChecked.forEach(([key]) => {
                                     note += `- ${dcLabels[key] || key}\n`;
+                                  });
+                                }
+
+                                // Trial eligibility auto-match
+                                const trialResults2 = Object.values(trialEligibility).filter(Boolean);
+                                const eligibleTrials2 = trialResults2.filter(t => t.status === 'eligible');
+                                const needsInfoTrials2 = trialResults2.filter(t => t.status === 'needs_info');
+                                if (eligibleTrials2.length > 0 || needsInfoTrials2.length > 0) {
+                                  note += `\nCLINICAL TRIAL ELIGIBILITY:\n`;
+                                  eligibleTrials2.forEach(t => {
+                                    const cfg = TRIAL_ELIGIBILITY_CONFIG[t.trialId];
+                                    note += `- ELIGIBLE: ${t.trialName} (${cfg?.nct || ''}) — ${t.quickDescription}. Criteria met: ${t.metCount}/${t.criteria.length}.\n`;
+                                  });
+                                  needsInfoTrials2.forEach(t => {
+                                    const cfg = TRIAL_ELIGIBILITY_CONFIG[t.trialId];
+                                    const missing = t.criteria.filter(c => c.status === 'unknown').map(c => c.label).join(', ');
+                                    note += `- NEEDS INFO: ${t.trialName} (${cfg?.nct || ''}) — missing: ${missing}.\n`;
                                   });
                                 }
 
