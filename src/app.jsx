@@ -896,6 +896,16 @@ Clinician Name`;
               antithromboticHeld: false,
               reimagingPlanned: false
             },
+            // Post-TNK Angioedema
+            angioedema: {
+              detected: false,
+              severity: '',
+              aceInhibitorUse: false,
+              stepsTaken: {},
+              intubated: false,
+              resolved: false,
+              onsetTime: ''
+            },
             // Dysphagia Screening
             dysphagiaScreening: {
               bedsideScreenPerformed: false,
@@ -3420,6 +3430,21 @@ Clinician Name`;
               reference: 'Powers WJ et al. Stroke. 2026.',
               conditions: (data) => {
                 return !!data.telestrokeNote?.tnkAdminTime || !!data.telestrokeNote?.hemorrhagicTransformation?.detected;
+              }
+            },
+
+            angioedema_post_tnk: {
+              id: 'angioedema_post_tnk',
+              category: 'Complications',
+              title: 'Post-thrombolysis orolingual angioedema',
+              recommendation: 'Monitor for orolingual angioedema after TNK, especially in patients on ACE inhibitors. Occurs in 1-5% of tPA/TNK recipients, typically within 2 hours. Immediate airway assessment is critical.',
+              detail: 'Stepwise management: 1) Stop TNK infusion if still running + hold ACEi. 2) Methylprednisolone 125 mg IV + Diphenhydramine 50 mg IV + Famotidine 20 mg IV. 3) If progressing: Epinephrine 0.3 mg IM (1:1000). 4) Refractory: Icatibant 30 mg SC (bradykinin B2 receptor antagonist) or C1 esterase inhibitor concentrate 20 U/kg IV. 5) Prepare for intubation if tongue/floor of mouth involvement. Risk factors: ACE inhibitor use (5x risk), anterior circulation infarcts involving insular cortex.',
+              classOfRec: 'I',
+              levelOfEvidence: 'C-EO',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026. Yayan J. Int J Gen Med. 2013;6:539-544.',
+              conditions: (data) => {
+                return !!data.telestrokeNote?.angioedema?.detected || (!!data.telestrokeNote?.tnkAdminTime && (data.telestrokeNote?.medications || '').toLowerCase().match(/lisinopril|enalapril|ramipril|captopril|benazepril|fosinopril|perindopril|quinapril|trandolapril|ace.?i/));
               }
             },
 
@@ -12478,7 +12503,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <i data-lucide="clipboard-list" className="w-5 h-5 text-orange-600"></i>
                                 Acute Care Protocols
                               </span>
-                              <span className="text-xs text-orange-500 font-normal">HT, Dysphagia, Mobilization, Hyperglycemia, DOAC Timing, Carotid, ESUS, ICH Anticoag</span>
+                              <span className="text-xs text-orange-500 font-normal">HT, Angioedema, Dysphagia, Mobilization, Hyperglycemia, DOAC Timing, Carotid, ESUS, ICH Anticoag</span>
                             </summary>
                             <div className="p-4 pt-0 space-y-4">
                               {/* Hemorrhagic Transformation */}
@@ -12539,6 +12564,104 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                       )}
                                     </div>
                                   </div>
+                                </div>
+                              )}
+
+                              {/* Post-TNK Orolingual Angioedema Protocol */}
+                              {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' && (telestrokeNote.tnkRecommended || telestrokeNote.tnkAdminTime) && (
+                                <div className={'border rounded-lg p-3 ' + ((telestrokeNote.angioedema || {}).detected ? 'bg-red-50 border-red-300' : 'bg-orange-50 border-orange-200')}>
+                                  <div className="flex items-center justify-between mb-2">
+                                    <h4 className="font-semibold text-orange-800 flex items-center gap-2">
+                                      Post-TNK Angioedema Protocol
+                                      {(telestrokeNote.medications || '').toLowerCase().match(/lisinopril|enalapril|ramipril|captopril|benazepril|fosinopril|perindopril|quinapril|trandolapril|ace.?i/) && (
+                                        <span className="px-2 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-bold">ACEi detected — 5x risk</span>
+                                      )}
+                                    </h4>
+                                    <span className="text-xs text-gray-500">Incidence: 1-5% post-thrombolysis</span>
+                                  </div>
+
+                                  <label className="flex items-center gap-2 mb-2">
+                                    <input type="checkbox" checked={!!(telestrokeNote.angioedema || {}).detected}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, angioedema: {...(telestrokeNote.angioedema || {}), detected: e.target.checked}})}
+                                      className="w-4 h-4" />
+                                    <span className="text-sm font-medium text-red-800">Angioedema detected</span>
+                                  </label>
+
+                                  {(telestrokeNote.angioedema || {}).detected ? (
+                                    <div className="space-y-3">
+                                      <div className="flex gap-3 items-center">
+                                        <label className="text-xs font-medium text-gray-700">Onset time:</label>
+                                        <input type="time" value={(telestrokeNote.angioedema || {}).onsetTime || ''}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, angioedema: {...(telestrokeNote.angioedema || {}), onsetTime: e.target.value}})}
+                                          className="px-2 py-1 border border-gray-300 rounded text-sm" />
+                                        <select value={(telestrokeNote.angioedema || {}).severity || ''}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, angioedema: {...(telestrokeNote.angioedema || {}), severity: e.target.value}})}
+                                          className="px-2 py-1 border border-gray-300 rounded text-sm">
+                                          <option value="">Severity</option>
+                                          <option value="mild">Mild — lip/facial swelling only</option>
+                                          <option value="moderate">Moderate — tongue swelling, no airway compromise</option>
+                                          <option value="severe">Severe — tongue/floor of mouth, airway compromise</option>
+                                        </select>
+                                      </div>
+
+                                      {/* Stepwise Management Algorithm */}
+                                      <div className="bg-white border border-red-200 rounded-lg p-3">
+                                        <p className="text-xs font-bold text-red-800 mb-2">Stepwise Management (execute in order):</p>
+                                        <div className="space-y-2">
+                                          {[
+                                            { id: 'stopTnk', step: 1, label: 'Stop TNK if still infusing + Hold ACE inhibitor', detail: 'Discontinue immediately. ACEi increases bradykinin — primary mediator.' },
+                                            { id: 'steroids', step: 2, label: 'Methylprednisolone 125 mg IV + Diphenhydramine 50 mg IV + Famotidine 20 mg IV', detail: 'Standard antihistamine/steroid protocol. Onset 15-30 min.' },
+                                            { id: 'epinephrine', step: 3, label: 'Epinephrine 0.3 mg IM (1:1000) if progressing', detail: 'For moderate-severe or any airway compromise. May repeat q5-15 min.' },
+                                            { id: 'icatibant', step: 4, label: 'Icatibant 30 mg SC OR C1 esterase inhibitor 20 U/kg IV', detail: 'Bradykinin B2 receptor antagonist. For refractory angioedema not responding to steps 1-3. Consider early if ACEi-related mechanism suspected.' },
+                                            { id: 'airway', step: 5, label: 'Prepare for intubation — call anesthesia/ENT', detail: 'Fiberoptic intubation preferred. Surgical airway backup if tongue/floor of mouth massive. Do NOT delay if stridor or desaturation.' }
+                                          ].map(item => {
+                                            const steps = (telestrokeNote.angioedema || {}).stepsTaken || {};
+                                            const isChecked = !!steps[item.id];
+                                            const severity = (telestrokeNote.angioedema || {}).severity;
+                                            const isRecommended = item.step <= 2 || (severity === 'moderate' && item.step <= 3) || severity === 'severe';
+                                            return (
+                                              <div key={item.id} className={'flex items-start gap-2 p-2 rounded ' + (isChecked ? 'bg-green-50' : isRecommended ? 'bg-red-50' : 'bg-gray-50')}>
+                                                <input type="checkbox" checked={isChecked}
+                                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, angioedema: {...(telestrokeNote.angioedema || {}), stepsTaken: {...steps, [item.id]: e.target.checked}}})}
+                                                  className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                                                <div className="min-w-0">
+                                                  <div className="flex items-center gap-2">
+                                                    <span className="text-xs font-bold text-gray-500">Step {item.step}</span>
+                                                    <span className={'text-sm font-medium ' + (isChecked ? 'text-green-800 line-through' : 'text-gray-900')}>{item.label}</span>
+                                                  </div>
+                                                  <p className="text-xs text-gray-600 mt-0.5">{item.detail}</p>
+                                                </div>
+                                              </div>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+
+                                      <div className="flex gap-4">
+                                        <label className="flex items-center gap-2">
+                                          <input type="checkbox" checked={!!(telestrokeNote.angioedema || {}).intubated}
+                                            onChange={(e) => setTelestrokeNote({...telestrokeNote, angioedema: {...(telestrokeNote.angioedema || {}), intubated: e.target.checked}})} />
+                                          <span className="text-xs font-medium text-red-700">Patient intubated</span>
+                                        </label>
+                                        <label className="flex items-center gap-2">
+                                          <input type="checkbox" checked={!!(telestrokeNote.angioedema || {}).resolved}
+                                            onChange={(e) => setTelestrokeNote({...telestrokeNote, angioedema: {...(telestrokeNote.angioedema || {}), resolved: e.target.checked}})} />
+                                          <span className="text-xs font-medium text-green-700">Angioedema resolved</span>
+                                        </label>
+                                      </div>
+
+                                      <label className="flex items-center gap-2">
+                                        <input type="checkbox" checked={!!(telestrokeNote.angioedema || {}).aceInhibitorUse}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, angioedema: {...(telestrokeNote.angioedema || {}), aceInhibitorUse: e.target.checked}})} />
+                                        <span className="text-xs">Patient was on ACE inhibitor (permanently discontinue)</span>
+                                      </label>
+                                    </div>
+                                  ) : (
+                                    <div className="text-xs text-gray-600 space-y-1">
+                                      <p><strong>Monitor for:</strong> Lip, tongue, or oropharyngeal swelling within 2 hours of TNK. Higher risk with ACE inhibitor use (5x), anterior circulation infarcts involving insular cortex.</p>
+                                      <p><strong>If detected:</strong> Check the box above to activate the stepwise management protocol.</p>
+                                    </div>
+                                  )}
                                 </div>
                               )}
 
@@ -13939,6 +14062,21 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   if (vte.ipcApplied) note += `- IPC applied on admission.\n`;
                                   if (vte.pharmacoProphylaxis) note += `- Pharmacologic: ${vte.pharmacoProphylaxis}${vte.enoxaparinDose ? ` ${vte.enoxaparinDose}` : ''}.\n`;
                                   if (vte.hematoStabilityConfirmed) note += `- Hemostatic stability confirmed.\n`;
+                                }
+
+                                // Post-TNK Angioedema
+                                const angio = telestrokeNote.angioedema || {};
+                                if (angio.detected) {
+                                  note += `\nPOST-TNK ANGIOEDEMA:\n`;
+                                  if (angio.severity) note += `- Severity: ${angio.severity}.\n`;
+                                  if (angio.onsetTime) note += `- Onset: ${angio.onsetTime}.\n`;
+                                  if (angio.aceInhibitorUse) note += `- ACE inhibitor use: Yes (discontinued).\n`;
+                                  const steps = angio.stepsTaken || {};
+                                  const stepLabels = { stopTnk: 'TNK stopped + ACEi held', steroids: 'Methylprednisolone/Diphenhydramine/Famotidine given', epinephrine: 'Epinephrine 0.3 mg IM administered', icatibant: 'Icatibant 30 mg SC or C1 esterase inhibitor given', airway: 'Airway intervention/intubation' };
+                                  const doneSteps = Object.entries(steps).filter(([k, v]) => v).map(([k]) => stepLabels[k] || k);
+                                  if (doneSteps.length > 0) { doneSteps.forEach(s => { note += `- ${s}.\n`; }); }
+                                  if (angio.intubated) note += `- Patient intubated for airway protection.\n`;
+                                  if (angio.resolved) note += `- Angioedema resolved.\n`;
                                 }
 
                                 // Fever Management

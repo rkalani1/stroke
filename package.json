@@ -1,6 +1,6 @@
 {
   "name": "stroke",
-  "version": "5.3.0",
+  "version": "5.4.0",
   "description": "A client-side clinical decision support toolkit for stroke management with encounter workflows, calculators, protocols, trials, and evidence references.",
   "main": "service-worker.js",
   "scripts": {
