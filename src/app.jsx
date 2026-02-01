@@ -824,19 +824,98 @@ Clinician Name`;
             secondaryPrevention: {
               bpTarget: '',
               bpMeds: '',
+              bpIntensiveCandidate: false,
               ldlCurrent: '',
               ldlTarget: '<70',
               statinDose: '',
               ezetimibeAdded: false,
               pcsk9Added: false,
+              inclisiranConsidered: false,
+              glp1ra: '',
+              glp1raIndication: '',
+              sglt2i: '',
+              sglt2iIndication: '',
+              colchicineConsidered: false,
+              colchicineIndication: '',
+              cyp2c19Tested: false,
+              cyp2c19Result: '',
               diabetesManagement: '',
               smokingStatus: '',
               smokingCessationRx: '',
               exercisePlan: '',
+              exerciseMinPerWeek: '',
               dietPlan: '',
+              dietAdherence: '',
               antiplateletRegimen: '',
               daptDuration: '',
               followUpTimeline: ''
+            },
+            // ICH Anticoagulation Resumption
+            ichAnticoagResumption: {
+              ichLocation: '',
+              caaFeatures: false,
+              chadsVascScore: '',
+              hasbledScore: '',
+              timeSinceICH: '',
+              decision: '',
+              rationale: '',
+              laaoConsidered: false
+            },
+            // Carotid Revascularization
+            carotidManagement: {
+              stenosisSide: '',
+              stenosisDegree: '',
+              symptomatic: false,
+              intervention: '',
+              medicalManagement: ''
+            },
+            // ESUS / Cryptogenic Pathway
+            esusWorkup: {
+              cardiacMonitoringType: '',
+              cardiacMonitoringDuration: '',
+              afDetected: false,
+              teePerformed: false,
+              teeFindings: '',
+              hypercoagWorkup: false,
+              esusAntiplatelet: ''
+            },
+            // DOAC Timing (AF-related stroke)
+            doacTiming: {
+              strokeSeverity: '',
+              hemorrhagicTransformation: false,
+              htClassification: '',
+              doacInitiationDay: '',
+              doacAgent: ''
+            },
+            // Hemorrhagic Transformation
+            hemorrhagicTransformation: {
+              detected: false,
+              classification: '',
+              symptomatic: false,
+              managementActions: '',
+              antithromboticHeld: false,
+              reimagingPlanned: false
+            },
+            // Dysphagia Screening
+            dysphagiaScreening: {
+              bedsideScreenPerformed: false,
+              bedsideScreenResult: '',
+              instrumentalAssessment: '',
+              npoStatus: false,
+              slpConsultOrdered: false
+            },
+            // Early Mobilization
+            earlyMobilization: {
+              timingDecision: '',
+              mobilizationStarted: false,
+              sessionFrequency: '',
+              contraindications: ''
+            },
+            // Post-TNK BP Monitoring
+            postTnkBpMonitoring: {
+              monitoringActive: false,
+              bpReadings: [],
+              lastBpTime: ''
             },
             // Phase 5: Special Populations
             pregnancyStroke: false,
@@ -3061,7 +3140,7 @@ Clinician Name`;
               category: 'Discharge',
               title: 'Discharge: BP optimization',
               recommendation: 'Initiate or optimize antihypertensive therapy at discharge targeting BP <130/80 for secondary stroke prevention.',
-              detail: 'ACE inhibitor or ARB + thiazide diuretic preferred. Initiate after 24-48 hours for ischemic stroke. Individualize timing for ICH (may start earlier).',
+              detail: 'ACE inhibitor or ARB + thiazide diuretic preferred. Initiate after 24-48 hours for ischemic stroke. Individualize timing for ICH (may start earlier). SBP <120 may be considered for selected patients (Class IIa, ESPRIT 2024). Use caution with bilateral severe carotid stenosis or orthostatic symptoms.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
@@ -3069,6 +3148,435 @@ Clinician Name`;
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('tia');
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // ICH ANTICOAGULATION RESUMPTION
+            // ---------------------------------------------------------------
+            ich_anticoag_resumption: {
+              id: 'ich_anticoag_resumption',
+              category: 'ICH Management',
+              title: 'Anticoagulation resumption after ICH',
+              recommendation: 'Anticoagulation resumption after ICH should be individualized based on ICH location, CHA\u2082DS\u2082-VASc score, and recurrent hemorrhage risk. Non-lobar ICH with high thromboembolic risk may benefit from DOAC reinitiation at 4-8 weeks.',
+              detail: 'PRESTIGE-AF (2025): DOACs dramatically reduced ischemic stroke (HR 0.05) but increased recurrent ICH (HR 10.89). ENRICH-AF halted lobar ICH enrollment due to excess recurrent hemorrhage. For non-lobar ICH with CHA\u2082DS\u2082-VASc \u22654, DOAC reinitiation is reasonable after shared decision-making at 4-8 weeks. For lobar ICH (possible CAA), consider LAAO or avoidance of anticoagulation. DOACs preferred over warfarin when anticoagulation is chosen.',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA/ASA Spontaneous ICH 2022 + PRESTIGE-AF/ENRICH-AF 2025',
+              reference: 'PRESTIGE-AF: Lancet 2025; SoSTART: Lancet Neurol 2021; APACHE-AF: Lancet Neurol 2021',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const hasAF = (data.telestrokeNote?.pmh || '').toLowerCase().includes('fib') || (data.telestrokeNote?.pmh || '').toLowerCase().includes('af');
+                return (dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral')) && hasAF;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // CAROTID REVASCULARIZATION
+            // ---------------------------------------------------------------
+            carotid_symptomatic: {
+              id: 'carotid_symptomatic',
+              category: 'Carotid',
+              title: 'Symptomatic carotid stenosis management',
+              recommendation: 'For symptomatic carotid stenosis \u226550%, CEA within 2 weeks is recommended. Optimal medical management is the foundation for all patients.',
+              detail: 'Symptomatic = stroke/TIA referable to the carotid territory within 6 months. CEA remains Class I for symptomatic stenosis \u226550%. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
+              reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467',
+              conditions: (data) => {
+                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
+                return cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('occlusion'));
+              }
+            },
+            carotid_asymptomatic: {
+              id: 'carotid_asymptomatic',
+              category: 'Carotid',
+              title: 'Asymptomatic carotid stenosis (CREST-2)',
+              recommendation: 'For asymptomatic carotid stenosis \u226570%, intensive medical management alone is the primary approach. CEA is NOT superior to intensive medical management (CREST-2, 2025).',
+              detail: 'CREST-2 (NEJM 2025): CEA + intensive medical management did NOT significantly reduce stroke/death vs. intensive medical management alone. CAS + intensive medical management showed modest benefit (NNT=31 at 4 years) at high-volume centers. Intensive medical management protocol: SBP <130, LDL <70 (add PCSK9i if needed), health coaching, smoking cessation. Annual duplex surveillance recommended.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'A',
+              guideline: 'CREST-2 (NEJM 2025); ECST-2 (Lancet Neurol 2025)',
+              reference: 'CREST-2: NEJM 2025; ECST-2: Lancet Neurology 2025',
+              conditions: (data) => {
+                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
+                return cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('narrowing'));
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // ESUS / CRYPTOGENIC STROKE
+            // ---------------------------------------------------------------
+            esus_monitoring: {
+              id: 'esus_monitoring',
+              category: 'ESUS/Cryptogenic',
+              title: 'Prolonged cardiac monitoring for cryptogenic stroke',
+              recommendation: 'For cryptogenic/ESUS stroke, prolonged cardiac monitoring (\u226514 days, ideally implantable loop recorder) is recommended to detect occult AF.',
+              detail: 'ACC 2024 ECDP: \u226514 days monitoring, especially if patient is anticoagulation candidate. ILR as initial strategy reasonable in select high-risk patients. PER-DIEM trial: ILR detected AF in 15.3% vs 4.7% with 30-day monitor at 1 year. If AF detected, transition to anticoagulation. NAVIGATE-ESUS, RE-SPECT ESUS, ATTICUS, ARCADIA: routine empiric anticoagulation NOT recommended for ESUS (Class III).',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-R',
+              guideline: 'ACC Expert Consensus Decision Pathway 2024',
+              reference: '2024 ACC ECDP; JACC 2024. PER-DIEM: Lancet Neurol 2024.',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
+                return dx.includes('cryptogenic') || dx.includes('esus') || toast.includes('cryptogenic') || toast.includes('undetermined');
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // DOAC TIMING IN AF-STROKE (CATALYST)
+            // ---------------------------------------------------------------
+            doac_timing_af: {
+              id: 'doac_timing_af',
+              category: 'Antithrombotic',
+              title: 'Early DOAC initiation in AF-related stroke (CATALYST)',
+              recommendation: 'For AF-related ischemic stroke without large hemorrhagic transformation, DOAC initiation within 4 days reduces recurrent ischemic stroke vs. later initiation (\u22655 days).',
+              detail: 'CATALYST IPDMA (Lancet 2025, n=5,441): Early DOAC (\u22644 days) reduced primary composite (recurrent ischemic stroke, sICH, or unclassified stroke) by 30% (OR 0.70, P=0.039). No increase in sICH. Timing guidance: Mild stroke (NIHSS \u22648): start \u22644 days. Moderate stroke (NIHSS 8-15): 3-5 days. Severe stroke/large HT: 6-14 days, individualized. Reassess imaging before starting if concern for hemorrhagic transformation.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'A',
+              guideline: 'CATALYST IPDMA 2025',
+              reference: 'CATALYST: Lancet 2025. Pooled TIMING, ELAN, OPTIMAS, START.',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('lvo');
+                const hasAF = (data.telestrokeNote?.pmh || '').toLowerCase().includes('fib') || (data.telestrokeNote?.pmh || '').toLowerCase().includes('af');
+                return isIschemic && hasAF;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // HEMORRHAGIC TRANSFORMATION
+            // ---------------------------------------------------------------
+            hemorrhagic_transformation: {
+              id: 'hemorrhagic_transformation',
+              category: 'Complications',
+              title: 'Hemorrhagic transformation management',
+              recommendation: 'Classify hemorrhagic transformation using ECASS criteria (HI-1, HI-2, PH-1, PH-2). Symptomatic ICH (PH-2 or neurological worsening) requires emergent management.',
+              detail: 'ECASS Classification: HI-1 (small petechiae along infarct margin), HI-2 (confluent petechiae within infarct, no mass effect), PH-1 (blood clots \u226430% of infarct, mild mass effect), PH-2 (blood clots >30% of infarct with significant mass effect). For symptomatic HT post-TNK: STAT CT, cryoprecipitate 10 units (target fibrinogen >200 mg/dL), TXA 1g IV over 10 min, platelets if <100K. Hold all antithrombotics. PH-1/PH-2 require ICU admission. Repeat imaging at 24h.',
+              classOfRec: 'I',
+              levelOfEvidence: 'C-EO',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026.',
+              conditions: (data) => {
+                return !!data.telestrokeNote?.tnkAdminTime || !!data.telestrokeNote?.hemorrhagicTransformation?.detected;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // HYPERGLYCEMIA (2026 UPDATE)
+            // ---------------------------------------------------------------
+            hyperglycemia_acute: {
+              id: 'hyperglycemia_acute',
+              category: 'Supportive Care',
+              title: 'Hyperglycemia management in acute stroke (2026 update)',
+              recommendation: 'Target glucose 140-180 mg/dL. Initiate insulin when glucose persistently >180 mg/dL. Intensive glucose lowering to 80-130 mg/dL with IV insulin is Class III (Harm).',
+              detail: 'Intensive glycemic control (80-130 mg/dL) caused symptomatic hypoglycemia in 1-in-9 patients and is explicitly recommended against. Protocol: critically ill/post-TNK patients: start IV insulin infusion with q1h glucose checks; transition to basal-bolus SC when stabilized. Sliding-scale SC insulin for less acute. Avoid glucose <70 mg/dL (neuronal injury risk). ADA 2026 aligned: 100-180 mg/dL for non-critically ill hospitalized patients.',
+              classOfRec: 'III',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026; ADA Standards of Care 2026.',
+              caveats: 'Class III: Harm applies to the intensive target of 80-130 mg/dL, NOT to treating hyperglycemia above 180.',
+              conditions: (data) => {
+                const glucose = parseFloat(data.telestrokeNote?.glucose) || 0;
+                return glucose > 180;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // SEIZURE MANAGEMENT (UPDATED 2025)
+            // ---------------------------------------------------------------
+            seizure_acute_stroke: {
+              id: 'seizure_acute_stroke',
+              category: 'Supportive Care',
+              title: 'Post-stroke seizure management (2025 update)',
+              recommendation: 'Prophylactic antiseizure medications are NOT recommended routinely. If seizures occur, levetiracetam or lamotrigine are preferred. Avoid phenytoin and valproic acid.',
+              detail: 'Primary prophylaxis: generally not recommended (Cochrane review: no clear benefit). Early seizures (within 7 days): low recurrence risk (10-20%), consider short-term treatment with taper. Late/unprovoked seizures (>7 days): 70% 10-year recurrence, long-term ASM recommended. Preferred agents (2025 network meta-analysis, Neurology): Levetiracetam (fewest recurrences, good tolerability), Lamotrigine (fewest adverse events), Lacosamide (favorable safety). AVOID: Phenytoin (higher mortality, drug interactions), Valproic acid (higher mortality). Start LEV 500 mg BID, titrate to 1000-1500 mg BID as needed.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA 2022 ICH; 2025 Network Meta-analysis (Neurology)',
+              reference: 'ASM Network Meta-analysis: Neurology 2025. DOI: 10.1212/WNL.0000000000210231',
+              conditions: (data) => {
+                const screening = data.telestrokeNote?.screeningTools || {};
+                return screening.seizureRisk === 'high' || screening.seizureRisk === 'moderate';
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // DYSPHAGIA SCREENING (2026)
+            // ---------------------------------------------------------------
+            dysphagia_screening: {
+              id: 'dysphagia_screening',
+              category: 'Supportive Care',
+              title: 'Dysphagia screening (2026 AHA)',
+              recommendation: 'All stroke patients must undergo bedside dysphagia screening before any oral intake. Failure should trigger instrumental assessment (FEES or VFSS) by SLP.',
+              detail: 'Validated bedside tools: Gugging Swallowing Screen (GUSS), Toronto Bedside Swallowing Screening Test (TOR-BSST), 3-oz Water Swallow Test. Instrumental assessment (FEES or videofluoroscopic swallowing study) recommended when resources allow, especially for silent aspiration detection. FEES can be performed at bedside (advantage for critically ill). Early nurse-led bedside screening reduces pneumonia rates. NPO until screen passed.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026.',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('sah');
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // EARLY MOBILIZATION
+            // ---------------------------------------------------------------
+            early_mobilization: {
+              id: 'early_mobilization',
+              category: 'Supportive Care',
+              title: 'Early mobilization after stroke (AVERT)',
+              recommendation: 'Avoid very early mobilization (<24 hours) for severe strokes (NIHSS >16) and ICH. Start graduated mobilization at 24-48 hours with short, frequent sessions.',
+              detail: 'AVERT Phase III (n=2,104): Very early mobilization within 24 hours was HARMFUL (aOR 0.73, P=0.004), especially in severe strokes and ICH. Optimal: start at 24-48 hours from onset with hemodynamic stability. Recommended session: 15-45 minutes, 1-3 times daily. Short frequent sessions superior to prolonged single sessions (AVERT dose-response analysis).',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'B-R',
+              guideline: 'AVERT Phase III (Lancet 2015); VA/DoD Stroke Rehab CPG 2024',
+              reference: 'AVERT: Lancet 2015;386:46-55.',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich');
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // DECOMPRESSIVE CRANIECTOMY (EXPANDED)
+            // ---------------------------------------------------------------
+            decompressive_craniectomy_cerebellar: {
+              id: 'decompressive_craniectomy_cerebellar',
+              category: 'Special Populations',
+              title: 'Suboccipital decompressive craniectomy for cerebellar infarction',
+              recommendation: 'Suboccipital decompressive craniectomy is a life-saving procedure for expansive cerebellar infarction with brainstem compression or hydrocephalus.',
+              detail: 'Class I, LOE B-NR. Indications: large cerebellar infarction with progressive neurological deterioration, brainstem compression, or obstructive hydrocephalus. EVD may be placed for acute hydrocephalus but alone may be insufficient if cerebellar swelling is the primary problem. Resection of necrotic cerebellar tissue may be combined with decompression. No absolute age cutoff; decision based on premorbid function, imaging, and clinical trajectory.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'Powers WJ et al. Stroke. 2026.',
+              conditions: (data) => {
+                const ct = (data.telestrokeNote?.ctResults || '').toLowerCase();
+                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
+                return ct.includes('cerebellar') || cta.includes('pica') || cta.includes('sca') || cta.includes('cerebellar');
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // GLP-1 RA SECONDARY PREVENTION
+            // ---------------------------------------------------------------
+            glp1ra_secondary_prevention: {
+              id: 'glp1ra_secondary_prevention',
+              category: 'Secondary Prevention',
+              title: 'GLP-1 RA for cardiovascular/stroke prevention',
+              recommendation: 'Semaglutide is recommended for stroke patients with T2DM and established ASCVD (Class I, LOE A). Consider for patients with BMI \u226527 + CVD even without diabetes (Class IIa).',
+              detail: 'SELECT (NEJM 2023, n=17,604): Semaglutide 2.4 mg weekly reduced MACE by 20% (HR 0.80, P<0.001) in overweight/obese patients with CVD but without diabetes. SUSTAIN-6: 39% reduction in nonfatal stroke (HR 0.61, P=0.04) in T2DM. SOUL (2025): 14% MACE reduction in T2DM, leading to EMA approval as first stroke management therapy. FDA approved March 2024 for MACE risk reduction in adults with overweight/obesity and established CVD. Benefit independent of baseline adiposity and weight loss.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Secondary Prevention; SELECT (NEJM 2023); SOUL (2025)',
+              reference: 'SELECT: NEJM 2023. SUSTAIN-6: NEJM 2016. SOUL: 2025.',
+              conditions: (data) => {
+                const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isStroke = dx.includes('stroke') || dx.includes('ischemic') || dx.includes('tia');
+                const hasDM = pmh.includes('diabet') || pmh.includes('dm') || pmh.includes('a1c');
+                const hasObesity = pmh.includes('obes') || pmh.includes('bmi');
+                return isStroke && (hasDM || hasObesity);
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // PCSK9 / LDL TARGETS
+            // ---------------------------------------------------------------
+            ldl_aggressive_target: {
+              id: 'ldl_aggressive_target',
+              category: 'Secondary Prevention',
+              title: 'Aggressive LDL lowering for stroke prevention',
+              recommendation: 'Target LDL <55 mg/dL with \u226550% reduction from baseline for atherosclerotic stroke/TIA. Add ezetimibe, then PCSK9 inhibitor if not at goal on max statin.',
+              detail: 'TST (Lancet Neurol 2020): LDL <70 reduced composite endpoint by 22%. SPARCL: atorvastatin 80 mg reduced stroke 16%, \u226550% LDL reduction yielded 31% stroke reduction. ESC/EAS 2019: LDL <55 for very-high-risk ASCVD. FOURIER 2025 subanalysis: LDL <40 mg/dL optimal for prior stroke patients (no safety concerns, no increase in hemorrhagic stroke). Escalation ladder: high-intensity statin \u2192 add ezetimibe 10 mg \u2192 add PCSK9i (evolocumab/alirocumab) \u2192 recheck 6-8 weeks. Inclisiran (twice-yearly injection) available for adherence challenges. Oral PCSK9 agents (enlicitide) in pipeline.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA 2021; TST (Lancet Neurol 2020); FOURIER (AHA 2025)',
+              reference: 'TST: Lancet Neurol 2020. SPARCL: NEJM 2006. FOURIER subanalysis: AHA 2025.',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
+                return (dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia')) && (toast.includes('athero') || toast === '' || toast.includes('undetermined'));
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // CYP2C19-GUIDED ANTIPLATELET (CHANCE-2)
+            // ---------------------------------------------------------------
+            cyp2c19_guided_dapt: {
+              id: 'cyp2c19_guided_dapt',
+              category: 'Antithrombotic',
+              title: 'CYP2C19-guided antiplatelet selection (CHANCE-2)',
+              recommendation: 'For minor stroke/TIA patients on DAPT, consider CYP2C19 testing. Loss-of-function carriers benefit from ticagrelor + ASA instead of clopidogrel + ASA.',
+              detail: 'CHANCE-2 (NEJM 2021, n=6,412 CYP2C19 LOF carriers): Ticagrelor + ASA \u00d7 21 days then ticagrelor mono \u00d7 90 days reduced 1-year stroke by 20% (HR 0.80, P=0.007) vs. clopidogrel + ASA. Benefit entirely in first 90 days. THALES: Ticagrelor + ASA \u00d7 30 days reduced stroke/death (HR 0.83) regardless of genotype but with higher severe bleeding (HR 3.99). Standard DAPT (non-LOF carriers): clopidogrel 300 mg load + ASA 325 mg, then clopidogrel 75 mg + ASA 81 mg \u00d7 21 days, then clopidogrel mono.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'B-R',
+              guideline: 'CHANCE-2 (NEJM 2021); THALES (NEJM 2020)',
+              reference: 'CHANCE-2: NEJM 2021. 1-year follow-up: Neurology 2024. THALES: NEJM 2020.',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const nihss = parseInt(data.telestrokeNote?.nihss) || 0;
+                return (dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia')) && nihss <= 5;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // COLCHICINE
+            // ---------------------------------------------------------------
+            colchicine_secondary_prevention: {
+              id: 'colchicine_secondary_prevention',
+              category: 'Secondary Prevention',
+              title: 'Colchicine for stroke + coronary artery disease (emerging)',
+              recommendation: 'Colchicine 0.5 mg daily may be considered for patients with stroke AND coronary artery disease, particularly with elevated hsCRP. Evidence is emerging but not yet definitive for stroke-only patients.',
+              detail: 'CONVINCE (Lancet 2024, n=3,154): Non-cardioembolic stroke/TIA. Primary endpoint not met (HR 0.84, P=0.12) but underpowered (stopped early due to COVID). Meta-analysis (eClinicalMedicine 2024): ischemic stroke reduced 27% (RR 0.73, 95% CI 0.58-0.90) when pooled with LoDoCo2/COLCOT. CHANCE-3 (BMJ 2024): negative in minor stroke/TIA. CLEAR SYNERGY: negative. Side effects: diarrhea 12%, ~20% discontinuation. Contraindicated in severe renal impairment. Monitor CRP as biomarker of response.',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'B-R',
+              guideline: 'CONVINCE (Lancet 2024); Meta-analysis (eClinicalMedicine 2024)',
+              reference: 'CONVINCE: Lancet 2024. CHANCE-3: BMJ 2024. Meta-analysis: eClinicalMedicine 2024.',
+              conditions: (data) => {
+                const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isStroke = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
+                const hasCAD = pmh.includes('cad') || pmh.includes('coronary') || pmh.includes('mi') || pmh.includes('stent') || pmh.includes('cabg');
+                return isStroke && hasCAD;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // INTRACRANIAL ATHEROSCLEROSIS (ICAD)
+            // ---------------------------------------------------------------
+            icad_management: {
+              id: 'icad_management',
+              category: 'Antithrombotic',
+              title: 'Intracranial atherosclerotic disease (ICAD) management',
+              recommendation: 'Aggressive medical management is first-line for intracranial stenosis: DAPT + high-intensity statin + BP <140/90. Intracranial stenting is NOT recommended routinely (Class III: Harm).',
+              detail: 'SAMMPRIS: PTAS was inferior to aggressive medical management (30-day stroke/death 14.7% vs 5.8%). CASSISS: No benefit of stenting + medical therapy. Pooled analysis (n=809): 30-day stroke/death significantly higher with PTAS (10.5% vs 4.2%, HR 2.62). Medical protocol: DAPT (ASA + clopidogrel) \u00d7 90 days, then single antiplatelet. High-intensity statin (LDL <70). SBP <140/90. Stenting considered ONLY after \u22652 recurrent events on max medical therapy at experienced centers (Class IIb, LOE C).',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-R',
+              guideline: '2022 AAN Intracranial Atherosclerosis',
+              reference: 'SAMMPRIS: NEJM 2011. CASSISS: JAMA 2022. Pooled IPD: 2025.',
+              conditions: (data) => {
+                const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
+                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
+                return toast.includes('large artery') || cta.includes('intracranial stenosis') || cta.includes('intracranial atheroscler');
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // MEVO EVT (NOT RECOMMENDED)
+            // ---------------------------------------------------------------
+            mevo_evt_not_recommended: {
+              id: 'mevo_evt_not_recommended',
+              category: 'EVT',
+              title: 'MeVO/distal occlusion EVT: NOT recommended routinely',
+              recommendation: 'EVT for medium vessel (M2/M3) and distal occlusions is NOT recommended routinely based on 2025 trial data. Consider clinical trial enrollment.',
+              detail: 'ESCAPE-MeVO (NEJM 2025, n=530): No benefit of EVT for MeVO. Higher mortality in EVT group (13.3% vs 8.4%, HR 1.82). sICH higher (5.4% vs 2.2%). DISTAL (n=543): No benefit. DISCOUNT: Consistent negative results. Post-hoc: possible heterogeneity by time, earlier presenters may benefit more. Future trials needed with different devices (aspiration, intra-arterial lytics). Flag M2/M3 patients for potential clinical trial enrollment (e.g., STEP trial).',
+              classOfRec: 'III',
+              levelOfEvidence: 'B-R',
+              guideline: 'ESCAPE-MeVO (NEJM 2025); DISTAL (2025); DISCOUNT (2025)',
+              reference: 'ESCAPE-MeVO: NEJM 2025. DISTAL: 2025. DISCOUNT: 2025.',
+              conditions: (data) => {
+                const vessels = data.telestrokeNote?.vesselOcclusion || [];
+                return vessels.some(v => /m2|m3|m4|distal|mevo|medium vessel/i.test(v));
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // POST-EVT BP DRIP PROTOCOL
+            // ---------------------------------------------------------------
+            bp_post_evt_drip: {
+              id: 'bp_post_evt_drip',
+              category: 'Blood Pressure',
+              title: 'Post-EVT BP drip titration protocol',
+              recommendation: 'For post-EVT BP management, use nicardipine 5-15 mg/hr or clevidipine 1-2 mg/hr. Target SBP 140-180 mmHg for recanalized patients.',
+              detail: 'Nicardipine: start 5 mg/hr, titrate by 2.5 mg/hr every 5-15 min (max 15 mg/hr). Clevidipine: start 1-2 mg/hr, double every 90 seconds initially (max 32 mg/hr). For successfully recanalized (mTICI 2b-3): target SBP 140-180 mmHg. For non-recanalized: SBP <180. ENCHANTED2/MT: SBP <120 was harmful. OPTIMAL-BP (JAMA 2024): intensive <140 showed no benefit. BP-TARGET: intensive 100-129 showed no benefit. Meta-analysis of 4 RCTs: intensive targets reduced functional independence by 23%.',
+              classOfRec: 'I',
+              levelOfEvidence: 'C-EO',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'ENCHANTED2/MT: Lancet 2022. OPTIMAL-BP: JAMA 2024. BP-TARGET: Lancet Neurol 2021.',
+              medications: ['Nicardipine 5 mg/hr IV (titrate q5-15min, max 15)', 'Clevidipine 1-2 mg/hr IV'],
+              conditions: (data) => {
+                return !!data.telestrokeNote?.evtRecommended;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // SGLT2 INHIBITORS
+            // ---------------------------------------------------------------
+            sglt2i_guidance: {
+              id: 'sglt2i_guidance',
+              category: 'Secondary Prevention',
+              title: 'SGLT2 inhibitors in stroke patients',
+              recommendation: 'SGLT2 inhibitors are recommended for cardiorenal benefits (HF, CKD) but NOT specifically for stroke prevention. Consider sotagliflozin if dual stroke + HF benefit is desired.',
+              detail: 'Meta-analysis (71 RCTs, n=105,914): SGLT2 inhibitors did NOT significantly reduce total stroke (RR 0.96, NS) or ischemic stroke (RR 0.89, NS). Exception: sotagliflozin (dual SGLT1/2 inhibitor) reduced all stroke types (RR 0.74, P=0.04). SGLT2i reduced hemorrhagic stroke (RR 0.62, P=0.04). Primary indications: HF (regardless of EF), CKD (eGFR 20-45), T2DM with cardiorenal comorbidity. GLP-1 RAs offer superior stroke protection in indirect comparisons.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'A',
+              guideline: 'ADA Standards 2026; SMART-C Meta-analysis (Circulation)',
+              reference: 'SGLT2i Stroke Meta-analysis: JSCVD 2024. SMART-C: Circulation 2024.',
+              conditions: (data) => {
+                const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
+                return pmh.includes('heart failure') || pmh.includes('hf') || pmh.includes('ckd') || pmh.includes('kidney');
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // DEPRESSION SCREENING
+            // ---------------------------------------------------------------
+            depression_screening_schedule: {
+              id: 'depression_screening_schedule',
+              category: 'Post-Stroke Care',
+              title: 'Post-stroke depression screening schedule',
+              recommendation: 'Screen all stroke patients for depression using PHQ-2/PHQ-9 at discharge, 1 month, 3 months, 6 months, and 12 months post-stroke. SSRIs for diagnosed PSD only.',
+              detail: 'Post-stroke depression affects ~30% of survivors. SSRIs for diagnosed PSD only (Class IIa) — NOT routine for recovery (Class III per FOCUS/AFFINITY/EFFECTS: no improvement in mRS). Preferred agents: sertraline, escitalopram. Drug interaction flag: SSRIs + DAPT = 29% higher hemorrhagic stroke risk. FLAME trial (small) suggested fluoxetine enhanced motor recovery, but 3 large RCTs (FOCUS n=3,127, AFFINITY n=1,280, EFFECTS) all negative for functional recovery. SSRIs increase falls, fractures, and hyponatremia risk.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA 2021; FOCUS (Lancet 2019); AFFINITY (JAMA Neurol 2020)',
+              reference: 'FOCUS: Lancet 2019. AFFINITY: JAMA Neurology 2020.',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('tia');
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // SLEEP APNEA
+            // ---------------------------------------------------------------
+            sleep_apnea_screening: {
+              id: 'sleep_apnea_screening',
+              category: 'Post-Stroke Care',
+              title: 'Sleep apnea screening and management after stroke',
+              recommendation: 'Screen all stroke/TIA patients for sleep apnea (STOP-BANG or Berlin Questionnaire). CPAP benefit for vascular event prevention is uncertain (SAVE trial negative).',
+              detail: 'OSA affects ~70% of stroke patients and is an independent risk factor. SAVE trial (n=2,687, including 1,183 with prior stroke): CPAP did NOT reduce recurrent vascular events or mortality. However, adherence was poor (~3.3 h/night). Some evidence of improved neurological recovery. Class IIa for screening; Class IIb for CPAP treatment (uncertain vascular benefit; possible neurological recovery benefit). Refer for polysomnography if high-risk on screening. Track CPAP adherence if prescribed.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA/ASA Secondary Prevention 2021; SAVE (NEJM 2016)',
+              reference: 'SAVE: NEJM 2016. CPAP meta-analysis: PMC 2023.',
+              conditions: (data) => {
+                const screening = data.telestrokeNote?.screeningTools || {};
+                return (parseInt(screening.stopBangScore) || 0) >= 3 || !!screening.stopBangPositive;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // MEDITERRANEAN DIET
+            // ---------------------------------------------------------------
+            mediterranean_diet: {
+              id: 'mediterranean_diet',
+              category: 'Secondary Prevention',
+              title: 'Mediterranean diet for stroke prevention',
+              recommendation: 'Mediterranean diet is recommended for secondary stroke prevention (Class I, LOE B). DASH diet has been downgraded due to lack of direct stroke endpoint RCT data.',
+              detail: 'PREDIMED: 42% stroke reduction (HR 0.58, 95% CI 0.42-0.82) — stronger effect than for MI or CV death. Meta-analysis of RCTs (2024): OR 0.63 for stroke incidence. 2024 AHA/ASA: Mediterranean diet upgraded; DASH diet downgraded. Italian National Guidelines 2025: high-quality evidence for Mediterranean diet + EVOO or nuts. Key components: EVOO, nuts, fish, vegetables, fruit, legumes, whole grains. Limit red meat, processed foods, added sugars. MEDAS-14 score can track adherence.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA/ASA 2024; PREDIMED; Italian National Guidelines 2025',
+              reference: 'PREDIMED: NEJM 2018. Meta-analysis: Wiley 2024.',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('tia');
               }
             }
           };
@@ -3551,6 +4059,50 @@ Clinician Name`;
             if (items.female) score += 1;
             if (items.sah) score -= 2;
             return score;
+          };
+
+          // =================================================================
+          // ICH VOLUME CALCULATOR (ABC/2 method)
+          // =================================================================
+          const calculateICHVolume = (items) => {
+            const a = parseFloat(items.lengthCm) || 0;
+            const b = parseFloat(items.widthCm) || 0;
+            const c = parseFloat(items.slicesCm) || 0;
+            const volume = (a * b * c) / 2;
+            return { volume: Math.round(volume * 10) / 10, isLarge: volume >= 30, isExpanding: false };
+          };
+
+          // =================================================================
+          // WEIGHT-BASED MEDICATION DOSING CALCULATORS
+          // =================================================================
+          const calculateEnoxaparinDose = (weightKg, crCl) => {
+            const weight = parseFloat(weightKg) || 0;
+            const renalClearance = parseFloat(crCl) || 100;
+            if (weight <= 0) return null;
+            const standardDose = Math.round(weight * 1);
+            const renalDose = Math.round(weight * 1);
+            const isRenalAdjusted = renalClearance < 30;
+            return {
+              dose: isRenalAdjusted ? renalDose : standardDose,
+              frequency: isRenalAdjusted ? 'daily' : 'BID',
+              isRenalAdjusted,
+              note: isRenalAdjusted ? `CrCl <30: ${renalDose} mg SC daily` : `${standardDose} mg SC BID`
+            };
+          };
+
+          const calculateAndexanetDose = (doacType, lastDoseHours) => {
+            const hours = parseFloat(lastDoseHours) || 0;
+            const isApixaban = (doacType || '').toLowerCase().includes('apixaban');
+            const isRivaroxaban = (doacType || '').toLowerCase().includes('rivaroxaban');
+            if (isApixaban) {
+              if (hours >= 8) return { regimen: 'low-dose', bolus: '400 mg IV over 15-30 min', infusion: '4 mg/min x 120 min (480 mg)', total: '880 mg' };
+              return { regimen: 'high-dose', bolus: '800 mg IV over 15-30 min', infusion: '8 mg/min x 120 min (960 mg)', total: '1760 mg' };
+            }
+            if (isRivaroxaban) {
+              if (hours >= 8) return { regimen: 'low-dose', bolus: '400 mg IV over 15-30 min', infusion: '4 mg/min x 120 min (480 mg)', total: '880 mg' };
+              return { regimen: 'high-dose', bolus: '800 mg IV over 15-30 min', infusion: '8 mg/min x 120 min (960 mg)', total: '1760 mg' };
+            }
+            return { regimen: 'N/A', bolus: 'Not applicable for this DOAC', infusion: '', total: '' };
           };
 
           // =================================================================
@@ -10746,8 +11298,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <div className="p-4 pt-0 space-y-4">
                               {/* BP Management */}
                               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                                <h4 className="font-semibold text-red-800 mb-2">Blood Pressure Target: &lt;130/80 mmHg</h4>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <h4 className="font-semibold text-red-800 mb-2">Blood Pressure Target</h4>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                   <div>
                                     <label className="text-xs text-gray-600">Current BP Meds</label>
                                     <input type="text" value={(telestrokeNote.secondaryPrevention || {}).bpMeds || ''}
@@ -10760,16 +11312,24 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                       onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), bpTarget: e.target.value}})}
                                       className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
                                       <option value="">Select</option>
-                                      <option value="<130/80">&lt;130/80 (standard)</option>
+                                      <option value="<130/80">&lt;130/80 (standard, Class I)</option>
+                                      <option value="<120/80">&lt;120/80 (intensive — SPS3, RESPECT-ESUS subgroup)</option>
                                       <option value="<140/90">&lt;140/90 (if tolerability concern)</option>
                                     </select>
+                                  </div>
+                                  <div>
+                                    <label className="flex items-center gap-1 text-xs mt-4">
+                                      <input type="checkbox" checked={!!(telestrokeNote.secondaryPrevention || {}).bpIntensiveCandidate}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), bpIntensiveCandidate: e.target.checked}})} />
+                                      Intensive BP candidate (lacunar/small vessel)
+                                    </label>
                                   </div>
                                 </div>
                               </div>
 
                               {/* LDL Ladder */}
                               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                                <h4 className="font-semibold text-yellow-800 mb-2">LDL Target: &lt;70 mg/dL (Class I, LOE A)</h4>
+                                <h4 className="font-semibold text-yellow-800 mb-2">LDL Target: &lt;55 mg/dL optimal, &lt;70 minimum (TST, SPARCL)</h4>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                   <div>
                                     <label className="text-xs text-gray-600">Current LDL</label>
@@ -10798,11 +11358,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     <label className="flex items-center gap-1 text-xs">
                                       <input type="checkbox" checked={!!(telestrokeNote.secondaryPrevention || {}).pcsk9Added}
                                         onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), pcsk9Added: e.target.checked}})} />
-                                      + PCSK9 inhibitor
+                                      + PCSK9i (evolocumab/alirocumab)
+                                    </label>
+                                    <label className="flex items-center gap-1 text-xs">
+                                      <input type="checkbox" checked={!!(telestrokeNote.secondaryPrevention || {}).inclisiranConsidered}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), inclisiranConsidered: e.target.checked}})} />
+                                      + Inclisiran (siRNA, q6mo injection)
                                     </label>
                                   </div>
                                 </div>
-                                <p className="text-xs text-gray-500 mt-1">Ladder: High-intensity statin first. If LDL not at goal, add ezetimibe. If still not at goal, add PCSK9 inhibitor.</p>
+                                <p className="text-xs text-gray-500 mt-1">Ladder: High-intensity statin → add ezetimibe → add PCSK9i or inclisiran. TST trial: LDL &lt;70 reduced recurrent stroke by 22%. FOURIER subanalysis supports LDL &lt;40 in high-risk ASCVD.</p>
                               </div>
 
                               {/* Antiplatelet Selection */}
@@ -10857,6 +11422,12 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     <option value="counseled">Exercise counseling provided (target 150 min/wk)</option>
                                     <option value="limited">Limited by disability — PT/OT referral</option>
                                   </select>
+                                  <div className="mt-1">
+                                    <label className="text-xs text-gray-500">Current min/week:</label>
+                                    <input type="number" value={(telestrokeNote.secondaryPrevention || {}).exerciseMinPerWeek || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), exerciseMinPerWeek: e.target.value}})}
+                                      className="w-20 ml-1 px-1 py-0.5 border border-gray-300 rounded text-xs" placeholder="0" />
+                                  </div>
                                 </div>
                                 <div className="bg-lime-50 border border-lime-200 rounded-lg p-3">
                                   <h4 className="font-semibold text-lime-800 mb-2 text-sm">Diet</h4>
@@ -10864,11 +11435,114 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), dietPlan: e.target.value}})}
                                     className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
                                     <option value="">Select</option>
-                                    <option value="mediterranean">Mediterranean diet counseled</option>
-                                    <option value="dash">DASH diet counseled</option>
-                                    <option value="sodium-restriction">Sodium restriction counseled (&lt;2.3g/day)</option>
+                                    <option value="mediterranean">Mediterranean diet (Class I — PREDIMED, 2024 AHA upgrade)</option>
+                                    <option value="dash">DASH diet</option>
+                                    <option value="sodium-restriction">Sodium restriction (&lt;2.3g/day)</option>
                                     <option value="dietitian">Dietitian referral placed</option>
                                   </select>
+                                  <select value={(telestrokeNote.secondaryPrevention || {}).dietAdherence || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), dietAdherence: e.target.value}})}
+                                    className="w-full px-2 py-1 border border-gray-300 rounded text-xs mt-1">
+                                    <option value="">Adherence</option>
+                                    <option value="good">Good adherence</option>
+                                    <option value="partial">Partial adherence</option>
+                                    <option value="poor">Poor adherence — reinforce counseling</option>
+                                  </select>
+                                </div>
+                              </div>
+
+                              {/* GLP-1 RA, SGLT2i, Colchicine, CYP2C19 */}
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div className="bg-violet-50 border border-violet-200 rounded-lg p-3">
+                                  <h4 className="font-semibold text-violet-800 mb-2 text-sm">GLP-1 Receptor Agonist</h4>
+                                  <select value={(telestrokeNote.secondaryPrevention || {}).glp1ra || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), glp1ra: e.target.value}})}
+                                    className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                                    <option value="">Select</option>
+                                    <option value="semaglutide-2.4">Semaglutide 2.4 mg SC weekly</option>
+                                    <option value="semaglutide-1.0">Semaglutide 1.0 mg SC weekly</option>
+                                    <option value="liraglutide">Liraglutide 1.8 mg SC daily</option>
+                                    <option value="dulaglutide">Dulaglutide 1.5 mg SC weekly</option>
+                                    <option value="not-indicated">Not indicated</option>
+                                  </select>
+                                  <select value={(telestrokeNote.secondaryPrevention || {}).glp1raIndication || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), glp1raIndication: e.target.value}})}
+                                    className="w-full px-2 py-1 border border-gray-300 rounded text-xs mt-1">
+                                    <option value="">Indication</option>
+                                    <option value="overweight-ascvd">Overweight/obesity + ASCVD (SELECT trial)</option>
+                                    <option value="t2dm">T2DM (SUSTAIN-6, SOUL)</option>
+                                    <option value="both">Both obesity + T2DM</option>
+                                  </select>
+                                  <p className="text-xs text-gray-500 mt-1">SELECT: semaglutide 2.4mg reduced MACE 20% in overweight/obese patients with ASCVD (HR 0.80). SOUL: stroke reduction with oral semaglutide in T2DM.</p>
+                                </div>
+                                <div className="bg-sky-50 border border-sky-200 rounded-lg p-3">
+                                  <h4 className="font-semibold text-sky-800 mb-2 text-sm">SGLT2 Inhibitor</h4>
+                                  <select value={(telestrokeNote.secondaryPrevention || {}).sglt2i || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), sglt2i: e.target.value}})}
+                                    className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                                    <option value="">Select</option>
+                                    <option value="empagliflozin">Empagliflozin 10mg daily</option>
+                                    <option value="dapagliflozin">Dapagliflozin 10mg daily</option>
+                                    <option value="sotagliflozin">Sotagliflozin 200mg daily</option>
+                                    <option value="not-indicated">Not indicated</option>
+                                  </select>
+                                  <select value={(telestrokeNote.secondaryPrevention || {}).sglt2iIndication || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), sglt2iIndication: e.target.value}})}
+                                    className="w-full px-2 py-1 border border-gray-300 rounded text-xs mt-1">
+                                    <option value="">Indication</option>
+                                    <option value="hf">Heart failure (HFrEF or HFpEF)</option>
+                                    <option value="ckd">CKD (eGFR 20-60)</option>
+                                    <option value="t2dm-ascvd">T2DM + ASCVD</option>
+                                    <option value="sotagliflozin-af-hf-dm">Sotagliflozin for AF + HF + DM (SCORED/SOLOIST)</option>
+                                  </select>
+                                  <p className="text-xs text-gray-500 mt-1">SGLT2i primarily for cardiorenal protection; not direct stroke prevention. Sotagliflozin exception: reduced stroke in DM + HF.</p>
+                                </div>
+                                <div className="bg-rose-50 border border-rose-200 rounded-lg p-3">
+                                  <h4 className="font-semibold text-rose-800 mb-2 text-sm">Colchicine</h4>
+                                  <label className="flex items-center gap-2 mb-1">
+                                    <input type="checkbox" checked={!!(telestrokeNote.secondaryPrevention || {}).colchicineConsidered}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), colchicineConsidered: e.target.checked}})} />
+                                    <span className="text-sm">Colchicine 0.5 mg daily considered</span>
+                                  </label>
+                                  <select value={(telestrokeNote.secondaryPrevention || {}).colchicineIndication || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), colchicineIndication: e.target.value}})}
+                                    className="w-full px-2 py-1 border border-gray-300 rounded text-xs">
+                                    <option value="">Indication</option>
+                                    <option value="atherosclerotic-stroke">Atherosclerotic stroke with hsCRP elevation</option>
+                                    <option value="recurrent-ascvd">Recurrent ASCVD events</option>
+                                    <option value="not-indicated">Not indicated</option>
+                                  </select>
+                                  <p className="text-xs text-gray-500 mt-1">CONVINCE: reduced recurrent vascular events post-stroke. CHANCE-3: colchicine + DAPT for minor stroke/TIA. Avoid if eGFR &lt;30.</p>
+                                </div>
+                                <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                                  <h4 className="font-semibold text-amber-800 mb-2 text-sm">CYP2C19 Pharmacogenomics</h4>
+                                  <label className="flex items-center gap-2 mb-1">
+                                    <input type="checkbox" checked={!!(telestrokeNote.secondaryPrevention || {}).cyp2c19Tested}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), cyp2c19Tested: e.target.checked}})} />
+                                    <span className="text-sm">CYP2C19 genotyping ordered/available</span>
+                                  </label>
+                                  {(telestrokeNote.secondaryPrevention || {}).cyp2c19Tested && (
+                                    <select value={(telestrokeNote.secondaryPrevention || {}).cyp2c19Result || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), cyp2c19Result: e.target.value}})}
+                                      className="w-full px-2 py-1 border border-gray-300 rounded text-xs">
+                                      <option value="">Result</option>
+                                      <option value="normal-metabolizer">Normal metabolizer (*1/*1) — clopidogrel OK</option>
+                                      <option value="intermediate">Intermediate metabolizer (*1/*2, *1/*3)</option>
+                                      <option value="poor-metabolizer">Poor metabolizer (*2/*2, *2/*3, *3/*3) — avoid clopidogrel</option>
+                                      <option value="rapid-metabolizer">Rapid/ultra-rapid metabolizer</option>
+                                      <option value="pending">Result pending</option>
+                                    </select>
+                                  )}
+                                  {(telestrokeNote.secondaryPrevention || {}).cyp2c19Result === 'poor-metabolizer' && (
+                                    <div className="mt-1 p-1 bg-red-100 rounded text-xs text-red-700">
+                                      CYP2C19 LOF: Switch to ticagrelor 90mg BID or prasugrel 10mg daily (CHANCE-2: ticagrelor + ASA superior to clopidogrel + ASA in LOF carriers).
+                                    </div>
+                                  )}
+                                  {(telestrokeNote.secondaryPrevention || {}).cyp2c19Result === 'intermediate' && (
+                                    <div className="mt-1 p-1 bg-yellow-100 rounded text-xs text-yellow-700">
+                                      Intermediate metabolizer: Consider ticagrelor 90mg BID. CHANCE-2 showed benefit in both intermediate and poor metabolizers.
+                                    </div>
+                                  )}
                                 </div>
                               </div>
 
@@ -10889,6 +11563,408 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   Recommended schedule: 1-2 wk post-discharge, then 3 mo, 6 mo, 12 mo. Adjust based on severity and risk factors.
                                 </div>
                               </div>
+                            </div>
+                          </details>
+                        )}
+
+                        {/* ========== ACUTE CARE PROTOCOLS ========== */}
+                        {telestrokeNote.diagnosis && (getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' || getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ich') && (
+                          <details className="bg-white border-2 border-orange-300 rounded-lg shadow-md">
+                            <summary className="cursor-pointer p-4 font-semibold text-orange-900 hover:bg-orange-50 rounded-lg flex items-center justify-between">
+                              <span className="flex items-center gap-2">
+                                <i data-lucide="clipboard-list" className="w-5 h-5 text-orange-600"></i>
+                                Acute Care Protocols
+                              </span>
+                              <span className="text-xs text-orange-500 font-normal">HT, Dysphagia, Mobilization, Hyperglycemia, DOAC Timing, Carotid, ESUS, ICH Anticoag</span>
+                            </summary>
+                            <div className="p-4 pt-0 space-y-4">
+                              {/* Hemorrhagic Transformation */}
+                              {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' && (
+                                <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                                  <h4 className="font-semibold text-red-800 mb-2">Hemorrhagic Transformation (HT) Monitoring</h4>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                      <label className="flex items-center gap-2 mb-2">
+                                        <input type="checkbox" checked={!!(telestrokeNote.hemorrhagicTransformation || {}).detected}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, hemorrhagicTransformation: {...(telestrokeNote.hemorrhagicTransformation || {}), detected: e.target.checked}})} />
+                                        <span className="text-sm font-medium">HT detected on imaging</span>
+                                      </label>
+                                      {(telestrokeNote.hemorrhagicTransformation || {}).detected && (
+                                        <div className="space-y-2 ml-6">
+                                          <select value={(telestrokeNote.hemorrhagicTransformation || {}).classification || ''}
+                                            onChange={(e) => setTelestrokeNote({...telestrokeNote, hemorrhagicTransformation: {...(telestrokeNote.hemorrhagicTransformation || {}), classification: e.target.value}})}
+                                            className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                                            <option value="">ECASS Classification</option>
+                                            <option value="HI-1">HI-1: Small petechiae along margin</option>
+                                            <option value="HI-2">HI-2: Confluent petechiae, no mass effect</option>
+                                            <option value="PH-1">PH-1: Hematoma &le;30% infarct, mild mass effect</option>
+                                            <option value="PH-2">PH-2: Hematoma &gt;30% infarct, significant mass effect</option>
+                                          </select>
+                                          <label className="flex items-center gap-2">
+                                            <input type="checkbox" checked={!!(telestrokeNote.hemorrhagicTransformation || {}).symptomatic}
+                                              onChange={(e) => setTelestrokeNote({...telestrokeNote, hemorrhagicTransformation: {...(telestrokeNote.hemorrhagicTransformation || {}), symptomatic: e.target.checked}})} />
+                                            <span className="text-xs text-red-700 font-medium">Symptomatic (sICH): NIHSS increase &ge;4 points</span>
+                                          </label>
+                                        </div>
+                                      )}
+                                    </div>
+                                    <div>
+                                      {(telestrokeNote.hemorrhagicTransformation || {}).detected && (
+                                        <div className="space-y-2">
+                                          <div className="text-xs text-gray-700 space-y-1">
+                                            {((telestrokeNote.hemorrhagicTransformation || {}).classification || '').startsWith('HI') && (
+                                              <p className="text-green-700">HI-1/2: Generally benign. May continue antiplatelets. Repeat imaging in 24h.</p>
+                                            )}
+                                            {(telestrokeNote.hemorrhagicTransformation || {}).classification === 'PH-1' && (
+                                              <p className="text-amber-700">PH-1: Hold antithrombotics 24-48h. Repeat CT. Consider reversal if post-TNK and symptomatic.</p>
+                                            )}
+                                            {(telestrokeNote.hemorrhagicTransformation || {}).classification === 'PH-2' && (
+                                              <p className="text-red-700">PH-2: Hold all antithrombotics. STAT labs (fibrinogen, platelets, INR). If post-TNK: cryoprecipitate 10U + TXA 1g. Neurosurgery consult.</p>
+                                            )}
+                                          </div>
+                                          <label className="flex items-center gap-2">
+                                            <input type="checkbox" checked={!!(telestrokeNote.hemorrhagicTransformation || {}).antithromboticHeld}
+                                              onChange={(e) => setTelestrokeNote({...telestrokeNote, hemorrhagicTransformation: {...(telestrokeNote.hemorrhagicTransformation || {}), antithromboticHeld: e.target.checked}})} />
+                                            <span className="text-xs">Antithrombotics held</span>
+                                          </label>
+                                          <label className="flex items-center gap-2">
+                                            <input type="checkbox" checked={!!(telestrokeNote.hemorrhagicTransformation || {}).reimagingPlanned}
+                                              onChange={(e) => setTelestrokeNote({...telestrokeNote, hemorrhagicTransformation: {...(telestrokeNote.hemorrhagicTransformation || {}), reimagingPlanned: e.target.checked}})} />
+                                            <span className="text-xs">Repeat imaging planned</span>
+                                          </label>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Dysphagia Screening */}
+                              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                <h4 className="font-semibold text-blue-800 mb-2">Dysphagia Screening Protocol</h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                  <div className="space-y-2">
+                                    <label className="flex items-center gap-2">
+                                      <input type="checkbox" checked={!!(telestrokeNote.dysphagiaScreening || {}).bedsideScreenPerformed}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, dysphagiaScreening: {...(telestrokeNote.dysphagiaScreening || {}), bedsideScreenPerformed: e.target.checked}})} />
+                                      <span className="text-sm">Bedside swallow screen performed</span>
+                                    </label>
+                                    {(telestrokeNote.dysphagiaScreening || {}).bedsideScreenPerformed && (
+                                      <select value={(telestrokeNote.dysphagiaScreening || {}).bedsideScreenResult || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, dysphagiaScreening: {...(telestrokeNote.dysphagiaScreening || {}), bedsideScreenResult: e.target.value}})}
+                                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm ml-6">
+                                        <option value="">Result</option>
+                                        <option value="pass">Pass — regular diet</option>
+                                        <option value="fail">Fail — NPO, SLP consult</option>
+                                        <option value="modified">Modified diet recommended</option>
+                                      </select>
+                                    )}
+                                  </div>
+                                  <div className="space-y-2">
+                                    <label className="flex items-center gap-2">
+                                      <input type="checkbox" checked={!!(telestrokeNote.dysphagiaScreening || {}).npoStatus}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, dysphagiaScreening: {...(telestrokeNote.dysphagiaScreening || {}), npoStatus: e.target.checked}})} />
+                                      <span className="text-sm">NPO until screened</span>
+                                    </label>
+                                    <label className="flex items-center gap-2">
+                                      <input type="checkbox" checked={!!(telestrokeNote.dysphagiaScreening || {}).slpConsultOrdered}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, dysphagiaScreening: {...(telestrokeNote.dysphagiaScreening || {}), slpConsultOrdered: e.target.checked}})} />
+                                      <span className="text-sm">SLP consult ordered</span>
+                                    </label>
+                                    <select value={(telestrokeNote.dysphagiaScreening || {}).instrumentalAssessment || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, dysphagiaScreening: {...(telestrokeNote.dysphagiaScreening || {}), instrumentalAssessment: e.target.value}})}
+                                      className="w-full px-2 py-1 border border-gray-300 rounded text-xs">
+                                      <option value="">Instrumental assessment</option>
+                                      <option value="vfss">VFSS (modified barium swallow)</option>
+                                      <option value="fees">FEES (fiberoptic endoscopic evaluation)</option>
+                                      <option value="not-needed">Not needed</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <p className="text-xs text-gray-500 mt-1">Class I: All stroke patients must have dysphagia screening before oral intake. Failed screen → NPO + SLP within 24h. Aspiration pneumonia risk increases 3x without screening.</p>
+                              </div>
+
+                              {/* Early Mobilization */}
+                              <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                                <h4 className="font-semibold text-green-800 mb-2">Early Mobilization (AVERT-Informed)</h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                  <div>
+                                    <select value={(telestrokeNote.earlyMobilization || {}).timingDecision || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, earlyMobilization: {...(telestrokeNote.earlyMobilization || {}), timingDecision: e.target.value}})}
+                                      className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                                      <option value="">Mobilization timing</option>
+                                      <option value="24-48h">24-48h post-onset (recommended)</option>
+                                      <option value="deferred">Deferred &gt;48h (severe stroke, hemodynamic instability)</option>
+                                      <option value="contraindicated">Contraindicated (active ICH expansion, unstable)</option>
+                                    </select>
+                                  </div>
+                                  <div className="space-y-1">
+                                    <label className="flex items-center gap-2">
+                                      <input type="checkbox" checked={!!(telestrokeNote.earlyMobilization || {}).mobilizationStarted}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, earlyMobilization: {...(telestrokeNote.earlyMobilization || {}), mobilizationStarted: e.target.checked}})} />
+                                      <span className="text-sm">Mobilization initiated</span>
+                                    </label>
+                                    <select value={(telestrokeNote.earlyMobilization || {}).sessionFrequency || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, earlyMobilization: {...(telestrokeNote.earlyMobilization || {}), sessionFrequency: e.target.value}})}
+                                      className="w-full px-2 py-1 border border-gray-300 rounded text-xs">
+                                      <option value="">Session frequency</option>
+                                      <option value="short-frequent">Short, frequent sessions (AVERT protocol)</option>
+                                      <option value="standard-pt">Standard PT schedule</option>
+                                      <option value="intensive">Intensive rehab (&ge;3h/day)</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <p className="text-xs text-gray-500 mt-1">AVERT: Very early mobilization (&lt;24h) is harmful (Class III). Graduated approach starting 24-48h preferred. Short, frequent sessions better than prolonged single sessions.</p>
+                              </div>
+
+                              {/* Hyperglycemia Management */}
+                              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                                <h4 className="font-semibold text-amber-800 mb-2">Acute Hyperglycemia Management</h4>
+                                <div className="text-sm text-gray-700 space-y-1">
+                                  <p><strong>Target glucose: 140-180 mg/dL</strong> (Class I, LOE A)</p>
+                                  <p className="text-red-700 font-semibold">Intensive glucose control (80-130 mg/dL) is CLASS III: HARM</p>
+                                  <p>• Treat glucose &gt;180 mg/dL with insulin</p>
+                                  <p>• Avoid hypoglycemia (&lt;60 mg/dL) — associated with worse outcomes</p>
+                                  <p>• Continuous glucose monitoring may be considered</p>
+                                  <p className="text-xs text-gray-500 italic">SHINE trial, AHA/ASA 2019 + 2026 update</p>
+                                </div>
+                              </div>
+
+                              {/* DOAC Timing Algorithm (Interactive) */}
+                              {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' && (
+                                <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                                  <h4 className="font-semibold text-purple-800 mb-2">DOAC Timing Algorithm (AF-Stroke)</h4>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div className="space-y-2">
+                                      <select value={(telestrokeNote.doacTiming || {}).strokeSeverity || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, doacTiming: {...(telestrokeNote.doacTiming || {}), strokeSeverity: e.target.value}})}
+                                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                                        <option value="">Stroke severity</option>
+                                        <option value="minor">Minor (NIHSS &lt;8, small infarct)</option>
+                                        <option value="moderate">Moderate (NIHSS 8-15)</option>
+                                        <option value="severe">Severe (NIHSS &gt;15 or large infarct)</option>
+                                      </select>
+                                      <label className="flex items-center gap-2">
+                                        <input type="checkbox" checked={!!(telestrokeNote.doacTiming || {}).hemorrhagicTransformation}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, doacTiming: {...(telestrokeNote.doacTiming || {}), hemorrhagicTransformation: e.target.checked}})} />
+                                        <span className="text-xs">Hemorrhagic transformation present</span>
+                                      </label>
+                                      <select value={(telestrokeNote.doacTiming || {}).doacAgent || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, doacTiming: {...(telestrokeNote.doacTiming || {}), doacAgent: e.target.value}})}
+                                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                                        <option value="">DOAC agent</option>
+                                        <option value="apixaban">Apixaban 5mg BID</option>
+                                        <option value="apixaban-reduced">Apixaban 2.5mg BID (dose reduction criteria met)</option>
+                                        <option value="rivaroxaban">Rivaroxaban 20mg daily</option>
+                                        <option value="rivaroxaban-reduced">Rivaroxaban 15mg daily (CrCl 15-50)</option>
+                                        <option value="dabigatran">Dabigatran 150mg BID</option>
+                                        <option value="edoxaban">Edoxaban 60mg daily</option>
+                                      </select>
+                                    </div>
+                                    <div>
+                                      {(telestrokeNote.doacTiming || {}).strokeSeverity && (
+                                        <div className={`p-2 rounded border text-sm ${
+                                          (telestrokeNote.doacTiming || {}).hemorrhagicTransformation ? 'bg-red-100 border-red-300' :
+                                          (telestrokeNote.doacTiming || {}).strokeSeverity === 'minor' ? 'bg-green-100 border-green-300' :
+                                          (telestrokeNote.doacTiming || {}).strokeSeverity === 'moderate' ? 'bg-amber-100 border-amber-300' :
+                                          'bg-red-100 border-red-300'
+                                        }`}>
+                                          <p className="font-semibold mb-1">
+                                            {(telestrokeNote.doacTiming || {}).hemorrhagicTransformation ? 'Delay DOAC — repeat imaging first' :
+                                             (telestrokeNote.doacTiming || {}).strokeSeverity === 'minor' ? 'Start DOAC within 48 hours' :
+                                             (telestrokeNote.doacTiming || {}).strokeSeverity === 'moderate' ? 'Start DOAC Day 3-5' :
+                                             'Start DOAC Day 6-14'}
+                                          </p>
+                                          <p className="text-xs text-gray-600">CATALYST meta-analysis (ELAN, OPTIMAS, TIMING, START). Early initiation is safe and non-inferior to delayed.</p>
+                                          {(telestrokeNote.doacTiming || {}).hemorrhagicTransformation && (
+                                            <p className="text-xs text-red-700 mt-1">HT present: Repeat CT before DOAC initiation. If PH-2, delay until stable and consult.</p>
+                                          )}
+                                        </div>
+                                      )}
+                                      <input type="text" value={(telestrokeNote.doacTiming || {}).doacInitiationDay || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, doacTiming: {...(telestrokeNote.doacTiming || {}), doacInitiationDay: e.target.value}})}
+                                        className="w-full px-2 py-1 border border-gray-300 rounded text-xs mt-2" placeholder="Planned initiation day (e.g., Day 3)" />
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Carotid Management */}
+                              {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' && (
+                                <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
+                                  <h4 className="font-semibold text-indigo-800 mb-2">Carotid Stenosis Management</h4>
+                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <div>
+                                      <label className="text-xs text-gray-600">Side</label>
+                                      <select value={(telestrokeNote.carotidManagement || {}).stenosisSide || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, carotidManagement: {...(telestrokeNote.carotidManagement || {}), stenosisSide: e.target.value}})}
+                                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                                        <option value="">Select</option>
+                                        <option value="left">Left</option>
+                                        <option value="right">Right</option>
+                                        <option value="bilateral">Bilateral</option>
+                                      </select>
+                                    </div>
+                                    <div>
+                                      <label className="text-xs text-gray-600">Degree of Stenosis</label>
+                                      <select value={(telestrokeNote.carotidManagement || {}).stenosisDegree || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, carotidManagement: {...(telestrokeNote.carotidManagement || {}), stenosisDegree: e.target.value}})}
+                                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                                        <option value="">Select</option>
+                                        <option value="<50">&lt;50% (mild)</option>
+                                        <option value="50-69">50-69% (moderate)</option>
+                                        <option value="70-99">70-99% (severe)</option>
+                                        <option value="occlusion">Complete occlusion</option>
+                                      </select>
+                                    </div>
+                                    <div>
+                                      <label className="flex items-center gap-2 mt-4">
+                                        <input type="checkbox" checked={!!(telestrokeNote.carotidManagement || {}).symptomatic}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, carotidManagement: {...(telestrokeNote.carotidManagement || {}), symptomatic: e.target.checked}})} />
+                                        <span className="text-sm">Symptomatic (ipsilateral to stroke)</span>
+                                      </label>
+                                    </div>
+                                  </div>
+                                  {(telestrokeNote.carotidManagement || {}).stenosisDegree && (
+                                    <div className="mt-2">
+                                      <select value={(telestrokeNote.carotidManagement || {}).intervention || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, carotidManagement: {...(telestrokeNote.carotidManagement || {}), intervention: e.target.value}})}
+                                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                                        <option value="">Intervention plan</option>
+                                        <option value="cea">CEA (within 2 weeks if symptomatic &ge;50%)</option>
+                                        <option value="cas">CAS (if high surgical risk)</option>
+                                        <option value="tcar">TCAR (transcarotid artery revascularization)</option>
+                                        <option value="medical-only">Medical management only</option>
+                                      </select>
+                                      {(telestrokeNote.carotidManagement || {}).symptomatic && ((telestrokeNote.carotidManagement || {}).stenosisDegree === '50-69' || (telestrokeNote.carotidManagement || {}).stenosisDegree === '70-99') && (
+                                        <div className="mt-1 p-2 bg-green-100 rounded text-xs text-green-800">
+                                          <strong>Symptomatic {(telestrokeNote.carotidManagement || {}).stenosisDegree}%:</strong> CEA within 2 weeks recommended (Class I, LOE A). Benefit greatest when performed early (NNT = 5 for &ge;70%).
+                                        </div>
+                                      )}
+                                      {!(telestrokeNote.carotidManagement || {}).symptomatic && ((telestrokeNote.carotidManagement || {}).stenosisDegree === '70-99') && (
+                                        <div className="mt-1 p-2 bg-yellow-100 rounded text-xs text-yellow-800">
+                                          <strong>Asymptomatic &ge;70%:</strong> CREST-2 showed CEA + medical NOT superior to medical management alone. Optimize medical therapy first (high-intensity statin, BP control, antiplatelet).
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+
+                              {/* ESUS / Cryptogenic Workup */}
+                              {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' && (
+                                <div className="bg-cyan-50 border border-cyan-200 rounded-lg p-3">
+                                  <h4 className="font-semibold text-cyan-800 mb-2">ESUS / Cryptogenic Stroke Workup</h4>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div className="space-y-2">
+                                      <select value={(telestrokeNote.esusWorkup || {}).cardiacMonitoringType || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, esusWorkup: {...(telestrokeNote.esusWorkup || {}), cardiacMonitoringType: e.target.value}})}
+                                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                                        <option value="">Cardiac monitoring plan</option>
+                                        <option value="30-day-monitor">30-day ambulatory monitor (preferred)</option>
+                                        <option value="14-day-patch">14-day continuous patch</option>
+                                        <option value="ilr">Implantable loop recorder</option>
+                                        <option value="telemetry-only">Inpatient telemetry only</option>
+                                      </select>
+                                      <label className="flex items-center gap-2">
+                                        <input type="checkbox" checked={!!(telestrokeNote.esusWorkup || {}).teePerformed}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, esusWorkup: {...(telestrokeNote.esusWorkup || {}), teePerformed: e.target.checked}})} />
+                                        <span className="text-sm">TEE performed/ordered</span>
+                                      </label>
+                                      {(telestrokeNote.esusWorkup || {}).teePerformed && (
+                                        <input type="text" value={(telestrokeNote.esusWorkup || {}).teeFindings || ''}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, esusWorkup: {...(telestrokeNote.esusWorkup || {}), teeFindings: e.target.value}})}
+                                          className="w-full px-2 py-1 border border-gray-300 rounded text-xs" placeholder="TEE findings (PFO, ASA, valve, LAA thrombus)" />
+                                      )}
+                                    </div>
+                                    <div className="space-y-2">
+                                      <label className="flex items-center gap-2">
+                                        <input type="checkbox" checked={!!(telestrokeNote.esusWorkup || {}).afDetected}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, esusWorkup: {...(telestrokeNote.esusWorkup || {}), afDetected: e.target.checked}})} />
+                                        <span className="text-sm">AF detected on monitoring</span>
+                                      </label>
+                                      <label className="flex items-center gap-2">
+                                        <input type="checkbox" checked={!!(telestrokeNote.esusWorkup || {}).hypercoagWorkup}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, esusWorkup: {...(telestrokeNote.esusWorkup || {}), hypercoagWorkup: e.target.checked}})} />
+                                        <span className="text-sm">Hypercoagulable workup ordered</span>
+                                      </label>
+                                      <select value={(telestrokeNote.esusWorkup || {}).esusAntiplatelet || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, esusWorkup: {...(telestrokeNote.esusWorkup || {}), esusAntiplatelet: e.target.value}})}
+                                        className="w-full px-2 py-1 border border-gray-300 rounded text-xs">
+                                        <option value="">ESUS antithrombotic</option>
+                                        <option value="antiplatelet">Antiplatelet (NAVIGATE-ESUS, RE-SPECT ESUS: no DOAC benefit)</option>
+                                        <option value="doac-af-found">DOAC — AF discovered on monitoring</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <p className="text-xs text-gray-500 mt-1">ACC 2024 ECDP: Extended cardiac monitoring is reasonable for all cryptogenic stroke. PER-DIEM trial supports early prolonged monitoring. NAVIGATE-ESUS and RE-SPECT ESUS showed no benefit of DOAC over antiplatelet for ESUS without AF.</p>
+                                </div>
+                              )}
+
+                              {/* ICH Anticoagulation Resumption */}
+                              {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ich' && (
+                                <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                                  <h4 className="font-semibold text-red-800 mb-2">ICH: Anticoagulation Resumption Decision</h4>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div className="space-y-2">
+                                      <select value={(telestrokeNote.ichAnticoagResumption || {}).ichLocation || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, ichAnticoagResumption: {...(telestrokeNote.ichAnticoagResumption || {}), ichLocation: e.target.value}})}
+                                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                                        <option value="">ICH location</option>
+                                        <option value="deep">Deep (basal ganglia, thalamus, pons)</option>
+                                        <option value="lobar">Lobar</option>
+                                        <option value="cerebellar">Cerebellar</option>
+                                        <option value="brainstem">Brainstem</option>
+                                      </select>
+                                      <label className="flex items-center gap-2">
+                                        <input type="checkbox" checked={!!(telestrokeNote.ichAnticoagResumption || {}).caaFeatures}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, ichAnticoagResumption: {...(telestrokeNote.ichAnticoagResumption || {}), caaFeatures: e.target.checked}})} />
+                                        <span className="text-sm text-red-700">CAA features on MRI (cortical siderosis, multiple lobar microbleeds)</span>
+                                      </label>
+                                      <div className="grid grid-cols-2 gap-2">
+                                        <div>
+                                          <label className="text-xs text-gray-600">CHA2DS2-VASc</label>
+                                          <input type="number" value={(telestrokeNote.ichAnticoagResumption || {}).chadsVascScore || ''}
+                                            onChange={(e) => setTelestrokeNote({...telestrokeNote, ichAnticoagResumption: {...(telestrokeNote.ichAnticoagResumption || {}), chadsVascScore: e.target.value}})}
+                                            className="w-full px-2 py-1 border border-gray-300 rounded text-sm" min="0" max="9" />
+                                        </div>
+                                        <div>
+                                          <label className="text-xs text-gray-600">HAS-BLED</label>
+                                          <input type="number" value={(telestrokeNote.ichAnticoagResumption || {}).hasbledScore || ''}
+                                            onChange={(e) => setTelestrokeNote({...telestrokeNote, ichAnticoagResumption: {...(telestrokeNote.ichAnticoagResumption || {}), hasbledScore: e.target.value}})}
+                                            className="w-full px-2 py-1 border border-gray-300 rounded text-sm" min="0" max="9" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                      <select value={(telestrokeNote.ichAnticoagResumption || {}).decision || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, ichAnticoagResumption: {...(telestrokeNote.ichAnticoagResumption || {}), decision: e.target.value}})}
+                                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                                        <option value="">Decision</option>
+                                        <option value="resume-doac">Resume DOAC (after 4-8 weeks)</option>
+                                        <option value="resume-doac-early">Resume DOAC early (high CHA2DS2-VASc, deep ICH)</option>
+                                        <option value="laao">LAAO (Watchman) referral — high bleed risk</option>
+                                        <option value="no-anticoag">No anticoagulation — high recurrent ICH risk</option>
+                                        <option value="defer">Defer decision — multidisciplinary discussion</option>
+                                      </select>
+                                      <label className="flex items-center gap-2">
+                                        <input type="checkbox" checked={!!(telestrokeNote.ichAnticoagResumption || {}).laaoConsidered}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, ichAnticoagResumption: {...(telestrokeNote.ichAnticoagResumption || {}), laaoConsidered: e.target.checked}})} />
+                                        <span className="text-sm">LAAO evaluation considered</span>
+                                      </label>
+                                      <textarea value={(telestrokeNote.ichAnticoagResumption || {}).rationale || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, ichAnticoagResumption: {...(telestrokeNote.ichAnticoagResumption || {}), rationale: e.target.value}})}
+                                        className="w-full px-2 py-1 border border-gray-300 rounded text-xs" rows="2" placeholder="Rationale for decision..." />
+                                      {(telestrokeNote.ichAnticoagResumption || {}).caaFeatures && (
+                                        <div className="p-1 bg-red-100 rounded text-xs text-red-700">
+                                          CAA + AF: High risk of both recurrent ICH and stroke. LAAO may be preferred. PRESTIGE-AF: DOAC had higher ICH recurrence in CAA patients.
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                  <p className="text-xs text-gray-500 mt-1">PRESTIGE-AF, SoSTART, APACHE-AF: Resuming OAC after ICH may be reasonable in selected patients (Class IIb). Deep ICH with high CHA2DS2-VASc favors resumption. Lobar ICH with CAA features favors LAAO or no anticoagulation.</p>
+                                </div>
+                              )}
                             </div>
                           </details>
                         )}
@@ -10943,12 +12019,22 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                       <p>• Surgery within 48 hours of symptom onset (ideally &lt;24h)</p>
                                       <p>• <strong>Goals-of-care discussion is critical</strong> — discuss functional outcomes</p>
                                     </div>
+                                    <div className="bg-blue-50 border border-blue-200 rounded p-2 mt-2">
+                                      <p className="text-xs font-semibold text-blue-800 mb-1">Cerebellar Infarction / Hemorrhage:</p>
+                                      <div className="text-xs text-blue-700 space-y-0.5">
+                                        <p>• Suboccipital decompressive craniectomy for cerebellar swelling with brainstem compression (Class I, LOE B-NR)</p>
+                                        <p>• EVD for acute obstructive hydrocephalus</p>
+                                        <p>• Imaging: posterior fossa CT/MRI, assess 4th ventricle compression</p>
+                                        <p>• Earlier surgery (&lt;24h) associated with better outcomes</p>
+                                      </div>
+                                    </div>
                                     <select
                                       value={(telestrokeNote.decompressiveCraniectomy || {}).timing || ''}
                                       onChange={(e) => setTelestrokeNote({...telestrokeNote, decompressiveCraniectomy: {...(telestrokeNote.decompressiveCraniectomy || {}), timing: e.target.value}})}
-                                      className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                                      className="w-full px-2 py-1 border border-gray-300 rounded text-sm mt-2">
                                       <option value="">-- Decision --</option>
-                                      <option value="proceeding">Proceeding with craniectomy</option>
+                                      <option value="proceeding-supra">Proceeding — supratentorial craniectomy</option>
+                                      <option value="proceeding-posterior">Proceeding — suboccipital decompression</option>
                                       <option value="monitoring">Close monitoring — may proceed if deterioration</option>
                                       <option value="not-candidate">Not a candidate (age, goals-of-care, timing)</option>
                                     </select>
@@ -11186,15 +12272,74 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   if (st.seizureRisk) note += `- Seizure status: ${st.seizureRisk.replace(/-/g, ' ')}.\n`;
                                 }
 
+                                // Acute Care Protocols
+                                const ht = telestrokeNote.hemorrhagicTransformation || {};
+                                if (ht.detected) {
+                                  note += `\nHEMORRHAGIC TRANSFORMATION:\n`;
+                                  if (ht.classification) note += `- ECASS classification: ${ht.classification}.\n`;
+                                  if (ht.symptomatic) note += `- Symptomatic ICH (sICH).\n`;
+                                  if (ht.antithromboticHeld) note += `- Antithrombotics held.\n`;
+                                  if (ht.reimagingPlanned) note += `- Repeat imaging planned.\n`;
+                                }
+                                const dysph = telestrokeNote.dysphagiaScreening || {};
+                                if (dysph.bedsideScreenPerformed || dysph.npoStatus || dysph.slpConsultOrdered) {
+                                  note += `\nDYSPHAGIA:\n`;
+                                  if (dysph.bedsideScreenPerformed) note += `- Bedside swallow screen: ${dysph.bedsideScreenResult || 'performed'}.\n`;
+                                  if (dysph.npoStatus) note += `- NPO status.\n`;
+                                  if (dysph.slpConsultOrdered) note += `- SLP consult ordered.\n`;
+                                  if (dysph.instrumentalAssessment && dysph.instrumentalAssessment !== 'not-needed') note += `- Instrumental assessment: ${dysph.instrumentalAssessment.toUpperCase()}.\n`;
+                                }
+                                const mob = telestrokeNote.earlyMobilization || {};
+                                if (mob.timingDecision) {
+                                  note += `\nMOBILIZATION: ${mob.timingDecision.replace(/-/g, ' ')}${mob.mobilizationStarted ? ' — initiated' : ''}.\n`;
+                                }
+                                const doac = telestrokeNote.doacTiming || {};
+                                if (doac.strokeSeverity || doac.doacAgent) {
+                                  note += `\nDOAC TIMING:\n`;
+                                  if (doac.strokeSeverity) note += `- Severity: ${doac.strokeSeverity}. Recommended: ${doac.strokeSeverity === 'minor' ? 'within 48h' : doac.strokeSeverity === 'moderate' ? 'Day 3-5' : 'Day 6-14'}.\n`;
+                                  if (doac.doacAgent) note += `- Agent: ${doac.doacAgent.replace(/-/g, ' ')}.\n`;
+                                  if (doac.doacInitiationDay) note += `- Planned initiation: ${doac.doacInitiationDay}.\n`;
+                                  if (doac.hemorrhagicTransformation) note += `- Note: HT present — repeat imaging before DOAC.\n`;
+                                }
+                                const carotid = telestrokeNote.carotidManagement || {};
+                                if (carotid.stenosisDegree) {
+                                  note += `\nCAROTID: ${carotid.stenosisSide || ''} ${carotid.stenosisDegree}% stenosis${carotid.symptomatic ? ' (symptomatic)' : ' (asymptomatic)'}.\n`;
+                                  if (carotid.intervention) note += `- Plan: ${carotid.intervention.replace(/-/g, ' ')}.\n`;
+                                }
+                                const esus = telestrokeNote.esusWorkup || {};
+                                if (esus.cardiacMonitoringType || esus.teePerformed || esus.hypercoagWorkup) {
+                                  note += `\nESUS/CRYPTOGENIC WORKUP:\n`;
+                                  if (esus.cardiacMonitoringType) note += `- Cardiac monitoring: ${esus.cardiacMonitoringType.replace(/-/g, ' ')}.\n`;
+                                  if (esus.teePerformed) note += `- TEE: performed${esus.teeFindings ? ` — ${esus.teeFindings}` : ''}.\n`;
+                                  if (esus.afDetected) note += `- AF DETECTED on monitoring.\n`;
+                                  if (esus.hypercoagWorkup) note += `- Hypercoagulable workup ordered.\n`;
+                                  if (esus.esusAntiplatelet) note += `- Antithrombotic: ${esus.esusAntiplatelet.replace(/-/g, ' ')}.\n`;
+                                }
+                                const ichAc = telestrokeNote.ichAnticoagResumption || {};
+                                if (ichAc.decision) {
+                                  note += `\nICH ANTICOAG RESUMPTION:\n`;
+                                  if (ichAc.ichLocation) note += `- Location: ${ichAc.ichLocation}.\n`;
+                                  if (ichAc.caaFeatures) note += `- CAA features present.\n`;
+                                  note += `- Decision: ${ichAc.decision.replace(/-/g, ' ')}.\n`;
+                                  if (ichAc.rationale) note += `- Rationale: ${ichAc.rationale}.\n`;
+                                  if (ichAc.laaoConsidered) note += `- LAAO evaluation considered.\n`;
+                                }
+
                                 // Secondary Prevention
                                 const sp = telestrokeNote.secondaryPrevention || {};
                                 if (sp.statinDose || sp.antiplateletRegimen || sp.bpTarget) {
                                   note += `\nSECONDARY PREVENTION:\n`;
                                   if (sp.antiplateletRegimen) note += `- Antithrombotic: ${sp.antiplateletRegimen.replace(/-/g, ' ')}.\n`;
-                                  if (sp.statinDose) note += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}.\n`;
-                                  if (sp.bpTarget) note += `- BP target: ${sp.bpTarget}.\n`;
+                                  if (sp.statinDose) note += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}${sp.inclisiranConsidered ? ' + inclisiran' : ''}.\n`;
+                                  if (sp.bpTarget) note += `- BP target: ${sp.bpTarget}${sp.bpIntensiveCandidate ? ' (intensive candidate)' : ''}.\n`;
                                   if (sp.diabetesManagement) note += `- Diabetes: ${sp.diabetesManagement.replace(/-/g, ' ')}.\n`;
+                                  if (sp.glp1ra && sp.glp1ra !== 'not-indicated') note += `- GLP-1 RA: ${sp.glp1ra.replace(/-/g, ' ')}${sp.glp1raIndication ? ` (${sp.glp1raIndication.replace(/-/g, ' ')})` : ''}.\n`;
+                                  if (sp.sglt2i && sp.sglt2i !== 'not-indicated') note += `- SGLT2i: ${sp.sglt2i}${sp.sglt2iIndication ? ` (${sp.sglt2iIndication.replace(/-/g, ' ')})` : ''}.\n`;
+                                  if (sp.colchicineConsidered) note += `- Colchicine 0.5 mg daily${sp.colchicineIndication ? ` — ${sp.colchicineIndication.replace(/-/g, ' ')}` : ''}.\n`;
+                                  if (sp.cyp2c19Tested) note += `- CYP2C19: ${sp.cyp2c19Result ? sp.cyp2c19Result.replace(/-/g, ' ') : 'tested, result pending'}.\n`;
                                   if (sp.smokingStatus) note += `- Smoking: ${sp.smokingStatus}.\n`;
+                                  if (sp.exercisePlan) note += `- Exercise: ${sp.exercisePlan}${sp.exerciseMinPerWeek ? ` (${sp.exerciseMinPerWeek} min/wk)` : ''}.\n`;
+                                  if (sp.dietPlan) note += `- Diet: ${sp.dietPlan}${sp.dietAdherence ? ` — adherence: ${sp.dietAdherence}` : ''}.\n`;
                                   if (sp.followUpTimeline) note += `- Follow-up: ${sp.followUpTimeline}.\n`;
                                 }
 
@@ -12427,6 +13572,73 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li>• Follow-up imaging: CT/CTA at 24h or if neuro change</li>
                                 <li>• Antiplatelet: ASA 325 mg within 24h if no hemorrhagic conversion</li>
                                 <li>• Neuro checks q1h x 24h minimum</li>
+                              </ul>
+                            </div>
+                          </div>
+                          {/* Post-EVT BP Drip Protocol */}
+                          <div className="mt-3 bg-white p-3 rounded border">
+                            <h4 className="font-semibold text-violet-700 mb-2">Post-EVT BP Drip Protocol</h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                              <div>
+                                <p className="font-semibold text-gray-700">Nicardipine (preferred):</p>
+                                <ul className="space-y-0.5 text-xs">
+                                  <li>• Start 5 mg/hr IV</li>
+                                  <li>• Titrate by 2.5 mg/hr q5-15min</li>
+                                  <li>• Max 15 mg/hr</li>
+                                  <li>• Target SBP 140-180 mmHg</li>
+                                </ul>
+                              </div>
+                              <div>
+                                <p className="font-semibold text-gray-700">Clevidipine (alternative):</p>
+                                <ul className="space-y-0.5 text-xs">
+                                  <li>• Start 1-2 mg/hr IV</li>
+                                  <li>• Titrate by doubling q90sec initially</li>
+                                  <li>• Max 32 mg/hr</li>
+                                  <li>• Ultra-short half-life (~1 min)</li>
+                                </ul>
+                              </div>
+                            </div>
+                            <p className="text-xs text-gray-500 mt-1 italic">ENCHANTED2/MT and OPTIMAL-BP: SBP &lt;140 post-EVT worsened outcomes. Maintain 140-180 range for first 24-72h.</p>
+                          </div>
+                        </div>
+
+                        {/* MeVO EVT - Not Recommended */}
+                        <div className="bg-gray-50 border border-gray-300 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-gray-800 mb-3">Medium Vessel Occlusion (MeVO) EVT</h3>
+                          <div className="bg-white p-3 rounded border">
+                            <p className="text-sm text-red-700 font-semibold mb-2">EVT for isolated MeVO (M2/M3) is NOT recommended based on current evidence</p>
+                            <ul className="text-sm space-y-1">
+                              <li>• <strong>ESCAPE-MeVO:</strong> EVT did not improve outcomes vs medical therapy for M2/M3 occlusions</li>
+                              <li>• <strong>DISTAL:</strong> No benefit of EVT for distal occlusions</li>
+                              <li>• <strong>DISCOUNT:</strong> Negative for M2 thrombectomy</li>
+                              <li>• All three trials showed similar functional outcomes with medical management alone</li>
+                              <li>• Consider EVT only in trial setting (e.g., STEP-EVT adaptive platform)</li>
+                            </ul>
+                            <p className="text-xs text-gray-500 mt-2 italic">Note: LVO (ICA-T, M1, basilar) EVT remains Class I. This applies only to isolated medium/distal vessel occlusions.</p>
+                          </div>
+                        </div>
+
+                        {/* ICAD Management */}
+                        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-orange-800 mb-3">Intracranial Atherosclerotic Disease (ICAD)</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-orange-700 mb-2">Symptomatic ICAD (70-99% stenosis)</h4>
+                              <ul className="text-sm space-y-1">
+                                <li>• DAPT x 90 days (ASA + clopidogrel)</li>
+                                <li>• High-intensity statin (LDL &lt;70)</li>
+                                <li>• SBP &lt;140 mmHg</li>
+                                <li>• <strong>NO intracranial stenting</strong> (SAMMPRIS, CASSISS: stenting inferior to medical therapy)</li>
+                                <li className="text-gray-500 italic text-xs mt-1">Class III (Harm) for stenting — SAMMPRIS, CASSISS</li>
+                              </ul>
+                            </div>
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-orange-700 mb-2">Moderate ICAD (50-69%)</h4>
+                              <ul className="text-sm space-y-1">
+                                <li>• Single antiplatelet preferred</li>
+                                <li>• Aggressive risk factor management</li>
+                                <li>• Consider DAPT if recent symptomatic event</li>
+                                <li>• Serial vascular imaging (MRA or CTA q6-12mo)</li>
                               </ul>
                             </div>
                           </div>
@@ -13851,6 +15063,140 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           Open PREVENT Calculator →
                         </a>
                         </div>
+                      </div>
+                    </details>
+
+                    {/* ICH Volume Calculator (ABC/2) */}
+                    <details className="bg-red-50 border border-red-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-red-800 hover:bg-red-100 rounded-lg flex items-center justify-between">
+                        <span>ICH Volume Calculator (ABC/2 Method)</span>
+                      </summary>
+                      <div className="p-4">
+                        <div className="grid grid-cols-3 gap-3 mb-3">
+                          <div>
+                            <label className="text-xs text-gray-600">A: Largest diameter (cm)</label>
+                            <input type="number" step="0.1" value={(telestrokeNote.ichVolumeCalc || {}).lengthCm || ''}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, ichVolumeCalc: {...(telestrokeNote.ichVolumeCalc || {}), lengthCm: e.target.value}})}
+                              className="w-full px-2 py-1 border border-gray-300 rounded text-sm" placeholder="cm" />
+                          </div>
+                          <div>
+                            <label className="text-xs text-gray-600">B: Perpendicular diameter (cm)</label>
+                            <input type="number" step="0.1" value={(telestrokeNote.ichVolumeCalc || {}).widthCm || ''}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, ichVolumeCalc: {...(telestrokeNote.ichVolumeCalc || {}), widthCm: e.target.value}})}
+                              className="w-full px-2 py-1 border border-gray-300 rounded text-sm" placeholder="cm" />
+                          </div>
+                          <div>
+                            <label className="text-xs text-gray-600">C: Slices x thickness (cm)</label>
+                            <input type="number" step="0.1" value={(telestrokeNote.ichVolumeCalc || {}).slicesCm || ''}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, ichVolumeCalc: {...(telestrokeNote.ichVolumeCalc || {}), slicesCm: e.target.value}})}
+                              className="w-full px-2 py-1 border border-gray-300 rounded text-sm" placeholder="cm" />
+                          </div>
+                        </div>
+                        {(() => {
+                          const result = calculateICHVolume(telestrokeNote.ichVolumeCalc || {});
+                          if (!result.volume) return null;
+                          return (
+                            <div className={`p-3 rounded-lg border ${result.isLarge ? 'bg-red-100 border-red-300' : 'bg-green-100 border-green-300'}`}>
+                              <p className="text-lg font-bold">Volume: {result.volume} mL</p>
+                              <p className="text-sm text-gray-700">
+                                {result.volume >= 60 ? 'Very large hematoma — poor prognosis, consider GOC discussion' :
+                                 result.volume >= 30 ? 'Large hematoma (30-80 mL) — may qualify for ENRICH MIE' :
+                                 result.volume >= 20 ? 'Moderate hematoma — monitor for expansion' :
+                                 'Small hematoma'}
+                              </p>
+                              <button onClick={() => copyToClipboard(`ICH Volume (ABC/2): ${result.volume} mL`, 'ICH Volume')}
+                                className="mt-1 px-2 py-1 bg-gray-200 rounded text-xs hover:bg-gray-300">Copy</button>
+                            </div>
+                          );
+                        })()}
+                        <p className="text-xs text-gray-500 mt-2">ABC/2 method: A = largest diameter, B = perpendicular diameter on same slice, C = number of slices with ICH x slice thickness.</p>
+                      </div>
+                    </details>
+
+                    {/* Andexanet Alfa Dosing Calculator */}
+                    <details className="bg-purple-50 border border-purple-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-purple-800 hover:bg-purple-100 rounded-lg flex items-center justify-between">
+                        <span>Andexanet Alfa (Andexxa) Dosing</span>
+                      </summary>
+                      <div className="p-4">
+                        <div className="grid grid-cols-2 gap-3 mb-3">
+                          <div>
+                            <label className="text-xs text-gray-600">DOAC Type</label>
+                            <select value={(telestrokeNote.andexanetCalc || {}).doacType || ''}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, andexanetCalc: {...(telestrokeNote.andexanetCalc || {}), doacType: e.target.value}})}
+                              className="w-full px-2 py-1 border border-gray-300 rounded text-sm">
+                              <option value="">Select DOAC</option>
+                              <option value="apixaban">Apixaban (Eliquis)</option>
+                              <option value="rivaroxaban">Rivaroxaban (Xarelto)</option>
+                              <option value="other">Other (not indicated for andexanet)</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="text-xs text-gray-600">Hours since last DOAC dose</label>
+                            <input type="number" step="0.5" value={(telestrokeNote.andexanetCalc || {}).lastDoseHours || ''}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, andexanetCalc: {...(telestrokeNote.andexanetCalc || {}), lastDoseHours: e.target.value}})}
+                              className="w-full px-2 py-1 border border-gray-300 rounded text-sm" placeholder="hours" />
+                          </div>
+                        </div>
+                        {(() => {
+                          const result = calculateAndexanetDose(
+                            (telestrokeNote.andexanetCalc || {}).doacType,
+                            (telestrokeNote.andexanetCalc || {}).lastDoseHours
+                          );
+                          if (result.regimen === 'N/A') return (
+                            <p className="text-sm text-gray-500">Select apixaban or rivaroxaban. Andexanet not indicated for dabigatran (use idarucizumab) or edoxaban.</p>
+                          );
+                          return (
+                            <div className={`p-3 rounded-lg border ${result.regimen === 'high-dose' ? 'bg-red-100 border-red-300' : 'bg-green-100 border-green-300'}`}>
+                              <p className="text-sm font-bold uppercase">{result.regimen} regimen</p>
+                              <p className="text-sm">Bolus: {result.bolus}</p>
+                              <p className="text-sm">Infusion: {result.infusion}</p>
+                              <p className="text-sm font-semibold">Total: {result.total}</p>
+                              <button onClick={() => copyToClipboard(`Andexanet ${result.regimen}: Bolus ${result.bolus}, Infusion ${result.infusion}, Total ${result.total}`, 'Andexanet Dose')}
+                                className="mt-1 px-2 py-1 bg-gray-200 rounded text-xs hover:bg-gray-300">Copy</button>
+                            </div>
+                          );
+                        })()}
+                        <p className="text-xs text-gray-500 mt-2">ANNEXA-4 trial. Low-dose if last DOAC &ge;8h ago (or apixaban &le;5mg). High-dose if last dose &lt;8h ago (or rivaroxaban &gt;10mg, apixaban &gt;5mg). Monitor for thrombotic events post-reversal.</p>
+                      </div>
+                    </details>
+
+                    {/* Weight-Based Enoxaparin Dosing */}
+                    <details className="bg-teal-50 border border-teal-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-teal-800 hover:bg-teal-100 rounded-lg flex items-center justify-between">
+                        <span>Enoxaparin Weight-Based Dosing</span>
+                      </summary>
+                      <div className="p-4">
+                        <div className="grid grid-cols-2 gap-3 mb-3">
+                          <div>
+                            <label className="text-xs text-gray-600">Weight (kg)</label>
+                            <input type="number" value={(telestrokeNote.enoxCalc || {}).weightKg || telestrokeNote.weight || ''}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, enoxCalc: {...(telestrokeNote.enoxCalc || {}), weightKg: e.target.value}})}
+                              className="w-full px-2 py-1 border border-gray-300 rounded text-sm" placeholder="kg" />
+                          </div>
+                          <div>
+                            <label className="text-xs text-gray-600">CrCl (mL/min)</label>
+                            <input type="number" value={(telestrokeNote.enoxCalc || {}).crCl || ''}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, enoxCalc: {...(telestrokeNote.enoxCalc || {}), crCl: e.target.value}})}
+                              className="w-full px-2 py-1 border border-gray-300 rounded text-sm" placeholder="mL/min" />
+                          </div>
+                        </div>
+                        {(() => {
+                          const result = calculateEnoxaparinDose(
+                            (telestrokeNote.enoxCalc || {}).weightKg || telestrokeNote.weight,
+                            (telestrokeNote.enoxCalc || {}).crCl
+                          );
+                          if (!result) return null;
+                          return (
+                            <div className={`p-3 rounded-lg border ${result.isRenalAdjusted ? 'bg-amber-100 border-amber-300' : 'bg-green-100 border-green-300'}`}>
+                              <p className="text-sm font-bold">{result.note}</p>
+                              {result.isRenalAdjusted && <p className="text-xs text-amber-700">Renal dose adjustment applied (CrCl &lt;30 mL/min)</p>}
+                              <button onClick={() => copyToClipboard(result.note, 'Enoxaparin Dose')}
+                                className="mt-1 px-2 py-1 bg-gray-200 rounded text-xs hover:bg-gray-300">Copy</button>
+                            </div>
+                          );
+                        })()}
+                        <p className="text-xs text-gray-500 mt-2">Treatment dose: 1 mg/kg SC BID. CrCl &lt;30: 1 mg/kg SC daily. For DVT prophylaxis: 40 mg SC daily (30 mg if CrCl &lt;30). Check anti-Xa levels for extremes of weight.</p>
                       </div>
                     </details>
 
