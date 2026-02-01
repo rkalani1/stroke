@@ -629,6 +629,7 @@ Clinician Name`;
             sex: 'M',
             affectedSide: '',
             weight: '',
+            weightEstimated: false,
             height: '',
             lastDOACDose: new Date().toISOString().slice(0, 16),
             lastDOACType: '',
@@ -7519,7 +7520,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               <div className="mb-4 sm:mb-6 app-header" role="banner">
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
                   <div className="flex-1 w-full sm:w-auto">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-1 text-center sm:text-left">
+                    <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-900 to-indigo-800 bg-clip-text text-transparent mb-1 text-center sm:text-left">
                       Stroke
                     </h1>
                     {topLinks.length > 0 && (
@@ -7947,7 +7948,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
               {/* Navigation Tabs - Desktop Only - 3 Tabs */}
               <div className="mb-4 sm:mb-6 hidden md:block app-nav" role="navigation" aria-label="Main navigation">
-                <nav className="flex flex-wrap justify-center gap-2 md:justify-around md:gap-0" role="tablist">
+                <nav className="flex flex-wrap justify-center gap-2 md:justify-around md:gap-0 shadow-sm rounded-xl bg-white/80 backdrop-blur-sm p-1" role="tablist">
                   {[
                     { id: 'encounter', name: '⚡ Encounter', icon: 'activity' },
                     { id: 'management', name: 'Management', icon: 'layers' },
@@ -8608,6 +8609,12 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, weight: e.target.value})}
                                 className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
                               />
+                              <label className="flex items-center gap-1.5 mt-1 cursor-pointer">
+                                <input type="checkbox" checked={!!telestrokeNote.weightEstimated}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, weightEstimated: e.target.checked})}
+                                  className="w-3.5 h-3.5" />
+                                <span className={'text-xs ' + (telestrokeNote.weightEstimated ? 'text-amber-700 font-semibold' : 'text-gray-500')}>Estimated</span>
+                              </label>
                             </div>
                             <div>
                               <label className="block text-xs font-medium text-gray-600 mb-1">Cr (mg/dL)</label>
@@ -9048,13 +9055,13 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               type="button"
                               onClick={() => {
                                 const recs = getContextualRecommendations();
-                                const age = telestrokeNote.age || '[Age]';
-                                const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '[sex]';
+                                const age = telestrokeNote.age || '***';
+                                const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***';
                                 const dx = telestrokeNote.diagnosis || '[Diagnosis]';
                                 let note = `TELEPHONE CONSULTATION NOTE\nDate: ${new Date().toLocaleDateString()}\n\n`;
                                 note += `HPI: ${age} year old ${sex}`;
                                 if (telestrokeNote.pmh) note += ` with PMH of ${telestrokeNote.pmh}`;
-                                note += ` presenting with ${telestrokeNote.symptoms || '[symptoms]'}.\n`;
+                                note += ` presenting with ${telestrokeNote.symptoms || '***'}.\n`;
                                 if (lkwTime) note += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
                                 note += `\nNIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n`;
                                 if (telestrokeNote.presentingBP) note += `BP: ${telestrokeNote.presentingBP}\n`;
@@ -9066,6 +9073,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 note += `\nASSESSMENT: ${dx}\n\nPLAN:\n`;
                                 if (telestrokeNote.tnkRecommended) {
                                   note += `- TNK 0.25 mg/kg IV bolus (max 25 mg) recommended`;
+                                  if (telestrokeNote.weight) note += ` (weight: ${telestrokeNote.weight} kg${telestrokeNote.weightEstimated ? ' — ESTIMATED' : ''})`;
                                   if (telestrokeNote.tnkAdminTime) note += ` at ${telestrokeNote.tnkAdminTime}`;
                                   note += `.\n`;
                                 } else { note += `- IV TNK: Not recommended.\n`; }
@@ -9119,11 +9127,11 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <span className="font-semibold text-indigo-800 text-sm">Pulsara Summary</span>
                               <button
                                 onClick={() => {
-                                  const age = telestrokeNote.age || "[Age]";
+                                  const age = telestrokeNote.age || "***";
                                   const sexRaw = telestrokeNote.sex;
-                                  const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '[sex]';
+                                  const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '***';
                                   const pmh = telestrokeNote.pmh || "no PMH";
-                                  const symptoms = telestrokeNote.symptoms || "[symptoms]";
+                                  const symptoms = telestrokeNote.symptoms || "***";
                                   const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
                                   const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
                                   const nihss = telestrokeNote.nihss || nihssScore || "[score]";
@@ -9149,11 +9157,11 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                             <p className="text-xs text-gray-600 whitespace-pre-wrap">
                               {(() => {
-                                const age = telestrokeNote.age || "[Age]";
+                                const age = telestrokeNote.age || "***";
                                 const sexRaw = telestrokeNote.sex;
-                                const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '[sex]';
+                                const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '***';
                                 const pmh = telestrokeNote.pmh || "no PMH";
-                                const symptoms = telestrokeNote.symptoms || "[symptoms]";
+                                const symptoms = telestrokeNote.symptoms || "***";
                                 const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
                                 const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
                                 const nihss = telestrokeNote.nihss || nihssScore || "[score]";
@@ -9208,6 +9216,56 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <i data-lucide="copy" className="w-4 h-4"></i>
                             {copiedText === 'telephone-note' ? 'Copied!' : 'Copy Full Telephone Note'}
                           </button>
+
+                          {/* Modular Copy: HPI / Exam-NIHSS / MDM-Plan */}
+                          <div className="grid grid-cols-3 gap-2">
+                            <button
+                              onClick={() => {
+                                const age = telestrokeNote.age || '***';
+                                const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***';
+                                let hpi = `HPI: ${age} year old ${sex}`;
+                                if (telestrokeNote.pmh) hpi += ` with PMH of ${telestrokeNote.pmh}`;
+                                hpi += ` presenting with ${telestrokeNote.symptoms || '***'}.\n`;
+                                if (lkwTime) hpi += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
+                                if (telestrokeNote.medications) hpi += `Medications: ${telestrokeNote.medications}\n`;
+                                if (telestrokeNote.lastDOACType) hpi += `Anticoag: ${telestrokeNote.lastDOACType}${telestrokeNote.lastDOACDose ? `, last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()}` : ''}\n`;
+                                navigator.clipboard.writeText(hpi);
+                                setCopiedText('tel-hpi'); setTimeout(() => setCopiedText(''), 2000);
+                              }}
+                              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-hpi' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                            >
+                              <i data-lucide={copiedText === 'tel-hpi' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                              HPI Data
+                            </button>
+                            <button
+                              onClick={() => {
+                                let exam = `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
+                                if (telestrokeNote.nihssDetails) exam += ` (${telestrokeNote.nihssDetails})`;
+                                exam += `\nBP: ${telestrokeNote.presentingBP || 'N/A'}, Glucose: ${telestrokeNote.glucose || 'N/A'}, INR: ${telestrokeNote.inr || 'N/A'}, Plt: ${telestrokeNote.platelets || 'N/A'}`;
+                                navigator.clipboard.writeText(exam);
+                                setCopiedText('tel-exam'); setTimeout(() => setCopiedText(''), 2000);
+                              }}
+                              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-exam' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                            >
+                              <i data-lucide={copiedText === 'tel-exam' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                              Exam / NIHSS
+                            </button>
+                            <button
+                              onClick={() => {
+                                let mdm = `ASSESSMENT: ${telestrokeNote.diagnosis || '***'}\n\nPLAN:\n`;
+                                mdm += `TNK: ${telestrokeNote.tnkRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
+                                mdm += `EVT: ${telestrokeNote.evtRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
+                                if (telestrokeNote.rationale) mdm += `Rationale: ${telestrokeNote.rationale}\n`;
+                                if (telestrokeNote.disposition) mdm += `Disposition: ${telestrokeNote.disposition}\n`;
+                                navigator.clipboard.writeText(mdm);
+                                setCopiedText('tel-mdm'); setTimeout(() => setCopiedText(''), 2000);
+                              }}
+                              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-mdm' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                            >
+                              <i data-lucide={copiedText === 'tel-mdm' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                              MDM / Plan
+                            </button>
+                          </div>
                         </div>
                       </div>
                     )}
@@ -9224,7 +9282,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       <div className={`lg:col-span-2 space-y-4`}>
 
                         {/* Section 1: Patient Info */}
-                        <div id="patient-info-section" className="bg-white border-2 border-blue-300 rounded-lg p-4 shadow-md">
+                        <div id="patient-info-section" className="bg-white border-2 border-blue-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-blue-900">1. Patient Info</h3>
                             <i data-lucide="user" className="w-5 h-5 text-blue-600"></i>
@@ -9267,6 +9325,12 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 />
                                 <span className="ml-1 text-xs text-gray-500">kg</span>
                               </div>
+                              <label className="flex items-center gap-1.5 mt-1 cursor-pointer">
+                                <input type="checkbox" checked={!!telestrokeNote.weightEstimated}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, weightEstimated: e.target.checked})}
+                                  className="w-3.5 h-3.5" />
+                                <span className={'text-xs ' + (telestrokeNote.weightEstimated ? 'text-amber-700 font-semibold' : 'text-gray-500')}>Estimated weight</span>
+                              </label>
                             </div>
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -9312,7 +9376,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         {/* Section 2: History & Medications */}
-                        <div className="bg-white border-2 border-purple-300 rounded-lg p-4 shadow-md">
+                        <div className="bg-white border-2 border-purple-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-purple-900">2. History & Medications</h3>
                             <i data-lucide="file-text" className="w-5 h-5 text-purple-600"></i>
@@ -9470,7 +9534,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         {/* Section 3: NIHSS Examination */}
-                        <div className="bg-white border-2 border-red-300 rounded-lg p-4 shadow-md">
+                        <div className="bg-white border-2 border-red-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-red-900">3. NIHSS Examination</h3>
                             <div className="flex items-center gap-2">
@@ -9539,18 +9603,40 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             )}
                           </div>
 
-                          {/* Full NIHSS Calculator (Collapsible) */}
+                          {/* Full NIHSS Calculator (Collapsible) with keyboard auto-advance */}
                           <details className="bg-gray-50 border border-gray-200 rounded-lg">
                             <summary className="cursor-pointer p-3 font-semibold text-gray-800 hover:bg-gray-100 rounded-lg">
                               📊 Full NIHSS Calculator (Click to expand)
                             </summary>
                             <div className="p-4 space-y-3">
-                              {nihssItems.map((item) => (
-                                <div key={item.id} className="bg-white p-3 rounded border">
-                                  <h4 className="font-semibold text-sm mb-2">{item.name}</h4>
+                              <p className="text-xs text-gray-500 italic">Tip: Press number keys (0-4) to select score for focused item. Auto-advances to next item.</p>
+                              {nihssItems.map((item, itemIndex) => (
+                                <div key={item.id} id={`nihss-item-${itemIndex}`} className={`bg-white p-3 rounded border transition-all ${patientData[item.id] ? 'border-green-300 bg-green-50/30' : ''}`}
+                                  tabIndex={0}
+                                  onKeyDown={(e) => {
+                                    const key = parseInt(e.key);
+                                    if (!isNaN(key) && key >= 0 && key < item.options.length) {
+                                      e.preventDefault();
+                                      const option = item.options[key];
+                                      const newData = { ...patientData, [item.id]: option };
+                                      setPatientData(newData);
+                                      const newScore = calculateNIHSS(newData);
+                                      setNihssScore(newScore);
+                                      setTelestrokeNote({...telestrokeNote, nihss: newScore.toString()});
+                                      // Auto-advance to next item
+                                      if (itemIndex < nihssItems.length - 1) {
+                                        setTimeout(() => {
+                                          const next = document.getElementById(`nihss-item-${itemIndex + 1}`);
+                                          if (next) { next.scrollIntoView({ behavior: 'smooth', block: 'center' }); next.focus(); }
+                                        }, 150);
+                                      }
+                                    }
+                                  }}
+                                >
+                                  <h4 className="font-semibold text-sm mb-2">{item.name} {patientData[item.id] && <span className="text-green-600 font-normal ml-1">({patientData[item.id].match(/\((\d+)\)/)?.[1] || '?'})</span>}</h4>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                     {item.options.map((option, optionIndex) => (
-                                      <label key={optionIndex} className="flex items-center space-x-2 cursor-pointer text-sm">
+                                      <label key={optionIndex} className={`flex items-center space-x-2 cursor-pointer text-sm min-h-[36px] px-2 py-1 rounded transition-colors ${patientData[item.id] === option ? 'bg-blue-100 font-medium' : 'hover:bg-gray-50'}`}>
                                         <input
                                           type="radio"
                                           name={item.id}
@@ -9562,10 +9648,17 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                             const newScore = calculateNIHSS(newData);
                                             setNihssScore(newScore);
                                             setTelestrokeNote({...telestrokeNote, nihss: newScore.toString()});
+                                            // Auto-advance on click too
+                                            if (itemIndex < nihssItems.length - 1) {
+                                              setTimeout(() => {
+                                                const next = document.getElementById(`nihss-item-${itemIndex + 1}`);
+                                                if (next) { next.scrollIntoView({ behavior: 'smooth', block: 'center' }); next.focus(); }
+                                              }, 150);
+                                            }
                                           }}
                                           className="text-blue-600"
                                         />
-                                        <span>{option}</span>
+                                        <span><span className="text-gray-400 mr-1">[{optionIndex}]</span>{option}</span>
                                       </label>
                                     ))}
                                   </div>
@@ -9576,7 +9669,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         {/* Section 4: Vitals & Labs */}
-                        <div className="bg-white border-2 border-green-300 rounded-lg p-4 shadow-md">
+                        <div className="bg-white border-2 border-green-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-green-900">4. Vitals & Labs</h3>
                             <i data-lucide="activity" className="w-5 h-5 text-green-600"></i>
@@ -9883,7 +9976,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         {/* Section 5: Imaging Review */}
-                        <div className="bg-white border-2 border-indigo-300 rounded-lg p-4 shadow-md">
+                        <div className="bg-white border-2 border-indigo-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-indigo-900">5. Imaging Review</h3>
                             <i data-lucide="image" className="w-5 h-5 text-indigo-600"></i>
@@ -10112,7 +10205,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         {/* Section 6: Treatment Decision */}
-                        <div id="treatment-decision" ref={treatmentDecisionRef} className="bg-white border-2 border-orange-300 rounded-lg p-4 shadow-md">
+                        <div id="treatment-decision" ref={treatmentDecisionRef} className="bg-white border-2 border-orange-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-orange-900">6. Treatment Decision</h3>
                             <i data-lucide="zap" className="w-5 h-5 text-orange-600"></i>
@@ -10391,6 +10484,41 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   <strong>Dx:</strong> {telestrokeNote.diagnosis}
                                 </div>
                               )}
+
+                              {/* Discordance Flags */}
+                              {(() => {
+                                const flags = [];
+                                const nihss = parseInt(telestrokeNote.nihss) || nihssScore || 0;
+                                const hasLVO = (telestrokeNote.vesselOcclusion || []).some(v =>
+                                  /ICA|M1|basilar/i.test(v)
+                                );
+                                const dx = (telestrokeNote.diagnosis || '').toLowerCase();
+                                const isTIA = dx.includes('tia') || dx.includes('transient');
+                                const timeFrom = calculateTimeFromLKW();
+
+                                if (nihss === 0 && hasLVO) {
+                                  flags.push({ key: 'nihss-lvo', color: 'red', text: 'NIHSS 0 with LVO — confirm occlusion status or consider rapidly improving symptoms' });
+                                }
+                                if (nihss >= 4 && isTIA) {
+                                  flags.push({ key: 'nihss-tia', color: 'amber', text: `NIHSS ${nihss} with TIA diagnosis — consider reclassifying as acute ischemic stroke if deficits persist` });
+                                }
+                                if (timeFrom && timeFrom.total > 24 && telestrokeNote.wakeUpStrokeWorkflow && telestrokeNote.wakeUpStrokeWorkflow.mriAvailable !== undefined) {
+                                  flags.push({ key: 'lkw-wakeup', color: 'amber', text: 'LKW >24h with wake-up stroke evaluation — verify onset window estimate for treatment eligibility' });
+                                }
+
+                                return flags.length > 0 ? (
+                                  <div className="space-y-1 mt-2">
+                                    {flags.map(f => (
+                                      <div key={f.key} className={`flex items-start gap-2 px-3 py-2 rounded-lg text-sm font-medium ${
+                                        f.color === 'red' ? 'bg-red-50 text-red-800 border border-red-300' : 'bg-amber-50 text-amber-800 border border-amber-300'
+                                      }`}>
+                                        <i data-lucide="alert-triangle" className="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                                        <span>{f.text}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                ) : null;
+                              })()}
 
                               {/* Active Trials List - Show for Ischemic or ICH */}
                               {showAdvanced && telestrokeNote.diagnosisCategory === 'ischemic' && (
@@ -14089,7 +14217,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* Section 7: Recommendations */}
-                        <div id="recommendations-section" className="bg-white border-2 border-teal-300 rounded-lg p-4 shadow-md">
+                        <div id="recommendations-section" className="bg-white border-2 border-teal-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-teal-900">7. Recommendations</h3>
                             <i data-lucide="clipboard-check" className="w-5 h-5 text-teal-600"></i>
@@ -14102,8 +14230,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               onClick={() => {
                                 const recs = getContextualRecommendations();
                                 const pathwayType = getPathwayForDiagnosis(telestrokeNote.diagnosis);
-                                const age = telestrokeNote.age || '[Age]';
-                                const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '[sex]';
+                                const age = telestrokeNote.age || '***';
+                                const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***';
                                 const dx = telestrokeNote.diagnosis || '[Diagnosis]';
                                 const nihss = telestrokeNote.nihss || nihssScore || '';
                                 const bp = telestrokeNote.presentingBP || '';
@@ -14119,7 +14247,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 // HPI
                                 note += `HPI: ${age} year old ${sex}`;
                                 if (telestrokeNote.pmh) note += ` with PMH of ${telestrokeNote.pmh}`;
-                                note += ` presenting with ${telestrokeNote.symptoms || '[symptoms]'}.\n`;
+                                note += ` presenting with ${telestrokeNote.symptoms || '***'}.\n`;
                                 if (lkwTime) {
                                   note += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
                                 }
@@ -14149,6 +14277,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   note += `PLAN:\n`;
                                   if (telestrokeNote.tnkRecommended) {
                                     note += `- TNK 0.25 mg/kg IV bolus (max 25 mg) recommended and administered`;
+                                    if (telestrokeNote.weight) note += ` (weight: ${telestrokeNote.weight} kg${telestrokeNote.weightEstimated ? ' — ESTIMATED' : ''})`;
+
                                     if (telestrokeNote.tnkAdminTime) note += ` at ${telestrokeNote.tnkAdminTime}`;
                                     note += `.\n`;
                                   } else {
@@ -14554,11 +14684,11 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <span className="font-semibold text-indigo-800 text-sm">Pulsara Summary</span>
                             <button
                               onClick={() => {
-                                const age = telestrokeNote.age || "[Age]";
+                                const age = telestrokeNote.age || "***";
                                 const sexRaw = telestrokeNote.sex;
-                                const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '[sex]';
+                                const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '***';
                                 const pmh = telestrokeNote.pmh || "no PMH";
-                                const symptoms = telestrokeNote.symptoms || "[symptoms]";
+                                const symptoms = telestrokeNote.symptoms || "***";
                                 const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
                                 const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
                                 const nihss = telestrokeNote.nihss || nihssScore || "[score]";
@@ -14584,11 +14714,11 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                           <p className="text-xs text-gray-600 whitespace-pre-wrap">
                             {(() => {
-                              const age = telestrokeNote.age || "[Age]";
+                              const age = telestrokeNote.age || "***";
                               const sexRaw = telestrokeNote.sex;
-                              const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '[sex]';
+                              const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '***';
                               const pmh = telestrokeNote.pmh || "no PMH";
-                              const symptoms = telestrokeNote.symptoms || "[symptoms]";
+                              const symptoms = telestrokeNote.symptoms || "***";
                               const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
                               const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
                               const nihss = telestrokeNote.nihss || nihssScore || "[score]";
@@ -14744,11 +14874,64 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 className="flex items-center gap-2 px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors"
                               >
                                 <i data-lucide={copiedText === 'encounter-note' ? 'check' : 'copy'} className="w-4 h-4"></i>
-                                {copiedText === 'encounter-note' ? 'Copied!' : 'Copy Note'}
+                                {copiedText === 'encounter-note' ? 'Copied!' : 'Copy Full Note'}
                               </button>
                             </div>
                           </div>
 
+                          {/* Modular Copy: HPI / Exam-NIHSS / MDM-Plan */}
+                          <div className="grid grid-cols-3 gap-2 mb-3">
+                            <button
+                              onClick={() => {
+                                const age = telestrokeNote.age || '***';
+                                const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***';
+                                let hpi = `HPI: ${age} year old ${sex}`;
+                                if (telestrokeNote.pmh) hpi += ` with PMH of ${telestrokeNote.pmh}`;
+                                hpi += ` presenting with ${telestrokeNote.symptoms || '***'}.\n`;
+                                if (lkwTime) hpi += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
+                                if (telestrokeNote.medications) hpi += `Medications: ${telestrokeNote.medications}\n`;
+                                if (telestrokeNote.lastDOACType) hpi += `Anticoag: ${telestrokeNote.lastDOACType}${telestrokeNote.lastDOACDose ? `, last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()}` : ''}\n`;
+                                navigator.clipboard.writeText(hpi);
+                                setCopiedText('vid-hpi'); setTimeout(() => setCopiedText(''), 2000);
+                              }}
+                              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-hpi' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                            >
+                              <i data-lucide={copiedText === 'vid-hpi' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                              HPI Data
+                            </button>
+                            <button
+                              onClick={() => {
+                                let exam = `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
+                                if (telestrokeNote.nihssDetails) exam += ` (${telestrokeNote.nihssDetails})`;
+                                exam += `\n\nVITALS:\nBP: ${telestrokeNote.presentingBP || 'N/A'}\nGlucose: ${telestrokeNote.glucose || 'N/A'}\nINR: ${telestrokeNote.inr || 'N/A'}\nPlt: ${telestrokeNote.platelets || 'N/A'}`;
+                                exam += `\n\nIMAGING:\nCT Head: ${telestrokeNote.ctResults || 'N/A'}\nCTA: ${telestrokeNote.ctaResults || 'N/A'}`;
+                                if (telestrokeNote.ctpResults) exam += `\nCTP: ${telestrokeNote.ctpResults}`;
+                                if (aspectsScore) exam += `\nASPECTS: ${aspectsScore}`;
+                                navigator.clipboard.writeText(exam);
+                                setCopiedText('vid-exam'); setTimeout(() => setCopiedText(''), 2000);
+                              }}
+                              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-exam' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                            >
+                              <i data-lucide={copiedText === 'vid-exam' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                              Exam / NIHSS
+                            </button>
+                            <button
+                              onClick={() => {
+                                let mdm = `ASSESSMENT: ${telestrokeNote.diagnosis || '***'}\n\nPLAN:\n`;
+                                mdm += `TNK: ${telestrokeNote.tnkRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
+                                mdm += `EVT: ${telestrokeNote.evtRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
+                                if (telestrokeNote.rationale) mdm += `Rationale: ${telestrokeNote.rationale}\n`;
+                                if (telestrokeNote.disposition) mdm += `Disposition: ${telestrokeNote.disposition}\n`;
+                                if (telestrokeNote.recommendationsText) mdm += `\n${telestrokeNote.recommendationsText}`;
+                                navigator.clipboard.writeText(mdm);
+                                setCopiedText('vid-mdm'); setTimeout(() => setCopiedText(''), 2000);
+                              }}
+                              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-mdm' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                            >
+                              <i data-lucide={copiedText === 'vid-mdm' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                              MDM / Plan
+                            </button>
+                          </div>
 
                           <div className="bg-white p-3 rounded border border-gray-200 max-h-96 overflow-y-auto">
                             <pre className="whitespace-pre-wrap text-xs text-gray-800 font-mono">
@@ -15268,6 +15451,27 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                 {/* Management Combined Tab (Ischemic, ICH, Calculators, References) */}
                 {activeTab === 'management' && (
                   <div className="space-y-6">
+                    {/* Contextual guidance based on diagnosis */}
+                    {!telestrokeNote.diagnosisCategory && (
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 flex items-start gap-3">
+                        <i data-lucide="info" className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0"></i>
+                        <div className="text-sm text-blue-800">
+                          <strong>No diagnosis set.</strong> Set a working diagnosis on the Encounter tab to activate pathway-specific management recommendations and auto-populate relevant protocols.
+                        </div>
+                      </div>
+                    )}
+                    {telestrokeNote.diagnosisCategory === 'ischemic' && managementSubTab === 'ich' && (
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 text-sm text-blue-800 flex items-center gap-2">
+                        <i data-lucide="arrow-right" className="w-4 h-4"></i>
+                        Current diagnosis is <strong>ischemic stroke</strong> — the <button onClick={() => setManagementSubTab('ischemic')} className="underline font-semibold hover:text-blue-900">Ischemic Stroke</button> tab may be more relevant.
+                      </div>
+                    )}
+                    {telestrokeNote.diagnosisCategory === 'ich' && managementSubTab === 'ischemic' && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-2 text-sm text-red-800 flex items-center gap-2">
+                        <i data-lucide="arrow-right" className="w-4 h-4"></i>
+                        Current diagnosis is <strong>ICH</strong> — the <button onClick={() => setManagementSubTab('ich')} className="underline font-semibold hover:text-red-900">ICH Management</button> tab may be more relevant.
+                      </div>
+                    )}
                     <div className="bg-white border border-gray-200 rounded-xl p-2 flex flex-wrap gap-2">
                       {[
                         { id: 'ich', label: 'ICH', icon: 'alert-triangle' },
@@ -17297,6 +17501,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     <details className="bg-indigo-50 border border-indigo-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-indigo-800 hover:bg-indigo-100 rounded-lg flex items-center justify-between">
                         <span>Creatinine Clearance (Cockcroft-Gault)</span>
+                        {(telestrokeNote.age && telestrokeNote.weight && telestrokeNote.creatinine && !(telestrokeNote.crclCalc || {}).age) && (
+                          <span className="text-xs bg-indigo-200 text-indigo-800 px-2 py-0.5 rounded-full font-normal">Auto-filled from patient data</span>
+                        )}
                       </summary>
                       <div className="p-4">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
@@ -17378,6 +17585,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     <details className="bg-teal-50 border border-teal-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-teal-800 hover:bg-teal-100 rounded-lg flex items-center justify-between">
                         <span>Enoxaparin Weight-Based Dosing</span>
+                        {(telestrokeNote.weight && !(telestrokeNote.enoxCalc || {}).weightKg) && (
+                          <span className="text-xs bg-teal-200 text-teal-800 px-2 py-0.5 rounded-full font-normal">Auto-filled from patient data</span>
+                        )}
                       </summary>
                       <div className="p-4">
                         <div className="grid grid-cols-2 gap-3 mb-3">
