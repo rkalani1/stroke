@@ -761,7 +761,38 @@ Clinician Name`;
             // Phase 2: Guided Clinical Pathway fields
             ichBPManaged: false,
             ichReversalOrdered: false,
-            ichNeurosurgeryConsulted: false
+            ichNeurosurgeryConsulted: false,
+            // Phase 4: SAH fields
+            sahGrade: '',
+            sahGradeScale: '',
+            sahBPManaged: false,
+            sahNimodipine: false,
+            sahEVDPlaced: false,
+            sahAneurysmSecured: false,
+            sahNeurosurgeryConsulted: false,
+            sahSeizureProphylaxis: false,
+            // Phase 4: CVT fields
+            cvtAnticoagStarted: false,
+            cvtAnticoagType: '',
+            cvtIcpManaged: false,
+            cvtSeizureManaged: false,
+            cvtHematologyConsulted: false,
+            // Phase 4: Discharge Checklist
+            dischargeChecklist: {
+              antiplateletOrAnticoag: false,
+              statinPrescribed: false,
+              bpMedOptimized: false,
+              diabetesManaged: false,
+              smokingCessation: false,
+              dietCounseling: false,
+              exerciseCounseling: false,
+              followUpNeurology: false,
+              followUpPCP: false,
+              rehabilitationOrdered: false,
+              patientEducation: false,
+              drivingRestrictions: false
+            },
+            dischargeChecklistReviewed: false
           });
 
           // Load saved data from localStorage with validation
@@ -2559,6 +2590,238 @@ Clinician Name`;
                 const ichScore = data.ichScore || 0;
                 return isICH && ichScore >= 3;
               }
+            },
+
+            // ---------------------------------------------------------------
+            // SAH MANAGEMENT (2023 AHA/ASA Aneurysmal SAH)
+            // ---------------------------------------------------------------
+            sah_bp_presecuring: {
+              id: 'sah_bp_presecuring',
+              category: 'SAH Management',
+              title: 'SAH: BP management (pre-aneurysm securing)',
+              recommendation: 'Target SBP <160 mmHg before aneurysm is secured. Avoid SBP >160 to reduce rebleeding risk.',
+              detail: 'Use short-acting IV agents (nicardipine or labetalol) for rapid titration. Avoid nitroprusside (may increase ICP). Balance between rebleed prevention and cerebral perfusion.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Aneurysmal SAH 2023',
+              reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
+              medications: ['Nicardipine 5 mg/hr IV (titrate to 15 mg/hr)', 'Labetalol 10-20 mg IV bolus PRN'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return (dx.includes('sah') || dx.includes('subarachnoid')) && !data.telestrokeNote?.sahAneurysmSecured;
+              }
+            },
+            sah_nimodipine: {
+              id: 'sah_nimodipine',
+              category: 'SAH Management',
+              title: 'SAH: Nimodipine for vasospasm prevention',
+              recommendation: 'Administer nimodipine 60 mg PO/NG q4h for 21 days. Begin as soon as possible after SAH diagnosis.',
+              detail: 'Only calcium channel blocker proven to improve outcomes after SAH. If hypotension occurs, reduce to 30 mg q2h. Do not give IV. Reduces delayed cerebral ischemia (DCI), not angiographic vasospasm.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Aneurysmal SAH 2023',
+              reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
+              medications: ['Nimodipine 60 mg PO/NG q4h x 21 days'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('sah') || dx.includes('subarachnoid');
+              }
+            },
+            sah_seizure: {
+              id: 'sah_seizure',
+              category: 'SAH Management',
+              title: 'SAH: Seizure management',
+              recommendation: 'Short-term (3-7 day) seizure prophylaxis may be considered. Routine long-term prophylaxis is NOT recommended.',
+              detail: 'Consider levetiracetam over phenytoin (phenytoin associated with worse cognitive outcomes). Continuous EEG monitoring for poor-grade SAH (HH 4-5). Routine prophylactic AEDs beyond 7 days are associated with harm.',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Aneurysmal SAH 2023',
+              reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
+              medications: ['Levetiracetam 500-1000 mg IV/PO q12h (preferred)', 'Avoid phenytoin if possible'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('sah') || dx.includes('subarachnoid');
+              }
+            },
+            sah_aneurysm_securing: {
+              id: 'sah_aneurysm_securing',
+              category: 'SAH Management',
+              title: 'SAH: Early aneurysm securing (clip or coil)',
+              recommendation: 'Secure ruptured aneurysm as early as feasible, ideally within 24 hours to reduce rebleeding risk.',
+              detail: 'Endovascular coiling preferred for posterior circulation and elderly. Microsurgical clipping may be preferred for MCA aneurysms, large hematomas requiring evacuation, or wide-neck aneurysms. Multidisciplinary decision between neurovascular surgery and neurointerventional.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Aneurysmal SAH 2023',
+              reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return (dx.includes('sah') || dx.includes('subarachnoid')) && !data.telestrokeNote?.sahAneurysmSecured;
+              }
+            },
+            sah_euvolemia: {
+              id: 'sah_euvolemia',
+              category: 'SAH Management',
+              title: 'SAH: Euvolemia maintenance',
+              recommendation: 'Maintain euvolemia with isotonic crystalloids. Avoid hypovolemia and prophylactic hypervolemia (triple-H therapy is NOT recommended).',
+              detail: 'Target euvolemia with isotonic saline. Monitor for cerebral salt wasting and SIADH. Induced hypertension may be considered as rescue for symptomatic DCI after aneurysm securing.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA/ASA Aneurysmal SAH 2023',
+              reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('sah') || dx.includes('subarachnoid');
+              }
+            },
+            sah_evd: {
+              id: 'sah_evd',
+              category: 'SAH Management',
+              title: 'SAH: External ventricular drain (EVD)',
+              recommendation: 'Place EVD for acute hydrocephalus or poor-grade SAH (Hunt & Hess 3-5) with decreased level of consciousness.',
+              detail: 'CSF diversion improves outcomes in acute hydrocephalus. Monitor for ventriculitis. Consider weaning after aneurysm securing and clinical improvement.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Aneurysmal SAH 2023',
+              reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isSAH = dx.includes('sah') || dx.includes('subarachnoid');
+                const grade = parseInt(data.telestrokeNote?.sahGrade) || 0;
+                return isSAH && grade >= 3;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // CVT MANAGEMENT (2024 AHA Cerebral Venous Thrombosis)
+            // ---------------------------------------------------------------
+            cvt_anticoag_acute: {
+              id: 'cvt_anticoag_acute',
+              category: 'CVT Management',
+              title: 'CVT: Acute anticoagulation',
+              recommendation: 'Initiate therapeutic anticoagulation with LMWH or UFH, even in the presence of hemorrhagic infarction or small parenchymal hemorrhage.',
+              detail: 'LMWH preferred over UFH in most cases. Enoxaparin 1 mg/kg q12h or weight-based UFH with aPTT target 60-80s. Hemorrhagic transformation is NOT a contraindication. For large parenchymal hemorrhages, individualize decision.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA Cerebral Venous Thrombosis 2024',
+              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000467',
+              medications: ['Enoxaparin 1 mg/kg SC q12h', 'UFH weight-based (aPTT 60-80s)'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('cvt') || dx.includes('venous thrombosis') || dx.includes('cerebral venous') || dx.includes('dural sinus');
+              }
+            },
+            cvt_anticoag_longterm: {
+              id: 'cvt_anticoag_longterm',
+              category: 'CVT Management',
+              title: 'CVT: Long-term anticoagulation',
+              recommendation: 'Transition to warfarin (INR 2-3) for 3-12 months. DOACs may be considered as alternative in provoked CVT without severe features.',
+              detail: 'Duration: 3-6 months for provoked CVT, 6-12 months for unprovoked, indefinite if recurrent VTE or severe thrombophilia. ACTION-CVT supports DOAC non-inferiority for mild-moderate CVT. Warfarin preferred for severe CVT or antiphospholipid syndrome.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA Cerebral Venous Thrombosis 2024',
+              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000467',
+              medications: ['Warfarin target INR 2-3', 'DOAC alternative: rivaroxaban 20 mg or apixaban 5 mg BID'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('cvt') || dx.includes('venous thrombosis') || dx.includes('cerebral venous') || dx.includes('dural sinus');
+              }
+            },
+            cvt_icp_management: {
+              id: 'cvt_icp_management',
+              category: 'CVT Management',
+              title: 'CVT: Elevated ICP management',
+              recommendation: 'Assess for elevated ICP. Use acetazolamide for isolated intracranial hypertension. LP with CSF drainage for severe headache or visual impairment.',
+              detail: 'Elevated ICP is common in CVT. HOB elevation to 30 degrees. Avoid lumbar drain in large parenchymal lesions. Decompressive craniectomy for malignant CVT with impending herniation.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA Cerebral Venous Thrombosis 2024',
+              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000467',
+              medications: ['Acetazolamide 250-500 mg PO BID', 'LP with CSF drainage if severe'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('cvt') || dx.includes('venous thrombosis') || dx.includes('cerebral venous') || dx.includes('dural sinus');
+              }
+            },
+            cvt_seizure: {
+              id: 'cvt_seizure',
+              category: 'CVT Management',
+              title: 'CVT: Seizure management',
+              recommendation: 'Seizure prophylaxis is reasonable for CVT with supratentorial parenchymal lesions. Treat acute seizures with standard ASMs.',
+              detail: 'Seizures occur in ~40% of CVT patients. Supratentorial hemorrhagic or ischemic lesions increase risk. Levetiracetam preferred. Duration: typically 3-6 months, taper if seizure-free and lesion resolved.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA Cerebral Venous Thrombosis 2024',
+              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000467',
+              medications: ['Levetiracetam 500-1000 mg PO/IV q12h'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('cvt') || dx.includes('venous thrombosis') || dx.includes('cerebral venous') || dx.includes('dural sinus');
+              }
+            },
+            cvt_thrombophilia: {
+              id: 'cvt_thrombophilia',
+              category: 'CVT Management',
+              title: 'CVT: Thrombophilia workup',
+              recommendation: 'Evaluate for underlying thrombophilia in unprovoked CVT, especially in young patients. Defer testing until after acute phase if possible.',
+              detail: 'Test for: Factor V Leiden, prothrombin G20210A, antithrombin III, protein C/S, antiphospholipid antibodies. Hormonal risk factors (OCP, pregnancy) are most common provoked cause. Test timing: some assays affected by acute thrombosis and anticoagulation.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA Cerebral Venous Thrombosis 2024',
+              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000467',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const age = parseInt(data.telestrokeNote?.age) || 0;
+                return (dx.includes('cvt') || dx.includes('venous thrombosis') || dx.includes('cerebral venous') || dx.includes('dural sinus')) && age <= 60;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // DISCHARGE / SECONDARY PREVENTION
+            // ---------------------------------------------------------------
+            discharge_antiplatelet: {
+              id: 'discharge_antiplatelet',
+              category: 'Discharge',
+              title: 'Discharge: Antiplatelet or anticoagulation',
+              recommendation: 'Ensure appropriate antithrombotic therapy is prescribed at discharge. Antiplatelet for non-cardioembolic stroke; anticoagulation for AF-related stroke.',
+              detail: 'ASA 81-325 mg, clopidogrel 75 mg, or DAPT based on stroke subtype. DOAC for AF (apixaban preferred). Verify no gaps in medication reconciliation.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
+              reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
+              }
+            },
+            discharge_statin: {
+              id: 'discharge_statin',
+              category: 'Discharge',
+              title: 'Discharge: High-intensity statin',
+              recommendation: 'Prescribe high-intensity statin at discharge with LDL target <70 mg/dL for ischemic stroke/TIA patients.',
+              detail: 'Atorvastatin 80 mg or rosuvastatin 20-40 mg. Add ezetimibe if not at goal. Verify statin is on discharge medication list.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
+              reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
+              }
+            },
+            discharge_bp_management: {
+              id: 'discharge_bp_management',
+              category: 'Discharge',
+              title: 'Discharge: BP optimization',
+              recommendation: 'Initiate or optimize antihypertensive therapy at discharge targeting BP <130/80 for secondary stroke prevention.',
+              detail: 'ACE inhibitor or ARB + thiazide diuretic preferred. Initiate after 24-48 hours for ischemic stroke. Individualize timing for ICH (may start earlier).',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
+              reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('tia');
+              }
             }
           };
 
@@ -2594,6 +2857,23 @@ Clinician Name`;
               { id: 'ich-neurosurg', label: 'Neurosurgery', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.ichNeurosurgeryConsulted },
               { id: 'recommendations', label: 'Recommendations', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.recommendationsText }
             ],
+            sah: [
+              { id: 'sah-grade', label: 'SAH Grade', section: 'sah-management-section', check: (d) => !!d.telestrokeNote?.sahGrade },
+              { id: 'sah-bp', label: 'BP Management', section: 'sah-management-section', check: (d) => !!d.telestrokeNote?.sahBPManaged },
+              { id: 'sah-nimodipine', label: 'Nimodipine', section: 'sah-management-section', check: (d) => !!d.telestrokeNote?.sahNimodipine },
+              { id: 'sah-neurosurg', label: 'Neurosurgery', section: 'sah-management-section', check: (d) => !!d.telestrokeNote?.sahNeurosurgeryConsulted },
+              { id: 'sah-aneurysm', label: 'Aneurysm Securing', section: 'sah-management-section', check: (d) => !!d.telestrokeNote?.sahAneurysmSecured,
+                skip: (d) => { const ct = (d.telestrokeNote?.ctaResults || '').toLowerCase(); return ct.includes('no aneurysm'); } },
+              { id: 'recommendations', label: 'Recommendations', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.recommendationsText }
+            ],
+            cvt: [
+              { id: 'cvt-anticoag', label: 'Anticoagulation', section: 'cvt-management-section', check: (d) => !!d.telestrokeNote?.cvtAnticoagStarted },
+              { id: 'cvt-icp', label: 'ICP Management', section: 'cvt-management-section', check: (d) => !!d.telestrokeNote?.cvtIcpManaged },
+              { id: 'cvt-seizure', label: 'Seizure Mgmt', section: 'cvt-management-section', check: (d) => !!d.telestrokeNote?.cvtSeizureManaged },
+              { id: 'cvt-heme', label: 'Hematology', section: 'cvt-management-section', check: (d) => !!d.telestrokeNote?.cvtHematologyConsulted,
+                skip: (d) => { const age = parseInt(d.telestrokeNote?.age) || 0; return age > 60; } },
+              { id: 'recommendations', label: 'Recommendations', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.recommendationsText }
+            ],
             mimic: [
               { id: 'alt-workup', label: 'Alternative Workup', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.diagnosis },
               { id: 'disposition', label: 'Disposition', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.disposition || !!d.telestrokeNote?.recommendationsText }
@@ -2604,6 +2884,8 @@ Clinician Name`;
             if (!diagnosis) return 'shared';
             const dx = diagnosis.toLowerCase();
             if (dx.includes('mimic') || dx.includes('non-stroke') || dx.includes('seizure') || dx.includes('migraine') || dx.includes('conversion') || dx.includes('bell')) return 'mimic';
+            if (dx.includes('sah') || dx.includes('subarachnoid')) return 'sah';
+            if (dx.includes('cvt') || dx.includes('venous thrombosis') || dx.includes('cerebral venous') || dx.includes('dural sinus')) return 'cvt';
             if (dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral') || dx.includes('bleed')) return 'ich';
             if (dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia') || dx.includes('lvo') || dx.includes('occlusion')) return 'ischemic';
             return 'shared';
@@ -4544,7 +4826,7 @@ Clinician Name`;
               if (completedCount === totalSteps) {
                 phase = 'Complete';
               } else if (completedCount > sharedSteps.filter(s => !s.skip || !s.skip(pathwayData)).length) {
-                phase = pathwayType === 'ischemic' ? 'Ischemic Pathway' : pathwayType === 'ich' ? 'ICH Pathway' : 'Workup';
+                phase = pathwayType === 'ischemic' ? 'Ischemic Pathway' : pathwayType === 'ich' ? 'ICH Pathway' : pathwayType === 'sah' ? 'SAH Pathway' : pathwayType === 'cvt' ? 'CVT Pathway' : 'Workup';
               } else {
                 phase = 'Initial Assessment';
               }
@@ -4572,6 +4854,15 @@ Clinician Name`;
                 'ich-bp': { title: 'ICH: Manage blood pressure', detail: 'Target SBP 130-150 within 2 hours (AHA/ASA 2022 ICH). Initiate nicardipine or labetalol.', cta: 'Manage BP' },
                 'ich-reversal': { title: 'ICH: Anticoagulation reversal', detail: 'Patient may be on anticoagulation. Review and order reversal agents.', cta: 'Order reversal' },
                 'ich-neurosurg': { title: 'ICH: Neurosurgery evaluation', detail: 'Document neurosurgery consultation for surgical candidacy assessment.', cta: 'Consult neurosurgery' },
+                'sah-grade': { title: 'SAH: Grade severity', detail: 'Enter Hunt & Hess or WFNS grade for SAH prognostication.', cta: 'Grade SAH' },
+                'sah-bp': { title: 'SAH: Manage blood pressure', detail: 'Target SBP <160 (pre-securing) or <140 (post-securing) per 2023 AHA/ASA SAH guidelines.', cta: 'Manage BP' },
+                'sah-nimodipine': { title: 'SAH: Start nimodipine', detail: 'Nimodipine 60 mg q4h x 21 days for vasospasm prevention (Class I, LOE A).', cta: 'Order nimodipine' },
+                'sah-neurosurg': { title: 'SAH: Neurosurgery consult', detail: 'Urgent neurosurgery consultation for aneurysm securing strategy.', cta: 'Consult neurosurgery' },
+                'sah-aneurysm': { title: 'SAH: Aneurysm securing', detail: 'Document plan for aneurysm securing (clip vs coil) within 24 hours.', cta: 'Document plan' },
+                'cvt-anticoag': { title: 'CVT: Start anticoagulation', detail: 'Initiate LMWH or UFH per 2024 AHA CVT guideline, even with hemorrhagic transformation.', cta: 'Start anticoag' },
+                'cvt-icp': { title: 'CVT: ICP management', detail: 'Assess and manage elevated intracranial pressure. HOB elevation, acetazolamide if needed.', cta: 'Manage ICP' },
+                'cvt-seizure': { title: 'CVT: Seizure management', detail: 'Assess seizure risk and initiate prophylaxis if supratentorial lesion.', cta: 'Manage seizures' },
+                'cvt-heme': { title: 'CVT: Hematology consult', detail: 'Thrombophilia workup for young patients or unprovoked CVT.', cta: 'Consult hematology' },
                 'alt-workup': { title: 'Alternative workup', detail: 'Document alternative diagnosis and appropriate workup.', cta: 'Document workup' },
                 'disposition': { title: 'Determine disposition', detail: 'Set disposition plan for stroke mimic.', cta: 'Set disposition' }
               };
@@ -5810,6 +6101,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
             { id: 'vitals-section', label: 'Vitals' },
             { id: 'treatment-decision', label: 'Treatment' },
             { id: 'time-metrics-section', label: 'DTN / DTP' },
+            { id: 'sah-management-section', label: 'SAH Mgmt' },
+            { id: 'cvt-management-section', label: 'CVT Mgmt' },
+            { id: 'discharge-checklist-section', label: 'Discharge' },
             { id: 'recommendations-section', label: 'Recommendations' },
             { id: 'handoff-section', label: 'Handoff' },
             { id: 'safety-section', label: 'Safety' },
@@ -7370,9 +7664,18 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             {[
                               { value: 'ischemic', label: 'Ischemic Stroke or TIA', color: 'blue', icon: 'activity' },
                               { value: 'ich', label: 'Intracranial Hemorrhage', color: 'red', icon: 'alert-triangle' },
+                              { value: 'sah', label: 'SAH', color: 'purple', icon: 'zap' },
+                              { value: 'cvt', label: 'CVT', color: 'indigo', icon: 'git-branch' },
                               { value: 'mimic', label: 'Stroke Mimic/Other', color: 'amber', icon: 'eye-off' }
                             ].map(option => {
                               const isSelected = telestrokeNote.diagnosisCategory === option.value;
+                              const colorMap = {
+                                blue: 'bg-blue-500 text-white border-blue-500',
+                                red: 'bg-red-500 text-white border-red-500',
+                                purple: 'bg-purple-500 text-white border-purple-500',
+                                indigo: 'bg-indigo-500 text-white border-indigo-500',
+                                amber: 'bg-amber-500 text-white border-amber-500'
+                              };
                               return (
                                 <button
                                   key={option.value}
@@ -7384,6 +7687,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                       newDiagnosis = 'Suspected acute ischemic stroke';
                                     } else if (newCategory === 'ich') {
                                       newDiagnosis = 'Intracerebral hemorrhage (ICH)';
+                                    } else if (newCategory === 'sah') {
+                                      newDiagnosis = 'Subarachnoid hemorrhage (SAH)';
+                                    } else if (newCategory === 'cvt') {
+                                      newDiagnosis = 'Cerebral venous thrombosis (CVT)';
                                     } else if (newCategory === 'mimic') {
                                       newDiagnosis = 'Stroke mimic/other';
                                     }
@@ -7395,13 +7702,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   }}
                                   className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all border-2 ${
                                     isSelected
-                                      ? option.color === 'blue'
-                                        ? 'bg-blue-500 text-white border-blue-500'
-                                        : option.color === 'red'
-                                          ? 'bg-red-500 text-white border-red-500'
-                                          : option.color === 'amber'
-                                            ? 'bg-amber-500 text-white border-amber-500'
-                                            : 'bg-gray-500 text-white border-gray-500'
+                                      ? (colorMap[option.color] || 'bg-gray-500 text-white border-gray-500')
                                       : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
                                   }`}
                                 >
@@ -7449,6 +7750,30 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li>• <strong>cAPPricorn-1</strong> – Intrathecal mivelsiran for CAA</li>
                                 <li>• <strong>MIRROR Registry</strong> – Minimally invasive ICH evacuation</li>
                                 <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-ICH</li>
+                              </ul>
+                            </div>
+                          )}
+                          {telestrokeNote.diagnosisCategory === 'sah' && (
+                            <div className="mt-3 text-sm bg-purple-50 border border-purple-200 rounded-lg p-2">
+                              <div className="font-medium text-purple-800 mb-1">SAH Key Actions (2023 AHA/ASA):</div>
+                              <ul className="text-purple-700 space-y-0.5 ml-4">
+                                <li>• <strong>Nimodipine</strong> – 60 mg q4h x 21 days (Class I, LOE A)</li>
+                                <li>• <strong>BP Target</strong> – SBP &lt;160 pre-securing</li>
+                                <li>• <strong>Aneurysm securing</strong> – Within 24h (clip vs coil)</li>
+                                <li>• <strong>EVD</strong> – For hydrocephalus or poor-grade (HH 3-5)</li>
+                                <li>• <strong>Euvolemia</strong> – Isotonic fluids; avoid triple-H</li>
+                              </ul>
+                            </div>
+                          )}
+                          {telestrokeNote.diagnosisCategory === 'cvt' && (
+                            <div className="mt-3 text-sm bg-indigo-50 border border-indigo-200 rounded-lg p-2">
+                              <div className="font-medium text-indigo-800 mb-1">CVT Key Actions (2024 AHA):</div>
+                              <ul className="text-indigo-700 space-y-0.5 ml-4">
+                                <li>• <strong>Anticoagulation</strong> – LMWH even with hemorrhage (Class I)</li>
+                                <li>• <strong>ICP monitoring</strong> – Acetazolamide, LP drainage if needed</li>
+                                <li>• <strong>Seizure prophylaxis</strong> – If supratentorial lesion</li>
+                                <li>• <strong>Thrombophilia workup</strong> – Especially young/unprovoked</li>
+                                <li>• <strong>Long-term AC</strong> – VKA 3-12 mo or DOAC if mild</li>
                               </ul>
                             </div>
                           )}
@@ -8708,9 +9033,18 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 {[
                                   { value: 'ischemic', label: 'Ischemic Stroke or TIA', color: 'blue', icon: 'activity' },
                                   { value: 'ich', label: 'Intracranial Hemorrhage', color: 'red', icon: 'alert-triangle' },
+                                  { value: 'sah', label: 'SAH', color: 'purple', icon: 'zap' },
+                                  { value: 'cvt', label: 'CVT', color: 'indigo', icon: 'git-branch' },
                                   { value: 'mimic', label: 'Stroke Mimic/Other', color: 'amber', icon: 'eye-off' }
                                 ].map(option => {
                                   const isSelected = telestrokeNote.diagnosisCategory === option.value;
+                                  const colorMap2 = {
+                                    blue: 'bg-blue-500 text-white border-blue-500',
+                                    red: 'bg-red-500 text-white border-red-500',
+                                    purple: 'bg-purple-500 text-white border-purple-500',
+                                    indigo: 'bg-indigo-500 text-white border-indigo-500',
+                                    amber: 'bg-amber-500 text-white border-amber-500'
+                                  };
                                   return (
                                     <button
                                       key={option.value}
@@ -8722,6 +9056,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                           newDiagnosis = 'Suspected acute ischemic stroke';
                                         } else if (newCategory === 'ich') {
                                           newDiagnosis = 'Intracerebral hemorrhage (ICH)';
+                                        } else if (newCategory === 'sah') {
+                                          newDiagnosis = 'Subarachnoid hemorrhage (SAH)';
+                                        } else if (newCategory === 'cvt') {
+                                          newDiagnosis = 'Cerebral venous thrombosis (CVT)';
                                         } else if (newCategory === 'mimic') {
                                           newDiagnosis = 'Stroke mimic';
                                         }
@@ -8733,13 +9071,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                       }}
                                       className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border-2 ${
                                         isSelected
-                                          ? option.color === 'blue'
-                                            ? 'bg-blue-500 text-white border-blue-500'
-                                            : option.color === 'red'
-                                              ? 'bg-red-500 text-white border-red-500'
-                                              : option.color === 'amber'
-                                                ? 'bg-amber-500 text-white border-amber-500'
-                                                : 'bg-gray-500 text-white border-gray-500'
+                                          ? (colorMap2[option.color] || 'bg-gray-500 text-white border-gray-500')
                                           : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
                                       }`}
                                     >
@@ -9637,12 +9969,406 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           );
                         })()}
 
+                        {/* SAH Management Section - Only show for SAH diagnosis */}
+                        {(telestrokeNote.diagnosisCategory === 'sah' || (telestrokeNote.diagnosis || '').toLowerCase().includes('sah') || (telestrokeNote.diagnosis || '').toLowerCase().includes('subarachnoid')) && (
+                          <div id="sah-management-section" className="bg-white border-2 border-purple-300 rounded-lg p-4 shadow-md">
+                            <div className="flex items-center justify-between mb-3">
+                              <h3 className="text-lg font-bold text-purple-900 flex items-center gap-2">
+                                <i data-lucide="zap" className="w-5 h-5"></i>
+                                SAH Management (2023 AHA/ASA)
+                              </h3>
+                            </div>
+
+                            <div className="space-y-3">
+                              {/* SAH Grade */}
+                              <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                  <label className="block text-xs font-medium text-gray-600 mb-1">Grading Scale</label>
+                                  <select
+                                    value={telestrokeNote.sahGradeScale || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, sahGradeScale: e.target.value})}
+                                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm"
+                                  >
+                                    <option value="">-- Select --</option>
+                                    <option value="huntHess">Hunt & Hess</option>
+                                    <option value="wfns">WFNS</option>
+                                  </select>
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-medium text-gray-600 mb-1">Grade</label>
+                                  <select
+                                    value={telestrokeNote.sahGrade || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, sahGrade: e.target.value})}
+                                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm"
+                                  >
+                                    <option value="">-- Select --</option>
+                                    {telestrokeNote.sahGradeScale === 'huntHess' ? (
+                                      <>
+                                        <option value="1">Grade 1 - Asymptomatic or mild headache</option>
+                                        <option value="2">Grade 2 - Moderate to severe headache, nuchal rigidity</option>
+                                        <option value="3">Grade 3 - Drowsy, confused, mild focal deficit</option>
+                                        <option value="4">Grade 4 - Stupor, moderate to severe hemiparesis</option>
+                                        <option value="5">Grade 5 - Deep coma, decerebrate posturing</option>
+                                      </>
+                                    ) : telestrokeNote.sahGradeScale === 'wfns' ? (
+                                      <>
+                                        <option value="1">Grade I - GCS 15, no motor deficit</option>
+                                        <option value="2">Grade II - GCS 13-14, no motor deficit</option>
+                                        <option value="3">Grade III - GCS 13-14, with motor deficit</option>
+                                        <option value="4">Grade IV - GCS 7-12</option>
+                                        <option value="5">Grade V - GCS 3-6</option>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                      </>
+                                    )}
+                                  </select>
+                                </div>
+                              </div>
+
+                              {/* SAH Grade Warning */}
+                              {parseInt(telestrokeNote.sahGrade) >= 4 && (
+                                <div className="bg-red-50 border border-red-300 rounded-lg p-2 text-sm text-red-800">
+                                  <strong>Poor-grade SAH (Grade {telestrokeNote.sahGrade}):</strong> Consider EVD placement, ICU admission, and early goals-of-care discussion. Avoid premature limitations of care.
+                                </div>
+                              )}
+
+                              {/* SAH Management Checklist */}
+                              <div className="bg-purple-50 rounded-lg p-3">
+                                <div className="text-sm font-semibold text-purple-800 mb-2">SAH ICU Bundle</div>
+                                <div className="space-y-2">
+                                  {[
+                                    { key: 'sahBPManaged', label: 'BP managed (SBP <160 pre-securing)', detail: 'Nicardipine or labetalol IV' },
+                                    { key: 'sahNimodipine', label: 'Nimodipine started (60 mg q4h x 21d)', detail: 'Class I, LOE A for DCI prevention' },
+                                    { key: 'sahEVDPlaced', label: 'EVD placed (if hydrocephalus/poor-grade)', detail: 'For acute hydrocephalus or HH 3-5' },
+                                    { key: 'sahNeurosurgeryConsulted', label: 'Neurosurgery consulted', detail: 'For aneurysm securing strategy' },
+                                    { key: 'sahAneurysmSecured', label: 'Aneurysm securing plan documented', detail: 'Clip vs coil within 24h' },
+                                    { key: 'sahSeizureProphylaxis', label: 'Seizure prophylaxis addressed', detail: 'Short-term (3-7d) levetiracetam if indicated' }
+                                  ].map(item => (
+                                    <label key={item.key} className="flex items-start gap-2 cursor-pointer">
+                                      <input
+                                        type="checkbox"
+                                        checked={!!telestrokeNote[item.key]}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, [item.key]: e.target.checked})}
+                                        className="mt-0.5 rounded border-purple-300 text-purple-600"
+                                      />
+                                      <div>
+                                        <span className="text-sm font-medium text-gray-800">{item.label}</span>
+                                        <span className="block text-xs text-gray-500">{item.detail}</span>
+                                      </div>
+                                    </label>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* CVT Management Section - Only show for CVT diagnosis */}
+                        {(telestrokeNote.diagnosisCategory === 'cvt' || (telestrokeNote.diagnosis || '').toLowerCase().includes('cvt') || (telestrokeNote.diagnosis || '').toLowerCase().includes('venous thrombosis') || (telestrokeNote.diagnosis || '').toLowerCase().includes('cerebral venous')) && (
+                          <div id="cvt-management-section" className="bg-white border-2 border-indigo-300 rounded-lg p-4 shadow-md">
+                            <div className="flex items-center justify-between mb-3">
+                              <h3 className="text-lg font-bold text-indigo-900 flex items-center gap-2">
+                                <i data-lucide="git-branch" className="w-5 h-5"></i>
+                                CVT Management (2024 AHA)
+                              </h3>
+                            </div>
+
+                            <div className="space-y-3">
+                              {/* CVT Anticoagulation */}
+                              <div className="bg-indigo-50 rounded-lg p-3">
+                                <div className="text-sm font-semibold text-indigo-800 mb-2">CVT Treatment Checklist</div>
+                                <div className="space-y-2">
+                                  <label className="flex items-start gap-2 cursor-pointer">
+                                    <input
+                                      type="checkbox"
+                                      checked={!!telestrokeNote.cvtAnticoagStarted}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, cvtAnticoagStarted: e.target.checked})}
+                                      className="mt-0.5 rounded border-indigo-300 text-indigo-600"
+                                    />
+                                    <div>
+                                      <span className="text-sm font-medium text-gray-800">Anticoagulation initiated</span>
+                                      <span className="block text-xs text-gray-500">LMWH or UFH, even with hemorrhagic infarction (Class I)</span>
+                                    </div>
+                                  </label>
+
+                                  {telestrokeNote.cvtAnticoagStarted && (
+                                    <div className="ml-6">
+                                      <select
+                                        value={telestrokeNote.cvtAnticoagType || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, cvtAnticoagType: e.target.value})}
+                                        className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm"
+                                      >
+                                        <option value="">-- Select agent --</option>
+                                        <option value="enoxaparin">Enoxaparin 1 mg/kg SC q12h</option>
+                                        <option value="ufh">UFH weight-based (aPTT 60-80s)</option>
+                                        <option value="other">Other</option>
+                                      </select>
+                                    </div>
+                                  )}
+
+                                  <label className="flex items-start gap-2 cursor-pointer">
+                                    <input
+                                      type="checkbox"
+                                      checked={!!telestrokeNote.cvtIcpManaged}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, cvtIcpManaged: e.target.checked})}
+                                      className="mt-0.5 rounded border-indigo-300 text-indigo-600"
+                                    />
+                                    <div>
+                                      <span className="text-sm font-medium text-gray-800">ICP assessment/management</span>
+                                      <span className="block text-xs text-gray-500">HOB 30°, acetazolamide if needed, LP drainage for visual impairment</span>
+                                    </div>
+                                  </label>
+
+                                  <label className="flex items-start gap-2 cursor-pointer">
+                                    <input
+                                      type="checkbox"
+                                      checked={!!telestrokeNote.cvtSeizureManaged}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, cvtSeizureManaged: e.target.checked})}
+                                      className="mt-0.5 rounded border-indigo-300 text-indigo-600"
+                                    />
+                                    <div>
+                                      <span className="text-sm font-medium text-gray-800">Seizure management addressed</span>
+                                      <span className="block text-xs text-gray-500">Prophylaxis for supratentorial lesions; levetiracetam preferred</span>
+                                    </div>
+                                  </label>
+
+                                  <label className="flex items-start gap-2 cursor-pointer">
+                                    <input
+                                      type="checkbox"
+                                      checked={!!telestrokeNote.cvtHematologyConsulted}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, cvtHematologyConsulted: e.target.checked})}
+                                      className="mt-0.5 rounded border-indigo-300 text-indigo-600"
+                                    />
+                                    <div>
+                                      <span className="text-sm font-medium text-gray-800">Hematology consult / thrombophilia workup</span>
+                                      <span className="block text-xs text-gray-500">Factor V Leiden, prothrombin mutation, protein C/S, APLA</span>
+                                    </div>
+                                  </label>
+                                </div>
+                              </div>
+
+                              {/* CVT Long-term Plan Note */}
+                              <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 text-xs text-blue-800">
+                                <strong>Long-term plan:</strong> Transition to VKA (INR 2-3) for 3-12 months. DOAC may be considered for mild provoked CVT per ACTION-CVT data. Indefinite anticoagulation if recurrent VTE or severe thrombophilia.
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Discharge Checklist - Show when recommendations or disposition is being addressed */}
+                        {telestrokeNote.diagnosis && (
+                          <div id="discharge-checklist-section" className="bg-white border-2 border-emerald-300 rounded-lg p-4 shadow-md">
+                            <div className="flex items-center justify-between mb-3">
+                              <h3 className="text-lg font-bold text-emerald-900 flex items-center gap-2">
+                                <i data-lucide="clipboard-list" className="w-5 h-5"></i>
+                                Discharge Checklist
+                              </h3>
+                              <div className="flex items-center gap-2">
+                                {(() => {
+                                  const dc = telestrokeNote.dischargeChecklist || {};
+                                  const total = Object.keys(dc).length;
+                                  const checked = Object.values(dc).filter(Boolean).length;
+                                  return (
+                                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${checked === total ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}`}>
+                                      {checked}/{total}
+                                    </span>
+                                  );
+                                })()}
+                                <button
+                                  type="button"
+                                  onClick={() => setTelestrokeNote({...telestrokeNote, dischargeChecklistReviewed: !telestrokeNote.dischargeChecklistReviewed})}
+                                  className={`text-xs px-2 py-1 rounded-lg font-medium ${telestrokeNote.dischargeChecklistReviewed ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                >
+                                  {telestrokeNote.dischargeChecklistReviewed ? 'Reviewed' : 'Mark Reviewed'}
+                                </button>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1">
+                              {[
+                                { key: 'antiplateletOrAnticoag', label: 'Antiplatelet or anticoagulation prescribed', category: 'Medications' },
+                                { key: 'statinPrescribed', label: 'High-intensity statin prescribed', category: 'Medications' },
+                                { key: 'bpMedOptimized', label: 'BP medications optimized (target <130/80)', category: 'Medications' },
+                                { key: 'diabetesManaged', label: 'Diabetes management addressed', category: 'Risk Factors' },
+                                { key: 'smokingCessation', label: 'Smoking cessation counseled', category: 'Risk Factors' },
+                                { key: 'dietCounseling', label: 'Diet counseling (Mediterranean/DASH)', category: 'Lifestyle' },
+                                { key: 'exerciseCounseling', label: 'Exercise counseling (150 min/wk)', category: 'Lifestyle' },
+                                { key: 'followUpNeurology', label: 'Neurology follow-up scheduled', category: 'Follow-up' },
+                                { key: 'followUpPCP', label: 'PCP follow-up scheduled', category: 'Follow-up' },
+                                { key: 'rehabilitationOrdered', label: 'Rehabilitation services ordered', category: 'Rehab' },
+                                { key: 'patientEducation', label: 'Stroke education provided', category: 'Education' },
+                                { key: 'drivingRestrictions', label: 'Driving restrictions discussed', category: 'Education' }
+                              ].map(item => (
+                                <label key={item.key} className="flex items-center gap-2 py-1 cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={!!(telestrokeNote.dischargeChecklist || {})[item.key]}
+                                    onChange={(e) => setTelestrokeNote({
+                                      ...telestrokeNote,
+                                      dischargeChecklist: {
+                                        ...(telestrokeNote.dischargeChecklist || {}),
+                                        [item.key]: e.target.checked
+                                      }
+                                    })}
+                                    className="rounded border-emerald-300 text-emerald-600"
+                                  />
+                                  <span className="text-sm text-gray-700">{item.label}</span>
+                                </label>
+                              ))}
+                            </div>
+
+                            <div className="mt-2 text-xs text-gray-500 italic">
+                              Based on AHA/ASA Secondary Stroke Prevention 2021 guidelines (Kleindorfer DO et al. Stroke. 2021;52:e364-e467)
+                            </div>
+                          </div>
+                        )}
+
                         {/* Section 7: Recommendations */}
                         <div id="recommendations-section" className="bg-white border-2 border-teal-300 rounded-lg p-4 shadow-md">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-teal-900">7. Recommendations</h3>
                             <i data-lucide="clipboard-check" className="w-5 h-5 text-teal-600"></i>
                           </div>
+
+                          {/* Auto-Note Generation Button */}
+                          <div className="mb-3">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const recs = getContextualRecommendations();
+                                const pathwayType = getPathwayForDiagnosis(telestrokeNote.diagnosis);
+                                const age = telestrokeNote.age || '[Age]';
+                                const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '[sex]';
+                                const dx = telestrokeNote.diagnosis || '[Diagnosis]';
+                                const nihss = telestrokeNote.nihss || nihssScore || '';
+                                const bp = telestrokeNote.presentingBP || '';
+                                const ct = telestrokeNote.ctResults || '';
+                                const cta = telestrokeNote.ctaResults || '';
+
+                                let note = '';
+
+                                // Header
+                                note += `TELESTROKE CONSULTATION NOTE\n`;
+                                note += `Date: ${new Date().toLocaleDateString()}\n\n`;
+
+                                // HPI
+                                note += `HPI: ${age} year old ${sex}`;
+                                if (telestrokeNote.pmh) note += ` with PMH of ${telestrokeNote.pmh}`;
+                                note += ` presenting with ${telestrokeNote.symptoms || '[symptoms]'}.\n`;
+                                if (lkwTime) {
+                                  note += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
+                                }
+                                note += '\n';
+
+                                // Exam
+                                note += `EXAMINATION:\n`;
+                                if (nihss) note += `NIHSS: ${nihss}`;
+                                if (telestrokeNote.nihssDetails) note += ` (${telestrokeNote.nihssDetails})`;
+                                if (nihss) note += '\n';
+                                if (bp) note += `Presenting BP: ${bp}\n`;
+                                note += '\n';
+
+                                // Imaging
+                                note += `IMAGING:\n`;
+                                if (ct) note += `Head CT: ${ct}\n`;
+                                if (cta) note += `CTA Head/Neck: ${cta}\n`;
+                                if (telestrokeNote.ctpResults) note += `CTP: ${telestrokeNote.ctpResults}\n`;
+                                if (aspectsScore) note += `ASPECTS: ${aspectsScore}\n`;
+                                note += '\n';
+
+                                // Assessment
+                                note += `ASSESSMENT: ${dx}\n\n`;
+
+                                // Pathway-specific summary
+                                if (pathwayType === 'ischemic') {
+                                  note += `PLAN:\n`;
+                                  if (telestrokeNote.tnkRecommended) {
+                                    note += `- IV thrombolysis recommended and administered`;
+                                    if (telestrokeNote.tnkAdminTime) note += ` at ${telestrokeNote.tnkAdminTime}`;
+                                    note += `.\n`;
+                                  } else {
+                                    note += `- IV thrombolysis: Not recommended.\n`;
+                                  }
+                                  if (telestrokeNote.evtRecommended) {
+                                    note += `- EVT: Recommended. Transfer to EVT-capable center.\n`;
+                                  }
+                                } else if (pathwayType === 'ich') {
+                                  note += `PLAN:\n`;
+                                  if (telestrokeNote.ichBPManaged) note += `- BP management initiated (target SBP 130-150).\n`;
+                                  if (telestrokeNote.ichReversalOrdered) note += `- Anticoagulation reversal ordered.\n`;
+                                  if (telestrokeNote.ichNeurosurgeryConsulted) note += `- Neurosurgery consulted.\n`;
+                                } else if (pathwayType === 'sah') {
+                                  note += `PLAN:\n`;
+                                  if (telestrokeNote.sahGrade) note += `- SAH Grade: ${telestrokeNote.sahGrade} (${telestrokeNote.sahGradeScale === 'huntHess' ? 'Hunt & Hess' : telestrokeNote.sahGradeScale === 'wfns' ? 'WFNS' : 'scale not specified'})\n`;
+                                  if (telestrokeNote.sahBPManaged) note += `- BP management initiated (target SBP <160 pre-securing).\n`;
+                                  if (telestrokeNote.sahNimodipine) note += `- Nimodipine 60 mg q4h started for DCI prevention.\n`;
+                                  if (telestrokeNote.sahEVDPlaced) note += `- EVD placed for hydrocephalus management.\n`;
+                                  if (telestrokeNote.sahNeurosurgeryConsulted) note += `- Neurosurgery consulted for aneurysm securing.\n`;
+                                  if (telestrokeNote.sahAneurysmSecured) note += `- Aneurysm securing plan documented.\n`;
+                                } else if (pathwayType === 'cvt') {
+                                  note += `PLAN:\n`;
+                                  if (telestrokeNote.cvtAnticoagStarted) note += `- Anticoagulation initiated (${telestrokeNote.cvtAnticoagType || 'agent selected'}).\n`;
+                                  if (telestrokeNote.cvtIcpManaged) note += `- ICP management addressed.\n`;
+                                  if (telestrokeNote.cvtSeizureManaged) note += `- Seizure management addressed.\n`;
+                                  if (telestrokeNote.cvtHematologyConsulted) note += `- Hematology consulted for thrombophilia workup.\n`;
+                                }
+
+                                // Guideline-based recommendations
+                                if (recs.length > 0) {
+                                  note += `\nGUIDELINE-BASED RECOMMENDATIONS:\n`;
+                                  recs.forEach(rec => {
+                                    note += `- ${rec.title}: ${rec.recommendation} [Class ${rec.classOfRec}, LOE ${rec.levelOfEvidence}] (${rec.guideline})\n`;
+                                  });
+                                }
+
+                                // Disposition
+                                if (telestrokeNote.disposition) {
+                                  note += `\nDISPOSITION: ${telestrokeNote.disposition}\n`;
+                                }
+                                if (telestrokeNote.admitLocation) {
+                                  note += `Admit to: ${telestrokeNote.admitLocation}\n`;
+                                }
+
+                                // Discharge checklist summary
+                                const dc = telestrokeNote.dischargeChecklist || {};
+                                const dcChecked = Object.entries(dc).filter(([k, v]) => v);
+                                if (dcChecked.length > 0) {
+                                  note += `\nDISCHARGE CHECKLIST ITEMS COMPLETED:\n`;
+                                  const dcLabels = {
+                                    antiplateletOrAnticoag: 'Antiplatelet/anticoagulation prescribed',
+                                    statinPrescribed: 'High-intensity statin prescribed',
+                                    bpMedOptimized: 'BP medications optimized',
+                                    diabetesManaged: 'Diabetes management addressed',
+                                    smokingCessation: 'Smoking cessation counseled',
+                                    dietCounseling: 'Diet counseling provided',
+                                    exerciseCounseling: 'Exercise counseling provided',
+                                    followUpNeurology: 'Neurology follow-up scheduled',
+                                    followUpPCP: 'PCP follow-up scheduled',
+                                    rehabilitationOrdered: 'Rehabilitation ordered',
+                                    patientEducation: 'Stroke education provided',
+                                    drivingRestrictions: 'Driving restrictions discussed'
+                                  };
+                                  dcChecked.forEach(([key]) => {
+                                    note += `- ${dcLabels[key] || key}\n`;
+                                  });
+                                }
+
+                                setTelestrokeNote({...telestrokeNote, recommendationsText: note});
+                              }}
+                              className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                            >
+                              <i data-lucide="file-text" className="w-4 h-4"></i>
+                              Generate Auto-Note
+                            </button>
+                            <span className="text-xs text-gray-500 ml-2">Populates note from patient data + guideline citations</span>
+                          </div>
+
                           <div>
                             <div className="flex items-center justify-between mb-1">
                               <span className="text-sm font-medium text-gray-700">Recommendation Summary</span>
