@@ -2102,6 +2102,11 @@ Clinician Name`;
               nct: 'NCT05948566',
               category: 'ischemic',
               quickDescription: 'Late thrombolysis (4.5-24h) for anterior circulation stroke, no TNK/EVT',
+              keyTakeaways: [
+                'Tests whether IV thrombolysis benefits patients 4.5-24h from LKW who are NOT candidates for EVT',
+                'Requires perfusion mismatch on CTP — target is the "TIMELESS-ineligible" population',
+                'If positive, could expand treatment to patients who currently receive no acute reperfusion therapy'
+              ],
               lookingFor: [
                 'Anterior circulation stroke',
                 'Late presenter (4.5-24h from LKW)',
@@ -2136,6 +2141,11 @@ Clinician Name`;
               nct: 'NCT06289985',
               category: 'ischemic',
               quickDescription: 'Adaptive platform for mild LVO or medium/distal vessel occlusions',
+              keyTakeaways: [
+                'NIH StrokeNet adaptive platform with two domains: mild stroke with LVO (NIHSS 0-5) and medium/distal vessel occlusions (M2-M4, A1-A3, P1-P3)',
+                'ESCAPE-MeVO (2025) showed EVT benefit for M2/proximal M3 — STEP extends to more distal occlusions',
+                'Adaptive design allows rapid testing of multiple EVT devices and techniques'
+              ],
               lookingFor: [
                 'Two domains: Low NIHSS with LVO, OR Medium/Distal Vessel Occlusion',
                 'Low NIHSS (0-5) + ICA/M1 occlusion, or',
@@ -2173,6 +2183,11 @@ Clinician Name`;
               nct: 'NCT05611242',
               category: 'ischemic',
               quickDescription: 'Tandem lesion: carotid stenosis + intracranial LVO',
+              keyTakeaways: [
+                'Tandem lesions (extracranial carotid + intracranial LVO) are common but excluded from most EVT trials',
+                'Tests emergent carotid stenting + EVT vs EVT alone for tandem occlusions',
+                'Addresses a gap where no RCT has established optimal management of the extracranial component'
+              ],
               lookingFor: [
                 'Tandem lesion (carotid + intracranial)',
                 'Extracranial ICA stenosis 70-100%',
@@ -2203,6 +2218,11 @@ Clinician Name`;
               nct: 'NCT05911568',
               category: 'ischemic',
               quickDescription: 'EVT in patients with pre-existing disability (mRS 3-4)',
+              keyTakeaways: [
+                'All major EVT trials excluded patients with pre-existing disability (mRS 3-4)',
+                'These patients are routinely denied EVT despite no evidence of futility',
+                'If positive, would extend EVT eligibility to a large underserved population'
+              ],
               lookingFor: [
                 'Patient with EXISTING disability (mRS 3-4)',
                 'LVO stroke within 24h',
@@ -2233,6 +2253,11 @@ Clinician Name`;
               nct: 'NCT03936361',
               category: 'ich',
               quickDescription: 'Statin continuation vs discontinuation after lobar ICH',
+              keyTakeaways: [
+                'Lobar ICH raises concern for CAA — statins may increase recurrent ICH risk in CAA patients',
+                'Many patients are on statins for cardiovascular prevention; stopping may increase MACE risk',
+                'First RCT to directly address the statin dilemma after lobar ICH'
+              ],
               lookingFor: [
                 'Lobar ICH (NOT deep/basal ganglia)',
                 'Already on statin therapy',
@@ -2258,6 +2283,11 @@ Clinician Name`;
               nct: 'NCT03907046',
               category: 'ich',
               quickDescription: 'Apixaban vs aspirin post-ICH in atrial fibrillation',
+              keyTakeaways: [
+                'ICH patients with AF face a dilemma: anticoagulation prevents ischemic stroke but may cause recurrent ICH',
+                'PRESTIGE-AF showed non-inferiority of DOAC vs no anticoag; ASPIRE directly compares apixaban to aspirin',
+                'Enrollment window is 14-180 days post-ICH — flag for outpatient follow-up'
+              ],
               lookingFor: [
                 'ICH patient with atrial fibrillation',
                 'Randomize 14-180 days post-ICH',
@@ -2285,6 +2315,11 @@ Clinician Name`;
               nct: 'NCT03496883',
               category: 'ich',
               quickDescription: 'rFVIIa within 2 hours of ICH onset for hematoma expansion prevention',
+              keyTakeaways: [
+                'Hematoma expansion occurs in ~30% of ICH patients and is the strongest modifiable predictor of poor outcome',
+                'Ultra-early rFVIIa (within 2 hours) targets the window before expansion is complete',
+                'Very narrow time window (2h from onset) — requires rapid screening at spoke sites'
+              ],
               lookingFor: [
                 'Acute ICH within 2 HOURS of symptom onset',
                 'Hematoma volume 2-60 mL',
@@ -2334,6 +2369,11 @@ Clinician Name`;
               nct: 'NCT05338697',
               category: 'ischemic',
               quickDescription: 'Observational: TMS/MRI to predict motor recovery',
+              keyTakeaways: [
+                'Uses TMS + MRI biomarkers to predict upper extremity motor recovery trajectory',
+                'Observational — enrollment is straightforward with minimal patient burden',
+                'Could establish precision rehab: matching therapy intensity to predicted recovery potential'
+              ],
               lookingFor: [
                 'Acute ischemic stroke within 7 days',
                 'Upper extremity weakness',
@@ -2358,6 +2398,11 @@ Clinician Name`;
               nct: 'NCT04916210',
               category: 'ischemic',
               quickDescription: 'Observational: Cognitive trajectories post-stroke',
+              keyTakeaways: [
+                'Maps cognitive decline trajectories after stroke (AIS, ICH, and SAH) over 2 years',
+                'Aims to identify modifiable risk factors for post-stroke cognitive impairment',
+                'Low barrier — observational with cognitive testing at standard follow-up intervals'
+              ],
               lookingFor: [
                 'Any stroke type (AIS, ICH, SAH)',
                 'Baseline visit within 6 weeks',
@@ -2380,6 +2425,35 @@ Clinician Name`;
           // GUIDELINE RECOMMENDATIONS KNOWLEDGE BASE
           // Evidence-based recommendations from current stroke guidelines
           // =================================================================
+          // Guideline URL lookup — maps guideline name substrings to source URLs
+          const GUIDELINE_URLS = {
+            'Early Management of Acute Ischemic Stroke 2026': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000513',
+            'Spontaneous ICH 2022': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000407',
+            'Secondary Stroke Prevention 2021': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000375',
+            'Aneurysmal SAH 2023': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000436',
+            'Cerebral Venous Thrombosis 2024': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000467',
+            'Systemic Complications of Acute Stroke 2024': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000477',
+            'Palliative Care in Stroke 2024': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000479',
+            'Intracranial Atherosclerosis': 'https://www.aan.com/Guidelines/home/GuidelineDetail/1103',
+            'CATALYST': 'https://doi.org/10.1016/S1474-4422(25)00057-5',
+            'TIMELESS': 'https://doi.org/10.1056/NEJMoa2412179',
+            'CREST-2': 'https://doi.org/10.1056/NEJMoa2408498',
+            'ECST-2': 'https://doi.org/10.1016/S1474-4422(25)00049-6',
+            'SELECT': 'https://doi.org/10.1056/NEJMoa2305049',
+            'CHANCE-2': 'https://doi.org/10.1056/NEJMoa2104816',
+            'CONVINCE': 'https://doi.org/10.1016/S0140-6736(24)00663-8',
+            'ESCAPE-MeVO': 'https://doi.org/10.1056/NEJMoa2411227',
+            'ACC Expert Consensus': 'https://doi.org/10.1016/j.jacc.2024.03.389'
+          };
+
+          const getGuidelineUrl = (guidelineStr) => {
+            if (!guidelineStr) return null;
+            for (const [key, url] of Object.entries(GUIDELINE_URLS)) {
+              if (guidelineStr.includes(key)) return url;
+            }
+            return null;
+          };
+
           const GUIDELINE_RECOMMENDATIONS = {
             // ---------------------------------------------------------------
             // BLOOD PRESSURE MANAGEMENT
@@ -4189,6 +4263,8 @@ Clinician Name`;
               category: config.category,
               quickDescription: config.quickDescription,
               lookingFor: config.lookingFor,
+              keyTakeaways: config.keyTakeaways || [],
+              nct: config.nct,
               criteria: [],
               exclusions: [],
               status: 'pending', // 'eligible', 'not_eligible', 'needs_info', 'pending'
@@ -4399,6 +4475,27 @@ Clinician Name`;
                 </summary>
 
                 <div className="bg-gray-50 p-4 border-t-2 border-gray-200">
+                  {/* Key Takeaways - pulled from TRIAL_ELIGIBILITY_CONFIG by NCT */}
+                  {(() => {
+                    const matchedConfig = Object.values(TRIAL_ELIGIBILITY_CONFIG).find(c => c.nct === trial.nct);
+                    if (!matchedConfig || !matchedConfig.keyTakeaways || matchedConfig.keyTakeaways.length === 0) return null;
+                    return (
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+                        <h4 className="font-bold text-blue-800 mb-2 text-sm flex items-center gap-1.5">
+                          <i data-lucide="lightbulb" className="w-4 h-4"></i>
+                          Key Takeaways
+                        </h4>
+                        <ul className="space-y-1">
+                          {matchedConfig.keyTakeaways.map((t, i) => (
+                            <li key={i} className="text-sm text-blue-900 flex gap-2">
+                              <span className="text-blue-500 mt-0.5 shrink-0">&#8227;</span>
+                              <span>{t}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  })()}
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <h4 className="font-bold text-green-700 mb-3 text-lg">✓ Inclusion Criteria</h4>
@@ -11397,7 +11494,19 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                                 {rec.caveats && (
                                                   <p className="text-xs text-amber-700 mt-1 italic">{rec.caveats}</p>
                                                 )}
-                                                <p className="text-xs text-gray-500 mt-1">{rec.guideline}</p>
+                                                <p className="text-xs text-gray-500 mt-1">
+                                                  {rec.guideline}
+                                                  {(() => {
+                                                    const url = getGuidelineUrl(rec.guideline);
+                                                    if (!url) return null;
+                                                    return (
+                                                      <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 ml-1.5 text-indigo-600 hover:text-indigo-800 font-medium" title={'View: ' + rec.guideline}>
+                                                        <i data-lucide="external-link" className="w-3 h-3"></i>
+                                                        <span>Source</span>
+                                                      </a>
+                                                    );
+                                                  })()}
+                                                </p>
                                               </div>
                                             </div>
                                           </div>
@@ -11466,6 +11575,18 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                       </summary>
                                       <div className="px-3 pb-3 space-y-2">
                                         <p className="text-xs text-gray-700 italic">{config.quickDescription}</p>
+
+                                        {/* Key takeaways */}
+                                        {config.keyTakeaways && config.keyTakeaways.length > 0 && (
+                                          <div className="bg-white/70 border border-gray-200 rounded px-2.5 py-1.5 space-y-0.5">
+                                            {config.keyTakeaways.map((t, i) => (
+                                              <p key={i} className="text-xs text-gray-700 flex gap-1.5">
+                                                <span className="text-blue-500 mt-px shrink-0">&#8227;</span>
+                                                <span>{t}</span>
+                                              </p>
+                                            ))}
+                                          </div>
+                                        )}
 
                                         {/* Criteria checklist */}
                                         <div className="space-y-1">
