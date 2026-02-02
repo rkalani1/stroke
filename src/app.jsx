@@ -6228,6 +6228,301 @@ Clinician Name`;
             }
           };
 
+          // =============================================
+          // DATA CONSISTENCY SANITY CHECKS
+          // =============================================
+          const getSanityChecks = () => {
+            const warnings = [];
+            const n = telestrokeNote;
+
+            // --- Out-of-range values ---
+            const weight = parseFloat(n.weight);
+            if (weight && (weight < 20 || weight > 300)) {
+              warnings.push({ id: 'weight-range', severity: 'error', msg: `Weight ${weight} kg is outside plausible range (20-300 kg)` });
+            }
+            const age = parseInt(n.age);
+            if (age && (age < 0 || age > 120)) {
+              warnings.push({ id: 'age-range', severity: 'error', msg: `Age ${age} is outside plausible range` });
+            }
+            const glucose = parseInt(n.glucose);
+            if (glucose && (glucose < 10 || glucose > 1500)) {
+              warnings.push({ id: 'glucose-range', severity: 'error', msg: `Glucose ${glucose} mg/dL is outside plausible range` });
+            }
+            const inr = parseFloat(n.inr);
+            if (inr && (inr < 0.5 || inr > 20)) {
+              warnings.push({ id: 'inr-range', severity: 'warn', msg: `INR ${inr} is unusual — verify result` });
+            }
+            const platelets = parseInt(n.platelets || n.plateletCount);
+            if (platelets && platelets < 10) {
+              warnings.push({ id: 'plt-low', severity: 'warn', msg: `Platelets ${platelets}K — critically low, verify result` });
+            }
+            const creatinine = parseFloat(n.creatinine);
+            if (creatinine && creatinine > 15) {
+              warnings.push({ id: 'cr-range', severity: 'warn', msg: `Creatinine ${creatinine} — unusually high, verify result` });
+            }
+
+            // Parse BP
+            const bpStr = n.presentingBP || '';
+            const bpMatch = bpStr.match(/(\d+)\s*\/\s*(\d+)/);
+            if (bpMatch) {
+              const sbp = parseInt(bpMatch[1]);
+              const dbp = parseInt(bpMatch[2]);
+              if (sbp < 50 || sbp > 300) warnings.push({ id: 'sbp-range', severity: 'error', msg: `SBP ${sbp} mmHg is outside plausible range` });
+              if (dbp < 20 || dbp > 200) warnings.push({ id: 'dbp-range', severity: 'error', msg: `DBP ${dbp} mmHg is outside plausible range` });
+              if (dbp >= sbp) warnings.push({ id: 'bp-inversion', severity: 'error', msg: `DBP (${dbp}) >= SBP (${sbp}) — check BP entry` });
+            }
+
+            // --- Time sequence checks ---
+            const parseTs = (d, t) => {
+              if (!d || !t) return null;
+              const dt = new Date(`${d}T${t}`);
+              return isNaN(dt.getTime()) ? null : dt;
+            };
+            const parseDT = (val) => val ? new Date(val) : null;
+
+            const lkw = parseTs(n.lkwDate, n.lkwTime);
+            const ctTime = parseTs(n.ctDate, n.ctTime);
+            const ctaTime = parseTs(n.ctaDate, n.ctaTime);
+            const arrival = parseDT(n.arrivalTime);
+            const tnkTime = parseDT(n.tnkAdminTime);
+
+            if (lkw && ctTime && ctTime < lkw) {
+              warnings.push({ id: 'ct-before-lkw', severity: 'error', msg: 'CT time is before LKW — check timestamps' });
+            }
+            if (arrival && ctTime && ctTime < arrival) {
+              warnings.push({ id: 'ct-before-arrival', severity: 'warn', msg: 'CT time is before arrival — verify if pre-transfer imaging' });
+            }
+            if (ctaTime && ctTime && ctaTime < ctTime) {
+              warnings.push({ id: 'cta-before-ct', severity: 'warn', msg: 'CTA time is before CT time — verify imaging sequence' });
+            }
+            if (tnkTime && lkw) {
+              const tnkHrs = (tnkTime - lkw) / (1000 * 60 * 60);
+              if (tnkHrs > 4.5 && !(n.wakeUpStrokeWorkflow && n.wakeUpStrokeWorkflow.extendEligible)) {
+                warnings.push({ id: 'tnk-outside-window', severity: 'error', msg: `TNK administered ${tnkHrs.toFixed(1)}h after LKW — outside standard 4.5h window (verify extended window eligibility)` });
+              }
+              if (tnkHrs < 0) {
+                warnings.push({ id: 'tnk-before-lkw', severity: 'error', msg: 'TNK time is before LKW — check timestamps' });
+              }
+            }
+
+            // --- Internal contradictions ---
+            const hasLVO = (n.vesselOcclusion || []).some(v => /ICA|M1|basilar/i.test(v));
+            if (n.tnkRecommended && n.diagnosisCategory === 'ich') {
+              warnings.push({ id: 'tnk-ich', severity: 'error', msg: 'TNK recommended but diagnosis is ICH — thrombolysis is contraindicated in hemorrhagic stroke' });
+            }
+            if (n.evtRecommended && !hasLVO && (n.vesselOcclusion || []).length === 0) {
+              warnings.push({ id: 'evt-no-lvo', severity: 'warn', msg: 'EVT recommended but no vessel occlusion documented — verify CTA findings' });
+            }
+            if (n.tnkRecommended && inr > 1.7) {
+              warnings.push({ id: 'tnk-inr', severity: 'error', msg: `TNK recommended with INR ${inr} — INR >1.7 is a contraindication` });
+            }
+            if (n.tnkRecommended && platelets && platelets < 100) {
+              warnings.push({ id: 'tnk-plt', severity: 'error', msg: `TNK recommended with platelets ${platelets}K — platelets <100K is a contraindication` });
+            }
+            if (glucose && glucose < 50 && n.tnkRecommended) {
+              warnings.push({ id: 'tnk-glucose', severity: 'warn', msg: `TNK recommended with glucose ${glucose} — hypoglycemia can mimic stroke, verify before treating` });
+            }
+
+            return warnings;
+          };
+
+          // =============================================
+          // ORDER BUNDLE QUICK COPY
+          // =============================================
+          const getOrderBundles = () => {
+            const n = telestrokeNote;
+            const dx = (n.diagnosis || '').toLowerCase();
+            const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('lvo');
+            const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+            const isSAH = dx.includes('sah') || dx.includes('subarachnoid');
+            const meds = (n.medications || '').toLowerCase();
+            const nihss = parseInt(n.nihss) || nihssScore || 0;
+            const weight = parseFloat(n.weight) || 0;
+            const bundles = [];
+
+            // BP Management - Pre-TNK
+            if (n.tnkRecommended && !n.tnkAdminTime) {
+              bundles.push({
+                id: 'bp-pre-tnk',
+                label: 'Pre-TNK BP Orders',
+                icon: 'heart-pulse',
+                color: 'red',
+                orders: [
+                  'Target BP <185/110 mmHg prior to and during TNK',
+                  'Labetalol 10-20 mg IV push over 1-2 min, may repeat x1',
+                  'If BP not controlled: Nicardipine 5 mg/hr IV, titrate by 2.5 mg/hr q5-15 min (max 15 mg/hr)',
+                  'If BP cannot be maintained <185/110: HOLD thrombolysis',
+                  `Current BP: ${n.presentingBP || '***'}`,
+                  'Recheck BP q5 min during active titration'
+                ]
+              });
+            }
+
+            // BP Management - Post-TNK
+            if (n.tnkAdminTime && isIschemic) {
+              bundles.push({
+                id: 'bp-post-tnk',
+                label: 'Post-TNK BP Orders',
+                icon: 'heart-pulse',
+                color: 'red',
+                orders: [
+                  'Target BP <180/105 mmHg x 24 hours post-TNK',
+                  'Nicardipine 5 mg/hr IV (titrate by 2.5 mg/hr q5-15 min, max 15 mg/hr)',
+                  'Monitor BP q15 min x 2h, then q30 min x 6h, then q1h x 16h',
+                  `TNK given at: ${n.tnkAdminTime}`,
+                  'Neuro checks q1h x 24h (call for any change)',
+                  'If hemorrhagic transformation suspected: STAT CT Head, hold antithrombotics'
+                ]
+              });
+            }
+
+            // BP Management - ICH
+            if (isICH) {
+              bundles.push({
+                id: 'bp-ich',
+                label: 'ICH BP Orders',
+                icon: 'heart-pulse',
+                color: 'red',
+                orders: [
+                  'Target SBP 130-150 mmHg (initiate within 2h of onset)',
+                  'Nicardipine 5 mg/hr IV, titrate by 2.5 mg/hr q5-15 min (max 15 mg/hr)',
+                  'Avoid SBP <130 mmHg (renal AKI risk)',
+                  `Current BP: ${n.presentingBP || '***'}`,
+                  'Maintain target for ≥24 hours',
+                  'Recheck BP q15 min during active titration, then q1h once stable'
+                ]
+              });
+            }
+
+            // Anticoagulant Reversal
+            const onWarfarin = meds.includes('warfarin') || meds.includes('coumadin');
+            const onDabigatran = meds.includes('dabigatran') || meds.includes('pradaxa');
+            const onXaI = meds.includes('apixaban') || meds.includes('eliquis') || meds.includes('rivaroxaban') || meds.includes('xarelto');
+            if (isICH && (onWarfarin || onDabigatran || onXaI)) {
+              const reversalOrders = [];
+              if (onWarfarin) {
+                reversalOrders.push(
+                  'Vitamin K 10 mg IV over 20 minutes',
+                  `4F-PCC (KCentra) 25-50 IU/kg IV based on INR${inr ? ` (INR: ${inr})` : ''}`,
+                  'Recheck INR at 30-60 minutes; repeat PCC if INR >1.5',
+                  'Target INR <1.5 within 4 hours'
+                );
+              } else if (onDabigatran) {
+                reversalOrders.push(
+                  'Idarucizumab (Praxbind) 5g IV (2 x 2.5g vials, consecutive infusions)',
+                  'If idarucizumab unavailable: 4F-PCC 50 IU/kg IV',
+                  'Reversal is immediate with idarucizumab'
+                );
+              } else if (onXaI) {
+                reversalOrders.push(
+                  'Andexanet alfa (Andexxa) — dose per protocol:',
+                  '  Low dose (apixaban, or rivaroxaban last dose >7h ago): 400 mg bolus then 480 mg infusion over 2h',
+                  '  High dose (rivaroxaban last dose <7h ago): 800 mg bolus then 960 mg infusion over 2h',
+                  'If andexanet unavailable: 4F-PCC 50 IU/kg IV'
+                );
+              }
+              bundles.push({
+                id: 'reversal',
+                label: `Anticoag Reversal (${onWarfarin ? 'Warfarin' : onDabigatran ? 'Dabigatran' : 'Xa Inhibitor'})`,
+                icon: 'shield-alert',
+                color: 'orange',
+                orders: reversalOrders
+              });
+            }
+
+            // VTE Prophylaxis
+            if (isIschemic || isICH) {
+              const vteOrders = ['Intermittent pneumatic compression (IPC) bilateral lower extremities — apply on admission'];
+              if (isIschemic && n.tnkAdminTime) {
+                vteOrders.push('Pharmacologic VTE prophylaxis: HOLD 24 hours post-TNK');
+                vteOrders.push('After 24h: Enoxaparin 40 mg SC daily (or Heparin 5000 units SC q8h if CrCl <30)');
+              } else if (isIschemic) {
+                vteOrders.push('Enoxaparin 40 mg SC daily (start within 24-48h if immobile)');
+                vteOrders.push('If CrCl <30: Heparin 5000 units SC q8h');
+              } else if (isICH) {
+                vteOrders.push('Pharmacologic VTE prophylaxis: consider after 24-48h if hematoma stable on repeat CT');
+                vteOrders.push('Enoxaparin 40 mg SC daily (or Heparin 5000 units SC q8h if CrCl <30)');
+              }
+              if (weight > 100) vteOrders.push(`Weight ${weight} kg — consider enoxaparin 40 mg SC q12h for BMI-based dosing`);
+              bundles.push({
+                id: 'vte',
+                label: 'VTE Prophylaxis',
+                icon: 'shield',
+                color: 'teal',
+                orders: vteOrders
+              });
+            }
+
+            // DAPT Loading
+            if (isIschemic && nihss <= 3 && !n.tnkRecommended) {
+              bundles.push({
+                id: 'dapt',
+                label: 'DAPT Loading (Minor Stroke/TIA)',
+                icon: 'pill',
+                color: 'blue',
+                orders: [
+                  'Aspirin 325 mg PO x1 (loading dose)',
+                  'Clopidogrel 300 mg PO x1 (loading dose)',
+                  'Then: Aspirin 81 mg PO daily + Clopidogrel 75 mg daily x 21 days',
+                  'After 21 days: transition to aspirin 81 mg monotherapy',
+                  `NIHSS: ${nihss} — qualifies for DAPT (NIHSS ≤3)`,
+                  'Contraindication: active GI bleed, allergy, planned surgery'
+                ]
+              });
+            }
+
+            // Osmotherapy - ICH or large ischemic with edema
+            if (isICH || (isIschemic && nihss >= 15)) {
+              const osmOrders = [];
+              if (isICH) {
+                osmOrders.push(
+                  'Hypertonic saline 23.4% 30 mL IV over 15 min via central line (for acute herniation)',
+                  'OR Hypertonic saline 3% 250 mL IV over 30 min (peripheral ok)',
+                  'OR Mannitol 20% 1 g/kg IV over 20 min (peripheral ok)',
+                  `${weight ? `Weight ${weight} kg → Mannitol ${Math.round(weight)} mL of 20% (= ${weight} g)` : 'Weight needed for mannitol dosing'}`,
+                  'Target Na+ 145-155 mEq/L for 3% NaCl; serum osmolality <320 for mannitol',
+                  'Check BMP q6h (Na+, K+, osmolality), strict I/O'
+                );
+              } else {
+                osmOrders.push(
+                  'Consider osmotherapy if signs of herniation or progressive edema',
+                  'Mannitol 20% 1 g/kg IV over 20 min (can give peripherally)',
+                  `${weight ? `Weight ${weight} kg → Mannitol ${Math.round(weight)} mL of 20%` : 'Weight needed for dosing'}`,
+                  'HOB 30 degrees, avoid hyperthermia, avoid hyponatremia'
+                );
+              }
+              bundles.push({
+                id: 'osmotherapy',
+                label: 'Osmotherapy',
+                icon: 'droplets',
+                color: 'purple',
+                orders: osmOrders
+              });
+            }
+
+            // SAH specific
+            if (isSAH) {
+              bundles.push({
+                id: 'sah-bundle',
+                label: 'SAH Admission Orders',
+                icon: 'brain',
+                color: 'pink',
+                orders: [
+                  'Nimodipine 60 mg PO/NG q4h x 21 days (reduce to 30 mg q2h if hypotension)',
+                  'Target SBP <160 mmHg until aneurysm secured',
+                  'Nicardipine 5 mg/hr IV (titrate to 15 mg/hr) for BP control',
+                  'IV isotonic saline for euvolemia — avoid hypovolemia',
+                  'Seizure prophylaxis: Levetiracetam 500-1000 mg IV/PO q12h x 3-7 days',
+                  'Stool softener (docusate 100 mg BID) — avoid straining',
+                  'Neurosurgery/neurointerventional consult for aneurysm securing',
+                  'Neuro checks q1h, strict I/O, HOB 30 degrees'
+                ]
+              });
+            }
+
+            return bundles;
+          };
+
           const scrollToSection = (id) => {
             const target = document.getElementById(id);
             if (!target) return;
@@ -10615,6 +10910,32 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     ))}
                                   </div>
                                 ) : null;
+                              })()}
+
+                              {/* Data Consistency Sanity Checks */}
+                              {(() => {
+                                const checks = getSanityChecks();
+                                if (checks.length === 0) return null;
+                                const errors = checks.filter(c => c.severity === 'error');
+                                const warns = checks.filter(c => c.severity === 'warn');
+                                return (
+                                  <details className={`mt-2 border rounded-lg ${errors.length > 0 ? 'bg-red-50 border-red-300' : 'bg-amber-50 border-amber-300'}`} open={errors.length > 0}>
+                                    <summary className={`cursor-pointer px-3 py-2 text-sm font-semibold flex items-center justify-between ${errors.length > 0 ? 'text-red-800' : 'text-amber-800'}`}>
+                                      <span className="flex items-center gap-2">
+                                        <i data-lucide="shield-alert" className="w-4 h-4"></i>
+                                        Data Consistency Check ({errors.length > 0 ? `${errors.length} error${errors.length > 1 ? 's' : ''}` : ''}{errors.length > 0 && warns.length > 0 ? ', ' : ''}{warns.length > 0 ? `${warns.length} warning${warns.length > 1 ? 's' : ''}` : ''})
+                                      </span>
+                                    </summary>
+                                    <div className="px-3 pb-2 space-y-1">
+                                      {checks.map(c => (
+                                        <div key={c.id} className={`flex items-start gap-2 text-sm px-2 py-1 rounded ${c.severity === 'error' ? 'text-red-800 bg-red-100/60' : 'text-amber-800 bg-amber-100/60'}`}>
+                                          <i data-lucide={c.severity === 'error' ? 'x-circle' : 'alert-triangle'} className="w-3.5 h-3.5 mt-0.5 flex-shrink-0"></i>
+                                          <span>{c.msg}</span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </details>
+                                );
                               })()}
 
                               {/* Active Trials List - Show for Ischemic or ICH */}
@@ -15615,6 +15936,70 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         );
                       })}
                     </div>
+
+                    {/* Order Bundle Quick Copy */}
+                    {(() => {
+                      const bundles = getOrderBundles();
+                      if (bundles.length === 0) return null;
+                      const colorMap = {
+                        red: 'bg-red-50 border-red-200 text-red-900',
+                        orange: 'bg-orange-50 border-orange-200 text-orange-900',
+                        teal: 'bg-teal-50 border-teal-200 text-teal-900',
+                        blue: 'bg-blue-50 border-blue-200 text-blue-900',
+                        purple: 'bg-purple-50 border-purple-200 text-purple-900',
+                        pink: 'bg-pink-50 border-pink-200 text-pink-900'
+                      };
+                      const btnColorMap = {
+                        red: 'bg-red-600 hover:bg-red-700',
+                        orange: 'bg-orange-600 hover:bg-orange-700',
+                        teal: 'bg-teal-600 hover:bg-teal-700',
+                        blue: 'bg-blue-600 hover:bg-blue-700',
+                        purple: 'bg-purple-600 hover:bg-purple-700',
+                        pink: 'bg-pink-600 hover:bg-pink-700'
+                      };
+                      return (
+                        <details className="bg-white border-2 border-green-300 rounded-lg shadow-sm">
+                          <summary className="cursor-pointer p-3 font-semibold text-green-900 hover:bg-green-50 rounded-lg flex items-center justify-between">
+                            <span className="flex items-center gap-2">
+                              <i data-lucide="clipboard-list" className="w-5 h-5 text-green-600"></i>
+                              Order Bundles — Quick Copy ({bundles.length})
+                            </span>
+                            <span className="text-xs text-green-600 font-normal">Patient-specific, copy to clipboard</span>
+                          </summary>
+                          <div className="p-3 pt-0 grid grid-cols-1 md:grid-cols-2 gap-3">
+                            {bundles.map(b => (
+                              <div key={b.id} className={`border rounded-lg p-3 ${colorMap[b.color] || 'bg-gray-50 border-gray-200 text-gray-900'}`}>
+                                <div className="flex items-center justify-between mb-2">
+                                  <span className="font-semibold text-sm flex items-center gap-1.5">
+                                    <i data-lucide={b.icon} className="w-4 h-4"></i>
+                                    {b.label}
+                                  </span>
+                                  <button
+                                    onClick={() => {
+                                      const text = b.label + '\n' + b.orders.map(o => '- ' + o).join('\n');
+                                      navigator.clipboard.writeText(text);
+                                      setCopiedText('bundle-' + b.id);
+                                      setTimeout(() => setCopiedText(''), 2000);
+                                    }}
+                                    className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-white rounded-lg transition-colors ${copiedText === 'bundle-' + b.id ? 'bg-green-600' : (btnColorMap[b.color] || 'bg-gray-600 hover:bg-gray-700')}`}
+                                  >
+                                    <i data-lucide={copiedText === 'bundle-' + b.id ? 'check' : 'copy'} className="w-3 h-3"></i>
+                                    {copiedText === 'bundle-' + b.id ? 'Copied!' : 'Copy'}
+                                  </button>
+                                </div>
+                                <ul className="space-y-0.5">
+                                  {b.orders.map((o, i) => (
+                                    <li key={i} className="text-xs flex gap-1.5">
+                                      {o.startsWith('  ') ? <span className="ml-4">{o.trim()}</span> : <><span className="shrink-0">•</span><span>{o}</span></>}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ))}
+                          </div>
+                        </details>
+                      );
+                    })()}
 
                     {/* ICH Content */}
                     {managementSubTab === 'ich' && (
