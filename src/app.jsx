@@ -870,6 +870,19 @@ Clinician Name`;
               intervention: '',
               medicalManagement: ''
             },
+            // Etiology Workup Planner
+            etiologyWorkup: {
+              suggestedTests: [],
+              completedTests: {},
+              customNote: ''
+            },
+            // Consent Communication Kit
+            consentKit: {
+              evtConsentDiscussed: false,
+              evtConsentType: '',
+              transferConsentDiscussed: false,
+              consentDocCopied: false
+            },
             // ESUS / Cryptogenic Pathway
             esusWorkup: {
               cardiacMonitoringType: '',
@@ -6000,6 +6013,67 @@ Clinician Name`;
             </span>
           );
 
+          // Generate follow-up brief for clinic handoff
+          const generateFollowUpBrief = () => {
+            const sp = telestrokeNote.secondaryPrevention || {};
+            const cw = telestrokeNote.cardiacWorkup || {};
+            const ew = telestrokeNote.etiologyWorkup || {};
+            const pathway = getPathwayForDiagnosis(telestrokeNote.diagnosis);
+            let brief = `FOLLOW-UP BRIEF — CLINIC HANDOFF\n`;
+            brief += `${'='.repeat(40)}\n\n`;
+            brief += `Patient: ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'M' : telestrokeNote.sex === 'F' ? 'F' : '***'}\n`;
+            brief += `Diagnosis: ${telestrokeNote.diagnosis || '***'}\n`;
+            brief += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n`;
+            if (telestrokeNote.toastClassification) {
+              const toastLabels = { 'large-artery': 'Large Artery Atherosclerosis', 'cardioembolism': 'Cardioembolism', 'small-vessel': 'Small Vessel Occlusion', 'other-determined': 'Other Determined', 'cryptogenic': 'Cryptogenic/ESUS' };
+              brief += `Etiology (TOAST): ${toastLabels[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}\n`;
+            }
+            brief += `\nACUTE COURSE:\n`;
+            if (telestrokeNote.tnkRecommended) brief += `- TNK administered${telestrokeNote.tnkAdminTime ? ` at ${telestrokeNote.tnkAdminTime}` : ''}\n`;
+            if (telestrokeNote.evtRecommended) brief += `- EVT recommended/performed\n`;
+            if (telestrokeNote.transferAccepted) brief += `- Transferred to comprehensive stroke center\n`;
+            if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) brief += `- Medical management\n`;
+            brief += `\nIMAGING:\n`;
+            brief += `- CT Head: ${telestrokeNote.ctResults || 'N/A'}\n`;
+            brief += `- CTA: ${telestrokeNote.ctaResults || 'N/A'}\n`;
+            if (telestrokeNote.ctpResults) brief += `- CTP: ${telestrokeNote.ctpResults}\n`;
+            if ((telestrokeNote.vesselOcclusion || []).length > 0) brief += `- Vessel occlusion: ${telestrokeNote.vesselOcclusion.join(', ')}\n`;
+            brief += `\nCARDIAC WORKUP:\n`;
+            if (cw.ecgComplete) brief += `- ECG: completed\n`;
+            if (cw.telemetryOrdered) brief += `- Telemetry: ordered\n`;
+            if (cw.echoOrdered) brief += `- Echo: ordered\n`;
+            if (cw.extendedMonitoringType) {
+              const monitorLabels = { '30-day-monitor': '30-day ambulatory monitor', '14-day-patch': '14-day continuous patch', 'ilr': 'ILR', 'none-af-known': 'Not needed (AF known)', 'none-other': 'Not indicated' };
+              brief += `- Extended monitoring: ${monitorLabels[cw.extendedMonitoringType] || cw.extendedMonitoringType}\n`;
+            }
+            if (cw.pfoEvaluation && cw.pfoEvaluation !== 'no-pfo') brief += `- PFO: ${cw.pfoEvaluation.replace(/-/g, ' ')}\n`;
+            // Pending workup items
+            if (ew.completedTests && Object.keys(ew.completedTests).length > 0) {
+              const pending = Object.entries(ew.completedTests).filter(([k, v]) => !v).map(([k]) => k);
+              if (pending.length > 0) {
+                brief += `\nPENDING WORKUP:\n`;
+                pending.forEach(k => brief += `- ${k.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase()).trim()}\n`);
+              }
+            }
+            brief += `\nSECONDARY PREVENTION:\n`;
+            if (sp.antiplateletRegimen) {
+              const apLabels = { 'dapt-21': 'DAPT x 21 days', 'asa-mono': 'ASA monotherapy', 'clopidogrel-mono': 'Clopidogrel monotherapy', 'asa-er-dipyridamole': 'ASA/ER-Dipyridamole', 'doac-af': 'DOAC for AF', 'anticoag-other': 'Anticoagulation (other)' };
+              brief += `- Antithrombotic: ${apLabels[sp.antiplateletRegimen] || sp.antiplateletRegimen}\n`;
+            }
+            if (sp.statinDose) brief += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}\n`;
+            if (sp.bpTarget) brief += `- BP target: ${sp.bpTarget}${sp.bpMeds ? ` (on ${sp.bpMeds})` : ''}\n`;
+            if (sp.diabetesManagement && sp.diabetesManagement !== 'no-diabetes') brief += `- Diabetes: ${sp.diabetesManagement.replace(/-/g, ' ')}\n`;
+            if (sp.smokingStatus && sp.smokingStatus !== 'never') brief += `- Smoking: ${sp.smokingStatus.replace(/-/g, ' ')}\n`;
+            if (sp.glp1ra && sp.glp1ra !== 'not-indicated') brief += `- GLP-1 RA: ${sp.glp1ra.replace(/-/g, ' ')}\n`;
+            brief += `\nFOLLOW-UP PLAN:\n`;
+            const dc = telestrokeNote.dischargeChecklist || {};
+            if (dc.followUpNeurology) brief += `- Neurology follow-up\n`;
+            if (dc.followUpPCP) brief += `- PCP follow-up\n`;
+            if (sp.followUpTimeline) brief += `- Timeline: ${sp.followUpTimeline}\n`;
+            if (telestrokeNote.recommendationsText) brief += `\nADDITIONAL RECOMMENDATIONS:\n${telestrokeNote.recommendationsText}\n`;
+            return brief;
+          };
+
           // Generate telestroke documentation note
           const generateTelestrokeNote = () => {
             const formatDate = (dateStr) => {
@@ -6068,6 +6142,32 @@ Clinician Name`;
                 note += `${relativeChecked.length} relative contraindication(s) identified. Clinical judgment applied.`;
               }
               note += '\n';
+            }
+
+            // Add EVT consent documentation
+            if (telestrokeNote.evtRecommended && (telestrokeNote.consentKit || {}).evtConsentDiscussed) {
+              note += `\nEVT Consent: Risks and benefits of mechanical thrombectomy discussed with patient/family. `;
+              const evtType = (telestrokeNote.consentKit || {}).evtConsentType;
+              if (evtType === 'informed-consent') note += 'Informed consent obtained.';
+              else if (evtType === 'presumed') note += 'Presumed consent — patient unable, no surrogate available.';
+              else if (evtType === 'surrogate') note += 'Surrogate/family consent obtained.';
+              else if (evtType === 'declined') note += 'Patient/family declined after informed discussion.';
+              note += '\n';
+            }
+
+            // Add TOAST classification and workup plan
+            if (telestrokeNote.toastClassification) {
+              const toastLabels = { 'large-artery': 'Large Artery Atherosclerosis', 'cardioembolism': 'Cardioembolism', 'small-vessel': 'Small Vessel Occlusion', 'other-determined': 'Other Determined Etiology', 'cryptogenic': 'Cryptogenic/ESUS' };
+              note += `\nEtiologic Classification (TOAST): ${toastLabels[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}\n`;
+            }
+
+            // Add etiology workup status
+            const ew = telestrokeNote.etiologyWorkup || {};
+            if (ew.completedTests && Object.keys(ew.completedTests).length > 0) {
+              const completed = Object.entries(ew.completedTests).filter(([k, v]) => v).map(([k]) => k.replace(/([A-Z])/g, ' $1').trim());
+              const pending = Object.entries(ew.completedTests).filter(([k, v]) => !v).map(([k]) => k.replace(/([A-Z])/g, ' $1').trim());
+              if (completed.length > 0) note += `Workup completed: ${completed.join(', ')}\n`;
+              if (pending.length > 0) note += `Workup pending: ${pending.join(', ')}\n`;
             }
 
             return note;
@@ -9658,6 +9758,17 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               MDM / Plan
                             </button>
                           </div>
+                          {/* Follow-up Brief Copy Button */}
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(generateFollowUpBrief());
+                              setCopiedText('tel-followup'); setTimeout(() => setCopiedText(''), 2000);
+                            }}
+                            className={`w-full mt-2 px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-followup' ? 'bg-green-600 text-white' : 'bg-teal-100 text-teal-800 hover:bg-teal-200 border border-teal-300'}`}
+                          >
+                            <i data-lucide={copiedText === 'tel-followup' ? 'check' : 'file-output'} className="w-3 h-3"></i>
+                            {copiedText === 'tel-followup' ? 'Copied!' : 'Copy Follow-up Brief (Clinic Handoff)'}
+                          </button>
                         </div>
                       </div>
                     )}
@@ -11448,6 +11559,89 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </div>
                             )}
 
+                            {/* ========== EVT CONSENT COMMUNICATION KIT ========== */}
+                            {telestrokeNote.evtRecommended && (
+                              <div className="bg-orange-50 border-2 border-orange-300 rounded-lg p-4 space-y-3">
+                                <h4 className="font-bold text-orange-900 flex items-center gap-2">
+                                  <i data-lucide="message-circle" className="w-4 h-4"></i>
+                                  EVT Consent Communication Kit
+                                </h4>
+                                <div className="bg-white border border-orange-200 rounded-lg p-3 text-sm text-gray-700 space-y-2">
+                                  <p>We recommend a procedure called <strong>mechanical thrombectomy</strong> (clot retrieval). A catheter is threaded from the groin artery up to the blocked blood vessel in the brain to physically remove the clot. This has been shown in multiple clinical trials to significantly improve outcomes — roughly <strong>1 in 3-4 patients</strong> treated with thrombectomy achieve functional independence who would not have otherwise.</p>
+                                  <p>The main risks include bleeding in the brain (~5-6%), vessel perforation or dissection, and complications from anesthesia. In rare cases, the clot can move to a new location. Despite these risks, the potential benefit significantly outweighs the risks when thrombectomy is indicated.</p>
+                                  <p className="text-xs text-gray-500 italic">Adapted from: AHA/ASA 2026 Early Management Guidelines; MR CLEAN, ESCAPE, EXTEND-IA, SWIFT PRIME, REVASCAT trials</p>
+                                </div>
+                                <div className="space-y-2">
+                                  <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                                    <input type="checkbox" checked={!!(telestrokeNote.consentKit || {}).evtConsentDiscussed}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, consentKit: {...(telestrokeNote.consentKit || {}), evtConsentDiscussed: e.target.checked}})}
+                                      className="w-4 h-4" />
+                                    EVT risks/benefits discussed with patient/family
+                                  </label>
+                                  <select value={(telestrokeNote.consentKit || {}).evtConsentType || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, consentKit: {...(telestrokeNote.consentKit || {}), evtConsentType: e.target.value}})}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                                    <option value="">-- Consent status --</option>
+                                    <option value="informed-consent">Informed consent obtained</option>
+                                    <option value="presumed">Presumed consent (patient unable, no surrogate available)</option>
+                                    <option value="surrogate">Surrogate/family consent obtained</option>
+                                    <option value="declined">Patient/family declined EVT</option>
+                                  </select>
+                                </div>
+                                <button onClick={() => {
+                                  const consentDoc = `EVT CONSENT DOCUMENTATION:\nMechanical thrombectomy was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${telestrokeNote.nihss || nihssScore || '***'}, vessel occlusion: ${(telestrokeNote.vesselOcclusion || []).join(', ') || '***'}).\nRisks discussed: intracranial hemorrhage (~5-6%), vessel injury, anesthesia complications, and the possibility that the procedure may not be successful.\nBenefits discussed: significantly improved chance of functional independence (NNT 3-4 based on pivotal trials).\nAlternatives discussed: medical management alone (associated with worse outcomes in setting of LVO).\nConsent: ${(telestrokeNote.consentKit || {}).evtConsentType === 'informed-consent' ? 'Informed consent obtained from patient/family' : (telestrokeNote.consentKit || {}).evtConsentType === 'presumed' ? 'Presumed consent — patient unable to provide consent, no surrogate available, treatment in best interest' : (telestrokeNote.consentKit || {}).evtConsentType === 'surrogate' ? 'Consent obtained from surrogate/family member' : (telestrokeNote.consentKit || {}).evtConsentType === 'declined' ? 'Patient/family declined after informed discussion' : '***'}`;
+                                  navigator.clipboard.writeText(consentDoc);
+                                  setCopiedText('evt-consent'); setTimeout(() => setCopiedText(''), 2000);
+                                }}
+                                  className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'evt-consent' ? 'bg-green-600 text-white' : 'bg-orange-600 text-white hover:bg-orange-700'}`}>
+                                  <i data-lucide={copiedText === 'evt-consent' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                  {copiedText === 'evt-consent' ? 'Copied!' : 'Copy EVT Consent Documentation'}
+                                </button>
+                              </div>
+                            )}
+
+                            {/* ========== TRANSFER CONSENT COMMUNICATION KIT ========== */}
+                            {telestrokeNote.transferAccepted && (
+                              <div className="bg-sky-50 border-2 border-sky-300 rounded-lg p-4 space-y-3">
+                                <h4 className="font-bold text-sky-900 flex items-center gap-2">
+                                  <i data-lucide="ambulance" className="w-4 h-4"></i>
+                                  Transfer Communication Kit
+                                </h4>
+                                <div className="bg-white border border-sky-200 rounded-lg p-3 text-sm text-gray-700 space-y-2">
+                                  <p>We recommend <strong>transferring to a comprehensive stroke center</strong> for a higher level of care. This facility can provide specialized treatments — such as clot-retrieval procedures (thrombectomy), neurosurgical intervention, or neurointensive care — that are not available here.</p>
+                                  <p>Transfer is time-sensitive. The sooner the patient arrives at the receiving facility, the better the chances for a good outcome. During transport, the patient will be monitored and any treatments already started will continue.</p>
+                                </div>
+                                <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                                  <input type="checkbox" checked={!!(telestrokeNote.consentKit || {}).transferConsentDiscussed}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, consentKit: {...(telestrokeNote.consentKit || {}), transferConsentDiscussed: e.target.checked}})}
+                                    className="w-4 h-4" />
+                                  Transfer rationale discussed with patient/family
+                                </label>
+                                <button onClick={() => {
+                                  const transferDoc = `TNK CONSENT DOCUMENTATION:\nTenecteplase was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'}.\nRisks discussed: symptomatic intracranial hemorrhage (up to 4%), allergic reaction (rare).\nBenefits discussed: improved chance of recovery without disability; earlier treatment provides greater benefit.\nAlternatives discussed: no thrombolytic treatment (associated with higher risk of disability).\nConsent: ${telestrokeNote.patientFamilyConsent ? 'Patient/family consent obtained' : telestrokeNote.presumedConsent ? 'Presumed consent — treatment in best interest' : '***'}\n\nTRANSFER DOCUMENTATION:\nPatient being transferred to comprehensive stroke center for ${telestrokeNote.evtRecommended ? 'mechanical thrombectomy evaluation and ' : ''}higher level of care.\nTransfer rationale: ${telestrokeNote.transferRationale || '***'}\nTransfer consent: ${(telestrokeNote.consentKit || {}).transferConsentDiscussed ? 'Discussed with patient/family' : 'Pending discussion'}`;
+                                  navigator.clipboard.writeText(transferDoc);
+                                  setCopiedText('transfer-consent'); setTimeout(() => setCopiedText(''), 2000);
+                                }}
+                                  className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'transfer-consent' ? 'bg-green-600 text-white' : 'bg-sky-600 text-white hover:bg-sky-700'}`}>
+                                  <i data-lucide={copiedText === 'transfer-consent' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                  {copiedText === 'transfer-consent' ? 'Copied!' : 'Copy Consent + Transfer Documentation'}
+                                </button>
+                              </div>
+                            )}
+
+                            {/* TNK-Only Consent Doc Copy (when TNK but no EVT/transfer) */}
+                            {telestrokeNote.tnkRecommended && telestrokeNote.tnkConsentDiscussed && !telestrokeNote.evtRecommended && !telestrokeNote.transferAccepted && (
+                              <button onClick={() => {
+                                const tnkDoc = `TNK CONSENT DOCUMENTATION:\nTenecteplase was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${telestrokeNote.nihss || nihssScore || '***'}).\nRisks discussed: symptomatic intracranial hemorrhage (up to 4%), allergic reaction (rare).\nBenefits discussed: improved chance of recovery without disability; earlier treatment provides greater benefit.\nAlternatives discussed: no thrombolytic treatment (associated with higher risk of disability).\nConsent: ${telestrokeNote.patientFamilyConsent ? 'Patient/family consent obtained' : telestrokeNote.presumedConsent ? 'Presumed consent — treatment in best interest' : '***'}`;
+                                navigator.clipboard.writeText(tnkDoc);
+                                setCopiedText('tnk-consent'); setTimeout(() => setCopiedText(''), 2000);
+                              }}
+                                className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'tnk-consent' ? 'bg-green-600 text-white' : 'bg-purple-600 text-white hover:bg-purple-700'}`}>
+                                <i data-lucide={copiedText === 'tnk-consent' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                {copiedText === 'tnk-consent' ? 'Copied!' : 'Copy TNK Consent Documentation'}
+                              </button>
+                            )}
+
                             {/* Time Metrics Section - DTN Tracker (Collapsible) */}
                             <details id="time-metrics-section" className="bg-purple-50 border-2 border-purple-300 rounded-lg" open={telestrokeNote.tnkRecommended}>
                               <summary className="cursor-pointer p-3 font-semibold text-purple-800 hover:bg-purple-100 rounded-lg flex items-center justify-between">
@@ -12341,6 +12535,106 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 </div>
                               )}
                             </div>
+                          </div>
+                        )}
+
+                        {/* ========== ETIOLOGY WORKUP PLANNER ========== */}
+                        {telestrokeNote.toastClassification && (getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' || getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia') && (
+                          <div className="bg-white border-2 border-cyan-300 rounded-lg p-4 shadow-md">
+                            <div className="flex items-center justify-between mb-3">
+                              <h3 className="text-lg font-bold text-cyan-900 flex items-center gap-2">
+                                <i data-lucide="clipboard-list" className="w-5 h-5"></i>
+                                Etiology Workup Planner
+                              </h3>
+                              <span className="text-xs bg-cyan-100 text-cyan-800 px-2 py-1 rounded-full font-medium">
+                                Based on: {telestrokeNote.toastClassification === 'large-artery' ? 'Large Artery Atherosclerosis' : telestrokeNote.toastClassification === 'cardioembolism' ? 'Cardioembolism' : telestrokeNote.toastClassification === 'small-vessel' ? 'Small Vessel' : telestrokeNote.toastClassification === 'other-determined' ? 'Other Determined' : 'Cryptogenic/ESUS'}
+                              </span>
+                            </div>
+                            {(() => {
+                              const toast = telestrokeNote.toastClassification;
+                              const ew = telestrokeNote.etiologyWorkup || {};
+                              const completed = ew.completedTests || {};
+                              const workupTests = {
+                                'large-artery': [
+                                  { key: 'ctaHeadNeck', label: 'CTA Head/Neck (or MRA)', reason: 'Assess degree of stenosis, plaque morphology' },
+                                  { key: 'carotidDuplex', label: 'Carotid Duplex Ultrasound', reason: 'Confirm stenosis degree if CTA equivocal' },
+                                  { key: 'mriDwi', label: 'MRI Brain (DWI/FLAIR)', reason: 'Characterize infarct pattern, exclude mimics' },
+                                  { key: 'lipidPanel', label: 'Fasting Lipid Panel', reason: 'Guide statin therapy intensity' },
+                                  { key: 'hba1c', label: 'HbA1c', reason: 'Screen for diabetes as atherosclerotic risk factor' },
+                                  { key: 'ecg', label: '12-Lead ECG', reason: 'Rule out concurrent AF' },
+                                  { key: 'echo', label: 'Echocardiogram (TTE)', reason: 'Exclude concurrent cardiac source' },
+                                  { key: 'vesselWallMri', label: 'Vessel Wall MRI (if intracranial)', reason: 'Characterize intracranial plaque (enhancement, remodeling)' }
+                                ],
+                                'cardioembolism': [
+                                  { key: 'ecg', label: '12-Lead ECG', reason: 'Document AF, flutter, or other arrhythmia' },
+                                  { key: 'telemetry', label: 'Inpatient Telemetry', reason: 'Continuous rhythm monitoring during admission' },
+                                  { key: 'echoTte', label: 'TTE with Bubble Study', reason: 'Evaluate for thrombus, PFO, valvular disease' },
+                                  { key: 'echoTee', label: 'TEE (if TTE non-diagnostic)', reason: 'Better sensitivity for LA thrombus, PFO, atrial septal aneurysm' },
+                                  { key: 'extendedMonitor', label: 'Extended Cardiac Monitoring (30-day)', reason: 'Detect paroxysmal AF if not documented on ECG/telemetry' },
+                                  { key: 'mriDwi', label: 'MRI Brain (DWI/FLAIR)', reason: 'Infarct pattern — multiterritory suggests cardioembolic' },
+                                  { key: 'ctaHeadNeck', label: 'CTA Head/Neck', reason: 'Exclude concurrent large-artery disease' }
+                                ],
+                                'small-vessel': [
+                                  { key: 'mriDwi', label: 'MRI Brain (DWI/FLAIR/SWI)', reason: 'Confirm subcortical lacunar infarct <15mm, assess WMH burden' },
+                                  { key: 'lipidPanel', label: 'Fasting Lipid Panel', reason: 'Optimize risk factors' },
+                                  { key: 'hba1c', label: 'HbA1c', reason: 'Diabetes screening — major SVD risk factor' },
+                                  { key: 'bpMonitoring', label: 'Ambulatory BP Monitoring', reason: 'Assess for nocturnal non-dipping, guide intensive BP management' },
+                                  { key: 'ecg', label: '12-Lead ECG', reason: 'Rule out AF' },
+                                  { key: 'ctaHeadNeck', label: 'CTA Head/Neck', reason: 'Exclude concurrent large-artery disease' }
+                                ],
+                                'other-determined': [
+                                  { key: 'mriDwi', label: 'MRI Brain (DWI/FLAIR)', reason: 'Characterize infarct pattern' },
+                                  { key: 'mraNeck', label: 'MRA Neck with fat sat (or CTA)', reason: 'Evaluate for dissection (intramural hematoma)' },
+                                  { key: 'vesselWallMri', label: 'Vessel Wall MRI', reason: 'Assess for vasculitis, dissection, Moyamoya, reversible vasoconstriction' },
+                                  { key: 'hypercoagPanel', label: 'Hypercoagulability Panel', reason: 'Factor V Leiden, prothrombin mutation, antiphospholipid Abs, protein C/S, antithrombin III' },
+                                  { key: 'esrCrp', label: 'ESR, CRP, ANA', reason: 'Screen for inflammatory/autoimmune vasculopathy' },
+                                  { key: 'ecg', label: '12-Lead ECG', reason: 'Rule out concurrent cardiac source' }
+                                ],
+                                'cryptogenic': [
+                                  { key: 'mriDwi', label: 'MRI Brain (DWI/FLAIR)', reason: 'Infarct pattern may suggest etiology (embolic vs lacunar)' },
+                                  { key: 'ctaHeadNeck', label: 'CTA Head/Neck', reason: 'Exclude large-artery disease, dissection' },
+                                  { key: 'echoTte', label: 'TTE with Bubble Study', reason: 'Screen for PFO, cardiac source' },
+                                  { key: 'echoTee', label: 'TEE (if PFO suspected or age <60)', reason: 'Better PFO characterization, atrial septal aneurysm' },
+                                  { key: 'extendedMonitor', label: 'Extended Cardiac Monitoring (30-day)', reason: 'Detect occult paroxysmal AF — yield ~12-15% at 30 days' },
+                                  { key: 'hypercoagPanel', label: 'Hypercoagulability Panel', reason: 'Especially if age <55 or recurrent events' },
+                                  { key: 'lipidPanel', label: 'Fasting Lipid Panel', reason: 'Complete risk factor assessment' },
+                                  { key: 'hba1c', label: 'HbA1c', reason: 'Screen for undiagnosed diabetes' }
+                                ]
+                              };
+                              const tests = workupTests[toast] || [];
+                              const completedCount = tests.filter(t => completed[t.key]).length;
+                              return (
+                                <div className="space-y-2">
+                                  <div className="flex items-center justify-between mb-2">
+                                    <span className="text-sm text-gray-600">Progress: {completedCount}/{tests.length} tests</span>
+                                    <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                      <div className="h-full bg-cyan-500 rounded-full transition-all" style={{ width: `${tests.length > 0 ? (completedCount / tests.length) * 100 : 0}%` }}></div>
+                                    </div>
+                                  </div>
+                                  {tests.map(test => (
+                                    <label key={test.key} className={`flex items-start gap-2 p-2 rounded border transition cursor-pointer ${completed[test.key] ? 'bg-cyan-50 border-cyan-300' : 'bg-white border-gray-200 hover:bg-gray-50'}`}>
+                                      <input type="checkbox" checked={!!completed[test.key]}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, etiologyWorkup: {...ew, completedTests: {...completed, [test.key]: e.target.checked}}})}
+                                        className="mt-0.5 text-cyan-600" />
+                                      <div className="flex-1 min-w-0">
+                                        <span className={`text-sm font-medium ${completed[test.key] ? 'text-cyan-800 line-through' : 'text-gray-800'}`}>{test.label}</span>
+                                        <p className="text-xs text-gray-500">{test.reason}</p>
+                                      </div>
+                                    </label>
+                                  ))}
+                                  <button onClick={() => {
+                                    const workupText = `ETIOLOGY WORKUP PLAN (${toast === 'large-artery' ? 'Large Artery Atherosclerosis' : toast === 'cardioembolism' ? 'Cardioembolism' : toast === 'small-vessel' ? 'Small Vessel' : toast === 'other-determined' ? 'Other Determined' : 'Cryptogenic/ESUS'}):\n` +
+                                      tests.map(t => `${completed[t.key] ? '[x]' : '[ ]'} ${t.label} — ${t.reason}`).join('\n');
+                                    navigator.clipboard.writeText(workupText);
+                                    setCopiedText('workup-plan'); setTimeout(() => setCopiedText(''), 2000);
+                                  }}
+                                    className={`w-full mt-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'workup-plan' ? 'bg-green-600 text-white' : 'bg-cyan-600 text-white hover:bg-cyan-700'}`}>
+                                    <i data-lucide={copiedText === 'workup-plan' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                    {copiedText === 'workup-plan' ? 'Copied!' : 'Copy Workup Plan'}
+                                  </button>
+                                </div>
+                              );
+                            })()}
                           </div>
                         )}
 
@@ -15374,6 +15668,17 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               MDM / Plan
                             </button>
                           </div>
+                          {/* Follow-up Brief Copy Button */}
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(generateFollowUpBrief());
+                              setCopiedText('vid-followup'); setTimeout(() => setCopiedText(''), 2000);
+                            }}
+                            className={`w-full mb-3 px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-followup' ? 'bg-green-600 text-white' : 'bg-teal-100 text-teal-800 hover:bg-teal-200 border border-teal-300'}`}
+                          >
+                            <i data-lucide={copiedText === 'vid-followup' ? 'check' : 'file-output'} className="w-3 h-3"></i>
+                            {copiedText === 'vid-followup' ? 'Copied!' : 'Copy Follow-up Brief (Clinic Handoff)'}
+                          </button>
 
                           <div className="bg-white p-3 rounded border border-gray-200 max-h-96 overflow-y-auto">
                             <pre className="whitespace-pre-wrap text-xs text-gray-800 font-mono">
