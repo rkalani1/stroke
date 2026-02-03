@@ -1,0 +1,50 @@
+{
+  "id": "cvt-2024",
+  "title": "AHA Cerebral Venous Thrombosis Scientific Statement 2024",
+  "shortTitle": "CVT Statement 2024",
+  "doi": "10.1161/STR.0000000000000456",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000456",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456",
+  "recommendations": [
+    {
+      "section": "Diagnosis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Diagnosis of CVT is primarily based on MRI/MRV or CT/CTV; contrast-enhanced MRV or susceptibility-weighted imaging helps confirm cortical vein thrombosis.",
+      "page": 6
+    },
+    {
+      "section": "Anticoagulation (Acute)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Initial therapy: LMWH is preferred over UFH, and venous hemorrhage is not a contraindication to anticoagulation in CVT.",
+      "page": 6
+    },
+    {
+      "section": "Anticoagulation (Long-Term)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Transition to VKA (INR 2-3) for 3-12 months for transient risk factors or indefinite therapy for chronic/recurrent risk; DOACs may be reasonable in selected patients.",
+      "page": 6
+    },
+    {
+      "section": "Endovascular Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Endovascular therapy may be considered as rescue for clinical deterioration or failed/contraindicated anticoagulation; evidence for a superior technique is limited.",
+      "page": 8
+    },
+    {
+      "section": "Surgical Decompression",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Decompressive craniectomy should be offered for severe CVT with parenchymal lesions and impending herniation as lifesaving therapy.",
+      "page": 8
+    }
+  ]
+}

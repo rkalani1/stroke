@@ -1,4 +1,14 @@
-        const { useState, useEffect, useRef } = React;
+import ais2026 from './guidelines/ais-2026.json';
+import cvt2024 from './guidelines/cvt-2024.json';
+import ich2022 from './guidelines/ich-2022.json';
+import maternalStroke2026 from './guidelines/maternal-stroke-2026.json';
+import primaryPrevention2024 from './guidelines/primary-prevention-2024.json';
+import secondaryPrevention2021 from './guidelines/secondary-prevention-2021.json';
+import sah2023 from './guidelines/sah-2023.json';
+import systemicComplications2024 from './guidelines/systemic-complications-2024.json';
+import svinLargeCore2025 from './guidelines/svin-large-core-2025.json';
+
+        const { useState, useEffect, useRef, useMemo } = React;
         const { Calculator, Clock, Brain, AlertTriangle, FileText, CheckCircle, Moon, Sun, Download, Copy, Search, Check, Info } = lucide;
 
         const APP_VERSION = (window.strokeAppStorage && window.strokeAppStorage.appVersion) || 'unknown';
@@ -1258,6 +1268,10 @@ Clinician Name`;
           const [searchOpen, setSearchOpen] = useState(false);
           const [searchContext, setSearchContext] = useState('header');
           const [evidenceFilter, setEvidenceFilter] = useState('');
+          const [guidelineLibraryQuery, setGuidelineLibraryQuery] = useState('');
+          const [guidelineLibraryGuideline, setGuidelineLibraryGuideline] = useState('');
+          const [guidelineLibrarySection, setGuidelineLibrarySection] = useState('');
+          const [guidelineLibraryClass, setGuidelineLibraryClass] = useState('');
           const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
           const [deidWarnings, setDeidWarnings] = useState({});
           const [wipeConfirmText, setWipeConfirmText] = useState('');
@@ -2443,8 +2457,12 @@ Clinician Name`;
             'Early Management of Acute Ischemic Stroke 2026': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000513',
             'Spontaneous ICH 2022': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000407',
             'Secondary Stroke Prevention 2021': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000375',
+            'Primary Prevention of Stroke 2024': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000475',
+            'Primary Prevention 2024': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000475',
             'Aneurysmal SAH 2023': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000436',
-            'Cerebral Venous Thrombosis 2024': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000467',
+            'Cerebral Venous Thrombosis 2024': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000456',
+            'Maternal Stroke 2026': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000514',
+            'Maternal Stroke in Pregnancy and Postpartum 2026': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000514',
             'Systemic Complications of Acute Stroke 2024': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000477',
             'Palliative Care in Stroke 2024': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000479',
             'Intracranial Atherosclerosis': 'https://www.aan.com/Guidelines/home/GuidelineDetail/1103',
@@ -2456,6 +2474,7 @@ Clinician Name`;
             'CHANCE-2': 'https://doi.org/10.1056/NEJMoa2104816',
             'CONVINCE': 'https://doi.org/10.1016/S0140-6736(24)00663-8',
             'ESCAPE-MeVO': 'https://doi.org/10.1056/NEJMoa2411227',
+            'SVIN Large-Core EVT 2025': 'https://www.ahajournals.org/doi/10.1161/SVIN.124.001581',
             'ACC Expert Consensus': 'https://doi.org/10.1016/j.jacc.2024.03.389'
           };
 
@@ -2465,6 +2484,34 @@ Clinician Name`;
               if (guidelineStr.includes(key)) return url;
             }
             return null;
+          };
+
+          const GUIDELINE_LIBRARY = [
+            ais2026,
+            ich2022,
+            sah2023,
+            cvt2024,
+            systemicComplications2024,
+            maternalStroke2026,
+            primaryPrevention2024,
+            secondaryPrevention2021,
+            svinLargeCore2025
+          ];
+          const GUIDELINE_LIBRARY_INDEX = GUIDELINE_LIBRARY.map((guideline) => ({
+            ...guideline,
+            recommendations: guideline.recommendations.map((rec, index) => ({
+              ...rec,
+              id: rec.id || `${guideline.id}-${index + 1}`,
+              sourceUrl: rec.page ? `${guideline.pdfUrl}#page=${rec.page}` : guideline.publisherUrl
+            }))
+          }));
+
+          const GUIDELINE_CLASS_COLORS = {
+            I: 'bg-green-600 text-white',
+            IIa: 'bg-blue-500 text-white',
+            IIb: 'bg-amber-500 text-white',
+            III: 'bg-red-600 text-white',
+            Statement: 'bg-gray-500 text-white'
           };
 
           const GUIDELINE_RECOMMENDATIONS = {
@@ -2524,13 +2571,30 @@ Clinician Name`;
               id: 'bp_ich_acute',
               category: 'Blood Pressure',
               title: 'ICH acute BP target',
-              recommendation: 'Target SBP 130-150 mmHg within 2 hours of ICH onset. Initiate rapid treatment for SBP >150.',
-              detail: 'Nicardipine infusion preferred for reliable titration. Avoid SBP <130 (risk of renal AKI). Maintain target for at least 24 hours.',
-              classOfRec: 'I',
-              levelOfEvidence: 'A',
+              recommendation: 'For mild to moderate ICH with SBP 150-220, target SBP 140 mmHg and maintain 130-150 mmHg.',
+              detail: 'Careful titration with smooth, sustained control is recommended. Avoid SBP <130 (Class III: Harm). Nicardipine infusion preferred. Maintain target for at least 24 hours.',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=17',
               medications: ['Nicardipine 5 mg/hr IV (titrate to 15 mg/hr)', 'Labetalol 10-20 mg IV bolus PRN'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+              }
+            },
+            bp_ich_avoid_low: {
+              id: 'bp_ich_avoid_low',
+              category: 'Blood Pressure',
+              title: 'Avoid overly aggressive BP lowering in ICH',
+              recommendation: 'Avoid lowering SBP to <130 mmHg in mild to moderate ICH (potentially harmful).',
+              detail: 'Aggressive SBP <130 is associated with worse outcomes in mild to moderate ICH.',
+              classOfRec: 'III',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=17',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
@@ -2635,24 +2699,67 @@ Clinician Name`;
                 return nihss >= 6 && timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && hasLVO;
               }
             },
-            evt_large_core: {
-              id: 'evt_large_core',
+            evt_large_core_early: {
+              id: 'evt_large_core_early',
               category: 'EVT',
-              title: 'EVT for large ischemic core (ASPECTS 3-5)',
-              recommendation: 'EVT can be beneficial for anterior LVO with ASPECTS 3-5 within 24 hours when NIHSS >= 6.',
-              detail: 'Based on SELECT2, RESCUE-Japan LIMIT, and ANGEL-ASPECT (2023). Despite larger infarcts, EVT still provides benefit. Goals-of-care discussion recommended. Higher sICH rates (~10%) and mortality. Consider patient/family preferences.',
-              classOfRec: 'IIa',
+              title: 'EVT for large core (ASPECTS 0-5, 0-6h)',
+              recommendation: 'EVT is recommended for anterior circulation LVO within 0-6 hours when ASPECTS is 0-5.',
+              detail: 'SVIN 2025 large-core guidance supports EVT across the ASPECTS 0-5 range in the early window based on LASTE, SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, and TESLA.',
+              classOfRec: 'I',
               levelOfEvidence: 'A',
-              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026; SELECT2 (NEJM 2023); ANGEL-ASPECT (NEJM 2023); RESCUE-Japan LIMIT (NEJM 2023).',
-              caveats: 'Trial eligibility: SELECT2 (ASPECTS 3-5, NIHSS >=6, LVO, <24h); ANGEL-ASPECT (ASPECTS 3-5, core 70-100mL, <24h); RESCUE-Japan LIMIT (ASPECTS 3-5, <24h).',
+              guideline: 'SVIN Large-Core EVT 2025',
+              reference: 'Mokin M et al. Stroke Vasc Interv Neurol. 2025;5:e001581. DOI: 10.1161/SVIN.124.001581.',
+              caveats: 'Trial eligibility generally required pre-stroke mRS 0-1 and age 18-80. Higher sICH risk; discuss goals of care.',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/SVIN.124.001581#page=10',
               conditions: (data) => {
-                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
-                const aspects = data.aspectsScore;
+                const timeFrom = data.timeFromLKW;
+                const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
                   /ica|m1|mca/i.test(v)
                 );
-                return nihss >= 6 && aspects >= 3 && aspects <= 5 && hasLVO;
+                return !!timeFrom && timeFrom.total <= 6 && aspects !== null && aspects <= 5 && hasLVO;
+              }
+            },
+            evt_large_core_late: {
+              id: 'evt_large_core_late',
+              category: 'EVT',
+              title: 'EVT for large core (ASPECTS 3-5, 6-24h)',
+              recommendation: 'EVT is recommended for anterior circulation LVO within 6-24 hours when ASPECTS is 3-5.',
+              detail: 'SVIN 2025: late-window large-core EVT supported by ANGEL-ASPECT and RESCUE-Japan LIMIT. CTP-based selection per SELECT2/ANGEL-ASPECT (core 50-100 mL) is also Class I, LOE A.',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'SVIN Large-Core EVT 2025',
+              reference: 'Mokin M et al. Stroke Vasc Interv Neurol. 2025;5:e001581. DOI: 10.1161/SVIN.124.001581.',
+              caveats: 'Eligibility often required pre-stroke mRS 0-1 and age 18-80. Discuss goals of care and higher hemorrhage risk.',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/SVIN.124.001581#page=10',
+              conditions: (data) => {
+                const timeFrom = data.timeFromLKW;
+                const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
+                const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
+                  /ica|m1|mca/i.test(v)
+                );
+                return !!timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && aspects !== null && aspects >= 3 && aspects <= 5 && hasLVO;
+              }
+            },
+            evt_large_core_uncertain: {
+              id: 'evt_large_core_uncertain',
+              category: 'EVT',
+              title: 'EVT for very large core (ASPECTS 0-2, 6-24h)',
+              recommendation: 'For ASPECTS 0-2 in the 6-24 hour window, the benefit of EVT is uncertain.',
+              detail: 'SVIN 2025 assigns Class IIb, LOE B-R for ASPECTS 0-2 in late window. Consider exceptional cases or trials only.',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'B-R',
+              guideline: 'SVIN Large-Core EVT 2025',
+              reference: 'Mokin M et al. Stroke Vasc Interv Neurol. 2025;5:e001581. DOI: 10.1161/SVIN.124.001581.',
+              caveats: 'Discuss goals of care and low likelihood of independence; prioritize trial enrollment when available.',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/SVIN.124.001581#page=10',
+              conditions: (data) => {
+                const timeFrom = data.timeFromLKW;
+                const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
+                const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
+                  /ica|m1|mca/i.test(v)
+                );
+                return !!timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && aspects !== null && aspects <= 2 && hasLVO;
               }
             },
             evt_basilar: {
@@ -2749,6 +2856,7 @@ Clinician Name`;
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=21',
               medications: ['Atorvastatin 80 mg daily', 'Rosuvastatin 20-40 mg daily', 'Ezetimibe 10 mg if LDL not at goal'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
@@ -2764,11 +2872,12 @@ Clinician Name`;
               category: 'Reversal',
               title: 'Warfarin reversal in ICH',
               recommendation: 'Administer IV Vitamin K 10 mg + 4-factor PCC (KCentra) for ICH on warfarin. Target INR <1.5 within 4 hours.',
-              detail: 'PCC preferred over FFP (faster, lower volume, more predictable reversal). Recheck INR at 30-60 minutes. Repeat PCC if INR remains elevated.',
+              detail: '4F-PCC preferred over FFP for rapid INR correction; give vitamin K after PCC to prevent rebound INR. Recheck INR at 30-60 minutes and repeat PCC if needed.',
               classOfRec: 'I',
-              levelOfEvidence: 'B-NR',
+              levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
               medications: ['Vitamin K 10 mg IV over 20 min', '4F-PCC (KCentra) 25-50 IU/kg based on INR'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
@@ -2783,12 +2892,13 @@ Clinician Name`;
               category: 'Reversal',
               title: 'Dabigatran reversal in ICH',
               recommendation: 'Administer idarucizumab (Praxbind) 5g IV (2 x 2.5g) for ICH on dabigatran.',
-              detail: 'If idarucizumab unavailable, use 4F-PCC 50 IU/kg. Reversal is immediate with idarucizumab.',
-              classOfRec: 'I',
+              detail: 'Reversal is immediate with idarucizumab. If unavailable, aPCC or PCC may be considered.',
+              classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
-              medications: ['Idarucizumab (Praxbind) 5g IV', 'Alt: 4F-PCC 50 IU/kg if unavailable'],
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
+              medications: ['Idarucizumab (Praxbind) 5g IV', 'Alt: aPCC/PCC if unavailable'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
@@ -2801,12 +2911,13 @@ Clinician Name`;
               id: 'reversal_xa_inhibitor',
               category: 'Reversal',
               title: 'Factor Xa inhibitor reversal in ICH',
-              recommendation: 'Administer andexanet alfa or 4F-PCC 50 IU/kg for ICH on apixaban/rivaroxaban.',
-              detail: 'Andexanet alfa (Andexxa) if available: low-dose bolus 400 mg then 480 mg infusion (rivaroxaban >7h or apixaban), high-dose 800 mg then 960 mg (rivaroxaban <7h). If unavailable, use 4F-PCC 50 IU/kg.',
+              recommendation: 'Administer andexanet alfa for ICH on apixaban/rivaroxaban when available.',
+              detail: 'Andexanet alfa is reasonable for factor Xa inhibitor reversal. If unavailable, 4F-PCC 50 IU/kg may be considered.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
               medications: ['Andexanet alfa (Andexxa) per dosing protocol', '4F-PCC 50 IU/kg if andexanet unavailable'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
@@ -2815,6 +2926,219 @@ Clinician Name`;
                 const onXaInhibitor = meds.includes('apixaban') || meds.includes('eliquis') ||
                                       meds.includes('rivaroxaban') || meds.includes('xarelto');
                 return isICH && onXaInhibitor;
+              }
+            },
+            antiplatelet_desmopressin: {
+              id: 'antiplatelet_desmopressin',
+              category: 'Reversal',
+              title: 'Antiplatelet-associated ICH: desmopressin',
+              recommendation: 'Desmopressin with or without platelet transfusion may be considered for antiplatelet-associated ICH, but effectiveness is uncertain.',
+              detail: 'Consider desmopressin 0.3 mcg/kg IV once; evidence is limited and benefits are uncertain.',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=23',
+              medications: ['Desmopressin 0.3 mcg/kg IV x1'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const meds = (data.telestrokeNote?.medications || '').toLowerCase();
+                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const onAntiplatelet = meds.includes('aspirin') || meds.includes('asa') ||
+                  meds.includes('clopidogrel') || meds.includes('plavix') ||
+                  meds.includes('ticagrelor') || meds.includes('brilinta') ||
+                  meds.includes('prasugrel') || meds.includes('effient') ||
+                  meds.includes('dipyridamole') || meds.includes('aggrenox');
+                return isICH && onAntiplatelet;
+              }
+            },
+            antiplatelet_platelet_transfusion_surgery: {
+              id: 'antiplatelet_platelet_transfusion_surgery',
+              category: 'Reversal',
+              title: 'Platelet transfusion before emergency neurosurgery',
+              recommendation: 'For aspirin-associated ICH requiring emergency neurosurgery, platelet transfusion might be considered.',
+              detail: 'Consider only when emergent neurosurgery is planned.',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=23',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const meds = (data.telestrokeNote?.medications || '').toLowerCase();
+                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const onAspirin = meds.includes('aspirin') || meds.includes('asa');
+                return isICH && onAspirin && !!data.telestrokeNote?.ichNeurosurgeryConsulted;
+              }
+            },
+            antiplatelet_platelet_transfusion_harm: {
+              id: 'antiplatelet_platelet_transfusion_harm',
+              category: 'Reversal',
+              title: 'Avoid platelet transfusion in aspirin-associated ICH (no surgery)',
+              recommendation: 'Do NOT give platelet transfusion for aspirin-associated ICH when emergency surgery is not planned.',
+              detail: 'Platelet transfusion is potentially harmful in this setting (PATCH trial).',
+              classOfRec: 'III',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=23',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const meds = (data.telestrokeNote?.medications || '').toLowerCase();
+                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const onAspirin = meds.includes('aspirin') || meds.includes('asa');
+                return isICH && onAspirin && !data.telestrokeNote?.ichNeurosurgeryConsulted;
+              }
+            },
+            ich_vte_ipc: {
+              id: 'ich_vte_ipc',
+              category: 'Supportive Care',
+              title: 'ICH: IPC for VTE prophylaxis',
+              recommendation: 'Start intermittent pneumatic compression (IPC) on the day of diagnosis for VTE prophylaxis.',
+              detail: 'IPC reduces DVT/PE risk in nonambulatory ICH patients.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=29',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+              }
+            },
+            ich_vte_heparin: {
+              id: 'ich_vte_heparin',
+              category: 'Supportive Care',
+              title: 'ICH: pharmacologic VTE prophylaxis timing',
+              recommendation: 'Low-dose UFH or LMWH at 24-48 hours from ICH onset may be reasonable once hematoma is stable.',
+              detail: 'Balance thrombosis prevention against hematoma expansion risk; obtain a stability CT when feasible.',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=29',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+              }
+            },
+            ich_vte_stockings: {
+              id: 'ich_vte_stockings',
+              category: 'Supportive Care',
+              title: 'Avoid compression stockings alone in ICH',
+              recommendation: 'Graduated compression stockings alone are not beneficial for VTE prophylaxis.',
+              detail: 'Use IPC instead; stockings alone do not reduce VTE risk.',
+              classOfRec: 'III',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=29',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+              }
+            },
+            ich_seizure_clinical: {
+              id: 'ich_seizure_clinical',
+              category: 'Seizures',
+              title: 'ICH: treat clinical seizures',
+              recommendation: 'Treat clinical seizures in ICH with antiseizure medication.',
+              detail: 'Levetiracetam is commonly used; avoid routine prophylaxis in patients without seizures.',
+              classOfRec: 'I',
+              levelOfEvidence: 'C-EO',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=34',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const sx = (data.telestrokeNote?.symptoms || '').toLowerCase();
+                return (dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral')) &&
+                  (sx.includes('seizure') || sx.includes('convulsion'));
+              }
+            },
+            ich_seizure_eeg: {
+              id: 'ich_seizure_eeg',
+              category: 'Seizures',
+              title: 'ICH: treat electrographic seizures',
+              recommendation: 'Treat confirmed electrographic seizures in ICH, especially with impaired consciousness.',
+              detail: 'Use EEG when mental status is unexplained or fluctuating.',
+              classOfRec: 'I',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=34',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const gcs = parseInt(data.telestrokeNote?.gcs || data.telestrokeNote?.gcsTotal) || null;
+                return (dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral')) && gcs !== null && gcs <= 12;
+              }
+            },
+            ich_seizure_cEEG: {
+              id: 'ich_seizure_cEEG',
+              category: 'Seizures',
+              title: 'ICH: continuous EEG for unexplained mental status',
+              recommendation: 'Continuous EEG (at least 24 hours) is reasonable for unexplained or fluctuating mental status in ICH.',
+              detail: 'Electrographic seizures are common in impaired consciousness without overt convulsions.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=34',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+              }
+            },
+            ich_seizure_prophylaxis: {
+              id: 'ich_seizure_prophylaxis',
+              category: 'Seizures',
+              title: 'ICH: avoid prophylactic antiseizure meds',
+              recommendation: 'Prophylactic antiseizure medication is not beneficial in ICH without seizures.',
+              detail: 'Avoid routine prophylaxis unless seizures occur.',
+              classOfRec: 'III',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=34',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+              }
+            },
+            ich_evd_ivh: {
+              id: 'ich_evd_ivh',
+              category: 'ICH',
+              title: 'IVH: EVD for large IVH with decreased consciousness',
+              recommendation: 'EVD is recommended for large IVH with impaired consciousness to reduce mortality.',
+              detail: 'Use EVD over medical management alone for obstructive hydrocephalus or large IVH.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=39',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const ct = (data.telestrokeNote?.ctResults || '').toLowerCase();
+                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const hasIVH = ct.includes('ivh') || ct.includes('intraventricular');
+                return isICH && hasIVH;
+              }
+            },
+            ich_mis_evac: {
+              id: 'ich_mis_evac',
+              category: 'ICH',
+              title: 'Minimally invasive ICH evacuation',
+              recommendation: 'For supratentorial ICH >20-30 mL with GCS 5-12, minimally invasive evacuation can be useful to reduce mortality.',
+              detail: 'Select endoscopic or stereotactic aspiration approaches based on local expertise. Functional outcome benefit is uncertain.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=37',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const gcs = parseInt(data.telestrokeNote?.gcs || data.telestrokeNote?.gcsTotal) || null;
+                return (dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral')) && gcs !== null && gcs >= 5 && gcs <= 12;
               }
             },
 
@@ -2849,6 +3173,7 @@ Clinician Name`;
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: getGuidelineUrl('AHA/ASA Spontaneous ICH 2022') + '#page=42',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const ct = (data.telestrokeNote?.ctResults || '').toLowerCase();
@@ -2889,6 +3214,7 @@ Clinician Name`;
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=32',
               conditions: (data) => {
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
                 return cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('occlus'));
@@ -2904,6 +3230,7 @@ Clinician Name`;
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=48',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const age = parseInt(data.telestrokeNote?.age) || 0;
@@ -2939,6 +3266,7 @@ Clinician Name`;
               levelOfEvidence: 'B-R',
               guideline: 'AHA Systemic Complications of Acute Stroke 2024',
               reference: 'AHA Scientific Statement 2024. DOI: 10.1161/STR.0000000000000477',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000477#page=6',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('hemorrhag');
@@ -2971,6 +3299,7 @@ Clinician Name`;
               levelOfEvidence: 'C-LD',
               guideline: 'AHA Systemic Complications of Acute Stroke 2024',
               reference: 'AHA Scientific Statement 2024. DOI: 10.1161/STR.0000000000000477',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000477#page=4',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('hemorrhag');
@@ -3008,9 +3337,10 @@ Clinician Name`;
               recommendation: 'Target SBP <160 mmHg before aneurysm is secured. Avoid SBP >160 to reduce rebleeding risk.',
               detail: 'Use short-acting IV agents (nicardipine or labetalol) for rapid titration. Avoid nitroprusside (may increase ICP). Balance between rebleed prevention and cerebral perfusion.',
               classOfRec: 'I',
-              levelOfEvidence: 'B-NR',
+              levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Aneurysmal SAH 2023',
               reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436#page=13',
               medications: ['Nicardipine 5 mg/hr IV (titrate to 15 mg/hr)', 'Labetalol 10-20 mg IV bolus PRN'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
@@ -3027,6 +3357,7 @@ Clinician Name`;
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Aneurysmal SAH 2023',
               reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436#page=26',
               medications: ['Nimodipine 60 mg PO/NG q4h x 21 days'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
@@ -3043,6 +3374,7 @@ Clinician Name`;
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Aneurysmal SAH 2023',
               reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436#page=31',
               medications: ['Levetiracetam 500-1000 mg IV/PO q12h (preferred)', 'Avoid phenytoin if possible'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
@@ -3059,6 +3391,7 @@ Clinician Name`;
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Aneurysmal SAH 2023',
               reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436#page=14',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 return (dx.includes('sah') || dx.includes('subarachnoid')) && !data.telestrokeNote?.sahAneurysmSecured;
@@ -3070,10 +3403,11 @@ Clinician Name`;
               title: 'SAH: Euvolemia maintenance',
               recommendation: 'Maintain euvolemia with isotonic crystalloids. Avoid hypovolemia and prophylactic hypervolemia (triple-H therapy is NOT recommended).',
               detail: 'Target euvolemia with isotonic saline. Monitor for cerebral salt wasting and SIADH. Induced hypertension may be considered as rescue for symptomatic DCI after aneurysm securing.',
-              classOfRec: 'I',
+              classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Aneurysmal SAH 2023',
               reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436#page=20',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 return dx.includes('sah') || dx.includes('subarachnoid');
@@ -3089,6 +3423,7 @@ Clinician Name`;
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Aneurysmal SAH 2023',
               reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436#page=30',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const isSAH = dx.includes('sah') || dx.includes('subarachnoid');
@@ -3109,7 +3444,8 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA Cerebral Venous Thrombosis 2024',
-              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000467',
+              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000456',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456#page=6',
               medications: ['Enoxaparin 1 mg/kg SC q12h', 'UFH weight-based (aPTT 60-80s)'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
@@ -3125,7 +3461,8 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA Cerebral Venous Thrombosis 2024',
-              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000467',
+              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000456',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456#page=6',
               medications: ['Warfarin target INR 2-3', 'DOAC alternative: rivaroxaban 20 mg or apixaban 5 mg BID'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
@@ -3136,13 +3473,13 @@ Clinician Name`;
               id: 'cvt_icp_management',
               category: 'CVT Management',
               title: 'CVT: Elevated ICP management',
-              recommendation: 'Assess for elevated ICP. Use acetazolamide for isolated intracranial hypertension. LP with CSF drainage for severe headache or visual impairment.',
-              detail: 'Elevated ICP is common in CVT. HOB elevation to 30 degrees. Avoid lumbar drain in large parenchymal lesions. Decompressive craniectomy for malignant CVT with impending herniation.',
+              recommendation: 'Monitor for elevated ICP and neurologic deterioration in CVT. Consider decompressive craniectomy for malignant edema with impending herniation.',
+              detail: 'Severe CVT with parenchymal lesions and mass effect should prompt emergent neurosurgical evaluation. Decompressive craniectomy is a lifesaving option in selected patients.',
               classOfRec: 'IIa',
               levelOfEvidence: 'C-LD',
               guideline: 'AHA Cerebral Venous Thrombosis 2024',
-              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000467',
-              medications: ['Acetazolamide 250-500 mg PO BID', 'LP with CSF drainage if severe'],
+              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000456',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456#page=8',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 return dx.includes('cvt') || dx.includes('venous thrombosis') || dx.includes('cerebral venous') || dx.includes('dural sinus');
@@ -3157,7 +3494,8 @@ Clinician Name`;
               classOfRec: 'IIa',
               levelOfEvidence: 'C-LD',
               guideline: 'AHA Cerebral Venous Thrombosis 2024',
-              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000467',
+              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000456',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456#page=2',
               medications: ['Levetiracetam 500-1000 mg PO/IV q12h'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
@@ -3173,7 +3511,8 @@ Clinician Name`;
               classOfRec: 'IIa',
               levelOfEvidence: 'C-LD',
               guideline: 'AHA Cerebral Venous Thrombosis 2024',
-              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000467',
+              reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000456',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456#page=2',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const age = parseInt(data.telestrokeNote?.age) || 0;
@@ -3353,12 +3692,13 @@ Clinician Name`;
               id: 'pregnancy_stroke',
               category: 'Special Populations',
               title: 'Stroke in pregnancy',
-              recommendation: 'TNK is a relative contraindication in pregnancy but may be considered when benefit outweighs risk. Consult OB/GYN immediately. EVT is preferred for LVO.',
-              detail: 'Per 2026 AHA guidelines, pregnancy is reclassified as relative (not absolute) contraindication. For LVO, EVT is preferred (no systemic thrombolytic exposure). ASA 81 mg is safe. Avoid warfarin in first trimester. LMWH is preferred anticoagulant.',
+              recommendation: 'Pregnancy should not delay acute stroke care. IV thrombolysis may be considered when benefits outweigh risks; EVT preferred for LVO. Consult OB immediately.',
+              detail: 'Maternal stroke statement: CT/CTA or MRI are acceptable; lead shielding is not recommended. Alteplase/tenecteplase do not cross placenta; weigh bleeding risk, especially early postpartum or recent cesarean/neuraxial anesthesia. Low-dose aspirin is safe; LMWH is preferred anticoagulant in pregnancy; avoid warfarin in first trimester.',
               classOfRec: 'IIb',
               levelOfEvidence: 'C-LD',
-              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026.',
+              guideline: 'AHA Maternal Stroke in Pregnancy and Postpartum 2026',
+              reference: 'Miller E et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000514',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000514#page=10',
               conditions: (data) => {
                 const checklist = data.telestrokeNote?.tnkContraindicationChecklist || {};
                 return !!checklist.pregnancy || !!data.telestrokeNote?.pregnancyStroke;
@@ -3393,6 +3733,7 @@ Clinician Name`;
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=21',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 return dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
@@ -3408,6 +3749,7 @@ Clinician Name`;
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=20',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('tia');
@@ -3447,6 +3789,7 @@ Clinician Name`;
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=32',
               conditions: (data) => {
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
                 return cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('occlusion'));
@@ -4108,6 +4451,7 @@ Clinician Name`;
               levelOfEvidence: 'C-LD',
               guideline: 'AHA/ASA 2021 Secondary Prevention; 2024 Primary Prevention',
               reference: 'AHA/ASA Secondary Prevention 2021.',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000475#page=40',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('tia');
@@ -4124,6 +4468,7 @@ Clinician Name`;
               levelOfEvidence: 'B-NR/A',
               guideline: 'AHA/ASA 2024 Primary Prevention',
               reference: 'AHA/ASA Primary Prevention 2024.',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000475#page=49',
               conditions: (data) => {
                 const sex = data.telestrokeNote?.sex;
                 return sex === 'F';
@@ -4140,6 +4485,7 @@ Clinician Name`;
               levelOfEvidence: 'B-R',
               guideline: 'CSBP CVT 2024; ESO CVT Guidelines',
               reference: 'CSBP CVT Module 2024.',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456#page=6',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 return dx.includes('cvt') || dx.includes('venous') || dx.includes('sinus');
@@ -6810,6 +7156,65 @@ Clinician Name`;
             if (sectionTitle.toLowerCase().includes(filter)) return true;
             return documentTitles.some(title => title.toLowerCase().includes(filter));
           };
+
+          const guidelineLibraryGuidelineOptions = useMemo(() => {
+            return GUIDELINE_LIBRARY_INDEX.map((guideline) => ({
+              id: guideline.id,
+              label: guideline.shortTitle || guideline.title
+            }));
+          }, []);
+
+          const guidelineLibrarySectionOptions = useMemo(() => {
+            const sections = new Set();
+            const guidelines = guidelineLibraryGuideline
+              ? GUIDELINE_LIBRARY_INDEX.filter((guideline) => guideline.id === guidelineLibraryGuideline)
+              : GUIDELINE_LIBRARY_INDEX;
+            guidelines.forEach((guideline) => {
+              guideline.recommendations.forEach((rec) => {
+                if (rec.section) sections.add(rec.section);
+              });
+            });
+            return Array.from(sections).sort();
+          }, [guidelineLibraryGuideline]);
+
+          const guidelineLibraryClassOptions = useMemo(() => {
+            const classSet = new Set();
+            GUIDELINE_LIBRARY_INDEX.forEach((guideline) => {
+              guideline.recommendations.forEach((rec) => {
+                classSet.add(rec.classOfRec || 'Statement');
+              });
+            });
+            const preferredOrder = ['I', 'IIa', 'IIb', 'III', 'Statement'];
+            const ordered = preferredOrder.filter((item) => classSet.has(item));
+            const remaining = Array.from(classSet).filter((item) => !preferredOrder.includes(item)).sort();
+            return [...ordered, ...remaining];
+          }, []);
+
+          const filteredGuidelineLibrary = useMemo(() => {
+            const query = guidelineLibraryQuery.trim().toLowerCase();
+            const matchesQuery = (rec, guideline) => {
+              if (!query) return true;
+              const haystack = `${rec.text} ${rec.section} ${guideline.title} ${guideline.shortTitle || ''}`.toLowerCase();
+              return haystack.includes(query);
+            };
+
+            return GUIDELINE_LIBRARY_INDEX
+              .filter((guideline) => !guidelineLibraryGuideline || guideline.id === guidelineLibraryGuideline)
+              .map((guideline) => {
+                const filteredRecs = guideline.recommendations.filter((rec) => {
+                  if (guidelineLibrarySection && rec.section !== guidelineLibrarySection) return false;
+                  const recClass = rec.classOfRec || 'Statement';
+                  if (guidelineLibraryClass && recClass !== guidelineLibraryClass) return false;
+                  return matchesQuery(rec, guideline);
+                });
+                return { ...guideline, recommendations: filteredRecs };
+              })
+              .filter((guideline) => guideline.recommendations.length > 0);
+          }, [guidelineLibraryQuery, guidelineLibraryGuideline, guidelineLibrarySection, guidelineLibraryClass]);
+
+          const guidelineLibraryResultsCount = useMemo(() => {
+            return filteredGuidelineLibrary.reduce((sum, guideline) => sum + guideline.recommendations.length, 0);
+          }, [filteredGuidelineLibrary]);
 
           const performSearch = (query) => {
             if (!query || query.length < 2) {
@@ -10559,8 +10964,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               }`}>
                                 {aspectsScore >= 7 ? `ASPECTS ${aspectsScore} = Favorable for EVT (most trials)` :
                                  aspectsScore === 6 ? `ASPECTS 6 = Standard EVT candidate; late window if perfusion mismatch or good collaterals` :
-                                 aspectsScore >= 3 ? `ASPECTS ${aspectsScore} = Large core — EVT may benefit (SELECT2/ANGEL-ASPECT/RESCUE-Japan); discuss GOC with family` :
-                                 `ASPECTS ${aspectsScore} = Very large core, poor EVT candidate`}
+                                 aspectsScore >= 3 ? `ASPECTS ${aspectsScore} = Large core — EVT recommended in many patients (SVIN 2025); consider age/mRS and higher sICH risk` :
+                                 `ASPECTS ${aspectsScore} = Very large core (0-2). Early window EVT may be considered; 6-24h benefit uncertain — discuss goals of care`}
                               </div>
                             </div>
 
@@ -10749,14 +11154,20 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             if (!hoursFromLKW) {
                               evtRec = { eligible: false, reason: 'Set LKW time to evaluate', confidence: 'low' };
                             } else if (nihss >= 6 && hoursFromLKW <= 24) {
-                              if (aspects >= 7 && hoursFromLKW <= 6) {
-                                evtRec = { eligible: true, reason: `Early window, NIHSS ${nihss}, ASPECTS ${aspects}`, confidence: 'high' };
-                              } else if (aspects >= 6 && hoursFromLKW > 6 && hoursFromLKW <= 24) {
-                                evtRec = { eligible: true, reason: `Late window eligible (DAWN/DEFUSE criteria likely met)`, confidence: 'medium' };
-                              } else if (aspects >= 3 && hoursFromLKW <= 24) {
-                                evtRec = { eligible: true, reason: `Large core - may qualify under SELECT2/RESCUE-Japan`, confidence: 'medium' };
-                              } else if (aspects < 3) {
-                                evtRec = { eligible: false, reason: `ASPECTS ${aspects} too low for EVT`, confidence: 'high' };
+                              if (hoursFromLKW <= 6) {
+                                if (aspects >= 6) {
+                                  evtRec = { eligible: true, reason: `Early window, NIHSS ${nihss}, ASPECTS ${aspects}`, confidence: 'high' };
+                                } else if (aspects >= 0 && aspects <= 5) {
+                                  evtRec = { eligible: true, reason: `Early window large core (SVIN 2025): ASPECTS ${aspects}`, confidence: 'medium' };
+                                }
+                              } else if (hoursFromLKW > 6 && hoursFromLKW <= 24) {
+                                if (aspects >= 6) {
+                                  evtRec = { eligible: true, reason: `Late window eligible (DAWN/DEFUSE criteria likely met)`, confidence: 'medium' };
+                                } else if (aspects >= 3 && aspects <= 5) {
+                                  evtRec = { eligible: true, reason: `Late window large core (SVIN 2025): ASPECTS ${aspects}`, confidence: 'medium' };
+                                } else if (aspects <= 2) {
+                                  evtRec = { eligible: false, reason: `ASPECTS ${aspects} - late window benefit uncertain (SVIN IIb)`, confidence: 'medium' };
+                                }
                               }
                             } else if (nihss < 6) {
                               evtRec = { eligible: false, reason: `NIHSS ${nihss} - consider if LVO present (STEP trial)`, confidence: 'medium' };
@@ -11902,21 +12313,23 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 </div>
                                 <div>
                                   <h4 className="font-semibold text-green-700 mb-2">Anterior Circulation Large Vessel Occlusion:</h4>
-                                  <p className="text-xs text-gray-600 mb-2">Trial evidence principally supports efficacy among adults ≥60 years of age, baseline mRS 0-1, NIHSS≥6 with disabling symptoms</p>
+                                  <p className="text-xs text-gray-600 mb-2">SVIN 2025 large-core guidance extends EVT eligibility to ASPECTS 0-5 in early window and 3-5 in late window (baseline mRS 0-1, age 18-80).</p>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
                                     <div className="bg-white p-2 rounded border">
                                       <p className="font-semibold text-green-700 text-xs mb-1">Early Window (0-6h):</p>
                                       <ul className="space-y-1 ml-2 text-xs">
-                                        <li>• ASPECTS 3-10: Generally eligible for EVT</li>
-                                        <li>• ASPECTS 0-2: Consider in very select cases; Consider CTP to evaluate if estimated core volume is &lt;70-100cc</li>
+                                        <li>• ASPECTS 6-10: Standard EVT candidate</li>
+                                        <li>• ASPECTS 3-5: Large core — EVT recommended (SVIN 2025)</li>
+                                        <li>• ASPECTS 0-2: May be considered early; higher sICH risk and low independence rates</li>
                                       </ul>
                                     </div>
                                     <div className="bg-white p-2 rounded border">
                                       <p className="font-semibold text-purple-700 text-xs mb-1">Late Window (6-24h):</p>
                                       <ul className="space-y-1 ml-2 text-xs">
-                                        <li>• ASPECTS 6-10: Generally eligible for EVT</li>
-                                        <li>• ASPECTS 3-5: Generally eligible; Consider CTP to evaluate if estimated core volume is ≤100cc + mismatch is present</li>
-                                        <li>• ASPECTS 0-2: EVT benefit is unclear</li>
+                                        <li>• ASPECTS 6-10: Standard EVT candidate (perfusion mismatch or good collaterals)</li>
+                                        <li>• ASPECTS 3-5: EVT recommended (SVIN 2025) if pre-stroke mRS 0-1</li>
+                                        <li>• ASPECTS 0-2: Benefit uncertain; consider trial/exceptional cases only</li>
+                                        <li>• CTP core 50-100 mL can support EVT (SELECT2/ANGEL-ASPECT)</li>
                                       </ul>
                                     </div>
                                   </div>
@@ -11968,12 +12381,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             grouped[rec.category].push(rec);
                           });
 
-                          const classColors = {
-                            'I': 'bg-green-600 text-white',
-                            'IIa': 'bg-blue-500 text-white',
-                            'IIb': 'bg-amber-500 text-white',
-                            'III': 'bg-red-600 text-white'
-                          };
+                          const classColors = GUIDELINE_CLASS_COLORS;
 
                           return (
                             <div className="bg-white border-2 border-indigo-300 rounded-lg shadow-md">
@@ -12012,7 +12420,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                                 <p className="text-xs text-gray-500 mt-1">
                                                   {rec.guideline}
                                                   {(() => {
-                                                    const url = getGuidelineUrl(rec.guideline);
+                                                    const url = rec.sourceUrl || getGuidelineUrl(rec.guideline);
                                                     if (!url) return null;
                                                     return (
                                                       <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 ml-1.5 text-indigo-600 hover:text-indigo-800 font-medium" title={'View: ' + rec.guideline}>
@@ -16314,7 +16722,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       {/* Minimally Invasive Evacuation */}
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                         <h3 className="text-lg font-semibold text-blue-800 mb-3">Minimally Invasive Evacuation (MIE)</h3>
-                        
+
+                        <div className="bg-white p-3 rounded border mb-4">
+                          <h4 className="font-semibold text-blue-700 mb-2">Guideline selection (AHA/ASA 2022)</h4>
+                          <ul className="text-sm space-y-1">
+                            <li>Supratentorial ICH volume &gt;20-30 mL with GCS 5-12: MIS evacuation can reduce mortality (Class IIa, LOE B-R).</li>
+                            <li>MIS may be reasonable over conventional craniotomy in eligible patients (Class IIb, LOE B-R).</li>
+                            <li>Functional outcome benefit remains uncertain (Class IIb, LOE B-R).</li>
+                          </ul>
+                        </div>
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           <div className="bg-white p-3 rounded border">
                             <h4 className="font-semibold text-green-600 mb-2">ENRICH Trial Inclusion (NCT02880878)</h4>
@@ -16358,34 +16775,46 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <div className="bg-white p-4 rounded border mb-4">
                           <h4 className="font-semibold text-blue-700 mb-3">Warfarin</h4>
                           <ul className="text-sm space-y-1">
-                            <li>• <strong>Vitamin K:</strong> 10 mg IV over 20 min</li>
-                            <li>• <strong>PCC (KCentra):</strong> 2000 U IV</li>
+                            <li><strong>Rapid reversal:</strong> discontinue anticoagulant and reverse ASAP (Class I, LOE C-LD).</li>
+                            <li><strong>4F-PCC:</strong> preferred over FFP for INR &gt;=2.0 (Class I, LOE B-R).</li>
+                            <li><strong>Vitamin K:</strong> IV after PCC to prevent INR rebound (Class I, LOE C-LD).</li>
+                            <li><strong>INR 1.3-1.9:</strong> PCC may be reasonable (Class IIb, LOE C-LD).</li>
                           </ul>
                         </div>
 
                         {/* Direct Oral Anticoagulants (DOACs) */}
                         <div className="bg-white p-4 rounded border mb-4">
                           <h4 className="font-semibold text-purple-700 mb-3">Direct Oral Anticoagulants (DOACs)</h4>
-                          
+
                           <div className="mb-3">
                             <p className="text-sm font-semibold text-gray-700">Direct Factor Xa Inhibitors:</p>
-                            <p className="text-sm text-gray-600 mb-2">Apixaban, Rivaroxaban</p>
+                            <p className="text-sm text-gray-600 mb-2">Apixaban, Rivaroxaban, Edoxaban</p>
                             <ul className="text-sm space-y-1">
-                              <li>• <strong>PCC (KCentra):</strong> 50 IU/kg (max 5000 IU)</li>
+                              <li><strong>Andexanet alfa:</strong> reasonable for reversal (Class IIa, LOE B-NR).</li>
                             </ul>
                           </div>
-                          
+
                           <div>
                             <p className="text-sm font-semibold text-gray-700">Direct Thrombin Inhibitor:</p>
                             <p className="text-sm text-gray-600 mb-2">Dabigatran</p>
                             <ul className="text-sm space-y-1">
-                              <li>• <strong>Idarucizumab (Praxbind):</strong> 5g IV (2 x 2.5g)</li>
-                              <li>• <strong>If unavailable:</strong> PCC (KCentra)</li>
+                              <li><strong>Idarucizumab (Praxbind):</strong> reasonable (Class IIa, LOE B-NR).</li>
+                              <li><strong>If unavailable:</strong> aPCC or PCC may be considered (Class IIb, LOE C-LD).</li>
+                              <li><strong>RRT:</strong> may be considered to reduce dabigatran (Class IIb, LOE C-LD).</li>
                             </ul>
                           </div>
                         </div>
 
+                        <div className="bg-white p-4 rounded border mb-4">
+                          <h4 className="font-semibold text-indigo-700 mb-3">Heparins</h4>
+                          <ul className="text-sm space-y-1">
+                            <li><strong>UFH:</strong> IV protamine is reasonable (Class IIa, LOE C-LD).</li>
+                            <li><strong>LMWH:</strong> IV protamine may be considered (Class IIb, LOE C-LD).</li>
+                          </ul>
+                        </div>
+
                         {/* Relative Contraindications */}
+
                         <div className="bg-white p-4 rounded border mb-4">
                           <h4 className="font-semibold text-gray-700 mb-3">Relative contraindications to PCC/FFP:</h4>
                           <ul className="text-sm space-y-1">
@@ -16397,6 +16826,18 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
                       </div>
 
+                      {/* Antiplatelet-Associated ICH */}
+                      <div className="mb-6">
+                        <h3 className="text-lg font-semibold text-red-700 mb-4">Antiplatelet-Associated ICH</h3>
+                        <div className="bg-white p-4 rounded border">
+                          <ul className="text-sm space-y-1">
+                            <li>Aspirin with emergent neurosurgery: platelet transfusion might be considered (Class IIb, LOE C-LD).</li>
+                            <li>Aspirin without planned surgery: platelet transfusions are potentially harmful and should not be given (Class III, LOE B-R).</li>
+                            <li>Desmopressin with or without platelets has uncertain benefit (Class IIb, LOE C-LD).</li>
+                          </ul>
+                        </div>
+                      </div>
+
                       {/* Hematoma Expansion Prevention */}
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">Hematoma Expansion Prevention</h3>
@@ -16404,11 +16845,12 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <div className="bg-white p-4 rounded border">
                             <h4 className="font-semibold text-red-600 mb-2">Blood Pressure Target</h4>
                             <ul className="text-sm space-y-1">
-                              <li>• <strong>Target SBP 130-150 mmHg</strong> within 2 hours</li>
-                              <li>• Avoid SBP &lt;130 (renal AKI risk)</li>
-                              <li>• Nicardipine infusion preferred (reliable titration)</li>
-                              <li>• Maintain target for at least 24 hours</li>
-                              <li className="text-gray-500 italic text-xs mt-1">Class I, LOE A — AHA/ASA ICH 2022</li>
+                              <li><strong>SBP 150-220:</strong> target SBP 140 and maintain 130-150 (Class IIb, LOE B-R).</li>
+                              <li><strong>Avoid:</strong> SBP &lt;130 (Class III, LOE B-R).</li>
+                              <li><strong>Smooth control:</strong> avoid peaks and variability (Class IIa, LOE B-NR).</li>
+                              <li><strong>Large/severe ICH or surgical candidates:</strong> safety of intensive BP lowering is uncertain (Class IIb, LOE C-LD).</li>
+                              <li><strong>Agent:</strong> IV nicardipine or clevidipine for titration.</li>
+                              <li className="text-gray-500 italic text-xs mt-1">AHA/ASA ICH 2022.</li>
                             </ul>
                           </div>
                           <div className="bg-white p-4 rounded border">
@@ -16432,19 +16874,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <div className="bg-white p-4 rounded border">
                             <h4 className="font-semibold text-orange-600 mb-2">EVD Indications</h4>
                             <ul className="text-sm space-y-1">
-                              <li>• GCS &le;8 with IVH and hydrocephalus</li>
-                              <li>• Obstructive hydrocephalus from IVH</li>
-                              <li>• Cerebellar ICH with 4th ventricle compression</li>
-                              <li>• Used for ICP monitoring and CSF drainage</li>
+                              <li>ICH or IVH with hydrocephalus causing decreased consciousness: EVD recommended to reduce mortality (Class I, LOE B-NR).</li>
+                              <li>Large IVH with impaired consciousness: EVD preferred over medical management alone (Class I, LOE B-NR).</li>
                             </ul>
                           </div>
                           <div className="bg-white p-4 rounded border">
                             <h4 className="font-semibold text-orange-600 mb-2">IVH-Specific Management</h4>
                             <ul className="text-sm space-y-1">
-                              <li>• Intraventricular alteplase may be considered (CLEAR III)</li>
-                              <li>• Dose: alteplase 1 mg q8h via EVD</li>
-                              <li>• Goal: accelerate clot resolution, reduce shunt dependency</li>
-                              <li className="text-gray-500 italic text-xs mt-1">Class IIb, LOE B-R — AHA/ASA ICH 2022</li>
+                              <li>GCS &gt;3 with primary IVH or IVH extension from supratentorial ICH &lt;30 mL requiring EVD: EVD + thrombolytic is reasonable to reduce mortality (Class IIa, LOE B-R).</li>
+                              <li>Functional outcome benefit from EVD + thrombolytic is uncertain (Class IIb, LOE B-R).</li>
+                              <li>Neuroendoscopic evacuation + EVD benefit is uncertain (Class IIb, LOE C-LD).</li>
                             </ul>
                           </div>
                         </div>
@@ -16457,23 +16896,17 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <div className="bg-white p-4 rounded border">
                             <h4 className="font-semibold text-teal-600 mb-2">Surgical Indications</h4>
                             <ul className="text-sm space-y-1">
-                              <li>• <strong>Cerebellar ICH &gt;15 mL:</strong> urgent surgical evacuation</li>
-                              <li>• Lobar ICH 30-80 mL: consider MIE (ENRICH criteria)</li>
-                              <li>• GCS deterioration by &ge;2 points</li>
-                              <li>• New pupil asymmetry or brainstem signs</li>
-                              <li>• Obstructive hydrocephalus unresponsive to EVD</li>
-                              <li className="text-gray-500 italic text-xs mt-1">Class I, LOE B-NR — AHA/ASA ICH 2022</li>
+                              <li><strong>Cerebellar ICH &gt;=15 mL</strong> with neurologic deterioration, brainstem compression, or hydrocephalus: immediate evacuation +/- EVD (Class I, LOE B-NR).</li>
+                              <li><strong>Supratentorial ICH:</strong> routine craniotomy for outcome benefit is uncertain (Class IIb, LOE A).</li>
+                              <li><strong>Deteriorating supratentorial ICH:</strong> craniotomy may be considered as a lifesaving measure (Class IIb, LOE C-LD).</li>
                             </ul>
                           </div>
                           <div className="bg-white p-4 rounded border">
-                            <h4 className="font-semibold text-teal-600 mb-2">Goals-of-Care Triggers</h4>
+                            <h4 className="font-semibold text-teal-600 mb-2">Goals-of-Care Guidance</h4>
                             <ul className="text-sm space-y-1">
-                              <li>• <strong>ICH Score &ge;3:</strong> initiate GOC discussion</li>
-                              <li>• Avoid early DNR orders limiting aggressive care</li>
-                              <li>• Full care recommended for minimum 24-48h</li>
-                              <li>• Self-fulfilling prophecy of withdrawal is well-documented</li>
-                              <li>• Palliative care consult for symptom management</li>
-                              <li className="text-gray-500 italic text-xs mt-1">Class I, LOE C-LD — AHA/ASA ICH 2022 + AHA Palliative 2024</li>
+                              <li><strong>No preexisting limits:</strong> aggressive care and postpone new DNAR/withdrawal until at least the second full hospital day (Class IIa, LOE B-NR).</li>
+                              <li>Do not limit other medical/surgical interventions solely due to DNAR unless explicitly specified (Class III, LOE B-NR).</li>
+                              <li>Early palliative care for symptom management and shared decision making.</li>
                             </ul>
                           </div>
                         </div>
@@ -16484,12 +16917,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <h3 className="text-lg font-semibold text-red-700 mb-4">Seizure Management in ICH</h3>
                         <div className="bg-white p-4 rounded border">
                           <ul className="text-sm space-y-1">
-                            <li>• Treat clinical seizures with antiseizure medication (ASM)</li>
-                            <li>• <strong>7-day prophylactic ASM</strong> may be considered for lobar ICH</li>
-                            <li>• <strong>No routine long-term seizure prophylaxis</strong> (Class III)</li>
-                            <li>• Continuous EEG monitoring for unexplained decrease in consciousness</li>
-                            <li>• Preferred agents: levetiracetam 500-1000 mg IV/PO BID or lacosamide 200 mg IV/PO BID</li>
-                            <li className="text-gray-500 italic text-xs mt-1">Class IIb (7-day prophylaxis), Class III (routine long-term) — AHA/ASA ICH 2022</li>
+                            <li>Treat clinical seizures with antiseizure medication (Class I, LOE C-EO).</li>
+                            <li>Treat electrographic seizures in impaired consciousness (Class I, LOE C-LD).</li>
+                            <li>Continuous EEG (24 hours) is reasonable for unexplained abnormal or fluctuating mental status (Class IIa, LOE C-LD).</li>
+                            <li>No prophylactic antiseizure medication in patients without seizures (Class III, LOE B-NR).</li>
                           </ul>
                         </div>
                       </div>
@@ -16501,12 +16932,14 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <div className="bg-white p-4 rounded border">
                             <h4 className="font-semibold text-gray-700 mb-2">Standard Orders</h4>
                             <ul className="text-sm space-y-1">
-                              <li>• NPO until dysphagia screen passed</li>
-                              <li>• IPC on admission for VTE prophylaxis</li>
-                              <li>• Pharmacologic VTE ppx after 24-48h (stable hematoma)</li>
-                              <li>• Glucose target 140-180 (no intensive insulin)</li>
-                              <li>• Acetaminophen for temp &gt;38°C</li>
-                              <li>• HOB 30 degrees</li>
+                              <li>NPO until dysphagia screen passed.</li>
+                              <li>IPC starting day of diagnosis for VTE prophylaxis (Class I, LOE B-R).</li>
+                              <li>Low-dose UFH/LMWH can be useful to reduce PE risk (Class IIa, LOE C-LD).</li>
+                              <li>Initiate UFH/LMWH at 24-48h if hematoma stable (Class IIb, LOE C-LD).</li>
+                              <li>Graduated compression stockings alone are not beneficial (Class III, LOE B-R).</li>
+                              <li>Glucose target 140-180 (no intensive insulin).</li>
+                              <li>Acetaminophen for temp &gt;38 C.</li>
+                              <li>HOB 30 degrees.</li>
                             </ul>
                           </div>
                           <div className="bg-white p-4 rounded border">
@@ -16541,7 +16974,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
                                 <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105</li>
                                 <li><strong>After thrombectomy:</strong> SBP &lt;180, DBP &lt;105</li>
-                                <li><strong>ICH:</strong> SBP &lt;160, DBP &lt;105</li>
+                                <li><strong>ICH:</strong> SBP target 140, maintain 130-150 (avoid &lt;130)</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border">
@@ -16696,6 +17129,30 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </ul>
                             </div>
                           </div>
+                        </div>
+
+                        {/* Large Core EVT Selection */}
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-blue-800 mb-3">Large Core EVT Selection (SVIN 2025)</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-blue-700 mb-2">Early Window (0-6h)</h4>
+                              <ul className="text-sm space-y-1">
+                                <li>• ASPECTS 0-5: EVT recommended</li>
+                                <li>• ICA/M1 occlusion; pre-stroke mRS 0-1; age 18-80</li>
+                                <li>• Higher sICH risk; discuss goals of care</li>
+                              </ul>
+                            </div>
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-blue-700 mb-2">Late Window (6-24h)</h4>
+                              <ul className="text-sm space-y-1">
+                                <li>• ASPECTS 3-5: EVT recommended</li>
+                                <li>• ASPECTS 0-2: Benefit uncertain (Class IIb)</li>
+                                <li>• CTP core 50-100 mL supports EVT (SELECT2/ANGEL-ASPECT)</li>
+                              </ul>
+                            </div>
+                          </div>
+                          <p className="text-xs text-gray-500 mt-2 italic">SVIN 2025 guideline incorporates LASTE, SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, and TESLA.</p>
                         </div>
 
                         {/* Post-EVT Management */}
@@ -18506,6 +18963,129 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <span>Asta (Ai2)</span>
                         </a>
                       </div>
+                    </div>
+
+                    {/* Guideline Library */}
+                    <div className="bg-white border border-indigo-200 rounded-lg p-4">
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div>
+                          <h3 className="text-lg font-semibold text-indigo-800">Guideline Library</h3>
+                          <p className="text-xs text-gray-600">Full COR/LOE recommendations with direct publisher PDF links.</p>
+                        </div>
+                        <span className="text-xs text-indigo-700 font-medium">{guidelineLibraryResultsCount} recommendations</span>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <div className="relative">
+                          <input
+                            type="text"
+                            placeholder="Search recommendations..."
+                            value={guidelineLibraryQuery}
+                            onChange={(e) => setGuidelineLibraryQuery(e.target.value)}
+                            className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            aria-label="Search guideline recommendations"
+                          />
+                          <i data-lucide="search" className="w-4 h-4 absolute left-3 top-2.5 text-gray-400"></i>
+                        </div>
+                        <select
+                          value={guidelineLibraryGuideline}
+                          onChange={(e) => {
+                            setGuidelineLibraryGuideline(e.target.value);
+                            setGuidelineLibrarySection('');
+                          }}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          aria-label="Filter by guideline"
+                        >
+                          <option value="">All guidelines</option>
+                          {guidelineLibraryGuidelineOptions.map((option) => (
+                            <option key={option.id} value={option.id}>{option.label}</option>
+                          ))}
+                        </select>
+                        <select
+                          value={guidelineLibrarySection}
+                          onChange={(e) => setGuidelineLibrarySection(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          aria-label="Filter by section"
+                        >
+                          <option value="">All sections</option>
+                          {guidelineLibrarySectionOptions.map((section) => (
+                            <option key={section} value={section}>{section}</option>
+                          ))}
+                        </select>
+                        <select
+                          value={guidelineLibraryClass}
+                          onChange={(e) => setGuidelineLibraryClass(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          aria-label="Filter by class of recommendation"
+                        >
+                          <option value="">All classes</option>
+                          {guidelineLibraryClassOptions.map((item) => (
+                            <option key={item} value={item}>{item}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {filteredGuidelineLibrary.length === 0 ? (
+                        <p className="text-sm text-gray-600 mt-3">No recommendations match the current filters.</p>
+                      ) : (
+                        <div className="mt-4 space-y-3">
+                          {filteredGuidelineLibrary.map((guideline) => {
+                            const grouped = {};
+                            guideline.recommendations.forEach((rec) => {
+                              if (!grouped[rec.section]) grouped[rec.section] = [];
+                              grouped[rec.section].push(rec);
+                            });
+                            const shouldExpand = Boolean(guidelineLibraryQuery || guidelineLibraryGuideline || guidelineLibrarySection || guidelineLibraryClass);
+                            return (
+                              <details key={guideline.id} className="border border-indigo-200 rounded-lg bg-indigo-50/40" open={shouldExpand}>
+                                <summary className="cursor-pointer p-3 font-semibold text-indigo-900 hover:bg-indigo-100 rounded-lg flex items-center justify-between">
+                                  <span>{guideline.shortTitle || guideline.title}</span>
+                                  <span className="text-xs text-indigo-600">{guideline.recommendations.length} recs</span>
+                                </summary>
+                                <div className="p-3 pt-0 space-y-3">
+                                  {Object.entries(grouped).map(([section, recs]) => (
+                                    <details key={section} className="bg-white border border-indigo-100 rounded-lg" open={shouldExpand || guidelineLibrarySection === section}>
+                                      <summary className="cursor-pointer px-3 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50 rounded-lg flex items-center justify-between">
+                                        <span>{section}</span>
+                                        <span className="text-xs text-indigo-500">{recs.length}</span>
+                                      </summary>
+                                      <div className="px-3 pb-3 space-y-2">
+                                        {recs.map((rec) => {
+                                          const recClass = rec.classOfRec || 'Statement';
+                                          const recLevel = rec.levelOfEvidence || 'Ungraded';
+                                          const classLabel = rec.classNote ? `${recClass} (${rec.classNote})` : recClass;
+                                          return (
+                                            <div key={rec.id} className="border border-indigo-100 rounded-lg p-2 bg-indigo-50/50">
+                                              <div className="flex items-start gap-2">
+                                                <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold shrink-0 ${GUIDELINE_CLASS_COLORS[recClass] || 'bg-gray-500 text-white'}`}>
+                                                  {classLabel}/{recLevel}
+                                                </span>
+                                                <div className="flex-1 min-w-0">
+                                                  <p className="text-sm text-gray-800">{rec.text}</p>
+                                                  <p className="text-xs text-gray-500 mt-1">
+                                                    {guideline.title}
+                                                    {rec.page ? ` · p. ${rec.page}` : ''}
+                                                    {rec.sourceUrl && (
+                                                      <a href={rec.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 ml-2 text-indigo-600 hover:text-indigo-800 font-medium">
+                                                        <i data-lucide="external-link" className="w-3 h-3"></i>
+                                                        <span>Source</span>
+                                                      </a>
+                                                    )}
+                                                  </p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          );
+                                        })}
+                                      </div>
+                                    </details>
+                                  ))}
+                                </div>
+                              </details>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
 
                     {/* Aneurysms & Vascular Malformations Section */}
