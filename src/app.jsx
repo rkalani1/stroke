@@ -8401,6 +8401,34 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
             : '';
           const hasNihssInputs = nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '');
           const nihssDisplay = nihssFromNote || (hasNihssInputs ? String(nihssScore) : '--');
+          const AlgorithmStep = ({ index, title, tag, tagTone, items, note }) => (
+            <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-sm">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <p className="text-[10px] uppercase tracking-wide text-slate-400 font-semibold">{index}</p>
+                  <h4 className="text-sm font-semibold text-slate-800">{title}</h4>
+                </div>
+                {tag && (
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${tagTone || 'bg-slate-100 text-slate-700'}`}>
+                    {tag}
+                  </span>
+                )}
+              </div>
+              {note && <p className="text-xs text-slate-500 mt-1">{note}</p>}
+              {items && items.length > 0 && (
+                <ul className="mt-2 text-sm text-slate-700 space-y-1 list-disc list-inside">
+                  {items.map((item, idx) => (
+                    <li key={`${index}-${idx}`}>{item}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          );
+          const AlgorithmArrow = ({ direction = 'down' }) => (
+            <div className={`flex ${direction === 'right' ? 'justify-start' : 'justify-center'} text-slate-400`}>
+              <i data-lucide={direction === 'right' ? 'arrow-right' : 'arrow-down'} className="w-4 h-4"></i>
+            </div>
+          );
 
           return (
             <div className="relative">
@@ -16716,10 +16744,88 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                     {/* ICH Content */}
                     {managementSubTab === 'ich' && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                      <h2 className="text-xl font-semibold text-red-800 mb-4">ICH Management</h2>
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
+                          <h2 className="text-xl font-semibold text-red-800">ICH Management</h2>
+                          <span className="text-xs text-red-600 font-medium">Algorithmic workflow</span>
+                        </div>
 
-                      {/* Minimally Invasive Evacuation */}
+                        <div className="space-y-3">
+                          <AlgorithmStep
+                            index="Step 1"
+                            title="Confirm ICH + severity"
+                            items={[
+                              'Noncontrast CT +/- CTA; quantify volume (ABC/2).',
+                              'Assess IVH/hydrocephalus, GCS, and ICH score.',
+                              'Send coagulation labs, platelets, and anticoagulant history.'
+                            ]}
+                          />
+                          <AlgorithmArrow />
+                          <AlgorithmStep
+                            index="Step 2"
+                            title="Hematoma expansion prevention"
+                            items={[
+                              'SBP 150-220: target 140 and maintain 130-150; avoid <130.',
+                              'Smooth BP control; avoid large variability.',
+                              'Large/severe ICH: intensive BP lowering safety uncertain.'
+                            ]}
+                          />
+                          <AlgorithmArrow />
+                          <AlgorithmStep
+                            index="Step 3"
+                            title="Hemostasis and reversal"
+                            items={[
+                              'Stop anticoagulants; use 4F-PCC + vitamin K for warfarin.',
+                              'Use andexanet or idarucizumab for Xa/dabigatran.',
+                              'Avoid platelets unless emergent neurosurgery; DDAVP uncertain.'
+                            ]}
+                          />
+                          <AlgorithmArrow />
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <AlgorithmStep
+                              index="Step 4A"
+                              title="IVH/hydrocephalus"
+                              items={[
+                                'EVD for hydrocephalus or large IVH with decreased consciousness.',
+                                'Consider IVH thrombolytic via EVD for select patients.'
+                              ]}
+                            />
+                            <AlgorithmStep
+                              index="Step 4B"
+                              title="Surgical selection"
+                              items={[
+                                'Cerebellar ICH >=15 mL + deterioration/brainstem compression: evacuate.',
+                                'Supratentorial >20-30 mL with GCS 5-12: MIS may reduce mortality.',
+                                'Routine craniotomy benefit uncertain; consider if deteriorating.'
+                              ]}
+                            />
+                          </div>
+                          <AlgorithmArrow />
+                          <AlgorithmStep
+                            index="Step 5"
+                            title="Seizures, VTE, supportive care"
+                            items={[
+                              'Treat clinical/electrographic seizures; cEEG if unexplained AMS.',
+                              'IPC day 1; UFH/LMWH at 24-48h if stable.',
+                              'NPO until swallow screen; manage glucose and fever.'
+                            ]}
+                          />
+                          <AlgorithmArrow />
+                          <AlgorithmStep
+                            index="Step 6"
+                            title="Goals of care"
+                            items={[
+                              'Postpone new DNAR/withdrawal until hospital day 2 when possible.',
+                              'Do not limit other interventions solely due to DNAR.',
+                              'Early palliative care for symptom support and shared decisions.'
+                            ]}
+                          />
+                        </div>
+
+                        <details className="mt-5 bg-white border border-red-200 rounded-lg">
+                          <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-lg">ICH protocol details</summary>
+                          <div className="p-4 space-y-6">
+{/* Minimally Invasive Evacuation */}
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                         <h3 className="text-lg font-semibold text-blue-800 mb-3">Minimally Invasive Evacuation (MIE)</h3>
 
@@ -16954,15 +17060,102 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                         </div>
                       </div>
-
-                    </div>
+                          </div>
+                        </details>
+                      </div>
                     )}
                     {/* End of ICH Content */}
 
                     {/* Ischemic Stroke Management Content */}
                     {managementSubTab === 'ischemic' && (
                       <div className="space-y-6">
-                        {/* Blood Pressure Management */}
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
+                            <h3 className="text-lg font-semibold text-blue-800">Ischemic Stroke Management Algorithm</h3>
+                            <span className="text-xs text-blue-600 font-medium">Algorithmic workflow</span>
+                          </div>
+
+                          <div className="space-y-3">
+                            <AlgorithmStep
+                              index="Step 1"
+                              title="Confirm ischemic stroke + imaging"
+                              items={[
+                                'Noncontrast CT; CTA/CTP or MRI as needed.',
+                                'Define last known well and stroke severity (NIHSS).',
+                                'Identify LVO and large-core status if present.'
+                              ]}
+                            />
+                            <AlgorithmArrow />
+                            <AlgorithmStep
+                              index="Step 2"
+                              title="Reperfusion decision"
+                              items={[
+                                'Assess IV thrombolysis eligibility and time window.',
+                                'Evaluate for EVT in LVO (0-24h per SVIN/AHA criteria).'
+                              ]}
+                            />
+                            <AlgorithmArrow />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              <AlgorithmStep
+                                index="Step 2A"
+                                title="IV thrombolysis"
+                                items={[
+                                  'BP <185/110 before lytics; <180/105 after.',
+                                  'Monitor closely for hemorrhage or angioedema.'
+                                ]}
+                              />
+                              <AlgorithmStep
+                                index="Step 2B"
+                                title="Mechanical thrombectomy"
+                                items={[
+                                  'LVO: EVT recommended in 0-6h and select 6-24h.',
+                                  'Large-core EVT per SVIN criteria when eligible.'
+                                ]}
+                              />
+                            </div>
+                            <AlgorithmArrow />
+                            <AlgorithmStep
+                              index="Step 3"
+                              title="Blood pressure targets"
+                              items={[
+                                'No lytics: allow up to 220/120 unless other indication.',
+                                'Post-lysis or post-EVT: target <180/105.'
+                              ]}
+                            />
+                            <AlgorithmArrow />
+                            <AlgorithmStep
+                              index="Step 4"
+                              title="Post-lysis complications"
+                              items={[
+                                'If neuro decline: activate post-lysis ICH protocol.',
+                                'Manage orolingual angioedema if present.'
+                              ]}
+                            />
+                            <AlgorithmArrow />
+                            <AlgorithmStep
+                              index="Step 5"
+                              title="Antithrombotic initiation"
+                              items={[
+                                'DAPT x21 days for minor stroke/TIA when indicated.',
+                                'ASA after 24h post-lysis; DOAC timing for AF per severity.'
+                              ]}
+                            />
+                            <AlgorithmArrow />
+                            <AlgorithmStep
+                              index="Step 6"
+                              title="Secondary prevention + discharge"
+                              items={[
+                                'High-intensity statin, BP <130/80, risk factor control.',
+                                'Smoking cessation, exercise/diet counseling, follow-up.'
+                              ]}
+                            />
+                          </div>
+                        </div>
+
+                        <details className="bg-white border border-blue-200 rounded-lg">
+                          <summary className="cursor-pointer px-4 py-3 font-semibold text-blue-800 hover:bg-blue-50 rounded-lg">Ischemic protocol details</summary>
+                          <div className="p-4 space-y-6">
+{/* Blood Pressure Management */}
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-blue-800 mb-3">Blood Pressure Management</h3>
 
@@ -17247,8 +17440,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
                         </div>
-
-
+                          </div>
+                        </details>
                       </div>
                     )}
                     {/* End of Ischemic Stroke Management Content */}
