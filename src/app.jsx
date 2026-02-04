@@ -8409,7 +8409,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               icon: 'text-slate-500',
               surface: 'bg-slate-50',
               line: 'bg-slate-300',
-              lineBorder: 'border-slate-300'
+              lineBorder: 'border-slate-300',
+              stroke: '#cbd5e1'
             },
             red: {
               border: 'border-red-200',
@@ -8418,7 +8419,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               icon: 'text-red-500',
               surface: 'bg-red-50',
               line: 'bg-red-200',
-              lineBorder: 'border-red-300'
+              lineBorder: 'border-red-300',
+              stroke: '#fecaca'
             },
             blue: {
               border: 'border-blue-200',
@@ -8427,7 +8429,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               icon: 'text-blue-500',
               surface: 'bg-blue-50',
               line: 'bg-blue-200',
-              lineBorder: 'border-blue-300'
+              lineBorder: 'border-blue-300',
+              stroke: '#bfdbfe'
             }
           };
           const AlgorithmStep = ({ index, title, tag, tagTone, items, note, tone = 'slate', icon }) => {
@@ -8492,13 +8495,28 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               </div>
             </div>
           );
-          const AlgorithmSplit = ({ tone = 'slate', label }) => {
+          const AlgorithmSplit = ({ tone = 'slate', leftLabel, rightLabel }) => {
             const toneStyles = algorithmToneStyles[tone] || algorithmToneStyles.slate;
             return (
-              <div className="relative flex items-center justify-center">
-                <div className={`w-full max-w-md h-px ${toneStyles.line}`}></div>
-                <div className={`absolute w-2.5 h-2.5 rounded-full border-2 ${toneStyles.lineBorder} bg-white`}></div>
-                {label && <span className="absolute -top-4 text-[10px] uppercase tracking-wide text-slate-400">{label}</span>}
+              <div className="flex flex-col items-center gap-2 py-1">
+                <svg
+                  className="w-full max-w-md h-6"
+                  viewBox="0 0 320 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <line x1="160" y1="0" x2="160" y2="10" stroke={toneStyles.stroke} strokeWidth="2" strokeLinecap="round" />
+                  <line x1="160" y1="10" x2="36" y2="10" stroke={toneStyles.stroke} strokeWidth="2" strokeLinecap="round" />
+                  <line x1="160" y1="10" x2="284" y2="10" stroke={toneStyles.stroke} strokeWidth="2" strokeLinecap="round" />
+                  <polygon points="28,10 36,4 36,16" fill={toneStyles.stroke} />
+                  <polygon points="292,10 284,4 284,16" fill={toneStyles.stroke} />
+                </svg>
+                {(leftLabel || rightLabel) && (
+                  <div className="w-full max-w-md grid grid-cols-2 text-[10px] uppercase tracking-wide text-slate-400">
+                    <span className="text-left">{leftLabel || ''}</span>
+                    <span className="text-right">{rightLabel || ''}</span>
+                  </div>
+                )}
               </div>
             );
           };
@@ -16860,7 +16878,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             ]}
                           />
                           <AlgorithmArrow />
-                          <AlgorithmSplit tone="red" />
+                          <AlgorithmSplit tone="red" leftLabel="IVH / hydrocephalus" rightLabel="Surgical selection" />
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <AlgorithmStep
                               index="Step 4A"
@@ -17182,8 +17200,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               tone="blue"
                               note="Assess IV thrombolysis window and EVT candidacy."
                             />
-                            <AlgorithmArrow />
-                            <AlgorithmSplit tone="blue" />
+                            <AlgorithmSplit tone="blue" leftLabel="IV thrombolysis" rightLabel="Mechanical EVT" />
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                               <AlgorithmStep
                                 index="Step 2A"
