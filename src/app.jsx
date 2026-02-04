@@ -8465,7 +8465,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               </div>
             );
           };
-          const AlgorithmDecision = ({ index, title, note, tone = 'slate', icon }) => {
+          const AlgorithmDecision = ({ index, title, note, tone = 'slate' }) => {
             const toneStyles = algorithmToneStyles[tone] || algorithmToneStyles.slate;
             const badgeLabel = index ? index.replace(/^Step\s*/i, '') : '';
             return (
@@ -8473,18 +8473,13 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                 <div className={`mb-2 w-8 h-8 rounded-full border-2 ${toneStyles.badge} flex items-center justify-center text-[10px] font-bold`}>
                   {badgeLabel}
                 </div>
-                <div className="relative w-40 h-40">
-                  <div className={`absolute inset-0 rotate-45 rounded-lg border-2 ${toneStyles.border} ${toneStyles.surface}`}></div>
-                  <div className="absolute inset-0 flex items-center justify-center p-4">
-                    <div className="text-center">
-                      <div className="flex items-center justify-center gap-2">
-                        {icon && <i data-lucide={icon} className={`w-4 h-4 ${toneStyles.icon}`}></i>}
-                        <p className={`text-sm font-semibold ${toneStyles.text}`}>{title}</p>
-                      </div>
-                      {note && <p className="mt-2 text-xs text-slate-500">{note}</p>}
-                    </div>
+                <div className="relative w-24 h-24">
+                  <div className={`absolute inset-0 rotate-45 border-2 ${toneStyles.border} bg-white`}></div>
+                  <div className="absolute inset-0 flex items-center justify-center text-center px-2">
+                    <p className={`text-xs font-semibold ${toneStyles.text}`}>{title}</p>
                   </div>
                 </div>
+                {note && <p className="mt-2 text-xs text-slate-500 text-center max-w-xs">{note}</p>}
               </div>
             );
           };
@@ -16865,7 +16860,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             ]}
                           />
                           <AlgorithmArrow />
-                          <AlgorithmSplit tone="red" label="Branch" />
+                          <AlgorithmSplit tone="red" />
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <AlgorithmStep
                               index="Step 4A"
@@ -17183,13 +17178,12 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <AlgorithmArrow />
                             <AlgorithmDecision
                               index="Step 2"
-                              title="Reperfusion decision"
+                              title="Reperfusion eligible?"
                               tone="blue"
-                              icon="target"
-                              note="IV thrombolysis window? EVT candidate?"
+                              note="Assess IV thrombolysis window and EVT candidacy."
                             />
                             <AlgorithmArrow />
-                            <AlgorithmSplit tone="blue" label="Branch" />
+                            <AlgorithmSplit tone="blue" />
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                               <AlgorithmStep
                                 index="Step 2A"
