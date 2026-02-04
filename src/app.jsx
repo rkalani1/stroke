@@ -8401,34 +8401,112 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
             : '';
           const hasNihssInputs = nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '');
           const nihssDisplay = nihssFromNote || (hasNihssInputs ? String(nihssScore) : '--');
-          const AlgorithmStep = ({ index, title, tag, tagTone, items, note }) => (
-            <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-sm">
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <p className="text-[10px] uppercase tracking-wide text-slate-400 font-semibold">{index}</p>
-                  <h4 className="text-sm font-semibold text-slate-800">{title}</h4>
+          const algorithmToneStyles = {
+            slate: {
+              border: 'border-slate-200',
+              badge: 'bg-slate-100 text-slate-700 border-slate-300',
+              text: 'text-slate-800',
+              icon: 'text-slate-500',
+              surface: 'bg-slate-50',
+              line: 'bg-slate-300',
+              lineBorder: 'border-slate-300'
+            },
+            red: {
+              border: 'border-red-200',
+              badge: 'bg-red-100 text-red-700 border-red-300',
+              text: 'text-red-800',
+              icon: 'text-red-500',
+              surface: 'bg-red-50',
+              line: 'bg-red-200',
+              lineBorder: 'border-red-300'
+            },
+            blue: {
+              border: 'border-blue-200',
+              badge: 'bg-blue-100 text-blue-700 border-blue-300',
+              text: 'text-blue-800',
+              icon: 'text-blue-500',
+              surface: 'bg-blue-50',
+              line: 'bg-blue-200',
+              lineBorder: 'border-blue-300'
+            }
+          };
+          const AlgorithmStep = ({ index, title, tag, tagTone, items, note, tone = 'slate', icon }) => {
+            const toneStyles = algorithmToneStyles[tone] || algorithmToneStyles.slate;
+            const badgeLabel = index ? index.replace(/^Step\s*/i, '') : '';
+            return (
+              <div className="relative pl-10">
+                <div className={`absolute left-0 top-3 w-8 h-8 rounded-full border-2 ${toneStyles.badge} flex items-center justify-center text-[10px] font-bold`}>
+                  {badgeLabel}
                 </div>
-                {tag && (
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${tagTone || 'bg-slate-100 text-slate-700'}`}>
-                    {tag}
-                  </span>
-                )}
+                <div className={`bg-white border ${toneStyles.border} rounded-lg p-3 shadow-sm`}>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-start gap-2">
+                      {icon && <i data-lucide={icon} className={`w-4 h-4 mt-0.5 ${toneStyles.icon}`}></i>}
+                      <div>
+                        <p className="text-[10px] uppercase tracking-wide text-slate-400 font-semibold">{index}</p>
+                        <h4 className={`text-sm font-semibold ${toneStyles.text}`}>{title}</h4>
+                      </div>
+                    </div>
+                    {tag && (
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${tagTone || 'bg-slate-100 text-slate-700'}`}>
+                        {tag}
+                      </span>
+                    )}
+                  </div>
+                  {note && <p className="text-xs text-slate-500 mt-1">{note}</p>}
+                  {items && items.length > 0 && (
+                    <ul className="mt-2 text-sm text-slate-700 space-y-1 list-disc list-inside">
+                      {items.map((item, idx) => (
+                        <li key={`${index}-${idx}`}>{item}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               </div>
-              {note && <p className="text-xs text-slate-500 mt-1">{note}</p>}
-              {items && items.length > 0 && (
-                <ul className="mt-2 text-sm text-slate-700 space-y-1 list-disc list-inside">
-                  {items.map((item, idx) => (
-                    <li key={`${index}-${idx}`}>{item}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          );
-          const AlgorithmArrow = ({ direction = 'down' }) => (
+            );
+          };
+          const AlgorithmDecision = ({ index, title, note, tone = 'slate', icon }) => {
+            const toneStyles = algorithmToneStyles[tone] || algorithmToneStyles.slate;
+            const badgeLabel = index ? index.replace(/^Step\s*/i, '') : '';
+            return (
+              <div className="flex flex-col items-center">
+                <div className={`mb-2 w-8 h-8 rounded-full border-2 ${toneStyles.badge} flex items-center justify-center text-[10px] font-bold`}>
+                  {badgeLabel}
+                </div>
+                <div className="relative w-40 h-40">
+                  <div className={`absolute inset-0 rotate-45 rounded-lg border-2 ${toneStyles.border} ${toneStyles.surface}`}></div>
+                  <div className="absolute inset-0 flex items-center justify-center p-4">
+                    <div className="text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        {icon && <i data-lucide={icon} className={`w-4 h-4 ${toneStyles.icon}`}></i>}
+                        <p className={`text-sm font-semibold ${toneStyles.text}`}>{title}</p>
+                      </div>
+                      {note && <p className="mt-2 text-xs text-slate-500">{note}</p>}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          };
+          const AlgorithmArrow = ({ direction = 'down', label }) => (
             <div className={`flex ${direction === 'right' ? 'justify-start' : 'justify-center'} text-slate-400`}>
-              <i data-lucide={direction === 'right' ? 'arrow-right' : 'arrow-down'} className="w-4 h-4"></i>
+              <div className="flex flex-col items-center">
+                <div className="h-4 w-px bg-slate-300"></div>
+                <i data-lucide={direction === 'right' ? 'arrow-right' : 'arrow-down'} className="w-4 h-4"></i>
+                {label && <span className="text-[10px] uppercase tracking-wide text-slate-400 mt-1">{label}</span>}
+              </div>
             </div>
           );
+          const AlgorithmSplit = ({ tone = 'slate', label }) => {
+            const toneStyles = algorithmToneStyles[tone] || algorithmToneStyles.slate;
+            return (
+              <div className="relative flex items-center justify-center">
+                <div className={`w-full max-w-md h-px ${toneStyles.line}`}></div>
+                <div className={`absolute w-2.5 h-2.5 rounded-full border-2 ${toneStyles.lineBorder} bg-white`}></div>
+                {label && <span className="absolute -top-4 text-[10px] uppercase tracking-wide text-slate-400">{label}</span>}
+              </div>
+            );
+          };
 
           return (
             <div className="relative">
@@ -16754,6 +16832,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <AlgorithmStep
                             index="Step 1"
                             title="Confirm ICH + severity"
+                            tone="red"
+                            icon="scan"
                             items={[
                               'Noncontrast CT +/- CTA; quantify volume (ABC/2).',
                               'Assess IVH/hydrocephalus, GCS, and ICH score.',
@@ -16764,6 +16844,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <AlgorithmStep
                             index="Step 2"
                             title="Hematoma expansion prevention"
+                            tone="red"
+                            icon="activity"
                             items={[
                               'SBP 150-220: target 140 and maintain 130-150; avoid <130.',
                               'Smooth BP control; avoid large variability.',
@@ -16774,6 +16856,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <AlgorithmStep
                             index="Step 3"
                             title="Hemostasis and reversal"
+                            tone="red"
+                            icon="shield"
                             items={[
                               'Stop anticoagulants; use 4F-PCC + vitamin K for warfarin.',
                               'Use andexanet or idarucizumab for Xa/dabigatran.',
@@ -16781,10 +16865,13 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             ]}
                           />
                           <AlgorithmArrow />
+                          <AlgorithmSplit tone="red" label="Branch" />
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <AlgorithmStep
                               index="Step 4A"
                               title="IVH/hydrocephalus"
+                              tone="red"
+                              icon="brain"
                               items={[
                                 'EVD for hydrocephalus or large IVH with decreased consciousness.',
                                 'Consider IVH thrombolytic via EVD for select patients.'
@@ -16793,6 +16880,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <AlgorithmStep
                               index="Step 4B"
                               title="Surgical selection"
+                              tone="red"
+                              icon="clipboard-check"
                               items={[
                                 'Cerebellar ICH >=15 mL + deterioration/brainstem compression: evacuate.',
                                 'Supratentorial >20-30 mL with GCS 5-12: MIS may reduce mortality.',
@@ -16804,6 +16893,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <AlgorithmStep
                             index="Step 5"
                             title="Seizures, VTE, supportive care"
+                            tone="red"
+                            icon="stethoscope"
                             items={[
                               'Treat clinical/electrographic seizures; cEEG if unexplained AMS.',
                               'IPC day 1; UFH/LMWH at 24-48h if stable.',
@@ -16814,6 +16905,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <AlgorithmStep
                             index="Step 6"
                             title="Goals of care"
+                            tone="red"
+                            icon="users"
                             items={[
                               'Postpone new DNAR/withdrawal until hospital day 2 when possible.',
                               'Do not limit other interventions solely due to DNAR.',
@@ -17079,6 +17172,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <AlgorithmStep
                               index="Step 1"
                               title="Confirm ischemic stroke + imaging"
+                              tone="blue"
+                              icon="scan"
                               items={[
                                 'Noncontrast CT; CTA/CTP or MRI as needed.',
                                 'Define last known well and stroke severity (NIHSS).',
@@ -17086,19 +17181,21 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               ]}
                             />
                             <AlgorithmArrow />
-                            <AlgorithmStep
+                            <AlgorithmDecision
                               index="Step 2"
                               title="Reperfusion decision"
-                              items={[
-                                'Assess IV thrombolysis eligibility and time window.',
-                                'Evaluate for EVT in LVO (0-24h per SVIN/AHA criteria).'
-                              ]}
+                              tone="blue"
+                              icon="target"
+                              note="IV thrombolysis window? EVT candidate?"
                             />
                             <AlgorithmArrow />
+                            <AlgorithmSplit tone="blue" label="Branch" />
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                               <AlgorithmStep
                                 index="Step 2A"
                                 title="IV thrombolysis"
+                                tone="blue"
+                                icon="zap"
                                 items={[
                                   'BP <185/110 before lytics; <180/105 after.',
                                   'Monitor closely for hemorrhage or angioedema.'
@@ -17107,6 +17204,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <AlgorithmStep
                                 index="Step 2B"
                                 title="Mechanical thrombectomy"
+                                tone="blue"
+                                icon="git-branch"
                                 items={[
                                   'LVO: EVT recommended in 0-6h and select 6-24h.',
                                   'Large-core EVT per SVIN criteria when eligible.'
@@ -17117,6 +17216,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <AlgorithmStep
                               index="Step 3"
                               title="Blood pressure targets"
+                              tone="blue"
+                              icon="activity"
                               items={[
                                 'No lytics: allow up to 220/120 unless other indication.',
                                 'Post-lysis or post-EVT: target <180/105.'
@@ -17126,6 +17227,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <AlgorithmStep
                               index="Step 4"
                               title="Post-lysis complications"
+                              tone="blue"
+                              icon="alert-triangle"
                               items={[
                                 'If neuro decline: activate post-lysis ICH protocol.',
                                 'Manage orolingual angioedema if present.'
@@ -17135,6 +17238,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <AlgorithmStep
                               index="Step 5"
                               title="Antithrombotic initiation"
+                              tone="blue"
+                              icon="shield"
                               items={[
                                 'DAPT x21 days for minor stroke/TIA when indicated.',
                                 'ASA after 24h post-lysis; DOAC timing for AF per severity.'
@@ -17144,6 +17249,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <AlgorithmStep
                               index="Step 6"
                               title="Secondary prevention + discharge"
+                              tone="blue"
+                              icon="clipboard-list"
                               items={[
                                 'High-intensity statin, BP <130/80, risk factor control.',
                                 'Smoking cessation, exercise/diet counseling, follow-up.'
