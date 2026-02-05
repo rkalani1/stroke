@@ -9039,6 +9039,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           Video Telestroke
                         </button>
                       </div>
+                      <div className="mt-3">
+                        <button
+                          type="button"
+                          onClick={() => scrollToSection('patient-info-section')}
+                          className="px-3 py-2 text-sm font-semibold rounded-lg border border-blue-300 text-blue-700 bg-white hover:bg-blue-50 transition-colors"
+                        >
+                          Go to Patient Info
+                        </button>
+                      </div>
                     </div>
 
                     {quickLinks.length > 0 && (
