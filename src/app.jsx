@@ -8562,27 +8562,122 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
             );
           };
 
-          const ichMermaid = `flowchart TD
-  classDef step fill:#ffffff,stroke:#475569,stroke-width:1px,rx:6,ry:6,color:#0f172a;
-  A[Confirm ICH + severity]:::step --> B[Hematoma expansion prevention]:::step
-  B --> C[Hemostasis and reversal]:::step
-  C --> D[Assess IVH / hydrocephalus]:::step
-  C --> E[Assess surgical candidacy]:::step
-  D --> F[Seizures, VTE, supportive care]:::step
-  E --> F
-  F --> G[Goals of care]:::step`;
+          const ichAnticoagMermaid = `flowchart TD
+  classDef header fill:#ffffff,stroke:#475569,stroke-width:1px,color:#0f172a;
+  classDef cor1 fill:#bbf7d0,stroke:#16a34a,stroke-width:1px,color:#0f172a;
+  classDef cor2a fill:#fde68a,stroke:#d97706,stroke-width:1px,color:#0f172a;
+  classDef cor2b fill:#fdba74,stroke:#ea580c,stroke-width:1px,color:#0f172a;
 
-          const ischemicMermaid = `flowchart TD
-  classDef step fill:#ffffff,stroke:#475569,stroke-width:1px,rx:6,ry:6,color:#0f172a;
-  classDef decision fill:#f8fafc,stroke:#475569,stroke-width:1px,color:#0f172a;
-  A[Confirm ischemic stroke + imaging]:::step --> B{Reperfusion eligible?}:::decision
-  B -->|IV thrombolysis| C[IV thrombolysis]:::step
-  B -->|Mechanical EVT| D[Mechanical thrombectomy]:::step
-  C --> E[Blood pressure targets]:::step
-  D --> E
-  E --> F[Post-lysis complications]:::step
-  F --> G[Antithrombotic initiation]:::step
-  G --> H[Secondary prevention + discharge]:::step`;
+  A[Patients with ICH on anticoagulation]:::header --> B[Discontinue anticoagulation therapy immediately.\\nRapid reversal should be performed as soon as possible.\\n(Class 1)]:::cor1
+
+  B --> VKA[Vitamin K antagonists]:::header
+  B --> DABI[Dabigatran]:::header
+  B --> FXA[Factor Xa inhibitors]:::header
+  B --> HEP[Heparins]:::header
+
+  VKA --> INR1319[INR 1.3-1.9]:::header
+  VKA --> INR2[INR >=2.0]:::header
+  INR1319 --> PCC10[4F-PCC 10–20 IU/kg\\n(Class 2b)]:::cor2b
+  INR2 --> PCC25[4F-PCC 25–50 IU/kg\\n(Class 1)]:::cor1
+  PCC10 --> VITK[IV vitamin K\\n(Class 1)]:::cor1
+  PCC25 --> VITK
+
+  DABI --> DABI_HIST[History: When last dose taken]:::header
+  DABI_HIST --> CHARCOAL[Activated charcoal if DOAC <2 h\\n(potential efficacy up to 8 h)\\n(Class 2b)]:::cor2b
+  DABI --> IDA_Q{Is idarucizumab\\navailable?}:::header
+  IDA_Q -->|Yes| IDA[Idarucizumab\\n(Class 2a)]:::cor2a
+  IDA_Q -->|No| PCCS[PCCs or aPCC and/or\\nrenal replacement therapy\\n(Class 2b)]:::cor2b
+
+  FXA --> FXA_HIST[History: When last dose taken]:::header
+  FXA_HIST --> CHARCOAL
+  FXA --> AND_Q{Is andexanet alfa\\navailable?}:::header
+  AND_Q -->|Yes| AND[Andexanet alfa\\n(Class 2a)]:::cor2a
+  AND_Q -->|No| PCC4[4-factor PCC or aPCC\\n(Class 2b)]:::cor2b
+
+  HEP --> UFH[Unfractionated heparin]:::header
+  HEP --> LMWH[Low molecular weight\\nheparin]:::header
+  UFH --> PROT1[Protamine\\n(Class 2a)]:::cor2a
+  LMWH --> PROT2[Protamine\\n(Class 2b)]:::cor2b`;
+
+          const ichIVHMermaid = `flowchart TD
+  classDef header fill:#ffffff,stroke:#475569,stroke-width:1px,color:#0f172a;
+  classDef cor1 fill:#bbf7d0,stroke:#16a34a,stroke-width:1px,color:#0f172a;
+  classDef cor2a fill:#fde68a,stroke:#d97706,stroke-width:1px,color:#0f172a;
+  classDef cor2b fill:#fdba74,stroke:#ea580c,stroke-width:1px,color:#0f172a;
+
+  A[IVH Surgical Management]:::header --> B[Spontaneous IVH +\\nObstructive Hydrocephalus]:::header
+  A --> C[Spontaneous ICH <30 mL,\\nGCS >3, IVH requiring EVD]:::header
+  A --> D[Spontaneous ICH <30 mL\\nIVH requiring EVD]:::header
+
+  B --> E[EVD]:::header
+  E --> M1[Mortality Reduction\\n(Class 1)]:::cor1
+  E --> F1[Functional Outcome Benefit\\n(Class 2b*)]:::cor2b
+
+  C --> E2[EVD + Thrombolytic]:::header
+  E2 --> M2[Mortality Reduction\\n(Class 2a)]:::cor2a
+  E2 --> F2[Functional Outcome Benefit\\n(Class 2b)]:::cor2b
+
+  D --> E3[Neuroendoscopy + EVD\\n+/- Thrombolytic]:::header
+  E3 --> F3[Functional Outcome Benefit\\n(Class 2b*)]:::cor2b
+  E3 --> R3[Reduced Permanent Shunting\\n(Class 2b*)]:::cor2b`;
+
+          const ischemicMermaid = `flowchart LR
+  classDef header fill:#ffffff,stroke:#475569,stroke-width:1px,color:#0f172a;
+  classDef cor1 fill:#bbf7d0,stroke:#16a34a,stroke-width:1px,color:#0f172a;
+  classDef cor2a fill:#fde68a,stroke:#d97706,stroke-width:1px,color:#0f172a;
+  classDef cor2b fill:#fdba74,stroke:#ea580c,stroke-width:1px,color:#0f172a;
+  classDef cor3nb fill:#fecaca,stroke:#dc2626,stroke-width:1px,color:#7f1d1d;
+  classDef idd fill:#e5e7eb,stroke:#94a3b8,stroke-width:1px,color:#0f172a;
+
+  subgraph Pediatrics
+    P0[Patients aged <=28 d]:::header --> P_L0[LVO*]:::header --> P_T0[0-24 h]:::header --> P_E0[IDD]:::idd
+    P1[Patients aged 28 d-5 y]:::header --> P_L1[LVO*]:::header --> P_T1[0-24 h]:::header --> P_S1[Salvageable brain tissue]:::header --> P_E1[EVT\\nClass 2b]:::cor2b
+    P2[Patients aged 6-17 y]:::header --> P_L2[LVO*]:::header
+    P_L2 --> P_T2a[0-6 h]:::header --> P_S2a[Salvageable brain tissue]:::header --> P_E2a[EVT\\nClass 2a]:::cor2a
+    P_L2 --> P_T2b[6-24 h]:::header --> P_S2b[Salvageable brain tissue]:::header --> P_E2b[EVT\\nClass 2a]:::cor2a
+    P_L2 --> P_T2c[>24 h]:::header --> P_E2c[IDD]:::idd
+  end
+
+  subgraph Adults["Adults (>=18 y)"]
+    A0[Patients aged >=18 y†]:::header --> A_LVO[LVO*]:::header
+    A_LVO --> A_T06[0-6 h]:::header
+    A_LVO --> A_T624[6-24 h]:::header
+    A_LVO --> A_T24[>24 h]:::header --> A_E24[IDD]:::idd
+
+    A_T06 --> A_AS610[ASPECTS 6-10]:::header
+    A_T06 --> A_AS35[ASPECTS 3-5]:::header
+    A_T06 --> A_AS02[ASPECTS 0-2]:::header
+
+    A_AS610 --> A_M01[mRS 0-1]:::header --> A_E01[EVT\\nClass 1]:::cor1
+    A_AS610 --> A_M2[mRS 2]:::header --> A_E2[EVT\\nClass 2a]:::cor2a
+    A_AS610 --> A_M34[mRS 3-4]:::header --> A_E34[EVT\\nClass 2b]:::cor2b
+    A_AS610 --> A_M4[mRS >4]:::header --> A_E4[IDD]:::idd
+
+    A_AS35 --> A_M01b[mRS 0-1]:::header --> A_E01b[EVT\\nClass 1]:::cor1
+    A_AS35 --> A_M2b[mRS >=2]:::header --> A_E2b[IDD]:::idd
+
+    A_AS02 --> A_M01c[mRS 0-1]:::header --> A_E01c[EVT\\nClass 2a]:::cor2a
+    A_AS02 --> A_M2c[mRS >=2]:::header --> A_E2c[IDD]:::idd
+
+    A_T624 --> A_AS610b[ASPECTS 6-10]:::header
+    A_T624 --> A_AS35b[ASPECTS 3-5]:::header
+    A_AS610b --> A_M01d[mRS 0-1]:::header --> A_E01d[EVT\\nClass 1]:::cor1
+    A_AS610b --> A_M2d[mRS >=2]:::header --> A_E2d[IDD]:::idd
+    A_AS35b --> A_M01e[mRS 0-1]:::header --> A_E01e[EVT\\nClass 1]:::cor1
+    A_AS35b --> A_M2e[mRS >=2]:::header --> A_E2e[IDD]:::idd
+
+    A0 --> A_MVOdom[MVO (Dominant M2)]:::header
+    A_MVOdom --> A_MVO06[0-6 h]:::header --> A_MVOAS[ASPECTS 6-10]:::header --> A_MVOmRS[mRS 0-1]:::header --> A_MVOEVT[EVT\\nClass 2a]:::cor2a
+    A_MVOdom --> A_MVO6p[>6 h]:::header --> A_MVOIDD[IDD]:::idd
+
+    A0 --> A_MVOnon[MVO (Non dominant M2) or DVO]:::header --> A_MVOT[0-24 h]:::header --> A_NOVT[No EVT\\nClass 3: No Benefit]:::cor3nb
+
+    A0 --> A_BAS[Basilar artery]:::header --> A_BAST[0-24 h]:::header --> A_PCAS[PC ASPECTS >=6]:::header
+    A_PCAS --> A_BmRS01[mRS 0-1]:::header --> A_BEVT1[EVT\\nClass 1]:::cor1
+    A_PCAS --> A_NIHSS10[NIHSS >=10]:::header --> A_BEVT2[EVT\\nClass 1]:::cor1
+    A_PCAS --> A_NIHSS69[NIHSS 6-9]:::header --> A_BEVT3[EVT\\nClass 2b]:::cor2b
+    A_PCAS --> A_BmRS2[mRS >=2]:::header --> A_BIDD[IDD]:::idd
+  end`;
 
           return (
             <div className="relative">
@@ -16913,9 +17008,25 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <span className="text-xs text-red-600 font-medium">Algorithmic workflow</span>
                         </div>
 
-                        <div className="bg-white border border-red-200 rounded-xl p-4 shadow-sm overflow-x-auto">
-                          <div className="mermaid text-xs md:text-sm" aria-label="ICH management workflow diagram">
-                            {ichMermaid}
+                        <div className="space-y-4">
+                          <div className="bg-white border border-red-200 rounded-xl p-4 shadow-sm overflow-x-auto">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-red-700 mb-3">
+                              Figure 2. Management of anticoagulant-related hemorrhage (AHA/ASA ICH 2022)
+                            </p>
+                            <div className="mermaid text-xs md:text-sm" aria-label="ICH anticoagulant-related hemorrhage algorithm">
+                              {ichAnticoagMermaid}
+                            </div>
+                          </div>
+                          <div className="bg-white border border-red-200 rounded-xl p-4 shadow-sm overflow-x-auto">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-red-700 mb-3">
+                              Figure 3. Surgical management of IVH (AHA/ASA ICH 2022)
+                            </p>
+                            <div className="mermaid text-xs md:text-sm" aria-label="IVH surgical management algorithm">
+                              {ichIVHMermaid}
+                            </div>
+                            <p className="text-[11px] text-slate-500 mt-2">
+                              *Not well established. †Uncertain.
+                            </p>
                           </div>
                         </div>
 
@@ -17173,9 +17284,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
 
                           <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm overflow-x-auto">
-                            <div className="mermaid text-xs md:text-sm" aria-label="Ischemic stroke management workflow diagram">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-3">
+                              Figure 3. Algorithm for management of AIS eligibility for EVT (AHA/ASA 2026)
+                            </p>
+                            <div className="mermaid text-xs md:text-sm" aria-label="AIS EVT eligibility algorithm">
                               {ischemicMermaid}
                             </div>
+                            <p className="text-[11px] text-slate-500 mt-2">
+                              *LVO of the anterior circulation. †In patients with NIHSS scores {'>='}6, unless specified in the graphic.
+                            </p>
                           </div>
                         </div>
 
