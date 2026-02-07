@@ -1,0 +1,90 @@
+{
+  "id": "perioperative-stroke-2021",
+  "title": "AHA Scientific Statement 2021: Perioperative Neurological Evaluation and Stroke Risk Reduction",
+  "shortTitle": "Perioperative Stroke 2021",
+  "doi": "10.1161/CIR.0000000000000968",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000000968",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/CIR.0000000000000968",
+  "recommendations": [
+    {
+      "section": "Preop Thromboembolic Risk",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Stratify thromboembolic risk in nonvalvular AF with CHA2DS2-VASc; stratify prosthetic valve risk by valve type/location and patient factors.",
+      "page": 8
+    },
+    {
+      "section": "Preop Thromboembolic Risk",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Stratify VTE risk by time since diagnosis and patient factors; defer elective operations for at least 3 months after VTE.",
+      "page": 8
+    },
+    {
+      "section": "Timing of Surgery",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Defer elective surgery after PCI: at least 14 days for balloon angioplasty, 30 days for bare-metal stent, and 1 year for drug-eluting stent placement.",
+      "page": 8
+    },
+    {
+      "section": "Timing of Surgery",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Defer elective operations for at least 9 months after ischemic stroke when feasible.",
+      "page": 8
+    },
+    {
+      "section": "Bleeding Risk",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Stratify patient bleeding risk with HAS-BLED and procedure-related bleeding risk with surgical assessment.",
+      "page": 8
+    },
+    {
+      "section": "Bridging Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "No evidence supports antiplatelet bridging or heparin bridging for DOACs; consider warfarin bridging only in high VTE risk patients and stop warfarin about 5 days pre-op.",
+      "page": 8
+    },
+    {
+      "section": "Intraoperative Hemodynamics",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Avoid significant intraoperative hypotension; consider maintaining MAP above ~70 mm Hg when possible to reduce end-organ injury risk.",
+      "page": 10
+    },
+    {
+      "section": "Transfusion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Monitor for anemia and consider cerebral perfusion reserve in patients with cerebrovascular disease when selecting transfusion thresholds.",
+      "page": 11
+    },
+    {
+      "section": "Ventilation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Avoid hypocapnia in high-risk patients; use lung-protective ventilation to reduce perioperative complications and hypoxemia.",
+      "page": 13
+    },
+    {
+      "section": "Stroke Recognition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Maintain vigilance for in-hospital/perioperative stroke and establish rapid recognition and response pathways.",
+      "page": 13
+    }
+  ]
+}

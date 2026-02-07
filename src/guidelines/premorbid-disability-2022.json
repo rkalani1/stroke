@@ -1,0 +1,50 @@
+{
+  "id": "premorbid-disability-2022",
+  "title": "AHA Scientific Statement 2022: EVT and Thrombolysis in AIS With Premorbid Disability or Dementia",
+  "shortTitle": "Premorbid Disability 2022",
+  "doi": "10.1161/STR.0000000000000406",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000406",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000406",
+  "recommendations": [
+    {
+      "section": "Background",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Premorbid disability and dementia are common in AIS, but randomized trial evidence is limited because these patients are often excluded.",
+      "page": 2
+    },
+    {
+      "section": "Guideline Context",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "European guidelines note uncertain benefit when prestroke mRS >=2; AHA/ASA suggests reperfusion may be reasonable in selected cases despite less improvement and higher mortality.",
+      "page": 2
+    },
+    {
+      "section": "Evidence Summary",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Observational data do not show consistent increases in sICH risk with IVT or EVT among patients with prestroke disability or dementia.",
+      "page": 6
+    },
+    {
+      "section": "Evidence Summary",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Some studies show higher mortality and lower return to baseline after IVT; EVT outcomes show similar accumulated disability compared with those without disability.",
+      "page": 6
+    },
+    {
+      "section": "Decision-Making",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Avoid automatic exclusion based on prestroke disability; consider intersectionality, bias, and individual values in shared decision-making.",
+      "page": 3
+    }
+  ]
+}

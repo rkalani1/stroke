@@ -1,0 +1,106 @@
+{
+  "id": "tia-ed-2023",
+  "title": "AHA Scientific Statement 2023: Diagnosis, Workup, and Risk Reduction of TIA in the Emergency Department",
+  "shortTitle": "TIA ED 2023",
+  "doi": "10.1161/STR.0000000000000418",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000418",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000418",
+  "recommendations": [
+    {
+      "section": "Diagnostics",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Perform point-of-care glucose for all suspected TIA to rule out hypoglycemia; obtain CBC, chemistry panel, A1c, and lipid profile to define risk factors.",
+      "page": 4
+    },
+    {
+      "section": "Diagnostics",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Use ECG, telemetry, and troponin for all TIA patients; consider prolonged rhythm monitoring (about 30 days) within 6 months when cardioembolic source is suspected.",
+      "page": 4
+    },
+    {
+      "section": "Vessel Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Perform acute-phase vessel imaging in the ED regardless of ABCD2 score to guide management; CTA is preferred, with MRA as alternative when contrast is contraindicated.",
+      "page": 4
+    },
+    {
+      "section": "Risk Stratification",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "TIA risk stratification scales help identify high-risk patients and guide disposition decisions.",
+      "page": 5
+    },
+    {
+      "section": "Disposition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Presumed symptomatic >50% extracranial or intracranial stenosis warrants hospital admission.",
+      "page": 7
+    },
+    {
+      "section": "Disposition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Acceptable disposition options include rapid ED TIA protocols with expedited referral to specialized clinics, 24-hour observation, or standard hospital admission.",
+      "page": 7
+    },
+    {
+      "section": "Disposition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Disposition should reflect short-term stroke risk, vessel imaging, timeliness of workup, rapid follow-up availability, and patient ability to return for evaluation.",
+      "page": 7
+    },
+    {
+      "section": "Disposition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Institutional and regional factors should guide disposition protocols for TIA patients.",
+      "page": 7
+    },
+    {
+      "section": "Risk Reduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Maximal medical therapy includes antithrombotic therapy plus BP, glucose, and lipid control with targets consistent with established guidelines.",
+      "page": 9
+    },
+    {
+      "section": "Risk Reduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "ABCD2 can guide antithrombotic regimens; use risk profiles rather than scores alone.",
+      "page": 9
+    },
+    {
+      "section": "Risk Reduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Provide counseling for patients with substance use disorders alongside medical management.",
+      "page": 9
+    },
+    {
+      "section": "Health Equity",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Address social determinants of health to reduce disparities in TIA care and outcomes.",
+      "page": 9
+    }
+  ]
+}

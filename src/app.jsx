@@ -1,12 +1,20 @@
 import ais2026 from './guidelines/ais-2026.json';
+import cancerStroke2026 from './guidelines/cancer-stroke-2026.json';
+import cardiacBrainHealth2024 from './guidelines/cardiac-brain-health-2024.json';
 import cvt2024 from './guidelines/cvt-2024.json';
 import ich2022 from './guidelines/ich-2022.json';
 import maternalStroke2026 from './guidelines/maternal-stroke-2026.json';
+import perioperativeStroke2021 from './guidelines/perioperative-stroke-2021.json';
+import poststrokeCognitive2023 from './guidelines/poststroke-cognitive-2023.json';
+import poststrokePrimaryCare2021 from './guidelines/poststroke-primary-care-2021.json';
+import poststrokeSpasticity2026 from './guidelines/poststroke-spasticity-2026.json';
 import primaryPrevention2024 from './guidelines/primary-prevention-2024.json';
+import premorbidDisability2022 from './guidelines/premorbid-disability-2022.json';
 import secondaryPrevention2021 from './guidelines/secondary-prevention-2021.json';
 import sah2023 from './guidelines/sah-2023.json';
 import systemicComplications2024 from './guidelines/systemic-complications-2024.json';
 import svinLargeCore2025 from './guidelines/svin-large-core-2025.json';
+import tiaEd2023 from './guidelines/tia-ed-2023.json';
 
         const { useState, useEffect, useRef, useMemo } = React;
         const { Calculator, Clock, Brain, AlertTriangle, FileText, CheckCircle, Moon, Sun, Download, Copy, Search, Check, Info } = lucide;
@@ -2466,6 +2474,14 @@ Clinician Name`;
             'Maternal Stroke in Pregnancy and Postpartum 2026': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000514',
             'Systemic Complications of Acute Stroke 2024': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000477',
             'Palliative Care in Stroke 2024': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000479',
+            'Classification and Management of Ischemic Stroke in Patients With Active Cancer': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000517',
+            'Cardiac Contributions to Brain Health': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000476',
+            'Transient Ischemic Attack in the Emergency Department': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000418',
+            'Cognitive Impairment After Ischemic and Hemorrhagic Stroke': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000430',
+            'Endovascular Treatment and Thrombolysis for Acute Ischemic Stroke in Patients With Premorbid Disability or Dementia': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000406',
+            'Primary Care of Adult Patients After Stroke': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000382',
+            'Perioperative Neurological Evaluation and Management': 'https://www.ahajournals.org/doi/10.1161/CIR.0000000000000968',
+            'Early Recognition and Intervention for Poststroke Spasticity': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000515',
             'Intracranial Atherosclerosis': 'https://www.aan.com/Guidelines/home/GuidelineDetail/1103',
             'CATALYST': 'https://doi.org/10.1016/S1474-4422(25)00057-5',
             'TIMELESS': 'https://doi.org/10.1056/NEJMoa2412179',
@@ -2492,18 +2508,27 @@ Clinician Name`;
             ich2022,
             sah2023,
             cvt2024,
-            systemicComplications2024,
             maternalStroke2026,
             primaryPrevention2024,
             secondaryPrevention2021,
-            svinLargeCore2025
+            svinLargeCore2025,
+            cancerStroke2026,
+            premorbidDisability2022,
+            tiaEd2023,
+            systemicComplications2024,
+            poststrokeCognitive2023,
+            poststrokeSpasticity2026,
+            poststrokePrimaryCare2021,
+            perioperativeStroke2021,
+            cardiacBrainHealth2024
           ];
           const GUIDELINE_LIBRARY_INDEX = GUIDELINE_LIBRARY.map((guideline) => ({
             ...guideline,
             recommendations: guideline.recommendations.map((rec, index) => ({
               ...rec,
               id: rec.id || `${guideline.id}-${index + 1}`,
-              sourceUrl: rec.page ? `${guideline.pdfUrl}#page=${rec.page}` : guideline.publisherUrl
+              sourceUrl: guideline.publisherUrl || guideline.pdfUrl,
+              pdfSourceUrl: rec.page && guideline.pdfUrl ? `${guideline.pdfUrl}#page=${rec.page}` : null
             }))
           }));
 
@@ -19378,13 +19403,21 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                                   <p className="text-xs text-gray-500 mt-1">
                                                     {guideline.title}
                                                     {rec.page ? ` · p. ${rec.page}` : ''}
+                                                  </p>
+                                                  <div className="flex flex-wrap items-center gap-2 mt-1 text-xs">
                                                     {rec.sourceUrl && (
-                                                      <a href={rec.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 ml-2 text-indigo-600 hover:text-indigo-800 font-medium">
+                                                      <a href={rec.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-indigo-600 hover:text-indigo-800 font-medium">
                                                         <i data-lucide="external-link" className="w-3 h-3"></i>
-                                                        <span>Source</span>
+                                                        <span>Publisher</span>
                                                       </a>
                                                     )}
-                                                  </p>
+                                                    {rec.pdfSourceUrl && (
+                                                      <a href={rec.pdfSourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-indigo-600 hover:text-indigo-800 font-medium">
+                                                        <i data-lucide="external-link" className="w-3 h-3"></i>
+                                                        <span>PDF p.{rec.page}</span>
+                                                      </a>
+                                                    )}
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>

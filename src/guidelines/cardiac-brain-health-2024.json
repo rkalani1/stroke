@@ -1,0 +1,82 @@
+{
+  "id": "cardiac-brain-health-2024",
+  "title": "AHA Scientific Statement 2024: Cardiac Contributions to Brain Health",
+  "shortTitle": "Heart-Brain Health 2024",
+  "doi": "10.1161/STR.0000000000000476",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000476",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000476",
+  "recommendations": [
+    {
+      "section": "Heart Failure",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Heart failure is associated with increased stroke risk and high prevalence of silent brain infarction; cardioembolism is a common subtype.",
+      "page": 3
+    },
+    {
+      "section": "Heart Failure",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Cognitive impairment in HFrEF is linked to reduced cerebral blood flow and neurohormonal/inflammatory pathways.",
+      "page": 3
+    },
+    {
+      "section": "Heart Failure",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Screen for cognitive impairment before advanced HF interventions (e.g., mechanical support or transplant).",
+      "page": 4
+    },
+    {
+      "section": "Atrial Fibrillation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "AF is associated with increased risk of cognitive impairment and dementia; anticoagulation reduces dementia risk in AF.",
+      "page": 5
+    },
+    {
+      "section": "Atrial Fibrillation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Subclinical AF is common; wearables and implantable devices improve detection and may refine brain health risk estimates.",
+      "page": 4
+    },
+    {
+      "section": "Atrial Fibrillation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "CHA2DS2-VASc is associated with dementia risk; AF burden may contribute to cognitive decline beyond overt stroke.",
+      "page": 5
+    },
+    {
+      "section": "Coronary Heart Disease",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "CHD is associated with cognitive decline and higher burden of cerebral small vessel disease; microvascular dysfunction links heart and brain.",
+      "page": 7
+    },
+    {
+      "section": "Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Control vascular risk factors per guideline-based CHD and AF management; cognitive benefits are plausible but not yet definitive.",
+      "page": 7
+    },
+    {
+      "section": "Heart-Brain Axis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Shared risk factors, inflammation, and microvascular dysfunction drive the heart-brain axis; cardiovascular trials should incorporate cognitive outcomes.",
+      "page": 8
+    }
+  ]
+}

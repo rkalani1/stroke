@@ -1,0 +1,250 @@
+{
+  "id": "poststroke-spasticity-2026",
+  "title": "AHA Scientific Statement 2026: Early Recognition and Intervention for Poststroke Spasticity",
+  "shortTitle": "Poststroke Spasticity 2026",
+  "doi": "10.1161/STR.0000000000000515",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000515",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000515",
+  "recommendations": [
+    {
+      "section": "Early Recognition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Spasticity can emerge within the first month after stroke and worsen over 6-12 months; early recognition and timely intervention are essential.",
+      "page": 3
+    },
+    {
+      "section": "Assessment and Diagnosis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Use structured clinical rating scales and, when needed, electrophysiologic or biomechanical tools to quantify spasticity and monitor response.",
+      "page": 3
+    },
+    {
+      "section": "Involuntary Muscle Activation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A*",
+      "text": "Botulinum toxin (BoNT-A) consistently reduces tone; early use with optimized dosing and ultrasound guidance improves outcomes.",
+      "page": 3
+    },
+    {
+      "section": "Involuntary Muscle Activation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Intrathecal baclofen is effective for generalized spasticity but requires monitoring for adverse effects.",
+      "page": 3
+    },
+    {
+      "section": "Involuntary Muscle Activation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Selective dorsal rhizotomy can be effective in lower extremity spasticity in selected patients.",
+      "page": 3
+    },
+    {
+      "section": "Involuntary Muscle Activation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Transcutaneous electrical nerve stimulation is effective in lower limbs; duration of effect and upper-limb efficacy are less clear.",
+      "page": 3
+    },
+    {
+      "section": "Involuntary Muscle Activation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "B*",
+      "text": "Phenol or alcohol nerve blocks provide temporary tone reduction and are options when BoNT-A is unavailable or ineffective.",
+      "page": 3
+    },
+    {
+      "section": "Involuntary Muscle Activation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "B/C",
+      "text": "Oral antispasticity agents (e.g., baclofen, tizanidine) offer modest tone reduction but are often limited by systemic side effects.",
+      "page": 3
+    },
+    {
+      "section": "Involuntary Muscle Activation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "C",
+      "text": "Selective motor neurectomy is an invasive option with longer-lasting effects and limited availability.",
+      "page": 3
+    },
+    {
+      "section": "Involuntary Muscle Activation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Emerging",
+      "text": "Cryoneurolysis has emerging evidence for sustained tone reduction; more research is needed.",
+      "page": 3
+    },
+    {
+      "section": "Abnormal Voluntary Control",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A*",
+      "text": "Task-specific training improves motor control and function.",
+      "page": 3
+    },
+    {
+      "section": "Abnormal Voluntary Control",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Constraint-induced movement therapy promotes use of the affected limb and is best suited for higher-functioning patients.",
+      "page": 3
+    },
+    {
+      "section": "Abnormal Voluntary Control",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A* (LE), B (UE)",
+      "text": "Functional electrical stimulation enhances voluntary activation; effects depend on timing and limb.",
+      "page": 3
+    },
+    {
+      "section": "Abnormal Voluntary Control",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Noninvasive brain stimulation (rTMS/tDCS) is effective for upper-limb motor control; strongest evidence for anodal tDCS and low-frequency rTMS.",
+      "page": 3
+    },
+    {
+      "section": "Abnormal Voluntary Control",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Repetitive peripheral magnetic stimulation can reduce tone; protocols need further refinement.",
+      "page": 3
+    },
+    {
+      "section": "Abnormal Voluntary Control",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "B*",
+      "text": "Bimanual training supports interlimb coordination; more robust trials are needed.",
+      "page": 3
+    },
+    {
+      "section": "Abnormal Voluntary Control",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "B/C*",
+      "text": "Music-supported therapy shows encouraging early evidence for motor function via auditory-motor coupling.",
+      "page": 3
+    },
+    {
+      "section": "Abnormal Voluntary Control",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "B",
+      "text": "Robotic therapy facilitates repetitive task-specific training and may be most effective as adjunct to conventional therapy.",
+      "page": 3
+    },
+    {
+      "section": "Abnormal Voluntary Control",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "B",
+      "text": "Vagal nerve stimulation paired with therapy improves upper extremity motor scores.",
+      "page": 3
+    },
+    {
+      "section": "Abnormal Voluntary Control",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "C*",
+      "text": "Aerobic and endurance training can improve motor control and counter inactivity effects.",
+      "page": 3
+    },
+    {
+      "section": "Passive Tissue Changes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A*",
+      "text": "Early mobilization and weight-bearing interventions help prevent contractures and reduce hyperreflexia when started early.",
+      "page": 3
+    },
+    {
+      "section": "Passive Tissue Changes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Passive stretching alone is not effective; combine with other rehabilitation modalities.",
+      "page": 3
+    },
+    {
+      "section": "Passive Tissue Changes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Static stretching with positioning orthoses provides modest tone improvements; evidence is limited by small studies.",
+      "page": 3
+    },
+    {
+      "section": "Passive Tissue Changes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Dry needling has short-term benefit in lower limbs; effects diminish over weeks.",
+      "page": 3
+    },
+    {
+      "section": "Passive Tissue Changes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Extracorporeal shockwave therapy reduces tone short-term; radial therapy may be superior.",
+      "page": 3
+    },
+    {
+      "section": "Passive Tissue Changes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Whole-body vibration can reduce spasticity, with strongest evidence in lower limbs using low-frequency protocols.",
+      "page": 3
+    },
+    {
+      "section": "Passive Tissue Changes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Localized muscle vibration improves tone in elbow or wrist; long-term and lower-limb data are limited.",
+      "page": 3
+    },
+    {
+      "section": "Passive Tissue Changes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "B",
+      "text": "Serial casting can temporarily prevent contractures but is labor intensive.",
+      "page": 3
+    },
+    {
+      "section": "Passive Tissue Changes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "C",
+      "text": "Soft tissue interventions (e.g., massage, myofascial release) have limited evidence and are typically adjunctive.",
+      "page": 3
+    },
+    {
+      "section": "Passive Tissue Changes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Emerging",
+      "text": "Hyaluronidase shows emerging benefit for tone and range of motion in subacute or chronic spasticity.",
+      "page": 3
+    }
+  ]
+}
