@@ -8563,54 +8563,43 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
           };
 
           const ichAnticoagMermaid = `flowchart TD
-  A[ICH on anticoagulation] --> B[Stop anticoagulant and reverse ASAP (Class 1)]
+  A[ICH on anticoagulation] --> B[Stop anticoagulant and reverse ASAP Class 1]
   B --> VKA[Vitamin K antagonists]
   B --> DABI[Dabigatran]
   B --> FXA[Factor Xa inhibitors]
   B --> HEP[Heparins]
   VKA --> INR1319[INR 1.3-1.9]
   VKA --> INR2[INR 2.0 or higher]
-  INR1319 --> PCC10[4F-PCC 10-20 IU/kg (Class 2b)]
-  INR2 --> PCC25[4F-PCC 25-50 IU/kg (Class 1)]
-  PCC10 --> VITK[IV vitamin K (Class 1)]
+  INR1319 --> PCC10[4F-PCC 10-20 IU/kg Class 2b]
+  INR2 --> PCC25[4F-PCC 25-50 IU/kg Class 1]
+  PCC10 --> VITK[IV vitamin K Class 1]
   PCC25 --> VITK
-  DABI --> DABI_HIST[History when last dose taken]
-  DABI_HIST --> CHARCOAL[Activated charcoal if DOAC under 2 h (Class 2b)]
-  DABI --> IDA_Q{Idarucizumab available}
-  IDA_Q --> IDA[Idarucizumab (Class 2a)]
-  IDA_Q --> PCCS[PCCs or aPCC or renal replacement (Class 2b)]
-  FXA --> FXA_HIST[History when last dose taken]
-  FXA_HIST --> CHARCOAL
-  FXA --> AND_Q{Andexanet alfa available}
-  AND_Q --> AND[Andexanet alfa (Class 2a)]
-  AND_Q --> PCC4[4-factor PCC or aPCC (Class 2b)]
+  DABI --> CHARCOAL[Activated charcoal if DOAC under 2 h Class 2b]
+  DABI --> IDA[Idarucizumab Class 2a]
+  DABI --> PCCS[PCCs or aPCC or RRT Class 2b]
+  FXA --> CHARCOAL
+  FXA --> AND[Andexanet alfa Class 2a]
+  FXA --> PCC4[4-factor PCC or aPCC Class 2b]
   HEP --> UFH[Unfractionated heparin]
   HEP --> LMWH[Low molecular weight heparin]
-  UFH --> PROT1[Protamine (Class 2a)]
-  LMWH --> PROT2[Protamine (Class 2b)]`;
+  UFH --> PROT1[Protamine Class 2a]
+  LMWH --> PROT2[Protamine Class 2b]`;
 
           const ichIVHMermaid = `flowchart TD
   A[IVH surgical management] --> B[Spontaneous IVH with obstructive hydrocephalus]
-  A --> C[Spontaneous ICH under 30 mL, GCS above 3, IVH requiring EVD]
-  A --> D[Spontaneous ICH under 30 mL, IVH requiring EVD]
+  A --> C[Spontaneous ICH under 30 mL GCS above 3 IVH requiring EVD]
+  A --> D[Spontaneous ICH under 30 mL IVH requiring EVD]
   B --> E[EVD]
-  E --> M1[Mortality reduction (Class 1)]
-  E --> F1[Functional outcome benefit (Class 2b uncertain)]
+  E --> M1[Mortality reduction Class 1]
+  E --> F1[Functional outcome benefit Class 2b uncertain]
   C --> E2[EVD plus thrombolytic]
-  E2 --> M2[Mortality reduction (Class 2a)]
-  E2 --> F2[Functional outcome benefit (Class 2b)]
+  E2 --> M2[Mortality reduction Class 2a]
+  E2 --> F2[Functional outcome benefit Class 2b]
   D --> E3[Neuroendoscopy plus EVD with or without thrombolytic]
-  E3 --> F3[Functional outcome benefit (Class 2b uncertain)]
-  E3 --> R3[Reduced permanent shunting (Class 2b uncertain)]`;
+  E3 --> F3[Functional outcome benefit Class 2b uncertain]
+  E3 --> R3[Reduced permanent shunting Class 2b uncertain]`;
 
-          const ischemicMermaid = `flowchart LR
-  P0[Age 0-28 d] --> P0L[LVO] --> P0T[0-24 h] --> P0E[IDD]
-  P1[Age 28 d-5 y] --> P1L[LVO] --> P1T[0-24 h] --> P1S[Salvageable tissue] --> P1E[EVT Class 2b]
-  P2[Age 6-17 y] --> P2L[LVO]
-  P2L --> P2T1[0-6 h] --> P2S1[Salvageable tissue] --> P2E1[EVT Class 2a]
-  P2L --> P2T2[6-24 h] --> P2S2[Salvageable tissue] --> P2E2[EVT Class 2a]
-  P2L --> P2T3[24+ h] --> P2E3[IDD]
-
+          const ischemicAdultMermaid = `flowchart LR
   A0[Age 18+ y] --> A_LVO[LVO]
   A_LVO --> A_T06[0-6 h]
   A_LVO --> A_T624[6-24 h]
@@ -8649,6 +8638,14 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
   A_PCAS --> A_NIHSS10[NIHSS 10+] --> A_BEVT2[EVT Class 1]
   A_PCAS --> A_NIHSS69[NIHSS 6-9] --> A_BEVT3[EVT Class 2b]
   A_PCAS --> A_BmRS2[mRS 2+] --> A_BIDD[IDD]`;
+
+          const ischemicPedsMermaid = `flowchart LR
+  P0[Age 0-28 d] --> P0L[LVO] --> P0T[0-24 h] --> P0E[IDD]
+  P1[Age 28 d-5 y] --> P1L[LVO] --> P1T[0-24 h] --> P1S[Salvageable tissue] --> P1E[EVT Class 2b]
+  P2[Age 6-17 y] --> P2L[LVO]
+  P2L --> P2T1[0-6 h] --> P2S1[Salvageable tissue] --> P2E1[EVT Class 2a]
+  P2L --> P2T2[6-24 h] --> P2S2[Salvageable tissue] --> P2E2[EVT Class 2a]
+  P2L --> P2T3[24+ h] --> P2E3[IDD]`;
 
           return (
             <div className="relative">
@@ -17256,14 +17253,22 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                           <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm overflow-x-auto">
                             <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-3">
-                              Figure 3. Algorithm for management of AIS eligibility for EVT (AHA/ASA 2026)
+                              Figure 3. Algorithm for management of AIS eligibility for EVT (Adults, AHA/ASA 2026)
                             </p>
-                            <div className="mermaid text-xs md:text-sm" aria-label="AIS EVT eligibility algorithm">
-                              {ischemicMermaid}
+                            <div className="mermaid text-xs md:text-sm" aria-label="Adult AIS EVT eligibility algorithm">
+                              {ischemicAdultMermaid}
                             </div>
                             <p className="text-[11px] text-slate-500 mt-2">
                               *LVO of the anterior circulation. †In patients with NIHSS scores {'>='}6, unless specified in the graphic.
                             </p>
+                          </div>
+                          <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm overflow-x-auto">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-3">
+                              Figure 3. Pediatric AIS EVT eligibility (AHA/ASA 2026)
+                            </p>
+                            <div className="mermaid text-xs md:text-sm" aria-label="Pediatric AIS EVT eligibility algorithm">
+                              {ischemicPedsMermaid}
+                            </div>
                           </div>
                         </div>
 
