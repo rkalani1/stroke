@@ -8576,14 +8576,14 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
   B --> HEP[Heparins]:::header
 
   VKA --> INR1319[INR 1.3-1.9]:::header
-  VKA --> INR2[INR >=2.0]:::header
+  VKA --> INR2[INR 2.0+]:::header
   INR1319 --> PCC10[4F-PCC 10–20 IU/kg\\n(Class 2b)]:::cor2b
   INR2 --> PCC25[4F-PCC 25–50 IU/kg\\n(Class 1)]:::cor1
   PCC10 --> VITK[IV vitamin K\\n(Class 1)]:::cor1
   PCC25 --> VITK
 
   DABI --> DABI_HIST[History: When last dose taken]:::header
-  DABI_HIST --> CHARCOAL[Activated charcoal if DOAC <2 h\\n(potential efficacy up to 8 h)\\n(Class 2b)]:::cor2b
+  DABI_HIST --> CHARCOAL[Activated charcoal if DOAC under 2 h\\n(potential efficacy up to 8 h)\\n(Class 2b)]:::cor2b
   DABI --> IDA_Q{Is idarucizumab\\navailable?}:::header
   IDA_Q -->|Yes| IDA[Idarucizumab\\n(Class 2a)]:::cor2a
   IDA_Q -->|No| PCCS[PCCs or aPCC and/or\\nrenal replacement therapy\\n(Class 2b)]:::cor2b
@@ -8606,8 +8606,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
   classDef cor2b fill:#fdba74,stroke:#ea580c,stroke-width:1px,color:#0f172a;
 
   A[IVH Surgical Management]:::header --> B[Spontaneous IVH +\\nObstructive Hydrocephalus]:::header
-  A --> C[Spontaneous ICH <30 mL,\\nGCS >3, IVH requiring EVD]:::header
-  A --> D[Spontaneous ICH <30 mL\\nIVH requiring EVD]:::header
+  A --> C[Spontaneous ICH under 30 mL,\\nGCS above 3, IVH requiring EVD]:::header
+  A --> D[Spontaneous ICH under 30 mL\\nIVH requiring EVD]:::header
 
   B --> E[EVD]:::header
   E --> M1[Mortality Reduction\\n(Class 1)]:::cor1
@@ -8617,7 +8617,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
   E2 --> M2[Mortality Reduction\\n(Class 2a)]:::cor2a
   E2 --> F2[Functional Outcome Benefit\\n(Class 2b)]:::cor2b
 
-  D --> E3[Neuroendoscopy + EVD\\n+/- Thrombolytic]:::header
+  D --> E3[Neuroendoscopy + EVD\\nwith or without thrombolytic]:::header
   E3 --> F3[Functional Outcome Benefit\\n(Class 2b*)]:::cor2b
   E3 --> R3[Reduced Permanent Shunting\\n(Class 2b*)]:::cor2b`;
 
@@ -8630,19 +8630,19 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
   classDef idd fill:#e5e7eb,stroke:#94a3b8,stroke-width:1px,color:#0f172a;
 
   subgraph Pediatrics
-    P0[Patients aged <=28 d]:::header --> P_L0[LVO*]:::header --> P_T0[0-24 h]:::header --> P_E0[IDD]:::idd
+    P0[Patients aged 0-28 d]:::header --> P_L0[LVO*]:::header --> P_T0[0-24 h]:::header --> P_E0[IDD]:::idd
     P1[Patients aged 28 d-5 y]:::header --> P_L1[LVO*]:::header --> P_T1[0-24 h]:::header --> P_S1[Salvageable brain tissue]:::header --> P_E1[EVT\\nClass 2b]:::cor2b
     P2[Patients aged 6-17 y]:::header --> P_L2[LVO*]:::header
     P_L2 --> P_T2a[0-6 h]:::header --> P_S2a[Salvageable brain tissue]:::header --> P_E2a[EVT\\nClass 2a]:::cor2a
     P_L2 --> P_T2b[6-24 h]:::header --> P_S2b[Salvageable brain tissue]:::header --> P_E2b[EVT\\nClass 2a]:::cor2a
-    P_L2 --> P_T2c[>24 h]:::header --> P_E2c[IDD]:::idd
+    P_L2 --> P_T2c[24+ h]:::header --> P_E2c[IDD]:::idd
   end
 
-  subgraph Adults["Adults (>=18 y)"]
-    A0[Patients aged >=18 y†]:::header --> A_LVO[LVO*]:::header
+  subgraph Adults["Adults 18+ y"]
+    A0[Patients aged 18+ y]:::header --> A_LVO[LVO*]:::header
     A_LVO --> A_T06[0-6 h]:::header
     A_LVO --> A_T624[6-24 h]:::header
-    A_LVO --> A_T24[>24 h]:::header --> A_E24[IDD]:::idd
+    A_LVO --> A_T24[24+ h]:::header --> A_E24[IDD]:::idd
 
     A_T06 --> A_AS610[ASPECTS 6-10]:::header
     A_T06 --> A_AS35[ASPECTS 3-5]:::header
@@ -8651,32 +8651,32 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
     A_AS610 --> A_M01[mRS 0-1]:::header --> A_E01[EVT\\nClass 1]:::cor1
     A_AS610 --> A_M2[mRS 2]:::header --> A_E2[EVT\\nClass 2a]:::cor2a
     A_AS610 --> A_M34[mRS 3-4]:::header --> A_E34[EVT\\nClass 2b]:::cor2b
-    A_AS610 --> A_M4[mRS >4]:::header --> A_E4[IDD]:::idd
+    A_AS610 --> A_M4[mRS 4+]:::header --> A_E4[IDD]:::idd
 
     A_AS35 --> A_M01b[mRS 0-1]:::header --> A_E01b[EVT\\nClass 1]:::cor1
-    A_AS35 --> A_M2b[mRS >=2]:::header --> A_E2b[IDD]:::idd
+    A_AS35 --> A_M2b[mRS 2+]:::header --> A_E2b[IDD]:::idd
 
     A_AS02 --> A_M01c[mRS 0-1]:::header --> A_E01c[EVT\\nClass 2a]:::cor2a
-    A_AS02 --> A_M2c[mRS >=2]:::header --> A_E2c[IDD]:::idd
+    A_AS02 --> A_M2c[mRS 2+]:::header --> A_E2c[IDD]:::idd
 
     A_T624 --> A_AS610b[ASPECTS 6-10]:::header
     A_T624 --> A_AS35b[ASPECTS 3-5]:::header
     A_AS610b --> A_M01d[mRS 0-1]:::header --> A_E01d[EVT\\nClass 1]:::cor1
-    A_AS610b --> A_M2d[mRS >=2]:::header --> A_E2d[IDD]:::idd
+    A_AS610b --> A_M2d[mRS 2+]:::header --> A_E2d[IDD]:::idd
     A_AS35b --> A_M01e[mRS 0-1]:::header --> A_E01e[EVT\\nClass 1]:::cor1
-    A_AS35b --> A_M2e[mRS >=2]:::header --> A_E2e[IDD]:::idd
+    A_AS35b --> A_M2e[mRS 2+]:::header --> A_E2e[IDD]:::idd
 
     A0 --> A_MVOdom[MVO (Dominant M2)]:::header
     A_MVOdom --> A_MVO06[0-6 h]:::header --> A_MVOAS[ASPECTS 6-10]:::header --> A_MVOmRS[mRS 0-1]:::header --> A_MVOEVT[EVT\\nClass 2a]:::cor2a
-    A_MVOdom --> A_MVO6p[>6 h]:::header --> A_MVOIDD[IDD]:::idd
+    A_MVOdom --> A_MVO6p[6+ h]:::header --> A_MVOIDD[IDD]:::idd
 
-    A0 --> A_MVOnon[MVO (Non dominant M2) or DVO]:::header --> A_MVOT[0-24 h]:::header --> A_NOVT[No EVT\\nClass 3: No Benefit]:::cor3nb
+    A0 --> A_MVOnon[MVO (Non dominant M2) or DVO]:::header --> A_MVOT[0-24 h]:::header --> A_NOVT[No EVT\\nClass 3 No Benefit]:::cor3nb
 
-    A0 --> A_BAS[Basilar artery]:::header --> A_BAST[0-24 h]:::header --> A_PCAS[PC ASPECTS >=6]:::header
+    A0 --> A_BAS[Basilar artery]:::header --> A_BAST[0-24 h]:::header --> A_PCAS[PC ASPECTS 6+]:::header
     A_PCAS --> A_BmRS01[mRS 0-1]:::header --> A_BEVT1[EVT\\nClass 1]:::cor1
-    A_PCAS --> A_NIHSS10[NIHSS >=10]:::header --> A_BEVT2[EVT\\nClass 1]:::cor1
+    A_PCAS --> A_NIHSS10[NIHSS 10+]:::header --> A_BEVT2[EVT\\nClass 1]:::cor1
     A_PCAS --> A_NIHSS69[NIHSS 6-9]:::header --> A_BEVT3[EVT\\nClass 2b]:::cor2b
-    A_PCAS --> A_BmRS2[mRS >=2]:::header --> A_BIDD[IDD]:::idd
+    A_PCAS --> A_BmRS2[mRS 2+]:::header --> A_BIDD[IDD]:::idd
   end`;
 
           return (
