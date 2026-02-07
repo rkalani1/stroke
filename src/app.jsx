@@ -8563,121 +8563,92 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
           };
 
           const ichAnticoagMermaid = `flowchart TD
-  classDef header fill:#ffffff,stroke:#475569,stroke-width:1px,color:#0f172a;
-  classDef cor1 fill:#bbf7d0,stroke:#16a34a,stroke-width:1px,color:#0f172a;
-  classDef cor2a fill:#fde68a,stroke:#d97706,stroke-width:1px,color:#0f172a;
-  classDef cor2b fill:#fdba74,stroke:#ea580c,stroke-width:1px,color:#0f172a;
-
-  A[Patients with ICH on anticoagulation]:::header --> B[Discontinue anticoagulation therapy immediately.\\nRapid reversal should be performed as soon as possible.\\n(Class 1)]:::cor1
-
-  B --> VKA[Vitamin K antagonists]:::header
-  B --> DABI[Dabigatran]:::header
-  B --> FXA[Factor Xa inhibitors]:::header
-  B --> HEP[Heparins]:::header
-
-  VKA --> INR1319[INR 1.3-1.9]:::header
-  VKA --> INR2[INR 2.0+]:::header
-  INR1319 --> PCC10[4F-PCC 10-20 IU/kg\\n(Class 2b)]:::cor2b
-  INR2 --> PCC25[4F-PCC 25-50 IU/kg\\n(Class 1)]:::cor1
-  PCC10 --> VITK[IV vitamin K\\n(Class 1)]:::cor1
+  A[ICH on anticoagulation] --> B[Stop anticoagulant and reverse ASAP (Class 1)]
+  B --> VKA[Vitamin K antagonists]
+  B --> DABI[Dabigatran]
+  B --> FXA[Factor Xa inhibitors]
+  B --> HEP[Heparins]
+  VKA --> INR1319[INR 1.3-1.9]
+  VKA --> INR2[INR 2.0 or higher]
+  INR1319 --> PCC10[4F-PCC 10-20 IU/kg (Class 2b)]
+  INR2 --> PCC25[4F-PCC 25-50 IU/kg (Class 1)]
+  PCC10 --> VITK[IV vitamin K (Class 1)]
   PCC25 --> VITK
-
-  DABI --> DABI_HIST[History: When last dose taken]:::header
-  DABI_HIST --> CHARCOAL[Activated charcoal if DOAC under 2 h\\n(potential efficacy up to 8 h)\\n(Class 2b)]:::cor2b
-  DABI --> IDA_Q{Is idarucizumab\\navailable?}:::header
-  IDA_Q -->|Yes| IDA[Idarucizumab\\n(Class 2a)]:::cor2a
-  IDA_Q -->|No| PCCS[PCCs or aPCC and/or\\nrenal replacement therapy\\n(Class 2b)]:::cor2b
-
-  FXA --> FXA_HIST[History: When last dose taken]:::header
+  DABI --> DABI_HIST[History when last dose taken]
+  DABI_HIST --> CHARCOAL[Activated charcoal if DOAC under 2 h (Class 2b)]
+  DABI --> IDA_Q{Idarucizumab available}
+  IDA_Q --> IDA[Idarucizumab (Class 2a)]
+  IDA_Q --> PCCS[PCCs or aPCC or renal replacement (Class 2b)]
+  FXA --> FXA_HIST[History when last dose taken]
   FXA_HIST --> CHARCOAL
-  FXA --> AND_Q{Is andexanet alfa\\navailable?}:::header
-  AND_Q -->|Yes| AND[Andexanet alfa\\n(Class 2a)]:::cor2a
-  AND_Q -->|No| PCC4[4-factor PCC or aPCC\\n(Class 2b)]:::cor2b
-
-  HEP --> UFH[Unfractionated heparin]:::header
-  HEP --> LMWH[Low molecular weight\\nheparin]:::header
-  UFH --> PROT1[Protamine\\n(Class 2a)]:::cor2a
-  LMWH --> PROT2[Protamine\\n(Class 2b)]:::cor2b`;
+  FXA --> AND_Q{Andexanet alfa available}
+  AND_Q --> AND[Andexanet alfa (Class 2a)]
+  AND_Q --> PCC4[4-factor PCC or aPCC (Class 2b)]
+  HEP --> UFH[Unfractionated heparin]
+  HEP --> LMWH[Low molecular weight heparin]
+  UFH --> PROT1[Protamine (Class 2a)]
+  LMWH --> PROT2[Protamine (Class 2b)]`;
 
           const ichIVHMermaid = `flowchart TD
-  classDef header fill:#ffffff,stroke:#475569,stroke-width:1px,color:#0f172a;
-  classDef cor1 fill:#bbf7d0,stroke:#16a34a,stroke-width:1px,color:#0f172a;
-  classDef cor2a fill:#fde68a,stroke:#d97706,stroke-width:1px,color:#0f172a;
-  classDef cor2b fill:#fdba74,stroke:#ea580c,stroke-width:1px,color:#0f172a;
-
-  A[IVH Surgical Management]:::header --> B[Spontaneous IVH +\\nObstructive Hydrocephalus]:::header
-  A --> C[Spontaneous ICH under 30 mL,\\nGCS above 3, IVH requiring EVD]:::header
-  A --> D[Spontaneous ICH under 30 mL\\nIVH requiring EVD]:::header
-
-  B --> E[EVD]:::header
-  E --> M1[Mortality Reduction\\n(Class 1)]:::cor1
-  E --> F1[Functional Outcome Benefit\\n(Class 2b uncertain)]:::cor2b
-
-  C --> E2[EVD + Thrombolytic]:::header
-  E2 --> M2[Mortality Reduction\\n(Class 2a)]:::cor2a
-  E2 --> F2[Functional Outcome Benefit\\n(Class 2b)]:::cor2b
-
-  D --> E3[Neuroendoscopy + EVD\\nwith or without thrombolytic]:::header
-  E3 --> F3[Functional Outcome Benefit\\n(Class 2b uncertain)]:::cor2b
-  E3 --> R3[Reduced Permanent Shunting\\n(Class 2b uncertain)]:::cor2b`;
+  A[IVH surgical management] --> B[Spontaneous IVH with obstructive hydrocephalus]
+  A --> C[Spontaneous ICH under 30 mL, GCS above 3, IVH requiring EVD]
+  A --> D[Spontaneous ICH under 30 mL, IVH requiring EVD]
+  B --> E[EVD]
+  E --> M1[Mortality reduction (Class 1)]
+  E --> F1[Functional outcome benefit (Class 2b uncertain)]
+  C --> E2[EVD plus thrombolytic]
+  E2 --> M2[Mortality reduction (Class 2a)]
+  E2 --> F2[Functional outcome benefit (Class 2b)]
+  D --> E3[Neuroendoscopy plus EVD with or without thrombolytic]
+  E3 --> F3[Functional outcome benefit (Class 2b uncertain)]
+  E3 --> R3[Reduced permanent shunting (Class 2b uncertain)]`;
 
           const ischemicMermaid = `flowchart LR
-  classDef header fill:#ffffff,stroke:#475569,stroke-width:1px,color:#0f172a;
-  classDef cor1 fill:#bbf7d0,stroke:#16a34a,stroke-width:1px,color:#0f172a;
-  classDef cor2a fill:#fde68a,stroke:#d97706,stroke-width:1px,color:#0f172a;
-  classDef cor2b fill:#fdba74,stroke:#ea580c,stroke-width:1px,color:#0f172a;
-  classDef cor3nb fill:#fecaca,stroke:#dc2626,stroke-width:1px,color:#7f1d1d;
-  classDef idd fill:#e5e7eb,stroke:#94a3b8,stroke-width:1px,color:#0f172a;
+  P0[Age 0-28 d] --> P0L[LVO] --> P0T[0-24 h] --> P0E[IDD]
+  P1[Age 28 d-5 y] --> P1L[LVO] --> P1T[0-24 h] --> P1S[Salvageable tissue] --> P1E[EVT Class 2b]
+  P2[Age 6-17 y] --> P2L[LVO]
+  P2L --> P2T1[0-6 h] --> P2S1[Salvageable tissue] --> P2E1[EVT Class 2a]
+  P2L --> P2T2[6-24 h] --> P2S2[Salvageable tissue] --> P2E2[EVT Class 2a]
+  P2L --> P2T3[24+ h] --> P2E3[IDD]
 
-  subgraph Pediatrics
-    P0[Patients aged 0-28 d]:::header --> P_L0[LVO]:::header --> P_T0[0-24 h]:::header --> P_E0[IDD]:::idd
-    P1[Patients aged 28 d-5 y]:::header --> P_L1[LVO]:::header --> P_T1[0-24 h]:::header --> P_S1[Salvageable brain tissue]:::header --> P_E1[EVT\\nClass 2b]:::cor2b
-    P2[Patients aged 6-17 y]:::header --> P_L2[LVO]:::header
-    P_L2 --> P_T2a[0-6 h]:::header --> P_S2a[Salvageable brain tissue]:::header --> P_E2a[EVT\\nClass 2a]:::cor2a
-    P_L2 --> P_T2b[6-24 h]:::header --> P_S2b[Salvageable brain tissue]:::header --> P_E2b[EVT\\nClass 2a]:::cor2a
-    P_L2 --> P_T2c[24+ h]:::header --> P_E2c[IDD]:::idd
-  end
+  A0[Age 18+ y] --> A_LVO[LVO]
+  A_LVO --> A_T06[0-6 h]
+  A_LVO --> A_T624[6-24 h]
+  A_LVO --> A_T24[24+ h] --> A_E24[IDD]
 
-  subgraph Adults["Adults 18+ y"]
-    A0[Patients aged 18+ y]:::header --> A_LVO[LVO]:::header
-    A_LVO --> A_T06[0-6 h]:::header
-    A_LVO --> A_T624[6-24 h]:::header
-    A_LVO --> A_T24[24+ h]:::header --> A_E24[IDD]:::idd
+  A_T06 --> A_AS610[ASPECTS 6-10]
+  A_T06 --> A_AS35[ASPECTS 3-5]
+  A_T06 --> A_AS02[ASPECTS 0-2]
 
-    A_T06 --> A_AS610[ASPECTS 6-10]:::header
-    A_T06 --> A_AS35[ASPECTS 3-5]:::header
-    A_T06 --> A_AS02[ASPECTS 0-2]:::header
+  A_AS610 --> A_M01[mRS 0-1] --> A_E01[EVT Class 1]
+  A_AS610 --> A_M2[mRS 2] --> A_E2[EVT Class 2a]
+  A_AS610 --> A_M34[mRS 3-4] --> A_E34[EVT Class 2b]
+  A_AS610 --> A_M4[mRS 4+] --> A_E4[IDD]
 
-    A_AS610 --> A_M01[mRS 0-1]:::header --> A_E01[EVT\\nClass 1]:::cor1
-    A_AS610 --> A_M2[mRS 2]:::header --> A_E2[EVT\\nClass 2a]:::cor2a
-    A_AS610 --> A_M34[mRS 3-4]:::header --> A_E34[EVT\\nClass 2b]:::cor2b
-    A_AS610 --> A_M4[mRS 4+]:::header --> A_E4[IDD]:::idd
+  A_AS35 --> A_M01b[mRS 0-1] --> A_E01b[EVT Class 1]
+  A_AS35 --> A_M2b[mRS 2+] --> A_E2b[IDD]
 
-    A_AS35 --> A_M01b[mRS 0-1]:::header --> A_E01b[EVT\\nClass 1]:::cor1
-    A_AS35 --> A_M2b[mRS 2+]:::header --> A_E2b[IDD]:::idd
+  A_AS02 --> A_M01c[mRS 0-1] --> A_E01c[EVT Class 2a]
+  A_AS02 --> A_M2c[mRS 2+] --> A_E2c[IDD]
 
-    A_AS02 --> A_M01c[mRS 0-1]:::header --> A_E01c[EVT\\nClass 2a]:::cor2a
-    A_AS02 --> A_M2c[mRS 2+]:::header --> A_E2c[IDD]:::idd
+  A_T624 --> A_AS610b[ASPECTS 6-10]
+  A_T624 --> A_AS35b[ASPECTS 3-5]
+  A_AS610b --> A_M01d[mRS 0-1] --> A_E01d[EVT Class 1]
+  A_AS610b --> A_M2d[mRS 2+] --> A_E2d[IDD]
+  A_AS35b --> A_M01e[mRS 0-1] --> A_E01e[EVT Class 1]
+  A_AS35b --> A_M2e[mRS 2+] --> A_E2e[IDD]
 
-    A_T624 --> A_AS610b[ASPECTS 6-10]:::header
-    A_T624 --> A_AS35b[ASPECTS 3-5]:::header
-    A_AS610b --> A_M01d[mRS 0-1]:::header --> A_E01d[EVT\\nClass 1]:::cor1
-    A_AS610b --> A_M2d[mRS 2+]:::header --> A_E2d[IDD]:::idd
-    A_AS35b --> A_M01e[mRS 0-1]:::header --> A_E01e[EVT\\nClass 1]:::cor1
-    A_AS35b --> A_M2e[mRS 2+]:::header --> A_E2e[IDD]:::idd
+  A0 --> A_MVOdom[MVO dominant M2]
+  A_MVOdom --> A_MVO06[0-6 h] --> A_MVOAS[ASPECTS 6-10] --> A_MVOmRS[mRS 0-1] --> A_MVOEVT[EVT Class 2a]
+  A_MVOdom --> A_MVO6p[6+ h] --> A_MVOIDD[IDD]
 
-    A0 --> A_MVOdom[MVO (Dominant M2)]:::header
-    A_MVOdom --> A_MVO06[0-6 h]:::header --> A_MVOAS[ASPECTS 6-10]:::header --> A_MVOmRS[mRS 0-1]:::header --> A_MVOEVT[EVT\\nClass 2a]:::cor2a
-    A_MVOdom --> A_MVO6p[6+ h]:::header --> A_MVOIDD[IDD]:::idd
+  A0 --> A_MVOnon[MVO non dominant M2 or DVO] --> A_MVOT[0-24 h] --> A_NOVT[No EVT Class 3 no benefit]
 
-    A0 --> A_MVOnon[MVO (Non dominant M2) or DVO]:::header --> A_MVOT[0-24 h]:::header --> A_NOVT[No EVT\\nClass 3 No Benefit]:::cor3nb
-
-    A0 --> A_BAS[Basilar artery]:::header --> A_BAST[0-24 h]:::header --> A_PCAS[PC ASPECTS 6+]:::header
-    A_PCAS --> A_BmRS01[mRS 0-1]:::header --> A_BEVT1[EVT\\nClass 1]:::cor1
-    A_PCAS --> A_NIHSS10[NIHSS 10+]:::header --> A_BEVT2[EVT\\nClass 1]:::cor1
-    A_PCAS --> A_NIHSS69[NIHSS 6-9]:::header --> A_BEVT3[EVT\\nClass 2b]:::cor2b
-    A_PCAS --> A_BmRS2[mRS 2+]:::header --> A_BIDD[IDD]:::idd
-  end`;
+  A0 --> A_BAS[Basilar artery] --> A_BAST[0-24 h] --> A_PCAS[PC ASPECTS 6+]
+  A_PCAS --> A_BmRS01[mRS 0-1] --> A_BEVT1[EVT Class 1]
+  A_PCAS --> A_NIHSS10[NIHSS 10+] --> A_BEVT2[EVT Class 1]
+  A_PCAS --> A_NIHSS69[NIHSS 6-9] --> A_BEVT3[EVT Class 2b]
+  A_PCAS --> A_BmRS2[mRS 2+] --> A_BIDD[IDD]`;
 
           return (
             <div className="relative">
