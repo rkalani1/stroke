@@ -8577,8 +8577,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
   VKA --> INR1319[INR 1.3-1.9]:::header
   VKA --> INR2[INR 2.0+]:::header
-  INR1319 --> PCC10[4F-PCC 10–20 IU/kg\\n(Class 2b)]:::cor2b
-  INR2 --> PCC25[4F-PCC 25–50 IU/kg\\n(Class 1)]:::cor1
+  INR1319 --> PCC10[4F-PCC 10-20 IU/kg\\n(Class 2b)]:::cor2b
+  INR2 --> PCC25[4F-PCC 25-50 IU/kg\\n(Class 1)]:::cor1
   PCC10 --> VITK[IV vitamin K\\n(Class 1)]:::cor1
   PCC25 --> VITK
 
@@ -8611,15 +8611,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
   B --> E[EVD]:::header
   E --> M1[Mortality Reduction\\n(Class 1)]:::cor1
-  E --> F1[Functional Outcome Benefit\\n(Class 2b*)]:::cor2b
+  E --> F1[Functional Outcome Benefit\\n(Class 2b uncertain)]:::cor2b
 
   C --> E2[EVD + Thrombolytic]:::header
   E2 --> M2[Mortality Reduction\\n(Class 2a)]:::cor2a
   E2 --> F2[Functional Outcome Benefit\\n(Class 2b)]:::cor2b
 
   D --> E3[Neuroendoscopy + EVD\\nwith or without thrombolytic]:::header
-  E3 --> F3[Functional Outcome Benefit\\n(Class 2b*)]:::cor2b
-  E3 --> R3[Reduced Permanent Shunting\\n(Class 2b*)]:::cor2b`;
+  E3 --> F3[Functional Outcome Benefit\\n(Class 2b uncertain)]:::cor2b
+  E3 --> R3[Reduced Permanent Shunting\\n(Class 2b uncertain)]:::cor2b`;
 
           const ischemicMermaid = `flowchart LR
   classDef header fill:#ffffff,stroke:#475569,stroke-width:1px,color:#0f172a;
@@ -8630,16 +8630,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
   classDef idd fill:#e5e7eb,stroke:#94a3b8,stroke-width:1px,color:#0f172a;
 
   subgraph Pediatrics
-    P0[Patients aged 0-28 d]:::header --> P_L0[LVO*]:::header --> P_T0[0-24 h]:::header --> P_E0[IDD]:::idd
-    P1[Patients aged 28 d-5 y]:::header --> P_L1[LVO*]:::header --> P_T1[0-24 h]:::header --> P_S1[Salvageable brain tissue]:::header --> P_E1[EVT\\nClass 2b]:::cor2b
-    P2[Patients aged 6-17 y]:::header --> P_L2[LVO*]:::header
+    P0[Patients aged 0-28 d]:::header --> P_L0[LVO]:::header --> P_T0[0-24 h]:::header --> P_E0[IDD]:::idd
+    P1[Patients aged 28 d-5 y]:::header --> P_L1[LVO]:::header --> P_T1[0-24 h]:::header --> P_S1[Salvageable brain tissue]:::header --> P_E1[EVT\\nClass 2b]:::cor2b
+    P2[Patients aged 6-17 y]:::header --> P_L2[LVO]:::header
     P_L2 --> P_T2a[0-6 h]:::header --> P_S2a[Salvageable brain tissue]:::header --> P_E2a[EVT\\nClass 2a]:::cor2a
     P_L2 --> P_T2b[6-24 h]:::header --> P_S2b[Salvageable brain tissue]:::header --> P_E2b[EVT\\nClass 2a]:::cor2a
     P_L2 --> P_T2c[24+ h]:::header --> P_E2c[IDD]:::idd
   end
 
   subgraph Adults["Adults 18+ y"]
-    A0[Patients aged 18+ y]:::header --> A_LVO[LVO*]:::header
+    A0[Patients aged 18+ y]:::header --> A_LVO[LVO]:::header
     A_LVO --> A_T06[0-6 h]:::header
     A_LVO --> A_T624[6-24 h]:::header
     A_LVO --> A_T24[24+ h]:::header --> A_E24[IDD]:::idd
