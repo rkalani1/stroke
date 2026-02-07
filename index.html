@@ -20,6 +20,7 @@
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js?v=20251016c"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js?v=20251016c"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js?v=20251016c"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js?v=20251016c"></script>
     <link rel="stylesheet" href="tailwind.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js?v=20251016c"></script>
     <style>
@@ -541,6 +542,19 @@
         .no-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+        .mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
+        .mermaid .edgeLabel {
+            font-family: "Manrope", "Segoe UI", sans-serif;
+            font-size: 11px;
         }
     </style>
     <script>

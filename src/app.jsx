@@ -1319,6 +1319,7 @@ Clinician Name`;
           // Ref and state for Part 6 (Treatment Decision) scroll visibility
           const treatmentDecisionRef = useRef(null);
           const backupImportRef = useRef(null);
+          const mermaidInitializedRef = useRef(false);
           const decisionStateRef = useRef({
             tnkRecommended: false,
             evtRecommended: false,
@@ -7543,6 +7544,46 @@ Clinician Name`;
             });
           }, []);
 
+          useEffect(() => {
+            if (!window.mermaid) return;
+            if (!mermaidInitializedRef.current) {
+              window.mermaid.initialize({
+                startOnLoad: false,
+                theme: 'base',
+                securityLevel: 'strict',
+                flowchart: {
+                  curve: 'linear',
+                  htmlLabels: false,
+                  useMaxWidth: true,
+                  nodeSpacing: 28,
+                  rankSpacing: 36
+                },
+                themeVariables: {
+                  fontFamily: 'Manrope, Segoe UI, sans-serif',
+                  fontSize: '12px',
+                  primaryColor: '#ffffff',
+                  primaryBorderColor: '#475569',
+                  primaryTextColor: '#0f172a',
+                  lineColor: '#64748b',
+                  tertiaryColor: '#f8fafc'
+                }
+              });
+              mermaidInitializedRef.current = true;
+            }
+            const runMermaid = () => {
+              try {
+                window.mermaid.run({ querySelector: '.mermaid' });
+              } catch (err) {
+                console.warn('Mermaid render failed:', err);
+              }
+            };
+            if (typeof requestAnimationFrame === 'function') {
+              requestAnimationFrame(runMermaid);
+            } else {
+              setTimeout(runMermaid, 0);
+            }
+          }, [activeTab, managementSubTab]);
+
 
           useEffect(() => {
             decisionStateRef.current = {
@@ -8520,6 +8561,28 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               </div>
             );
           };
+
+          const ichMermaid = `flowchart TD
+  classDef step fill:#ffffff,stroke:#475569,stroke-width:1px,rx:6,ry:6,color:#0f172a;
+  A[Confirm ICH + severity]:::step --> B[Hematoma expansion prevention]:::step
+  B --> C[Hemostasis and reversal]:::step
+  C --> D[Assess IVH / hydrocephalus]:::step
+  C --> E[Assess surgical candidacy]:::step
+  D --> F[Seizures, VTE, supportive care]:::step
+  E --> F
+  F --> G[Goals of care]:::step`;
+
+          const ischemicMermaid = `flowchart TD
+  classDef step fill:#ffffff,stroke:#475569,stroke-width:1px,rx:6,ry:6,color:#0f172a;
+  classDef decision fill:#f8fafc,stroke:#475569,stroke-width:1px,color:#0f172a;
+  A[Confirm ischemic stroke + imaging]:::step --> B{Reperfusion eligible?}:::decision
+  B -->|IV thrombolysis| C[IV thrombolysis]:::step
+  B -->|Mechanical EVT| D[Mechanical thrombectomy]:::step
+  C --> E[Blood pressure targets]:::step
+  D --> E
+  E --> F[Post-lysis complications]:::step
+  F --> G[Antithrombotic initiation]:::step
+  G --> H[Secondary prevention + discharge]:::step`;
 
           return (
             <div className="relative">
@@ -16850,91 +16913,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <span className="text-xs text-red-600 font-medium">Algorithmic workflow</span>
                         </div>
 
-                        <div className="space-y-3">
-                          <AlgorithmStep
-                            index="Step 1"
-                            title="Confirm ICH + severity"
-                            tone="red"
-                            icon="scan"
-                            items={[
-                              'Noncontrast CT +/- CTA; quantify volume (ABC/2).',
-                              'Assess IVH/hydrocephalus, GCS, and ICH score.',
-                              'Send coagulation labs, platelets, and anticoagulant history.'
-                            ]}
-                          />
-                          <AlgorithmArrow />
-                          <AlgorithmStep
-                            index="Step 2"
-                            title="Hematoma expansion prevention"
-                            tone="red"
-                            icon="activity"
-                            items={[
-                              'SBP 150-220: target 140 and maintain 130-150; avoid <130.',
-                              'Smooth BP control; avoid large variability.',
-                              'Large/severe ICH: intensive BP lowering safety uncertain.'
-                            ]}
-                          />
-                          <AlgorithmArrow />
-                          <AlgorithmStep
-                            index="Step 3"
-                            title="Hemostasis and reversal"
-                            tone="red"
-                            icon="shield"
-                            items={[
-                              'Stop anticoagulants; use 4F-PCC + vitamin K for warfarin.',
-                              'Use andexanet or idarucizumab for Xa/dabigatran.',
-                              'Avoid platelets unless emergent neurosurgery; DDAVP uncertain.'
-                            ]}
-                          />
-                          <AlgorithmArrow />
-                          <AlgorithmSplit tone="red" leftLabel="IVH / hydrocephalus" rightLabel="Surgical selection" />
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <AlgorithmStep
-                              index="Step 4A"
-                              title="IVH/hydrocephalus"
-                              tone="red"
-                              icon="brain"
-                              items={[
-                                'EVD for hydrocephalus or large IVH with decreased consciousness.',
-                                'Consider IVH thrombolytic via EVD for select patients.'
-                              ]}
-                            />
-                            <AlgorithmStep
-                              index="Step 4B"
-                              title="Surgical selection"
-                              tone="red"
-                              icon="clipboard-check"
-                              items={[
-                                'Cerebellar ICH >=15 mL + deterioration/brainstem compression: evacuate.',
-                                'Supratentorial >20-30 mL with GCS 5-12: MIS may reduce mortality.',
-                                'Routine craniotomy benefit uncertain; consider if deteriorating.'
-                              ]}
-                            />
+                        <div className="bg-white border border-red-200 rounded-xl p-4 shadow-sm overflow-x-auto">
+                          <div className="mermaid text-xs md:text-sm" aria-label="ICH management workflow diagram">
+                            {ichMermaid}
                           </div>
-                          <AlgorithmArrow />
-                          <AlgorithmStep
-                            index="Step 5"
-                            title="Seizures, VTE, supportive care"
-                            tone="red"
-                            icon="stethoscope"
-                            items={[
-                              'Treat clinical/electrographic seizures; cEEG if unexplained AMS.',
-                              'IPC day 1; UFH/LMWH at 24-48h if stable.',
-                              'NPO until swallow screen; manage glucose and fever.'
-                            ]}
-                          />
-                          <AlgorithmArrow />
-                          <AlgorithmStep
-                            index="Step 6"
-                            title="Goals of care"
-                            tone="red"
-                            icon="users"
-                            items={[
-                              'Postpone new DNAR/withdrawal until hospital day 2 when possible.',
-                              'Do not limit other interventions solely due to DNAR.',
-                              'Early palliative care for symptom support and shared decisions.'
-                            ]}
-                          />
                         </div>
 
                         <details className="mt-5 bg-white border border-red-200 rounded-lg">
@@ -17190,92 +17172,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <span className="text-xs text-blue-600 font-medium">Algorithmic workflow</span>
                           </div>
 
-                          <div className="space-y-3">
-                            <AlgorithmStep
-                              index="Step 1"
-                              title="Confirm ischemic stroke + imaging"
-                              tone="blue"
-                              icon="scan"
-                              items={[
-                                'Noncontrast CT; CTA/CTP or MRI as needed.',
-                                'Define last known well and stroke severity (NIHSS).',
-                                'Identify LVO and large-core status if present.'
-                              ]}
-                            />
-                            <AlgorithmArrow />
-                            <AlgorithmDecision
-                              index="Step 2"
-                              title="Reperfusion eligible?"
-                              tone="blue"
-                              note="Assess IV thrombolysis window and EVT candidacy."
-                            />
-                            <AlgorithmSplit tone="blue" leftLabel="IV thrombolysis" rightLabel="Mechanical EVT" />
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                              <AlgorithmStep
-                                index="Step 2A"
-                                title="IV thrombolysis"
-                                tone="blue"
-                                icon="zap"
-                                items={[
-                                  'BP <185/110 before lytics; <180/105 after.',
-                                  'Monitor closely for hemorrhage or angioedema.'
-                                ]}
-                              />
-                              <AlgorithmStep
-                                index="Step 2B"
-                                title="Mechanical thrombectomy"
-                                tone="blue"
-                                icon="git-branch"
-                                items={[
-                                  'LVO: EVT recommended in 0-6h and select 6-24h.',
-                                  'Large-core EVT per SVIN criteria when eligible.'
-                                ]}
-                              />
+                          <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm overflow-x-auto">
+                            <div className="mermaid text-xs md:text-sm" aria-label="Ischemic stroke management workflow diagram">
+                              {ischemicMermaid}
                             </div>
-                            <AlgorithmArrow />
-                            <AlgorithmStep
-                              index="Step 3"
-                              title="Blood pressure targets"
-                              tone="blue"
-                              icon="activity"
-                              items={[
-                                'No lytics: allow up to 220/120 unless other indication.',
-                                'Post-lysis or post-EVT: target <180/105.'
-                              ]}
-                            />
-                            <AlgorithmArrow />
-                            <AlgorithmStep
-                              index="Step 4"
-                              title="Post-lysis complications"
-                              tone="blue"
-                              icon="alert-triangle"
-                              items={[
-                                'If neuro decline: activate post-lysis ICH protocol.',
-                                'Manage orolingual angioedema if present.'
-                              ]}
-                            />
-                            <AlgorithmArrow />
-                            <AlgorithmStep
-                              index="Step 5"
-                              title="Antithrombotic initiation"
-                              tone="blue"
-                              icon="shield"
-                              items={[
-                                'DAPT x21 days for minor stroke/TIA when indicated.',
-                                'ASA after 24h post-lysis; DOAC timing for AF per severity.'
-                              ]}
-                            />
-                            <AlgorithmArrow />
-                            <AlgorithmStep
-                              index="Step 6"
-                              title="Secondary prevention + discharge"
-                              tone="blue"
-                              icon="clipboard-list"
-                              items={[
-                                'High-intensity statin, BP <130/80, risk factor control.',
-                                'Smoking cessation, exercise/diet counseling, follow-up.'
-                              ]}
-                            />
                           </div>
                         </div>
 
