@@ -8155,7 +8155,7 @@ Clinician Name`;
             } else {
               setTimeout(runMermaid, 0);
             }
-          }, [activeTab, managementSubTab, managementRole]);
+          }, [activeTab, managementSubTab]);
 
           useEffect(() => {
             window.strokeMermaidClick = (nodeId) => {
