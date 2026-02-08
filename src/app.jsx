@@ -1422,11 +1422,10 @@ Clinician Name`;
           const [consultationType, setConsultationType] = useState(loadFromStorage('consultationType', settings.defaultConsultationType || 'videoTelestroke'));
 
           const [managementSubTab, setManagementSubTab] = useState(initialManagementSubTab);
-          const [managementRole, setManagementRole] = useState(loadFromStorage('managementRole', 'telestroke'));
-          const showTelestrokeManagement = managementRole === 'telestroke';
-          const showInpatientManagement = managementRole === 'inpatient';
-          const showClinicManagement = managementRole === 'clinic';
-          const showAcuteManagement = showTelestrokeManagement || showInpatientManagement;
+          const showTelestrokeManagement = true;
+          const showInpatientManagement = true;
+          const showClinicManagement = true;
+          const showAcuteManagement = true;
 
           // Emergency Contacts FAB state
           const [fabExpanded, setFabExpanded] = useState(false);
@@ -8188,11 +8187,6 @@ Clinician Name`;
           useEffect(() => {
             debouncedSave('consultationType', consultationType);
           }, [consultationType]);
-
-          // Persist management role view
-          useEffect(() => {
-            debouncedSave('managementRole', managementRole);
-          }, [managementRole]);
 
           useEffect(() => {
             debouncedSave('patientData', patientData);
@@ -17660,61 +17654,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         Current diagnosis is <strong>ICH</strong> — the <button onClick={() => setManagementSubTab('ich')} className="underline font-semibold hover:text-red-900">ICH Management</button> tab may be more relevant.
                       </div>
                     )}
-                    <div className="bg-white border border-slate-200 rounded-xl p-3 flex flex-col gap-3">
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                        <div>
-                          <h3 className="text-sm font-semibold text-slate-800">Role Mode</h3>
-                          <p className="text-xs text-slate-500">Tailor management guidance for telestroke (phone or video), inpatient service, or clinic follow-up.</p>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {[
-                            { id: 'telestroke', label: 'Telestroke' },
-                            { id: 'inpatient', label: 'Inpatient' },
-                            { id: 'clinic', label: 'Clinic' }
-                          ].map((role) => (
-                            <button
-                              key={role.id}
-                              type="button"
-                              onClick={() => setManagementRole(role.id)}
-                              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
-                                managementRole === role.id
-                                  ? 'bg-blue-600 text-white border-blue-600'
-                                  : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-                              }`}
-                            >
-                              {role.label}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                      {showTelestrokeManagement && (
-                        <div className="flex flex-wrap items-center gap-2 text-xs">
-                          <span className="text-slate-500">Consult type:</span>
-                          <button
-                            type="button"
-                            onClick={() => setConsultationType('telephone')}
-                            className={`px-2.5 py-1 rounded-full border ${
-                              consultationType === 'telephone'
-                                ? 'bg-slate-900 text-white border-slate-900'
-                                : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-                            }`}
-                          >
-                            Telephone
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setConsultationType('videoTelestroke')}
-                            className={`px-2.5 py-1 rounded-full border ${
-                              consultationType === 'videoTelestroke'
-                                ? 'bg-slate-900 text-white border-slate-900'
-                                : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-                            }`}
-                          >
-                            Video Telestroke
-                          </button>
-                        </div>
-                      )}
-                    </div>
                     <div className="bg-white border border-gray-200 rounded-xl p-2 flex flex-wrap gap-2">
                       {[
                         { id: 'ich', label: 'ICH', icon: 'alert-triangle' },
@@ -17813,7 +17752,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <div className="space-y-4">
                           <div className="bg-white border border-red-200 rounded-xl p-4 shadow-sm overflow-x-auto">
                             <p className="text-xs font-semibold uppercase tracking-wide text-red-700 mb-3">
-                              Figure 2. Management of anticoagulant-related hemorrhage (AHA/ASA ICH 2022)
+                              ICH Algorithm — Anticoagulant-Related Hemorrhage (AHA/ASA 2022)
                             </p>
                             <div className="mermaid text-xs md:text-sm" aria-label="ICH anticoagulant-related hemorrhage algorithm">
                               {ichAnticoagMermaid}
@@ -17821,7 +17760,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                           <div className="bg-white border border-red-200 rounded-xl p-4 shadow-sm overflow-x-auto">
                             <p className="text-xs font-semibold uppercase tracking-wide text-red-700 mb-3">
-                              Figure 3. Surgical management of IVH (AHA/ASA ICH 2022)
+                              ICH Algorithm — IVH Surgical Management (AHA/ASA 2022)
                             </p>
                             <div className="mermaid text-xs md:text-sm" aria-label="IVH surgical management algorithm">
                               {ichIVHMermaid}
@@ -17928,11 +17867,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <details className="mt-5 bg-white border border-red-200 rounded-lg">
                           <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-lg">ICH protocol details</summary>
                           <div className="p-4 space-y-6">
-                            {showClinicManagement && (
-                              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800">
-                                Clinic view hides acute protocol blocks. Switch to Telestroke or Inpatient to view acute management details.
-                              </div>
-                            )}
 {showInpatientManagement && (
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                         <h3 className="text-lg font-semibold text-blue-800 mb-3">Minimally Invasive Evacuation (MIE)</h3>
@@ -18197,7 +18131,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                           <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm overflow-x-auto">
                             <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-3">
-                              Figure 3. Algorithm for management of AIS eligibility for EVT (Adults, AHA/ASA 2026)
+                              AIS EVT Eligibility Algorithm — Adults (AHA/ASA 2026)
                             </p>
                             <div className="mermaid text-xs md:text-sm" aria-label="Adult AIS EVT eligibility algorithm">
                               {ischemicAdultMermaid}
@@ -18208,7 +18142,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                           <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm overflow-x-auto">
                             <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-3">
-                              Figure 3. Pediatric AIS EVT eligibility (AHA/ASA 2026)
+                              AIS EVT Eligibility Algorithm — Pediatrics (AHA/ASA 2026)
                             </p>
                             <div className="mermaid text-xs md:text-sm" aria-label="Pediatric AIS EVT eligibility algorithm">
                               {ischemicPedsMermaid}
