@@ -1422,6 +1422,11 @@ Clinician Name`;
           const [consultationType, setConsultationType] = useState(loadFromStorage('consultationType', settings.defaultConsultationType || 'videoTelestroke'));
 
           const [managementSubTab, setManagementSubTab] = useState(initialManagementSubTab);
+          const [managementRole, setManagementRole] = useState(loadFromStorage('managementRole', 'telestroke'));
+          const showTelestrokeManagement = managementRole === 'telestroke';
+          const showInpatientManagement = managementRole === 'inpatient';
+          const showClinicManagement = managementRole === 'clinic';
+          const showAcuteManagement = showTelestrokeManagement || showInpatientManagement;
 
           // Emergency Contacts FAB state
           const [fabExpanded, setFabExpanded] = useState(false);
@@ -8151,7 +8156,7 @@ Clinician Name`;
             } else {
               setTimeout(runMermaid, 0);
             }
-          }, [activeTab, managementSubTab]);
+          }, [activeTab, managementSubTab, managementRole]);
 
           useEffect(() => {
             window.strokeMermaidClick = (nodeId) => {
@@ -8183,6 +8188,11 @@ Clinician Name`;
           useEffect(() => {
             debouncedSave('consultationType', consultationType);
           }, [consultationType]);
+
+          // Persist management role view
+          useEffect(() => {
+            debouncedSave('managementRole', managementRole);
+          }, [managementRole]);
 
           useEffect(() => {
             debouncedSave('patientData', patientData);
@@ -17650,6 +17660,61 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         Current diagnosis is <strong>ICH</strong> — the <button onClick={() => setManagementSubTab('ich')} className="underline font-semibold hover:text-red-900">ICH Management</button> tab may be more relevant.
                       </div>
                     )}
+                    <div className="bg-white border border-slate-200 rounded-xl p-3 flex flex-col gap-3">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                        <div>
+                          <h3 className="text-sm font-semibold text-slate-800">Role Mode</h3>
+                          <p className="text-xs text-slate-500">Tailor management guidance for telestroke (phone or video), inpatient service, or clinic follow-up.</p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {[
+                            { id: 'telestroke', label: 'Telestroke' },
+                            { id: 'inpatient', label: 'Inpatient' },
+                            { id: 'clinic', label: 'Clinic' }
+                          ].map((role) => (
+                            <button
+                              key={role.id}
+                              type="button"
+                              onClick={() => setManagementRole(role.id)}
+                              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
+                                managementRole === role.id
+                                  ? 'bg-blue-600 text-white border-blue-600'
+                                  : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                              }`}
+                            >
+                              {role.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      {showTelestrokeManagement && (
+                        <div className="flex flex-wrap items-center gap-2 text-xs">
+                          <span className="text-slate-500">Consult type:</span>
+                          <button
+                            type="button"
+                            onClick={() => setConsultationType('telephone')}
+                            className={`px-2.5 py-1 rounded-full border ${
+                              consultationType === 'telephone'
+                                ? 'bg-slate-900 text-white border-slate-900'
+                                : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                            }`}
+                          >
+                            Telephone
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setConsultationType('videoTelestroke')}
+                            className={`px-2.5 py-1 rounded-full border ${
+                              consultationType === 'videoTelestroke'
+                                ? 'bg-slate-900 text-white border-slate-900'
+                                : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                            }`}
+                          >
+                            Video Telestroke
+                          </button>
+                        </div>
+                      )}
+                    </div>
                     <div className="bg-white border border-gray-200 rounded-xl p-2 flex flex-wrap gap-2">
                       {[
                         { id: 'ich', label: 'ICH', icon: 'alert-triangle' },
@@ -17820,12 +17885,55 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               Auto-flags volume ≥30 mL (predictive of worse outcomes and surgical consideration).
                             </p>
                           </div>
+                          {showTelestrokeManagement && (
+                            <div className="bg-white border border-red-200 rounded-xl p-4">
+                              <h4 className="text-sm font-semibold text-red-700 mb-2">Telestroke rapid actions (phone or video)</h4>
+                              <ul className="text-sm space-y-1 text-slate-700">
+                                <li>Confirm anticoagulant/antiplatelet use and initiate reversal per Figure 2.</li>
+                                <li>Target SBP 140 and maintain 130-150; avoid SBP &lt;130 and use IV nicardipine or clevidipine.</li>
+                                <li>Screen for transfer triggers: cerebellar ICH ≥15 mL with deterioration/brainstem compression/hydrocephalus, IVH with hydrocephalus requiring EVD, or worsening supratentorial ICH.</li>
+                                <li>Plan repeat imaging and close neuro checks; avoid new DNAR/withdrawal within first 24h if no preexisting limits.</li>
+                              </ul>
+                              <p className="text-xs text-slate-500 mt-2">
+                                {consultationType === 'telephone'
+                                  ? 'Telephone: confirm NIHSS and exam details with the bedside team.'
+                                  : 'Video: perform a focused remote NIHSS and confirm imaging review.'}
+                              </p>
+                            </div>
+                          )}
+                          {showInpatientManagement && (
+                            <div className="bg-white border border-red-200 rounded-xl p-4">
+                              <h4 className="text-sm font-semibold text-red-700 mb-2">Inpatient priorities</h4>
+                              <ul className="text-sm space-y-1 text-slate-700">
+                                <li>Continue anticoagulant reversal, monitor for hematoma expansion, and maintain SBP 130-150.</li>
+                                <li>Evaluate IVH/hydrocephalus for EVD and monitor for neurologic decline.</li>
+                                <li>Manage seizures, avoid prophylaxis without seizures, and use EEG when indicated.</li>
+                                <li>Implement supportive care bundle, early rehab, and structured goals-of-care discussions.</li>
+                              </ul>
+                            </div>
+                          )}
+                          {showClinicManagement && (
+                            <div className="bg-white border border-red-200 rounded-xl p-4">
+                              <h4 className="text-sm font-semibold text-red-700 mb-2">Clinic follow-up focus</h4>
+                              <ul className="text-sm space-y-1 text-slate-700">
+                                <li>Review recurrence risk factors and optimize long-term BP and lifestyle management.</li>
+                                <li>Reassess antithrombotic strategy and anticoagulation restart decisions.</li>
+                                <li>Screen for cognitive, mood, and functional deficits; coordinate rehab services.</li>
+                              </ul>
+                              <p className="text-xs text-slate-500 mt-2">See Secondary Prevention Dashboard and the guideline library for detailed targets.</p>
+                            </div>
+                          )}
                         </div>
 
                         <details className="mt-5 bg-white border border-red-200 rounded-lg">
                           <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-lg">ICH protocol details</summary>
                           <div className="p-4 space-y-6">
-{/* Minimally Invasive Evacuation */}
+                            {showClinicManagement && (
+                              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800">
+                                Clinic view hides acute protocol blocks. Switch to Telestroke or Inpatient to view acute management details.
+                              </div>
+                            )}
+{showInpatientManagement && (
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                         <h3 className="text-lg font-semibold text-blue-800 mb-3">Minimally Invasive Evacuation (MIE)</h3>
 
@@ -17872,8 +17980,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <p className="text-sm mt-2 font-semibold">Volume = A x B x C / 2</p>
                         </div>
                       </div>
+                      )}
 
-                      {/* Anticoagulation Reversal */}
+                      {showAcuteManagement && (
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">Anticoagulation Reversal</h3>
                         
@@ -17935,8 +18044,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </ul>
                         </div>
                       </div>
+                      )}
 
-                      {/* Antiplatelet-Associated ICH */}
+                      {showAcuteManagement && (
                         <div className="mb-6">
                           <h3 className="text-lg font-semibold text-red-700 mb-4">Antiplatelet-Associated ICH</h3>
                           <div className="bg-white p-4 rounded border">
@@ -17947,8 +18057,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </ul>
                           </div>
                         </div>
+                      )}
 
-                      {/* Hematoma Expansion Prevention */}
+                      {showAcuteManagement && (
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">Hematoma Expansion Prevention</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -17976,8 +18087,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                         </div>
                       </div>
+                      )}
 
-                      {/* IVH and Hydrocephalus */}
+                      {showAcuteManagement && (
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">IVH &amp; Hydrocephalus Management</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -17998,8 +18110,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                         </div>
                       </div>
+                      )}
 
-                      {/* ICH Disposition & Goals of Care */}
+                      {showAcuteManagement && (
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">ICH Disposition &amp; Goals of Care</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -18021,8 +18134,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                         </div>
                       </div>
+                      )}
 
-                      {/* Seizure Management in ICH */}
+                      {showInpatientManagement && (
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">Seizure Management in ICH</h3>
                         <div className="bg-white p-4 rounded border">
@@ -18034,8 +18148,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </ul>
                         </div>
                       </div>
+                      )}
 
-                      {/* Supportive Care Bundle */}
+                      {showInpatientManagement && (
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">ICH Supportive Care Bundle</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -18064,6 +18179,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                         </div>
                       </div>
+                      )}
                           </div>
                         </details>
                       </div>
@@ -18099,11 +18215,47 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
                         </div>
+                        {showTelestrokeManagement && (
+                          <div className="bg-white border border-blue-200 rounded-xl p-4">
+                            <h4 className="text-sm font-semibold text-blue-800 mb-2">Telestroke rapid decision stack (phone or video)</h4>
+                            <ul className="text-sm space-y-1 text-slate-700">
+                              <li>Confirm LKW and thrombolysis window; screen for contraindications and disabling deficit.</li>
+                              <li>Use the EVT Eligibility Builder and activate transfer for LVO or large core candidates.</li>
+                              <li>Set BP phase target and treat if above goal.</li>
+                              <li>Document consent, contraindication review, and disposition; copy the consult note.</li>
+                            </ul>
+                            <p className="text-xs text-slate-500 mt-2">
+                              {consultationType === 'telephone'
+                                ? 'Telephone: request NIHSS and exam details from the bedside team and review imaging together.'
+                                : 'Video: perform a focused remote NIHSS and confirm imaging review.'}
+                            </p>
+                          </div>
+                        )}
+                        {showInpatientManagement && (
+                          <div className="bg-white border border-blue-200 rounded-xl p-4">
+                            <h4 className="text-sm font-semibold text-blue-800 mb-2">Inpatient priorities</h4>
+                            <ul className="text-sm space-y-1 text-slate-700">
+                              <li>Post-lytic and post-EVT monitoring with phase-appropriate BP targets.</li>
+                              <li>Manage complications (sICH, angioedema) and ensure nursing flowsheet compliance.</li>
+                              <li>Initiate secondary prevention: antithrombotic plan, statin, and risk-factor control.</li>
+                            </ul>
+                          </div>
+                        )}
+                        {showClinicManagement && (
+                          <div className="bg-white border border-blue-200 rounded-xl p-4">
+                            <h4 className="text-sm font-semibold text-blue-800 mb-2">Clinic follow-up focus</h4>
+                            <ul className="text-sm space-y-1 text-slate-700">
+                              <li>Confirm stroke etiology and optimize antithrombotic strategy.</li>
+                              <li>Risk factor targets (BP, lipids, diabetes, lifestyle) with adherence review.</li>
+                              <li>Screen for cognition, mood, and functional recovery; coordinate rehab.</li>
+                            </ul>
+                          </div>
+                        )}
 
                         <details className="bg-white border border-blue-200 rounded-lg">
                           <summary className="cursor-pointer px-4 py-3 font-semibold text-blue-800 hover:bg-blue-50 rounded-lg">Ischemic protocol details</summary>
                           <div className="p-4 space-y-6">
-                        {/* EVT Eligibility Builder */}
+                        {showAcuteManagement && (
                         <div className="bg-white border border-blue-200 rounded-lg p-4">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
                             <div>
@@ -18218,12 +18370,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             );
                           })()}
                         </div>
+                        )}
 
+                        {showAcuteManagement && (
                         <div className="bg-white border border-blue-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-blue-800 mb-2">Mobile Stroke Units (MSU)</h3>
                           <p className="text-sm text-gray-700">Use MSUs where available for rapid stroke identification and IV thrombolysis delivery. MSUs reduce onset-to-treatment time and improve outcomes (Class I, LOE A).</p>
                         </div>
+                        )}
 
+                        {showAcuteManagement && (
                         <div className="bg-white border border-blue-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-blue-800 mb-2">Pediatric Reperfusion (28 days–18 years)</h3>
                           <ul className="text-sm space-y-1 text-gray-700">
@@ -18233,13 +18389,14 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <li>• EVT may be considered for age 28 days–6 years with experienced neurointerventionalist (Class IIb).</li>
                           </ul>
                         </div>
+                        )}
 
-                        {/* DOAC Start Planner */}
+                        {(showInpatientManagement || showClinicManagement) && (
                         <div className="bg-white border border-blue-200 rounded-lg p-4">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
                             <div>
-                              <h3 className="text-lg font-semibold text-blue-800">DOAC Start Planner</h3>
-                              <p className="text-xs text-slate-500">Automatically computes earliest start date based on NIHSS severity.</p>
+                              <h3 className="text-lg font-semibold text-blue-800">AF Anticoagulation Timing (CATALYST)</h3>
+                              <p className="text-xs text-slate-500">Computes earliest start date based on NIHSS severity and protocol selection.</p>
                             </div>
                           </div>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
@@ -18294,9 +18451,42 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </div>
                             );
                           })()}
+                          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div className="bg-slate-50 p-3 rounded border">
+                              <p className="text-sm text-gray-700 mb-2">CATALYST meta-analysis (ELAN, OPTIMAS, TIMING, START) supports early DOAC initiation as safe and non-inferior to delayed initiation.</p>
+                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3 text-xs">
+                                <div className="bg-green-50 p-2 rounded border border-green-200 text-center">
+                                  <p className="font-bold text-green-700 uppercase">Minor</p>
+                                  <p className="text-gray-500">NIHSS &lt;8</p>
+                                  <p className="text-sm font-bold text-green-800 mt-1">Within 48h</p>
+                                </div>
+                                <div className="bg-amber-50 p-2 rounded border border-amber-200 text-center">
+                                  <p className="font-bold text-amber-700 uppercase">Moderate</p>
+                                  <p className="text-gray-500">NIHSS 8-15</p>
+                                  <p className="text-sm font-bold text-amber-800 mt-1">Day 3-5</p>
+                                </div>
+                                <div className="bg-red-50 p-2 rounded border border-red-200 text-center">
+                                  <p className="font-bold text-red-700 uppercase">Severe</p>
+                                  <p className="text-gray-500">NIHSS &gt;15</p>
+                                  <p className="text-sm font-bold text-red-800 mt-1">Day 6-14</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="bg-slate-50 p-3 rounded border">
+                              <h4 className="font-semibold text-purple-700 mb-2">Preferred DOACs</h4>
+                              <ul className="text-sm space-y-1">
+                                <li>• <strong>Apixaban</strong> 5 mg BID (2.5 mg if age ≥80, weight ≤60 kg, or Cr ≥1.5)</li>
+                                <li>• <strong>Rivaroxaban</strong> 20 mg daily (15 mg if CrCl 15-50)</li>
+                                <li>• <strong>Dabigatran</strong> 150 mg BID (110 mg if age ≥80)</li>
+                                <li className="text-gray-500 italic text-xs mt-1">DOAC preferred over warfarin (Class I, LOE A) — AHA/ASA 2021</li>
+                              </ul>
+                            </div>
+                          </div>
+                          <p className="text-xs text-gray-500 mt-2 italic">Fischer U et al. Lancet Neurol. 2025. Reassess imaging before DOAC start if concern for hemorrhagic transformation.</p>
                         </div>
+                        )}
 
-{/* Blood Pressure Management */}
+ {showAcuteManagement && (
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-blue-800 mb-3">Blood Pressure Management</h3>
 
@@ -18361,7 +18551,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
                                 <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105 (avoid SBP &lt;140 — no benefit)</li>
                                 <li><strong>After thrombectomy:</strong> SBP &lt;180, DBP &lt;105 (avoid SBP &lt;140 — harmful)</li>
-                                <li><strong>ICH:</strong> SBP target 140, maintain 130-150 (avoid &lt;130)</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border">
@@ -18370,13 +18559,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li><strong>Labetalol:</strong> 10 mg IV q15min</li>
                                 <li>Increase to 20mg, then 40mg, then 60mg</li>
                                 <li>Max total dose: 300mg in 2 hours</li>
-                                <li><strong>Alternative:</strong> Nicardipine 5 mg/hr IV</li>
+                                <li><strong>Nicardipine:</strong> 5 mg/hr IV</li>
                                 <li>Titrate by 2.5 mg/hr q15min</li>
+                                <li><strong>Clevidipine:</strong> 1-2 mg/hr IV, double q90 sec; max 32 mg/hr</li>
                               </ul>
                             </div>
                           </div>
                         </div>
+                        )}
 
+                        {showAcuteManagement && (
                         <div className="bg-sky-50 border border-sky-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-sky-800 mb-2">Normobaric Oxygen (NBO) Before EVT</h3>
                           <p className="text-sm text-gray-700 mb-1">
@@ -18387,8 +18579,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <li>• Class IIb, LOE B-R (OPENS-2)</li>
                           </ul>
                         </div>
+                        )}
 
-                        {/* Nursing Flowsheet Generator */}
+                        {showInpatientManagement && (
                         <div className="bg-white border border-blue-200 rounded-lg p-4">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
                             <div>
@@ -18450,8 +18643,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
                         </div>
+                        )}
 
-                        {/* Post-Lytic Complications */}
+                        {showAcuteManagement && (
                         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-red-800 mb-3">Post-Lytic ICH Protocol</h3>
 
@@ -18475,8 +18669,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
                         </div>
+                        )}
 
-                        {/* Orolingual Angioedema Protocol */}
+                        {showAcuteManagement && (
                         <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-yellow-800 mb-3">Orolingual Angioedema Protocol</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -18502,8 +18697,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
                         </div>
+                        )}
 
-                        {/* Antiplatelet Loading Protocol */}
+                        {showAcuteManagement && (
                         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-green-800 mb-3">Antiplatelet Loading Protocol</h3>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -18540,43 +18736,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
                         </div>
+                        )}
 
-                        {/* DOAC Timing in AF-Stroke (CATALYST) */}
-                        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                          <h3 className="text-lg font-semibold text-purple-800 mb-3">DOAC Initiation in AF-Stroke (CATALYST Meta-Analysis)</h3>
-                          <div className="bg-white p-3 rounded border mb-3">
-                            <p className="text-sm text-gray-700 mb-2">Based on the CATALYST meta-analysis (pooled data from ELAN, OPTIMAS, TIMING, START), early DOAC initiation is safe and non-inferior to delayed initiation.</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
-                              <div className="bg-green-50 p-2 rounded border border-green-200 text-center">
-                                <p className="text-xs font-bold text-green-700 uppercase">Minor Stroke</p>
-                                <p className="text-xs text-gray-500">NIHSS &lt;8, small infarct</p>
-                                <p className="text-lg font-bold text-green-800 mt-1">Within 48h</p>
-                              </div>
-                              <div className="bg-amber-50 p-2 rounded border border-amber-200 text-center">
-                                <p className="text-xs font-bold text-amber-700 uppercase">Moderate Stroke</p>
-                                <p className="text-xs text-gray-500">NIHSS 8-15</p>
-                                <p className="text-lg font-bold text-amber-800 mt-1">Day 3-5</p>
-                              </div>
-                              <div className="bg-red-50 p-2 rounded border border-red-200 text-center">
-                                <p className="text-xs font-bold text-red-700 uppercase">Severe Stroke</p>
-                                <p className="text-xs text-gray-500">NIHSS &gt;15 or large infarct</p>
-                                <p className="text-lg font-bold text-red-800 mt-1">Day 6-14</p>
-                              </div>
-                            </div>
-                            <p className="text-xs text-gray-500 mt-2 italic">Fischer U et al. Lancet Neurol. 2025. CATALYST Collaboration. Reassess imaging before DOAC start if concern for hemorrhagic transformation.</p>
-                          </div>
-                          <div className="bg-white p-3 rounded border">
-                            <h4 className="font-semibold text-purple-700 mb-2">Preferred DOACs</h4>
-                            <ul className="text-sm space-y-1">
-                              <li>• <strong>Apixaban</strong> 5 mg BID (2.5 mg if age &ge;80, weight &le;60 kg, or Cr &ge;1.5)</li>
-                              <li>• <strong>Rivaroxaban</strong> 20 mg daily (15 mg if CrCl 15-50)</li>
-                              <li>• <strong>Dabigatran</strong> 150 mg BID (110 mg if age &ge;80)</li>
-                              <li className="text-gray-500 italic text-xs mt-1">DOAC preferred over warfarin (Class I, LOE A) — AHA/ASA 2021</li>
-                            </ul>
-                          </div>
-                        </div>
-
-                        {/* Statin Initiation */}
+                        {(showInpatientManagement || showClinicManagement) && (
                         <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-indigo-800 mb-3">Statin Initiation</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -18602,8 +18764,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
                         </div>
+                        )}
 
-                        {/* Large Core EVT Selection */}
+                        {showAcuteManagement && (
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-blue-800 mb-3">Large Core EVT Selection (SVIN 2025)</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -18628,59 +18791,26 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                           <p className="text-xs text-gray-500 mt-2 italic">SVIN 2025 guideline incorporates LASTE, SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, and TESLA.</p>
                         </div>
+                        )}
 
-                        {/* Post-EVT Management */}
+                        {showInpatientManagement && (
                         <div className="bg-violet-50 border border-violet-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-violet-800 mb-3">Post-EVT Management</h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-violet-700 mb-2">Blood Pressure</h4>
-                              <ul className="text-sm space-y-1">
-                                <li>• SBP &lt;180/105 (standard target)</li>
-                                <li className="text-red-700 font-semibold">• Do NOT target SBP &lt;140 (Class III: Harm)</li>
-                                <li>• Based on ENCHANTED2/MT + OPTIMAL-BP</li>
-                                <li>• Monitor q15 min x 2h, then q30 min x 6h</li>
-                              </ul>
-                            </div>
-                            <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-violet-700 mb-2">Post-Procedure Care</h4>
-                              <ul className="text-sm space-y-1">
-                                <li>• Groin check q15 min x 4, q30 min x 4, then q1h</li>
-                                <li>• Bed rest per protocol (typically 2-6h)</li>
-                                <li>• Follow-up imaging: CT/CTA at 24h or if neuro change</li>
-                                <li>• Antiplatelet: ASA 325 mg within 24h if no hemorrhagic conversion</li>
-                                <li>• Neuro checks q1h x 24h minimum</li>
-                              </ul>
-                            </div>
-                          </div>
-                          {/* Post-EVT BP Drip Protocol */}
-                          <div className="mt-3 bg-white p-3 rounded border">
-                            <h4 className="font-semibold text-violet-700 mb-2">Post-EVT BP Drip Protocol</h4>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                              <div>
-                                <p className="font-semibold text-gray-700">Nicardipine (preferred):</p>
-                                <ul className="space-y-0.5 text-xs">
-                                  <li>• Start 5 mg/hr IV</li>
-                                  <li>• Titrate by 2.5 mg/hr q5-15min</li>
-                                  <li>• Max 15 mg/hr</li>
-                                  <li>• Target SBP 140-180 mmHg</li>
-                                </ul>
-                              </div>
-                              <div>
-                                <p className="font-semibold text-gray-700">Clevidipine (alternative):</p>
-                                <ul className="space-y-0.5 text-xs">
-                                  <li>• Start 1-2 mg/hr IV</li>
-                                  <li>• Titrate by doubling q90sec initially</li>
-                                  <li>• Max 32 mg/hr</li>
-                                  <li>• Ultra-short half-life (~1 min)</li>
-                                </ul>
-                              </div>
-                            </div>
-                            <p className="text-xs text-gray-500 mt-1 italic">ENCHANTED2/MT and OPTIMAL-BP: SBP &lt;140 post-EVT worsened outcomes. Maintain 140-180 range for first 24-72h.</p>
+                          <div className="bg-white p-3 rounded border">
+                            <h4 className="font-semibold text-violet-700 mb-2">Post-Procedure Care</h4>
+                            <ul className="text-sm space-y-1">
+                              <li>• Groin check q15 min x 4, q30 min x 4, then q1h</li>
+                              <li>• Bed rest per protocol (typically 2-6h)</li>
+                              <li>• Follow-up imaging: CT/CTA at 24h or if neuro change</li>
+                              <li>• Antiplatelet: ASA 325 mg within 24h if no hemorrhagic conversion</li>
+                              <li>• Neuro checks q1h x 24h minimum</li>
+                            </ul>
+                            <p className="text-xs text-slate-500 mt-2">Use the BP Management section and Nursing Flowsheet Generator for targets and monitoring cadence.</p>
                           </div>
                         </div>
+                        )}
 
-                        {/* MeVO EVT - Not Recommended */}
+                        {showAcuteManagement && (
                         <div className="bg-gray-50 border border-gray-300 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-gray-800 mb-3">Medium Vessel Occlusion (MeVO) EVT</h3>
                           <div className="bg-white p-3 rounded border">
@@ -18695,8 +18825,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <p className="text-xs text-gray-500 mt-2 italic">Note: LVO (ICA-T, M1, basilar) EVT remains Class I. This applies only to isolated medium/distal vessel occlusions.</p>
                           </div>
                         </div>
+                        )}
 
-                        {/* ICAD Management */}
+                        {(showInpatientManagement || showClinicManagement) && (
                         <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-orange-800 mb-3">Intracranial Atherosclerotic Disease (ICAD)</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -18721,6 +18852,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
                         </div>
+                        )}
                           </div>
                         </details>
                       </div>
