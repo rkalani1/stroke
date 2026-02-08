@@ -16,7 +16,7 @@ import systemicComplications2024 from './guidelines/systemic-complications-2024.
 import svinLargeCore2025 from './guidelines/svin-large-core-2025.json';
 import tiaEd2023 from './guidelines/tia-ed-2023.json';
 
-        const { useState, useEffect, useRef, useMemo } = React;
+        const { useState, useEffect, useRef, useMemo, useContext } = React;
         const { Calculator, Clock, Brain, AlertTriangle, FileText, CheckCircle, Moon, Sun, Download, Copy, Search, Check, Info } = lucide;
 
         const APP_VERSION = (window.strokeAppStorage && window.strokeAppStorage.appVersion) || 'unknown';
@@ -183,6 +183,108 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           const date = new Date(value);
           if (Number.isNaN(date.getTime())) return '';
           return date.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        };
+
+        const GlobalPatientContext = React.createContext(null);
+        const useGlobalPatient = () => useContext(GlobalPatientContext);
+
+        const parseBloodPressure = (bpString) => {
+          if (!bpString) return null;
+          const match = bpString.match(/(\d{2,3})\s*\/\s*(\d{2,3})/);
+          if (!match) return null;
+          return {
+            systolic: parseInt(match[1], 10),
+            diastolic: parseInt(match[2], 10)
+          };
+        };
+
+        const getWindowStatusFromTime = (timeFromLKW) => {
+          if (!timeFromLKW) return null;
+          if (timeFromLKW.total <= 4.5) {
+            if (timeFromLKW.total < 3) {
+              return { color: 'green', message: 'Within TNK window (<3h)', urgent: false, eligible: 'tnk' };
+            }
+            return { color: 'yellow', message: 'Extended TNK window (3-4.5h)', urgent: false, eligible: 'tnk' };
+          }
+          if (timeFromLKW.total < 6) {
+            return { color: 'orange', message: 'TNK window closed - EVT window (4.5-6h)', urgent: true, eligible: 'evt-early' };
+          }
+          if (timeFromLKW.total < 24) {
+            return { color: 'red', message: 'Late EVT window (6-24h - needs perfusion imaging)', urgent: true, eligible: 'evt-late' };
+          }
+          return { color: 'gray', message: 'Beyond standard treatment window', urgent: false, eligible: 'none' };
+        };
+
+        const useStrokeWindow = ({
+          lkwDate,
+          lkwTime,
+          lkwUnknown,
+          discoveryDate,
+          discoveryTime,
+          now
+        }) => {
+          return useMemo(() => {
+            const buildDate = (dateStr, timeStr) => {
+              if (!dateStr || !timeStr) return null;
+              const [year, month, day] = dateStr.split('-').map(Number);
+              const [hours, minutes] = timeStr.split(':').map(Number);
+              if (!year || !month || !day || Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+              return new Date(year, month - 1, day, hours, minutes);
+            };
+
+            const discovery = buildDate(discoveryDate, discoveryTime);
+            const lkw = buildDate(lkwDate, lkwTime);
+            const reference = lkwUnknown ? discovery : lkw;
+            if (!reference) {
+              return { timeFrom: null, status: null, label: lkwUnknown ? 'Discovery' : 'LKW' };
+            }
+
+            const nowTime = now instanceof Date ? now : new Date();
+            const diffMs = nowTime - reference;
+            const diffHrs = diffMs / (1000 * 60 * 60);
+            const diffMins = (diffMs / (1000 * 60)) % 60;
+            const timeFrom = {
+              hours: Math.floor(diffHrs),
+              minutes: Math.floor(diffMins),
+              total: diffHrs,
+              label: lkwUnknown ? 'Discovery' : 'LKW'
+            };
+            return {
+              timeFrom,
+              status: getWindowStatusFromTime(timeFrom),
+              label: timeFrom.label
+            };
+          }, [lkwDate, lkwTime, lkwUnknown, discoveryDate, discoveryTime, now instanceof Date ? now.getTime() : now]);
+        };
+
+        const DOAC_PROTOCOLS = {
+          catalyst: {
+            label: 'CATALYST early-start (default)',
+            days: { minor: 2, moderate: 3, severe: 6 }
+          },
+          '1-3-6-12': {
+            label: '1-3-6-12 rule',
+            days: { minor: 1, moderate: 3, severe: 6, verySevere: 12 }
+          }
+        };
+
+        const calculateDOACStart = (nihss, onsetDate, protocol = 'catalyst') => {
+          const nihssVal = parseFloat(nihss);
+          if (!onsetDate) return null;
+          const onset = new Date(onsetDate);
+          if (Number.isNaN(onset.getTime())) return null;
+          const rule = DOAC_PROTOCOLS[protocol] || DOAC_PROTOCOLS.catalyst;
+          const severity = Number.isNaN(nihssVal)
+            ? 'moderate'
+            : nihssVal <= 7
+              ? 'minor'
+              : nihssVal <= 15
+                ? 'moderate'
+                : 'severe';
+          const days = rule.days[severity] ?? rule.days.severe ?? rule.days.moderate;
+          const startDate = new Date(onset);
+          startDate.setDate(startDate.getDate() + days);
+          return { severity, days, startDate };
         };
 
         const generateId = (prefix = 'id') => {
@@ -669,6 +771,8 @@ Clinician Name`;
             presentingBP: '',
             bpPreTNK: '',
             bpPreTNKTime: '',
+            bpPhase: 'pre-tnk',
+            bpPostEVT: '',
             glucose: '',
             plateletsCoags: '',
             creatinine: '',
@@ -714,6 +818,7 @@ Clinician Name`;
             diagnosis: '',
             diagnosisCategory: '',
             tnkRecommended: false,
+            tnkAutoBlocked: false,
             evtRecommended: false,
             rationale: '',
             tnkConsentDiscussed: false,
@@ -1368,6 +1473,22 @@ Clinician Name`;
               }
             }
           }, [ichVolumeParams]);
+          const ichVolumeEstimate = useMemo(() => {
+            const { a, b, thicknessMm, numSlices } = ichVolumeParams;
+            const aVal = parseFloat(a);
+            const bVal = parseFloat(b);
+            const tVal = parseFloat(thicknessMm);
+            const nVal = parseFloat(numSlices);
+            if ([aVal, bVal, tVal, nVal].some(val => Number.isNaN(val))) return null;
+            const cCm = (tVal / 10) * nVal;
+            const vol = (aVal * bVal * cCm) / 2;
+            if (Number.isNaN(vol)) return null;
+            return {
+              value: vol,
+              display: vol.toFixed(1),
+              exceeds30: vol >= 30
+            };
+          }, [ichVolumeParams]);
           const [abcd2Items, setAbcd2Items] = useState(loadFromStorage('abcd2Items', {
             age60: false,
             bp: false,
@@ -1425,6 +1546,156 @@ Clinician Name`;
 
           // Telestroke Documentation State
           const [telestrokeNote, setTelestrokeNote] = useState(loadFromStorage('telestrokeNote', getDefaultTelestrokeNote()));
+
+          const [autoSyncCalculators, setAutoSyncCalculators] = useState(loadFromStorage('autoSyncCalculators', true));
+          const [evtDecisionInputs, setEvtDecisionInputs] = useState(loadFromStorage('evtDecisionInputs', {
+            population: 'adult',
+            occlusion: 'lvo',
+            timeWindow: 'auto',
+            aspects: '6-10',
+            mrs: '0-1',
+            nihss: '',
+            pcAspects: '>=6'
+          }));
+          const [doacProtocol, setDoacProtocol] = useState(loadFromStorage('doacProtocol', 'catalyst'));
+          const [nursingFlowsheetChecks, setNursingFlowsheetChecks] = useState({});
+          const [protocolModal, setProtocolModal] = useState(null);
+
+          const lkwDateForWindow = lkwTime
+            ? `${lkwTime.getFullYear()}-${String(lkwTime.getMonth() + 1).padStart(2, '0')}-${String(lkwTime.getDate()).padStart(2, '0')}`
+            : telestrokeNote.lkwDate;
+          const lkwTimeForWindow = lkwTime
+            ? lkwTime.toTimeString().slice(0, 5)
+            : telestrokeNote.lkwTime;
+          const strokeWindow = useStrokeWindow({
+            lkwDate: lkwDateForWindow,
+            lkwTime: lkwTimeForWindow,
+            lkwUnknown: telestrokeNote.lkwUnknown,
+            discoveryDate: telestrokeNote.discoveryDate,
+            discoveryTime: telestrokeNote.discoveryTime,
+            now: currentTime
+          });
+
+          const patientContextValue = useMemo(() => ({
+            age: telestrokeNote.age,
+            sex: telestrokeNote.sex,
+            weight: telestrokeNote.weight,
+            creatinine: telestrokeNote.creatinine,
+            diagnosis: telestrokeNote.diagnosis,
+            diagnosisCategory: telestrokeNote.diagnosisCategory,
+            nihss: telestrokeNote.nihss || nihssScore,
+            telestrokeNote,
+            setTelestrokeNote
+          }), [telestrokeNote, nihssScore]);
+
+          const calculatorDiagnosisKey = useMemo(() => {
+            if (telestrokeNote.diagnosisCategory) return telestrokeNote.diagnosisCategory;
+            const diag = (telestrokeNote.diagnosis || '').toLowerCase();
+            if (diag.includes('ich') || diag.includes('hemorrhage')) return 'ich';
+            if (diag.includes('sah') || diag.includes('subarachnoid')) return 'sah';
+            if (diag.includes('tia')) return 'tia';
+            if (diag.includes('ischemic')) return 'ischemic';
+            return 'other';
+          }, [telestrokeNote.diagnosisCategory, telestrokeNote.diagnosis]);
+
+          const calculatorPriorityMap = {
+            ich: ['ich-score', 'gcs', 'mrs', 'hasbled'],
+            ischemic: ['abcd2', 'mrs', 'chads2vasc', 'hasbled', 'rope'],
+            sah: ['hunt-hess', 'gcs'],
+            tia: ['abcd2', 'chads2vasc', 'hasbled'],
+            other: []
+          };
+          const calculatorLabelMap = {
+            'gcs': 'GCS',
+            'ich-score': 'ICH Score',
+            'mrs': 'mRS',
+            'abcd2': 'ABCD²',
+            'chads2vasc': 'CHA₂DS₂-VASc',
+            'hasbled': 'HAS-BLED',
+            'rope': 'ROPE',
+            'hunt-hess': 'Hunt-Hess/WFNS',
+            'rcvs2': 'RCVS²'
+          };
+          const calculatorPriorityList = calculatorPriorityMap[calculatorDiagnosisKey] || [];
+          const getCalculatorOrder = (id, fallback) => {
+            const idx = calculatorPriorityList.indexOf(id);
+            if (idx === -1) return 0;
+            return -1 * (calculatorPriorityList.length - idx);
+          };
+
+          const bpPhaseTargets = {
+            'pre-tnk': { label: 'Pre-lysis', systolic: 185, diastolic: 110 },
+            'post-evt': { label: 'Post-EVT', systolic: 180, diastolic: 105 },
+            'no-lytics': { label: 'No lytics/No EVT', systolic: 220, diastolic: 120 }
+          };
+          const currentBpPhase = telestrokeNote.bpPhase || 'pre-tnk';
+          const currentBpTarget = bpPhaseTargets[currentBpPhase] || bpPhaseTargets['pre-tnk'];
+          const currentBpReading = parseBloodPressure(telestrokeNote.bpPostEVT || telestrokeNote.bpPreTNK || telestrokeNote.presentingBP);
+          const bpWithinTarget = currentBpReading
+            ? currentBpReading.systolic <= currentBpTarget.systolic && currentBpReading.diastolic <= currentBpTarget.diastolic
+            : null;
+
+          const protocolDetailMap = useMemo(() => ({
+            PCC25: {
+              title: '4F-PCC (INR ≥2.0)',
+              classOfRec: 'Class I',
+              dosing: '25-50 IU/kg IV (dose by INR/weight).',
+              note: 'Give IV vitamin K after PCC to prevent INR rebound.'
+            },
+            PCC10: {
+              title: '4F-PCC (INR 1.3-1.9)',
+              classOfRec: 'Class IIb',
+              dosing: '10-20 IU/kg IV (consider based on bleeding risk).',
+              note: 'Follow with IV vitamin K.'
+            },
+            VITK: {
+              title: 'Vitamin K',
+              classOfRec: 'Class I',
+              dosing: '10 mg IV (slow infusion).',
+              note: 'Give after PCC to prevent INR rebound.'
+            },
+            AND: {
+              title: 'Andexanet Alfa',
+              classOfRec: 'Class IIa',
+              dosing: 'Low dose: 400 mg IV bolus + 4 mg/min x 120 min. High dose: 800 mg bolus + 8 mg/min x 120 min.',
+              note: 'Dose depends on agent, dose, and time since last intake.'
+            },
+            IDA: {
+              title: 'Idarucizumab',
+              classOfRec: 'Class IIa',
+              dosing: '5 g IV (two 2.5 g doses, no more than 15 minutes apart).',
+              note: 'Specific reversal for dabigatran.'
+            },
+            PCC4: {
+              title: 'PCC/aPCC (if andexanet unavailable)',
+              classOfRec: 'Class IIb',
+              dosing: '4F-PCC 50 IU/kg IV (institutional protocol).',
+              note: 'Use when andexanet not available or contraindicated.'
+            },
+            PROT1: {
+              title: 'Protamine (UFH)',
+              classOfRec: 'Class IIa',
+              dosing: '1 mg per 100 units of heparin in last 2-3h (max 50 mg).',
+              note: 'Titrate to last heparin dose/time.'
+            },
+            PROT2: {
+              title: 'Protamine (LMWH)',
+              classOfRec: 'Class IIb',
+              dosing: 'Enoxaparin: 1 mg protamine per 1 mg enoxaparin if <8h; 0.5 mg per 1 mg if 8-12h.',
+              note: 'Second dose may be considered if ongoing bleeding.'
+            },
+            CHARCOAL: {
+              title: 'Activated Charcoal',
+              classOfRec: 'Class IIb',
+              dosing: 'Consider if DOAC ingestion within ~2 hours.',
+              note: 'Most effective when administered early.'
+            }
+          }), []);
+
+          const protocolDetailRef = useRef(protocolDetailMap);
+          useEffect(() => {
+            protocolDetailRef.current = protocolDetailMap;
+          }, [protocolDetailMap]);
 
 
           // Trials data
@@ -6230,14 +6501,15 @@ Clinician Name`;
             const allowedKeys = [
               'alias', 'age', 'sex', 'weight', 'nihss', 'aspects', 'vesselOcclusion', 'diagnosisCategory',
               'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'arrivalTime', 'strokeAlertTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
-              'presentingBP', 'bpPreTNK', 'bpPreTNKTime',
+              'presentingBP', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT',
               'glucose', 'plateletCount', 'inr', 'ptt', 'creatinine',
               'tnkRecommended', 'evtRecommended', 'tnkContraindicationChecklist',
               'tnkContraindicationReviewed', 'tnkContraindicationReviewTime', 'tnkConsentDiscussed',
-              'patientFamilyConsent', 'presumedConsent', 'preTNKSafetyPause',
+              'patientFamilyConsent', 'presumedConsent', 'preTNKSafetyPause', 'tnkAutoBlocked',
               'imagingReviewed', 'transferAccepted', 'transferRationale', 'transferChecklist', 'disposition',
               'transferImagingShareMethod', 'transferImagingShareLink', 'transportMode', 'transportEta', 'transportNotes',
               'lastDOACType', 'lastDOACDose',
+              'punctureTime',
               'dtnEdArrival', 'dtnStrokeAlert', 'dtnCtStarted', 'dtnCtRead',
               'dtnTnkOrdered', 'dtnTnkAdministered',
               'decisionLog'
@@ -6649,6 +6921,47 @@ Clinician Name`;
             */
           };
 
+          const buildSmartNote = () => {
+            const age = telestrokeNote.age || 'Unknown age';
+            const sexRaw = telestrokeNote.sex;
+            const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : 'patient';
+            const pmh = telestrokeNote.pmh || 'no significant PMH documented';
+            const symptoms = telestrokeNote.symptoms || 'acute neurologic symptoms';
+            const lkw = telestrokeNote.lkwDate && telestrokeNote.lkwTime
+              ? `${telestrokeNote.lkwDate} ${telestrokeNote.lkwTime}`
+              : 'unknown';
+            const nihss = telestrokeNote.nihss || nihssScore || 'unknown';
+            const ct = telestrokeNote.ctResults || 'CT pending';
+            const cta = telestrokeNote.ctaResults || 'CTA pending';
+            const inr = telestrokeNote.inr || '';
+
+            const sentences = [];
+            sentences.push(`${age}-year-old ${sex} with ${pmh} presenting with ${symptoms}.`);
+            sentences.push(`Last known well: ${lkw}. NIHSS ${nihss}.`);
+            sentences.push(`Imaging: CT ${ct}. CTA ${cta}.`);
+
+            if (telestrokeNote.tnkRecommended) {
+              const tnkTime = telestrokeNote.tnkAdminTime ? ` at ${telestrokeNote.tnkAdminTime}` : '';
+              sentences.push(`TNK recommended${tnkTime}.`);
+            } else if (telestrokeNote.tnkAutoBlocked) {
+              sentences.push(`TNK contraindicated due to warfarin with INR >1.7${inr ? ` (INR ${inr})` : ''}.`);
+            } else {
+              sentences.push('TNK not recommended based on current eligibility criteria.');
+            }
+
+            if (telestrokeNote.evtRecommended) {
+              sentences.push('EVT recommended; transfer/activation initiated.');
+            } else {
+              sentences.push('EVT not recommended based on current criteria.');
+            }
+
+            if (telestrokeNote.rationale) {
+              sentences.push(`Rationale: ${telestrokeNote.rationale}.`);
+            }
+
+            return sentences.filter(Boolean).join(' ');
+          };
+
           // Time calculation functions
           const getDiscoveryDateTime = () => {
             if (!telestrokeNote.discoveryDate || !telestrokeNote.discoveryTime) return null;
@@ -6682,22 +6995,154 @@ Clinician Name`;
             };
           };
 
-          const getWindowStatus = (timeFromLKW) => {
-            if (!timeFromLKW) return null;
-            if (timeFromLKW.total <= 4.5) {
-              // TNK eligible up to and including 4.5 hours
-              if (timeFromLKW.total < 3) {
-                return { color: 'green', message: 'Within TNK window (<3h)', urgent: false, eligible: 'tnk' };
-              } else {
-                return { color: 'yellow', message: 'Extended TNK window (3-4.5h)', urgent: false, eligible: 'tnk' };
-              }
-            } else if (timeFromLKW.total < 6) {
-              return { color: 'orange', message: 'TNK window closed - EVT window (4.5-6h)', urgent: true, eligible: 'evt-early' };
-            } else if (timeFromLKW.total < 24) {
-              return { color: 'red', message: 'Late EVT window (6-24h - needs perfusion imaging)', urgent: true, eligible: 'evt-late' };
-            } else {
-              return { color: 'gray', message: 'Beyond standard treatment window', urgent: false, eligible: 'none' };
+          const getWindowStatus = (timeFromLKW) => getWindowStatusFromTime(timeFromLKW);
+
+          const getEvtEligibilityRecommendation = (inputs, timeFromLKW) => {
+            const occlusion = inputs.occlusion;
+            const aspects = inputs.aspects;
+            const mrs = inputs.mrs;
+            const nihss = parseInt(inputs.nihss);
+            const pcAspects = inputs.pcAspects;
+
+            const resolveWindow = () => {
+              if (inputs.timeWindow && inputs.timeWindow !== 'auto') return inputs.timeWindow;
+              if (!timeFromLKW) return 'unknown';
+              if (timeFromLKW.total <= 6) return '0-6';
+              if (timeFromLKW.total <= 24) return '6-24';
+              return '>24';
+            };
+
+            const window = resolveWindow();
+            const result = { classOfRec: 'IDD', label: 'Insufficient data', color: 'slate', rationale: [] };
+
+            if (window === 'unknown') {
+              return { ...result, label: 'Set LKW or select time window', color: 'amber' };
             }
+
+            if (occlusion === 'mvo-nondominant') {
+              if (window === '0-6' || window === '6-24') {
+                return { classOfRec: 'III (No benefit)', label: 'No EVT recommended', color: 'rose', rationale: ['Isolated non-dominant M2 or DVO'] };
+              }
+              return result;
+            }
+
+            if (occlusion === 'mvo-dominant') {
+              if (window === '0-6' && aspects === '6-10' && mrs === '0-1') {
+                return { classOfRec: 'IIa', label: 'EVT reasonable', color: 'emerald', rationale: ['Dominant M2, early window, ASPECTS 6-10, mRS 0-1'] };
+              }
+              return result;
+            }
+
+            if (occlusion === 'basilar') {
+              if ((window === '0-6' || window === '6-24') && pcAspects === '>=6') {
+                if (mrs === '0-1' && !Number.isNaN(nihss)) {
+                  if (nihss >= 10) {
+                    return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['Basilar, PC-ASPECTS ≥6, NIHSS ≥10, mRS 0-1'] };
+                  }
+                  if (nihss >= 6) {
+                    return { classOfRec: 'IIb', label: 'EVT may be considered', color: 'amber', rationale: ['Basilar, PC-ASPECTS ≥6, NIHSS 6-9, mRS 0-1'] };
+                  }
+                }
+                if (mrs !== '0-1') {
+                  return { classOfRec: 'IDD', label: 'Uncertain benefit', color: 'slate', rationale: ['mRS ≥2'] };
+                }
+              }
+              return result;
+            }
+
+            if (occlusion === 'lvo') {
+              if (window === '>24') return result;
+
+              if (window === '0-6') {
+                if (aspects === '6-10') {
+                  if (mrs === '0-1') return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 6-10, mRS 0-1'] };
+                  if (mrs === '2') return { classOfRec: 'IIa', label: 'EVT reasonable', color: 'emerald', rationale: ['ASPECTS 6-10, mRS 2'] };
+                  if (mrs === '3-4') return { classOfRec: 'IIb', label: 'EVT may be considered', color: 'amber', rationale: ['ASPECTS 6-10, mRS 3-4'] };
+                  return result;
+                }
+                if (aspects === '3-5') {
+                  if (mrs === '0-1') return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1'] };
+                  return result;
+                }
+                if (aspects === '0-2') {
+                  if (mrs === '0-1') return { classOfRec: 'IIa', label: 'EVT reasonable', color: 'amber', rationale: ['ASPECTS 0-2, mRS 0-1'] };
+                  return result;
+                }
+              }
+
+              if (window === '6-24') {
+                if ((aspects === '6-10' || aspects === '3-5') && mrs === '0-1') {
+                  return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['DAWN/DEFUSE-3 criteria (ASPECTS 3-10, mRS 0-1)'] };
+                }
+                return result;
+              }
+            }
+
+            return result;
+          };
+
+          const buildNursingFlowsheet = (baseTimeStr) => {
+            if (!baseTimeStr) return [];
+            const [hours, minutes] = baseTimeStr.split(':').map(Number);
+            if (Number.isNaN(hours) || Number.isNaN(minutes)) return [];
+            const baseMinutes = hours * 60 + minutes;
+            const intervals = [
+              { label: 'q15m', count: 4, step: 15 },
+              { label: 'q30m', count: 4, step: 30 }
+            ];
+            const schedule = [];
+            let offset = 0;
+            intervals.forEach((block) => {
+              for (let i = 0; i < block.count; i += 1) {
+                offset += block.step;
+                const totalMinutes = baseMinutes + offset;
+                const hh = Math.floor((totalMinutes % 1440) / 60);
+                const mm = totalMinutes % 60;
+                schedule.push({
+                  label: block.label,
+                  time: `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`,
+                  minutesFrom: offset
+                });
+              }
+            });
+            return schedule;
+          };
+
+          const CalculatorSync = () => {
+            const patient = useGlobalPatient();
+            useEffect(() => {
+              if (!autoSyncCalculators || !patient) return;
+              const age = parseInt(patient.age);
+              const isFemale = patient.sex === 'F';
+              if (!Number.isNaN(age)) {
+                setAbcd2Items(prev => (prev.age60 === (age >= 60) ? prev : { ...prev, age60: age >= 60 }));
+                setIchScoreItems(prev => (prev.age80 === (age >= 80) ? prev : { ...prev, age80: age >= 80 }));
+                setHasbledItems(prev => (prev.elderly === (age > 65) ? prev : { ...prev, elderly: age > 65 }));
+                setChads2vascItems(prev => {
+                  const age75 = age >= 75;
+                  const age65 = age >= 65 && age < 75;
+                  if (prev.age75 === age75 && prev.age65 === age65 && prev.female === isFemale) return prev;
+                  return { ...prev, age75, age65, female: isFemale };
+                });
+                setRopeItems(prev => (prev.age === String(age) ? prev : { ...prev, age: String(age) }));
+              }
+              setRcvs2Items(prev => (prev.female === isFemale ? prev : { ...prev, female: isFemale }));
+            }, [autoSyncCalculators, patient?.age, patient?.sex]);
+            return null;
+          };
+
+          const CalculatorPatientSnapshot = () => {
+            const patient = useGlobalPatient();
+            if (!patient) return null;
+            return (
+              <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-xs text-indigo-900 flex flex-wrap items-center gap-3">
+                <span className="font-semibold">Patient snapshot</span>
+                <span>Age: {patient.age || '--'}</span>
+                <span>Sex: {patient.sex || '--'}</span>
+                <span>Cr: {patient.creatinine || '--'}</span>
+                <span>Dx: {patient.diagnosisCategory || patient.diagnosis || '--'}</span>
+              </div>
+            );
           };
 
           // =============================================
@@ -7183,6 +7628,50 @@ Clinician Name`;
             return documentTitles.some(title => title.toLowerCase().includes(filter));
           };
 
+          const fuzzyScore = (query, target) => {
+            if (!query || !target) return 0;
+            const q = query.toLowerCase();
+            const t = target.toLowerCase();
+            if (t === q) return 100;
+            let score = 0;
+            if (t.startsWith(q)) score += 40;
+            if (t.includes(q)) score += 25;
+            let ti = 0;
+            for (let qi = 0; qi < q.length; qi += 1) {
+              const idx = t.indexOf(q[qi], ti);
+              if (idx === -1) continue;
+              score += idx === ti ? 4 : 1;
+              ti = idx + 1;
+            }
+            return score;
+          };
+
+          const rankText = (query, parts = []) => {
+            return parts.reduce((sum, part) => sum + fuzzyScore(query, part), 0);
+          };
+
+          const guidelineQuickActions = [
+            { id: 'tnk', label: 'TNK dosing', regex: /\b(tnk|tenecteplase)\b/i, target: { tab: 'encounter' } },
+            { id: 'evt', label: 'EVT criteria', regex: /\b(evt|thrombectomy|endovascular)\b/i, target: { tab: 'management', subTab: 'ischemic' } },
+            { id: 'ich', label: 'ICH protocol', regex: /\b(ich|intracerebral hemorrhage)\b/i, target: { tab: 'management', subTab: 'ich' } },
+            { id: 'nihss', label: 'NIHSS', regex: /\bnihss\b/i, target: { tab: 'encounter' } },
+            { id: 'aspects', label: 'ASPECTS', regex: /\baspects\b/i, target: { tab: 'encounter' } },
+            { id: 'gcs', label: 'GCS', regex: /\b(gcs|glasgow)\b/i, target: { tab: 'management', subTab: 'calculators' } },
+            { id: 'abcd2', label: 'ABCD²', regex: /\babcd2\b/i, target: { tab: 'management', subTab: 'calculators' } },
+            { id: 'chads', label: 'CHA₂DS₂-VASc', regex: /\b(cha2ds2|chads)\b/i, target: { tab: 'management', subTab: 'calculators' } },
+            { id: 'hasbled', label: 'HAS-BLED', regex: /\bhas[- ]?bled\b/i, target: { tab: 'management', subTab: 'calculators' } },
+            { id: 'doac', label: 'DOAC timing', regex: /\b(apixaban|rivaroxaban|dabigatran|edoxaban|doac)\b/i, target: { tab: 'management', subTab: 'ischemic' } }
+          ];
+
+          const getGuidelineQuickActions = (text) => {
+            if (!text) return [];
+            const actions = [];
+            guidelineQuickActions.forEach((action) => {
+              if (action.regex.test(text)) actions.push(action);
+            });
+            return actions;
+          };
+
           const guidelineLibraryGuidelineOptions = useMemo(() => {
             return GUIDELINE_LIBRARY_INDEX.map((guideline) => ({
               id: guideline.id,
@@ -7218,21 +7707,32 @@ Clinician Name`;
 
           const filteredGuidelineLibrary = useMemo(() => {
             const query = guidelineLibraryQuery.trim().toLowerCase();
-            const matchesQuery = (rec, guideline) => {
-              if (!query) return true;
-              const haystack = `${rec.text} ${rec.section} ${guideline.title} ${guideline.shortTitle || ''}`.toLowerCase();
-              return haystack.includes(query);
+            const classPriority = { I: 0, IIa: 1, IIb: 2, III: 3, Statement: 4 };
+            const getRecScore = (rec, guideline) => {
+              if (!query) return 0;
+              return rankText(query, [rec.text, rec.section, guideline.title, guideline.shortTitle || '']);
             };
 
             return GUIDELINE_LIBRARY_INDEX
               .filter((guideline) => !guidelineLibraryGuideline || guideline.id === guidelineLibraryGuideline)
               .map((guideline) => {
-                const filteredRecs = guideline.recommendations.filter((rec) => {
-                  if (guidelineLibrarySection && rec.section !== guidelineLibrarySection) return false;
-                  const recClass = rec.classOfRec || 'Statement';
-                  if (guidelineLibraryClass && recClass !== guidelineLibraryClass) return false;
-                  return matchesQuery(rec, guideline);
-                });
+                const filteredRecs = guideline.recommendations
+                  .map((rec) => ({ ...rec, _score: getRecScore(rec, guideline) }))
+                  .filter((rec) => {
+                    if (guidelineLibrarySection && rec.section !== guidelineLibrarySection) return false;
+                    const recClass = rec.classOfRec || 'Statement';
+                    if (guidelineLibraryClass && recClass !== guidelineLibraryClass) return false;
+                    if (query && rec._score <= 0) return false;
+                    return true;
+                  })
+                  .sort((a, b) => {
+                    const classA = a.classOfRec || 'Statement';
+                    const classB = b.classOfRec || 'Statement';
+                    const rankA = classPriority[classA] ?? 5;
+                    const rankB = classPriority[classB] ?? 5;
+                    if (rankA !== rankB) return rankA - rankB;
+                    return (b._score || 0) - (a._score || 0);
+                  });
                 return { ...guideline, recommendations: filteredRecs };
               })
               .filter((guideline) => guideline.recommendations.length > 0);
@@ -7250,20 +7750,21 @@ Clinician Name`;
 
             const results = [];
             const lowerQuery = query.toLowerCase();
+            const scoreFor = (parts, boost = 0) => rankText(lowerQuery, parts) + boost;
 
             // Search in trials
             Object.entries(trialsData).forEach(([category, data]) => {
               if (data.hasSubsections) {
                 Object.entries(data.subsections).forEach(([subKey, subsection]) => {
                   subsection.trials.forEach(trial => {
-                    if (trial.name.toLowerCase().includes(lowerQuery) ||
-                        trial.description.toLowerCase().includes(lowerQuery) ||
-                        trial.nct.toLowerCase().includes(lowerQuery)) {
+                    const score = scoreFor([trial.name, trial.description, trial.nct], 5);
+                    if (score > 0) {
                       results.push({
                         type: 'Clinical Trial',
                         category: category,
                         title: trial.name,
                         description: trial.description.substring(0, 100) + '...',
+                        score,
                         action: () => {
                           setTrialsCategory(category);
                           navigateTo('trials', { clearSearch: true });
@@ -7296,12 +7797,13 @@ Clinician Name`;
             ];
 
             searchableItems.forEach(item => {
-              if (item.name.toLowerCase().includes(lowerQuery) ||
-                  item.keywords.some(k => k.includes(lowerQuery))) {
+              const score = scoreFor([item.name, ...(item.keywords || [])], item.priority || 0);
+              if (score > 0) {
                 results.push({
                   type: 'Tool/Protocol',
                   title: item.name,
                   description: `Go to ${item.name}`,
+                  score,
                   action: () => {
                     navigateTo(item.tab, { clearSearch: true, subTab: item.subTab });
                   }
@@ -7334,13 +7836,13 @@ Clinician Name`;
             ];
 
             evidenceDocuments.forEach(doc => {
-              if (doc.title.toLowerCase().includes(lowerQuery) ||
-                  doc.section.toLowerCase().includes(lowerQuery) ||
-                  doc.keywords.some(k => k.toLowerCase().includes(lowerQuery))) {
+              const score = scoreFor([doc.title, doc.section, ...(doc.keywords || [])], doc.priority || 0);
+              if (score > 0) {
                 results.push({
                   type: 'Evidence',
                   title: doc.title,
                   description: `${doc.section} section`,
+                  score,
                   action: () => {
                     navigateTo('management', { clearSearch: true, subTab: 'references' });
                   }
@@ -7348,6 +7850,7 @@ Clinician Name`;
               }
             });
 
+            results.sort((a, b) => (b.score || 0) - (a.score || 0));
             setSearchResults(results.slice(0, 10)); // Limit to 10 results
           };
 
@@ -7575,7 +8078,7 @@ Clinician Name`;
               window.mermaid.initialize({
                 startOnLoad: false,
                 theme: 'base',
-                securityLevel: 'strict',
+                securityLevel: 'loose',
                 flowchart: {
                   curve: 'linear',
                   htmlLabels: false,
@@ -7608,6 +8111,20 @@ Clinician Name`;
               setTimeout(runMermaid, 0);
             }
           }, [activeTab, managementSubTab]);
+
+          useEffect(() => {
+            window.strokeMermaidClick = (nodeId) => {
+              const detail = protocolDetailRef.current[nodeId];
+              if (detail) {
+                setProtocolModal({ id: nodeId, ...detail });
+              }
+            };
+            return () => {
+              if (window.strokeMermaidClick) {
+                delete window.strokeMermaidClick;
+              }
+            };
+          }, []);
 
 
           useEffect(() => {
@@ -7683,6 +8200,18 @@ Clinician Name`;
           }, [rcvs2Items]);
 
           useEffect(() => {
+            debouncedSave('autoSyncCalculators', autoSyncCalculators);
+          }, [autoSyncCalculators]);
+
+          useEffect(() => {
+            debouncedSave('evtDecisionInputs', evtDecisionInputs);
+          }, [evtDecisionInputs]);
+
+          useEffect(() => {
+            debouncedSave('doacProtocol', doacProtocol);
+          }, [doacProtocol]);
+
+          useEffect(() => {
             debouncedSave('strokeCodeForm', sanitizeStrokeCodeFormForStorage(strokeCodeForm));
           }, [strokeCodeForm, settings.allowFreeTextStorage]);
 
@@ -7697,6 +8226,19 @@ Clinician Name`;
           useEffect(() => {
             debouncedSave('telestrokeNote', sanitizeTelestrokeNoteForStorage(telestrokeNote));
           }, [telestrokeNote, settings.allowFreeTextStorage]);
+
+          useEffect(() => {
+            const inrVal = parseFloat(telestrokeNote.inr);
+            const warfarinWithHighINR = telestrokeNote.lastDOACType === 'warfarin' && !Number.isNaN(inrVal) && inrVal > 1.7;
+            if (warfarinWithHighINR) {
+              setTelestrokeNote(prev => {
+                if (prev.tnkAutoBlocked && prev.tnkRecommended === false) return prev;
+                return { ...prev, tnkRecommended: false, tnkAutoBlocked: true };
+              });
+            } else if (telestrokeNote.tnkAutoBlocked) {
+              setTelestrokeNote(prev => ({ ...prev, tnkAutoBlocked: false }));
+            }
+          }, [telestrokeNote.lastDOACType, telestrokeNote.inr, telestrokeNote.tnkAutoBlocked]);
 
           useEffect(() => {
             const prev = decisionStateRef.current;
@@ -8608,7 +9150,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
   HEP --> UFH[Unfractionated heparin]
   HEP --> LMWH[Low molecular weight heparin]
   UFH --> PROT1[Protamine Class 2a]
-  LMWH --> PROT2[Protamine Class 2b]`;
+  LMWH --> PROT2[Protamine Class 2b]
+  click PCC10 call strokeMermaidClick "4F-PCC dosing"
+  click PCC25 call strokeMermaidClick "4F-PCC dosing"
+  click VITK call strokeMermaidClick "Vitamin K"
+  click AND call strokeMermaidClick "Andexanet alfa"
+  click IDA call strokeMermaidClick "Idarucizumab"
+  click PCC4 call strokeMermaidClick "PCC/aPCC"
+  click PROT1 call strokeMermaidClick "Protamine UFH"
+  click PROT2 call strokeMermaidClick "Protamine LMWH"
+  click CHARCOAL call strokeMermaidClick "Activated charcoal"`;
 
           const ichIVHMermaid = `flowchart TD
   A[IVH surgical management] --> B[Spontaneous IVH with obstructive hydrocephalus]
@@ -8674,6 +9225,50 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
           return (
             <div className="relative">
+              {protocolModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
+                  <div className="w-full max-w-lg bg-white rounded-xl shadow-xl border border-slate-200">
+                    <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200">
+                      <div>
+                        <h3 className="text-lg font-semibold text-slate-900">{protocolModal.title}</h3>
+                        <p className="text-xs text-slate-500">{protocolModal.classOfRec}</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setProtocolModal(null)}
+                        className="text-slate-500 hover:text-slate-700"
+                        aria-label="Close protocol"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="p-4 space-y-3 text-sm text-slate-700">
+                      <div>
+                        <p className="font-semibold text-slate-800">Dosing</p>
+                        <p>{protocolModal.dosing}</p>
+                        {(['PCC25', 'PCC10', 'PCC4'].includes(protocolModal.id) && telestrokeNote.weight) && (
+                          <p className="text-xs text-slate-500 mt-1">
+                            Weight-based range ({telestrokeNote.weight} kg):{' '}
+                            {protocolModal.id === 'PCC10' && `${Math.round(parseFloat(telestrokeNote.weight) * 10)}–${Math.round(parseFloat(telestrokeNote.weight) * 20)} IU`}
+                            {protocolModal.id === 'PCC25' && `${Math.round(parseFloat(telestrokeNote.weight) * 25)}–${Math.round(parseFloat(telestrokeNote.weight) * 50)} IU`}
+                            {protocolModal.id === 'PCC4' && `${Math.round(parseFloat(telestrokeNote.weight) * 50)} IU`}
+                          </p>
+                        )}
+                      </div>
+                      {protocolModal.note && (
+                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600">
+                          {protocolModal.note}
+                        </div>
+                      )}
+                      {!telestrokeNote.weight && ['PCC25', 'PCC10', 'PCC4'].includes(protocolModal.id) && (
+                        <div className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-2">
+                          Enter patient weight to auto-calculate dose range.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="app-shell max-w-7xl mx-auto p-4 sm:p-8 overflow-x-hidden" role="main">
               {/* Skip Navigation Link for Screen Readers */}
               <a
@@ -9517,6 +10112,11 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   <span>Meets WAKE-UP criteria - Consider IV thrombolysis</span>
                                 </div>
                               )}
+                              {telestrokeNote.tnkAutoBlocked && (
+                                <div className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg p-2">
+                                  TNK auto-disabled: Warfarin with INR &gt; 1.7. Override only with documented justification.
+                                </div>
+                              )}
                             </div>
                           )}
 
@@ -9746,6 +10346,24 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               className="w-full px-2 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500"
                             />
                           </div>
+                          {strokeWindow?.timeFrom && (
+                            <div className={`mt-3 rounded-lg border px-3 py-2 text-xs ${
+                              strokeWindow.status?.color === 'green'
+                                ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                                : strokeWindow.status?.color === 'yellow'
+                                  ? 'bg-amber-50 border-amber-200 text-amber-800'
+                                  : strokeWindow.status?.color === 'orange'
+                                    ? 'bg-orange-50 border-orange-200 text-orange-800'
+                                    : strokeWindow.status?.color === 'red'
+                                      ? 'bg-rose-50 border-rose-200 text-rose-800'
+                                      : 'bg-slate-50 border-slate-200 text-slate-600'
+                            }`}>
+                              <div className="flex flex-wrap items-center justify-between gap-2">
+                                <span className="font-semibold">{strokeWindow.status?.message || 'Treatment window'}</span>
+                                <span>{strokeWindow.timeFrom.hours}h {strokeWindow.timeFrom.minutes}m since {strokeWindow.label}</span>
+                              </div>
+                            </div>
+                          )}
                         </div>
 
                         {/* Section 2: Patient Info + History */}
@@ -9956,6 +10574,11 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   <span className="text-orange-700">t½: {ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].halfLife}</span>
                                 </div>
                                 <div className="text-orange-700 mt-1">TNK: {ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].thrombolysisThreshold}</div>
+                              </div>
+                            )}
+                            {telestrokeNote.tnkAutoBlocked && (
+                              <div className="mt-2 text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded p-2">
+                                TNK auto-disabled: Warfarin with INR &gt; 1.7. Override only with documented justification.
                               </div>
                             )}
                           </div>
@@ -10351,6 +10974,28 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 const rationale = telestrokeNote.rationale || "[rationale]";
                                 return `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale: ${rationale}.`;
                               })()}
+                            </p>
+                          </div>
+
+                          {/* Smart Note */}
+                          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="font-semibold text-emerald-800 text-sm">Smart Note (Narrative)</span>
+                              <button
+                                onClick={() => {
+                                  const note = buildSmartNote();
+                                  navigator.clipboard.writeText(note);
+                                  setCopiedText('smart-note');
+                                  setTimeout(() => setCopiedText(''), 2000);
+                                }}
+                                className="flex items-center gap-2 px-3 py-1.5 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors"
+                              >
+                                <i data-lucide={copiedText === 'smart-note' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                {copiedText === 'smart-note' ? 'Copied!' : 'Copy Smart Note'}
+                              </button>
+                            </div>
+                            <p className="text-xs text-gray-600 whitespace-pre-wrap">
+                              {buildSmartNote()}
                             </p>
                           </div>
 
@@ -16302,6 +16947,27 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
 
+                          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 mb-3">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="font-semibold text-emerald-800 text-sm">Smart Note (Narrative)</span>
+                              <button
+                                onClick={() => {
+                                  const note = buildSmartNote();
+                                  navigator.clipboard.writeText(note);
+                                  setCopiedText('smart-note-encounter');
+                                  setTimeout(() => setCopiedText(''), 2000);
+                                }}
+                                className="flex items-center gap-2 px-3 py-1.5 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors"
+                              >
+                                <i data-lucide={copiedText === 'smart-note-encounter' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                {copiedText === 'smart-note-encounter' ? 'Copied!' : 'Copy Smart Note'}
+                              </button>
+                            </div>
+                            <p className="text-xs text-gray-600 whitespace-pre-wrap">
+                              {buildSmartNote()}
+                            </p>
+                          </div>
+
                           {/* Modular Copy: HPI / Exam-NIHSS / MDM-Plan */}
                           <div className="grid grid-cols-3 gap-2 mb-3">
                             <button
@@ -17021,6 +17687,61 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               *Not well established. †Uncertain.
                             </p>
                           </div>
+                          <div className="bg-white border border-red-200 rounded-xl p-4 shadow-sm">
+                            <div className="flex items-center justify-between mb-3">
+                              <h4 className="text-sm font-semibold text-red-700">ABC/2 ICH Volume Calculator</h4>
+                              {ichVolumeEstimate && (
+                                <span className={`text-xs font-semibold px-2 py-1 rounded-full ${ichVolumeEstimate.exceeds30 ? 'bg-red-100 text-red-700' : 'bg-emerald-100 text-emerald-700'}`}>
+                                  {ichVolumeEstimate.display} mL
+                                </span>
+                              )}
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                              <div>
+                                <label className="block text-xs text-slate-500 mb-1">A (cm)</label>
+                                <input
+                                  type="number"
+                                  value={ichVolumeParams.a}
+                                  onChange={(e) => setIchVolumeParams(prev => ({ ...prev, a: e.target.value }))}
+                                  className="w-full px-2 py-1.5 border border-slate-200 rounded-lg"
+                                  placeholder="e.g. 4.2"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-xs text-slate-500 mb-1">B (cm)</label>
+                                <input
+                                  type="number"
+                                  value={ichVolumeParams.b}
+                                  onChange={(e) => setIchVolumeParams(prev => ({ ...prev, b: e.target.value }))}
+                                  className="w-full px-2 py-1.5 border border-slate-200 rounded-lg"
+                                  placeholder="e.g. 3.6"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-xs text-slate-500 mb-1">Slice thickness (mm)</label>
+                                <input
+                                  type="number"
+                                  value={ichVolumeParams.thicknessMm}
+                                  onChange={(e) => setIchVolumeParams(prev => ({ ...prev, thicknessMm: e.target.value }))}
+                                  className="w-full px-2 py-1.5 border border-slate-200 rounded-lg"
+                                  placeholder="e.g. 5"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-xs text-slate-500 mb-1">Slices w/ ICH</label>
+                                <input
+                                  type="number"
+                                  value={ichVolumeParams.numSlices}
+                                  onChange={(e) => setIchVolumeParams(prev => ({ ...prev, numSlices: e.target.value }))}
+                                  className="w-full px-2 py-1.5 border border-slate-200 rounded-lg"
+                                  placeholder="e.g. 6"
+                                />
+                              </div>
+                            </div>
+                            <p className="text-[11px] text-slate-500 mt-3">
+                              Auto-flags volume ≥30 mL (predictive of worse outcomes and surgical consideration).
+                            </p>
+                          </div>
                         </div>
 
                         <details className="mt-5 bg-white border border-red-200 rounded-lg">
@@ -17300,9 +18021,240 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <details className="bg-white border border-blue-200 rounded-lg">
                           <summary className="cursor-pointer px-4 py-3 font-semibold text-blue-800 hover:bg-blue-50 rounded-lg">Ischemic protocol details</summary>
                           <div className="p-4 space-y-6">
+                        {/* EVT Eligibility Builder */}
+                        <div className="bg-white border border-blue-200 rounded-lg p-4">
+                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
+                            <div>
+                              <h3 className="text-lg font-semibold text-blue-800">EVT Eligibility Builder</h3>
+                              <p className="text-xs text-slate-500">Guideline-aligned decision support (adult algorithm). Pediatric criteria kept separate.</p>
+                            </div>
+                            <span className="text-xs text-slate-500">
+                              Auto time: {calculateTimeFromLKW() ? `${calculateTimeFromLKW().hours}h ${calculateTimeFromLKW().minutes}m` : 'Set LKW'}
+                            </span>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">Occlusion</label>
+                              <select
+                                value={evtDecisionInputs.occlusion}
+                                onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, occlusion: e.target.value }))}
+                                className="w-full px-2 py-2 border border-slate-200 rounded-lg"
+                              >
+                                <option value="lvo">LVO (ICA-T / M1)</option>
+                                <option value="mvo-dominant">MVO (dominant M2)</option>
+                                <option value="mvo-nondominant">MVO non-dominant M2 or DVO</option>
+                                <option value="basilar">Basilar artery</option>
+                              </select>
+                            </div>
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">Time window</label>
+                              <select
+                                value={evtDecisionInputs.timeWindow}
+                                onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, timeWindow: e.target.value }))}
+                                className="w-full px-2 py-2 border border-slate-200 rounded-lg"
+                              >
+                                <option value="auto">Auto (from LKW)</option>
+                                <option value="0-6">0-6 h</option>
+                                <option value="6-24">6-24 h</option>
+                                <option value=">24">&gt;24 h</option>
+                              </select>
+                            </div>
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">ASPECTS</label>
+                              <select
+                                value={evtDecisionInputs.aspects}
+                                onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, aspects: e.target.value }))}
+                                className="w-full px-2 py-2 border border-slate-200 rounded-lg"
+                              >
+                                <option value="6-10">6-10</option>
+                                <option value="3-5">3-5</option>
+                                <option value="0-2">0-2</option>
+                              </select>
+                            </div>
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">Pre-stroke mRS</label>
+                              <select
+                                value={evtDecisionInputs.mrs}
+                                onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, mrs: e.target.value }))}
+                                className="w-full px-2 py-2 border border-slate-200 rounded-lg"
+                              >
+                                <option value="0-1">0-1</option>
+                                <option value="2">2</option>
+                                <option value="3-4">3-4</option>
+                                <option value=">=2">≥2</option>
+                              </select>
+                            </div>
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">NIHSS (Basilar)</label>
+                              <input
+                                type="number"
+                                value={evtDecisionInputs.nihss}
+                                onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, nihss: e.target.value }))}
+                                className="w-full px-2 py-2 border border-slate-200 rounded-lg"
+                                placeholder="e.g. 12"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">PC-ASPECTS (Basilar)</label>
+                              <select
+                                value={evtDecisionInputs.pcAspects}
+                                onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, pcAspects: e.target.value }))}
+                                className="w-full px-2 py-2 border border-slate-200 rounded-lg"
+                              >
+                                <option value=">=6">≥6</option>
+                                <option value="<6">&lt;6</option>
+                              </select>
+                            </div>
+                          </div>
+                          {(() => {
+                            const result = getEvtEligibilityRecommendation(evtDecisionInputs, calculateTimeFromLKW());
+                            return (
+                              <div className={`mt-4 rounded-lg border p-3 ${
+                                result.color === 'emerald'
+                                  ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                                  : result.color === 'amber'
+                                    ? 'bg-amber-50 border-amber-200 text-amber-800'
+                                    : result.color === 'rose'
+                                      ? 'bg-rose-50 border-rose-200 text-rose-800'
+                                      : 'bg-slate-50 border-slate-200 text-slate-700'
+                              }`}>
+                                <div className="flex items-center justify-between">
+                                  <div>
+                                    <p className="text-xs uppercase tracking-wide">Class of Recommendation</p>
+                                    <p className="text-lg font-semibold">{result.classOfRec}</p>
+                                  </div>
+                                  <p className="text-sm font-medium">{result.label}</p>
+                                </div>
+                                {result.rationale && result.rationale.length > 0 && (
+                                  <ul className="text-xs mt-2 space-y-1">
+                                    {result.rationale.map((item, idx) => (
+                                      <li key={idx}>• {item}</li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </div>
+                            );
+                          })()}
+                        </div>
+
+                        {/* DOAC Start Planner */}
+                        <div className="bg-white border border-blue-200 rounded-lg p-4">
+                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
+                            <div>
+                              <h3 className="text-lg font-semibold text-blue-800">DOAC Start Planner</h3>
+                              <p className="text-xs text-slate-500">Automatically computes earliest start date based on NIHSS severity.</p>
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">NIHSS</label>
+                              <input
+                                type="number"
+                                value={telestrokeNote.nihss}
+                                onChange={(e) => setTelestrokeNote(prev => ({ ...prev, nihss: e.target.value }))}
+                                className="w-full px-2 py-2 border border-slate-200 rounded-lg"
+                                placeholder={nihssScore ? `Auto ${nihssScore}` : 'e.g. 8'}
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">Onset (LKW)</label>
+                              <input
+                                type="text"
+                                value={`${lkwDateForWindow || ''} ${lkwTimeForWindow || ''}`.trim()}
+                                readOnly
+                                className="w-full px-2 py-2 border border-slate-200 rounded-lg bg-slate-50 text-slate-500"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">Protocol</label>
+                              <select
+                                value={doacProtocol}
+                                onChange={(e) => setDoacProtocol(e.target.value)}
+                                className="w-full px-2 py-2 border border-slate-200 rounded-lg"
+                              >
+                                {Object.entries(DOAC_PROTOCOLS).map(([key, rule]) => (
+                                  <option key={key} value={key}>{rule.label}</option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+                          {(() => {
+                            const onsetDate = lkwDateForWindow && lkwTimeForWindow ? new Date(`${lkwDateForWindow}T${lkwTimeForWindow}`) : null;
+                            const result = calculateDOACStart(telestrokeNote.nihss || nihssScore, onsetDate, doacProtocol);
+                            if (!result) {
+                              return (
+                                <div className="mt-3 text-xs text-slate-500">
+                                  Enter NIHSS and LKW to calculate the earliest DOAC start date.
+                                </div>
+                              );
+                            }
+                            return (
+                              <div className="mt-3 bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-sm">
+                                <p className="font-semibold text-emerald-800">Earliest start: {result.startDate.toLocaleDateString()}</p>
+                                <p className="text-xs text-emerald-700 mt-1">
+                                  Severity: {result.severity} • Wait {result.days} day(s) after onset.
+                                </p>
+                              </div>
+                            );
+                          })()}
+                        </div>
+
 {/* Blood Pressure Management */}
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-blue-800 mb-3">Blood Pressure Management</h3>
+
+                          <div className="bg-white border border-blue-200 rounded-lg p-3 mb-4">
+                            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                              <div>
+                                <h4 className="text-sm font-semibold text-blue-800">Phase-aware BP target</h4>
+                                <p className="text-xs text-slate-500">Toggles update the target and highlight current BP status.</p>
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                {Object.entries(bpPhaseTargets).map(([key, value]) => (
+                                  <button
+                                    key={key}
+                                    type="button"
+                                    onClick={() => setTelestrokeNote(prev => ({ ...prev, bpPhase: key }))}
+                                    className={`px-3 py-1.5 rounded-full text-xs font-semibold border ${
+                                      currentBpPhase === key
+                                        ? 'bg-blue-600 text-white border-blue-600'
+                                        : 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100'
+                                    }`}
+                                  >
+                                    {value.label}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3 text-sm">
+                              <div className="bg-blue-50 border border-blue-100 rounded-lg p-2">
+                                <p className="text-xs uppercase tracking-wide text-blue-600">Target</p>
+                                <p className="text-sm font-semibold text-blue-800">
+                                  SBP &lt; {currentBpTarget.systolic} / DBP &lt; {currentBpTarget.diastolic}
+                                </p>
+                              </div>
+                              <div className="bg-slate-50 border border-slate-200 rounded-lg p-2">
+                                <p className="text-xs uppercase tracking-wide text-slate-500">Current BP</p>
+                                <input
+                                  type="text"
+                                  value={telestrokeNote.bpPostEVT || telestrokeNote.bpPreTNK || telestrokeNote.presentingBP || ''}
+                                  onChange={(e) => setTelestrokeNote(prev => ({ ...prev, bpPostEVT: e.target.value }))}
+                                  className="w-full mt-1 px-2 py-1 border border-slate-200 rounded text-sm"
+                                  placeholder="e.g. 172/98"
+                                />
+                                <p className="text-[10px] text-slate-400 mt-1">Uses Post-EVT, then Pre-TNK, then Presenting BP.</p>
+                              </div>
+                              <div className={`rounded-lg p-2 border ${bpWithinTarget === null ? 'bg-slate-50 border-slate-200' : bpWithinTarget ? 'bg-emerald-50 border-emerald-200' : 'bg-rose-50 border-rose-200'}`}>
+                                <p className="text-xs uppercase tracking-wide text-slate-500">Status</p>
+                                <p className="text-sm font-semibold">
+                                  {bpWithinTarget === null ? 'Enter BP to check' : bpWithinTarget ? 'Within target' : 'Above target'}
+                                </p>
+                                {bpWithinTarget === false && (
+                                  <p className="text-[10px] text-rose-600 mt-1">Consider IV antihypertensive titration.</p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div className="bg-white p-3 rounded border">
@@ -17324,6 +18276,69 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li><strong>Alternative:</strong> Nicardipine 5 mg/hr IV</li>
                                 <li>Titrate by 2.5 mg/hr q15min</li>
                               </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Nursing Flowsheet Generator */}
+                        <div className="bg-white border border-blue-200 rounded-lg p-4">
+                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
+                            <div>
+                              <h3 className="text-lg font-semibold text-blue-800">Nursing Flowsheet Generator</h3>
+                              <p className="text-xs text-slate-500">Auto-generates q15m ×4, then q30m ×4 checks from groin puncture.</p>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => setTelestrokeNote(prev => ({ ...prev, punctureTime: new Date().toTimeString().slice(0, 5) }))}
+                              className="text-xs font-semibold text-blue-700 hover:text-blue-900"
+                            >
+                              Use current time
+                            </button>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">Groin puncture time</label>
+                              <input
+                                type="time"
+                                value={telestrokeNote.punctureTime || ''}
+                                onChange={(e) => setTelestrokeNote(prev => ({ ...prev, punctureTime: e.target.value }))}
+                                className="w-full px-2 py-2 border border-slate-200 rounded-lg"
+                              />
+                            </div>
+                            <div className="md:col-span-2">
+                              {(() => {
+                                const schedule = buildNursingFlowsheet(telestrokeNote.punctureTime);
+                                if (schedule.length === 0) {
+                                  return <p className="text-xs text-slate-500 mt-2">Enter puncture time to generate schedule.</p>;
+                                }
+                                return (
+                                  <div className="space-y-2">
+                                    <div className="flex flex-wrap gap-2">
+                                      {schedule.map((item) => (
+                                        <label key={item.time} className="flex items-center gap-2 text-xs bg-slate-50 border border-slate-200 rounded-lg px-2 py-1">
+                                          <input
+                                            type="checkbox"
+                                            checked={!!nursingFlowsheetChecks[item.time]}
+                                            onChange={(e) => setNursingFlowsheetChecks(prev => ({ ...prev, [item.time]: e.target.checked }))}
+                                          />
+                                          <span>{item.time}</span>
+                                          <span className="text-[10px] text-slate-400">{item.label}</span>
+                                        </label>
+                                      ))}
+                                    </div>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const lines = schedule.map(item => `${item.time} (${item.label})`);
+                                        copyPlainText(`Post-EVT checks:\\n${lines.join('\\n')}`);
+                                      }}
+                                      className="text-xs font-semibold text-blue-700 hover:text-blue-900"
+                                    >
+                                      Copy schedule
+                                    </button>
+                                  </div>
+                                );
+                              })()}
                             </div>
                           </div>
                         </div>
@@ -17593,7 +18608,41 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                     {/* Calculators Content */}
                     {managementSubTab === 'calculators' && (
-                  <div className="space-y-4">
+                  <GlobalPatientContext.Provider value={patientContextValue}>
+                  <div className="flex flex-col gap-4">
+                    <CalculatorSync />
+                    <CalculatorPatientSnapshot />
+                    <div className="bg-white border border-indigo-200 rounded-lg p-3 flex flex-wrap items-center gap-3 text-xs">
+                      <label className="flex items-center gap-2 font-semibold text-indigo-800">
+                        <input
+                          type="checkbox"
+                          checked={autoSyncCalculators}
+                          onChange={(e) => setAutoSyncCalculators(e.target.checked)}
+                        />
+                        Auto-sync calculators with patient age/sex
+                      </label>
+                      <span className="text-slate-500">Updates CHA₂DS₂-VASc, HAS-BLED, ABCD², ICH Score, ROPE, and RCVS².</span>
+                    </div>
+                    {calculatorPriorityList.length > 0 && (
+                      <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs">
+                        <p className="font-semibold text-slate-700 mb-2">Priority calculators for {calculatorDiagnosisKey.toUpperCase()}</p>
+                        <div className="flex flex-wrap gap-2">
+                          {calculatorPriorityList.map((id) => (
+                            <button
+                              key={id}
+                              type="button"
+                              onClick={() => {
+                                const el = document.getElementById(`calc-${id}`);
+                                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                              }}
+                              className="px-2 py-1 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-100"
+                            >
+                              {calculatorLabelMap[id] || id}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                     {/* ============================================ */}
                     {/* CALCULATOR TRIAL PROMPTS                     */}
                     {/* Shows trial relevance after scoring          */}
@@ -17674,7 +18723,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     )}
 
                     {/* Glasgow Coma Scale */}
-                    <details className="bg-gray-50 border border-gray-200 rounded-lg">
+                    <details id="calc-gcs" style={{ order: getCalculatorOrder('gcs', 10) }} className="bg-gray-50 border border-gray-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-gray-800 hover:bg-gray-100 rounded-lg flex items-center justify-between">
                         <span>Glasgow Coma Scale (GCS)</span>
                         <span className="text-sm font-normal text-gray-600">Score: {calculateGCS(gcsItems)}</span>
@@ -17871,11 +18920,22 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </label>
                         </div>
                       </div>
+                      {(() => {
+                        const gcs = calculateGCS(gcsItems);
+                        if (!gcs) return null;
+                        const label = gcs <= 8 ? 'Severe' : gcs <= 12 ? 'Moderate' : 'Mild';
+                        const tone = gcs <= 8 ? 'bg-rose-50 border-rose-200 text-rose-800' : gcs <= 12 ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-emerald-50 border-emerald-200 text-emerald-800';
+                        return (
+                          <div className={`mt-3 border rounded-lg p-2 text-xs ${tone}`}>
+                            <span className="font-semibold">Interpretation:</span> {label} brain injury (GCS {gcs})
+                          </div>
+                        );
+                      })()}
                       </div>
                     </details>
 
                     {/* ICH Score */}
-                    <details className="bg-red-50 border border-red-200 rounded-lg">
+                    <details id="calc-ich-score" style={{ order: getCalculatorOrder('ich-score', 20) }} className="bg-red-50 border border-red-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-red-800 hover:bg-red-100 rounded-lg flex items-center justify-between">
                         <span>ICH Score</span>
                         <span className="text-sm font-normal text-red-600">Score: {calculateICHScore(ichScoreItems)}</span>
@@ -17892,6 +18952,17 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <i data-lucide="copy" className="w-4 h-4 text-red-600"></i>
                         </button>
                       </div>
+
+                      {(() => {
+                        const ichScore = calculateICHScore(ichScoreItems);
+                        const label = ichScore >= 4 ? 'High mortality risk' : ichScore >= 2 ? 'Moderate risk' : 'Lower risk';
+                        const tone = ichScore >= 4 ? 'bg-rose-50 border-rose-200 text-rose-800' : ichScore >= 2 ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-emerald-50 border-emerald-200 text-emerald-800';
+                        return (
+                          <div className={`mt-2 border rounded-lg p-2 text-xs ${tone}`}>
+                            <span className="font-semibold">Interpretation:</span> {label} (ICH Score {ichScore})
+                          </div>
+                        );
+                      })()}
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
                         <div className="space-y-2">
@@ -18093,7 +19164,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                     {/* Modified Rankin Scale (mRS) */}
-                    <details className="bg-gray-50 border border-gray-200 rounded-lg">
+                    <details id="calc-mrs" style={{ order: getCalculatorOrder('mrs', 30) }} className="bg-gray-50 border border-gray-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-gray-800 hover:bg-gray-100 rounded-lg flex items-center justify-between">
                         <span>Modified Rankin Scale (mRS)</span>
                         <span className="text-sm font-normal text-gray-600">Score: {mrsScore || 'Not Selected'}</span>
@@ -18242,7 +19313,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                     {/* ABCD2 */}
-                    <details className="bg-orange-50 border border-orange-200 rounded-lg">
+                    <details id="calc-abcd2" style={{ order: getCalculatorOrder('abcd2', 40) }} className="bg-orange-50 border border-orange-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-orange-800 hover:bg-orange-100 rounded-lg flex items-center justify-between">
                         <span>ABCD² Score</span>
                         <span className="text-sm font-normal text-orange-600">Score: {calculateABCD2Score(abcd2Items)}</span>
@@ -18259,6 +19330,17 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <i data-lucide="copy" className="w-4 h-4 text-orange-600"></i>
                         </button>
                       </div>
+
+                      {(() => {
+                        const abcd2 = calculateABCD2Score(abcd2Items);
+                        const label = abcd2 >= 6 ? 'High risk' : abcd2 >= 4 ? 'Moderate risk' : 'Lower risk';
+                        const tone = abcd2 >= 6 ? 'bg-rose-50 border-rose-200 text-rose-800' : abcd2 >= 4 ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-emerald-50 border-emerald-200 text-emerald-800';
+                        return (
+                          <div className={`mt-2 border rounded-lg p-2 text-xs ${tone}`}>
+                            <span className="font-semibold">Interpretation:</span> {label} 2-day stroke risk (ABCD² {abcd2})
+                          </div>
+                        );
+                      })()}
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
                         <div className="space-y-2">
@@ -18371,7 +19453,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                     {/* CHADS2-VASC */}
-                    <details className="bg-purple-50 border border-purple-200 rounded-lg">
+                    <details id="calc-chads2vasc" style={{ order: getCalculatorOrder('chads2vasc', 50) }} className="bg-purple-50 border border-purple-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-purple-800 hover:bg-purple-100 rounded-lg flex items-center justify-between">
                         <span>CHA₂DS₂-VASc Score</span>
                         <span className="text-sm font-normal text-purple-600">Score: {calculateCHADS2VascScore(chads2vascItems)}</span>
@@ -18489,7 +19571,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                     {/* HAS-BLED Score */}
-                    <details className="bg-pink-50 border border-pink-200 rounded-lg">
+                    <details id="calc-hasbled" style={{ order: getCalculatorOrder('hasbled', 60) }} className="bg-pink-50 border border-pink-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-pink-800 hover:bg-pink-100 rounded-lg flex items-center justify-between">
                         <span>HAS-BLED Score</span>
                         <span className="text-sm font-normal text-pink-600">Score: {calculateHASBLEDScore(hasbledItems)}</span>
@@ -18605,7 +19687,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                     {/* ROPE Score */}
-                    <details className="bg-teal-50 border border-teal-200 rounded-lg">
+                    <details id="calc-rope" style={{ order: getCalculatorOrder('rope', 70) }} className="bg-teal-50 border border-teal-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-teal-800 hover:bg-teal-100 rounded-lg flex items-center justify-between">
                         <span>ROPE Score and PASCAL Classification</span>
                         <span className="text-sm font-normal text-teal-600">Score: {calculateROPEScore(ropeItems)}</span>
@@ -18746,7 +19828,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
 
                     {/* RCVS2 Score */}
-                    <details className="bg-cyan-50 border border-cyan-200 rounded-lg">
+                    <details id="calc-rcvs2" style={{ order: getCalculatorOrder('rcvs2', 90) }} className="bg-cyan-50 border border-cyan-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-cyan-800 hover:bg-cyan-100 rounded-lg flex items-center justify-between">
                         <span>RCVS² Score</span>
                         <span className="text-sm font-normal text-cyan-600">Score: {calculateRCVS2Score(rcvs2Items)}</span>
@@ -18825,7 +19907,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                     {/* Hunt and Hess Scale / WFNS Scale */}
-                    <details className="bg-amber-50 border border-amber-200 rounded-lg">
+                    <details id="calc-hunt-hess" style={{ order: getCalculatorOrder('hunt-hess', 80) }} className="bg-amber-50 border border-amber-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-amber-800 hover:bg-amber-100 rounded-lg flex items-center justify-between">
                         <span>Hunt and Hess / WFNS Scale (SAH Grading)</span>
                         <span className="text-sm font-normal text-amber-600">H&H: {huntHessGrade || 'Not Selected'} | WFNS: {wfnsGrade || 'Not Selected'}</span>
@@ -19231,6 +20313,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                   </div>
+                  </GlobalPatientContext.Provider>
                     )}
 
                     {/* References & Evidence Content */}
@@ -19392,6 +20475,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                           const recClass = rec.classOfRec || 'Statement';
                                           const recLevel = rec.levelOfEvidence || 'Ungraded';
                                           const classLabel = rec.classNote ? `${recClass} (${rec.classNote})` : recClass;
+                                          const quickActions = getGuidelineQuickActions(rec.text);
                                           return (
                                             <div key={rec.id} className="border border-indigo-100 rounded-lg p-2 bg-indigo-50/50">
                                               <div className="flex items-start gap-2">
@@ -19418,6 +20502,20 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                                       </a>
                                                     )}
                                                   </div>
+                                                  {quickActions.length > 0 && (
+                                                    <div className="flex flex-wrap gap-1 mt-2">
+                                                      {quickActions.map((action) => (
+                                                        <button
+                                                          key={action.id}
+                                                          type="button"
+                                                          onClick={() => navigateTo(action.target.tab, { subTab: action.target.subTab })}
+                                                          className="px-2 py-1 text-[10px] font-semibold rounded-full border border-indigo-200 text-indigo-700 hover:bg-indigo-100"
+                                                        >
+                                                          {action.label}
+                                                        </button>
+                                                      ))}
+                                                    </div>
+                                                  )}
                                                 </div>
                                               </div>
                                             </div>
