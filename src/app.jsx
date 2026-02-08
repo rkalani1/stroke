@@ -9151,15 +9151,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
   HEP --> LMWH[Low molecular weight heparin]
   UFH --> PROT1[Protamine Class 2a]
   LMWH --> PROT2[Protamine Class 2b]
-  click PCC10 call strokeMermaidClick "4F-PCC dosing"
-  click PCC25 call strokeMermaidClick "4F-PCC dosing"
-  click VITK call strokeMermaidClick "Vitamin K"
-  click AND call strokeMermaidClick "Andexanet alfa"
-  click IDA call strokeMermaidClick "Idarucizumab"
-  click PCC4 call strokeMermaidClick "PCC/aPCC"
-  click PROT1 call strokeMermaidClick "Protamine UFH"
-  click PROT2 call strokeMermaidClick "Protamine LMWH"
-  click CHARCOAL call strokeMermaidClick "Activated charcoal"`;
+  click PCC10 strokeMermaidClick "4F-PCC dosing"
+  click PCC25 strokeMermaidClick "4F-PCC dosing"
+  click VITK strokeMermaidClick "Vitamin K"
+  click AND strokeMermaidClick "Andexanet alfa"
+  click IDA strokeMermaidClick "Idarucizumab"
+  click PCC4 strokeMermaidClick "PCC/aPCC"
+  click PROT1 strokeMermaidClick "Protamine UFH"
+  click PROT2 strokeMermaidClick "Protamine LMWH"
+  click CHARCOAL strokeMermaidClick "Activated charcoal"`;
 
           const ichIVHMermaid = `flowchart TD
   A[IVH surgical management] --> B[Spontaneous IVH with obstructive hydrocephalus]

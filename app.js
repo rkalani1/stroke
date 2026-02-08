@@ -516,15 +516,15 @@ ${t.recommendationsText}`),navigator.clipboard.writeText(e),A("vid-mdm"),setTime
   HEP --> LMWH[Low molecular weight heparin]
   UFH --> PROT1[Protamine Class 2a]
   LMWH --> PROT2[Protamine Class 2b]
-  click PCC10 call strokeMermaidClick "4F-PCC dosing"
-  click PCC25 call strokeMermaidClick "4F-PCC dosing"
-  click VITK call strokeMermaidClick "Vitamin K"
-  click AND call strokeMermaidClick "Andexanet alfa"
-  click IDA call strokeMermaidClick "Idarucizumab"
-  click PCC4 call strokeMermaidClick "PCC/aPCC"
-  click PROT1 call strokeMermaidClick "Protamine UFH"
-  click PROT2 call strokeMermaidClick "Protamine LMWH"
-  click CHARCOAL call strokeMermaidClick "Activated charcoal"`)),React.createElement("div",{className:"bg-white border border-red-200 rounded-xl p-4 shadow-sm overflow-x-auto"},React.createElement("p",{className:"text-xs font-semibold uppercase tracking-wide text-red-700 mb-3"},"Figure 3. Surgical management of IVH (AHA/ASA ICH 2022)"),React.createElement("div",{className:"mermaid text-xs md:text-sm","aria-label":"IVH surgical management algorithm"},`flowchart TD
+  click PCC10 strokeMermaidClick "4F-PCC dosing"
+  click PCC25 strokeMermaidClick "4F-PCC dosing"
+  click VITK strokeMermaidClick "Vitamin K"
+  click AND strokeMermaidClick "Andexanet alfa"
+  click IDA strokeMermaidClick "Idarucizumab"
+  click PCC4 strokeMermaidClick "PCC/aPCC"
+  click PROT1 strokeMermaidClick "Protamine UFH"
+  click PROT2 strokeMermaidClick "Protamine LMWH"
+  click CHARCOAL strokeMermaidClick "Activated charcoal"`)),React.createElement("div",{className:"bg-white border border-red-200 rounded-xl p-4 shadow-sm overflow-x-auto"},React.createElement("p",{className:"text-xs font-semibold uppercase tracking-wide text-red-700 mb-3"},"Figure 3. Surgical management of IVH (AHA/ASA ICH 2022)"),React.createElement("div",{className:"mermaid text-xs md:text-sm","aria-label":"IVH surgical management algorithm"},`flowchart TD
   A[IVH surgical management] --> B[Spontaneous IVH with obstructive hydrocephalus]
   A --> C[Spontaneous ICH under 30 mL GCS above 3 IVH requiring EVD]
   A --> D[Spontaneous ICH under 30 mL IVH requiring EVD]
