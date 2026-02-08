@@ -784,6 +784,7 @@ Clinician Name`;
             contrastAllergy: false,
             nihss: '',
             nihssDetails: '',
+            disablingDeficit: false,
             imagingReviewed: true,
             ctDate: new Date().toISOString().split('T')[0],
             ctTime: '',
@@ -850,7 +851,11 @@ Clinician Name`;
             tnkContraindicationChecklist: {
               activeInternalBleeding: false,
               recentIntracranialSurgery: false,
+              recentStroke: false,
+              recentHeadTrauma: false,
+              extensiveHypoattenuation: false,
               intracranialNeoplasm: false,
+              intracranialTumor: false,
               knownBleedingDiathesis: false,
               severeUncontrolledHTN: false,
               currentICH: false,
@@ -863,7 +868,10 @@ Clinician Name`;
               lowPlatelets: false,
               elevatedINR: false,
               elevatedPTT: false,
-              abnormalGlucose: false,
+              warfarinElevatedINR: false,
+              recentHeparin: false,
+              lowGlucose: false,
+              highGlucose: false,
               recentDOAC: false
             },
             tnkContraindicationReviewed: false,
@@ -2839,7 +2847,7 @@ Clinician Name`;
               category: 'Blood Pressure',
               title: 'Post-thrombolysis BP target',
               recommendation: 'Maintain BP <180/105 mmHg for 24 hours after IV thrombolysis.',
-              detail: 'Monitor BP every 15 minutes for 2 hours, then every 30 minutes for 6 hours, then hourly for 16 hours.',
+              detail: 'Monitor BP every 15 minutes for 2 hours, then every 30 minutes for 6 hours, then hourly for 16 hours. Intensive SBP <140 mmHg is NOT recommended (Class III: No Benefit).',
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -2938,19 +2946,19 @@ Clinician Name`;
             tnk_extended_imaging: {
               id: 'tnk_extended_imaging',
               category: 'Thrombolysis',
-              title: 'Extended window TNK (4.5-24h)',
-              recommendation: 'TNK 0.25 mg/kg (max 25 mg) IV bolus may be considered in the 4.5-24 hour window when perfusion imaging shows salvageable tissue (core <70 mL, mismatch ratio >1.2).',
-              detail: 'Based on TIMELESS trial (2025): TNK in the 4.5-24h window with perfusion mismatch showed improved functional outcomes. Also supported by EXTEND/WAKE-UP criteria (DWI-FLAIR mismatch for wake-up strokes). Requires CTP or MRI DWI/perfusion before treatment.',
+              title: 'Extended window IVT (4.5-9h or wake-up)',
+              recommendation: 'IV thrombolysis (TNK or alteplase) is reasonable in the 4.5-9 hour or wake-up window when mismatch imaging shows salvageable tissue.',
+              detail: 'Use CT perfusion, MR perfusion, or DWI/FLAIR mismatch to select patients. EXTEND supports perfusion mismatch (4.5-9h), WAKE-UP supports DWI/FLAIR mismatch for unknown onset. 4.5-24h IVT remains investigational and should be limited to clinical trials (TIMELESS/SISTER).',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026; TIMELESS Investigators. NEJM 2025.',
+              reference: 'Powers WJ et al. Stroke. 2026; EXTEND; WAKE-UP.',
               medications: ['TNK 0.25 mg/kg IV bolus (max 25 mg)'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('lvo');
                 const timeFrom = data.timeFromLKW;
-                return isIschemic && timeFrom && timeFrom.total > 4.5 && timeFrom.total <= 24;
+                return isIschemic && timeFrom && timeFrom.total > 4.5 && timeFrom.total <= 9;
               }
             },
 
@@ -5639,9 +5647,9 @@ Clinician Name`;
             const glucose = parseFloat(data.telestrokeNote?.glucose);
             if (!isNaN(glucose)) {
               if (glucose < 50) {
-                alerts.push({ severity: 'critical', label: 'Hypoglycemia', message: `Glucose ${glucose} mg/dL - Correct before thrombolysis`, field: 'glucose' });
+                alerts.push({ severity: 'warning', label: 'Hypoglycemia', message: `Glucose ${glucose} mg/dL - Correct immediately; if deficits persist, IVT remains eligible`, field: 'glucose' });
               } else if (glucose > 400) {
-                alerts.push({ severity: 'critical', label: 'Hyperglycemia', message: `Glucose ${glucose} mg/dL - Correct before thrombolysis`, field: 'glucose' });
+                alerts.push({ severity: 'warning', label: 'Severe hyperglycemia', message: `Glucose ${glucose} mg/dL - Correct; if deficits persist, IVT remains eligible`, field: 'glucose' });
               }
             }
 
@@ -6502,7 +6510,7 @@ Clinician Name`;
               'alias', 'age', 'sex', 'weight', 'nihss', 'aspects', 'vesselOcclusion', 'diagnosisCategory',
               'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'arrivalTime', 'strokeAlertTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
               'presentingBP', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT',
-              'glucose', 'plateletCount', 'inr', 'ptt', 'creatinine',
+              'glucose', 'plateletCount', 'inr', 'ptt', 'creatinine', 'disablingDeficit',
               'tnkRecommended', 'evtRecommended', 'tnkContraindicationChecklist',
               'tnkContraindicationReviewed', 'tnkContraindicationReviewTime', 'tnkConsentDiscussed',
               'patientFamilyConsent', 'presumedConsent', 'preTNKSafetyPause', 'tnkAutoBlocked',
@@ -6774,8 +6782,41 @@ Clinician Name`;
             if (telestrokeNote.tnkContraindicationReviewed) {
               note += `\nThrombolysis Contraindication Review: Completed at ${telestrokeNote.tnkContraindicationReviewTime}. `;
               const checklist = telestrokeNote.tnkContraindicationChecklist || {};
-              const absoluteKeys = ['activeInternalBleeding', 'recentIntracranialSurgery', 'intracranialNeoplasm', 'knownBleedingDiathesis', 'severeUncontrolledHTN', 'currentICH'];
-              const relativeKeys = ['recentMajorSurgery', 'recentGIGUBleeding', 'recentArterialPuncture', 'recentLumbarPuncture', 'pregnancy', 'seizureAtOnset', 'lowPlatelets', 'elevatedINR', 'elevatedPTT', 'abnormalGlucose', 'recentDOAC'];
+              const absoluteKeys = [
+                'currentICH',
+                'largeInfarct',
+                'intracranialTumor',
+                'intracranialNeoplasm',
+                'aorticDissection',
+                'activeInternalBleeding',
+                'giMalignancy',
+                'sahPresentation',
+                'infectiveEndocarditis',
+                'severeUncontrolledHTN',
+                'lowPlatelets',
+                'warfarinElevatedINR',
+                'recentHeparin'
+              ];
+              const relativeKeys = [
+                'recentStroke',
+                'recentHeadTrauma',
+                'recentIntracranialSurgery',
+                'recentMajorSurgery',
+                'recentGIGUBleeding',
+                'recentArterialPuncture',
+                'recentLumbarPuncture',
+                'pregnancy',
+                'seizureAtOnset',
+                'lowGlucose',
+                'highGlucose',
+                'recentDOAC',
+                'extensiveHypoattenuation',
+                'intracranialAneurysm',
+                'vascularMalformation',
+                'priorICH',
+                'lecanemab',
+                'abnormalCoagUnknown'
+              ];
               const absoluteChecked = absoluteKeys.filter(k => checklist[k]);
               const relativeChecked = relativeKeys.filter(k => checklist[k]);
               if (absoluteChecked.length === 0 && relativeChecked.length === 0) {
@@ -7026,12 +7067,12 @@ Clinician Name`;
               return result;
             }
 
-            if (occlusion === 'mvo-dominant') {
-              if (window === '0-6' && aspects === '6-10' && mrs === '0-1') {
-                return { classOfRec: 'IIa', label: 'EVT reasonable', color: 'emerald', rationale: ['Dominant M2, early window, ASPECTS 6-10, mRS 0-1'] };
+              if (occlusion === 'mvo-dominant') {
+                if (window === '0-6' && aspects === '6-10' && mrs === '0-1') {
+                  return { classOfRec: 'IIa', label: 'EVT reasonable', color: 'emerald', rationale: ['Dominant M2, early window, ASPECTS 6-10, mRS 0-1'] };
+                }
+                return result;
               }
-              return result;
-            }
 
             if (occlusion === 'basilar') {
               if ((window === '0-6' || window === '6-24') && pcAspects === '>=6') {
@@ -7056,23 +7097,23 @@ Clinician Name`;
               if (window === '0-6') {
                 if (aspects === '6-10') {
                   if (mrs === '0-1') return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 6-10, mRS 0-1'] };
-                  if (mrs === '2') return { classOfRec: 'IIa', label: 'EVT reasonable', color: 'emerald', rationale: ['ASPECTS 6-10, mRS 2'] };
+                  if (mrs === '2') return { classOfRec: 'IIa', label: 'EVT reasonable', color: 'emerald', rationale: ['ASPECTS 6-10, pre-stroke mRS 2 (mild disability)'] };
                   if (mrs === '3-4') return { classOfRec: 'IIb', label: 'EVT may be considered', color: 'amber', rationale: ['ASPECTS 6-10, mRS 3-4'] };
                   return result;
                 }
                 if (aspects === '3-5') {
-                  if (mrs === '0-1') return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1'] };
+                  if (mrs === '0-1') return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1, NIHSS ≥6'] };
                   return result;
                 }
                 if (aspects === '0-2') {
-                  if (mrs === '0-1') return { classOfRec: 'IIa', label: 'EVT reasonable', color: 'amber', rationale: ['ASPECTS 0-2, mRS 0-1'] };
+                  if (mrs === '0-1') return { classOfRec: 'IIa', label: 'EVT reasonable', color: 'amber', rationale: ['ASPECTS 0-2, mRS 0-1, select patients without mass effect'] };
                   return result;
                 }
               }
 
               if (window === '6-24') {
                 if ((aspects === '6-10' || aspects === '3-5') && mrs === '0-1') {
-                  return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['DAWN/DEFUSE-3 criteria (ASPECTS 3-10, mRS 0-1)'] };
+                  return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['DAWN/DEFUSE-3 + large core data (ASPECTS 3-10, mRS 0-1, NIHSS ≥6)'] };
                 }
                 return result;
               }
@@ -8818,11 +8859,11 @@ ${telestrokeNote.evtRecommended ? `EVT: Recommended` : 'EVT: Not Recommended'}`;
 3. Continuous telemetry monitoring
 4. NPO until swallow evaluation completed
 5. IV fluids: NS at 75 mL/hr
-6. Maintain SBP <180/105 (or <185/110 if post-tPA)
+6. Maintain SBP <180/105 (avoid SBP <140 after successful EVT)
 7. Blood glucose 140-180 mg/dL
 8. HOB elevated 30 degrees
 9. DVT prophylaxis: SCDs (hold pharmacologic if tPA given)
-10. Aspirin 325mg daily (hold x 24h if tPA given)
+10. Aspirin 325mg daily (hold x 24h if tPA given; avoid IV aspirin within 90 min of IVT start)
 11. Statin therapy: Atorvastatin 80mg daily
 12. Neurology consultation
 13. PT/OT/Speech evaluation
@@ -10144,6 +10185,21 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     className="w-4 h-4 rounded border-orange-400 text-orange-600"
                                   />
                                   <span>NIHSS 4-26</span>
+                                </label>
+                                <label className="flex items-center gap-2 cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.timeWindow4_5to9h}
+                                    onChange={(e) => setTelestrokeNote({
+                                      ...telestrokeNote,
+                                      wakeUpStrokeWorkflow: {
+                                        ...telestrokeNote.wakeUpStrokeWorkflow,
+                                        extendCriteria: {...telestrokeNote.wakeUpStrokeWorkflow.extendCriteria, timeWindow4_5to9h: e.target.checked}
+                                      }
+                                    })}
+                                    className="w-4 h-4 rounded border-orange-400 text-orange-600"
+                                  />
+                                  <span>Time window 4.5-9 hours from LKW</span>
                                 </label>
                                 <label className="flex items-center gap-2 cursor-pointer">
                                   <input
@@ -11813,6 +11869,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <h3 className="text-lg font-bold text-indigo-900">5. Imaging Review</h3>
                             <i data-lucide="image" className="w-5 h-5 text-indigo-600"></i>
                           </div>
+                          <div className="mb-3 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs text-indigo-800">
+                            Do <strong>not</strong> delay IV thrombolysis for CTA/CTP or routine labs unless there is a specific clinical concern
+                            (e.g., anticoagulant use, coagulopathy, thrombocytopenia).
+                          </div>
                           <div className="space-y-3">
                             {/* Non-contrast Head CT */}
                             <div className="bg-gray-50 p-3 rounded border">
@@ -11889,7 +11949,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 {aspectsScore >= 7 ? `ASPECTS ${aspectsScore} = Favorable for EVT (most trials)` :
                                  aspectsScore === 6 ? `ASPECTS 6 = Standard EVT candidate; late window if perfusion mismatch or good collaterals` :
                                  aspectsScore >= 3 ? `ASPECTS ${aspectsScore} = Large core — EVT recommended in many patients (SVIN 2025); consider age/mRS and higher sICH risk` :
-                                 `ASPECTS ${aspectsScore} = Very large core (0-2). Early window EVT may be considered; 6-24h benefit uncertain — discuss goals of care`}
+                                 `ASPECTS ${aspectsScore} = Very large core (0-2). Early window EVT may be reasonable in select patients without significant mass effect; 6-24h benefit uncertain — discuss goals of care`}
                               </div>
                             </div>
 
@@ -12062,16 +12122,18 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               tnkRec = { eligible: false, reason: 'Absolute contraindication(s) present', confidence: 'high' };
                             } else if (!hoursFromLKW) {
                               tnkRec = { eligible: false, reason: 'Set LKW time to evaluate', confidence: 'low' };
-                            } else if (nihss < 4 && !telestrokeNote.nihssDetails) {
-                              tnkRec = { eligible: false, reason: `NIHSS ${nihss} - minor stroke, TNK not typically indicated`, confidence: 'medium' };
+                            } else if (nihss <= 5 && !telestrokeNote.disablingDeficit) {
+                              tnkRec = { eligible: false, reason: `NIHSS ${nihss} with non-disabling symptoms — IVT not recommended (Class III)`, confidence: 'medium' };
                             } else if (hoursFromLKW <= 4.5) {
-                              if (nihss >= 4 || telestrokeNote.nihssDetails) {
+                              if (nihss >= 4 || telestrokeNote.nihssDetails || telestrokeNote.disablingDeficit) {
                                 tnkRec = { eligible: true, reason: `Within 4.5h window, NIHSS ${nihss}`, confidence: 'high' };
                               }
-                            } else if (hoursFromLKW > 4.5 && hoursFromLKW <= 24) {
-                              tnkRec = { eligible: true, reason: `Extended window (${hoursFromLKW.toFixed(1)}h) — TNK may be given if perfusion mismatch present (TIMELESS criteria: core <70 mL, ratio >1.2). Obtain CTP/MRI.`, confidence: 'medium' };
+                            } else if (hoursFromLKW > 4.5 && hoursFromLKW <= 9) {
+                              tnkRec = { eligible: true, reason: `Extended window (${hoursFromLKW.toFixed(1)}h) — consider IVT if CTP/MR perfusion mismatch or DWI/FLAIR mismatch`, confidence: 'medium' };
+                            } else if (hoursFromLKW > 9 && hoursFromLKW <= 24) {
+                              tnkRec = { eligible: false, reason: 'Outside recommended IVT window (9-24h) — consider clinical trial (TIMELESS/SISTER)', confidence: 'medium' };
                             } else if (hoursFromLKW > 24) {
-                              tnkRec = { eligible: false, reason: 'Outside all TNK windows (>24h)', confidence: 'high' };
+                              tnkRec = { eligible: false, reason: 'Outside all IVT windows (>24h)', confidence: 'high' };
                             }
 
                             // EVT Logic
@@ -12455,18 +12517,32 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     <li>• Diagnosis of ischemic stroke causing measurable neurologic deficit</li>
                                     <li>• Age ≥18 years</li>
                                     <li>• Onset of symptoms &lt;4.5 hours from LKW</li>
+                                    <li>• Do NOT delay IVT for CTA/CTP or labs unless specific clinical concern exists</li>
                                     <li>• Class I, LOE A (AHA/ASA 2026)</li>
                                   </ul>
+                                  <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg p-2 text-xs text-amber-800">
+                                    IVT is <strong>not recommended</strong> for mild <em>non-disabling</em> symptoms (NIHSS 0-5). Treat if deficits are disabling (aphasia, hemianopsia, severe weakness).
+                                  </div>
+                                  <label className="mt-2 flex items-center gap-2 text-xs font-semibold text-amber-800 cursor-pointer">
+                                    <input
+                                      type="checkbox"
+                                      checked={telestrokeNote.disablingDeficit}
+                                      onChange={(e) => setTelestrokeNote({ ...telestrokeNote, disablingDeficit: e.target.checked })}
+                                      className="w-4 h-4 rounded border-amber-400 text-amber-600 focus:ring-amber-500"
+                                    />
+                                    Deficit is disabling (override for NIHSS 0-5)
+                                  </label>
                                 </div>
                                 <div>
-                                  <h4 className="font-semibold text-teal-700 mb-2">Extended Window (4.5-24h) — TIMELESS Criteria:</h4>
+                                  <h4 className="font-semibold text-teal-700 mb-2">Extended Window (4.5-9h or wake-up) — mismatch imaging:</h4>
                                   <ul className="space-y-1 ml-4">
-                                    <li>• TNK 0.25 mg/kg IV bolus (max 25 mg) in 4.5-24h window</li>
-                                    <li>• Requires CT Perfusion or MRI DWI/perfusion</li>
-                                    <li>• Ischemic core &lt;70 mL with mismatch ratio &gt;1.2</li>
+                                    <li>• IVT (TNK or alteplase) may be considered in 4.5-9h or wake-up stroke with mismatch imaging</li>
+                                    <li>• Acceptable imaging: CT perfusion, MR perfusion, or DWI/FLAIR mismatch</li>
+                                    <li>• Ischemic core &lt;70 mL with mismatch ratio &gt;1.2 (EXTEND-type criteria)</li>
                                     <li>• No hemorrhage on imaging</li>
-                                    <li>• Class IIa, LOE B-R (TIMELESS 2025, EXTEND, WAKE-UP)</li>
+                                    <li>• Class IIa, LOE B-R (EXTEND, WAKE-UP)</li>
                                   </ul>
+                                  <p className="text-[11px] text-slate-500 mt-2">4.5-24h IVT remains investigational and should be limited to clinical trials (e.g., TIMELESS/SISTER).</p>
                                 </div>
                                 <div>
                                   <h4 className="font-semibold text-teal-700 mb-2">WAKE-UP Stroke:</h4>
@@ -12482,6 +12558,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   <ul className="space-y-1 ml-4">
                                     <li>• Pregnancy is a relative (not absolute) contraindication — consult OB/GYN</li>
                                     <li>• Prior stroke &lt;90 days: relative CI; weigh severity of current vs prior</li>
+                                    <li>• Age &gt;80, prior stroke + DM, or NIHSS &gt;25 are <strong>not</strong> exclusions in 3-4.5h if deficits are disabling</li>
                                     <li>• Extra-axial intracranial neoplasm: NOT a contraindication</li>
                                     <li>• Seizure at onset: may treat if deficit clearly from stroke, not postictal</li>
                                     <li>• Lecanemab / anti-amyloid therapy: relative CI due to ARIA risk</li>
@@ -12496,48 +12573,48 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             {(() => {
                               const checklist = telestrokeNote.tnkContraindicationChecklist || {};
 
-                              const absoluteContraindications = [
-                                // Imaging Exclusions
-                                { id: 'currentICH', label: 'CT with evidence of hemorrhage', note: null },
-                                { id: 'extensiveHypoattenuation', label: 'CT with extensive regions of clear hypoattenuation', note: null },
-                                { id: 'largeInfarct', label: 'Ischemic injury >1/3 of MCA territory', note: null },
-                                { id: 'intracranialTumor', label: 'Intra-axial intracranial tumor', note: 'extra-axial not absolute' },
-                                { id: 'aorticDissection', label: 'Aortic arch dissection', note: null },
-                                // Clinical Exclusions
-                                { id: 'recentStroke', label: 'Recent stroke', note: '<90 days' },
-                                { id: 'recentHeadTrauma', label: 'Recent severe head trauma', note: '<90 days' },
-                                { id: 'recentIntracranialSurgery', label: 'Recent intracranial/intraspinal surgery', note: '<60 days' },
-                                { id: 'activeInternalBleeding', label: 'Active internal bleeding', note: null },
-                                { id: 'giMalignancy', label: 'GI malignancy', note: null },
-                                { id: 'sahPresentation', label: 'Clinical presentation suggestive of SAH', note: 'even if CT normal' },
-                                { id: 'infectiveEndocarditis', label: 'Presentation consistent with infective endocarditis', note: null },
-                                // Lab/Vital Exclusions
-                                { id: 'severeUncontrolledHTN', label: 'SBP >185 or DBP >110 mmHg', note: 'unresponsive to treatment' },
-                                { id: 'lowPlatelets', label: 'Platelet count <100,000', note: null },
-                                { id: 'lowGlucose', label: 'Blood glucose <50 mg/dL', note: null },
-                                { id: 'warfarinElevatedINR', label: 'Warfarin use with PT >15s, INR >1.7, or aPTT >40s', note: null },
-                                { id: 'recentDOAC', label: 'Recent DOAC use', note: '<48h' },
-                                { id: 'recentHeparin', label: 'Treatment-dose heparin/LMWH', note: '<24 hours' }
-                              ];
+                                const absoluteContraindications = [
+                                  // Imaging Exclusions
+                                  { id: 'currentICH', label: 'CT with evidence of hemorrhage', note: null },
+                                  { id: 'largeInfarct', label: 'Ischemic injury >1/3 of MCA territory', note: null },
+                                  { id: 'intracranialTumor', label: 'Intra-axial intracranial tumor', note: 'extra-axial not absolute' },
+                                  { id: 'aorticDissection', label: 'Aortic arch dissection', note: null },
+                                  // Clinical Exclusions
+                                  { id: 'activeInternalBleeding', label: 'Active internal bleeding', note: null },
+                                  { id: 'giMalignancy', label: 'GI malignancy', note: null },
+                                  { id: 'sahPresentation', label: 'Clinical presentation suggestive of SAH', note: 'even if CT normal' },
+                                  { id: 'infectiveEndocarditis', label: 'Presentation consistent with infective endocarditis', note: null },
+                                  // Lab/Vital Exclusions
+                                  { id: 'severeUncontrolledHTN', label: 'SBP >185 or DBP >110 mmHg', note: 'unresponsive to treatment' },
+                                  { id: 'lowPlatelets', label: 'Platelet count <100,000', note: null },
+                                  { id: 'warfarinElevatedINR', label: 'Warfarin use with PT >15s, INR >1.7, or aPTT >40s', note: null },
+                                  { id: 'recentHeparin', label: 'Treatment-dose heparin/LMWH', note: '<24 hours' }
+                                ];
 
-                              const relativeContraindications = [
-                                // Cautionary - Consider risks/benefits
-                                { id: 'priorICH', label: 'Prior known non-traumatic intracranial hemorrhage', note: null },
-                                { id: 'vascularMalformation', label: 'Intracranial vascular malformation', note: 'unless severe neuro sx' },
-                                { id: 'intracranialAneurysm', label: 'Intracranial aneurysm', note: null },
-                                { id: 'knownBleedingDiathesis', label: 'Known bleeding diathesis', note: null },
-                                { id: 'pregnancy', label: 'Pregnancy', note: 'consult OB/GYN ASAP' },
-                                { id: 'recentMajorSurgery', label: 'Major extracranial surgery or trauma', note: '<14 days' },
-                                { id: 'recentGIGUBleeding', label: 'Recent GI/urinary tract hemorrhage', note: '<21 days' },
-                                { id: 'recentMI', label: 'Acute or recent MI', note: '<3 months, depends on type' },
-                                { id: 'acutePericarditis', label: 'Acute pericarditis', note: null },
-                                { id: 'recentArterialPuncture', label: 'Recent arterial puncture at non-compressible site', note: '<7 days' },
-                                { id: 'recentLumbarPuncture', label: 'Recent lumbar puncture', note: '<7 days' },
-                                { id: 'seizureAtOnset', label: 'Seizure at onset with postictal deficits', note: 'consider stroke mimic' },
-                                { id: 'abnormalCoagUnknown', label: 'Abnormal aPTT, TT, or anti-Xa with unknown anticoagulant use', note: null },
-                                { id: 'cerebralMicrobleeds', label: 'Cerebral microbleeds >10 on prior MRI', note: 'increased ICH risk' },
-                                { id: 'lecanemab', label: 'Lecanemab or other Alzheimer medications', note: 'ARIA risk' },
-                                { id: 'highGlucose', label: 'Blood glucose >400 mg/dL', note: 'correct before treatment' },
+                                const relativeContraindications = [
+                                  // Cautionary - Consider risks/benefits
+                                  { id: 'priorICH', label: 'Prior known non-traumatic intracranial hemorrhage', note: null },
+                                  { id: 'vascularMalformation', label: 'Intracranial vascular malformation', note: 'unless severe neuro sx' },
+                                  { id: 'intracranialAneurysm', label: 'Intracranial aneurysm', note: 'no size cutoff' },
+                                  { id: 'knownBleedingDiathesis', label: 'Known bleeding diathesis', note: null },
+                                  { id: 'pregnancy', label: 'Pregnancy', note: 'consult OB/GYN ASAP' },
+                                  { id: 'recentStroke', label: 'Recent ischemic stroke', note: '<3 months (relative)' },
+                                  { id: 'recentHeadTrauma', label: 'Recent severe head trauma', note: '14 days–3 months (relative)' },
+                                  { id: 'recentIntracranialSurgery', label: 'Recent intracranial/intraspinal surgery', note: '14 days–3 months (relative)' },
+                                  { id: 'recentMajorSurgery', label: 'Major extracranial surgery or trauma', note: '14 days–3 months (relative)' },
+                                  { id: 'recentGIGUBleeding', label: 'Recent GI/urinary tract hemorrhage', note: '<21 days (relative)' },
+                                  { id: 'recentMI', label: 'Acute or recent MI', note: '<3 months, depends on type' },
+                                  { id: 'acutePericarditis', label: 'Acute pericarditis', note: null },
+                                  { id: 'recentArterialPuncture', label: 'Recent arterial puncture at non-compressible site', note: '<7 days (relative)' },
+                                  { id: 'recentLumbarPuncture', label: 'Recent lumbar puncture', note: '<7 days' },
+                                  { id: 'seizureAtOnset', label: 'Seizure at onset with postictal deficits', note: 'consider stroke mimic' },
+                                  { id: 'abnormalCoagUnknown', label: 'Abnormal aPTT, TT, or anti-Xa with unknown anticoagulant use', note: null },
+                                  { id: 'cerebralMicrobleeds', label: 'Cerebral microbleeds >10 on prior MRI', note: 'increased ICH risk' },
+                                  { id: 'lecanemab', label: 'Lecanemab or other Alzheimer medications', note: 'ARIA risk' },
+                                  { id: 'extensiveHypoattenuation', label: 'Extensive clear hypoattenuation', note: 're-evaluate onset/benefit; not automatic exclusion' },
+                                  { id: 'recentDOAC', label: 'Recent DOAC use', note: '<48h; consider drug level/reversal' },
+                                  { id: 'lowGlucose', label: 'Blood glucose <50 mg/dL', note: 'correct and reassess deficits' },
+                                  { id: 'highGlucose', label: 'Blood glucose >400 mg/dL', note: 'correct and reassess deficits' },
                                 { id: 'severeRenalFailure', label: 'Severe renal failure (Cr >3 or CrCl <25)', note: 'increased bleeding risk' }
                               ];
 
@@ -12953,7 +13030,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   Transfer rationale discussed with patient/family
                                 </label>
                                 <button onClick={() => {
-                                  const transferDoc = `TNK CONSENT DOCUMENTATION:\nTenecteplase was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'}.\nRisks discussed: symptomatic intracranial hemorrhage (up to 4%), allergic reaction (rare).\nBenefits discussed: improved chance of recovery without disability; earlier treatment provides greater benefit.\nAlternatives discussed: no thrombolytic treatment (associated with higher risk of disability).\nConsent: ${telestrokeNote.patientFamilyConsent ? 'Patient/family consent obtained' : telestrokeNote.presumedConsent ? 'Presumed consent — treatment in best interest' : '***'}\n\nTRANSFER DOCUMENTATION:\nPatient being transferred to comprehensive stroke center for ${telestrokeNote.evtRecommended ? 'mechanical thrombectomy evaluation and ' : ''}higher level of care.\nTransfer rationale: ${telestrokeNote.transferRationale || '***'}\nTransfer consent: ${(telestrokeNote.consentKit || {}).transferConsentDiscussed ? 'Discussed with patient/family' : 'Pending discussion'}`;
+                                  const transferDoc = `TNK CONSENT DOCUMENTATION:\nTenecteplase was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'}.\nTreatment window: within 4.5 hours of LKW (or mismatch imaging criteria for extended window).\nRisks discussed: symptomatic intracranial hemorrhage (up to 4%), allergic reaction (rare).\nBenefits discussed: improved chance of recovery without disability; earlier treatment provides greater benefit.\nAlternatives discussed: no thrombolytic treatment (associated with higher risk of disability).\nConsent: ${telestrokeNote.patientFamilyConsent ? 'Patient/family consent obtained' : telestrokeNote.presumedConsent ? 'Presumed consent — treatment in best interest' : '***'}\n\nTRANSFER DOCUMENTATION:\nPatient being transferred to comprehensive stroke center for ${telestrokeNote.evtRecommended ? 'mechanical thrombectomy evaluation and ' : ''}higher level of care.\nTransfer rationale: ${telestrokeNote.transferRationale || '***'}\nTransfer consent: ${(telestrokeNote.consentKit || {}).transferConsentDiscussed ? 'Discussed with patient/family' : 'Pending discussion'}`;
                                   navigator.clipboard.writeText(transferDoc);
                                   setCopiedText('transfer-consent'); setTimeout(() => setCopiedText(''), 2000);
                                 }}
@@ -12967,7 +13044,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             {/* TNK-Only Consent Doc Copy (when TNK but no EVT/transfer) */}
                             {telestrokeNote.tnkRecommended && telestrokeNote.tnkConsentDiscussed && !telestrokeNote.evtRecommended && !telestrokeNote.transferAccepted && (
                               <button onClick={() => {
-                                const tnkDoc = `TNK CONSENT DOCUMENTATION:\nTenecteplase was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${telestrokeNote.nihss || nihssScore || '***'}).\nRisks discussed: symptomatic intracranial hemorrhage (up to 4%), allergic reaction (rare).\nBenefits discussed: improved chance of recovery without disability; earlier treatment provides greater benefit.\nAlternatives discussed: no thrombolytic treatment (associated with higher risk of disability).\nConsent: ${telestrokeNote.patientFamilyConsent ? 'Patient/family consent obtained' : telestrokeNote.presumedConsent ? 'Presumed consent — treatment in best interest' : '***'}`;
+                                const tnkDoc = `TNK CONSENT DOCUMENTATION:\nTenecteplase was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${telestrokeNote.nihss || nihssScore || '***'}).\nTreatment window: within 4.5 hours of LKW (or mismatch imaging criteria for extended window).\nRisks discussed: symptomatic intracranial hemorrhage (up to 4%), allergic reaction (rare).\nBenefits discussed: improved chance of recovery without disability; earlier treatment provides greater benefit.\nAlternatives discussed: no thrombolytic treatment (associated with higher risk of disability).\nConsent: ${telestrokeNote.patientFamilyConsent ? 'Patient/family consent obtained' : telestrokeNote.presumedConsent ? 'Presumed consent — treatment in best interest' : '***'}`;
                                 navigator.clipboard.writeText(tnkDoc);
                                 setCopiedText('tnk-consent'); setTimeout(() => setCopiedText(''), 2000);
                               }}
@@ -16904,6 +16981,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li>• Admit to ICU</li>
                                 <li>• q1hour neurochecks and VS monitoring</li>
                                 <li>• NO antithrombotics/anticoagulants for 24 hour after IV-tPA</li>
+                                <li>• Avoid IV aspirin within 90 minutes of IVT start</li>
                                 <li>• Maintain BP&lt;180/105 for 24 hours after IV-tPA</li>
                                 <li>• HCT 24 hours post-tPA administration</li>
                                 <li>• MRI Brain with diffusion weighted imaging</li>
@@ -17807,6 +17885,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <li><strong>4F-PCC:</strong> preferred over FFP for INR &gt;=2.0 (Class I, LOE B-R).</li>
                             <li><strong>Vitamin K:</strong> IV after PCC to prevent INR rebound (Class I, LOE C-LD).</li>
                             <li><strong>INR 1.3-1.9:</strong> PCC may be reasonable (Class IIb, LOE C-LD).</li>
+                            <li><strong>Dosing:</strong> 4F-PCC 25-50 IU/kg (weight/INR-based) + vitamin K 10 mg IV.</li>
+                            <li><strong>Recheck INR:</strong> 30-60 min after PCC; repeat PCC if needed.</li>
                           </ul>
                         </div>
 
@@ -17819,6 +17899,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <p className="text-sm text-gray-600 mb-2">Apixaban, Rivaroxaban, Edoxaban</p>
                             <ul className="text-sm space-y-1">
                               <li><strong>Andexanet alfa:</strong> reasonable for reversal (Class IIa, LOE B-NR).</li>
+                              <li><strong>If unavailable:</strong> 4F-PCC or aPCC 50 IU/kg may be considered (Class IIb, LOE B-NR).</li>
+                              <li><strong>Activated charcoal:</strong> if ingestion &lt;2 hours.</li>
                             </ul>
                           </div>
 
@@ -17855,16 +17937,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       </div>
 
                       {/* Antiplatelet-Associated ICH */}
-                      <div className="mb-6">
-                        <h3 className="text-lg font-semibold text-red-700 mb-4">Antiplatelet-Associated ICH</h3>
-                        <div className="bg-white p-4 rounded border">
-                          <ul className="text-sm space-y-1">
-                            <li>Aspirin with emergent neurosurgery: platelet transfusion might be considered (Class IIb, LOE C-LD).</li>
-                            <li>Aspirin without planned surgery: platelet transfusions are potentially harmful and should not be given (Class III, LOE B-R).</li>
-                            <li>Desmopressin with or without platelets has uncertain benefit (Class IIb, LOE C-LD).</li>
-                          </ul>
+                        <div className="mb-6">
+                          <h3 className="text-lg font-semibold text-red-700 mb-4">Antiplatelet-Associated ICH</h3>
+                          <div className="bg-white p-4 rounded border">
+                            <ul className="text-sm space-y-1">
+                              <li>Aspirin with emergent neurosurgery: platelet transfusion might be considered (Class IIb, LOE C-LD).</li>
+                              <li>Aspirin without planned surgery: platelet transfusions are potentially harmful and should not be given (Class III, LOE B-R).</li>
+                              <li>Desmopressin 0.3 mcg/kg IV once may be considered; benefit uncertain (Class IIb, LOE C-LD).</li>
+                            </ul>
+                          </div>
                         </div>
-                      </div>
 
                       {/* Hematoma Expansion Prevention */}
                       <div className="mb-6">
@@ -18137,6 +18219,21 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           })()}
                         </div>
 
+                        <div className="bg-white border border-blue-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-blue-800 mb-2">Mobile Stroke Units (MSU)</h3>
+                          <p className="text-sm text-gray-700">Use MSUs where available for rapid stroke identification and IV thrombolysis delivery. MSUs reduce onset-to-treatment time and improve outcomes (Class I, LOE A).</p>
+                        </div>
+
+                        <div className="bg-white border border-blue-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-blue-800 mb-2">Pediatric Reperfusion (28 days–18 years)</h3>
+                          <ul className="text-sm space-y-1 text-gray-700">
+                            <li>• MRI is preferred for diagnostic imaging when feasible.</li>
+                            <li>• IV thrombolysis may be considered within 4.5h in select children at experienced centers (Class IIb).</li>
+                            <li>• EVT for LVO is reasonable for age ≥6 years (Class IIa).</li>
+                            <li>• EVT may be considered for age 28 days–6 years with experienced neurointerventionalist (Class IIb).</li>
+                          </ul>
+                        </div>
+
                         {/* DOAC Start Planner */}
                         <div className="bg-white border border-blue-200 rounded-lg p-4">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
@@ -18262,8 +18359,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <ul className="text-sm space-y-1">
                                 <li><strong>Ischemic stroke:</strong> SBP &lt;220, DBP &lt;120</li>
                                 <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
-                                <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105</li>
-                                <li><strong>After thrombectomy:</strong> SBP &lt;180, DBP &lt;105</li>
+                                <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105 (avoid SBP &lt;140 — no benefit)</li>
+                                <li><strong>After thrombectomy:</strong> SBP &lt;180, DBP &lt;105 (avoid SBP &lt;140 — harmful)</li>
                                 <li><strong>ICH:</strong> SBP target 140, maintain 130-150 (avoid &lt;130)</li>
                               </ul>
                             </div>
@@ -18278,6 +18375,17 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </ul>
                             </div>
                           </div>
+                        </div>
+
+                        <div className="bg-sky-50 border border-sky-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-sky-800 mb-2">Normobaric Oxygen (NBO) Before EVT</h3>
+                          <p className="text-sm text-gray-700 mb-1">
+                            In AIS within 6h with anterior LVO, NIHSS 10-20, and ASPECTS ≥6, NBO may be reasonable before EVT.
+                          </p>
+                          <ul className="text-sm space-y-1 text-gray-700">
+                            <li>• 100% O₂ at 10 L/min via non-rebreather for 4 hours (or FiO₂ 1.0 if intubated)</li>
+                            <li>• Class IIb, LOE B-R (OPENS-2)</li>
+                          </ul>
                         </div>
 
                         {/* Nursing Flowsheet Generator */}
@@ -18360,9 +18468,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <div className="bg-white p-3 rounded border">
                               <h4 className="font-semibold mb-2">Reversal</h4>
                               <ul className="text-sm space-y-1">
-                                <li><strong>Cryoprecipitate:</strong> 10 units IV</li>
-                                <li><strong>Platelets:</strong> 6 units IV</li>
-                                <li><strong>TXA:</strong> 1g IV over 10 min</li>
+                                <li><strong>Cryoprecipitate:</strong> 10 units IV (target fibrinogen ≥150-200 mg/dL)</li>
+                                <li><strong>TXA:</strong> 1g IV over 10 min (or aminocaproic acid if TXA unavailable)</li>
+                                <li><strong>Platelets:</strong> only if platelets &lt;100K or emergent neurosurgery planned</li>
                               </ul>
                             </div>
                           </div>
@@ -18398,15 +18506,25 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         {/* Antiplatelet Loading Protocol */}
                         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-green-800 mb-3">Antiplatelet Loading Protocol</h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-green-700 mb-2">Minor Stroke / TIA (NIHSS &le; 3)</h4>
+                              <h4 className="font-semibold text-green-700 mb-2">Minor Stroke / High-Risk TIA</h4>
                               <ul className="text-sm space-y-1">
                                 <li><strong>DAPT x 21 days:</strong></li>
                                 <li>• ASA 325 mg load → 81 mg daily</li>
                                 <li>• Clopidogrel 300 mg load → 75 mg daily</li>
+                                <li>• Start within 24h (NIHSS ≤3 or ABCD2 ≥4)</li>
                                 <li>• Then single antiplatelet after 21 days</li>
-                                <li className="text-gray-500 italic text-xs mt-1">Class I, LOE A (CHANCE/POINT) — AHA/ASA 2021</li>
+                                <li className="text-gray-500 italic text-xs mt-1">Class I, LOE A (CHANCE/POINT) — AHA/ASA 2026</li>
+                              </ul>
+                            </div>
+                            <div className="bg-white p-3 rounded border">
+                              <h4 className="font-semibold text-green-700 mb-2">NIHSS 4-5 or 24-72h Window</h4>
+                              <ul className="text-sm space-y-1">
+                                <li><strong>DAPT is reasonable:</strong></li>
+                                <li>• Start within 24-72h if NIHSS 4-5 or delayed presentation</li>
+                                <li>• DAPT x 21 days → then single antiplatelet</li>
+                                <li className="text-gray-500 italic text-xs mt-1">Class IIa, LOE B-R (INSPIRES)</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border">
@@ -18415,6 +18533,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li><strong>Single antiplatelet:</strong></li>
                                 <li>• ASA 325 mg within 24-48h of onset</li>
                                 <li>• If post-TNK: delay ASA 24 hours</li>
+                                <li>• Avoid IV aspirin within 90 minutes of IVT start</li>
                                 <li>• If AF: transition to DOAC per CATALYST timing</li>
                                 <li className="text-gray-500 italic text-xs mt-1">Class I, LOE A — AHA/ASA 2021</li>
                               </ul>
@@ -18491,17 +18610,19 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <div className="bg-white p-3 rounded border">
                               <h4 className="font-semibold text-blue-700 mb-2">Early Window (0-6h)</h4>
                               <ul className="text-sm space-y-1">
-                                <li>• ASPECTS 0-5: EVT recommended</li>
-                                <li>• ICA/M1 occlusion; pre-stroke mRS 0-1; age 18-80</li>
+                                <li>• ASPECTS 3-5: EVT recommended (Class I)</li>
+                                <li>• ASPECTS 0-2: EVT reasonable in select patients without mass effect (Class IIa)</li>
+                                <li>• ICA/M1 occlusion; pre-stroke mRS 0-1; age 18-80; NIHSS ≥6</li>
                                 <li>• Higher sICH risk; discuss goals of care</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border">
                               <h4 className="font-semibold text-blue-700 mb-2">Late Window (6-24h)</h4>
                               <ul className="text-sm space-y-1">
-                                <li>• ASPECTS 3-5: EVT recommended</li>
+                                <li>• ASPECTS 3-5: EVT recommended (Class I)</li>
                                 <li>• ASPECTS 0-2: Benefit uncertain (Class IIb)</li>
                                 <li>• CTP core 50-100 mL supports EVT (SELECT2/ANGEL-ASPECT)</li>
+                                <li>• Eligibility is not limited to strict DAWN/DEFUSE mismatch criteria</li>
                               </ul>
                             </div>
                           </div>
