@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    @apply tracking-tight;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+
+  ::selection {
+    background: #dbeafe;
+    color: #0f172a;
+  }
+}
+
+@layer components {
+  .app-shell {
+    @apply bg-white/80 border border-slate-200 rounded-2xl shadow-sm;
+  }
+
+  .app-header {
+    @apply border-b border-slate-200/60 pb-3;
+  }
+
+  details > summary {
+    list-style: none;
+  }
+
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+}
