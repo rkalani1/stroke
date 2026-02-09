@@ -5496,6 +5496,7 @@ Clinician Name`;
             return {
               weightKg: weight,
               calculatedDose: finalDose.toFixed(1),
+              volume: `${(finalDose / 5).toFixed(1)} mL`,
               isMaxDose: rawDose >= 25,
               doseTable
             };
