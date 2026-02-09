@@ -42,3 +42,49 @@
     display: none;
   }
 }
+
+/* Print styles */
+@media print {
+  .app-header,
+  .app-nav,
+  nav[role="tablist"],
+  button,
+  .sticky,
+  [role="alert"] {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    font-size: 11pt;
+  }
+
+  .app-shell {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: white !important;
+    padding: 0 !important;
+  }
+
+  details {
+    display: block !important;
+  }
+
+  details[open] > summary {
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .shadow-sm,
+  .shadow-md,
+  .shadow-lg {
+    box-shadow: none !important;
+  }
+
+  @page {
+    margin: 1.5cm;
+  }
+}

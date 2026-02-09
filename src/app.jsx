@@ -188,6 +188,147 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         const GlobalPatientContext = React.createContext(null);
         const useGlobalPatient = () => useContext(GlobalPatientContext);
 
+        // ============================================
+        // TOAST NOTIFICATION SYSTEM
+        // ============================================
+        let toastIdCounter = 0;
+        const ToastContext = React.createContext(null);
+        const useToast = () => useContext(ToastContext);
+
+        const ToastContainer = ({ toasts, removeToast }) => {
+          return React.createElement('div', {
+            className: 'fixed bottom-20 left-1/2 -translate-x-1/2 z-[100] flex flex-col-reverse gap-2 pointer-events-none max-w-md w-full px-4',
+            'aria-live': 'polite'
+          }, toasts.map(t => React.createElement('div', {
+            key: t.id,
+            className: `pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-xl shadow-lg border text-sm font-medium transition-all animate-toast-in ${
+              t.type === 'success' ? 'bg-emerald-600 text-white border-emerald-700' :
+              t.type === 'error' ? 'bg-red-600 text-white border-red-700' :
+              t.type === 'warning' ? 'bg-amber-500 text-white border-amber-600' :
+              'bg-slate-800 text-white border-slate-700'
+            }`,
+            role: 'status'
+          },
+            React.createElement('span', { className: 'flex-1' }, t.message),
+            React.createElement('button', {
+              onClick: () => removeToast(t.id),
+              className: 'ml-2 opacity-70 hover:opacity-100 transition-opacity text-white',
+              'aria-label': 'Dismiss'
+            }, '\u00D7')
+          )));
+        };
+
+        // ============================================
+        // CONFIRMATION MODAL (replaces confirm/prompt)
+        // ============================================
+        const ConfirmModal = ({ config, onClose }) => {
+          const [inputValue, setInputValue] = React.useState(config.defaultValue || '');
+          if (!config) return null;
+          return React.createElement('div', { className: 'fixed inset-0 z-[200] flex items-center justify-center p-4' },
+            React.createElement('div', { className: 'fixed inset-0 bg-black/40', onClick: () => { if (!config.required) onClose(null); } }),
+            React.createElement('div', { className: 'relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4' },
+              React.createElement('h3', { className: 'text-lg font-bold text-slate-900' }, config.title || 'Confirm'),
+              config.message && React.createElement('p', { className: 'text-sm text-slate-600' }, config.message),
+              config.input && React.createElement('div', { className: 'space-y-1' },
+                config.inputLabel && React.createElement('label', { className: 'block text-xs font-medium text-slate-700' }, config.inputLabel),
+                config.inputType === 'textarea'
+                  ? React.createElement('textarea', {
+                      value: inputValue,
+                      onChange: (e) => setInputValue(e.target.value),
+                      rows: 3,
+                      className: 'w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none',
+                      placeholder: config.placeholder || '',
+                      autoFocus: true
+                    })
+                  : React.createElement('input', {
+                      type: 'text',
+                      value: inputValue,
+                      onChange: (e) => setInputValue(e.target.value),
+                      className: 'w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none',
+                      placeholder: config.placeholder || '',
+                      autoFocus: true
+                    })
+              ),
+              React.createElement('div', { className: 'flex justify-end gap-2' },
+                React.createElement('button', {
+                  onClick: () => onClose(null),
+                  className: 'px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors'
+                }, 'Cancel'),
+                React.createElement('button', {
+                  onClick: () => onClose(config.input ? inputValue : true),
+                  className: `px-4 py-2 text-sm font-medium text-white rounded-lg transition-colors ${
+                    config.danger ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'
+                  }`
+                }, config.confirmLabel || 'Confirm')
+              )
+            )
+          );
+        };
+
+        // ============================================
+        // ERROR BOUNDARY
+        // ============================================
+        class ErrorBoundary extends React.Component {
+          constructor(props) {
+            super(props);
+            this.state = { hasError: false, error: null };
+          }
+          static getDerivedStateFromError(error) {
+            return { hasError: true, error };
+          }
+          componentDidCatch(error, info) {
+            console.error('ErrorBoundary caught:', error, info);
+          }
+          render() {
+            if (this.state.hasError) {
+              return React.createElement('div', {
+                className: 'p-4 bg-red-50 border border-red-200 rounded-xl text-center space-y-3'
+              },
+                React.createElement('p', { className: 'text-red-800 font-semibold' }, 'Something went wrong in this section.'),
+                React.createElement('p', { className: 'text-sm text-red-600' }, this.state.error?.message || ''),
+                React.createElement('button', {
+                  onClick: () => this.setState({ hasError: false, error: null }),
+                  className: 'px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors'
+                }, 'Reset Section')
+              );
+            }
+            return this.props.children;
+          }
+        }
+
+        // ============================================
+        // ENCOUNTER TEMPLATES
+        // ============================================
+        const ENCOUNTER_TEMPLATES = [
+          { id: 'blank', label: 'Blank Encounter', icon: 'file-plus', description: 'Start fresh', defaults: {} },
+          { id: 'acute-lvo', label: 'Acute LVO', icon: 'zap', description: 'Large vessel occlusion workup', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'Ischemic stroke - LVO' } },
+          { id: 'tia', label: 'TIA Workup', icon: 'activity', description: 'Transient ischemic attack evaluation', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'TIA' } },
+          { id: 'wakeup', label: 'Wake-up Stroke', icon: 'moon', description: 'Unknown onset / wake-up presentation', defaults: { diagnosisCategory: 'ischemic', lkwUnknown: true } },
+          { id: 'ich-anticoag', label: 'ICH on Anticoagulation', icon: 'alert-triangle', description: 'Hemorrhage with reversal needed', defaults: { diagnosisCategory: 'ich', diagnosis: 'Intracerebral hemorrhage' } }
+        ];
+
+        // ============================================
+        // CLINICAL PEARLS
+        // ============================================
+        const CLINICAL_PEARLS = {
+          tnk: 'TNK 0.25 mg/kg is non-inferior to alteplase with lower sICH rates and simpler administration (AcT trial, 2022).',
+          evt: 'EVT benefit is time-dependent: NNT=3 at 3h, NNT=6 at 6h, NNT=10 at 12h (HERMES meta-analysis).',
+          ich_bp: 'INTERACT3: Intensive BP lowering + bundle of care improves functional outcomes in ICH (Lancet 2023).',
+          doac_timing: 'CATALYST/ELAN: Early DOAC restart (2-6 days) after mild-moderate ischemic stroke is safe and may reduce recurrence.',
+          aspects: 'ASPECTS 6-10: Standard EVT eligibility. ASPECTS 3-5: Consider EVT for mRS 0-1 patients with anterior LVO (SELECT2, ANGEL-ASPECT).',
+          pcc: 'Fixed-dose PCC (2000 units) for warfarin reversal in ICH — check INR at 15-30 min post-infusion.',
+          wakeup: 'DWI-FLAIR mismatch suggests onset <4.5h; CTP mismatch allows treatment up to 9h from midpoint of sleep (WAKE-UP, EXTEND).'
+        };
+
+        // ============================================
+        // CHANGELOG
+        // ============================================
+        const CHANGELOG = [
+          { version: '2.5', date: '2025-06', items: ['Updated ICH algorithms to UW Medicine pocket cards (Rev 6/2025)', 'Replaced EVT mermaid flowcharts with scannable tables', 'Added warfarin/DOAC reversal step-cards', 'Added post-thrombolytic ICH protocol', 'Added angioedema management', 'Added contrast allergy protocol', 'Added BP management quick reference'] },
+          { version: '2.6', date: '2025-07', items: ['Simplified encounter to Video Telestroke / Phone Consult', 'Removed inpatient/clinic contexts and quick/full mode toggle'] },
+          { version: '3.0', date: '2025-08', items: ['Toast notification system replacing inline alerts', 'Replaced all confirm/prompt dialogs with styled modals', 'Persistent timer visible across all tabs', 'Encounter templates for common presentations', 'Encounter history with shift handoff support', 'Focus mode for active encounters', 'Calculator drawer with inline scoring', 'Section completion indicators', 'Keyboard shortcuts (Ctrl+Shift+C, Ctrl+K, etc.)', 'Improved mobile touch targets', 'Visual timeline for stroke events', 'Auto-filtering trials by patient characteristics', 'References search and filtering', 'Error boundaries for graceful failure recovery', 'Service worker for offline support'] }
+        ];
+
         const parseBloodPressure = (bpString) => {
           if (!bpString) return null;
           const match = bpString.match(/(\d{2,3})\s*\/\s*(\d{2,3})/);
@@ -583,7 +724,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           : DEFAULT_TTL_HOURS;
         const INITIAL_STORAGE_EXPIRED = applyStorageExpiration(initialTtlHours);
 
-        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'calculators', 'references'];
+        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators', 'references'];
         const LEGACY_MANAGEMENT_TABS = {
           ich: 'ich',
           protocols: 'ischemic',
@@ -929,6 +1070,11 @@ Clinician Name`;
             sahAneurysmSecured: false,
             sahNeurosurgeryConsulted: false,
             sahSeizureProphylaxis: false,
+            fisherGrade: '',
+            // ASPECTS regions
+            aspectsRegions: { C: false, L: false, IC: false, I: false, M1: false, M2: false, M3: false, M4: false, M5: false, M6: false },
+            pcAspectsRegions: { pons: false, midbrain: false, cerebellumL: false, cerebellumR: false, pcaL: false, pcaR: false, thalamusL: false, thalamusR: false },
+            ticiScore: '',
             // Phase 4: CVT fields
             cvtAnticoagStarted: false,
             cvtAnticoagType: '',
@@ -1466,6 +1612,60 @@ Clinician Name`;
           // Emergency Contacts FAB state
           const [fabExpanded, setFabExpanded] = useState(false);
 
+          // Toast notification system
+          const [toasts, setToasts] = useState([]);
+          const addToast = React.useCallback((message, type = 'info', duration = 3000) => {
+            const id = ++toastIdCounter;
+            setToasts(prev => [...prev.slice(-4), { id, message, type }]);
+            if (duration > 0) {
+              setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), duration);
+            }
+            return id;
+          }, []);
+          const removeToast = React.useCallback((id) => {
+            setToasts(prev => prev.filter(t => t.id !== id));
+          }, []);
+
+          // Confirmation modal state (replaces confirm/prompt)
+          const [confirmConfig, setConfirmConfig] = useState(null);
+          const confirmResolveRef = useRef(null);
+          const showConfirm = React.useCallback((config) => {
+            return new Promise((resolve) => {
+              confirmResolveRef.current = resolve;
+              setConfirmConfig(config);
+            });
+          }, []);
+          const handleConfirmClose = React.useCallback((result) => {
+            if (confirmResolveRef.current) {
+              confirmResolveRef.current(result);
+              confirmResolveRef.current = null;
+            }
+            setConfirmConfig(null);
+          }, []);
+
+          // Focus mode
+          const [focusMode, setFocusMode] = useState(false);
+
+          // Online/offline status
+          const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
+
+          // Encounter history
+          const [encounterHistory, setEncounterHistory] = useState(() => {
+            try {
+              const stored = localStorage.getItem('strokeApp:encounterHistory');
+              return stored ? JSON.parse(stored) : [];
+            } catch { return []; }
+          });
+
+          // Changelog modal
+          const [showChangelog, setShowChangelog] = useState(false);
+
+          // References search
+          const [referencesSearchQuery, setReferencesSearchQuery] = useState('');
+
+          // Inline prompt state (for transfer reason, board name, etc.)
+          const [inlinePrompt, setInlinePrompt] = useState(null);
+
           const [selectedPackId, setSelectedPackId] = useState(appData.encounter.clipboardPacks?.[0]?.id || 'telestroke-consult');
 
 
@@ -1477,6 +1677,7 @@ Clinician Name`;
           // Ref and state for Part 6 (Treatment Decision) scroll visibility
           const treatmentDecisionRef = useRef(null);
           const backupImportRef = useRef(null);
+          const searchContainerRef = useRef(null);
           // mermaidInitializedRef removed — no more mermaid diagrams
           const decisionStateRef = useRef({
             tnkRecommended: false,
@@ -1774,6 +1975,44 @@ Clinician Name`;
             protocolDetailRef.current = protocolDetailMap;
           }, [protocolDetailMap]);
 
+          // Online/offline detection
+          useEffect(() => {
+            const goOnline = () => setIsOnline(true);
+            const goOffline = () => setIsOnline(false);
+            window.addEventListener('online', goOnline);
+            window.addEventListener('offline', goOffline);
+            return () => {
+              window.removeEventListener('online', goOnline);
+              window.removeEventListener('offline', goOffline);
+            };
+          }, []);
+
+          // Keyboard shortcuts
+          useEffect(() => {
+            const handler = (e) => {
+              // Ctrl+1-4 for tab switching
+              if (e.ctrlKey && !e.shiftKey && !e.altKey) {
+                const tabMap = { '1': 'encounter', '2': 'management', '3': 'note', '4': 'communication' };
+                if (tabMap[e.key]) {
+                  e.preventDefault();
+                  setActiveTab(tabMap[e.key]);
+                }
+              }
+              // Escape to close modals
+              if (e.key === 'Escape') {
+                if (protocolModal) setProtocolModal(null);
+                if (showChangelog) setShowChangelog(false);
+                if (showKeyboardHelp) setShowKeyboardHelp(false);
+              }
+              // ? to show keyboard help (when not in input)
+              if (e.key === '?' && !e.ctrlKey && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) {
+                e.preventDefault();
+                setShowKeyboardHelp(prev => !prev);
+              }
+            };
+            window.addEventListener('keydown', handler);
+            return () => window.removeEventListener('keydown', handler);
+          }, [protocolModal, showChangelog]);
 
           // Trials data
           const trialsData = {
@@ -6079,8 +6318,15 @@ Clinician Name`;
             }));
           };
 
-          const addShiftBoard = () => {
-            const name = prompt('Board name:', 'New Board');
+          const addShiftBoard = async () => {
+            const name = await showConfirm({
+              title: 'New Board',
+              input: true,
+              inputLabel: 'Board name',
+              placeholder: 'New Board',
+              defaultValue: 'New Board',
+              confirmLabel: 'Create'
+            });
             if (!name) return;
             const boardId = generateId('board');
             updateAppData((prev) => ({
@@ -6088,7 +6334,7 @@ Clinician Name`;
               shiftBoards: [
                 {
                   id: boardId,
-                  name: name.trim() || 'New Board',
+                  name: String(name).trim() || 'New Board',
                   createdAt: toIsoString(),
                   updatedAt: toIsoString(),
                   archived: false,
@@ -6100,12 +6346,18 @@ Clinician Name`;
             }));
           };
 
-          const renameShiftBoard = (boardId) => {
+          const renameShiftBoard = async (boardId) => {
             const board = shiftBoards.find((item) => item.id === boardId);
             if (!board) return;
-            const name = prompt('Rename board:', board.name);
+            const name = await showConfirm({
+              title: 'Rename Board',
+              input: true,
+              inputLabel: 'Board name',
+              defaultValue: board.name,
+              confirmLabel: 'Rename'
+            });
             if (!name) return;
-            updateShiftBoard(boardId, (current) => ({ ...current, name: name.trim() || current.name }));
+            updateShiftBoard(boardId, (current) => ({ ...current, name: String(name).trim() || current.name }));
           };
 
           const archiveShiftBoard = (boardId, archived = true) => {
@@ -6167,15 +6419,21 @@ Clinician Name`;
             }));
           };
 
-          const promptAddShiftTask = () => {
+          const promptAddShiftTask = async () => {
             if (!activeShiftBoard || !(activeShiftBoard.patients || []).length) {
               showNotice('Add a patient before creating a task.', 'warning');
               return;
             }
-            const taskText = prompt('Task description:');
+            const taskText = await showConfirm({
+              title: 'New Task',
+              input: true,
+              inputLabel: 'Task description',
+              placeholder: 'e.g., Check INR at 6h',
+              confirmLabel: 'Add Task'
+            });
             if (!taskText) return;
             const targetPatient = activeShiftBoard.patients[0];
-            addShiftTask(targetPatient.id, taskText);
+            addShiftTask(targetPatient.id, String(taskText));
           };
 
           const updateShiftTask = (patientId, taskId, updates) => {
@@ -6255,6 +6513,104 @@ Clinician Name`;
             return text.trim();
           };
 
+          // ============================================
+          // ENCOUNTER HISTORY
+          // ============================================
+          const saveEncounterToHistory = React.useCallback(() => {
+            if (!telestrokeNote.age && !nihssScore && !telestrokeNote.diagnosis) return;
+            const snapshot = {
+              id: generateId('enc'),
+              timestamp: Date.now(),
+              age: telestrokeNote.age,
+              sex: telestrokeNote.sex,
+              diagnosis: telestrokeNote.diagnosis || 'No diagnosis',
+              nihss: telestrokeNote.nihss || nihssScore || 0,
+              tnk: telestrokeNote.tnkRecommended ? 'Yes' : 'No',
+              evt: telestrokeNote.evtRecommended ? 'Yes' : 'No',
+              consultationType
+            };
+            setEncounterHistory(prev => {
+              const next = [snapshot, ...prev].slice(0, 20);
+              try { localStorage.setItem('strokeApp:encounterHistory', JSON.stringify(next)); } catch {}
+              return next;
+            });
+          }, [telestrokeNote, nihssScore, consultationType]);
+
+          // ============================================
+          // SECTION COMPLETION TRACKING
+          // ============================================
+          const sectionCompletion = useMemo(() => {
+            const triage = [telestrokeNote.age, telestrokeNote.sex, lkwTime, telestrokeNote.nihss || nihssScore].filter(Boolean).length;
+            const decision = [telestrokeNote.ctResults, telestrokeNote.ctaResults, telestrokeNote.diagnosis].filter(Boolean).length;
+            const orders = [telestrokeNote.tnkRecommended !== undefined || telestrokeNote.evtRecommended !== undefined].filter(Boolean).length;
+            const docs = [telestrokeNote.rationale].filter(Boolean).length;
+            return {
+              triage: { done: triage, total: 4, complete: triage >= 4 },
+              decision: { done: decision, total: 3, complete: decision >= 3 },
+              orders: { done: orders, total: 1, complete: orders >= 1 },
+              docs: { done: docs, total: 1, complete: docs >= 1 }
+            };
+          }, [telestrokeNote, nihssScore, lkwTime]);
+
+          // ============================================
+          // KEYBOARD SHORTCUTS
+          // ============================================
+          useEffect(() => {
+            const handleKeyDown = (e) => {
+              // Ctrl+Shift+C — Copy note
+              if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+                e.preventDefault();
+                const note = generateTelestrokeNote();
+                if (note) {
+                  navigator.clipboard.writeText(note);
+                  addToast('Consult note copied', 'success');
+                }
+                return;
+              }
+              // Ctrl+K — Toggle calculators
+              if (e.ctrlKey && e.key === 'k') {
+                e.preventDefault();
+                setCalcDrawerOpen(prev => !prev);
+                return;
+              }
+              // Escape — Close modals
+              if (e.key === 'Escape') {
+                if (calcDrawerOpen) { setCalcDrawerOpen(false); return; }
+                if (protocolModal) { setProtocolModal(null); return; }
+                if (confirmConfig) { handleConfirmClose(null); return; }
+                if (focusMode) { setFocusMode(false); return; }
+                return;
+              }
+              // Ctrl+F — Toggle focus mode
+              if (e.ctrlKey && e.shiftKey && e.key === 'F') {
+                e.preventDefault();
+                setFocusMode(prev => !prev);
+                return;
+              }
+              // 1-4 keys (when not in input) — Switch encounter phases
+              if (!e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey) {
+                const tagName = e.target.tagName.toLowerCase();
+                if (tagName === 'input' || tagName === 'textarea' || tagName === 'select' || e.target.isContentEditable) return;
+                const phaseMap = { '1': 'phase-triage', '2': 'phase-decision', '3': 'phase-management', '4': 'phase-documentation' };
+                if (phaseMap[e.key] && activeTab === 'encounter') {
+                  e.preventDefault();
+                  setEncounterPhase(phaseMap[e.key]);
+                  scrollToSection(phaseMap[e.key]);
+                  return;
+                }
+                // M key — Mute/unmute timer alerts
+                if (e.key === 'm' || e.key === 'M') {
+                  if (activeTab === 'encounter') {
+                    toggleAlertMute();
+                    return;
+                  }
+                }
+              }
+            };
+            document.addEventListener('keydown', handleKeyDown);
+            return () => document.removeEventListener('keydown', handleKeyDown);
+          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode]);
+
 
           // Persist shift patients to localStorage
           React.useEffect(() => {
@@ -6283,6 +6639,7 @@ Clinician Name`;
               clearTimeout(noticeTimeoutRef.current);
             }
             setNotice({ message, type });
+            addToast(message, type, timeoutMs);
             if (!persist) {
               noticeTimeoutRef.current = setTimeout(() => {
                 setNotice(null);
@@ -6597,7 +6954,8 @@ Clinician Name`;
               'chiefComplaint', 'doorTime', 'needleTime', 'admitLocation', 'plateletsCoags',
               'wakeUpStrokeWorkflow', 'recommendationsText', 'consentKit',
               // SAH/CVT/TIA pathway fields
-              'sahGrade', 'sahGradeScale', 'sahBPManaged', 'sahNimodipine', 'sahEVDPlaced', 'sahAneurysmSecured', 'sahNeurosurgeryConsulted', 'sahSeizureProphylaxis',
+              'sahGrade', 'sahGradeScale', 'sahBPManaged', 'sahNimodipine', 'sahEVDPlaced', 'sahAneurysmSecured', 'sahNeurosurgeryConsulted', 'sahSeizureProphylaxis', 'fisherGrade',
+              'aspectsRegions', 'pcAspectsRegions', 'ticiScore',
               'cvtAnticoagStarted', 'cvtAnticoagType', 'cvtIcpManaged', 'cvtSeizureManaged', 'cvtHematologyConsulted',
               'tiaWorkup', 'tiaWorkupReviewed',
               // Clinical pathway nested objects
@@ -6671,6 +7029,7 @@ Clinician Name`;
             navigator.clipboard.writeText(text).then(() => {
               setCopiedText(label);
               setTimeout(() => setCopiedText(''), 2000);
+              addToast(`${label} copied to clipboard`, 'success');
             });
           };
 
@@ -6827,6 +7186,36 @@ Clinician Name`;
             return brief;
           };
 
+          // Generate Pulsara summary (shared, deduplicated)
+          const generatePulsaraSummary = () => {
+            const age = telestrokeNote.age || "***";
+            const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***';
+            const pmh = telestrokeNote.pmh || "no PMH";
+            const symptoms = telestrokeNote.symptoms || "***";
+            const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
+            const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
+            const nihss = telestrokeNote.nihss || nihssScore || "[score]";
+            const nihssDeficits = telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : "";
+            const ctResults = telestrokeNote.ctResults || "[CT findings]";
+            const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
+            const ctpResults = telestrokeNote.ctpResults || "N/A";
+            const aspectsStr = aspectsScore ? ` ASPECTS: ${aspectsScore}.` : "";
+            const vesselStr = (telestrokeNote.vesselOcclusion || []).length > 0 && !telestrokeNote.vesselOcclusion.includes('None')
+              ? ` Vessel occlusion: ${telestrokeNote.vesselOcclusion.join(', ')}.` : "";
+            const tnkStatus = telestrokeNote.diagnosisCategory === 'ich' ? "N/A (ICH)" : telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
+            const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
+            const rationale = telestrokeNote.rationale || "[rationale]";
+            const site = telestrokeNote.callingSite ? `[${telestrokeNote.callingSite}] ` : '';
+            return `${site}${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr}${vesselStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale: ${rationale}.`;
+          };
+          const generatePulsaraPreview = () => {
+            const age = telestrokeNote.age || "***";
+            const nihss = telestrokeNote.nihss || nihssScore || "[score]";
+            const dx = telestrokeNote.diagnosis || '[Diagnosis]';
+            const site = telestrokeNote.callingSite || '';
+            return `${site ? `[${site}] ` : ''}${age}${telestrokeNote.sex || ''} NIHSS ${nihss} — ${dx}`;
+          };
+
           // Generate telestroke documentation note
           const generateTelestrokeNote = () => {
             const formatDate = (dateStr) => {
@@ -6911,6 +7300,123 @@ Clinician Name`;
 
             if (noteTemplate === 'followup') {
               return generateFollowUpBrief();
+            }
+
+            if (noteTemplate === 'procedure') {
+              let note = `EVT PROCEDURE NOTE\n${'='.repeat(40)}\n\n`;
+              note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}\n`;
+              note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}\n`;
+              note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n`;
+              note += `ASPECTS: ${aspectsScore != null ? aspectsScore + '/10' : 'N/A'}\n\n`;
+              note += `INDICATION:\n`;
+              note += `Acute ischemic stroke with large vessel occlusion (${(telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ') || '___'}).\n`;
+              note += `LKW: ${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}\n`;
+              if (telestrokeNote.tnkRecommended) note += `IV TNK administered at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+              note += `\nPROCEDURE DETAILS:\n`;
+              note += `Procedure: Mechanical thrombectomy\n`;
+              note += `Access: ___ (R/L femoral, R/L radial)\n`;
+              note += `Guide catheter: ___\n`;
+              note += `Technique: ___ (aspiration, stent retriever, combined)\n`;
+              note += `Number of passes: ___\n`;
+              note += `Complications: ___ (none, perforation, dissection, distal embolization)\n`;
+              note += `Groin puncture time: ${telestrokeNote.punctureTime || '___'}\n`;
+              note += `Reperfusion time: ___\n`;
+              note += `mTICI score: ${telestrokeNote.ticiScore || '___'}\n\n`;
+              note += `POST-PROCEDURE:\n`;
+              note += `- BP target: SBP <180/105 for 24h\n`;
+              note += `- Neurovascular checks q15min x 2h, then q30min x 4h\n`;
+              note += `- Groin site checks q15min x 4h\n`;
+              note += `- Hold antiplatelets/anticoagulants x 24h\n`;
+              note += `- Repeat CT at 24h\n`;
+              note += `- Bedrest with HOB 30° x 6h post-sheath removal\n`;
+              return note;
+            }
+
+            if (noteTemplate === 'patient-ed') {
+              let note = `STROKE PATIENT EDUCATION\n${'='.repeat(40)}\n\n`;
+              note += `Dear Patient / Family,\n\n`;
+              note += `You have been diagnosed with: ${telestrokeNote.diagnosis || '___'}\n\n`;
+              note += `WHAT IS A STROKE?\n`;
+              note += `A stroke happens when blood flow to part of the brain is blocked (ischemic stroke) or when a blood vessel in the brain bursts (hemorrhagic stroke). Without blood flow, brain cells begin to die.\n\n`;
+              note += `WARNING SIGNS — BE FAST:\n`;
+              note += `B — Balance: Sudden loss of balance\n`;
+              note += `E — Eyes: Sudden vision changes\n`;
+              note += `F — Face: Face drooping on one side\n`;
+              note += `A — Arms: Arm weakness or numbness\n`;
+              note += `S — Speech: Slurred or difficulty speaking\n`;
+              note += `T — Time: Call 911 immediately!\n\n`;
+              note += `YOUR MEDICATIONS:\n`;
+              const sp = telestrokeNote.secondaryPrevention || {};
+              if (sp.antiplateletRegimen) note += `- Blood thinner: ${AP_LABELS_SHORT[sp.antiplateletRegimen] || sp.antiplateletRegimen} — Take as prescribed, do NOT skip doses\n`;
+              if (sp.statinDose) note += `- Cholesterol medication: ${sp.statinDose.replace(/-/g, ' ')} — Take daily\n`;
+              if (sp.bpMeds) note += `- Blood pressure medication: ${sp.bpMeds}\n`;
+              note += `\nLIFESTYLE CHANGES:\n`;
+              note += `- Control blood pressure (target: ${sp.bpTarget || '<130/80'})\n`;
+              note += `- Take medications as prescribed\n`;
+              note += `- Exercise regularly (30 min/day, 5 days/week)\n`;
+              note += `- Eat a healthy diet (low salt, Mediterranean)\n`;
+              note += `- Stop smoking\n`;
+              note += `- Limit alcohol\n`;
+              note += `- Monitor blood sugar if diabetic\n\n`;
+              note += `WHEN TO CALL 911:\n`;
+              note += `- Any new stroke symptoms (BE FAST)\n`;
+              note += `- Severe headache\n`;
+              note += `- Seizures\n`;
+              note += `- Difficulty breathing\n\n`;
+              note += `FOLLOW-UP APPOINTMENTS:\n`;
+              note += `- Stroke clinic: 1-2 weeks\n`;
+              note += `- Primary care: 1 week\n`;
+              note += `- Rehabilitation therapy: as arranged\n`;
+              return note;
+            }
+
+            if (noteTemplate === 'discharge') {
+              let note = `STROKE DISCHARGE SUMMARY\n${'='.repeat(40)}\n\n`;
+              note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}\n`;
+              note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}\n`;
+              note += `Admission Date: ${formatDate(telestrokeNote.lkwDate) || '___'}\n`;
+              note += `Discharge Date: ___\n\n`;
+              note += `HOSPITAL COURSE:\n`;
+              note += `${telestrokeNote.symptoms || '___'}\n`;
+              note += `Presenting NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n`;
+              note += `Premorbid mRS: ${telestrokeNote.premorbidMRS || 'N/A'}\n\n`;
+              note += `IMAGING:\n`;
+              note += `- CT Head: ${telestrokeNote.ctResults || '___'}\n`;
+              note += `- CTA: ${telestrokeNote.ctaResults || '___'}\n`;
+              if (telestrokeNote.ctpResults) note += `- CTP: ${telestrokeNote.ctpResults}\n`;
+              note += '\n';
+              note += `ACUTE TREATMENT:\n`;
+              if (telestrokeNote.tnkRecommended) {
+                const dischDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
+                note += `- IV TNK ${dischDose ? dischDose.calculatedDose + ' mg' : ''} at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+              }
+              if (telestrokeNote.evtRecommended) note += `- Mechanical thrombectomy${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
+              if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
+              note += '\n';
+              note += `SECONDARY PREVENTION:\n`;
+              const dischSp = telestrokeNote.secondaryPrevention || {};
+              if (dischSp.antiplateletRegimen) note += `- Antithrombotic: ${AP_LABELS_SHORT[dischSp.antiplateletRegimen] || dischSp.antiplateletRegimen}\n`;
+              if (dischSp.statinDose) note += `- Statin: ${dischSp.statinDose.replace(/-/g, ' ')}\n`;
+              if (dischSp.bpTarget) note += `- BP Target: ${dischSp.bpTarget}\n`;
+              if (dischSp.bpMeds) note += `- BP Medications: ${dischSp.bpMeds}\n`;
+              const ct = telestrokeNote.cardiacWorkup || {};
+              if (ct.extendedMonitoringType) note += `- Cardiac monitoring: ${ct.extendedMonitoringType}\n`;
+              note += '\n';
+              note += `DISCHARGE NIHSS: ___\n`;
+              note += `DISCHARGE mRS: ___\n\n`;
+              note += `DISPOSITION: ${telestrokeNote.disposition || '___'}\n\n`;
+              note += `FOLLOW-UP:\n`;
+              note += `- Stroke clinic in 1-2 weeks\n`;
+              note += `- PCP follow-up in 1 week\n`;
+              if (ct.extendedMonitoringType) note += `- Cardiology follow-up for cardiac monitoring\n`;
+              note += '\n';
+              note += `PATIENT EDUCATION:\n`;
+              note += `- Stroke warning signs (BE-FAST)\n`;
+              note += `- Medication compliance\n`;
+              note += `- When to call 911\n`;
+              note += `- Driving restrictions per state law\n\n`;
+              note += `RECOMMENDATIONS:\n${telestrokeNote.recommendationsText || '___'}\n`;
+              return note;
             }
 
             // Default: 'consult' — use the editable template
@@ -8256,11 +8762,16 @@ Clinician Name`;
             setSaveStatus('saved');
           };
 
-          const clearCurrentCase = (options = {}) => {
+          const clearCurrentCase = async (options = {}) => {
             const { generateNewId = false } = options;
-            if (!confirm('Start a new case? Current inputs will be cleared. You can undo for 30 seconds.')) {
-              return;
-            }
+            const confirmed = await showConfirm({
+              title: 'Start New Case',
+              message: 'Current inputs will be cleared. You can undo for 30 seconds.',
+              confirmLabel: 'Clear Case',
+              danger: true
+            });
+            if (!confirmed) return;
+            saveEncounterToHistory();
             const snapshot = buildCaseSnapshot();
             resetCaseState();
             if (generateNewId) {
@@ -8289,17 +8800,26 @@ Clinician Name`;
           };
 
           // Reset all data - New Patient
-          const resetAllData = () => {
-            if (!confirm('Start new patient assessment? All current data will be cleared. This cannot be undone.')) {
-              return;
-            }
+          const resetAllData = async () => {
+            const confirmed = await showConfirm({
+              title: 'Reset All Data',
+              message: 'All current data will be cleared. This cannot be undone.',
+              confirmLabel: 'Reset Everything',
+              danger: true
+            });
+            if (!confirmed) return;
+            saveEncounterToHistory();
             resetCaseState();
           };
 
-          const handleClearLocalData = () => {
-            if (!confirm('This clears locally stored app data on this device.')) {
-              return;
-            }
+          const handleClearLocalData = async () => {
+            const confirmed = await showConfirm({
+              title: 'Clear Local Data',
+              message: 'This clears all locally stored app data on this device. This cannot be undone.',
+              confirmLabel: 'Clear All Data',
+              danger: true
+            });
+            if (!confirmed) return;
 
             clearAllAppStorage();
             resetAppStateToDefaults({ resetDarkMode: true });
@@ -8365,6 +8885,19 @@ Clinician Name`;
               console.warn('Service worker registration failed:', err);
             });
           }, []);
+
+          // Click-outside handler for search dropdown (replaces fragile setTimeout blur hack)
+          useEffect(() => {
+            const handleClickOutside = (e) => {
+              if (searchContainerRef.current && !searchContainerRef.current.contains(e.target)) {
+                setSearchOpen(false);
+              }
+            };
+            if (searchOpen) {
+              document.addEventListener('mousedown', handleClickOutside);
+              return () => document.removeEventListener('mousedown', handleClickOutside);
+            }
+          }, [searchOpen]);
 
           // Mermaid initialization and strokeMermaidClick removed — algorithms now use JSX
 
@@ -8471,8 +9004,12 @@ Clinician Name`;
 
           useEffect(() => {
             const inrVal = parseFloat(telestrokeNote.inr);
+            const pltVal = parseInt(telestrokeNote.plateletCount);
             const warfarinWithHighINR = telestrokeNote.lastDOACType === 'warfarin' && !Number.isNaN(inrVal) && inrVal > 1.7;
-            if (warfarinWithHighINR) {
+            const lowPlatelets = !Number.isNaN(pltVal) && pltVal < 100;
+            const isICH = telestrokeNote.diagnosisCategory === 'ich' || telestrokeNote.diagnosisCategory === 'sah';
+            const shouldBlock = warfarinWithHighINR || lowPlatelets || isICH;
+            if (shouldBlock) {
               setTelestrokeNote(prev => {
                 if (prev.tnkAutoBlocked && prev.tnkRecommended === false) return prev;
                 return { ...prev, tnkRecommended: false, tnkAutoBlocked: true };
@@ -8480,7 +9017,7 @@ Clinician Name`;
             } else if (telestrokeNote.tnkAutoBlocked) {
               setTelestrokeNote(prev => ({ ...prev, tnkAutoBlocked: false }));
             }
-          }, [telestrokeNote.lastDOACType, telestrokeNote.inr, telestrokeNote.tnkAutoBlocked]);
+          }, [telestrokeNote.lastDOACType, telestrokeNote.inr, telestrokeNote.plateletCount, telestrokeNote.diagnosisCategory, telestrokeNote.tnkAutoBlocked]);
 
           useEffect(() => {
             const prev = decisionStateRef.current;
@@ -9401,24 +9938,48 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                 Skip to main content
               </a>
 
-              {/* Header */}
-              <div className="mb-4 sm:mb-6 app-header" role="banner">
+              {/* Offline Indicator */}
+              {!isOnline && (
+                <div className="bg-amber-500 text-white px-4 py-2 text-center text-sm font-medium flex items-center justify-center gap-2" role="alert">
+                  <i data-lucide="wifi-off" className="w-4 h-4"></i>
+                  <span>You are offline — changes are saved locally and will sync when reconnected</span>
+                </div>
+              )}
+
+              {/* Header — Simplified */}
+              <div className={`mb-4 sm:mb-6 app-header ${focusMode ? 'hidden' : ''}`} role="banner">
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
                   <div className="flex-1 w-full sm:w-auto">
-                    <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-900 to-indigo-800 bg-clip-text text-transparent mb-1 text-center sm:text-left">
-                      Stroke
-                    </h1>
+                    <div className="flex items-center gap-3 justify-center sm:justify-start">
+                      <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-900 to-indigo-800 bg-clip-text text-transparent">
+                        Stroke
+                      </h1>
+                      <button
+                        onClick={() => setShowChangelog(true)}
+                        className="text-xs text-slate-400 hover:text-blue-600 transition-colors"
+                        title="What's new"
+                      >
+                        v3.0
+                      </button>
+                      <button
+                        onClick={() => setShowKeyboardHelp(true)}
+                        className="hidden sm:inline-flex text-xs text-slate-400 hover:text-blue-600 transition-colors px-1.5 py-0.5 border border-slate-200 rounded"
+                        title="Keyboard shortcuts (?)"
+                      >
+                        <i data-lucide="keyboard" className="w-3 h-3"></i>
+                      </button>
+                    </div>
                     {topLinks.length > 0 && (
-                      <div className="mt-2 flex flex-wrap items-center gap-2 justify-center sm:justify-start">
+                      <div className="mt-1 flex flex-wrap items-center gap-1.5 justify-center sm:justify-start">
                         {topLinks.map((link) => (
                           <a
                             key={link.url}
                             href={link.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
+                            className="flex items-center gap-1.5 px-2 py-1 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-md transition-colors"
                           >
-                            <i data-lucide="external-link" className="w-4 h-4"></i>
+                            <i data-lucide="external-link" className="w-3 h-3"></i>
                             <span>{link.label}</span>
                           </a>
                         ))}
@@ -9426,10 +9987,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     )}
                   </div>
                   <div className="flex w-full flex-col items-center justify-center gap-2 sm:w-auto sm:items-end sm:justify-end">
-                    <div className="relative w-full sm:w-auto">
+                    <div className="relative w-full sm:w-auto" ref={searchContainerRef}>
                       <input
                         type="text"
-                        placeholder="Search trials, management tools, references..."
+                        placeholder="Search trials, tools, references..."
                         value={searchQuery}
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
@@ -9440,7 +10001,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           setSearchOpen(true);
                           setSearchContext('header');
                         }}
-                        onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
                         className="pl-8 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-48 md:w-64"
                         aria-label="Search trials, management tools, and references"
                       />
@@ -9479,15 +10039,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
                       )}
                     </div>
-                    <div className="text-xs text-slate-500 flex items-center gap-2">
-                      <span className={saveStatus === 'saving' ? 'text-amber-600' : 'text-emerald-600'}>
-                        {saveStatus === 'saving' ? 'Saving...' : 'Saved'}
-                      </span>
-                      {lastSaved && (
-                        <span>
-                          {new Date(lastSaved).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-                        </span>
-                      )}
+                    <div className="text-xs text-slate-400 flex items-center gap-1" title={saveStatus === 'saving' ? 'Saving...' : lastSaved ? `Saved ${new Date(lastSaved).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}` : 'Saved'}>
+                      <i data-lucide={saveStatus === 'saving' ? 'loader' : 'check-circle'} className={`w-3 h-3 ${saveStatus === 'saving' ? 'text-amber-500 animate-spin' : 'text-emerald-500'}`}></i>
+                      <span className="hidden sm:inline">{saveStatus === 'saving' ? 'Saving' : 'Saved'}</span>
                     </div>
 
                     <div className="flex w-full flex-wrap items-center justify-center gap-2 sm:w-auto sm:justify-end">
@@ -9532,6 +10086,30 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 >
                                   <i data-lucide="share-2" className="w-4 h-4 text-slate-400"></i>
                                   Share
+                                </button>
+                              )}
+                              <div className="border-t border-slate-100 my-1"></div>
+                              <button
+                                onClick={() => { setFocusMode(prev => !prev); setSettingsMenuOpen(false); }}
+                                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
+                              >
+                                <i data-lucide={focusMode ? 'minimize-2' : 'maximize-2'} className="w-4 h-4 text-slate-400"></i>
+                                {focusMode ? 'Exit Focus Mode' : 'Focus Mode'}
+                              </button>
+                              <button
+                                onClick={() => { setShowChangelog(true); setSettingsMenuOpen(false); }}
+                                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
+                              >
+                                <i data-lucide="sparkles" className="w-4 h-4 text-slate-400"></i>
+                                What's New
+                              </button>
+                              {encounterHistory.length > 0 && (
+                                <button
+                                  onClick={() => { setSettingsMenuOpen(false); scrollToSection('encounter-history-section'); }}
+                                  className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
+                                >
+                                  <i data-lucide="history" className="w-4 h-4 text-slate-400"></i>
+                                  Recent Encounters ({encounterHistory.length})
                                 </button>
                               )}
                               <div className="border-t border-slate-100 my-1"></div>
@@ -9622,68 +10200,50 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
               {/* Case summary removed — patient summary strip in encounter tab is the single source */}
 
-              {/* Keyboard Shortcuts Help Modal */}
-              {showKeyboardHelp && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={() => setShowKeyboardHelp(false)}>
-                  <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6" role="dialog" aria-modal="true" aria-label="Keyboard Shortcuts" onClick={(e) => e.stopPropagation()}>
-                    <div className="flex justify-between items-center mb-4">
-                      <h2 className="text-2xl font-bold text-slate-900">Keyboard Shortcuts</h2>
-                      <button
-                        onClick={() => setShowKeyboardHelp(false)}
-                        className="text-slate-500 hover:text-slate-700"
-                        aria-label="Close keyboard shortcuts"
-                      >
-                        <i data-lucide="x" className="w-6 h-6"></i>
+              {/* ===== PERSISTENT TIMER STRIP (visible across all tabs) ===== */}
+              {(() => {
+                const timeFromLKW = calculateTimeFromLKW();
+                if (!timeFromLKW) return null;
+                const totalHours = timeFromLKW.total;
+                const tnkRemaining = 4.5 - totalHours;
+                const tnkRemainingMin = Math.max(0, Math.floor(tnkRemaining * 60));
+                const evtEarlyRemaining = 6 - totalHours;
+                const elH = Math.floor(elapsedSeconds / 3600);
+                const elM = Math.floor((elapsedSeconds % 3600) / 60);
+                const elS = elapsedSeconds % 60;
+                const timerBg = totalHours < 3 ? 'from-emerald-600 to-emerald-700' : totalHours < 4 ? 'from-amber-500 to-amber-600' : totalHours < 4.5 ? 'from-orange-500 to-orange-600' : 'from-red-600 to-red-700';
+                return (
+                  <div className={`mb-3 bg-gradient-to-r ${timerBg} rounded-xl px-4 py-2 text-white flex flex-wrap items-center justify-between gap-2 ${alertFlashing ? 'alert-flash' : ''}`}>
+                    <div className="flex items-center gap-3">
+                      <i data-lucide="clock" className="w-4 h-4"></i>
+                      <span className="font-mono font-bold text-lg">{elH}h {String(elM).padStart(2,'0')}m {String(elS).padStart(2,'0')}s</span>
+                      <span className="text-xs opacity-80">from {timeFromLKW.label || 'LKW'}</span>
+                    </div>
+                    <div className="flex items-center gap-4 text-xs">
+                      {tnkRemaining > 0 ? (
+                        <span className={`font-semibold ${tnkRemainingMin <= 30 ? 'animate-pulse' : ''}`}>
+                          TNK: {Math.floor(tnkRemainingMin/60)}h {tnkRemainingMin%60}m left
+                        </span>
+                      ) : (
+                        <span className="opacity-70">TNK closed</span>
+                      )}
+                      {evtEarlyRemaining > 0 ? (
+                        <span>EVT early: {Math.floor(evtEarlyRemaining)}h {Math.floor((evtEarlyRemaining%1)*60)}m</span>
+                      ) : totalHours < 24 ? (
+                        <span>EVT late window</span>
+                      ) : null}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <button onClick={toggleAlertMute} className="p-1 rounded-full hover:bg-white/20 transition-colors" title={alertsMuted ? 'Unmute' : 'Mute'}>
+                        <i data-lucide={alertsMuted ? 'volume-x' : 'volume-2'} className="w-4 h-4"></i>
                       </button>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-3">
-                        <h3 className="font-semibold text-slate-800 mb-2">Navigation</h3>
-                        <div className="flex justify-between items-center">
-                          <span className="text-slate-700">Encounter Tab</span>
-                          <kbd className="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-sm font-mono">1</kbd>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-slate-700">Management (Ischemic) Tab</span>
-                          <kbd className="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-sm font-mono">2</kbd>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-slate-700">Management (Calculators) Tab</span>
-                          <kbd className="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-sm font-mono">3</kbd>
-                        </div>
-                      </div>
-                      <div className="space-y-3">
-                        <h3 className="font-semibold text-slate-800 mb-2">Actions</h3>
-                        <div className="flex justify-between items-center">
-                          <span className="text-slate-700">Open Search</span>
-                          <kbd className="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-sm font-mono">⌘K / Ctrl+K</kbd>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-slate-700">Export to PDF</span>
-                          <kbd className="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-sm font-mono">⌘E / Ctrl+E</kbd>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-slate-700">Close Modals</span>
-                          <kbd className="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-sm font-mono">Esc</kbd>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-slate-700">Show This Help</span>
-                          <kbd className="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-sm font-mono">?</kbd>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-6 text-center">
-                      <button
-                        onClick={() => setShowKeyboardHelp(false)}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                      >
-                        Got it!
+                      <button onClick={() => setFocusMode(prev => !prev)} className={`p-1 rounded-full hover:bg-white/20 transition-colors ${focusMode ? 'bg-white/20' : ''}`} title={focusMode ? 'Exit focus mode' : 'Focus mode'}>
+                        <i data-lucide={focusMode ? 'minimize-2' : 'maximize-2'} className="w-4 h-4"></i>
                       </button>
                     </div>
                   </div>
-                </div>
-              )}
-
+                );
+              })()}
 
               {/* Critical Alerts Banner */}
               {criticalAlerts.length > 0 && (
@@ -9796,58 +10356,71 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       </div>
                     )}
 
-                    {/* ===== ENCOUNTER SECTION NAVIGATION ===== */}
-                    <div className="bg-white border border-slate-200 rounded-lg p-0.5">
+                    {/* ===== ENCOUNTER SECTION NAVIGATION with completion indicators ===== */}
+                    <div className="bg-white border border-slate-200 rounded-lg p-0.5 sticky top-14 z-20">
                       <nav className="flex gap-0.5 overflow-x-auto no-scrollbar" aria-label="Encounter sections">
                         {[
-                          { id: 'phase-triage', label: 'Triage' },
-                          { id: 'phase-decision', label: 'Decision' },
-                          { id: 'phase-management', label: 'Orders' },
-                          { id: 'phase-documentation', label: 'Docs' }
-                        ].map((phase) => (
-                          <button
-                            key={phase.id}
-                            onClick={() => {
-                              setEncounterPhase(phase.id);
-                              scrollToSection(phase.id);
-                            }}
-                            className={`flex-1 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-                              encounterPhase === phase.id
-                                ? 'bg-blue-600 text-white'
-                                : 'text-slate-500 hover:bg-slate-100'
-                            }`}
-                          >
-                            {phase.label}
-                          </button>
-                        ))}
+                          { id: 'phase-triage', label: 'Triage', key: 'triage' },
+                          { id: 'phase-decision', label: 'Decision', key: 'decision' },
+                          { id: 'phase-management', label: 'Orders', key: 'orders' },
+                          { id: 'phase-documentation', label: 'Docs', key: 'docs' }
+                        ].map((phase) => {
+                          const completion = sectionCompletion[phase.key];
+                          return (
+                            <button
+                              key={phase.id}
+                              onClick={() => {
+                                setEncounterPhase(phase.id);
+                                scrollToSection(phase.id);
+                              }}
+                              className={`flex-1 px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center justify-center gap-1.5 ${
+                                encounterPhase === phase.id
+                                  ? 'bg-blue-600 text-white'
+                                  : 'text-slate-500 hover:bg-slate-100'
+                              }`}
+                            >
+                              {phase.label}
+                              {completion && completion.complete ? (
+                                <i data-lucide="check-circle" className={`w-3 h-3 ${encounterPhase === phase.id ? 'text-white' : 'text-emerald-500'}`}></i>
+                              ) : completion && completion.done > 0 ? (
+                                <span className={`text-[10px] ${encounterPhase === phase.id ? 'text-blue-200' : 'text-slate-400'}`}>
+                                  {completion.done}/{completion.total}
+                                </span>
+                              ) : null}
+                            </button>
+                          );
+                        })}
                       </nav>
                     </div>
 
-                    {/* ===== STROKE TIMELINE STRIP (hidden in clinic) ===== */}
+                    {/* ===== STROKE TIMELINE STRIP — connected visual timeline ===== */}
                     {(lkwTime || telestrokeNote.dtnEdArrival || telestrokeNote.tnkAdminTime) && (
-                      <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 overflow-x-auto no-scrollbar">
-                        <div className="flex items-center gap-1 text-xs min-w-max">
+                      <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 overflow-x-auto no-scrollbar">
+                        <div className="flex items-start gap-0 text-xs min-w-max relative">
                           {[
-                            { label: 'LKW', time: lkwTime ? lkwTime.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-blue-700 bg-blue-100' },
-                            { label: 'Door', time: telestrokeNote.dtnEdArrival ? new Date(telestrokeNote.dtnEdArrival).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-purple-700 bg-purple-100' },
-                            { label: 'Alert', time: telestrokeNote.dtnStrokeAlert ? new Date(telestrokeNote.dtnStrokeAlert).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-amber-700 bg-amber-100' },
-                            { label: 'CT', time: telestrokeNote.dtnCtStarted ? new Date(telestrokeNote.dtnCtStarted).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-slate-700 bg-slate-200' },
-                            { label: 'TNK', time: telestrokeNote.tnkAdminTime || null, color: 'text-emerald-700 bg-emerald-100' },
-                            { label: 'Puncture', time: telestrokeNote.punctureTime || null, color: 'text-indigo-700 bg-indigo-100' }
+                            { label: 'LKW', time: lkwTime ? lkwTime.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-blue-500', line: 'bg-blue-200' },
+                            { label: 'Door', time: telestrokeNote.dtnEdArrival ? new Date(telestrokeNote.dtnEdArrival).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-purple-500', line: 'bg-purple-200' },
+                            { label: 'Alert', time: telestrokeNote.dtnStrokeAlert ? new Date(telestrokeNote.dtnStrokeAlert).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-amber-500', line: 'bg-amber-200' },
+                            { label: 'CT', time: telestrokeNote.dtnCtStarted ? new Date(telestrokeNote.dtnCtStarted).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-slate-500', line: 'bg-slate-200' },
+                            { label: 'TNK', time: telestrokeNote.tnkAdminTime || null, dot: 'bg-emerald-500', line: 'bg-emerald-200' },
+                            { label: 'Puncture', time: telestrokeNote.punctureTime || null, dot: 'bg-indigo-500', line: 'bg-indigo-200' }
                           ].filter(t => t.time).map((t, i, arr) => (
                             <React.Fragment key={t.label}>
-                              <span className={`inline-flex flex-col items-center px-2 py-1 rounded ${t.color}`}>
-                                <span className="font-semibold">{t.label}</span>
-                                <span className="font-mono">{t.time}</span>
-                              </span>
-                              {i < arr.length - 1 && <span className="text-slate-300 mx-0.5">→</span>}
+                              <div className="flex flex-col items-center min-w-[60px]">
+                                <div className={`w-3 h-3 rounded-full ${t.dot} ring-2 ring-white shadow-sm z-10`}></div>
+                                <span className="font-semibold text-slate-700 mt-1">{t.label}</span>
+                                <span className="font-mono text-slate-500">{t.time}</span>
+                              </div>
+                              {i < arr.length - 1 && (
+                                <div className={`flex-1 h-0.5 ${t.line} self-center mt-1.5 min-w-[24px] -mx-1`} style={{marginTop: '5px'}}></div>
+                              )}
                             </React.Fragment>
                           ))}
                           {(() => {
                             const metrics = calculateDTNMetrics();
                             if (metrics.doorToNeedle !== null) {
                               const b = getDTNBenchmark(metrics.doorToNeedle);
-                              return <span className={`ml-2 px-2 py-1 rounded font-bold ${b.color === 'green' ? 'bg-emerald-500 text-white' : b.color === 'yellow' ? 'bg-amber-500 text-white' : 'bg-red-500 text-white'}`}>DTN {metrics.doorToNeedle}m</span>;
+                              return <div className="ml-3 self-center"><span className={`px-2.5 py-1 rounded-full font-bold text-xs ${b.color === 'green' ? 'bg-emerald-500 text-white' : b.color === 'yellow' ? 'bg-amber-500 text-white' : 'bg-red-500 text-white'}`}>DTN {metrics.doorToNeedle}m</span></div>;
                             }
                             return null;
                           })()}
@@ -9903,6 +10476,63 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
                       ) : null;
                     })()}
+
+                    {/* ===== ENCOUNTER TEMPLATES (shown when no data entered yet) ===== */}
+                    {!telestrokeNote.age && !nihssScore && !telestrokeNote.diagnosis && (
+                      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+                        <h3 className="text-sm font-semibold text-blue-900 mb-3 flex items-center gap-2">
+                          <i data-lucide="layout-template" className="w-4 h-4"></i>
+                          Quick Start Templates
+                        </h3>
+                        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                          {ENCOUNTER_TEMPLATES.map(tmpl => (
+                            <button
+                              key={tmpl.id}
+                              onClick={() => {
+                                if (tmpl.defaults && Object.keys(tmpl.defaults).length > 0) {
+                                  setTelestrokeNote(prev => ({ ...prev, ...tmpl.defaults }));
+                                  if (tmpl.defaults.diagnosisCategory === 'ich') {
+                                    setManagementSubTab('ich');
+                                  }
+                                  addToast(`Template: ${tmpl.label}`, 'info');
+                                }
+                              }}
+                              className="flex flex-col items-center gap-1.5 px-3 py-3 bg-white border border-blue-200 rounded-xl hover:bg-blue-50 hover:border-blue-400 transition-all text-center"
+                            >
+                              <i data-lucide={tmpl.icon} className="w-5 h-5 text-blue-600"></i>
+                              <span className="text-xs font-semibold text-slate-800">{tmpl.label}</span>
+                              <span className="text-[10px] text-slate-500">{tmpl.description}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* ===== ENCOUNTER HISTORY (collapsible) ===== */}
+                    {encounterHistory.length > 0 && !telestrokeNote.age && (
+                      <details id="encounter-history-section" className="bg-slate-50 border border-slate-200 rounded-xl">
+                        <summary className="cursor-pointer px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 rounded-xl flex items-center gap-2">
+                          <i data-lucide="history" className="w-4 h-4 text-slate-500"></i>
+                          Recent Encounters ({encounterHistory.length})
+                        </summary>
+                        <div className="px-4 pb-3 space-y-1.5">
+                          {encounterHistory.slice(0, 10).map(enc => (
+                            <div key={enc.id} className="flex items-center justify-between px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs">
+                              <div className="flex items-center gap-3">
+                                <span className="text-slate-400">{new Date(enc.timestamp).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                                <span className="font-semibold text-slate-800">{enc.age}{enc.sex || ''}</span>
+                                <span className="text-slate-600">{enc.diagnosis}</span>
+                                <span className="text-slate-500">NIHSS {enc.nihss}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className={`font-medium ${enc.tnk === 'Yes' ? 'text-emerald-600' : 'text-slate-400'}`}>TNK: {enc.tnk}</span>
+                                <span className={`font-medium ${enc.evt === 'Yes' ? 'text-blue-600' : 'text-slate-400'}`}>EVT: {enc.evt}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </details>
+                    )}
 
                     {/* ===== TRIAGE SECTION ===== */}
                     <div id="phase-triage"></div>
@@ -10886,7 +11516,13 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 value={telestrokeNote.presentingBP}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, presentingBP: e.target.value})}
                                 placeholder="120/80"
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
+                                className={`w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-green-500 ${(() => {
+                                  const s = getBPThresholdStatus(telestrokeNote.presentingBP);
+                                  if (s.status === 'too_high') return 'border-red-400 bg-red-50';
+                                  if (s.status === 'borderline') return 'border-amber-400 bg-amber-50';
+                                  if (s.status === 'ok') return 'border-emerald-400 bg-emerald-50';
+                                  return 'border-slate-300';
+                                })()}`}
                               />
                             </div>
                             <div>
@@ -10896,8 +11532,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 value={telestrokeNote.glucose}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, glucose: e.target.value})}
                                 placeholder="mg/dL"
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
+                                className={`w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-green-500 ${(() => {
+                                  const g = parseInt(telestrokeNote.glucose);
+                                  if (!telestrokeNote.glucose || isNaN(g)) return 'border-slate-300';
+                                  if (g < 60) return 'border-red-400 bg-red-50';
+                                  if (g > 400) return 'border-amber-400 bg-amber-50';
+                                  return 'border-slate-300';
+                                })()}`}
                               />
+                              {telestrokeNote.glucose && parseInt(telestrokeNote.glucose) < 60 && <p className="text-xs text-red-600 mt-0.5">Hypoglycemia - stroke mimic?</p>}
                             </div>
                             <div>
                               <label className="block text-xs text-slate-600 mb-1">INR</label>
@@ -10905,8 +11548,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 type="text"
                                 value={telestrokeNote.inr}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, inr: e.target.value})}
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
+                                className={`w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-green-500 ${(() => {
+                                  const i = parseFloat(telestrokeNote.inr);
+                                  if (!telestrokeNote.inr || isNaN(i)) return 'border-slate-300';
+                                  if (i > 1.7) return 'border-red-400 bg-red-50';
+                                  if (i > 1.5) return 'border-amber-400 bg-amber-50';
+                                  return 'border-slate-300';
+                                })()}`}
                               />
+                              {telestrokeNote.inr && parseFloat(telestrokeNote.inr) > 1.7 && <p className="text-xs text-red-600 mt-0.5">TNK contraindicated (INR &gt;1.7)</p>}
                             </div>
                             <div>
                               <label className="block text-xs text-slate-600 mb-1">Platelets</label>
@@ -10915,8 +11565,14 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 value={telestrokeNote.plateletCount}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, plateletCount: e.target.value})}
                                 placeholder="K/uL"
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
+                                className={`w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-green-500 ${(() => {
+                                  const p = parseInt(telestrokeNote.plateletCount);
+                                  if (!telestrokeNote.plateletCount || isNaN(p)) return 'border-slate-300';
+                                  if (p < 100) return 'border-red-400 bg-red-50';
+                                  return 'border-slate-300';
+                                })()}`}
                               />
+                              {telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount) < 100 && <p className="text-xs text-red-600 mt-0.5">TNK contraindicated (plt &lt;100K)</p>}
                             </div>
                           </div>
                           {/* BP Threshold Alert */}
@@ -11069,8 +11725,20 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 value={telestrokeNote.diagnosis}
                                 onChange={(e) => {
                                   const newDx = e.target.value;
-                                  const category = newDx.toLowerCase().includes('ich') || newDx.toLowerCase().includes('hemorrhag') ? 'ich' : newDx.toLowerCase().includes('ischemic') || newDx.toLowerCase().includes('lvo') ? 'ischemic' : '';
+                                  const dxLower = newDx.toLowerCase();
+                                  const category = dxLower.includes('ich') || dxLower.includes('intracerebral') ? 'ich'
+                                    : dxLower.includes('sah') || dxLower.includes('subarachnoid') ? 'sah'
+                                    : dxLower === 'tia' ? 'tia'
+                                    : dxLower.includes('ischemic') || dxLower.includes('lvo') ? 'ischemic'
+                                    : dxLower.includes('cvt') || dxLower.includes('venous thrombosis') ? 'cvt'
+                                    : '';
                                   setTelestrokeNote({...telestrokeNote, diagnosis: newDx, diagnosisCategory: category});
+                                  // Auto-route management sub-tab
+                                  if (category === 'ich') setManagementSubTab('ich');
+                                  else if (category === 'sah') setManagementSubTab('sah');
+                                  else if (category === 'tia') setManagementSubTab('tia');
+                                  else if (category === 'ischemic') setManagementSubTab('ischemic');
+                                  else if (category === 'cvt') setManagementSubTab('cvt');
                                 }}
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500"
                               >
@@ -11149,6 +11817,28 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 </div>
                                 <div className="text-xs text-red-700 bg-red-100 rounded p-1.5">
                                   TNK is contraindicated. Targets: SBP 130-150, reverse anticoagulation if applicable, repeat CT in 6h, ICU admission.
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Stroke Mimic Decision Support */}
+                            {telestrokeNote.diagnosis === 'Stroke Mimic' && (
+                              <div className="bg-purple-50 border-2 border-purple-300 rounded-lg p-3 space-y-2">
+                                <h5 className="text-sm font-bold text-purple-800">Stroke Mimic — Differential Diagnosis</h5>
+                                <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-slate-700">
+                                  <div className="flex items-start gap-1"><span className="text-purple-500 font-bold">1.</span> Seizure / Todd's paralysis</div>
+                                  <div className="flex items-start gap-1"><span className="text-purple-500 font-bold">2.</span> Hypoglycemia</div>
+                                  <div className="flex items-start gap-1"><span className="text-purple-500 font-bold">3.</span> Migraine with aura</div>
+                                  <div className="flex items-start gap-1"><span className="text-purple-500 font-bold">4.</span> Functional / conversion disorder</div>
+                                  <div className="flex items-start gap-1"><span className="text-purple-500 font-bold">5.</span> Syncope / presyncope</div>
+                                  <div className="flex items-start gap-1"><span className="text-purple-500 font-bold">6.</span> Toxic-metabolic encephalopathy</div>
+                                  <div className="flex items-start gap-1"><span className="text-purple-500 font-bold">7.</span> Peripheral vertigo (BPPV, vestibular neuritis)</div>
+                                  <div className="flex items-start gap-1"><span className="text-purple-500 font-bold">8.</span> Hypertensive encephalopathy / PRES</div>
+                                  <div className="flex items-start gap-1"><span className="text-purple-500 font-bold">9.</span> CNS infection (meningitis, encephalitis)</div>
+                                  <div className="flex items-start gap-1"><span className="text-purple-500 font-bold">10.</span> Brain tumor / mass lesion</div>
+                                </div>
+                                <div className="text-xs text-purple-700 bg-purple-100 rounded p-1.5 mt-1">
+                                  <strong>Key checks:</strong> Fingerstick glucose, tox screen, EEG if seizure suspected, MRI DWI to exclude infarct, CBC/BMP/TSH. Consider HINTS exam for posterior fossa symptoms.
                                 </div>
                               </div>
                             )}
@@ -11410,6 +12100,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <option value="transfer">Transfer Summary</option>
                               <option value="signout">Signout</option>
                               <option value="followup">Follow-up Brief</option>
+                              <option value="discharge">Discharge Summary</option>
+                              <option value="procedure">EVT Procedure Note</option>
+                              <option value="patient-ed">Patient Education</option>
                             </select>
                           </div>
 
@@ -11417,55 +12110,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
                             <div className="flex items-center justify-between mb-2">
                               <span className="font-semibold text-indigo-800 text-sm">Pulsara Summary</span>
-                              {(() => {
-                                const buildPulsara = () => {
-                                  const age = telestrokeNote.age || "***";
-                                  const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***';
-                                  const pmh = telestrokeNote.pmh || "no PMH";
-                                  const symptoms = telestrokeNote.symptoms || "***";
-                                  const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
-                                  const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
-                                  const nihss = telestrokeNote.nihss || nihssScore || "[score]";
-                                  const nihssDeficits = telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : "";
-                                  const ctResults = telestrokeNote.ctResults || "[CT findings]";
-                                  const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
-                                  const ctpResults = telestrokeNote.ctpResults || "N/A";
-                                  const aspectsStr = aspectsScore ? ` ASPECTS: ${aspectsScore}.` : "";
-                                  const vesselStr = (telestrokeNote.vesselOcclusion || []).length > 0 && !telestrokeNote.vesselOcclusion.includes('None')
-                                    ? ` Vessel occlusion: ${telestrokeNote.vesselOcclusion.join(', ')}.` : "";
-                                  const tnkStatus = telestrokeNote.diagnosisCategory === 'ich' ? "N/A (ICH)" : telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
-                                  const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
-                                  const rationale = telestrokeNote.rationale || "[rationale]";
-                                  const site = telestrokeNote.callingSite ? `[${telestrokeNote.callingSite}] ` : '';
-                                  return `${site}${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr}${vesselStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale: ${rationale}.`;
-                                };
-                                return (
-                                  <>
-                                    <button
-                                      onClick={() => {
-                                        navigator.clipboard.writeText(buildPulsara());
-                                        setCopiedText('tel-pulsara');
-                                        setTimeout(() => setCopiedText(''), 2000);
-                                      }}
-                                      className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors"
-                                    >
-                                      <i data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-4 h-4"></i>
-                                      {copiedText === 'tel-pulsara' ? 'Copied!' : 'Copy Pulsara'}
-                                    </button>
-                                  </>
-                                );
-                              })()}
+                              <button
+                                onClick={() => { copyToClipboard(generatePulsaraSummary(), 'tel-pulsara'); }}
+                                className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors"
+                              >
+                                <i data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                {copiedText === 'tel-pulsara' ? 'Copied!' : 'Copy Pulsara'}
+                              </button>
                             </div>
-                            <p className="text-xs text-slate-600 whitespace-pre-wrap">
-                              {(() => {
-                                const age = telestrokeNote.age || "***";
-                                const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***';
-                                const nihss = telestrokeNote.nihss || nihssScore || "[score]";
-                                const dx = telestrokeNote.diagnosis || '[Diagnosis]';
-                                const site = telestrokeNote.callingSite || '';
-                                return `${site ? `[${site}] ` : ''}${age}${telestrokeNote.sex || ''} NIHSS ${nihss} — ${dx}`;
-                              })()}
-                            </p>
+                            <p className="text-xs text-slate-600 whitespace-pre-wrap">{generatePulsaraPreview()}</p>
                           </div>
 
                           {/* Smart Note */}
@@ -11501,8 +12154,26 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             className="w-full px-4 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium flex items-center justify-center gap-2"
                           >
                             <i data-lucide="copy" className="w-4 h-4"></i>
-                            {copiedText === 'telephone-note' ? 'Copied!' : `Copy ${noteTemplate === 'consult' ? 'Consult Note' : noteTemplate === 'transfer' ? 'Transfer Summary' : noteTemplate === 'signout' ? 'Signout' : 'Follow-up Brief'}`}
+                            {copiedText === 'telephone-note' ? 'Copied!' : `Copy ${
+                              noteTemplate === 'consult' ? 'Consult Note' : noteTemplate === 'transfer' ? 'Transfer Summary' : noteTemplate === 'signout' ? 'Signout' : noteTemplate === 'discharge' ? 'Discharge Summary' : noteTemplate === 'procedure' ? 'Procedure Note' : noteTemplate === 'patient-ed' ? 'Patient Education' : 'Follow-up Brief'
+                            }`}
                           </button>
+
+                          {/* Share via Web Share API (mobile) */}
+                          {typeof navigator !== 'undefined' && navigator.share && (
+                            <button
+                              onClick={async () => {
+                                try {
+                                  const note = generateTelestrokeNote();
+                                  await navigator.share({ title: `Stroke Consult — ${telestrokeNote.diagnosis || 'Note'}`, text: note });
+                                } catch (err) { /* user cancelled */ }
+                              }}
+                              className="w-full px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
+                            >
+                              <i data-lucide="share-2" className="w-4 h-4"></i>
+                              Share Note
+                            </button>
+                          )}
 
                           {/* Modular Copy: HPI / Exam-NIHSS / MDM-Plan */}
                           <div className="grid grid-cols-3 gap-2">
@@ -11594,9 +12265,11 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 type="number"
                                 value={telestrokeNote.age}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, age: e.target.value})}
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${telestrokeNote.age && (parseInt(telestrokeNote.age) < 0 || parseInt(telestrokeNote.age) > 120) ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
                                 placeholder=""
+                                min="0" max="120"
                               />
+                              {telestrokeNote.age && parseInt(telestrokeNote.age) > 120 && <p className="text-xs text-red-600 mt-0.5">Check age value</p>}
                             </div>
                             <div>
                               <label className="block text-sm font-medium text-slate-700 mb-1">Sex</label>
@@ -11619,9 +12292,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   type="number"
                                   value={telestrokeNote.weight}
                                   onChange={(e) => setTelestrokeNote({...telestrokeNote, weight: e.target.value})}
-                                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${telestrokeNote.weight && (parseFloat(telestrokeNote.weight) > 300 || parseFloat(telestrokeNote.weight) < 10) ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
                                   placeholder=""
-                                  min="0"
+                                  min="0" max="500"
                                 />
                                 <span className="ml-1 text-xs text-slate-500">kg</span>
                               </div>
@@ -11934,32 +12607,26 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   }}
                                 >
                                   <h4 className="font-semibold text-sm mb-2">{item.name} {patientData[item.id] && <span className="text-emerald-600 font-normal ml-1">({patientData[item.id].match(/\((\d+)\)/)?.[1] || '?'})</span>}</h4>
-                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
                                     {item.options.map((option, optionIndex) => (
-                                      <label key={optionIndex} className={`flex items-center space-x-2 cursor-pointer text-sm min-h-[36px] px-2 py-1 rounded transition-colors ${patientData[item.id] === option ? 'bg-blue-100 font-medium' : 'hover:bg-slate-50'}`}>
-                                        <input
-                                          type="radio"
-                                          name={item.id}
-                                          value={option}
-                                          checked={patientData[item.id] === option}
-                                          onChange={(e) => {
-                                            const newData = { ...patientData, [item.id]: e.target.value };
-                                            setPatientData(newData);
-                                            const newScore = calculateNIHSS(newData);
-                                            setNihssScore(newScore);
-                                            setTelestrokeNote({...telestrokeNote, nihss: newScore.toString()});
-                                            // Auto-advance on click too
-                                            if (itemIndex < nihssItems.length - 1) {
-                                              setTimeout(() => {
-                                                const next = document.getElementById(`nihss-item-${itemIndex + 1}`);
-                                                if (next) { next.scrollIntoView({ behavior: 'smooth', block: 'center' }); next.focus(); }
-                                              }, 150);
-                                            }
-                                          }}
-                                          className="text-blue-600"
-                                        />
-                                        <span><span className="text-slate-400 mr-1">[{optionIndex}]</span>{option}</span>
-                                      </label>
+                                      <button key={optionIndex} type="button"
+                                        className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${patientData[item.id] === option ? 'bg-blue-600 text-white border-blue-600 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-blue-50'}`}
+                                        onClick={() => {
+                                          const newData = { ...patientData, [item.id]: option };
+                                          setPatientData(newData);
+                                          const newScore = calculateNIHSS(newData);
+                                          setNihssScore(newScore);
+                                          setTelestrokeNote({...telestrokeNote, nihss: newScore.toString()});
+                                          if (itemIndex < nihssItems.length - 1) {
+                                            setTimeout(() => {
+                                              const next = document.getElementById(`nihss-item-${itemIndex + 1}`);
+                                              if (next) { next.scrollIntoView({ behavior: 'smooth', block: 'center' }); next.focus(); }
+                                            }, 150);
+                                          }
+                                        }}
+                                      >
+                                        <span className={patientData[item.id] === option ? 'text-blue-200' : 'text-slate-400'}>[{optionIndex}]</span> {option}
+                                      </button>
                                     ))}
                                   </div>
                                 </div>
@@ -12622,6 +13289,19 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   </div>
                                 </div>
 
+                                {/* Clinical Pearls — contextual evidence */}
+                                <details className="mt-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                  <summary className="cursor-pointer px-3 py-2 text-xs font-semibold text-blue-800 hover:bg-blue-100 rounded-lg flex items-center gap-1.5">
+                                    <i data-lucide="lightbulb" className="w-3.5 h-3.5 text-blue-500"></i>
+                                    Clinical Pearls
+                                  </summary>
+                                  <div className="px-3 pb-2 space-y-1.5 text-xs text-blue-800">
+                                    {tnkRec.eligible && <p className="flex gap-1.5"><span className="shrink-0 text-blue-500">*</span>{CLINICAL_PEARLS.tnk}</p>}
+                                    {evtRec.eligible && <p className="flex gap-1.5"><span className="shrink-0 text-blue-500">*</span>{CLINICAL_PEARLS.evt}</p>}
+                                    <p className="flex gap-1.5"><span className="shrink-0 text-blue-500">*</span>{CLINICAL_PEARLS.aspects}</p>
+                                  </div>
+                                </details>
+
                               </div>
                             );
                           })()}
@@ -12692,10 +13372,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <h4 className="text-sm font-semibold text-slate-700">Decision Log</h4>
                               <button
                                 type="button"
-                                onClick={() => {
-                                  const label = prompt('Decision label (e.g., TNK held, transfer declined)');
+                                onClick={async () => {
+                                  const label = await showConfirm({
+                                    title: 'Add Decision Timestamp',
+                                    input: true,
+                                    inputLabel: 'Decision label',
+                                    placeholder: 'e.g., TNK held, transfer declined',
+                                    confirmLabel: 'Add'
+                                  });
                                   if (!label) return;
-                                  addDecisionLogEntry(label.trim());
+                                  addDecisionLogEntry(String(label).trim());
                                 }}
                                 className="text-xs font-semibold text-blue-700 hover:text-blue-900"
                               >
@@ -14331,20 +15017,13 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 { value: 'other-determined', label: 'Other Determined Etiology', desc: 'Dissection, vasculitis, hypercoagulable, sickle cell, etc.' },
                                 { value: 'cryptogenic', label: 'Cryptogenic / ESUS', desc: 'No cause found despite complete evaluation, or >1 competing cause' }
                               ].map(item => (
-                                <label key={item.value} className={`flex items-start gap-2 p-2 rounded cursor-pointer border transition ${telestrokeNote.toastClassification === item.value ? 'bg-violet-100 border-violet-400' : 'hover:bg-violet-50 border-slate-200'}`}>
-                                  <input
-                                    type="radio"
-                                    name="toastClassification"
-                                    value={item.value}
-                                    checked={telestrokeNote.toastClassification === item.value}
-                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, toastClassification: e.target.value})}
-                                    className="mt-1 text-violet-600"
-                                  />
-                                  <div>
-                                    <span className="text-sm font-semibold text-slate-800">{item.label}</span>
-                                    <p className="text-xs text-slate-500">{item.desc}</p>
-                                  </div>
-                                </label>
+                                <button key={item.value} type="button"
+                                  className={`w-full text-left p-2 rounded border transition-colors ${telestrokeNote.toastClassification === item.value ? 'bg-violet-600 text-white border-violet-600' : 'hover:bg-violet-50 border-slate-200 active:bg-violet-100'}`}
+                                  onClick={() => setTelestrokeNote({...telestrokeNote, toastClassification: item.value})}
+                                >
+                                  <span className="text-sm font-semibold">{item.label}</span>
+                                  <p className={`text-xs ${telestrokeNote.toastClassification === item.value ? 'text-violet-200' : 'text-slate-500'}`}>{item.desc}</p>
+                                </button>
                               ))}
                             </div>
                           </div>
@@ -17364,56 +18043,14 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <div className="flex items-center justify-between mb-2">
                             <span className="font-semibold text-indigo-800 text-sm">Pulsara Summary</span>
                             <button
-                              onClick={() => {
-                                const age = telestrokeNote.age || "***";
-                                const sexRaw = telestrokeNote.sex;
-                                const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '***';
-                                const pmh = telestrokeNote.pmh || "no PMH";
-                                const symptoms = telestrokeNote.symptoms || "***";
-                                const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
-                                const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
-                                const nihss = telestrokeNote.nihss || nihssScore || "[score]";
-                                const nihssDeficits = telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : "";
-                                const ctResults = telestrokeNote.ctResults || "[CT findings]";
-                                const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
-                                const ctpResults = telestrokeNote.ctpResults || "N/A";
-                                const aspectsStr = aspectsScore ? ` ASPECTS: ${aspectsScore}.` : "";
-                                const tnkStatus = telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
-                                const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
-                                const rationale = telestrokeNote.rationale || "[rationale]";
-
-                                const summary = `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale for Treatment Recommendation: ${rationale}.`;
-                                navigator.clipboard.writeText(summary);
-                                setCopiedText('tel-pulsara');
-                                setTimeout(() => setCopiedText(''), 2000);
-                              }}
+                              onClick={() => { copyToClipboard(generatePulsaraSummary(), 'tel-pulsara'); }}
                               className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors"
                             >
                               <i data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-4 h-4"></i>
                               {copiedText === 'tel-pulsara' ? 'Copied!' : 'Copy Pulsara'}
                             </button>
                           </div>
-                          <p className="text-xs text-slate-600 whitespace-pre-wrap">
-                            {(() => {
-                              const age = telestrokeNote.age || "***";
-                              const sexRaw = telestrokeNote.sex;
-                              const sex = sexRaw === 'M' ? 'male' : sexRaw === 'F' ? 'female' : '***';
-                              const pmh = telestrokeNote.pmh || "no PMH";
-                              const symptoms = telestrokeNote.symptoms || "***";
-                              const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
-                              const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
-                              const nihss = telestrokeNote.nihss || nihssScore || "[score]";
-                              const nihssDeficits = telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : "";
-                              const ctResults = telestrokeNote.ctResults || "[CT findings]";
-                              const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
-                              const ctpResults = telestrokeNote.ctpResults || "N/A";
-                              const aspectsStr = aspectsScore ? ` ASPECTS: ${aspectsScore}.` : "";
-                              const tnkStatus = telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
-                              const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
-                              const rationale = telestrokeNote.rationale || "[rationale]";
-                              return `${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale: ${rationale}.`;
-                            })()}
-                          </p>
+                          <p className="text-xs text-slate-600 whitespace-pre-wrap">{generatePulsaraPreview()}</p>
                         </div>
 
                         {/* Telestroke Section */}
@@ -17472,13 +18109,20 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <div className="mt-2 flex flex-wrap gap-2">
                                 <button
                                   type="button"
-                                  onClick={() => {
-                                    const reason = prompt('Reason for accepting transfer (optional)');
+                                  onClick={async () => {
+                                    const reason = await showConfirm({
+                                      title: 'Accept Transfer',
+                                      input: true,
+                                      inputType: 'textarea',
+                                      inputLabel: 'Reason for accepting (optional)',
+                                      placeholder: 'e.g., LVO confirmed, EVT candidate',
+                                      confirmLabel: 'Accept Transfer'
+                                    });
+                                    if (reason === null) return;
                                     const note = buildTransferDecisionText('accept', reason || '');
                                     setTelestrokeNote({ ...telestrokeNote, transferAccepted: true, transferRationale: note });
                                     navigator.clipboard.writeText(note);
-                                    setCopiedText('transfer-accept');
-                                    setTimeout(() => setCopiedText(''), 2000);
+                                    addToast('Transfer acceptance copied', 'success');
                                   }}
                                   className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700"
                                 >
@@ -17486,14 +18130,22 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 </button>
                                 <button
                                   type="button"
-                                  onClick={() => {
-                                    const reason = prompt('Reason for declining transfer');
+                                  onClick={async () => {
+                                    const reason = await showConfirm({
+                                      title: 'Decline Transfer',
+                                      input: true,
+                                      inputType: 'textarea',
+                                      inputLabel: 'Reason for declining',
+                                      placeholder: 'e.g., Not EVT candidate, ASPECTS too low',
+                                      confirmLabel: 'Decline Transfer',
+                                      required: true,
+                                      danger: true
+                                    });
                                     if (!reason) return;
-                                    const note = buildTransferDecisionText('decline', reason);
+                                    const note = buildTransferDecisionText('decline', String(reason));
                                     setTelestrokeNote({ ...telestrokeNote, transferAccepted: false, transferRationale: note });
                                     navigator.clipboard.writeText(note);
-                                    setCopiedText('transfer-decline');
-                                    setTimeout(() => setCopiedText(''), 2000);
+                                    addToast('Transfer decline copied', 'success');
                                   }}
                                   className="px-3 py-2 bg-red-600 text-white rounded-lg text-xs font-semibold hover:bg-red-700"
                                 >
@@ -18183,7 +18835,33 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                 {/* Management Combined Tab (Ischemic, ICH, Calculators, References) */}
                 {activeTab === 'management' && (
+                  <ErrorBoundary>
                   <div className="space-y-6">
+                    {/* ===== QUICK PATIENT SUMMARY CARD ===== */}
+                    {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) && (
+                      <div className="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-xl px-4 py-3">
+                        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">
+                          {telestrokeNote.age && <span className="font-semibold text-slate-800">{telestrokeNote.age}{telestrokeNote.sex || ''}</span>}
+                          {(nihssScore > 0 || telestrokeNote.nihss) && <span className="font-bold text-slate-900">NIHSS {telestrokeNote.nihss || nihssScore}</span>}
+                          {telestrokeNote.diagnosis && <span className="text-slate-700">Dx: {telestrokeNote.diagnosis}</span>}
+                          {telestrokeNote.presentingBP && <span className="text-slate-600">BP: {telestrokeNote.presentingBP}</span>}
+                          {telestrokeNote.glucose && <span className="text-slate-600">Gluc: {telestrokeNote.glucose}</span>}
+                          {telestrokeNote.inr && <span className="text-slate-600">INR: {telestrokeNote.inr}</span>}
+                          {telestrokeNote.platelets && <span className="text-slate-600">Plt: {telestrokeNote.platelets}</span>}
+                          {telestrokeNote.tnkRecommended !== undefined && (
+                            <span className={`font-semibold ${telestrokeNote.tnkRecommended ? 'text-emerald-700' : 'text-slate-500'}`}>
+                              TNK: {telestrokeNote.tnkRecommended ? 'Yes' : 'No'}
+                            </span>
+                          )}
+                          {telestrokeNote.evtRecommended !== undefined && (
+                            <span className={`font-semibold ${telestrokeNote.evtRecommended ? 'text-blue-700' : 'text-slate-500'}`}>
+                              EVT: {telestrokeNote.evtRecommended ? 'Yes' : 'No'}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
                     {/* Contextual guidance based on diagnosis */}
                     {!telestrokeNote.diagnosisCategory && (
                       <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 flex items-start gap-3">
@@ -18208,7 +18886,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     <div className="bg-white border border-slate-200 rounded-xl p-2 flex flex-wrap gap-2">
                       {[
                         { id: 'ich', label: 'ICH', icon: 'alert-triangle' },
-                        { id: 'ischemic', label: 'Ischemic Stroke', icon: 'activity' },
+                        { id: 'ischemic', label: 'Ischemic', icon: 'activity' },
+                        { id: 'sah', label: 'SAH', icon: 'zap' },
+                        { id: 'tia', label: 'TIA', icon: 'clock' },
+                        { id: 'cvt', label: 'CVT', icon: 'git-branch' },
                         { id: 'calculators', label: 'Calculators', icon: 'calculator' },
                         { id: 'references', label: 'References', icon: 'book-open' }
                       ].map((tab) => {
@@ -18220,6 +18901,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                               isActive ? 'bg-blue-600 text-white' : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
                             }`}
+                            role="tab"
+                            aria-selected={isActive}
+                            aria-label={`${tab.label} management tab`}
                           >
                             <i data-lucide={tab.icon} className="w-4 h-4"></i>
                             <span>{tab.label}</span>
@@ -18249,15 +18933,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         pink: 'bg-pink-600 hover:bg-pink-700'
                       };
                       return (
-                        <details className="bg-white border border-emerald-200 rounded-xl shadow-sm">
-                          <summary className="cursor-pointer p-3 font-semibold text-emerald-900 hover:bg-emerald-50 rounded-lg flex items-center justify-between">
+                        <div className="bg-white border-2 border-emerald-300 rounded-xl shadow-sm">
+                          <div className="p-3 font-semibold text-emerald-900 flex items-center justify-between border-b border-emerald-200">
                             <span className="flex items-center gap-2">
                               <i data-lucide="clipboard-list" className="w-5 h-5 text-emerald-600"></i>
                               Order Bundles — Quick Copy ({bundles.length})
                             </span>
                             <span className="text-xs text-emerald-600 font-normal">Patient-specific, copy to clipboard</span>
-                          </summary>
-                          <div className="p-3 pt-0 grid grid-cols-1 md:grid-cols-2 gap-3">
+                          </div>
+                          <div className="p-3 grid grid-cols-1 md:grid-cols-2 gap-3">
                             {bundles.map(b => (
                               <div key={b.id} className={`border rounded-lg p-3 ${colorMap[b.color] || 'bg-slate-50 border-slate-200 text-slate-900'}`}>
                                 <div className="flex items-center justify-between mb-2">
@@ -18288,7 +18972,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </div>
                             ))}
                           </div>
-                        </details>
+                        </div>
                       );
                     })()}
 
@@ -18302,7 +18986,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                         <div className="space-y-4">
                           {/* === ALL PATIENTS INITIAL STEPS === */}
-                          <div className="bg-white border border-red-300 rounded-xl p-4 shadow-sm">
+                          <div className="bg-white border border-red-300 border-l-4 border-l-red-600 rounded-xl p-4 shadow-sm">
                             <p className="text-xs font-semibold uppercase tracking-wide text-red-700 mb-3">All Patients — Initial Steps</p>
                             <div className="space-y-2">
                               <div className="flex gap-2 items-start">
@@ -19661,6 +20345,658 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     )}
                     {/* End of Ischemic Stroke Management Content */}
 
+                    {/* SAH Management Content */}
+                    {managementSubTab === 'sah' && (
+                      <div className="space-y-4">
+                        {/* SAH Quick Summary */}
+                        <div className="bg-white border-l-4 border-l-purple-600 border border-slate-200 rounded-lg p-4">
+                          <h3 className="text-lg font-bold text-purple-900 mb-1">Subarachnoid Hemorrhage Management</h3>
+                          <p className="text-sm text-slate-600">2023 AHA/ASA Guidelines for Management of Aneurysmal SAH</p>
+                        </div>
+
+                        {/* Acute SAH Protocol */}
+                        <div className="bg-white border border-slate-200 rounded-lg p-4">
+                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-purple-600 text-white text-xs flex items-center justify-center font-bold">1</span>
+                            Immediate Actions (First 6 Hours)
+                          </h4>
+                          <div className="space-y-2">
+                            {[
+                              { step: 'Secure airway', detail: 'Intubate if GCS ≤8; elevate HOB 30°', urgent: true },
+                              { step: 'BP control: SBP <160 mmHg', detail: 'Nicardipine 5-15 mg/h IV or labetalol IV (pre-aneurysm securing)', urgent: true },
+                              { step: 'Start Nimodipine 60 mg PO/NG q4h', detail: 'Begin within 96h of onset; continue 21 days. Class I, LOE A for DCI prevention', urgent: true },
+                              { step: 'Neurosurgery/Neurointerventional consult', detail: 'For aneurysm securing strategy (clip vs coil) — target within 24h', urgent: true },
+                              { step: 'Analgesia for headache', detail: 'Acetaminophen 1g IV/PO q6h. Avoid NSAIDs. Cautious opioids if severe', urgent: false },
+                              { step: 'Seizure prophylaxis (if indicated)', detail: 'Short-term (3-7d) levetiracetam 500-1000mg BID. Not routine for all patients', urgent: false },
+                              { step: 'EVD placement', detail: 'If acute hydrocephalus or GCS ≤8 with IVH. Open at 15-20 cmH₂O', urgent: false },
+                              { step: 'Labs: CBC, BMP, Coags, Type & Screen, Troponin, Mg²⁺', detail: 'Repeat BMP q6h initially for Na⁺ monitoring', urgent: false }
+                            ].map((item, i) => (
+                              <div key={i} className={`flex items-start gap-3 p-2 rounded ${item.urgent ? 'bg-purple-50' : 'bg-slate-50'}`}>
+                                <span className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${item.urgent ? 'bg-purple-600 text-white' : 'bg-slate-300 text-slate-700'}`}>{i + 1}</span>
+                                <div>
+                                  <span className="text-sm font-semibold text-slate-800">{item.step}</span>
+                                  <span className="block text-xs text-slate-500">{item.detail}</span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Fisher Grade & Vasospasm Risk */}
+                        <div className="bg-white border border-slate-200 rounded-lg p-4">
+                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-purple-600 text-white text-xs flex items-center justify-center font-bold">2</span>
+                            Fisher Grade — Vasospasm Risk Prediction
+                          </h4>
+                          <div className="space-y-2">
+                            {[
+                              { grade: '1', ct: 'No blood detected', risk: '~0%', color: 'emerald' },
+                              { grade: '2', ct: 'Diffuse thin SAH (<1 mm thick)', risk: '~20%', color: 'amber' },
+                              { grade: '3', ct: 'Localized clot or thick layer (>1 mm)', risk: '~33%', color: 'red' },
+                              { grade: '4', ct: 'Intraventricular or intracerebral blood ± diffuse SAH', risk: '~25%', color: 'orange' }
+                            ].map(f => (
+                              <button key={f.grade} type="button"
+                                className={`w-full text-left p-3 rounded-lg border transition-colors ${telestrokeNote.fisherGrade === f.grade ? `bg-${f.color}-600 text-white border-${f.color}-600` : 'bg-white border-slate-200 hover:bg-slate-50'}`}
+                                onClick={() => setTelestrokeNote({...telestrokeNote, fisherGrade: f.grade})}
+                              >
+                                <div className="flex justify-between items-center">
+                                  <div>
+                                    <span className="font-semibold">Grade {f.grade}</span>
+                                    <span className={`block text-sm ${telestrokeNote.fisherGrade === f.grade ? 'opacity-80' : 'text-slate-600'}`}>{f.ct}</span>
+                                  </div>
+                                  <span className={`text-sm font-bold px-2 py-0.5 rounded ${telestrokeNote.fisherGrade === f.grade ? 'bg-white/20' : `text-${f.color}-700 bg-${f.color}-50`}`}>
+                                    Spasm risk: {f.risk}
+                                  </span>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                          {telestrokeNote.fisherGrade === '3' && (
+                            <div className="mt-3 p-2 bg-red-50 border border-red-200 rounded text-sm text-red-800">
+                              <strong>Highest vasospasm risk.</strong> Initiate daily TCD monitoring days 3-14. Consider CTP if clinical decline.
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Vasospasm Monitoring & DCI */}
+                        <div className="bg-white border border-slate-200 rounded-lg p-4">
+                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-purple-600 text-white text-xs flex items-center justify-center font-bold">3</span>
+                            Vasospasm Monitoring & DCI Management
+                          </h4>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-purple-50 rounded-lg p-3">
+                              <h5 className="font-semibold text-purple-800 text-sm mb-2">Monitoring Protocol</h5>
+                              <ul className="space-y-1.5 text-sm text-slate-700">
+                                <li className="flex items-start gap-2"><span className="text-purple-600 font-bold">&#x2022;</span> Daily TCD: Days 3-14 (peak vasospasm window)</li>
+                                <li className="flex items-start gap-2"><span className="text-purple-600 font-bold">&#x2022;</span> MCA velocity &gt;120 cm/s = mild spasm</li>
+                                <li className="flex items-start gap-2"><span className="text-purple-600 font-bold">&#x2022;</span> MCA velocity &gt;200 cm/s or Lindegaard ratio &gt;6 = severe</li>
+                                <li className="flex items-start gap-2"><span className="text-purple-600 font-bold">&#x2022;</span> Neuro checks q1h for first 14 days</li>
+                                <li className="flex items-start gap-2"><span className="text-purple-600 font-bold">&#x2022;</span> CTP if new deficit or rising TCD velocities</li>
+                              </ul>
+                            </div>
+                            <div className="bg-red-50 rounded-lg p-3">
+                              <h5 className="font-semibold text-red-800 text-sm mb-2">DCI Treatment Escalation</h5>
+                              <div className="space-y-2 text-sm text-slate-700">
+                                <div className="flex items-start gap-2">
+                                  <span className="bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0">1</span>
+                                  <span><strong>Euvolemia + induced hypertension:</strong> Phenylephrine or norepinephrine to raise MAP 20-25% above baseline</span>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                  <span className="bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0">2</span>
+                                  <span><strong>No improvement:</strong> Endovascular rescue — intra-arterial verapamil/nicardipine</span>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                  <span className="bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0">3</span>
+                                  <span><strong>Refractory:</strong> Balloon angioplasty for proximal vasospasm</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Electrolyte Management */}
+                        <div className="bg-white border border-slate-200 rounded-lg p-4">
+                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-purple-600 text-white text-xs flex items-center justify-center font-bold">4</span>
+                            Electrolyte Monitoring — CSW vs SIADH
+                          </h4>
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-sm border-collapse">
+                              <thead>
+                                <tr className="bg-slate-100">
+                                  <th className="border border-slate-200 px-3 py-2 text-left font-semibold">Feature</th>
+                                  <th className="border border-slate-200 px-3 py-2 text-left font-semibold text-amber-700">Cerebral Salt Wasting</th>
+                                  <th className="border border-slate-200 px-3 py-2 text-left font-semibold text-blue-700">SIADH</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {[
+                                  ['Volume status', 'Hypovolemic (dehydrated)', 'Euvolemic / mildly hypervolemic'],
+                                  ['Urine output', 'High (polyuria)', 'Low / normal'],
+                                  ['Serum Na⁺', 'Low (<135)', 'Low (<135)'],
+                                  ['Urine Na⁺', 'High (>40 mEq/L)', 'High (>40 mEq/L)'],
+                                  ['Urine osmolality', 'High', 'Inappropriately high'],
+                                  ['CVP / volume markers', 'Low (hemoconcentration)', 'Normal / elevated'],
+                                  ['Treatment', 'NS or hypertonic saline + fludrocortisone 0.1-0.2 mg BID', 'Fluid restriction ± salt tabs ± conivaptan/tolvaptan'],
+                                  ['Key differentiator', 'Volume depletion + high urine output', 'Euvolemia + concentrated urine']
+                                ].map((row, i) => (
+                                  <tr key={i} className={i % 2 === 0 ? '' : 'bg-slate-50'}>
+                                    <td className="border border-slate-200 px-3 py-1.5 font-medium">{row[0]}</td>
+                                    <td className="border border-slate-200 px-3 py-1.5">{row[1]}</td>
+                                    <td className="border border-slate-200 px-3 py-1.5">{row[2]}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                          <p className="text-xs text-slate-500 mt-2">Monitor Na⁺ q4-6h. Correct hyponatremia slowly (max 8-10 mEq/L per 24h). CSW is more common in SAH than SIADH.</p>
+                        </div>
+
+                        {/* Rebleeding Risk */}
+                        <div className="bg-white border border-slate-200 rounded-lg p-4">
+                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-purple-600 text-white text-xs flex items-center justify-center font-bold">5</span>
+                            Rebleeding Risk & Aneurysm Securing
+                          </h4>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-red-50 rounded-lg p-3">
+                              <h5 className="font-semibold text-red-800 text-sm mb-2">Rebleeding Risk Timeline</h5>
+                              <div className="space-y-1 text-sm">
+                                <div className="flex justify-between"><span>First 6 hours</span><span className="font-bold text-red-700">~15% (peak risk)</span></div>
+                                <div className="w-full bg-red-200 rounded-full h-3"><div className="bg-red-600 h-3 rounded-full" style={{width: '100%'}}></div></div>
+                                <div className="flex justify-between mt-2"><span>6-24 hours</span><span className="font-bold text-orange-700">~5-10%</span></div>
+                                <div className="w-full bg-orange-200 rounded-full h-3"><div className="bg-orange-500 h-3 rounded-full" style={{width: '60%'}}></div></div>
+                                <div className="flex justify-between mt-2"><span>Day 2-14</span><span className="font-bold text-amber-700">~1-2%/day</span></div>
+                                <div className="w-full bg-amber-200 rounded-full h-3"><div className="bg-amber-500 h-3 rounded-full" style={{width: '25%'}}></div></div>
+                                <div className="flex justify-between mt-2"><span>After 14 days</span><span className="font-bold text-emerald-700">~0.5%/day declining</span></div>
+                                <div className="w-full bg-emerald-200 rounded-full h-3"><div className="bg-emerald-500 h-3 rounded-full" style={{width: '10%'}}></div></div>
+                              </div>
+                            </div>
+                            <div className="space-y-3">
+                              <div className="bg-purple-50 rounded-lg p-3">
+                                <h5 className="font-semibold text-purple-800 text-sm mb-2">Securing Strategy</h5>
+                                <ul className="space-y-1 text-sm text-slate-700">
+                                  <li><strong>Coiling (endovascular):</strong> Preferred for posterior circulation, elderly, poor-grade, basilar tip. Class I.</li>
+                                  <li><strong>Clipping (surgical):</strong> Consider for MCA, large/wide-necked aneurysms, concurrent hematoma needing evacuation.</li>
+                                  <li><strong>Timeline:</strong> Secure within 24h of presentation (Class I, LOE B-NR).</li>
+                                </ul>
+                              </div>
+                              <div className="bg-amber-50 rounded-lg p-3">
+                                <h5 className="font-semibold text-amber-800 text-sm mb-2">Risk Factors for Rebleeding</h5>
+                                <ul className="space-y-1 text-sm text-slate-700">
+                                  <li>&#x2022; Unsecured aneurysm (most important)</li>
+                                  <li>&#x2022; Poor clinical grade (H&H 4-5)</li>
+                                  <li>&#x2022; Systolic BP &gt;160 mmHg</li>
+                                  <li>&#x2022; Large aneurysm size (&gt;10 mm)</li>
+                                  <li>&#x2022; Posterior circulation location</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Post-Securing BP Targets */}
+                        <div className="bg-white border border-slate-200 rounded-lg p-4">
+                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-purple-600 text-white text-xs flex items-center justify-center font-bold">6</span>
+                            BP Targets by Phase
+                          </h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            {[
+                              { phase: 'Pre-Securing', target: 'SBP <160', color: 'red', detail: 'Until aneurysm clipped/coiled' },
+                              { phase: 'Post-Securing', target: 'SBP <180', color: 'amber', detail: 'First 24-72h after securing' },
+                              { phase: 'DCI Treatment', target: 'Induced HTN', color: 'purple', detail: 'MAP +20-25% above baseline' }
+                            ].map(bp => (
+                              <div key={bp.phase} className={`bg-${bp.color}-50 border border-${bp.color}-200 rounded-lg p-3 text-center`}>
+                                <div className="text-xs text-slate-600 mb-1">{bp.phase}</div>
+                                <div className={`text-xl font-bold text-${bp.color}-700`}>{bp.target}</div>
+                                <div className="text-xs text-slate-500 mt-1">{bp.detail}</div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* SAH Supportive Care Bundle */}
+                        <details className="bg-white border border-slate-200 rounded-lg">
+                          <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-lg">
+                            SAH ICU Supportive Care Bundle
+                          </summary>
+                          <div className="px-4 pb-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              {[
+                                { cat: 'Cardiac', items: ['Troponin + ECG on admission (SAH can cause stress cardiomyopathy)', 'Continuous telemetry', 'Echo if troponin elevated or hemodynamic instability'] },
+                                { cat: 'DVT Prevention', items: ['SCDs immediately', 'UFH 5000u SC q8-12h after aneurysm secured', 'LMWH if no EVD and aneurysm secured'] },
+                                { cat: 'Glycemic Control', items: ['Target glucose 140-180 mg/dL', 'Insulin drip if persistent hyperglycemia', 'Avoid hypoglycemia (<70 mg/dL)'] },
+                                { cat: 'Fever Management', items: ['Target normothermia (<38°C)', 'Acetaminophen 1g q6h scheduled', 'Cooling device if refractory', 'Workup: blood/urine cultures, CXR'] },
+                                { cat: 'Nutrition', items: ['NPO until swallow evaluation', 'Dobhoff if intubated >48h or failed swallow', 'Early enteral nutrition preferred'] },
+                                { cat: 'Positioning', items: ['HOB 30°', 'Quiet, low-stimulation environment', 'Stool softeners (avoid Valsalva)', 'Activity restrictions until aneurysm secured'] }
+                              ].map(section => (
+                                <div key={section.cat} className="bg-slate-50 rounded-lg p-3">
+                                  <h5 className="font-semibold text-slate-800 text-sm mb-1">{section.cat}</h5>
+                                  <ul className="space-y-0.5">
+                                    {section.items.map((item, i) => (
+                                      <li key={i} className="text-xs text-slate-600 flex items-start gap-1">
+                                        <span className="text-purple-400 mt-0.5">&#x2022;</span> {item}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </details>
+                      </div>
+                    )}
+                    {/* End of SAH Management Content */}
+
+                    {/* TIA Management Content */}
+                    {managementSubTab === 'tia' && (
+                      <div className="space-y-4">
+                        {/* TIA Header */}
+                        <div className="bg-white border-l-4 border-l-orange-500 border border-slate-200 rounded-lg p-4">
+                          <h3 className="text-lg font-bold text-orange-900 mb-1">TIA Management & Secondary Prevention</h3>
+                          <p className="text-sm text-slate-600">Urgent evaluation and risk reduction for transient ischemic attack</p>
+                        </div>
+
+                        {/* Admit All TIAs */}
+                        <div className="bg-orange-50 border border-orange-300 rounded-lg p-3">
+                          <p className="text-sm text-orange-900 font-semibold">Admit ALL TIAs for urgent inpatient workup (Class I, LOE B-NR). Do not use ABCD2 score alone for disposition decisions.</p>
+                        </div>
+
+                        {/* ABCD2 Risk Stratification */}
+                        <div className="bg-white border border-slate-200 rounded-lg p-4">
+                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center font-bold">1</span>
+                            Risk Stratification (ABCD2)
+                          </h4>
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-sm border-collapse">
+                              <thead>
+                                <tr className="bg-slate-100">
+                                  <th className="border border-slate-200 px-3 py-2 text-left">Score</th>
+                                  <th className="border border-slate-200 px-3 py-2 text-left">Risk Level</th>
+                                  <th className="border border-slate-200 px-3 py-2 text-left">2-Day Stroke Risk</th>
+                                  <th className="border border-slate-200 px-3 py-2 text-left">7-Day</th>
+                                  <th className="border border-slate-200 px-3 py-2 text-left">90-Day</th>
+                                  <th className="border border-slate-200 px-3 py-2 text-left">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr className="bg-emerald-50">
+                                  <td className="border border-slate-200 px-3 py-1.5 font-mono font-bold">0-3</td>
+                                  <td className="border border-slate-200 px-3 py-1.5"><span className="text-emerald-700 font-semibold">Low</span></td>
+                                  <td className="border border-slate-200 px-3 py-1.5">1.0%</td>
+                                  <td className="border border-slate-200 px-3 py-1.5">1.2%</td>
+                                  <td className="border border-slate-200 px-3 py-1.5">3.1%</td>
+                                  <td className="border border-slate-200 px-3 py-1.5 text-xs">Admit, urgent workup within 24h</td>
+                                </tr>
+                                <tr className="bg-amber-50">
+                                  <td className="border border-slate-200 px-3 py-1.5 font-mono font-bold">4-5</td>
+                                  <td className="border border-slate-200 px-3 py-1.5"><span className="text-amber-700 font-semibold">Moderate</span></td>
+                                  <td className="border border-slate-200 px-3 py-1.5">4.1%</td>
+                                  <td className="border border-slate-200 px-3 py-1.5">5.9%</td>
+                                  <td className="border border-slate-200 px-3 py-1.5">9.8%</td>
+                                  <td className="border border-slate-200 px-3 py-1.5 text-xs">Admit, expedited workup + DAPT</td>
+                                </tr>
+                                <tr className="bg-red-50">
+                                  <td className="border border-slate-200 px-3 py-1.5 font-mono font-bold">6-7</td>
+                                  <td className="border border-slate-200 px-3 py-1.5"><span className="text-red-700 font-semibold">High</span></td>
+                                  <td className="border border-slate-200 px-3 py-1.5">8.1%</td>
+                                  <td className="border border-slate-200 px-3 py-1.5">11.7%</td>
+                                  <td className="border border-slate-200 px-3 py-1.5">17.8%</td>
+                                  <td className="border border-slate-200 px-3 py-1.5 text-xs">Admit, STAT workup + DAPT + vascular imaging</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <p className="text-xs text-slate-500 mt-2">ABCD2 is informational only — all TIA patients should be admitted regardless of score.</p>
+                        </div>
+
+                        {/* Urgent Imaging Protocol */}
+                        <div className="bg-white border border-slate-200 rounded-lg p-4">
+                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center font-bold">2</span>
+                            Urgent Imaging Protocol
+                          </h4>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-blue-50 rounded-lg p-3">
+                              <h5 className="font-semibold text-blue-800 text-sm mb-2">Brain Imaging</h5>
+                              <ul className="space-y-1.5 text-sm text-slate-700">
+                                <li className="flex items-start gap-2"><span className="text-blue-600 font-bold">1.</span> <strong>MRI DWI</strong> (preferred) — 80% sensitivity for acute ischemia. Obtain within 24h.</li>
+                                <li className="flex items-start gap-2"><span className="text-blue-600 font-bold">2.</span> <strong>CT Head</strong> — if MRI unavailable. Low sensitivity for TIA but rules out hemorrhage.</li>
+                                <li className="flex items-start gap-2"><span className="text-blue-600 font-bold">3.</span> <strong>DWI-positive TIA</strong> = higher stroke risk. Consider as minor stroke.</li>
+                              </ul>
+                            </div>
+                            <div className="bg-amber-50 rounded-lg p-3">
+                              <h5 className="font-semibold text-amber-800 text-sm mb-2">Vascular Imaging</h5>
+                              <ul className="space-y-1.5 text-sm text-slate-700">
+                                <li className="flex items-start gap-2"><span className="text-amber-600 font-bold">1.</span> <strong>CTA Head & Neck</strong> (preferred) or MRA — Obtain STAT</li>
+                                <li className="flex items-start gap-2"><span className="text-amber-600 font-bold">2.</span> <strong>Carotid duplex</strong> — if anterior circulation TIA + CTA not done</li>
+                                <li className="flex items-start gap-2"><span className="text-amber-600 font-bold">3.</span> <strong>Intracranial vessel imaging</strong> — CTA or MRA for ICAD evaluation</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* DAPT Initiation */}
+                        <div className="bg-white border border-slate-200 rounded-lg p-4">
+                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center font-bold">3</span>
+                            Antiplatelet Therapy — DAPT Protocol
+                          </h4>
+                          <div className="space-y-3">
+                            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                              <h5 className="font-semibold text-emerald-800 text-sm mb-2">High-Risk TIA or Minor Stroke (NIHSS ≤3) — CHANCE/POINT Protocol</h5>
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                                <div className="bg-white rounded p-2 border border-emerald-100">
+                                  <div className="font-semibold text-slate-800">Day 1 (Loading)</div>
+                                  <div className="text-slate-600">ASA 325 mg + Clopidogrel 300 mg</div>
+                                </div>
+                                <div className="bg-white rounded p-2 border border-emerald-100">
+                                  <div className="font-semibold text-slate-800">Days 2-21</div>
+                                  <div className="text-slate-600">ASA 81 mg + Clopidogrel 75 mg daily</div>
+                                </div>
+                                <div className="bg-white rounded p-2 border border-emerald-100">
+                                  <div className="font-semibold text-slate-800">Day 22+</div>
+                                  <div className="text-slate-600">Mono antiplatelet (ASA 81 or Clop 75)</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm">
+                              <strong className="text-amber-800">CYP2C19 Testing:</strong> Order CYP2C19 genotyping. Poor metabolizers (*2/*2, *2/*3, *3/*3) have reduced clopidogrel efficacy — switch to ticagrelor 90mg BID.
+                            </div>
+                            <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm text-slate-700">
+                              <strong>If AF identified:</strong> Switch from DAPT to anticoagulation (DOAC preferred). Do NOT combine long-term DAPT + anticoagulation.
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Etiologic Workup */}
+                        <div className="bg-white border border-slate-200 rounded-lg p-4">
+                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center font-bold">4</span>
+                            Etiologic Workup Checklist
+                          </h4>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            {[
+                              { cat: 'Cardiac', items: ['12-Lead ECG', 'Continuous telemetry (≥24h)', 'TTE with bubble study', 'Extended cardiac monitoring (14-30 day) if no AF on telemetry'], color: 'red' },
+                              { cat: 'Vascular', items: ['CTA Head & Neck (or MRA)', 'Carotid duplex if anterior TIA', 'Vessel wall MRI if ICAD suspected', 'Aortic arch imaging if embolism suspected'], color: 'blue' },
+                              { cat: 'Laboratory', items: ['CBC, BMP, HbA1c', 'Fasting lipid panel', 'TSH', 'ESR/CRP if vasculitis suspected', 'Hypercoagulable panel if age <50 or cryptogenic'] , color: 'emerald' }
+                            ].map(section => (
+                              <div key={section.cat} className={`bg-${section.color}-50 rounded-lg p-3`}>
+                                <h5 className={`font-semibold text-${section.color}-800 text-sm mb-2`}>{section.cat}</h5>
+                                <ul className="space-y-1">
+                                  {section.items.map((item, i) => (
+                                    <li key={i} className="text-xs text-slate-700 flex items-start gap-1">
+                                      <span className={`text-${section.color}-400 mt-0.5`}>&#x2022;</span> {item}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Carotid Stenosis Decision Tree */}
+                        <div className="bg-white border border-slate-200 rounded-lg p-4">
+                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center font-bold">5</span>
+                            Carotid Stenosis Management
+                          </h4>
+                          <div className="space-y-2">
+                            {[
+                              { stenosis: '70-99% Symptomatic', action: 'CEA within 2 weeks (Class I, LOE A)', detail: 'CAS reasonable alternative if high surgical risk. Best outcomes if revascularization within 14 days.', color: 'red' },
+                              { stenosis: '50-69% Symptomatic', action: 'Individualize — CEA may be considered', detail: 'Benefit greatest in males, age >75, recent symptoms. Consider patient comorbidities.', color: 'amber' },
+                              { stenosis: '<50% Symptomatic', action: 'Medical management only', detail: 'DAPT + high-intensity statin + BP control. Revascularization NOT recommended.', color: 'emerald' },
+                              { stenosis: 'Near-occlusion / string sign', action: 'Medical management preferred', detail: 'Revascularization benefit uncertain. Aggressive medical therapy.', color: 'slate' }
+                            ].map(row => (
+                              <div key={row.stenosis} className={`flex items-start gap-3 p-3 rounded-lg bg-${row.color}-50 border border-${row.color}-200`}>
+                                <div className={`shrink-0 px-2 py-1 rounded text-xs font-bold text-${row.color}-700 bg-${row.color}-100`}>{row.stenosis}</div>
+                                <div>
+                                  <div className="text-sm font-semibold text-slate-800">{row.action}</div>
+                                  <div className="text-xs text-slate-600">{row.detail}</div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Secondary Prevention */}
+                        <details className="bg-white border border-slate-200 rounded-lg">
+                          <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-lg">
+                            Secondary Prevention — Complete Checklist
+                          </summary>
+                          <div className="px-4 pb-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              {[
+                                { cat: 'Antithrombotic', items: ['DAPT x21d then mono antiplatelet (if no AF)', 'DOAC if AF confirmed (apixaban/rivaroxaban preferred)', 'CYP2C19 genotyping for clopidogrel efficacy'] },
+                                { cat: 'Lipid Management', items: ['High-intensity statin: Atorvastatin 80mg or Rosuvastatin 20-40mg', 'LDL target <70 mg/dL', 'Add ezetimibe 10mg if not at goal', 'PCSK9i if refractory (evolocumab, alirocumab)'] },
+                                { cat: 'Blood Pressure', items: ['Target <130/80 mmHg (Class I)', 'Initiate/optimize after 24-48h post-event', 'Preferred: ACE-I/ARB + thiazide or CCB', 'Home BP monitoring'] },
+                                { cat: 'Diabetes & Lifestyle', items: ['HbA1c target <7%', 'GLP-1 RA (semaglutide/liraglutide) — CV benefit', 'Smoking cessation (varenicline/NRT)', 'Mediterranean diet', 'Exercise: 150 min/week moderate intensity'] }
+                              ].map(section => (
+                                <div key={section.cat} className="bg-slate-50 rounded-lg p-3">
+                                  <h5 className="font-semibold text-slate-800 text-sm mb-1">{section.cat}</h5>
+                                  <ul className="space-y-0.5">
+                                    {section.items.map((item, i) => (
+                                      <li key={i} className="text-xs text-slate-600">&#x2022; {item}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </details>
+                      </div>
+                    )}
+                    {/* End of TIA Management Content */}
+
+                    {/* CVT Management Content */}
+                    {managementSubTab === 'cvt' && (
+                      <div className="space-y-4">
+                        {/* CVT Header */}
+                        <div className="bg-white border-l-4 border-l-indigo-500 border border-slate-200 rounded-lg p-4">
+                          <h2 className="text-xl font-bold text-indigo-900 flex items-center gap-2">
+                            <i data-lucide="git-branch" className="w-6 h-6"></i>
+                            Cerebral Venous Thrombosis (CVT) Management
+                          </h2>
+                          <p className="text-sm text-slate-600 mt-1">AHA/ASA 2024 Guidelines — CSBP 2024</p>
+                        </div>
+
+                        {/* CVT Treatment Checklist */}
+                        <div className="bg-white border border-indigo-200 rounded-lg p-4">
+                          <h3 className="text-base font-bold text-indigo-800 mb-3 flex items-center gap-2">
+                            <i data-lucide="clipboard-check" className="w-5 h-5"></i>
+                            Acute Management Checklist
+                          </h3>
+                          <div className="space-y-2">
+                            <label className="flex items-start gap-2 cursor-pointer p-2 rounded-lg hover:bg-indigo-50">
+                              <input type="checkbox" checked={!!telestrokeNote.cvtAnticoagStarted}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, cvtAnticoagStarted: e.target.checked})}
+                                className="mt-0.5 rounded border-indigo-300 text-indigo-600" />
+                              <div>
+                                <span className="text-sm font-medium text-slate-800">Anticoagulation initiated</span>
+                                <span className="block text-xs text-slate-500">LMWH or UFH, even with hemorrhagic infarction (Class I, LOE B-NR)</span>
+                              </div>
+                            </label>
+                            {telestrokeNote.cvtAnticoagStarted && (
+                              <div className="ml-8 mb-2">
+                                <select value={telestrokeNote.cvtAnticoagType || ''}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, cvtAnticoagType: e.target.value})}
+                                  className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm">
+                                  <option value="">-- Select agent --</option>
+                                  <option value="enoxaparin">Enoxaparin 1 mg/kg SC q12h</option>
+                                  <option value="ufh">UFH weight-based (aPTT 60-80s)</option>
+                                  <option value="other">Other</option>
+                                </select>
+                              </div>
+                            )}
+                            <label className="flex items-start gap-2 cursor-pointer p-2 rounded-lg hover:bg-indigo-50">
+                              <input type="checkbox" checked={!!telestrokeNote.cvtIcpManaged}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, cvtIcpManaged: e.target.checked})}
+                                className="mt-0.5 rounded border-indigo-300 text-indigo-600" />
+                              <div>
+                                <span className="text-sm font-medium text-slate-800">ICP assessment/management</span>
+                                <span className="block text-xs text-slate-500">HOB 30°, acetazolamide if needed, LP drainage for visual impairment</span>
+                              </div>
+                            </label>
+                            <label className="flex items-start gap-2 cursor-pointer p-2 rounded-lg hover:bg-indigo-50">
+                              <input type="checkbox" checked={!!telestrokeNote.cvtSeizureManaged}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, cvtSeizureManaged: e.target.checked})}
+                                className="mt-0.5 rounded border-indigo-300 text-indigo-600" />
+                              <div>
+                                <span className="text-sm font-medium text-slate-800">Seizure management addressed</span>
+                                <span className="block text-xs text-slate-500">Prophylaxis for supratentorial lesions; levetiracetam preferred</span>
+                              </div>
+                            </label>
+                            <label className="flex items-start gap-2 cursor-pointer p-2 rounded-lg hover:bg-indigo-50">
+                              <input type="checkbox" checked={!!telestrokeNote.cvtHematologyConsulted}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, cvtHematologyConsulted: e.target.checked})}
+                                className="mt-0.5 rounded border-indigo-300 text-indigo-600" />
+                              <div>
+                                <span className="text-sm font-medium text-slate-800">Hematology consult / thrombophilia workup</span>
+                                <span className="block text-xs text-slate-500">Factor V Leiden, prothrombin mutation, protein C/S, APLA</span>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+
+                        {/* CVT Risk Factors */}
+                        <div className="bg-white border border-indigo-200 rounded-lg p-4">
+                          <h3 className="text-base font-bold text-indigo-800 mb-3">Risk Factor Assessment</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                            <div className="bg-indigo-50 p-3 rounded-lg">
+                              <h4 className="font-semibold text-indigo-800 mb-1">Prothrombotic</h4>
+                              <ul className="text-xs text-slate-700 space-y-0.5">
+                                <li>• Factor V Leiden mutation</li>
+                                <li>• Prothrombin G20210A</li>
+                                <li>• Protein C/S deficiency</li>
+                                <li>• Antithrombin III deficiency</li>
+                                <li>• Antiphospholipid syndrome</li>
+                                <li>• Hyperhomocysteinemia</li>
+                              </ul>
+                            </div>
+                            <div className="bg-indigo-50 p-3 rounded-lg">
+                              <h4 className="font-semibold text-indigo-800 mb-1">Acquired</h4>
+                              <ul className="text-xs text-slate-700 space-y-0.5">
+                                <li>• OCP / hormonal therapy</li>
+                                <li>• Pregnancy / puerperium</li>
+                                <li>• Malignancy</li>
+                                <li>• Infection (mastoiditis, sinusitis)</li>
+                                <li>• IBD / nephrotic syndrome</li>
+                                <li>• Dehydration / recent surgery</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* CVT Imaging */}
+                        <div className="bg-white border border-indigo-200 rounded-lg p-4">
+                          <h3 className="text-base font-bold text-indigo-800 mb-3">Diagnostic Imaging</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                            <div className="bg-white border border-slate-200 p-3 rounded-lg">
+                              <h4 className="font-semibold text-slate-800 mb-1">First-line</h4>
+                              <ul className="text-xs text-slate-700 space-y-0.5">
+                                <li>• <strong>MRI + MRV</strong> (preferred)</li>
+                                <li>• CT venography if MRI unavailable</li>
+                                <li>• Non-contrast CT: cord sign, dense triangle sign, hemorrhagic venous infarct</li>
+                              </ul>
+                            </div>
+                            <div className="bg-white border border-slate-200 p-3 rounded-lg">
+                              <h4 className="font-semibold text-slate-800 mb-1">Follow-up</h4>
+                              <ul className="text-xs text-slate-700 space-y-0.5">
+                                <li>• Repeat MRV at 3-6 months</li>
+                                <li>• Assess for recanalization</li>
+                                <li>• Guide duration of anticoagulation</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Endovascular Therapy */}
+                        <div className="bg-white border border-indigo-200 rounded-lg p-4">
+                          <h3 className="text-base font-bold text-indigo-800 mb-3">Endovascular Therapy Consideration</h3>
+                          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm">
+                            <p className="text-amber-800 font-medium mb-1">Consider EVT if clinical deterioration despite adequate anticoagulation:</p>
+                            <ul className="text-xs text-amber-700 space-y-0.5">
+                              <li>• Mechanical thrombectomy ± local thrombolysis</li>
+                              <li>• Class IIb recommendation (LOE C-LD)</li>
+                              <li>• Contact interventional neuroradiology early</li>
+                              <li>• Decompressive craniectomy if impending herniation (Class IIa)</li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        {/* Long-term Management */}
+                        <div className="bg-white border border-indigo-200 rounded-lg p-4">
+                          <h3 className="text-base font-bold text-indigo-800 mb-3">Long-term Anticoagulation</h3>
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-sm border-collapse">
+                              <thead>
+                                <tr className="bg-indigo-50">
+                                  <th className="border border-indigo-200 px-3 py-2 text-left text-indigo-800">Scenario</th>
+                                  <th className="border border-indigo-200 px-3 py-2 text-left text-indigo-800">Duration</th>
+                                  <th className="border border-indigo-200 px-3 py-2 text-left text-indigo-800">Agent</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td className="border border-indigo-100 px-3 py-2 text-xs">Provoked (OCP, pregnancy, infection)</td>
+                                  <td className="border border-indigo-100 px-3 py-2 text-xs font-medium">3-6 months</td>
+                                  <td className="border border-indigo-100 px-3 py-2 text-xs">VKA (INR 2-3) preferred</td>
+                                </tr>
+                                <tr className="bg-slate-50">
+                                  <td className="border border-indigo-100 px-3 py-2 text-xs">Unprovoked / mild thrombophilia</td>
+                                  <td className="border border-indigo-100 px-3 py-2 text-xs font-medium">6-12 months</td>
+                                  <td className="border border-indigo-100 px-3 py-2 text-xs">VKA; DOAC may be considered (ACTION-CVT)</td>
+                                </tr>
+                                <tr>
+                                  <td className="border border-indigo-100 px-3 py-2 text-xs">Recurrent VTE or severe thrombophilia</td>
+                                  <td className="border border-indigo-100 px-3 py-2 text-xs font-medium">Indefinite</td>
+                                  <td className="border border-indigo-100 px-3 py-2 text-xs">VKA (INR 2-3)</td>
+                                </tr>
+                                <tr className="bg-slate-50">
+                                  <td className="border border-indigo-100 px-3 py-2 text-xs">APS confirmed</td>
+                                  <td className="border border-indigo-100 px-3 py-2 text-xs font-medium">Indefinite</td>
+                                  <td className="border border-indigo-100 px-3 py-2 text-xs">VKA only (DOACs contraindicated)</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <p className="text-xs text-slate-500 mt-2 italic">Reassess imaging (MRV) at 3-6 months to guide anticoag duration. Fischer U et al. Lancet Neurol. 2025.</p>
+                        </div>
+
+                        {/* Special Populations */}
+                        <details className="bg-white border border-indigo-200 rounded-lg">
+                          <summary className="cursor-pointer p-4 font-semibold text-indigo-800 hover:bg-indigo-50 rounded-lg flex items-center justify-between">
+                            <span>CVT in Special Populations</span>
+                            <i data-lucide="chevron-down" className="w-4 h-4"></i>
+                          </summary>
+                          <div className="p-4 pt-0 space-y-3 text-sm">
+                            <div className="bg-pink-50 border border-pink-200 rounded-lg p-3">
+                              <h4 className="font-semibold text-pink-800 mb-1">Pregnancy / Postpartum</h4>
+                              <ul className="text-xs text-slate-700 space-y-0.5">
+                                <li>• LMWH throughout pregnancy (UFH also acceptable)</li>
+                                <li>• Warfarin contraindicated in 1st trimester, acceptable postpartum</li>
+                                <li>• DOACs contraindicated in pregnancy/breastfeeding</li>
+                                <li>• Future pregnancy not contraindicated, but prophylactic LMWH recommended</li>
+                              </ul>
+                            </div>
+                            <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                              <h4 className="font-semibold text-slate-800 mb-1">Pediatric CVT</h4>
+                              <ul className="text-xs text-slate-700 space-y-0.5">
+                                <li>• Anticoagulation recommended (LMWH or UFH)</li>
+                                <li>• Treat underlying infection aggressively</li>
+                                <li>• 3-6 months anticoagulation typical</li>
+                                <li>• Thrombophilia workup recommended</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </details>
+                      </div>
+                    )}
+                    {/* End of CVT Management Content */}
+
                     {/* Calculators Content */}
                     {managementSubTab === 'calculators' && (
                   <GlobalPatientContext.Provider value={patientContextValue}>
@@ -19800,179 +21136,38 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
-                        <div className="space-y-2">
-                          <h4 className="font-semibold">Eye Opening</h4>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_eye"
-                              value="4"
-                              className="text-slate-600"
-                              checked={gcsItems.eye === '4'}
-                              onChange={(e) => setGcsItems({...gcsItems, eye: e.target.value})}
-                            />
-                            <span className="text-sm">4 - Spontaneous</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_eye"
-                              value="3"
-                              className="text-slate-600"
-                              checked={gcsItems.eye === '3'}
-                              onChange={(e) => setGcsItems({...gcsItems, eye: e.target.value})}
-                            />
-                            <span className="text-sm">3 - To sound</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_eye"
-                              value="2"
-                              className="text-slate-600"
-                              checked={gcsItems.eye === '2'}
-                              onChange={(e) => setGcsItems({...gcsItems, eye: e.target.value})}
-                            />
-                            <span className="text-sm">2 - To pain</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_eye"
-                              value="1"
-                              className="text-slate-600"
-                              checked={gcsItems.eye === '1'}
-                              onChange={(e) => setGcsItems({...gcsItems, eye: e.target.value})}
-                            />
-                            <span className="text-sm">1 - None</span>
-                          </label>
+                        <div className="space-y-1">
+                          <h4 className="font-semibold text-sm mb-1">Eye Opening</h4>
+                          {[{v:'4',l:'Spontaneous'},{v:'3',l:'To sound'},{v:'2',l:'To pain'},{v:'1',l:'None'}].map(o => (
+                            <button key={o.v} type="button"
+                              className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${gcsItems.eye === o.v ? 'bg-slate-700 text-white border-slate-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
+                              onClick={() => setGcsItems({...gcsItems, eye: o.v})}
+                            >
+                              <span className="font-mono mr-1">{o.v}</span> {o.l}
+                            </button>
+                          ))}
                         </div>
-                        <div className="space-y-2">
-                          <h4 className="font-semibold">Verbal Response</h4>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_verbal"
-                              value="5"
-                              className="text-slate-600"
-                              checked={gcsItems.verbal === '5'}
-                              onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
-                            />
-                            <span className="text-sm">5 - Oriented</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_verbal"
-                              value="4"
-                              className="text-slate-600"
-                              checked={gcsItems.verbal === '4'}
-                              onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
-                            />
-                            <span className="text-sm">4 - Confused</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_verbal"
-                              value="3"
-                              className="text-slate-600"
-                              checked={gcsItems.verbal === '3'}
-                              onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
-                            />
-                            <span className="text-sm">3 - Inappropriate</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_verbal"
-                              value="2"
-                              className="text-slate-600"
-                              checked={gcsItems.verbal === '2'}
-                              onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
-                            />
-                            <span className="text-sm">2 - Incomprehensible</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_verbal"
-                              value="1"
-                              className="text-slate-600"
-                              checked={gcsItems.verbal === '1'}
-                              onChange={(e) => setGcsItems({...gcsItems, verbal: e.target.value})}
-                            />
-                            <span className="text-sm">1 - None</span>
-                          </label>
+                        <div className="space-y-1">
+                          <h4 className="font-semibold text-sm mb-1">Verbal Response</h4>
+                          {[{v:'5',l:'Oriented'},{v:'4',l:'Confused'},{v:'3',l:'Inappropriate'},{v:'2',l:'Incomprehensible'},{v:'1',l:'None'}].map(o => (
+                            <button key={o.v} type="button"
+                              className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${gcsItems.verbal === o.v ? 'bg-slate-700 text-white border-slate-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
+                              onClick={() => setGcsItems({...gcsItems, verbal: o.v})}
+                            >
+                              <span className="font-mono mr-1">{o.v}</span> {o.l}
+                            </button>
+                          ))}
                         </div>
-                        <div className="space-y-2">
-                          <h4 className="font-semibold">Motor Response</h4>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_motor"
-                              value="6"
-                              className="text-slate-600"
-                              checked={gcsItems.motor === '6'}
-                              onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
-                            />
-                            <span className="text-sm">6 - Obeying</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_motor"
-                              value="5"
-                              className="text-slate-600"
-                              checked={gcsItems.motor === '5'}
-                              onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
-                            />
-                            <span className="text-sm">5 - Localizing</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_motor"
-                              value="4"
-                              className="text-slate-600"
-                              checked={gcsItems.motor === '4'}
-                              onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
-                            />
-                            <span className="text-sm">4 - Flexing</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_motor"
-                              value="3"
-                              className="text-slate-600"
-                              checked={gcsItems.motor === '3'}
-                              onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
-                            />
-                            <span className="text-sm">3 - Abnormal flexion</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_motor"
-                              value="2"
-                              className="text-slate-600"
-                              checked={gcsItems.motor === '2'}
-                              onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
-                            />
-                            <span className="text-sm">2 - Extending</span>
-                          </label>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="gcs_motor"
-                              value="1"
-                              className="text-slate-600"
-                              checked={gcsItems.motor === '1'}
-                              onChange={(e) => setGcsItems({...gcsItems, motor: e.target.value})}
-                            />
-                            <span className="text-sm">1 - None</span>
-                          </label>
+                        <div className="space-y-1">
+                          <h4 className="font-semibold text-sm mb-1">Motor Response</h4>
+                          {[{v:'6',l:'Obeying'},{v:'5',l:'Localizing'},{v:'4',l:'Flexing'},{v:'3',l:'Abnormal flexion'},{v:'2',l:'Extending'},{v:'1',l:'None'}].map(o => (
+                            <button key={o.v} type="button"
+                              className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${gcsItems.motor === o.v ? 'bg-slate-700 text-white border-slate-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
+                              onClick={() => setGcsItems({...gcsItems, motor: o.v})}
+                            >
+                              <span className="font-mono mr-1">{o.v}</span> {o.l}
+                            </button>
+                          ))}
                         </div>
                       </div>
                       {(() => {
@@ -20021,37 +21216,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
                         <div className="space-y-2">
-                          <p className="font-semibold text-sm mb-2">Glasgow Coma Scale:</p>
-                          <label className="flex items-center space-x-2 cursor-pointer">
-                            <input
-                              type="radio"
-                              name="ich_gcs"
-                              className="text-red-600"
-                              checked={ichScoreItems.gcs === 'gcs34'}
-                              onChange={() => setIchScoreItems({...ichScoreItems, gcs: 'gcs34'})}
-                            />
-                            <span className="text-sm">GCS 3-4 (+2 points)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 cursor-pointer">
-                            <input
-                              type="radio"
-                              name="ich_gcs"
-                              className="text-red-600"
-                              checked={ichScoreItems.gcs === 'gcs512'}
-                              onChange={() => setIchScoreItems({...ichScoreItems, gcs: 'gcs512'})}
-                            />
-                            <span className="text-sm">GCS 5-12 (+1 point)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 cursor-pointer">
-                            <input
-                              type="radio"
-                              name="ich_gcs"
-                              className="text-red-600"
-                              checked={ichScoreItems.gcs === ''}
-                              onChange={() => setIchScoreItems({...ichScoreItems, gcs: ''})}
-                            />
-                            <span className="text-sm">GCS 13-15 (0 points)</span>
-                          </label>
+                          <p className="font-semibold text-sm mb-1">Glasgow Coma Scale:</p>
+                          {[{v:'gcs34',l:'GCS 3-4',p:'+2 points'},{v:'gcs512',l:'GCS 5-12',p:'+1 point'},{v:'',l:'GCS 13-15',p:'0 points'}].map(o => (
+                            <button key={o.v} type="button"
+                              className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${ichScoreItems.gcs === o.v ? 'bg-red-700 text-white border-red-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
+                              onClick={() => setIchScoreItems({...ichScoreItems, gcs: o.v})}
+                            >
+                              {o.l} <span className={ichScoreItems.gcs === o.v ? 'text-red-200' : 'text-slate-400'}>({o.p})</span>
+                            </button>
+                          ))}
                           <hr className="my-3" />
                           <label className="flex items-center space-x-2">
                             <input 
@@ -20245,109 +21418,23 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       </div>
 
                       <div className="space-y-2">
-                        <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="mrs"
-                            value="0"
-                            checked={mrsScore === '0'}
-                            onChange={(e) => setMrsScore(e.target.value)}
-                            className="mt-1 text-blue-600"
-                          />
-                          <div className="flex-1">
-                            <div className="font-semibold text-slate-900">0 - No symptoms</div>
-                            <div className="text-sm text-slate-600">Completely recovered; no residual symptoms</div>
-                          </div>
-                        </label>
-
-                        <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="mrs"
-                            value="1"
-                            checked={mrsScore === '1'}
-                            onChange={(e) => setMrsScore(e.target.value)}
-                            className="mt-1 text-blue-600"
-                          />
-                          <div className="flex-1">
-                            <div className="font-semibold text-slate-900">1 - No significant disability</div>
-                            <div className="text-sm text-slate-600">Able to carry out all usual duties and activities despite some symptoms</div>
-                          </div>
-                        </label>
-
-                        <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="mrs"
-                            value="2"
-                            checked={mrsScore === '2'}
-                            onChange={(e) => setMrsScore(e.target.value)}
-                            className="mt-1 text-blue-600"
-                          />
-                          <div className="flex-1">
-                            <div className="font-semibold text-slate-900">2 - Slight disability</div>
-                            <div className="text-sm text-slate-600">Unable to carry out all previous activities but able to look after own affairs without assistance</div>
-                          </div>
-                        </label>
-
-                        <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="mrs"
-                            value="3"
-                            checked={mrsScore === '3'}
-                            onChange={(e) => setMrsScore(e.target.value)}
-                            className="mt-1 text-blue-600"
-                          />
-                          <div className="flex-1">
-                            <div className="font-semibold text-slate-900">3 - Moderate disability</div>
-                            <div className="text-sm text-slate-600">Requires some help, but able to walk without assistance</div>
-                          </div>
-                        </label>
-
-                        <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="mrs"
-                            value="4"
-                            checked={mrsScore === '4'}
-                            onChange={(e) => setMrsScore(e.target.value)}
-                            className="mt-1 text-blue-600"
-                          />
-                          <div className="flex-1">
-                            <div className="font-semibold text-slate-900">4 - Moderately severe disability</div>
-                            <div className="text-sm text-slate-600">Unable to walk without assistance and unable to attend to own bodily needs without assistance</div>
-                          </div>
-                        </label>
-
-                        <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="mrs"
-                            value="5"
-                            checked={mrsScore === '5'}
-                            onChange={(e) => setMrsScore(e.target.value)}
-                            className="mt-1 text-blue-600"
-                          />
-                          <div className="flex-1">
-                            <div className="font-semibold text-slate-900">5 - Severe disability</div>
-                            <div className="text-sm text-slate-600">Bedridden, incontinent, and requires constant nursing care and attention</div>
-                          </div>
-                        </label>
-
-                        <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="mrs"
-                            value="6"
-                            checked={mrsScore === '6'}
-                            onChange={(e) => setMrsScore(e.target.value)}
-                            className="mt-1 text-blue-600"
-                          />
-                          <div className="flex-1">
-                            <div className="font-semibold text-slate-900">6 - Dead</div>
-                          </div>
-                        </label>
+                        {[
+                          {v:'0',title:'0 - No symptoms',desc:'Completely recovered; no residual symptoms'},
+                          {v:'1',title:'1 - No significant disability',desc:'Able to carry out all usual duties and activities despite some symptoms'},
+                          {v:'2',title:'2 - Slight disability',desc:'Unable to carry out all previous activities but able to look after own affairs without assistance'},
+                          {v:'3',title:'3 - Moderate disability',desc:'Requires some help, but able to walk without assistance'},
+                          {v:'4',title:'4 - Moderately severe disability',desc:'Unable to walk without assistance and unable to attend to own bodily needs without assistance'},
+                          {v:'5',title:'5 - Severe disability',desc:'Bedridden, incontinent, and requires constant nursing care and attention'},
+                          {v:'6',title:'6 - Dead',desc:''}
+                        ].map(o => (
+                          <button key={o.v} type="button"
+                            className={`w-full text-left p-3 rounded-lg border transition-colors ${mrsScore === o.v ? 'bg-blue-600 text-white border-blue-600' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
+                            onClick={() => setMrsScore(o.v)}
+                          >
+                            <div className="font-semibold">{o.title}</div>
+                            {o.desc && <div className={`text-sm ${mrsScore === o.v ? 'text-blue-100' : 'text-slate-600'}`}>{o.desc}</div>}
+                          </button>
+                        ))}
                       </div>
 
                       {mrsScore && (
@@ -20437,37 +21524,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             />
                             <span className="text-sm">Speech disturbance w/o weakness (+1)</span>
                           </label>
-                          <p className="font-semibold text-sm mt-3 mb-2">Symptom Duration:</p>
-                          <label className="flex items-center space-x-2 cursor-pointer">
-                            <input
-                              type="radio"
-                              name="abcd2_duration"
-                              className="text-orange-600"
-                              checked={abcd2Items.duration === 'duration60'}
-                              onChange={() => setAbcd2Items({...abcd2Items, duration: 'duration60'})}
-                            />
-                            <span className="text-sm">≥60 minutes (+2 points)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 cursor-pointer">
-                            <input
-                              type="radio"
-                              name="abcd2_duration"
-                              className="text-orange-600"
-                              checked={abcd2Items.duration === 'duration10'}
-                              onChange={() => setAbcd2Items({...abcd2Items, duration: 'duration10'})}
-                            />
-                            <span className="text-sm">10-59 minutes (+1 point)</span>
-                          </label>
-                          <label className="flex items-center space-x-2 cursor-pointer">
-                            <input
-                              type="radio"
-                              name="abcd2_duration"
-                              className="text-orange-600"
-                              checked={abcd2Items.duration === ''}
-                              onChange={() => setAbcd2Items({...abcd2Items, duration: ''})}
-                            />
-                            <span className="text-sm">&lt;10 minutes (0 points)</span>
-                          </label>
+                          <p className="font-semibold text-sm mt-3 mb-1">Symptom Duration:</p>
+                          {[{v:'duration60',l:'\u226560 minutes',p:'+2 points'},{v:'duration10',l:'10-59 minutes',p:'+1 point'},{v:'',l:'<10 minutes',p:'0 points'}].map(o => (
+                            <button key={o.v || 'none'} type="button"
+                              className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors mb-1 ${abcd2Items.duration === o.v ? 'bg-orange-600 text-white border-orange-600 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
+                              onClick={() => setAbcd2Items({...abcd2Items, duration: o.v})}
+                            >
+                              {o.l} <span className={abcd2Items.duration === o.v ? 'text-orange-200' : 'text-slate-400'}>({o.p})</span>
+                            </button>
+                          ))}
                           <hr className="my-3" />
                           <label className="flex items-center space-x-2">
                             <input
@@ -20973,76 +22038,21 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <div className="space-y-3">
                             <h4 className="text-base font-semibold text-amber-800 mb-2">Hunt and Hess Scale</h4>
                             <div className="space-y-2">
-                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
-                                <input
-                                  type="radio"
-                                  name="huntHess"
-                                  value="1"
-                                  checked={huntHessGrade === '1'}
-                                  onChange={(e) => setHuntHessGrade(e.target.value)}
-                                  className="mt-1 text-amber-600"
-                                />
-                                <div className="flex-1">
-                                  <div className="font-semibold text-slate-900">Grade 1</div>
-                                  <div className="text-sm text-slate-600">Asymptomatic or mild headache</div>
-                                </div>
-                              </label>
-                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
-                                <input
-                                  type="radio"
-                                  name="huntHess"
-                                  value="2"
-                                  checked={huntHessGrade === '2'}
-                                  onChange={(e) => setHuntHessGrade(e.target.value)}
-                                  className="mt-1 text-amber-600"
-                                />
-                                <div className="flex-1">
-                                  <div className="font-semibold text-slate-900">Grade 2</div>
-                                  <div className="text-sm text-slate-600">Moderate-severe headache, nuchal rigidity, no deficit (except CN palsy)</div>
-                                </div>
-                              </label>
-                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
-                                <input
-                                  type="radio"
-                                  name="huntHess"
-                                  value="3"
-                                  checked={huntHessGrade === '3'}
-                                  onChange={(e) => setHuntHessGrade(e.target.value)}
-                                  className="mt-1 text-amber-600"
-                                />
-                                <div className="flex-1">
-                                  <div className="font-semibold text-slate-900">Grade 3</div>
-                                  <div className="text-sm text-slate-600">Drowsiness, confusion, or mild focal deficit</div>
-                                </div>
-                              </label>
-                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
-                                <input
-                                  type="radio"
-                                  name="huntHess"
-                                  value="4"
-                                  checked={huntHessGrade === '4'}
-                                  onChange={(e) => setHuntHessGrade(e.target.value)}
-                                  className="mt-1 text-amber-600"
-                                />
-                                <div className="flex-1">
-                                  <div className="font-semibold text-slate-900">Grade 4</div>
-                                  <div className="text-sm text-slate-600">Stupor, moderate-severe hemiparesis</div>
-                                </div>
-                              </label>
-                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
-                                <input
-                                  type="radio"
-                                  name="huntHess"
-                                  value="5"
-                                  checked={huntHessGrade === '5'}
-                                  onChange={(e) => setHuntHessGrade(e.target.value)}
-                                  className="mt-1 text-amber-600"
-                                />
-                                <div className="flex-1">
-                                  <div className="font-semibold text-slate-900">Grade 5</div>
-                                  <div className="text-sm text-slate-600">Deep coma, decerebrate rigidity, moribund</div>
-                                </div>
-                              </label>
+                              {[
+                                {v:'1',title:'Grade 1',desc:'Asymptomatic or mild headache'},
+                                {v:'2',title:'Grade 2',desc:'Moderate-severe headache, nuchal rigidity, no deficit (except CN palsy)'},
+                                {v:'3',title:'Grade 3',desc:'Drowsiness, confusion, or mild focal deficit'},
+                                {v:'4',title:'Grade 4',desc:'Stupor, moderate-severe hemiparesis'},
+                                {v:'5',title:'Grade 5',desc:'Deep coma, decerebrate rigidity, moribund'}
+                              ].map(o => (
+                                <button key={o.v} type="button"
+                                  className={`w-full text-left p-3 rounded-lg border transition-colors ${huntHessGrade === o.v ? 'bg-amber-600 text-white border-amber-600' : 'bg-white border-amber-200 hover:bg-amber-50 active:bg-amber-100'}`}
+                                  onClick={() => setHuntHessGrade(o.v)}
+                                >
+                                  <div className="font-semibold">{o.title}</div>
+                                  <div className={`text-sm ${huntHessGrade === o.v ? 'text-amber-100' : 'text-slate-600'}`}>{o.desc}</div>
+                                </button>
+                              ))}
                             </div>
                           </div>
 
@@ -21050,76 +22060,21 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <div className="space-y-3">
                             <h4 className="text-base font-semibold text-amber-800 mb-2">WFNS Scale</h4>
                             <div className="space-y-2">
-                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
-                                <input
-                                  type="radio"
-                                  name="wfns"
-                                  value="1"
-                                  checked={wfnsGrade === '1'}
-                                  onChange={(e) => setWfnsGrade(e.target.value)}
-                                  className="mt-1 text-amber-600"
-                                />
-                                <div className="flex-1">
-                                  <div className="font-semibold text-slate-900">Grade 1</div>
-                                  <div className="text-sm text-slate-600">GCS 15, no motor deficit</div>
-                                </div>
-                              </label>
-                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
-                                <input
-                                  type="radio"
-                                  name="wfns"
-                                  value="2"
-                                  checked={wfnsGrade === '2'}
-                                  onChange={(e) => setWfnsGrade(e.target.value)}
-                                  className="mt-1 text-amber-600"
-                                />
-                                <div className="flex-1">
-                                  <div className="font-semibold text-slate-900">Grade 2</div>
-                                  <div className="text-sm text-slate-600">GCS 13-14, no motor deficit</div>
-                                </div>
-                              </label>
-                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
-                                <input
-                                  type="radio"
-                                  name="wfns"
-                                  value="3"
-                                  checked={wfnsGrade === '3'}
-                                  onChange={(e) => setWfnsGrade(e.target.value)}
-                                  className="mt-1 text-amber-600"
-                                />
-                                <div className="flex-1">
-                                  <div className="font-semibold text-slate-900">Grade 3</div>
-                                  <div className="text-sm text-slate-600">GCS 13-14, with motor deficit</div>
-                                </div>
-                              </label>
-                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
-                                <input
-                                  type="radio"
-                                  name="wfns"
-                                  value="4"
-                                  checked={wfnsGrade === '4'}
-                                  onChange={(e) => setWfnsGrade(e.target.value)}
-                                  className="mt-1 text-amber-600"
-                                />
-                                <div className="flex-1">
-                                  <div className="font-semibold text-slate-900">Grade 4</div>
-                                  <div className="text-sm text-slate-600">GCS 7-12, with or without motor deficit</div>
-                                </div>
-                              </label>
-                              <label className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-amber-200 hover:bg-amber-50 cursor-pointer">
-                                <input
-                                  type="radio"
-                                  name="wfns"
-                                  value="5"
-                                  checked={wfnsGrade === '5'}
-                                  onChange={(e) => setWfnsGrade(e.target.value)}
-                                  className="mt-1 text-amber-600"
-                                />
-                                <div className="flex-1">
-                                  <div className="font-semibold text-slate-900">Grade 5</div>
-                                  <div className="text-sm text-slate-600">GCS 3-6, with or without motor deficit</div>
-                                </div>
-                              </label>
+                              {[
+                                {v:'1',title:'Grade 1',desc:'GCS 15, no motor deficit'},
+                                {v:'2',title:'Grade 2',desc:'GCS 13-14, no motor deficit'},
+                                {v:'3',title:'Grade 3',desc:'GCS 13-14, with motor deficit'},
+                                {v:'4',title:'Grade 4',desc:'GCS 7-12, with or without motor deficit'},
+                                {v:'5',title:'Grade 5',desc:'GCS 3-6, with or without motor deficit'}
+                              ].map(o => (
+                                <button key={o.v} type="button"
+                                  className={`w-full text-left p-3 rounded-lg border transition-colors ${wfnsGrade === o.v ? 'bg-amber-600 text-white border-amber-600' : 'bg-white border-amber-200 hover:bg-amber-50 active:bg-amber-100'}`}
+                                  onClick={() => setWfnsGrade(o.v)}
+                                >
+                                  <div className="font-semibold">{o.title}</div>
+                                  <div className={`text-sm ${wfnsGrade === o.v ? 'text-amber-100' : 'text-slate-600'}`}>{o.desc}</div>
+                                </button>
+                              ))}
                             </div>
                           </div>
                         </div>
@@ -21364,6 +22319,321 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           );
                         })()}
                         <p className="text-xs text-slate-500 mt-2">Treatment dose: 1 mg/kg SC BID. CrCl &lt;30: 1 mg/kg SC daily. For DVT prophylaxis: 40 mg SC daily (30 mg if CrCl &lt;30). Check anti-Xa levels for extremes of weight.</p>
+                      </div>
+                    </details>
+
+                    {/* ASPECTS Interactive Scorer */}
+                    <details id="calc-aspects" style={{ order: getCalculatorOrder('aspects', 15) }} className="bg-blue-50 border border-blue-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-blue-800 hover:bg-blue-100 rounded-lg flex items-center justify-between">
+                        <span>ASPECTS Score (Interactive)</span>
+                        <span className="text-sm font-normal text-blue-600">Score: {10 - Object.values(typeof aspectsRegions !== 'undefined' ? aspectsRegions : {}).filter(Boolean).length}/10</span>
+                      </summary>
+                      <div className="p-4">
+                        <p className="text-xs text-slate-600 mb-3">Click regions with <strong>early ischemic changes</strong> on CT. ASPECTS = 10 minus number of affected regions.</p>
+                        <div className="grid grid-cols-5 gap-2 mb-3">
+                          {[
+                            { id: 'C', label: 'C', desc: 'Caudate' },
+                            { id: 'L', label: 'L', desc: 'Lentiform' },
+                            { id: 'IC', label: 'IC', desc: 'Internal Capsule' },
+                            { id: 'I', label: 'I', desc: 'Insular Ribbon' },
+                            { id: 'M1', label: 'M1', desc: 'Anterior MCA' },
+                            { id: 'M2', label: 'M2', desc: 'MCA lateral to insular ribbon' },
+                            { id: 'M3', label: 'M3', desc: 'Posterior MCA' },
+                            { id: 'M4', label: 'M4', desc: 'Anterior MCA above M1' },
+                            { id: 'M5', label: 'M5', desc: 'Lateral MCA above M2' },
+                            { id: 'M6', label: 'M6', desc: 'Posterior MCA above M3' }
+                          ].map(region => {
+                            const isAffected = !!(telestrokeNote.aspectsRegions || {})[region.id];
+                            return (
+                              <button key={region.id} type="button"
+                                className={`flex flex-col items-center p-2 rounded-lg border-2 transition-colors text-center ${isAffected ? 'bg-red-600 text-white border-red-600' : 'bg-white border-slate-200 hover:bg-blue-50 hover:border-blue-300'}`}
+                                onClick={() => {
+                                  const newRegions = {...(telestrokeNote.aspectsRegions || {}), [region.id]: !isAffected};
+                                  const score = 10 - Object.values(newRegions).filter(Boolean).length;
+                                  setTelestrokeNote({...telestrokeNote, aspectsRegions: newRegions});
+                                  if (typeof setAspectsScore === 'function') setAspectsScore(score.toString());
+                                }}
+                                title={region.desc}
+                              >
+                                <span className="font-bold text-sm">{region.label}</span>
+                                <span className={`text-[10px] ${isAffected ? 'text-red-200' : 'text-slate-400'}`}>{region.desc}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                        {(() => {
+                          const score = 10 - Object.values(telestrokeNote.aspectsRegions || {}).filter(Boolean).length;
+                          const color = score >= 6 ? 'emerald' : score >= 3 ? 'amber' : 'red';
+                          return (
+                            <div className={`p-3 rounded-lg bg-${color}-50 border border-${color}-200`}>
+                              <div className="flex items-center justify-between">
+                                <span className={`text-2xl font-bold text-${color}-700`}>ASPECTS: {score}</span>
+                                <span className={`text-sm font-semibold text-${color}-700`}>
+                                  {score >= 6 ? 'Favorable for EVT' : score >= 3 ? 'Large core — EVT may be considered' : 'Very large core — EVT uncertain'}
+                                </span>
+                              </div>
+                              <div className="mt-1 text-xs text-slate-600">
+                                {score >= 6 ? 'ASPECTS 6-10: Standard EVT candidacy (Class I for LVO 0-6h)' :
+                                 score >= 3 ? 'ASPECTS 3-5: EVT recommended for select patients (mRS 0-1, 0-6h)' :
+                                 'ASPECTS 0-2: EVT may be reasonable in select patients (ICA/M1, mRS 0-1)'}
+                              </div>
+                            </div>
+                          );
+                        })()}
+                        <button type="button" onClick={() => { setTelestrokeNote({...telestrokeNote, aspectsRegions: {}}); if (typeof setAspectsScore === 'function') setAspectsScore('10'); }}
+                          className="mt-2 text-xs text-slate-500 hover:text-slate-700 underline">Reset all regions</button>
+                      </div>
+                    </details>
+
+                    {/* PC-ASPECTS Calculator */}
+                    <details id="calc-pc-aspects" style={{ order: getCalculatorOrder('pc-aspects', 16) }} className="bg-blue-50 border border-blue-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-blue-800 hover:bg-blue-100 rounded-lg flex items-center justify-between">
+                        <span>PC-ASPECTS (Posterior Circulation)</span>
+                        <span className="text-sm font-normal text-blue-600">Score: {10 - Object.values(telestrokeNote.pcAspectsRegions || {}).filter(Boolean).length}/10</span>
+                      </summary>
+                      <div className="p-4">
+                        <p className="text-xs text-slate-600 mb-3">Click regions with early ischemic changes. Used for basilar artery EVT eligibility (≥6 favors intervention).</p>
+                        <div className="grid grid-cols-4 gap-2 mb-3">
+                          {[
+                            { id: 'pons', label: 'Pons', pts: 2 },
+                            { id: 'midbrain', label: 'Midbrain', pts: 2 },
+                            { id: 'cerebL', label: 'Cerebellum L', pts: 1 },
+                            { id: 'cerebR', label: 'Cerebellum R', pts: 1 },
+                            { id: 'pcaL', label: 'PCA L', pts: 1 },
+                            { id: 'pcaR', label: 'PCA R', pts: 1 },
+                            { id: 'thalL', label: 'Thalamus L', pts: 1 },
+                            { id: 'thalR', label: 'Thalamus R', pts: 1 }
+                          ].map(region => {
+                            const isAffected = !!(telestrokeNote.pcAspectsRegions || {})[region.id];
+                            return (
+                              <button key={region.id} type="button"
+                                className={`flex flex-col items-center p-2 rounded-lg border-2 transition-colors ${isAffected ? 'bg-red-600 text-white border-red-600' : 'bg-white border-slate-200 hover:bg-blue-50'}`}
+                                onClick={() => setTelestrokeNote({...telestrokeNote, pcAspectsRegions: {...(telestrokeNote.pcAspectsRegions || {}), [region.id]: !isAffected}})}
+                              >
+                                <span className="font-bold text-xs">{region.label}</span>
+                                <span className={`text-[10px] ${isAffected ? 'text-red-200' : 'text-slate-400'}`}>{region.pts}pt{region.pts > 1 ? 's' : ''}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                        {(() => {
+                          const r = telestrokeNote.pcAspectsRegions || {};
+                          const deducted = (r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0);
+                          const score = 10 - deducted;
+                          return (
+                            <div className={`p-3 rounded-lg ${score >= 6 ? 'bg-emerald-50 border border-emerald-200' : 'bg-red-50 border border-red-200'}`}>
+                              <span className={`text-2xl font-bold ${score >= 6 ? 'text-emerald-700' : 'text-red-700'}`}>PC-ASPECTS: {score}</span>
+                              <span className={`ml-2 text-sm ${score >= 6 ? 'text-emerald-600' : 'text-red-600'}`}>
+                                {score >= 6 ? 'Favorable for basilar EVT (ATTENTION/BAOCHE trials)' : 'Poor prognosis — EVT benefit uncertain'}
+                              </span>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    </details>
+
+                    {/* SPAN-100 / DRAGON / sICH Risk */}
+                    <details id="calc-risk-scores" style={{ order: getCalculatorOrder('risk-scores', 25) }} className="bg-amber-50 border border-amber-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-amber-800 hover:bg-amber-100 rounded-lg flex items-center justify-between">
+                        <span>Thrombolysis Risk Scores (SPAN-100, DRAGON, SEDAN)</span>
+                        <span className="text-sm font-normal text-amber-600">sICH Risk Assessment</span>
+                      </summary>
+                      <div className="p-4 space-y-4">
+                        {/* SPAN-100 */}
+                        <div className="bg-white rounded-lg p-3 border border-slate-200">
+                          <h5 className="font-semibold text-sm text-slate-800 mb-2">SPAN-100 Index</h5>
+                          <p className="text-xs text-slate-500 mb-2">Age + NIHSS ≥ 100 predicts higher symptomatic ICH risk and lower chance of good outcome after IV thrombolysis.</p>
+                          {(() => {
+                            const age = parseInt(telestrokeNote.age) || 0;
+                            const nihss = parseInt(telestrokeNote.nihss || nihssScore) || 0;
+                            const span = age + nihss;
+                            const positive = span >= 100;
+                            return (
+                              <div className={`p-3 rounded-lg ${positive ? 'bg-red-50 border border-red-200' : 'bg-emerald-50 border border-emerald-200'}`}>
+                                <div className="flex items-center justify-between">
+                                  <span className={`text-xl font-bold ${positive ? 'text-red-700' : 'text-emerald-700'}`}>
+                                    Age ({age || '?'}) + NIHSS ({nihss || '?'}) = {age && nihss ? span : '?'}
+                                  </span>
+                                  <span className={`px-2 py-1 rounded text-xs font-bold ${positive ? 'bg-red-600 text-white' : 'bg-emerald-600 text-white'}`}>
+                                    {positive ? 'POSITIVE — Higher sICH Risk' : 'NEGATIVE — Lower Risk'}
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })()}
+                        </div>
+
+                        {/* SEDAN Score */}
+                        <div className="bg-white rounded-lg p-3 border border-slate-200">
+                          <h5 className="font-semibold text-sm text-slate-800 mb-2">SEDAN Score (sICH Risk Post-Thrombolysis)</h5>
+                          <p className="text-xs text-slate-500 mb-2">Sugar + Early infarct signs + Dense artery + Age + NIHSS</p>
+                          {(() => {
+                            const glucose = parseInt(telestrokeNote.glucose) || 0;
+                            const nihss = parseInt(telestrokeNote.nihss || nihssScore) || 0;
+                            const age = parseInt(telestrokeNote.age) || 0;
+                            let sedanScore = 0;
+                            const items = [];
+                            if (glucose > 144 && glucose <= 216) { sedanScore += 1; items.push('Glucose 145-216 (+1)'); }
+                            else if (glucose > 216) { sedanScore += 2; items.push('Glucose >216 (+2)'); }
+                            else items.push('Glucose ≤144 (0)');
+                            items.push('Early infarct signs on CT: assess manually');
+                            items.push('Dense artery sign: assess manually');
+                            if (age > 75) { sedanScore += 1; items.push('Age >75 (+1)'); }
+                            else items.push('Age ≤75 (0)');
+                            if (nihss >= 10) { sedanScore += 1; items.push('NIHSS ≥10 (+1)'); }
+                            else items.push('NIHSS <10 (0)');
+                            const risk = sedanScore <= 1 ? '~2%' : sedanScore <= 3 ? '~5-8%' : '~12%+';
+                            return (
+                              <div>
+                                <div className="space-y-1 mb-2">
+                                  {items.map((item, i) => (
+                                    <div key={i} className="text-xs text-slate-600 flex items-center gap-2">
+                                      <span className="text-amber-500">&#x2022;</span> {item}
+                                    </div>
+                                  ))}
+                                </div>
+                                <div className={`p-2 rounded ${sedanScore >= 3 ? 'bg-red-50 border border-red-200' : 'bg-amber-50 border border-amber-200'}`}>
+                                  <span className="font-bold text-sm">SEDAN: {sedanScore} (auto-calculated components)</span>
+                                  <span className="ml-2 text-xs text-slate-600">Estimated sICH risk: {risk}</span>
+                                </div>
+                                <p className="text-xs text-slate-400 mt-1">Note: Early infarct signs and dense artery sign must be assessed manually from CT. Add +1 for each if present.</p>
+                              </div>
+                            );
+                          })()}
+                        </div>
+                      </div>
+                    </details>
+
+                    {/* TICI Reperfusion Score */}
+                    <details id="calc-tici" style={{ order: getCalculatorOrder('tici', 18) }} className="bg-emerald-50 border border-emerald-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-emerald-800 hover:bg-emerald-100 rounded-lg flex items-center justify-between">
+                        <span>mTICI Reperfusion Score (Post-EVT)</span>
+                        <i data-lucide="chevron-down" className="w-4 h-4"></i>
+                      </summary>
+                      <div className="p-4 space-y-2">
+                        <p className="text-xs text-slate-500 mb-3">Modified Treatment in Cerebral Ischemia. Select the grade that best describes post-procedure reperfusion.</p>
+                        <div className="space-y-2">
+                          {[
+                            { grade: '0', label: 'No perfusion', desc: 'No antegrade flow beyond occlusion', color: 'red' },
+                            { grade: '1', label: 'Minimal perfusion', desc: 'Antegrade flow past occlusion, no distal filling', color: 'red' },
+                            { grade: '2a', label: 'Partial (< 50%)', desc: 'Antegrade flow fills <50% of downstream territory', color: 'amber' },
+                            { grade: '2b', label: 'Substantial (50-99%)', desc: 'Antegrade flow fills 50-99% of downstream territory', color: 'emerald' },
+                            { grade: '2c', label: 'Near-complete', desc: 'Near-complete perfusion with slow flow or few small distal emboli', color: 'emerald' },
+                            { grade: '3', label: 'Complete perfusion', desc: 'Full antegrade flow, normal filling speed', color: 'emerald' }
+                          ].map(({ grade, label, desc, color }) => {
+                            const isSelected = telestrokeNote.ticiScore === grade;
+                            const colorMap = {
+                              red: isSelected ? 'bg-red-600 text-white border-red-600' : 'bg-white border-red-200 hover:bg-red-50',
+                              amber: isSelected ? 'bg-amber-600 text-white border-amber-600' : 'bg-white border-amber-200 hover:bg-amber-50',
+                              emerald: isSelected ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-emerald-200 hover:bg-emerald-50'
+                            };
+                            return (
+                              <button
+                                key={grade}
+                                type="button"
+                                onClick={() => setTelestrokeNote(prev => ({ ...prev, ticiScore: isSelected ? '' : grade }))}
+                                className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${colorMap[color]}`}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div>
+                                    <span className="font-bold text-sm">mTICI {grade}</span>
+                                    <span className="ml-2 text-sm">{label}</span>
+                                  </div>
+                                  {isSelected && <i data-lucide="check" className="w-5 h-5"></i>}
+                                </div>
+                                <p className={`text-xs mt-0.5 ${isSelected ? 'opacity-80' : 'text-slate-500'}`}>{desc}</p>
+                              </button>
+                            );
+                          })}
+                        </div>
+                        {telestrokeNote.ticiScore && (
+                          <div className={`mt-3 p-3 rounded-lg text-sm ${
+                            ['2b', '2c', '3'].includes(telestrokeNote.ticiScore)
+                              ? 'bg-emerald-100 border border-emerald-300 text-emerald-800'
+                              : 'bg-amber-100 border border-amber-300 text-amber-800'
+                          }`}>
+                            <strong>mTICI {telestrokeNote.ticiScore}:</strong>{' '}
+                            {['2b', '2c', '3'].includes(telestrokeNote.ticiScore)
+                              ? 'Successful reperfusion — associated with better functional outcomes.'
+                              : 'Incomplete reperfusion — consider further attempts or adjunctive measures.'}
+                          </div>
+                        )}
+                      </div>
+                    </details>
+
+                    {/* DRAGON Score */}
+                    <details id="calc-dragon" style={{ order: getCalculatorOrder('dragon', 26) }} className="bg-purple-50 border border-purple-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-purple-800 hover:bg-purple-100 rounded-lg flex items-center justify-between">
+                        <span>DRAGON Score (IVT Outcome Prediction)</span>
+                        <i data-lucide="chevron-down" className="w-4 h-4"></i>
+                      </summary>
+                      <div className="p-4">
+                        <p className="text-xs text-slate-500 mb-3">Predicts 3-month outcome after IV thrombolysis. Auto-calculated from patient data where available.</p>
+                        {(() => {
+                          const age = parseInt(telestrokeNote.age) || 0;
+                          const nihss = parseInt(telestrokeNote.nihss || nihssScore) || 0;
+                          const glucose = parseFloat(telestrokeNote.glucose) || 0;
+                          const glucoseMmol = glucose > 30 ? glucose / 18.0 : glucose;
+
+                          let score = 0;
+                          const items = [];
+
+                          // D - Dense cerebral artery / early infarct (manual)
+                          items.push({ label: 'Dense artery sign or early infarct on NCCT', value: '?', points: '+1-2', auto: false });
+
+                          // R - mRS > 1 pre-stroke
+                          const mrs = parseInt(telestrokeNote.premorbidMRS);
+                          if (!isNaN(mrs) && mrs > 1) { score += 1; items.push({ label: `Pre-stroke mRS > 1 (mRS=${mrs})`, value: 'Yes', points: '+1', auto: true }); }
+                          else items.push({ label: 'Pre-stroke mRS > 1', value: isNaN(mrs) ? '?' : 'No', points: mrs > 1 ? '+1' : '+0', auto: !isNaN(mrs) });
+
+                          // A - Age
+                          if (age >= 80) { score += 2; items.push({ label: `Age ≥80 (${age})`, value: 'Yes', points: '+2', auto: true }); }
+                          else if (age >= 65) { score += 1; items.push({ label: `Age 65-79 (${age})`, value: 'Yes', points: '+1', auto: true }); }
+                          else items.push({ label: `Age <65 (${age || '?'})`, value: age ? 'No' : '?', points: '+0', auto: !!age });
+
+                          // G - Glucose
+                          if (glucoseMmol > 8 || glucose > 144) { score += 1; items.push({ label: `Glucose >8 mmol/L (${glucose} mg/dL)`, value: 'Yes', points: '+1', auto: true }); }
+                          else items.push({ label: `Glucose ≤8 mmol/L (${glucose || '?'})`, value: glucose ? 'No' : '?', points: '+0', auto: !!glucose });
+
+                          // O - Onset to treatment (manual)
+                          items.push({ label: 'Onset to treatment >90 min', value: '?', points: '+1', auto: false });
+
+                          // N - NIHSS
+                          if (nihss > 15) { score += 3; items.push({ label: `NIHSS >15 (${nihss})`, value: 'Yes', points: '+3', auto: true }); }
+                          else if (nihss >= 10) { score += 2; items.push({ label: `NIHSS 10-15 (${nihss})`, value: 'Yes', points: '+2', auto: true }); }
+                          else if (nihss >= 5) { score += 1; items.push({ label: `NIHSS 5-9 (${nihss})`, value: 'Yes', points: '+1', auto: true }); }
+                          else items.push({ label: `NIHSS <5 (${nihss || '?'})`, value: nihss ? 'No' : '?', points: '+0', auto: !!nihss });
+
+                          const prognosis = score <= 3 ? { text: 'Good outcome likely (mRS 0-2)', color: 'emerald' }
+                            : score <= 5 ? { text: 'Intermediate prognosis', color: 'amber' }
+                            : { text: 'Poor outcome likely (mRS 5-6 or miserable outcome)', color: 'red' };
+
+                          return (
+                            <div className="space-y-3">
+                              <div className="space-y-1">
+                                {items.map((item, i) => (
+                                  <div key={i} className={`flex items-center justify-between p-2 rounded text-xs ${item.auto ? 'bg-white border border-slate-200' : 'bg-slate-50 border border-dashed border-slate-300'}`}>
+                                    <span className="text-slate-700">{item.label}</span>
+                                    <div className="flex items-center gap-2">
+                                      <span className={`font-mono text-xs ${item.auto ? 'text-purple-600' : 'text-slate-400'}`}>{item.points}</span>
+                                      {item.auto ? <span className="text-emerald-600 text-[10px]">auto</span> : <span className="text-slate-400 text-[10px]">manual</span>}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                              <div className={`p-3 rounded-lg bg-${prognosis.color}-50 border border-${prognosis.color}-200`}>
+                                <div className="flex items-center justify-between">
+                                  <span className={`text-lg font-bold text-${prognosis.color}-700`}>DRAGON: {score} (auto-components)</span>
+                                  <span className={`text-xs px-2 py-1 rounded bg-${prognosis.color}-600 text-white font-bold`}>
+                                    {score <= 3 ? 'Good' : score <= 5 ? 'Intermediate' : 'Poor'}
+                                  </span>
+                                </div>
+                                <p className={`text-xs text-${prognosis.color}-700 mt-1`}>{prognosis.text}</p>
+                              </div>
+                              <p className="text-xs text-slate-400">Note: D (dense artery/early infarct) and O (onset time) must be assessed manually. Add +1-2 for D and +1 for O if applicable.</p>
+                            </div>
+                          );
+                        })()}
                       </div>
                     </details>
 
@@ -22467,6 +23737,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                 {/* End of References/Evidence Content */}
 
                   </div>
+                </ErrorBoundary>
                 )}
                 {/* End of Combined Management Tab (Ischemic, ICH, Calculators, References) */}
 
@@ -22574,6 +23845,48 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         );
                       })}
                     </div>
+
+                    {/* Patient-based Trial Relevance Summary */}
+                    {(telestrokeNote.age || nihssScore > 0) && (
+                      <div className="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-xl p-4">
+                        <h3 className="text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
+                          <i data-lucide="user-check" className="w-4 h-4 text-blue-600"></i>
+                          Patient-Specific Trial Relevance
+                        </h3>
+                        <div className="flex flex-wrap gap-2 text-xs">
+                          {telestrokeNote.age && <span className="px-2 py-1 bg-white border rounded-full text-slate-700">Age: {telestrokeNote.age}</span>}
+                          {(nihssScore > 0 || telestrokeNote.nihss) && <span className="px-2 py-1 bg-white border rounded-full text-slate-700">NIHSS: {telestrokeNote.nihss || nihssScore}</span>}
+                          {telestrokeNote.diagnosis && <span className="px-2 py-1 bg-white border rounded-full text-slate-700">Dx: {telestrokeNote.diagnosis}</span>}
+                          {calculateGCS(gcsItems) > 0 && <span className="px-2 py-1 bg-white border rounded-full text-slate-700">GCS: {calculateGCS(gcsItems)}</span>}
+                        </div>
+                        <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                          {nihssScore >= 6 && trialsCategory === 'ischemic' && (
+                            <div className="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 rounded-lg px-2 py-1.5">
+                              <i data-lucide="check-circle" className="w-3.5 h-3.5"></i>
+                              <span><strong>SISTER:</strong> NIHSS {'\u2265'}6 threshold met</span>
+                            </div>
+                          )}
+                          {nihssScore > 0 && nihssScore <= 5 && trialsCategory === 'ischemic' && (
+                            <div className="flex items-center gap-1.5 text-amber-700 bg-amber-50 rounded-lg px-2 py-1.5">
+                              <i data-lucide="alert-circle" className="w-3.5 h-3.5"></i>
+                              <span><strong>STEP mild arm:</strong> Check for LVO</span>
+                            </div>
+                          )}
+                          {(() => { const gcs = calculateGCS(gcsItems); return gcs >= 5 && gcs <= 14 && trialsCategory === 'ich' ? (
+                            <div className="flex items-center gap-1.5 text-blue-700 bg-blue-50 rounded-lg px-2 py-1.5">
+                              <i data-lucide="check-circle" className="w-3.5 h-3.5"></i>
+                              <span><strong>ENRICH:</strong> GCS 5-14 range met</span>
+                            </div>
+                          ) : null; })()}
+                          {telestrokeNote.age && parseInt(telestrokeNote.age) >= 18 && parseInt(telestrokeNote.age) <= 85 && (
+                            <div className="flex items-center gap-1.5 text-slate-600 bg-slate-50 rounded-lg px-2 py-1.5">
+                              <i data-lucide="info" className="w-3.5 h-3.5"></i>
+                              <span>Age within most trial ranges (18-85)</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
 
                     {/* Trial Cards - Uses trialsData and TrialCard component */}
                     <div className="space-y-4">
@@ -22697,55 +24010,172 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               )}
             </div>
 
-            {/* ===== CALCULATOR MODAL ===== */}
+            {/* ===== CALCULATOR DRAWER — with inline GCS + quick nav ===== */}
             {calcDrawerOpen && (
               <>
                 <div className="fixed inset-0 z-50 bg-black/30" onClick={() => setCalcDrawerOpen(false)}></div>
-                <div className="fixed inset-x-0 bottom-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-50 w-full sm:w-[28rem] sm:max-h-[80vh] bg-white sm:rounded-2xl rounded-t-2xl shadow-2xl overflow-y-auto" role="dialog" aria-modal="true" aria-label="Clinical Calculators">
+                <div className="fixed inset-x-0 bottom-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-50 w-full sm:w-[32rem] sm:max-h-[85vh] bg-white sm:rounded-2xl rounded-t-2xl shadow-2xl overflow-y-auto" role="dialog" aria-modal="true" aria-label="Clinical Calculators">
                   <div className="sticky top-0 bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between z-10">
                     <h2 className="text-base font-semibold text-slate-900 flex items-center gap-2">
                       <i data-lucide="calculator" className="w-4 h-4 text-blue-600"></i>
                       Calculators
+                      <kbd className="text-xs text-slate-400 font-mono ml-2">Ctrl+K</kbd>
                     </h2>
-                    <button
-                      onClick={() => setCalcDrawerOpen(false)}
-                      className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-                      aria-label="Close calculators"
-                    >
+                    <button onClick={() => setCalcDrawerOpen(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close">
                       <i data-lucide="x" className="w-5 h-5 text-slate-500"></i>
                     </button>
                   </div>
-                  <div className="p-3 space-y-2">
-                    {[
-                      { label: 'NIHSS', desc: 'Stroke severity', action: () => { setCalcDrawerOpen(false); navigateTo('encounter'); setEncounterPhase('triage'); setTimeout(() => scrollToSection('nihss-section'), 100); }},
-                      { label: 'GCS', desc: 'Consciousness level', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }},
-                      { label: 'ICH Score', desc: 'ICH outcome prediction', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }},
-                      { label: 'ASPECTS', desc: 'Early ischemic changes', action: () => { setCalcDrawerOpen(false); navigateTo('encounter'); setEncounterPhase('triage'); }},
-                      { label: 'ABCD\u00B2', desc: 'TIA stroke risk', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }},
-                      { label: 'CHA\u2082DS\u2082-VASc', desc: 'AF stroke risk', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }},
-                      { label: 'HAS-BLED', desc: 'Bleeding risk', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }},
-                      { label: 'ROPE', desc: 'PFO attribution', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }},
-                      { label: 'Hunt & Hess', desc: 'SAH severity', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }},
-                      { label: 'RCVS\u00B2', desc: 'Vasoconstriction score', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }},
-                      { label: 'CrCl / eGFR', desc: 'Renal function', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }},
-                      { label: 'ICH Volume (ABC/2)', desc: 'Hematoma volume', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }}
-                    ].map((calc) => (
-                      <button
-                        key={calc.label}
-                        onClick={calc.action}
-                        className="w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 transition-all text-left"
-                      >
-                        <div>
-                          <div className="font-medium text-sm text-slate-900">{calc.label}</div>
-                          <div className="text-xs text-slate-500">{calc.desc}</div>
+
+                  {/* Inline GCS Quick Score */}
+                  <div className="px-4 py-3 border-b border-slate-100 bg-slate-50">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-semibold text-slate-800">Quick GCS</span>
+                      <span className="text-lg font-bold text-slate-600">{calculateGCS(gcsItems) || '—'}</span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2 text-xs">
+                      <div>
+                        <label className="font-medium text-slate-500 block mb-1">Eye</label>
+                        {[{v:'4',l:'Spontaneous'},{v:'3',l:'Sound'},{v:'2',l:'Pain'},{v:'1',l:'None'}].map(o => (
+                          <button key={o.v} onClick={() => setGcsItems({...gcsItems, eye: o.v})}
+                            className={`w-full text-left px-2 py-1.5 rounded mb-0.5 transition-colors ${gcsItems.eye === o.v ? 'bg-blue-600 text-white' : 'hover:bg-slate-200 text-slate-700'}`}>
+                            {o.v} - {o.l}
+                          </button>
+                        ))}
+                      </div>
+                      <div>
+                        <label className="font-medium text-slate-500 block mb-1">Verbal</label>
+                        {[{v:'5',l:'Oriented'},{v:'4',l:'Confused'},{v:'3',l:'Words'},{v:'2',l:'Sounds'},{v:'1',l:'None'}].map(o => (
+                          <button key={o.v} onClick={() => setGcsItems({...gcsItems, verbal: o.v})}
+                            className={`w-full text-left px-2 py-1.5 rounded mb-0.5 transition-colors ${gcsItems.verbal === o.v ? 'bg-blue-600 text-white' : 'hover:bg-slate-200 text-slate-700'}`}>
+                            {o.v} - {o.l}
+                          </button>
+                        ))}
+                      </div>
+                      <div>
+                        <label className="font-medium text-slate-500 block mb-1">Motor</label>
+                        {[{v:'6',l:'Obeys'},{v:'5',l:'Localizes'},{v:'4',l:'Withdraws'},{v:'3',l:'Flexion'},{v:'2',l:'Extension'},{v:'1',l:'None'}].map(o => (
+                          <button key={o.v} onClick={() => setGcsItems({...gcsItems, motor: o.v})}
+                            className={`w-full text-left px-2 py-1.5 rounded mb-0.5 transition-colors ${gcsItems.motor === o.v ? 'bg-blue-600 text-white' : 'hover:bg-slate-200 text-slate-700'}`}>
+                            {o.v} - {o.l}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Calculator Navigation */}
+                  <div className="p-3">
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Acute Scoring</p>
+                    <div className="grid grid-cols-2 gap-1.5 mb-3">
+                      {[
+                        { label: 'NIHSS', desc: 'Stroke severity', action: () => { setCalcDrawerOpen(false); navigateTo('encounter'); setEncounterPhase('triage'); setTimeout(() => scrollToSection('nihss-section'), 100); }},
+                        { label: 'ASPECTS', desc: 'Ischemic changes', action: () => { setCalcDrawerOpen(false); navigateTo('encounter'); setEncounterPhase('triage'); }},
+                        { label: 'ICH Score', desc: 'ICH prognosis', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }},
+                        { label: 'Hunt & Hess', desc: 'SAH severity', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }}
+                      ].map(c => (
+                        <button key={c.label} onClick={c.action} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 text-left">
+                          <div><div className="font-medium text-sm text-slate-900">{c.label}</div><div className="text-xs text-slate-500">{c.desc}</div></div>
+                          <i data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-400"></i>
+                        </button>
+                      ))}
+                    </div>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Risk Stratification</p>
+                    <div className="grid grid-cols-2 gap-1.5 mb-3">
+                      {[
+                        { label: 'ABCD\u00B2', desc: 'TIA stroke risk' },
+                        { label: 'CHA\u2082DS\u2082-VASc', desc: 'AF stroke risk' },
+                        { label: 'HAS-BLED', desc: 'Bleeding risk' },
+                        { label: 'ROPE', desc: 'PFO attribution' },
+                        { label: 'RCVS\u00B2', desc: 'Vasoconstriction' }
+                      ].map(c => (
+                        <button key={c.label} onClick={() => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 text-left">
+                          <div><div className="font-medium text-sm text-slate-900">{c.label}</div><div className="text-xs text-slate-500">{c.desc}</div></div>
+                          <i data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-400"></i>
+                        </button>
+                      ))}
+                    </div>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Dosing / Volume</p>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {[
+                        { label: 'CrCl / eGFR', desc: 'Renal function' },
+                        { label: 'ICH Volume', desc: 'ABC/2 method' }
+                      ].map(c => (
+                        <button key={c.label} onClick={() => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 text-left">
+                          <div><div className="font-medium text-sm text-slate-900">{c.label}</div><div className="text-xs text-slate-500">{c.desc}</div></div>
+                          <i data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-400"></i>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* ===== CHANGELOG MODAL ===== */}
+            {showChangelog && (
+              <>
+                <div className="fixed inset-0 z-[150] bg-black/40" onClick={() => setShowChangelog(false)}></div>
+                <div className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[28rem] max-h-[70vh] bg-white rounded-2xl shadow-2xl overflow-y-auto">
+                  <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between z-10">
+                    <h2 className="text-base font-bold text-slate-900">What's New</h2>
+                    <button onClick={() => setShowChangelog(false)} className="p-2 hover:bg-slate-100 rounded-lg"><i data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
+                  </div>
+                  <div className="p-4 space-y-4">
+                    {CHANGELOG.map((release) => (
+                      <div key={release.version}>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="font-bold text-blue-700">v{release.version}</span>
+                          <span className="text-xs text-slate-500">{release.date}</span>
                         </div>
-                        <i data-lucide="chevron-right" className="w-4 h-4 text-slate-400"></i>
-                      </button>
+                        <ul className="space-y-1">
+                          {release.items.map((item, i) => (
+                            <li key={i} className="text-sm text-slate-700 flex gap-2">
+                              <span className="text-emerald-500 shrink-0">+</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     ))}
                   </div>
                 </div>
               </>
             )}
+
+            {/* ===== KEYBOARD SHORTCUT HELP ===== */}
+            {showKeyboardHelp && (
+              <>
+                <div className="fixed inset-0 z-[150] bg-black/40" onClick={() => setShowKeyboardHelp(false)}></div>
+                <div className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[24rem] bg-white rounded-2xl shadow-2xl overflow-hidden">
+                  <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between">
+                    <h2 className="text-base font-bold text-slate-900">Keyboard Shortcuts</h2>
+                    <button onClick={() => setShowKeyboardHelp(false)} className="p-2 hover:bg-slate-100 rounded-lg"><i data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
+                  </div>
+                  <div className="p-4 space-y-3">
+                    {[
+                      { keys: 'Ctrl + 1', action: 'Encounter tab' },
+                      { keys: 'Ctrl + 2', action: 'Management tab' },
+                      { keys: 'Ctrl + 3', action: 'Trials tab' },
+                      { keys: 'Esc', action: 'Close modal / dialog' },
+                      { keys: '?', action: 'Toggle this help' }
+                    ].map(({ keys, action }) => (
+                      <div key={keys} className="flex items-center justify-between">
+                        <span className="text-sm text-slate-700">{action}</span>
+                        <kbd className="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-xs font-mono text-slate-600">{keys}</kbd>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* ===== CONFIRMATION MODAL ===== */}
+            {confirmConfig && (
+              <ConfirmModal config={confirmConfig} onClose={handleConfirmClose} />
+            )}
+
+            {/* ===== TOAST CONTAINER ===== */}
+            <ToastContainer toasts={toasts} removeToast={removeToast} />
 
             {/* Mobile bottom nav removed — top nav is now sticky on mobile */}
 
