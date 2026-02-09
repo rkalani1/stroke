@@ -823,6 +823,9 @@ Clinician Name`;
             evtRecommended: false,
             rationale: '',
             tnkConsentDiscussed: false,
+            tnkConsentType: '',
+            tnkConsentTime: '',
+            tnkConsentWith: '',
             patientFamilyConsent: false,
             presumedConsent: false,
             preTNKSafetyPause: false,
@@ -6524,7 +6527,10 @@ Clinician Name`;
               'glucose', 'plateletCount', 'inr', 'ptt', 'creatinine', 'disablingDeficit',
               'tnkRecommended', 'evtRecommended', 'tnkContraindicationChecklist',
               'tnkContraindicationReviewed', 'tnkContraindicationReviewTime', 'tnkConsentDiscussed',
+              'tnkConsentType', 'tnkConsentTime', 'tnkConsentWith',
               'patientFamilyConsent', 'presumedConsent', 'preTNKSafetyPause', 'tnkAutoBlocked',
+              'postTnkNeuroChecksStarted', 'postTnkBpMonitoring', 'postTnkRepeatCTOrdered', 'postTnkAntiplateletHeld',
+              'sichDetected', 'angioedemaDetected', 'reperfusionHemorrhage', 'clinicalDeterioration', 'complicationNotes',
               'imagingReviewed', 'transferAccepted', 'transferRationale', 'transferChecklist', 'disposition',
               'transferImagingShareMethod', 'transferImagingShareLink', 'transportMode', 'transportEta', 'transportNotes',
               'lastDOACType', 'lastDOACDose',
@@ -6918,14 +6924,18 @@ Clinician Name`;
             }
 
             // Add TNK consent documentation
-            if (telestrokeNote.tnkRecommended) {
-              if (telestrokeNote.tnkConsentDiscussed || telestrokeNote.patientFamilyConsent || telestrokeNote.presumedConsent) {
-                note += `\nTNK Consent: Risks and benefits of IV thrombolysis (including ~4% risk of sICH) discussed. `;
-                if (telestrokeNote.patientFamilyConsent) note += 'Informed consent obtained from patient/family. ';
-                if (telestrokeNote.presumedConsent) note += 'Presumed consent — patient unable to consent, no surrogate available. ';
-                if (telestrokeNote.preTNKSafetyPause) note += 'Pre-TNK safety pause completed. ';
-                note += '\n';
-              }
+            if (telestrokeNote.tnkRecommended && telestrokeNote.tnkConsentDiscussed) {
+              note += `\nTNK Consent: Risks and benefits of IV thrombolysis (including ~4% risk of sICH) discussed`;
+              if (telestrokeNote.tnkConsentWith) note += ` with ${telestrokeNote.tnkConsentWith}`;
+              if (telestrokeNote.tnkConsentTime) note += ` at ${telestrokeNote.tnkConsentTime}`;
+              note += '. ';
+              const ct = telestrokeNote.tnkConsentType;
+              if (ct === 'informed') note += 'Informed consent obtained. ';
+              else if (ct === 'surrogate') note += 'Surrogate/family consent obtained. ';
+              else if (ct === 'presumed') note += 'Presumed consent — patient unable to consent, no surrogate available. ';
+              else if (ct === 'declined') note += 'Patient/family declined after informed discussion. ';
+              if (telestrokeNote.preTNKSafetyPause) note += 'Pre-TNK safety pause completed. ';
+              note += '\n';
             }
 
             // Add vessel occlusion details
@@ -6940,6 +6950,26 @@ Clinician Name`;
               if (telestrokeNote.ichReversalOrdered) ichNote += '- Anticoagulation reversal ordered\n';
               if (telestrokeNote.ichNeurosurgeryConsulted) ichNote += '- Neurosurgery consulted\n';
               if (ichNote !== '\nICH Management:\n') note += ichNote;
+            }
+
+            // Add post-thrombolysis complications
+            if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) {
+              const complications = [];
+              if (telestrokeNote.sichDetected) complications.push('symptomatic ICH');
+              if (telestrokeNote.angioedemaDetected) complications.push('orolingual angioedema');
+              if (telestrokeNote.reperfusionHemorrhage) complications.push('reperfusion hemorrhage');
+              if (telestrokeNote.clinicalDeterioration) complications.push('clinical deterioration');
+              if (complications.length > 0) {
+                note += `\nPost-Thrombolysis Complications: ${complications.join(', ')}`;
+                if (telestrokeNote.complicationNotes) note += `\n${telestrokeNote.complicationNotes}`;
+                note += '\n';
+              } else {
+                const monitored = [];
+                if (telestrokeNote.postTnkNeuroChecksStarted) monitored.push('neuro checks');
+                if (telestrokeNote.postTnkBpMonitoring) monitored.push('BP monitoring');
+                if (telestrokeNote.postTnkRepeatCTOrdered) monitored.push('repeat CT ordered');
+                if (monitored.length > 0) note += `\nPost-TNK Monitoring: ${monitored.join(', ')}. No complications noted.\n`;
+              }
             }
 
             // Add secondary prevention summary
@@ -13128,24 +13158,43 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     </p>
 
                                     <div className="mt-3 space-y-2">
-                                      <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
-                                        <input
-                                          type="checkbox"
-                                          checked={telestrokeNote.patientFamilyConsent}
-                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, patientFamilyConsent: e.target.checked})}
-                                          className="w-4 h-4"
-                                        />
-                                        Patient/family provides consent
-                                      </label>
-                                      <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
-                                        <input
-                                          type="checkbox"
-                                          checked={telestrokeNote.presumedConsent}
-                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, presumedConsent: e.target.checked})}
-                                          className="w-4 h-4"
-                                        />
-                                        Presumed consent
-                                      </label>
+                                      <div>
+                                        <label className="block text-xs font-medium text-slate-600 mb-1">Consent type</label>
+                                        <select
+                                          value={telestrokeNote.tnkConsentType || ''}
+                                          onChange={(e) => {
+                                            const val = e.target.value;
+                                            setTelestrokeNote({...telestrokeNote,
+                                              tnkConsentType: val,
+                                              patientFamilyConsent: val === 'informed' || val === 'surrogate',
+                                              presumedConsent: val === 'presumed',
+                                              tnkConsentTime: telestrokeNote.tnkConsentTime || new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                                            });
+                                          }}
+                                          className="w-full px-2 py-1.5 border border-purple-200 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
+                                        >
+                                          <option value="">-- Select --</option>
+                                          <option value="informed">Informed consent (patient)</option>
+                                          <option value="surrogate">Surrogate/family consent</option>
+                                          <option value="presumed">Presumed consent (no surrogate available)</option>
+                                          <option value="declined">Patient/family declined</option>
+                                        </select>
+                                      </div>
+                                      <div className="grid grid-cols-2 gap-2">
+                                        <div>
+                                          <label className="block text-xs font-medium text-slate-600 mb-1">Consent time</label>
+                                          <input type="time" value={telestrokeNote.tnkConsentTime || ''}
+                                            onChange={(e) => setTelestrokeNote({...telestrokeNote, tnkConsentTime: e.target.value})}
+                                            className="w-full px-2 py-1.5 border border-purple-200 rounded-lg text-sm focus:ring-2 focus:ring-purple-500" />
+                                        </div>
+                                        <div>
+                                          <label className="block text-xs font-medium text-slate-600 mb-1">Discussed with</label>
+                                          <input type="text" value={telestrokeNote.tnkConsentWith || ''}
+                                            onChange={(e) => setTelestrokeNote({...telestrokeNote, tnkConsentWith: e.target.value})}
+                                            placeholder="Patient, wife, son..."
+                                            className="w-full px-2 py-1.5 border border-purple-200 rounded-lg text-sm focus:ring-2 focus:ring-purple-500" />
+                                        </div>
+                                      </div>
                                       <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                                         <input
                                           type="checkbox"
