@@ -1403,7 +1403,6 @@ Clinician Name`;
           const [aspectsScore, setAspectsScore] = useState(loadFromStorage('aspectsScore', 10));
           const [darkMode, setDarkMode] = useState(getKey('darkMode', false) === true);
           const [searchQuery, setSearchQuery] = useState('');
-          const [isCalculating, setIsCalculating] = useState(false);
           const [copiedText, setCopiedText] = useState('');
           const [isMounted, setIsMounted] = useState(false);
           const [editableTemplate, setEditableTemplate] = useState(loadFromStorage('telestrokeTemplate', defaultTelestrokeTemplate));
@@ -1475,9 +1474,6 @@ Clinician Name`;
           const [fabExpanded, setFabExpanded] = useState(false);
 
           const [selectedPackId, setSelectedPackId] = useState(appData.encounter.clipboardPacks?.[0]?.id || 'telestroke-consult');
-          const [shiftFilterDueToday, setShiftFilterDueToday] = useState(false);
-          const [shiftFilterPendingOnly, setShiftFilterPendingOnly] = useState(false);
-          const [showArchivedBoards, setShowArchivedBoards] = useState(false);
           const [shiftDrafts, setShiftDrafts] = useState({});
 
           const shiftBoards = appData.shiftBoards || [];
@@ -6340,7 +6336,6 @@ Clinician Name`;
             setEvidenceFilter('');
             setShowKeyboardHelp(false);
             setCopiedText('');
-            setIsCalculating(false);
             setCriticalAlerts([]);
             setTrialsCategory('ischemic');
             setSaveStatus('saved');
@@ -6602,7 +6597,8 @@ Clinician Name`;
               'decisionLog',
               // Structured clinical data
               'diagnosis', 'premorbidMRS', 'affectedSide', 'weightEstimated', 'noAnticoagulants', 'contrastAllergy',
-              'wakeUpStrokeWorkflow', 'recommendations', 'consentKit',
+              'chiefComplaint', 'doorTime', 'needleTime', 'admitLocation', 'plateletsCoags',
+              'wakeUpStrokeWorkflow', 'recommendationsText', 'consentKit',
               // SAH/CVT/TIA pathway fields
               'sahGrade', 'sahGradeScale', 'sahBPManaged', 'sahNimodipine', 'sahEVDPlaced', 'sahAneurysmSecured', 'sahNeurosurgeryConsulted', 'sahSeizureProphylaxis',
               'cvtAnticoagStarted', 'cvtAnticoagType', 'cvtIcpManaged', 'cvtSeizureManaged', 'cvtHematologyConsulted',
@@ -6614,6 +6610,13 @@ Clinician Name`;
               // Nursing/management
               'dysphagiaScreening', 'earlyMobilization', 'vteProphylaxis', 'postTnkBpTracker', 'feverManagement',
               'osmoticTherapy', 'nutritionalSupport',
+              // Drug interactions and bridging
+              'drugInteractions', 'anticoagBridging',
+              // Special workups and assessments
+              'youngAdultWorkup', 'drivingRestrictions', 'returnToWork',
+              'sexualHealthCounseling', 'airTravelRestrictions',
+              'spasticity', 'centralPain', 'fatigue', 'substanceScreening', 'hormonalRisk',
+              'palliativeCare', 'fallsRisk', 'pregnancyStroke', 'decompressiveCraniectomy', 'rehabReferral',
               // Discharge
               'dischargeChecklist', 'dischargeChecklistReviewed', 'mrsAssessment',
               // Inline calculator state
@@ -6755,12 +6758,6 @@ Clinician Name`;
             }
           };
 
-          const Tooltip = ({ text, children }) => (
-            <span className="tooltip">
-              {children}
-              <span className="tooltiptext">{text}</span>
-            </span>
-          );
 
           // Generate follow-up brief for clinic handoff
           const generateFollowUpBrief = () => {
@@ -6806,13 +6803,24 @@ Clinician Name`;
             }
             brief += `\nSECONDARY PREVENTION:\n`;
             if (sp.antiplateletRegimen) {
-              brief += `- Antithrombotic: ${AP_LABELS[sp.antiplateletRegimen] || sp.antiplateletRegimen}\n`;
+              let apLine = `- Antithrombotic: ${AP_LABELS[sp.antiplateletRegimen] || sp.antiplateletRegimen}`;
+              if (sp.daptDuration) apLine += ` (${sp.daptDuration})`;
+              if (sp.cyp2c19Tested && sp.cyp2c19Result) {
+                const cypLabels = { 'normal-metabolizer': 'Normal', 'intermediate': 'Intermediate (consider ticagrelor)', 'poor-metabolizer': 'Poor/LOF (avoid clopidogrel)', 'rapid-metabolizer': 'Rapid', 'pending': 'Pending' };
+                apLine += ` — CYP2C19: ${cypLabels[sp.cyp2c19Result] || sp.cyp2c19Result}`;
+              }
+              brief += apLine + '\n';
             }
             if (sp.statinDose) brief += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}\n`;
             if (sp.bpTarget) brief += `- BP target: ${sp.bpTarget}${sp.bpMeds ? ` (on ${sp.bpMeds})` : ''}\n`;
             if (sp.diabetesManagement && sp.diabetesManagement !== 'no-diabetes') brief += `- Diabetes: ${sp.diabetesManagement.replace(/-/g, ' ')}\n`;
-            if (sp.smokingStatus && sp.smokingStatus !== 'never') brief += `- Smoking: ${sp.smokingStatus.replace(/-/g, ' ')}\n`;
+            if (sp.smokingStatus && sp.smokingStatus !== 'never') {
+              let smokeLine = `- Smoking: ${sp.smokingStatus.replace(/-/g, ' ')}`;
+              if (sp.smokingCessationRx) smokeLine += ` — ${sp.smokingCessationRx}`;
+              brief += smokeLine + '\n';
+            }
             if (sp.glp1ra && sp.glp1ra !== 'not-indicated') brief += `- GLP-1 RA: ${sp.glp1ra.replace(/-/g, ' ')}\n`;
+            if (sp.sglt2i && sp.sglt2i !== 'not-indicated') brief += `- SGLT2i: ${sp.sglt2i.replace(/-/g, ' ')}\n`;
             brief += `\nFOLLOW-UP PLAN:\n`;
             const dc = telestrokeNote.dischargeChecklist || {};
             if (dc.followUpNeurology) brief += `- Neurology follow-up\n`;
@@ -7084,12 +7092,33 @@ Clinician Name`;
             const sp = telestrokeNote.secondaryPrevention || {};
             const spItems = [];
             if (sp.antiplateletRegimen) {
-              spItems.push(`Antithrombotic: ${AP_LABELS[sp.antiplateletRegimen] || sp.antiplateletRegimen}`);
+              let apLine = `Antithrombotic: ${AP_LABELS[sp.antiplateletRegimen] || sp.antiplateletRegimen}`;
+              if (sp.daptDuration) apLine += ` (${sp.daptDuration})`;
+              if (sp.cyp2c19Tested && sp.cyp2c19Result) {
+                const cypLabels = { 'normal-metabolizer': 'Normal', 'intermediate': 'Intermediate', 'poor-metabolizer': 'Poor (LOF)', 'rapid-metabolizer': 'Rapid/Ultra-rapid', 'pending': 'Pending' };
+                apLine += ` — CYP2C19: ${cypLabels[sp.cyp2c19Result] || sp.cyp2c19Result}`;
+              }
+              spItems.push(apLine);
             }
             if (sp.statinDose) spItems.push(`Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}`);
             if (sp.bpTarget) spItems.push(`BP target: ${sp.bpTarget}${sp.bpMeds ? ` (${sp.bpMeds})` : ''}`);
+            if (sp.diabetesManagement) spItems.push(`Diabetes: ${sp.diabetesManagement}`);
+            if (sp.smokingStatus && sp.smokingStatus !== 'never') {
+              let smokeLine = `Smoking: ${sp.smokingStatus}`;
+              if (sp.smokingCessationRx) smokeLine += ` — ${sp.smokingCessationRx}`;
+              spItems.push(smokeLine);
+            }
             if (spItems.length > 0) {
               note += `\nSecondary Prevention:\n${spItems.map(i => `- ${i}`).join('\n')}\n`;
+            }
+
+            // Add drug interaction alerts
+            const di = telestrokeNote.drugInteractions || {};
+            const diItems = [];
+            if (di.aedDoacInteraction) diItems.push(`AED-DOAC interaction: ${di.aedType} (enzyme-inducing — consider warfarin)`);
+            if (di.statinInteraction) diItems.push(`Statin interaction: ${di.statinInteractionDrug} (dose adjustment needed)`);
+            if (diItems.length > 0) {
+              note += `\nDrug Interaction Alerts:\n${diItems.map(i => `- ${i}`).join('\n')}\n`;
             }
 
             // Add disposition
@@ -7108,11 +7137,17 @@ Clinician Name`;
             // Add discharge checklist summary
             const dc = telestrokeNote.dischargeChecklist || {};
             const dcItems = [];
-            if (dc.followUpNeurology) dcItems.push('Neurology follow-up');
-            if (dc.followUpPCP) dcItems.push('PCP follow-up');
+            if (dc.followUpNeurology) dcItems.push(`Neurology follow-up${dc.followUpNeurologyTimeframe ? ` (${dc.followUpNeurologyTimeframe})` : ''}`);
+            if (dc.followUpPCP) dcItems.push(`PCP follow-up${dc.followUpPCPTimeframe ? ` (${dc.followUpPCPTimeframe})` : ''}`);
+            if (dc.followUpCardiology) dcItems.push('Cardiology follow-up');
             if (dc.imagingFollowUp) dcItems.push(`Imaging follow-up: ${dc.imagingFollowUp}`);
-            if (dc.ptEvaluated) dcItems.push('PT/OT evaluated');
+            if (dc.rehabilitationOrdered) dcItems.push(`Rehabilitation: ${dc.rehabilitationType || 'ordered'}`);
             if (dc.swallowScreened) dcItems.push(`Swallow screen: ${dc.swallowScreenResult || 'completed'}`);
+            if (dc.dvtProphylaxis) dcItems.push(`DVT prophylaxis: ${dc.dvtProphylaxisType || 'initiated'}`);
+            if (dc.repeatCT24h) dcItems.push('Repeat CT at 24h ordered');
+            if (dc.mriOrdered) dcItems.push('MRI ordered');
+            if (dc.patientEducation) dcItems.push('Patient/family education provided');
+            if (dc.drivingRestrictions) dcItems.push('Driving restrictions counseled');
             if (dcItems.length > 0) {
               note += `\nDischarge Planning:\n${dcItems.map(i => `- ${i}`).join('\n')}\n`;
             }
@@ -7194,7 +7229,9 @@ Clinician Name`;
             const sp = telestrokeNote.secondaryPrevention || {};
             const spParts = [];
             if (sp.antiplateletRegimen) {
-              spParts.push(AP_LABELS_SHORT[sp.antiplateletRegimen] || sp.antiplateletRegimen);
+              let apText = AP_LABELS_SHORT[sp.antiplateletRegimen] || sp.antiplateletRegimen;
+              if (sp.cyp2c19Result === 'poor-metabolizer') apText += ' (CYP2C19 LOF — consider ticagrelor)';
+              spParts.push(apText);
             }
             if (sp.statinDose) spParts.push(`${sp.statinDose.replace(/-/g, ' ')} statin`);
             if (sp.bpTarget) spParts.push(`BP target ${sp.bpTarget}`);
@@ -11455,6 +11492,23 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                       <option value="doac-af">DOAC for AF</option>
                                       <option value="anticoag-other">Anticoagulation (other)</option>
                                     </select>
+                                    {(() => {
+                                      const sp = telestrokeNote.secondaryPrevention || {};
+                                      const ap = sp.antiplateletRegimen || '';
+                                      const cyp = sp.cyp2c19Result || '';
+                                      const usesClopidogrel = ap === 'clopidogrel-mono' || ap === 'dapt-21';
+                                      if (usesClopidogrel && cyp === 'poor-metabolizer') return (
+                                        <div className="mt-1 p-1.5 bg-red-100 border border-red-300 rounded text-xs text-red-800">
+                                          <strong>CYP2C19 LOF:</strong> Clopidogrel ineffective. Switch to ticagrelor + ASA (CHANCE-2).
+                                        </div>
+                                      );
+                                      if (usesClopidogrel && cyp === 'intermediate') return (
+                                        <div className="mt-1 p-1.5 bg-amber-100 border border-amber-300 rounded text-xs text-amber-800">
+                                          <strong>CYP2C19 intermediate:</strong> Consider ticagrelor over clopidogrel (CHANCE-2).
+                                        </div>
+                                      );
+                                      return null;
+                                    })()}
                                   </div>
                                   <div>
                                     <label className="block text-xs text-slate-600 mb-0.5">Statin</label>
