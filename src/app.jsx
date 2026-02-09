@@ -6855,7 +6855,10 @@ Clinician Name`;
               note += `\n`;
               if (telestrokeNote.ctpResults) note += `- CTP: ${telestrokeNote.ctpResults}\n`;
               note += `\nTreatment:\n`;
-              if (telestrokeNote.tnkRecommended) note += `- TNK administered at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+              if (telestrokeNote.tnkRecommended) {
+                const transferDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
+                note += `- TNK${transferDose ? ` ${transferDose.calculatedDose} mg` : ''} administered at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+              }
               if (telestrokeNote.evtRecommended) note += `- EVT recommended\n`;
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
               if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) note += formatDTNForNote();
@@ -7127,6 +7130,7 @@ Clinician Name`;
             const dx = telestrokeNote.diagnosisCategory || '';
 
             const sentences = [];
+            if (telestrokeNote.callingSite) sentences.push(`[${telestrokeNote.callingSite}]`);
             sentences.push(`${age}-year-old ${sex} with ${pmh} presenting with ${symptoms}.`);
             sentences.push(`Last known well: ${lkw}. NIHSS ${nihss}.`);
 
@@ -7154,7 +7158,9 @@ Clinician Name`;
             } else {
               if (telestrokeNote.tnkRecommended) {
                 const tnkTime = telestrokeNote.tnkAdminTime ? ` at ${telestrokeNote.tnkAdminTime}` : '';
-                sentences.push(`TNK recommended${tnkTime}.`);
+                const tnkDoseInfo = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
+                const doseStr = tnkDoseInfo ? ` (${tnkDoseInfo.calculatedDose} mg)` : '';
+                sentences.push(`TNK recommended${doseStr}${tnkTime}.`);
               } else if (telestrokeNote.tnkAutoBlocked) {
                 sentences.push(`TNK contraindicated due to warfarin with INR >1.7${inr ? ` (INR ${inr})` : ''}.`);
               } else {
