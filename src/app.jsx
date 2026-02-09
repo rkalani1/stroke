@@ -784,7 +784,6 @@ Clinician Name`;
             inr: '',
             ptt: '',
             plateletCount: '',
-            platelets: '',
             allergies: '',
             contrastAllergy: false,
             nihss: '',
@@ -6843,6 +6842,11 @@ Clinician Name`;
               if (telestrokeNote.evtRecommended) note += `- EVT recommended\n`;
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
               if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) note += formatDTNForNote();
+              if (telestrokeNote.transportMode || telestrokeNote.transportEta) {
+                note += `\nTransport: ${telestrokeNote.transportMode || '___'}`;
+                if (telestrokeNote.transportEta) note += ` | ETA: ${telestrokeNote.transportEta}`;
+                note += '\n';
+              }
               note += `\nRecommendations:\n${telestrokeNote.recommendationsText || '___'}\n`;
               return note;
             }
@@ -7387,7 +7391,7 @@ Clinician Name`;
             if (inr && (inr < 0.5 || inr > 20)) {
               warnings.push({ id: 'inr-range', severity: 'warn', msg: `INR ${inr} is unusual — verify result` });
             }
-            const platelets = parseInt(n.platelets || n.plateletCount);
+            const platelets = parseInt(n.plateletCount);
             if (platelets && platelets < 10) {
               warnings.push({ id: 'plt-low', severity: 'warn', msg: `Platelets ${platelets}K — critically low, verify result` });
             }
@@ -11051,8 +11055,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <label className="block text-xs text-slate-600 mb-1">Platelets</label>
                               <input
                                 type="text"
-                                value={telestrokeNote.platelets}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, platelets: e.target.value})}
+                                value={telestrokeNote.plateletCount}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, plateletCount: e.target.value})}
                                 placeholder="K/uL"
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
                               />
@@ -11082,7 +11086,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           })()}
                           {/* Platelet Alert */}
                           {(() => {
-                            const plt = parseInt(telestrokeNote.platelets);
+                            const plt = parseInt(telestrokeNote.plateletCount);
                             if (!plt) return null;
                             if (plt < 100) return <div className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">Plt {plt}K - TNK contraindicated if &lt;100K</div>;
                             return null;
@@ -11615,7 +11619,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               onClick={() => {
                                 let exam = `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
                                 if (telestrokeNote.nihssDetails) exam += ` (${telestrokeNote.nihssDetails})`;
-                                exam += `\nBP: ${telestrokeNote.presentingBP || 'N/A'}, Glucose: ${telestrokeNote.glucose || 'N/A'}, INR: ${telestrokeNote.inr || 'N/A'}, Plt: ${telestrokeNote.platelets || 'N/A'}`;
+                                exam += `\nBP: ${telestrokeNote.presentingBP || 'N/A'}, Glucose: ${telestrokeNote.glucose || 'N/A'}, INR: ${telestrokeNote.inr || 'N/A'}, Plt: ${telestrokeNote.plateletCount || 'N/A'}`;
                                 navigator.clipboard.writeText(exam);
                                 setCopiedText('tel-exam'); setTimeout(() => setCopiedText(''), 2000);
                               }}
@@ -17739,7 +17743,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               onClick={() => {
                                 let exam = `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
                                 if (telestrokeNote.nihssDetails) exam += ` (${telestrokeNote.nihssDetails})`;
-                                exam += `\n\nVITALS:\nBP: ${telestrokeNote.presentingBP || 'N/A'}\nGlucose: ${telestrokeNote.glucose || 'N/A'}\nINR: ${telestrokeNote.inr || 'N/A'}\nPlt: ${telestrokeNote.platelets || 'N/A'}`;
+                                exam += `\n\nVITALS:\nBP: ${telestrokeNote.presentingBP || 'N/A'}\nGlucose: ${telestrokeNote.glucose || 'N/A'}\nINR: ${telestrokeNote.inr || 'N/A'}\nPlt: ${telestrokeNote.plateletCount || 'N/A'}`;
                                 exam += `\n\nIMAGING:\nCT Head: ${telestrokeNote.ctResults || 'N/A'}\nCTA: ${telestrokeNote.ctaResults || 'N/A'}`;
                                 if (telestrokeNote.ctpResults) exam += `\nCTP: ${telestrokeNote.ctpResults}`;
                                 if (aspectsScore) exam += `\nASPECTS: ${aspectsScore}`;
