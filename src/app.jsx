@@ -11334,6 +11334,19 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   onChange={(e) => setTelestrokeNote({...telestrokeNote, tnkAdminTime: e.target.value})}
                                   className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
                                 />
+                                {telestrokeNote.tnkAdminTime && (() => {
+                                  const [h, m] = telestrokeNote.tnkAdminTime.split(':').map(Number);
+                                  const now = currentTime;
+                                  const tnkDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
+                                  const diffMin = Math.round((now - tnkDate) / 60000);
+                                  if (diffMin < 0 || diffMin > 1440) return null;
+                                  const color = diffMin <= 60 ? 'text-emerald-700 bg-emerald-50' : diffMin <= 180 ? 'text-amber-700 bg-amber-50' : 'text-red-700 bg-red-50';
+                                  return (
+                                    <div className={`mt-1 px-2 py-1 rounded text-xs font-medium ${color}`}>
+                                      {diffMin} min since TNK{diffMin >= 60 && diffMin < 180 ? ' — monitor for complications' : diffMin >= 180 ? ' — order repeat CT at 24h' : ''}
+                                    </div>
+                                  );
+                                })()}
                               </div>
                             )}
 
@@ -11519,6 +11532,28 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
                           />
                         </div>
+
+                        {/* Missing Fields Warning */}
+                        {(() => {
+                          const missing = [
+                            !telestrokeNote.age && 'Age',
+                            !lkwTime && !telestrokeNote.lkwUnknown && 'LKW',
+                            !(telestrokeNote.nihss || nihssScore) && 'NIHSS',
+                            !telestrokeNote.diagnosisCategory && 'Diagnosis',
+                            !telestrokeNote.ctResults && 'CT Results',
+                            !telestrokeNote.ctaResults && 'CTA Results',
+                            !telestrokeNote.disposition && 'Disposition'
+                          ].filter(Boolean);
+                          if (missing.length === 0) return null;
+                          return (
+                            <div className="bg-amber-50 border border-amber-300 rounded-lg px-3 py-2 flex items-start gap-2">
+                              <i data-lucide="alert-triangle" className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0"></i>
+                              <span className="text-xs text-amber-800">
+                                <span className="font-semibold">Incomplete:</span> {missing.join(', ')}
+                              </span>
+                            </div>
+                          );
+                        })()}
 
                         {/* Section 7: Output Buttons */}
                         <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 shadow-md space-y-3">
