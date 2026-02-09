@@ -730,6 +730,11 @@ Clinician Name`;
           ]);
 
           const getDefaultTelestrokeNote = () => ({
+            // Consultation metadata
+            consultStartTime: '',
+            callerName: '',
+            callerRole: '',
+            attendingPhysician: '',
             // Calling Site for Telephone Consults
             callingSite: '',
             callingSiteOther: '',
@@ -6549,6 +6554,7 @@ Clinician Name`;
           const sanitizeTelestrokeNoteForStorage = (note) => {
             if (shouldPersistFreeText) return note;
             const allowedKeys = [
+              'consultStartTime', 'callerName', 'callerRole', 'attendingPhysician',
               'alias', 'age', 'sex', 'weight', 'nihss', 'aspects', 'vesselOcclusion', 'diagnosisCategory',
               'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'arrivalTime', 'strokeAlertTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
               'presentingBP', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT',
@@ -6791,6 +6797,7 @@ Clinician Name`;
             // Template-specific note generation
             if (noteTemplate === 'transfer') {
               let note = `TRANSFER SUMMARY\n${'='.repeat(40)}\n\n`;
+              if (telestrokeNote.callingSite) note += `From: ${telestrokeNote.callingSite}\n`;
               note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}\n`;
               note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}\n`;
               note += `LKW: ${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}\n`;
@@ -6815,6 +6822,7 @@ Clinician Name`;
 
             if (noteTemplate === 'signout') {
               let note = `SIGNOUT / HANDOFF\n${'='.repeat(40)}\n\n`;
+              if (telestrokeNote.callingSite) note += `Site: ${telestrokeNote.callingSite}\n`;
               note += `${telestrokeNote.age || '___'} ${telestrokeNote.sex || '___'} — ${telestrokeNote.diagnosis || '___'}\n`;
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'} | LKW: ${formatTime(telestrokeNote.lkwTime) || '___'}\n\n`;
               note += `Brief HPI: ${telestrokeNote.symptoms || '___'}\n\n`;
@@ -6868,6 +6876,16 @@ Clinician Name`;
             note = note.replace(/{diagnosis}/g, telestrokeNote.diagnosis || '');
             note = note.replace(/{tnkAdminTime}/g, formatTime(telestrokeNote.tnkAdminTime));
             note = note.replace(/{recommendationsText}/g, telestrokeNote.recommendationsText || '');
+
+            // Add consultation metadata header
+            const metadataLines = [];
+            if (telestrokeNote.callingSite) metadataLines.push(`Site: ${telestrokeNote.callingSite}${telestrokeNote.callingSiteOther ? ` (${telestrokeNote.callingSiteOther})` : ''}`);
+            if (telestrokeNote.callerName) metadataLines.push(`Caller: ${telestrokeNote.callerName}${telestrokeNote.callerRole ? ` (${telestrokeNote.callerRole})` : ''}`);
+            if (telestrokeNote.attendingPhysician) metadataLines.push(`Attending: ${telestrokeNote.attendingPhysician}`);
+            if (telestrokeNote.consultStartTime) metadataLines.push(`Consult Time: ${telestrokeNote.consultStartTime}`);
+            if (metadataLines.length > 0) {
+              note += `\n${metadataLines.join('\n')}\n`;
+            }
 
             // Add DTN metrics if TNK was administered
             if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) {
@@ -10495,21 +10513,74 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     {consultationType === 'telephone' && (
                       <div className="space-y-4">
 
-                        {/* Header with LKW Timer */}
+                        {/* Header with LKW Timer + Consult Duration */}
                         <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg p-4 shadow-lg">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                            <h3 className="text-xl font-bold">📞 Telephone Consult</h3>
-                            {lkwTime && (
-                              <div className="bg-white/20 rounded-lg px-4 py-2 text-center">
-                                <span className="text-2xl font-bold">
-                                  {(() => {
-                                    const tf = calculateTimeFromLKW();
-                                    return tf ? `${tf.hours}h ${tf.minutes}m` : '--:--';
-                                  })()}
-                                </span>
-                                <span className="text-sm ml-2 opacity-90">from LKW</span>
-                              </div>
-                            )}
+                            <div>
+                              <h3 className="text-xl font-bold">📞 Telephone Consult</h3>
+                              {telestrokeNote.consultStartTime && (
+                                <span className="text-xs opacity-80">Started {telestrokeNote.consultStartTime}</span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-3">
+                              {lkwTime && (
+                                <div className="bg-white/20 rounded-lg px-4 py-2 text-center">
+                                  <span className="text-2xl font-bold">
+                                    {(() => {
+                                      const tf = calculateTimeFromLKW();
+                                      return tf ? `${tf.hours}h ${tf.minutes}m` : '--:--';
+                                    })()}
+                                  </span>
+                                  <span className="text-sm ml-2 opacity-90">from LKW</span>
+                                </div>
+                              )}
+                              {!telestrokeNote.consultStartTime && (
+                                <button type="button" onClick={() => setTelestrokeNote({...telestrokeNote, consultStartTime: new Date().toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'})})}
+                                  className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-colors">
+                                  Start Timer
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Consultation Metadata */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                          <div>
+                            <label className="block text-xs font-medium text-slate-600 mb-1">Caller Name</label>
+                            <input type="text" value={telestrokeNote.callerName}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, callerName: e.target.value})}
+                              placeholder="e.g., Dr. Smith"
+                              className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-slate-600 mb-1">Caller Role</label>
+                            <select value={telestrokeNote.callerRole}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, callerRole: e.target.value})}
+                              className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500">
+                              <option value="">--</option>
+                              <option value="ED Physician">ED Physician</option>
+                              <option value="ED NP/PA">ED NP/PA</option>
+                              <option value="Hospitalist">Hospitalist</option>
+                              <option value="Neurology Resident">Neurology Resident</option>
+                              <option value="RN">RN</option>
+                              <option value="Other">Other</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-slate-600 mb-1">Attending</label>
+                            <input type="text" value={telestrokeNote.attendingPhysician}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, attendingPhysician: e.target.value})}
+                              placeholder="Attending name"
+                              className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-slate-600 mb-1">Consult Time</label>
+                            <div className="flex items-center gap-1">
+                              <input type="time" value={telestrokeNote.consultStartTime ? '' : ''}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, consultStartTime: e.target.value})}
+                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500" />
+                            </div>
                           </div>
                         </div>
 
@@ -11012,6 +11083,43 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               />
                             </div>
                           </div>
+                          {/* BP Threshold Alert */}
+                          {(() => {
+                            const bpStatus = getBPThresholdStatus(telestrokeNote.presentingBP);
+                            if (bpStatus.status === 'unknown') return null;
+                            return (
+                              <div className={`mt-2 border rounded-lg px-3 py-2 text-sm flex items-center justify-between ${bpStatus.badgeClass}`}>
+                                <span className="font-medium">{bpStatus.icon} BP {telestrokeNote.presentingBP}: {bpStatus.message}</span>
+                                {bpStatus.needsLowering && (
+                                  <span className="text-xs font-semibold">Lower SBP by {bpStatus.sbpToLower > 0 ? `${bpStatus.sbpToLower}` : ''}{bpStatus.sbpToLower > 0 && bpStatus.dbpToLower > 0 ? ' / DBP by ' : ''}{bpStatus.dbpToLower > 0 ? `${bpStatus.dbpToLower}` : ''} mmHg</span>
+                                )}
+                              </div>
+                            );
+                          })()}
+                          {/* Glucose Alert */}
+                          {(() => {
+                            const glu = parseInt(telestrokeNote.glucose);
+                            if (!glu) return null;
+                            if (glu < 50) return <div className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">Hypoglycemia ({glu} mg/dL) - Correct before attributing symptoms to stroke</div>;
+                            if (glu > 400) return <div className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">Severe hyperglycemia ({glu} mg/dL) - Insulin protocol, r/o DKA/HHS</div>;
+                            if (glu > 180) return <div className="mt-1 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5 text-xs text-amber-800 font-medium">Hyperglycemia ({glu} mg/dL) - Target &lt;180 mg/dL per AHA guidelines</div>;
+                            return null;
+                          })()}
+                          {/* Platelet Alert */}
+                          {(() => {
+                            const plt = parseInt(telestrokeNote.platelets);
+                            if (!plt) return null;
+                            if (plt < 100) return <div className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">Plt {plt}K - TNK contraindicated if &lt;100K</div>;
+                            return null;
+                          })()}
+                          {/* INR Alert */}
+                          {(() => {
+                            const inr = parseFloat(telestrokeNote.inr);
+                            if (!inr) return null;
+                            if (inr > 1.7) return <div className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">INR {inr} - TNK contraindicated if &gt;1.7</div>;
+                            if (inr > 1.5) return <div className="mt-1 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5 text-xs text-amber-800 font-medium">INR {inr} - Elevated, use caution with TNK</div>;
+                            return null;
+                          })()}
                         </div>
 
                         {/* Section 5: Imaging */}
