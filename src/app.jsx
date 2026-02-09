@@ -1264,10 +1264,21 @@ Clinician Name`;
               dietCounseling: false,
               exerciseCounseling: false,
               followUpNeurology: false,
+              followUpNeurologyTimeframe: '',
               followUpPCP: false,
+              followUpPCPTimeframe: '',
+              followUpCardiology: false,
               rehabilitationOrdered: false,
+              rehabilitationType: '',
               patientEducation: false,
-              drivingRestrictions: false
+              drivingRestrictions: false,
+              swallowScreened: false,
+              swallowScreenResult: '',
+              dvtProphylaxis: false,
+              dvtProphylaxisType: '',
+              imagingFollowUp: '',
+              repeatCT24h: false,
+              mriOrdered: false
             },
             dischargeChecklistReviewed: false
           });
@@ -1425,10 +1436,10 @@ Clinician Name`;
           const [consultationType, setConsultationType] = useState(loadFromStorage('consultationType', settings.defaultConsultationType || 'telephone'));
 
           const [managementSubTab, setManagementSubTab] = useState(initialManagementSubTab);
-          const showTelestrokeManagement = true;
-          const showInpatientManagement = true;
-          const showClinicManagement = true;
-          const showAcuteManagement = true;
+          const showTelestrokeManagement = clinicalContext === 'acute' || clinicalContext === 'phone';
+          const showInpatientManagement = clinicalContext === 'inpatient' || clinicalContext === 'acute';
+          const showClinicManagement = clinicalContext === 'clinic';
+          const showAcuteManagement = clinicalContext === 'acute' || clinicalContext === 'phone';
 
           // Emergency Contacts FAB state
           const [fabExpanded, setFabExpanded] = useState(false);
@@ -6372,13 +6383,6 @@ Clinician Name`;
           };
 
 
-          const applyRolePreset = (role) => {
-            const preset = rolePresets[role];
-            if (!preset) return;
-            setConsultationType(preset.consultationType);
-            setShowAdvanced(preset.showAdvanced);
-          };
-
           const formatDateTimeDisplay = (value) => {
             if (!value) return '';
             const parsed = value instanceof Date ? value : new Date(value);
@@ -6911,6 +6915,69 @@ Clinician Name`;
               const pending = Object.entries(ew.completedTests).filter(([k, v]) => !v).map(([k]) => k.replace(/([A-Z])/g, ' $1').trim());
               if (completed.length > 0) note += `Workup completed: ${completed.join(', ')}\n`;
               if (pending.length > 0) note += `Workup pending: ${pending.join(', ')}\n`;
+            }
+
+            // Add TNK consent documentation
+            if (telestrokeNote.tnkRecommended) {
+              if (telestrokeNote.tnkConsentDiscussed || telestrokeNote.patientFamilyConsent || telestrokeNote.presumedConsent) {
+                note += `\nTNK Consent: Risks and benefits of IV thrombolysis (including ~4% risk of sICH) discussed. `;
+                if (telestrokeNote.patientFamilyConsent) note += 'Informed consent obtained from patient/family. ';
+                if (telestrokeNote.presumedConsent) note += 'Presumed consent — patient unable to consent, no surrogate available. ';
+                if (telestrokeNote.preTNKSafetyPause) note += 'Pre-TNK safety pause completed. ';
+                note += '\n';
+              }
+            }
+
+            // Add vessel occlusion details
+            if ((telestrokeNote.vesselOcclusion || []).length > 0) {
+              note += `\nVessel Occlusion: ${telestrokeNote.vesselOcclusion.join(', ')}\n`;
+            }
+
+            // Add ICH-specific details
+            if (telestrokeNote.diagnosisCategory === 'ich') {
+              let ichNote = '\nICH Management:\n';
+              if (telestrokeNote.ichBPManaged) ichNote += '- BP managed (target SBP 130-150)\n';
+              if (telestrokeNote.ichReversalOrdered) ichNote += '- Anticoagulation reversal ordered\n';
+              if (telestrokeNote.ichNeurosurgeryConsulted) ichNote += '- Neurosurgery consulted\n';
+              if (ichNote !== '\nICH Management:\n') note += ichNote;
+            }
+
+            // Add secondary prevention summary
+            const sp = telestrokeNote.secondaryPrevention || {};
+            const spItems = [];
+            if (sp.antiplateletRegimen) {
+              const apLabels = { 'dapt-21': 'DAPT x 21 days', 'asa-mono': 'ASA monotherapy', 'clopidogrel-mono': 'Clopidogrel monotherapy', 'asa-er-dipyridamole': 'ASA/ER-Dipyridamole', 'doac-af': 'DOAC for AF', 'anticoag-other': 'Anticoagulation (other)' };
+              spItems.push(`Antithrombotic: ${apLabels[sp.antiplateletRegimen] || sp.antiplateletRegimen}`);
+            }
+            if (sp.statinDose) spItems.push(`Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}`);
+            if (sp.bpTarget) spItems.push(`BP target: ${sp.bpTarget}${sp.bpMeds ? ` (${sp.bpMeds})` : ''}`);
+            if (spItems.length > 0) {
+              note += `\nSecondary Prevention:\n${spItems.map(i => `- ${i}`).join('\n')}\n`;
+            }
+
+            // Add disposition
+            if (telestrokeNote.disposition || telestrokeNote.transferAccepted) {
+              note += `\nDisposition: `;
+              if (telestrokeNote.transferAccepted) {
+                note += `Transfer to comprehensive stroke center`;
+                if (telestrokeNote.transportMode) note += ` via ${telestrokeNote.transportMode}`;
+                if (telestrokeNote.transportEta) note += ` (ETA: ${telestrokeNote.transportEta})`;
+              } else {
+                note += telestrokeNote.disposition || 'Pending';
+              }
+              note += '\n';
+            }
+
+            // Add discharge checklist summary
+            const dc = telestrokeNote.dischargeChecklist || {};
+            const dcItems = [];
+            if (dc.followUpNeurology) dcItems.push('Neurology follow-up');
+            if (dc.followUpPCP) dcItems.push('PCP follow-up');
+            if (dc.imagingFollowUp) dcItems.push(`Imaging follow-up: ${dc.imagingFollowUp}`);
+            if (dc.ptEvaluated) dcItems.push('PT/OT evaluated');
+            if (dc.swallowScreened) dcItems.push(`Swallow screen: ${dc.swallowScreenResult || 'completed'}`);
+            if (dcItems.length > 0) {
+              note += `\nDischarge Planning:\n${dcItems.map(i => `- ${i}`).join('\n')}\n`;
             }
 
             return note;
@@ -9074,13 +9141,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
             { value: 'icu', label: 'ICU' },
             { value: 'transfer', label: 'Transfer' }
           ];
-          const rolePresets = {
-            consult: { consultationType: 'videoTelestroke', showAdvanced: true },
-            attending: { consultationType: 'videoTelestroke', showAdvanced: true },
-            ed: { consultationType: 'telephone', showAdvanced: false },
-            icu: { consultationType: 'telephone', showAdvanced: true },
-            transfer: { consultationType: 'videoTelestroke', showAdvanced: true }
-          };
           const timeFromLKW = calculateTimeFromLKW();
           const safetyChecks = getSafetyChecks();
           const safetyChecksCompleted = safetyChecks.filter((item) => item.complete).length;
@@ -9908,6 +9968,27 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
                       </div>
                     </div>
+
+                    {/* ===== MISSING FIELDS WARNING ===== */}
+                    {(() => {
+                      const required = [
+                        { name: 'Age', value: telestrokeNote.age },
+                        { name: 'Sex', value: telestrokeNote.sex },
+                        { name: 'LKW', value: lkwTime },
+                        { name: 'NIHSS', value: telestrokeNote.nihss || nihssScore },
+                        { name: 'CT Head', value: telestrokeNote.ctResults },
+                        { name: 'Diagnosis', value: telestrokeNote.diagnosis }
+                      ];
+                      const missing = required.filter(f => !f.value);
+                      return missing.length > 0 && missing.length < required.length ? (
+                        <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 flex items-center gap-2 text-sm">
+                          <i data-lucide="alert-triangle" className="w-4 h-4 text-amber-500 shrink-0"></i>
+                          <span className="text-amber-800">
+                            <span className="font-medium">Missing:</span> {missing.map(f => f.name).join(', ')}
+                          </span>
+                        </div>
+                      ) : null;
+                    })()}
 
                     {/* ===== TRIAGE SECTION ===== */}
                     <div id="phase-triage"></div>
@@ -11060,7 +11141,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                         {/* Section 7: Output Buttons */}
                         <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 shadow-md space-y-3">
-                          <h4 className="text-md font-bold text-slate-800 mb-3">📋 Copy Notes</h4>
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-md font-bold text-slate-800">Copy Notes</h4>
+                            <select value={noteTemplate} onChange={(e) => setNoteTemplate(e.target.value)}
+                              className="text-xs border border-slate-300 rounded-lg px-2 py-1 focus:ring-2 focus:ring-blue-500">
+                              <option value="consult">Consult Note</option>
+                              <option value="transfer">Transfer Summary</option>
+                              <option value="signout">Signout</option>
+                              <option value="followup">Follow-up Brief</option>
+                            </select>
+                          </div>
 
                           {/* Pulsara Summary */}
                           <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
@@ -11141,35 +11231,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </p>
                           </div>
 
-                          {/* Brief Note Button */}
+                          {/* Full Note Button (uses template system) */}
                           <button
                             onClick={() => {
-                              const siteName = telestrokeNote.callingSite === 'Other' ? telestrokeNote.callingSiteOther : telestrokeNote.callingSite;
-                              const timeFromLKW = calculateTimeFromLKW();
-                              const timeDisplay = timeFromLKW ? `${timeFromLKW.hours}h ${timeFromLKW.minutes}m from LKW` : '';
-
-                              const note = `TELEPHONE CONSULT\n\n` +
-                                `Site: ${siteName || 'Not specified'}\n` +
-                                `Patient: ${telestrokeNote.age || '?'}yo ${telestrokeNote.sex || '?'}\n` +
-                                `LKW: ${lkwTime ? lkwTime.toLocaleString() : 'Not specified'}${timeDisplay ? ` (${timeDisplay})` : ''}\n\n` +
-                                `PRESENTATION:\n${telestrokeNote.symptoms || 'Not documented'}\n` +
-                                `PMH: ${telestrokeNote.pmh || 'Not documented'}\n` +
-                                `Medications: ${telestrokeNote.medications || 'Not documented'}\n` +
-                                (telestrokeNote.lastDOACType ? `Anticoagulation: ${telestrokeNote.lastDOACType}${telestrokeNote.lastDOACDose ? `, last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()}` : ''}\n` : '') +
-                                `\nNIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}${telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : ''}\n` +
-                                `\nVITALS/LABS:\n` +
-                                `BP: ${telestrokeNote.presentingBP || 'N/A'}, Glucose: ${telestrokeNote.glucose || 'N/A'}, INR: ${telestrokeNote.inr || 'N/A'}, Plt: ${telestrokeNote.platelets || 'N/A'}\n` +
-                                `\nIMAGING:\n` +
-                                `CT Head: ${telestrokeNote.ctResults || 'Not documented'}\n` +
-                                `CTA: ${telestrokeNote.ctaResults || 'Not documented'}\n` +
-                                (aspectsScore ? `ASPECTS: ${aspectsScore}\n` : '') +
-                                (telestrokeNote.ctpResults ? `CTP: ${telestrokeNote.ctpResults}\n` : '') +
-                                `\nTREATMENT DECISION:\n` +
-                                `TNK: ${telestrokeNote.tnkRecommended ? 'RECOMMENDED' : 'Not recommended'}\n` +
-                                `EVT: ${telestrokeNote.evtRecommended ? 'RECOMMENDED' : 'Not recommended'}\n` +
-                                `\nRATIONALE/RECOMMENDATIONS:\n${telestrokeNote.rationale || 'None documented'}\n\n` +
-                                `Clinician Name\n` +
-                                `${new Date().toLocaleString()}`;
+                              const note = generateTelestrokeNote();
                               navigator.clipboard.writeText(note);
                               setCopiedText('telephone-note');
                               setTimeout(() => setCopiedText(''), 2000);
@@ -11177,7 +11242,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             className="w-full px-4 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium flex items-center justify-center gap-2"
                           >
                             <i data-lucide="copy" className="w-4 h-4"></i>
-                            {copiedText === 'telephone-note' ? 'Copied!' : 'Copy Full Telephone Note'}
+                            {copiedText === 'telephone-note' ? 'Copied!' : `Copy ${noteTemplate === 'consult' ? 'Consult Note' : noteTemplate === 'transfer' ? 'Transfer Summary' : noteTemplate === 'signout' ? 'Signout' : 'Follow-up Brief'}`}
                           </button>
 
                           {/* Modular Copy: HPI / Exam-NIHSS / MDM-Plan */}
@@ -13186,6 +13251,67 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <i data-lucide={copiedText === 'tnk-consent' ? 'check' : 'copy'} className="w-4 h-4"></i>
                                 {copiedText === 'tnk-consent' ? 'Copied!' : 'Copy TNK Consent Documentation'}
                               </button>
+                            )}
+
+                            {/* ===== POST-THROMBOLYSIS MONITORING ===== */}
+                            {telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime && (
+                              <div className="bg-rose-50 border-2 border-rose-300 rounded-xl p-4 space-y-3">
+                                <h4 className="font-bold text-rose-900 flex items-center gap-2">
+                                  <i data-lucide="heart-pulse" className="w-4 h-4"></i>
+                                  Post-Thrombolysis Monitoring
+                                </h4>
+                                <p className="text-xs text-rose-700">Monitor for complications. NIHSS q15min x 2h, then q1h x 6h. Avoid anticoagulants/antiplatelets x 24h. Repeat CT at 24h or if clinical deterioration.</p>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                  {[
+                                    { field: 'postTnkNeuroChecksStarted', label: 'Neuro checks q15m initiated' },
+                                    { field: 'postTnkBpMonitoring', label: 'BP monitoring (target <180/105)' },
+                                    { field: 'postTnkRepeatCTOrdered', label: 'Repeat CT Head ordered (24h or PRN)' },
+                                    { field: 'postTnkAntiplateletHeld', label: 'Antiplatelets/anticoagulants held x 24h' }
+                                  ].map(item => (
+                                    <label key={item.field} className="flex items-center gap-2 p-2 bg-white border border-rose-200 rounded-lg cursor-pointer text-sm">
+                                      <input
+                                        type="checkbox"
+                                        checked={telestrokeNote[item.field] || false}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, [item.field]: e.target.checked})}
+                                        className="w-4 h-4 text-rose-600"
+                                      />
+                                      <span className="text-rose-800">{item.label}</span>
+                                    </label>
+                                  ))}
+                                </div>
+                                <details className="bg-white border border-rose-200 rounded-lg">
+                                  <summary className="cursor-pointer p-2 text-sm font-semibold text-rose-800 hover:bg-rose-50 rounded-lg">
+                                    Complication Documentation
+                                  </summary>
+                                  <div className="p-3 space-y-2">
+                                    {[
+                                      { field: 'sichDetected', label: 'Symptomatic ICH (sICH)' },
+                                      { field: 'angioedemaDetected', label: 'Orolingual angioedema' },
+                                      { field: 'reperfusionHemorrhage', label: 'Reperfusion hemorrhage' },
+                                      { field: 'clinicalDeterioration', label: 'Clinical deterioration (NIHSS increase ≥4)' }
+                                    ].map(item => (
+                                      <label key={item.field} className="flex items-center gap-2 text-sm">
+                                        <input
+                                          type="checkbox"
+                                          checked={telestrokeNote[item.field] || false}
+                                          onChange={(e) => setTelestrokeNote({...telestrokeNote, [item.field]: e.target.checked})}
+                                          className="w-4 h-4 text-red-600"
+                                        />
+                                        <span className="text-slate-700">{item.label}</span>
+                                      </label>
+                                    ))}
+                                    {(telestrokeNote.sichDetected || telestrokeNote.clinicalDeterioration) && (
+                                      <textarea
+                                        value={telestrokeNote.complicationNotes || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, complicationNotes: e.target.value})}
+                                        placeholder="Describe complication, timing, and management taken..."
+                                        rows="2"
+                                        className="w-full px-3 py-2 border border-red-300 rounded-lg text-sm focus:ring-2 focus:ring-red-500"
+                                      />
+                                    )}
+                                  </div>
+                                </details>
+                              </div>
                             )}
 
                             {/* ===== MANAGEMENT SECTION ===== */}
@@ -16444,8 +16570,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <div className="flex items-center gap-2">
                                 {(() => {
                                   const dc = telestrokeNote.dischargeChecklist || {};
-                                  const total = Object.keys(dc).length;
-                                  const checked = Object.values(dc).filter(Boolean).length;
+                                  const boolKeys = Object.entries(dc).filter(([k, v]) => typeof v === 'boolean');
+                                  const total = boolKeys.length;
+                                  const checked = boolKeys.filter(([k, v]) => v).length;
                                   return (
                                     <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${checked === total ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
                                       {checked}/{total}
@@ -16462,41 +16589,78 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1">
+                            <div className="space-y-3">
                               {[
-                                { key: 'antiplateletOrAnticoag', label: 'Antiplatelet or anticoagulation prescribed', category: 'Medications' },
-                                { key: 'statinPrescribed', label: 'High-intensity statin prescribed', category: 'Medications' },
-                                { key: 'bpMedOptimized', label: 'BP medications optimized (target <130/80)', category: 'Medications' },
-                                { key: 'diabetesManaged', label: 'Diabetes management addressed', category: 'Risk Factors' },
-                                { key: 'smokingCessation', label: 'Smoking cessation counseled', category: 'Risk Factors' },
-                                { key: 'dietCounseling', label: 'Diet counseling (Mediterranean/DASH)', category: 'Lifestyle' },
-                                { key: 'exerciseCounseling', label: 'Exercise counseling (150 min/wk)', category: 'Lifestyle' },
-                                { key: 'followUpNeurology', label: 'Neurology follow-up scheduled', category: 'Follow-up' },
-                                { key: 'followUpPCP', label: 'PCP follow-up scheduled', category: 'Follow-up' },
-                                { key: 'rehabilitationOrdered', label: 'Rehabilitation services ordered', category: 'Rehab' },
-                                { key: 'patientEducation', label: 'Stroke education provided', category: 'Education' },
-                                { key: 'drivingRestrictions', label: 'Driving restrictions discussed', category: 'Education' }
-                              ].map(item => (
-                                <label key={item.key} className="flex items-center gap-2 py-1 cursor-pointer">
-                                  <input
-                                    type="checkbox"
-                                    checked={!!(telestrokeNote.dischargeChecklist || {})[item.key]}
-                                    onChange={(e) => setTelestrokeNote({
-                                      ...telestrokeNote,
-                                      dischargeChecklist: {
-                                        ...(telestrokeNote.dischargeChecklist || {}),
-                                        [item.key]: e.target.checked
-                                      }
-                                    })}
-                                    className="rounded border-emerald-300 text-emerald-600"
-                                  />
-                                  <span className="text-sm text-slate-700">{item.label}</span>
-                                </label>
+                                { heading: 'Medications', items: [
+                                  { key: 'antiplateletOrAnticoag', label: 'Antiplatelet or anticoagulation prescribed' },
+                                  { key: 'statinPrescribed', label: 'High-intensity statin prescribed' },
+                                  { key: 'bpMedOptimized', label: 'BP medications optimized (target <130/80)' },
+                                  { key: 'diabetesManaged', label: 'Diabetes management addressed' }
+                                ]},
+                                { heading: 'Safety & Monitoring', items: [
+                                  { key: 'swallowScreened', label: 'Dysphagia screening completed', hasDetail: 'swallowScreenResult', detailPlaceholder: 'Result: passed / failed / modified diet' },
+                                  { key: 'dvtProphylaxis', label: 'DVT prophylaxis ordered', hasDetail: 'dvtProphylaxisType', detailPlaceholder: 'Type: SCDs / enoxaparin / heparin' },
+                                  { key: 'repeatCT24h', label: 'Repeat CT Head ordered (24h)' },
+                                  { key: 'mriOrdered', label: 'MRI Brain ordered' }
+                                ]},
+                                { heading: 'Follow-up', items: [
+                                  { key: 'followUpNeurology', label: 'Neurology follow-up', hasDetail: 'followUpNeurologyTimeframe', detailPlaceholder: 'Timeframe: 2 weeks / 1 month / 3 months' },
+                                  { key: 'followUpPCP', label: 'PCP follow-up', hasDetail: 'followUpPCPTimeframe', detailPlaceholder: 'Timeframe: 1 week / 2 weeks' },
+                                  { key: 'followUpCardiology', label: 'Cardiology follow-up (if indicated)' }
+                                ]},
+                                { heading: 'Rehabilitation & Education', items: [
+                                  { key: 'rehabilitationOrdered', label: 'Rehabilitation ordered', hasDetail: 'rehabilitationType', detailPlaceholder: 'Type: acute rehab / SNF / home PT/OT/ST' },
+                                  { key: 'patientEducation', label: 'Stroke education provided' },
+                                  { key: 'drivingRestrictions', label: 'Driving restrictions discussed' },
+                                  { key: 'smokingCessation', label: 'Smoking cessation counseled' },
+                                  { key: 'dietCounseling', label: 'Diet counseling (Mediterranean/DASH)' },
+                                  { key: 'exerciseCounseling', label: 'Exercise counseling (150 min/wk)' }
+                                ]}
+                              ].map(group => (
+                                <div key={group.heading}>
+                                  <h5 className="text-xs font-semibold text-emerald-700 uppercase tracking-wide mb-1">{group.heading}</h5>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1">
+                                    {group.items.map(item => (
+                                      <div key={item.key}>
+                                        <label className="flex items-center gap-2 py-1 cursor-pointer">
+                                          <input
+                                            type="checkbox"
+                                            checked={!!(telestrokeNote.dischargeChecklist || {})[item.key]}
+                                            onChange={(e) => setTelestrokeNote({
+                                              ...telestrokeNote,
+                                              dischargeChecklist: {
+                                                ...(telestrokeNote.dischargeChecklist || {}),
+                                                [item.key]: e.target.checked
+                                              }
+                                            })}
+                                            className="rounded border-emerald-300 text-emerald-600"
+                                          />
+                                          <span className="text-sm text-slate-700">{item.label}</span>
+                                        </label>
+                                        {item.hasDetail && (telestrokeNote.dischargeChecklist || {})[item.key] && (
+                                          <input
+                                            type="text"
+                                            value={(telestrokeNote.dischargeChecklist || {})[item.hasDetail] || ''}
+                                            onChange={(e) => setTelestrokeNote({
+                                              ...telestrokeNote,
+                                              dischargeChecklist: {
+                                                ...(telestrokeNote.dischargeChecklist || {}),
+                                                [item.hasDetail]: e.target.value
+                                              }
+                                            })}
+                                            placeholder={item.detailPlaceholder}
+                                            className="ml-6 w-[calc(100%-1.5rem)] px-2 py-1 border border-emerald-200 rounded text-xs focus:ring-1 focus:ring-emerald-500 mb-1"
+                                          />
+                                        )}
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
                               ))}
                             </div>
 
                             <div className="mt-2 text-xs text-slate-500 italic">
-                              Based on AHA/ASA Secondary Stroke Prevention 2021 guidelines (Kleindorfer DO et al. Stroke. 2021;52:e364-e467)
+                              Based on AHA/ASA Secondary Stroke Prevention 2021 &amp; Systemic Complications of Acute Stroke 2024 guidelines
                             </div>
                           </div>
                         )}
