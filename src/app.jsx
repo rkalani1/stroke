@@ -787,6 +787,7 @@ Clinician Name`;
             allergies: '',
             contrastAllergy: false,
             nihss: '',
+            aspects: '',
             nihssDetails: '',
             disablingDeficit: false,
             imagingReviewed: true,
@@ -6593,7 +6594,23 @@ Clinician Name`;
               'punctureTime',
               'dtnEdArrival', 'dtnStrokeAlert', 'dtnCtStarted', 'dtnCtRead',
               'dtnTnkOrdered', 'dtnTnkAdministered',
-              'decisionLog'
+              'decisionLog',
+              // Structured clinical data
+              'diagnosis', 'premorbidMRS', 'affectedSide', 'weightEstimated', 'noAnticoagulants', 'contrastAllergy',
+              'wakeUpStrokeWorkflow', 'recommendations', 'consentKit',
+              // SAH/CVT/TIA pathway fields
+              'sahGrade', 'sahGradeScale', 'sahBPManaged', 'sahNimodipine', 'sahEVDPlaced', 'sahAneurysmSecured', 'sahNeurosurgeryConsulted', 'sahSeizureProphylaxis',
+              'cvtAnticoagStarted', 'cvtAnticoagType', 'cvtIcpManaged', 'cvtSeizureManaged', 'cvtHematologyConsulted',
+              'tiaWorkup', 'tiaWorkupReviewed',
+              // Clinical pathway nested objects
+              'cardiacWorkup', 'dissectionPathway', 'screeningTools', 'etiologyWorkup',
+              'esusWorkup', 'doacTiming', 'hemorrhagicTransformation', 'angioedema',
+              'ichAnticoagResumption', 'carotidManagement', 'cvtAnticoag',
+              // Nursing/management
+              'dysphagiaScreening', 'earlyMobilization', 'vteProphylaxis', 'feverManagement',
+              'osmoticTherapy', 'nutritionalSupport',
+              // Discharge
+              'dischargeChecklist', 'dischargeChecklistReviewed', 'mrsAssessment'
             ];
             return allowedKeys.reduce((acc, key) => {
               if (note && Object.prototype.hasOwnProperty.call(note, key)) {
