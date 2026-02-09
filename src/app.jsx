@@ -11256,7 +11256,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </select>
                             </div>
 
-                            {!isClinicContext && (
+                            {!isClinicContext && telestrokeNote.diagnosisCategory !== 'ich' && (
                             <div className="grid grid-cols-2 gap-3">
                               <label className="flex items-center gap-2 p-2 bg-emerald-50 border border-emerald-200 rounded-lg cursor-pointer">
                                 <input
@@ -11277,6 +11277,42 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <span className="text-sm font-medium text-blue-800">EVT Recommended</span>
                               </label>
                             </div>
+                            )}
+
+                            {/* ICH Quick Management */}
+                            {!isClinicContext && telestrokeNote.diagnosisCategory === 'ich' && (
+                              <div className="bg-red-50 border-2 border-red-300 rounded-lg p-3 space-y-2">
+                                <h5 className="text-sm font-bold text-red-800">ICH Management</h5>
+                                <div className="grid grid-cols-2 gap-2">
+                                  <label className="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" checked={!!telestrokeNote.ichBPManaged}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, ichBPManaged: e.target.checked})}
+                                      className="w-3.5 h-3.5 text-red-600" />
+                                    <span>BP managed (target SBP 130-150)</span>
+                                  </label>
+                                  <label className="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" checked={!!telestrokeNote.ichReversalInitiated}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, ichReversalInitiated: e.target.checked})}
+                                      className="w-3.5 h-3.5 text-red-600" />
+                                    <span>Anticoag reversal initiated</span>
+                                  </label>
+                                  <label className="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" checked={!!telestrokeNote.ichNeurosurgeryConsulted}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, ichNeurosurgeryConsulted: e.target.checked})}
+                                      className="w-3.5 h-3.5 text-red-600" />
+                                    <span>Neurosurgery consulted</span>
+                                  </label>
+                                  <label className="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input type="checkbox" checked={!!telestrokeNote.ichSeizureProphylaxis}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, ichSeizureProphylaxis: e.target.checked})}
+                                      className="w-3.5 h-3.5 text-red-600" />
+                                    <span>Seizure prophylaxis</span>
+                                  </label>
+                                </div>
+                                <div className="text-xs text-red-700 bg-red-100 rounded p-1.5">
+                                  TNK is contraindicated. Targets: SBP 130-150, reverse anticoagulation if applicable, repeat CT in 6h, ICU admission.
+                                </div>
+                              </div>
                             )}
 
                             {!isClinicContext && telestrokeNote.tnkRecommended && (
@@ -11319,6 +11355,50 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <option value="Discharge">Discharge</option>
                               </select>
                             </div>
+
+                            {/* Transfer Checklist */}
+                            {(telestrokeNote.disposition === 'Transfer to CSC' || telestrokeNote.disposition === 'Transfer to PSC') && (
+                              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 space-y-2">
+                                <h5 className="text-sm font-semibold text-blue-800">Transfer Checklist</h5>
+                                <div className="grid grid-cols-2 gap-1.5 text-sm">
+                                  {[
+                                    { key: 'transferAccepted', label: 'Accepting facility contacted' },
+                                    { key: 'transferImagingShared', label: 'Imaging shared/sent' },
+                                    { key: 'transferLabsSent', label: 'Labs and records sent' },
+                                    { key: 'transferIVAccess', label: 'IV access confirmed' },
+                                    { key: 'transferBPStable', label: 'BP stable for transport' },
+                                    { key: 'transferFamilyNotified', label: 'Family notified' }
+                                  ].map(item => (
+                                    <label key={item.key} className="flex items-center gap-2 cursor-pointer">
+                                      <input type="checkbox" checked={!!telestrokeNote[item.key]}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, [item.key]: e.target.checked})}
+                                        className="w-3.5 h-3.5 text-blue-600" />
+                                      <span>{item.label}</span>
+                                    </label>
+                                  ))}
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                  <div>
+                                    <label className="block text-xs text-slate-600 mb-0.5">Transport Mode</label>
+                                    <select value={telestrokeNote.transportMode || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, transportMode: e.target.value})}
+                                      className="w-full px-2 py-1 border border-slate-300 rounded text-xs">
+                                      <option value="">--</option>
+                                      <option value="Ground ambulance">Ground ambulance</option>
+                                      <option value="Air transport">Air transport</option>
+                                      <option value="Critical care transport">Critical care transport</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label className="block text-xs text-slate-600 mb-0.5">ETA</label>
+                                    <input type="text" value={telestrokeNote.transportEta || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, transportEta: e.target.value})}
+                                      placeholder="e.g., 45 min"
+                                      className="w-full px-2 py-1 border border-slate-300 rounded text-xs" />
+                                  </div>
+                                </div>
+                              </div>
+                            )}
 
                             {/* TOAST Quick-Select */}
                             {telestrokeNote.diagnosisCategory === 'ischemic' && (
