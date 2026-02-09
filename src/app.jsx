@@ -7809,7 +7809,7 @@ Clinician Name`;
                 'tnk-admin': { title: 'Document TNK administration', detail: 'Capture administration time for DTN metrics.', cta: 'Add TNK time' },
                 'transfer': { title: 'Arrange transfer', detail: 'Coordinate transfer to EVT-capable center for LVO.', cta: 'Transfer checklist' },
                 'recommendations': { title: 'Finalize recommendations', detail: 'Complete the recommendation summary for handoff and documentation.', cta: 'Add recommendations' },
-                'ich-bp': { title: 'ICH: Manage blood pressure', detail: 'Target SBP 130-150 within 2 hours (AHA/ASA 2022 ICH). Initiate nicardipine or labetalol.', cta: 'Manage BP' },
+                'ich-bp': { title: 'ICH: Manage blood pressure', detail: 'Target SBP <160 mmHg. Initiate nicardipine or labetalol.', cta: 'Manage BP' },
                 'ich-reversal': { title: 'ICH: Anticoagulation reversal', detail: 'Patient may be on anticoagulation. Review and order reversal agents.', cta: 'Order reversal' },
                 'ich-neurosurg': { title: 'ICH: Neurosurgery evaluation', detail: 'Document neurosurgery consultation for surgical candidacy assessment.', cta: 'Consult neurosurgery' },
                 'sah-grade': { title: 'SAH: Grade severity', detail: 'Enter Hunt & Hess or WFNS grade for SAH prognostication.', cta: 'Grade SAH' },
@@ -16179,7 +16179,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     </select>
                                   </div>
                                   <div className="text-xs text-slate-700 space-y-1">
-                                    <p className="text-red-700 font-semibold">Postpone new DNR until hospital day 2 (AHA/ASA 2022 ICH)</p>
+                                    <p className="text-red-700 font-semibold">Postpone new DNR until hospital day 2</p>
                                     <p>• Triggers: high NIHSS (&ge;20), large ICH, failed EVT</p>
                                     <p>• ICH score must NOT limit treatment</p>
                                     <p>• Full aggressive care x 24-48h minimum for ICH</p>
@@ -18324,7 +18324,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <details open className="bg-white border border-red-200 rounded-xl shadow-sm">
                             <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
                               <i data-lucide="pill" className="w-4 h-4 text-red-600"></i>
-                              Warfarin Reversal Guide (UW Pocket Card Rev 6/2025)
+                              Warfarin Reversal Guide
                             </summary>
                             <div className="p-4 space-y-3">
                               <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
@@ -18372,7 +18372,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <details open className="bg-white border border-red-200 rounded-xl shadow-sm">
                             <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
                               <i data-lucide="pill" className="w-4 h-4 text-purple-600"></i>
-                              DOAC Reversal Guide (UW Pocket Card Rev 6/2025)
+                              DOAC Reversal Guide
                             </summary>
                             <div className="p-4 space-y-3">
                               {/* Dabigatran */}
@@ -18435,7 +18435,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <details className="bg-white border border-red-200 rounded-xl shadow-sm">
                             <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
                               <i data-lucide="alert-triangle" className="w-4 h-4 text-red-600"></i>
-                              Post-Thrombolytic ICH Suspicion Algorithm (UW Pocket Card Rev 6/2025)
+                              Post-Thrombolytic ICH Suspicion Algorithm
                             </summary>
                             <div className="p-4 space-y-3">
                               <div className="bg-red-100 border border-red-300 rounded-lg p-3">
@@ -18491,7 +18491,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     <p className="text-xs font-semibold text-red-700 mb-1">YES — Blood confirmed:</p>
                                     <ol className="text-sm space-y-1 ml-4 list-decimal">
                                       <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-blue-600 underline hover:text-blue-800">2 pools Cryo</button> over 10-30 min (or continue if already started)</li>
-                                      <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.TXA)} className="text-blue-600 underline hover:text-blue-800">TXA 1 g IV</button> over 10 min</li>
+                                      <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.TXA)} className="text-blue-600 underline hover:text-blue-800">TXA 1 g IV</button> over 10 min (or aminocaproic acid 4-5 g IV if TXA unavailable)</li>
                                       <li>Repeat hemorrhage panel</li>
                                       <li>Call Stroke/Neuro attending</li>
                                       <li>Consult neurosurgery</li>
@@ -18523,11 +18523,11 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <details className="bg-white border border-red-200 rounded-xl shadow-sm">
                             <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
                               <i data-lucide="shield-alert" className="w-4 h-4 text-orange-600"></i>
-                              Angioedema Management (UW Pocket Card Rev 6/2025)
+                              Angioedema Management
                             </summary>
                             <div className="p-4 space-y-3">
                               <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                                <p className="text-xs text-orange-600 mb-2">COR IIb, LOE C-EO</p>
+                                <p className="text-xs text-orange-600 mb-2">Post-thrombolytic orolingual angioedema</p>
                                 <div className="space-y-2">
                                   <div className="flex gap-2 items-start">
                                     <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white text-xs flex items-center justify-center font-bold">1</span>
@@ -18621,7 +18621,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <h4 className="text-sm font-semibold text-red-700 mb-2">Telestroke rapid actions (phone or video)</h4>
                               <ul className="text-sm space-y-1 text-slate-700">
                                 <li>Confirm anticoagulant/antiplatelet use and initiate reversal.</li>
-                                <li>Target SBP 140 and maintain 130-150; avoid SBP &lt;130 and use IV nicardipine or clevidipine.</li>
+                                <li>Target SBP &lt;160; use IV nicardipine or clevidipine for smooth control.</li>
                                 <li>Screen for transfer triggers: cerebellar ICH ≥15 mL with deterioration/brainstem compression/hydrocephalus, IVH with hydrocephalus requiring EVD, or worsening supratentorial ICH.</li>
                                 <li>Plan repeat imaging and close neuro checks; avoid new DNAR/withdrawal within first 24h if no preexisting limits.</li>
                               </ul>
@@ -18634,7 +18634,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <div className="bg-white border border-red-200 rounded-xl p-4">
                               <h4 className="text-sm font-semibold text-red-700 mb-2">Inpatient priorities</h4>
                               <ul className="text-sm space-y-1 text-slate-700">
-                                <li>Continue anticoagulant reversal, monitor for hematoma expansion, and maintain SBP 130-150.</li>
+                                <li>Continue anticoagulant reversal, monitor for hematoma expansion, and maintain SBP &lt;160.</li>
                                 <li>Evaluate IVH/hydrocephalus for EVD and monitor for neurologic decline.</li>
                                 <li>Manage seizures, avoid prophylaxis without seizures, and use EEG when indicated.</li>
                                 <li>Implement supportive care bundle, early rehab, and structured goals-of-care discussions.</li>
@@ -18649,11 +18649,11 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <h3 className="text-lg font-semibold text-blue-800 mb-3">Minimally Invasive Evacuation (MIE)</h3>
 
                         <div className="bg-white p-3 rounded border mb-4">
-                          <h4 className="font-semibold text-blue-700 mb-2">Guideline selection (AHA/ASA 2022)</h4>
+                          <h4 className="font-semibold text-blue-700 mb-2">Surgical Selection</h4>
                           <ul className="text-sm space-y-1">
-                            <li>Supratentorial ICH volume &gt;20-30 mL with GCS 5-12: MIS evacuation can reduce mortality (Class IIa, LOE B-R).</li>
-                            <li>MIS may be reasonable over conventional craniotomy in eligible patients (Class IIb, LOE B-R).</li>
-                            <li>Functional outcome benefit remains uncertain (Class IIb, LOE B-R).</li>
+                            <li>Supratentorial ICH volume &gt;20-30 mL with GCS 5-12: MIS evacuation can reduce mortality.</li>
+                            <li>MIS may be reasonable over conventional craniotomy in eligible patients.</li>
+                            <li>Functional outcome benefit remains uncertain.</li>
                           </ul>
                         </div>
 
@@ -18697,7 +18697,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                         {/* Warfarin */}
                         <div className="bg-white p-4 rounded border mb-4">
-                          <h4 className="font-semibold text-blue-700 mb-3">Warfarin (UW Protocol)</h4>
+                          <h4 className="font-semibold text-blue-700 mb-3">Warfarin</h4>
                           <ul className="text-sm space-y-1">
                             <li><strong>Immediate:</strong> Vitamin K 10 mg IV for all warfarin patients.</li>
                             <li><strong>INR ≥1.6:</strong> PCC (Kcentra) 2000 units IVPB x1.</li>
@@ -18711,7 +18711,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                         {/* Direct Oral Anticoagulants (DOACs) */}
                         <div className="bg-white p-4 rounded border mb-4">
-                          <h4 className="font-semibold text-purple-700 mb-3">Direct Oral Anticoagulants — UW Protocol</h4>
+                          <h4 className="font-semibold text-purple-700 mb-3">Direct Oral Anticoagulants (DOACs)</h4>
 
                           <div className="mb-3">
                             <p className="text-sm font-semibold text-slate-700">Dabigatran (Direct Thrombin Inhibitor):</p>
@@ -18743,8 +18743,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <div className="bg-white p-4 rounded border mb-4">
                           <h4 className="font-semibold text-indigo-700 mb-3">Heparins</h4>
                           <ul className="text-sm space-y-1">
-                            <li><strong>UFH:</strong> IV protamine is reasonable (Class IIa, LOE C-LD).</li>
-                            <li><strong>LMWH:</strong> IV protamine may be considered (Class IIb, LOE C-LD).</li>
+                            <li><strong>UFH:</strong> IV protamine is reasonable.</li>
+                            <li><strong>LMWH:</strong> IV protamine may be considered.</li>
                           </ul>
                         </div>
 
@@ -18765,9 +18765,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <h3 className="text-lg font-semibold text-red-700 mb-4">Antiplatelet-Associated ICH</h3>
                           <div className="bg-white p-4 rounded border">
                             <ul className="text-sm space-y-1">
-                              <li>Aspirin with emergent neurosurgery: platelet transfusion might be considered (Class IIb, LOE C-LD).</li>
-                              <li>Aspirin without planned surgery: platelet transfusions are potentially harmful and should not be given (Class III, LOE B-R).</li>
-                              <li>Desmopressin 0.3 mcg/kg IV once may be considered; benefit uncertain (Class IIb, LOE C-LD).</li>
+                              <li>Aspirin with emergent neurosurgery: platelet transfusion might be considered.</li>
+                              <li>Aspirin without planned surgery: platelet transfusions are potentially harmful and should not be given.</li>
+                              <li>Desmopressin 0.3 mcg/kg IV once may be considered; benefit uncertain.</li>
                             </ul>
                           </div>
                         </div>
@@ -18778,12 +18778,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <div className="bg-white p-4 rounded border">
                             <h4 className="font-semibold text-red-600 mb-2">Blood Pressure Target</h4>
                             <ul className="text-sm space-y-1">
-                              <li><strong>SBP 150-220:</strong> target SBP 140 and maintain 130-150 (Class IIb, LOE B-R).</li>
-                              <li><strong>Avoid:</strong> SBP &lt;130 (Class III, LOE B-R).</li>
-                              <li><strong>Smooth control:</strong> avoid peaks and variability (Class IIa, LOE B-NR).</li>
-                              <li><strong>Large/severe ICH or surgical candidates:</strong> safety of intensive BP lowering is uncertain (Class IIb, LOE C-LD).</li>
+                              <li><strong>Target:</strong> SBP &lt;160 mmHg.</li>
+                              <li><strong>Smooth control:</strong> avoid peaks and variability.</li>
+                              <li><strong>Large/severe ICH or surgical candidates:</strong> safety of intensive BP lowering is uncertain.</li>
                               <li><strong>Agent:</strong> IV nicardipine or clevidipine for titration.</li>
-                              <li className="text-slate-500 italic text-xs mt-1">AHA/ASA ICH 2022.</li>
                             </ul>
                           </div>
                           <div className="bg-white p-4 rounded border">
@@ -18806,16 +18804,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <div className="bg-white p-4 rounded border">
                             <h4 className="font-semibold text-orange-600 mb-2">EVD Indications</h4>
                             <ul className="text-sm space-y-1">
-                              <li>ICH or IVH with hydrocephalus causing decreased consciousness: EVD recommended to reduce mortality (Class I, LOE B-NR).</li>
-                              <li>Large IVH with impaired consciousness: EVD preferred over medical management alone (Class I, LOE B-NR).</li>
+                              <li>ICH or IVH with hydrocephalus causing decreased consciousness: EVD recommended to reduce mortality.</li>
+                              <li>Large IVH with impaired consciousness: EVD preferred over medical management alone.</li>
                             </ul>
                           </div>
                           <div className="bg-white p-4 rounded border">
                             <h4 className="font-semibold text-orange-600 mb-2">IVH-Specific Management</h4>
                             <ul className="text-sm space-y-1">
-                              <li>GCS &gt;3 with primary IVH or IVH extension from supratentorial ICH &lt;30 mL requiring EVD: EVD + thrombolytic is reasonable to reduce mortality (Class IIa, LOE B-R).</li>
-                              <li>Functional outcome benefit from EVD + thrombolytic is uncertain (Class IIb, LOE B-R).</li>
-                              <li>Neuroendoscopic evacuation + EVD benefit is uncertain (Class IIb, LOE C-LD).</li>
+                              <li>GCS &gt;3 with primary IVH or IVH extension from supratentorial ICH &lt;30 mL requiring EVD: EVD + thrombolytic is reasonable to reduce mortality.</li>
+                              <li>Functional outcome benefit from EVD + thrombolytic is uncertain.</li>
+                              <li>Neuroendoscopic evacuation + EVD benefit is uncertain.</li>
                             </ul>
                           </div>
                         </div>
@@ -18827,16 +18825,16 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <div className="bg-white p-4 rounded border">
                             <h4 className="font-semibold text-blue-600 mb-2">Surgical Indications</h4>
                             <ul className="text-sm space-y-1">
-                              <li><strong>Cerebellar ICH &gt;=15 mL</strong> with neurologic deterioration, brainstem compression, or hydrocephalus: immediate evacuation +/- EVD (Class I, LOE B-NR).</li>
-                              <li><strong>Supratentorial ICH:</strong> routine craniotomy for outcome benefit is uncertain (Class IIb, LOE A).</li>
-                              <li><strong>Deteriorating supratentorial ICH:</strong> craniotomy may be considered as a lifesaving measure (Class IIb, LOE C-LD).</li>
+                              <li><strong>Cerebellar ICH &gt;=15 mL</strong> with neurologic deterioration, brainstem compression, or hydrocephalus: immediate evacuation +/- EVD.</li>
+                              <li><strong>Supratentorial ICH:</strong> routine craniotomy for outcome benefit is uncertain.</li>
+                              <li><strong>Deteriorating supratentorial ICH:</strong> craniotomy may be considered as a lifesaving measure.</li>
                             </ul>
                           </div>
                           <div className="bg-white p-4 rounded border">
                             <h4 className="font-semibold text-blue-600 mb-2">Goals-of-Care Guidance</h4>
                             <ul className="text-sm space-y-1">
-                              <li><strong>No preexisting limits:</strong> aggressive care and postpone new DNAR/withdrawal until at least the second full hospital day (Class IIa, LOE B-NR).</li>
-                              <li>Do not limit other medical/surgical interventions solely due to DNAR unless explicitly specified (Class III, LOE B-NR).</li>
+                              <li><strong>No preexisting limits:</strong> aggressive care and postpone new DNAR/withdrawal until at least the second full hospital day.</li>
+                              <li>Do not limit other medical/surgical interventions solely due to DNAR unless explicitly specified.</li>
                               <li>Early palliative care for symptom management and shared decision making.</li>
                             </ul>
                           </div>
@@ -18847,10 +18845,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <h3 className="text-lg font-semibold text-red-700 mb-4">Seizure Management in ICH</h3>
                         <div className="bg-white p-4 rounded border">
                           <ul className="text-sm space-y-1">
-                            <li>Treat clinical seizures with antiseizure medication (Class I, LOE C-EO).</li>
-                            <li>Treat electrographic seizures in impaired consciousness (Class I, LOE C-LD).</li>
-                            <li>Continuous EEG (24 hours) is reasonable for unexplained abnormal or fluctuating mental status (Class IIa, LOE C-LD).</li>
-                            <li>No prophylactic antiseizure medication in patients without seizures (Class III, LOE B-NR).</li>
+                            <li>Treat clinical seizures with antiseizure medication.</li>
+                            <li>Treat electrographic seizures in impaired consciousness.</li>
+                            <li>Continuous EEG (24 hours) is reasonable for unexplained abnormal or fluctuating mental status.</li>
+                            <li>No prophylactic antiseizure medication in patients without seizures.</li>
                           </ul>
                         </div>
                       </div>
@@ -18862,10 +18860,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <h4 className="font-semibold text-slate-700 mb-2">Standard Orders</h4>
                             <ul className="text-sm space-y-1">
                               <li>NPO until dysphagia screen passed.</li>
-                              <li>IPC starting day of diagnosis for VTE prophylaxis (Class I, LOE B-R).</li>
-                              <li>Low-dose UFH/LMWH can be useful to reduce PE risk (Class IIa, LOE C-LD).</li>
-                              <li>Initiate UFH/LMWH at 24-48h if hematoma stable (Class IIb, LOE C-LD).</li>
-                              <li>Graduated compression stockings alone are not beneficial (Class III, LOE B-R).</li>
+                              <li>IPC starting day of diagnosis for VTE prophylaxis.</li>
+                              <li>Low-dose UFH/LMWH can be useful to reduce PE risk.</li>
+                              <li>Initiate UFH/LMWH at 24-48h if hematoma stable.</li>
+                              <li>Graduated compression stockings alone are not beneficial.</li>
                               <li>Glucose target 140-180 (no intensive insulin).</li>
                               <li>Acetaminophen for temp &gt;38 C.</li>
                               <li>HOB 30 degrees.</li>
@@ -18895,79 +18893,151 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
                             <h3 className="text-lg font-semibold text-blue-800">EVT Eligibility — Quick Reference</h3>
-                            <span className="text-xs text-blue-600 font-medium">AHA/ASA 2025 Guidelines</span>
                           </div>
 
-                          {/* Adult EVT Table */}
-                          <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm overflow-x-auto mb-4">
-                            <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-3">Adult AIS EVT Eligibility</p>
-                            <table className="w-full text-xs border-collapse">
-                              <thead>
-                                <tr className="bg-blue-100">
-                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Vessel</th>
-                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Time</th>
-                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">ASPECTS</th>
-                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Pre-stroke mRS</th>
-                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Recommendation</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {/* LVO 0-6h */}
-                                <tr><td className="border border-blue-100 px-2 py-1" rowSpan="4">LVO (ICA-T/M1)</td><td className="border border-blue-100 px-2 py-1" rowSpan="4">0-6h</td><td className="border border-blue-100 px-2 py-1" rowSpan="4">6-10</td><td className="border border-blue-100 px-2 py-1">0-1</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-700">EVT — Class I</span></td></tr>
-                                <tr><td className="border border-blue-100 px-2 py-1">2</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-600">EVT — Class IIa</span></td></tr>
-                                <tr><td className="border border-blue-100 px-2 py-1">3-4</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-amber-600">EVT — Class IIb</span></td></tr>
-                                <tr><td className="border border-blue-100 px-2 py-1">4+</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+                          {/* Adult EVT Flowchart */}
+                          <div className="space-y-3 mb-4">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">Adult AIS — EVT Eligibility</p>
 
-                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">0-6h</td><td className="border border-blue-100 px-2 py-1">3-5</td><td className="border border-blue-100 px-2 py-1">0-1</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-700">EVT — Class I</span></td></tr>
-                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">0-6h</td><td className="border border-blue-100 px-2 py-1">3-5</td><td className="border border-blue-100 px-2 py-1">2+</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+                            {/* LVO */}
+                            <div className="bg-white rounded-xl border-l-4 border-blue-600 p-3 shadow-sm">
+                              <p className="font-semibold text-blue-800 text-sm mb-2">LVO (ICA-T / M1)</p>
+                              <p className="text-[11px] text-slate-500 mb-2">NIHSS ≥6 unless otherwise specified</p>
 
-                                <tr><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">0-6h</td><td className="border border-blue-100 px-2 py-1">0-2</td><td className="border border-blue-100 px-2 py-1">0-1</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-600">EVT — Class IIa</span></td></tr>
-                                <tr><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">0-6h</td><td className="border border-blue-100 px-2 py-1">0-2</td><td className="border border-blue-100 px-2 py-1">2+</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+                              {/* 0-6h */}
+                              <div className="ml-2 mb-3 pl-3 border-l-2 border-blue-200">
+                                <p className="text-xs font-bold text-blue-600 mb-1.5">0 – 6 hours</p>
+                                <div className="space-y-1.5 text-xs">
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-700">ASPECTS 3-10, mRS 0-1</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-semibold">Recommended</span>
+                                  </div>
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-700">ASPECTS 6-10, mRS 2</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300">Reasonable</span>
+                                  </div>
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-700">ASPECTS 6-10, mRS 3-4</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold border border-amber-300">May be considered</span>
+                                  </div>
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-700">ASPECTS 0-2, mRS 0-1, age &lt;80, no mass effect</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300">Reasonable</span>
+                                  </div>
+                                </div>
+                              </div>
 
-                                {/* LVO 6-24h */}
-                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">6-24h</td><td className="border border-blue-100 px-2 py-1">6-10</td><td className="border border-blue-100 px-2 py-1">0-1</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-700">EVT — Class I</span></td></tr>
-                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">6-24h</td><td className="border border-blue-100 px-2 py-1">6-10</td><td className="border border-blue-100 px-2 py-1">2+</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
-                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">6-24h</td><td className="border border-blue-100 px-2 py-1">3-5</td><td className="border border-blue-100 px-2 py-1">0-1</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-700">EVT — Class I</span></td></tr>
-                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">6-24h</td><td className="border border-blue-100 px-2 py-1">3-5</td><td className="border border-blue-100 px-2 py-1">2+</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+                              {/* 6-24h */}
+                              <div className="ml-2 mb-3 pl-3 border-l-2 border-blue-200">
+                                <p className="text-xs font-bold text-blue-600 mb-1.5">6 – 24 hours</p>
+                                <div className="space-y-1.5 text-xs">
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-700">ASPECTS 3-10, mRS 0-1</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-semibold">Recommended</span>
+                                  </div>
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-700">ASPECTS 0-2</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold border border-amber-300">Benefit uncertain</span>
+                                  </div>
+                                </div>
+                              </div>
 
-                                {/* LVO 24+h */}
-                                <tr><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">24+h</td><td className="border border-blue-100 px-2 py-1">Any</td><td className="border border-blue-100 px-2 py-1">Any</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+                              {/* >24h */}
+                              <div className="ml-2 pl-3 border-l-2 border-slate-200">
+                                <p className="text-xs font-bold text-slate-500 mb-1.5">&gt;24 hours</p>
+                                <div className="text-xs flex items-center gap-1.5">
+                                  <span className="text-slate-500">Any</span>
+                                  <span className="text-slate-400">→</span>
+                                  <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold border border-slate-300">Individualized</span>
+                                </div>
+                              </div>
+                            </div>
 
-                                {/* M2 */}
-                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">Dominant M2</td><td className="border border-blue-100 px-2 py-1">0-6h</td><td className="border border-blue-100 px-2 py-1">6-10</td><td className="border border-blue-100 px-2 py-1">0-1</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-600">EVT — Class IIa</span></td></tr>
-                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">Dominant M2</td><td className="border border-blue-100 px-2 py-1">6+h</td><td className="border border-blue-100 px-2 py-1">Any</td><td className="border border-blue-100 px-2 py-1">Any</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
-                                <tr><td className="border border-blue-100 px-2 py-1">Non-dom M2/DVO</td><td className="border border-blue-100 px-2 py-1">0-24h</td><td className="border border-blue-100 px-2 py-1">Any</td><td className="border border-blue-100 px-2 py-1">Any</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-red-600">No EVT — Class III</span></td></tr>
+                            {/* Basilar */}
+                            <div className="bg-white rounded-xl border-l-4 border-violet-500 p-3 shadow-sm">
+                              <p className="font-semibold text-violet-800 text-sm mb-2">Basilar Artery</p>
+                              <div className="ml-2 pl-3 border-l-2 border-violet-200">
+                                <p className="text-xs font-bold text-violet-600 mb-1.5">0 – 24 hours &bull; PC-ASPECTS ≥6</p>
+                                <div className="space-y-1.5 text-xs">
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-700">mRS 0-1, NIHSS ≥10</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-semibold">Recommended</span>
+                                  </div>
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-700">NIHSS 6-9</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold border border-amber-300">May be considered</span>
+                                  </div>
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-500">mRS 2+</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold border border-slate-300">Individualized</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
 
-                                {/* Basilar */}
-                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1" rowSpan="3">Basilar</td><td className="border border-blue-100 px-2 py-1" rowSpan="3">0-24h</td><td className="border border-blue-100 px-2 py-1" rowSpan="3">PC-ASPECTS 6+</td><td className="border border-blue-100 px-2 py-1">mRS 0-1, NIHSS 10+</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-700">EVT — Class I</span></td></tr>
-                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">NIHSS 6-9</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-amber-600">EVT — Class IIb</span></td></tr>
-                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">mRS 2+</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
-                              </tbody>
-                            </table>
-                            <p className="text-[11px] text-slate-500 mt-2">IDD = individualized decision. NIHSS ≥6 unless otherwise specified. LVO = anterior circulation large vessel occlusion.</p>
+                            {/* M2 / MeVO */}
+                            <div className="bg-white rounded-xl border-l-4 border-slate-400 p-3 shadow-sm">
+                              <p className="font-semibold text-slate-800 text-sm mb-2">M2 / Distal Vessels</p>
+                              <div className="ml-2 pl-3 border-l-2 border-slate-200">
+                                <div className="space-y-1.5 text-xs">
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-700">Dominant M2, 0-6h, ASPECTS 6-10, mRS 0-1</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300">Reasonable</span>
+                                  </div>
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-700">Non-dominant M2 / distal vessel occlusion</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-semibold border border-red-300">Not recommended</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
 
-                          {/* Pediatric EVT Table */}
-                          <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm overflow-x-auto">
-                            <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-3">Pediatric AIS EVT Eligibility</p>
-                            <table className="w-full text-xs border-collapse">
-                              <thead>
-                                <tr className="bg-blue-100">
-                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Age</th>
-                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Vessel</th>
-                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Time</th>
-                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Criteria</th>
-                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Recommendation</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr><td className="border border-blue-100 px-2 py-1">0-28 days</td><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">0-24h</td><td className="border border-blue-100 px-2 py-1">—</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
-                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">28d - 5y</td><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">0-24h</td><td className="border border-blue-100 px-2 py-1">Salvageable tissue</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-amber-600">EVT — Class IIb</span></td></tr>
-                                <tr><td className="border border-blue-100 px-2 py-1">6-17y</td><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">0-6h</td><td className="border border-blue-100 px-2 py-1">Salvageable tissue</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-600">EVT — Class IIa</span></td></tr>
-                                <tr><td className="border border-blue-100 px-2 py-1">6-17y</td><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">6-24h</td><td className="border border-blue-100 px-2 py-1">Salvageable tissue</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-600">EVT — Class IIa</span></td></tr>
-                                <tr><td className="border border-blue-100 px-2 py-1">6-17y</td><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">24+h</td><td className="border border-blue-100 px-2 py-1">—</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
-                              </tbody>
-                            </table>
+                          {/* Pediatric EVT Flowchart */}
+                          <div className="space-y-3">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">Pediatric AIS — EVT Eligibility</p>
+
+                            <div className="bg-white rounded-xl border-l-4 border-sky-500 p-3 shadow-sm">
+                              <p className="font-semibold text-sky-800 text-sm mb-2">Pediatric LVO</p>
+                              <div className="ml-2 pl-3 border-l-2 border-sky-200">
+                                <div className="space-y-1.5 text-xs">
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-700">Age 6-17y, 0-24h, salvageable tissue</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300">Reasonable</span>
+                                  </div>
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-700">Age 28d-5y, 0-24h, salvageable tissue</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold border border-amber-300">May be considered</span>
+                                  </div>
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-500">Neonates (0-28d) / &gt;24h</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold border border-slate-300">Individualized</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex flex-wrap gap-2 text-[11px] text-slate-500">
+                              <span><span className="inline-block w-3 h-3 rounded-full bg-emerald-600 align-middle mr-1"></span>Recommended</span>
+                              <span><span className="inline-block w-3 h-3 rounded-full bg-emerald-100 border border-emerald-300 align-middle mr-1"></span>Reasonable</span>
+                              <span><span className="inline-block w-3 h-3 rounded-full bg-amber-100 border border-amber-300 align-middle mr-1"></span>May be considered / Uncertain</span>
+                              <span><span className="inline-block w-3 h-3 rounded-full bg-red-100 border border-red-300 align-middle mr-1"></span>Not recommended</span>
+                              <span><span className="inline-block w-3 h-3 rounded-full bg-slate-100 border border-slate-300 align-middle mr-1"></span>Individualized decision</span>
+                            </div>
                           </div>
                         </div>
                           <div className="bg-white border border-blue-200 rounded-xl p-4">
@@ -19277,7 +19347,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-emerald-700 mb-2">BP Goals (UW Pocket Card)</h4>
+                              <h4 className="font-semibold text-emerald-700 mb-2">BP Goals</h4>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Ischemic stroke:</strong> SBP &lt;220, DBP &lt;120</li>
                                 <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
@@ -19287,7 +19357,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-blue-700 mb-2">Medications (UW Pocket Card)</h4>
+                              <h4 className="font-semibold text-blue-700 mb-2">Medications</h4>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Labetalol escalation:</strong></li>
                                 <li className="ml-3">10 mg IV → 20 mg → 40 mg → 60 mg q15min</li>
@@ -19302,11 +19372,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <div className="bg-sky-50 border border-sky-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-sky-800 mb-2">Normobaric Oxygen (NBO) Before EVT</h3>
                           <p className="text-sm text-slate-700 mb-1">
-                            In AIS within 6h with anterior LVO, NIHSS 10-20, and ASPECTS ≥6, NBO may be reasonable before EVT.
+                            In AIS within 6h with anterior LVO, NIHSS 10-20, and ASPECTS ≥6, NBO is reasonable before EVT.
                           </p>
                           <ul className="text-sm space-y-1 text-slate-700">
                             <li>• 100% O₂ at 10 L/min via non-rebreather for 4 hours (or FiO₂ 1.0 if intubated)</li>
-                            <li>• Class IIb, LOE B-R (OPENS-2)</li>
                           </ul>
                         </div>
 
@@ -19373,7 +19442,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                          <h3 className="text-lg font-semibold text-red-800 mb-3">Post-Lytic ICH Protocol (UW Pocket Card)</h3>
+                          <h3 className="text-lg font-semibold text-red-800 mb-3">Post-Lytic ICH Protocol</h3>
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-white p-3 rounded border">
@@ -19389,7 +19458,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <h4 className="font-semibold mb-2">Reversal (if blood on CT)</h4>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Cryoprecipitate:</strong> 2 pools IV over 10-30 min (empirically if CT delayed &gt;30 min and fibrinogen &lt;200)</li>
-                                <li><strong>TXA:</strong> 1 g IV over 10 min</li>
+                                <li><strong>TXA:</strong> 1 g IV over 10 min (or aminocaproic acid 4-5 g IV if TXA unavailable)</li>
                                 <li><strong>Repeat hemorrhage panel</strong></li>
                                 <li><strong>Consult neurosurgery</strong></li>
                               </ul>
@@ -19398,7 +19467,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         <div className="bg-amber-50 border border-amber-300 rounded-lg p-4">
-                          <h3 className="text-lg font-semibold text-amber-800 mb-3">Orolingual Angioedema Protocol (UW Pocket Card)</h3>
+                          <h3 className="text-lg font-semibold text-amber-800 mb-3">Orolingual Angioedema Protocol</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-white p-3 rounded border">
                               <h4 className="font-semibold text-amber-700 mb-2">Risk Factors</h4>
@@ -19409,7 +19478,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-amber-700 mb-2">Treatment (COR IIb, LOE C-EO)</h4>
+                              <h4 className="font-semibold text-amber-700 mb-2">Treatment</h4>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Maintain airway</strong> — fiberoptic intubation if needed</li>
                                 <li><strong>Discontinue IV alteplase</strong> and hold ACE inhibitors</li>
@@ -19435,7 +19504,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li>• Clopidogrel 300 mg load → 75 mg daily</li>
                                 <li>• Start within 24h (NIHSS ≤3 or ABCD2 ≥4)</li>
                                 <li>• Then single antiplatelet after 21 days</li>
-                                <li className="text-slate-500 italic text-xs mt-1">Class I, LOE A (CHANCE/POINT) — AHA/ASA 2026</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border">
@@ -19444,7 +19512,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li><strong>DAPT is reasonable:</strong></li>
                                 <li>• Start within 24-72h if NIHSS 4-5 or delayed presentation</li>
                                 <li>• DAPT x 21 days → then single antiplatelet</li>
-                                <li className="text-slate-500 italic text-xs mt-1">Class IIa, LOE B-R (INSPIRES)</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border">
@@ -19455,7 +19522,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li>• If post-TNK: delay ASA 24 hours</li>
                                 <li>• Avoid IV aspirin within 90 minutes of IVT start</li>
                                 <li>• If AF: transition to DOAC per CATALYST timing</li>
-                                <li className="text-slate-500 italic text-xs mt-1">Class I, LOE A — AHA/ASA 2021</li>
                               </ul>
                             </div>
                           </div>
@@ -19472,13 +19538,12 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li>• Start during hospitalization</li>
                                 <li>• Add ezetimibe 10 mg if LDL not at goal</li>
                                 <li>• Consider PCSK9i if still above target</li>
-                                <li className="text-slate-500 italic text-xs mt-1">Class I, LOE A — AHA/ASA 2021</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border">
                               <h4 className="font-semibold text-amber-700 mb-2">Special Considerations</h4>
                               <ul className="text-sm space-y-1">
-                                <li>• sICAS (70-99%): high-intensity + LDL &lt;70 (Class I)</li>
+                                <li>• sICAS (70-99%): high-intensity statin + LDL &lt;70</li>
                                 <li>• Lobar ICH: caution — SATURN trial pending</li>
                                 <li>• Check LFTs at baseline, recheck 4-12 weeks</li>
                                 <li>• Do not discontinue statin for mild transaminase elevation (&lt;3x ULN)</li>
@@ -19488,13 +19553,13 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                          <h3 className="text-lg font-semibold text-blue-800 mb-3">Large Core EVT Selection (SVIN 2025)</h3>
+                          <h3 className="text-lg font-semibold text-blue-800 mb-3">Large Core EVT Selection</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-white p-3 rounded border">
                               <h4 className="font-semibold text-blue-700 mb-2">Early Window (0-6h)</h4>
                               <ul className="text-sm space-y-1">
-                                <li>• ASPECTS 3-5: EVT recommended (Class I)</li>
-                                <li>• ASPECTS 0-2: EVT reasonable in select patients without mass effect (Class IIa)</li>
+                                <li>• ASPECTS 3-5: EVT recommended</li>
+                                <li>• ASPECTS 0-2: EVT reasonable in select patients without mass effect (age &lt;80)</li>
                                 <li>• ICA/M1 occlusion; pre-stroke mRS 0-1; age 18-80; NIHSS ≥6</li>
                                 <li>• Higher sICH risk; discuss goals of care</li>
                               </ul>
@@ -19502,14 +19567,13 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <div className="bg-white p-3 rounded border">
                               <h4 className="font-semibold text-blue-700 mb-2">Late Window (6-24h)</h4>
                               <ul className="text-sm space-y-1">
-                                <li>• ASPECTS 3-5: EVT recommended (Class I)</li>
-                                <li>• ASPECTS 0-2: Benefit uncertain (Class IIb)</li>
-                                <li>• CTP core 50-100 mL supports EVT (SELECT2/ANGEL-ASPECT)</li>
+                                <li>• ASPECTS 3-5: EVT recommended</li>
+                                <li>• ASPECTS 0-2: Benefit uncertain</li>
+                                <li>• CTP core 50-100 mL supports EVT</li>
                                 <li>• Eligibility is not limited to strict DAWN/DEFUSE mismatch criteria</li>
                               </ul>
                             </div>
                           </div>
-                          <p className="text-xs text-slate-500 mt-2 italic">SVIN 2025 guideline incorporates LASTE, SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, and TESLA.</p>
                         </div>
 
                         <div className="bg-violet-50 border border-violet-200 rounded-lg p-4">
@@ -19538,12 +19602,12 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <li>• All three trials showed similar functional outcomes with medical management alone</li>
                               <li>• Consider EVT only in trial setting (e.g., STEP-EVT adaptive platform)</li>
                             </ul>
-                            <p className="text-xs text-slate-500 mt-2 italic">Note: LVO (ICA-T, M1, basilar) EVT remains Class I. This applies only to isolated medium/distal vessel occlusions.</p>
+                            <p className="text-xs text-slate-500 mt-2 italic">Note: LVO (ICA-T, M1, basilar) EVT remains recommended. This applies only to isolated medium/distal vessel occlusions.</p>
                           </div>
                         </div>
 
                         <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
-                          <h3 className="text-lg font-semibold text-teal-800 mb-3">Contrast Allergy + Suspected LVO Protocol (UW Pocket Card)</h3>
+                          <h3 className="text-lg font-semibold text-teal-800 mb-3">Contrast Allergy + Suspected LVO Protocol</h3>
                           <div className="bg-white p-3 rounded border mb-3">
                             <p className="text-sm font-semibold text-teal-700 mb-2">Eligibility:</p>
                             <ul className="text-sm space-y-1">
