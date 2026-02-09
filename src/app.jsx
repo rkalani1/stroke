@@ -7139,8 +7139,8 @@ Clinician Name`;
             if (vessels.length > 0 && !vessels.includes('None')) {
               imagingLine += ` Vessel occlusion: ${vessels.join(', ')}.`;
             }
-            if (telestrokeNote.aspectsScore) {
-              imagingLine += ` ASPECTS ${telestrokeNote.aspectsScore}/10.`;
+            if (aspectsScore != null && aspectsScore < 10) {
+              imagingLine += ` ASPECTS ${aspectsScore}/10.`;
             }
             sentences.push(imagingLine);
 
