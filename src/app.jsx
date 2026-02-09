@@ -6565,7 +6565,9 @@ Clinician Name`;
               'patientFamilyConsent', 'presumedConsent', 'preTNKSafetyPause', 'tnkAutoBlocked',
               'postTnkNeuroChecksStarted', 'postTnkBpMonitoring', 'postTnkRepeatCTOrdered', 'postTnkAntiplateletHeld',
               'sichDetected', 'angioedemaDetected', 'reperfusionHemorrhage', 'clinicalDeterioration', 'complicationNotes',
-              'imagingReviewed', 'transferAccepted', 'transferRationale', 'transferChecklist', 'disposition',
+              'ichBPManaged', 'ichReversalInitiated', 'ichNeurosurgeryConsulted', 'ichSeizureProphylaxis',
+              'imagingReviewed', 'transferAccepted', 'transferImagingShared', 'transferLabsSent', 'transferIVAccess', 'transferBPStable', 'transferFamilyNotified',
+              'transferRationale', 'transferChecklist', 'disposition',
               'transferImagingShareMethod', 'transferImagingShareLink', 'transportMode', 'transportEta', 'transportNotes',
               'lastDOACType', 'lastDOACDose',
               'punctureTime',
@@ -7058,110 +7060,6 @@ Clinician Name`;
             }
 
             return note;
-
-            // OLD TEMPLATE CODE BELOW - kept for reference but not used anymore
-            /*
-
-            let note = `Chief complaint: ${telestrokeNote.chiefComplaint}\n`;
-            note += `Last known well (date/time): ${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}\n`;
-            note += `HPI:\n`;
-            note += `            ${telestrokeNote.age} year old ${telestrokeNote.sex} p/w ${telestrokeNote.symptoms}`;
-            if (telestrokeNote.lkwTime) {
-              note += ` at ${formatTime(telestrokeNote.lkwTime)}`;
-            }
-            note += `\n`;
-
-            note += `Relevant PMH:\n`;
-            note += `            ${telestrokeNote.pmh}\n`;
-
-            note += `Medications: `;
-            if (telestrokeNote.noAnticoagulants) {
-              note += `no anticoagulants (confirmed with pt's wife), `;
-            }
-            note += `${telestrokeNote.medications}\n`;
-
-            note += `Objective:\n`;
-            note += `Vitals:\n`;
-            if (telestrokeNote.presentingBP) {
-              note += `Presenting BP ${telestrokeNote.presentingBP}\n`;
-            }
-            if (telestrokeNote.bpPreTNK) {
-              note += `Blood pressure: BP prior to TNK administration: ${telestrokeNote.bpPreTNK}`;
-              if (telestrokeNote.bpPreTNKTime) {
-                note += ` at ${formatTime(telestrokeNote.bpPreTNKTime)}`;
-              }
-              note += `\n`;
-            }
-
-            note += `Labs: `;
-            const labs = [];
-            if (telestrokeNote.glucose) labs.push(`Glucose ${telestrokeNote.glucose}`);
-            if (telestrokeNote.plateletsCoags) labs.push(`PLT and coags ${telestrokeNote.plateletsCoags}`);
-            if (telestrokeNote.creatinine) {
-              const autoCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
-              labs.push(`Cr ${telestrokeNote.creatinine}${autoCrCl ? ` (CrCl ${autoCrCl.value} mL/min — ${autoCrCl.label})` : ''}`);
-            }
-            note += labs.join(', ') + `\n`;
-
-            note += `Exam: Scores: NIHSS ${telestrokeNote.nihss}`;
-            if (telestrokeNote.nihssDetails) {
-              note += ` - ${telestrokeNote.nihssDetails}`;
-            }
-            note += `\n`;
-
-            note += `Imaging: `;
-            if (telestrokeNote.imagingReviewed) {
-              note += `I personally reviewed imaging\n`;
-            } else {
-              note += `\n`;
-            }
-
-            if (telestrokeNote.ctTime) {
-              note += `Date/time Non-contrast Head CT reviewed: ${formatTime(telestrokeNote.ctTime)}\n`;
-            }
-            if (telestrokeNote.ctResults) {
-              note += `Non-contrast Head CT Results: ${telestrokeNote.ctResults}\n`;
-            }
-
-            if (telestrokeNote.ctaDate && telestrokeNote.ctaTime) {
-              note += `Date/time CTA reviewed: ${formatDate(telestrokeNote.ctaDate)} ${formatTime(telestrokeNote.ctaTime)}\n`;
-            }
-            if (telestrokeNote.ctaResults) {
-              note += `CTA Results: ${telestrokeNote.ctaResults}\n`;
-            }
-
-            if (telestrokeNote.ekgResults) {
-              note += `EKG - ${telestrokeNote.ekgResults}\n`;
-            }
-
-            note += `\nAssessment and Plan:\n`;
-            note += `${telestrokeNote.diagnosis}\n`;
-
-            if (telestrokeNote.tnkRecommended) {
-              note += `After ensuring that there were no evident contraindications, TNK administration was recommended`;
-              if (telestrokeNote.tnkAdminTime) {
-                note += ` at ${formatTime(telestrokeNote.tnkAdminTime.split(' ')[0])}`;
-              }
-              note += `. `;
-
-              if (telestrokeNote.tnkConsentDiscussed) {
-                note += `Potential benefits, potential risks (including a potential risk of sx ICH of up to 4%), and alternatives to treatment were discussed with the patient, patient's wife, and OSH provider. Both the patient and his wife expressed agreement with the recommendation.\n`;
-              }
-
-              if (telestrokeNote.tnkAdminTime) {
-                note += `TNK was administered at ${formatTime(telestrokeNote.tnkAdminTime)} after a brief time-out.\n`;
-              }
-            }
-
-            note += `\nRecommendations:\n`;
-            if (telestrokeNote.recommendationsText) {
-              note += `${telestrokeNote.recommendationsText}\n`;
-            }
-
-            note += `\nClinician Name`;
-
-            return note;
-            */
           };
 
           const buildSmartNote = () => {
@@ -8199,7 +8097,7 @@ Clinician Name`;
             setRcvs2Items({ recurrentTCH: false, carotidInvolvement: false, vasoconstrictiveTrigger: false, female: false, sah: false });
             setCurrentStep(0);
             setCompletedSteps([]);
-            setConsultationType(settings.defaultConsultationType || 'videoTelestroke');
+            setConsultationType(settings.defaultConsultationType || 'telephone');
             setTelestrokeNote(getDefaultTelestrokeNote());
 
             const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',
