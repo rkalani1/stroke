@@ -1461,10 +1461,7 @@ Clinician Name`;
           const [consultationType, setConsultationType] = useState(loadFromStorage('consultationType', settings.defaultConsultationType || 'telephone'));
 
           const [managementSubTab, setManagementSubTab] = useState(initialManagementSubTab);
-          const showTelestrokeManagement = true;
-          const showInpatientManagement = true;
-          const showClinicManagement = false;
-          const showAcuteManagement = true;
+          // Management flags removed — all sections now render unconditionally
 
           // Emergency Contacts FAB state
           const [fabExpanded, setFabExpanded] = useState(false);
@@ -1480,7 +1477,7 @@ Clinician Name`;
           // Ref and state for Part 6 (Treatment Decision) scroll visibility
           const treatmentDecisionRef = useRef(null);
           const backupImportRef = useRef(null);
-          const mermaidInitializedRef = useRef(false);
+          // mermaidInitializedRef removed — no more mermaid diagrams
           const decisionStateRef = useRef({
             tnkRecommended: false,
             evtRecommended: false,
@@ -1683,41 +1680,80 @@ Clinician Name`;
             : null;
 
           const protocolDetailMap = useMemo(() => ({
-            PCC25: {
-              title: '4F-PCC (INR ≥2.0)',
-              classOfRec: 'Class I',
-              dosing: '25-50 IU/kg IV (dose by INR/weight).',
-              note: 'Give IV vitamin K after PCC to prevent INR rebound.'
+            PCC: {
+              title: '4F-PCC (Kcentra)',
+              dosing: 'PCC (Kcentra) 2000 units IVPB x1.',
+              note: 'Check PT/INR at 15-30 min, 6h, and 24h after PCC. If INR >1.5 at 15-30 min → consult hematology for additional PCC. If INR >1.5 at 24h → repeat vitamin K 10 mg IV over 30 min.'
             },
-            PCC10: {
-              title: '4F-PCC (INR 1.3-1.9)',
-              classOfRec: 'Class IIb',
-              dosing: '10-20 IU/kg IV (consider based on bleeding risk).',
-              note: 'Follow with IV vitamin K.'
+            PCC_DOAC: {
+              title: '4F-PCC for DOAC Reversal',
+              dosing: 'PCC (Kcentra) 2000 units IVPB. Consider ONLY if no contraindications.',
+              note: 'For dabigatran: use only if idarucizumab unavailable. For rivaroxaban/apixaban: consider if Direct Xa Inhibitor screen elevated.'
             },
             VITK: {
               title: 'Vitamin K',
-              classOfRec: 'Class I',
-              dosing: '10 mg IV (slow infusion).',
-              note: 'Give after PCC to prevent INR rebound.'
-            },
-            AND: {
-              title: 'Andexanet Alfa',
-              classOfRec: 'Class IIa',
-              dosing: 'Low dose: 400 mg IV bolus + 4 mg/min x 120 min. High dose: 800 mg bolus + 8 mg/min x 120 min.',
-              note: 'Dose depends on agent, dose, and time since last intake.'
+              dosing: '10 mg IV — give immediately for all warfarin patients.',
+              note: 'Repeat 10 mg IV over 30 min if INR >1.5 at 24h post-PCC.'
             },
             IDA: {
-              title: 'Idarucizumab',
-              classOfRec: 'Class IIa',
-              dosing: '5 g IV (two 2.5 g doses, no more than 15 minutes apart).',
-              note: 'Specific reversal for dabigatran.'
+              title: 'Idarucizumab (Praxbind)',
+              dosing: '5 g IV total: two 2.5 g doses, ≤15 min apart, each infused over 5-10 min.',
+              note: 'Specific reversal for dabigatran. If unavailable → consider PCC (Kcentra) 2000 units.'
             },
-            PCC4: {
-              title: 'PCC/aPCC (if andexanet unavailable)',
-              classOfRec: 'Class IIb',
-              dosing: '4F-PCC 50 IU/kg IV (institutional protocol).',
-              note: 'Use when andexanet not available or contraindicated.'
+            FFP: {
+              title: 'Fresh Frozen Plasma (FFP)',
+              dosing: '4 units emergency-release FFP → check INR → if >1.5 give 4 more type-specific units → if still >1.5 consult hematology.',
+              note: 'Use ONLY if PCC unavailable. FFP pathway is slower and less effective than PCC.'
+            },
+            CHARCOAL: {
+              title: 'Activated Charcoal',
+              dosing: 'Administer if DOAC ingestion <2 hours ago.',
+              note: 'Most effective when given early. Use for dabigatran, rivaroxaban, or apixaban.'
+            },
+            CRYO: {
+              title: 'Cryoprecipitate',
+              dosing: '2 pools cryoprecipitate IV over 10-30 min (takes ~15-20 min to prepare).',
+              note: 'For post-thrombolytic ICH. Give empirically if CT delayed >30 min and fibrinogen <200. Repeat hemorrhage panel after administration.'
+            },
+            TXA: {
+              title: 'Tranexamic Acid (TXA)',
+              dosing: '1 g IV over 10 min.',
+              note: 'For post-thrombolytic ICH after cryoprecipitate. Give when intracranial blood confirmed on CT.'
+            },
+            METHYLPRED: {
+              title: 'Methylprednisolone',
+              dosing: '125 mg IV (for angioedema).',
+              note: 'Part of angioedema management protocol. For contrast allergy premedication: 40 mg IV.'
+            },
+            DIPHEN: {
+              title: 'Diphenhydramine',
+              dosing: '50 mg IV.',
+              note: 'For angioedema management and contrast allergy premedication.'
+            },
+            EPI: {
+              title: 'Epinephrine',
+              dosing: '0.1% solution: 0.3 mL SC or via nebulizer 0.5 mL.',
+              note: 'For worsening angioedema. Use if symptoms progress despite methylprednisolone and diphenhydramine.'
+            },
+            ICATIBANT: {
+              title: 'Icatibant',
+              dosing: '30 mg SC.',
+              note: 'Bradykinin B2 receptor antagonist. Consider for ACE inhibitor-related angioedema refractory to initial treatment.'
+            },
+            BERINERT: {
+              title: 'C1 Esterase Inhibitor (Berinert)',
+              dosing: '20 IU/kg IV.',
+              note: 'Plasma-derived C1 esterase inhibitor. For refractory angioedema.'
+            },
+            HYDROCORT: {
+              title: 'Hydrocortisone',
+              dosing: '200 mg IV.',
+              note: 'For contrast allergy premedication in suspected LVO patients. Alternative: methylprednisolone 40 mg IV.'
+            },
+            RANITIDINE: {
+              title: 'Ranitidine/Famotidine',
+              dosing: 'Ranitidine 50 mg IV or famotidine 20 mg IV.',
+              note: 'H2 blocker for angioedema management protocol.'
             },
             PROT1: {
               title: 'Protamine (UFH)',
@@ -1730,12 +1766,6 @@ Clinician Name`;
               classOfRec: 'Class IIb',
               dosing: 'Enoxaparin: 1 mg protamine per 1 mg enoxaparin if <8h; 0.5 mg per 1 mg if 8-12h.',
               note: 'Second dose may be considered if ongoing bleeding.'
-            },
-            CHARCOAL: {
-              title: 'Activated Charcoal',
-              classOfRec: 'Class IIb',
-              dosing: 'Consider if DOAC ingestion within ~2 hours.',
-              note: 'Most effective when administered early.'
             }
           }), []);
 
@@ -8336,59 +8366,7 @@ Clinician Name`;
             });
           }, []);
 
-          useEffect(() => {
-            if (!window.mermaid) return;
-            if (!mermaidInitializedRef.current) {
-              window.mermaid.initialize({
-                startOnLoad: false,
-                theme: 'base',
-                securityLevel: 'loose',
-                flowchart: {
-                  curve: 'linear',
-                  htmlLabels: false,
-                  useMaxWidth: true,
-                  nodeSpacing: 28,
-                  rankSpacing: 36
-                },
-                themeVariables: {
-                  fontFamily: 'Manrope, Segoe UI, sans-serif',
-                  fontSize: '12px',
-                  primaryColor: '#ffffff',
-                  primaryBorderColor: '#475569',
-                  primaryTextColor: '#0f172a',
-                  lineColor: '#64748b',
-                  tertiaryColor: '#f8fafc'
-                }
-              });
-              mermaidInitializedRef.current = true;
-            }
-            const runMermaid = () => {
-              try {
-                window.mermaid.run({ querySelector: '.mermaid' });
-              } catch (err) {
-                console.warn('Mermaid render failed:', err);
-              }
-            };
-            if (typeof requestAnimationFrame === 'function') {
-              requestAnimationFrame(runMermaid);
-            } else {
-              setTimeout(runMermaid, 0);
-            }
-          }, [activeTab, managementSubTab]);
-
-          useEffect(() => {
-            window.strokeMermaidClick = (nodeId) => {
-              const detail = protocolDetailRef.current[nodeId];
-              if (detail) {
-                setProtocolModal({ id: nodeId, ...detail });
-              }
-            };
-            return () => {
-              if (window.strokeMermaidClick) {
-                delete window.strokeMermaidClick;
-              }
-            };
-          }, []);
+          // Mermaid initialization and strokeMermaidClick removed — algorithms now use JSX
 
 
           useEffect(() => {
@@ -9372,99 +9350,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
             );
           };
 
-          const ichAnticoagMermaid = `flowchart TD
-  A[ICH on anticoagulation] --> B[Stop anticoagulant and reverse ASAP Class 1]
-  B --> VKA[Vitamin K antagonists]
-  B --> DABI[Dabigatran]
-  B --> FXA[Factor Xa inhibitors]
-  B --> HEP[Heparins]
-  VKA --> INR1319[INR 1.3-1.9]
-  VKA --> INR2[INR 2.0 or higher]
-  INR1319 --> PCC10[4F-PCC 10-20 IU/kg Class 2b]
-  INR2 --> PCC25[4F-PCC 25-50 IU/kg Class 1]
-  PCC10 --> VITK[IV vitamin K Class 1]
-  PCC25 --> VITK
-  DABI --> CHARCOAL[Activated charcoal if DOAC under 2 h Class 2b]
-  DABI --> IDA[Idarucizumab Class 2a]
-  DABI --> PCCS[PCCs or aPCC or RRT Class 2b]
-  FXA --> CHARCOAL
-  FXA --> AND[Andexanet alfa Class 2a]
-  FXA --> PCC4[4-factor PCC or aPCC Class 2b]
-  HEP --> UFH[Unfractionated heparin]
-  HEP --> LMWH[Low molecular weight heparin]
-  UFH --> PROT1[Protamine Class 2a]
-  LMWH --> PROT2[Protamine Class 2b]
-  click PCC10 strokeMermaidClick "4F-PCC dosing"
-  click PCC25 strokeMermaidClick "4F-PCC dosing"
-  click VITK strokeMermaidClick "Vitamin K"
-  click AND strokeMermaidClick "Andexanet alfa"
-  click IDA strokeMermaidClick "Idarucizumab"
-  click PCC4 strokeMermaidClick "PCC/aPCC"
-  click PROT1 strokeMermaidClick "Protamine UFH"
-  click PROT2 strokeMermaidClick "Protamine LMWH"
-  click CHARCOAL strokeMermaidClick "Activated charcoal"`;
+          // ICH algorithms removed — replaced with JSX step-cards below
 
-          const ichIVHMermaid = `flowchart TD
-  A[IVH surgical management] --> B[Spontaneous IVH with obstructive hydrocephalus]
-  A --> C[Spontaneous ICH under 30 mL GCS above 3 IVH requiring EVD]
-  A --> D[Spontaneous ICH under 30 mL IVH requiring EVD]
-  B --> E[EVD]
-  E --> M1[Mortality reduction Class 1]
-  E --> F1[Functional outcome benefit Class 2b uncertain]
-  C --> E2[EVD plus thrombolytic]
-  E2 --> M2[Mortality reduction Class 2a]
-  E2 --> F2[Functional outcome benefit Class 2b]
-  D --> E3[Neuroendoscopy plus EVD with or without thrombolytic]
-  E3 --> F3[Functional outcome benefit Class 2b uncertain]
-  E3 --> R3[Reduced permanent shunting Class 2b uncertain]`;
-
-          const ischemicAdultMermaid = `flowchart LR
-  A0[Age 18+ y] --> A_LVO[LVO]
-  A_LVO --> A_T06[0-6 h]
-  A_LVO --> A_T624[6-24 h]
-  A_LVO --> A_T24[24+ h] --> A_E24[IDD]
-
-  A_T06 --> A_AS610[ASPECTS 6-10]
-  A_T06 --> A_AS35[ASPECTS 3-5]
-  A_T06 --> A_AS02[ASPECTS 0-2]
-
-  A_AS610 --> A_M01[mRS 0-1] --> A_E01[EVT Class 1]
-  A_AS610 --> A_M2[mRS 2] --> A_E2[EVT Class 2a]
-  A_AS610 --> A_M34[mRS 3-4] --> A_E34[EVT Class 2b]
-  A_AS610 --> A_M4[mRS 4+] --> A_E4[IDD]
-
-  A_AS35 --> A_M01b[mRS 0-1] --> A_E01b[EVT Class 1]
-  A_AS35 --> A_M2b[mRS 2+] --> A_E2b[IDD]
-
-  A_AS02 --> A_M01c[mRS 0-1] --> A_E01c[EVT Class 2a]
-  A_AS02 --> A_M2c[mRS 2+] --> A_E2c[IDD]
-
-  A_T624 --> A_AS610b[ASPECTS 6-10]
-  A_T624 --> A_AS35b[ASPECTS 3-5]
-  A_AS610b --> A_M01d[mRS 0-1] --> A_E01d[EVT Class 1]
-  A_AS610b --> A_M2d[mRS 2+] --> A_E2d[IDD]
-  A_AS35b --> A_M01e[mRS 0-1] --> A_E01e[EVT Class 1]
-  A_AS35b --> A_M2e[mRS 2+] --> A_E2e[IDD]
-
-  A0 --> A_MVOdom[MVO dominant M2]
-  A_MVOdom --> A_MVO06[0-6 h] --> A_MVOAS[ASPECTS 6-10] --> A_MVOmRS[mRS 0-1] --> A_MVOEVT[EVT Class 2a]
-  A_MVOdom --> A_MVO6p[6+ h] --> A_MVOIDD[IDD]
-
-  A0 --> A_MVOnon[MVO non dominant M2 or DVO] --> A_MVOT[0-24 h] --> A_NOVT[No EVT Class 3 no benefit]
-
-  A0 --> A_BAS[Basilar artery] --> A_BAST[0-24 h] --> A_PCAS[PC ASPECTS 6+]
-  A_PCAS --> A_BmRS01[mRS 0-1] --> A_BEVT1[EVT Class 1]
-  A_PCAS --> A_NIHSS10[NIHSS 10+] --> A_BEVT2[EVT Class 1]
-  A_PCAS --> A_NIHSS69[NIHSS 6-9] --> A_BEVT3[EVT Class 2b]
-  A_PCAS --> A_BmRS2[mRS 2+] --> A_BIDD[IDD]`;
-
-          const ischemicPedsMermaid = `flowchart LR
-  P0[Age 0-28 d] --> P0L[LVO] --> P0T[0-24 h] --> P0E[IDD]
-  P1[Age 28 d-5 y] --> P1L[LVO] --> P1T[0-24 h] --> P1S[Salvageable tissue] --> P1E[EVT Class 2b]
-  P2[Age 6-17 y] --> P2L[LVO]
-  P2L --> P2T1[0-6 h] --> P2S1[Salvageable tissue] --> P2E1[EVT Class 2a]
-  P2L --> P2T2[6-24 h] --> P2S2[Salvageable tissue] --> P2E2[EVT Class 2a]
-  P2L --> P2T3[24+ h] --> P2E3[IDD]`;
+          // Ischemic EVT algorithms removed — replaced with JSX tables below
 
           return (
             <div className="relative">
@@ -9489,23 +9377,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       <div>
                         <p className="font-semibold text-slate-800">Dosing</p>
                         <p>{protocolModal.dosing}</p>
-                        {(['PCC25', 'PCC10', 'PCC4'].includes(protocolModal.id) && telestrokeNote.weight) && (
-                          <p className="text-xs text-slate-500 mt-1">
-                            Weight-based range ({telestrokeNote.weight} kg):{' '}
-                            {protocolModal.id === 'PCC10' && `${Math.round(parseFloat(telestrokeNote.weight) * 10)}–${Math.round(parseFloat(telestrokeNote.weight) * 20)} IU`}
-                            {protocolModal.id === 'PCC25' && `${Math.round(parseFloat(telestrokeNote.weight) * 25)}–${Math.round(parseFloat(telestrokeNote.weight) * 50)} IU`}
-                            {protocolModal.id === 'PCC4' && `${Math.round(parseFloat(telestrokeNote.weight) * 50)} IU`}
-                          </p>
-                        )}
                       </div>
+                      {protocolModal.classOfRec && (
+                        <div className="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-lg p-2">
+                          {protocolModal.classOfRec}
+                        </div>
+                      )}
                       {protocolModal.note && (
                         <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600">
                           {protocolModal.note}
-                        </div>
-                      )}
-                      {!telestrokeNote.weight && ['PCC25', 'PCC10', 'PCC4'].includes(protocolModal.id) && (
-                        <div className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-2">
-                          Enter patient weight to auto-calculate dose range.
                         </div>
                       )}
                     </div>
@@ -18421,25 +18301,267 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         <div className="space-y-4">
-                          <div className="bg-white border border-red-200 rounded-xl p-4 shadow-sm overflow-x-auto">
-                            <p className="text-xs font-semibold uppercase tracking-wide text-red-700 mb-3">
-                              ICH Algorithm — Anticoagulant-Related Hemorrhage (AHA/ASA 2022)
-                            </p>
-                            <div className="mermaid text-xs md:text-sm" aria-label="ICH anticoagulant-related hemorrhage algorithm">
-                              {ichAnticoagMermaid}
+                          {/* === ALL PATIENTS INITIAL STEPS === */}
+                          <div className="bg-white border border-red-300 rounded-xl p-4 shadow-sm">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-red-700 mb-3">All Patients — Initial Steps</p>
+                            <div className="space-y-2">
+                              <div className="flex gap-2 items-start">
+                                <span className="shrink-0 w-6 h-6 rounded-full bg-red-600 text-white text-xs flex items-center justify-center font-bold">1</span>
+                                <p className="text-sm">Order <strong>STAT Emergency Stroke Panel</strong> (PT/INR, platelets, fibrinogen, PTT, TT)</p>
+                              </div>
+                              <div className="flex gap-2 items-start">
+                                <span className="shrink-0 w-6 h-6 rounded-full bg-red-600 text-white text-xs flex items-center justify-center font-bold">2</span>
+                                <p className="text-sm">Obtain <strong>antithrombotic history</strong> — agent, dose, last dose timing</p>
+                              </div>
+                              <div className="flex gap-2 items-start">
+                                <span className="shrink-0 w-6 h-6 rounded-full bg-red-600 text-white text-xs flex items-center justify-center font-bold">3</span>
+                                <p className="text-sm">Order <strong>Type & Screen</strong></p>
+                              </div>
                             </div>
                           </div>
-                          <div className="bg-white border border-red-200 rounded-xl p-4 shadow-sm overflow-x-auto">
-                            <p className="text-xs font-semibold uppercase tracking-wide text-red-700 mb-3">
-                              ICH Algorithm — IVH Surgical Management (AHA/ASA 2022)
-                            </p>
-                            <div className="mermaid text-xs md:text-sm" aria-label="IVH surgical management algorithm">
-                              {ichIVHMermaid}
+
+                          {/* === WARFARIN REVERSAL === */}
+                          <details open className="bg-white border border-red-200 rounded-xl shadow-sm">
+                            <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
+                              <i data-lucide="pill" className="w-4 h-4 text-red-600"></i>
+                              Warfarin Reversal Guide (UW Pocket Card Rev 6/2025)
+                            </summary>
+                            <div className="p-4 space-y-3">
+                              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                                <p className="text-sm font-semibold text-amber-800 mb-1">Immediate — All Warfarin Patients:</p>
+                                <p className="text-sm">Give <button onClick={() => setProtocolModal(protocolDetailMap.VITK)} className="text-blue-600 underline font-semibold hover:text-blue-800">Vitamin K 10 mg IV</button> immediately</p>
+                              </div>
+
+                              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                                <p className="text-sm font-semibold text-red-800 mb-1">INR ≥ 1.6:</p>
+                                <p className="text-sm">Give <button onClick={() => setProtocolModal(protocolDetailMap.PCC)} className="text-blue-600 underline font-semibold hover:text-blue-800">PCC (Kcentra) 2000 units IVPB x1</button></p>
+                                <ul className="text-sm mt-2 space-y-1 ml-4">
+                                  <li>• Check PT/INR at <strong>15-30 min</strong>, <strong>6h</strong>, and <strong>24h</strong> after PCC</li>
+                                  <li>• If INR &gt;1.5 at 15-30 min → <strong>consult hematology</strong> for additional PCC</li>
+                                  <li>• If INR &gt;1.5 at 24h → repeat vitamin K 10 mg IV over 30 min</li>
+                                </ul>
+                              </div>
+
+                              <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <p className="text-sm font-semibold text-slate-700 mb-1">INR 1.3-1.5:</p>
+                                <p className="text-sm text-slate-600">Low evidence — consider PCC on a case-by-case basis</p>
+                              </div>
+
+                              <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                                <p className="text-sm font-semibold text-orange-800 mb-1">FFP Pathway (if PCC unavailable):</p>
+                                <ol className="text-sm space-y-1 ml-4 list-decimal">
+                                  <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.FFP)} className="text-blue-600 underline font-semibold hover:text-blue-800">4 units emergency-release FFP</button></li>
+                                  <li>Check INR → if &gt;1.5 give 4 more type-specific units</li>
+                                  <li>If still &gt;1.5 → consult hematology</li>
+                                </ol>
+                              </div>
+
+                              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                                <p className="text-xs font-semibold text-yellow-800 mb-1">Relative Contraindications to PCC/FFP:</p>
+                                <ul className="text-xs space-y-0.5 text-yellow-900">
+                                  <li>• Thrombotic event in past 6 weeks</li>
+                                  <li>• Prothrombotic condition</li>
+                                  <li>• Major surgery in past 6 weeks</li>
+                                  <li>• IPH not considered survivable</li>
+                                </ul>
+                              </div>
                             </div>
-                            <p className="text-[11px] text-slate-500 mt-2">
-                              *Not well established. †Uncertain.
-                            </p>
-                          </div>
+                          </details>
+
+                          {/* === DOAC REVERSAL === */}
+                          <details open className="bg-white border border-red-200 rounded-xl shadow-sm">
+                            <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
+                              <i data-lucide="pill" className="w-4 h-4 text-purple-600"></i>
+                              DOAC Reversal Guide (UW Pocket Card Rev 6/2025)
+                            </summary>
+                            <div className="p-4 space-y-3">
+                              {/* Dabigatran */}
+                              <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                                <p className="text-sm font-semibold text-purple-800 mb-2">Dabigatran (Direct Thrombin Inhibitor)</p>
+                                <p className="text-xs text-purple-600 mb-2">Reverse if TT prolonged or unavailable</p>
+                                <ul className="text-sm space-y-1.5">
+                                  <li className="flex gap-2">
+                                    <span className="shrink-0 font-bold text-purple-700">1.</span>
+                                    <span>If ingestion &lt;2h → <button onClick={() => setProtocolModal(protocolDetailMap.CHARCOAL)} className="text-blue-600 underline hover:text-blue-800">activated charcoal</button></span>
+                                  </li>
+                                  <li className="flex gap-2">
+                                    <span className="shrink-0 font-bold text-purple-700">2.</span>
+                                    <span>Give <button onClick={() => setProtocolModal(protocolDetailMap.IDA)} className="text-blue-600 underline font-semibold hover:text-blue-800">idarucizumab (Praxbind) 5 g IV</button> — two 2.5 g doses, ≤15 min apart, each over 5-10 min</span>
+                                  </li>
+                                  <li className="flex gap-2">
+                                    <span className="shrink-0 font-bold text-purple-700">3.</span>
+                                    <span>If idarucizumab unavailable → <button onClick={() => setProtocolModal(protocolDetailMap.PCC_DOAC)} className="text-blue-600 underline hover:text-blue-800">PCC (Kcentra) 2000 units</button></span>
+                                  </li>
+                                </ul>
+                                <p className="text-xs text-purple-600 mt-2">Emergent dialysis option — dabigatran ~65% removed by dialysis (t½ = 14h, longer in renal impairment)</p>
+                              </div>
+
+                              {/* Factor Xa Inhibitors */}
+                              <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
+                                <p className="text-sm font-semibold text-indigo-800 mb-2">Rivaroxaban / Apixaban (Factor Xa Inhibitors)</p>
+                                <p className="text-xs text-indigo-600 mb-2">Reverse if Direct Xa Inhibitor screen elevated</p>
+                                <ul className="text-sm space-y-1.5">
+                                  <li className="flex gap-2">
+                                    <span className="shrink-0 font-bold text-indigo-700">1.</span>
+                                    <span>If ingestion &lt;2h → <button onClick={() => setProtocolModal(protocolDetailMap.CHARCOAL)} className="text-blue-600 underline hover:text-blue-800">activated charcoal</button></span>
+                                  </li>
+                                  <li className="flex gap-2">
+                                    <span className="shrink-0 font-bold text-indigo-700">2.</span>
+                                    <span>Consider <button onClick={() => setProtocolModal(protocolDetailMap.PCC_DOAC)} className="text-blue-600 underline font-semibold hover:text-blue-800">PCC (Kcentra) 2000 units</button> — ONLY if no contraindications</span>
+                                  </li>
+                                </ul>
+                                <p className="text-xs text-indigo-600 mt-2">NOT dialyzable (rivaroxaban t½ = 9h, apixaban t½ = 12h)</p>
+                              </div>
+
+                              {/* Edoxaban */}
+                              <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <p className="text-sm font-semibold text-slate-700 mb-1">Edoxaban</p>
+                                <p className="text-sm text-slate-600">Direct Xa Inhibitor screen excludes presence; no calibrated specific assays available. t½ = 10-14h, NOT dialyzable.</p>
+                              </div>
+
+                              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                                <p className="text-xs font-semibold text-yellow-800 mb-1">Relative Contraindications to PCC:</p>
+                                <ul className="text-xs space-y-0.5 text-yellow-900">
+                                  <li>• Thrombotic event in past 6 weeks</li>
+                                  <li>• Prothrombotic condition</li>
+                                  <li>• Major surgery in past 6 weeks</li>
+                                  <li>• IPH not considered survivable</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </details>
+
+                          {/* === POST-THROMBOLYTIC ICH SUSPICION === */}
+                          <details className="bg-white border border-red-200 rounded-xl shadow-sm">
+                            <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
+                              <i data-lucide="alert-triangle" className="w-4 h-4 text-red-600"></i>
+                              Post-Thrombolytic ICH Suspicion Algorithm (UW Pocket Card Rev 6/2025)
+                            </summary>
+                            <div className="p-4 space-y-3">
+                              <div className="bg-red-100 border border-red-300 rounded-lg p-3">
+                                <p className="text-xs font-semibold text-red-800 mb-1">Triggered by:</p>
+                                <p className="text-sm text-red-700">Sudden neurological deterioration, new headache, acute hypertension, nausea/vomiting</p>
+                              </div>
+
+                              <div className="space-y-2">
+                                <div className="flex gap-2 items-start">
+                                  <span className="shrink-0 w-6 h-6 rounded-full bg-red-700 text-white text-xs flex items-center justify-center font-bold">1</span>
+                                  <p className="text-sm"><strong>STOP thrombolytic</strong> if still running</p>
+                                </div>
+                                <div className="flex gap-2 items-start">
+                                  <span className="shrink-0 w-6 h-6 rounded-full bg-red-700 text-white text-xs flex items-center justify-center font-bold">2</span>
+                                  <div className="text-sm">
+                                    <p><strong>STAT non-contrast CT Head</strong> + <strong>STAT blood draw:</strong></p>
+                                    <ul className="ml-4 mt-1 text-xs space-y-0.5">
+                                      <li>• Emergency Hemorrhage Panel: PT/INR, platelets, fibrinogen</li>
+                                      <li>• Coag screen: PTT, TT, D-dimers</li>
+                                      <li>• CBC, Type & Cross</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div className="flex gap-2 items-start">
+                                  <span className="shrink-0 w-6 h-6 rounded-full bg-red-700 text-white text-xs flex items-center justify-center font-bold">3</span>
+                                  <p className="text-sm">Call <strong>Transfusion Support</strong>; order <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-blue-600 underline font-semibold hover:text-blue-800">2 pools Cryoprecipitate</button> (~15-20 min to prepare)</p>
+                                </div>
+                                <div className="flex gap-2 items-start">
+                                  <span className="shrink-0 w-6 h-6 rounded-full bg-red-700 text-white text-xs flex items-center justify-center font-bold">4</span>
+                                  <p className="text-sm"><strong>Notify family</strong></p>
+                                </div>
+                              </div>
+
+                              {/* Decision tree */}
+                              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                                <p className="text-sm font-semibold text-amber-800 mb-2">CT scan delayed &gt;30 min?</p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                  <div className="bg-white border border-amber-300 rounded p-2">
+                                    <p className="text-xs font-semibold text-amber-700 mb-1">YES — CT delayed:</p>
+                                    <p className="text-sm">Empirically administer 2 pools Cryo if fibrinogen &lt;200</p>
+                                  </div>
+                                  <div className="bg-white border border-amber-300 rounded p-2">
+                                    <p className="text-xs font-semibold text-amber-700 mb-1">NO — CT available:</p>
+                                    <p className="text-sm">Wait for CT results</p>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="bg-red-50 border border-red-300 rounded-lg p-3">
+                                <p className="text-sm font-semibold text-red-800 mb-2">Intracranial blood on CT?</p>
+                                <div className="space-y-2">
+                                  <div className="bg-white border border-red-300 rounded p-2">
+                                    <p className="text-xs font-semibold text-red-700 mb-1">YES — Blood confirmed:</p>
+                                    <ol className="text-sm space-y-1 ml-4 list-decimal">
+                                      <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-blue-600 underline hover:text-blue-800">2 pools Cryo</button> over 10-30 min (or continue if already started)</li>
+                                      <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.TXA)} className="text-blue-600 underline hover:text-blue-800">TXA 1 g IV</button> over 10 min</li>
+                                      <li>Repeat hemorrhage panel</li>
+                                      <li>Call Stroke/Neuro attending</li>
+                                      <li>Consult neurosurgery</li>
+                                    </ol>
+                                    <p className="text-xs text-red-600 mt-1 italic">If Cryo already started + infusing and CT shows NO ICH → STOP infusion</p>
+                                  </div>
+                                  <div className="bg-white border border-emerald-300 rounded p-2">
+                                    <p className="text-xs font-semibold text-emerald-700 mb-1">NO — No intracranial blood:</p>
+                                    <ul className="text-sm space-y-1">
+                                      <li>• Do <strong>NOT</strong> restart lytic</li>
+                                      <li>• Consider other causes: extending infarct, seizure, hypoxia, hypercarbia, hypoglycemia, electrolyte abnormalities</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <p className="text-xs font-semibold text-slate-700 mb-1">Follow-up:</p>
+                                <ul className="text-xs space-y-0.5 text-slate-600">
+                                  <li>• If labs abnormal or uncontrolled bleeding → consult Hematology</li>
+                                  <li>• Repeat hemorrhage panel q4h until normal</li>
+                                  <li>• Update family</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </details>
+
+                          {/* === ANGIOEDEMA MANAGEMENT === */}
+                          <details className="bg-white border border-red-200 rounded-xl shadow-sm">
+                            <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
+                              <i data-lucide="shield-alert" className="w-4 h-4 text-orange-600"></i>
+                              Angioedema Management (UW Pocket Card Rev 6/2025)
+                            </summary>
+                            <div className="p-4 space-y-3">
+                              <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                                <p className="text-xs text-orange-600 mb-2">COR IIb, LOE C-EO</p>
+                                <div className="space-y-2">
+                                  <div className="flex gap-2 items-start">
+                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white text-xs flex items-center justify-center font-bold">1</span>
+                                    <p className="text-sm"><strong>Maintain airway</strong> — may not need intubation if limited to anterior tongue/lips; fiberoptic intubation preferred if needed</p>
+                                  </div>
+                                  <div className="flex gap-2 items-start">
+                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white text-xs flex items-center justify-center font-bold">2</span>
+                                    <p className="text-sm"><strong>Discontinue IV alteplase</strong> and <strong>hold ACE inhibitors</strong></p>
+                                  </div>
+                                  <div className="flex gap-2 items-start">
+                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white text-xs flex items-center justify-center font-bold">3</span>
+                                    <p className="text-sm"><button onClick={() => setProtocolModal(protocolDetailMap.METHYLPRED)} className="text-blue-600 underline hover:text-blue-800">Methylprednisolone 125 mg IV</button></p>
+                                  </div>
+                                  <div className="flex gap-2 items-start">
+                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white text-xs flex items-center justify-center font-bold">4</span>
+                                    <p className="text-sm"><button onClick={() => setProtocolModal(protocolDetailMap.DIPHEN)} className="text-blue-600 underline hover:text-blue-800">Diphenhydramine 50 mg IV</button></p>
+                                  </div>
+                                  <div className="flex gap-2 items-start">
+                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white text-xs flex items-center justify-center font-bold">5</span>
+                                    <p className="text-sm"><button onClick={() => setProtocolModal(protocolDetailMap.RANITIDINE)} className="text-blue-600 underline hover:text-blue-800">Ranitidine 50 mg IV or famotidine 20 mg IV</button></p>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                                <p className="text-sm font-semibold text-red-800 mb-1">If worsening:</p>
+                                <ul className="text-sm space-y-1">
+                                  <li>• <button onClick={() => setProtocolModal(protocolDetailMap.EPI)} className="text-blue-600 underline hover:text-blue-800">Epinephrine 0.1% — 0.3 mL SC</button> or nebulizer 0.5 mL</li>
+                                  <li>• <button onClick={() => setProtocolModal(protocolDetailMap.ICATIBANT)} className="text-blue-600 underline hover:text-blue-800">Icatibant</button> (bradykinin B2 antagonist)</li>
+                                  <li>• <button onClick={() => setProtocolModal(protocolDetailMap.BERINERT)} className="text-blue-600 underline hover:text-blue-800">C1 esterase inhibitor (Berinert) 20 IU/kg</button></li>
+                                </ul>
+                              </div>
+                            </div>
+                          </details>
                           <div className="bg-white border border-red-200 rounded-xl p-4 shadow-sm">
                             <div className="flex items-center justify-between mb-3">
                               <h4 className="text-sm font-semibold text-red-700">ABC/2 ICH Volume Calculator</h4>
@@ -18495,11 +18617,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               Auto-flags volume ≥30 mL (predictive of worse outcomes and surgical consideration).
                             </p>
                           </div>
-                          {showTelestrokeManagement && (
-                            <div className="bg-white border border-red-200 rounded-xl p-4">
+                          <div className="bg-white border border-red-200 rounded-xl p-4">
                               <h4 className="text-sm font-semibold text-red-700 mb-2">Telestroke rapid actions (phone or video)</h4>
                               <ul className="text-sm space-y-1 text-slate-700">
-                                <li>Confirm anticoagulant/antiplatelet use and initiate reversal per Figure 2.</li>
+                                <li>Confirm anticoagulant/antiplatelet use and initiate reversal.</li>
                                 <li>Target SBP 140 and maintain 130-150; avoid SBP &lt;130 and use IV nicardipine or clevidipine.</li>
                                 <li>Screen for transfer triggers: cerebellar ICH ≥15 mL with deterioration/brainstem compression/hydrocephalus, IVH with hydrocephalus requiring EVD, or worsening supratentorial ICH.</li>
                                 <li>Plan repeat imaging and close neuro checks; avoid new DNAR/withdrawal within first 24h if no preexisting limits.</li>
@@ -18510,8 +18631,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   : 'Video: perform a focused remote NIHSS and confirm imaging review.'}
                               </p>
                             </div>
-                          )}
-                          {showInpatientManagement && (
                             <div className="bg-white border border-red-200 rounded-xl p-4">
                               <h4 className="text-sm font-semibold text-red-700 mb-2">Inpatient priorities</h4>
                               <ul className="text-sm space-y-1 text-slate-700">
@@ -18521,24 +18640,11 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li>Implement supportive care bundle, early rehab, and structured goals-of-care discussions.</li>
                               </ul>
                             </div>
-                          )}
-                          {showClinicManagement && (
-                            <div className="bg-white border border-red-200 rounded-xl p-4">
-                              <h4 className="text-sm font-semibold text-red-700 mb-2">Clinic follow-up focus</h4>
-                              <ul className="text-sm space-y-1 text-slate-700">
-                                <li>Review recurrence risk factors and optimize long-term BP and lifestyle management.</li>
-                                <li>Reassess antithrombotic strategy and anticoagulation restart decisions.</li>
-                                <li>Screen for cognitive, mood, and functional deficits; coordinate rehab services.</li>
-                              </ul>
-                              <p className="text-xs text-slate-500 mt-2">See Secondary Prevention Dashboard and the guideline library for detailed targets.</p>
-                            </div>
-                          )}
                         </div>
 
                         <details className="mt-5 bg-white border border-red-200 rounded-lg">
                           <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-lg">ICH protocol details</summary>
                           <div className="p-4 space-y-6">
-{showInpatientManagement && (
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                         <h3 className="text-lg font-semibold text-blue-800 mb-3">Minimally Invasive Evacuation (MIE)</h3>
 
@@ -18585,46 +18691,51 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <p className="text-sm mt-2 font-semibold">Volume = A x B x C / 2</p>
                         </div>
                       </div>
-                      )}
 
-                      {showAcuteManagement && (
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">Anticoagulation Reversal</h3>
-                        
+
                         {/* Warfarin */}
                         <div className="bg-white p-4 rounded border mb-4">
-                          <h4 className="font-semibold text-blue-700 mb-3">Warfarin</h4>
+                          <h4 className="font-semibold text-blue-700 mb-3">Warfarin (UW Protocol)</h4>
                           <ul className="text-sm space-y-1">
-                            <li><strong>Rapid reversal:</strong> discontinue anticoagulant and reverse ASAP (Class I, LOE C-LD).</li>
-                            <li><strong>4F-PCC:</strong> preferred over FFP for INR &gt;=2.0 (Class I, LOE B-R).</li>
-                            <li><strong>Vitamin K:</strong> IV after PCC to prevent INR rebound (Class I, LOE C-LD).</li>
-                            <li><strong>INR 1.3-1.9:</strong> PCC may be reasonable (Class IIb, LOE C-LD).</li>
-                            <li><strong>Dosing:</strong> 4F-PCC 25-50 IU/kg (weight/INR-based) + vitamin K 10 mg IV.</li>
-                            <li><strong>Recheck INR:</strong> 30-60 min after PCC; repeat PCC if needed.</li>
+                            <li><strong>Immediate:</strong> Vitamin K 10 mg IV for all warfarin patients.</li>
+                            <li><strong>INR ≥1.6:</strong> PCC (Kcentra) 2000 units IVPB x1.</li>
+                            <li><strong>Check INR:</strong> at 15-30 min, 6h, and 24h after PCC.</li>
+                            <li><strong>INR &gt;1.5 at 15-30 min:</strong> consult hematology for additional PCC.</li>
+                            <li><strong>INR &gt;1.5 at 24h:</strong> repeat vitamin K 10 mg IV over 30 min.</li>
+                            <li><strong>INR 1.3-1.5:</strong> low evidence — consider on case-by-case basis.</li>
+                            <li><strong>FFP pathway (if PCC unavailable):</strong> 4 units emergency-release FFP → recheck INR → if &gt;1.5 give 4 more → if still &gt;1.5 consult hematology.</li>
                           </ul>
                         </div>
 
                         {/* Direct Oral Anticoagulants (DOACs) */}
                         <div className="bg-white p-4 rounded border mb-4">
-                          <h4 className="font-semibold text-purple-700 mb-3">Direct Oral Anticoagulants (DOACs)</h4>
+                          <h4 className="font-semibold text-purple-700 mb-3">Direct Oral Anticoagulants — UW Protocol</h4>
 
                           <div className="mb-3">
-                            <p className="text-sm font-semibold text-slate-700">Direct Factor Xa Inhibitors:</p>
-                            <p className="text-sm text-slate-600 mb-2">Apixaban, Rivaroxaban, Edoxaban</p>
+                            <p className="text-sm font-semibold text-slate-700">Dabigatran (Direct Thrombin Inhibitor):</p>
                             <ul className="text-sm space-y-1">
-                              <li><strong>Andexanet alfa:</strong> reasonable for reversal (Class IIa, LOE B-NR).</li>
-                              <li><strong>If unavailable:</strong> 4F-PCC or aPCC 50 IU/kg may be considered (Class IIb, LOE B-NR).</li>
+                              <li><strong>Idarucizumab (Praxbind):</strong> 5 g IV — two 2.5 g doses, ≤15 min apart, each over 5-10 min.</li>
+                              <li><strong>If unavailable:</strong> PCC (Kcentra) 2000 units.</li>
                               <li><strong>Activated charcoal:</strong> if ingestion &lt;2 hours.</li>
+                              <li><strong>Dialysis:</strong> ~65% removed (t½ = 14h, longer in renal impairment).</li>
                             </ul>
                           </div>
 
                           <div>
-                            <p className="text-sm font-semibold text-slate-700">Direct Thrombin Inhibitor:</p>
-                            <p className="text-sm text-slate-600 mb-2">Dabigatran</p>
+                            <p className="text-sm font-semibold text-slate-700">Rivaroxaban / Apixaban (Factor Xa Inhibitors):</p>
                             <ul className="text-sm space-y-1">
-                              <li><strong>Idarucizumab (Praxbind):</strong> reasonable (Class IIa, LOE B-NR).</li>
-                              <li><strong>If unavailable:</strong> aPCC or PCC may be considered (Class IIb, LOE C-LD).</li>
-                              <li><strong>RRT:</strong> may be considered to reduce dabigatran (Class IIb, LOE C-LD).</li>
+                              <li><strong>PCC (Kcentra):</strong> 2000 units — consider ONLY if Direct Xa Inhibitor screen elevated and no contraindications.</li>
+                              <li><strong>Activated charcoal:</strong> if ingestion &lt;2 hours.</li>
+                              <li><strong>NOT dialyzable</strong> (rivaroxaban t½ = 9h, apixaban t½ = 12h).</li>
+                            </ul>
+                          </div>
+
+                          <div className="mt-3">
+                            <p className="text-sm font-semibold text-slate-700">Edoxaban:</p>
+                            <ul className="text-sm space-y-1">
+                              <li>Direct Xa Inhibitor screen excludes presence; no calibrated specific assays. t½ = 10-14h, NOT dialyzable.</li>
                             </ul>
                           </div>
                         </div>
@@ -18649,9 +18760,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </ul>
                         </div>
                       </div>
-                      )}
 
-                      {showAcuteManagement && (
                         <div className="mb-6">
                           <h3 className="text-lg font-semibold text-red-700 mb-4">Antiplatelet-Associated ICH</h3>
                           <div className="bg-white p-4 rounded border">
@@ -18662,9 +18771,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </ul>
                           </div>
                         </div>
-                      )}
 
-                      {showAcuteManagement && (
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">Hematoma Expansion Prevention</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -18692,9 +18799,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                         </div>
                       </div>
-                      )}
 
-                      {showAcuteManagement && (
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">IVH &amp; Hydrocephalus Management</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -18715,9 +18820,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                         </div>
                       </div>
-                      )}
 
-                      {showAcuteManagement && (
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">ICH Disposition &amp; Goals of Care</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -18739,9 +18842,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                         </div>
                       </div>
-                      )}
 
-                      {showInpatientManagement && (
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">Seizure Management in ICH</h3>
                         <div className="bg-white p-4 rounded border">
@@ -18753,9 +18854,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </ul>
                         </div>
                       </div>
-                      )}
 
-                      {showInpatientManagement && (
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">ICH Supportive Care Bundle</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -18784,7 +18883,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                         </div>
                       </div>
-                      )}
                           </div>
                         </details>
                       </div>
@@ -18796,31 +18894,82 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       <div className="space-y-6">
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
-                            <h3 className="text-lg font-semibold text-blue-800">Ischemic Stroke Management Algorithm</h3>
-                            <span className="text-xs text-blue-600 font-medium">Algorithmic workflow</span>
+                            <h3 className="text-lg font-semibold text-blue-800">EVT Eligibility — Quick Reference</h3>
+                            <span className="text-xs text-blue-600 font-medium">AHA/ASA 2025 Guidelines</span>
                           </div>
 
-                          <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm overflow-x-auto">
-                            <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-3">
-                              AIS EVT Eligibility Algorithm — Adults (AHA/ASA 2026)
-                            </p>
-                            <div className="mermaid text-xs md:text-sm" aria-label="Adult AIS EVT eligibility algorithm">
-                              {ischemicAdultMermaid}
-                            </div>
-                            <p className="text-[11px] text-slate-500 mt-2">
-                              *LVO of the anterior circulation. †In patients with NIHSS scores {'>='}6, unless specified in the graphic.
-                            </p>
+                          {/* Adult EVT Table */}
+                          <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm overflow-x-auto mb-4">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-3">Adult AIS EVT Eligibility</p>
+                            <table className="w-full text-xs border-collapse">
+                              <thead>
+                                <tr className="bg-blue-100">
+                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Vessel</th>
+                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Time</th>
+                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">ASPECTS</th>
+                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Pre-stroke mRS</th>
+                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Recommendation</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {/* LVO 0-6h */}
+                                <tr><td className="border border-blue-100 px-2 py-1" rowSpan="4">LVO (ICA-T/M1)</td><td className="border border-blue-100 px-2 py-1" rowSpan="4">0-6h</td><td className="border border-blue-100 px-2 py-1" rowSpan="4">6-10</td><td className="border border-blue-100 px-2 py-1">0-1</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-700">EVT — Class I</span></td></tr>
+                                <tr><td className="border border-blue-100 px-2 py-1">2</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-600">EVT — Class IIa</span></td></tr>
+                                <tr><td className="border border-blue-100 px-2 py-1">3-4</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-amber-600">EVT — Class IIb</span></td></tr>
+                                <tr><td className="border border-blue-100 px-2 py-1">4+</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+
+                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">0-6h</td><td className="border border-blue-100 px-2 py-1">3-5</td><td className="border border-blue-100 px-2 py-1">0-1</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-700">EVT — Class I</span></td></tr>
+                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">0-6h</td><td className="border border-blue-100 px-2 py-1">3-5</td><td className="border border-blue-100 px-2 py-1">2+</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+
+                                <tr><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">0-6h</td><td className="border border-blue-100 px-2 py-1">0-2</td><td className="border border-blue-100 px-2 py-1">0-1</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-600">EVT — Class IIa</span></td></tr>
+                                <tr><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">0-6h</td><td className="border border-blue-100 px-2 py-1">0-2</td><td className="border border-blue-100 px-2 py-1">2+</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+
+                                {/* LVO 6-24h */}
+                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">6-24h</td><td className="border border-blue-100 px-2 py-1">6-10</td><td className="border border-blue-100 px-2 py-1">0-1</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-700">EVT — Class I</span></td></tr>
+                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">6-24h</td><td className="border border-blue-100 px-2 py-1">6-10</td><td className="border border-blue-100 px-2 py-1">2+</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">6-24h</td><td className="border border-blue-100 px-2 py-1">3-5</td><td className="border border-blue-100 px-2 py-1">0-1</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-700">EVT — Class I</span></td></tr>
+                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">6-24h</td><td className="border border-blue-100 px-2 py-1">3-5</td><td className="border border-blue-100 px-2 py-1">2+</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+
+                                {/* LVO 24+h */}
+                                <tr><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">24+h</td><td className="border border-blue-100 px-2 py-1">Any</td><td className="border border-blue-100 px-2 py-1">Any</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+
+                                {/* M2 */}
+                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">Dominant M2</td><td className="border border-blue-100 px-2 py-1">0-6h</td><td className="border border-blue-100 px-2 py-1">6-10</td><td className="border border-blue-100 px-2 py-1">0-1</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-600">EVT — Class IIa</span></td></tr>
+                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">Dominant M2</td><td className="border border-blue-100 px-2 py-1">6+h</td><td className="border border-blue-100 px-2 py-1">Any</td><td className="border border-blue-100 px-2 py-1">Any</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+                                <tr><td className="border border-blue-100 px-2 py-1">Non-dom M2/DVO</td><td className="border border-blue-100 px-2 py-1">0-24h</td><td className="border border-blue-100 px-2 py-1">Any</td><td className="border border-blue-100 px-2 py-1">Any</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-red-600">No EVT — Class III</span></td></tr>
+
+                                {/* Basilar */}
+                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1" rowSpan="3">Basilar</td><td className="border border-blue-100 px-2 py-1" rowSpan="3">0-24h</td><td className="border border-blue-100 px-2 py-1" rowSpan="3">PC-ASPECTS 6+</td><td className="border border-blue-100 px-2 py-1">mRS 0-1, NIHSS 10+</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-700">EVT — Class I</span></td></tr>
+                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">NIHSS 6-9</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-amber-600">EVT — Class IIb</span></td></tr>
+                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">mRS 2+</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+                              </tbody>
+                            </table>
+                            <p className="text-[11px] text-slate-500 mt-2">IDD = individualized decision. NIHSS ≥6 unless otherwise specified. LVO = anterior circulation large vessel occlusion.</p>
                           </div>
+
+                          {/* Pediatric EVT Table */}
                           <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm overflow-x-auto">
-                            <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-3">
-                              AIS EVT Eligibility Algorithm — Pediatrics (AHA/ASA 2026)
-                            </p>
-                            <div className="mermaid text-xs md:text-sm" aria-label="Pediatric AIS EVT eligibility algorithm">
-                              {ischemicPedsMermaid}
-                            </div>
+                            <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-3">Pediatric AIS EVT Eligibility</p>
+                            <table className="w-full text-xs border-collapse">
+                              <thead>
+                                <tr className="bg-blue-100">
+                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Age</th>
+                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Vessel</th>
+                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Time</th>
+                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Criteria</th>
+                                  <th className="border border-blue-200 px-2 py-1.5 text-left font-semibold text-blue-800">Recommendation</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr><td className="border border-blue-100 px-2 py-1">0-28 days</td><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">0-24h</td><td className="border border-blue-100 px-2 py-1">—</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+                                <tr className="bg-slate-50"><td className="border border-blue-100 px-2 py-1">28d - 5y</td><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">0-24h</td><td className="border border-blue-100 px-2 py-1">Salvageable tissue</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-amber-600">EVT — Class IIb</span></td></tr>
+                                <tr><td className="border border-blue-100 px-2 py-1">6-17y</td><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">0-6h</td><td className="border border-blue-100 px-2 py-1">Salvageable tissue</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-600">EVT — Class IIa</span></td></tr>
+                                <tr><td className="border border-blue-100 px-2 py-1">6-17y</td><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">6-24h</td><td className="border border-blue-100 px-2 py-1">Salvageable tissue</td><td className="border border-blue-100 px-2 py-1"><span className="font-semibold text-emerald-600">EVT — Class IIa</span></td></tr>
+                                <tr><td className="border border-blue-100 px-2 py-1">6-17y</td><td className="border border-blue-100 px-2 py-1">LVO</td><td className="border border-blue-100 px-2 py-1">24+h</td><td className="border border-blue-100 px-2 py-1">—</td><td className="border border-blue-100 px-2 py-1 text-slate-500">IDD</td></tr>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
-                        {showTelestrokeManagement && (
                           <div className="bg-white border border-blue-200 rounded-xl p-4">
                             <h4 className="text-sm font-semibold text-blue-800 mb-2">Telestroke rapid decision stack (phone or video)</h4>
                             <ul className="text-sm space-y-1 text-slate-700">
@@ -18835,8 +18984,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 : 'Video: perform a focused remote NIHSS and confirm imaging review.'}
                             </p>
                           </div>
-                        )}
-                        {showInpatientManagement && (
                           <div className="bg-white border border-blue-200 rounded-xl p-4">
                             <h4 className="text-sm font-semibold text-blue-800 mb-2">Inpatient priorities</h4>
                             <ul className="text-sm space-y-1 text-slate-700">
@@ -18845,22 +18992,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <li>Initiate secondary prevention: antithrombotic plan, statin, and risk-factor control.</li>
                             </ul>
                           </div>
-                        )}
-                        {showClinicManagement && (
-                          <div className="bg-white border border-blue-200 rounded-xl p-4">
-                            <h4 className="text-sm font-semibold text-blue-800 mb-2">Clinic follow-up focus</h4>
-                            <ul className="text-sm space-y-1 text-slate-700">
-                              <li>Confirm stroke etiology and optimize antithrombotic strategy.</li>
-                              <li>Risk factor targets (BP, lipids, diabetes, lifestyle) with adherence review.</li>
-                              <li>Screen for cognition, mood, and functional recovery; coordinate rehab.</li>
-                            </ul>
-                          </div>
-                        )}
 
                         <details className="bg-white border border-blue-200 rounded-lg">
                           <summary className="cursor-pointer px-4 py-3 font-semibold text-blue-800 hover:bg-blue-50 rounded-lg">Ischemic protocol details</summary>
                           <div className="p-4 space-y-6">
-                        {showAcuteManagement && (
                         <div className="bg-white border border-blue-200 rounded-lg p-4">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
                             <div>
@@ -18975,16 +19110,12 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             );
                           })()}
                         </div>
-                        )}
 
-                        {showAcuteManagement && (
                         <div className="bg-white border border-blue-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-blue-800 mb-2">Mobile Stroke Units (MSU)</h3>
                           <p className="text-sm text-slate-700">Use MSUs where available for rapid stroke identification and IV thrombolysis delivery. MSUs reduce onset-to-treatment time and improve outcomes (Class I, LOE A).</p>
                         </div>
-                        )}
 
-                        {showAcuteManagement && (
                         <div className="bg-white border border-blue-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-blue-800 mb-2">Pediatric Reperfusion (28 days–18 years)</h3>
                           <ul className="text-sm space-y-1 text-slate-700">
@@ -18994,9 +19125,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <li>• EVT may be considered for age 28 days–6 years with experienced neurointerventionalist (Class IIb).</li>
                           </ul>
                         </div>
-                        )}
 
-                        {(showInpatientManagement || showClinicManagement) && (
                         <div className="bg-white border border-blue-200 rounded-lg p-4">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
                             <div>
@@ -19089,9 +19218,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                           <p className="text-xs text-slate-500 mt-2 italic">Fischer U et al. Lancet Neurol. 2025. Reassess imaging before DOAC start if concern for hemorrhagic transformation.</p>
                         </div>
-                        )}
 
- {showAcuteManagement && (
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-blue-800 mb-3">Blood Pressure Management</h3>
 
@@ -19150,30 +19277,28 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-emerald-700 mb-2">BP Goals</h4>
+                              <h4 className="font-semibold text-emerald-700 mb-2">BP Goals (UW Pocket Card)</h4>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Ischemic stroke:</strong> SBP &lt;220, DBP &lt;120</li>
                                 <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
-                                <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105 (avoid SBP &lt;140 — no benefit)</li>
-                                <li><strong>After thrombectomy:</strong> SBP &lt;180, DBP &lt;105 (avoid SBP &lt;140 — harmful)</li>
+                                <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105</li>
+                                <li><strong>After thrombectomy:</strong> SBP &lt;180, DBP &lt;105</li>
+                                <li><strong>IPH:</strong> SBP &lt;160, DBP &lt;105</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-blue-700 mb-2">Acute Treatment</h4>
+                              <h4 className="font-semibold text-blue-700 mb-2">Medications (UW Pocket Card)</h4>
                               <ul className="text-sm space-y-1">
-                                <li><strong>Labetalol:</strong> 10 mg IV q15min</li>
-                                <li>Increase to 20mg, then 40mg, then 60mg</li>
-                                <li>Max total dose: 300mg in 2 hours</li>
-                                <li><strong>Nicardipine:</strong> 5 mg/hr IV</li>
-                                <li>Titrate by 2.5 mg/hr q15min</li>
+                                <li><strong>Labetalol escalation:</strong></li>
+                                <li className="ml-3">10 mg IV → 20 mg → 40 mg → 60 mg q15min</li>
+                                <li className="ml-3">Max total: 300 mg in 2 hours</li>
+                                <li><strong>Nicardipine drip:</strong> 5 mg/hr IV, titrate by 2.5 mg/hr q15min (max 15 mg/hr)</li>
                                 <li><strong>Clevidipine:</strong> 1-2 mg/hr IV, double q90 sec; max 32 mg/hr</li>
                               </ul>
                             </div>
                           </div>
                         </div>
-                        )}
 
-                        {showAcuteManagement && (
                         <div className="bg-sky-50 border border-sky-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-sky-800 mb-2">Normobaric Oxygen (NBO) Before EVT</h3>
                           <p className="text-sm text-slate-700 mb-1">
@@ -19184,9 +19309,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <li>• Class IIb, LOE B-R (OPENS-2)</li>
                           </ul>
                         </div>
-                        )}
 
-                        {showInpatientManagement && (
                         <div className="bg-white border border-blue-200 rounded-lg p-4">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
                             <div>
@@ -19248,37 +19371,34 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
                         </div>
-                        )}
 
-                        {showAcuteManagement && (
                         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                          <h3 className="text-lg font-semibold text-red-800 mb-3">Post-Lytic ICH Protocol</h3>
+                          <h3 className="text-lg font-semibold text-red-800 mb-3">Post-Lytic ICH Protocol (UW Pocket Card)</h3>
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-white p-3 rounded border">
                               <h4 className="font-semibold mb-2">Immediate Actions</h4>
                               <ol className="text-sm space-y-1 list-decimal list-inside">
-                                <li>STAT non-contrast CT head</li>
-                                <li>Emergency hemorrhage panel</li>
-                                <li>Type & cross</li>
+                                <li>Stop thrombolytic if still running</li>
+                                <li>STAT non-contrast CT head + STAT blood draw (PT/INR, platelets, fibrinogen, PTT, TT, D-dimers, CBC, Type &amp; Cross)</li>
+                                <li>Call Transfusion Support; order 2 pools cryoprecipitate</li>
                                 <li>Notify patient's family</li>
                               </ol>
                             </div>
                             <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold mb-2">Reversal</h4>
+                              <h4 className="font-semibold mb-2">Reversal (if blood on CT)</h4>
                               <ul className="text-sm space-y-1">
-                                <li><strong>Cryoprecipitate:</strong> 10 units IV (target fibrinogen ≥150-200 mg/dL)</li>
-                                <li><strong>TXA:</strong> 1g IV over 10 min (or aminocaproic acid if TXA unavailable)</li>
-                                <li><strong>Platelets:</strong> only if platelets &lt;100K or emergent neurosurgery planned</li>
+                                <li><strong>Cryoprecipitate:</strong> 2 pools IV over 10-30 min (empirically if CT delayed &gt;30 min and fibrinogen &lt;200)</li>
+                                <li><strong>TXA:</strong> 1 g IV over 10 min</li>
+                                <li><strong>Repeat hemorrhage panel</strong></li>
+                                <li><strong>Consult neurosurgery</strong></li>
                               </ul>
                             </div>
                           </div>
                         </div>
-                        )}
 
-                        {showAcuteManagement && (
                         <div className="bg-amber-50 border border-amber-300 rounded-lg p-4">
-                          <h3 className="text-lg font-semibold text-amber-800 mb-3">Orolingual Angioedema Protocol</h3>
+                          <h3 className="text-lg font-semibold text-amber-800 mb-3">Orolingual Angioedema Protocol (UW Pocket Card)</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-white p-3 rounded border">
                               <h4 className="font-semibold text-amber-700 mb-2">Risk Factors</h4>
@@ -19289,22 +19409,21 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-amber-700 mb-2">Treatment</h4>
+                              <h4 className="font-semibold text-amber-700 mb-2">Treatment (COR IIb, LOE C-EO)</h4>
                               <ul className="text-sm space-y-1">
-                                <li><strong>Stop thrombolytic infusion</strong> if running</li>
+                                <li><strong>Maintain airway</strong> — fiberoptic intubation if needed</li>
+                                <li><strong>Discontinue IV alteplase</strong> and hold ACE inhibitors</li>
                                 <li><strong>Methylprednisolone:</strong> 125 mg IV</li>
                                 <li><strong>Diphenhydramine:</strong> 50 mg IV</li>
-                                <li><strong>Ranitidine:</strong> 50 mg IV</li>
-                                <li><strong>Epinephrine:</strong> 0.1% if severe</li>
-                                <li><strong>Consider Berinert:</strong> 20 IU/kg (C1 esterase inhibitor)</li>
-                                <li><strong>Supportive Care</strong></li>
+                                <li><strong>Ranitidine:</strong> 50 mg IV or famotidine 20 mg IV</li>
+                                <li><strong>If worsening: Epinephrine</strong> 0.1% 0.3 mL SC or nebulizer 0.5 mL</li>
+                                <li><strong>Icatibant</strong> (bradykinin B2 antagonist)</li>
+                                <li><strong>Berinert:</strong> 20 IU/kg IV (C1 esterase inhibitor)</li>
                               </ul>
                             </div>
                           </div>
                         </div>
-                        )}
 
-                        {showAcuteManagement && (
                         <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-emerald-800 mb-3">Antiplatelet Loading Protocol</h3>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -19341,9 +19460,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
                         </div>
-                        )}
 
-                        {(showInpatientManagement || showClinicManagement) && (
                         <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-indigo-800 mb-3">Statin Initiation</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -19369,9 +19486,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
                         </div>
-                        )}
 
-                        {showAcuteManagement && (
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-blue-800 mb-3">Large Core EVT Selection (SVIN 2025)</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -19396,9 +19511,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                           <p className="text-xs text-slate-500 mt-2 italic">SVIN 2025 guideline incorporates LASTE, SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, and TESLA.</p>
                         </div>
-                        )}
 
-                        {showInpatientManagement && (
                         <div className="bg-violet-50 border border-violet-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-violet-800 mb-3">Post-EVT Management</h3>
                           <div className="bg-white p-3 rounded border">
@@ -19413,9 +19526,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <p className="text-xs text-slate-500 mt-2">Use the BP Management section and Nursing Flowsheet Generator for targets and monitoring cadence.</p>
                           </div>
                         </div>
-                        )}
 
-                        {showAcuteManagement && (
                         <div className="bg-slate-50 border border-slate-300 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-slate-800 mb-3">Medium Vessel Occlusion (MeVO) EVT</h3>
                           <div className="bg-white p-3 rounded border">
@@ -19430,9 +19541,32 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <p className="text-xs text-slate-500 mt-2 italic">Note: LVO (ICA-T, M1, basilar) EVT remains Class I. This applies only to isolated medium/distal vessel occlusions.</p>
                           </div>
                         </div>
-                        )}
 
-                        {(showInpatientManagement || showClinicManagement) && (
+                        <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-teal-800 mb-3">Contrast Allergy + Suspected LVO Protocol (UW Pocket Card)</h3>
+                          <div className="bg-white p-3 rounded border mb-3">
+                            <p className="text-sm font-semibold text-teal-700 mb-2">Eligibility:</p>
+                            <ul className="text-sm space-y-1">
+                              <li>• CT contrast allergy (mild/moderate/unknown severity) AND suspected LVO</li>
+                              <li>• <strong>Excludes:</strong> known contrast-related anaphylaxis</li>
+                            </ul>
+                          </div>
+                          <div className="bg-white p-3 rounded border mb-3">
+                            <p className="text-sm font-semibold text-teal-700 mb-2">Requirements:</p>
+                            <ul className="text-sm space-y-1">
+                              <li>• Consent from patient or LNOK</li>
+                              <li>• Pre-administration approval from <strong>Stroke phone</strong>, <strong>Emergency MD</strong>, and <strong>Neuroradiology</strong></li>
+                            </ul>
+                          </div>
+                          <div className="bg-white p-3 rounded border">
+                            <p className="text-sm font-semibold text-teal-700 mb-2">Pre-medication:</p>
+                            <ul className="text-sm space-y-1">
+                              <li>• <button onClick={() => setProtocolModal(protocolDetailMap.HYDROCORT)} className="text-blue-600 underline hover:text-blue-800">Hydrocortisone 200 mg IV</button> <strong>OR</strong> <button onClick={() => setProtocolModal(protocolDetailMap.METHYLPRED)} className="text-blue-600 underline hover:text-blue-800">Methylprednisolone 40 mg IV</button></li>
+                              <li>• <strong>PLUS</strong> <button onClick={() => setProtocolModal(protocolDetailMap.DIPHEN)} className="text-blue-600 underline hover:text-blue-800">Diphenhydramine 50 mg IV</button></li>
+                            </ul>
+                          </div>
+                        </div>
+
                         <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-orange-800 mb-3">Intracranial Atherosclerotic Disease (ICAD)</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -19457,7 +19591,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
                         </div>
-                        )}
                           </div>
                         </details>
                       </div>
