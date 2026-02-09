@@ -2359,9 +2359,10 @@ Clinician Name`;
           // =================================================================
           // ANTICOAGULANT INFORMATION - Drug-specific half-lives, thrombolysis
           // =================================================================
-          // ANTIPLATELET REGIMEN LABELS
+          // SHARED LABEL CONSTANTS
           const AP_LABELS = { 'dapt-21': 'DAPT x 21 days', 'asa-mono': 'ASA monotherapy', 'clopidogrel-mono': 'Clopidogrel monotherapy', 'asa-er-dipyridamole': 'ASA/ER-Dipyridamole', 'doac-af': 'DOAC for AF', 'anticoag-other': 'Anticoagulation (other)' };
           const AP_LABELS_SHORT = { 'dapt-21': 'DAPT x21d', 'asa-mono': 'ASA', 'clopidogrel-mono': 'Clopidogrel', 'asa-er-dipyridamole': 'ASA/ER-Dipyridamole', 'doac-af': 'DOAC (AF)', 'anticoag-other': 'Anticoagulation' };
+          const TOAST_LABELS = { 'large-artery': 'Large Artery Atherosclerosis', 'cardioembolism': 'Cardioembolism', 'small-vessel': 'Small Vessel Occlusion (Lacunar)', 'other-determined': 'Other Determined Etiology', 'cryptogenic': 'Cryptogenic/ESUS' };
 
           // CALLING SITES - Unified list for both telephone and video consults
           // =================================================================
@@ -6750,8 +6751,8 @@ Clinician Name`;
             brief += `Diagnosis: ${telestrokeNote.diagnosis || '***'}\n`;
             brief += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n`;
             if (telestrokeNote.toastClassification) {
-              const toastLabels = { 'large-artery': 'Large Artery Atherosclerosis', 'cardioembolism': 'Cardioembolism', 'small-vessel': 'Small Vessel Occlusion', 'other-determined': 'Other Determined', 'cryptogenic': 'Cryptogenic/ESUS' };
-              brief += `Etiology (TOAST): ${toastLabels[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}\n`;
+
+              brief += `Etiology (TOAST): ${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}\n`;
             }
             brief += `\nACUTE COURSE:\n`;
             if (telestrokeNote.tnkRecommended) brief += `- TNK administered${telestrokeNote.tnkAdminTime ? ` at ${telestrokeNote.tnkAdminTime}` : ''}\n`;
@@ -6976,8 +6977,8 @@ Clinician Name`;
 
             // Add TOAST classification and workup plan
             if (telestrokeNote.toastClassification) {
-              const toastLabels = { 'large-artery': 'Large Artery Atherosclerosis', 'cardioembolism': 'Cardioembolism', 'small-vessel': 'Small Vessel Occlusion', 'other-determined': 'Other Determined Etiology', 'cryptogenic': 'Cryptogenic/ESUS' };
-              note += `\nEtiologic Classification (TOAST): ${toastLabels[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}\n`;
+
+              note += `\nEtiologic Classification (TOAST): ${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}\n`;
             }
 
             // Add etiology workup status
@@ -7137,8 +7138,8 @@ Clinician Name`;
               }
 
               if (telestrokeNote.toastClassification) {
-                const toastLabels = { 'large-artery': 'Large artery atherosclerosis', 'cardioembolism': 'Cardioembolism', 'lacunar': 'Small vessel/lacunar', 'other': 'Other determined etiology', 'cryptogenic': 'Cryptogenic/ESUS' };
-                sentences.push(`TOAST: ${toastLabels[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}.`);
+  
+                sentences.push(`TOAST: ${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}.`);
               }
             }
 
@@ -8605,7 +8606,7 @@ Clinician Name`;
                 currentTime += config.duration + 0.15; // Gap between beeps
               }
             } catch (e) {
-              console.log('Audio alert not supported:', e);
+              console.warn('Audio alert not supported:', e);
             }
           };
 
@@ -14574,7 +14575,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 Etiology Workup Planner
                               </h3>
                               <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
-                                Based on: {telestrokeNote.toastClassification === 'large-artery' ? 'Large Artery Atherosclerosis' : telestrokeNote.toastClassification === 'cardioembolism' ? 'Cardioembolism' : telestrokeNote.toastClassification === 'small-vessel' ? 'Small Vessel' : telestrokeNote.toastClassification === 'other-determined' ? 'Other Determined' : 'Cryptogenic/ESUS'}
+                                Based on: {TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}
                               </span>
                             </div>
                             {(() => {
@@ -17129,8 +17130,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                                 // TOAST Classification
                                 if (telestrokeNote.toastClassification) {
-                                  const toastLabels = { 'large-artery': 'Large Artery Atherosclerosis', 'cardioembolism': 'Cardioembolism', 'small-vessel': 'Small Vessel Occlusion (Lacunar)', 'other-determined': 'Other Determined Etiology', 'cryptogenic': 'Cryptogenic / ESUS' };
-                                  note += `\nETIOLOGIC CLASSIFICATION (TOAST): ${toastLabels[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}\n`;
+                    
+                                  note += `\nETIOLOGIC CLASSIFICATION (TOAST): ${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}\n`;
                                 }
 
                                 // Cardiac Workup
