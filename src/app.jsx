@@ -835,6 +835,17 @@ Clinician Name`;
             presumedConsent: false,
             preTNKSafetyPause: false,
             tnkAdminTime: '',
+            // Post-TNK monitoring
+            postTnkNeuroChecksStarted: false,
+            postTnkBpMonitoring: false,
+            postTnkRepeatCTOrdered: false,
+            postTnkAntiplateletHeld: false,
+            // Post-TNK complications
+            sichDetected: false,
+            angioedemaDetected: false,
+            reperfusionHemorrhage: false,
+            clinicalDeterioration: false,
+            complicationNotes: '',
             admitLocation: '',
             recommendationsText: '',
             transferAccepted: false,
@@ -853,6 +864,12 @@ Clinician Name`;
             transportEta: '',
             transportNotes: '',
             disposition: '',
+            // Transfer checklist (telephone form flat fields)
+            transferImagingShared: false,
+            transferLabsSent: false,
+            transferIVAccess: false,
+            transferBPStable: false,
+            transferFamilyNotified: false,
             doorTime: '',
             needleTime: '',
             punctureTime: '',
@@ -900,7 +917,8 @@ Clinician Name`;
             },
             // Phase 2: Guided Clinical Pathway fields
             ichBPManaged: false,
-            ichReversalOrdered: false,
+            ichReversalInitiated: false,
+            ichSeizureProphylaxis: false,
             ichNeurosurgeryConsulted: false,
             // Phase 4: SAH fields
             sahGrade: '',
@@ -1380,7 +1398,6 @@ Clinician Name`;
           const [aspectsScore, setAspectsScore] = useState(loadFromStorage('aspectsScore', 10));
           const [darkMode, setDarkMode] = useState(getKey('darkMode', false) === true);
           const [searchQuery, setSearchQuery] = useState('');
-          const [showSuccess, setShowSuccess] = useState(false);
           const [isCalculating, setIsCalculating] = useState(false);
           const [copiedText, setCopiedText] = useState('');
           const [isMounted, setIsMounted] = useState(false);
@@ -1570,7 +1587,6 @@ Clinician Name`;
             sah: false
           }));
           const [trialsCategory, setTrialsCategory] = useState('ischemic');
-          const [toolLoadErrors, setToolLoadErrors] = useState({ clinic: false, map: false });
 
           const [strokeCodeForm, setStrokeCodeForm] = useState(loadFromStorage('strokeCodeForm', getDefaultStrokeCodeForm()));
           const [aspectsRegionState, setAspectsRegionState] = useState(loadFromStorage('aspectsRegionState', getDefaultAspectsRegionState()));
@@ -2343,6 +2359,10 @@ Clinician Name`;
           // =================================================================
           // ANTICOAGULANT INFORMATION - Drug-specific half-lives, thrombolysis
           // =================================================================
+          // ANTIPLATELET REGIMEN LABELS
+          const AP_LABELS = { 'dapt-21': 'DAPT x 21 days', 'asa-mono': 'ASA monotherapy', 'clopidogrel-mono': 'Clopidogrel monotherapy', 'asa-er-dipyridamole': 'ASA/ER-Dipyridamole', 'doac-af': 'DOAC for AF', 'anticoag-other': 'Anticoagulation (other)' };
+          const AP_LABELS_SHORT = { 'dapt-21': 'DAPT x21d', 'asa-mono': 'ASA', 'clopidogrel-mono': 'Clopidogrel', 'asa-er-dipyridamole': 'ASA/ER-Dipyridamole', 'doac-af': 'DOAC (AF)', 'anticoag-other': 'Anticoagulation' };
+
           // CALLING SITES - Unified list for both telephone and video consults
           // =================================================================
           const CALLING_SITES = [
@@ -4911,7 +4931,7 @@ Clinician Name`;
             ],
             ich: [
               { id: 'ich-bp', label: 'BP Management', section: 'vitals-section', check: (d) => !!d.telestrokeNote?.ichBPManaged },
-              { id: 'ich-reversal', label: 'Anticoag Reversal', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.ichReversalOrdered,
+              { id: 'ich-reversal', label: 'Anticoag Reversal', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.ichReversalInitiated,
                 skip: (d) => !!d.telestrokeNote?.noAnticoagulants },
               { id: 'ich-neurosurg', label: 'Neurosurgery', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.ichNeurosurgeryConsulted },
               { id: 'recommendations', label: 'Recommendations', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.recommendationsText }
@@ -6314,11 +6334,9 @@ Clinician Name`;
             setEvidenceFilter('');
             setShowKeyboardHelp(false);
             setCopiedText('');
-            setShowSuccess(false);
             setIsCalculating(false);
             setCriticalAlerts([]);
             setTrialsCategory('ischemic');
-            setToolLoadErrors({ clinic: false, map: false });
             setSaveStatus('saved');
             setLastSaved(null);
             setNotice(null);
@@ -6555,7 +6573,9 @@ Clinician Name`;
             if (shouldPersistFreeText) return note;
             const allowedKeys = [
               'consultStartTime', 'callerName', 'callerRole', 'attendingPhysician',
+              'callingSite', 'callingSiteOther',
               'alias', 'age', 'sex', 'weight', 'nihss', 'aspects', 'vesselOcclusion', 'diagnosisCategory',
+              'toastClassification', 'secondaryPrevention',
               'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'arrivalTime', 'strokeAlertTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
               'presentingBP', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT',
               'glucose', 'plateletCount', 'inr', 'ptt', 'creatinine', 'disablingDeficit',
@@ -6762,8 +6782,7 @@ Clinician Name`;
             }
             brief += `\nSECONDARY PREVENTION:\n`;
             if (sp.antiplateletRegimen) {
-              const apLabels = { 'dapt-21': 'DAPT x 21 days', 'asa-mono': 'ASA monotherapy', 'clopidogrel-mono': 'Clopidogrel monotherapy', 'asa-er-dipyridamole': 'ASA/ER-Dipyridamole', 'doac-af': 'DOAC for AF', 'anticoag-other': 'Anticoagulation (other)' };
-              brief += `- Antithrombotic: ${apLabels[sp.antiplateletRegimen] || sp.antiplateletRegimen}\n`;
+              brief += `- Antithrombotic: ${AP_LABELS[sp.antiplateletRegimen] || sp.antiplateletRegimen}\n`;
             }
             if (sp.statinDose) brief += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}\n`;
             if (sp.bpTarget) brief += `- BP target: ${sp.bpTarget}${sp.bpMeds ? ` (on ${sp.bpMeds})` : ''}\n`;
@@ -6836,8 +6855,7 @@ Clinician Name`;
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
               const sp = telestrokeNote.secondaryPrevention || {};
               if (sp.antiplateletRegimen) {
-                const apLabels = { 'dapt-21': 'DAPT x 21d', 'asa-mono': 'ASA', 'clopidogrel-mono': 'Clopidogrel', 'asa-er-dipyridamole': 'ASA/Dipyridamole', 'doac-af': 'DOAC (AF)', 'anticoag-other': 'Anticoag' };
-                note += `- Antithrombotic: ${apLabels[sp.antiplateletRegimen] || sp.antiplateletRegimen}\n`;
+                note += `- Antithrombotic: ${AP_LABELS_SHORT[sp.antiplateletRegimen] || sp.antiplateletRegimen}\n`;
               }
               if (sp.statinDose) note += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}\n`;
               note += `\nActive issues / To-do:\n`;
@@ -6995,7 +7013,7 @@ Clinician Name`;
             if (telestrokeNote.diagnosisCategory === 'ich') {
               let ichNote = '\nICH Management:\n';
               if (telestrokeNote.ichBPManaged) ichNote += '- BP managed (target SBP 130-150)\n';
-              if (telestrokeNote.ichReversalOrdered || telestrokeNote.ichReversalInitiated) ichNote += '- Anticoagulation reversal initiated\n';
+              if (telestrokeNote.ichReversalInitiated || telestrokeNote.ichReversalInitiated) ichNote += '- Anticoagulation reversal initiated\n';
               if (telestrokeNote.ichNeurosurgeryConsulted) ichNote += '- Neurosurgery consulted\n';
               if (telestrokeNote.ichSeizureProphylaxis) ichNote += '- Seizure prophylaxis ordered\n';
               if (ichNote !== '\nICH Management:\n') note += ichNote;
@@ -7025,8 +7043,7 @@ Clinician Name`;
             const sp = telestrokeNote.secondaryPrevention || {};
             const spItems = [];
             if (sp.antiplateletRegimen) {
-              const apLabels = { 'dapt-21': 'DAPT x 21 days', 'asa-mono': 'ASA monotherapy', 'clopidogrel-mono': 'Clopidogrel monotherapy', 'asa-er-dipyridamole': 'ASA/ER-Dipyridamole', 'doac-af': 'DOAC for AF', 'anticoag-other': 'Anticoagulation (other)' };
-              spItems.push(`Antithrombotic: ${apLabels[sp.antiplateletRegimen] || sp.antiplateletRegimen}`);
+              spItems.push(`Antithrombotic: ${AP_LABELS[sp.antiplateletRegimen] || sp.antiplateletRegimen}`);
             }
             if (sp.statinDose) spItems.push(`Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}`);
             if (sp.bpTarget) spItems.push(`BP target: ${sp.bpTarget}${sp.bpMeds ? ` (${sp.bpMeds})` : ''}`);
@@ -7075,29 +7092,79 @@ Clinician Name`;
             const ct = telestrokeNote.ctResults || 'CT pending';
             const cta = telestrokeNote.ctaResults || 'CTA pending';
             const inr = telestrokeNote.inr || '';
+            const vessels = telestrokeNote.vesselOcclusion || [];
+            const dx = telestrokeNote.diagnosisCategory || '';
 
             const sentences = [];
             sentences.push(`${age}-year-old ${sex} with ${pmh} presenting with ${symptoms}.`);
             sentences.push(`Last known well: ${lkw}. NIHSS ${nihss}.`);
-            sentences.push(`Imaging: CT ${ct}. CTA ${cta}.`);
 
-            if (telestrokeNote.tnkRecommended) {
-              const tnkTime = telestrokeNote.tnkAdminTime ? ` at ${telestrokeNote.tnkAdminTime}` : '';
-              sentences.push(`TNK recommended${tnkTime}.`);
-            } else if (telestrokeNote.tnkAutoBlocked) {
-              sentences.push(`TNK contraindicated due to warfarin with INR >1.7${inr ? ` (INR ${inr})` : ''}.`);
-            } else {
-              sentences.push('TNK not recommended based on current eligibility criteria.');
+            // Imaging with vessel occlusion
+            let imagingLine = `Imaging: CT ${ct}. CTA ${cta}.`;
+            if (vessels.length > 0 && !vessels.includes('None')) {
+              imagingLine += ` Vessel occlusion: ${vessels.join(', ')}.`;
             }
+            if (telestrokeNote.aspectsScore) {
+              imagingLine += ` ASPECTS ${telestrokeNote.aspectsScore}/10.`;
+            }
+            sentences.push(imagingLine);
 
-            if (telestrokeNote.evtRecommended) {
-              sentences.push('EVT recommended; transfer/activation initiated.');
+            // Diagnosis and TOAST
+            if (dx === 'ich') {
+              sentences.push('Diagnosis: Intracerebral hemorrhage.');
+              const ichActions = [];
+              if (telestrokeNote.ichBPManaged) ichActions.push('BP management initiated (target SBP 130-150)');
+              if (telestrokeNote.ichReversalInitiated) ichActions.push('anticoagulation reversal initiated');
+              if (telestrokeNote.ichNeurosurgeryConsulted) ichActions.push('neurosurgery consulted');
+              if (telestrokeNote.ichSeizureProphylaxis) ichActions.push('seizure prophylaxis ordered');
+              if (ichActions.length > 0) {
+                sentences.push(`ICH management: ${ichActions.join(', ')}.`);
+              }
             } else {
-              sentences.push('EVT not recommended based on current criteria.');
+              if (telestrokeNote.tnkRecommended) {
+                const tnkTime = telestrokeNote.tnkAdminTime ? ` at ${telestrokeNote.tnkAdminTime}` : '';
+                sentences.push(`TNK recommended${tnkTime}.`);
+              } else if (telestrokeNote.tnkAutoBlocked) {
+                sentences.push(`TNK contraindicated due to warfarin with INR >1.7${inr ? ` (INR ${inr})` : ''}.`);
+              } else {
+                sentences.push('TNK not recommended based on current eligibility criteria.');
+              }
+
+              if (telestrokeNote.evtRecommended) {
+                sentences.push('EVT recommended; transfer/activation initiated.');
+              } else if (vessels.some(v => /ICA|M1|Basilar/i.test(v))) {
+                sentences.push('LVO identified; EVT evaluation recommended.');
+              }
+
+              if (telestrokeNote.toastClassification) {
+                const toastLabels = { 'large-artery': 'Large artery atherosclerosis', 'cardioembolism': 'Cardioembolism', 'lacunar': 'Small vessel/lacunar', 'other': 'Other determined etiology', 'cryptogenic': 'Cryptogenic/ESUS' };
+                sentences.push(`TOAST: ${toastLabels[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}.`);
+              }
             }
 
             if (telestrokeNote.rationale) {
               sentences.push(`Rationale: ${telestrokeNote.rationale}.`);
+            }
+
+            // Secondary prevention
+            const sp = telestrokeNote.secondaryPrevention || {};
+            const spParts = [];
+            if (sp.antiplateletRegimen) {
+              spParts.push(AP_LABELS_SHORT[sp.antiplateletRegimen] || sp.antiplateletRegimen);
+            }
+            if (sp.statinDose) spParts.push(`${sp.statinDose.replace(/-/g, ' ')} statin`);
+            if (sp.bpTarget) spParts.push(`BP target ${sp.bpTarget}`);
+            if (spParts.length > 0) {
+              sentences.push(`Secondary prevention: ${spParts.join(', ')}.`);
+            }
+
+            // Disposition
+            if (telestrokeNote.disposition) {
+              sentences.push(`Disposition: ${telestrokeNote.disposition}.`);
+            } else if (telestrokeNote.transferAccepted) {
+              let dispo = 'Transfer to comprehensive stroke center';
+              if (telestrokeNote.transportMode) dispo += ` via ${telestrokeNote.transportMode}`;
+              sentences.push(`${dispo}.`);
             }
 
             return sentences.filter(Boolean).join(' ');
@@ -9906,7 +9973,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 else if (ctx.id === 'phone') setDocumentationMode('full');
                                 else if (ctx.id === 'inpatient') setDocumentationMode('full');
                                 else setDocumentationMode('quick');
-                                if (ctx.id === 'acute' || ctx.id === 'phone') setConsultationType(ctx.id === 'acute' ? 'videoTelestroke' : 'telephone');
+                                if (ctx.id === 'acute') setConsultationType('videoTelestroke');
+                                else setConsultationType('telephone');
                               }}
                               className={`text-xs px-2.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1 ${
                                 clinicalContext === ctx.id
@@ -12905,7 +12973,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <div className="space-y-2">
                                   {[
                                     { field: 'ichBPManaged', label: 'BP managed (SBP 130-150 target)', detail: 'AHA/ASA ICH 2022' },
-                                    { field: 'ichReversalOrdered', label: 'Anticoag reversal ordered (if applicable)', detail: 'Skip if no anticoagulants', skipIf: telestrokeNote.noAnticoagulants },
+                                    { field: 'ichReversalInitiated', label: 'Anticoag reversal ordered (if applicable)', detail: 'Skip if no anticoagulants', skipIf: telestrokeNote.noAnticoagulants },
                                     { field: 'ichNeurosurgeryConsulted', label: 'Neurosurgery consulted/evaluated', detail: 'Surgical candidacy assessed' }
                                   ].filter(item => !item.skipIf).map(item => (
                                     <label key={item.field} className="flex items-start gap-2 cursor-pointer">
@@ -17026,7 +17094,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 } else if (pathwayType === 'ich') {
                                   note += `PLAN:\n`;
                                   if (telestrokeNote.ichBPManaged) note += `- BP management initiated (target SBP 130-150).\n`;
-                                  if (telestrokeNote.ichReversalOrdered) note += `- Anticoagulation reversal ordered.\n`;
+                                  if (telestrokeNote.ichReversalInitiated) note += `- Anticoagulation reversal ordered.\n`;
                                   if (telestrokeNote.ichNeurosurgeryConsulted) note += `- Neurosurgery consulted.\n`;
                                 } else if (pathwayType === 'sah') {
                                   note += `PLAN:\n`;
