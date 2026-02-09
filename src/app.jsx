@@ -1383,11 +1383,7 @@ Clinician Name`;
           const [actionsOpen, setActionsOpen] = useState(false);
           const [encounterPhase, setEncounterPhase] = useState('triage');
           const [clinicalContext, setClinicalContext] = useState('phone');
-          const [documentationMode, setDocumentationMode] = useState('full');
           const [noteTemplate, setNoteTemplate] = useState('consult');
-          const isQuickMode = documentationMode === 'quick';
-          const isClinicContext = clinicalContext === 'clinic';
-          const isInpatientContext = clinicalContext === 'inpatient';
           const [calcDrawerOpen, setCalcDrawerOpen] = useState(false);
           const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
           // Phase 2: Guided Clinical Pathway UI state
@@ -1465,10 +1461,10 @@ Clinician Name`;
           const [consultationType, setConsultationType] = useState(loadFromStorage('consultationType', settings.defaultConsultationType || 'telephone'));
 
           const [managementSubTab, setManagementSubTab] = useState(initialManagementSubTab);
-          const showTelestrokeManagement = clinicalContext === 'acute' || clinicalContext === 'phone';
-          const showInpatientManagement = clinicalContext === 'inpatient' || clinicalContext === 'acute';
-          const showClinicManagement = clinicalContext === 'clinic';
-          const showAcuteManagement = clinicalContext === 'acute' || clinicalContext === 'phone';
+          const showTelestrokeManagement = true;
+          const showInpatientManagement = true;
+          const showClinicManagement = false;
+          const showAcuteManagement = true;
 
           // Emergency Contacts FAB state
           const [fabExpanded, setFabExpanded] = useState(false);
@@ -9948,7 +9944,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </div>
 
                     {/* ===== STROKE TIMELINE STRIP (hidden in clinic) ===== */}
-                    {!isClinicContext && (lkwTime || telestrokeNote.dtnEdArrival || telestrokeNote.tnkAdminTime) && (
+                    {(lkwTime || telestrokeNote.dtnEdArrival || telestrokeNote.tnkAdminTime) && (
                       <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 overflow-x-auto no-scrollbar">
                         <div className="flex items-center gap-1 text-xs min-w-max">
                           {[
@@ -9979,77 +9975,31 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       </div>
                     )}
 
-                    {/* ===== ONBOARDING CARD (no patient data yet) ===== */}
-                    {!telestrokeNote.age && !telestrokeNote.diagnosis && nihssScore === 0 && (
-                      <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center">
-                        <h3 className="text-lg font-semibold text-blue-900 mb-2">Start a New Encounter</h3>
-                        <p className="text-sm text-blue-700 mb-4 max-w-md mx-auto">
-                          Enter the Last Known Well time and patient demographics to begin. The app will guide you through triage, treatment decisions, and documentation.
-                        </p>
-                        <div className="flex flex-wrap justify-center gap-3 text-xs text-blue-600">
-                          <span className="flex items-center gap-1"><i data-lucide="clock" className="w-3.5 h-3.5"></i> Treatment windows</span>
-                          <span className="flex items-center gap-1"><i data-lucide="calculator" className="w-3.5 h-3.5"></i> Clinical calculators</span>
-                          <span className="flex items-center gap-1"><i data-lucide="file-text" className="w-3.5 h-3.5"></i> Auto-generated notes</span>
-                          <span className="flex items-center gap-1"><i data-lucide="book-open" className="w-3.5 h-3.5"></i> Evidence-based guidelines</span>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* ===== CLINICAL CONTEXT + DOCUMENTATION MODE ===== */}
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 px-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Setting:</span>
-                        <div className="flex gap-1">
-                          {[
-                            { id: 'acute', label: 'Video Telestroke', icon: 'zap' },
-                            { id: 'phone', label: 'Phone Consult', icon: 'phone' },
-                            { id: 'inpatient', label: 'Inpatient', icon: 'bed-double' },
-                            { id: 'clinic', label: 'Clinic', icon: 'stethoscope' }
-                          ].map(ctx => (
-                            <button
-                              key={ctx.id}
-                              onClick={() => {
-                                setClinicalContext(ctx.id);
-                                if (ctx.id === 'acute') setDocumentationMode('full');
-                                else if (ctx.id === 'phone') setDocumentationMode('full');
-                                else if (ctx.id === 'inpatient') setDocumentationMode('full');
-                                else setDocumentationMode('quick');
-                                if (ctx.id === 'acute') setConsultationType('videoTelestroke');
-                                else setConsultationType('telephone');
-                              }}
-                              className={`text-xs px-2.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1 ${
-                                clinicalContext === ctx.id
-                                  ? 'bg-blue-600 text-white shadow-sm'
-                                  : 'text-slate-500 hover:bg-slate-100'
-                              }`}
-                            >
-                              <i data-lucide={ctx.icon} className="w-3 h-3"></i>
-                              <span className="hidden sm:inline">{ctx.label}</span>
-                              <span className="sm:hidden">{ctx.label.split(' ')[0]}</span>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 sm:ml-4">
-                        <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Detail:</span>
-                        <div className="flex gap-1 bg-slate-100 rounded-lg p-0.5">
+                    {/* ===== CONSULTATION TYPE ===== */}
+                    <div className="flex items-center gap-2 px-1">
+                      <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Setting:</span>
+                      <div className="flex gap-1">
+                        {[
+                          { id: 'acute', label: 'Video Telestroke', icon: 'zap' },
+                          { id: 'phone', label: 'Phone Consult', icon: 'phone' }
+                        ].map(ctx => (
                           <button
-                            onClick={() => setDocumentationMode('quick')}
-                            className={`text-xs px-3 py-1 rounded-md font-medium transition-all ${
-                              documentationMode === 'quick' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'
+                            key={ctx.id}
+                            onClick={() => {
+                              setClinicalContext(ctx.id);
+                              if (ctx.id === 'acute') setConsultationType('videoTelestroke');
+                              else setConsultationType('telephone');
+                            }}
+                            className={`text-xs px-2.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1 ${
+                              clinicalContext === ctx.id
+                                ? 'bg-blue-600 text-white shadow-sm'
+                                : 'text-slate-500 hover:bg-slate-100'
                             }`}
                           >
-                            Quick
+                            <i data-lucide={ctx.icon} className="w-3 h-3"></i>
+                            {ctx.label}
                           </button>
-                          <button
-                            onClick={() => setDocumentationMode('full')}
-                            className={`text-xs px-3 py-1 rounded-md font-medium transition-all ${
-                              documentationMode === 'full' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'
-                            }`}
-                          >
-                            Full
-                          </button>
-                        </div>
+                        ))}
                       </div>
                     </div>
 
@@ -10077,7 +10027,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     {/* ===== TRIAGE SECTION ===== */}
                     <div id="phase-triage"></div>
 
-                    {!isQuickMode && quickLinks.length > 0 && (
+                    {quickLinks.length > 0 && (
                       <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
                         <div className="flex items-center justify-between mb-3">
                           <h3 className="text-sm font-semibold text-blue-900 uppercase tracking-wide">Quick Links</h3>
@@ -10105,7 +10055,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     )}
 
                     {/* Calling Site Dropdown - Shared for all consult types */}
-                    {!isQuickMode && !isClinicContext && (
+                    {(
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <label className="block text-sm font-medium text-blue-900 mb-1">
                         <i data-lucide="map-pin" className="w-4 h-4 inline mr-1"></i>
@@ -11264,7 +11214,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </select>
                             </div>
 
-                            {!isClinicContext && telestrokeNote.diagnosisCategory !== 'ich' && (
+                            {telestrokeNote.diagnosisCategory !== 'ich' && (
                             <div className="grid grid-cols-2 gap-3">
                               <label className="flex items-center gap-2 p-2 bg-emerald-50 border border-emerald-200 rounded-lg cursor-pointer">
                                 <input
@@ -11288,7 +11238,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             )}
 
                             {/* ICH Quick Management */}
-                            {!isClinicContext && telestrokeNote.diagnosisCategory === 'ich' && (
+                            {telestrokeNote.diagnosisCategory === 'ich' && (
                               <div className="bg-red-50 border-2 border-red-300 rounded-lg p-3 space-y-2">
                                 <h5 className="text-sm font-bold text-red-800">ICH Management</h5>
                                 <div className="grid grid-cols-2 gap-2">
@@ -11323,7 +11273,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </div>
                             )}
 
-                            {!isClinicContext && telestrokeNote.tnkRecommended && (
+                            {telestrokeNote.tnkRecommended && (
                               <div>
                                 <label className="block text-xs text-slate-600 mb-1">TNK Admin Time</label>
                                 <input
@@ -11724,7 +11674,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </button>
                           </div>
                           {/* Follow-up Brief Copy Button */}
-                          {!isQuickMode && (
+                          {(
                           <button
                             onClick={() => {
                               navigator.clipboard.writeText(generateFollowUpBrief());
@@ -13087,7 +13037,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             )}
 
                             {/* Lytic Eligibility Criteria (Collapsible) — hidden in clinic */}
-                            {!isClinicContext && (
+                            {(
                             <details className="bg-emerald-50 border border-emerald-200 rounded-lg">
                               <summary className="cursor-pointer p-3 font-semibold text-emerald-800 hover:bg-emerald-100 rounded-lg">
                                 ✓ TNK Eligibility Criteria (Click to expand)
@@ -13152,7 +13102,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             )}
 
                             {/* ========== TNK CONTRAINDICATIONS (hidden in clinic) ========== */}
-                            {!isClinicContext && (() => {
+                            {(() => {
                               const checklist = telestrokeNote.tnkContraindicationChecklist || {};
 
                                 const absoluteContraindications = [
@@ -13339,50 +13289,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                         Mark Reviewed
                                       </button>
                                     </div>
-                                    {isQuickMode ? (
-                                      <>
-                                      {/* Grouped accordion for quick mode */}
-                                      {[
-                                        { group: 'Imaging Exclusions', color: 'red', items: absoluteContraindications.filter(c => ['currentICH','largeInfarct','intracranialTumor','aorticDissection'].includes(c.id)) },
-                                        { group: 'Active Bleeding / Coagulopathy', color: 'red', items: absoluteContraindications.filter(c => ['activeInternalBleeding','giMalignancy','sahPresentation','infectiveEndocarditis','lowPlatelets','warfarinElevatedINR','recentHeparin'].includes(c.id)) },
-                                        { group: 'Uncontrolled BP / Labs', color: 'red', items: absoluteContraindications.filter(c => ['severeUncontrolledHTN'].includes(c.id)) },
-                                        { group: 'Recent Surgery / Procedure / Trauma', color: 'amber', items: relativeContraindications.filter(c => ['recentIntracranialSurgery','recentMajorSurgery','recentArterialPuncture','recentLumbarPuncture','recentMI','acutePericarditis'].includes(c.id)) },
-                                        { group: 'Bleeding / Vascular History', color: 'amber', items: relativeContraindications.filter(c => ['priorICH','vascularMalformation','intracranialAneurysm','knownBleedingDiathesis','recentGIGUBleeding','cerebralMicrobleeds'].includes(c.id)) },
-                                        { group: 'Medications / Anticoagulation', color: 'amber', items: relativeContraindications.filter(c => ['recentDOAC','abnormalCoagUnknown','lecanemab'].includes(c.id)) },
-                                        { group: 'Other', color: 'amber', items: relativeContraindications.filter(c => ['pregnancy','recentStroke','recentHeadTrauma','seizureAtOnset','extensiveHypoattenuation','lowGlucose','highGlucose','severeRenalFailure'].includes(c.id)) }
-                                      ].map(grp => {
-                                        const groupChecked = grp.items.filter(c => checklist[c.id] || autoDetected[c.id]);
-                                        const hasAny = groupChecked.length > 0;
-                                        const bgClass = grp.color === 'red'
-                                          ? (hasAny ? 'bg-red-100 border-red-300' : 'bg-red-50 border-red-200')
-                                          : (hasAny ? 'bg-amber-100 border-amber-300' : 'bg-amber-50 border-amber-200');
-                                        return (
-                                          <details key={grp.group} className={`border rounded-lg ${bgClass}`} open={hasAny}>
-                                            <summary className={`cursor-pointer p-2.5 text-sm font-medium flex items-center justify-between ${grp.color === 'red' ? 'text-red-800' : 'text-amber-800'}`}>
-                                              <span>{grp.group}</span>
-                                              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${hasAny ? (grp.color === 'red' ? 'bg-red-500 text-white' : 'bg-amber-500 text-white') : 'bg-slate-200 text-slate-600'}`}>
-                                                {hasAny ? `${groupChecked.length} flagged` : `0/${grp.items.length}`}
-                                              </span>
-                                            </summary>
-                                            <div className="px-2.5 pb-2.5 space-y-1">
-                                              {grp.items.map(item => {
-                                                const isAuto = autoDetected[item.id];
-                                                const isChk = checklist[item.id] || isAuto;
-                                                return (
-                                                  <label key={item.id} className={'flex items-start gap-2 p-1.5 rounded cursor-pointer text-sm ' + (isChk ? (grp.color === 'red' ? 'bg-red-200' : 'bg-amber-200') : '')}>
-                                                    <input type="checkbox" checked={isChk} onChange={(e) => updateChecklistItem(item.id, e.target.checked)} className={'w-4 h-4 mt-0.5 ' + (grp.color === 'red' ? 'accent-red-600' : 'accent-amber-600')} />
-                                                    <span className={isChk ? (grp.color === 'red' ? 'text-red-900 font-semibold' : 'text-amber-900 font-semibold') : 'text-slate-700'}>{item.label}</span>
-                                                    {isAuto && <span className="text-xs bg-red-500 text-white px-1.5 py-0.5 rounded ml-1">Auto</span>}
-                                                  </label>
-                                                );
-                                              })}
-                                            </div>
-                                          </details>
-                                        );
-                                      })}
-                                      </>
-                                    ) : (
-                                      <>
                                     <div className="bg-red-100 border border-red-300 rounded-lg p-3">
                                       <h4 className="font-bold text-red-800 mb-3 flex items-center gap-2">
                                         <span className="bg-red-600 text-white px-2 py-0.5 rounded text-xs">ABSOLUTE</span>
@@ -13427,8 +13333,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                         })}
                                       </div>
                                     </div>
-                                      </>
-                                    )}
                                     <div className="flex items-center justify-between pt-2 border-t border-orange-200">
                                       <div className="text-sm text-slate-600">
                                         {telestrokeNote.tnkContraindicationReviewed && <span className="text-emerald-700">Reviewed at {telestrokeNote.tnkContraindicationReviewTime}</span>}
@@ -13766,7 +13670,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <div id="phase-management"></div>
 
                             {/* Time Metrics Section - DTN Tracker (hidden in clinic) */}
-                            {!isClinicContext && <details id="time-metrics-section" className="bg-purple-50 border border-purple-200 rounded-xl" open={telestrokeNote.tnkRecommended}>
+                            {<details id="time-metrics-section" className="bg-purple-50 border border-purple-200 rounded-xl" open={telestrokeNote.tnkRecommended}>
                               <summary className="cursor-pointer p-3 font-semibold text-purple-800 hover:bg-purple-100 rounded-lg flex items-center justify-between">
                                 <span className="flex items-center gap-2">
                                   <i data-lucide="timer" className="w-4 h-4"></i>
@@ -14010,7 +13914,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </details>}
 
                             {/* EVT Eligibility (Collapsible — hidden in clinic) */}
-                            {!isClinicContext && <details className="bg-blue-50 border border-blue-200 rounded-lg">
+                            {<details className="bg-blue-50 border border-blue-200 rounded-lg">
                               <summary className="cursor-pointer p-3 font-semibold text-blue-800 hover:bg-blue-100 rounded-lg">
                                 🔧 EVT Eligibility Criteria (Click to expand)
                               </summary>
@@ -14082,7 +13986,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         {/* Guideline Recommendations Panel */}
-                        {!isQuickMode && (() => {
+                        {(() => {
                           const recs = getContextualRecommendations();
                           if (recs.length === 0) return null;
 
@@ -14156,7 +14060,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         })()}
 
                         {/* Trial Eligibility Auto-Matcher */}
-                        {!isQuickMode && (() => {
+                        {(() => {
                           const allTrialIds = Object.keys(TRIAL_ELIGIBILITY_CONFIG);
                           if (allTrialIds.length === 0) return null;
 
@@ -14285,7 +14189,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         })()}
 
                         {/* SAH Management Section - Only show for SAH diagnosis */}
-                        {!isQuickMode && (telestrokeNote.diagnosisCategory === 'sah' || (telestrokeNote.diagnosis || '').toLowerCase().includes('sah') || (telestrokeNote.diagnosis || '').toLowerCase().includes('subarachnoid')) && (
+                        {(telestrokeNote.diagnosisCategory === 'sah' || (telestrokeNote.diagnosis || '').toLowerCase().includes('sah') || (telestrokeNote.diagnosis || '').toLowerCase().includes('subarachnoid')) && (
                           <div id="sah-management-section" className="bg-white border border-purple-200 rounded-xl p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-purple-900 flex items-center gap-2">
@@ -14385,7 +14289,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* CVT Management Section - Only show for CVT diagnosis */}
-                        {!isQuickMode && (telestrokeNote.diagnosisCategory === 'cvt' || (telestrokeNote.diagnosis || '').toLowerCase().includes('cvt') || (telestrokeNote.diagnosis || '').toLowerCase().includes('venous thrombosis') || (telestrokeNote.diagnosis || '').toLowerCase().includes('cerebral venous')) && (
+                        {(telestrokeNote.diagnosisCategory === 'cvt' || (telestrokeNote.diagnosis || '').toLowerCase().includes('cvt') || (telestrokeNote.diagnosis || '').toLowerCase().includes('venous thrombosis') || (telestrokeNote.diagnosis || '').toLowerCase().includes('cerebral venous')) && (
                           <div id="cvt-management-section" className="bg-white border-2 border-indigo-300 rounded-lg p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-indigo-900 flex items-center gap-2">
@@ -14477,7 +14381,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* ========== TIA WORKUP CHECKLIST ========== */}
-                        {!isQuickMode && getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia' && (
+                        {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia' && (
                           <div className="bg-white border border-orange-200 rounded-xl p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-orange-900 flex items-center gap-2">
@@ -14567,7 +14471,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* ========== CARDIAC WORKUP DECISION TREE ========== */}
-                        {!isQuickMode && (getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' || getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia' || telestrokeNote.toastClassification === 'cardioembolism' || telestrokeNote.toastClassification === 'cryptogenic') && telestrokeNote.diagnosis && (
+                        {(getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' || getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia' || telestrokeNote.toastClassification === 'cardioembolism' || telestrokeNote.toastClassification === 'cryptogenic') && telestrokeNote.diagnosis && (
                           <div className="bg-white border-2 border-pink-300 rounded-lg p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-pink-900 flex items-center gap-2">
@@ -14659,7 +14563,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* ========== ETIOLOGY WORKUP PLANNER ========== */}
-                        {!isQuickMode && telestrokeNote.toastClassification && (getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' || getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia') && (
+                        {telestrokeNote.toastClassification && (getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' || getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia') && (
                           <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-blue-900 flex items-center gap-2">
@@ -14759,7 +14663,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* ========== CERVICAL ARTERY DISSECTION PATHWAY ========== */}
-                        {!isQuickMode && getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'dissection' && (
+                        {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'dissection' && (
                           <div className="bg-white border border-red-200 rounded-xl p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-red-900 flex items-center gap-2">
@@ -14813,7 +14717,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* ========== SCREENING TOOLS ========== */}
-                        {!isQuickMode && telestrokeNote.diagnosis && getPathwayForDiagnosis(telestrokeNote.diagnosis) !== 'mimic' && (
+                        {telestrokeNote.diagnosis && getPathwayForDiagnosis(telestrokeNote.diagnosis) !== 'mimic' && (
                           <details className="bg-white border border-blue-200 rounded-xl shadow-md">
                             <summary className="cursor-pointer p-4 font-semibold text-blue-900 hover:bg-blue-50 rounded-lg flex items-center justify-between">
                               <span className="flex items-center gap-2">
@@ -14973,7 +14877,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* ========== SECONDARY PREVENTION DASHBOARD ========== */}
-                        {!isQuickMode && telestrokeNote.diagnosis && getPathwayForDiagnosis(telestrokeNote.diagnosis) !== 'mimic' && (
+                        {telestrokeNote.diagnosis && getPathwayForDiagnosis(telestrokeNote.diagnosis) !== 'mimic' && (
                           <details className="bg-white border border-emerald-200 rounded-xl shadow-md">
                             <summary className="cursor-pointer p-4 font-semibold text-emerald-900 hover:bg-emerald-50 rounded-lg flex items-center justify-between">
                               <span className="flex items-center gap-2">
@@ -17008,7 +16912,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <div id="phase-documentation"></div>
 
                         {/* Discharge Checklist - Show when recommendations or disposition is being addressed */}
-                        {!isQuickMode && telestrokeNote.diagnosis && (
+                        {telestrokeNote.diagnosis && (
                           <div id="discharge-checklist-section" className="bg-white border border-emerald-200 rounded-xl p-4 shadow-sm">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-emerald-900 flex items-center gap-2">
@@ -17852,7 +17756,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </button>
                           </div>
                           {/* Follow-up Brief Copy Button */}
-                          {!isQuickMode && (
+                          {(
                           <button
                             onClick={() => {
                               navigator.clipboard.writeText(generateFollowUpBrief());
@@ -17892,7 +17796,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       <div className={`lg:col-span-1 space-y-4`}>
 
                         {/* Treatment Window Countdown - Enhanced with Elapsed Timer & Audible Alerts */}
-                        {!isQuickMode && (() => {
+                        {(() => {
                           const timeFromLKW = calculateTimeFromLKW();
                           if (!timeFromLKW) return null;
 
@@ -18173,7 +18077,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         {/* DETAILED CLINICAL TRIAL INFORMATION         */}
                         {/* Expanded descriptions for Video Telestroke  */}
                         {/* ============================================ */}
-                        {!isQuickMode && consultationType === 'videoTelestroke' && telestrokeNote.diagnosisCategory && (
+                        {consultationType === 'videoTelestroke' && telestrokeNote.diagnosisCategory && (
                           <details className="bg-white border-2 border-indigo-200 rounded-lg shadow-md overflow-hidden">
                             <summary className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white p-3 cursor-pointer hover:from-indigo-600 hover:to-purple-600 transition-colors">
                               <span className="font-bold text-sm flex items-center gap-2">
@@ -18285,7 +18189,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </div>
                     </>
                     )}
-                    {!isQuickMode && (
+                    {(
                     <div id="handoff-section" className="bg-white border-2 border-slate-200 rounded-lg p-4 shadow-sm">
                       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
                         <div>
@@ -18349,7 +18253,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </div>
                     )}
 
-                    {!isQuickMode && (
+                    {(
                     <details id="safety-section" className="bg-white border border-slate-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
                         <span>Safety checks</span>
@@ -18370,7 +18274,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
                     )}
 
-                    {!isQuickMode && (showAdvanced || telestrokeNote.diagnosisCategory === 'mimic') && (
+                    {(showAdvanced || telestrokeNote.diagnosisCategory === 'mimic') && (
                       <details className="bg-white border border-slate-200 rounded-lg">
                         <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
                           <span>Stroke mimic FAQ</span>
