@@ -1341,6 +1341,11 @@ Clinician Name`;
           const [actionsOpen, setActionsOpen] = useState(false);
           const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
           const [encounterPhase, setEncounterPhase] = useState('triage');
+          const [clinicalContext, setClinicalContext] = useState('acute');
+          const [documentationMode, setDocumentationMode] = useState('quick');
+          const [noteTemplate, setNoteTemplate] = useState('consult');
+          const isQuickMode = documentationMode === 'quick';
+          const isClinicContext = clinicalContext === 'clinic';
           const [calcDrawerOpen, setCalcDrawerOpen] = useState(false);
           const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
           const [caseSummaryCollapsed, setCaseSummaryCollapsed] = useState(() => {
@@ -7488,6 +7493,18 @@ Clinician Name`;
             return bundles;
           };
 
+          // Helper: format date as YYYY-MM-DD
+          const formatDateLocal = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+          // Helper: format time as HH:MM
+          const formatTimeLocal = (d) => `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+
+          // Now button component for timestamp fields
+          const NowButton = ({ onClick, label }) => (
+            <button type="button" onClick={onClick} className="px-2 py-1 text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors whitespace-nowrap" title={label || 'Set to current time'}>
+              Now
+            </button>
+          );
+
           const scrollToSection = (id) => {
             const target = document.getElementById(id);
             if (!target) return;
@@ -8917,6 +8934,12 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               // Escape: Close search/modals
               if (e.key === 'Escape') {
                 setSearchOpen(false);
+                setShowKeyboardHelp(false);
+                setCalcDrawerOpen(false);
+                setSettingsMenuOpen(false);
+                setFabExpanded(false);
+                setShowPatientSwitcher(false);
+                setProtocolModal(null);
               }
 
               // Number keys for tab navigation
@@ -9541,72 +9564,12 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                 )}
               </div>
 
-              {/* Sticky Case Summary */}
-              <div className="sticky top-2 z-40 mb-4 no-print">
-                <div className="bg-white/95 backdrop-blur border border-slate-200 rounded-xl shadow-sm px-3 py-3 dark:bg-slate-900/90 dark:border-slate-700">
-                  <div className="flex items-center justify-between gap-3 lg:hidden mb-2">
-                    <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-300">Case Summary</p>
-                    <button
-                      onClick={() => setCaseSummaryCollapsed((prev) => !prev)}
-                      className="text-xs font-semibold text-blue-700 dark:text-blue-300"
-                      aria-expanded={!caseSummaryCollapsed}
-                      aria-label={caseSummaryCollapsed ? 'Expand case summary' : 'Collapse case summary'}
-                    >
-                      {caseSummaryCollapsed ? 'Expand' : 'Collapse'}
-                    </button>
-                  </div>
-                  {caseSummaryCollapsed ? (
-                    <div className="grid grid-cols-3 gap-2">
-                      <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 dark:bg-slate-800 dark:border-slate-700">
-                        <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-300">NIHSS</p>
-                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{nihssDisplay}</p>
-                      </div>
-                      <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 dark:bg-slate-800 dark:border-slate-700">
-                        <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-300">LKW</p>
-                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{lkwDisplay}</p>
-                        {lkwElapsed && (
-                          <p className="text-xs text-slate-500 dark:text-slate-300">({lkwElapsed} from {onsetLabel})</p>
-                        )}
-                      </div>
-                      <div className={`rounded-lg border px-3 py-2 ${windowToneClass}`}>
-                        <p className="text-[11px] uppercase tracking-wide opacity-70">Window</p>
-                        <p className="text-sm font-semibold">{windowStatus.message}</p>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
-                      <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 dark:bg-slate-800 dark:border-slate-700">
-                        <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-300">Age</p>
-                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{ageDisplay}</p>
-                      </div>
-                      <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 dark:bg-slate-800 dark:border-slate-700">
-                        <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-300">Weight</p>
-                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{weightDisplay}</p>
-                      </div>
-                      <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 dark:bg-slate-800 dark:border-slate-700">
-                        <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-300">NIHSS</p>
-                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{nihssDisplay}</p>
-                      </div>
-                      <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 dark:bg-slate-800 dark:border-slate-700">
-                        <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-300">LKW</p>
-                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{lkwDisplay}</p>
-                        {lkwElapsed && (
-                          <p className="text-xs text-slate-500 dark:text-slate-300">({lkwElapsed} from {onsetLabel})</p>
-                        )}
-                      </div>
-                      <div className={`rounded-lg border px-3 py-2 ${windowToneClass}`}>
-                        <p className="text-[11px] uppercase tracking-wide opacity-70">Window</p>
-                        <p className="text-sm font-semibold">{windowStatus.message}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
+              {/* Case summary removed — patient summary strip in encounter tab is the single source */}
 
               {/* Keyboard Shortcuts Help Modal */}
               {showKeyboardHelp && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={() => setShowKeyboardHelp(false)}>
-                  <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6" onClick={(e) => e.stopPropagation()}>
+                  <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6" role="dialog" aria-modal="true" aria-label="Keyboard Shortcuts" onClick={(e) => e.stopPropagation()}>
                     <div className="flex justify-between items-center mb-4">
                       <h2 className="text-2xl font-bold text-slate-900">Keyboard Shortcuts</h2>
                       <button
@@ -9644,10 +9607,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <kbd className="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-sm font-mono">⌘E / Ctrl+E</kbd>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-slate-700">Toggle Dark Mode</span>
-                          <kbd className="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-sm font-mono">⌘D / Ctrl+D</kbd>
-                        </div>
-                        <div className="flex justify-between items-center">
                           <span className="text-slate-700">Close Modals</span>
                           <kbd className="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-sm font-mono">Esc</kbd>
                         </div>
@@ -9678,7 +9637,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       key={alert.id}
                       className={`p-4 rounded-lg border-2 flex items-start gap-3 ${
                         alert.level === 'critical'
-                          ? 'bg-red-50 border-red-500 animate-pulse'
+                          ? 'bg-red-50 border-red-500'
                           : 'bg-amber-50 border-amber-500'
                       }`}
                     >
@@ -9706,8 +9665,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               )}
 
               {/* Navigation Tabs - Desktop Only - 3 Tabs */}
-              <div className="mb-4 sm:mb-6 hidden md:block app-nav" role="navigation" aria-label="Main navigation">
-                <nav className="flex flex-wrap justify-center gap-2 md:justify-around md:gap-0 shadow-sm rounded-xl bg-white/80 backdrop-blur-sm p-1" role="tablist">
+              <div className="mb-4 sm:mb-6 sticky top-0 z-30 app-nav" role="navigation" aria-label="Main navigation">
+                <nav className="flex justify-around gap-0 bg-white border border-slate-200 rounded-xl p-1" role="tablist">
                   {[
                     { id: 'encounter', name: '⚡ Encounter', icon: 'activity' },
                     { id: 'management', name: 'Management', icon: 'layers' },
@@ -9782,13 +9741,13 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     )}
 
                     {/* ===== ENCOUNTER SECTION NAVIGATION ===== */}
-                    <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-1">
-                      <nav className="flex gap-1 overflow-x-auto no-scrollbar" aria-label="Encounter sections">
+                    <div className="bg-white border border-slate-200 rounded-lg p-0.5">
+                      <nav className="flex gap-0.5 overflow-x-auto no-scrollbar" aria-label="Encounter sections">
                         {[
-                          { id: 'phase-triage', label: 'Triage', icon: 'zap', desc: 'LKW, demographics, NIHSS, imaging' },
-                          { id: 'phase-decision', label: 'Decision', icon: 'git-branch', desc: 'Diagnosis, eligibility, treatment' },
-                          { id: 'phase-management', label: 'Orders', icon: 'clipboard-list', desc: 'Protocols, BP, medications' },
-                          { id: 'phase-documentation', label: 'Documentation', icon: 'file-text', desc: 'Notes, handoff, discharge' }
+                          { id: 'phase-triage', label: 'Triage' },
+                          { id: 'phase-decision', label: 'Decision' },
+                          { id: 'phase-management', label: 'Orders' },
+                          { id: 'phase-documentation', label: 'Docs' }
                         ].map((phase) => (
                           <button
                             key={phase.id}
@@ -9796,19 +9755,50 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               setEncounterPhase(phase.id);
                               scrollToSection(phase.id);
                             }}
-                            className={`flex-1 min-w-[80px] flex flex-col items-center gap-0.5 px-3 py-2.5 rounded-lg text-xs font-medium transition-all ${
+                            className={`flex-1 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
                               encounterPhase === phase.id
-                                ? 'bg-blue-600 text-white shadow-sm'
-                                : 'text-slate-600 hover:bg-slate-100'
+                                ? 'bg-blue-600 text-white'
+                                : 'text-slate-500 hover:bg-slate-100'
                             }`}
-                            title={phase.desc}
                           >
-                            <i data-lucide={phase.icon} className="w-4 h-4"></i>
-                            <span>{phase.label}</span>
+                            {phase.label}
                           </button>
                         ))}
                       </nav>
                     </div>
+
+                    {/* ===== STROKE TIMELINE STRIP ===== */}
+                    {(lkwTime || telestrokeNote.dtnEdArrival || telestrokeNote.tnkAdminTime) && (
+                      <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 overflow-x-auto no-scrollbar">
+                        <div className="flex items-center gap-1 text-xs min-w-max">
+                          {[
+                            { label: 'LKW', time: lkwTime ? lkwTime.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-blue-700 bg-blue-100' },
+                            { label: 'Door', time: telestrokeNote.dtnEdArrival ? new Date(telestrokeNote.dtnEdArrival).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-purple-700 bg-purple-100' },
+                            { label: 'Alert', time: telestrokeNote.dtnStrokeAlert ? new Date(telestrokeNote.dtnStrokeAlert).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-amber-700 bg-amber-100' },
+                            { label: 'CT', time: telestrokeNote.dtnCtComplete ? new Date(telestrokeNote.dtnCtComplete).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-slate-700 bg-slate-200' },
+                            { label: 'TNK', time: telestrokeNote.tnkAdminTime || null, color: 'text-emerald-700 bg-emerald-100' },
+                            { label: 'Puncture', time: telestrokeNote.dtnGroinPuncture ? new Date(telestrokeNote.dtnGroinPuncture).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-indigo-700 bg-indigo-100' },
+                            { label: 'Reflow', time: telestrokeNote.dtnReperfusion ? new Date(telestrokeNote.dtnReperfusion).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-emerald-700 bg-emerald-100' }
+                          ].filter(t => t.time).map((t, i, arr) => (
+                            <React.Fragment key={t.label}>
+                              <span className={`inline-flex flex-col items-center px-2 py-1 rounded ${t.color}`}>
+                                <span className="font-semibold">{t.label}</span>
+                                <span className="font-mono">{t.time}</span>
+                              </span>
+                              {i < arr.length - 1 && <span className="text-slate-300 mx-0.5">→</span>}
+                            </React.Fragment>
+                          ))}
+                          {(() => {
+                            const metrics = calculateDTNMetrics();
+                            if (metrics.doorToNeedle !== null) {
+                              const b = getDTNBenchmark(metrics.doorToNeedle);
+                              return <span className={`ml-2 px-2 py-1 rounded font-bold ${b.color === 'green' ? 'bg-emerald-500 text-white' : b.color === 'yellow' ? 'bg-amber-500 text-white' : 'bg-red-500 text-white'}`}>DTN {metrics.doorToNeedle}m</span>;
+                            }
+                            return null;
+                          })()}
+                        </div>
+                      </div>
+                    )}
 
                     {/* ===== ONBOARDING CARD (no patient data yet) ===== */}
                     {!telestrokeNote.age && !telestrokeNote.diagnosis && nihssScore === 0 && (
@@ -9826,37 +9816,66 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       </div>
                     )}
 
-                    {/* ===== CONSULTATION TYPE (compact) ===== */}
-                    <div className="flex items-center gap-2 px-1">
-                      <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Mode:</span>
-                      <div className="flex gap-1">
-                        <button
-                          onClick={() => setConsultationType('telephone')}
-                          className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-all ${
-                            consultationType === 'telephone'
-                              ? 'bg-slate-700 text-white'
-                              : 'text-slate-500 hover:bg-slate-100'
-                          }`}
-                        >
-                          Telephone
-                        </button>
-                        <button
-                          onClick={() => setConsultationType('videoTelestroke')}
-                          className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-all ${
-                            consultationType === 'videoTelestroke'
-                              ? 'bg-blue-600 text-white'
-                              : 'text-slate-500 hover:bg-slate-100'
-                          }`}
-                        >
-                          Video Telestroke
-                        </button>
+                    {/* ===== CLINICAL CONTEXT + DOCUMENTATION MODE ===== */}
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 px-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Setting:</span>
+                        <div className="flex gap-1">
+                          {[
+                            { id: 'acute', label: 'Acute Stroke', icon: 'zap' },
+                            { id: 'phone', label: 'Phone Consult', icon: 'phone' },
+                            { id: 'inpatient', label: 'Inpatient', icon: 'bed-double' },
+                            { id: 'clinic', label: 'Clinic', icon: 'stethoscope' }
+                          ].map(ctx => (
+                            <button
+                              key={ctx.id}
+                              onClick={() => {
+                                setClinicalContext(ctx.id);
+                                if (ctx.id === 'acute' || ctx.id === 'phone') setDocumentationMode('quick');
+                                else if (ctx.id === 'inpatient') setDocumentationMode('full');
+                                else setDocumentationMode('quick');
+                                if (ctx.id === 'acute' || ctx.id === 'phone') setConsultationType(ctx.id === 'acute' ? 'videoTelestroke' : 'telephone');
+                              }}
+                              className={`text-xs px-2.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1 ${
+                                clinicalContext === ctx.id
+                                  ? 'bg-blue-600 text-white shadow-sm'
+                                  : 'text-slate-500 hover:bg-slate-100'
+                              }`}
+                            >
+                              <i data-lucide={ctx.icon} className="w-3 h-3"></i>
+                              <span className="hidden sm:inline">{ctx.label}</span>
+                              <span className="sm:hidden">{ctx.label.split(' ')[0]}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 sm:ml-4">
+                        <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Detail:</span>
+                        <div className="flex gap-1 bg-slate-100 rounded-lg p-0.5">
+                          <button
+                            onClick={() => setDocumentationMode('quick')}
+                            className={`text-xs px-3 py-1 rounded-md font-medium transition-all ${
+                              documentationMode === 'quick' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'
+                            }`}
+                          >
+                            Quick
+                          </button>
+                          <button
+                            onClick={() => setDocumentationMode('full')}
+                            className={`text-xs px-3 py-1 rounded-md font-medium transition-all ${
+                              documentationMode === 'full' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'
+                            }`}
+                          >
+                            Full
+                          </button>
+                        </div>
                       </div>
                     </div>
 
                     {/* ===== TRIAGE SECTION ===== */}
                     <div id="phase-triage"></div>
 
-                    {quickLinks.length > 0 && (
+                    {!isQuickMode && quickLinks.length > 0 && (
                       <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
                         <div className="flex items-center justify-between mb-3">
                           <h3 className="text-sm font-semibold text-blue-900 uppercase tracking-wide">Quick Links</h3>
@@ -9884,7 +9903,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     )}
 
                     {/* Calling Site Dropdown - Show for Video Telestroke */}
-                    {consultationType === 'videoTelestroke' && (
+                    {!isQuickMode && consultationType === 'videoTelestroke' && (
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <label className="block text-sm font-medium text-blue-900 mb-1">
                         <i data-lucide="map-pin" className="w-4 h-4 inline mr-1"></i>
@@ -9959,7 +9978,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       {/* Separate Date and Time Inputs */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div className="min-w-0">
-                          <label className="block text-sm font-medium text-blue-900 mb-1">Date</label>
+                          <div className="flex items-center justify-between mb-1">
+                            <label className="block text-sm font-medium text-blue-900">Date</label>
+                            <NowButton onClick={() => setLkwTime(new Date())} label="Set LKW to now" />
+                          </div>
                           <input
                             type="date"
                             value={lkwTime ? `${lkwTime.getFullYear()}-${String(lkwTime.getMonth() + 1).padStart(2, '0')}-${String(lkwTime.getDate()).padStart(2, '0')}` : ''}
@@ -10385,10 +10407,13 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                         {/* Section 1b: Last Known Well */}
                         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 shadow-md">
-                          <label className="block text-sm font-medium text-amber-900 mb-1">
-                            <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
-                            Last Known Well
-                          </label>
+                          <div className="flex items-center justify-between mb-1">
+                            <label className="block text-sm font-medium text-amber-900">
+                              <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
+                              Last Known Well
+                            </label>
+                            <NowButton onClick={() => setLkwTime(new Date())} label="Set LKW to now" />
+                          </div>
                           <div className="grid grid-cols-2 gap-2">
                             <input
                               type="date"
@@ -11166,6 +11191,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </button>
                           </div>
                           {/* Follow-up Brief Copy Button */}
+                          {!isQuickMode && (
                           <button
                             onClick={() => {
                               navigator.clipboard.writeText(generateFollowUpBrief());
@@ -11176,6 +11202,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <i data-lucide={copiedText === 'tel-followup' ? 'check' : 'file-output'} className="w-3 h-3"></i>
                             {copiedText === 'tel-followup' ? 'Copied!' : 'Copy Follow-up Brief (Clinic Handoff)'}
                           </button>
+                          )}
                         </div>
                       </div>
                     )}
@@ -12718,7 +12745,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               return (
                                 <>
                                 {autoAbsolute.length > 0 && (
-                                  <div className="bg-red-100 border-2 border-red-400 rounded-lg p-3 animate-pulse">
+                                  <div className="bg-red-100 border-2 border-red-400 rounded-lg p-3">
                                     <div className="flex items-center gap-2 mb-1">
                                       <span className="bg-red-600 text-white px-2 py-0.5 rounded text-xs font-bold">AUTO-DETECTED</span>
                                       <span className="text-sm font-bold text-red-900">TNK Contraindication{autoAbsolute.length > 1 ? 's' : ''} Found From Patient Data</span>
@@ -12779,6 +12806,50 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                         Mark Reviewed
                                       </button>
                                     </div>
+                                    {isQuickMode ? (
+                                      <>
+                                      {/* Grouped accordion for quick mode */}
+                                      {[
+                                        { group: 'Imaging Exclusions', color: 'red', items: absoluteContraindications.filter(c => ['currentICH','largeInfarct','intracranialTumor','aorticDissection'].includes(c.id)) },
+                                        { group: 'Active Bleeding / Coagulopathy', color: 'red', items: absoluteContraindications.filter(c => ['activeInternalBleeding','giMalignancy','sahPresentation','infectiveEndocarditis','lowPlatelets','warfarinElevatedINR','recentHeparin'].includes(c.id)) },
+                                        { group: 'Uncontrolled BP / Labs', color: 'red', items: absoluteContraindications.filter(c => ['severeUncontrolledHTN'].includes(c.id)) },
+                                        { group: 'Recent Surgery / Procedure / Trauma', color: 'amber', items: relativeContraindications.filter(c => ['recentIntracranialSurgery','recentMajorSurgery','recentArterialPuncture','recentLumbarPuncture','recentMI','acutePericarditis'].includes(c.id)) },
+                                        { group: 'Bleeding / Vascular History', color: 'amber', items: relativeContraindications.filter(c => ['priorICH','vascularMalformation','intracranialAneurysm','knownBleedingDiathesis','recentGIGUBleeding','cerebralMicrobleeds'].includes(c.id)) },
+                                        { group: 'Medications / Anticoagulation', color: 'amber', items: relativeContraindications.filter(c => ['recentDOAC','abnormalCoagUnknown','lecanemab'].includes(c.id)) },
+                                        { group: 'Other', color: 'amber', items: relativeContraindications.filter(c => ['pregnancy','recentStroke','recentHeadTrauma','seizureAtOnset','extensiveHypoattenuation','lowGlucose','highGlucose','severeRenalFailure'].includes(c.id)) }
+                                      ].map(grp => {
+                                        const groupChecked = grp.items.filter(c => checklist[c.id] || autoDetected[c.id]);
+                                        const hasAny = groupChecked.length > 0;
+                                        const bgClass = grp.color === 'red'
+                                          ? (hasAny ? 'bg-red-100 border-red-300' : 'bg-red-50 border-red-200')
+                                          : (hasAny ? 'bg-amber-100 border-amber-300' : 'bg-amber-50 border-amber-200');
+                                        return (
+                                          <details key={grp.group} className={`border rounded-lg ${bgClass}`} open={hasAny}>
+                                            <summary className={`cursor-pointer p-2.5 text-sm font-medium flex items-center justify-between ${grp.color === 'red' ? 'text-red-800' : 'text-amber-800'}`}>
+                                              <span>{grp.group}</span>
+                                              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${hasAny ? (grp.color === 'red' ? 'bg-red-500 text-white' : 'bg-amber-500 text-white') : 'bg-slate-200 text-slate-600'}`}>
+                                                {hasAny ? `${groupChecked.length} flagged` : `0/${grp.items.length}`}
+                                              </span>
+                                            </summary>
+                                            <div className="px-2.5 pb-2.5 space-y-1">
+                                              {grp.items.map(item => {
+                                                const isAuto = autoDetected[item.id];
+                                                const isChk = checklist[item.id] || isAuto;
+                                                return (
+                                                  <label key={item.id} className={'flex items-start gap-2 p-1.5 rounded cursor-pointer text-sm ' + (isChk ? (grp.color === 'red' ? 'bg-red-200' : 'bg-amber-200') : '')}>
+                                                    <input type="checkbox" checked={isChk} onChange={(e) => updateChecklistItem(item.id, e.target.checked)} className={'w-4 h-4 mt-0.5 ' + (grp.color === 'red' ? 'accent-red-600' : 'accent-amber-600')} />
+                                                    <span className={isChk ? (grp.color === 'red' ? 'text-red-900 font-semibold' : 'text-amber-900 font-semibold') : 'text-slate-700'}>{item.label}</span>
+                                                    {isAuto && <span className="text-xs bg-red-500 text-white px-1.5 py-0.5 rounded ml-1">Auto</span>}
+                                                  </label>
+                                                );
+                                              })}
+                                            </div>
+                                          </details>
+                                        );
+                                      })}
+                                      </>
+                                    ) : (
+                                      <>
                                     <div className="bg-red-100 border border-red-300 rounded-lg p-3">
                                       <h4 className="font-bold text-red-800 mb-3 flex items-center gap-2">
                                         <span className="bg-red-600 text-white px-2 py-0.5 rounded text-xs">ABSOLUTE</span>
@@ -12823,6 +12894,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                         })}
                                       </div>
                                     </div>
+                                      </>
+                                    )}
                                     <div className="flex items-center justify-between pt-2 border-t border-orange-200">
                                       <div className="text-sm text-slate-600">
                                         {telestrokeNote.tnkContraindicationReviewed && <span className="text-emerald-700">Reviewed at {telestrokeNote.tnkContraindicationReviewTime}</span>}
@@ -13396,7 +13469,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
 
                         {/* Guideline Recommendations Panel */}
-                        {(() => {
+                        {!isQuickMode && (() => {
                           const recs = getContextualRecommendations();
                           if (recs.length === 0) return null;
 
@@ -13470,7 +13543,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         })()}
 
                         {/* Trial Eligibility Auto-Matcher */}
-                        {(() => {
+                        {!isQuickMode && (() => {
                           const allTrialIds = Object.keys(TRIAL_ELIGIBILITY_CONFIG);
                           if (allTrialIds.length === 0) return null;
 
@@ -13599,7 +13672,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         })()}
 
                         {/* SAH Management Section - Only show for SAH diagnosis */}
-                        {(telestrokeNote.diagnosisCategory === 'sah' || (telestrokeNote.diagnosis || '').toLowerCase().includes('sah') || (telestrokeNote.diagnosis || '').toLowerCase().includes('subarachnoid')) && (
+                        {!isQuickMode && (telestrokeNote.diagnosisCategory === 'sah' || (telestrokeNote.diagnosis || '').toLowerCase().includes('sah') || (telestrokeNote.diagnosis || '').toLowerCase().includes('subarachnoid')) && (
                           <div id="sah-management-section" className="bg-white border border-purple-200 rounded-xl p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-purple-900 flex items-center gap-2">
@@ -13699,7 +13772,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* CVT Management Section - Only show for CVT diagnosis */}
-                        {(telestrokeNote.diagnosisCategory === 'cvt' || (telestrokeNote.diagnosis || '').toLowerCase().includes('cvt') || (telestrokeNote.diagnosis || '').toLowerCase().includes('venous thrombosis') || (telestrokeNote.diagnosis || '').toLowerCase().includes('cerebral venous')) && (
+                        {!isQuickMode && (telestrokeNote.diagnosisCategory === 'cvt' || (telestrokeNote.diagnosis || '').toLowerCase().includes('cvt') || (telestrokeNote.diagnosis || '').toLowerCase().includes('venous thrombosis') || (telestrokeNote.diagnosis || '').toLowerCase().includes('cerebral venous')) && (
                           <div id="cvt-management-section" className="bg-white border-2 border-indigo-300 rounded-lg p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-indigo-900 flex items-center gap-2">
@@ -13791,7 +13864,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* ========== TIA WORKUP CHECKLIST ========== */}
-                        {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia' && (
+                        {!isQuickMode && getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia' && (
                           <div className="bg-white border border-orange-200 rounded-xl p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-orange-900 flex items-center gap-2">
@@ -13881,7 +13954,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* ========== CARDIAC WORKUP DECISION TREE ========== */}
-                        {(getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' || getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia' || telestrokeNote.toastClassification === 'cardioembolism' || telestrokeNote.toastClassification === 'cryptogenic') && telestrokeNote.diagnosis && (
+                        {!isQuickMode && (getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' || getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia' || telestrokeNote.toastClassification === 'cardioembolism' || telestrokeNote.toastClassification === 'cryptogenic') && telestrokeNote.diagnosis && (
                           <div className="bg-white border-2 border-pink-300 rounded-lg p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-pink-900 flex items-center gap-2">
@@ -13973,7 +14046,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* ========== ETIOLOGY WORKUP PLANNER ========== */}
-                        {telestrokeNote.toastClassification && (getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' || getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia') && (
+                        {!isQuickMode && telestrokeNote.toastClassification && (getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' || getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia') && (
                           <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-blue-900 flex items-center gap-2">
@@ -14073,7 +14146,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* ========== CERVICAL ARTERY DISSECTION PATHWAY ========== */}
-                        {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'dissection' && (
+                        {!isQuickMode && getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'dissection' && (
                           <div className="bg-white border border-red-200 rounded-xl p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-red-900 flex items-center gap-2">
@@ -14127,7 +14200,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* ========== SCREENING TOOLS ========== */}
-                        {telestrokeNote.diagnosis && getPathwayForDiagnosis(telestrokeNote.diagnosis) !== 'mimic' && (
+                        {!isQuickMode && telestrokeNote.diagnosis && getPathwayForDiagnosis(telestrokeNote.diagnosis) !== 'mimic' && (
                           <details className="bg-white border border-blue-200 rounded-xl shadow-md">
                             <summary className="cursor-pointer p-4 font-semibold text-blue-900 hover:bg-blue-50 rounded-lg flex items-center justify-between">
                               <span className="flex items-center gap-2">
@@ -14287,7 +14360,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         )}
 
                         {/* ========== SECONDARY PREVENTION DASHBOARD ========== */}
-                        {telestrokeNote.diagnosis && getPathwayForDiagnosis(telestrokeNote.diagnosis) !== 'mimic' && (
+                        {!isQuickMode && telestrokeNote.diagnosis && getPathwayForDiagnosis(telestrokeNote.diagnosis) !== 'mimic' && (
                           <details className="bg-white border border-emerald-200 rounded-xl shadow-md">
                             <summary className="cursor-pointer p-4 font-semibold text-emerald-900 hover:bg-emerald-50 rounded-lg flex items-center justify-between">
                               <span className="flex items-center gap-2">
@@ -16322,7 +16395,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <div id="phase-documentation"></div>
 
                         {/* Discharge Checklist - Show when recommendations or disposition is being addressed */}
-                        {telestrokeNote.diagnosis && (
+                        {!isQuickMode && telestrokeNote.diagnosis && (
                           <div id="discharge-checklist-section" className="bg-white border border-emerald-200 rounded-xl p-4 shadow-sm">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-emerald-900 flex items-center gap-2">
@@ -17128,6 +17201,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </button>
                           </div>
                           {/* Follow-up Brief Copy Button */}
+                          {!isQuickMode && (
                           <button
                             onClick={() => {
                               navigator.clipboard.writeText(generateFollowUpBrief());
@@ -17138,6 +17212,21 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <i data-lucide={copiedText === 'vid-followup' ? 'check' : 'file-output'} className="w-3 h-3"></i>
                             {copiedText === 'vid-followup' ? 'Copied!' : 'Copy Follow-up Brief (Clinic Handoff)'}
                           </button>
+                          )}
+
+                          <div className="flex items-center gap-2 mb-3">
+                            <label className="text-xs font-medium text-slate-500 uppercase tracking-wide">Template:</label>
+                            <select
+                              value={noteTemplate}
+                              onChange={(e) => setNoteTemplate(e.target.value)}
+                              className="text-sm border border-slate-300 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-blue-500"
+                            >
+                              <option value="consult">Acute Consult</option>
+                              <option value="transfer">Transfer Summary</option>
+                              <option value="signout">Signout</option>
+                              <option value="followup">Clinic Follow-up</option>
+                            </select>
+                          </div>
 
                           <div className="bg-white p-3 rounded border border-slate-200 max-h-96 overflow-y-auto">
                             <pre className="whitespace-pre-wrap text-xs text-slate-800 font-mono">
@@ -17152,7 +17241,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       <div className={`lg:col-span-1 space-y-4`}>
 
                         {/* Treatment Window Countdown - Enhanced with Elapsed Timer & Audible Alerts */}
-                        {(() => {
+                        {!isQuickMode && (() => {
                           const timeFromLKW = calculateTimeFromLKW();
                           if (!timeFromLKW) return null;
 
@@ -17433,7 +17522,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         {/* DETAILED CLINICAL TRIAL INFORMATION         */}
                         {/* Expanded descriptions for Video Telestroke  */}
                         {/* ============================================ */}
-                        {consultationType === 'videoTelestroke' && telestrokeNote.diagnosisCategory && (
+                        {!isQuickMode && consultationType === 'videoTelestroke' && telestrokeNote.diagnosisCategory && (
                           <details className="bg-white border-2 border-indigo-200 rounded-lg shadow-md overflow-hidden">
                             <summary className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white p-3 cursor-pointer hover:from-indigo-600 hover:to-purple-600 transition-colors">
                               <span className="font-bold text-sm flex items-center gap-2">
@@ -17545,6 +17634,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </div>
                     </>
                     )}
+                    {!isQuickMode && (
                     <div id="handoff-section" className="bg-white border-2 border-slate-200 rounded-lg p-4 shadow-sm">
                       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
                         <div>
@@ -17606,7 +17696,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         );
                       })()}
                     </div>
+                    )}
 
+                    {!isQuickMode && (
                     <details id="safety-section" className="bg-white border border-slate-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
                         <span>Safety checks</span>
@@ -17625,8 +17717,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
                       </div>
                     </details>
+                    )}
 
-                    {(showAdvanced || telestrokeNote.diagnosisCategory === 'mimic') && (
+                    {!isQuickMode && (showAdvanced || telestrokeNote.diagnosisCategory === 'mimic') && (
                       <details className="bg-white border border-slate-200 rounded-lg">
                         <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
                           <span>Stroke mimic FAQ</span>
@@ -21767,6 +21860,21 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
             </div>
 
+            {/* Persistent Copy Note Button - Encounter tab only */}
+            {activeTab === 'encounter' && (telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) && (
+              <button
+                onClick={() => {
+                  const note = generateTelestrokeNote();
+                  copyToClipboard(note, 'Consult Note');
+                }}
+                className="fixed left-4 fab-offset z-50 flex items-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors no-print"
+                title="Copy consult note to clipboard"
+              >
+                <i data-lucide="clipboard-copy" className="w-4 h-4"></i>
+                <span className="text-sm font-medium hidden sm:inline">Copy Note</span>
+              </button>
+            )}
+
             {/* Emergency Contacts FAB - Floating Action Button */}
             <div className="fixed right-4 fab-offset fab-layer">
               {/* Expanded Contact Panel */}
@@ -21837,15 +21945,15 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               )}
             </div>
 
-            {/* ===== CALCULATOR DRAWER ===== */}
+            {/* ===== CALCULATOR MODAL ===== */}
             {calcDrawerOpen && (
               <>
-                <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm" onClick={() => setCalcDrawerOpen(false)}></div>
-                <div className="fixed right-0 top-0 bottom-0 z-50 w-full sm:w-96 bg-white shadow-2xl overflow-y-auto animate-fadeIn">
+                <div className="fixed inset-0 z-50 bg-black/30" onClick={() => setCalcDrawerOpen(false)}></div>
+                <div className="fixed inset-x-0 bottom-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-50 w-full sm:w-[28rem] sm:max-h-[80vh] bg-white sm:rounded-2xl rounded-t-2xl shadow-2xl overflow-y-auto" role="dialog" aria-modal="true" aria-label="Clinical Calculators">
                   <div className="sticky top-0 bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between z-10">
-                    <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
-                      <i data-lucide="calculator" className="w-5 h-5 text-blue-600"></i>
-                      Clinical Calculators
+                    <h2 className="text-base font-semibold text-slate-900 flex items-center gap-2">
+                      <i data-lucide="calculator" className="w-4 h-4 text-blue-600"></i>
+                      Calculators
                     </h2>
                     <button
                       onClick={() => setCalcDrawerOpen(false)}
@@ -21855,8 +21963,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       <i data-lucide="x" className="w-5 h-5 text-slate-500"></i>
                     </button>
                   </div>
-                  <div className="p-4 space-y-3">
-                    <p className="text-xs text-slate-500 mb-2">Quick access to all calculators. Tap any to navigate to the full calculator.</p>
+                  <div className="p-3 space-y-2">
                     {[
                       { label: 'NIHSS', desc: 'Stroke severity', action: () => { setCalcDrawerOpen(false); navigateTo('encounter'); setEncounterPhase('triage'); setTimeout(() => scrollToSection('nihss-section'), 100); }},
                       { label: 'GCS', desc: 'Consciousness level', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }},
@@ -21874,7 +21981,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       <button
                         key={calc.label}
                         onClick={calc.action}
-                        className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl hover:bg-blue-50 hover:border-blue-200 transition-all text-left"
+                        className="w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 transition-all text-left"
                       >
                         <div>
                           <div className="font-medium text-sm text-slate-900">{calc.label}</div>
@@ -21888,64 +21995,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               </>
             )}
 
-            {/* Mobile Bottom Navigation - Only visible on small screens */}
-            <div id="mobile-bottom-nav" className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-slate-200 shadow-lg z-40 pb-safe">
-              <div className="flex items-center justify-around px-2 py-1.5">
-                {mobilePrimaryTabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => {
-                      navigateTo(tab.id);
-                    }}
-                    className={`flex flex-col items-center justify-center px-3 py-1.5 rounded-lg transition-all ${
-                      activeTab === tab.id
-                        ? 'text-blue-600'
-                        : 'text-slate-400'
-                    }`}
-                  >
-                    <i data-lucide={tab.icon} className="w-5 h-5 mb-0.5"></i>
-                    <span className="text-[10px] font-medium">{tab.name}</span>
-                  </button>
-                ))}
-                <button
-                  onClick={() => setCalcDrawerOpen(true)}
-                  className="flex flex-col items-center justify-center px-3 py-1.5 rounded-lg transition-all text-slate-400"
-                >
-                  <i data-lucide="calculator" className="w-5 h-5 mb-0.5"></i>
-                  <span className="text-[10px] font-medium">Calc</span>
-                </button>
-              </div>
-            </div>
-
-            {mobileMoreOpen && mobileMoreTabs.length > 0 && (
-              <div className="md:hidden fixed inset-0 z-50 bg-black bg-opacity-40" onClick={() => setMobileMoreOpen(false)}>
-                <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl p-4 space-y-2" onClick={(e) => e.stopPropagation()}>
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wide">More</h3>
-                    <button onClick={() => setMobileMoreOpen(false)} className="text-slate-500">
-                      <i data-lucide="x" className="w-5 h-5"></i>
-                    </button>
-                  </div>
-                  <div className="grid grid-cols-3 gap-3">
-                    {mobileMoreTabs.map((tab) => (
-                      <button
-                        key={tab.id}
-                        onClick={() => {
-                          navigateTo(tab.id);
-                          setMobileMoreOpen(false);
-                        }}
-                        className={`flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all ${
-                          activeTab === tab.id ? 'bg-blue-50 text-blue-600' : 'text-slate-600'
-                        }`}
-                      >
-                        <i data-lucide={tab.icon} className="w-6 h-6 mb-1"></i>
-                        <span className="text-xs font-medium">{tab.name}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
+            {/* Mobile bottom nav removed — top nav is now sticky on mobile */}
 
           </div>
           );

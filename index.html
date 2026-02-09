@@ -62,30 +62,25 @@
         }
 
         .app-header {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
-            border-radius: 18px;
-            padding: 1.1rem;
+            background: #fff;
+            border-bottom: 1px solid var(--panel-border);
+            padding: 0.75rem 1.1rem;
         }
 
         .app-nav {
-            background: rgba(255, 255, 255, 0.9);
+            background: #fff;
             border: 1px solid var(--panel-border);
-            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
-            border-radius: 18px;
+            border-radius: 12px;
             padding: 0.35rem;
         }
 
         .tool-card {
-            box-shadow: var(--card-shadow);
-            border-color: rgba(15, 23, 42, 0.08);
-            transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+            border-color: rgba(15, 23, 42, 0.1);
+            transition: border-color 160ms ease;
         }
         .tool-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.14);
-            border-color: rgba(37, 99, 235, 0.25);
+            border-color: rgba(37, 99, 235, 0.3);
         }
 
         .tab-pill {
@@ -114,22 +109,6 @@
         .compact .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.75rem !important; }
         .compact .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem !important; }
 
-        .lightweight body {
-            background: #f8fafc;
-        }
-        .lightweight .app-shell,
-        .lightweight .app-header,
-        .lightweight .app-nav,
-        .lightweight .tool-card {
-            box-shadow: none !important;
-            backdrop-filter: none !important;
-        }
-        .lightweight * {
-            animation: none !important;
-            transition: none !important;
-        }
-
-        /* Dark mode removed - was only partially implemented (14/3332 elements) */
 
         @media (max-width: 640px) {
             .app-shell {
@@ -318,14 +297,6 @@
             animation: alertFlash 1s ease-in-out infinite;
         }
 
-        /* Pulse animation for urgent countdown */
-        @keyframes urgentPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-        .urgent-pulse {
-            animation: urgentPulse 0.5s ease-in-out infinite;
-        }
 
         /* Fade in animation for FAB */
         @keyframes fadeIn {
@@ -423,31 +394,14 @@
         }
 
         /* Safe area insets for notched devices */
-        :root {
-            --mobile-nav-offset: 5.5rem;
-            --mobile-action-offset: 3.5rem;
-        }
         .pb-safe {
             padding-bottom: env(safe-area-inset-bottom, 0);
         }
         .mb-safe {
             margin-bottom: env(safe-area-inset-bottom, 0);
         }
-        .mobile-nav-padding {
-            padding-bottom: calc(var(--mobile-nav-offset, 5.5rem) + var(--mobile-action-offset, 3.5rem));
-        }
-        @media (min-width: 768px) {
-            .mobile-nav-padding {
-                padding-bottom: 0;
-            }
-        }
         .fab-offset {
-            bottom: calc(var(--mobile-nav-offset, 0px) + 1.5rem);
-        }
-        @media (min-width: 768px) {
-            .fab-offset {
-                bottom: 1.5rem;
-            }
+            bottom: 1.5rem;
         }
         .fab-layer {
             z-index: 60;
@@ -455,17 +409,6 @@
 
         .action-bar-shadow {
             box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.12);
-        }
-        .highlight-pulse {
-            animation: highlightPulse 1.8s ease-in-out infinite;
-        }
-        @keyframes highlightPulse {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
-            }
         }
         /* FAB positioning with safe area */
 
