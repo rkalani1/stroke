@@ -11150,9 +11150,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               />
                             </div>
                           </div>
+                          {/* ASPECTS + Vessel Occlusion Row */}
                           <div className="grid grid-cols-2 gap-3 mt-3">
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">ASPECTS</label>
+                              <label className="block text-xs text-slate-600 mb-1">ASPECTS (0-10)</label>
                               <input
                                 type="number"
                                 value={aspectsScore}
@@ -11163,15 +11164,55 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               />
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">CTP</label>
+                              <label className="block text-xs text-slate-600 mb-1">CTP (free text)</label>
                               <input
                                 type="text"
                                 value={telestrokeNote.ctpResults}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, ctpResults: e.target.value})}
-                                placeholder="Core/penumbra, mismatch..."
+                                placeholder="Core/penumbra volumes..."
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
                               />
                             </div>
+                          </div>
+                          {/* ASPECTS Interpretation */}
+                          {aspectsScore > 0 && (
+                            <div className={`mt-2 rounded-lg border px-3 py-1.5 text-xs font-medium ${
+                              aspectsScore >= 7 ? 'bg-emerald-50 border-emerald-200 text-emerald-800' :
+                              aspectsScore >= 5 ? 'bg-amber-50 border-amber-200 text-amber-800' :
+                              'bg-red-50 border-red-200 text-red-800'
+                            }`}>
+                              ASPECTS {aspectsScore}/10: {aspectsScore >= 7 ? 'Favorable for intervention' : aspectsScore >= 5 ? 'Intermediate - consider perfusion imaging' : 'Large established infarct - limited benefit from intervention'}
+                            </div>
+                          )}
+                          {/* Vessel Occlusion Quick Select */}
+                          <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded-lg">
+                            <p className="text-xs font-semibold text-blue-800 mb-1">Vessel Occlusion</p>
+                            <div className="flex flex-wrap gap-1.5">
+                              {['ICA', 'M1', 'M2', 'M3', 'A1', 'A2', 'P1', 'P2', 'Basilar', 'None'].map(vessel => (
+                                <button key={vessel} type="button"
+                                  onClick={() => {
+                                    const current = telestrokeNote.vesselOcclusion || [];
+                                    const updated = current.includes(vessel) ? current.filter(v => v !== vessel) : [...current.filter(v => v !== 'None'), ...(vessel === 'None' ? [] : [vessel]), ...(vessel === 'None' ? ['None'] : [])];
+                                    setTelestrokeNote({...telestrokeNote, vesselOcclusion: vessel === 'None' ? ['None'] : updated.filter(v => v !== 'None')});
+                                  }}
+                                  className={`px-2 py-1 text-xs rounded-full font-medium transition-colors ${
+                                    (telestrokeNote.vesselOcclusion || []).includes(vessel) ? 'bg-blue-600 text-white' : 'bg-white border border-blue-200 text-blue-700 hover:bg-blue-100'
+                                  }`}>
+                                  {vessel}
+                                </button>
+                              ))}
+                            </div>
+                            {/* LVO alert for EVT */}
+                            {(telestrokeNote.vesselOcclusion || []).some(v => ['ICA', 'M1', 'Basilar'].includes(v)) && (
+                              <div className="mt-1.5 bg-emerald-50 border border-emerald-200 rounded px-2 py-1 text-xs text-emerald-800 font-medium">
+                                Large vessel occlusion detected - Consider EVT evaluation
+                              </div>
+                            )}
+                            {(telestrokeNote.vesselOcclusion || []).some(v => ['M2', 'M3', 'A1', 'A2', 'P1', 'P2'].includes(v)) && !(telestrokeNote.vesselOcclusion || []).some(v => ['ICA', 'M1', 'Basilar'].includes(v)) && (
+                              <div className="mt-1.5 bg-amber-50 border border-amber-200 rounded px-2 py-1 text-xs text-amber-800 font-medium">
+                                Medium vessel occlusion - EVT may be considered (emerging evidence)
+                              </div>
+                            )}
                           </div>
                         </div>
 
