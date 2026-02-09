@@ -8869,16 +8869,6 @@ Clinician Name`;
             };
           }, []);
 
-          useEffect(() => {
-            const handleResize = () => {
-              if (window.innerWidth >= 1024) {
-                setCaseSummaryCollapsed(false);
-              }
-            };
-            window.addEventListener('resize', handleResize);
-            return () => window.removeEventListener('resize', handleResize);
-          }, []);
-
           // Load optional local config (ignored if missing)
           useEffect(() => {
             let cancelled = false;
