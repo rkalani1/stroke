@@ -1340,8 +1340,8 @@ Clinician Name`;
           const [storageExpired, setStorageExpired] = useState(INITIAL_STORAGE_EXPIRED);
           const [actionsOpen, setActionsOpen] = useState(false);
           const [encounterPhase, setEncounterPhase] = useState('triage');
-          const [clinicalContext, setClinicalContext] = useState('acute');
-          const [documentationMode, setDocumentationMode] = useState('quick');
+          const [clinicalContext, setClinicalContext] = useState('phone');
+          const [documentationMode, setDocumentationMode] = useState('full');
           const [noteTemplate, setNoteTemplate] = useState('consult');
           const isQuickMode = documentationMode === 'quick';
           const isClinicContext = clinicalContext === 'clinic';
@@ -1422,7 +1422,7 @@ Clinician Name`;
           // ============================================
           // CONSULTATION TYPE: Telephone, Video Telestroke
           // ============================================
-          const [consultationType, setConsultationType] = useState(loadFromStorage('consultationType', settings.defaultConsultationType || 'videoTelestroke'));
+          const [consultationType, setConsultationType] = useState(loadFromStorage('consultationType', settings.defaultConsultationType || 'telephone'));
 
           const [managementSubTab, setManagementSubTab] = useState(initialManagementSubTab);
           const showTelestrokeManagement = true;
@@ -9858,7 +9858,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Setting:</span>
                         <div className="flex gap-1">
                           {[
-                            { id: 'acute', label: 'Acute Stroke', icon: 'zap' },
+                            { id: 'acute', label: 'Video Telestroke', icon: 'zap' },
                             { id: 'phone', label: 'Phone Consult', icon: 'phone' },
                             { id: 'inpatient', label: 'Inpatient', icon: 'bed-double' },
                             { id: 'clinic', label: 'Clinic', icon: 'stethoscope' }
@@ -9867,7 +9867,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               key={ctx.id}
                               onClick={() => {
                                 setClinicalContext(ctx.id);
-                                if (ctx.id === 'acute' || ctx.id === 'phone') setDocumentationMode('quick');
+                                if (ctx.id === 'acute') setDocumentationMode('full');
+                                else if (ctx.id === 'phone') setDocumentationMode('full');
                                 else if (ctx.id === 'inpatient') setDocumentationMode('full');
                                 else setDocumentationMode('quick');
                                 if (ctx.id === 'acute' || ctx.id === 'phone') setConsultationType(ctx.id === 'acute' ? 'videoTelestroke' : 'telephone');
