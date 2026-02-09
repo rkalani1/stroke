@@ -2337,6 +2337,34 @@ Clinician Name`;
 
           // =================================================================
           // ANTICOAGULANT INFORMATION - Drug-specific half-lives, thrombolysis
+          // =================================================================
+          // CALLING SITES - Unified list for both telephone and video consults
+          // =================================================================
+          const CALLING_SITES = [
+            { group: 'UW Sites', sites: ['HMC', 'UWMC-ML', 'UWM Northwest'] },
+            { group: 'Video Partner Sites', sites: [
+              'Astria Sunnyside',
+              'Cascade Medical – Leavenworth',
+              'Columbia Basin-Ephrata',
+              'Confluence Health – Wenatchee',
+              'Island Health – Anacortes',
+              'Lourdes Health – Pasco',
+              'Mason General Hospital – Shelton',
+              'Snoqualmie Valley – Snoqualmie',
+              'St. Joseph Regional Medical Center – Lewiston, Idaho'
+            ]},
+            { group: 'PeaceHealth Sites', sites: [
+              'PeaceHealth Island - Friday Harbor',
+              'PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska',
+              'PeaceHealth St. Joseph Medical Center – Bellingham',
+              'PeaceHealth United General Medical Center – Sedro Woolley'
+            ]},
+            { group: 'Alaska Sites', sites: ['Petersburg, AK'] },
+            { group: 'Tri-Cities', sites: ['Trios Health – Kennewick'] }
+          ];
+
+          // =================================================================
+          // ANTICOAGULANT_INFO - Drug-specific half-lives, monitoring
           // thresholds, and ICH reversal protocols
           // Sources: AHA/ASA Guidelines, NEJM, Stroke Journal
           // =================================================================
@@ -10050,8 +10078,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       </div>
                     )}
 
-                    {/* Calling Site Dropdown - Show for Video Telestroke */}
-                    {!isQuickMode && consultationType === 'videoTelestroke' && (
+                    {/* Calling Site Dropdown - Shared for all consult types */}
+                    {!isQuickMode && !isClinicContext && (
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <label className="block text-sm font-medium text-blue-900 mb-1">
                         <i data-lucide="map-pin" className="w-4 h-4 inline mr-1"></i>
@@ -10063,32 +10091,11 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="">-- Select Site --</option>
-                        <optgroup label="UW Sites">
-                          <option value="UWM Northwest">UWM Northwest</option>
-                        </optgroup>
-                        <optgroup label="Video Partner Sites">
-                          <option value="Astria Sunnyside">Astria Sunnyside</option>
-                          <option value="Cascade Medical – Leavenworth">Cascade Medical – Leavenworth</option>
-                          <option value="Columbia Basin-Ephrata">Columbia Basin-Ephrata</option>
-                          <option value="Confluence Health – Wenatchee">Confluence Health – Wenatchee</option>
-                          <option value="Island Health – Anacortes">Island Health – Anacortes</option>
-                          <option value="Lourdes Health – Pasco">Lourdes Health – Pasco</option>
-                          <option value="Mason General Hospital – Shelton">Mason General Hospital – Shelton</option>
-                          <option value="Snoqualmie Valley – Snoqualmie">Snoqualmie Valley – Snoqualmie</option>
-                          <option value="St. Joseph Regional Medical Center – Lewiston, Idaho">St. Joseph Regional Medical Center – Lewiston, Idaho</option>
-                        </optgroup>
-                        <optgroup label="PeaceHealth Sites">
-                          <option value="PeaceHealth Island - Friday Harbor">PeaceHealth Island - Friday Harbor</option>
-                          <option value="PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska">PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska</option>
-                          <option value="PeaceHealth St. Joseph Medical Center – Bellingham">PeaceHealth St. Joseph Medical Center – Bellingham</option>
-                          <option value="PeaceHealth United General Medical Center – Sedro Woolley">PeaceHealth United General Medical Center – Sedro Woolley</option>
-                        </optgroup>
-                        <optgroup label="Alaska Sites">
-                          <option value="Petersburg, AK">Petersburg, AK</option>
-                        </optgroup>
-                        <optgroup label="Tri-Cities">
-                          <option value="Trios Health – Kennewick">Trios Health – Kennewick</option>
-                        </optgroup>
+                        {CALLING_SITES.map(g => (
+                          <optgroup key={g.group} label={g.group}>
+                            {g.sites.map(s => <option key={s} value={s}>{s}</option>)}
+                          </optgroup>
+                        ))}
                         <option value="Other">Other (specify below)</option>
                       </select>
                       {telestrokeNote.callingSite === 'Other' && (
@@ -10506,53 +10513,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                         </div>
 
-                        {/* Section 1a: Calling Site */}
-                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 shadow-md">
-                          <label className="block text-sm font-medium text-blue-900 mb-1">
-                            <i data-lucide="map-pin" className="w-4 h-4 inline mr-1"></i>
-                            Calling Site
-                          </label>
-                          <select
-                            value={telestrokeNote.callingSite}
-                            onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSite: e.target.value, callingSiteOther: e.target.value === 'Other' ? telestrokeNote.callingSiteOther : ''})}
-                            className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                          >
-                            <option value="">-- Select Site --</option>
-                            <optgroup label="UW Sites">
-                              <option value="HMC">HMC</option>
-                              <option value="UWMC-ML">UWMC-ML</option>
-                              <option value="UWM Northwest">UWM Northwest</option>
-                            </optgroup>
-                            <optgroup label="Partner Sites">
-                              <option value="Astria Sunnyside">Astria Sunnyside</option>
-                              <option value="Cascade Medical – Leavenworth">Cascade Medical – Leavenworth</option>
-                              <option value="Columbia Basin-Ephrata">Columbia Basin-Ephrata</option>
-                              <option value="Confluence Health – Wenatchee">Confluence Health – Wenatchee</option>
-                              <option value="Island Health – Anacortes">Island Health – Anacortes</option>
-                              <option value="Lourdes Health – Pasco">Lourdes Health – Pasco</option>
-                              <option value="Mason General Hospital – Shelton">Mason General Hospital – Shelton</option>
-                              <option value="Snoqualmie Valley – Snoqualmie">Snoqualmie Valley – Snoqualmie</option>
-                              <option value="St. Joseph Regional Medical Center – Lewiston, Idaho">St. Joseph Regional Medical Center – Lewiston, Idaho</option>
-                              <option value="PeaceHealth Island - Friday Harbor">PeaceHealth Island - Friday Harbor</option>
-                              <option value="PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska">PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska</option>
-                              <option value="PeaceHealth St. Joseph Medical Center – Bellingham">PeaceHealth St. Joseph Medical Center – Bellingham</option>
-                              <option value="PeaceHealth United General Medical Center – Sedro Woolley">PeaceHealth United General Medical Center – Sedro Woolley</option>
-                              <option value="Petersburg, AK">Petersburg, AK</option>
-                              <option value="Trios Health – Kennewick">Trios Health – Kennewick</option>
-                            </optgroup>
-                            <option value="Other">Other (specify below)</option>
-                          </select>
-                          {telestrokeNote.callingSite === 'Other' && (
-                            <input
-                              type="text"
-                              value={telestrokeNote.callingSiteOther}
-                              onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSiteOther: e.target.value})}
-                              className="w-full mt-2 px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                              placeholder="Enter site name..."
-                            />
-                          )}
-                        </div>
-
                         {/* Section 1b: Last Known Well */}
                         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 shadow-md">
                           <div className="flex items-center justify-between mb-1">
@@ -10610,6 +10570,125 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <span className="font-semibold">{strokeWindow.status?.message || 'Treatment window'}</span>
                                 <span>{strokeWindow.timeFrom.hours}h {strokeWindow.timeFrom.minutes}m since {strokeWindow.label}</span>
                               </div>
+                            </div>
+                          )}
+
+                          {/* Wake-up Stroke / Unknown LKW */}
+                          <div className="mt-3">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={telestrokeNote.lkwUnknown}
+                                onChange={(e) => {
+                                  const nextValue = e.target.checked;
+                                  setTelestrokeNote({
+                                    ...telestrokeNote,
+                                    lkwUnknown: nextValue,
+                                    discoveryDate: nextValue ? (telestrokeNote.discoveryDate || new Date().toISOString().split('T')[0]) : telestrokeNote.discoveryDate,
+                                    discoveryTime: nextValue ? (telestrokeNote.discoveryTime || new Date().toTimeString().slice(0, 5)) : telestrokeNote.discoveryTime
+                                  });
+                                }}
+                                className="w-4 h-4 rounded border-2 border-purple-400 text-purple-600 focus:ring-purple-500"
+                              />
+                              <span className="text-sm font-semibold text-purple-800">Wake-up Stroke / Unknown LKW</span>
+                            </label>
+                          </div>
+
+                          {telestrokeNote.lkwUnknown && (
+                            <div className="mt-2 bg-purple-50 border border-purple-200 rounded-lg p-3 space-y-3">
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm font-semibold text-purple-800">Discovery Time</span>
+                                <button
+                                  onClick={() => setTelestrokeNote({
+                                    ...telestrokeNote,
+                                    discoveryDate: new Date().toISOString().split('T')[0],
+                                    discoveryTime: new Date().toTimeString().slice(0, 5)
+                                  })}
+                                  className="text-xs font-semibold text-purple-700 hover:text-purple-900"
+                                  type="button"
+                                >
+                                  Use Now
+                                </button>
+                              </div>
+                              <div className="grid grid-cols-2 gap-2">
+                                <input type="date" value={telestrokeNote.discoveryDate}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, discoveryDate: e.target.value})}
+                                  className="w-full px-2 py-1.5 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm" />
+                                <input type="time" value={telestrokeNote.discoveryTime}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, discoveryTime: e.target.value})}
+                                  className="w-full px-2 py-1.5 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm" />
+                              </div>
+
+                              {/* MRI Availability Decision Point */}
+                              <div className="space-y-2">
+                                <div className="text-sm font-semibold text-purple-800">Is MRI with DWI-FLAIR available?</div>
+                                <div className="flex gap-2">
+                                  <button onClick={() => setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...telestrokeNote.wakeUpStrokeWorkflow, mriAvailable: true}})}
+                                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${telestrokeNote.wakeUpStrokeWorkflow.mriAvailable === true ? 'bg-purple-600 text-white' : 'bg-white border border-purple-300 text-purple-700 hover:bg-purple-100'}`}>
+                                    Yes - MRI
+                                  </button>
+                                  <button onClick={() => setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...telestrokeNote.wakeUpStrokeWorkflow, mriAvailable: false}})}
+                                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${telestrokeNote.wakeUpStrokeWorkflow.mriAvailable === false ? 'bg-orange-600 text-white' : 'bg-white border border-orange-300 text-orange-700 hover:bg-orange-100'}`}>
+                                    No - Use CTP
+                                  </button>
+                                </div>
+                              </div>
+
+                              {/* WAKE-UP Trial Criteria */}
+                              {telestrokeNote.wakeUpStrokeWorkflow.mriAvailable === true && (
+                                <div className="bg-white border border-purple-200 rounded-lg p-2 space-y-1 text-sm">
+                                  <div className="font-bold text-purple-800">WAKE-UP Trial Criteria</div>
+                                  {[
+                                    { key: 'dwi', label: 'DWI positive lesion', path: 'dwi.positiveForLesion' },
+                                    { key: 'flair', label: 'No FLAIR hyperintensity', path: 'flair.noMarkedHyperintensity' },
+                                    { key: 'age', label: 'Age 18-80', path: 'ageEligible' },
+                                    { key: 'nihss', label: 'NIHSS ≤25', path: 'nihssEligible' }
+                                  ].map(item => (
+                                    <label key={item.key} className="flex items-center gap-2 cursor-pointer">
+                                      <input type="checkbox"
+                                        checked={item.path.includes('.') ? telestrokeNote.wakeUpStrokeWorkflow[item.path.split('.')[0]][item.path.split('.')[1]] : telestrokeNote.wakeUpStrokeWorkflow[item.path]}
+                                        onChange={(e) => {
+                                          if (item.path.includes('.')) {
+                                            const [parent, child] = item.path.split('.');
+                                            setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...telestrokeNote.wakeUpStrokeWorkflow, [parent]: {...telestrokeNote.wakeUpStrokeWorkflow[parent], [child]: e.target.checked}}});
+                                          } else {
+                                            setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...telestrokeNote.wakeUpStrokeWorkflow, [item.path]: e.target.checked}});
+                                          }
+                                        }}
+                                        className="w-3.5 h-3.5 rounded border-purple-400 text-purple-600" />
+                                      <span>{item.label}</span>
+                                    </label>
+                                  ))}
+                                  {telestrokeNote.wakeUpStrokeWorkflow.dwi.positiveForLesion && telestrokeNote.wakeUpStrokeWorkflow.flair.noMarkedHyperintensity && telestrokeNote.wakeUpStrokeWorkflow.ageEligible && telestrokeNote.wakeUpStrokeWorkflow.nihssEligible && (
+                                    <div className="bg-emerald-100 border border-emerald-300 rounded p-1.5 text-emerald-800 font-semibold text-xs">Meets WAKE-UP criteria - Consider IV thrombolysis</div>
+                                  )}
+                                </div>
+                              )}
+
+                              {/* EXTEND Trial Criteria */}
+                              {telestrokeNote.wakeUpStrokeWorkflow.mriAvailable === false && (
+                                <div className="bg-white border border-orange-200 rounded-lg p-2 space-y-1 text-sm">
+                                  <div className="font-bold text-orange-800">EXTEND Trial Criteria</div>
+                                  {[
+                                    { key: 'nihss', label: 'NIHSS 4-26', field: 'nihss4to26' },
+                                    { key: 'time', label: 'Time 4.5-9h or wake-up', field: 'timeWindow4_5to9h' },
+                                    { key: 'mrs', label: 'Pre-morbid mRS <2', field: 'premorbidMRSLt2' },
+                                    { key: 'core', label: 'Ischemic core ≤70mL', field: 'ischemicCoreLte70' },
+                                    { key: 'mismatch', label: 'Mismatch ratio ≥1.2', field: 'mismatchRatioGte1_2' }
+                                  ].map(item => (
+                                    <label key={item.key} className="flex items-center gap-2 cursor-pointer">
+                                      <input type="checkbox"
+                                        checked={telestrokeNote.wakeUpStrokeWorkflow.extendCriteria[item.field]}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...telestrokeNote.wakeUpStrokeWorkflow, extendCriteria: {...telestrokeNote.wakeUpStrokeWorkflow.extendCriteria, [item.field]: e.target.checked}}})}
+                                        className="w-3.5 h-3.5 rounded border-orange-400 text-orange-600" />
+                                      <span>{item.label}</span>
+                                    </label>
+                                  ))}
+                                  {telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.nihss4to26 && telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.premorbidMRSLt2 && telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.ischemicCoreLte70 && telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.mismatchRatioGte1_2 && telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.timeWindow4_5to9h && (
+                                    <div className="bg-emerald-100 border border-emerald-300 rounded p-1.5 text-emerald-800 font-semibold text-xs">Meets EXTEND criteria - Consider IV thrombolysis</div>
+                                  )}
+                                </div>
+                              )}
                             </div>
                           )}
                         </div>
@@ -11106,52 +11185,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <button
                               type="button"
                               onClick={() => {
-                                const recs = getContextualRecommendations();
-                                const age = telestrokeNote.age || '***';
-                                const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***';
-                                const dx = telestrokeNote.diagnosis || '[Diagnosis]';
-                                let note = `TELEPHONE CONSULTATION NOTE\nDate: ${new Date().toLocaleDateString()}\n\n`;
-                                note += `HPI: ${age} year old ${sex}`;
-                                if (telestrokeNote.pmh) note += ` with PMH of ${telestrokeNote.pmh}`;
-                                note += ` presenting with ${telestrokeNote.symptoms || '***'}.\n`;
-                                if (lkwTime) note += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
-                                note += `\nNIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n`;
-                                if (telestrokeNote.presentingBP) note += `BP: ${telestrokeNote.presentingBP}\n`;
-                                note += `\nIMAGING:\n`;
-                                if (telestrokeNote.ctResults) note += `CT Head: ${telestrokeNote.ctResults}\n`;
-                                if (telestrokeNote.ctaResults) note += `CTA: ${telestrokeNote.ctaResults}\n`;
-                                if (telestrokeNote.ctpResults) note += `CTP: ${telestrokeNote.ctpResults}\n`;
-                                if (aspectsScore) note += `ASPECTS: ${aspectsScore}\n`;
-                                note += `\nASSESSMENT: ${dx}\n\nPLAN:\n`;
-                                if (telestrokeNote.tnkRecommended) {
-                                  note += `- TNK 0.25 mg/kg IV bolus (max 25 mg) recommended`;
-                                  if (telestrokeNote.weight) note += ` (weight: ${telestrokeNote.weight} kg${telestrokeNote.weightEstimated ? ' — ESTIMATED' : ''})`;
-                                  if (telestrokeNote.tnkAdminTime) note += ` at ${telestrokeNote.tnkAdminTime}`;
-                                  note += `.\n`;
-                                } else { note += `- IV TNK: Not recommended.\n`; }
-                                if (telestrokeNote.evtRecommended) note += `- EVT: Recommended.\n`;
-                                if (telestrokeNote.rationale) note += `- Rationale: ${telestrokeNote.rationale}\n`;
-                                if (telestrokeNote.disposition) note += `\nDISPOSITION: ${telestrokeNote.disposition}\n`;
-                                if (recs.length > 0) {
-                                  note += `\nGUIDELINE-BASED RECOMMENDATIONS:\n`;
-                                  recs.forEach(rec => { note += `- ${rec.title}: ${rec.recommendation} [Class ${rec.classOfRec}, LOE ${rec.levelOfEvidence}]\n`; });
-                                }
-                                // Trial eligibility auto-match
-                                const trialResults = Object.values(trialEligibility).filter(Boolean);
-                                const eligibleTrials = trialResults.filter(t => t.status === 'eligible');
-                                const needsInfoTrials = trialResults.filter(t => t.status === 'needs_info');
-                                if (eligibleTrials.length > 0 || needsInfoTrials.length > 0) {
-                                  note += `\nCLINICAL TRIAL ELIGIBILITY:\n`;
-                                  eligibleTrials.forEach(t => {
-                                    const cfg = TRIAL_ELIGIBILITY_CONFIG[t.trialId];
-                                    note += `- ELIGIBLE: ${t.trialName} (${cfg?.nct || ''}) — ${t.quickDescription}. Criteria met: ${t.metCount}/${t.criteria.length}.\n`;
-                                  });
-                                  needsInfoTrials.forEach(t => {
-                                    const cfg = TRIAL_ELIGIBILITY_CONFIG[t.trialId];
-                                    const missing = t.criteria.filter(c => c.status === 'unknown').map(c => c.label).join(', ');
-                                    note += `- NEEDS INFO: ${t.trialName} (${cfg?.nct || ''}) — missing: ${missing}.\n`;
-                                  });
-                                }
+                                const note = generateTelestrokeNote();
                                 setTelestrokeNote({...telestrokeNote, recommendationsText: note});
                               }}
                               className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition-colors"
