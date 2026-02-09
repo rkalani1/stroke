@@ -1474,7 +1474,7 @@ Clinician Name`;
           const [fabExpanded, setFabExpanded] = useState(false);
 
           const [selectedPackId, setSelectedPackId] = useState(appData.encounter.clipboardPacks?.[0]?.id || 'telestroke-consult');
-          const [shiftDrafts, setShiftDrafts] = useState({});
+
 
           const shiftBoards = appData.shiftBoards || [];
           const clipboardPacks = appData.encounter.clipboardPacks || getDefaultClipboardPacks();
@@ -5097,15 +5097,11 @@ Clinician Name`;
           // Trial eligibility state
           const [trialEligibility, setTrialEligibility] = useState({});
 
-          // Selected trial for navigation from Encounter to Trials tab
-          const [selectedTrialId, setSelectedTrialId] = useState(null);
-
           // Navigate to Trials tab with specific trial selected
           const navigateToTrial = (trialId) => {
             const config = TRIAL_ELIGIBILITY_CONFIG[trialId];
             if (!config) return;
 
-            setSelectedTrialId(trialId);
             setActiveTab('trials');
 
             // Create the same slug used in TrialCard from the trial name
@@ -5783,32 +5779,6 @@ Clinician Name`;
             }
 
             return alerts;
-          };
-
-          // Create Icon component wrapper
-          const Icon = ({ icon: IconComponent, size = 16 }) => {
-            const ref = useRef(null);
-            
-            React.useEffect(() => {
-              if (ref.current) {
-                // Scope icon creation to this specific container to prevent global DOM conflicts
-                lucide.createIcons({
-                  root: ref.current,
-                  nameAttr: 'data-lucide',
-                  attrs: {
-                    class: `w-4 h-4 inline-block`
-                  }
-                });
-              }
-            }, [IconComponent]);
-
-            // Use a span wrapper to protect the icon from React reconciliation issues
-            // Lucide will replace the <i> inside this span
-            return (
-              <span ref={ref} className="inline-flex items-center justify-center">
-                <i data-lucide={IconComponent} className="w-4 h-4 inline-block"></i>
-              </span>
-            );
           };
 
           // Privacy: Persist app data and update lastUpdated (TTL handled globally)
