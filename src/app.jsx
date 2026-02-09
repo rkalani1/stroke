@@ -11321,6 +11321,62 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <option value="Discharge">Discharge</option>
                               </select>
                             </div>
+
+                            {/* Quick Secondary Prevention (for consult recommendations) */}
+                            {telestrokeNote.diagnosisCategory === 'ischemic' && (
+                              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 space-y-2">
+                                <h5 className="text-sm font-semibold text-emerald-800">Quick Secondary Prevention</h5>
+                                <div className="grid grid-cols-2 gap-2">
+                                  <div>
+                                    <label className="block text-xs text-slate-600 mb-0.5">Antithrombotic</label>
+                                    <select value={(telestrokeNote.secondaryPrevention || {}).antiplateletRegimen || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), antiplateletRegimen: e.target.value}})}
+                                      className="w-full px-2 py-1 border border-slate-300 rounded text-xs">
+                                      <option value="">-- Select --</option>
+                                      <option value="dapt-21">DAPT x 21d (minor stroke/TIA)</option>
+                                      <option value="asa-mono">ASA 81-325 mg</option>
+                                      <option value="clopidogrel-mono">Clopidogrel 75 mg</option>
+                                      <option value="asa-er-dipyridamole">ASA/Dipyridamole</option>
+                                      <option value="doac-af">DOAC for AF</option>
+                                      <option value="anticoag-other">Anticoagulation (other)</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label className="block text-xs text-slate-600 mb-0.5">Statin</label>
+                                    <select value={(telestrokeNote.secondaryPrevention || {}).statinDose || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), statinDose: e.target.value}})}
+                                      className="w-full px-2 py-1 border border-slate-300 rounded text-xs">
+                                      <option value="">-- Select --</option>
+                                      <option value="atorvastatin-80">Atorvastatin 80 mg (high intensity)</option>
+                                      <option value="rosuvastatin-20">Rosuvastatin 20-40 mg (high intensity)</option>
+                                      <option value="atorvastatin-40">Atorvastatin 40 mg (moderate)</option>
+                                      <option value="already-on-statin">Already on statin - continue</option>
+                                      <option value="statin-deferred">Statin deferred</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                  <div>
+                                    <label className="block text-xs text-slate-600 mb-0.5">BP Target</label>
+                                    <select value={(telestrokeNote.secondaryPrevention || {}).bpTarget || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), bpTarget: e.target.value}})}
+                                      className="w-full px-2 py-1 border border-slate-300 rounded text-xs">
+                                      <option value="">-- Select --</option>
+                                      <option value="<130/80">&lt;130/80 (intensive, SPS3/ESPRIT)</option>
+                                      <option value="<140/90">&lt;140/90 (standard)</option>
+                                      <option value="permissive">Permissive (acute phase)</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label className="block text-xs text-slate-600 mb-0.5">BP Meds</label>
+                                    <input type="text" value={(telestrokeNote.secondaryPrevention || {}).bpMeds || ''}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), bpMeds: e.target.value}})}
+                                      placeholder="e.g., Amlodipine 5mg"
+                                      className="w-full px-2 py-1 border border-slate-300 rounded text-xs" />
+                                  </div>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
 
