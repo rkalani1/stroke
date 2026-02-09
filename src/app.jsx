@@ -1092,8 +1092,8 @@ Clinician Name`;
               sessionFrequency: '',
               contraindications: ''
             },
-            // Post-TNK BP Monitoring
-            postTnkBpMonitoring: {
+            // Post-TNK BP Monitoring Tracker
+            postTnkBpTracker: {
               monitoringActive: false,
               bpReadings: [],
               lastBpTime: ''
@@ -1306,7 +1306,12 @@ Clinician Name`;
               repeatCT24h: false,
               mriOrdered: false
             },
-            dischargeChecklistReviewed: false
+            dischargeChecklistReviewed: false,
+            // Inline calculator state
+            ichVolumeCalc: { lengthCm: '', widthCm: '', slicesCm: '' },
+            andexanetCalc: { doacType: '', lastDoseHours: '' },
+            crclCalc: { age: '', weight: '', sex: 'M', cr: '' },
+            enoxCalc: { weightKg: '', crCl: '' }
           });
 
           // Load saved data from localStorage with validation
@@ -6607,10 +6612,12 @@ Clinician Name`;
               'esusWorkup', 'doacTiming', 'hemorrhagicTransformation', 'angioedema',
               'ichAnticoagResumption', 'carotidManagement', 'cvtAnticoag',
               // Nursing/management
-              'dysphagiaScreening', 'earlyMobilization', 'vteProphylaxis', 'feverManagement',
+              'dysphagiaScreening', 'earlyMobilization', 'vteProphylaxis', 'postTnkBpTracker', 'feverManagement',
               'osmoticTherapy', 'nutritionalSupport',
               // Discharge
-              'dischargeChecklist', 'dischargeChecklistReviewed', 'mrsAssessment'
+              'dischargeChecklist', 'dischargeChecklistReviewed', 'mrsAssessment',
+              // Inline calculator state
+              'ichVolumeCalc', 'andexanetCalc', 'crclCalc', 'enoxCalc'
             ];
             return allowedKeys.reduce((acc, key) => {
               if (note && Object.prototype.hasOwnProperty.call(note, key)) {
@@ -9950,10 +9957,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             { label: 'LKW', time: lkwTime ? lkwTime.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-blue-700 bg-blue-100' },
                             { label: 'Door', time: telestrokeNote.dtnEdArrival ? new Date(telestrokeNote.dtnEdArrival).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-purple-700 bg-purple-100' },
                             { label: 'Alert', time: telestrokeNote.dtnStrokeAlert ? new Date(telestrokeNote.dtnStrokeAlert).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-amber-700 bg-amber-100' },
-                            { label: 'CT', time: telestrokeNote.dtnCtComplete ? new Date(telestrokeNote.dtnCtComplete).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-slate-700 bg-slate-200' },
+                            { label: 'CT', time: telestrokeNote.dtnCtStarted ? new Date(telestrokeNote.dtnCtStarted).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-slate-700 bg-slate-200' },
                             { label: 'TNK', time: telestrokeNote.tnkAdminTime || null, color: 'text-emerald-700 bg-emerald-100' },
-                            { label: 'Puncture', time: telestrokeNote.dtnGroinPuncture ? new Date(telestrokeNote.dtnGroinPuncture).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-indigo-700 bg-indigo-100' },
-                            { label: 'Reflow', time: telestrokeNote.dtnReperfusion ? new Date(telestrokeNote.dtnReperfusion).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, color: 'text-emerald-700 bg-emerald-100' }
+                            { label: 'Puncture', time: telestrokeNote.punctureTime || null, color: 'text-indigo-700 bg-indigo-100' }
                           ].filter(t => t.time).map((t, i, arr) => (
                             <React.Fragment key={t.label}>
                               <span className={`inline-flex flex-col items-center px-2 py-1 rounded ${t.color}`}>
