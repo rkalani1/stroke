@@ -18990,7 +18990,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <div className="ml-2 pl-3 border-l-2 border-slate-200">
                                 <div className="space-y-1.5 text-xs">
                                   <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700">Dominant M2, 0-6h, ASPECTS 6-10, mRS 0-1</span>
+                                    <span className="text-slate-700">Dominant M2, 0-6h, NIHSS ≥6, ASPECTS 6-10, mRS 0-1</span>
                                     <span className="text-slate-400">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300">Reasonable</span>
                                   </div>
