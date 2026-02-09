@@ -1339,20 +1339,15 @@ Clinician Name`;
           const [clearUndo, setClearUndo] = useState(null);
           const [storageExpired, setStorageExpired] = useState(INITIAL_STORAGE_EXPIRED);
           const [actionsOpen, setActionsOpen] = useState(false);
-          const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
           const [encounterPhase, setEncounterPhase] = useState('triage');
           const [clinicalContext, setClinicalContext] = useState('acute');
           const [documentationMode, setDocumentationMode] = useState('quick');
           const [noteTemplate, setNoteTemplate] = useState('consult');
           const isQuickMode = documentationMode === 'quick';
           const isClinicContext = clinicalContext === 'clinic';
+          const isInpatientContext = clinicalContext === 'inpatient';
           const [calcDrawerOpen, setCalcDrawerOpen] = useState(false);
           const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
-          const [caseSummaryCollapsed, setCaseSummaryCollapsed] = useState(() => {
-            const saved = getKey('caseSummaryCollapsed', null);
-            if (saved !== null && saved !== undefined) return saved === true;
-            return window.innerWidth < 640;
-          });
           // Phase 2: Guided Clinical Pathway UI state
           const [pathwayCollapsed, setPathwayCollapsed] = useState(true);
           const [guidelineRecsExpanded, setGuidelineRecsExpanded] = useState(false);
@@ -6755,7 +6750,58 @@ Clinician Name`;
               return `${displayHour}:${minutes} ${ampm}`;
             };
 
-            // Use the editable template and replace placeholders with actual values
+            // Template-specific note generation
+            if (noteTemplate === 'transfer') {
+              let note = `TRANSFER SUMMARY\n${'='.repeat(40)}\n\n`;
+              note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}\n`;
+              note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}\n`;
+              note += `LKW: ${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}\n`;
+              note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n\n`;
+              note += `HPI: ${telestrokeNote.symptoms || '___'}\n`;
+              note += `PMH: ${telestrokeNote.pmh || '___'}\n`;
+              note += `Medications: ${telestrokeNote.medications || '___'}\n\n`;
+              note += `Vitals: BP ${telestrokeNote.presentingBP || '___'}, Glucose ${telestrokeNote.glucose || '___'}\n`;
+              note += `Labs: Plt/Coags ${telestrokeNote.plateletsCoags || '___'}, Cr ${telestrokeNote.creatinine || '___'}\n\n`;
+              note += `Imaging:\n`;
+              note += `- CT Head: ${telestrokeNote.ctResults || '___'}\n`;
+              note += `- CTA: ${telestrokeNote.ctaResults || '___'}\n`;
+              if (telestrokeNote.ctpResults) note += `- CTP: ${telestrokeNote.ctpResults}\n`;
+              note += `\nTreatment:\n`;
+              if (telestrokeNote.tnkRecommended) note += `- TNK administered at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+              if (telestrokeNote.evtRecommended) note += `- EVT recommended\n`;
+              if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
+              if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) note += formatDTNForNote();
+              note += `\nRecommendations:\n${telestrokeNote.recommendationsText || '___'}\n`;
+              return note;
+            }
+
+            if (noteTemplate === 'signout') {
+              let note = `SIGNOUT / HANDOFF\n${'='.repeat(40)}\n\n`;
+              note += `${telestrokeNote.age || '___'} ${telestrokeNote.sex || '___'} — ${telestrokeNote.diagnosis || '___'}\n`;
+              note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'} | LKW: ${formatTime(telestrokeNote.lkwTime) || '___'}\n\n`;
+              note += `Brief HPI: ${telestrokeNote.symptoms || '___'}\n\n`;
+              note += `Key imaging: CT ${telestrokeNote.ctResults || '___'}; CTA ${telestrokeNote.ctaResults || '___'}\n`;
+              note += `BP: ${telestrokeNote.presentingBP || '___'}\n\n`;
+              note += `Treatment given:\n`;
+              if (telestrokeNote.tnkRecommended) note += `- TNK at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+              if (telestrokeNote.evtRecommended) note += `- EVT recommended/performed\n`;
+              if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
+              const sp = telestrokeNote.secondaryPrevention || {};
+              if (sp.antiplateletRegimen) {
+                const apLabels = { 'dapt-21': 'DAPT x 21d', 'asa-mono': 'ASA', 'clopidogrel-mono': 'Clopidogrel', 'asa-er-dipyridamole': 'ASA/Dipyridamole', 'doac-af': 'DOAC (AF)', 'anticoag-other': 'Anticoag' };
+                note += `- Antithrombotic: ${apLabels[sp.antiplateletRegimen] || sp.antiplateletRegimen}\n`;
+              }
+              if (sp.statinDose) note += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}\n`;
+              note += `\nActive issues / To-do:\n`;
+              note += `${telestrokeNote.recommendationsText || '- (none documented)'}\n`;
+              return note;
+            }
+
+            if (noteTemplate === 'followup') {
+              return generateFollowUpBrief();
+            }
+
+            // Default: 'consult' — use the editable template
             let note = editableTemplate;
 
             // Replace all placeholders with actual values
@@ -8122,10 +8168,6 @@ Clinician Name`;
           }, [timerSidebarCollapsed]);
 
           useEffect(() => {
-            setKey('caseSummaryCollapsed', caseSummaryCollapsed, { skipLastUpdated: true });
-          }, [caseSummaryCollapsed]);
-
-          useEffect(() => {
             setKey('showAdvanced', showAdvanced, { skipLastUpdated: true });
           }, [showAdvanced]);
 
@@ -9008,12 +9050,6 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               return false;
             }
           });
-          const mobilePrimaryTabs = [
-            { id: 'encounter', name: 'Encounter', icon: 'activity' },
-            { id: 'management', name: 'Manage', icon: 'layers' },
-            { id: 'trials', name: 'Trials', icon: 'file-text' }
-          ];
-          const mobileMoreTabs = [];
           const quickContacts = Array.isArray(settings.contacts) && settings.contacts.length
             ? settings.contacts
             : DEFAULT_CONTACTS;
@@ -9692,7 +9728,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               </div>
 
               {/* Content */}
-              <div id="main-content" className="space-y-6 sm:space-y-8 mobile-nav-padding" role="region" aria-label="Main content area">
+              <div id="main-content" className="space-y-6 sm:space-y-8" role="region" aria-label="Main content area">
 
                 {/* CONSOLIDATED ENCOUNTER TAB */}
                 {activeTab === 'encounter' && (
@@ -9700,7 +9736,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                     {/* ===== PATIENT SUMMARY STRIP ===== */}
                     {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) && (
-                      <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl shadow-sm px-4 py-2.5">
+                      <div className="sticky top-14 z-20 bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl shadow-sm px-4 py-2.5">
                         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
                           {telestrokeNote.age && (
                             <span className="font-medium text-slate-700">
@@ -9767,8 +9803,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       </nav>
                     </div>
 
-                    {/* ===== STROKE TIMELINE STRIP ===== */}
-                    {(lkwTime || telestrokeNote.dtnEdArrival || telestrokeNote.tnkAdminTime) && (
+                    {/* ===== STROKE TIMELINE STRIP (hidden in clinic) ===== */}
+                    {!isClinicContext && (lkwTime || telestrokeNote.dtnEdArrival || telestrokeNote.tnkAdminTime) && (
                       <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 overflow-x-auto no-scrollbar">
                         <div className="flex items-center gap-1 text-xs min-w-max">
                           {[
@@ -10882,6 +10918,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </select>
                             </div>
 
+                            {!isClinicContext && (
                             <div className="grid grid-cols-2 gap-3">
                               <label className="flex items-center gap-2 p-2 bg-emerald-50 border border-emerald-200 rounded-lg cursor-pointer">
                                 <input
@@ -10902,8 +10939,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <span className="text-sm font-medium text-blue-800">EVT Recommended</span>
                               </label>
                             </div>
+                            )}
 
-                            {telestrokeNote.tnkRecommended && (
+                            {!isClinicContext && telestrokeNote.tnkRecommended && (
                               <div>
                                 <label className="block text-xs text-slate-600 mb-1">TNK Admin Time</label>
                                 <input
@@ -12553,8 +12591,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </div>
                             )}
 
-                            {/* Lytic Eligibility Criteria (Collapsible) */}
-                            {(
+                            {/* Lytic Eligibility Criteria (Collapsible) — hidden in clinic */}
+                            {!isClinicContext && (
                             <details className="bg-emerald-50 border border-emerald-200 rounded-lg">
                               <summary className="cursor-pointer p-3 font-semibold text-emerald-800 hover:bg-emerald-100 rounded-lg">
                                 ✓ TNK Eligibility Criteria (Click to expand)
@@ -12618,8 +12656,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </details>
                             )}
 
-                            {/* ========== TNK CONTRAINDICATIONS ========== */}
-                            {(() => {
+                            {/* ========== TNK CONTRAINDICATIONS (hidden in clinic) ========== */}
+                            {!isClinicContext && (() => {
                               const checklist = telestrokeNote.tnkContraindicationChecklist || {};
 
                                 const absoluteContraindications = [
@@ -13152,8 +13190,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             {/* ===== MANAGEMENT SECTION ===== */}
                             <div id="phase-management"></div>
 
-                            {/* Time Metrics Section - DTN Tracker (Collapsible) */}
-                            <details id="time-metrics-section" className="bg-purple-50 border border-purple-200 rounded-xl" open={telestrokeNote.tnkRecommended}>
+                            {/* Time Metrics Section - DTN Tracker (hidden in clinic) */}
+                            {!isClinicContext && <details id="time-metrics-section" className="bg-purple-50 border border-purple-200 rounded-xl" open={telestrokeNote.tnkRecommended}>
                               <summary className="cursor-pointer p-3 font-semibold text-purple-800 hover:bg-purple-100 rounded-lg flex items-center justify-between">
                                 <span className="flex items-center gap-2">
                                   <i data-lucide="timer" className="w-4 h-4"></i>
@@ -13394,10 +13432,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   );
                                 })()}
                               </div>
-                            </details>
+                            </details>}
 
-                            {/* EVT Eligibility (Collapsible) */}
-                            <details className="bg-blue-50 border border-blue-200 rounded-lg">
+                            {/* EVT Eligibility (Collapsible — hidden in clinic) */}
+                            {!isClinicContext && <details className="bg-blue-50 border border-blue-200 rounded-lg">
                               <summary className="cursor-pointer p-3 font-semibold text-blue-800 hover:bg-blue-100 rounded-lg">
                                 🔧 EVT Eligibility Criteria (Click to expand)
                               </summary>
@@ -13441,7 +13479,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   </ul>
                                 </div>
                               </div>
-                            </details>
+                            </details>}
 
                             <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                               <input
