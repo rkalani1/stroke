@@ -1446,7 +1446,7 @@ Clinician Name`;
           // Each patient in shift has: id, summary, timestamp, formState snapshot
           const [shiftPatients, setShiftPatients] = useState(loadFromStorage('shiftPatients', []));
           const [currentPatientId, setCurrentPatientId] = useState(loadFromStorage('currentPatientId', null));
-          const [showPatientSwitcher, setShowPatientSwitcher] = useState(false);
+
 
           // Collapsible Timer Sidebar state (default: expanded on desktop, collapsed on mobile)
           const [timerSidebarCollapsed, setTimerSidebarCollapsed] = useState(() => {
@@ -5969,7 +5969,7 @@ Clinician Name`;
             setMrsScore(formState.mrsScore);
             setGcsItems(formState.gcsItems);
             setCurrentPatientId(patientId);
-            setShowPatientSwitcher(false);
+
           };
 
           // Start a new patient (save current first)
@@ -6317,7 +6317,7 @@ Clinician Name`;
             setCompletedSteps([]);
             setShiftPatients([]);
             setCurrentPatientId(null);
-            setShowPatientSwitcher(false);
+
             setConsultationType(getDefaultSettings().defaultConsultationType || 'videoTelestroke');
             setManagementSubTab('ich');
             setFabExpanded(false);
@@ -6830,8 +6830,13 @@ Clinician Name`;
               note += `Vitals: BP ${telestrokeNote.presentingBP || '___'}, Glucose ${telestrokeNote.glucose || '___'}\n`;
               note += `Labs: Plt/Coags ${telestrokeNote.plateletsCoags || '___'}, Cr ${telestrokeNote.creatinine || '___'}\n\n`;
               note += `Imaging:\n`;
-              note += `- CT Head: ${telestrokeNote.ctResults || '___'}\n`;
-              note += `- CTA: ${telestrokeNote.ctaResults || '___'}\n`;
+              note += `- CT Head: ${telestrokeNote.ctResults || '___'}`;
+              if (aspectsScore != null && aspectsScore < 10) note += ` (ASPECTS ${aspectsScore}/10)`;
+              note += `\n`;
+              note += `- CTA: ${telestrokeNote.ctaResults || '___'}`;
+              const transferVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
+              if (transferVessels.length > 0) note += ` — Occlusion: ${transferVessels.join(', ')}`;
+              note += `\n`;
               if (telestrokeNote.ctpResults) note += `- CTP: ${telestrokeNote.ctpResults}\n`;
               note += `\nTreatment:\n`;
               if (telestrokeNote.tnkRecommended) note += `- TNK administered at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
@@ -6848,7 +6853,10 @@ Clinician Name`;
               note += `${telestrokeNote.age || '___'} ${telestrokeNote.sex || '___'} — ${telestrokeNote.diagnosis || '___'}\n`;
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'} | LKW: ${formatTime(telestrokeNote.lkwTime) || '___'}\n\n`;
               note += `Brief HPI: ${telestrokeNote.symptoms || '___'}\n\n`;
-              note += `Key imaging: CT ${telestrokeNote.ctResults || '___'}; CTA ${telestrokeNote.ctaResults || '___'}\n`;
+              let imagingLine = `Key imaging: CT ${telestrokeNote.ctResults || '___'}; CTA ${telestrokeNote.ctaResults || '___'}`;
+              const signoutVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
+              if (signoutVessels.length > 0) imagingLine += ` (${signoutVessels.join(', ')})`;
+              note += imagingLine + '\n';
               note += `BP: ${telestrokeNote.presentingBP || '___'}\n\n`;
               note += `Treatment given:\n`;
               if (telestrokeNote.tnkRecommended) note += `- TNK at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
@@ -6859,6 +6867,7 @@ Clinician Name`;
                 note += `- Antithrombotic: ${AP_LABELS_SHORT[sp.antiplateletRegimen] || sp.antiplateletRegimen}\n`;
               }
               if (sp.statinDose) note += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}\n`;
+              if (telestrokeNote.disposition) note += `\nDisposition: ${telestrokeNote.disposition}\n`;
               note += `\nActive issues / To-do:\n`;
               note += `${telestrokeNote.recommendationsText || '- (none documented)'}\n`;
               return note;
@@ -7014,7 +7023,7 @@ Clinician Name`;
             if (telestrokeNote.diagnosisCategory === 'ich') {
               let ichNote = '\nICH Management:\n';
               if (telestrokeNote.ichBPManaged) ichNote += '- BP managed (target SBP 130-150)\n';
-              if (telestrokeNote.ichReversalInitiated || telestrokeNote.ichReversalInitiated) ichNote += '- Anticoagulation reversal initiated\n';
+              if (telestrokeNote.ichReversalInitiated) ichNote += '- Anticoagulation reversal initiated\n';
               if (telestrokeNote.ichNeurosurgeryConsulted) ichNote += '- Neurosurgery consulted\n';
               if (telestrokeNote.ichSeizureProphylaxis) ichNote += '- Seizure prophylaxis ordered\n';
               if (ichNote !== '\nICH Management:\n') note += ichNote;
@@ -8189,7 +8198,7 @@ Clinician Name`;
             if (generateNewId) {
               setCurrentPatientId(generatePatientId());
             }
-            setShowPatientSwitcher(false);
+
             setClearUndo({ snapshot, expiresAt: Date.now() + CLEAR_UNDO_WINDOW_MS });
             if (clearUndoTimeoutRef.current) {
               clearTimeout(clearUndoTimeoutRef.current);
@@ -9090,7 +9099,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                 setCalcDrawerOpen(false);
                 setSettingsMenuOpen(false);
                 setFabExpanded(false);
-                setShowPatientSwitcher(false);
+    
                 setProtocolModal(null);
               }
 
