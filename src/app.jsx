@@ -10576,11 +10576,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                           <div>
                             <label className="block text-xs font-medium text-slate-600 mb-1">Consult Time</label>
-                            <div className="flex items-center gap-1">
-                              <input type="time" value={telestrokeNote.consultStartTime ? '' : ''}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, consultStartTime: e.target.value})}
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500" />
-                            </div>
+                            <input type="time" value={telestrokeNote.consultStartTime || ''}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, consultStartTime: e.target.value})}
+                              className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500" />
                           </div>
                         </div>
 
@@ -11321,6 +11319,30 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <option value="Discharge">Discharge</option>
                               </select>
                             </div>
+
+                            {/* TOAST Quick-Select */}
+                            {telestrokeNote.diagnosisCategory === 'ischemic' && (
+                              <div className="bg-violet-50 border border-violet-200 rounded-lg p-3">
+                                <h5 className="text-sm font-semibold text-violet-800 mb-2">Stroke Etiology (TOAST)</h5>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {[
+                                    { value: 'large-artery', label: 'Large Artery' },
+                                    { value: 'cardioembolism', label: 'Cardioembolism' },
+                                    { value: 'small-vessel', label: 'Lacunar' },
+                                    { value: 'other-determined', label: 'Other' },
+                                    { value: 'cryptogenic', label: 'Cryptogenic/ESUS' }
+                                  ].map(item => (
+                                    <button key={item.value} type="button"
+                                      onClick={() => setTelestrokeNote({...telestrokeNote, toastClassification: telestrokeNote.toastClassification === item.value ? '' : item.value})}
+                                      className={`px-2.5 py-1 text-xs rounded-full font-medium transition-colors ${
+                                        telestrokeNote.toastClassification === item.value ? 'bg-violet-600 text-white' : 'bg-white border border-violet-200 text-violet-700 hover:bg-violet-100'
+                                      }`}>
+                                      {item.label}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
 
                             {/* Quick Secondary Prevention (for consult recommendations) */}
                             {telestrokeNote.diagnosisCategory === 'ischemic' && (
