@@ -7615,6 +7615,15 @@ Clinician Name`;
                 if (vte.pharmacoProphylaxis) vteParts.push(vte.pharmacoProphylaxis);
                 note += `- VTE prophylaxis: ${vteParts.join(' + ')}\n`;
               }
+              // Osmotic therapy (ICH/SAH)
+              const osmo = telestrokeNote.osmoticTherapy || {};
+              if (osmo.agentUsed) {
+                note += `- Osmotic therapy: ${osmo.agentUsed}`;
+                if (osmo.sodiumTarget) note += ` | Na+ target: ${osmo.sodiumTarget} mEq/L`;
+                if (osmo.serumSodium) note += ` | Last Na+: ${osmo.serumSodium}`;
+                if (osmo.serumOsmolality) note += ` | Osm: ${osmo.serumOsmolality}`;
+                note += '\n';
+              }
               note += '\n';
               const dischMRS = (telestrokeNote.mrsAssessment || {}).discharge;
               note += `DISCHARGE NIHSS: ___\n`;
@@ -9945,8 +9954,8 @@ ${telestrokeNote.evtRecommended ? `EVT: Recommended` : 'EVT: Not Recommended'}`;
 10. ${antiplatelet}
 11. Statin therapy: Atorvastatin 80mg daily${diagCat === 'ich' ? ' (consider holding acutely)' : ''}
 12. ${diagCat === 'sah' ? 'Nimodipine 60mg PO/NG q4h x 21 days' : 'Neurology consultation'}
-13. PT/OT/Speech evaluation
-14. Fall precautions${diagCat === 'sah' ? '\n15. Neurosurgery consultation' : ''}
+${diagCat === 'sah' ? '13. Seizure prophylaxis: Levetiracetam 500-1000mg IV/PO q12h x 3-7 days (if cortical SAH, IVH, poor-grade, or seizure at onset)\n14' : '13'}. PT/OT/Speech evaluation
+${diagCat === 'sah' ? '15' : '14'}. Fall precautions${diagCat === 'sah' ? '\n16. Neurosurgery consultation' : ''}
 
 LABS:
 - CBC, CMP, PT/INR, PTT
@@ -10420,7 +10429,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </button>
                         {settingsMenuOpen && (
                           <>
-                            <div className="fixed inset-0 z-40" onClick={() => setSettingsMenuOpen(false)}></div>
+                            <div className="fixed inset-0 z-40" onClick={() => setSettingsMenuOpen(false)} onKeyDown={(e) => e.key === 'Escape' && setSettingsMenuOpen(false)} role="presentation" aria-hidden="true"></div>
                             <div className="absolute right-0 top-12 w-56 bg-white border border-slate-200 rounded-xl shadow-lg z-50 py-1 overflow-hidden">
                               {showDocumentActions && (
                                 <button
@@ -23276,7 +23285,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* ICH Volume Calculator (ABC/2) */}
-                    <details className="bg-red-50 border border-red-200 rounded-lg">
+                    <details id="calc-ich-volume" style={{ order: getCalculatorOrder('ich-volume', 21) }} className="bg-red-50 border border-red-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-red-800 hover:bg-red-100 rounded-lg flex items-center justify-between">
                         <span>ICH Volume Calculator (ABC/2 Method)</span>
                       </summary>
@@ -23314,7 +23323,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                  'Small hematoma'}
                               </p>
                               <button onClick={() => copyToClipboard(`ICH Volume (ABC/2): ${result.volume} mL`, 'ICH Volume')}
-                                className="mt-1 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300">Copy</button>
+                                className="mt-1 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300" aria-label="Copy ICH volume to clipboard">Copy</button>
                             </div>
                           );
                         })()}
@@ -23323,7 +23332,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Andexanet Alfa Dosing Calculator */}
-                    <details className="bg-purple-50 border border-purple-200 rounded-lg">
+                    <details id="calc-andexanet" style={{ order: getCalculatorOrder('andexanet', 36) }} className="bg-purple-50 border border-purple-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-purple-800 hover:bg-purple-100 rounded-lg flex items-center justify-between">
                         <span>Andexanet Alfa (Andexxa) Dosing</span>
                       </summary>
@@ -23362,7 +23371,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <p className="text-sm">Infusion: {result.infusion}</p>
                               <p className="text-sm font-semibold">Total: {result.total}</p>
                               <button onClick={() => copyToClipboard(`Andexanet ${result.regimen}: Bolus ${result.bolus}, Infusion ${result.infusion}, Total ${result.total}`, 'Andexanet Dose')}
-                                className="mt-1 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300">Copy</button>
+                                className="mt-1 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300" aria-label="Copy andexanet dose to clipboard">Copy</button>
                             </div>
                           );
                         })()}
@@ -23449,7 +23458,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 )}
                               </div>
                               <button onClick={() => copyToClipboard(`CrCl (Cockcroft-Gault): ${result.value} mL/min — ${result.label}`, 'CrCl')}
-                                className="mt-2 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300">Copy</button>
+                                className="mt-2 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300" aria-label="Copy CrCl to clipboard">Copy</button>
                             </div>
                           );
                         })()}
@@ -23458,7 +23467,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Weight-Based Enoxaparin Dosing */}
-                    <details className="bg-blue-50 border border-blue-200 rounded-lg">
+                    <details id="calc-enoxaparin" style={{ order: getCalculatorOrder('enoxaparin', 37) }} className="bg-blue-50 border border-blue-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-blue-800 hover:bg-blue-100 rounded-lg flex items-center justify-between">
                         <span>Enoxaparin Weight-Based Dosing</span>
                         {(telestrokeNote.weight && !(telestrokeNote.enoxCalc || {}).weightKg) && (
@@ -23492,7 +23501,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <p className="text-sm font-bold">{result.note}</p>
                               {result.isRenalAdjusted && <p className="text-xs text-amber-700">Renal dose adjustment applied (CrCl &lt;30 mL/min)</p>}
                               <button onClick={() => copyToClipboard(result.note, 'Enoxaparin Dose')}
-                                className="mt-1 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300">Copy</button>
+                                className="mt-1 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300" aria-label="Copy enoxaparin dose to clipboard">Copy</button>
                             </div>
                           );
                         })()}
@@ -25768,7 +25777,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             {/* ===== CALCULATOR DRAWER — with inline GCS + quick nav ===== */}
             {calcDrawerOpen && (
               <>
-                <div className="fixed inset-0 z-50 bg-black/30" onClick={() => setCalcDrawerOpen(false)}></div>
+                <div className="fixed inset-0 z-50 bg-black/30" onClick={() => setCalcDrawerOpen(false)} role="presentation" aria-hidden="true"></div>
                 <div className="fixed inset-x-0 bottom-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-50 w-full sm:w-[32rem] sm:max-h-[85vh] bg-white sm:rounded-2xl rounded-t-2xl shadow-2xl overflow-y-auto" role="dialog" aria-modal="true" aria-label="Clinical Calculators">
                   <div className="sticky top-0 bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between z-10">
                     <h2 className="text-base font-semibold text-slate-900 flex items-center gap-2">
@@ -25869,7 +25878,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             {/* ===== CHANGELOG MODAL ===== */}
             {showChangelog && (
               <>
-                <div className="fixed inset-0 z-[150] bg-black/40" onClick={() => setShowChangelog(false)}></div>
+                <div className="fixed inset-0 z-[150] bg-black/40" onClick={() => setShowChangelog(false)} role="presentation" aria-hidden="true"></div>
                 <div className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[28rem] max-h-[70vh] bg-white rounded-2xl shadow-2xl overflow-y-auto">
                   <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between z-10">
                     <h2 className="text-base font-bold text-slate-900">What's New</h2>
@@ -25900,7 +25909,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             {/* ===== KEYBOARD SHORTCUT HELP ===== */}
             {showKeyboardHelp && (
               <>
-                <div className="fixed inset-0 z-[150] bg-black/40" onClick={() => setShowKeyboardHelp(false)}></div>
+                <div className="fixed inset-0 z-[150] bg-black/40" onClick={() => setShowKeyboardHelp(false)} role="presentation" aria-hidden="true"></div>
                 <div className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[24rem] bg-white rounded-2xl shadow-2xl overflow-hidden">
                   <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between">
                     <h2 className="text-base font-bold text-slate-900">Keyboard Shortcuts</h2>
