@@ -2025,7 +2025,7 @@ Clinician Name`;
             };
             window.addEventListener('keydown', handler);
             return () => window.removeEventListener('keydown', handler);
-          }, [protocolModal, showChangelog]);
+          }, [protocolModal, showChangelog, showKeyboardHelp]);
 
           // Trials data
           const trialsData = {
@@ -23218,7 +23218,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           );
                         })()}
-                        <button type="button" onClick={() => { setTelestrokeNote({...telestrokeNote, aspectsRegions: {}}); if (typeof setAspectsScore === 'function') setAspectsScore('10'); }}
+                        <button type="button" onClick={() => { setTelestrokeNote(prev => ({...prev, aspectsRegions: {}})); if (typeof setAspectsScore === 'function') setAspectsScore('10'); }}
                           className="mt-2 text-xs text-slate-500 hover:text-slate-700 underline">Reset all regions</button>
                       </div>
                     </details>
