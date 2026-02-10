@@ -1803,8 +1803,25 @@ Clinician Name`;
           // PC-ASPECTS regions state
           const [pcAspectsRegions, setPcAspectsRegions] = useState(loadFromStorage('pcAspectsRegions', getDefaultPcAspectsRegions()));
 
-          // Telestroke Documentation State
-          const [telestrokeNote, setTelestrokeNote] = useState(loadFromStorage('telestrokeNote', getDefaultTelestrokeNote()));
+          // Telestroke Documentation State — deep merge saved data with defaults
+          // Ensures new nested objects (wakeUpStrokeWorkflow, osmoticTherapy, etc.) are always present
+          const [telestrokeNote, setTelestrokeNote] = useState(() => {
+            const saved = loadFromStorage('telestrokeNote', null);
+            if (!saved) return getDefaultTelestrokeNote();
+            const defaults = getDefaultTelestrokeNote();
+            const merged = { ...defaults };
+            for (const key of Object.keys(saved)) {
+              if (saved[key] !== undefined && saved[key] !== null) {
+                if (typeof defaults[key] === 'object' && defaults[key] !== null && !Array.isArray(defaults[key])
+                    && typeof saved[key] === 'object' && !Array.isArray(saved[key])) {
+                  merged[key] = { ...defaults[key], ...saved[key] };
+                } else {
+                  merged[key] = saved[key];
+                }
+              }
+            }
+            return merged;
+          });
 
           const [autoSyncCalculators, setAutoSyncCalculators] = useState(loadFromStorage('autoSyncCalculators', true));
           const [evtDecisionInputs, setEvtDecisionInputs] = useState(loadFromStorage('evtDecisionInputs', {
@@ -7071,13 +7088,32 @@ Clinician Name`;
           };
 
           const copyToClipboard = (text, label) => {
-            navigator.clipboard.writeText(text).then(() => {
+            const onSuccess = () => {
               setCopiedText(label);
               setTimeout(() => setCopiedText(''), 2000);
               addToast(`${label} copied to clipboard`, 'success');
-            }).catch(() => {
-              addToast('Clipboard unavailable — try again', 'error');
-            });
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(text).then(onSuccess).catch(() => {
+                // Fallback for clipboard permission denied
+                copyFallback(text) ? onSuccess() : addToast('Clipboard unavailable — try again', 'error');
+              });
+            } else {
+              // Fallback for insecure contexts (HTTP, some mobile browsers)
+              copyFallback(text) ? onSuccess() : addToast('Clipboard unavailable — try again', 'error');
+            }
+          };
+          const copyFallback = (text) => {
+            try {
+              const ta = document.createElement('textarea');
+              ta.value = text;
+              ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px';
+              document.body.appendChild(ta);
+              ta.select();
+              const ok = document.execCommand('copy');
+              document.body.removeChild(ta);
+              return ok;
+            } catch (_) { return false; }
           };
 
           // Share document using Web Share API
