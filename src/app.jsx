@@ -5504,7 +5504,7 @@ Clinician Name`;
                   })()}
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-bold text-emerald-700 mb-3 text-lg">✓ Inclusion Criteria</h4>
+                      <h4 className="font-bold text-emerald-700 mb-3 text-lg">Inclusion Criteria</h4>
                       <ul className="space-y-2">
                         {trial.inclusion.map((item, idx) => (
                           <li key={idx} className="flex items-start">
@@ -5515,7 +5515,7 @@ Clinician Name`;
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-bold text-red-700 mb-3 text-lg">✗ Exclusion Criteria</h4>
+                      <h4 className="font-bold text-red-700 mb-3 text-lg">Exclusion Criteria</h4>
                       <ul className="space-y-2">
                         {trial.exclusion.map((item, idx) => (
                           <li key={idx} className="flex items-start">
@@ -10605,7 +10605,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           {encounterHistory.slice(0, 10).map(enc => (
                             <div key={enc.id} className="flex items-center justify-between px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs">
                               <div className="flex items-center gap-3">
-                                <span className="text-slate-400">{new Date(enc.timestamp).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                                <span className="text-slate-500">{new Date(enc.timestamp).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
                                 <span className="font-semibold text-slate-800">{enc.age}{enc.sex || ''}</span>
                                 <span className="text-slate-600">{enc.diagnosis}</span>
                                 <span className="text-slate-500">NIHSS {enc.nihss}</span>
@@ -10917,7 +10917,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                telestrokeNote.wakeUpStrokeWorkflow.ageEligible &&
                                telestrokeNote.wakeUpStrokeWorkflow.nihssEligible && (
                                 <div className="bg-emerald-100 border border-emerald-300 rounded-lg p-2 text-emerald-800 font-semibold text-sm flex items-center gap-2">
-                                  <span>✓</span>
+                                  <i data-lucide="check-circle" className="w-4 h-4"></i>
                                   <span>Meets WAKE-UP criteria - Consider IV thrombolysis</span>
                                 </div>
                               )}
@@ -11037,7 +11037,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.mismatchRatioGte1_2 &&
                                telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.timeWindow4_5to9h && (
                                 <div className="bg-emerald-100 border border-emerald-300 rounded-lg p-2 text-emerald-800 font-semibold text-sm flex items-center gap-2">
-                                  <span>✓</span>
+                                  <i data-lucide="check-circle" className="w-4 h-4"></i>
                                   <span>Meets EXTEND criteria - Consider IV thrombolysis</span>
                                 </div>
                               )}
@@ -12981,7 +12981,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                         <span className={`text-xl font-bold ${isGood ? 'text-emerald-800' : 'text-red-800'}`}>
                                           {dtn} min
                                         </span>
-                                        <span className="block text-xs text-slate-500">{isGood ? '✓ Goal ≤60 min' : '⚠ Goal ≤60 min'}</span>
+                                        <span className="block text-xs text-slate-500">{isGood ? 'Met goal (60 min)' : 'Exceeded goal (60 min)'}</span>
                                       </div>
                                     );
                                   })()}
@@ -12997,7 +12997,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                         <span className={`text-xl font-bold ${isGood ? 'text-emerald-800' : 'text-red-800'}`}>
                                           {dtp} min
                                         </span>
-                                        <span className="block text-xs text-slate-500">{isGood ? '✓ Goal ≤90 min' : '⚠ Goal ≤90 min'}</span>
+                                        <span className="block text-xs text-slate-500">{isGood ? 'Met goal (90 min)' : 'Exceeded goal (90 min)'}</span>
                                       </div>
                                     );
                                   })()}
@@ -13705,7 +13705,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             {(
                             <details className="bg-emerald-50 border border-emerald-200 rounded-lg">
                               <summary className="cursor-pointer p-3 font-semibold text-emerald-800 hover:bg-emerald-100 rounded-lg">
-                                ✓ TNK Eligibility Criteria (Click to expand)
+                                TNK Eligibility Criteria (Click to expand)
                               </summary>
                               <div className="p-4 space-y-3 text-sm">
                                 <div>
@@ -15590,7 +15590,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                   <div>
                                     <label className="text-xs text-slate-600">Current LDL</label>
-                                    <input type="text" value={(telestrokeNote.secondaryPrevention || {}).ldlCurrent || ''}
+                                    <input type="number" min="10" max="500" value={(telestrokeNote.secondaryPrevention || {}).ldlCurrent || ''}
                                       onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), ldlCurrent: e.target.value}})}
                                       className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="mg/dL" />
                                   </div>
@@ -17945,7 +17945,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                       const delta = rNa - bNa;
                                       const proj24 = (delta / hrsE) * 24;
                                       note += `- Na+ correction: ${delta > 0 ? '+' : ''}${delta.toFixed(1)} mEq/L in ${hrsE.toFixed(1)}h (projected 24h: ${proj24 > 0 ? '+' : ''}${proj24.toFixed(1)} mEq/L).`;
-                                      if (Math.abs(proj24) > 10) note += ` ⚠ EXCEEDS SAFE LIMIT (>10 mEq/L/24h).`;
+                                      if (Math.abs(proj24) > 10) note += ` WARNING: EXCEEDS SAFE LIMIT (>10 mEq/L/24h).`;
                                       note += '\n';
                                     }
                                   }
@@ -18908,7 +18908,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <div key={check.id} className={`flex items-center gap-2 p-2 rounded-lg border ${
                               check.complete ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-amber-50 border-amber-200 text-amber-800'
                             }`}>
-                              <span className="text-xs font-bold">{check.complete ? '✓' : '!'}</span>
+                              <span className="text-xs font-bold">{check.complete ? 'Done' : '!'}</span>
                               <span className="text-sm">{check.label}</span>
                             </div>
                           ))}
@@ -20332,7 +20332,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                             onChange={(e) => setNursingFlowsheetChecks(prev => ({ ...prev, [item.time]: e.target.checked }))}
                                           />
                                           <span>{item.time}</span>
-                                          <span className="text-[10px] text-slate-400">{item.label}</span>
+                                          <span className="text-[10px] text-slate-500">{item.label}</span>
                                         </label>
                                       ))}
                                     </div>
