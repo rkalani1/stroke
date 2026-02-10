@@ -10207,14 +10207,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </h1>
                       <button
                         onClick={() => setShowChangelog(true)}
-                        className="text-xs text-slate-400 hover:text-blue-600 transition-colors"
+                        className="text-xs text-slate-500 hover:text-blue-600 transition-colors"
                         title="What's new"
                       >
                         {APP_VERSION}
                       </button>
                       <button
                         onClick={() => setShowKeyboardHelp(true)}
-                        className="hidden sm:inline-flex text-xs text-slate-400 hover:text-blue-600 transition-colors px-1.5 py-0.5 border border-slate-200 rounded"
+                        className="hidden sm:inline-flex text-xs text-slate-500 hover:text-blue-600 transition-colors px-1.5 py-0.5 border border-slate-200 rounded"
                         title="Keyboard shortcuts (?)"
                       >
                         <i data-lucide="keyboard" className="w-3 h-3"></i>
