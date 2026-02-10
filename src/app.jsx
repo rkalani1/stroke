@@ -8312,6 +8312,11 @@ Clinician Name`;
               }
             }
 
+            // Pregnancy + TNK warning
+            if (n.tnkRecommended && n.pregnancyStroke) {
+              warnings.push({ id: 'tnk-pregnancy', severity: 'warn', msg: 'TNK recommended in pregnancy — weigh bleeding risk carefully, especially if postpartum or recent cesarean/neuraxial anesthesia' });
+            }
+
             return warnings;
           };
 
