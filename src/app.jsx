@@ -12989,7 +12989,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <span className="text-blue-700 ml-2">&lt;180/105 for 24 hours after thrombolysis</span>
                               </div>
                             )}
-                            <div className="grid grid-cols-3 gap-3">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                               <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-1">Glucose</label>
                                 <div className="flex items-center">
@@ -12998,11 +12998,26 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     value={telestrokeNote.glucose}
                                     onChange={(e) => setTelestrokeNote({...telestrokeNote, glucose: e.target.value})}
                                     placeholder=""
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    className={`w-full px-3 py-2 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                                      (() => {
+                                        const g = parseFloat(telestrokeNote.glucose);
+                                        if (!g) return 'border-slate-300';
+                                        if (g < 50) return 'border-red-400 bg-red-50';
+                                        if (g > 400) return 'border-amber-400 bg-amber-50';
+                                        return 'border-emerald-400 bg-emerald-50';
+                                      })()
+                                    }`}
                                     min="0"
                                   />
                                   <span className="ml-1 text-xs text-slate-500">mg/dL</span>
                                 </div>
+                                {(() => {
+                                  const g = parseFloat(telestrokeNote.glucose);
+                                  if (!g) return null;
+                                  if (g < 50) return <p className="text-xs text-red-700 font-medium mt-0.5">Hypoglycemia — correct before TNK</p>;
+                                  if (g > 400) return <p className="text-xs text-amber-700 font-medium mt-0.5">Severe hyperglycemia — correct, TNK still eligible</p>;
+                                  return null;
+                                })()}
                               </div>
                               <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-1">INR</label>
@@ -13011,10 +13026,25 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   value={telestrokeNote.inr}
                                   onChange={(e) => setTelestrokeNote({...telestrokeNote, inr: e.target.value})}
                                   placeholder=""
-                                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  className={`w-full px-3 py-2 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                                    (() => {
+                                      const i = parseFloat(telestrokeNote.inr);
+                                      if (!i) return 'border-slate-300';
+                                      if (i > 1.7) return 'border-red-400 bg-red-50';
+                                      if (i > 1.5) return 'border-amber-400 bg-amber-50';
+                                      return 'border-emerald-400 bg-emerald-50';
+                                    })()
+                                  }`}
                                   step="0.1"
                                   min="0"
                                 />
+                                {(() => {
+                                  const i = parseFloat(telestrokeNote.inr);
+                                  if (!i) return null;
+                                  if (i > 1.7) return <p className="text-xs text-red-700 font-medium mt-0.5">TNK contraindicated (INR &gt;1.7)</p>;
+                                  if (i > 1.5) return <p className="text-xs text-amber-700 font-medium mt-0.5">Borderline — verify with repeat</p>;
+                                  return null;
+                                })()}
                               </div>
                               <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-1">Platelets</label>
@@ -13024,11 +13054,49 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     value={telestrokeNote.plateletCount}
                                     onChange={(e) => setTelestrokeNote({...telestrokeNote, plateletCount: e.target.value})}
                                     placeholder=""
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    className={`w-full px-3 py-2 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                                      (() => {
+                                        const p = parseFloat(telestrokeNote.plateletCount);
+                                        if (!p) return 'border-slate-300';
+                                        if (p < 100000) return 'border-red-400 bg-red-50';
+                                        return 'border-emerald-400 bg-emerald-50';
+                                      })()
+                                    }`}
                                     min="0"
                                   />
                                   <span className="ml-1 text-xs text-slate-500">/μL</span>
                                 </div>
+                                {(() => {
+                                  const p = parseFloat(telestrokeNote.plateletCount);
+                                  if (p && p < 100000) return <p className="text-xs text-red-700 font-medium mt-0.5">TNK contraindicated (&lt;100k)</p>;
+                                  return null;
+                                })()}
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">aPTT</label>
+                                <div className="flex items-center">
+                                  <input
+                                    type="number"
+                                    value={telestrokeNote.ptt}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, ptt: e.target.value})}
+                                    placeholder=""
+                                    className={`w-full px-3 py-2 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                                      (() => {
+                                        const a = parseFloat(telestrokeNote.ptt);
+                                        if (!a) return 'border-slate-300';
+                                        if (a > 40) return 'border-red-400 bg-red-50';
+                                        return 'border-emerald-400 bg-emerald-50';
+                                      })()
+                                    }`}
+                                    min="0"
+                                  />
+                                  <span className="ml-1 text-xs text-slate-500">sec</span>
+                                </div>
+                                {(() => {
+                                  const a = parseFloat(telestrokeNote.ptt);
+                                  if (a && a > 40) return <p className="text-xs text-red-700 font-medium mt-0.5">Elevated aPTT — TNK relative CI</p>;
+                                  return null;
+                                })()}
                               </div>
                             </div>
 
@@ -13956,6 +14024,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   { id: 'recentDOAC', label: 'Recent DOAC use', note: '<48h; consider drug level/reversal' },
                                   { id: 'lowGlucose', label: 'Blood glucose <50 mg/dL', note: 'correct and reassess deficits' },
                                   { id: 'highGlucose', label: 'Blood glucose >400 mg/dL', note: 'correct and reassess deficits' },
+                                  { id: 'elevatedAPTT', label: 'aPTT >40 seconds', note: 'coagulopathy — confirm anticoagulant status' },
                                 { id: 'severeRenalFailure', label: 'Severe renal failure (Cr >3 or CrCl <25)', note: 'increased bleeding risk' }
                               ];
 
@@ -13966,7 +14035,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               const inrVal = parseFloat(telestrokeNote.inr);
                               if (!isNaN(inrVal) && inrVal > 1.7) autoDetected.warfarinElevatedINR = true;
                               const pttVal = parseFloat(telestrokeNote.ptt);
-                              if (!isNaN(pttVal) && pttVal > 40) autoDetected.warfarinElevatedINR = true;
+                              if (!isNaN(pttVal) && pttVal > 40) autoDetected.elevatedAPTT = true;
                               const plateletsVal = parseFloat(telestrokeNote.plateletCount);
                               if (!isNaN(plateletsVal) && plateletsVal < 100000) autoDetected.lowPlatelets = true;
                               const bpVal = telestrokeNote.presentingBP || '';
@@ -14024,9 +14093,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               const updateChecklistItem = (id, value) => setTelestrokeNote({...telestrokeNote, tnkContraindicationChecklist: {...telestrokeNote.tnkContraindicationChecklist, [id]: value}});
 
                               const clearAllAndProceed = () => {
-                                const clearedChecklist = {};
-                                [...absoluteContraindications, ...relativeContraindications].forEach(c => { clearedChecklist[c.id] = false; });
-                                setTelestrokeNote({...telestrokeNote, tnkContraindicationChecklist: clearedChecklist, tnkContraindicationReviewed: true, tnkContraindicationReviewTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }), tnkRecommended: true});
+                                setTelestrokeNote(prev => ({...prev, tnkContraindicationReviewed: true, tnkContraindicationReviewTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }), tnkRecommended: true}));
                               };
 
                               // Auto-detected items for prominent banner
