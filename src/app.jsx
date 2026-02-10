@@ -2674,9 +2674,9 @@ Clinician Name`;
               thrombolysisThreshold: '48 hours since last dose',
               thrombolysisNote: 'Consider anti-Xa level if <48h - thrombolysis may be given if anti-Xa <30 ng/mL',
               ichReversal: {
-                primary: '4-Factor PCC (Kcentra) 50 IU/kg (max 5000 IU)',
+                primary: '4-Factor PCC (Kcentra) 2000 units IVPB (institutional protocol) or 50 IU/kg (max 5000 IU)',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Andexxa (andexanet alfa) is NOT recommended due to cost, availability, and thrombosis risk'
+                note: 'Andexxa (andexanet alfa) is NOT recommended due to cost, availability, and thrombosis risk. Consider PCC ONLY if no contraindications and Direct Xa Inhibitor screen elevated.'
               },
               monitoring: 'Anti-Xa level (calibrated for apixaban)'
             },
@@ -2688,9 +2688,9 @@ Clinician Name`;
               thrombolysisThreshold: '48 hours since last dose',
               thrombolysisNote: 'Consider anti-Xa level if <48h - thrombolysis may be given if anti-Xa <30 ng/mL',
               ichReversal: {
-                primary: '4-Factor PCC (Kcentra) 50 IU/kg (max 5000 IU)',
+                primary: '4-Factor PCC (Kcentra) 2000 units IVPB (institutional protocol) or 50 IU/kg (max 5000 IU)',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Andexxa (andexanet alfa) is NOT recommended due to cost, availability, and thrombosis risk'
+                note: 'Andexxa (andexanet alfa) is NOT recommended due to cost, availability, and thrombosis risk. Consider PCC ONLY if no contraindications and Direct Xa Inhibitor screen elevated.'
               },
               monitoring: 'Anti-Xa level (calibrated for rivaroxaban)'
             },
@@ -3529,7 +3529,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
-              medications: ['Vitamin K 10 mg IV over 20 min', '4F-PCC (KCentra) 25-50 IU/kg based on INR'],
+              medications: ['Vitamin K 10 mg IV over 20 min', '4F-PCC (KCentra) 2000 units IVPB (institutional) or 25-50 IU/kg based on INR (AHA)'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
