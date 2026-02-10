@@ -9030,7 +9030,21 @@ Clinician Name`;
               { name: 'WFNS Scale', keywords: ['wfns', 'world federation', 'neurosurgical', 'sah', 'subarachnoid'], tab: 'management', subTab: 'calculators' },
               { name: 'HAS-BLED Score', keywords: ['hasbled', 'has-bled', 'bleeding', 'risk', 'anticoagulation'], tab: 'management', subTab: 'calculators' },
               { name: 'RCVS² Score', keywords: ['rcvs', 'rcvs2', 'vasoconstriction', 'thunderclap', 'headache'], tab: 'management', subTab: 'calculators' },
-              { name: 'Blood Pressure Management', keywords: ['bp', 'blood pressure', 'labetalol', 'nicardipine'], tab: 'management', subTab: 'ischemic' }
+              { name: 'Blood Pressure Management', keywords: ['bp', 'blood pressure', 'labetalol', 'nicardipine'], tab: 'management', subTab: 'ischemic' },
+              { name: 'SAH Management', keywords: ['sah', 'subarachnoid', 'aneurysm', 'nimodipine', 'vasospasm'], tab: 'management', subTab: 'sah' },
+              { name: 'TIA Management', keywords: ['tia', 'transient ischemic', 'abcd2', 'dual antiplatelet'], tab: 'management', subTab: 'tia' },
+              { name: 'CVT Management', keywords: ['cvt', 'cerebral venous', 'sinus thrombosis', 'venous'], tab: 'management', subTab: 'cvt' },
+              { name: 'Seizure Management', keywords: ['seizure', 'epilepsy', 'levetiracetam', 'keppra', 'prophylaxis'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Dysphagia Screening', keywords: ['dysphagia', 'swallow', 'swallowing', 'aspiration', 'npo'], tab: 'encounter' },
+              { name: 'Contraindication Checklist', keywords: ['contraindication', 'exclusion', 'tnk', 'thrombolysis', 'checklist'], tab: 'encounter' },
+              { name: 'Door-to-Needle Timer', keywords: ['dtn', 'door to needle', 'time', 'timer', 'workflow'], tab: 'encounter' },
+              { name: 'CrCl Calculator', keywords: ['crcl', 'creatinine clearance', 'cockcroft', 'gault', 'renal'], tab: 'management', subTab: 'calculators' },
+              { name: 'Enoxaparin Dosing', keywords: ['enoxaparin', 'lovenox', 'lmwh', 'dvt', 'vte'], tab: 'management', subTab: 'calculators' },
+              { name: 'Andexanet Dosing', keywords: ['andexanet', 'andexxa', 'reversal', 'factor xa'], tab: 'management', subTab: 'calculators' },
+              { name: 'ICH Volume (ABC/2)', keywords: ['ich volume', 'abc', 'hematoma', 'volume'], tab: 'management', subTab: 'calculators' },
+              { name: 'Contrast Allergy Protocol', keywords: ['contrast', 'allergy', 'premedication', 'ct angiography'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Posterior Circulation Stroke', keywords: ['posterior', 'basilar', 'vertebral', 'cerebellar'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Transfer Checklist', keywords: ['transfer', 'spoke', 'hub', 'transport'], tab: 'encounter' }
             ];
 
             searchableItems.forEach(item => {
@@ -9088,7 +9102,7 @@ Clinician Name`;
             });
 
             results.sort((a, b) => (b.score || 0) - (a.score || 0));
-            setSearchResults(results.slice(0, 10)); // Limit to 10 results
+            setSearchResults(results.slice(0, 15));
           };
 
           const CLEAR_UNDO_WINDOW_MS = 30000;
@@ -9679,13 +9693,14 @@ Clinician Name`;
               aspectsScore,
               nihssScore,
               mrsScore,
+              gcsScore: calculateGCS(gcsItems),
               hoursFromLKW,
               lkwTime
             };
 
             const results = evaluateAllTrials(evaluationData);
             setTrialEligibility(results);
-          }, [telestrokeNote, strokeCodeForm, aspectsScore, nihssScore, mrsScore, lkwTime]);
+          }, [telestrokeNote, strokeCodeForm, aspectsScore, nihssScore, mrsScore, gcsItems, lkwTime]);
 
           // Monitor scroll position for Part 6 (Treatment Decision) visibility
 
