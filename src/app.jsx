@@ -1992,12 +1992,20 @@ Clinician Name`;
             };
           }, []);
 
+          // Auto-route management sub-tab when diagnosis changes
+          useEffect(() => {
+            const cat = telestrokeNote.diagnosisCategory;
+            if (cat && MANAGEMENT_SUBTABS.includes(cat)) {
+              setManagementSubTab(cat);
+            }
+          }, [telestrokeNote.diagnosisCategory]);
+
           // Keyboard shortcuts
           useEffect(() => {
             const handler = (e) => {
               // Ctrl+1-4 for tab switching
               if (e.ctrlKey && !e.shiftKey && !e.altKey) {
-                const tabMap = { '1': 'encounter', '2': 'management', '3': 'note', '4': 'communication' };
+                const tabMap = { '1': 'encounter', '2': 'management', '3': 'trials' };
                 if (tabMap[e.key]) {
                   e.preventDefault();
                   setActiveTab(tabMap[e.key]);
@@ -6571,7 +6579,7 @@ Clinician Name`;
                 e.preventDefault();
                 const note = generateTelestrokeNote();
                 if (note) {
-                  navigator.clipboard.writeText(note);
+                  navigator.clipboard.writeText(note).catch(() => {});
                   addToast('Consult note copied', 'success');
                 }
                 return;
@@ -7044,6 +7052,8 @@ Clinician Name`;
               setCopiedText(label);
               setTimeout(() => setCopiedText(''), 2000);
               addToast(`${label} copied to clipboard`, 'success');
+            }).catch(() => {
+              addToast('Clipboard unavailable — try again', 'error');
             });
           };
 
@@ -12227,7 +12237,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <button
                                 onClick={() => {
                                   const note = buildSmartNote();
-                                  navigator.clipboard.writeText(note);
+                                  navigator.clipboard.writeText(note).catch(() => {});
                                   setCopiedText('smart-note');
                                   setTimeout(() => setCopiedText(''), 2000);
                                 }}
@@ -12246,7 +12256,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           <button
                             onClick={() => {
                               const note = generateTelestrokeNote();
-                              navigator.clipboard.writeText(note);
+                              navigator.clipboard.writeText(note).catch(() => {});
                               setCopiedText('telephone-note');
                               setTimeout(() => setCopiedText(''), 2000);
                             }}
@@ -12286,7 +12296,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 if (lkwTime) hpi += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
                                 if (telestrokeNote.medications) hpi += `Medications: ${telestrokeNote.medications}\n`;
                                 if (telestrokeNote.lastDOACType) hpi += `Anticoag: ${telestrokeNote.lastDOACType}${telestrokeNote.lastDOACDose ? `, last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()}` : ''}\n`;
-                                navigator.clipboard.writeText(hpi);
+                                navigator.clipboard.writeText(hpi).catch(() => {});
                                 setCopiedText('tel-hpi'); setTimeout(() => setCopiedText(''), 2000);
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-hpi' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
@@ -12299,7 +12309,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 let exam = `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
                                 if (telestrokeNote.nihssDetails) exam += ` (${telestrokeNote.nihssDetails})`;
                                 exam += `\nBP: ${telestrokeNote.presentingBP || 'N/A'}, Glucose: ${telestrokeNote.glucose || 'N/A'}, INR: ${telestrokeNote.inr || 'N/A'}, Plt: ${telestrokeNote.plateletCount || 'N/A'}`;
-                                navigator.clipboard.writeText(exam);
+                                navigator.clipboard.writeText(exam).catch(() => {});
                                 setCopiedText('tel-exam'); setTimeout(() => setCopiedText(''), 2000);
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-exam' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
@@ -12314,7 +12324,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 mdm += `EVT: ${telestrokeNote.evtRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
                                 if (telestrokeNote.rationale) mdm += `Rationale: ${telestrokeNote.rationale}\n`;
                                 if (telestrokeNote.disposition) mdm += `Disposition: ${telestrokeNote.disposition}\n`;
-                                navigator.clipboard.writeText(mdm);
+                                navigator.clipboard.writeText(mdm).catch(() => {});
                                 setCopiedText('tel-mdm'); setTimeout(() => setCopiedText(''), 2000);
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-mdm' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
@@ -12327,7 +12337,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           {(
                           <button
                             onClick={() => {
-                              navigator.clipboard.writeText(generateFollowUpBrief());
+                              navigator.clipboard.writeText(generateFollowUpBrief()).catch(() => {});
                               setCopiedText('tel-followup'); setTimeout(() => setCopiedText(''), 2000);
                             }}
                             className={`w-full mt-2 px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-followup' ? 'bg-emerald-600 text-white' : 'bg-blue-100 text-blue-800 hover:bg-blue-200 border border-blue-300'}`}
@@ -14226,7 +14236,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 </div>
                                 <button onClick={() => {
                                   const consentDoc = `EVT CONSENT DOCUMENTATION:\nMechanical thrombectomy was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${telestrokeNote.nihss || nihssScore || '***'}, vessel occlusion: ${(telestrokeNote.vesselOcclusion || []).join(', ') || '***'}).\nRisks discussed: intracranial hemorrhage (~5-6%), vessel injury, anesthesia complications, and the possibility that the procedure may not be successful.\nBenefits discussed: significantly improved chance of functional independence (NNT 3-4 based on pivotal trials).\nAlternatives discussed: medical management alone (associated with worse outcomes in setting of LVO).\nConsent: ${(telestrokeNote.consentKit || {}).evtConsentType === 'informed-consent' ? 'Informed consent obtained from patient/family' : (telestrokeNote.consentKit || {}).evtConsentType === 'presumed' ? 'Presumed consent — patient unable to provide consent, no surrogate available, treatment in best interest' : (telestrokeNote.consentKit || {}).evtConsentType === 'surrogate' ? 'Consent obtained from surrogate/family member' : (telestrokeNote.consentKit || {}).evtConsentType === 'declined' ? 'Patient/family declined after informed discussion' : '***'}`;
-                                  navigator.clipboard.writeText(consentDoc);
+                                  navigator.clipboard.writeText(consentDoc).catch(() => {});
                                   setCopiedText('evt-consent'); setTimeout(() => setCopiedText(''), 2000);
                                 }}
                                   className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'evt-consent' ? 'bg-emerald-600 text-white' : 'bg-orange-600 text-white hover:bg-orange-700'}`}>
@@ -14255,7 +14265,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 </label>
                                 <button onClick={() => {
                                   const transferDoc = `TNK CONSENT DOCUMENTATION:\nTenecteplase was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'}.\nTreatment window: within 4.5 hours of LKW (or mismatch imaging criteria for extended window).\nRisks discussed: symptomatic intracranial hemorrhage (up to 4%), allergic reaction (rare).\nBenefits discussed: improved chance of recovery without disability; earlier treatment provides greater benefit.\nAlternatives discussed: no thrombolytic treatment (associated with higher risk of disability).\nConsent: ${telestrokeNote.patientFamilyConsent ? 'Patient/family consent obtained' : telestrokeNote.presumedConsent ? 'Presumed consent — treatment in best interest' : '***'}\n\nTRANSFER DOCUMENTATION:\nPatient being transferred to comprehensive stroke center for ${telestrokeNote.evtRecommended ? 'mechanical thrombectomy evaluation and ' : ''}higher level of care.\nTransfer rationale: ${telestrokeNote.transferRationale || '***'}\nTransfer consent: ${(telestrokeNote.consentKit || {}).transferConsentDiscussed ? 'Discussed with patient/family' : 'Pending discussion'}`;
-                                  navigator.clipboard.writeText(transferDoc);
+                                  navigator.clipboard.writeText(transferDoc).catch(() => {});
                                   setCopiedText('transfer-consent'); setTimeout(() => setCopiedText(''), 2000);
                                 }}
                                   className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'transfer-consent' ? 'bg-emerald-600 text-white' : 'bg-sky-600 text-white hover:bg-sky-700'}`}>
@@ -14269,7 +14279,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             {telestrokeNote.tnkRecommended && telestrokeNote.tnkConsentDiscussed && !telestrokeNote.evtRecommended && !telestrokeNote.transferAccepted && (
                               <button onClick={() => {
                                 const tnkDoc = `TNK CONSENT DOCUMENTATION:\nTenecteplase was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${telestrokeNote.nihss || nihssScore || '***'}).\nTreatment window: within 4.5 hours of LKW (or mismatch imaging criteria for extended window).\nRisks discussed: symptomatic intracranial hemorrhage (up to 4%), allergic reaction (rare).\nBenefits discussed: improved chance of recovery without disability; earlier treatment provides greater benefit.\nAlternatives discussed: no thrombolytic treatment (associated with higher risk of disability).\nConsent: ${telestrokeNote.patientFamilyConsent ? 'Patient/family consent obtained' : telestrokeNote.presumedConsent ? 'Presumed consent — treatment in best interest' : '***'}`;
-                                navigator.clipboard.writeText(tnkDoc);
+                                navigator.clipboard.writeText(tnkDoc).catch(() => {});
                                 setCopiedText('tnk-consent'); setTimeout(() => setCopiedText(''), 2000);
                               }}
                                 className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'tnk-consent' ? 'bg-emerald-600 text-white' : 'bg-purple-600 text-white hover:bg-purple-700'}`}>
@@ -15315,7 +15325,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   <button onClick={() => {
                                     const workupText = `ETIOLOGY WORKUP PLAN (${toast === 'large-artery' ? 'Large Artery Atherosclerosis' : toast === 'cardioembolism' ? 'Cardioembolism' : toast === 'small-vessel' ? 'Small Vessel' : toast === 'other-determined' ? 'Other Determined' : 'Cryptogenic/ESUS'}):\n` +
                                       tests.map(t => `${completed[t.key] ? '[x]' : '[ ]'} ${t.label} — ${t.reason}`).join('\n');
-                                    navigator.clipboard.writeText(workupText);
+                                    navigator.clipboard.writeText(workupText).catch(() => {});
                                     setCopiedText('workup-plan'); setTimeout(() => setCopiedText(''), 2000);
                                   }}
                                     className={`w-full mt-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'workup-plan' ? 'bg-emerald-600 text-white' : 'bg-blue-600 text-white hover:bg-blue-700'}`}>
@@ -18228,7 +18238,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     if (reason === null) return;
                                     const note = buildTransferDecisionText('accept', reason || '');
                                     setTelestrokeNote({ ...telestrokeNote, transferAccepted: true, transferRationale: note });
-                                    navigator.clipboard.writeText(note);
+                                    navigator.clipboard.writeText(note).catch(() => {});
                                     addToast('Transfer acceptance copied', 'success');
                                   }}
                                   className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700"
@@ -18251,7 +18261,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     if (!reason) return;
                                     const note = buildTransferDecisionText('decline', String(reason));
                                     setTelestrokeNote({ ...telestrokeNote, transferAccepted: false, transferRationale: note });
-                                    navigator.clipboard.writeText(note);
+                                    navigator.clipboard.writeText(note).catch(() => {});
                                     addToast('Transfer decline copied', 'success');
                                   }}
                                   className="px-3 py-2 bg-red-600 text-white rounded-lg text-xs font-semibold hover:bg-red-700"
@@ -18308,7 +18318,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <button
                                 onClick={() => {
                                   const note = generateTelestrokeNote();
-                                  navigator.clipboard.writeText(note);
+                                  navigator.clipboard.writeText(note).catch(() => {});
                                   setCopiedText('encounter-note');
                                   setTimeout(() => setCopiedText(''), 2000);
                                 }}
@@ -18326,7 +18336,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <button
                                 onClick={() => {
                                   const note = buildSmartNote();
-                                  navigator.clipboard.writeText(note);
+                                  navigator.clipboard.writeText(note).catch(() => {});
                                   setCopiedText('smart-note-encounter');
                                   setTimeout(() => setCopiedText(''), 2000);
                                 }}
@@ -18353,7 +18363,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 if (lkwTime) hpi += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
                                 if (telestrokeNote.medications) hpi += `Medications: ${telestrokeNote.medications}\n`;
                                 if (telestrokeNote.lastDOACType) hpi += `Anticoag: ${telestrokeNote.lastDOACType}${telestrokeNote.lastDOACDose ? `, last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()}` : ''}\n`;
-                                navigator.clipboard.writeText(hpi);
+                                navigator.clipboard.writeText(hpi).catch(() => {});
                                 setCopiedText('vid-hpi'); setTimeout(() => setCopiedText(''), 2000);
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-hpi' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
@@ -18369,7 +18379,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 exam += `\n\nIMAGING:\nCT Head: ${telestrokeNote.ctResults || 'N/A'}\nCTA: ${telestrokeNote.ctaResults || 'N/A'}`;
                                 if (telestrokeNote.ctpResults) exam += `\nCTP: ${telestrokeNote.ctpResults}`;
                                 if (aspectsScore) exam += `\nASPECTS: ${aspectsScore}`;
-                                navigator.clipboard.writeText(exam);
+                                navigator.clipboard.writeText(exam).catch(() => {});
                                 setCopiedText('vid-exam'); setTimeout(() => setCopiedText(''), 2000);
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-exam' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
@@ -18385,7 +18395,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 if (telestrokeNote.rationale) mdm += `Rationale: ${telestrokeNote.rationale}\n`;
                                 if (telestrokeNote.disposition) mdm += `Disposition: ${telestrokeNote.disposition}\n`;
                                 if (telestrokeNote.recommendationsText) mdm += `\n${telestrokeNote.recommendationsText}`;
-                                navigator.clipboard.writeText(mdm);
+                                navigator.clipboard.writeText(mdm).catch(() => {});
                                 setCopiedText('vid-mdm'); setTimeout(() => setCopiedText(''), 2000);
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-mdm' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
@@ -18398,7 +18408,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           {(
                           <button
                             onClick={() => {
-                              navigator.clipboard.writeText(generateFollowUpBrief());
+                              navigator.clipboard.writeText(generateFollowUpBrief()).catch(() => {});
                               setCopiedText('vid-followup'); setTimeout(() => setCopiedText(''), 2000);
                             }}
                             className={`w-full mb-3 px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-followup' ? 'bg-emerald-600 text-white' : 'bg-blue-100 text-blue-800 hover:bg-blue-200 border border-blue-300'}`}
@@ -18842,7 +18852,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           type="button"
                           onClick={() => {
                             const summary = buildHandoffSummary();
-                            navigator.clipboard.writeText(summary);
+                            navigator.clipboard.writeText(summary).catch(() => {});
                             setCopiedText('handoff-summary');
                             setTimeout(() => setCopiedText(''), 2000);
                           }}
@@ -19063,7 +19073,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   <button
                                     onClick={() => {
                                       const text = b.label + '\n' + b.orders.map(o => '- ' + o).join('\n');
-                                      navigator.clipboard.writeText(text);
+                                      navigator.clipboard.writeText(text).catch(() => {});
                                       setCopiedText('bundle-' + b.id);
                                       setTimeout(() => setCopiedText(''), 2000);
                                     }}
@@ -23294,8 +23304,25 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       </div>
                     </div>
 
+                    {/* References TOC */}
+                    <div className="flex flex-wrap gap-1.5">
+                      {[
+                        ['ref-hints', 'HINTS Exam'],
+                        ['ref-cvt', 'CVT'],
+                        ['ref-prognosis', 'Prognosis'],
+                        ['ref-pearls', 'Clinical Pearls'],
+                        ['ref-pitfalls', 'Pitfalls'],
+                        ['ref-imaging', 'Imaging F/U'],
+                        ['ref-mimics', 'Mimics DDx'],
+                        ['ref-orders', 'Admission Orders'],
+                        ['ref-guidelines', 'Guidelines'],
+                      ].map(([id, label]) => (
+                        <button key={id} onClick={() => { const el = document.getElementById(id); if (el) { if (el.tagName === 'DETAILS') el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}} className="px-2.5 py-1 text-xs font-medium bg-slate-100 hover:bg-blue-100 text-slate-700 hover:text-blue-700 rounded-full border border-slate-200 hover:border-blue-300 transition-colors">{label}</button>
+                      ))}
+                    </div>
+
                     {/* HINTS Exam Protocol */}
-                    <details className="bg-white border border-violet-200 rounded-lg">
+                    <details id="ref-hints" className="bg-white border border-violet-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-violet-800 hover:bg-violet-50 rounded-lg flex items-center gap-2">
                         <i data-lucide="eye" className="w-4 h-4 text-violet-600"></i>
                         HINTS Exam — Acute Vestibular Syndrome
@@ -23330,7 +23357,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                     {/* CVT Monitoring Parameters */}
-                    <details className="bg-white border border-teal-200 rounded-lg">
+                    <details id="ref-cvt" className="bg-white border border-teal-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-teal-800 hover:bg-teal-50 rounded-lg flex items-center gap-2">
                         <i data-lucide="activity" className="w-4 h-4 text-teal-600"></i>
                         CVT Monitoring Parameters
@@ -23379,7 +23406,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                     {/* Neuroprognostication Framework */}
-                    <details className="bg-white border border-rose-200 rounded-lg">
+                    <details id="ref-prognosis" className="bg-white border border-rose-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-rose-800 hover:bg-rose-50 rounded-lg flex items-center gap-2">
                         <i data-lucide="heart-pulse" className="w-4 h-4 text-rose-600"></i>
                         Neuroprognostication &amp; Goals of Care
@@ -23425,7 +23452,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                     {/* Clinical Pearls for Trainees */}
-                    <details className="bg-white border border-indigo-200 rounded-lg">
+                    <details id="ref-pearls" className="bg-white border border-indigo-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-indigo-800 hover:bg-indigo-50 rounded-lg flex items-center gap-2">
                         <i data-lucide="lightbulb" className="w-4 h-4 text-indigo-600"></i>
                         Clinical Pearls for Trainees
@@ -23479,7 +23506,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                     {/* Trainee Pitfalls — Common Mistakes */}
-                    <details className="bg-white border border-red-200 rounded-lg">
+                    <details id="ref-pitfalls" className="bg-white border border-red-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-red-800 hover:bg-red-50 rounded-lg flex items-center gap-2">
                         <i data-lucide="triangle-alert" className="w-4 h-4 text-red-600"></i>
                         Common Trainee Pitfalls
@@ -23550,7 +23577,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                     {/* Imaging Follow-Up Protocols */}
-                    <details className="bg-white border border-cyan-200 rounded-lg">
+                    <details id="ref-imaging" className="bg-white border border-cyan-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-cyan-800 hover:bg-cyan-50 rounded-lg flex items-center gap-2">
                         <i data-lucide="scan" className="w-4 h-4 text-cyan-600"></i>
                         Imaging Follow-Up Protocols by Diagnosis
@@ -23635,7 +23662,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                     {/* Stroke Mimic DDx Tool */}
-                    <details className="bg-white border border-orange-200 rounded-lg">
+                    <details id="ref-mimics" className="bg-white border border-orange-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-orange-800 hover:bg-orange-50 rounded-lg flex items-center gap-2">
                         <i data-lucide="shield-alert" className="w-4 h-4 text-orange-600"></i>
                         Stroke Mimic Differential Diagnosis
@@ -23676,7 +23703,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                     {/* Admission Order Checklists */}
-                    <details className="bg-white border border-emerald-200 rounded-lg">
+                    <details id="ref-orders" className="bg-white border border-emerald-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-emerald-800 hover:bg-emerald-50 rounded-lg flex items-center gap-2">
                         <i data-lucide="clipboard-list" className="w-4 h-4 text-emerald-600"></i>
                         Admission Order Checklists
@@ -23855,7 +23882,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     </details>
 
                     {/* Guideline Library */}
-                    <div className="bg-white border border-indigo-200 rounded-lg p-4">
+                    <div id="ref-guidelines" className="bg-white border border-indigo-200 rounded-lg p-4">
                       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <div>
                           <h3 className="text-lg font-semibold text-indigo-800">Guideline Library</h3>
@@ -25299,6 +25326,9 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       { keys: 'Ctrl + 1', action: 'Encounter tab' },
                       { keys: 'Ctrl + 2', action: 'Management tab' },
                       { keys: 'Ctrl + 3', action: 'Trials tab' },
+                      { keys: 'Ctrl+Shift+C', action: 'Copy consult note' },
+                      { keys: 'Ctrl + K', action: 'Toggle calculators' },
+                      { keys: 'Ctrl+Shift+F', action: 'Toggle focus mode' },
                       { keys: 'Esc', action: 'Close modal / dialog' },
                       { keys: '?', action: 'Toggle this help' }
                     ].map(({ keys, action }) => (
