@@ -7624,6 +7624,20 @@ Clinician Name`;
                 if (osmo.serumOsmolality) note += ` | Osm: ${osmo.serumOsmolality}`;
                 note += '\n';
               }
+              // Nutritional support
+              const nutri = telestrokeNote.nutritionalSupport || {};
+              if (nutri.feedingRoute) {
+                note += `- Nutrition: ${nutri.feedingRoute}`;
+                if (nutri.ngPlacementDay) note += ` (NG day ${nutri.ngPlacementDay})`;
+                if (nutri.pegConsiderationDay) note += ` | PEG consideration day ${nutri.pegConsiderationDay}`;
+                if (nutri.nutritionConsultOrdered) note += ' | Nutrition consult ordered';
+                note += '\n';
+              }
+              // Falls risk
+              const falls = telestrokeNote.fallsRisk || {};
+              if (falls.screenPerformed) {
+                note += `- Falls risk: ${falls.highRisk ? 'HIGH RISK' : 'standard risk'}${falls.preventionPlanInitiated ? ' — prevention plan initiated' : ''}${falls.balanceProgramReferral ? ', balance program referral' : ''}\n`;
+              }
               note += '\n';
               const dischMRS = (telestrokeNote.mrsAssessment || {}).discharge;
               note += `DISCHARGE NIHSS: ___\n`;
@@ -7640,7 +7654,13 @@ Clinician Name`;
               note += `- Stroke warning signs (BE-FAST)\n`;
               note += `- Medication compliance\n`;
               note += `- When to call 911\n`;
-              note += `- Driving restrictions per state law\n\n`;
+              const driving = telestrokeNote.drivingRestrictions || {};
+              if (driving.counselingProvided) {
+                note += `- Driving: restricted${driving.restrictionDuration ? ` x ${driving.restrictionDuration}` : ' per state law'}${driving.commercialDriver ? ' (COMMERCIAL DRIVER — DMV notification required)' : ''}${driving.drivingEvalReferral ? ' — driving eval referral placed' : ''}\n`;
+              } else {
+                note += `- Driving restrictions per state law\n`;
+              }
+              note += '\n';
               note += `RECOMMENDATIONS:\n${telestrokeNote.recommendationsText || '___'}\n`;
               return note;
             }
