@@ -1878,8 +1878,11 @@ Clinician Name`;
 
           const bpPhaseTargets = {
             'pre-tnk': { label: 'Pre-lysis', systolic: 185, diastolic: 110 },
+            'post-tnk': { label: 'Post-TNK', systolic: 180, diastolic: 105 },
             'post-evt': { label: 'Post-EVT', systolic: 180, diastolic: 105 },
-            'no-lytics': { label: 'No lytics/No EVT', systolic: 220, diastolic: 120 }
+            'no-lytics': { label: 'No lytics/No EVT', systolic: 220, diastolic: 120 },
+            'ich': { label: 'ICH', systolic: 140, diastolic: 90 },
+            'sah': { label: 'SAH', systolic: 160, diastolic: 105 }
           };
           const currentBpPhase = telestrokeNote.bpPhase || 'pre-tnk';
           const currentBpTarget = bpPhaseTargets[currentBpPhase] || bpPhaseTargets['pre-tnk'];
@@ -9135,6 +9138,23 @@ Clinician Name`;
             }
           }, [telestrokeNote.diagnosisCategory]);
 
+          // Auto-set BP phase based on diagnosis and treatment context
+          useEffect(() => {
+            const cat = telestrokeNote.diagnosisCategory;
+            if (cat === 'ich') {
+              setTelestrokeNote(prev => prev.bpPhase === 'ich' ? prev : { ...prev, bpPhase: 'ich' });
+            } else if (cat === 'sah') {
+              setTelestrokeNote(prev => prev.bpPhase === 'sah' ? prev : { ...prev, bpPhase: 'sah' });
+            }
+          }, [telestrokeNote.diagnosisCategory]);
+
+          // Auto-switch BP phase to post-TNK when TNK is administered
+          useEffect(() => {
+            if (telestrokeNote.tnkRecommended && telestrokeNote.bpPhase === 'pre-tnk') {
+              setTelestrokeNote(prev => ({ ...prev, bpPhase: 'post-tnk' }));
+            }
+          }, [telestrokeNote.tnkRecommended]);
+
           useEffect(() => {
             debouncedSave('telestrokeTemplate', editableTemplate);
           }, [editableTemplate]);
@@ -9648,7 +9668,7 @@ Clinician Name`;
             if (isMounted) {
               lucide.createIcons();
             }
-          }, [activeTab, copiedText, darkMode, notice, searchOpen, actionsOpen, isMounted, focusMode, managementSubTab]);
+          }, [activeTab, copiedText, darkMode, notice, searchOpen, actionsOpen, isMounted, focusMode, managementSubTab, calcDrawerOpen, protocolModal, encounterPhase]);
 
           // Documentation generation functions
           const generateHPI = () => {
@@ -9674,36 +9694,78 @@ ${telestrokeNote.evtRecommended ? `EVT: Recommended` : 'EVT: Not Recommended'}`;
 
           const generateAdmissionOrders = () => {
             const nihssDisplay = telestrokeNote.nihss || nihssScore || '__';
+            const receivedTNK = !!telestrokeNote.tnkRecommended;
+            const receivedEVT = !!telestrokeNote.evtRecommended;
+            const diagCat = telestrokeNote.diagnosisCategory;
+            const tnkDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
 
-            return `ACUTE STROKE ADMISSION ORDERS:
+            const vitals = receivedTNK
+              ? 'Neuro checks + BP q15min x 2h, then q30min x 6h, then q1h x 16h'
+              : receivedEVT
+              ? 'Neuro checks q1h x 24h; groin checks q15min x 4h, q30min x 4h, then q1h'
+              : diagCat === 'ich'
+              ? 'Neuro checks + VS q1h x 24h, then q2h'
+              : diagCat === 'sah'
+              ? 'Neuro checks q1h x 14 days; VS q1h'
+              : 'Vital signs q1h x 24h, then q4h';
 
-1. Admit to Stroke Unit / Neuro ICU
-2. Vital signs q1h x 24h, then q4h
+            const bpTarget = receivedTNK ? 'SBP <180, DBP <105 x 24h'
+              : receivedEVT ? 'SBP <180, DBP <105 (avoid SBP <140)'
+              : diagCat === 'ich' ? 'SBP <140 (target 130-150 if presenting SBP 150-220)'
+              : diagCat === 'sah' ? 'SBP <160 until aneurysm secured'
+              : 'SBP <220, DBP <120 (if no thrombolysis)';
+
+            const antiplatelet = receivedTNK
+              ? `Aspirin 325mg LOAD then 81mg daily — HOLD x 24h post-TNK${tnkDose ? ` (TNK ${tnkDose.calculatedDose} mg given)` : ''}`
+              : diagCat === 'ich' ? 'Hold antiplatelets — discuss restart timing with attending'
+              : 'Aspirin 325mg LOAD, then 81mg daily';
+
+            const dvt = receivedTNK
+              ? 'DVT prophylaxis: SCDs now; hold SQ heparin/enoxaparin x 24h post-TNK + CT clear'
+              : diagCat === 'ich'
+              ? 'DVT prophylaxis: IPC immediately; SQ heparin after 24-48h if hematoma stable on repeat CT'
+              : diagCat === 'sah'
+              ? 'DVT prophylaxis: SCDs until aneurysm secured, then SQ heparin'
+              : 'DVT prophylaxis: SCDs on admission; enoxaparin 40mg SC daily';
+
+            const callCriteria = receivedTNK
+              ? `\nCALL CRITERIA (POST-TNK):
+- NIHSS increase >=4 points
+- New headache, acute hypertension, nausea/vomiting
+- Orolingual swelling (angioedema)
+- Any bleeding (groin, GI, GU, mucosal)
+- SBP >180 or DBP >105 despite treatment`
+              : '';
+
+            return `ACUTE STROKE ADMISSION ORDERS:${diagCat === 'ich' ? ' (ICH)' : diagCat === 'sah' ? ' (SAH)' : receivedTNK ? ' (POST-TNK)' : ''}
+
+1. Admit to ${diagCat === 'sah' || diagCat === 'ich' ? 'Neuro ICU' : 'Stroke Unit / Neuro ICU'}
+2. ${vitals}
 3. Continuous telemetry monitoring
 4. NPO until swallow evaluation completed
 5. IV fluids: NS at 75 mL/hr
-6. Maintain SBP <180/105 (avoid SBP <140 after successful EVT)
-7. Blood glucose 140-180 mg/dL
+6. BP target: ${bpTarget}
+7. Blood glucose 140-180 mg/dL (avoid hypoglycemia <70)
 8. HOB elevated 30 degrees
-9. DVT prophylaxis: SCDs (hold pharmacologic if tPA given)
-10. Aspirin 325mg LOAD, then 81mg daily (hold x 24h if tPA given; avoid IV aspirin within 90 min of IVT start)
-11. Statin therapy: Atorvastatin 80mg daily
-12. Neurology consultation
+9. ${dvt}
+10. ${antiplatelet}
+11. Statin therapy: Atorvastatin 80mg daily${diagCat === 'ich' ? ' (consider holding acutely)' : ''}
+12. ${diagCat === 'sah' ? 'Nimodipine 60mg PO/NG q4h x 21 days' : 'Neurology consultation'}
 13. PT/OT/Speech evaluation
-14. Fall precautions
+14. Fall precautions${diagCat === 'sah' ? '\n15. Neurosurgery consultation' : ''}
 
 LABS:
 - CBC, CMP, PT/INR, PTT
 - Lipid panel, HbA1c
-- Troponin, BNP
+- Troponin, BNP${receivedTNK ? '\n- Repeat CBC, INR, fibrinogen at 24h post-TNK' : ''}${diagCat === 'ich' ? '\n- Repeat PT/INR if on anticoagulant' : ''}
 - Consider: ESR, CRP if indicated
 
 IMAGING:
-- MRI brain with DWI if not already done
-- Carotid ultrasound
+- ${receivedTNK ? 'Repeat CT head at 24h post-TNK (or sooner if clinical decline)' : diagCat === 'ich' ? 'Repeat CT head at 6h and 24h (or sooner if decline)' : 'MRI brain with DWI if not already done'}
+- ${diagCat === 'sah' ? 'CTA for aneurysm localization' : 'Carotid ultrasound'}
 - Echocardiogram (TTE or TEE)
-
-NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
+${callCriteria}
+NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : 'q4h x 24h, then daily'}`;
           };
 
           // Keyboard shortcuts
@@ -9907,7 +9969,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     <div className="flex items-start gap-2">
                       {icon && <i data-lucide={icon} className={`w-4 h-4 mt-0.5 ${toneStyles.icon}`}></i>}
                       <div>
-                        <p className="text-[10px] uppercase tracking-wide text-slate-400 font-semibold">{index}</p>
+                        <p className="text-[10px] uppercase tracking-wide text-slate-500 font-semibold">{index}</p>
                         <h4 className={`text-sm font-semibold ${toneStyles.text}`}>{title}</h4>
                       </div>
                     </div>
@@ -9952,7 +10014,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
               <div className="flex flex-col items-center">
                 <div className="h-4 w-px bg-slate-300"></div>
                 <i data-lucide={direction === 'right' ? 'arrow-right' : 'arrow-down'} className="w-4 h-4"></i>
-                {label && <span className="text-[10px] uppercase tracking-wide text-slate-400 mt-1">{label}</span>}
+                {label && <span className="text-[10px] uppercase tracking-wide text-slate-500 mt-1">{label}</span>}
               </div>
             </div>
           );
@@ -9973,7 +10035,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                   <polygon points="292,10 284,4 284,16" fill={toneStyles.stroke} />
                 </svg>
                 {(leftLabel || rightLabel) && (
-                  <div className="w-full max-w-md grid grid-cols-2 text-[10px] uppercase tracking-wide text-slate-400">
+                  <div className="w-full max-w-md grid grid-cols-2 text-[10px] uppercase tracking-wide text-slate-500">
                     <span className="text-left">{leftLabel || ''}</span>
                     <span className="text-right">{rightLabel || ''}</span>
                   </div>
@@ -10329,10 +10391,10 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       ) : null}
                     </div>
                     <div className="flex items-center gap-1">
-                      <button onClick={toggleAlertMute} className="p-2 rounded-full hover:bg-white/20 transition-colors" title={alertsMuted ? 'Unmute' : 'Mute'}>
+                      <button onClick={toggleAlertMute} className="p-2 rounded-full hover:bg-white/20 transition-colors" title={alertsMuted ? 'Unmute' : 'Mute'} aria-label={alertsMuted ? 'Unmute alerts' : 'Mute alerts'}>
                         <i data-lucide={alertsMuted ? 'volume-x' : 'volume-2'} className="w-4 h-4"></i>
                       </button>
-                      <button onClick={() => setFocusMode(prev => !prev)} className={`p-2 rounded-full hover:bg-white/20 transition-colors ${focusMode ? 'bg-white/20' : ''}`} title={focusMode ? 'Exit focus mode' : 'Focus mode'}>
+                      <button onClick={() => setFocusMode(prev => !prev)} className={`p-2 rounded-full hover:bg-white/20 transition-colors ${focusMode ? 'bg-white/20' : ''}`} title={focusMode ? 'Exit focus mode' : 'Focus mode'} aria-label={focusMode ? 'Exit focus mode' : 'Enter focus mode'}>
                         <i data-lucide={focusMode ? 'minimize-2' : 'maximize-2'} className="w-4 h-4"></i>
                       </button>
                     </div>
@@ -14554,7 +14616,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   return (
                                     <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-4 border-2 border-purple-300">
                                       <h5 className="font-bold text-purple-900 mb-3 flex items-center gap-2">
-                                        <i data-lucide="bar-chart-2" className="w-4 h-4"></i>
+                                        <i data-lucide="chart-column" className="w-4 h-4"></i>
                                         Calculated Intervals
                                       </h5>
                                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -18531,6 +18593,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   onClick={() => setTimerSidebarCollapsed(!timerSidebarCollapsed)}
                                   className="font-bold text-lg text-blue-900 flex items-center gap-2 hover:text-blue-700 transition-colors"
                                   title={timerSidebarCollapsed ? 'Expand timer' : 'Collapse timer'}
+                                  aria-label={timerSidebarCollapsed ? 'Expand treatment timer' : 'Collapse treatment timer'}
                                 >
                                   <i data-lucide={timerSidebarCollapsed ? 'chevron-right' : 'chevron-down'} className="w-4 h-4"></i>
                                   <i data-lucide="clock" className="w-5 h-5"></i>
@@ -18551,6 +18614,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                         : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
                                     }`}
                                     title={alertsMuted ? 'Unmute alerts' : 'Mute alerts'}
+                                    aria-label={alertsMuted ? 'Unmute alerts' : 'Mute alerts'}
                                   >
                                     {alertsMuted ? (
                                       <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -20631,6 +20695,44 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </ul>
                             <p className="text-xs text-slate-500 mt-2">Use the BP Management section and Nursing Flowsheet Generator for targets and monitoring cadence.</p>
                           </div>
+                          <details className="mt-3 bg-white border border-red-200 rounded-lg">
+                            <summary className="cursor-pointer p-3 text-sm font-semibold text-red-800 hover:bg-red-50 rounded-lg">
+                              Groin Complication Recognition
+                            </summary>
+                            <div className="p-3 pt-0 space-y-2">
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
+                                <div className="bg-red-50 p-2 rounded border border-red-100">
+                                  <h5 className="font-semibold text-red-800 mb-1">Expanding Hematoma</h5>
+                                  <ul className="text-slate-700 space-y-0.5">
+                                    <li>- Firm, expanding groin mass</li>
+                                    <li>- Pain disproportionate to exam</li>
+                                    <li>- Apply direct pressure 20 min</li>
+                                    <li>- Call IR if not controlled</li>
+                                  </ul>
+                                </div>
+                                <div className="bg-amber-50 p-2 rounded border border-amber-100">
+                                  <h5 className="font-semibold text-amber-800 mb-1">Pseudoaneurysm</h5>
+                                  <ul className="text-slate-700 space-y-0.5">
+                                    <li>- Pulsatile mass + bruit</li>
+                                    <li>- Confirm with duplex US</li>
+                                    <li>- Thrombin injection or surgery</li>
+                                    <li>- Avoid anticoag until resolved</li>
+                                  </ul>
+                                </div>
+                                <div className="bg-purple-50 p-2 rounded border border-purple-100">
+                                  <h5 className="font-semibold text-purple-800 mb-1">Retroperitoneal Bleed</h5>
+                                  <ul className="text-slate-700 space-y-0.5">
+                                    <li>- Back/flank/abdominal pain</li>
+                                    <li>- Unexplained tachycardia/hypotension</li>
+                                    <li>- Dropping hemoglobin</li>
+                                    <li>- CT abdomen/pelvis with contrast</li>
+                                    <li>- STAT call IR + vascular surgery</li>
+                                  </ul>
+                                </div>
+                              </div>
+                              <p className="text-xs text-red-700 font-medium">Call interventional radiology STAT if: expanding hematoma despite 20 min pressure, hemodynamic instability, or suspected retroperitoneal bleed.</p>
+                            </div>
+                          </details>
                         </div>
 
                         <div id="isch-mevo" className="bg-slate-50 border border-slate-300 rounded-lg p-4">
@@ -21904,7 +22006,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     value={ichVolumeParams.a}
                                     onChange={(e) => setIchVolumeParams({...ichVolumeParams, a: e.target.value})}
                                   />
-                                  <span className="absolute right-3 top-2 text-xs text-slate-400 font-medium">cm</span>
+                                  <span className="absolute right-3 top-2 text-xs text-slate-500 font-medium">cm</span>
                                 </div>
                               </div>
                               <div className="space-y-1">
@@ -21917,7 +22019,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     value={ichVolumeParams.b}
                                     onChange={(e) => setIchVolumeParams({...ichVolumeParams, b: e.target.value})}
                                   />
-                                  <span className="absolute right-3 top-2 text-xs text-slate-400 font-medium">cm</span>
+                                  <span className="absolute right-3 top-2 text-xs text-slate-500 font-medium">cm</span>
                                 </div>
                               </div>
                             </div>
@@ -21933,7 +22035,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     value={ichVolumeParams.thicknessMm}
                                     onChange={(e) => setIchVolumeParams({...ichVolumeParams, thicknessMm: e.target.value})}
                                   />
-                                  <span className="absolute right-3 top-2 text-xs text-slate-400 font-medium">mm</span>
+                                  <span className="absolute right-3 top-2 text-xs text-slate-500 font-medium">mm</span>
                                 </div>
                               </div>
                               <div className="space-y-1">
@@ -21946,7 +22048,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     value={ichVolumeParams.numSlices}
                                     onChange={(e) => setIchVolumeParams({...ichVolumeParams, numSlices: e.target.value})}
                                   />
-                                  <span className="absolute right-3 top-2 text-xs text-slate-400 font-medium">#</span>
+                                  <span className="absolute right-3 top-2 text-xs text-slate-500 font-medium">#</span>
                                 </div>
                               </div>
                             </div>
@@ -23317,8 +23419,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   <div key={i} className={`flex items-center justify-between p-2 rounded text-xs ${item.auto ? 'bg-white border border-slate-200' : 'bg-slate-50 border border-dashed border-slate-300'}`}>
                                     <span className="text-slate-700">{item.label}</span>
                                     <div className="flex items-center gap-2">
-                                      <span className={`font-mono text-xs ${item.auto ? 'text-purple-600' : 'text-slate-400'}`}>{item.points}</span>
-                                      {item.auto ? <span className="text-emerald-600 text-[10px]">auto</span> : <span className="text-slate-400 text-[10px]">manual</span>}
+                                      <span className={`font-mono text-xs ${item.auto ? 'text-purple-600' : 'text-slate-500'}`}>{item.points}</span>
+                                      {item.auto ? <span className="text-emerald-600 text-[10px]">auto</span> : <span className="text-slate-500 text-[10px]">manual</span>}
                                     </div>
                                   </div>
                                 ))}
@@ -25298,7 +25400,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     <h2 className="text-base font-semibold text-slate-900 flex items-center gap-2">
                       <i data-lucide="calculator" className="w-4 h-4 text-blue-600"></i>
                       Calculators
-                      <kbd className="text-xs text-slate-400 font-mono ml-2">Ctrl+K</kbd>
+                      <kbd className="text-xs text-slate-500 font-mono ml-2">Ctrl+K</kbd>
                     </h2>
                     <button onClick={() => setCalcDrawerOpen(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close">
                       <i data-lucide="x" className="w-5 h-5 text-slate-500"></i>
