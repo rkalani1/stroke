@@ -2716,6 +2716,20 @@ Clinician Name`;
               },
               monitoring: 'dTT (dilute thrombin time), ECT, or aPTT (less reliable)'
             },
+            edoxaban: {
+              name: 'Edoxaban (Savaysa)',
+              class: 'Direct Factor Xa Inhibitor',
+              halfLife: '10-14 hours',
+              halfLifeNote: 'Prolonged in low body weight (<60kg) and renal impairment',
+              thrombolysisThreshold: '48 hours since last dose',
+              thrombolysisNote: 'No calibrated specific assay widely available; Direct Xa Inhibitor screen may help exclude presence',
+              ichReversal: {
+                primary: '4-Factor PCC (Kcentra) 2000 units IVPB (institutional protocol) or 50 IU/kg (max 5000 IU)',
+                alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
+                note: 'Andexxa (andexanet alfa) is NOT indicated for edoxaban. Consider PCC ONLY if no contraindications.'
+              },
+              monitoring: 'Direct Xa Inhibitor screen (not widely calibrated for edoxaban)'
+            },
             warfarin: {
               name: 'Warfarin (Coumadin)',
               class: 'Vitamin K Antagonist',
@@ -11583,6 +11597,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <option value="apixaban">Apixaban (Eliquis)</option>
                                   <option value="rivaroxaban">Rivaroxaban (Xarelto)</option>
                                   <option value="dabigatran">Dabigatran (Pradaxa)</option>
+                                  <option value="edoxaban">Edoxaban (Savaysa)</option>
                                   <option value="warfarin">Warfarin (check INR)</option>
                                   <option value="heparin">Heparin UFH (check PTT)</option>
                                   <option value="lmwh">LMWH / Enoxaparin</option>
@@ -11636,6 +11651,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 apixaban: crclVal && crclVal < 30 ? 15 : 10,
                                 rivaroxaban: crclVal && crclVal < 30 ? 13 : 9,
                                 dabigatran: crclVal && crclVal < 30 ? 28 : crclVal && crclVal < 50 ? 18 : 14,
+                                edoxaban: crclVal && crclVal < 30 ? 16 : 12,
                                 warfarin: 40, heparin: 1.5, enoxaparin: crclVal && crclVal < 30 ? 7 : 4.5
                               };
                               const estHalfLife = halfLifeMap[telestrokeNote.lastDOACType] || 12;
@@ -12646,7 +12662,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <option value="apixaban">Apixaban (Eliquis)</option>
                                     <option value="rivaroxaban">Rivaroxaban (Xarelto)</option>
                                     <option value="dabigatran">Dabigatran (Pradaxa)</option>
-                                      <option value="warfarin">Warfarin (check INR)</option>
+                                    <option value="edoxaban">Edoxaban (Savaysa)</option>
+                                    <option value="warfarin">Warfarin (check INR)</option>
                                     <option value="heparin">Heparin UFH (check PTT)</option>
                                     <option value="lmwh">LMWH / Enoxaparin</option>
                                   </select>
