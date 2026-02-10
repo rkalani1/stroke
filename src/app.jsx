@@ -5593,10 +5593,12 @@ Clinician Name`;
 
           // Calculate NIHSS score
           const calculateNIHSS = (responses) => {
-            return Object.values(responses).reduce((total, response) => {
+            const total = Object.values(responses).reduce((sum, response) => {
+              if (typeof response !== 'string') return sum;
               const score = parseInt(response?.split('(')[1]?.split(')')[0] || 0);
-              return total + score;
+              return sum + (isNaN(score) ? 0 : score);
             }, 0);
+            return Math.min(total, 42);
           };
 
           // Calculate ASPECTS score
@@ -6305,13 +6307,13 @@ Clinician Name`;
               EVT_STATUS: telestrokeNote.evtRecommended ? 'Recommended' : 'Not recommended',
               DISPOSITION: telestrokeNote.disposition || '',
               TRANSFER_STATUS: telestrokeNote.transferAccepted ? 'Accepted' : '',
-              PENDING_ITEMS: '',
+              PENDING_ITEMS: telestrokeNote.recommendationsText || '',
               ICH_SCORE: calculateICHScore(ichScoreItems),
               GCS: calculateGCS(gcsItems),
               BP: telestrokeNote.presentingBP || '',
               HEMATOMA: telestrokeNote.ctResults || '',
-              IVH: telestrokeNote.ctResults || '',
-              REVERSAL: ''
+              IVH: telestrokeNote.ctResults ? (telestrokeNote.ctResults.toLowerCase().includes('ivh') ? 'IVH present' : 'No IVH') : '',
+              REVERSAL: telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType] ? ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].ichReversal?.primary || '' : ''
             };
           };
 
@@ -7526,13 +7528,25 @@ Clinician Name`;
               note += `Discharge Date: ___\n\n`;
               note += `HOSPITAL COURSE:\n`;
               note += `${telestrokeNote.symptoms || '___'}\n`;
-              note += `Presenting NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n`;
-              note += `Premorbid mRS: ${telestrokeNote.premorbidMRS || 'N/A'}\n\n`;
+              note += `Presenting NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
+              const dischGCS = calculateGCS(gcsItems);
+              if (dischGCS > 0) note += ` | GCS: ${dischGCS}`;
+              note += `\n`;
+              note += `Premorbid mRS: ${telestrokeNote.premorbidMRS || 'N/A'}\n`;
+              const dischVitals = [`BP ${telestrokeNote.presentingBP || '___'}`];
+              if (telestrokeNote.heartRate) dischVitals.push(`HR ${telestrokeNote.heartRate}`);
+              if (telestrokeNote.spO2) dischVitals.push(`SpO2 ${telestrokeNote.spO2}%`);
+              if (telestrokeNote.glucose) dischVitals.push(`Glucose ${telestrokeNote.glucose}`);
+              note += `Presenting Vitals: ${dischVitals.join(', ')}\n\n`;
               note += `IMAGING:\n`;
               note += `- CT Head: ${telestrokeNote.ctResults || '___'}\n`;
               if (aspectsScore !== null && aspectsScore !== undefined && aspectsScore !== 10) note += `- ASPECTS: ${aspectsScore}/10\n`;
-              note += `- CTA: ${telestrokeNote.ctaResults || '___'}\n`;
+              note += `- CTA: ${telestrokeNote.ctaResults || '___'}`;
+              const dischVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
+              if (dischVessels.length > 0) note += ` — Occlusion: ${dischVessels.join(', ')}`;
+              note += `\n`;
               if (telestrokeNote.ctpResults) note += `- CTP: ${telestrokeNote.ctpResults}\n`;
+              if (telestrokeNote.ekgResults) note += `- EKG: ${telestrokeNote.ekgResults}\n`;
               note += '\n';
               note += `ACUTE TREATMENT:\n`;
               if (telestrokeNote.tnkRecommended) {
@@ -7549,6 +7563,9 @@ Clinician Name`;
               if (telestrokeNote.reperfusionHemorrhage) dischComplications.push('reperfusion hemorrhage');
               if (telestrokeNote.clinicalDeterioration) dischComplications.push('clinical deterioration');
               if (dischComplications.length > 0) note += `- Complications: ${dischComplications.join(', ')}\n`;
+              if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
+                note += `- Pre-admission anticoagulation: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].name}\n`;
+              }
               note += '\n';
               note += `SECONDARY PREVENTION:\n`;
               const dischSp = telestrokeNote.secondaryPrevention || {};
@@ -7559,8 +7576,9 @@ Clinician Name`;
               const ct = telestrokeNote.cardiacWorkup || {};
               if (ct.extendedMonitoringType) note += `- Cardiac monitoring: ${ct.extendedMonitoringType}\n`;
               note += '\n';
+              const dischMRS = (telestrokeNote.mrsAssessment || {}).discharge;
               note += `DISCHARGE NIHSS: ___\n`;
-              note += `DISCHARGE mRS: ___\n\n`;
+              note += `DISCHARGE mRS: ${dischMRS || '___'}\n\n`;
               note += `DISPOSITION: ${telestrokeNote.disposition || '___'}\n\n`;
               note += `FOLLOW-UP:\n`;
               note += `- Stroke/Neurology clinic: 1-2 weeks (review imaging, labs, secondary prevention)\n`;
