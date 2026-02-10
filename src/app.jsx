@@ -7148,21 +7148,27 @@ Clinician Name`;
           };
 
           const exportToPDF = async () => {
-            if (typeof html2pdf === 'undefined') {
-              const script = document.createElement('script');
-              script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-              document.head.appendChild(script);
-              await new Promise((resolve, reject) => { script.onload = resolve; script.onerror = reject; });
+            addToast('Generating PDF...', 'info');
+            try {
+              if (typeof html2pdf === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+                document.head.appendChild(script);
+                await new Promise((resolve, reject) => { script.onload = resolve; script.onerror = reject; });
+              }
+              const element = document.getElementById('root');
+              const opt = {
+                margin: 0.5,
+                filename: `stroke-assessment-${new Date().toISOString().split('T')[0]}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+              };
+              await html2pdf().set(opt).from(element).save();
+              addToast('PDF exported successfully', 'success');
+            } catch (err) {
+              addToast('PDF export failed — try again', 'error');
             }
-            const element = document.getElementById('root');
-            const opt = {
-              margin: 0.5,
-              filename: `stroke-assessment-${new Date().toISOString().split('T')[0]}.pdf`,
-              image: { type: 'jpeg', quality: 0.98 },
-              html2canvas: { scale: 2 },
-              jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-            html2pdf().set(opt).from(element).save();
           };
 
 
@@ -23368,8 +23374,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         </div>
                         {(() => {
-                          const result = calculateICHVolume(telestrokeNote.ichVolumeCalc || {});
-                          if (!result || !result.volume) return null;
+                          const ichCalcInput = telestrokeNote.ichVolumeCalc || {};
+                          const result = calculateICHVolume(ichCalcInput);
+                          if (!result || !result.volume) {
+                            const hasAnyInput = ichCalcInput.lengthCm || ichCalcInput.widthCm || ichCalcInput.slicesCm;
+                            return hasAnyInput
+                              ? <p className="text-xs text-amber-600 italic">Enter all three dimensions (A, B, C) to calculate volume.</p>
+                              : <p className="text-xs text-slate-500 italic">Enter A, B, and C measurements from CT to calculate ICH volume.</p>;
+                          }
                           return (
                             <div className={`p-3 rounded-lg border ${result.isLarge ? 'bg-red-100 border-red-300' : 'bg-emerald-100 border-emerald-300'}`}>
                               <p className="text-lg font-bold">Volume: {result.volume} mL</p>
