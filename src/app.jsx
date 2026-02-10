@@ -8987,7 +8987,7 @@ Clinician Name`;
               { title: 'Diabetes and stroke', section: 'Risk Factors', keywords: ['diabetes', 'risk factor', 'dm'] },
               { title: 'Lipids and Cerebrovascular Disease', section: 'Risk Factors', keywords: ['lipids', 'cholesterol', 'statins', 'ldl'] },
               { title: 'WAKE-UP Trial', section: 'Thrombolytic Therapy', keywords: ['wake-up', 'thrombolysis', 'tpa', 'alteplase', 'mri'] },
-              { title: 'Thrombolytic Therapy 4.5-24h RCTs', section: 'Thrombolytic Therapy', keywords: ['thrombolysis', 'tpa', 'alteplase', 'rct', 'extended window', '4.5-24h'] },
+              { title: 'Thrombolytic Therapy AIS 4.5-24h RCTs', section: 'Thrombolytic Therapy', keywords: ['thrombolysis', 'tpa', 'alteplase', 'rct', 'extended window', '4.5-24h'] },
               { title: 'Lacunar Stroke', section: 'Cerebral Small Vessel Disease', keywords: ['lacunar', 'small vessel', 'csvd'] },
               { title: 'Symptomatic Cervical Carotid Artery Stenosis', section: 'Large Artery Disease', keywords: ['carotid', 'stenosis', 'endarterectomy', 'cea', 'cas'] },
               { title: 'CREST-2 Trial', section: 'Large Artery Disease', keywords: ['crest', 'crest-2', 'carotid', 'stenting', 'endarterectomy', 'cea', 'cas', 'asymptomatic'] },
@@ -25322,25 +25322,25 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     )}
 
                     {/* Thrombolytic Therapy Section */}
-                    {evidenceSectionMatches('Thrombolytic Therapy', ['Thrombolytic Therapy 4.5-24h RCTs', 'WAKE-UP Trial']) && (
+                    {evidenceSectionMatches('Thrombolytic Therapy', ['Thrombolytic Therapy AIS 4.5-24h RCTs', 'WAKE-UP Trial']) && (
                     <details className="bg-white border border-slate-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg">
                         <span>Thrombolytic Therapy</span>
                         <i data-lucide="chevron-down" className="w-5 h-5"></i>
                       </summary>
                       <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Thrombolytic Therapy 4.5-24h RCTs */}
+                        {/* Document 1 - Thrombolytic Therapy AIS 4.5-24h RCTs */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
                             <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900">Thrombolytic Therapy 4.5-24h RCTs</h4>
+                              <h4 className="text-sm font-medium text-slate-900">Thrombolytic Therapy AIS 4.5-24h RCTs</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
                             <a
-                              href="documents/thrombolytic/Thrombolytic Therapy 4.5-24h RCTs.pdf"
+                              href="documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
@@ -25349,7 +25349,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               View
                             </a>
                             <a
-                              href="documents/thrombolytic/Thrombolytic Therapy 4.5-24h RCTs.pdf"
+                              href="documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf"
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
@@ -25357,7 +25357,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               Download
                             </a>
                             <button
-                              onClick={() => emailDocument('Thrombolytic Therapy 4.5-24h RCTs', 'documents/thrombolytic/Thrombolytic Therapy 4.5-24h RCTs.pdf')}
+                              onClick={() => emailDocument('Thrombolytic Therapy AIS 4.5-24h RCTs', 'documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf')}
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
