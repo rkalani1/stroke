@@ -974,6 +974,7 @@ Clinician Name`;
             diagnosisCategory: '',
             tnkRecommended: false,
             tnkAutoBlocked: false,
+            tnkAutoBlockReason: '',
             evtRecommended: false,
             rationale: '',
             tnkConsentDiscussed: false,
@@ -6078,8 +6079,11 @@ Clinician Name`;
               const lkw = new Date(`${lkwDate}T${lkwTime}`);
               const now = new Date();
               const hoursFromLKW = (now - lkw) / (1000 * 60 * 60);
-              if (hoursFromLKW > 4.5 && data.telestrokeNote?.tnkRecommended) {
+              const wakeUpExtended = data.telestrokeNote?.wakeUpStrokeWorkflow?.extendEligible;
+              if (hoursFromLKW > 4.5 && data.telestrokeNote?.tnkRecommended && !wakeUpExtended) {
                 alerts.push({ severity: 'warning', label: 'Late Window', message: `${hoursFromLKW.toFixed(1)}h from LKW - Verify imaging criteria`, field: 'lkwTime' });
+              } else if (hoursFromLKW > 4.5 && data.telestrokeNote?.tnkRecommended && wakeUpExtended) {
+                alerts.push({ severity: 'info', label: 'Extended Window', message: `${hoursFromLKW.toFixed(1)}h from LKW - Wake-up stroke extended eligibility active`, field: 'lkwTime' });
               }
             }
 
@@ -7957,7 +7961,7 @@ Clinician Name`;
                 const doseStr = tnkDoseInfo ? ` (${tnkDoseInfo.calculatedDose} mg)` : '';
                 sentences.push(`TNK recommended${doseStr}${tnkTime}.`);
               } else if (telestrokeNote.tnkAutoBlocked) {
-                sentences.push(`TNK contraindicated due to warfarin with INR >1.7${inr ? ` (INR ${inr})` : ''}.`);
+                sentences.push(`TNK contraindicated: ${telestrokeNote.tnkAutoBlockReason || 'contraindication detected'}.`);
               } else {
                 sentences.push('TNK not recommended based on current eligibility criteria.');
               }
@@ -9262,12 +9266,22 @@ Clinician Name`;
             const recentDOAC = telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== 'warfarin' && telestrokeNote.lastDOACType !== 'none';
             const shouldBlock = warfarinWithHighINR || lowPlatelets || elevatedAPTT || isICH || recentDOAC;
             if (shouldBlock) {
+              const reasons = [];
+              if (warfarinWithHighINR) reasons.push(`Warfarin with INR ${inrVal.toFixed(1)} (>1.7)`);
+              if (lowPlatelets) reasons.push(`Platelets ${pltVal}K (<100K)`);
+              if (elevatedAPTT) reasons.push(`aPTT ${pttVal}s (>40s)`);
+              if (isICH) reasons.push(telestrokeNote.diagnosisCategory === 'sah' ? 'SAH diagnosis' : 'ICH diagnosis');
+              if (recentDOAC) {
+                const doacName = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType;
+                reasons.push(`Recent ${doacName}`);
+              }
+              const reasonStr = reasons.join('; ');
               setTelestrokeNote(prev => {
-                if (prev.tnkAutoBlocked && prev.tnkRecommended === false) return prev;
-                return { ...prev, tnkRecommended: false, tnkAutoBlocked: true };
+                if (prev.tnkAutoBlocked && prev.tnkRecommended === false && prev.tnkAutoBlockReason === reasonStr) return prev;
+                return { ...prev, tnkRecommended: false, tnkAutoBlocked: true, tnkAutoBlockReason: reasonStr };
               });
             } else if (telestrokeNote.tnkAutoBlocked) {
-              setTelestrokeNote(prev => ({ ...prev, tnkAutoBlocked: false }));
+              setTelestrokeNote(prev => ({ ...prev, tnkAutoBlocked: false, tnkAutoBlockReason: '' }));
             }
           }, [telestrokeNote.lastDOACType, telestrokeNote.inr, telestrokeNote.plateletCount, telestrokeNote.ptt, telestrokeNote.diagnosisCategory, telestrokeNote.tnkAutoBlocked]);
 
@@ -11193,7 +11207,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               )}
                               {telestrokeNote.tnkAutoBlocked && (
                                 <div className="text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg p-2">
-                                  TNK auto-disabled: Warfarin with INR &gt; 1.7. Override only with documented justification.
+                                  TNK auto-disabled: {telestrokeNote.tnkAutoBlockReason || 'Contraindication detected'}. Override only with documented justification.
                                 </div>
                               )}
                             </div>
@@ -11862,7 +11876,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             })()}
                             {telestrokeNote.tnkAutoBlocked && (
                               <div className="mt-2 text-xs text-red-700 bg-red-50 border border-red-200 rounded p-2">
-                                TNK auto-disabled: Warfarin with INR &gt; 1.7. Override only with documented justification.
+                                TNK auto-disabled: {telestrokeNote.tnkAutoBlockReason || 'Contraindication detected'}. Override only with documented justification.
                               </div>
                             )}
                           </div>
@@ -12545,13 +12559,32 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             !telestrokeNote.ctaResults && 'CTA Results',
                             !telestrokeNote.disposition && 'Disposition'
                           ].filter(Boolean);
-                          if (missing.length === 0) return null;
+                          const safetyGaps = [
+                            !telestrokeNote.presentingBP && 'BP',
+                            !telestrokeNote.glucose && 'Glucose',
+                            telestrokeNote.tnkRecommended && !telestrokeNote.weight && 'Weight (TNK dosing)',
+                            telestrokeNote.tnkRecommended && !telestrokeNote.tnkConsentDiscussed && 'TNK Consent',
+                            !telestrokeNote.plateletCount && 'Platelets',
+                          ].filter(Boolean);
+                          if (missing.length === 0 && safetyGaps.length === 0) return null;
                           return (
-                            <div className="bg-amber-50 border border-amber-300 rounded-lg px-3 py-2 flex items-start gap-2">
-                              <i data-lucide="alert-triangle" className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0"></i>
-                              <span className="text-xs text-amber-800">
-                                <span className="font-semibold">Incomplete:</span> {missing.join(', ')}
-                              </span>
+                            <div className="space-y-1.5">
+                              {missing.length > 0 && (
+                                <div className="bg-amber-50 border border-amber-300 rounded-lg px-3 py-2 flex items-start gap-2">
+                                  <i data-lucide="alert-triangle" className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0"></i>
+                                  <span className="text-xs text-amber-800">
+                                    <span className="font-semibold">Incomplete:</span> {missing.join(', ')}
+                                  </span>
+                                </div>
+                              )}
+                              {safetyGaps.length > 0 && (
+                                <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2 flex items-start gap-2">
+                                  <i data-lucide="shield-alert" className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0"></i>
+                                  <span className="text-xs text-red-700">
+                                    <span className="font-semibold">Safety-critical:</span> {safetyGaps.join(', ')}
+                                  </span>
+                                </div>
+                              )}
                             </div>
                           );
                         })()}
