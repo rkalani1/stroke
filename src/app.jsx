@@ -809,7 +809,7 @@ Relevant PMH: {pmh}
 Medications: {medications}
 
 Objective:
-Vitals: BP {presentingBP}
+Vitals: BP {presentingBP}, HR {heartRate}, SpO2 {spO2}%, Temp {temperature}°F
 BP prior to TNK administration: {bpPreTNK} at {bpPreTNKTime}
 Labs: Glucose {glucose}, Plt/Coags {plateletsCoags}, Cr {creatinine}, INR {inr}
 Exam: NIHSS {nihss} - {nihssDetails}
@@ -918,6 +918,9 @@ Clinician Name`;
             premorbidMRS: '',
             vesselOcclusion: [],
             presentingBP: '',
+            heartRate: '',
+            spO2: '',
+            temperature: '',
             bpPreTNK: '',
             bpPreTNKTime: '',
             bpPhase: 'pre-tnk',
@@ -6960,7 +6963,7 @@ Clinician Name`;
               'alias', 'age', 'sex', 'weight', 'nihss', 'aspects', 'vesselOcclusion', 'diagnosisCategory',
               'toastClassification', 'secondaryPrevention',
               'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'arrivalTime', 'strokeAlertTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
-              'presentingBP', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT',
+              'presentingBP', 'heartRate', 'spO2', 'temperature', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT',
               'glucose', 'plateletCount', 'inr', 'ptt', 'creatinine', 'disablingDeficit',
               'tnkRecommended', 'evtRecommended', 'tnkContraindicationChecklist',
               'tnkContraindicationReviewed', 'tnkContraindicationReviewTime', 'tnkConsentDiscussed',
@@ -7288,9 +7291,14 @@ Clinician Name`;
               note += `HPI: ${telestrokeNote.symptoms || '___'}\n`;
               note += `PMH: ${telestrokeNote.pmh || '___'}\n`;
               note += `Medications: ${telestrokeNote.medications || '___'}\n\n`;
-              note += `Vitals: BP ${telestrokeNote.presentingBP || '___'}, Glucose ${telestrokeNote.glucose || '___'}\n`;
+              const vitals = [`BP ${telestrokeNote.presentingBP || '___'}`];
+              if (telestrokeNote.heartRate) vitals.push(`HR ${telestrokeNote.heartRate}`);
+              if (telestrokeNote.spO2) vitals.push(`SpO2 ${telestrokeNote.spO2}%`);
+              if (telestrokeNote.temperature) vitals.push(`Temp ${telestrokeNote.temperature}°F`);
+              note += `Vitals: ${vitals.join(', ')}, Glucose ${telestrokeNote.glucose || '___'}\n`;
               note += `Labs: Plt/Coags ${telestrokeNote.plateletsCoags || '___'}, Cr ${telestrokeNote.creatinine || '___'}`;
               if (telestrokeNote.inr) note += `, INR ${telestrokeNote.inr}`;
+              if (telestrokeNote.ptt) note += `, aPTT ${telestrokeNote.ptt}`;
               note += `\n`;
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
                 const txAcInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
@@ -7312,6 +7320,12 @@ Clinician Name`;
               if (telestrokeNote.tnkRecommended) {
                 const transferDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
                 note += `- TNK${transferDose ? ` ${transferDose.calculatedDose} mg` : ''} administered at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+                if (telestrokeNote.tnkConsentDiscussed) {
+                  note += `- Consent: ${telestrokeNote.tnkConsentType || 'informed'} consent`;
+                  if (telestrokeNote.tnkConsentWith) note += ` with ${telestrokeNote.tnkConsentWith}`;
+                  if (telestrokeNote.tnkConsentTime) note += ` at ${telestrokeNote.tnkConsentTime}`;
+                  note += `\n`;
+                }
               }
               if (telestrokeNote.evtRecommended) note += `- EVT recommended\n`;
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
@@ -7563,6 +7577,9 @@ Clinician Name`;
             note = note.replace(/{pmh}/g, telestrokeNote.pmh || '');
             note = note.replace(/{medications}/g, telestrokeNote.medications || '');
             note = note.replace(/{presentingBP}/g, telestrokeNote.presentingBP || '');
+            note = note.replace(/{heartRate}/g, telestrokeNote.heartRate || '');
+            note = note.replace(/{spO2}/g, telestrokeNote.spO2 || '');
+            note = note.replace(/{temperature}/g, telestrokeNote.temperature || '');
             note = note.replace(/{bpPreTNK}/g, telestrokeNote.bpPreTNK || '');
             note = note.replace(/{bpPreTNKTime}/g, formatTime(telestrokeNote.bpPreTNKTime));
             note = note.replace(/{glucose}/g, telestrokeNote.glucose || '');
@@ -8901,12 +8918,16 @@ Clinician Name`;
             setCompletedSteps([]);
             setConsultationType(settings.defaultConsultationType || 'telephone');
             setTelestrokeNote(getDefaultTelestrokeNote());
+            setEvtDecisionInputs({ population: 'adult', occlusion: 'lvo', timeWindow: 'auto', aspects: '6-10', mrs: '0-1', nihss: '', pcAspects: '>=6' });
+            setDoacProtocol('catalyst');
+            setNursingFlowsheetChecks({});
 
             const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',
                                   'abcd2Items', 'chads2vascItems', 'ropeItems', 'huntHessGrade', 'wfnsGrade',
                                   'hasbledItems', 'rcvs2Items', 'strokeCodeForm', 'lkwTime',
                                   'currentStep', 'completedSteps', 'aspectsRegionState', 'pcAspectsRegions',
-                                  'telestrokeNote', 'consultationType'];
+                                  'telestrokeNote', 'consultationType',
+                                  'evtDecisionInputs', 'doacProtocol', 'nursingFlowsheetChecks'];
             keysToRemove.forEach((key) => removeKey(key));
 
             navigateTo('encounter');
@@ -11800,6 +11821,33 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   if (s.status === 'ok') return 'border-emerald-400 bg-emerald-50';
                                   return 'border-slate-300';
                                 })()}`}
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-slate-600 mb-1">HR</label>
+                              <input type="number" min="20" max="300"
+                                value={telestrokeNote.heartRate}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, heartRate: e.target.value})}
+                                placeholder="bpm"
+                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-slate-600 mb-1">SpO2</label>
+                              <input type="number" min="50" max="100"
+                                value={telestrokeNote.spO2}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, spO2: e.target.value})}
+                                placeholder="%"
+                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-slate-600 mb-1">Temp</label>
+                              <input type="number" step="0.1" min="90" max="110"
+                                value={telestrokeNote.temperature}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, temperature: e.target.value})}
+                                placeholder="°F"
+                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
                               />
                             </div>
                             <div>
@@ -25648,7 +25696,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 <div className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[28rem] max-h-[70vh] bg-white rounded-2xl shadow-2xl overflow-y-auto">
                   <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between z-10">
                     <h2 className="text-base font-bold text-slate-900">What's New</h2>
-                    <button onClick={() => setShowChangelog(false)} className="p-2 hover:bg-slate-100 rounded-lg"><i data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
+                    <button onClick={() => setShowChangelog(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close changelog"><i data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
                   </div>
                   <div className="p-4 space-y-4">
                     {CHANGELOG.map((release) => (
@@ -25679,7 +25727,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 <div className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[24rem] bg-white rounded-2xl shadow-2xl overflow-hidden">
                   <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between">
                     <h2 className="text-base font-bold text-slate-900">Keyboard Shortcuts</h2>
-                    <button onClick={() => setShowKeyboardHelp(false)} className="p-2 hover:bg-slate-100 rounded-lg"><i data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
+                    <button onClick={() => setShowKeyboardHelp(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close keyboard shortcuts"><i data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
                   </div>
                   <div className="p-4 space-y-3">
                     {[
