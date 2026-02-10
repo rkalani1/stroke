@@ -1858,10 +1858,10 @@ Clinician Name`;
           }, [telestrokeNote.diagnosisCategory, telestrokeNote.diagnosis]);
 
           const calculatorPriorityMap = {
-            ich: ['ich-score', 'gcs', 'mrs', 'hasbled'],
-            ischemic: ['abcd2', 'mrs', 'chads2vasc', 'hasbled', 'rope'],
-            sah: ['hunt-hess', 'gcs'],
-            tia: ['abcd2', 'chads2vasc', 'hasbled'],
+            ich: ['ich-score', 'gcs', 'mrs', 'hasbled', 'crcl'],
+            ischemic: ['abcd2', 'mrs', 'chads2vasc', 'hasbled', 'rope', 'crcl'],
+            sah: ['hunt-hess', 'gcs', 'crcl'],
+            tia: ['abcd2', 'chads2vasc', 'hasbled', 'crcl'],
             other: []
           };
           const calculatorLabelMap = {
@@ -1873,7 +1873,8 @@ Clinician Name`;
             'hasbled': 'HAS-BLED',
             'rope': 'ROPE',
             'hunt-hess': 'Hunt-Hess/WFNS',
-            'rcvs2': 'RCVS²'
+            'rcvs2': 'RCVS²',
+            'crcl': 'CrCl'
           };
           const calculatorPriorityList = calculatorPriorityMap[calculatorDiagnosisKey] || [];
           const getCalculatorOrder = (id, fallback) => {
@@ -3774,7 +3775,7 @@ Clinician Name`;
               category: 'Seizures',
               title: 'ICH: avoid prophylactic antiseizure meds',
               recommendation: 'Prophylactic antiseizure medication is not beneficial in ICH without seizures.',
-              detail: 'Avoid routine prophylaxis unless seizures occur.',
+              detail: 'Avoid routine prophylaxis unless clinical or electrographic seizures occur. Risk factors for seizures: cortical ICH, lobar location, large hematoma volume. If seizures develop, levetiracetam is preferred first-line agent.',
               classOfRec: 'III',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -8368,7 +8369,7 @@ Clinician Name`;
                   'Nicardipine 5 mg/hr IV (titrate by 2.5 mg/hr q5-15 min, max 15 mg/hr)',
                   'Monitor BP q15 min x 2h, then q30 min x 6h, then q1h x 16h',
                   `TNK given at: ${n.tnkAdminTime}`,
-                  'Neuro checks q1h x 24h (call for any change)',
+                  'Neuro checks q15min x 2h, q30min x 6h, q1h x 16h (call for any change)',
                   'If hemorrhagic transformation suspected: STAT CT Head, hold antithrombotics'
                 ]
               });
@@ -8510,7 +8511,7 @@ Clinician Name`;
                   'Target SBP <160 mmHg until aneurysm secured',
                   'Nicardipine 5 mg/hr IV (titrate to 15 mg/hr) for BP control',
                   'IV isotonic saline for euvolemia — avoid hypovolemia',
-                  'Seizure prophylaxis: Levetiracetam 500-1000 mg IV/PO q12h x 3-7 days',
+                  'Seizure prophylaxis (if cortical SAH, IVH, poor-grade HH 3-5, or seizure at onset): Levetiracetam 500-1000 mg IV/PO q12h x 3-7 days — avoid prolonged routine prophylaxis',
                   'Stool softener (docusate 100 mg BID) — avoid straining',
                   'Neurosurgery/neurointerventional consult for aneurysm securing',
                   'Neuro checks q1h, strict I/O, HOB 30 degrees'
@@ -14765,7 +14766,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <i data-lucide="heart-pulse" className="w-4 h-4"></i>
                                   Post-Thrombolysis Monitoring
                                 </h4>
-                                <p className="text-xs text-rose-700">Monitor for complications. NIHSS q15min x 2h, then q1h x 6h. Avoid anticoagulants/antiplatelets x 24h. Repeat CT at 24h or if clinical deterioration.</p>
+                                <p className="text-xs text-rose-700">Monitor for complications. Neuro checks + BP q15min x 2h, then q30min x 6h, then q1h x 16h. Avoid anticoagulants/antiplatelets x 24h. Repeat CT at 24h or if clinical deterioration.</p>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                   {[
                                     { field: 'postTnkNeuroChecksStarted', label: 'Neuro checks q15m initiated' },
@@ -18754,7 +18755,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h4 className="font-semibold text-slate-700 mb-2">Post-IV TNK/tPA recommendations:</h4>
                               <ul className="text-sm space-y-1">
                                 <li>• Admit to ICU</li>
-                                <li>• q1hour neurochecks and VS monitoring</li>
+                                <li>• Neuro checks + BP q15min x 2h, then q30min x 6h, then q1h x 16h</li>
                                 <li>• NO antithrombotics/anticoagulants for 24 hour after IV-tPA</li>
                                 <li>• Avoid IV aspirin within 90 minutes of IVT start</li>
                                 <li>• Maintain BP&lt;180/105 for 24 hours after IV-tPA</li>
@@ -23373,7 +23374,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Cockcroft-Gault CrCl Calculator */}
-                    <details className="bg-indigo-50 border border-indigo-200 rounded-lg">
+                    <details id="calc-crcl" style={{ order: getCalculatorOrder('crcl', 35) }} className="bg-indigo-50 border border-indigo-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-indigo-800 hover:bg-indigo-100 rounded-lg flex items-center justify-between">
                         <span>Creatinine Clearance (Cockcroft-Gault)</span>
                         {(telestrokeNote.age && telestrokeNote.weight && telestrokeNote.creatinine && !(telestrokeNote.crclCalc || {}).age) && (
@@ -24300,7 +24301,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
                               <div className="space-y-1">
                                 <p className="font-bold text-blue-700 mb-1">Monitoring</p>
-                                <p>Neuro checks q1h x 24h (q15min x 2h if post-TNK)</p>
+                                <p>Neuro checks q1h x 24h (post-TNK: q15min x 2h, q30min x 6h, q1h x 16h)</p>
                                 <p>Cardiac telemetry continuous</p>
                                 <p>VS q1h (BP, HR, O2 sat)</p>
                                 <p>I&O q shift</p>
