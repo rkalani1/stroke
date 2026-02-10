@@ -9,20 +9,15 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="manifest" href="manifest.json">
-    <!-- Aggressive cache control -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
+    <link rel="icon" href="icon-192.png" type="image/png">
     <title>Stroke</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:wght@400;500;600&display=swap" rel="stylesheet">
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js?v=20251016c"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js?v=20251016c"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js?v=20251016c"></script>
-    <!-- mermaid removed — algorithms now use JSX -->
+    <script defer crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script defer crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script defer src="https://unpkg.com/lucide@0.563.0/dist/umd/lucide.js"></script>
     <link rel="stylesheet" href="tailwind.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js?v=20251016c"></script>
     <style>
         :root {
             --app-bg: #f8fafc;
@@ -461,7 +456,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = 'v5.9.0'; // Increment this with each deployment
+            const APP_VERSION = 'v5.10.0'; // Increment this with each deployment
             const STORAGE_PREFIX = 'strokeApp:';
             const APP_DATA_KEY = 'stroke.appData.v2';
             const LEGACY_KEYS = [
@@ -582,6 +577,12 @@
     </script>
 </head>
 <body>
+    <noscript>
+        <div style="padding: 40px; font-family: Arial; max-width: 600px; margin: 0 auto; text-align: center;">
+            <h1>Stroke Clinical Decision Support</h1>
+            <p>This application requires JavaScript to run. Please enable JavaScript in your browser settings.</p>
+        </div>
+    </noscript>
     <div id="root"></div>
 
     <script>

@@ -5684,6 +5684,7 @@ Clinician Name`;
             const a = parseFloat(items.lengthCm) || 0;
             const b = parseFloat(items.widthCm) || 0;
             const c = parseFloat(items.slicesCm) || 0;
+            if (a <= 0 || b <= 0 || c <= 0) return null;
             const volume = (a * b * c) / 2;
             return { volume: Math.round(volume * 10) / 10, isLarge: volume >= 30, isExpanding: false };
           };
@@ -7075,7 +7076,13 @@ Clinician Name`;
             window.location.href = `mailto:?subject=${subject}&body=${body}`;
           };
 
-          const exportToPDF = () => {
+          const exportToPDF = async () => {
+            if (typeof html2pdf === 'undefined') {
+              const script = document.createElement('script');
+              script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+              document.head.appendChild(script);
+              await new Promise((resolve, reject) => { script.onload = resolve; script.onerror = reject; });
+            }
             const element = document.getElementById('root');
             const opt = {
               margin: 0.5,
@@ -14748,7 +14755,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   if (!config) return null;
                                   const statusColor = trial.status === 'eligible' ? 'border-emerald-400 bg-emerald-50' : trial.status === 'needs_info' ? 'border-amber-400 bg-amber-50' : 'border-slate-300 bg-slate-50';
                                   const statusBadge = trial.status === 'eligible' ? 'bg-emerald-600 text-white' : trial.status === 'needs_info' ? 'bg-amber-500 text-white' : 'bg-slate-400 text-white';
-                                  const statusLabel = trial.status === 'eligible' ? '&#10003; Eligible' : trial.status === 'needs_info' ? '? Needs Info' : '&#10007; Not Eligible';
+                                  const statusLabel = trial.status === 'eligible' ? '\u2713 Eligible' : trial.status === 'needs_info' ? '? Needs Info' : '\u2717 Not Eligible';
                                   const unknownCriteria = trial.criteria.filter(c => c.status === 'unknown');
                                   const metCriteria = trial.criteria.filter(c => c.status === 'met');
                                   const notMetCriteria = trial.criteria.filter(c => c.status === 'not_met');
@@ -14757,7 +14764,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                     <details key={trial.trialId} className={'border rounded-lg ' + statusColor} open={trial.status === 'eligible' || trial.status === 'needs_info'}>
                                       <summary className="cursor-pointer px-3 py-2 flex items-center justify-between text-sm">
                                         <div className="flex items-center gap-2 min-w-0">
-                                          <span className={'px-2 py-0.5 rounded text-xs font-bold whitespace-nowrap ' + statusBadge} dangerouslySetInnerHTML={{__html: statusLabel}}></span>
+                                          <span className={'px-2 py-0.5 rounded text-xs font-bold whitespace-nowrap ' + statusBadge}>{statusLabel}</span>
                                           <span className="font-semibold truncate">{config.name}</span>
                                           <span className="text-xs text-slate-500 hidden sm:inline">({config.nct})</span>
                                         </div>
@@ -22366,26 +22373,26 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         <div className="grid grid-cols-3 gap-3 mb-3">
                           <div>
                             <label className="text-xs text-slate-600">A: Largest diameter (cm)</label>
-                            <input type="number" step="0.1" value={(telestrokeNote.ichVolumeCalc || {}).lengthCm || ''}
+                            <input type="number" step="0.1" min="0" max="30" value={(telestrokeNote.ichVolumeCalc || {}).lengthCm || ''}
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, ichVolumeCalc: {...(telestrokeNote.ichVolumeCalc || {}), lengthCm: e.target.value}})}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="cm" />
                           </div>
                           <div>
                             <label className="text-xs text-slate-600">B: Perpendicular diameter (cm)</label>
-                            <input type="number" step="0.1" value={(telestrokeNote.ichVolumeCalc || {}).widthCm || ''}
+                            <input type="number" step="0.1" min="0" max="30" value={(telestrokeNote.ichVolumeCalc || {}).widthCm || ''}
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, ichVolumeCalc: {...(telestrokeNote.ichVolumeCalc || {}), widthCm: e.target.value}})}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="cm" />
                           </div>
                           <div>
                             <label className="text-xs text-slate-600">C: Slices x thickness (cm)</label>
-                            <input type="number" step="0.1" value={(telestrokeNote.ichVolumeCalc || {}).slicesCm || ''}
+                            <input type="number" step="0.1" min="0" max="30" value={(telestrokeNote.ichVolumeCalc || {}).slicesCm || ''}
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, ichVolumeCalc: {...(telestrokeNote.ichVolumeCalc || {}), slicesCm: e.target.value}})}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="cm" />
                           </div>
                         </div>
                         {(() => {
                           const result = calculateICHVolume(telestrokeNote.ichVolumeCalc || {});
-                          if (!result.volume) return null;
+                          if (!result || !result.volume) return null;
                           return (
                             <div className={`p-3 rounded-lg border ${result.isLarge ? 'bg-red-100 border-red-300' : 'bg-emerald-100 border-emerald-300'}`}>
                               <p className="text-lg font-bold">Volume: {result.volume} mL</p>

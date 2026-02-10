@@ -1,4 +1,4 @@
-const CACHE_NAME = 'stroke-app-v3';
+const CACHE_NAME = 'stroke-app-v4';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -12,8 +12,7 @@ const CORE_ASSETS = [
 const CDN_ASSETS = [
   'https://unpkg.com/react@18/umd/react.production.min.js',
   'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
-  'https://unpkg.com/lucide@latest/dist/umd/lucide.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'
+  'https://unpkg.com/lucide@0.563.0/dist/umd/lucide.js'
 ];
 
 self.addEventListener('install', (event) => {
