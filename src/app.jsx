@@ -304,7 +304,10 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           { id: 'acute-lvo', label: 'Acute LVO', icon: 'zap', description: 'Large vessel occlusion workup', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'Ischemic stroke - LVO' } },
           { id: 'tia', label: 'TIA Workup', icon: 'activity', description: 'Transient ischemic attack evaluation', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'TIA' } },
           { id: 'wakeup', label: 'Wake-up Stroke', icon: 'moon', description: 'Unknown onset / wake-up presentation', defaults: { diagnosisCategory: 'ischemic', lkwUnknown: true } },
-          { id: 'ich-anticoag', label: 'ICH on Anticoagulation', icon: 'alert-triangle', description: 'Hemorrhage with reversal needed', defaults: { diagnosisCategory: 'ich', diagnosis: 'Intracerebral hemorrhage' } }
+          { id: 'ich-anticoag', label: 'ICH on Anticoagulation', icon: 'alert-triangle', description: 'Hemorrhage with reversal needed', defaults: { diagnosisCategory: 'ich', diagnosis: 'Intracerebral hemorrhage' } },
+          { id: 'sah', label: 'SAH', icon: 'droplets', description: 'Subarachnoid hemorrhage management', defaults: { diagnosisCategory: 'sah', diagnosis: 'Subarachnoid hemorrhage' } },
+          { id: 'posterior', label: 'Posterior Circulation', icon: 'brain', description: 'Basilar/vertebral stroke', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'Posterior circulation stroke' } },
+          { id: 'minor-stroke', label: 'Minor Stroke', icon: 'activity', description: 'NIHSS ≤5, DAPT protocol', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'Minor ischemic stroke' } }
         ];
 
         // ============================================
@@ -11536,15 +11539,44 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </div>
                             </div>
                             {/* Show anticoagulant info if selected */}
-                            {telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType] && (
-                              <div className="mt-2 bg-orange-50 border border-orange-200 rounded p-2 text-xs">
+                            {telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType] && (() => {
+                              const info = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
+                              const hoursSince = telestrokeNote.lastDOACDose ? Math.max(0, (new Date() - new Date(telestrokeNote.lastDOACDose)) / (1000 * 60 * 60)) : null;
+                              const crcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
+                              const crclVal = crcl ? crcl.value : null;
+                              // Estimate effective half-life based on renal function
+                              const halfLifeMap = {
+                                apixaban: crclVal && crclVal < 30 ? 16 : 10,
+                                rivaroxaban: crclVal && crclVal < 30 ? 13 : 9,
+                                dabigatran: crclVal && crclVal < 30 ? 28 : crclVal && crclVal < 50 ? 18 : 14,
+                                warfarin: 40, heparin: 1.5, enoxaparin: crclVal && crclVal < 30 ? 7 : 4.5
+                              };
+                              const estHalfLife = halfLifeMap[telestrokeNote.lastDOACType] || 12;
+                              const halfLives = hoursSince ? hoursSince / estHalfLife : null;
+                              const clearancePct = halfLives ? Math.min(99.9, (1 - Math.pow(0.5, halfLives)) * 100) : null;
+                              const clearanceColor = clearancePct === null ? 'bg-orange-50 border-orange-200' : clearancePct >= 97 ? 'bg-emerald-50 border-emerald-200' : clearancePct >= 87 ? 'bg-amber-50 border-amber-200' : 'bg-red-50 border-red-200';
+                              return (
+                              <div className={`mt-2 ${clearanceColor} border rounded p-2 text-xs space-y-1`}>
                                 <div className="flex justify-between">
-                                  <span className="font-medium">{ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].name}</span>
-                                  <span className="text-orange-700">t½: {ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].halfLife}</span>
+                                  <span className="font-medium">{info.name}</span>
+                                  <span className="text-slate-600">t½: {info.halfLife}{crclVal && crclVal < 50 ? ' (prolonged — CrCl ' + Math.round(crclVal) + ')' : ''}</span>
                                 </div>
-                                <div className="text-orange-700 mt-1">TNK: {ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].thrombolysisThreshold}</div>
+                                {hoursSince !== null && (
+                                  <div className="flex justify-between font-semibold">
+                                    <span>{Math.floor(hoursSince)}h since last dose ({halfLives.toFixed(1)} half-lives)</span>
+                                    <span>~{clearancePct.toFixed(0)}% cleared</span>
+                                  </div>
+                                )}
+                                <div className={`font-semibold ${clearancePct !== null && clearancePct >= 97 ? 'text-emerald-800' : clearancePct !== null && clearancePct >= 87 ? 'text-amber-800' : 'text-red-800'}`}>
+                                  TNK: {info.thrombolysisThreshold}
+                                  {clearancePct !== null && clearancePct >= 97 && ' — Likely safe, confirm with drug level'}
+                                  {clearancePct !== null && clearancePct >= 87 && clearancePct < 97 && ' — Check drug-specific assay before TNK'}
+                                  {clearancePct !== null && clearancePct < 87 && ' — Drug likely still active, TNK high risk'}
+                                </div>
+                                {hoursSince !== null && <div className="text-slate-500">{info.thrombolysisNote}</div>}
                               </div>
-                            )}
+                              );
+                            })()}
                             {telestrokeNote.tnkAutoBlocked && (
                               <div className="mt-2 text-xs text-red-700 bg-red-50 border border-red-200 rounded p-2">
                                 TNK auto-disabled: Warfarin with INR &gt; 1.7. Override only with documented justification.
