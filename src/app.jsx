@@ -1907,7 +1907,8 @@ Clinician Name`;
             'post-evt': { label: 'Post-EVT', systolic: 180, diastolic: 105 },
             'no-lytics': { label: 'No lytics/No EVT', systolic: 220, diastolic: 120 },
             'ich': { label: 'ICH', systolic: 140, diastolic: 90 },
-            'sah': { label: 'SAH', systolic: 160, diastolic: 105 }
+            'sah': { label: 'SAH (pre-securing)', systolic: 160, diastolic: 105 },
+            'sah-secured': { label: 'SAH (post-securing)', systolic: 140, diastolic: 90 }
           };
           const currentBpPhase = telestrokeNote.bpPhase || 'pre-tnk';
           const currentBpTarget = bpPhaseTargets[currentBpPhase] || bpPhaseTargets['pre-tnk'];
@@ -2003,6 +2004,26 @@ Clinician Name`;
               classOfRec: 'Class IIb',
               dosing: 'Enoxaparin: 1 mg protamine per 1 mg enoxaparin if <8h; 0.5 mg per 1 mg if 8-12h.',
               note: 'Second dose may be considered if ongoing bleeding.'
+            },
+            NICARDIPINE: {
+              title: 'Nicardipine (Cardene)',
+              dosing: 'Start 5 mg/hr IV. Titrate by 2.5 mg/hr every 5-15 min. Max 15 mg/hr.',
+              note: 'Preferred continuous infusion for stroke BP management. Onset 5-15 min. Avoid in severe aortic stenosis or advanced heart failure.'
+            },
+            LABETALOL: {
+              title: 'Labetalol',
+              dosing: '10-20 mg IV over 1-2 min. May repeat every 10-20 min. Max 300 mg total. Infusion: 2-8 mg/min.',
+              note: 'Combined alpha/beta blocker. Avoid in asthma/COPD, bradycardia, 2nd/3rd-degree heart block, decompensated HF. Hold if HR <60.'
+            },
+            LEVETIRACETAM: {
+              title: 'Levetiracetam (Keppra)',
+              dosing: '500-1000 mg IV/PO q12h. Load: 1000-2000 mg IV for acute seizure.',
+              note: 'For SAH seizure prophylaxis (if cortical SAH, IVH, poor-grade HH 3-5, or seizure at onset). Limit prophylaxis to 3-7 days; avoid prolonged routine use. Renal adjust: CrCl <30 → reduce dose 50%.'
+            },
+            NIMODIPINE: {
+              title: 'Nimodipine (Nymalize)',
+              dosing: '60 mg PO/NG q4h x 21 days. Start within 96h of SAH onset.',
+              note: 'Calcium channel blocker for SAH vasospasm prevention. Only proven agent to improve outcomes. If hypotension: reduce to 30 mg q4h temporarily. Do NOT give IV (risk of severe hypotension/cardiac arrest).'
             }
           }), []);
 
