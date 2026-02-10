@@ -1548,7 +1548,6 @@ Clinician Name`;
           // Phase 2: Guided Clinical Pathway UI state
           const [pathwayCollapsed, setPathwayCollapsed] = useState(true);
           const [guidelineRecsExpanded, setGuidelineRecsExpanded] = useState(false);
-          const [showAdvanced, setShowAdvanced] = useState(() => getKey('showAdvanced', false) === true);
           const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null });
           const [configLoaded, setConfigLoaded] = useState(false);
           const [ttlHours, setTtlHours] = useState(settings.ttlHoursOverride || DEFAULT_TTL_HOURS);
@@ -1556,7 +1555,7 @@ Clinician Name`;
           const [patientData, setPatientData] = useState(loadFromStorage('patientData', {}));
           const [nihssScore, setNihssScore] = useState(loadFromStorage('nihssScore', 0));
           const [aspectsScore, setAspectsScore] = useState(loadFromStorage('aspectsScore', 10));
-          const [darkMode, setDarkMode] = useState(getKey('darkMode', false) === true);
+
           const [searchQuery, setSearchQuery] = useState('');
           const [copiedText, setCopiedText] = useState('');
           const [isMounted, setIsMounted] = useState(false);
@@ -6211,14 +6210,17 @@ Clinician Name`;
 
           // Switch to a different patient from shift list
           const switchToPatient = (patientId) => {
-            // First save current patient
-            if (currentPatientId && telestrokeNote.age) {
+            // First save current patient if any meaningful data exists
+            if (currentPatientId && (telestrokeNote.age || telestrokeNote.diagnosis || telestrokeNote.nihss || nihssScore > 0)) {
               saveCurrentPatientToShift();
             }
 
             // Find and load the selected patient
             const patient = shiftPatients.find(p => p.id === patientId);
-            if (!patient) return;
+            if (!patient) {
+              showNotice('Patient not found in shift list', 'warning');
+              return;
+            }
 
             const { formState } = patient;
             setTelestrokeNote(formState.telestrokeNote);
@@ -6234,8 +6236,8 @@ Clinician Name`;
 
           // Start a new patient (save current first)
           const startNewPatient = () => {
-            // Save current if there's data
-            if (telestrokeNote.age) {
+            // Save current if any meaningful data exists
+            if (telestrokeNote.age || telestrokeNote.diagnosis || telestrokeNote.nihss || nihssScore > 0) {
               saveCurrentPatientToShift();
             }
 
@@ -6637,9 +6639,7 @@ Clinician Name`;
 
           // Persist shift patients to localStorage
           React.useEffect(() => {
-            if (shiftPatients.length > 0) {
-              saveWithExpiration('shiftPatients', shiftPatients);
-            }
+            saveWithExpiration('shiftPatients', shiftPatients);
           }, [shiftPatients]);
 
           React.useEffect(() => {
@@ -7111,16 +7111,6 @@ Clinician Name`;
             html2pdf().set(opt).from(element).save();
           };
 
-          const toggleDarkMode = () => {
-            const newDarkMode = !darkMode;
-            setDarkMode(newDarkMode);
-            setKey('darkMode', newDarkMode, { skipLastUpdated: true });
-            if (newDarkMode) {
-              document.documentElement.classList.add('dark');
-            } else {
-              document.documentElement.classList.remove('dark');
-            }
-          };
 
           const handleShare = async () => {
             const shareData = {
@@ -7167,7 +7157,10 @@ Clinician Name`;
               brief += `Etiology (TOAST): ${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}\n`;
             }
             brief += `\nACUTE COURSE:\n`;
-            if (telestrokeNote.tnkRecommended) brief += `- TNK administered${telestrokeNote.tnkAdminTime ? ` at ${telestrokeNote.tnkAdminTime}` : ''}\n`;
+            if (telestrokeNote.tnkRecommended) {
+              const fuDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
+              brief += `- TNK${fuDose ? ` ${fuDose.calculatedDose} mg` : ''} administered${telestrokeNote.tnkAdminTime ? ` at ${telestrokeNote.tnkAdminTime}` : ''}\n`;
+            }
             if (telestrokeNote.evtRecommended) brief += `- EVT recommended/performed\n`;
             if (telestrokeNote.transferAccepted) brief += `- Transferred to comprehensive stroke center\n`;
             if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) brief += `- Medical management\n`;
@@ -7175,7 +7168,7 @@ Clinician Name`;
             brief += `- CT Head: ${telestrokeNote.ctResults || 'N/A'}\n`;
             brief += `- CTA: ${telestrokeNote.ctaResults || 'N/A'}\n`;
             if (telestrokeNote.ctpResults) brief += `- CTP: ${telestrokeNote.ctpResults}\n`;
-            if ((telestrokeNote.vesselOcclusion || []).length > 0) brief += `- Vessel occlusion: ${telestrokeNote.vesselOcclusion.join(', ')}\n`;
+            if ((telestrokeNote.vesselOcclusion || []).length > 0) brief += `- Vessel occlusion: ${(telestrokeNote.vesselOcclusion || []).join(', ')}\n`;
             brief += `\nCARDIAC WORKUP:\n`;
             if (cw.ecgComplete) brief += `- ECG: completed\n`;
             if (cw.telemetryOrdered) brief += `- Telemetry: ordered\n`;
@@ -7213,6 +7206,14 @@ Clinician Name`;
             }
             if (sp.glp1ra && sp.glp1ra !== 'not-indicated') brief += `- GLP-1 RA: ${sp.glp1ra.replace(/-/g, ' ')}\n`;
             if (sp.sglt2i && sp.sglt2i !== 'not-indicated') brief += `- SGLT2i: ${sp.sglt2i.replace(/-/g, ' ')}\n`;
+            const doac = telestrokeNote.doacTiming || {};
+            if (doac.strokeSeverity || doac.doacAgent) {
+              brief += `\nDOAC TIMING:\n`;
+              if (doac.strokeSeverity) brief += `- Severity: ${doac.strokeSeverity} → ${doac.strokeSeverity === 'minor' ? 'start within 48h' : doac.strokeSeverity === 'moderate' ? 'start Day 3-5' : 'start Day 6-14'}\n`;
+              if (doac.doacAgent) brief += `- Agent: ${doac.doacAgent.replace(/-/g, ' ')}\n`;
+              if (doac.doacInitiationDay) brief += `- Planned initiation: ${doac.doacInitiationDay}\n`;
+              if (doac.hemorrhagicTransformation) brief += `- HT present: repeat imaging before DOAC initiation\n`;
+            }
             brief += `\nFOLLOW-UP PLAN:\n`;
             const dc = telestrokeNote.dischargeChecklist || {};
             if (dc.followUpNeurology) brief += `- Neurology follow-up\n`;
@@ -7236,8 +7237,9 @@ Clinician Name`;
             const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
             const ctpResults = telestrokeNote.ctpResults || "N/A";
             const aspectsStr = aspectsScore ? ` ASPECTS: ${aspectsScore}.` : "";
-            const vesselStr = (telestrokeNote.vesselOcclusion || []).length > 0 && !telestrokeNote.vesselOcclusion.includes('None')
-              ? ` Vessel occlusion: ${telestrokeNote.vesselOcclusion.join(', ')}.` : "";
+            const vesselArr = telestrokeNote.vesselOcclusion || [];
+            const vesselStr = vesselArr.length > 0 && !vesselArr.includes('None')
+              ? ` Vessel occlusion: ${vesselArr.join(', ')}.` : "";
             const tnkStatus = telestrokeNote.diagnosisCategory === 'ich' ? "N/A (ICH)" : telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
             const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
             const rationale = telestrokeNote.rationale || "[rationale]";
@@ -7282,7 +7284,16 @@ Clinician Name`;
               note += `PMH: ${telestrokeNote.pmh || '___'}\n`;
               note += `Medications: ${telestrokeNote.medications || '___'}\n\n`;
               note += `Vitals: BP ${telestrokeNote.presentingBP || '___'}, Glucose ${telestrokeNote.glucose || '___'}\n`;
-              note += `Labs: Plt/Coags ${telestrokeNote.plateletsCoags || '___'}, Cr ${telestrokeNote.creatinine || '___'}\n\n`;
+              note += `Labs: Plt/Coags ${telestrokeNote.plateletsCoags || '___'}, Cr ${telestrokeNote.creatinine || '___'}`;
+              if (telestrokeNote.inr) note += `, INR ${telestrokeNote.inr}`;
+              note += `\n`;
+              if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
+                const txAcInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
+                note += `Anticoagulation: ${txAcInfo.name}`;
+                if (telestrokeNote.lastDOACDose) note += ` (last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()})`;
+                note += `\n`;
+              }
+              note += `\n`;
               note += `Imaging:\n`;
               note += `- CT Head: ${telestrokeNote.ctResults || '___'}`;
               if (aspectsScore != null && aspectsScore < 10) note += ` (ASPECTS ${aspectsScore}/10)`;
@@ -7321,15 +7332,28 @@ Clinician Name`;
               note += imagingLine + '\n';
               note += `BP: ${telestrokeNote.presentingBP || '___'}\n\n`;
               note += `Treatment given:\n`;
-              if (telestrokeNote.tnkRecommended) note += `- TNK at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+              if (telestrokeNote.tnkRecommended) {
+                const signoutDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
+                note += `- TNK${signoutDose ? ` ${signoutDose.calculatedDose} mg` : ''} at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+              }
               if (telestrokeNote.evtRecommended) note += `- EVT recommended/performed\n`;
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
+              // Anticoagulation status
+              if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
+                const acInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
+                note += `- Recent anticoagulant: ${acInfo.name}`;
+                if (telestrokeNote.lastDOACDose) note += ` (last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()})`;
+                note += `\n`;
+              }
               // Complications
               const signoutComps = [];
               if (telestrokeNote.sichDetected) signoutComps.push('sICH');
               if (telestrokeNote.angioedemaDetected) signoutComps.push('angioedema');
               if (telestrokeNote.reperfusionHemorrhage) signoutComps.push('reperfusion hemorrhage');
               if (signoutComps.length > 0) note += `- Complications: ${signoutComps.join(', ')}\n`;
+              // BP target
+              const signoutBpPhase = bpPhaseTargets[telestrokeNote.bpPhase];
+              if (signoutBpPhase) note += `- BP target: <${signoutBpPhase.systolic}/${signoutBpPhase.diastolic} (${signoutBpPhase.label})\n`;
               const sp = telestrokeNote.secondaryPrevention || {};
               if (sp.antiplateletRegimen) {
                 note += `- Antithrombotic: ${AP_LABELS_SHORT[sp.antiplateletRegimen] || sp.antiplateletRegimen}\n`;
@@ -7354,7 +7378,10 @@ Clinician Name`;
               note += `INDICATION:\n`;
               note += `Acute ischemic stroke with large vessel occlusion (${(telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ') || '___'}).\n`;
               note += `LKW: ${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}\n`;
-              if (telestrokeNote.tnkRecommended) note += `IV TNK administered at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+              if (telestrokeNote.tnkRecommended) {
+                const procDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
+                note += `IV TNK${procDose ? ` ${procDose.calculatedDose} mg` : ''} administered at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+              }
               note += `\nPROCEDURE DETAILS:\n`;
               note += `Procedure: Mechanical thrombectomy\n`;
               note += `Access: ___ (R/L femoral, R/L radial)\n`;
@@ -7366,7 +7393,8 @@ Clinician Name`;
               note += `Reperfusion time: ___\n`;
               note += `mTICI score: ${telestrokeNote.ticiScore || '___'}\n\n`;
               note += `POST-PROCEDURE:\n`;
-              note += `- BP target: SBP <180/105 for 24h\n`;
+              const procBp = bpPhaseTargets['post-evt'];
+              note += `- BP target: SBP <${procBp.systolic}/${procBp.diastolic} for 24h\n`;
               note += `- Neurovascular checks q15min x 2h, then q30min x 4h\n`;
               note += `- Groin site checks q15min x 4h\n`;
               note += `- Hold antiplatelets/anticoagulants x 24h\n`;
@@ -7402,7 +7430,8 @@ Clinician Name`;
               if (telestrokeNote.sichDetected) progComps.push('sICH');
               if (telestrokeNote.angioedemaDetected) progComps.push('angioedema');
               if (progComps.length > 0) note += `   - Complications: ${progComps.join(', ')}\n`;
-              note += `   - BP goal: ___\n`;
+              const progBp = bpPhaseTargets[telestrokeNote.bpPhase];
+              note += `   - BP goal: ${progBp ? `<${progBp.systolic}/${progBp.diastolic} (${progBp.label})` : '___'}\n`;
               note += `   - DVT prophylaxis: ___\n`;
               note += `   - Dysphagia screening: ${telestrokeNote.dysphagiaScreening ? 'completed' : 'pending'}\n\n`;
               note += `2. Secondary prevention:\n`;
@@ -7661,7 +7690,7 @@ Clinician Name`;
 
             // Add vessel occlusion details
             if ((telestrokeNote.vesselOcclusion || []).length > 0) {
-              note += `\nVessel Occlusion: ${telestrokeNote.vesselOcclusion.join(', ')}\n`;
+              note += `\nVessel Occlusion: ${(telestrokeNote.vesselOcclusion || []).join(', ')}\n`;
             }
 
             // Add ICH-specific details
@@ -8987,9 +9016,6 @@ Clinician Name`;
             setKey('timerSidebarCollapsed', timerSidebarCollapsed, { skipLastUpdated: true });
           }, [timerSidebarCollapsed]);
 
-          useEffect(() => {
-            setKey('showAdvanced', showAdvanced, { skipLastUpdated: true });
-          }, [showAdvanced]);
 
 
           useEffect(() => {
@@ -9663,7 +9689,7 @@ Clinician Name`;
             if (isMounted) {
               lucide.createIcons();
             }
-          }, [activeTab, copiedText, darkMode, notice, searchOpen, actionsOpen, isMounted, focusMode, managementSubTab, calcDrawerOpen, protocolModal, encounterPhase]);
+          }, [activeTab, copiedText, notice, searchOpen, actionsOpen, isMounted, focusMode, managementSubTab, calcDrawerOpen, protocolModal, encounterPhase]);
 
           // Documentation generation functions
           const generateHPI = () => {
@@ -11602,8 +11628,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               const crcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
                               const crclVal = crcl ? crcl.value : null;
                               // Estimate effective half-life based on renal function
+                              // References: apixaban t½ 8-15h (severe renal), rivaroxaban 9-13h, dabigatran 14-28h
                               const halfLifeMap = {
-                                apixaban: crclVal && crclVal < 30 ? 16 : 10,
+                                apixaban: crclVal && crclVal < 30 ? 15 : 10,
                                 rivaroxaban: crclVal && crclVal < 30 ? 13 : 9,
                                 dabigatran: crclVal && crclVal < 30 ? 28 : crclVal && crclVal < 50 ? 18 : 14,
                                 warfarin: 40, heparin: 1.5, enoxaparin: crclVal && crclVal < 30 ? 7 : 4.5
@@ -11611,6 +11638,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               const estHalfLife = halfLifeMap[telestrokeNote.lastDOACType] || 12;
                               const halfLives = hoursSince ? hoursSince / estHalfLife : null;
                               const clearancePct = halfLives ? Math.min(99.9, (1 - Math.pow(0.5, halfLives)) * 100) : null;
+                              const missingCrCl = !crclVal && ['apixaban','rivaroxaban','dabigatran','enoxaparin'].includes(telestrokeNote.lastDOACType);
                               const clearanceColor = clearancePct === null ? 'bg-orange-50 border-orange-200' : clearancePct >= 97 ? 'bg-emerald-50 border-emerald-200' : clearancePct >= 87 ? 'bg-amber-50 border-amber-200' : 'bg-red-50 border-red-200';
                               return (
                               <div className={`mt-2 ${clearanceColor} border rounded p-2 text-xs space-y-1`}>
@@ -11618,11 +11646,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <span className="font-medium">{info.name}</span>
                                   <span className="text-slate-600">t½: {info.halfLife}{crclVal && crclVal < 50 ? ' (prolonged — CrCl ' + Math.round(crclVal) + ')' : ''}</span>
                                 </div>
-                                {hoursSince !== null && (
+                                {missingCrCl && (
+                                  <div className="text-amber-700 font-medium flex items-center gap-1">
+                                    <i data-lucide="alert-triangle" className="w-3 h-3"></i>
+                                    CrCl not available — using normal renal function estimate. Enter age, weight, sex, and creatinine for renal-adjusted clearance.
+                                  </div>
+                                )}
+                                {hoursSince !== null ? (
                                   <div className="flex justify-between font-semibold">
                                     <span>{Math.floor(hoursSince)}h since last dose ({halfLives.toFixed(1)} half-lives)</span>
                                     <span>~{clearancePct.toFixed(0)}% cleared</span>
                                   </div>
+                                ) : (
+                                  <div className="text-amber-700 font-medium">Enter last dose time to calculate clearance estimate</div>
                                 )}
                                 <div className={`font-semibold ${clearancePct !== null && clearancePct >= 97 ? 'text-emerald-800' : clearancePct !== null && clearancePct >= 87 ? 'text-amber-800' : 'text-red-800'}`}>
                                   TNK: {info.thrombolysisThreshold}
@@ -12457,7 +12493,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className={`lg:col-span-2 space-y-4`}>
 
                         {/* Section 1: Patient Info */}
-                        <div id="patient-info-section" className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                        <div id="phone-patient-info-section" className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-blue-900">1. Patient Info</h3>
                             <i data-lucide="user" className="w-5 h-5 text-blue-600"></i>
@@ -19024,7 +19060,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
                     )}
 
-                    {(showAdvanced || telestrokeNote.diagnosisCategory === 'mimic') && (
+                    {telestrokeNote.diagnosisCategory === 'mimic' && (
                       <details className="bg-white border border-slate-200 rounded-lg">
                         <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
                           <span>Stroke mimic FAQ</span>
