@@ -7288,18 +7288,24 @@ Clinician Name`;
 
             // Template-specific note generation
             if (noteTemplate === 'transfer') {
-              let note = `TRANSFER SUMMARY\n${'='.repeat(40)}\n\n`;
+              const transferConsultLabel = consultationType === 'telephone' ? 'Telephone Consult' : 'Video Telestroke';
+              let note = `TRANSFER SUMMARY (${transferConsultLabel})\n${'='.repeat(40)}\n\n`;
               if (telestrokeNote.callingSite) note += `From: ${telestrokeNote.callingSite}\n`;
-              note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}\n`;
+              note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}`;
+              if (telestrokeNote.weight) note += ` | Wt: ${telestrokeNote.weight} kg${telestrokeNote.weightEstimated ? ' (estimated)' : ''}`;
+              note += `\n`;
               note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}\n`;
               note += `LKW: ${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}\n`;
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
               const transferGCS = calculateGCS(gcsItems);
               if (transferGCS > 0) note += ` | GCS: ${transferGCS}`;
+              if (telestrokeNote.premorbidMRS) note += ` | Pre-mRS: ${telestrokeNote.premorbidMRS}`;
               note += `\n\n`;
               note += `HPI: ${telestrokeNote.symptoms || '___'}\n`;
               note += `PMH: ${telestrokeNote.pmh || '___'}\n`;
-              note += `Medications: ${telestrokeNote.medications || '___'}\n\n`;
+              note += `Medications: ${telestrokeNote.medications || '___'}\n`;
+              if (telestrokeNote.contrastAllergy) note += `** CONTRAST ALLERGY **\n`;
+              note += `\n`;
               const vitals = [`BP ${telestrokeNote.presentingBP || '___'}`];
               if (telestrokeNote.heartRate) vitals.push(`HR ${telestrokeNote.heartRate}`);
               if (telestrokeNote.spO2) vitals.push(`SpO2 ${telestrokeNote.spO2}%`);
@@ -7349,7 +7355,8 @@ Clinician Name`;
             }
 
             if (noteTemplate === 'signout') {
-              let note = `SIGNOUT / HANDOFF\n${'='.repeat(40)}\n\n`;
+              const signoutConsultLabel = consultationType === 'telephone' ? 'Telephone' : 'Video Telestroke';
+              let note = `SIGNOUT / HANDOFF (${signoutConsultLabel})\n${'='.repeat(40)}\n\n`;
               if (telestrokeNote.callingSite) note += `Site: ${telestrokeNote.callingSite}\n`;
               note += `${telestrokeNote.age || '___'} ${telestrokeNote.sex || '___'} — ${telestrokeNote.diagnosis || '___'}\n`;
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
@@ -7627,8 +7634,12 @@ Clinician Name`;
             note = note.replace(/{ctaTime}/g, formatTime(telestrokeNote.ctaTime));
             note = note.replace(/{ctaResults}/g, telestrokeNote.ctaResults || '');
             note = note.replace(/{ekgResults}/g, telestrokeNote.ekgResults || '');
-            note = note.replace(/{inr}/g, telestrokeNote.inr || '');
-            note = note.replace(/{ptt}/g, telestrokeNote.ptt ? `, aPTT ${telestrokeNote.ptt}` : '');
+            const inrVal = telestrokeNote.inr || '';
+            const pttVal = telestrokeNote.ptt || '';
+            const inrPttStr = [inrVal ? `${inrVal}` : '', pttVal ? `aPTT ${pttVal}` : ''].filter(Boolean).join(', ');
+            note = note.replace(/{inr}{ptt}/g, inrPttStr);
+            note = note.replace(/{inr}/g, inrVal);
+            note = note.replace(/{ptt}/g, pttVal ? `, aPTT ${pttVal}` : '');
             const aspectsStr = aspectsScore != null && aspectsScore < 10 ? `ASPECTS ${aspectsScore}/10` : '';
             note = note.replace(/{aspects}/g, aspectsStr);
             const vesselStr = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ');
@@ -7638,7 +7649,11 @@ Clinician Name`;
             note = note.replace(/{tnkAdminTime}/g, formatTime(telestrokeNote.tnkAdminTime));
             note = note.replace(/{recommendationsText}/g, telestrokeNote.recommendationsText || '');
 
-            // Add consultation metadata header
+            // Add consultation type header
+            const consultLabel = consultationType === 'telephone' ? 'TELEPHONE CONSULTATION NOTE' : 'TELESTROKE VIDEO CONSULTATION NOTE';
+            note = `${consultLabel}\n${'='.repeat(40)}\n\n${note}`;
+
+            // Add consultation metadata footer
             const metadataLines = [];
             if (telestrokeNote.callingSite) metadataLines.push(`Site: ${telestrokeNote.callingSite}${telestrokeNote.callingSiteOther ? ` (${telestrokeNote.callingSiteOther})` : ''}`);
             if (telestrokeNote.callerName) metadataLines.push(`Caller: ${telestrokeNote.callerName}${telestrokeNote.callerRole ? ` (${telestrokeNote.callerRole})` : ''}`);
@@ -7646,6 +7661,14 @@ Clinician Name`;
             if (telestrokeNote.consultStartTime) metadataLines.push(`Consult Time: ${telestrokeNote.consultStartTime}`);
             if (metadataLines.length > 0) {
               note += `\n${metadataLines.join('\n')}\n`;
+            }
+
+            // Add anticoagulation details if present
+            if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
+              const acInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
+              let acLine = `\nAnticoagulation: ${acInfo.name}`;
+              if (telestrokeNote.lastDOACDose) acLine += ` (last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()})`;
+              note += acLine + '\n';
             }
 
             // Add DTN metrics if TNK was administered
@@ -8232,7 +8255,27 @@ Clinician Name`;
               warnings.push({ id: 'tnk-ptt', severity: 'error', msg: `TNK recommended with aPTT ${ptt}s — aPTT >40s is a relative contraindication` });
             }
             if (glucose && glucose < 50 && n.tnkRecommended) {
-              warnings.push({ id: 'tnk-glucose', severity: 'warn', msg: `TNK recommended with glucose ${glucose} — hypoglycemia can mimic stroke, verify before treating` });
+              warnings.push({ id: 'tnk-glucose', severity: 'error', msg: `TNK recommended with glucose ${glucose} mg/dL — hypoglycemia can mimic stroke. Correct glucose and reassess before treating.` });
+            }
+
+            // SAH + anticoagulation warning
+            if (n.diagnosisCategory === 'sah' && (n.lastDOACType || n.lastDOACDose)) {
+              const acName = n.lastDOACType && ANTICOAGULANT_INFO[n.lastDOACType] ? ANTICOAGULANT_INFO[n.lastDOACType].name : 'anticoagulant';
+              warnings.push({ id: 'sah-anticoag', severity: 'error', msg: `SAH on ${acName} — initiate reversal per ICH anticoagulant reversal protocol` });
+            }
+
+            // GCS ≤8 airway alert
+            const gcsTotal = calculateGCS(gcsItems);
+            if (gcsTotal > 0 && gcsTotal <= 8) {
+              warnings.push({ id: 'gcs-airway', severity: 'error', msg: `GCS ${gcsTotal} ≤8 — consider intubation for airway protection` });
+            }
+
+            // Edoxaban + CrCl >95 warning
+            if (n.lastDOACType === 'edoxaban') {
+              const edoCrCl = calculateCrCl(n.age, n.weight, n.sex, n.creatinine);
+              if (edoCrCl && edoCrCl.value > 95) {
+                warnings.push({ id: 'edoxaban-crcl-high', severity: 'warn', msg: `Edoxaban with CrCl ${edoCrCl.value} mL/min (>95) — reduced efficacy per ENGAGE AF-TIMI 48, avoid edoxaban` });
+              }
             }
 
             return warnings;
@@ -8957,6 +9000,7 @@ Clinician Name`;
             setDoacProtocol('catalyst');
             setNursingFlowsheetChecks({});
             setWeightUnit('kg');
+            setTrialEligibility({});
 
             const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',
                                   'abcd2Items', 'chads2vascItems', 'ropeItems', 'huntHessGrade', 'wfnsGrade',
