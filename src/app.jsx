@@ -23478,6 +23478,162 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       </div>
                     </details>
 
+                    {/* Trainee Pitfalls — Common Mistakes */}
+                    <details className="bg-white border border-red-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-red-800 hover:bg-red-50 rounded-lg flex items-center gap-2">
+                        <i data-lucide="triangle-alert" className="w-4 h-4 text-red-600"></i>
+                        Common Trainee Pitfalls
+                      </summary>
+                      <div className="px-4 pb-4 space-y-2">
+                        <p className="text-xs text-slate-600 mb-2">Scenario-based Q&amp;A for common mistakes during stroke consultations.</p>
+                        {[
+                          {
+                            q: 'Patient got TNK and now has trace blood on urine dip. Should I reverse?',
+                            a: 'No. Microscopic hematuria is not an indication to reverse thrombolysis. Only gross hematuria, active bleeding requiring transfusion, or symptomatic intracranial hemorrhage warrants reversal. Continue monitoring.',
+                            ref: 'AHA/ASA 2019 Acute Ischemic Stroke Guidelines'
+                          },
+                          {
+                            q: 'Patient has ICH Score of 4. Family wants to know prognosis. Should we recommend comfort care?',
+                            a: 'No. The ICH Score predicts 30-day MORTALITY, not functional outcome, and was derived from cohorts with high rates of early DNR/withdrawal. AHA recommends postponing DNR at least 24h (Class IIa). Use FUNC Score for functional prognosis and provide aggressive care for at least 72 hours before prognosticating.',
+                            ref: 'AHA/ASA ICH 2022; Hemphill 2001; Rost 2008'
+                          },
+                          {
+                            q: 'Patient has cerebral venous thrombosis with hemorrhagic venous infarction. Should I hold anticoagulation?',
+                            a: 'No. Anticoagulate even with hemorrhage. CVT-associated hemorrhage is caused by venous congestion, and anticoagulation treats the underlying cause. AHA/ASA recommends initial anticoagulation with heparin even in presence of ICH (Class IIa, LOE B).',
+                            ref: 'AHA/ASA CVT 2024; ESO 2017'
+                          },
+                          {
+                            q: 'Patient has NIHSS 3 but CTA shows M1 occlusion. Do they need EVT?',
+                            a: 'Likely yes. Low NIHSS does not exclude LVO benefit. MR CLEAN-LATE and ESCAPE showed benefit even with lower NIHSS in LVO. Early neurological deterioration occurs in up to 30% of untreated LVO patients with initially low NIHSS. Discuss with neurointerventionalist.',
+                            ref: 'AHA/ASA 2025; MR CLEAN-LATE 2023'
+                          },
+                          {
+                            q: 'Patient had a seizure at stroke onset. Is TNK contraindicated?',
+                            a: 'No. Seizure at onset is no longer an absolute contraindication if residual deficits are clearly attributable to stroke (not postictal). If doubt exists, CT/CTA can help. The key concern is misdiagnosing Todd paralysis as stroke — do a thorough exam.',
+                            ref: 'AHA/ASA 2019; ACT-FAST 2022'
+                          },
+                          {
+                            q: 'Should I start prophylactic anti-seizure medication in this ICH patient?',
+                            a: 'No. Routine prophylactic AEDs are NOT recommended for ICH (Class III: No Benefit). Only treat clinical or electrographic seizures. If the patient has altered mental status disproportionate to the lesion, order continuous EEG — non-convulsive seizures occur in up to 28% of ICH patients.',
+                            ref: 'AHA/ASA ICH 2022'
+                          },
+                          {
+                            q: 'Patient is on clopidogrel and taking omeprazole. Is this a concern?',
+                            a: 'Yes. Omeprazole and esomeprazole are strong CYP2C19 inhibitors that significantly reduce clopidogrel active metabolite. Switch to pantoprazole (weak CYP2C19 inhibitor) or consider H2 blocker. This interaction does NOT apply to DOACs or aspirin.',
+                            ref: 'FDA Safety Communication 2009; COGENT trial 2010'
+                          },
+                          {
+                            q: 'Patient had TNK 3 hours ago, now new hemianopia. HT or new ischemia?',
+                            a: 'Get STAT CT head. HT typically presents with headache, nausea, BP elevation, and decreased consciousness. New focal deficit without consciousness change suggests re-occlusion or new territory ischemia. If CT shows no hemorrhage, consider repeat CTA to assess vessel patency — may need rescue EVT.',
+                            ref: 'Clinical reasoning; AHA/ASA 2019'
+                          },
+                          {
+                            q: 'Should I use phenytoin for post-stroke seizures?',
+                            a: 'Avoid if possible. Phenytoin has drug interactions with DOACs/statins, causes hypotension, and has worse cognitive outcomes. First-line: Levetiracetam 1000-1500 mg IV load, then 500-1000 mg BID. Alternative: Lacosamide 200 mg IV load.',
+                            ref: 'AHA/ASA 2022; Clinical consensus'
+                          },
+                          {
+                            q: 'Patient is 62 with malignant MCA infarction. Is hemicraniectomy indicated?',
+                            a: 'Discuss with the patient/family and neurosurgery. DESTINY II showed survival benefit in age >60 BUT higher rate of severe disability (mRS 4-5). NNT 2 for survival, but most survivors have moderate-severe disability. This requires a goals-of-care conversation — some patients/families value survival, others prioritize independence.',
+                            ref: 'DESTINY II (Juttler 2014); DECIMAL/DESTINY/HAMLET pooled analysis'
+                          },
+                        ].map((item, idx) => (
+                          <details key={idx} className="bg-red-50 border border-red-100 rounded-lg">
+                            <summary className="cursor-pointer p-2 text-sm font-medium text-red-900 hover:bg-red-100 rounded-lg">{item.q}</summary>
+                            <div className="px-3 pb-2">
+                              <p className="text-xs text-slate-700 mt-1">{item.a}</p>
+                              <p className="text-[10px] text-slate-500 mt-1 italic">Ref: {item.ref}</p>
+                            </div>
+                          </details>
+                        ))}
+                      </div>
+                    </details>
+
+                    {/* Imaging Follow-Up Protocols */}
+                    <details className="bg-white border border-cyan-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-cyan-800 hover:bg-cyan-50 rounded-lg flex items-center gap-2">
+                        <i data-lucide="scan" className="w-4 h-4 text-cyan-600"></i>
+                        Imaging Follow-Up Protocols by Diagnosis
+                      </summary>
+                      <div className="px-4 pb-4 space-y-3">
+                        <p className="text-xs text-slate-600">Ensures no imaging gets missed during admission or at discharge. Protocol-driven imaging reduces diagnostic errors.</p>
+                        <div className="space-y-2">
+                          <details className="bg-blue-50 border border-blue-200 rounded-lg" open>
+                            <summary className="cursor-pointer p-2 text-sm font-semibold text-blue-800">AIS (Post-TNK)</summary>
+                            <div className="px-3 pb-2 text-xs space-y-1">
+                              <p><strong>24h:</strong> NCHCT — screen for hemorrhagic transformation (required before starting antithrombotics)</p>
+                              <p><strong>24-48h:</strong> MRI DWI/FLAIR if not done — confirm infarct extent, detect silent infarcts</p>
+                              <p><strong>If neuro decline:</strong> STAT NCHCT +/- CTA (reocclusion vs HT vs edema)</p>
+                              <p><strong>Discharge:</strong> Ensure CTA/MRA head and neck completed. If not → outpatient within 1 week.</p>
+                              <p><strong>Outpatient (3-6 months):</strong> If carotid/vertebral stenosis → repeat CTA/MRA to assess progression</p>
+                            </div>
+                          </details>
+                          <details className="bg-blue-50 border border-blue-200 rounded-lg">
+                            <summary className="cursor-pointer p-2 text-sm font-semibold text-blue-800">AIS (Post-EVT)</summary>
+                            <div className="px-3 pb-2 text-xs space-y-1">
+                              <p><strong>Immediately post-procedure:</strong> Flat-panel CT in angio suite (contrast extravasation vs staining)</p>
+                              <p><strong>24h:</strong> NCHCT +/- CTA — assess for HT, confirm reperfusion, evaluate stent/device patency</p>
+                              <p><strong>If neuro decline:</strong> STAT NCHCT + CTA (reocclusion, HT, edema, vasospasm)</p>
+                              <p><strong>48-72h:</strong> MRI DWI if available — final infarct volume for prognostication</p>
+                              <p><strong>If stent placed:</strong> CTA at 3-6 months for in-stent stenosis surveillance</p>
+                            </div>
+                          </details>
+                          <details className="bg-red-50 border border-red-200 rounded-lg">
+                            <summary className="cursor-pointer p-2 text-sm font-semibold text-red-800">ICH</summary>
+                            <div className="px-3 pb-2 text-xs space-y-1">
+                              <p><strong>6h:</strong> Repeat NCHCT — assess for hematoma expansion (≥33% or ≥6 mL = significant)</p>
+                              <p><strong>24h:</strong> Repeat NCHCT if stable; CTA if no etiology identified (AVM, aneurysm, tumor)</p>
+                              <p><strong>If neuro decline:</strong> STAT NCHCT (expansion, hydrocephalus, new hemorrhage)</p>
+                              <p><strong>If young/no HTN/lobar:</strong> MRI with GRE/SWI and contrast — evaluate for underlying lesion, amyloid angiopathy (microbleeds)</p>
+                              <p><strong>Before DVT prophylaxis:</strong> Confirm stable hematoma on repeat imaging</p>
+                              <p><strong>Outpatient (3 months):</strong> MRI brain if not done inpatient; consider conventional angiogram if high suspicion for vascular malformation</p>
+                            </div>
+                          </details>
+                          <details className="bg-amber-50 border border-amber-200 rounded-lg">
+                            <summary className="cursor-pointer p-2 text-sm font-semibold text-amber-800">SAH</summary>
+                            <div className="px-3 pb-2 text-xs space-y-1">
+                              <p><strong>Day 0:</strong> CTA head/neck to identify aneurysm source. If CTA negative → conventional angiogram.</p>
+                              <p><strong>Day 3-14 (vasospasm window):</strong> Daily TCDs. CTA/CTP if TCD velocities &gt;200 cm/s or clinical decline.</p>
+                              <p><strong>If neuro decline:</strong> STAT NCHCT (rebleed, hydrocephalus, infarction) + CTA/CTP (vasospasm)</p>
+                              <p><strong>Post-coiling:</strong> Follow-up conventional angiogram or MRA at 6 months, 18 months, 3 years</p>
+                              <p><strong>Post-clipping:</strong> CTA at 6-12 months to confirm clip positioning and rule out residual aneurysm</p>
+                              <p><strong>Perimesencephalic SAH (CTA neg):</strong> Repeat conventional angiogram in 1-2 weeks if initial was negative</p>
+                            </div>
+                          </details>
+                          <details className="bg-pink-50 border border-pink-200 rounded-lg">
+                            <summary className="cursor-pointer p-2 text-sm font-semibold text-pink-800">Cervical Artery Dissection</summary>
+                            <div className="px-3 pb-2 text-xs space-y-1">
+                              <p><strong>Acute:</strong> CTA neck (or MRI/MRA with fat-sat) to confirm dissection</p>
+                              <p><strong>3-6 months:</strong> Repeat CTA or MRA neck — assess healing, recanalization</p>
+                              <p><strong>If recanalized:</strong> May simplify antithrombotic regimen</p>
+                              <p><strong>If persistent stenosis/occlusion:</strong> Continue antithrombotics, repeat at 12 months</p>
+                              <p><strong>If FMD suspected:</strong> CTA from aortic arch to circle of Willis + renal arteries screening</p>
+                            </div>
+                          </details>
+                          <details className="bg-teal-50 border border-teal-200 rounded-lg">
+                            <summary className="cursor-pointer p-2 text-sm font-semibold text-teal-800">CVT (Cerebral Venous Thrombosis)</summary>
+                            <div className="px-3 pb-2 text-xs space-y-1">
+                              <p><strong>Acute:</strong> MRI/MRV brain (or CTV if MRI contraindicated)</p>
+                              <p><strong>3-6 months:</strong> Repeat MRI/MRV — assess recanalization</p>
+                              <p><strong>If worsening:</strong> Repeat MRI/MRV urgently; consider conventional venography + endovascular intervention</p>
+                              <p><strong>If persistent headache:</strong> LP opening pressure to evaluate for pseudotumor cerebri</p>
+                              <p><strong>If recanalized:</strong> May consider stopping anticoagulation (if provoked; indefinite if unprovoked or thrombophilia)</p>
+                            </div>
+                          </details>
+                          <details className="bg-slate-50 border border-slate-200 rounded-lg">
+                            <summary className="cursor-pointer p-2 text-sm font-semibold text-slate-800">Cryptogenic Stroke Workup</summary>
+                            <div className="px-3 pb-2 text-xs space-y-1">
+                              <p><strong>Inpatient:</strong> MRI DWI, CTA/MRA head and neck, TTE with bubble study, continuous telemetry ≥24h</p>
+                              <p><strong>If TTE negative + high suspicion:</strong> TEE (PFO, LAA thrombus, aortic arch atheroma)</p>
+                              <p><strong>Extended monitoring:</strong> 14-30 day ambulatory cardiac monitor (ICM if recurrent or high-risk)</p>
+                              <p><strong>If age &lt;60:</strong> Consider vessel wall MRI (vasculitis, reversible vasoconstriction, dissection), hypercoagulability workup</p>
+                              <p><strong>If ESUS confirmed:</strong> Antiplatelet therapy (not anticoagulation) per NAVIGATE ESUS/RE-SPECT ESUS. Extended monitoring is key to finding AF.</p>
+                            </div>
+                          </details>
+                        </div>
+                      </div>
+                    </details>
+
                     {/* Stroke Mimic DDx Tool */}
                     <details className="bg-white border border-orange-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-orange-800 hover:bg-orange-50 rounded-lg flex items-center gap-2">
