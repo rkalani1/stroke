@@ -9243,9 +9243,9 @@ Clinician Name`;
           };
 
           // Second-level timer for elapsed time and alert checking
-          // Only runs on encounter tab to prevent re-renders on other tabs
+          // Runs on all tabs when LKW is set — timer strip + alerts must stay live
           useEffect(() => {
-            if (!lkwTime || activeTab !== 'encounter') return;
+            if (!lkwTime) return;
 
             const checkAlertsAndUpdate = () => {
               const now = new Date();
@@ -9293,7 +9293,7 @@ Clinician Name`;
               clearInterval(timer);
               if (alertFlashTimeoutRef.current) clearTimeout(alertFlashTimeoutRef.current);
             };
-          }, [lkwTime, alertsMuted, lastAlertPlayed, activeTab]);
+          }, [lkwTime, alertsMuted, lastAlertPlayed]);
 
           // Reset last alert when LKW changes
           useEffect(() => {
@@ -19659,6 +19659,51 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       </div>
 
                       <div className="mb-6">
+                        <h3 className="text-lg font-semibold text-red-700 mb-4">Anticoagulation Restart After ICH</h3>
+                        <div className="bg-white p-4 rounded border space-y-3">
+                          <p className="text-xs text-slate-600">When and how to restart anticoagulation in patients with AF who had an ICH. Individualize based on ICH location, etiology, and stroke risk.</p>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                              <h4 className="font-semibold text-emerald-800 text-sm mb-2">Deep ICH (Favorable for Restart)</h4>
+                              <ul className="text-xs text-slate-700 space-y-1">
+                                <li>&#x2022; Lower rebleed risk (~2%/yr) vs lobar</li>
+                                <li>&#x2022; Restart DOAC at <strong>4-8 weeks</strong> (AHA 2022)</li>
+                                <li>&#x2022; Consider earlier (2-4 wks) if high CHA₂DS₂-VASc (&ge;6) and stable imaging</li>
+                                <li>&#x2022; Prefer apixaban or edoxaban (lower ICH rates)</li>
+                              </ul>
+                            </div>
+                            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                              <h4 className="font-semibold text-amber-800 text-sm mb-2">Lobar ICH (Higher Rebleed Risk)</h4>
+                              <ul className="text-xs text-slate-700 space-y-1">
+                                <li>&#x2022; Often CAA-associated &mdash; rebleed ~7-10%/yr</li>
+                                <li>&#x2022; Delay restart to <strong>&ge;8 weeks</strong> or consider alternatives</li>
+                                <li>&#x2022; <strong>LAA closure (Watchman)</strong>: reasonable if CHA₂DS₂-VASc &ge;3 + high rebleed risk (STROKE-CLOSE)</li>
+                                <li>&#x2022; If restarting, use lowest effective DOAC dose</li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                            <h4 className="font-semibold text-blue-800 text-sm mb-2">Key Evidence</h4>
+                            <ul className="text-xs text-slate-700 space-y-1">
+                              <li>&#x2022; <strong>SoSTART (2021):</strong> OAC restart associated with lower recurrent stroke without excess ICH (observational)</li>
+                              <li>&#x2022; <strong>APACHE-AF (2021):</strong> Apixaban vs no anticoagulation &mdash; underpowered, trend favoring restart</li>
+                              <li>&#x2022; <strong>PRESTIGE-AF (2024):</strong> DOAC restart reduced ischemic events without significant increase in ICH</li>
+                              <li>&#x2022; <strong>DOAC preferred over warfarin</strong> for restart (lower ICH risk: 0.3-0.5%/yr vs 1%/yr)</li>
+                            </ul>
+                          </div>
+                          <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                            <h4 className="font-semibold text-red-800 text-sm mb-2">Do NOT Restart If</h4>
+                            <ul className="text-xs text-slate-700 space-y-1">
+                              <li>&#x2022; Multiple lobar ICH or severe CAA burden on MRI</li>
+                              <li>&#x2022; Ongoing hematoma expansion</li>
+                              <li>&#x2022; Uncontrolled hypertension</li>
+                              <li>&#x2022; Patient/family preference against restart</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mb-6">
                         <h3 className="text-lg font-semibold text-red-700 mb-4">ICH Supportive Care Bundle</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="bg-white p-4 rounded border">
@@ -20836,6 +20881,32 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           )}
                         </div>
+
+                        {/* Modified Fisher Scale */}
+                        <details className="bg-white border border-slate-200 rounded-lg">
+                          <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-purple-600 text-white text-xs flex items-center justify-center font-bold">+</span>
+                            Modified Fisher Scale (Better Vasospasm Prediction)
+                          </summary>
+                          <div className="px-4 pb-4">
+                            <p className="text-xs text-slate-600 mb-2">Frontera et al., 2006. More predictive of symptomatic vasospasm than original Fisher grade.</p>
+                            <div className="space-y-1.5">
+                              {[
+                                { grade: '0', ct: 'No SAH or IVH', risk: 'Minimal' },
+                                { grade: '1', ct: 'Thin SAH, no IVH', risk: '24%' },
+                                { grade: '2', ct: 'Thin SAH with IVH', risk: '33%' },
+                                { grade: '3', ct: 'Thick SAH, no IVH', risk: '33%' },
+                                { grade: '4', ct: 'Thick SAH with IVH', risk: '40%' }
+                              ].map(f => (
+                                <div key={f.grade} className="flex justify-between items-center p-2 rounded bg-slate-50 text-sm">
+                                  <div><span className="font-mono font-bold mr-2">mF {f.grade}</span><span className="text-slate-600">{f.ct}</span></div>
+                                  <span className="text-xs font-semibold text-purple-700">Spasm: {f.risk}</span>
+                                </div>
+                              ))}
+                            </div>
+                            <p className="text-xs text-slate-500 mt-2">Thick = &gt;1mm layer. IVH = intraventricular hemorrhage present bilaterally.</p>
+                          </div>
+                        </details>
 
                         {/* Vasospasm Monitoring & DCI */}
                         <div className="bg-white border border-slate-200 rounded-lg p-4">
