@@ -119,6 +119,9 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
             }
           } catch (e) {
             console.warn('Failed to save key:', name, e);
+            if (e.name === 'QuotaExceededError' || e.code === 22) {
+              throw e; // Re-throw quota errors for caller to handle
+            }
           }
         };
 
@@ -6169,6 +6172,9 @@ Clinician Name`;
             } catch (e) {
               setSaveStatus('error');
               console.error('Save failed:', e);
+              if (e.name === 'QuotaExceededError' || e.code === 22) {
+                addToast('Storage full — data may not be saved. Export your note or clear old data.', 'error');
+              }
             }
           };
 
@@ -10126,25 +10132,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           // Keyboard shortcuts
           React.useEffect(() => {
             const handleKeyDown = (e) => {
-              // Ignore if user is typing in an input/textarea
-              if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
-                return;
-              }
-
+              // Global shortcuts — work even when typing in inputs
               // Cmd/Ctrl + K: Open search
               if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
                 e.preventDefault();
                 setSearchOpen(true);
                 setSearchContext('header');
                 document.querySelector('input[placeholder*="Search"]')?.focus();
-              }
-
-              // "/" key: Focus search
-              if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey) {
-                e.preventDefault();
-                setSearchOpen(true);
-                setSearchContext('header');
-                document.querySelector('input[placeholder*="Search"]')?.focus();
+                return;
               }
 
               // Escape: Close search/modals
@@ -10154,8 +10149,21 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 setCalcDrawerOpen(false);
                 setSettingsMenuOpen(false);
                 setFabExpanded(false);
-    
                 setProtocolModal(null);
+                return;
+              }
+
+              // Ignore remaining shortcuts if user is typing in an input/textarea
+              if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+                return;
+              }
+
+              // "/" key: Focus search (only outside inputs)
+              if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+                e.preventDefault();
+                setSearchOpen(true);
+                setSearchContext('header');
+                document.querySelector('input[placeholder*="Search"]')?.focus();
               }
 
               const inInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName);
@@ -26079,7 +26087,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       { keys: 'Ctrl + 2', action: 'Management tab' },
                       { keys: 'Ctrl + 3', action: 'Trials tab' },
                       { keys: 'Ctrl+Shift+C', action: 'Copy consult note' },
-                      { keys: 'Ctrl + K', action: 'Toggle calculators' },
+                      { keys: 'Ctrl + K', action: 'Open search' },
+                      { keys: '/', action: 'Focus search' },
                       { keys: 'Ctrl+Shift+F', action: 'Toggle focus mode' },
                       { keys: 'Esc', action: 'Close modal / dialog' },
                       { keys: '?', action: 'Toggle this help' }
