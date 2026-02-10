@@ -7350,6 +7350,14 @@ Clinician Name`;
                 if (telestrokeNote.transportEta) note += ` | ETA: ${telestrokeNote.transportEta}`;
                 note += '\n';
               }
+              // Nursing/safety alerts for receiving team
+              const transferAlerts = [];
+              const transferDysphagia = telestrokeNote.dysphagiaScreening || {};
+              if (transferDysphagia.bedsideScreenResult === 'fail') transferAlerts.push('NPO — failed dysphagia screen');
+              if (telestrokeNote.contrastAllergy) transferAlerts.push('Contrast allergy');
+              if (transferAlerts.length > 0) {
+                note += `\nALERTS: ${transferAlerts.join('; ')}\n`;
+              }
               note += `\nRecommendations:\n${telestrokeNote.recommendationsText || '___'}\n`;
               return note;
             }
@@ -7582,6 +7590,19 @@ Clinician Name`;
               if (dischSp.bpMeds) note += `- BP Medications: ${dischSp.bpMeds}\n`;
               const ct = telestrokeNote.cardiacWorkup || {};
               if (ct.extendedMonitoringType) note += `- Cardiac monitoring: ${ct.extendedMonitoringType}\n`;
+              note += '\n';
+              // Dysphagia and VTE status
+              const dysphagia = telestrokeNote.dysphagiaScreening || {};
+              if (dysphagia.bedsideScreenPerformed) {
+                note += `- Dysphagia screen: ${dysphagia.bedsideScreenResult || 'completed'}${dysphagia.bedsideScreenResult === 'fail' ? ' — NPO, SLP referral' : ''}\n`;
+              }
+              const vte = telestrokeNote.vteProphylaxis || {};
+              if (vte.ipcApplied || vte.pharmacoProphylaxis) {
+                const vteParts = [];
+                if (vte.ipcApplied) vteParts.push('IPC');
+                if (vte.pharmacoProphylaxis) vteParts.push(vte.pharmacoProphylaxis);
+                note += `- VTE prophylaxis: ${vteParts.join(' + ')}\n`;
+              }
               note += '\n';
               const dischMRS = (telestrokeNote.mrsAssessment || {}).discharge;
               note += `DISCHARGE NIHSS: ___\n`;
@@ -9283,6 +9304,9 @@ Clinician Name`;
               setTelestrokeNote(prev => prev.bpPhase === 'ich' ? prev : { ...prev, bpPhase: 'ich' });
             } else if (cat === 'sah') {
               setTelestrokeNote(prev => prev.bpPhase === 'sah' ? prev : { ...prev, bpPhase: 'sah' });
+            } else if (cat === 'ischemic') {
+              // Revert from ICH/SAH phase to pre-tnk default when switching to ischemic
+              setTelestrokeNote(prev => (prev.bpPhase === 'ich' || prev.bpPhase === 'sah') ? { ...prev, bpPhase: 'pre-tnk' } : prev);
             }
           }, [telestrokeNote.diagnosisCategory]);
 
