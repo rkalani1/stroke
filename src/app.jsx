@@ -900,7 +900,7 @@ Clinician Name`;
             weight: '',
             weightEstimated: false,
             height: '',
-            lastDOACDose: new Date().toISOString().slice(0, 16),
+            lastDOACDose: '',
             lastDOACType: '',
             arrivalTime: '',
             strokeAlertTime: '',
@@ -5757,6 +5757,7 @@ Clinician Name`;
             const w = parseFloat(weight);
             const cr = parseFloat(creatinine);
             if (!a || !w || !cr || a <= 0 || w <= 0 || cr <= 0) return null;
+            if (sex !== 'M' && sex !== 'F') return null;
             const sexFactor = (sex === 'F') ? 0.85 : 1.0;
             const crcl = ((140 - a) * w * sexFactor) / (72 * cr);
             return {
@@ -6029,10 +6030,10 @@ Clinician Name`;
               alerts.push({ severity: 'critical', label: 'Elevated INR', message: `INR ${inr.toFixed(1)} >1.7 - tPA/TNK CONTRAINDICATED`, field: 'inr' });
             }
 
-            // Platelet check
+            // Platelet check (value stored in K/μL, e.g. 150 = 150,000/μL)
             const platelets = parseFloat(data.telestrokeNote?.plateletCount);
-            if (!isNaN(platelets) && platelets < 100000) {
-              alerts.push({ severity: 'critical', label: 'Low Platelets', message: `${platelets.toLocaleString()}/μL <100,000 - tPA/TNK CONTRAINDICATED`, field: 'plateletCount' });
+            if (!isNaN(platelets) && platelets < 100) {
+              alerts.push({ severity: 'critical', label: 'Low Platelets', message: `Platelets ${platelets}K/μL (<100K) - tPA/TNK CONTRAINDICATED`, field: 'plateletCount' });
             }
 
             // BP check (parse from string like "185/110")
@@ -8174,6 +8175,10 @@ Clinician Name`;
             if (n.tnkRecommended && platelets && platelets < 100) {
               warnings.push({ id: 'tnk-plt', severity: 'error', msg: `TNK recommended with platelets ${platelets}K — platelets <100K is a contraindication` });
             }
+            const ptt = parseFloat(n.ptt);
+            if (n.tnkRecommended && ptt && ptt > 40) {
+              warnings.push({ id: 'tnk-ptt', severity: 'error', msg: `TNK recommended with aPTT ${ptt}s — aPTT >40s is a relative contraindication` });
+            }
             if (glucose && glucose < 50 && n.tnkRecommended) {
               warnings.push({ id: 'tnk-glucose', severity: 'warn', msg: `TNK recommended with glucose ${glucose} — hypoglycemia can mimic stroke, verify before treating` });
             }
@@ -9109,11 +9114,13 @@ Clinician Name`;
           useEffect(() => {
             const inrVal = parseFloat(telestrokeNote.inr);
             const pltVal = parseInt(telestrokeNote.plateletCount);
+            const pttVal = parseFloat(telestrokeNote.ptt);
             const warfarinWithHighINR = telestrokeNote.lastDOACType === 'warfarin' && !Number.isNaN(inrVal) && inrVal > 1.7;
             const lowPlatelets = !Number.isNaN(pltVal) && pltVal < 100;
+            const elevatedAPTT = !Number.isNaN(pttVal) && pttVal > 40;
             const isICH = telestrokeNote.diagnosisCategory === 'ich' || telestrokeNote.diagnosisCategory === 'sah';
             const recentDOAC = telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== 'warfarin' && telestrokeNote.lastDOACType !== 'none';
-            const shouldBlock = warfarinWithHighINR || lowPlatelets || isICH || recentDOAC;
+            const shouldBlock = warfarinWithHighINR || lowPlatelets || elevatedAPTT || isICH || recentDOAC;
             if (shouldBlock) {
               setTelestrokeNote(prev => {
                 if (prev.tnkAutoBlocked && prev.tnkRecommended === false) return prev;
@@ -9122,7 +9129,7 @@ Clinician Name`;
             } else if (telestrokeNote.tnkAutoBlocked) {
               setTelestrokeNote(prev => ({ ...prev, tnkAutoBlocked: false }));
             }
-          }, [telestrokeNote.lastDOACType, telestrokeNote.inr, telestrokeNote.plateletCount, telestrokeNote.diagnosisCategory, telestrokeNote.tnkAutoBlocked]);
+          }, [telestrokeNote.lastDOACType, telestrokeNote.inr, telestrokeNote.plateletCount, telestrokeNote.ptt, telestrokeNote.diagnosisCategory, telestrokeNote.tnkAutoBlocked]);
 
           useEffect(() => {
             const prev = decisionStateRef.current;
@@ -13091,22 +13098,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     type="number"
                                     value={telestrokeNote.plateletCount}
                                     onChange={(e) => setTelestrokeNote({...telestrokeNote, plateletCount: e.target.value})}
-                                    placeholder=""
+                                    placeholder="K/μL"
                                     className={`w-full px-3 py-2 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 ${
                                       (() => {
                                         const p = parseFloat(telestrokeNote.plateletCount);
                                         if (!p) return 'border-slate-300';
-                                        if (p < 100000) return 'border-red-400 bg-red-50';
+                                        if (p < 100) return 'border-red-400 bg-red-50';
                                         return 'border-emerald-400 bg-emerald-50';
                                       })()
                                     }`}
-                                    min="0"
+                                    min="0" max="1500"
                                   />
-                                  <span className="ml-1 text-xs text-slate-500">/μL</span>
+                                  <span className="ml-1 text-xs text-slate-500">K/μL</span>
                                 </div>
                                 {(() => {
                                   const p = parseFloat(telestrokeNote.plateletCount);
-                                  if (p && p < 100000) return <p className="text-xs text-red-700 font-medium mt-0.5">TNK contraindicated (&lt;100k)</p>;
+                                  if (p && p < 100) return <p className="text-xs text-red-700 font-medium mt-0.5">TNK contraindicated (&lt;100K)</p>;
                                   return null;
                                 })()}
                               </div>
@@ -14075,7 +14082,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               const pttVal = parseFloat(telestrokeNote.ptt);
                               if (!isNaN(pttVal) && pttVal > 40) autoDetected.elevatedAPTT = true;
                               const plateletsVal = parseFloat(telestrokeNote.plateletCount);
-                              if (!isNaN(plateletsVal) && plateletsVal < 100000) autoDetected.lowPlatelets = true;
+                              if (!isNaN(plateletsVal) && plateletsVal < 100) autoDetected.lowPlatelets = true;
                               const bpVal = telestrokeNote.presentingBP || '';
                               const bpMatchVal = bpVal.match(/(\d+)\s*\/\s*(\d+)/);
                               if (bpMatchVal && (parseInt(bpMatchVal[1]) > 185 || parseInt(bpMatchVal[2]) > 110)) autoDetected.severeUncontrolledHTN = true;
