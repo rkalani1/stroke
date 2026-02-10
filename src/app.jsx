@@ -9983,7 +9983,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         className="text-slate-500 hover:text-slate-700"
                         aria-label="Close protocol"
                       >
-                        ✕
+                        <i data-lucide="x" className="w-5 h-5"></i>
                       </button>
                     </div>
                     <div className="p-4 space-y-3 text-sm text-slate-700">
@@ -10810,7 +10810,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                       {telestrokeNote.lkwUnknown && (
                         <div className="mt-3 bg-purple-50 border border-purple-200 rounded-xl p-4 space-y-4">
                           <div className="flex items-center gap-2">
-                            <span className="text-lg font-bold text-purple-900">🌙 Wake-up Stroke Evaluation</span>
+                            <span className="text-lg font-bold text-purple-900"><i data-lucide="moon" className="w-5 h-5 inline mr-1"></i> Wake-up Stroke Evaluation</span>
                           </div>
 
                           {/* MRI Availability Decision Point */}
@@ -13134,7 +13134,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             {/* ASPECTS Calculator (Collapsible) */}
                             <details className="bg-blue-50 border border-blue-200 rounded-lg">
                               <summary className="cursor-pointer p-3 font-semibold text-blue-800 hover:bg-blue-100 rounded-lg">
-                                🧮 Full ASPECTS Calculator (Click to expand)
+                                <i data-lucide="grid-3x3" className="w-4 h-4 inline"></i> Full ASPECTS Calculator (Click to expand)
                               </summary>
                               <div className="p-4">
                                 <div className="text-center mb-3">
@@ -13165,7 +13165,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             {/* PC-ASPECTS Calculator (Collapsible) */}
                             <details className="bg-purple-50 border border-purple-200 rounded-lg">
                               <summary className="cursor-pointer p-3 font-semibold text-purple-800 hover:bg-purple-100 rounded-lg">
-                                🧮 PC-ASPECTS Calculator (Posterior Circulation)
+                                <i data-lucide="grid-3x3" className="w-4 h-4 inline"></i> PC-ASPECTS Calculator (Posterior Circulation)
                               </summary>
                               <div className="p-4">
                                 <div className="flex justify-between items-center mb-3">
@@ -14589,7 +14589,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             {/* EVT Eligibility (Collapsible — hidden in clinic) */}
                             {<details className="bg-blue-50 border border-blue-200 rounded-lg">
                               <summary className="cursor-pointer p-3 font-semibold text-blue-800 hover:bg-blue-100 rounded-lg">
-                                🔧 EVT Eligibility Criteria (Click to expand)
+                                <i data-lucide="wrench" className="w-4 h-4 inline"></i> EVT Eligibility Criteria (Click to expand)
                               </summary>
                               <div className="p-4 space-y-3 text-sm">
                                 <div>
@@ -21477,12 +21477,12 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 )}
                                 {nihssScore > 8 && (
                                   <li className="text-blue-700">
-                                    🔵 <strong>STEP MeVO arm</strong>: Check for M2/M3 occlusion
+                                    <i data-lucide="circle" className="w-3 h-3 inline text-blue-500"></i> <strong>STEP MeVO arm</strong>: Check for M2/M3 occlusion
                                   </li>
                                 )}
                                 {nihssScore < 6 && (
                                   <li className="text-slate-600">
-                                    ⚪ SISTER: NIHSS ≥6 required (current: {nihssScore})
+                                    SISTER: NIHSS ≥6 required (current: {nihssScore})
                                   </li>
                                 )}
                               </ul>
@@ -21498,17 +21498,17 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <ul className="space-y-1 text-xs text-slate-700">
                                   {gcs >= 5 && gcs <= 14 && (
                                     <li className="text-blue-700">
-                                      🔵 <strong>ENRICH range</strong>: GCS 5-14 for MIE consideration
+                                      <i data-lucide="circle" className="w-3 h-3 inline text-blue-500"></i> <strong>ENRICH range</strong>: GCS 5-14 for MIE consideration
                                     </li>
                                   )}
                                   {gcs > 14 && (
                                     <li className="text-slate-600">
-                                      ⚪ ENRICH: GCS 5-14 required (current: {gcs})
+                                      ENRICH: GCS 5-14 required (current: {gcs})
                                     </li>
                                   )}
                                   {gcs < 5 && (
                                     <li className="text-slate-600">
-                                      ⚪ GCS too low for most trial eligibility
+                                      GCS too low for most trial eligibility
                                     </li>
                                   )}
                                 </ul>
@@ -24980,7 +24980,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           >
                             {isRecommended && (
                               <span className="absolute -top-2 -right-1 text-xs bg-amber-400 text-amber-900 px-1.5 py-0.5 rounded-full font-bold">
-                                ★
+                                <i data-lucide="star" className="w-3 h-3 inline"></i>
                               </span>
                             )}
                             {getCategoryName(category)} ({trialCount})
