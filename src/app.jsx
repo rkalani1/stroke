@@ -7294,7 +7294,9 @@ Clinician Name`;
               note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}`;
               if (telestrokeNote.weight) note += ` | Wt: ${telestrokeNote.weight} kg${telestrokeNote.weightEstimated ? ' (estimated)' : ''}`;
               note += `\n`;
-              note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}\n`;
+              note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}`;
+              if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
+              note += `\n`;
               note += `LKW: ${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}\n`;
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
               const transferGCS = calculateGCS(gcsItems);
@@ -7345,6 +7347,8 @@ Clinician Name`;
               if (telestrokeNote.evtRecommended) note += `- EVT recommended\n`;
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
               if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) note += formatDTNForNote();
+              const transferBp = bpPhaseTargets[telestrokeNote.bpPhase];
+              if (transferBp) note += `- BP target: <${transferBp.systolic}/${transferBp.diastolic} (${transferBp.label})\n`;
               if (telestrokeNote.transportMode || telestrokeNote.transportEta) {
                 note += `\nTransport: ${telestrokeNote.transportMode || '___'}`;
                 if (telestrokeNote.transportEta) note += ` | ETA: ${telestrokeNote.transportEta}`;
@@ -7538,7 +7542,9 @@ Clinician Name`;
             if (noteTemplate === 'discharge') {
               let note = `STROKE DISCHARGE SUMMARY\n${'='.repeat(40)}\n\n`;
               note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}\n`;
-              note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}\n`;
+              note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}`;
+              if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
+              note += `\n`;
               note += `Admission Date: ${formatDate(telestrokeNote.lkwDate) || '___'}\n`;
               note += `Discharge Date: ___\n\n`;
               note += `HOSPITAL COURSE:\n`;
@@ -7690,6 +7696,12 @@ Clinician Name`;
               let acLine = `\nAnticoagulation: ${acInfo.name}`;
               if (telestrokeNote.lastDOACDose) acLine += ` (last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()})`;
               note += acLine + '\n';
+            }
+
+            // Add BP target for continuity
+            const consultBp = bpPhaseTargets[telestrokeNote.bpPhase];
+            if (consultBp) {
+              note += `\nBP target: <${consultBp.systolic}/${consultBp.diastolic} (${consultBp.label})\n`;
             }
 
             // Add DTN metrics if TNK was administered
