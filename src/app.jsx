@@ -812,7 +812,7 @@ Objective:
 Vitals: BP {presentingBP}, HR {heartRate}, SpO2 {spO2}%, Temp {temperature}°F
 BP prior to TNK administration: {bpPreTNK} at {bpPreTNKTime}
 Labs: Glucose {glucose}, Plt/Coags {plateletsCoags}, Cr {creatinine}, INR {inr}
-Exam: NIHSS {nihss} - {nihssDetails}
+Exam: NIHSS {nihss} {gcs}- {nihssDetails}
 
 Imaging: I personally reviewed imaging
 NCCT Head ({ctTime}): {ctResults} {aspects}
@@ -7159,7 +7159,10 @@ Clinician Name`;
             brief += `${'='.repeat(40)}\n\n`;
             brief += `Patient: ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'M' : telestrokeNote.sex === 'F' ? 'F' : '***'}\n`;
             brief += `Diagnosis: ${telestrokeNote.diagnosis || '***'}\n`;
-            brief += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n`;
+            brief += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
+            const fuGCS = calculateGCS(gcsItems);
+            if (fuGCS > 0) brief += ` | GCS: ${fuGCS}`;
+            brief += `\n`;
             if (telestrokeNote.toastClassification) {
 
               brief += `Etiology (TOAST): ${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}\n`;
@@ -7287,7 +7290,10 @@ Clinician Name`;
               note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}\n`;
               note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}\n`;
               note += `LKW: ${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}\n`;
-              note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n\n`;
+              note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
+              const transferGCS = calculateGCS(gcsItems);
+              if (transferGCS > 0) note += ` | GCS: ${transferGCS}`;
+              note += `\n\n`;
               note += `HPI: ${telestrokeNote.symptoms || '___'}\n`;
               note += `PMH: ${telestrokeNote.pmh || '___'}\n`;
               note += `Medications: ${telestrokeNote.medications || '___'}\n\n`;
@@ -7343,13 +7349,20 @@ Clinician Name`;
               let note = `SIGNOUT / HANDOFF\n${'='.repeat(40)}\n\n`;
               if (telestrokeNote.callingSite) note += `Site: ${telestrokeNote.callingSite}\n`;
               note += `${telestrokeNote.age || '___'} ${telestrokeNote.sex || '___'} — ${telestrokeNote.diagnosis || '___'}\n`;
-              note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'} | LKW: ${formatTime(telestrokeNote.lkwTime) || '___'}\n\n`;
+              note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
+              const signoutGCS = calculateGCS(gcsItems);
+              if (signoutGCS > 0) note += ` | GCS: ${signoutGCS}`;
+              note += ` | LKW: ${formatTime(telestrokeNote.lkwTime) || '___'}\n\n`;
               note += `Brief HPI: ${telestrokeNote.symptoms || '___'}\n\n`;
               let imagingLine = `Key imaging: CT ${telestrokeNote.ctResults || '___'}; CTA ${telestrokeNote.ctaResults || '___'}`;
               const signoutVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
               if (signoutVessels.length > 0) imagingLine += ` (${signoutVessels.join(', ')})`;
               note += imagingLine + '\n';
-              note += `BP: ${telestrokeNote.presentingBP || '___'}\n\n`;
+              const signoutVitals = [`BP ${telestrokeNote.presentingBP || '___'}`];
+              if (telestrokeNote.heartRate) signoutVitals.push(`HR ${telestrokeNote.heartRate}`);
+              if (telestrokeNote.spO2) signoutVitals.push(`SpO2 ${telestrokeNote.spO2}%`);
+              if (telestrokeNote.glucose) signoutVitals.push(`Glucose ${telestrokeNote.glucose}`);
+              note += `Vitals: ${signoutVitals.join(', ')}\n\n`;
               note += `Treatment given:\n`;
               if (telestrokeNote.tnkRecommended) {
                 const signoutDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
@@ -7586,6 +7599,8 @@ Clinician Name`;
             note = note.replace(/{plateletsCoags}/g, telestrokeNote.plateletsCoags || '');
             note = note.replace(/{creatinine}/g, telestrokeNote.creatinine || '');
             note = note.replace(/{nihss}/g, telestrokeNote.nihss || nihssScore || '');
+            const gcsForNote = calculateGCS(gcsItems);
+            note = note.replace(/{gcs}/g, gcsForNote > 0 ? `| GCS: ${gcsForNote} ` : '');
             note = note.replace(/{nihssDetails}/g, telestrokeNote.nihssDetails || '');
             note = note.replace(/{ctTime}/g, formatTime(telestrokeNote.ctTime));
             note = note.replace(/{ctResults}/g, telestrokeNote.ctResults || '');
@@ -12034,6 +12049,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             )}
                           </div>
+                          <div className="mt-3">
+                            <label className="block text-xs text-slate-600 mb-1">Telemetry / EKG</label>
+                            <input
+                              type="text"
+                              value={telestrokeNote.ekgResults}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, ekgResults: e.target.value})}
+                              placeholder="NSR, AF, STEMI, etc."
+                              className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                            />
+                          </div>
                         </div>
 
 
@@ -13573,6 +13598,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, ctpResults: e.target.value})}
                                 placeholder=""
                                 rows="3"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                              />
+                            </div>
+                            {/* Telemetry / EKG */}
+                            <div className="bg-slate-50 p-3 rounded border">
+                              <h4 className="font-semibold text-slate-700 mb-2">Telemetry / EKG</h4>
+                              <input
+                                type="text"
+                                value={telestrokeNote.ekgResults}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, ekgResults: e.target.value})}
+                                placeholder="NSR, AF, STEMI, etc."
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                               />
                             </div>
