@@ -806,20 +806,20 @@ Relevant PMH: {pmh}
 Medications: {medications}
 
 Objective:
-Vitals:
-Presenting BP {presentingBP}
-Blood pressure: BP prior to TNK administration: {bpPreTNK} at {bpPreTNKTime}
-Labs: Glucose {glucose}
-Exam: Scores: NIHSS {nihss} - {nihssDetails}
+Vitals: BP {presentingBP}
+BP prior to TNK administration: {bpPreTNK} at {bpPreTNKTime}
+Labs: Glucose {glucose}, Plt/Coags {plateletsCoags}, Cr {creatinine}, INR {inr}
+Exam: NIHSS {nihss} - {nihssDetails}
 
 Imaging: I personally reviewed imaging
-Date/time Non-contrast Head CT reviewed: {ctTime}; Non-contrast Head CT Results: {ctResults}
-Date/time CTA reviewed: {ctaDate} {ctaTime}; CTA Results: {ctaResults}
+NCCT Head ({ctTime}): {ctResults} {aspects}
+CTA Head/Neck ({ctaDate} {ctaTime}): {ctaResults} {vesselOcclusion}
+CTP: {ctpResults}
 Telemetry/EKG: {ekgResults}
 
 Assessment and Plan:
 Suspected Diagnosis: {diagnosis}
-After ensuring that there were no evident contraindications, TNK administration was recommended at {tnkAdminTime}. Potential benefits, potential risks (including a potential risk of sx ICH of up to 4%), and alternatives to treatment were discussed with the patient, patient's wife, and OSH provider. Both the patient and his wife expressed agreement with the recommendation.
+After ensuring that there were no evident contraindications, TNK administration was recommended at {tnkAdminTime}. Potential benefits, potential risks (including a potential risk of sx ICH of up to 4%), and alternatives to treatment were discussed with the patient, family/LNOK, and OSH provider.
 TNK was administered at {tnkAdminTime} after a brief time-out.
 
 Recommendations:
@@ -5809,14 +5809,14 @@ Clinician Name`;
             let status = 'ok';
             let message = 'OK for lysis';
             let badgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-300';
-            let icon = String.fromCharCode(0x2713); // checkmark
+            let icon = '';
 
             // Check if too high (absolute contraindication)
             if (systolic > MAX_SBP || diastolic > MAX_DBP) {
               status = 'too_high';
               message = 'Too high for TNK';
               badgeClass = 'bg-red-100 text-red-800 border-red-300';
-              icon = String.fromCharCode(0x1F6AB); // prohibited sign
+              icon = '[X]';
             }
             // Check if borderline
             else if ((systolic >= BORDERLINE_SBP_LOW && systolic <= MAX_SBP) ||
@@ -5824,7 +5824,7 @@ Clinician Name`;
               status = 'borderline';
               message = 'Borderline';
               badgeClass = 'bg-amber-100 text-amber-800 border-amber-300';
-              icon = String.fromCharCode(0x26A0); // warning sign
+              icon = '[!]';
             }
 
             // Calculate how much to lower if too high
@@ -7536,6 +7536,12 @@ Clinician Name`;
             note = note.replace(/{ctaTime}/g, formatTime(telestrokeNote.ctaTime));
             note = note.replace(/{ctaResults}/g, telestrokeNote.ctaResults || '');
             note = note.replace(/{ekgResults}/g, telestrokeNote.ekgResults || '');
+            note = note.replace(/{inr}/g, telestrokeNote.inr || '');
+            const aspectsStr = aspectsScore != null && aspectsScore < 10 ? `ASPECTS ${aspectsScore}/10` : '';
+            note = note.replace(/{aspects}/g, aspectsStr);
+            const vesselStr = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ');
+            note = note.replace(/{vesselOcclusion}/g, vesselStr ? `Occlusion: ${vesselStr}` : '');
+            note = note.replace(/{ctpResults}/g, telestrokeNote.ctpResults || 'N/A');
             note = note.replace(/{diagnosis}/g, telestrokeNote.diagnosis || '');
             note = note.replace(/{tnkAdminTime}/g, formatTime(telestrokeNote.tnkAdminTime));
             note = note.replace(/{recommendationsText}/g, telestrokeNote.recommendationsText || '');
