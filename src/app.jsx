@@ -1637,6 +1637,7 @@ Clinician Name`;
 
           // Confirmation modal state (replaces confirm/prompt)
           const [confirmConfig, setConfirmConfig] = useState(null);
+          const alertFlashTimeoutRef = useRef(null);
           const confirmResolveRef = useRef(null);
           const showConfirm = React.useCallback((config) => {
             return new Promise((resolve) => {
@@ -9264,8 +9265,9 @@ Clinician Name`;
                   playAlertTone(threshold.id);
                   setAlertFlashing(true);
 
-                  // Stop flashing after 10 seconds
-                  setTimeout(() => setAlertFlashing(false), 10000);
+                  // Stop flashing after 10 seconds (clear previous timeout to prevent accumulation)
+                  if (alertFlashTimeoutRef.current) clearTimeout(alertFlashTimeoutRef.current);
+                  alertFlashTimeoutRef.current = setTimeout(() => setAlertFlashing(false), 10000);
                   break;
                 }
               }
@@ -9277,7 +9279,10 @@ Clinician Name`;
             // Update every second for precise timing
             const timer = setInterval(checkAlertsAndUpdate, 1000);
 
-            return () => clearInterval(timer);
+            return () => {
+              clearInterval(timer);
+              if (alertFlashTimeoutRef.current) clearTimeout(alertFlashTimeoutRef.current);
+            };
           }, [lkwTime, alertsMuted, lastAlertPlayed, activeTab]);
 
           // Reset last alert when LKW changes
