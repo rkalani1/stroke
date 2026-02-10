@@ -7017,7 +7017,7 @@ Clinician Name`;
             const allowedKeys = [
               'consultStartTime', 'callerName', 'callerRole', 'attendingPhysician',
               'callingSite', 'callingSiteOther',
-              'alias', 'age', 'sex', 'weight', 'nihss', 'aspects', 'vesselOcclusion', 'diagnosisCategory',
+              'alias', 'age', 'sex', 'weight', 'height', 'nihss', 'aspects', 'vesselOcclusion', 'diagnosisCategory',
               'toastClassification', 'secondaryPrevention',
               'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'arrivalTime', 'strokeAlertTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
               'presentingBP', 'heartRate', 'spO2', 'temperature', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT',
@@ -7042,7 +7042,7 @@ Clinician Name`;
               // Structured clinical data
               'diagnosis', 'premorbidMRS', 'affectedSide', 'weightEstimated', 'noAnticoagulants', 'contrastAllergy',
               'chiefComplaint', 'doorTime', 'needleTime', 'admitLocation', 'plateletsCoags',
-              'wakeUpStrokeWorkflow', 'recommendationsText', 'consentKit',
+              'wakeUpStrokeWorkflow', 'recommendations', 'recommendationsText', 'consentKit',
               // SAH/CVT/TIA pathway fields
               'sahGrade', 'sahGradeScale', 'sahBPManaged', 'sahNimodipine', 'sahEVDPlaced', 'sahAneurysmSecured', 'sahNeurosurgeryConsulted', 'sahSeizureProphylaxis', 'fisherGrade',
               'aspectsRegions', 'pcAspectsRegions', 'ticiScore',
@@ -9157,6 +9157,9 @@ Clinician Name`;
             setNursingFlowsheetChecks({});
             setWeightUnit('kg');
             setTrialEligibility({});
+            setEncounterPhase('phase-triage');
+            setNoteTemplate('consult');
+            setCalcDrawerOpen(false);
 
             const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',
                                   'abcd2Items', 'chads2vascItems', 'ropeItems', 'huntHessGrade', 'wfnsGrade',
@@ -10358,7 +10361,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           return (
             <div className="relative">
               {protocolModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-label={protocolModal.title}>
                   <div className="w-full max-w-lg bg-white rounded-xl shadow-xl border border-slate-200">
                     <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200">
                       <div>
