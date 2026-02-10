@@ -10110,7 +10110,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                         </div>
                       )}
                     </div>
-                    <div className="text-xs text-slate-400 flex items-center gap-1" title={saveStatus === 'saving' ? 'Saving...' : lastSaved ? `Saved ${new Date(lastSaved).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}` : 'Saved'}>
+                    <div className="text-xs text-slate-500 flex items-center gap-1" role="status" aria-live="polite" title={saveStatus === 'saving' ? 'Saving...' : lastSaved ? `Saved ${new Date(lastSaved).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}` : 'Saved'}>
                       <i data-lucide={saveStatus === 'saving' ? 'loader' : 'check-circle'} className={`w-3 h-3 ${saveStatus === 'saving' ? 'text-amber-500 animate-spin' : 'text-emerald-500'}`}></i>
                       <span className="hidden sm:inline">{saveStatus === 'saving' ? 'Saving' : 'Saved'}</span>
                     </div>
@@ -11630,7 +11630,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <div>
                               <label className="block text-xs text-slate-600 mb-1">INR</label>
                               <input
-                                type="text"
+                                type="number"
+                                step="0.1" min="0.5" max="15"
                                 value={telestrokeNote.inr}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, inr: e.target.value})}
                                 className={`w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-green-500 ${(() => {
@@ -11646,7 +11647,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             <div>
                               <label className="block text-xs text-slate-600 mb-1">Platelets</label>
                               <input
-                                type="text"
+                                type="number"
+                                min="1" max="1500"
                                 value={telestrokeNote.plateletCount}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, plateletCount: e.target.value})}
                                 placeholder="K/uL"
@@ -22760,7 +22762,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   <span className="font-bold text-sm">SEDAN: {sedanScore} (auto-calculated components)</span>
                                   <span className="ml-2 text-xs text-slate-600">Estimated sICH risk: {risk}</span>
                                 </div>
-                                <p className="text-xs text-slate-400 mt-1">Note: Early infarct signs and dense artery sign must be assessed manually from CT. Add +1 for each if present.</p>
+                                <p className="text-xs text-slate-500 mt-1">Note: Early infarct signs and dense artery sign must be assessed manually from CT. Add +1 for each if present.</p>
                               </div>
                             );
                           })()}
@@ -22894,7 +22896,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 </div>
                                 <p className={`text-xs text-${prognosis.color}-700 mt-1`}>{prognosis.text}</p>
                               </div>
-                              <p className="text-xs text-slate-400">Note: D (dense artery/early infarct) and O (onset time) must be assessed manually. Add +1-2 for D and +1 for O if applicable.</p>
+                              <p className="text-xs text-slate-500">Note: D (dense artery/early infarct) and O (onset time) must be assessed manually. Add +1-2 for D and +1 for O if applicable.</p>
                             </div>
                           );
                         })()}
