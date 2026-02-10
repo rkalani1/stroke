@@ -812,7 +812,7 @@ Medications: {medications}
 Objective:
 Vitals: BP {presentingBP}, HR {heartRate}, SpO2 {spO2}%, Temp {temperature}°F
 BP prior to TNK administration: {bpPreTNK} at {bpPreTNKTime}
-Labs: Glucose {glucose}, Plt/Coags {plateletsCoags}, Cr {creatinine}, INR {inr}
+Labs: Glucose {glucose}, Plt/Coags {plateletsCoags}, Cr {creatinine}, INR {inr}{ptt}
 Exam: NIHSS {nihss} {gcs}- {nihssDetails}
 
 Imaging: I personally reviewed imaging
@@ -7628,6 +7628,7 @@ Clinician Name`;
             note = note.replace(/{ctaResults}/g, telestrokeNote.ctaResults || '');
             note = note.replace(/{ekgResults}/g, telestrokeNote.ekgResults || '');
             note = note.replace(/{inr}/g, telestrokeNote.inr || '');
+            note = note.replace(/{ptt}/g, telestrokeNote.ptt ? `, aPTT ${telestrokeNote.ptt}` : '');
             const aspectsStr = aspectsScore != null && aspectsScore < 10 ? `ASPECTS ${aspectsScore}/10` : '';
             note = note.replace(/{aspects}/g, aspectsStr);
             const vesselStr = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ');
@@ -8955,6 +8956,7 @@ Clinician Name`;
             setEvtDecisionInputs({ population: 'adult', occlusion: 'lvo', timeWindow: 'auto', aspects: '6-10', mrs: '0-1', nihss: '', pcAspects: '>=6' });
             setDoacProtocol('catalyst');
             setNursingFlowsheetChecks({});
+            setWeightUnit('kg');
 
             const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',
                                   'abcd2Items', 'chads2vascItems', 'ropeItems', 'huntHessGrade', 'wfnsGrade',
