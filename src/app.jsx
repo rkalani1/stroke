@@ -6063,6 +6063,25 @@ Clinician Name`;
               alerts.push({ severity: 'critical', label: 'Low Platelets', message: `Platelets ${platelets}K/μL (<100K) - tPA/TNK CONTRAINDICATED`, field: 'plateletCount' });
             }
 
+            // aPTT check
+            const ptt = parseFloat(data.telestrokeNote?.ptt);
+            if (!isNaN(ptt) && ptt > 40) {
+              alerts.push({ severity: 'critical', label: 'Elevated aPTT', message: `aPTT ${ptt}s (>40s) - tPA/TNK CONTRAINDICATED`, field: 'ptt' });
+            }
+
+            // ICH/SAH diagnosis check
+            const diagCat = data.telestrokeNote?.diagnosisCategory;
+            if (diagCat === 'ich' || diagCat === 'sah') {
+              alerts.push({ severity: 'critical', label: diagCat === 'sah' ? 'SAH Diagnosis' : 'ICH Diagnosis', message: `${diagCat.toUpperCase()} diagnosis - Thrombolytics CONTRAINDICATED`, field: 'diagnosisCategory' });
+            }
+
+            // Heparin/LMWH check
+            const acType = data.telestrokeNote?.lastDOACType;
+            if (acType === 'heparin' || acType === 'lmwh') {
+              const acName = acType === 'heparin' ? 'Heparin' : 'LMWH';
+              alerts.push({ severity: 'warning', label: `Recent ${acName}`, message: `${acName} use - Check aPTT (must be ≤40s for TNK eligibility)`, field: 'lastDOACType' });
+            }
+
             // BP check (parse from string like "185/110")
             const bp = data.telestrokeNote?.presentingBP || '';
             const bpMatch = bp.match(/(\d+)\s*\/\s*(\d+)/);
@@ -6074,13 +6093,24 @@ Clinician Name`;
               }
             }
 
-            // DOAC check
+            // DOAC check (renal-adjusted clearance threshold)
             if (data.telestrokeNote?.lastDOACType && data.telestrokeNote?.lastDOACDose) {
-              const lastDose = new Date(data.telestrokeNote.lastDOACDose);
-              const now = new Date();
-              const hoursSinceDose = (now - lastDose) / (1000 * 60 * 60);
-              if (hoursSinceDose < 48) {
-                alerts.push({ severity: 'warning', label: 'Recent DOAC', message: `${data.telestrokeNote.lastDOACType} within ${hoursSinceDose.toFixed(0)}h - Check drug-specific assay`, field: 'lastDOACDose' });
+              const doacType = data.telestrokeNote.lastDOACType;
+              if (doacType !== 'warfarin' && doacType !== 'heparin' && doacType !== 'lmwh' && doacType !== 'none') {
+                const lastDose = new Date(data.telestrokeNote.lastDOACDose);
+                const now = new Date();
+                const hoursSinceDose = (now - lastDose) / (1000 * 60 * 60);
+                const crcl = calculateCrCl(data.telestrokeNote?.age, data.telestrokeNote?.weight, data.telestrokeNote?.sex, data.telestrokeNote?.creatinine);
+                const crclVal = crcl ? crcl.value : null;
+                const halfLifeMap = { apixaban: crclVal && crclVal < 30 ? 15 : 10, rivaroxaban: crclVal && crclVal < 30 ? 13 : 9, dabigatran: crclVal && crclVal < 30 ? 28 : crclVal && crclVal < 50 ? 18 : 14, edoxaban: crclVal && crclVal < 30 ? 16 : 12 };
+                const estHalfLife = halfLifeMap[doacType] || 12;
+                const clearanceThreshold = estHalfLife * 5; // 5 half-lives ≈97% cleared
+                const threshold = Math.max(48, clearanceThreshold);
+                if (hoursSinceDose < threshold) {
+                  const doacName = ANTICOAGULANT_INFO[doacType]?.name || doacType;
+                  const renalNote = crclVal && crclVal < 50 ? ` (CrCl ${Math.round(crclVal)} — clearance prolonged)` : !crclVal ? ' (CrCl unknown — enter for renal-adjusted estimate)' : '';
+                  alerts.push({ severity: 'warning', label: 'Recent DOAC', message: `${doacName} ${hoursSinceDose.toFixed(0)}h ago${renalNote} - Check drug-specific assay`, field: 'lastDOACDose' });
+                }
               }
             }
 
@@ -20309,7 +20339,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               ['isch-seizure', 'Seizure Ppx'],
                             ].map(([id, label]) => (
                               <button key={id} type="button" onClick={() => document.getElementById(id)?.scrollIntoView({behavior: 'smooth', block: 'start'})}
-                                className="px-2 py-0.5 text-xs rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-colors">
+                                className="px-2.5 py-1.5 text-xs rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-colors">
                                 {label}
                               </button>
                             ))}
@@ -23980,7 +24010,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ['ref-orders', 'Admission Orders'],
                         ['ref-guidelines', 'Guidelines'],
                       ].map(([id, label]) => (
-                        <button key={id} onClick={() => { const el = document.getElementById(id); if (el) { if (el.tagName === 'DETAILS') el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}} className="px-2.5 py-1 text-xs font-medium bg-slate-100 hover:bg-blue-100 text-slate-700 hover:text-blue-700 rounded-full border border-slate-200 hover:border-blue-300 transition-colors">{label}</button>
+                        <button key={id} onClick={() => { const el = document.getElementById(id); if (el) { if (el.tagName === 'DETAILS') el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}} className="px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-blue-100 text-slate-700 hover:text-blue-700 rounded-full border border-slate-200 hover:border-blue-300 transition-colors">{label}</button>
                       ))}
                     </div>
 
