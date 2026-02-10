@@ -48,8 +48,9 @@
   .app-header,
   .app-nav,
   nav[role="tablist"],
-  button,
   .sticky,
+  .no-print,
+  .fixed,
   [role="alert"] {
     display: none !important;
   }

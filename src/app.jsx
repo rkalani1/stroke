@@ -6670,9 +6670,7 @@ Clinician Name`;
             }
           };
 
-          const resetAppStateToDefaults = (options = {}) => {
-            const { resetDarkMode = false } = options;
-
+          const resetAppStateToDefaults = () => {
             setAppData(getDefaultAppData());
             setPatientData({});
             setNihssScore(0);
@@ -6721,11 +6719,6 @@ Clinician Name`;
             setPathwayCollapsed(true);
             setGuidelineRecsExpanded(false);
             setDeidWarnings({});
-
-            if (resetDarkMode) {
-              setDarkMode(false);
-              document.documentElement.classList.remove('dark');
-            }
           };
 
           const navigateTo = (tab, options = {}) => {
@@ -8964,7 +8957,7 @@ Clinician Name`;
             if (!confirmed) return;
 
             clearAllAppStorage();
-            resetAppStateToDefaults({ resetDarkMode: true });
+            resetAppStateToDefaults();
             navigateTo('encounter');
             showNotice('Local data cleared.', 'success');
           };
@@ -9589,7 +9582,7 @@ Clinician Name`;
           // If storage expired on load, notify and reset visual state
           useEffect(() => {
             if (!storageExpired) return;
-            resetAppStateToDefaults({ resetDarkMode: true });
+            resetAppStateToDefaults();
             navigateTo('encounter');
             showNotice('Stored data expired and was cleared.', 'warning', { timeoutMs: 6000 });
           }, []);
@@ -9601,7 +9594,7 @@ Clinician Name`;
             const expired = applyStorageExpiration(ttlHours);
             if (expired) {
               setStorageExpired(true);
-              resetAppStateToDefaults({ resetDarkMode: true });
+              resetAppStateToDefaults();
               navigateTo('encounter');
               showNotice('Stored data expired and was cleared.', 'warning', { timeoutMs: 6000 });
             }
@@ -10120,7 +10113,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               {!isOnline && (
                 <div className="bg-amber-500 text-white px-4 py-2 text-center text-sm font-medium flex items-center justify-center gap-2" role="alert">
                   <i data-lucide="wifi-off" className="w-4 h-4"></i>
-                  <span>You are offline — changes are saved locally and will sync when reconnected</span>
+                  <span>You are offline — changes are saved locally</span>
                 </div>
               )}
 
@@ -10473,7 +10466,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         onClick={() => {
                           navigateTo(tab.id);
                         }}
-                        className={`tab-pill py-2 px-4 text-sm flex items-center space-x-2 transition-all ${isActive ? 'active' : 'inactive'}`}
+                        className={`tab-pill py-3 sm:py-2 px-4 text-sm flex items-center space-x-2 transition-all min-h-[44px] sm:min-h-0 ${isActive ? 'active' : 'inactive'}`}
                         role="tab"
                         aria-selected={isActive}
                       >
@@ -10551,7 +10544,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 setEncounterPhase(phase.id);
                                 scrollToSection(phase.id);
                               }}
-                              className={`flex-1 px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center justify-center gap-1.5 ${
+                              className={`flex-1 px-3 py-2.5 sm:py-1.5 rounded-md text-xs font-medium transition-all flex items-center justify-center gap-1.5 min-h-[44px] sm:min-h-0 ${
                                 encounterPhase === phase.id
                                   ? 'bg-blue-600 text-white'
                                   : 'text-slate-500 hover:bg-slate-100'
@@ -19152,7 +19145,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <button
                             key={tab.id}
                             onClick={() => setManagementSubTab(tab.id)}
-                            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                            className={`flex items-center gap-2 px-3 py-2.5 sm:py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 ${
                               isActive ? 'bg-blue-600 text-white' : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
                             }`}
                             role="tab"
