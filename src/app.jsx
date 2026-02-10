@@ -895,7 +895,7 @@ Clinician Name`;
             discoveryDate: '',
             discoveryTime: '',
             age: '',
-            sex: 'M',
+            sex: '',
             affectedSide: '',
             weight: '',
             weightEstimated: false,
@@ -1657,6 +1657,7 @@ Clinician Name`;
 
           // Focus mode
           const [focusMode, setFocusMode] = useState(false);
+          const [weightUnit, setWeightUnit] = useState('kg'); // 'kg' or 'lbs' — stored value is always kg
 
           // Online/offline status
           const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
@@ -3584,14 +3585,14 @@ Clinician Name`;
               id: 'reversal_xa_inhibitor',
               category: 'Reversal',
               title: 'Factor Xa inhibitor reversal in ICH',
-              recommendation: 'Administer andexanet alfa for ICH on apixaban/rivaroxaban when available.',
-              detail: 'Andexanet alfa is reasonable for factor Xa inhibitor reversal. If unavailable, 4F-PCC 50 IU/kg may be considered.',
+              recommendation: 'Administer 4F-PCC (Kcentra) 2000 units IVPB for ICH on apixaban/rivaroxaban/edoxaban (institutional protocol).',
+              detail: 'AHA/ASA 2022 lists andexanet alfa as Class IIa, but institutional protocol favors PCC due to cost, availability, and thrombosis risk with andexanet. Consult Hematology if PCC contraindicated.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
-              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              guideline: 'AHA/ASA Spontaneous ICH 2022 (modified per institutional protocol)',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
-              medications: ['Andexanet alfa (Andexxa) per dosing protocol', '4F-PCC 50 IU/kg if andexanet unavailable'],
+              medications: ['4F-PCC (Kcentra) 2000 units IVPB (institutional)', 'Andexanet alfa NOT recommended per institutional protocol'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
@@ -8269,10 +8270,10 @@ Clinician Name`;
                 );
               } else if (onXaI) {
                 reversalOrders.push(
-                  'Andexanet alfa (Andexxa) — dose per protocol:',
-                  '  Low dose (apixaban, or rivaroxaban last dose >7h ago): 400 mg bolus then 480 mg infusion over 2h',
-                  '  High dose (rivaroxaban last dose <7h ago): 800 mg bolus then 960 mg infusion over 2h',
-                  'If andexanet unavailable: 4F-PCC 50 IU/kg IV'
+                  '4F-PCC (Kcentra) 2000 units IVPB (institutional protocol)',
+                  'Recheck Direct Xa Inhibitor screen after PCC administration',
+                  'Andexanet alfa NOT recommended (cost, availability, thrombosis risk per institutional protocol)',
+                  'If PCC contraindicated: consult Hematology'
                 );
               }
               bundles.push({
@@ -8460,7 +8461,7 @@ Clinician Name`;
                 'tnk-admin': { title: 'Document TNK administration', detail: 'Capture administration time for DTN metrics.', cta: 'Add TNK time' },
                 'transfer': { title: 'Arrange transfer', detail: 'Coordinate transfer to EVT-capable center for LVO.', cta: 'Transfer checklist' },
                 'recommendations': { title: 'Finalize recommendations', detail: 'Complete the recommendation summary for handoff and documentation.', cta: 'Add recommendations' },
-                'ich-bp': { title: 'ICH: Manage blood pressure', detail: 'Target SBP <160 mmHg. Initiate nicardipine or labetalol.', cta: 'Manage BP' },
+                'ich-bp': { title: 'ICH: Manage blood pressure', detail: 'Target SBP 130-150 mmHg (avoid <130). Initiate nicardipine or labetalol.', cta: 'Manage BP' },
                 'ich-reversal': { title: 'ICH: Anticoagulation reversal', detail: 'Patient may be on anticoagulation. Review and order reversal agents.', cta: 'Order reversal' },
                 'ich-neurosurg': { title: 'ICH: Neurosurgery evaluation', detail: 'Document neurosurgery consultation for surgical candidacy assessment.', cta: 'Consult neurosurgery' },
                 'sah-grade': { title: 'SAH: Grade severity', detail: 'Enter Hunt & Hess or WFNS grade for SAH prognostication.', cta: 'Grade SAH' },
@@ -10145,7 +10146,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         className="text-xs text-slate-400 hover:text-blue-600 transition-colors"
                         title="What's new"
                       >
-                        v3.0
+                        {APP_VERSION}
                       </button>
                       <button
                         onClick={() => setShowKeyboardHelp(true)}
@@ -11460,21 +11461,41 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <select
                                 value={telestrokeNote.sex}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, sex: e.target.value})}
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
+                                className={'w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 ' + (!telestrokeNote.sex ? 'border-amber-400 bg-amber-50' : 'border-slate-300')}
                               >
+                                <option value="">--</option>
                                 <option value="M">M</option>
                                 <option value="F">F</option>
                               </select>
                             </div>
                             <div>
-                              <label className="block text-xs font-medium text-slate-600 mb-1">Weight (kg)</label>
+                              <div className="flex items-center justify-between mb-1">
+                                <label className="block text-xs font-medium text-slate-600">Weight</label>
+                                <div className="flex bg-slate-100 rounded-md p-0.5">
+                                  <button type="button" onClick={() => setWeightUnit('kg')}
+                                    className={'px-1.5 py-0.5 text-xs rounded ' + (weightUnit === 'kg' ? 'bg-white shadow-sm font-semibold text-slate-900' : 'text-slate-500')}>kg</button>
+                                  <button type="button" onClick={() => setWeightUnit('lbs')}
+                                    className={'px-1.5 py-0.5 text-xs rounded ' + (weightUnit === 'lbs' ? 'bg-white shadow-sm font-semibold text-slate-900' : 'text-slate-500')}>lbs</button>
+                                </div>
+                              </div>
                               <input
                                 type="number"
-                                min="20" max="350"
-                                value={telestrokeNote.weight}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, weight: e.target.value})}
+                                min={weightUnit === 'lbs' ? '44' : '20'} max={weightUnit === 'lbs' ? '770' : '350'}
+                                value={weightUnit === 'lbs' && telestrokeNote.weight ? String(Math.round(parseFloat(telestrokeNote.weight) * 2.20462)) : telestrokeNote.weight}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  if (weightUnit === 'lbs') {
+                                    setTelestrokeNote(prev => ({...prev, weight: val ? String(Math.round(parseFloat(val) / 2.20462)) : ''}));
+                                  } else {
+                                    setTelestrokeNote(prev => ({...prev, weight: val}));
+                                  }
+                                }}
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
+                                placeholder={weightUnit}
                               />
+                              {weightUnit === 'lbs' && telestrokeNote.weight && (
+                                <p className="text-xs text-slate-500 mt-0.5">= {telestrokeNote.weight} kg</p>
+                              )}
                               <label className="flex items-center gap-1.5 mt-1 cursor-pointer">
                                 <input type="checkbox" checked={!!telestrokeNote.weightEstimated}
                                   onChange={(e) => setTelestrokeNote({...telestrokeNote, weightEstimated: e.target.checked})}
@@ -23113,7 +23134,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           );
                         })()}
-                        <p className="text-xs text-slate-500 mt-2">ANNEXA-4 trial. Low-dose if last DOAC &ge;8h ago (or apixaban &le;5mg). High-dose if last dose &lt;8h ago (or rivaroxaban &gt;10mg, apixaban &gt;5mg). Monitor for thrombotic events post-reversal.</p>
+                        <div className="mt-2 p-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">
+                          <strong>Institutional note:</strong> Andexanet alfa is NOT recommended per institutional protocol due to cost, availability, and thrombosis risk. First-line Xa inhibitor reversal is 4F-PCC (Kcentra) 2000 units IVPB. This calculator is provided for reference only.
+                        </div>
+                        <p className="text-xs text-slate-500 mt-1">ANNEXA-4 trial. Low-dose if last DOAC &ge;8h ago (or apixaban &le;5mg). High-dose if last dose &lt;8h ago (or rivaroxaban &gt;10mg, apixaban &gt;5mg). Monitor for thrombotic events post-reversal.</p>
                       </div>
                     </details>
 
