@@ -2022,11 +2022,6 @@ Clinician Name`;
                 if (showChangelog) setShowChangelog(false);
                 if (showKeyboardHelp) setShowKeyboardHelp(false);
               }
-              // ? to show keyboard help (when not in input)
-              if (e.key === '?' && !e.ctrlKey && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) {
-                e.preventDefault();
-                setShowKeyboardHelp(prev => !prev);
-              }
             };
             window.addEventListener('keydown', handler);
             return () => window.removeEventListener('keydown', handler);
@@ -6565,14 +6560,15 @@ Clinician Name`;
           // SECTION COMPLETION TRACKING
           // ============================================
           const sectionCompletion = useMemo(() => {
-            const triage = [telestrokeNote.age, telestrokeNote.sex, lkwTime, telestrokeNote.nihss || nihssScore].filter(Boolean).length;
+            const nihssPresent = telestrokeNote.nihss !== '' && telestrokeNote.nihss !== undefined && telestrokeNote.nihss !== null || nihssScore > 0;
+            const triage = [telestrokeNote.age, telestrokeNote.sex, lkwTime, nihssPresent].filter(Boolean).length;
             const decision = [telestrokeNote.ctResults, telestrokeNote.ctaResults, telestrokeNote.diagnosis].filter(Boolean).length;
-            const orders = [telestrokeNote.tnkRecommended !== undefined || telestrokeNote.evtRecommended !== undefined].filter(Boolean).length;
+            const treatmentDecided = telestrokeNote.tnkRecommended === true || telestrokeNote.tnkRecommended === false || telestrokeNote.evtRecommended === true || telestrokeNote.evtRecommended === false;
             const docs = [telestrokeNote.rationale].filter(Boolean).length;
             return {
               triage: { done: triage, total: 4, complete: triage >= 4 },
               decision: { done: decision, total: 3, complete: decision >= 3 },
-              orders: { done: orders, total: 1, complete: orders >= 1 },
+              orders: { done: treatmentDecided ? 1 : 0, total: 1, complete: treatmentDecided },
               docs: { done: docs, total: 1, complete: docs >= 1 }
             };
           }, [telestrokeNote, nihssScore, lkwTime]);
@@ -9402,7 +9398,11 @@ Clinician Name`;
               }
             }
 
-            setCriticalAlerts(alerts);
+            const timeAlertIds = ['tnk-cutoff', 'evt-cutoff'];
+            setCriticalAlerts(prev => {
+              const nonTimeAlerts = prev.filter(a => !timeAlertIds.includes(a.id));
+              return [...alerts, ...nonTimeAlerts];
+            });
           }, [currentTime, lkwTime]);
 
           // Multi-tab sync: warn if another tab modifies stroke data
@@ -9817,7 +9817,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 setProtocolModal(null);
               }
 
-              // Number keys for tab navigation
+              const inInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName);
+              if (inInput) return;
+
+              // Number keys for tab navigation (only outside encounter tab to avoid conflict with phase shortcuts)
               const tabMap = {
                 '1': { tab: 'encounter' },
                 '2': { tab: 'management', subTab: 'ischemic' },
@@ -9835,8 +9838,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 e.preventDefault();
                 exportToPDF();
               }
-
-              // Dark mode removed - was only partially implemented
 
               // ? key: Show keyboard shortcuts help
               if (e.key === '?' && !e.metaKey && !e.ctrlKey) {
@@ -10446,6 +10447,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {alert.action}
                         </p>
                       </div>
+                      {alert.level !== 'critical' && (
+                        <button
+                          onClick={() => setCriticalAlerts(prev => prev.filter(a => a.id !== alert.id))}
+                          className="text-slate-400 hover:text-slate-600 flex-shrink-0"
+                          aria-label="Dismiss alert"
+                        >
+                          <i data-lucide="x" className="w-5 h-5"></i>
+                        </button>
+                      )}
                     </div>
                   ))}
                 </div>
