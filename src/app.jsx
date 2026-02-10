@@ -9629,7 +9629,7 @@ Clinician Name`;
             if (isMounted) {
               lucide.createIcons();
             }
-          }, [activeTab, copiedText, darkMode, notice, searchOpen, actionsOpen, isMounted]);
+          }, [activeTab, copiedText, darkMode, notice, searchOpen, actionsOpen, isMounted, focusMode, managementSubTab]);
 
           // Documentation generation functions
           const generateHPI = () => {
@@ -10567,7 +10567,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     {!telestrokeNote.age && !nihssScore && !telestrokeNote.diagnosis && (
                       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
                         <h3 className="text-sm font-semibold text-blue-900 mb-3 flex items-center gap-2">
-                          <i data-lucide="layout-template" className="w-4 h-4"></i>
+                          <i data-lucide="layout-grid" className="w-4 h-4"></i>
                           Quick Start Templates
                         </h3>
                         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
@@ -10611,8 +10611,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <span className="text-slate-500">NIHSS {enc.nihss}</span>
                               </div>
                               <div className="flex items-center gap-2">
-                                <span className={`font-medium ${enc.tnk === 'Yes' ? 'text-emerald-600' : 'text-slate-400'}`}>TNK: {enc.tnk}</span>
-                                <span className={`font-medium ${enc.evt === 'Yes' ? 'text-blue-600' : 'text-slate-400'}`}>EVT: {enc.evt}</span>
+                                <span className={`font-medium ${enc.tnk === 'Yes' ? 'text-emerald-600' : 'text-slate-500'}`}>TNK: {enc.tnk}</span>
+                                <span className={`font-medium ${enc.evt === 'Yes' ? 'text-blue-600' : 'text-slate-500'}`}>EVT: {enc.evt}</span>
                               </div>
                             </div>
                           ))}
@@ -11864,7 +11864,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   disabled={telestrokeNote.tnkAutoBlocked}
                                   className="w-4 h-4 text-emerald-600 disabled:opacity-50"
                                 />
-                                <span className={`text-sm font-medium ${telestrokeNote.tnkAutoBlocked ? 'text-slate-400 line-through' : 'text-emerald-800'}`}>TNK Recommended</span>
+                                <span className={`text-sm font-medium ${telestrokeNote.tnkAutoBlocked ? 'text-slate-500 line-through' : 'text-emerald-800'}`}>TNK Recommended</span>
                               </label>
                               <label className="flex items-center gap-2 p-2 bg-blue-50 border border-blue-200 rounded-lg cursor-pointer">
                                 <input
@@ -12062,7 +12062,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             {telestrokeNote.diagnosisCategory === 'ischemic' && (
                               <details className="bg-emerald-50 border border-emerald-200 rounded-lg">
                                 <summary className="p-3 text-sm font-semibold text-emerald-800 cursor-pointer flex items-center gap-2">
-                                  <i data-lucide="chevron-right" className="w-3.5 h-3.5 transition-transform details-open:rotate-90"></i>
+                                  <i data-lucide="chevron-right" className="w-3.5 h-3.5"></i>
                                   Quick Secondary Prevention
                                 </summary>
                                 <div className="px-3 pb-3 space-y-2">
@@ -12678,7 +12678,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           {/* Full NIHSS Calculator (Collapsible) with keyboard auto-advance */}
                           <details className="bg-slate-50 border border-slate-200 rounded-lg">
                             <summary className="cursor-pointer p-3 font-semibold text-slate-800 hover:bg-slate-100 rounded-lg">
-                              <i data-lucide="bar-chart-3" className="w-4 h-4 inline"></i> Full NIHSS Calculator (Click to expand)
+                              <i data-lucide="chart-no-axes-column-increasing" className="w-4 h-4 inline"></i> Full NIHSS Calculator (Click to expand)
                             </summary>
                             <div className="p-4 space-y-3">
                               <p className="text-xs text-slate-500 italic">Tip: Press number keys (0-4) to select score for focused item. Auto-advances to next item.</p>
@@ -14101,7 +14101,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                             {doseCalc.weightKg} kg × 0.25 mg/kg = {(doseCalc.weightKg * 0.25).toFixed(1)} mg
                                             {doseCalc.isMaxDose && ' → capped at 25 mg max'}
                                           </div>
-                                          <div className="text-xs text-slate-400 text-center mt-1">
+                                          <div className="text-xs text-slate-500 text-center mt-1">
                                             Reconstitute: 50mg vial + 10mL sterile water = 5 mg/mL
                                           </div>
                                           {telestrokeNote.weightEstimated && (
@@ -19695,6 +19695,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               ['isch-bp', 'BP Management'],
                               ['isch-nbo', 'NBO'],
                               ['isch-postlytic', 'Post-Lytic ICH'],
+                              ['isch-ht', 'HT Classification'],
                               ['isch-angioedema', 'Angioedema'],
                               ['isch-antiplatelet', 'Antiplatelets'],
                               ['isch-statin', 'Statins'],
@@ -20155,7 +20156,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                   className="w-full mt-1 px-2 py-1 border border-slate-200 rounded text-sm"
                                   placeholder="e.g. 172/98"
                                 />
-                                <p className="text-[10px] text-slate-400 mt-1">Uses Post-EVT, then Pre-TNK, then Presenting BP.</p>
+                                <p className="text-[10px] text-slate-500 mt-1">Uses Post-EVT, then Pre-TNK, then Presenting BP.</p>
                               </div>
                               <div className={`rounded-lg p-2 border ${bpWithinTarget === null ? 'bg-slate-50 border-slate-200' : bpWithinTarget ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}`}>
                                 <p className="text-xs uppercase tracking-wide text-slate-500">Status</p>
@@ -20192,7 +20193,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
 
                           <details className="bg-white border border-blue-200 rounded-lg mb-4">
                             <summary className="p-3 text-sm font-semibold text-blue-800 cursor-pointer flex items-center gap-2">
-                              <i data-lucide="chevron-right" className="w-3.5 h-3.5 transition-transform details-open:rotate-90"></i>
+                              <i data-lucide="chevron-right" className="w-3.5 h-3.5"></i>
                               IV Antihypertensive Titration Protocols
                             </summary>
                             <div className="px-3 pb-3 space-y-3">
@@ -20376,6 +20377,43 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </div>
                           </div>
                         </div>
+
+                        <details id="isch-ht" className="bg-rose-50 border border-rose-200 rounded-lg">
+                          <summary className="cursor-pointer p-4 font-semibold text-rose-800 hover:bg-rose-100 rounded-lg">
+                            ECASS Hemorrhagic Transformation Classification
+                          </summary>
+                          <div className="px-4 pb-4 space-y-3">
+                            <p className="text-xs text-slate-600">ECASS classification determines severity and guides anticoagulation restart decisions. Obtain CT 24h post-TNK or if neurological decline.</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                                <h4 className="font-bold text-emerald-800 text-sm mb-1">HI-1 (Hemorrhagic Infarction Type 1)</h4>
+                                <p className="text-xs text-slate-700">Small petechiae along the margins of the infarct</p>
+                                <p className="text-xs text-emerald-700 mt-1 font-medium">Clinical impact: Benign. No change in management. May restart anticoagulation per schedule.</p>
+                              </div>
+                              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                                <h4 className="font-bold text-yellow-800 text-sm mb-1">HI-2 (Hemorrhagic Infarction Type 2)</h4>
+                                <p className="text-xs text-slate-700">Confluent petechiae within the infarcted area, no mass effect</p>
+                                <p className="text-xs text-yellow-700 mt-1 font-medium">Clinical impact: Usually benign. Monitor closely. May delay anticoagulation restart by a few days.</p>
+                              </div>
+                              <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                                <h4 className="font-bold text-orange-800 text-sm mb-1">PH-1 (Parenchymal Hematoma Type 1)</h4>
+                                <p className="text-xs text-slate-700">Blood clot ≤30% of infarcted area, with mild mass effect</p>
+                                <p className="text-xs text-orange-700 mt-1 font-medium">Clinical impact: Moderate. Hold anticoagulation/antiplatelets. Repeat imaging in 24-48h. Consider cautious restart after 1-2 weeks if stable.</p>
+                              </div>
+                              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                                <h4 className="font-bold text-red-800 text-sm mb-1">PH-2 (Parenchymal Hematoma Type 2)</h4>
+                                <p className="text-xs text-slate-700">Blood clot &gt;30% of infarcted area, with significant mass effect (or remote hemorrhage)</p>
+                                <p className="text-xs text-red-700 mt-1 font-medium">Clinical impact: SEVERE. Symptomatic sICH. Associated with neurological deterioration and increased mortality. Hold all antithrombotics. Neurosurgery consult. Delay anticoagulation ≥4 weeks.</p>
+                              </div>
+                            </div>
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-2">
+                              <p className="text-xs text-blue-800"><strong>sICH (Symptomatic ICH) definition:</strong> PH-2 with NIHSS increase ≥4 points within 36h of treatment (ECASS II/III definition). Occurs in 2-7% of IV thrombolysis patients.</p>
+                            </div>
+                            <div className="bg-slate-50 border border-slate-200 rounded-lg p-2">
+                              <p className="text-xs text-slate-700"><strong>Anticoagulation restart after HT:</strong> HI-1/HI-2 → per standard DOAC timing (see AF section above). PH-1 → delay 7-14 days, repeat imaging first. PH-2 → delay ≥4 weeks, multidisciplinary discussion, consider LAA closure (Watchman) if high rebleed risk.</p>
+                            </div>
+                          </div>
+                        </details>
 
                         <div id="isch-angioedema" className="bg-amber-50 border border-amber-300 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-amber-800 mb-3">Orolingual Angioedema Protocol</h3>
@@ -23443,7 +23481,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                     {/* Stroke Mimic DDx Tool */}
                     <details className="bg-white border border-orange-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-orange-800 hover:bg-orange-50 rounded-lg flex items-center gap-2">
-                        <i data-lucide="shield-question" className="w-4 h-4 text-orange-600"></i>
+                        <i data-lucide="shield-alert" className="w-4 h-4 text-orange-600"></i>
                         Stroke Mimic Differential Diagnosis
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
