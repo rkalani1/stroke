@@ -7449,7 +7449,9 @@ Clinician Name`;
               const signoutConsultLabel = consultationType === 'telephone' ? 'Telephone' : 'Video Telestroke';
               let note = `SIGNOUT / HANDOFF (${signoutConsultLabel})\n${'='.repeat(40)}\n\n`;
               if (telestrokeNote.callingSite) note += `Site: ${telestrokeNote.callingSite}\n`;
-              note += `${telestrokeNote.age || '___'} ${telestrokeNote.sex || '___'} — ${telestrokeNote.diagnosis || '___'}\n`;
+              note += `${telestrokeNote.age || '___'} ${telestrokeNote.sex || '___'} — ${telestrokeNote.diagnosis || '___'}`;
+              if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
+              note += '\n';
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
               const signoutGCS = calculateGCS(gcsItems);
               if (signoutGCS > 0) note += ` | GCS: ${signoutGCS}`;
@@ -7502,6 +7504,12 @@ Clinician Name`;
                 note += `- Antithrombotic: ${AP_LABELS_SHORT[sp.antiplateletRegimen] || sp.antiplateletRegimen}\n`;
               }
               if (sp.statinDose) note += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}\n`;
+              // Consent
+              if (telestrokeNote.tnkRecommended && telestrokeNote.tnkConsentDiscussed) {
+                const consentType = telestrokeNote.tnkConsentType || 'verbal';
+                const consentWith = telestrokeNote.tnkConsentWith || '';
+                note += `- Consent: ${consentType}${consentWith ? ` with ${consentWith}` : ''}${telestrokeNote.tnkConsentTime ? ` at ${formatTime(telestrokeNote.tnkConsentTime)}` : ''}\n`;
+              }
               if (telestrokeNote.disposition) note += `\nDisposition: ${telestrokeNote.disposition}\n`;
               note += `\nActive issues / To-do:\n`;
               note += `${telestrokeNote.recommendationsText || '- (none documented)'}\n`;
@@ -7793,6 +7801,8 @@ Clinician Name`;
             note = note.replace(/{diagnosis}/g, telestrokeNote.diagnosis || '');
             note = note.replace(/{tnkAdminTime}/g, formatTime(telestrokeNote.tnkAdminTime));
             note = note.replace(/{recommendationsText}/g, telestrokeNote.recommendationsText || '');
+            // Remove any unreplaced template placeholders (e.g., user-added custom fields)
+            note = note.replace(/\{[a-zA-Z0-9_]+\}/g, '');
 
             // Add consultation type header
             const consultLabel = consultationType === 'telephone' ? 'TELEPHONE CONSULTATION NOTE' : 'TELESTROKE VIDEO CONSULTATION NOTE';
