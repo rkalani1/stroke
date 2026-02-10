@@ -1540,7 +1540,7 @@ Clinician Name`;
           const [clearUndo, setClearUndo] = useState(null);
           const [storageExpired, setStorageExpired] = useState(INITIAL_STORAGE_EXPIRED);
           const [actionsOpen, setActionsOpen] = useState(false);
-          const [encounterPhase, setEncounterPhase] = useState('triage');
+          const [encounterPhase, setEncounterPhase] = useState('phase-triage');
           const [clinicalContext, setClinicalContext] = useState('phone');
           const [noteTemplate, setNoteTemplate] = useState('consult');
           const [calcDrawerOpen, setCalcDrawerOpen] = useState(false);
@@ -9222,11 +9222,6 @@ Clinician Name`;
 
             try {
               const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-              const oscillator = audioContext.createOscillator();
-              const gainNode = audioContext.createGain();
-
-              oscillator.connect(gainNode);
-              gainNode.connect(audioContext.destination);
 
               // Different tones for different alert types
               const toneConfigs = {
@@ -25449,8 +25444,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Acute Scoring</p>
                     <div className="grid grid-cols-2 gap-1.5 mb-3">
                       {[
-                        { label: 'NIHSS', desc: 'Stroke severity', action: () => { setCalcDrawerOpen(false); navigateTo('encounter'); setEncounterPhase('triage'); setTimeout(() => scrollToSection('nihss-section'), 100); }},
-                        { label: 'ASPECTS', desc: 'Ischemic changes', action: () => { setCalcDrawerOpen(false); navigateTo('encounter'); setEncounterPhase('triage'); }},
+                        { label: 'NIHSS', desc: 'Stroke severity', action: () => { setCalcDrawerOpen(false); navigateTo('encounter'); setEncounterPhase('phase-triage'); setTimeout(() => scrollToSection('nihss-section'), 100); }},
+                        { label: 'ASPECTS', desc: 'Ischemic changes', action: () => { setCalcDrawerOpen(false); navigateTo('encounter'); setEncounterPhase('phase-triage'); }},
                         { label: 'ICH Score', desc: 'ICH prognosis', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }},
                         { label: 'Hunt & Hess', desc: 'SAH severity', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }}
                       ].map(c => (
