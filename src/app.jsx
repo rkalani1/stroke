@@ -9667,7 +9667,7 @@ ${telestrokeNote.evtRecommended ? `EVT: Recommended` : 'EVT: Not Recommended'}`;
 7. Blood glucose 140-180 mg/dL
 8. HOB elevated 30 degrees
 9. DVT prophylaxis: SCDs (hold pharmacologic if tPA given)
-10. Aspirin 325mg daily (hold x 24h if tPA given; avoid IV aspirin within 90 min of IVT start)
+10. Aspirin 325mg LOAD, then 81mg daily (hold x 24h if tPA given; avoid IV aspirin within 90 min of IVT start)
 11. Statin therapy: Atorvastatin 80mg daily
 12. Neurology consultation
 13. PT/OT/Speech evaluation
@@ -14104,6 +14104,14 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                           <div className="text-xs text-slate-400 text-center mt-1">
                                             Reconstitute: 50mg vial + 10mL sterile water = 5 mg/mL
                                           </div>
+                                          {telestrokeNote.weightEstimated && (
+                                            <div className="mt-2 px-3 py-2 bg-red-100 border border-red-300 rounded-lg text-center">
+                                              <span className="text-sm font-bold text-red-800">
+                                                <i data-lucide="alert-triangle" className="w-4 h-4 inline mr-1"></i>
+                                                WEIGHT IS ESTIMATED — Confirm actual weight before administering TNK
+                                              </span>
+                                            </div>
+                                          )}
                                         </div>
                                       </div>
                                     );
@@ -19695,6 +19703,8 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               ['isch-mevo', 'MeVO'],
                               ['isch-contrast', 'Contrast Allergy'],
                               ['isch-icad', 'ICAD'],
+                              ['isch-posterior', 'Posterior Circ'],
+                              ['isch-cad', 'CAD'],
                               ['isch-seizure', 'Seizure Ppx'],
                             ].map(([id, label]) => (
                               <button key={id} type="button" onClick={() => document.getElementById(id)?.scrollIntoView({behavior: 'smooth', block: 'start'})}
@@ -20171,16 +20181,100 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border">
-                              <h4 className="font-semibold text-blue-700 mb-2">Medications</h4>
+                              <h4 className="font-semibold text-blue-700 mb-2">Quick Reference</h4>
                               <ul className="text-sm space-y-1">
-                                <li><strong>Labetalol escalation:</strong></li>
-                                <li className="ml-3">10 mg IV → 20 mg → 40 mg → 60 mg q15min</li>
-                                <li className="ml-3">Max total: 300 mg in 2 hours</li>
-                                <li><strong>Nicardipine drip:</strong> 5 mg/hr IV, titrate by 2.5 mg/hr q15min (max 15 mg/hr)</li>
-                                <li><strong>Clevidipine:</strong> 1-2 mg/hr IV, double q90 sec; max 32 mg/hr</li>
+                                <li><strong>First-line:</strong> Labetalol IV push OR Nicardipine drip</li>
+                                <li><strong>Second-line:</strong> Clevidipine or Hydralazine</li>
+                                <li className="text-amber-700"><strong>Avoid:</strong> Sublingual nifedipine (unpredictable drops), nitroprusside (raises ICP)</li>
                               </ul>
                             </div>
                           </div>
+
+                          <details className="bg-white border border-blue-200 rounded-lg mb-4">
+                            <summary className="p-3 text-sm font-semibold text-blue-800 cursor-pointer flex items-center gap-2">
+                              <i data-lucide="chevron-right" className="w-3.5 h-3.5 transition-transform details-open:rotate-90"></i>
+                              IV Antihypertensive Titration Protocols
+                            </summary>
+                            <div className="px-3 pb-3 space-y-3">
+                              <div className="bg-blue-50 border border-blue-100 rounded-lg p-3">
+                                <h5 className="font-bold text-blue-800 mb-2">Labetalol IV Push Protocol</h5>
+                                <div className="overflow-x-auto">
+                                  <table className="w-full text-sm border-collapse">
+                                    <thead>
+                                      <tr className="bg-blue-100">
+                                        <th className="border border-blue-200 px-2 py-1 text-left">Step</th>
+                                        <th className="border border-blue-200 px-2 py-1 text-left">Dose</th>
+                                        <th className="border border-blue-200 px-2 py-1 text-left">Timing</th>
+                                        <th className="border border-blue-200 px-2 py-1 text-left">Cumulative</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr><td className="border border-blue-200 px-2 py-1">1</td><td className="border border-blue-200 px-2 py-1 font-semibold">10 mg IV over 1-2 min</td><td className="border border-blue-200 px-2 py-1">Time 0</td><td className="border border-blue-200 px-2 py-1">10 mg</td></tr>
+                                      <tr><td className="border border-blue-200 px-2 py-1">2</td><td className="border border-blue-200 px-2 py-1 font-semibold">20 mg IV</td><td className="border border-blue-200 px-2 py-1">+10 min</td><td className="border border-blue-200 px-2 py-1">30 mg</td></tr>
+                                      <tr><td className="border border-blue-200 px-2 py-1">3</td><td className="border border-blue-200 px-2 py-1 font-semibold">40 mg IV</td><td className="border border-blue-200 px-2 py-1">+10 min</td><td className="border border-blue-200 px-2 py-1">70 mg</td></tr>
+                                      <tr><td className="border border-blue-200 px-2 py-1">4</td><td className="border border-blue-200 px-2 py-1 font-semibold">80 mg IV</td><td className="border border-blue-200 px-2 py-1">+10 min</td><td className="border border-blue-200 px-2 py-1">150 mg</td></tr>
+                                      <tr><td className="border border-blue-200 px-2 py-1">5</td><td className="border border-blue-200 px-2 py-1 font-semibold">80 mg IV</td><td className="border border-blue-200 px-2 py-1">+10 min</td><td className="border border-blue-200 px-2 py-1">230 mg</td></tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <ul className="text-xs text-slate-600 mt-2 space-y-0.5">
+                                  <li>• Max cumulative dose: 300 mg in 24 hours</li>
+                                  <li>• Onset: 2-5 min | Peak: 5-15 min | Duration: 2-4 hours</li>
+                                  <li>• Hold if HR &lt;60 or SBP &lt;100</li>
+                                  <li className="text-red-600">• Contraindicated: asthma/severe COPD, 2nd/3rd degree AV block, decompensated HF, HR &lt;60</li>
+                                </ul>
+                              </div>
+
+                              <div className="bg-purple-50 border border-purple-100 rounded-lg p-3">
+                                <h5 className="font-bold text-purple-800 mb-2">Nicardipine IV Drip Protocol</h5>
+                                <div className="overflow-x-auto">
+                                  <table className="w-full text-sm border-collapse">
+                                    <thead>
+                                      <tr className="bg-purple-100">
+                                        <th className="border border-purple-200 px-2 py-1 text-left">Step</th>
+                                        <th className="border border-purple-200 px-2 py-1 text-left">Rate</th>
+                                        <th className="border border-purple-200 px-2 py-1 text-left">Instructions</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr><td className="border border-purple-200 px-2 py-1">Start</td><td className="border border-purple-200 px-2 py-1 font-semibold">5 mg/hr</td><td className="border border-purple-200 px-2 py-1">Check BP q5 min</td></tr>
+                                      <tr><td className="border border-purple-200 px-2 py-1">Titrate up</td><td className="border border-purple-200 px-2 py-1 font-semibold">+2.5 mg/hr</td><td className="border border-purple-200 px-2 py-1">q5-15 min until target</td></tr>
+                                      <tr><td className="border border-purple-200 px-2 py-1">Max</td><td className="border border-purple-200 px-2 py-1 font-semibold">15 mg/hr</td><td className="border border-purple-200 px-2 py-1">Call MD if not at goal</td></tr>
+                                      <tr><td className="border border-purple-200 px-2 py-1">At goal</td><td className="border border-purple-200 px-2 py-1 font-semibold">Decrease by 3 mg/hr</td><td className="border border-purple-200 px-2 py-1">q30 min, maintain lowest effective rate</td></tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <ul className="text-xs text-slate-600 mt-2 space-y-0.5">
+                                  <li>• Onset: 5-15 min | Duration: continuous while infusing</li>
+                                  <li>• Preferred for: sustained BP control, patients needing precise titration</li>
+                                  <li>• Standard dilution: 25 mg/250 mL NS (0.1 mg/mL) or 50 mg/250 mL (0.2 mg/mL)</li>
+                                  <li>• Transition to PO antihypertensive 1h before stopping drip</li>
+                                </ul>
+                              </div>
+
+                              <div className="bg-amber-50 border border-amber-100 rounded-lg p-3">
+                                <h5 className="font-bold text-amber-800 mb-2">Clevidipine IV Drip Protocol</h5>
+                                <ul className="text-sm space-y-1">
+                                  <li>• Start: <strong>1-2 mg/hr</strong></li>
+                                  <li>• Titrate: <strong>Double the rate q90 seconds</strong> until near goal</li>
+                                  <li>• Fine-tune: increase by &lt;double as goal is approached</li>
+                                  <li>• Max: <strong>32 mg/hr</strong> (max 1000 mL/24h due to lipid load)</li>
+                                  <li>• Onset: 2-4 min | Duration: 5-15 min after stopping</li>
+                                </ul>
+                                <p className="text-xs text-slate-500 mt-1">Advantage: ultra-short acting, no renal/hepatic adjustment needed. Contains soy/egg lecithin — check allergies.</p>
+                              </div>
+
+                              <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <h5 className="font-bold text-slate-700 mb-2">Hydralazine (Rescue)</h5>
+                                <ul className="text-sm space-y-1">
+                                  <li>• <strong>10-20 mg IV q20-30 min PRN</strong> (max 40 mg/dose)</li>
+                                  <li>• Onset: 10-20 min | Duration: 1-4 hours</li>
+                                  <li>• Less predictable response — use as adjunct when labetalol/nicardipine insufficient</li>
+                                  <li className="text-red-600">• Avoid in aortic dissection (reflex tachycardia)</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </details>
                         </div>
 
                         <div id="isch-nbo" className="bg-sky-50 border border-sky-200 rounded-lg p-4">
@@ -20335,7 +20429,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <h4 className="font-semibold text-emerald-700 mb-2">Moderate-Severe Stroke (no lysis)</h4>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Single antiplatelet:</strong></li>
-                                <li>• ASA 325 mg within 24-48h of onset</li>
+                                <li>• ASA 325 mg load within 24-48h of onset, then 81 mg daily</li>
                                 <li>• If post-TNK: delay ASA 24 hours</li>
                                 <li>• Avoid IV aspirin within 90 minutes of IVT start</li>
                                 <li>• If AF: transition to DOAC per CATALYST timing</li>
@@ -20401,7 +20495,7 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                               <li>• Groin check q15 min x 4, q30 min x 4, then q1h</li>
                               <li>• Bed rest per protocol (typically 2-6h)</li>
                               <li>• Follow-up imaging: CT/CTA at 24h or if neuro change</li>
-                              <li>• Antiplatelet: ASA 325 mg within 24h if no hemorrhagic conversion</li>
+                              <li>• Antiplatelet: ASA 325 mg load within 24h if no hemorrhagic conversion, then 81 mg daily</li>
                               <li>• Neuro checks q1h x 24h minimum</li>
                             </ul>
                             <p className="text-xs text-slate-500 mt-2">Use the BP Management section and Nursing Flowsheet Generator for targets and monitoring cadence.</p>
@@ -20469,6 +20563,122 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                                 <li>• Consider DAPT if recent symptomatic event</li>
                                 <li>• Serial vascular imaging (MRA or CTA q6-12mo)</li>
                               </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div id="isch-posterior" className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-indigo-800 mb-3">Posterior Circulation Stroke</h3>
+                          <div className="space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="bg-white p-3 rounded border">
+                                <h4 className="font-semibold text-red-700 mb-2">Basilar Artery Occlusion (BAO)</h4>
+                                <ul className="text-sm space-y-1">
+                                  <li><strong>Clinical presentation:</strong> Coma, quadriplegia, locked-in syndrome, bilateral cranial nerve palsies, vertigo, dysarthria, ataxia</li>
+                                  <li><strong>EVT evidence (0-24h):</strong></li>
+                                  <li className="ml-3">ATTENTION trial: EVT + medical vs medical alone — significant benefit (mRS 0-3: 46% vs 23%)</li>
+                                  <li className="ml-3">BAOCHE trial: EVT benefit in 6-24h window with favorable imaging</li>
+                                  <li className="ml-3">BASICS trial: Neutral — but underpowered, slow enrollment</li>
+                                  <li><strong>Current recommendation:</strong> EVT reasonable for BAO 0-24h with PC-ASPECTS ≥6, NIHSS ≥10 (Class IIa)</li>
+                                  <li><strong>IV thrombolysis:</strong> Give TNK if within 4.5h and no contraindications, even if planning EVT (bridging therapy)</li>
+                                </ul>
+                              </div>
+                              <div className="bg-white p-3 rounded border">
+                                <h4 className="font-semibold text-indigo-700 mb-2">PC-ASPECTS Scoring</h4>
+                                <ul className="text-sm space-y-1">
+                                  <li><strong>10 points</strong> (normal), subtract 1 for each affected region:</li>
+                                  <li className="ml-3">Left/Right thalamus (1 each)</li>
+                                  <li className="ml-3">Left/Right cerebellum (1 each)</li>
+                                  <li className="ml-3">Left/Right PCA territory (1 each)</li>
+                                  <li className="ml-3">Midbrain (1)</li>
+                                  <li className="ml-3">Pons (1)</li>
+                                  <li><strong>PC-ASPECTS ≥8:</strong> Good EVT candidate</li>
+                                  <li><strong>PC-ASPECTS 6-7:</strong> Consider EVT on case-by-case basis</li>
+                                  <li><strong>PC-ASPECTS &lt;6:</strong> Poor prognosis, EVT benefit uncertain</li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="bg-white p-3 rounded border">
+                                <h4 className="font-semibold text-indigo-700 mb-2">Cerebellar Stroke</h4>
+                                <ul className="text-sm space-y-1">
+                                  <li><strong>Key danger:</strong> Posterior fossa edema → brainstem compression → rapid deterioration</li>
+                                  <li><strong>Monitor:</strong> Neuro checks q1h, repeat CT if any decline</li>
+                                  <li><strong>Neurosurgery consult early</strong> for infarcts &gt;1/3 cerebellar hemisphere</li>
+                                  <li><strong>Suboccipital decompressive craniectomy:</strong> Lifesaving if brainstem compression (Class I, LOE C-LD)</li>
+                                  <li><strong>EVD:</strong> If obstructive hydrocephalus. Do NOT rely on EVD alone if mass effect present — decompress.</li>
+                                  <li className="text-amber-700">Osmotic therapy (mannitol/HTS) is temporizing only — NOT definitive</li>
+                                </ul>
+                              </div>
+                              <div className="bg-white p-3 rounded border">
+                                <h4 className="font-semibold text-indigo-700 mb-2">Wallenberg Syndrome (Lateral Medullary)</h4>
+                                <ul className="text-sm space-y-1">
+                                  <li><strong>Vessel:</strong> PICA or vertebral artery</li>
+                                  <li><strong>Classic findings:</strong></li>
+                                  <li className="ml-3">Ipsilateral: facial pain/numbness, Horner syndrome, cerebellar ataxia, vocal cord paralysis</li>
+                                  <li className="ml-3">Contralateral: body pain/temperature loss</li>
+                                  <li><strong>Dysphagia:</strong> Major concern — aspiration risk is HIGH. Early SLP eval essential.</li>
+                                  <li><strong>Prognosis:</strong> Generally good for motor recovery. Dysphagia and neuropathic pain may be prolonged.</li>
+                                  <li><strong>Workup:</strong> MRI DWI (CT often negative), CTA/MRA vertebral arteries, evaluate for vertebral dissection</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div id="isch-cad" className="bg-pink-50 border border-pink-200 rounded-lg p-4">
+                          <h3 className="text-lg font-semibold text-pink-800 mb-3">Cervical Artery Dissection (CAD)</h3>
+                          <div className="space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="bg-white p-3 rounded border">
+                                <h4 className="font-semibold text-pink-700 mb-2">Diagnosis</h4>
+                                <ul className="text-sm space-y-1">
+                                  <li><strong>Classic triad (carotid):</strong> ipsilateral neck pain/headache, partial Horner syndrome, cerebral ischemia</li>
+                                  <li><strong>Vertebral:</strong> occipital/posterior neck pain, lateral medullary or cerebellar infarct</li>
+                                  <li><strong>Imaging:</strong></li>
+                                  <li className="ml-3">CTA neck: intimal flap, vessel irregularity, string sign, occlusion</li>
+                                  <li className="ml-3">MRI/MRA neck with fat-sat: intramural hematoma (crescent sign)</li>
+                                  <li className="ml-3">Conventional angiography: gold standard (rarely needed)</li>
+                                  <li><strong>Risk factors:</strong> Recent trauma/chiropractic manipulation, connective tissue disorders (FMD, Ehlers-Danlos IV, Marfan), recent infection</li>
+                                </ul>
+                              </div>
+                              <div className="bg-white p-3 rounded border">
+                                <h4 className="font-semibold text-pink-700 mb-2">Antithrombotic Management</h4>
+                                <ul className="text-sm space-y-1">
+                                  <li><strong>CADISS trial:</strong> Antiplatelet vs anticoagulation — NO significant difference in stroke recurrence or death</li>
+                                  <li><strong>Either approach acceptable</strong> (Class IIa, LOE B-R)</li>
+                                  <li><strong>Antiplatelet preferred if:</strong></li>
+                                  <li className="ml-3">Large completed infarct (hemorrhagic transformation risk)</li>
+                                  <li className="ml-3">Intracranial extension of dissection</li>
+                                  <li className="ml-3">Pseudoaneurysm (debatable)</li>
+                                  <li><strong>Anticoagulation preferred if:</strong></li>
+                                  <li className="ml-3">Free-floating thrombus</li>
+                                  <li className="ml-3">Recurrent ischemic events on antiplatelet therapy</li>
+                                  <li className="ml-3">High-grade stenosis with hemodynamic compromise</li>
+                                  <li><strong>Duration:</strong> 3-6 months, then reassess with follow-up imaging</li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="bg-white p-3 rounded border">
+                                <h4 className="font-semibold text-pink-700 mb-2">Follow-Up Imaging</h4>
+                                <ul className="text-sm space-y-1">
+                                  <li>• CTA or MRA neck at 3-6 months to assess healing</li>
+                                  <li>• Most dissections heal within 3-6 months</li>
+                                  <li>• If recanalized → can consider stopping anticoagulation/simplifying antiplatelet</li>
+                                  <li>• If persistent stenosis/occlusion → continue antithrombotic, repeat imaging at 12 months</li>
+                                  <li>• Pseudoaneurysm: low risk of thromboembolic events; usually managed conservatively</li>
+                                </ul>
+                              </div>
+                              <div className="bg-white p-3 rounded border">
+                                <h4 className="font-semibold text-pink-700 mb-2">Special Populations</h4>
+                                <ul className="text-sm space-y-1">
+                                  <li><strong>Fibromuscular dysplasia (FMD):</strong> Screen all cervical/cerebral vessels (multivessel disease common). Screen renal arteries.</li>
+                                  <li><strong>Connective tissue disorders:</strong> Genetic testing if recurrent dissection, family history, or phenotypic features. Vascular EDS (type IV) = high mortality risk.</li>
+                                  <li><strong>Young stroke (&lt;50):</strong> Dissection accounts for ~15-25% of ischemic strokes. Always consider in the workup.</li>
+                                  <li><strong>Thrombolysis:</strong> TNK is NOT contraindicated in suspected dissection if within treatment window. Treat the stroke first.</li>
+                                </ul>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -21651,6 +21861,70 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                           </div>
                         </div>
                       </div>
+                      </div>
+                    </details>
+
+                    {/* FUNC Score */}
+                    <details id="calc-func" style={{ order: getCalculatorOrder('func', 22) }} className="bg-rose-50 border border-rose-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-rose-800 hover:bg-rose-100 rounded-lg flex items-center justify-between">
+                        <span>FUNC Score (ICH Functional Outcome)</span>
+                        <span className="text-sm font-normal text-rose-600">Prognosis</span>
+                      </summary>
+                      <div className="p-4">
+                        <p className="text-xs text-slate-600 mb-3">Predicts functional independence (GOS ≥4) at 90 days after ICH. Range 0-11. Higher = better prognosis. (Rost et al., Stroke 2008)</p>
+                        {(() => {
+                          const funcItems = {
+                            volume: ichVolumeParams.a && ichVolumeParams.b && ichVolumeParams.c
+                              ? (() => {
+                                  const vol = (parseFloat(ichVolumeParams.a) * parseFloat(ichVolumeParams.b) * parseFloat(ichVolumeParams.c)) / 2;
+                                  return vol < 30 ? 4 : vol < 60 ? 2 : 0;
+                                })()
+                              : null,
+                            age: telestrokeNote.age ? (parseInt(telestrokeNote.age) < 70 ? 2 : parseInt(telestrokeNote.age) <= 79 ? 1 : 0) : null,
+                            location: ichScoreItems.infratentorial ? 0 : 2,
+                            gcs: ichScoreItems.gcs === 'gcs34' ? 0 : ichScoreItems.gcs === 'gcs512' ? 1 : 2,
+                            cognitive: 1,
+                          };
+                          const known = Object.values(funcItems).filter(v => v !== null);
+                          const score = known.reduce((a, b) => a + b, 0);
+                          const hasAll = !Object.values(funcItems).includes(null);
+                          const funcOutcome = score >= 8 ? {label: 'Good (≥80% chance of functional independence)', color: 'bg-emerald-50 border-emerald-200 text-emerald-800'}
+                            : score >= 5 ? {label: 'Moderate (50-80% chance)', color: 'bg-amber-50 border-amber-200 text-amber-800'}
+                            : {label: 'Poor (<50% chance of functional independence)', color: 'bg-red-50 border-red-200 text-red-800'};
+                          return (
+                            <div className="space-y-3">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <div className="bg-white border rounded p-2">
+                                  <p className="font-semibold text-rose-700">ICH Volume</p>
+                                  <p className="text-xs text-slate-600">&lt;30 mL: +4 | 30-59 mL: +2 | ≥60 mL: +0</p>
+                                  <p className="text-xs mt-1 font-medium">{funcItems.volume !== null ? `Current: +${funcItems.volume} (from ABC/2)` : 'Enter ICH volume above'}</p>
+                                </div>
+                                <div className="bg-white border rounded p-2">
+                                  <p className="font-semibold text-rose-700">Age</p>
+                                  <p className="text-xs text-slate-600">&lt;70: +2 | 70-79: +1 | ≥80: +0</p>
+                                  <p className="text-xs mt-1 font-medium">{funcItems.age !== null ? `Current: +${funcItems.age} (age ${telestrokeNote.age})` : 'Enter age in encounter'}</p>
+                                </div>
+                                <div className="bg-white border rounded p-2">
+                                  <p className="font-semibold text-rose-700">ICH Location</p>
+                                  <p className="text-xs text-slate-600">Lobar: +2 | Deep: +1 | Infratentorial: +0</p>
+                                  <p className="text-xs mt-1 font-medium">Current: +{funcItems.location} ({ichScoreItems.infratentorial ? 'Infratentorial' : 'Supratentorial'})</p>
+                                </div>
+                                <div className="bg-white border rounded p-2">
+                                  <p className="font-semibold text-rose-700">GCS Score</p>
+                                  <p className="text-xs text-slate-600">≥9: +2 | 5-8: +1 | 3-4: +0</p>
+                                  <p className="text-xs mt-1 font-medium">Current: +{funcItems.gcs}</p>
+                                </div>
+                              </div>
+                              <div className={`border rounded-lg p-3 ${funcOutcome.color}`}>
+                                <p className="text-sm font-bold">FUNC Score: {score}/11 {!hasAll && '(partial — enter missing values)'}</p>
+                                <p className="text-xs mt-1">{funcOutcome.label}</p>
+                              </div>
+                              <div className="bg-amber-50 border border-amber-200 rounded p-2 text-xs text-amber-800">
+                                <strong>Important:</strong> FUNC Score should NOT be used alone for withdrawal-of-care decisions. Early aggressive care limitations (self-fulfilling prophecy) contribute to poor outcomes. AHA/ASA recommends postponing DNR orders for at least 24h after ICH onset.
+                              </div>
+                            </div>
+                          );
+                        })()}
                       </div>
                     </details>
 
@@ -23063,6 +23337,326 @@ NIHSS: ${nihssDisplay} - reassess q4h x 24h, then daily`;
                             </ul>
                           </div>
                         </div>
+                      </div>
+                    </details>
+
+                    {/* Neuroprognostication Framework */}
+                    <details className="bg-white border border-rose-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-rose-800 hover:bg-rose-50 rounded-lg flex items-center gap-2">
+                        <i data-lucide="heart-pulse" className="w-4 h-4 text-rose-600"></i>
+                        Neuroprognostication &amp; Goals of Care
+                      </summary>
+                      <div className="px-4 pb-4 space-y-3">
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-2">
+                          <p className="text-xs font-bold text-red-800">AHA/ASA 2022: New DNR orders should be postponed until at least the second full day of hospitalization (Class IIa, LOE C-LD). Early care limitations are a strong independent predictor of mortality — the "self-fulfilling prophecy."</p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="bg-rose-50 border border-rose-200 rounded-lg p-3">
+                            <h4 className="font-bold text-rose-900 text-sm mb-2">ICH Prognostication</h4>
+                            <ul className="text-xs text-slate-700 space-y-1.5">
+                              <li><strong>ICH Score:</strong> Validated for 30-day mortality (see Calculators tab). NOT validated for long-term functional outcomes.</li>
+                              <li><strong>FUNC Score:</strong> Predicts 90-day functional independence — use for positive framing with families.</li>
+                              <li><strong>Volume trajectory matters:</strong> Repeat CT at 6h. Stable or shrinking volume = better prognosis.</li>
+                              <li><strong>Location matters:</strong> Lobar and deep small (&lt;30 mL) have best outcomes. Brainstem and large deep (&gt;60 mL) have worst.</li>
+                              <li className="text-amber-700"><strong>Caution:</strong> ICH Score was derived from populations with high rates of early DNR — it overestimates mortality when aggressive care is provided.</li>
+                            </ul>
+                          </div>
+                          <div className="bg-rose-50 border border-rose-200 rounded-lg p-3">
+                            <h4 className="font-bold text-rose-900 text-sm mb-2">Severe AIS Prognostication</h4>
+                            <ul className="text-xs text-slate-700 space-y-1.5">
+                              <li><strong>Early NIHSS does NOT predict long-term outcome</strong> after successful reperfusion. Dramatic early improvement is common.</li>
+                              <li><strong>ASPECTS ≥6 with successful recanalization:</strong> ~50% achieve functional independence (mRS 0-2) even with initial NIHSS &gt;20.</li>
+                              <li><strong>Malignant MCA infarction:</strong> Hemicraniectomy within 48h (age &lt;60) — NNT 2 for survival, NNT 4 for mRS 0-3 (DECIMAL/DESTINY/HAMLET).</li>
+                              <li><strong>Basilar artery occlusion:</strong> Outcomes improving with EVT (ATTENTION/BAOCHE) — do not assume futility.</li>
+                              <li className="text-emerald-700"><strong>Framework:</strong> "We are early. The brain needs time. Let us give aggressive medical care for 72 hours, then reassess together."</li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                          <h4 className="font-bold text-blue-800 text-sm mb-2">Talking to Families</h4>
+                          <ul className="text-xs text-slate-700 space-y-1">
+                            <li>• Use "best case / realistic case / worst case" framework rather than single prediction</li>
+                            <li>• Avoid "devastating" or "catastrophic" — use measurable descriptors (size, location, function)</li>
+                            <li>• Ask: "What would [patient name] consider an acceptable quality of life?"</li>
+                            <li>• Discuss what we WILL do (aggressive medical care, monitoring, rehab), not just what went wrong</li>
+                            <li>• Revisit at planned intervals (24h, 72h, 1 week) — avoid repeated ad hoc updates that increase family anxiety</li>
+                            <li>• Document the conversation: who was present, what was discussed, family's questions, plan</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </details>
+
+                    {/* Clinical Pearls for Trainees */}
+                    <details className="bg-white border border-indigo-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-indigo-800 hover:bg-indigo-50 rounded-lg flex items-center gap-2">
+                        <i data-lucide="lightbulb" className="w-4 h-4 text-indigo-600"></i>
+                        Clinical Pearls for Trainees
+                      </summary>
+                      <div className="px-4 pb-4 space-y-3">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                            <h4 className="font-bold text-blue-900 text-sm mb-2">Acute Assessment Pearls</h4>
+                            <ul className="text-xs text-slate-700 space-y-1.5">
+                              <li><strong>Time is brain:</strong> ~1.9 million neurons lost per minute in untreated LVO. Every minute of delay = 1 day less of disability-free life.</li>
+                              <li><strong>NIHSS 0 does not mean no stroke:</strong> Posterior circulation strokes (vertigo, diplopia, ataxia, dysarthria) can score 0. Always consider the clinical picture.</li>
+                              <li><strong>Always check glucose before TNK:</strong> Hypoglycemia is a treatable mimic. BG &lt;60 should be corrected first.</li>
+                              <li><strong>Blood pressure:</strong> Do NOT lower BP aggressively in AIS unless giving lytics. Permissive hypertension (SBP &lt;220) is appropriate.</li>
+                              <li><strong>CT negative ≠ no stroke:</strong> CT sensitivity for ischemic stroke in first 6h is only ~25%. A normal CT DOES NOT rule out AIS.</li>
+                              <li><strong>ASPECTS:</strong> Count the regions INVOLVED (not spared). Subtract from 10. ASPECTS 10 = normal CT.</li>
+                            </ul>
+                          </div>
+                          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                            <h4 className="font-bold text-emerald-900 text-sm mb-2">Treatment Pearls</h4>
+                            <ul className="text-xs text-slate-700 space-y-1.5">
+                              <li><strong>TNK vs alteplase:</strong> TNK 0.25 mg/kg (max 25 mg) single bolus is now preferred for AIS. No infusion needed. Easier logistics.</li>
+                              <li><strong>Don't delay TNK for perfusion imaging:</strong> If within 4.5h and no contraindications, give TNK. Perfusion imaging is for extending the window, not for gatekeeping.</li>
+                              <li><strong>DAPT timing:</strong> For minor stroke (NIHSS ≤3), start DAPT within 24h. Loading doses: ASA 325 + clopidogrel 300. Continue x 21 days (CHANCE/POINT).</li>
+                              <li><strong>Statin timing:</strong> Start high-intensity statin (atorvastatin 80 mg) in hospital. Don't wait for fasting lipids.</li>
+                              <li><strong>AF detection:</strong> If stroke is cryptogenic after routine workup, extended cardiac monitoring (≥14 days) finds AF in ~12-16% of patients.</li>
+                              <li><strong>Anticoagulation after stroke + AF:</strong> ELAN trial: early DOAC (&lt;48h for minor, day 3-4 for moderate, day 6-7 for severe) is non-inferior and safe.</li>
+                            </ul>
+                          </div>
+                          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                            <h4 className="font-bold text-amber-900 text-sm mb-2">ICH Pearls</h4>
+                            <ul className="text-xs text-slate-700 space-y-1.5">
+                              <li><strong>BP control matters most in first 2h:</strong> Target SBP &lt;140 mmHg within 2h of presentation (INTERACT2). Nicardipine drip preferred for smooth control.</li>
+                              <li><strong>Anticoagulant reversal:</strong> This is the MOST time-sensitive intervention in ICH. Give PCC/idarucizumab BEFORE the CT in known anticoagulated patients.</li>
+                              <li><strong>Spot sign on CTA:</strong> Contrast extravasation predicts hematoma expansion. If present → more aggressive BP control and close monitoring.</li>
+                              <li><strong>IVH worsens prognosis:</strong> Consider EVD if hydrocephalus develops. Intraventricular alteplase (CLEAR III) reduces mortality but doesn't improve functional outcome.</li>
+                              <li><strong>When to restart anticoagulation:</strong> For AF + ICH, generally restart DOAC at 4-8 weeks (individualized). Lobar ICH = higher rebleed risk than deep.</li>
+                            </ul>
+                          </div>
+                          <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                            <h4 className="font-bold text-purple-900 text-sm mb-2">Disposition Pearls</h4>
+                            <ul className="text-xs text-slate-700 space-y-1.5">
+                              <li><strong>Stroke unit care matters:</strong> Admission to a dedicated stroke unit reduces mortality and disability regardless of stroke type (NNT 18 for death or dependency). Cochrane 2020.</li>
+                              <li><strong>Early mobilization:</strong> Avoid bedrest beyond 24h unless post-TNK. AVERT trial: very early (&lt;24h) aggressive mobilization may be harmful; gradual is better.</li>
+                              <li><strong>Swallow screen before anything PO:</strong> Aspiration pneumonia is the #1 preventable complication. Formal SLP eval if bedside screen abnormal.</li>
+                              <li><strong>DVT prophylaxis:</strong> SCDs on admission for all. SQ heparin after 24h post-TNK (or 48h post-ICH). IPC + anticoagulation is better than IPC alone.</li>
+                              <li><strong>Fever is bad:</strong> Target normothermia. Every 1°C rise in temperature in the first 72h worsens outcomes. Workup infection aggressively.</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </details>
+
+                    {/* Stroke Mimic DDx Tool */}
+                    <details className="bg-white border border-orange-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-orange-800 hover:bg-orange-50 rounded-lg flex items-center gap-2">
+                        <i data-lucide="shield-question" className="w-4 h-4 text-orange-600"></i>
+                        Stroke Mimic Differential Diagnosis
+                      </summary>
+                      <div className="px-4 pb-4 space-y-3">
+                        <p className="text-xs text-slate-600">Up to 25-30% of suspected strokes are mimics. Key features favoring mimic: age &lt;50, no vascular risk factors, seizure at onset, normal NIHSS, symptoms not conforming to vascular territory.</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                            <h4 className="font-bold text-orange-900 text-sm mb-2">Common Mimics</h4>
+                            <ul className="text-xs text-slate-700 space-y-1.5">
+                              <li><strong>Seizure/Todd paralysis:</strong> Witnessed seizure activity, postictal state, gradual resolution. EEG if uncertain.</li>
+                              <li><strong>Migraine with aura:</strong> Positive symptoms (scintillations, spreading paresthesias), headache history, gradual march over 20-60 min.</li>
+                              <li><strong>Hypoglycemia:</strong> BG &lt;60 mg/dL, focal deficits resolve with glucose correction. Always check BG first.</li>
+                              <li><strong>Conversion disorder (FND):</strong> Inconsistent exam, Hoover sign, give-way weakness, non-anatomic sensory loss. Often young patients.</li>
+                              <li><strong>Peripheral vertigo:</strong> HINTS exam peripheral pattern, no focal deficits. See HINTS section above.</li>
+                            </ul>
+                          </div>
+                          <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                            <h4 className="font-bold text-orange-900 text-sm mb-2">Less Common Mimics</h4>
+                            <ul className="text-xs text-slate-700 space-y-1.5">
+                              <li><strong>Hypertensive encephalopathy/PRES:</strong> Severely elevated BP, visual changes, seizures, posterior edema on MRI.</li>
+                              <li><strong>Bell palsy:</strong> Isolated facial weakness (upper AND lower face), no limb weakness, ear pain.</li>
+                              <li><strong>Hemiplegic migraine:</strong> Family history, prior episodes, fully reversible motor aura. Diagnosis of exclusion.</li>
+                              <li><strong>CNS infection:</strong> Fever, meningismus, CSF pleocytosis. Consider HSV encephalitis if temporal lobe symptoms.</li>
+                              <li><strong>Brain tumor:</strong> Subacute onset, progressive symptoms, seizures. CT/MRI diagnostic.</li>
+                              <li><strong>Toxic/metabolic:</strong> Hepatic encephalopathy, uremia, hypo/hypernatremia, drug intoxication (lithium, phenytoin).</li>
+                              <li><strong>Demyelinating disease:</strong> Young patient, optic neuritis, prior episodes, MRI white matter lesions.</li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-2">
+                          <p className="text-xs font-semibold text-red-800">If in doubt, treat as stroke. TNK is relatively safe; missing a true stroke is far worse than treating a mimic. False-negative rate of CT is high in the first 6-12 hours.</p>
+                        </div>
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-2">
+                          <p className="text-xs text-blue-800"><strong>FABS Score (mimic predictor):</strong> Facial palsy absent (+1), AF history absent (+1), BP at presentation SBP &lt;150 (+1), Seizure at onset (+1). Score ≥3 → consider mimic. (Ali SF et al., Stroke 2014)</p>
+                        </div>
+                      </div>
+                    </details>
+
+                    {/* Admission Order Checklists */}
+                    <details className="bg-white border border-emerald-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-emerald-800 hover:bg-emerald-50 rounded-lg flex items-center gap-2">
+                        <i data-lucide="clipboard-list" className="w-4 h-4 text-emerald-600"></i>
+                        Admission Order Checklists
+                      </summary>
+                      <div className="px-4 pb-4 space-y-4">
+
+                        <details className="bg-blue-50 border border-blue-200 rounded-lg" open>
+                          <summary className="cursor-pointer p-3 font-semibold text-blue-800 text-sm">AIS (Acute Ischemic Stroke) Orders</summary>
+                          <div className="px-3 pb-3">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+                              <div className="space-y-1">
+                                <p className="font-bold text-blue-700 mb-1">Monitoring</p>
+                                <p>Neuro checks q1h x 24h (q15min x 2h if post-TNK)</p>
+                                <p>Cardiac telemetry continuous</p>
+                                <p>VS q1h (BP, HR, O2 sat)</p>
+                                <p>I&O q shift</p>
+                                <p>Fingerstick glucose q6h</p>
+                                <p>NPO until swallow eval</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="font-bold text-blue-700 mb-1">Activity & Safety</p>
+                                <p>Bedrest with HOB 30° x 24h (if post-TNK)</p>
+                                <p>Fall precautions</p>
+                                <p>Aspiration precautions</p>
+                                <p>DVT prophylaxis: SCDs (hold heparin x 24h post-TNK)</p>
+                                <p>IV NS at 75 mL/hr (avoid D5W)</p>
+                                <p>Foley catheter only if unable to void; remove within 24h</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="font-bold text-blue-700 mb-1">Medications</p>
+                                <p>ASA 325 mg load (hold 24h post-TNK), then 81 mg daily</p>
+                                <p>Atorvastatin 80 mg daily</p>
+                                <p>BP meds per protocol (see BP section)</p>
+                                <p>Home medications (review for interactions)</p>
+                                <p>Hold anticoagulants per clinical situation</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="font-bold text-blue-700 mb-1">Labs & Imaging</p>
+                                <p>CBC, CMP, PT/INR, PTT on admission</p>
+                                <p>Lipid panel, HbA1c (fasting AM)</p>
+                                <p>Troponin x 2 (q6h), BNP</p>
+                                <p>CT head 24h post-TNK (or sooner if decline)</p>
+                                <p>MRI brain with DWI if not obtained</p>
+                                <p>TTE with bubble study (or TEE if indicated)</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="font-bold text-blue-700 mb-1">Consults & Therapy</p>
+                                <p>PT/OT/Speech eval within 24h</p>
+                                <p>Swallow evaluation before PO intake</p>
+                                <p>Social work/case management</p>
+                                <p>Cardiac monitoring (extended if no AF found)</p>
+                              </div>
+                            </div>
+                          </div>
+                        </details>
+
+                        <details className="bg-red-50 border border-red-200 rounded-lg">
+                          <summary className="cursor-pointer p-3 font-semibold text-red-800 text-sm">ICH (Intracerebral Hemorrhage) Orders</summary>
+                          <div className="px-3 pb-3">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+                              <div className="space-y-1">
+                                <p className="font-bold text-red-700 mb-1">Monitoring</p>
+                                <p>ICU admission (GCS &lt;8 or deteriorating)</p>
+                                <p>Neuro checks q1h</p>
+                                <p>Arterial line for continuous BP monitoring</p>
+                                <p>VS q1h (strict BP control)</p>
+                                <p>ICP monitoring if GCS &lt;8 or hydrocephalus</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="font-bold text-red-700 mb-1">BP & Medications</p>
+                                <p>Target SBP &lt;140 mmHg (INTERACT2/ATACH-2)</p>
+                                <p>Nicardipine drip preferred (see BP section)</p>
+                                <p>Reversal agents if on anticoagulation (see ICH tab)</p>
+                                <p>Hold all antithrombotics</p>
+                                <p>DVT prophylaxis: SCDs (delay SQ heparin 24-48h)</p>
+                                <p>Seizure meds ONLY if clinical seizure (no prophylaxis)</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="font-bold text-red-700 mb-1">Labs & Imaging</p>
+                                <p>STAT: CBC, CMP, PT/INR, PTT, fibrinogen</p>
+                                <p>Type & screen</p>
+                                <p>Repeat CT head at 6h or if neuro change</p>
+                                <p>CTA if no known etiology (AVM, aneurysm)</p>
+                                <p>Toxicology screen if young/no risk factors</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="font-bold text-red-700 mb-1">Consults</p>
+                                <p>Neurosurgery (EVD if hydrocephalus; evac if indicated)</p>
+                                <p>Goals of care discussion within 24h</p>
+                                <p>PT/OT/Speech when stable</p>
+                              </div>
+                            </div>
+                          </div>
+                        </details>
+
+                        <details className="bg-amber-50 border border-amber-200 rounded-lg">
+                          <summary className="cursor-pointer p-3 font-semibold text-amber-800 text-sm">SAH (Subarachnoid Hemorrhage) Orders</summary>
+                          <div className="px-3 pb-3">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+                              <div className="space-y-1">
+                                <p className="font-bold text-amber-700 mb-1">Monitoring</p>
+                                <p>Neuro ICU admission</p>
+                                <p>Neuro checks q1h</p>
+                                <p>Arterial line, central line</p>
+                                <p>Continuous EEG if poor grade or altered</p>
+                                <p>Transcranial Dopplers (TCDs) daily starting day 3</p>
+                                <p>Strict I&O, daily weights</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="font-bold text-amber-700 mb-1">Medications</p>
+                                <p>Nimodipine 60 mg PO/NG q4h x 21 days</p>
+                                <p>Target SBP &lt;160 until aneurysm secured</p>
+                                <p>Euvolemia (avoid hypovolemia)</p>
+                                <p>Stool softeners (avoid Valsalva)</p>
+                                <p>Seizure prophylaxis: brief course if indicated (levetiracetam)</p>
+                                <p>VTE prophylaxis: SCDs until aneurysm secured, then SQ heparin</p>
+                                <p>Pain control: avoid NSAIDs; acetaminophen, short-acting opioids</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="font-bold text-amber-700 mb-1">Labs & Imaging</p>
+                                <p>CBC, CMP, Mg, Phos q6-12h</p>
+                                <p>PT/INR, PTT, fibrinogen on admit</p>
+                                <p>CTA to identify aneurysm source</p>
+                                <p>Conventional angiogram if CTA negative</p>
+                                <p>CT head if neuro change</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="font-bold text-amber-700 mb-1">Consults & Goals</p>
+                                <p>Neurosurgery/Neurointerventional (secure aneurysm &lt;24h)</p>
+                                <p>Goals of care (especially poor-grade SAH)</p>
+                                <p>Vasospasm watch days 3-14 (peak day 7-10)</p>
+                              </div>
+                            </div>
+                          </div>
+                        </details>
+
+                        <details className="bg-teal-50 border border-teal-200 rounded-lg">
+                          <summary className="cursor-pointer p-3 font-semibold text-teal-800 text-sm">TIA (Transient Ischemic Attack) Orders</summary>
+                          <div className="px-3 pb-3">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+                              <div className="space-y-1">
+                                <p className="font-bold text-teal-700 mb-1">Risk Stratification</p>
+                                <p>Calculate ABCD2 score</p>
+                                <p>ABCD2 ≥4 OR DWI+ → admit for observation</p>
+                                <p>ABCD2 &lt;4 AND DWI- → consider rapid outpatient workup</p>
+                                <p>Crescendo TIA → admit, treat as high-risk</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="font-bold text-teal-700 mb-1">Workup</p>
+                                <p>MRI brain with DWI (within 24h)</p>
+                                <p>CTA or MRA head/neck</p>
+                                <p>TTE with bubble study</p>
+                                <p>Cardiac monitoring ≥24h (extended if cryptogenic)</p>
+                                <p>Labs: CBC, CMP, lipid panel, HbA1c, PT/INR</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="font-bold text-teal-700 mb-1">Treatment</p>
+                                <p>DAPT if minor stroke/high-risk TIA: ASA 325 load + clopidogrel 300 load, then ASA 81 + clopidogrel 75 x 21 days</p>
+                                <p>Single antiplatelet if low-risk: ASA 81 mg daily</p>
+                                <p>High-intensity statin: atorvastatin 80 mg</p>
+                                <p>BP control: target &lt;130/80 (after acute phase)</p>
+                                <p>If AF: anticoagulation per DOAC timing (see AF section)</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="font-bold text-teal-700 mb-1">Disposition</p>
+                                <p>Stroke neurology follow-up within 1-2 weeks</p>
+                                <p>PCP follow-up within 1 week</p>
+                                <p>Driving restrictions counseling</p>
+                                <p>Stroke education: FAST signs, when to call 911</p>
+                              </div>
+                            </div>
+                          </div>
+                        </details>
+
                       </div>
                     </details>
 
