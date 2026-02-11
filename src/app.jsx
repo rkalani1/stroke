@@ -7996,11 +7996,14 @@ Clinician Name`;
                 if (telestrokeNote.sichDetected) postTnkComps.push('sICH DETECTED');
                 if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) postTnkComps.push('ANGIOEDEMA');
                 if (telestrokeNote.clinicalDeterioration) postTnkComps.push('CLINICAL DETERIORATION');
+                const ht = telestrokeNote.hemorrhagicTransformation || {};
+                if (ht.detected) postTnkComps.push(`hemorrhagic transformation${ht.classification ? ` (${ht.classification}${ht.symptomatic ? ', symptomatic' : ''})` : ''}`);
                 if (postTnkComps.length > 0) {
                   note += `- COMPLICATIONS: ${postTnkComps.join(', ')}\n`;
                 } else {
                   note += `- No post-TNK complications at time of transfer\n`;
                 }
+                if (telestrokeNote.complicationNotes) note += `- Complication details: ${telestrokeNote.complicationNotes}\n`;
                 note += `- Neuro checks q15 min x 2h, then q30 min x 6h, then q1h x 16h post-TNK\n`;
                 note += `- Hold antithrombotics x 24h post-TNK\n`;
               }
@@ -8094,7 +8097,10 @@ Clinician Name`;
               if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) signoutComps.push('angioedema');
               if (telestrokeNote.reperfusionHemorrhage) signoutComps.push('reperfusion hemorrhage');
               if (telestrokeNote.clinicalDeterioration) signoutComps.push('clinical deterioration');
+              const htSignout = telestrokeNote.hemorrhagicTransformation || {};
+              if (htSignout.detected) signoutComps.push(`HT${htSignout.classification ? ` (${htSignout.classification}${htSignout.symptomatic ? ', sxHT' : ''})` : ''}`);
               if (signoutComps.length > 0) note += `- Complications: ${signoutComps.join(', ')}\n`;
+              if (telestrokeNote.complicationNotes) note += `- Complication details: ${telestrokeNote.complicationNotes}\n`;
               // Special populations
               if (telestrokeNote.pregnancyStroke) note += `- PREGNANCY: OB/GYN co-management recommended\n`;
               if (telestrokeNote.activeCancer) note += `- ACTIVE CANCER: oncology co-management recommended\n`;
@@ -8189,6 +8195,8 @@ Clinician Name`;
               if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) progComps.push('angioedema');
               if (telestrokeNote.reperfusionHemorrhage) progComps.push('reperfusion hemorrhage');
               if (telestrokeNote.clinicalDeterioration) progComps.push('clinical deterioration');
+              const htProg = telestrokeNote.hemorrhagicTransformation || {};
+              if (htProg.detected) progComps.push(`HT${htProg.classification ? ` (${htProg.classification}${htProg.symptomatic ? ', symptomatic' : ''})` : ''}`);
               if (progComps.length > 0) note += `   - Complications: ${progComps.join(', ')}\n`;
               if (telestrokeNote.activeCancer) note += `   - ACTIVE CANCER\n`;
               if (telestrokeNote.sickleCellDisease) note += `   - SICKLE CELL DISEASE\n`;
@@ -8304,7 +8312,10 @@ Clinician Name`;
               if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) dischComplications.push('orolingual angioedema');
               if (telestrokeNote.reperfusionHemorrhage) dischComplications.push('reperfusion hemorrhage');
               if (telestrokeNote.clinicalDeterioration) dischComplications.push('clinical deterioration');
+              const htDisch = telestrokeNote.hemorrhagicTransformation || {};
+              if (htDisch.detected) dischComplications.push(`hemorrhagic transformation${htDisch.classification ? ` (ECASS ${htDisch.classification}${htDisch.symptomatic ? ', symptomatic' : ''})` : ''}`);
               if (dischComplications.length > 0) note += `- Complications: ${dischComplications.join(', ')}\n`;
+              if (telestrokeNote.complicationNotes) note += `- Complication details: ${telestrokeNote.complicationNotes}\n`;
               if (telestrokeNote.activeCancer) note += `- Active cancer: oncology co-management\n`;
               if (telestrokeNote.sickleCellDisease) note += `- Sickle cell disease: hematology co-management\n`;
               if (telestrokeNote.infectiveEndocarditis) note += `- Infective endocarditis: ID/cardiology co-management\n`;
@@ -13479,7 +13490,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     : dxLower.includes('ischemic') || dxLower.includes('lvo') ? 'ischemic'
                                     : dxLower.includes('cvt') || dxLower.includes('venous thrombosis') ? 'cvt'
                                     : '';
-                                  setTelestrokeNote({...telestrokeNote, diagnosis: newDx, diagnosisCategory: category});
+                                  const diagUpdate = { diagnosis: newDx, diagnosisCategory: category };
+                                  // Auto-clear TNK recommendation for hemorrhagic diagnoses (safety-critical)
+                                  if ((category === 'ich' || category === 'sah') && telestrokeNote.tnkRecommended) {
+                                    diagUpdate.tnkRecommended = false;
+                                    diagUpdate.tnkAutoBlocked = true;
+                                    diagUpdate.tnkAutoBlockReason = `TNK auto-cleared: ${category.toUpperCase()} diagnosis (thrombolysis contraindicated)`;
+                                    addToast(`TNK recommendation cleared — ${category.toUpperCase()} diagnosis is a contraindication to thrombolysis`, 'error');
+                                  }
+                                  setTelestrokeNote({...telestrokeNote, ...diagUpdate});
                                   // Auto-route management sub-tab
                                   if (category === 'ich') setManagementSubTab('ich');
                                   else if (category === 'sah') setManagementSubTab('sah');
@@ -24112,10 +24131,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <p className="text-xs text-slate-600 mb-3">Predicts functional independence (GOS ≥4) at 90 days after ICH. Range 0-11. Higher = better prognosis. (Rost et al., Stroke 2008)</p>
                         {(() => {
                           const funcItems = {
-                            volume: ichVolumeParams.a && ichVolumeParams.b && ichVolumeParams.c
+                            volume: ichVolumeParams.a && ichVolumeParams.b && ichVolumeParams.thicknessMm && ichVolumeParams.numSlices
                               ? (() => {
-                                  const vol = (parseFloat(ichVolumeParams.a) * parseFloat(ichVolumeParams.b) * parseFloat(ichVolumeParams.c)) / 2;
-                                  return vol < 30 ? 4 : vol < 60 ? 2 : 0;
+                                  const cCm = parseFloat(ichVolumeParams.thicknessMm) / 10 * parseFloat(ichVolumeParams.numSlices);
+                                  const vol = (parseFloat(ichVolumeParams.a) * parseFloat(ichVolumeParams.b) * cCm) / 2;
+                                  return isNaN(vol) || vol <= 0 ? null : vol < 30 ? 4 : vol < 60 ? 2 : 0;
                                 })()
                               : null,
                             age: telestrokeNote.age ? (parseInt(telestrokeNote.age) < 70 ? 2 : parseInt(telestrokeNote.age) <= 79 ? 1 : 0) : null,
