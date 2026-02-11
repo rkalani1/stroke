@@ -466,11 +466,13 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
 
         const copyPlainText = async (text) => {
           try {
-            await navigator.clipboard.writeText(text);
-            return true;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(text);
+              return true;
+            }
+            return copyFallback(text);
           } catch (e) {
-            console.warn('Clipboard copy failed:', e);
-            return false;
+            return copyFallback(text);
           }
         };
 
@@ -653,7 +655,12 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
             localStorage.setItem(APP_DATA_KEY, JSON.stringify(data));
             touchLastUpdated();
           } catch (e) {
-            console.warn('Failed to save app data:', e);
+            if (e.name === 'QuotaExceededError' || e.code === 22) {
+              console.error('Storage quota exceeded:', e);
+              try { document.dispatchEvent(new CustomEvent('storage-quota-exceeded')); } catch (_) {}
+            } else {
+              console.warn('Failed to save app data:', e);
+            }
           }
         };
 
@@ -1022,6 +1029,7 @@ Clinician Name`;
             transportEta: '',
             transportNotes: '',
             disposition: '',
+            codeStatus: '',
             // Transfer checklist (telephone form flat fields)
             transferImagingShared: false,
             transferLabsSent: false,
@@ -6194,7 +6202,7 @@ Clinician Name`;
             const weight = parseFloat(weightKg) || 0;
             const parsedCrCl = parseFloat(crCl);
             const renalClearance = (!isNaN(parsedCrCl) && parsedCrCl > 0) ? parsedCrCl : null;
-            if (weight <= 0) return null;
+            if (weight <= 0 || weight > 350) return null;
             const crClUnknown = renalClearance === null;
             const isRenalAdjusted = renalClearance !== null && renalClearance < 30;
             // Treatment dose: 1 mg/kg
@@ -6270,7 +6278,7 @@ Clinician Name`;
 
           const calculateTNKDose = (weightKg) => {
             const weight = parseFloat(weightKg);
-            if (isNaN(weight) || weight <= 0) return null;
+            if (isNaN(weight) || weight <= 0 || weight > 350) return null;
 
             // TNK dosing: 0.25 mg/kg, maximum 25 mg
             const rawDose = weight * 0.25;
@@ -6301,7 +6309,7 @@ Clinician Name`;
           const calculatePCCDose = (weightKg, inrVal) => {
             const weight = parseFloat(weightKg);
             const inr = parseFloat(inrVal);
-            if (!weight || weight <= 0) return null;
+            if (isNaN(weight) || weight <= 0 || weight > 350) return null;
             let iuPerKg = null;
             if (!isNaN(inr) && inr >= 2 && inr < 4) iuPerKg = 25;
             else if (!isNaN(inr) && inr >= 4 && inr <= 6) iuPerKg = 35;
@@ -6315,7 +6323,7 @@ Clinician Name`;
           // =================================================================
           const calculateAlteplaseDose = (weightKg) => {
             const weight = parseFloat(weightKg);
-            if (isNaN(weight) || weight <= 0) return null;
+            if (isNaN(weight) || weight <= 0 || weight > 350) return null;
             const totalDose = Math.min(+(weight * 0.9).toFixed(1), 90);
             const bolus = +(totalDose * 0.1).toFixed(1);
             const infusion = +(totalDose * 0.9).toFixed(1);
@@ -6330,13 +6338,13 @@ Clinician Name`;
               return { status: 'unknown', systolic: null, diastolic: null };
             }
 
-            const bpMatch = bpString.match(/(\d+)\s*\/\s*(\d+)/);
+            const bpMatch = bpString.match(/(\d{2,3})\s*\/\s*(\d{2,3})/);
             if (!bpMatch) {
               return { status: 'unknown', systolic: null, diastolic: null };
             }
 
-            const systolic = parseInt(bpMatch[1]);
-            const diastolic = parseInt(bpMatch[2]);
+            const systolic = parseInt(bpMatch[1], 10);
+            const diastolic = parseInt(bpMatch[2], 10);
 
             if (isNaN(systolic) || isNaN(diastolic)) {
               return { status: 'unknown', systolic: null, diastolic: null };
@@ -6392,7 +6400,7 @@ Clinician Name`;
           const calculate4FPCC = (weightKg, inr) => {
             const weight = parseFloat(weightKg);
             const inrValue = parseFloat(inr);
-            if (isNaN(weight) || weight <= 0) return null;
+            if (isNaN(weight) || weight <= 0 || weight > 350) return null;
 
             let unitsPerKg;
             let description;
@@ -7576,7 +7584,7 @@ Clinician Name`;
               'sichDetected', 'angioedemaDetected', 'reperfusionHemorrhage', 'clinicalDeterioration', 'complicationNotes',
               'ichBPManaged', 'ichReversalInitiated', 'ichNeurosurgeryConsulted', 'ichSeizureProphylaxis',
               'imagingReviewed', 'transferAccepted', 'transferImagingShared', 'transferLabsSent', 'transferIVAccess', 'transferBPStable', 'transferFamilyNotified',
-              'transferRationale', 'transferChecklist', 'disposition',
+              'transferRationale', 'transferChecklist', 'disposition', 'codeStatus',
               'transferImagingShareMethod', 'transferImagingShareLink', 'transportMode', 'transportEta', 'transportNotes',
               'lastDOACType', 'lastDOACDose',
               'punctureTime',
@@ -7759,19 +7767,11 @@ Clinician Name`;
               if (navigator.share) {
                 await navigator.share(shareData);
               } else {
-                // Fallback: copy link to clipboard
-                await navigator.clipboard.writeText(window.location.href);
-                setCopiedText('Link');
+                copyToClipboard(window.location.href, 'Link');
               }
             } catch (err) {
               if (err.name !== 'AbortError') {
-                // User cancelled or error occurred - fallback to copy
-                try {
-                  await navigator.clipboard.writeText(window.location.href);
-                  setCopiedText('Link');
-                } catch (e) {
-                  console.error('Share failed:', e);
-                }
+                copyToClipboard(window.location.href, 'Link');
               }
             }
           };
@@ -8030,11 +8030,13 @@ Clinician Name`;
               note += `${telestrokeNote.age || '___'} ${telestrokeNote.sex || '___'} — ${telestrokeNote.diagnosis || '___'}`;
               if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
               note += '\n';
+              if (telestrokeNote.weight) note += `Weight: ${telestrokeNote.weight} kg\n`;
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
               const signoutGCS = calculateGCS(gcsItems);
               if (signoutGCS > 0) note += ` | GCS: ${signoutGCS}`;
-              note += ` | LKW: ${formatTime(telestrokeNote.lkwTime) || '___'}\n\n`;
-              note += `Brief HPI: ${telestrokeNote.symptoms || '___'}\n\n`;
+              note += ` | LKW: ${formatTime(telestrokeNote.lkwTime) || '___'}\n`;
+              if (telestrokeNote.codeStatus) note += `Code status: ${telestrokeNote.codeStatus}\n`;
+              note += `\nBrief HPI: ${telestrokeNote.symptoms || '___'}\n\n`;
               let imagingLine = `Key imaging: CT ${telestrokeNote.ctResults || '___'}; CTA ${telestrokeNote.ctaResults || '___'}`;
               const signoutVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
               if (signoutVessels.length > 0) imagingLine += ` (${signoutVessels.join(', ')})`;
@@ -8184,6 +8186,7 @@ Clinician Name`;
               note += `3. Disposition planning:\n`;
               note += `   - Estimated discharge: ___\n`;
               note += `   - Disposition: ${telestrokeNote.disposition || '___'}\n`;
+              if (telestrokeNote.codeStatus) note += `   - Code status: ${telestrokeNote.codeStatus}\n`;
               note += `   - Rehab needs: ___\n\n`;
               const progRecText2 = telestrokeNote.recommendationsText || '___';
               note += `RECOMMENDATIONS:\n${progRecText2.length > 500 ? progRecText2.substring(0, 500) + '\n[...see full consultation note]' : progRecText2}\n`;
@@ -8329,7 +8332,8 @@ Clinician Name`;
               const dischMRS = (telestrokeNote.mrsAssessment || {}).discharge;
               note += `DISCHARGE NIHSS: ${telestrokeNote.dischargeNIHSS || nihssScore || '___'}${!telestrokeNote.dischargeNIHSS && nihssScore ? ' (admission — update before finalizing)' : ''}\n`;
               note += `DISCHARGE mRS: ${dischMRS || '___'}\n\n`;
-              note += `DISPOSITION: ${telestrokeNote.disposition || '___'}\n\n`;
+              note += `DISPOSITION: ${telestrokeNote.disposition || '___'}\n`;
+              note += `CODE STATUS: ${telestrokeNote.codeStatus || '___'}\n\n`;
               // Key results for discharge
               note += `KEY RESULTS:\n`;
               note += `- Echo (TTE/TEE): ___\n`;
@@ -9011,19 +9015,19 @@ Clinician Name`;
 
             // --- Out-of-range values ---
             const weight = parseFloat(n.weight);
-            if (weight && (weight < 20 || weight > 300)) {
+            if (!isNaN(weight) && (weight < 20 || weight > 300)) {
               warnings.push({ id: 'weight-range', severity: 'error', msg: `Weight ${weight} kg is outside plausible range (20-300 kg)` });
             }
             const age = parseInt(n.age);
-            if (age && (age < 0 || age > 120)) {
+            if (!isNaN(age) && (age < 0 || age > 120)) {
               warnings.push({ id: 'age-range', severity: 'error', msg: `Age ${age} is outside plausible range` });
             }
             const glucose = parseInt(n.glucose);
-            if (glucose && (glucose < 10 || glucose > 1500)) {
+            if (!isNaN(glucose) && (glucose < 10 || glucose > 1500)) {
               warnings.push({ id: 'glucose-range', severity: 'error', msg: `Glucose ${glucose} mg/dL is outside plausible range` });
             }
             const inr = parseFloat(n.inr);
-            if (inr && (inr < 0.5 || inr > 20)) {
+            if (!isNaN(inr) && (inr < 0.5 || inr > 20)) {
               warnings.push({ id: 'inr-range', severity: 'warn', msg: `INR ${inr} is unusual — verify result` });
             }
             const platelets = parseInt(n.plateletCount);
@@ -10557,6 +10561,13 @@ Clinician Name`;
               }
             };
           }, [telestrokeNote]);
+
+          // Storage quota exceeded listener
+          React.useEffect(() => {
+            const handleQuota = () => addToast('Storage nearly full — consider clearing old cases to prevent data loss', 'error');
+            document.addEventListener('storage-quota-exceeded', handleQuota);
+            return () => document.removeEventListener('storage-quota-exceeded', handleQuota);
+          }, []);
 
           // ============================================================
           // THROMBOLYSIS WINDOW TIMER & AUDIBLE ALERTS
@@ -13559,6 +13570,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <option value="Transfer to PSC">Transfer to Primary Stroke Center</option>
                                 <option value="Observation">Observation</option>
                                 <option value="Discharge">Discharge</option>
+                              </select>
+                            </div>
+
+                            <div>
+                              <label className="block text-xs text-slate-600 mb-1">Code Status</label>
+                              <select
+                                value={telestrokeNote.codeStatus || ''}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, codeStatus: e.target.value})}
+                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
+                              >
+                                <option value="">-- Select --</option>
+                                <option value="Full Code">Full Code</option>
+                                <option value="DNR/DNI">DNR/DNI</option>
+                                <option value="DNR/Full treatment">DNR / Full treatment</option>
+                                <option value="Comfort care">Comfort care</option>
+                                <option value="Not yet discussed">Not yet discussed</option>
                               </select>
                             </div>
 
@@ -17074,8 +17101,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <button onClick={() => {
                                     const workupText = `ETIOLOGY WORKUP PLAN (${toast === 'large-artery' ? 'Large Artery Atherosclerosis' : toast === 'cardioembolism' ? 'Cardioembolism' : toast === 'small-vessel' ? 'Small Vessel' : toast === 'other-determined' ? 'Other Determined' : 'Cryptogenic/ESUS'}):\n` +
                                       tests.map(t => `${completed[t.key] ? '[x]' : '[ ]'} ${t.label} — ${t.reason}`).join('\n');
-                                    navigator.clipboard.writeText(workupText).catch(() => {});
-                                    setCopiedText('workup-plan'); setTimeout(() => setCopiedText(''), 2000);
+                                    copyToClipboard(workupText, 'workup-plan');
                                   }}
                                     className={`w-full mt-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'workup-plan' ? 'bg-emerald-600 text-white' : 'bg-blue-600 text-white hover:bg-blue-700'}`}>
                                     <i data-lucide={copiedText === 'workup-plan' ? 'check' : 'copy'} className="w-4 h-4"></i>
@@ -20084,8 +20110,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     if (reason === null) return;
                                     const note = buildTransferDecisionText('accept', reason || '');
                                     setTelestrokeNote({ ...telestrokeNote, transferAccepted: true, transferRationale: note });
-                                    navigator.clipboard.writeText(note).catch(() => {});
-                                    addToast('Transfer acceptance copied', 'success');
+                                    copyToClipboard(note, 'transfer-accept');
                                   }}
                                   className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700"
                                 >
@@ -20107,8 +20132,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     if (!reason) return;
                                     const note = buildTransferDecisionText('decline', String(reason));
                                     setTelestrokeNote({ ...telestrokeNote, transferAccepted: false, transferRationale: note });
-                                    navigator.clipboard.writeText(note).catch(() => {});
-                                    addToast('Transfer decline copied', 'success');
+                                    copyToClipboard(note, 'transfer-decline');
                                   }}
                                   className="px-3 py-2 bg-red-600 text-white rounded-lg text-xs font-semibold hover:bg-red-700"
                                 >
@@ -20164,9 +20188,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <button
                                 onClick={() => {
                                   const note = generateTelestrokeNote();
-                                  navigator.clipboard.writeText(note).catch(() => {});
-                                  setCopiedText('encounter-note');
-                                  setTimeout(() => setCopiedText(''), 2000);
+                                  copyToClipboard(note, 'encounter-note');
                                 }}
                                 className="flex items-center gap-2 px-3 py-2 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors"
                               >
@@ -20182,9 +20204,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <button
                                 onClick={() => {
                                   const note = buildSmartNote();
-                                  navigator.clipboard.writeText(note).catch(() => {});
-                                  setCopiedText('smart-note-encounter');
-                                  setTimeout(() => setCopiedText(''), 2000);
+                                  copyToClipboard(note, 'smart-note-encounter');
                                 }}
                                 className="flex items-center gap-2 px-3 py-1.5 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors"
                               >
@@ -20209,8 +20229,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 if (lkwTime) hpi += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
                                 if (telestrokeNote.medications) hpi += `Medications: ${telestrokeNote.medications}\n`;
                                 if (telestrokeNote.lastDOACType) hpi += `Anticoag: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType}${telestrokeNote.lastDOACDose ? `, last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()}` : ''}\n`;
-                                navigator.clipboard.writeText(hpi).catch(() => {});
-                                setCopiedText('vid-hpi'); setTimeout(() => setCopiedText(''), 2000);
+                                copyToClipboard(hpi, 'vid-hpi');
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-hpi' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
@@ -20225,8 +20244,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 exam += `\n\nIMAGING:\nCT Head: ${telestrokeNote.ctResults || 'N/A'}\nCTA: ${telestrokeNote.ctaResults || 'N/A'}`;
                                 if (telestrokeNote.ctpResults) exam += `\nCTP: ${telestrokeNote.ctpResults}`;
                                 if (aspectsScore != null) exam += `\nASPECTS: ${aspectsScore}`;
-                                navigator.clipboard.writeText(exam).catch(() => {});
-                                setCopiedText('vid-exam'); setTimeout(() => setCopiedText(''), 2000);
+                                copyToClipboard(exam, 'vid-exam');
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-exam' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
@@ -20241,8 +20259,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 if (telestrokeNote.rationale) mdm += `Rationale: ${telestrokeNote.rationale}\n`;
                                 if (telestrokeNote.disposition) mdm += `Disposition: ${telestrokeNote.disposition}\n`;
                                 if (telestrokeNote.recommendationsText) mdm += `\n${telestrokeNote.recommendationsText}`;
-                                navigator.clipboard.writeText(mdm).catch(() => {});
-                                setCopiedText('vid-mdm'); setTimeout(() => setCopiedText(''), 2000);
+                                copyToClipboard(mdm, 'vid-mdm');
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-mdm' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
@@ -20254,8 +20271,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {(
                           <button
                             onClick={() => {
-                              navigator.clipboard.writeText(generateFollowUpBrief()).catch(() => {});
-                              setCopiedText('vid-followup'); setTimeout(() => setCopiedText(''), 2000);
+                              copyToClipboard(generateFollowUpBrief(), 'vid-followup');
                             }}
                             className={`w-full mb-3 px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-followup' ? 'bg-emerald-600 text-white' : 'bg-blue-100 text-blue-800 hover:bg-blue-200 border border-blue-300'}`}
                           >
@@ -20700,9 +20716,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           type="button"
                           onClick={() => {
                             const summary = buildHandoffSummary();
-                            navigator.clipboard.writeText(summary).catch(() => {});
-                            setCopiedText('handoff-summary');
-                            setTimeout(() => setCopiedText(''), 2000);
+                            copyToClipboard(summary, 'handoff-summary');
                           }}
                           className="px-3 py-2 bg-slate-900 text-white rounded-lg text-xs font-semibold hover:bg-slate-800"
                         >
@@ -20933,9 +20947,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <button
                                     onClick={() => {
                                       const text = b.label + '\n' + b.orders.map(o => '- ' + o).join('\n');
-                                      navigator.clipboard.writeText(text).catch(() => {});
-                                      setCopiedText('bundle-' + b.id);
-                                      setTimeout(() => setCopiedText(''), 2000);
+                                      copyToClipboard(text, 'bundle-' + b.id);
                                     }}
                                     className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-white rounded-lg transition-colors ${copiedText === 'bundle-' + b.id ? 'bg-emerald-600' : (btnColorMap[b.color] || 'bg-slate-600 hover:bg-slate-700')}`}
                                   >
