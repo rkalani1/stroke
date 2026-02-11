@@ -6535,18 +6535,20 @@ Clinician Name`;
             if (metrics.doorToCT !== null) {
               noteText += `Door-to-CT: ${metrics.doorToCT} minutes\n`;
             }
-            noteText += `Door-to-Needle (DTN): ${metrics.doorToNeedle} minutes`;
+            if (metrics.doorToNeedle !== null) {
+              noteText += `Door-to-Needle (DTN): ${metrics.doorToNeedle} minutes`;
 
-            if (benchmark) {
-              noteText += ` (${benchmark.label}`;
-              if (benchmark.delta > 0) {
-                noteText += `, +${benchmark.delta} min over ${benchmark.target} min target`;
-              } else if (benchmark.delta < 0) {
-                noteText += `, ${Math.abs(benchmark.delta)} min under ${benchmark.target} min target`;
+              if (benchmark) {
+                noteText += ` (${benchmark.label}`;
+                if (benchmark.delta > 0) {
+                  noteText += `, +${benchmark.delta} min over ${benchmark.target} min target`;
+                } else if (benchmark.delta < 0) {
+                  noteText += `, ${Math.abs(benchmark.delta)} min under ${benchmark.target} min target`;
+                }
+                noteText += ')';
               }
-              noteText += ')';
+              noteText += '\n';
             }
-            noteText += '\n';
 
             if (metrics.ctToNeedle !== null) {
               noteText += `CT-to-Needle: ${metrics.ctToNeedle} minutes\n`;
