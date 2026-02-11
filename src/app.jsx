@@ -808,7 +808,9 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         };
 
         const StrokeClinicalTool = () => {
-          const defaultTelestrokeTemplate = `Chief complaint: {chiefComplaint}
+          const defaultTelestrokeTemplate = `Reason for Consultation: Acute stroke evaluation — {chiefComplaint}
+
+Chief complaint: {chiefComplaint}
 Last known well (date/time): {lkwDate} {lkwTime}
 HPI: {age} year old {sex} p/w {symptoms} at {lkwTime}
 Relevant PMH: {pmh}
@@ -889,9 +891,6 @@ Clinician Name`;
             callingSite: '',
             callingSiteOther: '',
             alias: '',
-            // Telephone consult specific fields
-            workingDiagnosis: '',
-            briefHistory: '',
             chiefComplaint: '',
             lkwDate: new Date().toISOString().split('T')[0],
             lkwTime: new Date().toTimeString().slice(0, 5),
@@ -903,7 +902,6 @@ Clinician Name`;
             affectedSide: '',
             weight: '',
             weightEstimated: false,
-            height: '',
             lastDOACDose: '',
             lastDOACType: '',
             arrivalTime: '',
@@ -918,7 +916,6 @@ Clinician Name`;
             symptoms: '',
             pmh: '',
             medications: '',
-            noAnticoagulants: false,
             premorbidMRS: '',
             vesselOcclusion: [],
             presentingBP: '',
@@ -1002,14 +999,6 @@ Clinician Name`;
             recommendationsText: '',
             transferAccepted: false,
             transferRationale: '',
-            transferChecklist: {
-              imagingShared: false,
-              transferCenterCalled: false,
-              acceptingPhysicianNotified: false,
-              transportArranged: false,
-              etaConfirmed: false,
-              bpGoalsCommunicated: false
-            },
             transferImagingShareMethod: '',
             transferImagingShareLink: '',
             transportMode: '',
@@ -7547,7 +7536,7 @@ Clinician Name`;
             const allowedKeys = [
               'consultStartTime', 'callerName', 'callerRole', 'attendingPhysician',
               'callingSite', 'callingSiteOther',
-              'alias', 'age', 'sex', 'weight', 'height', 'nihss', 'aspects', 'vesselOcclusion', 'diagnosisCategory',
+              'alias', 'age', 'sex', 'weight', 'nihss', 'aspects', 'vesselOcclusion', 'diagnosisCategory',
               'toastClassification', 'secondaryPrevention',
               'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'arrivalTime', 'strokeAlertTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
               'presentingBP', 'heartRate', 'spO2', 'temperature', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT',
@@ -7560,7 +7549,7 @@ Clinician Name`;
               'sichDetected', 'angioedemaDetected', 'reperfusionHemorrhage', 'clinicalDeterioration', 'complicationNotes',
               'ichBPManaged', 'ichReversalInitiated', 'ichNeurosurgeryConsulted', 'ichSeizureProphylaxis',
               'imagingReviewed', 'transferAccepted', 'transferImagingShared', 'transferLabsSent', 'transferIVAccess', 'transferBPStable', 'transferFamilyNotified',
-              'transferRationale', 'transferChecklist', 'disposition', 'codeStatus',
+              'transferRationale', 'disposition', 'codeStatus',
               'transferImagingShareMethod', 'transferImagingShareLink', 'transportMode', 'transportEta', 'transportNotes',
               'lastDOACType', 'lastDOACDose',
               'punctureTime',
@@ -7570,7 +7559,7 @@ Clinician Name`;
               // Free-text clinical data (persisted for note generation)
               'symptoms', 'pmh', 'medications', 'rationale', 'allergies',
               // Structured clinical data
-              'diagnosis', 'premorbidMRS', 'affectedSide', 'weightEstimated', 'noAnticoagulants', 'contrastAllergy',
+              'diagnosis', 'premorbidMRS', 'affectedSide', 'weightEstimated', 'contrastAllergy',
               'chiefComplaint', 'doorTime', 'needleTime', 'admitLocation', 'plateletsCoags',
               'wakeUpStrokeWorkflow', 'recommendationsText', 'consentKit',
               // SAH/CVT/TIA pathway fields
@@ -7596,7 +7585,6 @@ Clinician Name`;
               'dischargeChecklist', 'dischargeChecklistReviewed', 'dischargeNIHSS', 'mrsAssessment',
               // Imaging and exam results
               'ctResults', 'ctaResults', 'ctpResults', 'ekgResults', 'nihssDetails',
-              'briefHistory', 'workingDiagnosis',
               // Inline calculator state
               'ichVolumeCalc', 'andexanetCalc', 'crclCalc', 'enoxCalc'
             ];
@@ -7904,7 +7892,10 @@ Clinician Name`;
               const transferGCS = calculateGCS(gcsItems);
               if (transferGCS > 0) note += ` | GCS: ${transferGCS}`;
               if (telestrokeNote.premorbidMRS) note += ` | Pre-mRS: ${telestrokeNote.premorbidMRS}`;
-              note += `\n\n`;
+              note += `\n`;
+              if (telestrokeNote.affectedSide) note += `Affected side: ${telestrokeNote.affectedSide}\n`;
+              if (telestrokeNote.codeStatus) note += `Code status: ${telestrokeNote.codeStatus}\n`;
+              note += `\n`;
               note += `HPI: ${telestrokeNote.symptoms || '___'}\n`;
               note += `PMH: ${telestrokeNote.pmh || '___'}\n`;
               note += `Medications: ${telestrokeNote.medications || '___'}\n`;
@@ -7955,11 +7946,21 @@ Clinician Name`;
               if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) note += formatDTNForNote();
               const transferBp = bpPhaseTargets[telestrokeNote.bpPhase];
               if (transferBp) note += `- BP target: <${transferBp.systolic}/${transferBp.diastolic} (${transferBp.label})\n`;
+              if (telestrokeNote.transferRationale) note += `\nTransfer rationale: ${telestrokeNote.transferRationale}\n`;
               if (telestrokeNote.transportMode || telestrokeNote.transportEta) {
-                note += `\nTransport: ${telestrokeNote.transportMode || '___'}`;
+                note += `${telestrokeNote.transferRationale ? '' : '\n'}Transport: ${telestrokeNote.transportMode || '___'}`;
                 if (telestrokeNote.transportEta) note += ` | ETA: ${telestrokeNote.transportEta}`;
                 note += '\n';
               }
+              if (telestrokeNote.transportNotes) note += `Transport notes: ${telestrokeNote.transportNotes}\n`;
+              // Transfer checklist status
+              const txChecks = [];
+              if (telestrokeNote.transferImagingShared) txChecks.push('imaging shared');
+              if (telestrokeNote.transferLabsSent) txChecks.push('labs sent');
+              if (telestrokeNote.transferIVAccess) txChecks.push('IV access confirmed');
+              if (telestrokeNote.transferBPStable) txChecks.push('BP stable');
+              if (telestrokeNote.transferFamilyNotified) txChecks.push('family notified');
+              if (txChecks.length > 0) note += `Transfer readiness: ${txChecks.join(', ')}\n`;
               // Post-TNK Status
               if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) {
                 note += `\nPost-TNK Status:\n`;
@@ -7976,6 +7977,18 @@ Clinician Name`;
                 note += `- Hold antithrombotics x 24h post-TNK\n`;
               }
 
+              // SAH-specific data
+              const isDiagSAH = (telestrokeNote.diagnosis || '').toLowerCase().includes('sah') || (telestrokeNote.diagnosis || '').toLowerCase().includes('subarachnoid');
+              if (isDiagSAH) {
+                note += `\nSAH Management:\n`;
+                if (telestrokeNote.sahGrade) note += `- ${telestrokeNote.sahGradeScale || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
+                if (telestrokeNote.fisherGrade) note += `- Modified Fisher Grade: ${telestrokeNote.fisherGrade}\n`;
+                if (telestrokeNote.sahNimodipine) note += `- Nimodipine: initiated\n`;
+                if (telestrokeNote.sahEVDPlaced) note += `- EVD: placed\n`;
+                if (telestrokeNote.sahAneurysmSecured) note += `- Aneurysm: secured\n`;
+                if (telestrokeNote.sahNeurosurgeryConsulted) note += `- Neurosurgery: consulted\n`;
+                if (telestrokeNote.sahSeizureProphylaxis) note += `- Seizure prophylaxis: initiated\n`;
+              }
               // Nursing/safety alerts for receiving team
               const transferAlerts = [];
               const transferDysphagia = telestrokeNote.dysphagiaScreening || {};
@@ -8021,7 +8034,7 @@ Clinician Name`;
               const signoutVitals = [`BP ${telestrokeNote.presentingBP || '___'}`];
               if (telestrokeNote.heartRate) signoutVitals.push(`HR ${telestrokeNote.heartRate}`);
               if (telestrokeNote.spO2) signoutVitals.push(`SpO2 ${telestrokeNote.spO2}%`);
-              if (telestrokeNote.temperature) signoutVitals.push(`T ${telestrokeNote.temperature}°F`);
+              if (telestrokeNote.temperature) signoutVitals.push(`Temp ${telestrokeNote.temperature}°F`);
               if (telestrokeNote.glucose) signoutVitals.push(`Glucose ${telestrokeNote.glucose}`);
               note += `Vitals: ${signoutVitals.join(', ')}\n`;
               const signoutLabs = [];
@@ -8098,6 +8111,8 @@ Clinician Name`;
                 note += `IV TNK${procDose ? ` ${procDose.calculatedDose} mg` : ''} administered at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
               }
               note += `\nPROCEDURE DETAILS:\n`;
+              note += `Operator: ${telestrokeNote.attendingPhysician || '___'}\n`;
+              note += `Anesthesia: ___ (general / conscious sedation / local)\n`;
               note += `Procedure: Mechanical thrombectomy\n`;
               note += `Access: ___ (R/L femoral, R/L radial)\n`;
               note += `Guide catheter: ___\n`;
@@ -8158,6 +8173,12 @@ Clinician Name`;
               const progSp = telestrokeNote.secondaryPrevention || {};
               if (progSp.antiplateletRegimen) note += `   - Antithrombotic: ${AP_LABELS_SHORT[progSp.antiplateletRegimen] || progSp.antiplateletRegimen}\n`;
               if (progSp.statinDose) note += `   - Statin: ${progSp.statinDose.replace(/-/g, ' ')}\n`;
+              if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
+                const progAcInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
+                note += `   - Pre-admission anticoagulant: ${progAcInfo.name}`;
+                if (telestrokeNote.doacTiming?.plannedRestartDate) note += ` — planned restart: ${telestrokeNote.doacTiming.plannedRestartDate}`;
+                note += `\n`;
+              }
               note += `   - Cardiac monitoring: ${(telestrokeNote.cardiacWorkup || {}).extendedMonitoringType || 'pending'}\n\n`;
               note += `3. Disposition planning:\n`;
               note += `   - Estimated discharge: ___\n`;
@@ -8222,6 +8243,9 @@ Clinician Name`;
               if (dischGCS > 0) note += ` | GCS: ${dischGCS}`;
               note += `\n`;
               note += `Premorbid mRS: ${telestrokeNote.premorbidMRS || 'N/A'}\n`;
+              if (telestrokeNote.affectedSide) note += `Affected side: ${telestrokeNote.affectedSide}\n`;
+              if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}\n`;
+              if (telestrokeNote.contrastAllergy) note += `** CONTRAST ALLERGY — relevant for follow-up vascular imaging **\n`;
               const dischVitals = [`BP ${telestrokeNote.presentingBP || '___'}`];
               if (telestrokeNote.heartRate) dischVitals.push(`HR ${telestrokeNote.heartRate}`);
               if (telestrokeNote.spO2) dischVitals.push(`SpO2 ${telestrokeNote.spO2}%`);
@@ -8258,6 +8282,18 @@ Clinician Name`;
               if (telestrokeNote.infectiveEndocarditis) note += `- Infective endocarditis: ID/cardiology co-management\n`;
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
                 note += `- Pre-admission anticoagulation: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].name}\n`;
+              }
+              // SAH-specific data
+              const dischIsSAH = (telestrokeNote.diagnosis || '').toLowerCase().includes('sah') || (telestrokeNote.diagnosis || '').toLowerCase().includes('subarachnoid');
+              if (dischIsSAH) {
+                note += '\nSAH MANAGEMENT:\n';
+                if (telestrokeNote.sahGrade) note += `- ${telestrokeNote.sahGradeScale || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
+                if (telestrokeNote.fisherGrade) note += `- Modified Fisher Grade: ${telestrokeNote.fisherGrade}\n`;
+                if (telestrokeNote.sahNimodipine) note += `- Nimodipine: initiated\n`;
+                if (telestrokeNote.sahEVDPlaced) note += `- EVD: placed\n`;
+                if (telestrokeNote.sahAneurysmSecured) note += `- Aneurysm: secured\n`;
+                if (telestrokeNote.sahNeurosurgeryConsulted) note += `- Neurosurgery: consulted\n`;
+                if (telestrokeNote.sahSeizureProphylaxis) note += `- Seizure prophylaxis: initiated\n`;
               }
               note += '\n';
               note += `SECONDARY PREVENTION:\n`;
@@ -8365,6 +8401,7 @@ Clinician Name`;
               note += `- Call 911 immediately — do NOT drive yourself\n\n`;
               const dischRecText = telestrokeNote.recommendationsText || '___';
               note += `RECOMMENDATIONS:\n${dischRecText.length > 500 ? dischRecText.substring(0, 500) + '\n[...see full consultation note]' : dischRecText}\n`;
+              if (telestrokeNote.attendingPhysician) note += `\nAttending Physician: ${telestrokeNote.attendingPhysician}\n`;
               return note;
             }
 
@@ -8527,6 +8564,38 @@ Clinician Name`;
             if (telestrokeNote.toastClassification) {
 
               note += `\nEtiologic Classification (TOAST): ${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}\n`;
+            }
+
+            // Wake-up stroke workflow documentation
+            const wus = telestrokeNote.wakeUpStrokeWorkflow || {};
+            if (wus.isWakeUpStroke) {
+              note += `\nWAKE-UP STROKE EVALUATION:\n`;
+              note += `- MRI available: ${wus.mriAvailable ? 'Yes' : 'No'}\n`;
+              if (wus.mriAvailable) {
+                if (wus.dwiPositive != null) note += `- DWI lesion: ${wus.dwiPositive ? 'Positive' : 'Negative'}\n`;
+                if (wus.flairHyperintense != null) note += `- FLAIR hyperintensity: ${wus.flairHyperintense ? 'Present (unfavorable)' : 'Absent (favorable — DWI-FLAIR mismatch)'}\n`;
+              }
+              if (wus.extendEligible) {
+                note += `- EXTEND criteria: Met\n`;
+                const ext = wus.extendCriteria || {};
+                const extMet = [];
+                if (ext.nihss4to26) extMet.push('NIHSS 4-26');
+                if (ext.premorbidMRSLt2) extMet.push('pre-mRS <2');
+                if (ext.ischemicCoreLte70) extMet.push('core ≤70cc');
+                if (ext.mismatchRatioGte1_2) extMet.push('mismatch ≥1.2');
+                if (ext.timeWindow4_5to9h) extMet.push('4.5-9h window');
+                if (extMet.length > 0) note += `  ${extMet.join(', ')}\n`;
+              }
+            }
+
+            // Disabling deficit documentation
+            if (telestrokeNote.disablingDeficit) {
+              note += `\nDisabling deficit: Yes — thrombolysis pursued despite low NIHSS based on clinical assessment of disabling deficit.\n`;
+            }
+
+            // Affected side
+            if (telestrokeNote.affectedSide) {
+              note += `Laterality: ${telestrokeNote.affectedSide}-sided deficits\n`;
             }
 
             // Add etiology workup status
@@ -13404,6 +13473,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <option value="Stroke Mimic">Stroke Mimic</option>
                                   <option value="Other">Other</option>
                                 </optgroup>
+                              </select>
+                            </div>
+
+                            <div>
+                              <label className="block text-xs text-slate-600 mb-1">Affected Side</label>
+                              <select
+                                value={telestrokeNote.affectedSide || ''}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, affectedSide: e.target.value})}
+                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
+                              >
+                                <option value="">-- Select --</option>
+                                <option value="Left">Left</option>
+                                <option value="Right">Right</option>
+                                <option value="Bilateral">Bilateral</option>
                               </select>
                             </div>
 
