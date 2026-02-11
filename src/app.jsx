@@ -1448,6 +1448,9 @@ Clinician Name`;
             },
             // Phase 5: Special Populations
             pregnancyStroke: false,
+            activeCancer: false,
+            sickleCellDisease: false,
+            infectiveEndocarditis: false,
             decompressiveCraniectomy: {
               considered: false,
               age: '',
@@ -5097,6 +5100,60 @@ Clinician Name`;
             },
 
             // ---------------------------------------------------------------
+            // CANCER-ASSOCIATED STROKE
+            // ---------------------------------------------------------------
+            cancer_stroke_management: {
+              id: 'cancer_stroke_management',
+              category: 'Special Populations',
+              title: 'Cancer-associated stroke management',
+              recommendation: 'For ischemic stroke in patients with active cancer: extend workup (D-dimer, blood cultures, TEE for NBTE), classify mechanism (cancer-related vs conventional), and tailor secondary prevention. Consider LMWH for cancer-related hypercoagulability; oncology co-management recommended.',
+              detail: 'AHA 2026 Scientific Statement on Cancer-Associated Stroke: Trousseau syndrome (cancer hypercoagulability) typically presents with multiterritory infarcts, elevated D-dimer (often >5x ULN), and no conventional etiology. Mechanism classification: probable cancer-related (NBTE, DIC, tumor embolism) vs possible vs conventional. Extended workup: D-dimer, fibrinogen, blood smear (schistocytes), blood cultures (if febrile), TTE→TEE (marantic vegetations), body CT. TNK: use standard criteria; avoid if brain metastases, platelets <100K, or coagulopathy. Secondary prevention: for probable cancer-related stroke, LMWH (enoxaparin 1 mg/kg BID or dalteparin 200 IU/kg daily) is preferred. DOAC vs LMWH for cancer-associated VTE is evolving (SELECT-D, HOKUSAI-VTE Cancer). Antiplatelet therapy if conventional mechanism. Life expectancy and goals of care are central to decision-making.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'C-LD',
+              guideline: 'Classification and Management of Ischemic Stroke in Patients With Active Cancer',
+              reference: 'AHA Scientific Statement 2026. Navi BB et al. Stroke. 2026.',
+              conditions: (data) => {
+                return !!data.telestrokeNote?.activeCancer;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // SICKLE CELL DISEASE STROKE
+            // ---------------------------------------------------------------
+            sickle_cell_stroke: {
+              id: 'sickle_cell_stroke',
+              category: 'Special Populations',
+              title: 'Sickle cell disease — acute stroke management',
+              recommendation: 'For acute ischemic stroke in sickle cell disease: initiate exchange transfusion urgently (target HbS <30%, Hgb ~10 g/dL). Simple transfusion if exchange unavailable. Hematology and transfusion medicine consult STAT. IV thrombolysis is NOT contraindicated.',
+              detail: 'AHA/ASA Guidelines: Exchange transfusion is the cornerstone of acute SCD stroke treatment (Class I). Target: HbS <30%, total Hgb ~10 g/dL (avoid >10 — hyperviscosity risk). If exchange transfusion unavailable, simple transfusion to Hgb 10 g/dL as bridge. TNK/alteplase: not contraindicated but do NOT delay exchange transfusion. EVT: appropriate for LVO per standard criteria. Secondary prevention: chronic exchange transfusion program (target HbS <30% indefinitely) + hydroxyurea (SWITCH trial: hydroxyurea + phlebotomy inferior to transfusion + chelation for secondary prevention). STOP trial: TCD screening in pediatric SCD; chronic transfusion reduced stroke risk 92%. Contact transfusion services immediately.',
+              classOfRec: 'I',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'STOP: Adams RJ et al. NEJM 1998. SWITCH: Ware RE et al. Lancet 2016.',
+              conditions: (data) => {
+                return !!data.telestrokeNote?.sickleCellDisease;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // INFECTIVE ENDOCARDITIS STROKE
+            // ---------------------------------------------------------------
+            endocarditis_stroke: {
+              id: 'endocarditis_stroke',
+              category: 'Special Populations',
+              title: 'Infective endocarditis — stroke management',
+              recommendation: 'For stroke due to infective endocarditis: AVOID systemic anticoagulation and IV thrombolysis (high hemorrhagic transformation risk). EVT is preferred for LVO. Order blood cultures, STAT echocardiography (TEE), and CTA to screen for mycotic aneurysms. ID and cardiac surgery consultation.',
+              detail: 'IV thrombolysis is contraindicated (AHA/ASA Class III). Anticoagulation is generally avoided in IE-related stroke due to high rates of hemorrhagic transformation, EXCEPT for mechanical prosthetic valve endocarditis (continue anticoagulation, Class IIa). EVT may be considered for LVO with disabling deficits (Class IIb). Mycotic aneurysm screening: CTA head/neck; if positive, consider conventional angiography. Mycotic aneurysms may require endovascular treatment or surgical clipping. Timing of cardiac surgery after stroke: small infarct — early surgery acceptable; large infarct or hemorrhagic conversion — delay 2-4 weeks if hemodynamically stable. Antibiotic therapy per ID guidance (minimum 4-6 weeks IV). Blood cultures x3 from separate sites before antibiotics.',
+              classOfRec: 'III',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'AHA/AHA Infective Endocarditis Guidelines 2015. Stroke in IE: Baddour et al. Circulation 2015.',
+              conditions: (data) => {
+                return !!data.telestrokeNote?.infectiveEndocarditis;
+              }
+            },
+
+            // ---------------------------------------------------------------
             // INTRACRANIAL ATHEROSCLEROSIS (ICAD)
             // ---------------------------------------------------------------
             icad_management: {
@@ -6198,15 +6255,24 @@ Clinician Name`;
             const h = parseFloat(heightCm);
             const bmi = (h && h > 0) ? w / ((h / 100) ** 2) : null;
             const isObese = bmi && bmi > 30;
+            // Adjusted body weight CrCl for obese patients
+            let adjBwCrCl = null;
+            if (isObese && h > 0) {
+              const heightIn = h / 2.54;
+              const ibw = sex === 'M' ? 50 + 2.3 * (heightIn - 60) : 45.5 + 2.3 * (heightIn - 60);
+              const adjBw = ibw + 0.4 * (w - ibw);
+              adjBwCrCl = Math.round(((140 - a) * adjBw * sexFactor) / (72 * cr) * 10) / 10;
+            }
             return {
               value: Math.round(crcl * 10) / 10,
+              adjBwValue: adjBwCrCl,
               isLow: crcl < 30,
               isBorderline: crcl >= 30 && crcl < 50,
               isObese,
               bmi: bmi ? Math.round(bmi * 10) / 10 : null,
               renalCategory: crcl < 15 ? 'severe-dialysis' : crcl < 30 ? 'severe' : crcl < 50 ? 'moderate' : crcl < 90 ? 'mild' : 'normal',
               label: crcl < 15 ? 'Severe (consider dialysis)' : crcl < 30 ? 'Severe (<30)' : crcl < 50 ? 'Moderate (30-49)' : crcl < 90 ? 'Mild (50-89)' : 'Normal (≥90)',
-              obesityWarning: isObese ? 'BMI >30 — CrCl may be overestimated with actual body weight. Consider adjusted body weight for DOAC dosing.' : null
+              obesityWarning: isObese ? `BMI >30 — CrCl may be overestimated. Adjusted body weight CrCl: ${adjBwCrCl} mL/min. Use AdjBW CrCl for DOAC dosing decisions.` : null
             };
           };
 
@@ -6622,8 +6688,6 @@ Clinician Name`;
             debounce((key, data) => {
               setSaveStatus('saving');
               saveWithExpiration(key, data);
-              setSaveStatus('saved');
-              setLastSaved(Date.now());
             }, 1000),
             []
           );
@@ -7506,7 +7570,7 @@ Clinician Name`;
               'youngAdultWorkup', 'drivingRestrictions', 'returnToWork',
               'sexualHealthCounseling', 'airTravelRestrictions',
               'spasticity', 'centralPain', 'fatigue', 'substanceScreening', 'hormonalRisk',
-              'palliativeCare', 'fallsRisk', 'pregnancyStroke', 'decompressiveCraniectomy', 'rehabReferral',
+              'palliativeCare', 'fallsRisk', 'pregnancyStroke', 'activeCancer', 'sickleCellDisease', 'infectiveEndocarditis', 'decompressiveCraniectomy', 'rehabReferral',
               // Discharge
               'dischargeChecklist', 'dischargeChecklistReviewed', 'mrsAssessment',
               // Imaging and exam results
@@ -7900,6 +7964,9 @@ Clinician Name`;
               if (transferDysphagia.bedsideScreenResult === 'fail') transferAlerts.push('NPO — failed dysphagia screen');
               if (telestrokeNote.contrastAllergy) transferAlerts.push('Contrast allergy');
               if (telestrokeNote.pregnancyStroke) transferAlerts.push('PREGNANCY — consult OB');
+              if (telestrokeNote.activeCancer) transferAlerts.push('ACTIVE CANCER — consider D-dimer, NBTE eval, oncology consult');
+              if (telestrokeNote.sickleCellDisease) transferAlerts.push('SICKLE CELL DISEASE — urgent exchange transfusion, hematology consult');
+              if (telestrokeNote.infectiveEndocarditis) transferAlerts.push('INFECTIVE ENDOCARDITIS — avoid anticoagulation, ID consult, blood cultures, TEE');
               const transferMeds = (telestrokeNote.medications || '').toLowerCase();
               if (/nsaid|ibuprofen|naproxen|meloxicam/.test(transferMeds)) transferAlerts.push('On NSAID — hold with antiplatelet/anticoagulation');
               if (transferAlerts.length > 0) {
@@ -8984,6 +9051,32 @@ Clinician Name`;
               warnings.push({ id: 'tnk-pregnancy', severity: 'warn', msg: 'TNK recommended in pregnancy — weigh bleeding risk carefully, especially if postpartum or recent cesarean/neuraxial anesthesia' });
             }
 
+            // Cardiac complication warning (troponin/EKG)
+            const ekgLower = (n.ekgResults || '').toLowerCase();
+            if (/stemi|st.?elevation|acute.?mi|st.?changes/.test(ekgLower)) {
+              warnings.push({ id: 'cardiac-complication', severity: 'critical', msg: 'EKG suggests acute cardiac event — Differentiate: Type 2 MI (demand ischemia, most common in stroke), concurrent STEMI, or Takotsubo/neurogenic stunned myocardium. Cardiology consult. If concurrent ACS: heparin conflicts with post-TNK hold (24h) and post-ICH management. For Takotsubo: avoid catecholamines, consider milrinone if shock. Serial troponins, bedside echo.' });
+            } else if (/takotsubo|stress.?cardio|wall.?motion|apical.?balloon/.test(ekgLower)) {
+              warnings.push({ id: 'takotsubo-warning', severity: 'warn', msg: 'Takotsubo/neurogenic stunned myocardium suspected — common in large strokes and SAH. Bedside echo, serial troponins. Avoid catecholamines if cardiogenic shock (milrinone preferred). Usually self-resolving. Monitor for LV thrombus if severe wall motion abnormality.' });
+            }
+
+            // Cancer-associated stroke warnings
+            if (n.activeCancer) {
+              warnings.push({ id: 'cancer-stroke', severity: 'warn', msg: 'Active cancer — consider: D-dimer, blood cultures, TTE/TEE for marantic endocarditis (NBTE), chest CT. Multiterritory infarcts suggest cancer-related hypercoagulability. Secondary prevention: equipoise between anticoagulation (LMWH preferred) vs antiplatelet — discuss with oncology (AHA 2026 Cancer-Stroke Scientific Statement).' });
+              if (n.tnkRecommended) {
+                warnings.push({ id: 'cancer-tnk', severity: 'warn', msg: 'TNK in active cancer — check CBC/coagulation. Generally avoid IVT if known brain metastases. Thrombocytopenia (<100K) is a contraindication.' });
+              }
+            }
+
+            // Sickle cell disease warnings
+            if (n.sickleCellDisease) {
+              warnings.push({ id: 'scd-stroke', severity: 'critical', msg: 'Sickle cell disease — URGENT: initiate exchange transfusion (target HbS <30%, Hgb ~10 g/dL). If exchange not immediately available, simple transfusion to Hgb 10. Contact transfusion medicine/hematology STAT. TNK is NOT contraindicated but do not delay exchange transfusion for TNK. Hydroxyurea + chronic transfusion for secondary prevention.' });
+            }
+
+            // Infective endocarditis warnings
+            if (n.infectiveEndocarditis) {
+              warnings.push({ id: 'endocarditis-stroke', severity: 'critical', msg: 'Infective endocarditis — AVOID anticoagulation (increases hemorrhagic transformation risk). Order: blood cultures x2, STAT TTE → TEE, CTA head/neck (mycotic aneurysm screen), ID consult. EVT is preferred for LVO (TNK is contraindicated). Monitor for hemorrhagic conversion.' });
+            }
+
             return warnings;
           };
 
@@ -9223,20 +9316,29 @@ Clinician Name`;
             }
 
             // DAPT Loading
-            if (isIschemic && nihss <= 3 && !n.tnkRecommended) {
-              bundles.push({
-                id: 'dapt',
-                label: 'DAPT Loading (Minor Stroke/TIA)',
-                icon: 'pill',
-                color: 'blue',
-                orders: [
+            if (isIschemic && nihss <= 5 && !n.tnkRecommended) {
+              const daptOrders = nihss <= 3 ? [
                   'Aspirin 325 mg PO x1 (loading dose)',
                   'Clopidogrel 300 mg PO x1 (loading dose)',
                   'Then: Aspirin 81 mg PO daily + Clopidogrel 75 mg daily x 21 days',
                   'After 21 days: transition to aspirin 81 mg monotherapy',
-                  `NIHSS: ${nihss} — qualifies for DAPT (NIHSS ≤3)`,
+                  `NIHSS: ${nihss} — qualifies for DAPT (NIHSS ≤3, CHANCE/POINT)`,
+                  'If CYP2C19 LOF carrier: Ticagrelor 180 mg load → 90 mg BID + ASA x 21 days (CHANCE-2)',
                   'Contraindication: active GI bleed, allergy, planned surgery'
-                ]
+                ] : [
+                  'Consider: Ticagrelor 180 mg PO x1 + Aspirin 325 mg PO x1 (loading doses)',
+                  'Then: Ticagrelor 90 mg PO BID + Aspirin 81 mg daily x 30 days (THALES, Class IIb)',
+                  'After 30 days: transition to aspirin 81 mg monotherapy',
+                  `NIHSS: ${nihss} — NIHSS 4-5 qualifies for ticagrelor-based DAPT (THALES)`,
+                  'Alternative: Standard clopidogrel-based DAPT if ticagrelor contraindicated',
+                  'Contraindication: active GI bleed, allergy, planned surgery, strong CYP3A4 inhibitors'
+                ];
+              bundles.push({
+                id: 'dapt',
+                label: nihss <= 3 ? 'DAPT Loading (CHANCE/POINT)' : 'DAPT Loading (THALES, NIHSS 4-5)',
+                icon: 'pill',
+                color: 'blue',
+                orders: daptOrders
               });
             }
 
@@ -9270,7 +9372,51 @@ Clinician Name`;
               });
             }
 
-            // SAH specific
+            // Acute Seizure Treatment Bundle
+            if (isICH || isSAH || (isIschemic && nihss >= 10)) {
+              bundles.push({
+                id: 'seizure-treatment',
+                label: 'Acute Seizure Treatment',
+                icon: 'zap',
+                color: 'amber',
+                orders: [
+                  'FIRST-LINE: Lorazepam 0.1 mg/kg IV (max 4 mg/dose), may repeat x1 in 5 min',
+                  '  If no IV access: Midazolam 0.2 mg/kg IM (max 10 mg)',
+                  'SECOND-LINE (if seizures persist >5 min after benzo):',
+                  '  Levetiracetam 60 mg/kg IV (max 4500 mg) over 15 min',
+                  '  OR Fosphenytoin 20 PE/kg IV (max 150 PE/min) — avoid in ICH if possible (hypotension risk)',
+                  '  OR Valproate 40 mg/kg IV (max 3000 mg) over 10 min — avoid if liver disease/pregnancy',
+                  'REFRACTORY STATUS (>30 min): Intubation + continuous IV midazolam (0.2 mg/kg bolus, 0.05-2 mg/kg/hr) or propofol',
+                  'Continuous EEG monitoring if: impaired consciousness, recurrent seizures, or post-status',
+                  'Check glucose, electrolytes, AED levels. Treat fever aggressively.',
+                  `${isICH ? 'ICH: Seizures may indicate hematoma expansion — STAT repeat CT' : isSAH ? 'SAH: Seizures may indicate rebleed — STAT repeat CT' : ''}`
+                ]
+              });
+            }
+
+            // Glucose Management Bundle
+            {
+              const glucose = parseFloat(n.glucose);
+              if (glucose > 180 || n.tnkRecommended) {
+                bundles.push({
+                  id: 'glucose-mgmt',
+                  label: 'Glucose Management',
+                  icon: 'droplet',
+                  color: 'yellow',
+                  orders: [
+                    'Target blood glucose 140-180 mg/dL (AHA/ASA 2026; SHINE trial: intensive insulin <130 was harmful)',
+                    `${glucose ? `Current glucose: ${glucose} mg/dL` : 'Check POC glucose on arrival'}`,
+                    'BG checks: q6h routine; q1h if on insulin infusion',
+                    n.tnkRecommended ? 'Post-TNK: insulin drip preferred for tight control during monitoring period' : 'Sliding scale insulin for glucose >180 mg/dL',
+                    'AVOID: D5W fluids, glucose-containing IV solutions',
+                    'Treat hypoglycemia (<70 mg/dL): 25 mL D50W IV push, recheck in 15 min',
+                    'Call MD if: glucose <70 or >300 mg/dL despite treatment',
+                    'Transition to basal-bolus SC insulin when tolerating PO and clinically stable'
+                  ]
+                });
+              }
+            }
+
             // Post-EVT Groin/Access Site Care Orders
             if (telestrokeNote.evtRecommended) {
               bundles.push({
@@ -9320,7 +9466,7 @@ Clinician Name`;
               nursingOrders.push(`Activity: ${n.tnkAdminTime ? 'Bedrest HOB 30° x 24h post-lytic' : isSAH ? 'Bedrest HOB 30°, minimal stimulation' : 'Bedrest until stable neuro exam, then OOB with assist'}`);
               nursingOrders.push(`DVT prophylaxis: SCDs on admission. ${n.tnkAdminTime ? 'Hold SQ heparin 24h post-TNK' : isICH ? 'Hold SQ heparin 24-48h' : 'Start enoxaparin 40mg SC daily if immobile'}`);
               nursingOrders.push('IV: NS at 75 mL/hr (avoid D5W/hypotonic)');
-              nursingOrders.push(`Call MD if: NIHSS increase ≥2 points, SBP ${isICH ? '>140 or <110' : '>185 or <100'}, new headache/vomiting, any bleeding, O2 <94%, temperature >38°C, urine output <0.5 mL/kg/hr`);
+              nursingOrders.push(`Call MD if: NIHSS increase ≥2 points, SBP ${isICH ? '>140 or <110' : '>185 or <100'}, glucose <70 or >250 mg/dL, new headache/vomiting, any bleeding, O2 <94%, temperature >38°C, urine output <0.5 mL/kg/hr`);
               bundles.push({
                 id: 'nursing-params',
                 label: 'Nursing Parameters Sheet',
@@ -9737,7 +9883,12 @@ Clinician Name`;
               { name: 'FUNC Score', keywords: ['func', 'functional outcome', 'ich prognosis'], tab: 'management', subTab: 'calculators' },
               { name: 'COMPASS Trial', keywords: ['compass', 'rivaroxaban aspirin', 'dual pathway', 'polyvascular', 'pad cad'], tab: 'management', subTab: 'ischemic' },
               { name: 'Nursing Parameters', keywords: ['nursing', 'parameters', 'call md', 'neuro checks', 'nurse communication'], tab: 'management', subTab: 'ischemic' },
-              { name: 'Collateral Assessment', keywords: ['collateral', 'tan score', 'asitn', 'multiphase cta'], tab: 'management', subTab: 'references' }
+              { name: 'Collateral Assessment', keywords: ['collateral', 'tan score', 'asitn', 'multiphase cta'], tab: 'management', subTab: 'references' },
+              { name: 'Cancer-Associated Stroke', keywords: ['cancer', 'malignancy', 'trousseau', 'nbte', 'marantic', 'tumor', 'oncology'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Sickle Cell Stroke', keywords: ['sickle cell', 'scd', 'exchange transfusion', 'hbs', 'hemoglobin s'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Infective Endocarditis', keywords: ['endocarditis', 'mycotic aneurysm', 'vegetation', 'ie stroke', 'blood cultures'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Acute Seizure Treatment', keywords: ['seizure', 'status epilepticus', 'lorazepam', 'levetiracetam', 'fosphenytoin', 'benzodiazepine'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Glucose Management', keywords: ['glucose', 'insulin', 'hyperglycemia', 'hypoglycemia', 'shine trial', 'blood sugar'], tab: 'management', subTab: 'ischemic' }
             ];
 
             searchableItems.forEach(item => {
@@ -10803,8 +10954,9 @@ ${telestrokeNote.evtRecommended ? `EVT: Recommended` : 'EVT: Not Recommended'}`;
 10. ${antiplatelet}
 11. Statin therapy: Atorvastatin 80mg daily${diagCat === 'ich' ? ' (consider holding acutely)' : ''}
 12. ${diagCat === 'sah' ? 'Nimodipine 60mg PO/NG q4h x 21 days' : 'Neurology consultation'}
-${diagCat === 'sah' ? '13. Seizure prophylaxis: Levetiracetam 500-1000mg IV/PO q12h x 3-7 days (if cortical SAH, IVH, poor-grade, or seizure at onset)\n14' : '13'}. PT/OT/Speech evaluation
-${diagCat === 'sah' ? '15' : '14'}. Fall precautions${diagCat === 'sah' ? '\n16. Neurosurgery consultation' : ''}
+${diagCat === 'sah' ? '13. Seizure prophylaxis: Levetiracetam 500-1000mg IV/PO q12h x 3-7 days (if cortical SAH, IVH, poor-grade, or seizure at onset)\n14' : '13'}. Bowel protocol: docusate 100 mg BID + senna PRN (avoid Valsalva straining)
+${diagCat === 'sah' ? '15' : '14'}. PT/OT/Speech evaluation
+${diagCat === 'sah' ? '16' : '15'}. Fall precautions${diagCat === 'sah' ? '\n17. Neurosurgery consultation' : ''}
 
 LABS:
 - CBC, CMP, PT/INR, PTT
@@ -15198,6 +15350,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               if (telestrokeNote.pregnancyStroke) {
                                 autoDetected.pregnancy = true;
                               }
+                              // Infective endocarditis — absolute TNK contraindication
+                              if (telestrokeNote.infectiveEndocarditis) {
+                                autoDetected.infectiveEndocarditis = true;
+                              }
                               // Medication text scan for anticoagulants
                               const medsText = (telestrokeNote.medications || '').toLowerCase();
                               if (/warfarin|coumadin|jantoven/.test(medsText) && !isNaN(inrVal) && inrVal > 1.7) {
@@ -18760,6 +18916,69 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 )}
                               </div>
 
+                              {/* Cancer-Associated Stroke */}
+                              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                                <h4 className="font-semibold text-amber-800 mb-2">Cancer-Associated Stroke</h4>
+                                <label className="flex items-center gap-2 mb-2">
+                                  <input type="checkbox" checked={!!telestrokeNote.activeCancer}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, activeCancer: e.target.checked})}
+                                    className="text-amber-600" />
+                                  <span className="text-sm font-medium">Patient has active malignancy</span>
+                                </label>
+                                {telestrokeNote.activeCancer && (
+                                  <div className="text-xs text-amber-700 space-y-1 ml-6">
+                                    <p>• <strong>Extended workup:</strong> D-dimer, fibrinogen, blood smear, blood cultures if febrile, TTE→TEE (NBTE), body CT</p>
+                                    <p>• <strong>TNK:</strong> Use standard criteria. Avoid if brain metastases or platelets &lt;100K</p>
+                                    <p>• <strong>Mechanism:</strong> Multiterritory infarcts + elevated D-dimer → suspect Trousseau syndrome (cancer hypercoagulability)</p>
+                                    <p>• <strong>Secondary prevention:</strong> Cancer-related mechanism → LMWH preferred (enoxaparin 1 mg/kg BID). Conventional mechanism → standard antiplatelet</p>
+                                    <p>• <strong>Consults:</strong> Oncology for shared decision-making. Goals of care central.</p>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Sickle Cell Disease */}
+                              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                                <h4 className="font-semibold text-red-800 mb-2">Sickle Cell Disease Stroke</h4>
+                                <label className="flex items-center gap-2 mb-2">
+                                  <input type="checkbox" checked={!!telestrokeNote.sickleCellDisease}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, sickleCellDisease: e.target.checked})}
+                                    className="text-red-600" />
+                                  <span className="text-sm font-medium">Patient has sickle cell disease</span>
+                                </label>
+                                {telestrokeNote.sickleCellDisease && (
+                                  <div className="text-xs text-red-700 space-y-1 ml-6">
+                                    <p className="font-bold">⚠ URGENT: Initiate exchange transfusion</p>
+                                    <p>• Target: HbS &lt;30%, total Hgb ~10 g/dL (avoid &gt;10 — hyperviscosity)</p>
+                                    <p>• If exchange unavailable: simple transfusion to Hgb 10 as bridge</p>
+                                    <p>• TNK is NOT contraindicated — but do not delay exchange transfusion</p>
+                                    <p>• Contact transfusion medicine/hematology STAT</p>
+                                    <p>• Secondary prevention: chronic exchange transfusion + hydroxyurea</p>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Infective Endocarditis */}
+                              <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                                <h4 className="font-semibold text-orange-800 mb-2">Infective Endocarditis</h4>
+                                <label className="flex items-center gap-2 mb-2">
+                                  <input type="checkbox" checked={!!telestrokeNote.infectiveEndocarditis}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, infectiveEndocarditis: e.target.checked})}
+                                    className="text-orange-600" />
+                                  <span className="text-sm font-medium">Suspected infective endocarditis</span>
+                                </label>
+                                {telestrokeNote.infectiveEndocarditis && (
+                                  <div className="text-xs text-orange-700 space-y-1 ml-6">
+                                    <p className="font-bold">⚠ TNK is CONTRAINDICATED. AVOID anticoagulation.</p>
+                                    <p>• <strong>EVT preferred</strong> for LVO with disabling deficits</p>
+                                    <p>• Blood cultures x3 (separate sites) before antibiotics</p>
+                                    <p>• STAT TTE → TEE (vegetations, abscess)</p>
+                                    <p>• CTA head/neck: screen for mycotic aneurysms</p>
+                                    <p>• Consults: ID (antibiotics 4-6 weeks IV), cardiac surgery</p>
+                                    <p>• Exception: mechanical prosthetic valve — continue anticoagulation</p>
+                                  </div>
+                                )}
+                              </div>
+
                               {/* Decompressive Craniectomy */}
                               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                                 <h4 className="font-semibold text-red-800 mb-2">Decompressive Craniectomy Decision Support</h4>
@@ -19471,6 +19690,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                                 // Special Populations
                                 if (telestrokeNote.pregnancyStroke) note += `\nSPECIAL: Pregnant/postpartum patient — see pregnancy-specific management above.\n`;
+                                if (telestrokeNote.activeCancer) note += `SPECIAL: Active cancer — extended workup ordered (D-dimer, TEE, body CT). Secondary prevention tailored to mechanism.\n`;
+                                if (telestrokeNote.sickleCellDisease) note += `SPECIAL: Sickle cell disease — exchange transfusion initiated (target HbS <30%, Hgb ~10). Hematology consulted.\n`;
+                                if (telestrokeNote.infectiveEndocarditis) note += `SPECIAL: Infective endocarditis — TNK contraindicated, anticoagulation avoided. Blood cultures, TEE, mycotic aneurysm screen ordered. ID consulted.\n`;
                                 if ((telestrokeNote.decompressiveCraniectomy || {}).considered) note += `DECOMPRESSIVE CRANIECTOMY: ${(telestrokeNote.decompressiveCraniectomy || {}).timing || 'being considered'}.\n`;
                                 const rehab = telestrokeNote.rehabReferral || {};
                                 const rehabItems = Object.entries(rehab).filter(([k, v]) => v && typeof v === 'boolean');
