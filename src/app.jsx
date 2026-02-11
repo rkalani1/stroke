@@ -4199,7 +4199,7 @@ Clinician Name`;
               detail: 'SWIFT DIRECT, MR CLEAN NO IV, DIRECT-MT: direct EVT was non-inferior only at high-volume centers with groin puncture achievable within 60 min. Standard of care remains bridging IVT + EVT. Exception: Direct EVT may be reasonable when IVT is contraindicated or groin puncture is achievable within 60 min at a comprehensive stroke center (Class IIb).',
               classOfRec: 'I',
               levelOfEvidence: 'A',
-              guideline: 'AHA/ASA Early Management of AIS 2025',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'SWIFT DIRECT (Lancet 2022), MR CLEAN NO IV (Lancet 2022), DIRECT-MT (Lancet 2020)',
               conditions: (data) => {
                 return !!data.telestrokeNote?.evtRecommended;
@@ -22166,12 +22166,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="bg-white p-3 rounded border">
                                 <h4 className="font-semibold text-indigo-700 mb-2">PC-ASPECTS Scoring</h4>
                                 <ul className="text-sm space-y-1">
-                                  <li><strong>10 points</strong> (normal), subtract 1 for each affected region:</li>
+                                  <li><strong>10 points</strong> (normal), subtract points for each affected region:</li>
                                   <li className="ml-3">Left/Right thalamus (1 each)</li>
                                   <li className="ml-3">Left/Right cerebellum (1 each)</li>
                                   <li className="ml-3">Left/Right PCA territory (1 each)</li>
-                                  <li className="ml-3">Midbrain (1)</li>
-                                  <li className="ml-3">Pons (1)</li>
+                                  <li className="ml-3">Midbrain (2)</li>
+                                  <li className="ml-3">Pons (2)</li>
                                   <li><strong>PC-ASPECTS ≥8:</strong> Good EVT candidate</li>
                                   <li><strong>PC-ASPECTS 6-7:</strong> Consider EVT on case-by-case basis</li>
                                   <li><strong>PC-ASPECTS &lt;6:</strong> Poor prognosis, EVT benefit uncertain</li>
