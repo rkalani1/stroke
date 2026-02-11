@@ -6527,7 +6527,7 @@ Clinician Name`;
           // Format DTN metrics for Epic note
           const formatDTNForNote = () => {
             const metrics = calculateDTNMetrics();
-            if (!metrics.doorToNeedle) return '';
+            if (!metrics.doorToNeedle && !metrics.doorToPuncture && !metrics.doorToCT) return '';
 
             const benchmark = getDTNBenchmark(metrics.doorToNeedle);
             let noteText = '\nTime Metrics:\n';
@@ -6550,6 +6550,10 @@ Clinician Name`;
 
             if (metrics.ctToNeedle !== null) {
               noteText += `CT-to-Needle: ${metrics.ctToNeedle} minutes\n`;
+            }
+
+            if (metrics.doorToPuncture !== null) {
+              noteText += `Door-to-Puncture (DTP): ${metrics.doorToPuncture} minutes${metrics.doorToPuncture <= 90 ? '' : ' (exceeded 90 min target)'}\n`;
             }
 
             return noteText;
@@ -7938,7 +7942,7 @@ Clinician Name`;
               note += `\nTreatment:\n`;
               if (telestrokeNote.tnkRecommended) {
                 const transferDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
-                note += `- TNK${transferDose ? ` ${transferDose.calculatedDose} mg` : ''} administered at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+                note += `- TNK${transferDose ? ` ${transferDose.calculatedDose} mg` : ''} ${telestrokeNote.tnkAdminTime ? 'administered at ' + (formatTime(telestrokeNote.tnkAdminTime) || '___') : 'recommended (not yet administered)'}\n`;
                 if (telestrokeNote.tnkConsentDiscussed) {
                   note += `- Consent: ${telestrokeNote.tnkConsentType || 'informed'} consent`;
                   if (telestrokeNote.tnkConsentWith) note += ` with ${telestrokeNote.tnkConsentWith}`;
@@ -8028,7 +8032,7 @@ Clinician Name`;
               note += `Treatment given:\n`;
               if (telestrokeNote.tnkRecommended) {
                 const signoutDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
-                note += `- TNK${signoutDose ? ` ${signoutDose.calculatedDose} mg` : ''} at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+                note += `- TNK${signoutDose ? ` ${signoutDose.calculatedDose} mg` : ''} ${telestrokeNote.tnkAdminTime ? 'at ' + (formatTime(telestrokeNote.tnkAdminTime) || '___') : '(recommended, not yet administered)'}\n`;
               }
               if (telestrokeNote.evtRecommended) note += `- EVT recommended/performed\n`;
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
@@ -8042,9 +8046,14 @@ Clinician Name`;
               // Complications
               const signoutComps = [];
               if (telestrokeNote.sichDetected) signoutComps.push('sICH');
-              if (telestrokeNote.angioedemaDetected) signoutComps.push('angioedema');
+              if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) signoutComps.push('angioedema');
               if (telestrokeNote.reperfusionHemorrhage) signoutComps.push('reperfusion hemorrhage');
+              if (telestrokeNote.clinicalDeterioration) signoutComps.push('clinical deterioration');
               if (signoutComps.length > 0) note += `- Complications: ${signoutComps.join(', ')}\n`;
+              // Special populations
+              if (telestrokeNote.activeCancer) note += `- ACTIVE CANCER: oncology co-management recommended\n`;
+              if (telestrokeNote.sickleCellDisease) note += `- SICKLE CELL DISEASE: hematology co-management, exchange transfusion status\n`;
+              if (telestrokeNote.infectiveEndocarditis) note += `- INFECTIVE ENDOCARDITIS: TNK contraindicated, infectious disease/cardiology co-management\n`;
               // BP target
               const signoutBpPhase = bpPhaseTargets[telestrokeNote.bpPhase];
               if (signoutBpPhase) note += `- BP target: <${signoutBpPhase.systolic}/${signoutBpPhase.diastolic} (${signoutBpPhase.label})\n`;
@@ -8116,7 +8125,7 @@ Clinician Name`;
               note += `OBJECTIVE:\n`;
               note += `Vitals: T___ HR___ BP___ RR___ SpO2___\n`;
               note += `I/O: ___\n`;
-              note += `NIHSS: ${telestrokeNote.nihss || nihssScore || '___'} (admission: ${telestrokeNote.nihss || nihssScore || '___'})\n`;
+              note += `NIHSS: ${telestrokeNote.dischargeNIHSS || telestrokeNote.nihss || nihssScore || '___'} (admission: ${telestrokeNote.nihss || nihssScore || '___'})\n`;
               note += `Neuro exam: ___\n\n`;
               note += `LABS/IMAGING:\n`;
               note += `- CT Head: ${telestrokeNote.ctResults || '___'}\n`;
@@ -8128,12 +8137,17 @@ Clinician Name`;
               if (telestrokeNote.evtRecommended) note += `   - Post-EVT: mTICI ${telestrokeNote.ticiScore || '___'}\n`;
               const progComps = [];
               if (telestrokeNote.sichDetected) progComps.push('sICH');
-              if (telestrokeNote.angioedemaDetected) progComps.push('angioedema');
+              if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) progComps.push('angioedema');
+              if (telestrokeNote.reperfusionHemorrhage) progComps.push('reperfusion hemorrhage');
+              if (telestrokeNote.clinicalDeterioration) progComps.push('clinical deterioration');
               if (progComps.length > 0) note += `   - Complications: ${progComps.join(', ')}\n`;
+              if (telestrokeNote.activeCancer) note += `   - ACTIVE CANCER\n`;
+              if (telestrokeNote.sickleCellDisease) note += `   - SICKLE CELL DISEASE\n`;
+              if (telestrokeNote.infectiveEndocarditis) note += `   - INFECTIVE ENDOCARDITIS\n`;
               const progBp = bpPhaseTargets[telestrokeNote.bpPhase];
               note += `   - BP goal: ${progBp ? `<${progBp.systolic}/${progBp.diastolic} (${progBp.label})` : '___'}\n`;
               note += `   - DVT prophylaxis: ___\n`;
-              note += `   - Dysphagia screening: ${telestrokeNote.dysphagiaScreening ? 'completed' : 'pending'}\n\n`;
+              note += `   - Dysphagia screening: ${telestrokeNote.dysphagiaScreening?.bedsideScreenPerformed ? 'completed' : 'pending'}\n\n`;
               note += `2. Secondary prevention:\n`;
               const progSp = telestrokeNote.secondaryPrevention || {};
               if (progSp.antiplateletRegimen) note += `   - Antithrombotic: ${AP_LABELS_SHORT[progSp.antiplateletRegimen] || progSp.antiplateletRegimen}\n`;
@@ -8191,7 +8205,7 @@ Clinician Name`;
               note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}`;
               if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
               note += `\n`;
-              note += `Admission Date: ${formatDate(telestrokeNote.lkwDate) || '___'}\n`;
+              note += `Admission Date: ${formatDate(telestrokeNote.lkwDate) || '___'} (LKW date)\n`;
               note += `Discharge Date: ___\n\n`;
               note += `HOSPITAL COURSE:\n`;
               note += `${telestrokeNote.symptoms || '___'}\n`;
@@ -8218,7 +8232,7 @@ Clinician Name`;
               note += `ACUTE TREATMENT:\n`;
               if (telestrokeNote.tnkRecommended) {
                 const dischDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
-                note += `- IV TNK ${dischDose ? dischDose.calculatedDose + ' mg' : ''} at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+                note += `- IV TNK ${dischDose ? dischDose.calculatedDose + ' mg' : ''} ${telestrokeNote.tnkAdminTime ? 'at ' + (formatTime(telestrokeNote.tnkAdminTime) || '___') : '(recommended, not yet administered)'}\n`;
                 if (telestrokeNote.dtnTnkAdministered) note += formatDTNForNote();
               }
               if (telestrokeNote.evtRecommended) note += `- Mechanical thrombectomy${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
@@ -8226,10 +8240,13 @@ Clinician Name`;
               // Post-treatment complications
               const dischComplications = [];
               if (telestrokeNote.sichDetected) dischComplications.push('symptomatic ICH (sICH)');
-              if (telestrokeNote.angioedemaDetected) dischComplications.push('orolingual angioedema');
+              if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) dischComplications.push('orolingual angioedema');
               if (telestrokeNote.reperfusionHemorrhage) dischComplications.push('reperfusion hemorrhage');
               if (telestrokeNote.clinicalDeterioration) dischComplications.push('clinical deterioration');
               if (dischComplications.length > 0) note += `- Complications: ${dischComplications.join(', ')}\n`;
+              if (telestrokeNote.activeCancer) note += `- Active cancer: oncology co-management\n`;
+              if (telestrokeNote.sickleCellDisease) note += `- Sickle cell disease: hematology co-management\n`;
+              if (telestrokeNote.infectiveEndocarditis) note += `- Infective endocarditis: ID/cardiology co-management\n`;
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
                 note += `- Pre-admission anticoagulation: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].name}\n`;
               }
@@ -8519,15 +8536,19 @@ Clinician Name`;
             // Add thrombolysis contraindication review to note
             if (telestrokeNote.tnkRecommended && telestrokeNote.tnkContraindicationReviewed) {
               note += `\nTHROMBOLYSIS CONTRAINDICATION REVIEW:\n`;
-              const inrOk = !inr || parseFloat(inr) <= 1.7;
-              const pltOk = !platelets || parseFloat(platelets) >= 100;
-              const apttOk = !ptt || parseFloat(ptt) <= 40;
-              const glucOk = !glucose || parseFloat(glucose) >= 50;
-              note += `- INR: ${inr || 'N/A'} (threshold ≤1.7) [${inr ? (inrOk ? 'CLEARED' : 'NOT CLEARED') : 'pending'}]\n`;
-              note += `- Platelets: ${platelets || 'N/A'}K (threshold ≥100K) [${platelets ? (pltOk ? 'CLEARED' : 'NOT CLEARED') : 'pending'}]\n`;
-              note += `- aPTT: ${ptt || 'N/A'}s (threshold ≤40s) [${ptt ? (apttOk ? 'CLEARED' : 'NOT CLEARED') : 'pending'}]\n`;
-              note += `- Glucose: ${glucose || 'N/A'} mg/dL (threshold ≥50) [${glucose ? (glucOk ? 'CLEARED' : 'NOT CLEARED') : 'pending'}]\n`;
-              note += `- BP pre-treatment: ${telestrokeNote.bp || 'N/A'} (threshold <185/110)\n`;
+              const noteInr = telestrokeNote.inr;
+              const notePlt = telestrokeNote.plateletCount;
+              const notePtt = telestrokeNote.ptt;
+              const noteGluc = telestrokeNote.glucose;
+              const inrOk = !noteInr || parseFloat(noteInr) <= 1.7;
+              const pltOk = !notePlt || parseFloat(notePlt) >= 100;
+              const apttOk = !notePtt || parseFloat(notePtt) <= 40;
+              const glucOk = !noteGluc || parseFloat(noteGluc) >= 50;
+              note += `- INR: ${noteInr || 'N/A'} (threshold ≤1.7) [${noteInr ? (inrOk ? 'CLEARED' : 'NOT CLEARED') : 'pending'}]\n`;
+              note += `- Platelets: ${notePlt || 'N/A'}K (threshold ≥100K) [${notePlt ? (pltOk ? 'CLEARED' : 'NOT CLEARED') : 'pending'}]\n`;
+              note += `- aPTT: ${notePtt || 'N/A'}s (threshold ≤40s) [${notePtt ? (apttOk ? 'CLEARED' : 'NOT CLEARED') : 'pending'}]\n`;
+              note += `- Glucose: ${noteGluc || 'N/A'} mg/dL (threshold ≥50) [${noteGluc ? (glucOk ? 'CLEARED' : 'NOT CLEARED') : 'pending'}]\n`;
+              note += `- BP pre-treatment: ${telestrokeNote.bpPreTNK || telestrokeNote.presentingBP || 'N/A'} (threshold <185/110)\n`;
               note += `- Anticoagulant: ${telestrokeNote.lastDOACType ? ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType : 'None reported'}\n`;
             }
 
