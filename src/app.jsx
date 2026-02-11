@@ -2009,8 +2009,8 @@ Clinician Name`;
             },
             EPI: {
               title: 'Epinephrine',
-              dosing: '0.1% solution: 0.3 mL SC or via nebulizer 0.5 mL.',
-              note: 'For worsening angioedema. Use if symptoms progress despite methylprednisolone and diphenhydramine.'
+              dosing: 'Epinephrine 0.3 mg IM (1 mg/mL solution) into anterolateral thigh. Nebulized: 0.5 mL of 1 mg/mL solution.',
+              note: 'For worsening angioedema. IM preferred over SC (faster absorption per AHA/WAO guidelines). Use if symptoms progress despite methylprednisolone and diphenhydramine.'
             },
             ICATIBANT: {
               title: 'Icatibant',
@@ -2027,10 +2027,10 @@ Clinician Name`;
               dosing: '200 mg IV (OR Methylprednisolone 40 mg IV).',
               note: 'Institutional LVO contrast allergy protocol: Immediately prior to contrast, give Hydrocortisone 200mg IV OR Methylprednisolone 40mg + Diphenhydramine 50mg IV. Requires pre-approval from Stroke phone, Emergency MD, AND Neuroradiology. Excludes known contrast-related anaphylaxis (cardiovascular collapse). Document consent + approving physicians.'
             },
-            RANITIDINE: {
-              title: 'Ranitidine/Famotidine',
-              dosing: 'Ranitidine 50 mg IV or famotidine 20 mg IV.',
-              note: 'H2 blocker for angioedema management protocol.'
+            FAMOTIDINE: {
+              title: 'Famotidine',
+              dosing: 'Famotidine 20 mg IV.',
+              note: 'H2 blocker for angioedema management protocol. (Ranitidine withdrawn by FDA April 2020 due to NDMA.)'
             },
             PROT1: {
               title: 'Protamine (UFH)',
@@ -5353,7 +5353,9 @@ Clinician Name`;
               reference: 'AHA/ASA AIS Guidelines 2019.',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('ischemic') || dx.includes('stroke');
+                const isIschemic = dx.includes('ischemic') || dx.includes('stroke');
+                const isHemorrhagic = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral') || dx.includes('bleed') || dx.includes('sah') || dx.includes('subarachnoid');
+                return isIschemic && !isHemorrhagic;
               }
             },
             // BASILAR ARTERY OCCLUSION EVT
@@ -5939,7 +5941,7 @@ Clinician Name`;
             { id: 'limb_ataxia', name: '7. Limb Ataxia', options: ['Absent (0)', 'Present in upper or lower (1)', 'Present in both (2)'] },
             { id: 'sensory', name: '8. Sensory', options: ['Normal (0)', 'Partial loss (1)', 'Dense loss (2)'] },
             { id: 'language', name: '9. Best Language†', options: ['No aphasia (0)', 'Mild-moderate aphasia (1)', 'Severe aphasia (2)', 'Mute, global aphasia (3)'] },
-            { id: 'dysarthria', name: '10. Dysarthria†', options: ['Normal articulation (0)', 'Mild-moderate slurring (1)', 'Severe dysarthria (2)', 'Intubated/other (2)'] },
+            { id: 'dysarthria', name: '10. Dysarthria†', options: ['Normal articulation (0)', 'Mild-moderate slurring (1)', 'Severe dysarthria (2)', 'Intubated/other (UN)'] },
             { id: 'extinction', name: '11. Extinction and Inattention', options: ['No neglect (0)', 'Visual, tactile, auditory, spatial, or personal inattention (1)', 'Profound hemi-inattention (2)'] }
           ];
 
@@ -5947,6 +5949,7 @@ Clinician Name`;
           const calculateNIHSS = (responses) => {
             const total = Object.values(responses).reduce((sum, response) => {
               if (typeof response !== 'string') return sum;
+              if (response.includes('UN')) return sum; // Untestable items do not contribute to total
               const score = parseInt(response?.split('(')[1]?.split(')')[0] || 0);
               return sum + (isNaN(score) ? 0 : score);
             }, 0);
@@ -6052,10 +6055,10 @@ Clinician Name`;
           const calculateRCVS2Score = (items) => {
             let score = 0;
             if (items.recurrentTCH) score += 5;
-            if (items.carotidInvolvement) score += 3;
-            if (items.vasoconstrictiveTrigger) score += 2;
+            if (items.carotidInvolvement) score -= 2; // Carotid involvement suggests PACNS, not RCVS
+            if (items.vasoconstrictiveTrigger) score += 3;
             if (items.female) score += 1;
-            if (items.sah) score -= 2;
+            if (items.sah) score += 1; // Convexity SAH favors RCVS
             return score;
           };
 
@@ -6130,14 +6133,14 @@ Clinician Name`;
             const isApixaban = (doacType || '').toLowerCase().includes('apixaban');
             const isRivaroxaban = (doacType || '').toLowerCase().includes('rivaroxaban');
             if (isApixaban) {
-              if (hours >= 8) return { regimen: 'low-dose', bolus: '400 mg IV over 15-30 min', infusion: '4 mg/min x 120 min (480 mg)', total: '880 mg' };
-              return { regimen: 'high-dose', bolus: '800 mg IV over 15-30 min', infusion: '8 mg/min x 120 min (960 mg)', total: '1760 mg' };
+              if (hours >= 8) return { regimen: 'low-dose', bolus: '400 mg IV over 15-30 min', infusion: '4 mg/min x 120 min (480 mg)', total: '880 mg', doseWarning: null };
+              return { regimen: 'high-dose', bolus: '800 mg IV over 15-30 min', infusion: '8 mg/min x 120 min (960 mg)', total: '1760 mg', doseWarning: 'Per FDA label: low-dose is correct for standard apixaban ≤5mg even if <8h. High-dose is only for apixaban >5mg (10mg) taken <8h ago. Verify actual DOAC dose.' };
             }
             if (isRivaroxaban) {
-              if (hours >= 8) return { regimen: 'low-dose', bolus: '400 mg IV over 15-30 min', infusion: '4 mg/min x 120 min (480 mg)', total: '880 mg' };
-              return { regimen: 'high-dose', bolus: '800 mg IV over 15-30 min', infusion: '8 mg/min x 120 min (960 mg)', total: '1760 mg' };
+              if (hours >= 8) return { regimen: 'low-dose', bolus: '400 mg IV over 15-30 min', infusion: '4 mg/min x 120 min (480 mg)', total: '880 mg', doseWarning: null };
+              return { regimen: 'high-dose', bolus: '800 mg IV over 15-30 min', infusion: '8 mg/min x 120 min (960 mg)', total: '1760 mg', doseWarning: 'Per FDA label: low-dose is correct for rivaroxaban ≤10mg even if <8h. High-dose is only for rivaroxaban >10mg taken <8h ago. Verify actual DOAC dose.' };
             }
-            return { regimen: 'N/A', bolus: 'Not applicable for this DOAC', infusion: '', total: '' };
+            return { regimen: 'N/A', bolus: 'Not applicable for this DOAC', infusion: '', total: '', doseWarning: null };
           };
 
           // =================================================================
@@ -8701,7 +8704,9 @@ Clinician Name`;
                   return result;
                 }
                 if (aspects === '3-5') {
-                  if (mrs === '0-1') return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1, NIHSS ≥6'] };
+                  if (mrs === '0-1' && !isNaN(nihss) && nihss >= 6) return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1, NIHSS ≥6'] };
+                  if (mrs === '0-1' && (isNaN(nihss) || nihss === 0)) return { classOfRec: 'IDD', label: 'Enter NIHSS to evaluate', color: 'amber', rationale: ['ASPECTS 3-5, mRS 0-1 — NIHSS ≥6 required for Class I recommendation'] };
+                  if (mrs === '0-1' && nihss < 6) return { classOfRec: 'IIb', label: 'EVT may be considered', color: 'amber', rationale: ['ASPECTS 3-5, mRS 0-1, but NIHSS <6 — weaker evidence for large-core EVT with low NIHSS'] };
                   return result;
                 }
                 if (aspects === '0-2') {
@@ -20647,7 +20652,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </div>
                                   <div className="flex gap-2 items-start">
                                     <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white text-xs flex items-center justify-center font-bold">5</span>
-                                    <p className="text-sm"><button onClick={() => setProtocolModal(protocolDetailMap.RANITIDINE)} className="text-blue-600 underline hover:text-blue-800">Ranitidine 50 mg IV or famotidine 20 mg IV</button></p>
+                                    <p className="text-sm"><button onClick={() => setProtocolModal(protocolDetailMap.FAMOTIDINE)} className="text-blue-600 underline hover:text-blue-800">Famotidine 20 mg IV</button></p>
                                   </div>
                                 </div>
                               </div>
@@ -20655,7 +20660,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                                 <p className="text-sm font-semibold text-red-800 mb-1">If worsening:</p>
                                 <ul className="text-sm space-y-1">
-                                  <li>• <button onClick={() => setProtocolModal(protocolDetailMap.EPI)} className="text-blue-600 underline hover:text-blue-800">Epinephrine 0.1% — 0.3 mL SC</button> or nebulizer 0.5 mL</li>
+                                  <li>• <button onClick={() => setProtocolModal(protocolDetailMap.EPI)} className="text-blue-600 underline hover:text-blue-800">Epinephrine 0.3 mg IM</button> (1 mg/mL, anterolateral thigh) or nebulizer 0.5 mL</li>
                                   <li>• <button onClick={() => setProtocolModal(protocolDetailMap.ICATIBANT)} className="text-blue-600 underline hover:text-blue-800">Icatibant</button> (bradykinin B2 antagonist)</li>
                                   <li>• <button onClick={() => setProtocolModal(protocolDetailMap.BERINERT)} className="text-blue-600 underline hover:text-blue-800">C1 esterase inhibitor (Berinert) 20 IU/kg</button></li>
                                 </ul>
@@ -21798,8 +21803,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <li><strong>Discontinue IV alteplase</strong> and hold ACE inhibitors</li>
                                 <li><strong>Methylprednisolone:</strong> 125 mg IV</li>
                                 <li><strong>Diphenhydramine:</strong> 50 mg IV</li>
-                                <li><strong>Ranitidine:</strong> 50 mg IV or famotidine 20 mg IV</li>
-                                <li><strong>If worsening: Epinephrine</strong> 0.1% 0.3 mL SC or nebulizer 0.5 mL</li>
+                                <li><strong>Famotidine:</strong> 20 mg IV (H2 blocker)</li>
+                                <li><strong>If worsening: Epinephrine</strong> 0.3 mg IM (anterolateral thigh) or nebulizer 0.5 mL</li>
                                 <li><strong>Icatibant</strong> (bradykinin B2 antagonist)</li>
                                 <li><strong>Berinert:</strong> 20 IU/kg IV (C1 esterase inhibitor)</li>
                               </ul>
@@ -23995,7 +24000,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={rcvs2Items.carotidInvolvement}
                               onChange={(e) => setRcvs2Items({...rcvs2Items, carotidInvolvement: e.target.checked})}
                             />
-                            <span className="text-sm">Intracranial carotid artery involvement (+3)</span>
+                            <span className="text-sm">Intracranial carotid artery involvement (-2)</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-blue-50 rounded cursor-pointer">
                             <input
@@ -24004,7 +24009,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={rcvs2Items.vasoconstrictiveTrigger}
                               onChange={(e) => setRcvs2Items({...rcvs2Items, vasoconstrictiveTrigger: e.target.checked})}
                             />
-                            <span className="text-sm">Vasoconstrictive trigger exposure (+2)</span>
+                            <span className="text-sm">Vasoconstrictive trigger exposure (+3)</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-blue-50 rounded cursor-pointer">
                             <input
@@ -24022,7 +24027,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={rcvs2Items.sah}
                               onChange={(e) => setRcvs2Items({...rcvs2Items, sah: e.target.checked})}
                             />
-                            <span className="text-sm">Subarachnoid hemorrhage on imaging (-2)</span>
+                            <span className="text-sm">Subarachnoid hemorrhage on imaging (+1)</span>
                           </label>
                         </div>
 
@@ -24283,6 +24288,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <p className="text-sm">Bolus: {result.bolus}</p>
                               <p className="text-sm">Infusion: {result.infusion}</p>
                               <p className="text-sm font-semibold">Total: {result.total}</p>
+                              {result.doseWarning && (
+                                <p className="text-xs text-amber-700 mt-1 bg-amber-50 border border-amber-200 rounded p-1">{result.doseWarning}</p>
+                              )}
                               <button onClick={() => copyToClipboard(`Andexanet ${result.regimen}: Bolus ${result.bolus}, Infusion ${result.infusion}, Total ${result.total}`, 'Andexanet Dose')}
                                 className="mt-1 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300" aria-label="Copy andexanet dose to clipboard">Copy</button>
                             </div>
