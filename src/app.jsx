@@ -943,6 +943,10 @@ Clinician Name`;
             ctaTime: '',
             ctaResults: '',
             ctpResults: '',
+            ctpStructured: { coreVolume: '', penumbraVolume: '', mismatchRatio: '' },
+            collateralGrade: '',
+            earlyInfarctSigns: false,
+            denseArterySign: false,
             ekgResults: '',
             wakeUpStrokeWorkflow: {
               mriAvailable: null,
@@ -7476,9 +7480,15 @@ Clinician Name`;
               `CT: ${telestrokeNote.ctResults || 'pending'}`,
               `CTA: ${telestrokeNote.ctaResults || 'pending'}`
             ];
-            if (telestrokeNote.ctpResults) {
-              imagingSummaryParts.push(`CTP: ${telestrokeNote.ctpResults}`);
+            {
+              const ctpS = telestrokeNote.ctpStructured || {};
+              const ctpBits = [];
+              if (ctpS.coreVolume) ctpBits.push(`Core ${ctpS.coreVolume}mL`);
+              if (ctpS.penumbraVolume) ctpBits.push(`Penumbra ${ctpS.penumbraVolume}mL`);
+              if (telestrokeNote.ctpResults) ctpBits.push(telestrokeNote.ctpResults);
+              if (ctpBits.length > 0) imagingSummaryParts.push(`CTP: ${ctpBits.join(', ')}`);
             }
+            if (telestrokeNote.collateralGrade) imagingSummaryParts.push(`Collaterals: ${telestrokeNote.collateralGrade}`);
             const imagingSummary = imagingSummaryParts.join('; ');
             const tnkDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
             const tnkStatus = telestrokeNote.tnkRecommended
@@ -7801,7 +7811,15 @@ Clinician Name`;
             brief += `\nIMAGING:\n`;
             brief += `- CT Head: ${telestrokeNote.ctResults || 'N/A'}\n`;
             brief += `- CTA: ${telestrokeNote.ctaResults || 'N/A'}\n`;
-            if (telestrokeNote.ctpResults) brief += `- CTP: ${telestrokeNote.ctpResults}\n`;
+            {
+              const ctpS = telestrokeNote.ctpStructured || {};
+              const ctpParts = [];
+              if (ctpS.coreVolume) ctpParts.push(`Core: ${ctpS.coreVolume} mL`);
+              if (ctpS.penumbraVolume) ctpParts.push(`Penumbra: ${ctpS.penumbraVolume} mL`);
+              if (telestrokeNote.ctpResults) ctpParts.push(telestrokeNote.ctpResults);
+              if (ctpParts.length > 0) brief += `- CTP: ${ctpParts.join('; ')}\n`;
+            }
+            if (telestrokeNote.collateralGrade) brief += `- Collaterals: ${telestrokeNote.collateralGrade}\n`;
             const briefVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
             if (briefVessels.length > 0) brief += `- Vessel occlusion: ${briefVessels.join(', ')}\n`;
             brief += `\nCARDIAC WORKUP:\n`;
@@ -7959,7 +7977,19 @@ Clinician Name`;
               const transferVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
               if (transferVessels.length > 0) note += ` — Occlusion: ${transferVessels.join(', ')}`;
               note += `\n`;
-              if (telestrokeNote.ctpResults) note += `- CTP: ${telestrokeNote.ctpResults}\n`;
+              {
+                const ctpS = telestrokeNote.ctpStructured || {};
+                const ctpParts = [];
+                if (ctpS.coreVolume) ctpParts.push(`Core: ${ctpS.coreVolume} mL`);
+                if (ctpS.penumbraVolume) ctpParts.push(`Penumbra (Tmax>6s): ${ctpS.penumbraVolume} mL`);
+                if (ctpS.coreVolume && ctpS.penumbraVolume) {
+                  const c = parseFloat(ctpS.coreVolume), p = parseFloat(ctpS.penumbraVolume);
+                  if (!isNaN(c) && !isNaN(p) && c > 0) ctpParts.push(`Mismatch ratio: ${(p/c).toFixed(1)}`);
+                }
+                if (telestrokeNote.ctpResults) ctpParts.push(telestrokeNote.ctpResults);
+                if (ctpParts.length > 0) note += `- CTP: ${ctpParts.join('; ')}\n`;
+              }
+              if (telestrokeNote.collateralGrade) note += `- Collaterals: ${telestrokeNote.collateralGrade}\n`;
               if (telestrokeNote.ekgResults) note += `- EKG: ${telestrokeNote.ekgResults}\n`;
               note += `\nTreatment:\n`;
               if (telestrokeNote.tnkRecommended) {
@@ -8298,7 +8328,19 @@ Clinician Name`;
               const dischVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
               if (dischVessels.length > 0) note += ` — Occlusion: ${dischVessels.join(', ')}`;
               note += `\n`;
-              if (telestrokeNote.ctpResults) note += `- CTP: ${telestrokeNote.ctpResults}\n`;
+              {
+                const ctpS = telestrokeNote.ctpStructured || {};
+                const ctpParts = [];
+                if (ctpS.coreVolume) ctpParts.push(`Core: ${ctpS.coreVolume} mL`);
+                if (ctpS.penumbraVolume) ctpParts.push(`Penumbra: ${ctpS.penumbraVolume} mL`);
+                if (ctpS.coreVolume && ctpS.penumbraVolume) {
+                  const c = parseFloat(ctpS.coreVolume), p = parseFloat(ctpS.penumbraVolume);
+                  if (!isNaN(c) && !isNaN(p) && c > 0) ctpParts.push(`Ratio: ${(p/c).toFixed(1)}`);
+                }
+                if (telestrokeNote.ctpResults) ctpParts.push(telestrokeNote.ctpResults);
+                if (ctpParts.length > 0) note += `- CTP: ${ctpParts.join('; ')}\n`;
+              }
+              if (telestrokeNote.collateralGrade) note += `- Collaterals: ${telestrokeNote.collateralGrade}\n`;
               if (telestrokeNote.ekgResults) note += `- EKG: ${telestrokeNote.ekgResults}\n`;
               note += '\n';
               note += `ACUTE TREATMENT:\n`;
@@ -13438,15 +13480,112 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">CTP (free text)</label>
-                              <input
-                                type="text"
-                                value={telestrokeNote.ctpResults}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, ctpResults: e.target.value})}
-                                placeholder="Core/penumbra volumes..."
+                              <label className="block text-xs text-slate-600 mb-1">Collaterals (CTA)</label>
+                              <select
+                                value={telestrokeNote.collateralGrade || ''}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, collateralGrade: e.target.value})}
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
-                              />
+                              >
+                                <option value="">-- Not assessed --</option>
+                                <option value="good">Good (≥50% filling)</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="poor">Poor/Absent</option>
+                              </select>
                             </div>
+                          </div>
+                          {/* CTP Perfusion — Structured + Free Text */}
+                          <div className="mt-2 bg-violet-50 border border-violet-200 rounded-lg p-2">
+                            <p className="text-xs font-semibold text-violet-800 mb-1.5">CTP Perfusion (RAPID output)</p>
+                            <div className="grid grid-cols-3 gap-2 mb-1.5">
+                              <div>
+                                <label className="block text-xs text-slate-600">Core (mL)</label>
+                                <input type="number" min="0" step="1"
+                                  value={(telestrokeNote.ctpStructured || {}).coreVolume || ''}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, ctpStructured: {...(telestrokeNote.ctpStructured || {}), coreVolume: e.target.value}})}
+                                  placeholder="CBF<30%"
+                                  className="w-full px-2 py-1 border border-slate-300 rounded text-sm" />
+                              </div>
+                              <div>
+                                <label className="block text-xs text-slate-600">Penumbra (mL)</label>
+                                <input type="number" min="0" step="1"
+                                  value={(telestrokeNote.ctpStructured || {}).penumbraVolume || ''}
+                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, ctpStructured: {...(telestrokeNote.ctpStructured || {}), penumbraVolume: e.target.value}})}
+                                  placeholder="Tmax>6s"
+                                  className="w-full px-2 py-1 border border-slate-300 rounded text-sm" />
+                              </div>
+                              <div>
+                                <label className="block text-xs text-slate-600">Mismatch Ratio</label>
+                                <input type="text" readOnly
+                                  value={(() => {
+                                    const c = parseFloat((telestrokeNote.ctpStructured || {}).coreVolume);
+                                    const p = parseFloat((telestrokeNote.ctpStructured || {}).penumbraVolume);
+                                    if (!isNaN(c) && !isNaN(p) && c > 0) return (p / c).toFixed(1);
+                                    if (!isNaN(c) && c === 0 && !isNaN(p) && p > 0) return '∞';
+                                    return '';
+                                  })()}
+                                  className="w-full px-2 py-1 border border-slate-200 rounded text-sm bg-slate-50 text-center font-medium" />
+                              </div>
+                            </div>
+                            <input type="text" value={telestrokeNote.ctpResults}
+                              onChange={(e) => setTelestrokeNote({...telestrokeNote, ctpResults: e.target.value})}
+                              placeholder="Additional CTP notes..."
+                              className="w-full px-2 py-1 border border-slate-300 rounded text-xs" />
+                            {/* DAWN / DEFUSE-3 / EXTEND Auto-Comparison */}
+                            {(() => {
+                              const ctp = telestrokeNote.ctpStructured || {};
+                              const core = parseFloat(ctp.coreVolume);
+                              const penumbra = parseFloat(ctp.penumbraVolume);
+                              if (isNaN(core) && isNaN(penumbra)) return null;
+                              const mismatchVol = !isNaN(core) && !isNaN(penumbra) ? penumbra - core : NaN;
+                              const mismatchRatio = !isNaN(core) && core > 0 && !isNaN(penumbra) ? penumbra / core : NaN;
+                              const age = parseInt(telestrokeNote.age) || 0;
+                              const nihss = parseInt(telestrokeNote.nihss || nihssScore) || 0;
+                              const badges = [];
+                              // DAWN criteria (6-24h)
+                              if (!isNaN(core)) {
+                                const dawnA = age >= 80 && nihss >= 10 && core < 21;
+                                const dawnB = age < 80 && nihss >= 10 && core < 31;
+                                const dawnC = age < 80 && nihss >= 20 && core < 51;
+                                const dawnEligible = dawnA || dawnB || dawnC;
+                                badges.push({ label: 'DAWN', eligible: dawnEligible,
+                                  detail: dawnEligible
+                                    ? `Core ${core}mL — eligible (${dawnA ? 'Group A: age≥80, NIHSS≥10, core<21' : dawnB ? 'Group B: age<80, NIHSS≥10, core<31' : 'Group C: age<80, NIHSS≥20, core<51'})`
+                                    : `Core ${core}mL — does not meet DAWN criteria for age ${age}/NIHSS ${nihss}`
+                                });
+                              }
+                              // DEFUSE-3 criteria (6-16h)
+                              if (!isNaN(core)) {
+                                const defuseEligible = core < 70 && !isNaN(mismatchRatio) && mismatchRatio >= 1.8 && !isNaN(mismatchVol) && mismatchVol >= 15;
+                                const reasons = [];
+                                if (core >= 70) reasons.push(`core ${core}≥70`);
+                                if (!isNaN(mismatchRatio) && mismatchRatio < 1.8) reasons.push(`ratio ${mismatchRatio.toFixed(1)}<1.8`);
+                                if (!isNaN(mismatchVol) && mismatchVol < 15) reasons.push(`mismatch vol ${mismatchVol.toFixed(0)}<15`);
+                                badges.push({ label: 'DEFUSE-3', eligible: defuseEligible,
+                                  detail: defuseEligible
+                                    ? `Core ${core}mL, ratio ${mismatchRatio.toFixed(1)}, mismatch ${mismatchVol.toFixed(0)}mL — eligible`
+                                    : `Not met: ${reasons.join('; ') || 'insufficient data'}`
+                                });
+                              }
+                              // EXTEND criteria (4.5-9h, wake-up stroke)
+                              if (!isNaN(core)) {
+                                const extendEligible = core <= 70 && !isNaN(mismatchRatio) && mismatchRatio >= 1.2;
+                                badges.push({ label: 'EXTEND', eligible: extendEligible,
+                                  detail: extendEligible
+                                    ? `Core ${core}mL, ratio ${!isNaN(mismatchRatio) ? mismatchRatio.toFixed(1) : '?'} — eligible for extended thrombolysis`
+                                    : `Not met: core ${core}${core > 70 ? '>70' : ''}${!isNaN(mismatchRatio) && mismatchRatio < 1.2 ? ', ratio<1.2' : ''}`
+                                });
+                              }
+                              if (badges.length === 0) return null;
+                              return (
+                                <div className="mt-1.5 flex flex-wrap gap-1.5">
+                                  {badges.map((b, i) => (
+                                    <div key={i} className={`px-2 py-0.5 rounded text-xs font-medium border ${b.eligible ? 'bg-emerald-50 border-emerald-300 text-emerald-800' : 'bg-slate-50 border-slate-300 text-slate-600'}`} title={b.detail}>
+                                      {b.eligible ? '✓' : '✗'} {b.label}
+                                    </div>
+                                  ))}
+                                </div>
+                              );
+                            })()}
                           </div>
                           {/* ASPECTS Interpretation */}
                           {aspectsScore > 0 && (
@@ -13599,6 +13738,47 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </label>
                             </div>
                             )}
+                            {/* Inline sICH Risk at TNK Decision Point */}
+                            {telestrokeNote.tnkRecommended && (() => {
+                              const glucose = parseInt(telestrokeNote.glucose) || 0;
+                              const nihss = parseInt(telestrokeNote.nihss || nihssScore) || 0;
+                              const age = parseInt(telestrokeNote.age) || 0;
+                              let sedanAuto = 0;
+                              if (glucose > 144 && glucose <= 216) sedanAuto += 1;
+                              else if (glucose > 216) sedanAuto += 2;
+                              if (age > 75) sedanAuto += 1;
+                              if (nihss >= 10) sedanAuto += 1;
+                              if (telestrokeNote.earlyInfarctSigns) sedanAuto += 1;
+                              if (telestrokeNote.denseArterySign) sedanAuto += 1;
+                              const sedanRisk = sedanAuto <= 1 ? '~2%' : sedanAuto <= 3 ? '~5-8%' : '~12%+';
+                              const span100 = age + nihss;
+                              const span100Pos = span100 >= 100;
+                              const riskLevel = sedanAuto >= 4 || span100Pos ? 'high' : sedanAuto >= 2 ? 'moderate' : 'low';
+                              const colors = riskLevel === 'high' ? 'bg-red-50 border-red-300 text-red-800' : riskLevel === 'moderate' ? 'bg-amber-50 border-amber-300 text-amber-800' : 'bg-emerald-50 border-emerald-200 text-emerald-700';
+                              return (
+                                <div className={`mt-2 rounded-lg border px-3 py-2 ${colors}`}>
+                                  <p className="text-xs font-semibold mb-1">sICH Risk Assessment</p>
+                                  <div className="flex flex-wrap gap-3 text-xs">
+                                    <span>SEDAN: {sedanAuto}/6 (est. sICH {sedanRisk})</span>
+                                    <span className={span100Pos ? 'font-bold' : ''}>SPAN-100: {span100} {span100Pos ? '(≥100 — higher risk)' : '(<100)'}</span>
+                                  </div>
+                                  <div className="flex flex-wrap gap-2 mt-1">
+                                    <label className="flex items-center gap-1 text-xs cursor-pointer">
+                                      <input type="checkbox" checked={!!telestrokeNote.earlyInfarctSigns}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, earlyInfarctSigns: e.target.checked})}
+                                        className="w-3 h-3" />
+                                      Early infarct signs on CT (+1)
+                                    </label>
+                                    <label className="flex items-center gap-1 text-xs cursor-pointer">
+                                      <input type="checkbox" checked={!!telestrokeNote.denseArterySign}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, denseArterySign: e.target.checked})}
+                                        className="w-3 h-3" />
+                                      Dense artery sign (+1)
+                                    </label>
+                                  </div>
+                                </div>
+                              );
+                            })()}
 
                             {/* ICH Quick Management */}
                             {telestrokeNote.diagnosisCategory === 'ich' && (
@@ -17144,6 +17324,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <option value="possible">Possible — Low probability (closure uncertain benefit)</option>
                                     <option value="unlikely">Unlikely — Very low probability (closure not recommended)</option>
                                   </select>
+                                  {(() => {
+                                    const rope = calculateROPEScore(ropeItems);
+                                    if (rope === 0) return null;
+                                    const suggested = rope >= 7 ? 'probable' : rope >= 4 ? 'possible' : 'unlikely';
+                                    const current = (telestrokeNote.cardiacWorkup || {}).pascalClassification;
+                                    if (current) return null;
+                                    return (
+                                      <button type="button" onClick={() => setTelestrokeNote({...telestrokeNote, cardiacWorkup: {...(telestrokeNote.cardiacWorkup || {}), pascalClassification: suggested}})}
+                                        className="mt-1 text-xs text-pink-600 hover:text-pink-800 underline">
+                                        Auto-suggest based on RoPE {rope}: {suggested} (click to apply)
+                                      </button>
+                                    );
+                                  })()}
                                   <p className="text-xs text-slate-500 mt-1">PASCAL integrates: PFO anatomy (shunt size, ASA), age, clot/DVT source, Alternative etiologies, Lacunar vs cortical pattern. Closure recommended for definite/probable in patients age 18-60.</p>
                                 </div>
                               )}
@@ -25501,8 +25694,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             if (glucose > 144 && glucose <= 216) { sedanScore += 1; items.push('Glucose 145-216 (+1)'); }
                             else if (glucose > 216) { sedanScore += 2; items.push('Glucose >216 (+2)'); }
                             else items.push('Glucose ≤144 (0)');
-                            items.push('Early infarct signs on CT: assess manually');
-                            items.push('Dense artery sign: assess manually');
+                            if (telestrokeNote.earlyInfarctSigns) { sedanScore += 1; items.push('Early infarct signs on CT (+1) ✓'); }
+                            else items.push('Early infarct signs on CT (0) — set in Treatment Decision section');
+                            if (telestrokeNote.denseArterySign) { sedanScore += 1; items.push('Dense artery sign (+1) ✓'); }
+                            else items.push('Dense artery sign (0) — set in Treatment Decision section');
                             if (age > 75) { sedanScore += 1; items.push('Age >75 (+1)'); }
                             else items.push('Age ≤75 (0)');
                             if (nihss >= 10) { sedanScore += 1; items.push('NIHSS ≥10 (+1)'); }
@@ -25518,10 +25713,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   ))}
                                 </div>
                                 <div className={`p-2 rounded ${sedanScore >= 3 ? 'bg-red-50 border border-red-200' : 'bg-amber-50 border border-amber-200'}`}>
-                                  <span className="font-bold text-sm">SEDAN: {sedanScore} (auto-calculated components)</span>
+                                  <span className="font-bold text-sm">SEDAN: {sedanScore}/6</span>
                                   <span className="ml-2 text-xs text-slate-600">Estimated sICH risk: {risk}</span>
                                 </div>
-                                <p className="text-xs text-slate-500 mt-1">Note: Early infarct signs and dense artery sign must be assessed manually from CT. Add +1 for each if present.</p>
                               </div>
                             );
                           })()}
