@@ -6687,27 +6687,22 @@ Clinician Name`;
             }
           };
 
-          // Debounce utility
-          const debounce = (func, wait) => {
-            let timeout;
-            return function executedFunction(...args) {
-              const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-              };
-              clearTimeout(timeout);
-              timeout = setTimeout(later, wait);
-            };
-          };
+          // Batched debounced save — collects all pending writes and flushes them together
+          const pendingWritesRef = React.useRef({});
+          const batchSaveTimerRef = React.useRef(null);
 
-          // Debounced save (will be set up in useEffect)
-          const debouncedSave = React.useCallback(
-            debounce((key, data) => {
+          const debouncedSave = React.useCallback((key, data) => {
+            pendingWritesRef.current[key] = data;
+            if (batchSaveTimerRef.current) clearTimeout(batchSaveTimerRef.current);
+            batchSaveTimerRef.current = setTimeout(() => {
               setSaveStatus('saving');
-              saveWithExpiration(key, data);
-            }, 1000),
-            []
-          );
+              const writes = { ...pendingWritesRef.current };
+              pendingWritesRef.current = {};
+              for (const [k, v] of Object.entries(writes)) {
+                saveWithExpiration(k, v);
+              }
+            }, 1000);
+          }, []);
 
           // ====================================
           // SHIFT MANAGEMENT FUNCTIONS
@@ -6783,7 +6778,20 @@ Clinician Name`;
                 nihssScore,
                 aspectsScore,
                 mrsScore,
-                gcsItems: { ...gcsItems }
+                gcsItems: { ...gcsItems },
+                ichScoreItems: { ...ichScoreItems },
+                abcd2Items: { ...abcd2Items },
+                chads2vascItems: { ...chads2vascItems },
+                ropeItems: { ...ropeItems },
+                huntHessGrade,
+                wfnsGrade,
+                hasbledItems: { ...hasbledItems },
+                rcvs2Items: { ...rcvs2Items },
+                phasesItems: { ...phasesItems },
+                evtDecisionInputs: { ...evtDecisionInputs },
+                doacProtocol,
+                currentStep,
+                completedSteps: [...completedSteps]
               }
             };
 
@@ -6826,7 +6834,20 @@ Clinician Name`;
             setNihssScore(formState.nihssScore);
             setAspectsScore(formState.aspectsScore);
             setMrsScore(formState.mrsScore);
-            setGcsItems(formState.gcsItems);
+            setGcsItems(formState.gcsItems || { eye: '', verbal: '', motor: '' });
+            if (formState.ichScoreItems) setIchScoreItems(formState.ichScoreItems);
+            if (formState.abcd2Items) setAbcd2Items(formState.abcd2Items);
+            if (formState.chads2vascItems) setChads2vascItems(formState.chads2vascItems);
+            if (formState.ropeItems) setRopeItems(formState.ropeItems);
+            if (formState.huntHessGrade !== undefined) setHuntHessGrade(formState.huntHessGrade);
+            if (formState.wfnsGrade !== undefined) setWfnsGrade(formState.wfnsGrade);
+            if (formState.hasbledItems) setHasbledItems(formState.hasbledItems);
+            if (formState.rcvs2Items) setRcvs2Items(formState.rcvs2Items);
+            if (formState.phasesItems) setPhasesItems(formState.phasesItems);
+            if (formState.evtDecisionInputs) setEvtDecisionInputs(formState.evtDecisionInputs);
+            if (formState.doacProtocol) setDoacProtocol(formState.doacProtocol);
+            if (formState.currentStep !== undefined) setCurrentStep(formState.currentStep);
+            if (formState.completedSteps) setCompletedSteps(formState.completedSteps);
             setCurrentPatientId(patientId);
 
           };
@@ -7318,6 +7339,12 @@ Clinician Name`;
             setPathwayCollapsed(true);
             setGuidelineRecsExpanded(false);
             setDeidWarnings({});
+            setEvtDecisionInputs({ population: 'adult', occlusion: 'lvo', timeWindow: 'auto', aspects: '6-10', mrs: '0-1', nihss: '', pcAspects: '>=6' });
+            setDoacProtocol('catalyst');
+            setNursingFlowsheetChecks({});
+            setAutoSyncCalculators(true);
+            setIchVolumeParams({ a: '', b: '', thicknessMm: '', numSlices: '' });
+            setWeightUnit('kg');
           };
 
           const navigateTo = (tab, options = {}) => {
@@ -10028,8 +10055,8 @@ Clinician Name`;
             setNihssScore(snapshot.nihssScore || 0);
             setAspectsScore(Number.isFinite(snapshot.aspectsScore) ? snapshot.aspectsScore : 10);
             setMrsScore(snapshot.mrsScore || '');
-            setGcsItems(snapshot.gcsItems || { eye: 0, verbal: 0, motor: 0 });
-            setIchScoreItems(snapshot.ichScoreItems || { gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false });
+            setGcsItems(snapshot.gcsItems || { eye: '', verbal: '', motor: '' });
+            setIchScoreItems(snapshot.ichScoreItems || { gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false, lobar: false, preCogImpairment: false });
             setAbcd2Items(snapshot.abcd2Items || { age60: false, bp: false, unilateralWeakness: false, speechDisturbance: false, duration: '', diabetes: false });
             setChads2vascItems(snapshot.chads2vascItems || { chf: false, hypertension: false, age75: false, diabetes: false, strokeTia: false, vascular: false, age65: false, female: false });
             setRopeItems(snapshot.ropeItems || { noHypertension: false, noDiabetes: false, noStrokeTia: false, nonsmoker: false, cortical: false, age: '' });
@@ -10066,7 +10093,7 @@ Clinician Name`;
             setStrokeCodeForm(getDefaultStrokeCodeForm());
             setAspectsRegionState(getDefaultAspectsRegionState());
             setPcAspectsRegions(getDefaultPcAspectsRegions());
-            setGcsItems({ eye: 0, verbal: 0, motor: 0 });
+            setGcsItems({ eye: '', verbal: '', motor: '' });
             setMrsScore('');
             setIchScoreItems({ gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false, lobar: false, preCogImpairment: false });
             setAbcd2Items({ age60: false, bp: false, unilateralWeakness: false, speechDisturbance: false, duration: '', diabetes: false });
@@ -10465,6 +10492,16 @@ Clinician Name`;
           useEffect(() => {
             const flushSave = () => {
               try {
+                // Flush pending batched writes first
+                if (Object.keys(pendingWritesRef.current).length > 0) {
+                  const writes = { ...pendingWritesRef.current };
+                  pendingWritesRef.current = {};
+                  if (batchSaveTimerRef.current) clearTimeout(batchSaveTimerRef.current);
+                  for (const [k, v] of Object.entries(writes)) {
+                    saveWithExpiration(k, v);
+                  }
+                }
+                // Then flush the latest telestrokeNote
                 const data = sanitizeTelestrokeNoteForStorage(telestrokeNote);
                 setKey('telestrokeNote', data);
               } catch (e) { /* best-effort */ }
