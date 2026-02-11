@@ -21789,7 +21789,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </p>
                           <ul className="text-sm space-y-1 text-slate-700">
                             <li>• 100% O₂ at 10 L/min via non-rebreather for 4 hours (or FiO₂ 1.0 if intubated)</li>
-                            <li>• <strong>Class IIb, LOE B-R</strong> (2025 AHA/ASA)</li>
+                            <li>• <strong>Class IIb, LOE B-R</strong> (2026 AHA/ASA)</li>
                             <li>• Evidence: PROOF-ICL trial — NBO showed improved 90-day functional outcomes (mRS 0-2: 50% vs 38%)</li>
                             <li className="text-amber-700">• Do NOT apply supplemental O₂ to non-hypoxic AIS patients without LVO (Class III: No Benefit)</li>
                           </ul>
@@ -25279,7 +25279,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {
                             q: 'Patient has NIHSS 3 but CTA shows M1 occlusion. Do they need EVT?',
                             a: 'Likely yes. Low NIHSS does not exclude LVO benefit. MR CLEAN-LATE and ESCAPE showed benefit even with lower NIHSS in LVO. Early neurological deterioration occurs in up to 30% of untreated LVO patients with initially low NIHSS. Discuss with neurointerventionalist.',
-                            ref: 'AHA/ASA 2025; MR CLEAN-LATE 2023'
+                            ref: 'AHA/ASA 2026; MR CLEAN-LATE 2023'
                           },
                           {
                             q: 'Patient had a seizure at stroke onset. Is TNK contraindicated?',
