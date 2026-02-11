@@ -2853,8 +2853,8 @@ Clinician Name`;
               thrombolysisThreshold: '24 hours since last therapeutic dose',
               thrombolysisNote: 'Contraindicated within 24h of therapeutic dose; prophylactic dosing may be acceptable',
               ichReversal: {
-                primary: 'Protamine sulfate 1mg per 1mg enoxaparin (if <8h since dose)',
-                note: 'Protamine only partially reverses LMWH (~60% anti-Xa activity neutralized)'
+                primary: 'Protamine: <8h since dose → 1mg per 1mg enoxaparin; 8-12h → 0.5mg per 1mg; >12h → likely unnecessary (check anti-Xa). Max single dose 50mg. May repeat 0.5mg/mg if bleeding persists.',
+                note: 'Protamine only partially reverses LMWH (~60% anti-Xa activity neutralized). Anti-Xa level guides additional dosing.'
               },
               monitoring: 'Anti-Xa level (preferred), aPTT (unreliable)'
             }
@@ -4064,8 +4064,8 @@ Clinician Name`;
               id: 'decompressive_craniectomy',
               category: 'Disposition',
               title: 'Decompressive craniectomy for malignant MCA infarction',
-              recommendation: 'Consider decompressive craniectomy within 48 hours for malignant MCA infarction in patients age <60 with deteriorating neurological status despite medical therapy.',
-              detail: 'Based on pooled analysis of DECIMAL, DESTINY, HAMLET trials. Reduces mortality from ~78% to ~22%. Discuss functional outcomes and goals of care with family.',
+              recommendation: 'Consider decompressive craniectomy within 48 hours for malignant MCA infarction with deteriorating neurological status despite medical therapy. Strongest evidence for age <60.',
+              detail: 'Age <60: Strongly recommended (Class I, LOE A). NNT 2 for survival, NNT 4 for mRS 0-3. Based on pooled analysis of DECIMAL, DESTINY, HAMLET. Age 61+: Reduces mortality (33% vs 70%) but 32% of survivors have mRS 5 (DESTINY-II). Requires explicit goals-of-care discussion. Consider concurrent palliative care consultation. Class IIb, LOE B-R for age >60.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -4167,6 +4167,85 @@ Clinician Name`;
                 const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
                 const isLargeIschemic = (dx.includes('ischemic') || dx.includes('stroke')) && nihss >= 15;
                 return isICH || isLargeIschemic;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // BRIDGING IVT + EVT
+            // ---------------------------------------------------------------
+            bridging_ivt_evt: {
+              id: 'bridging_ivt_evt',
+              category: 'EVT',
+              title: 'IV thrombolysis before EVT (bridging therapy)',
+              recommendation: 'Administer IV thrombolysis to eligible patients even when EVT is planned. Do NOT withhold IVT to expedite EVT (Class I, LOE A).',
+              detail: 'SWIFT DIRECT, MR CLEAN NO IV, DIRECT-MT: direct EVT was non-inferior only at high-volume centers with groin puncture achievable within 60 min. Standard of care remains bridging IVT + EVT. Exception: Direct EVT may be reasonable when IVT is contraindicated or groin puncture is achievable within 60 min at a comprehensive stroke center (Class IIb).',
+              classOfRec: 'I',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Early Management of AIS 2025',
+              reference: 'SWIFT DIRECT (Lancet 2022), MR CLEAN NO IV (Lancet 2022), DIRECT-MT (Lancet 2020)',
+              conditions: (data) => {
+                return !!data.telestrokeNote?.evtRecommended;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // ARCADIA ATRIAL CARDIOPATHY
+            // ---------------------------------------------------------------
+            arcadia_atrial_cardiopathy: {
+              id: 'arcadia_atrial_cardiopathy',
+              category: 'ESUS/Cryptogenic',
+              title: 'No benefit of apixaban for atrial cardiopathy (ARCADIA)',
+              recommendation: 'Do NOT prescribe empiric anticoagulation for cryptogenic stroke with atrial cardiopathy markers. Aspirin is appropriate.',
+              detail: 'ARCADIA (JAMA 2024): Apixaban 5mg BID vs aspirin 81mg daily in cryptogenic stroke with atrial cardiopathy (P-wave terminal force >5000 uV*ms, NT-proBNP >250, LA enlargement). HR 1.00 for recurrent stroke. Stopped for futility. P-wave abnormalities and elevated NT-proBNP do NOT justify empiric anticoagulation without confirmed AF.',
+              classOfRec: 'III',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA/ASA Secondary Prevention 2024 Update',
+              reference: 'Kamel H et al. JAMA. 2024;331(11):981-990. DOI: 10.1001/jama.2024.0840',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return dx.includes('cryptogenic') || dx.includes('esus');
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // LAAO AFTER ICH (STROKE-CLOSE)
+            // ---------------------------------------------------------------
+            laao_after_ich: {
+              id: 'laao_after_ich',
+              category: 'ICH',
+              title: 'LAA closure after ICH with AF (STROKE-CLOSE)',
+              recommendation: 'LAA closure may be reasonable for ICH patients with AF who have high thromboembolic risk and high rebleeding risk, particularly lobar ICH with CAA features.',
+              detail: 'STROKE-CLOSE (Lancet 2024): Watchman FLX vs medical therapy in ICH patients with AF. Primary composite (stroke, SE, major bleed, CV death) HR 0.61 favoring LAA closure. Most benefit in lobar ICH. Consider outpatient referral for structural heart/EP evaluation. Limitations: open-label, moderate sample size.',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA/ASA Spontaneous ICH 2022 + STROKE-CLOSE 2024',
+              reference: 'STROKE-CLOSE: Nielsen TH et al. Lancet. 2024.',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const afib = (data.telestrokeNote?.ekgFindings || '').toLowerCase().includes('fib') ||
+                             (data.telestrokeNote?.ekgFindings || '').toLowerCase().includes('af');
+                return isICH && afib;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // PREGNANCY + EVT
+            // ---------------------------------------------------------------
+            pregnancy_evt: {
+              id: 'pregnancy_evt',
+              category: 'Special Populations',
+              title: 'EVT in pregnancy',
+              recommendation: 'EVT is reasonable in pregnant patients with LVO when standard eligibility criteria are met. Same indications as non-pregnant patients.',
+              detail: 'Use lead shielding over pelvis during angiography. Minimize fluoroscopy time. Coordinate with OB before and after procedure. Gadolinium contrast is avoided in pregnancy but iodinated contrast for EVT is acceptable when benefit outweighs risk. Post-procedure: fetal monitoring. Consider lactation consultation if contrast administered.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA/ASA Stroke in Pregnancy Scientific Statement 2024',
+              reference: 'AHA/ASA Scientific Statement. Stroke. 2024.',
+              conditions: (data) => {
+                const isPreg = (data.telestrokeNote?.specialPopulations || '').toLowerCase().includes('pregn') ||
+                               (data.telestrokeNote?.pmh || '').toLowerCase().includes('pregn');
+                return isPreg && !!data.telestrokeNote?.evtRecommended;
               }
             },
 
@@ -5046,8 +5125,8 @@ Clinician Name`;
               id: 'bp_post_evt_drip',
               category: 'Blood Pressure',
               title: 'Post-EVT BP drip titration protocol',
-              recommendation: 'For post-EVT BP management, use nicardipine 5-15 mg/hr or clevidipine 1-2 mg/hr. Target SBP 140-180 mmHg for recanalized patients.',
-              detail: 'Nicardipine: start 5 mg/hr, titrate by 2.5 mg/hr every 5-15 min (max 15 mg/hr). Clevidipine: start 1-2 mg/hr, double every 90 seconds initially (max 32 mg/hr). For successfully recanalized (mTICI 2b-3): target SBP 140-180 mmHg. For non-recanalized: SBP <180. ENCHANTED2/MT: SBP <120 was harmful. OPTIMAL-BP (JAMA 2024): intensive <140 showed no benefit. BP-TARGET: intensive 100-129 showed no benefit. Meta-analysis of 4 RCTs: intensive targets reduced functional independence by 23%.',
+              recommendation: 'For post-EVT BP management, use nicardipine 5-15 mg/hr or clevidipine 1-2 mg/hr. Maintain SBP <180/105; avoid targeting SBP <140 (Class III: Harm).',
+              detail: 'Nicardipine: start 5 mg/hr, titrate by 2.5 mg/hr every 5-15 min (max 15 mg/hr). Clevidipine: start 1-2 mg/hr, double every 90 seconds initially (max 32 mg/hr). For successfully recanalized (mTICI 2b-3): maintain SBP <180, avoid SBP <140. For non-recanalized: SBP <180. ENCHANTED2/MT: SBP <120 was harmful. OPTIMAL-BP (JAMA 2024): intensive <140 showed no benefit. BP-TARGET: intensive 100-129 showed no benefit. BEST-II (Stroke 2024): SBP 100-129 vs 130-159 post-EVT — lower targets trended toward worse outcomes; maintain SBP floor ~130 post-EVT. Meta-analysis of 4 RCTs: intensive targets reduced functional independence by 23%.',
               classOfRec: 'I',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -5157,7 +5236,7 @@ Clinician Name`;
               category: 'Acute',
               title: 'IPC at admission for immobile stroke patients',
               recommendation: 'Intermittent pneumatic compression (IPC) should be applied immediately at admission for all immobile AIS and ICH patients (Class I, LOE A). Graduated compression stockings alone are NOT effective (Class III).',
-              detail: 'CLOTS 3 trial: IPC reduced DVT from 12.1% to 8.5% (OR 0.65). TED hose alone showed no benefit (CLOTS 1). IPC should be continued until patient is independently mobile. Pharmacologic VTE prophylaxis added after 24-48h (post-tPA: wait 24h + clear CT).',
+              detail: 'CLOTS 3 trial: IPC reduced DVT from 12.1% to 8.5% (OR 0.65). TED hose alone showed no benefit (CLOTS 1). IPC should be continued until patient is independently mobile. Pharmacologic VTE prophylaxis added after 24-48h (post-thrombolysis: wait 24h + clear CT).',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA 2019 AIS; AHA/ASA 2022 ICH; CLOTS 3',
@@ -6067,7 +6146,7 @@ Clinician Name`;
           // =================================================================
           // COCKCROFT-GAULT CrCl CALCULATOR
           // =================================================================
-          const calculateCrCl = (age, weight, sex, creatinine) => {
+          const calculateCrCl = (age, weight, sex, creatinine, heightCm) => {
             const a = parseFloat(age);
             const w = parseFloat(weight);
             const cr = parseFloat(creatinine);
@@ -6075,12 +6154,19 @@ Clinician Name`;
             if (sex !== 'M' && sex !== 'F') return null;
             const sexFactor = (sex === 'F') ? 0.85 : 1.0;
             const crcl = ((140 - a) * w * sexFactor) / (72 * cr);
+            // BMI-based obesity check (if height available)
+            const h = parseFloat(heightCm);
+            const bmi = (h && h > 0) ? w / ((h / 100) ** 2) : null;
+            const isObese = bmi && bmi > 30;
             return {
               value: Math.round(crcl * 10) / 10,
               isLow: crcl < 30,
               isBorderline: crcl >= 30 && crcl < 50,
+              isObese,
+              bmi: bmi ? Math.round(bmi * 10) / 10 : null,
               renalCategory: crcl < 15 ? 'severe-dialysis' : crcl < 30 ? 'severe' : crcl < 50 ? 'moderate' : crcl < 90 ? 'mild' : 'normal',
-              label: crcl < 15 ? 'Severe (consider dialysis)' : crcl < 30 ? 'Severe (<30)' : crcl < 50 ? 'Moderate (30-49)' : crcl < 90 ? 'Mild (50-89)' : 'Normal (≥90)'
+              label: crcl < 15 ? 'Severe (consider dialysis)' : crcl < 30 ? 'Severe (<30)' : crcl < 50 ? 'Moderate (30-49)' : crcl < 90 ? 'Mild (50-89)' : 'Normal (≥90)',
+              obesityWarning: isObese ? 'BMI >30 — CrCl may be overestimated with actual body weight. Consider adjusted body weight for DOAC dosing.' : null
             };
           };
 
@@ -6109,6 +6195,33 @@ Clinician Name`;
               isMaxDose: rawDose >= 25,
               doseTable
             };
+          };
+
+          // =================================================================
+          // PCC DOSE CALCULATOR (AHA weight-based reference alongside institutional)
+          // =================================================================
+          const calculatePCCDose = (weightKg, inrVal) => {
+            const weight = parseFloat(weightKg);
+            const inr = parseFloat(inrVal);
+            if (!weight || weight <= 0) return null;
+            let iuPerKg = null;
+            if (!isNaN(inr) && inr >= 2 && inr < 4) iuPerKg = 25;
+            else if (!isNaN(inr) && inr >= 4 && inr <= 6) iuPerKg = 35;
+            else if (!isNaN(inr) && inr > 6) iuPerKg = 50;
+            const ahaDose = iuPerKg ? Math.min(Math.round(weight * iuPerKg), 5000) : null;
+            return { institutional: 2000, ahaDose, iuPerKg, weight };
+          };
+
+          // =================================================================
+          // ALTEPLASE (tPA) DOSE CALCULATOR
+          // =================================================================
+          const calculateAlteplaseDose = (weightKg) => {
+            const weight = parseFloat(weightKg);
+            if (isNaN(weight) || weight <= 0) return null;
+            const totalDose = Math.min(+(weight * 0.9).toFixed(1), 90);
+            const bolus = +(totalDose * 0.1).toFixed(1);
+            const infusion = +(totalDose * 0.9).toFixed(1);
+            return { totalDose, bolus, infusion, weightKg: weight, capped: weight * 0.9 > 90 };
           };
 
           // =================================================================
@@ -8272,6 +8385,21 @@ Clinician Name`;
               note += '\n';
             }
 
+            // Add thrombolysis contraindication review to note
+            if (telestrokeNote.tnkRecommended && telestrokeNote.tnkContraindicationReviewed) {
+              note += `\nTHROMBOLYSIS CONTRAINDICATION REVIEW:\n`;
+              const inrOk = !inr || parseFloat(inr) <= 1.7;
+              const pltOk = !platelets || parseFloat(platelets) >= 100;
+              const apttOk = !ptt || parseFloat(ptt) <= 40;
+              const glucOk = !glucose || parseFloat(glucose) >= 50;
+              note += `- INR: ${inr || 'N/A'} (threshold ≤1.7) [${inr ? (inrOk ? 'CLEARED' : 'NOT CLEARED') : 'pending'}]\n`;
+              note += `- Platelets: ${platelets || 'N/A'}K (threshold ≥100K) [${platelets ? (pltOk ? 'CLEARED' : 'NOT CLEARED') : 'pending'}]\n`;
+              note += `- aPTT: ${ptt || 'N/A'}s (threshold ≤40s) [${ptt ? (apttOk ? 'CLEARED' : 'NOT CLEARED') : 'pending'}]\n`;
+              note += `- Glucose: ${glucose || 'N/A'} mg/dL (threshold ≥50) [${glucose ? (glucOk ? 'CLEARED' : 'NOT CLEARED') : 'pending'}]\n`;
+              note += `- BP pre-treatment: ${telestrokeNote.bp || 'N/A'} (threshold <185/110)\n`;
+              note += `- Anticoagulant: ${telestrokeNote.lastDOACType ? ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType : 'None reported'}\n`;
+            }
+
             // Add vessel occlusion details
             if ((telestrokeNote.vesselOcclusion || []).length > 0) {
               note += `\nVessel Occlusion: ${(telestrokeNote.vesselOcclusion || []).join(', ')}\n`;
@@ -8777,14 +8905,24 @@ Clinician Name`;
             // GCS ≤8 airway alert
             const gcsTotal = calculateGCS(gcsItems);
             if (gcsTotal > 0 && gcsTotal <= 8) {
-              warnings.push({ id: 'gcs-airway', severity: 'error', msg: `GCS ${gcsTotal} ≤8 — consider intubation for airway protection` });
+              warnings.push({ id: 'gcs-airway', severity: 'error', msg: `GCS ${gcsTotal} ≤8 — consider intubation for airway protection. RSI: prefer rocuronium 1.2 mg/kg (avoid succinylcholine — may raise ICP). Induction: propofol 1-2 mg/kg or etomidate 0.3 mg/kg.` });
+            }
+
+            // Triple therapy warning (DAPT + DOAC)
+            const hasAntiplatelet = meds.includes('aspirin') || meds.includes('clopidogrel') || meds.includes('ticagrelor') || meds.includes('prasugrel');
+            const hasAnticoag = n.lastDOACType || meds.includes('warfarin') || meds.includes('coumadin') || meds.includes('heparin');
+            const hasDAPT = [meds.includes('aspirin'), meds.includes('clopidogrel'), meds.includes('ticagrelor'), meds.includes('prasugrel')].filter(Boolean).length >= 2;
+            if (hasDAPT && hasAnticoag) {
+              warnings.push({ id: 'triple-therapy', severity: 'error', msg: 'Patient on DUAL antiplatelet + anticoagulant (triple therapy) — extreme bleeding risk. Coordinate with cardiology regarding de-escalation. Most patients should be reduced to single antiplatelet + anticoagulant.' });
+            } else if (hasAntiplatelet && hasAnticoag) {
+              warnings.push({ id: 'dual-antithrombotic', severity: 'warn', msg: 'Patient on antiplatelet + anticoagulant — increased bleeding risk. Verify indication for combination therapy.' });
             }
 
             // Edoxaban + CrCl >95 warning
             if (n.lastDOACType === 'edoxaban') {
               const edoCrCl = calculateCrCl(n.age, n.weight, n.sex, n.creatinine);
               if (edoCrCl && edoCrCl.value > 95) {
-                warnings.push({ id: 'edoxaban-crcl-high', severity: 'warn', msg: `Edoxaban with CrCl ${edoCrCl.value} mL/min (>95) — reduced efficacy per ENGAGE AF-TIMI 48, avoid edoxaban` });
+                warnings.push({ id: 'edoxaban-crcl-high', severity: 'warn', msg: `Edoxaban with CrCl ${edoCrCl.value} mL/min (>95) — reduced efficacy per ENGAGE AF-TIMI 48, avoid edoxaban. Verify CrCl reflects baseline kidney function (not augmented renal clearance or post-rehydration).` });
               }
             }
 
@@ -8905,7 +9043,8 @@ Clinician Name`;
                 'Seizure precautions (avoid routine prophylactic ASMs unless cortical/lobar ICH with seizures)',
                 'IPC/SCDs on admission for VTE prophylaxis',
                 'Hold all antithrombotics — discuss restart timing at 48-72h if applicable',
-                'Strict I/O, Foley catheter if ICU'
+                'Strict I/O, Foley catheter if ICU',
+                'Bowel protocol: docusate 100 mg BID standing + senna 8.6 mg PRN (avoid Valsalva straining — may worsen hemorrhage/raise ICP)'
               ];
               if (nihss >= 10 || (telestrokeNote.gcs && parseInt(telestrokeNote.gcs) <= 12)) {
                 ichAdmitOrders.push('Consider EEG monitoring if unexplained decline in consciousness');
@@ -8937,9 +9076,11 @@ Clinician Name`;
                   else if (inrVal >= 1.3) inrTier = `INR ${inrVal.toFixed(1)} (1.3-1.5) → Consider 4F-PCC case-by-case (COR 2b/C)`;
                   else inrTier = `INR ${inrVal.toFixed(1)} (<1.3) → PCC likely not needed; give Vitamin K`;
                 }
+                const pccRef = calculatePCCDose(telestrokeNote.weight, inr);
+                const pccDoseNote = pccRef && pccRef.ahaDose ? ` [AHA weight-based: ${pccRef.ahaDose} units (${pccRef.iuPerKg} IU/kg)]` : '';
                 reversalOrders.push(
                   'Vitamin K 10 mg IV',
-                  `4F-PCC (Kcentra) 2000 units IV immediately (institutional fixed-dose protocol)`,
+                  `4F-PCC (Kcentra) 2000 units IV immediately (institutional fixed-dose protocol)${pccDoseNote}`,
                   inrTier,
                   'Recheck PT/INR at 30 min and q6h x 24h post-PCC',
                   'If INR >1.5 after PCC: page Hematology, consider 500 units PCC or 2-4 units FFP',
@@ -9076,6 +9217,24 @@ Clinician Name`;
             }
 
             // SAH specific
+            // Post-EVT Groin/Access Site Care Orders
+            if (telestrokeNote.evtRecommended) {
+              bundles.push({
+                id: 'post-evt-groin',
+                label: 'Post-EVT Groin/Access Site Care',
+                icon: 'activity',
+                color: 'orange',
+                orders: [
+                  'Groin check q15 min x 2h, then q30 min x 4h, then q1h x 6h',
+                  'Bed rest with HOB flat x 4-6h (or per closure device instructions)',
+                  'Check distal pulses (dorsalis pedis, posterior tibial) with each groin check',
+                  'If hematoma expanding: manual pressure x 15 min, call neurointerventional team',
+                  'NPO until reassessed (in case re-intervention needed)',
+                  'Mark access site with skin marker at time of arrival from angio suite'
+                ]
+              });
+            }
+
             if (isSAH) {
               bundles.push({
                 id: 'sah-bundle',
@@ -9089,6 +9248,7 @@ Clinician Name`;
                   'IV isotonic saline for euvolemia — avoid hypovolemia',
                   'Seizure prophylaxis (if cortical SAH, IVH, poor-grade HH 3-5, or seizure at onset): Levetiracetam 500-1000 mg IV/PO q12h x 3-7 days — avoid prolonged routine prophylaxis',
                   'Stool softener (docusate 100 mg BID) — avoid straining',
+                  'Magnesium sulfate: Target Mg2+ ≥2.0 mg/dL. Check q12h. Replete aggressively — hypomagnesemia worsens vasospasm.',
                   'Neurosurgery/neurointerventional consult for aneurysm securing',
                   'Neuro checks q1h, strict I/O, HOB 30 degrees'
                 ]
@@ -9487,7 +9647,15 @@ Clinician Name`;
               { name: 'Post-EVT Management', keywords: ['post evt', 'post thrombectomy', 'dect', 'reperfusion', 'tici'], tab: 'management', subTab: 'ischemic' },
               { name: 'Dissection Management', keywords: ['dissection', 'carotid dissection', 'vertebral dissection', 'cervical'], tab: 'management', subTab: 'ischemic' },
               { name: 'Depression Screening', keywords: ['depression', 'phq', 'phq-2', 'phq-9', 'ssri', 'mood'], tab: 'management', subTab: 'ischemic' },
-              { name: 'PHASES Score (Aneurysm)', keywords: ['phases', 'aneurysm', 'rupture risk', 'unruptured'], tab: 'management', subTab: 'calculators' }
+              { name: 'PHASES Score (Aneurysm)', keywords: ['phases', 'aneurysm', 'rupture risk', 'unruptured'], tab: 'management', subTab: 'calculators' },
+              { name: 'Alteplase (tPA) Dosing', keywords: ['alteplase', 'tpa', 'activase', 'thrombolysis dose', 'bolus infusion'], tab: 'management', subTab: 'calculators' },
+              { name: 'Bridging IVT + EVT', keywords: ['bridging', 'ivt before evt', 'direct to evt', 'swift direct', 'mr clean no iv'], tab: 'management', subTab: 'ischemic' },
+              { name: 'ARCADIA (Atrial Cardiopathy)', keywords: ['arcadia', 'atrial cardiopathy', 'esus', 'cryptogenic', 'p-wave'], tab: 'management', subTab: 'ischemic' },
+              { name: 'LAA Closure After ICH', keywords: ['laao', 'stroke-close', 'watchman', 'left atrial appendage', 'ich af'], tab: 'management', subTab: 'ich' },
+              { name: 'Triple Therapy Warning', keywords: ['triple therapy', 'dapt doac', 'dual antiplatelet anticoagulant'], tab: 'encounter' },
+              { name: 'PCC Dose Calculator', keywords: ['pcc', 'kcentra', '4f-pcc', 'prothrombin complex', 'warfarin reversal'], tab: 'management', subTab: 'calculators' },
+              { name: 'Post-EVT Groin Care', keywords: ['groin', 'access site', 'post thrombectomy groin', 'hematoma', 'pulse check'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Pregnancy + EVT', keywords: ['pregnancy evt', 'pregnant thrombectomy', 'obstetric stroke'], tab: 'management', subTab: 'ischemic' }
             ];
 
             searchableItems.forEach(item => {
@@ -17009,6 +17177,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             ) : (
                                               <>Apixaban 2.5mg BID if ≥2 of: age ≥80, weight ≤60kg, Cr ≥1.5. <strong>Do NOT reduce dose for single criterion</strong> (ARISTOTLE).</>
                                             )}
+                                            {!patientWt && <p className="text-amber-600 text-xs mt-1">Weight not entered — cannot fully assess dose reduction criteria.</p>}
+                                            {patientCr > 2.0 && <p className="text-amber-600 text-xs mt-1">Cr {patientCr} — verify this is baseline creatinine, not AKI.</p>}
                                           </div>
                                         )}
                                         {selectedDoac === 'rivaroxaban' && (
@@ -17145,6 +17315,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), followUpTimeline: e.target.value}})}
                                   className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                                   <option value="">-- Select follow-up plan --</option>
+                                  <option value="24-72h">24-72 hours (TIA, high recurrence risk, ABCD2 ≥4)</option>
                                   <option value="1-2wk">1-2 weeks (high risk, post-TNK, carotid surgery)</option>
                                   <option value="3mo">3 months (standard)</option>
                                   <option value="6mo">6 months</option>
@@ -17672,7 +17843,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <option value="enoxaparin-40">Enoxaparin 40mg SC daily (preferred — PREVAIL)</option>
                                       <option value="enoxaparin-30">Enoxaparin 30mg SC daily (CrCl &lt;30)</option>
                                       <option value="ufh-5000">UFH 5000u SC q8-12h (alternative)</option>
-                                      <option value="held-post-tpa">Held — post-tPA (24h wait + CT clear)</option>
+                                      <option value="held-post-tpa">Held — post-thrombolysis (24h wait + CT clear)</option>
                                       <option value="held-post-ich">Held — post-ICH (24-48h + hematoma stability)</option>
                                       <option value="contraindicated">Contraindicated</option>
                                     </select>
@@ -19191,7 +19362,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   note += `\nDISCHARGE CHECKLIST ITEMS COMPLETED:\n`;
                                   const dcLabels = {
                                     antiplateletOrAnticoag: 'Antiplatelet/anticoagulation prescribed',
-                                    statinPrescribed: 'High-intensity statin prescribed',
+                                    statinPrescribed: `High-intensity statin prescribed${(telestrokeNote.secondaryPrevention || {}).statinDose ? ` (${(telestrokeNote.secondaryPrevention.statinDose || '').replace('-', ' ')})` : ''}`,
                                     bpMedOptimized: 'BP medications optimized',
                                     diabetesManaged: 'Diabetes management addressed',
                                     smokingCessation: 'Smoking cessation counseled',
@@ -19379,10 +19550,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <ul className="text-sm space-y-1">
                                 <li>• Admit to ICU</li>
                                 <li>• Neuro checks + BP q15min x 2h, then q30min x 6h, then q1h x 16h</li>
-                                <li>• NO antithrombotics/anticoagulants for 24 hour after IV-tPA</li>
+                                <li>• NO antithrombotics/anticoagulants for 24 hours after thrombolysis</li>
                                 <li>• Avoid IV aspirin within 90 minutes of IVT start</li>
-                                <li>• Maintain BP&lt;180/105 for 24 hours after IV-tPA</li>
-                                <li>• HCT 24 hours post-tPA administration</li>
+                                <li>• Maintain BP&lt;180/105 for 24 hours after thrombolysis</li>
+                                <li>• NCCT 24 hours post-thrombolysis</li>
                                 <li>• MRI Brain with diffusion weighted imaging</li>
                                 <li>• EKG/telemetry</li>
                                 <li>• Transthoracic echocardiogram</li>
@@ -21300,7 +21471,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <ul className="text-sm space-y-1">
                                 <li>• <strong>Apixaban</strong> 5 mg BID (2.5 mg if age ≥80, weight ≤60 kg, or Cr ≥1.5)</li>
                                 <li>• <strong>Rivaroxaban</strong> 20 mg daily (15 mg if CrCl 15-50)</li>
-                                <li>• <strong>Dabigatran</strong> 150 mg BID (110 mg if age ≥80)</li>
+                                <li>• <strong>Dabigatran</strong> 150 mg BID (75 mg BID if CrCl 15-30 mL/min)</li>
                                 <li className="text-slate-500 italic text-xs mt-1">DOAC preferred over warfarin (Class I, LOE A) — AHA/ASA 2021</li>
                               </ul>
                             </div>
@@ -24190,7 +24361,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="text-amber-700">
                                     <p><strong>Apixaban:</strong> Standard 5mg BID (2.5mg BID if 2 of 3: age ≥80, wt ≤60kg, Cr ≥1.5).</p>
                                     <p><strong>Rivaroxaban:</strong> 15mg daily for AF (20mg if CrCl &gt;50).</p>
-                                    <p><strong>Dabigatran:</strong> 150mg BID preferred; 110mg BID if high bleed risk. Consider 75mg BID if CrCl 30-49 per FDA.</p>
+                                    <p><strong>Dabigatran:</strong> 150mg BID (standard). 75mg BID if CrCl 15-30 mL/min per FDA. Contraindicated if CrCl &lt;15.</p>
                                     <p><strong>Edoxaban:</strong> 30mg daily.</p>
                                     <p><strong>Enoxaparin:</strong> Standard dosing; monitor anti-Xa if prolonged use.</p>
                                   </div>
@@ -24199,6 +24370,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <p className="text-emerald-700">Standard DOAC and enoxaparin dosing. No renal adjustment needed. {result.renalCategory === 'normal' && 'Note: Edoxaban 60mg — avoid if CrCl >95 (reduced efficacy, ENGAGE AF).'}</p>
                                 )}
                               </div>
+                              {result.obesityWarning && (
+                                <p className="text-amber-700 text-xs mt-1 bg-amber-50 p-1 rounded border border-amber-200">{result.obesityWarning}</p>
+                              )}
                               <button onClick={() => copyToClipboard(`CrCl (Cockcroft-Gault): ${result.value} mL/min — ${result.label}`, 'CrCl')}
                                 className="mt-2 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300" aria-label="Copy CrCl to clipboard">Copy</button>
                             </div>
@@ -24357,6 +24531,46 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 {score >= 6 ? 'Favorable for basilar EVT (ATTENTION/BAOCHE trials)' : 'Poor prognosis — EVT benefit uncertain'}
                               </span>
                             </div>
+                          );
+                        })()}
+                      </div>
+                    </details>
+
+                    {/* Alteplase (tPA) Dosing Calculator */}
+                    <details id="calc-alteplase" style={{ order: getCalculatorOrder('alteplase', 24) }} className="bg-violet-50 border border-violet-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-violet-800 hover:bg-violet-100 rounded-lg flex items-center justify-between">
+                        <span>Alteplase (tPA) Dosing Calculator</span>
+                        <span className="text-xs font-normal text-violet-600">0.9 mg/kg, max 90 mg</span>
+                      </summary>
+                      <div className="p-4">
+                        {(() => {
+                          const wt = parseFloat(telestrokeNote.weight) || 0;
+                          const alt = wt > 0 ? calculateAlteplaseDose(wt) : null;
+                          return alt ? (
+                            <div className="space-y-3">
+                              <div className="grid grid-cols-3 gap-3 text-center">
+                                <div className="bg-violet-100 p-3 rounded-lg">
+                                  <div className="text-2xl font-black text-violet-900">{alt.bolus}</div>
+                                  <div className="text-xs text-violet-700">mg Bolus (10%)</div>
+                                  <div className="text-xs text-violet-600">over 1 min</div>
+                                </div>
+                                <div className="bg-violet-100 p-3 rounded-lg">
+                                  <div className="text-2xl font-black text-violet-900">{alt.infusion}</div>
+                                  <div className="text-xs text-violet-700">mg Infusion (90%)</div>
+                                  <div className="text-xs text-violet-600">over 60 min</div>
+                                </div>
+                                <div className="bg-violet-100 p-3 rounded-lg">
+                                  <div className="text-2xl font-black text-violet-900">{alt.totalDose}</div>
+                                  <div className="text-xs text-violet-700">mg Total</div>
+                                  {alt.capped && <div className="text-xs text-amber-600 font-bold">MAX DOSE</div>}
+                                </div>
+                              </div>
+                              <p className="text-xs text-slate-500 text-center">{wt} kg × 0.9 mg/kg = {(wt * 0.9).toFixed(1)} mg{alt.capped ? ' → capped at 90 mg' : ''}</p>
+                              <button onClick={() => copyToClipboard(`Alteplase: ${alt.totalDose} mg total (${alt.bolus} mg bolus IV over 1 min + ${alt.infusion} mg infusion over 60 min)`, 'Alteplase dose')}
+                                className="w-full px-2 py-1 bg-violet-200 rounded text-xs hover:bg-violet-300" aria-label="Copy alteplase dose">Copy Dose</button>
+                            </div>
+                          ) : (
+                            <p className="text-sm text-amber-600">Enter patient weight in the encounter section to calculate dose.</p>
                           );
                         })()}
                       </div>
