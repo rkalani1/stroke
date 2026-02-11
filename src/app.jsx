@@ -432,7 +432,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           const rule = DOAC_PROTOCOLS[protocol] || DOAC_PROTOCOLS.catalyst;
           const severity = Number.isNaN(nihssVal)
             ? 'moderate'
-            : nihssVal <= 7
+            : nihssVal <= 8
               ? 'minor'
               : nihssVal <= 15
                 ? 'moderate'
@@ -1898,9 +1898,9 @@ Clinician Name`;
             'post-tnk': { label: 'Post-TNK', systolic: 180, diastolic: 105 },
             'post-evt': { label: 'Post-EVT', systolic: 180, diastolic: 105 },
             'no-lytics': { label: 'No lytics/No EVT', systolic: 220, diastolic: 120 },
-            'ich': { label: 'ICH (INTERACT2)', systolic: 140, diastolic: 105 },
+            'ich': { label: 'ICH (INTERACT2)', systolic: 140, diastolic: 90 },
             'sah': { label: 'SAH (pre-securing)', systolic: 160, diastolic: 105 },
-            'sah-secured': { label: 'SAH (post-securing)', systolic: 140, diastolic: 90 },
+            'sah-secured': { label: 'SAH (post-securing)', systolic: 180, diastolic: 105 },
             'cvt': { label: 'CVT (permissive)', systolic: 220, diastolic: 120 },
             'cvt-hemorrhage': { label: 'CVT with hemorrhage', systolic: 140, diastolic: 90 },
             'pregnancy': { label: 'Pregnancy/Postpartum stroke', systolic: 160, diastolic: 110 },
@@ -1998,7 +1998,7 @@ Clinician Name`;
             PROT2: {
               title: 'Protamine (LMWH)',
               classOfRec: 'Class IIb',
-              dosing: 'Last dose <8h: Protamine 50 mg IV. Last dose 8-24h: Protamine 25 mg IV. Last dose >24h: no reversal indicated. (COR 2b/C)',
+              dosing: 'Last dose <8h: Protamine 1 mg per 1 mg enoxaparin (max 50 mg). 8-12h: 0.5 mg per 1 mg enoxaparin (max 50 mg). >12h: likely unnecessary — check anti-Xa. (COR 2b/C)',
               note: 'Protamine only partially reverses LMWH (~60% anti-Xa neutralization). Second dose may be considered if ongoing bleeding.'
             },
             NICARDIPINE: {
@@ -9432,16 +9432,16 @@ Clinician Name`;
               } else if (onLMWH) {
                 reversalOrders.push(
                   'Assessment: clinically significant hemorrhage (COR 2b/C)',
-                  'Last dose <8h: Protamine 50 mg IV',
-                  'Last dose 8-24h: Protamine 25 mg IV',
-                  'Last dose >24h: no reversal indicated',
+                  'Last dose <8h: Protamine 1 mg per 1 mg enoxaparin (max 50 mg)',
+                  'Last dose 8-12h: Protamine 0.5 mg per 1 mg enoxaparin (max 50 mg)',
+                  'Last dose >12h: likely unnecessary — check anti-Xa',
                   'Note: protamine only partially reverses LMWH (~60% anti-Xa neutralization)'
                 );
               }
               // Additional blood product thresholds
               reversalOrders.push(
                 '--- Additional Products (check labs) ---',
-                'If fibrinogen <125 mg/dL → 2 pools cryoprecipitate (10 individual units)',
+                'If fibrinogen <200 mg/dL → 2 pools cryoprecipitate (10 individual units)',
                 'If platelets <50K → 2 units platelets; 50-100K → 1 unit platelets',
                 'Antiplatelet agents: discontinue; platelet transfusion NOT recommended (PATCH, COR 3/B harm)'
               );
@@ -22235,7 +22235,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
                                 <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105</li>
                                 <li><strong>After thrombectomy:</strong> SBP &lt;180, DBP &lt;105</li>
-                                <li><strong>IPH:</strong> SBP &lt;140, DBP &lt;105</li>
+                                <li><strong>IPH:</strong> SBP &lt;140 (INTERACT2; no specific DBP target)</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border">
@@ -23631,9 +23631,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="bg-white rounded p-3 border">
                               <h3 className="font-semibold text-purple-800 mb-2">NIHSS = {nihssScore}</h3>
                               <ul className="space-y-1 text-xs text-slate-700">
-                                {nihssScore >= 6 && (
+                                {nihssScore >= 4 && (
                                   <li className="text-emerald-700">
-                                    <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 mr-1"></span> <strong>SISTER eligible</strong>: NIHSS ≥6 threshold met
+                                    <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 mr-1"></span> <strong>SISTER eligible</strong>: NIHSS ≥4 threshold met{nihssScore <= 5 ? ' (4-5 requires disabling deficit)' : ''}
                                   </li>
                                 )}
                                 {nihssScore <= 5 && (
@@ -23646,9 +23646,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <i data-lucide="circle" className="w-3 h-3 inline text-blue-500"></i> <strong>STEP MeVO arm</strong>: Check for M2/M3 occlusion
                                   </li>
                                 )}
-                                {nihssScore < 6 && (
+                                {nihssScore < 4 && (
                                   <li className="text-slate-600">
-                                    SISTER: NIHSS ≥6 required (current: {nihssScore})
+                                    SISTER: NIHSS ≥4 required (current: {nihssScore})
                                   </li>
                                 )}
                               </ul>
@@ -27603,10 +27603,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {calculateGCS(gcsItems) > 0 && <span className="px-2 py-1 bg-white border rounded-full text-slate-700">GCS: {calculateGCS(gcsItems)}</span>}
                         </div>
                         <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                          {nihssScore >= 6 && trialsCategory === 'ischemic' && (
+                          {nihssScore >= 4 && trialsCategory === 'ischemic' && (
                             <div className="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 rounded-lg px-2 py-1.5">
                               <i data-lucide="check-circle" className="w-3.5 h-3.5"></i>
-                              <span><strong>SISTER:</strong> NIHSS {'\u2265'}6 threshold met</span>
+                              <span><strong>SISTER:</strong> NIHSS {'\u2265'}4 threshold met{nihssScore <= 5 ? ' (requires disabling deficit)' : ''}</span>
                             </div>
                           )}
                           {nihssScore > 0 && nihssScore <= 5 && trialsCategory === 'ischemic' && (
