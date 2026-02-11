@@ -1741,7 +1741,9 @@ Clinician Name`;
             age80: false,
             volume30: false,
             ivh: false,
-            infratentorial: false
+            infratentorial: false,
+            lobar: false, // FUNC Score: lobar vs deep supratentorial
+            preCogImpairment: false // FUNC Score: pre-ICH cognitive impairment
           }));
           const [ichVolumeParams, setIchVolumeParams] = useState({ a: '', b: '', thicknessMm: '', numSlices: '' });
 
@@ -3502,7 +3504,7 @@ Clinician Name`;
               category: 'Thrombolysis',
               title: 'Extended window IVT (4.5-9h or wake-up)',
               recommendation: 'IV thrombolysis (TNK or alteplase) is reasonable in the 4.5-9 hour or wake-up window when mismatch imaging shows salvageable tissue.',
-              detail: 'Use CT perfusion, MR perfusion, or DWI/FLAIR mismatch to select patients. EXTEND supports perfusion mismatch (4.5-9h), WAKE-UP supports DWI/FLAIR mismatch for unknown onset. 4.5-24h IVT remains investigational and should be limited to clinical trials (TIMELESS/SISTER).',
+              detail: 'Use CT perfusion, MR perfusion, or DWI/FLAIR mismatch to select patients. EXTEND supports perfusion mismatch (4.5-9h), WAKE-UP supports DWI/FLAIR mismatch for unknown onset. IST-3 (Lancet 2012, n=3035): IVT up to 6h, included many >80 yr — primary ordinal analysis neutral, but supported that age alone should not exclude IVT. ECASS-III (NEJM 2008): established 3-4.5h window. 4.5-24h IVT remains investigational (TIMELESS/SISTER).',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -4060,6 +4062,22 @@ Clinician Name`;
                 return isICH && isCerebellar;
               }
             },
+            supratentorial_ich_surgery: {
+              id: 'supratentorial_ich_surgery',
+              category: 'Disposition',
+              title: 'Supratentorial ICH: surgery evidence (STICH/STICH-II/MISTIE-III)',
+              recommendation: 'Routine open craniotomy for supratentorial ICH is NOT recommended (Class III: No Benefit). Minimally invasive surgery (MIS) with clot reduction to <15 mL may improve functional outcomes and is under active investigation.',
+              detail: 'STICH (Lancet 2005): Open craniotomy vs initial conservative Rx — no benefit (n=1033, OR 0.89). STICH-II (Lancet 2013): Early surgery for lobar ICH 10-100 mL, <1 cm from surface — no significant benefit (n=601, OR 0.86). MISTIE-III (Lancet 2019): MIS with tPA clot irrigation — primary endpoint negative, but subgroup achieving residual clot <15 mL had improved mRS 0-3 (adjusted OR 2.58). ENRICH (JAMA 2024): Early MIS with BrainPath for lobar ICH showed improved utility-weighted mRS. CLEAR III (Lancet 2017): intraventricular alteplase reduced mortality but did not improve functional outcome.',
+              classOfRec: 'III',
+              levelOfEvidence: 'A',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'STICH: Lancet 2005;365:387-97. STICH-II: Lancet 2013;382:397-408. MISTIE-III: Lancet 2019;393:1021-32.',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                return isICH && !dx.includes('cerebell');
+              }
+            },
             decompressive_craniectomy: {
               id: 'decompressive_craniectomy',
               category: 'Disposition',
@@ -4363,7 +4381,7 @@ Clinician Name`;
               category: 'SAH Management',
               title: 'SAH: Nimodipine for vasospasm prevention',
               recommendation: 'Administer nimodipine 60 mg PO/NG q4h for 21 days. Begin as soon as possible after SAH diagnosis.',
-              detail: 'Only calcium channel blocker proven to improve outcomes after SAH. If hypotension occurs, reduce to 30 mg q2h. Do not give IV. Reduces delayed cerebral ischemia (DCI), not angiographic vasospasm. Hepatic impairment (Child-Pugh A/B): reduce to 30 mg q4h; Child-Pugh C: avoid or 30 mg q6h with close monitoring. Caution with CYP3A4 inhibitors (azoles, macrolides, protease inhibitors) — may significantly increase nimodipine levels. Administer ≥1h before or 2h after meals for optimal absorption.',
+              detail: 'Only calcium channel blocker proven to improve outcomes after SAH. Reduces DCI, not angiographic vasospasm — this distinction matters (CONSCIOUS-1/2/3: clazosentan reduced angiographic vasospasm but NO improvement in functional outcome, stopped for futility; confirms vasospasm ≠ DCI). If hypotension occurs, reduce to 30 mg q2h. Do not give IV. Hepatic impairment (Child-Pugh A/B): reduce to 30 mg q4h; Child-Pugh C: avoid or 30 mg q6h with close monitoring. Caution with CYP3A4 inhibitors (azoles, macrolides, protease inhibitors). Administer ≥1h before or 2h after meals.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Aneurysmal SAH 2023',
@@ -4397,7 +4415,7 @@ Clinician Name`;
               category: 'SAH Management',
               title: 'SAH: Early aneurysm securing (clip or coil)',
               recommendation: 'Secure ruptured aneurysm as early as feasible, ideally within 24 hours to reduce rebleeding risk.',
-              detail: 'Endovascular coiling preferred for posterior circulation and elderly. Microsurgical clipping may be preferred for MCA aneurysms, large hematomas requiring evacuation, or wide-neck aneurysms. Multidisciplinary decision between neurovascular surgery and neurointerventional.',
+              detail: 'ISAT (Lancet 2002, n=2143): Coiling superior to clipping for aneurysms amenable to both (23.7% vs 30.6% poor outcome at 1 yr; long-term follow-up: benefit maintained at 10 yr, higher retreatment with coils). BRAT (J Neurosurg 2015, 6-yr update): Equivalent outcomes between clip and coil at 6 yr, with higher retreatment for coils. Endovascular coiling preferred for posterior circulation and elderly. Microsurgical clipping may be preferred for MCA aneurysms, large hematomas requiring evacuation, or wide-neck aneurysms. Multidisciplinary decision.',
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Aneurysmal SAH 2023',
@@ -5405,6 +5423,25 @@ Clinician Name`;
               conditions: (data) => {
                 const ap = (data.telestrokeNote?.secondaryPrevention?.antiplateletRegimen || '');
                 return ap.includes('dapt');
+              }
+            },
+            // COMPASS: Dual Pathway Inhibition for polyvascular disease
+            compass_dual_pathway: {
+              id: 'compass_dual_pathway',
+              category: 'Secondary Prevention',
+              title: 'COMPASS: Low-dose rivaroxaban + aspirin for polyvascular atherosclerosis',
+              recommendation: 'For ischemic stroke patients with concomitant CAD or PAD (polyvascular atherosclerotic disease), low-dose rivaroxaban 2.5 mg BID + aspirin 100 mg daily may be considered to reduce recurrent vascular events.',
+              detail: 'COMPASS (Eikelboom, NEJM 2017, n=27,395): rivaroxaban 2.5mg BID + ASA vs ASA alone in stable atherosclerotic disease — 24% relative risk reduction in MACE (HR 0.76), NNT ~77/yr. Modest increase in major bleeding (HR 1.70) but no increase in fatal/ICH bleeding. Most benefit in polyvascular disease (CAD+PAD or CAD+cerebrovascular). Not studied specifically in acute stroke; consider after stabilization. AHA/ASA 2021 secondary prevention includes this as an option (Class IIb).',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA/ASA Secondary Prevention 2021',
+              reference: 'COMPASS: Eikelboom JW et al. NEJM 2017;377:1319-1330.',
+              conditions: (data) => {
+                const hx = (data.telestrokeNote?.medicalHistory || '').toLowerCase();
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
+                const hasPolyvasc = hx.includes('cad') || hx.includes('coronary') || hx.includes('pad') || hx.includes('peripheral arterial') || hx.includes('mi') || hx.includes('cabg') || hx.includes('stent');
+                return isIschemic && hasPolyvasc;
               }
             },
             // DRUG INTERACTION: AED-DOAC
@@ -7160,7 +7197,7 @@ Clinician Name`;
             setPcAspectsRegions(getDefaultPcAspectsRegions());
             setGcsItems({ eye: '', verbal: '', motor: '' });
             setMrsScore('');
-            setIchScoreItems({ gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false });
+            setIchScoreItems({ gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false, lobar: false, preCogImpairment: false });
             setAbcd2Items({ age60: false, bp: false, unilateralWeakness: false, speechDisturbance: false, duration: '', diabetes: false });
             setChads2vascItems({ chf: false, hypertension: false, age75: false, diabetes: false, strokeTia: false, vascular: false, age65: false, female: false });
             setRopeItems({ noHypertension: false, noDiabetes: false, noStrokeTia: false, nonsmoker: false, cortical: false, age: '' });
@@ -9261,6 +9298,27 @@ Clinician Name`;
               });
             }
 
+            // Nursing Communication Parameter Sheet
+            if (isIschemic || isICH || isSAH) {
+              const nursingOrders = [];
+              const bpTarget = isICH ? 'SBP <140 mmHg (INTERACT2)' : isSAH ? 'SBP <160 until aneurysm secured' :
+                n.tnkAdminTime ? 'SBP <180/105 x 24h post-lytic' : n.evtRecommended ? 'SBP <180, avoid <140 post-EVT' : 'SBP <220 (permissive HTN)';
+              nursingOrders.push(`BP target: ${bpTarget}`);
+              nursingOrders.push(`Neuro checks: ${n.tnkAdminTime ? 'q15min x 2h, q30min x 6h, q1h x 16h' : 'q1h'}`);
+              nursingOrders.push('Diet: NPO until formal swallow screen/SLP eval');
+              nursingOrders.push(`Activity: ${n.tnkAdminTime ? 'Bedrest HOB 30° x 24h post-lytic' : isSAH ? 'Bedrest HOB 30°, minimal stimulation' : 'Bedrest until stable neuro exam, then OOB with assist'}`);
+              nursingOrders.push(`DVT prophylaxis: SCDs on admission. ${n.tnkAdminTime ? 'Hold SQ heparin 24h post-TNK' : isICH ? 'Hold SQ heparin 24-48h' : 'Start enoxaparin 40mg SC daily if immobile'}`);
+              nursingOrders.push('IV: NS at 75 mL/hr (avoid D5W/hypotonic)');
+              nursingOrders.push(`Call MD if: NIHSS increase ≥2 points, SBP ${isICH ? '>160 or <110' : '>185 or <100'}, new headache/vomiting, any bleeding, O2 <94%, temperature >38°C, urine output <0.5 mL/kg/hr`);
+              bundles.push({
+                id: 'nursing-params',
+                label: 'Nursing Parameters Sheet',
+                icon: 'clipboard-check',
+                color: 'purple',
+                orders: nursingOrders
+              });
+            }
+
             return bundles;
           };
 
@@ -9661,7 +9719,14 @@ Clinician Name`;
               { name: 'Triple Therapy Warning', keywords: ['triple therapy', 'dapt doac', 'dual antiplatelet anticoagulant'], tab: 'encounter' },
               { name: 'PCC Dose Calculator', keywords: ['pcc', 'kcentra', '4f-pcc', 'prothrombin complex', 'warfarin reversal'], tab: 'management', subTab: 'calculators' },
               { name: 'Post-EVT Groin Care', keywords: ['groin', 'access site', 'post thrombectomy groin', 'hematoma', 'pulse check'], tab: 'management', subTab: 'ischemic' },
-              { name: 'Pregnancy + EVT', keywords: ['pregnancy evt', 'pregnant thrombectomy', 'obstetric stroke'], tab: 'management', subTab: 'ischemic' }
+              { name: 'Pregnancy + EVT', keywords: ['pregnancy evt', 'pregnant thrombectomy', 'obstetric stroke'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Stroke Chameleons', keywords: ['chameleon', 'missed stroke', 'vertigo stroke', 'confusional state', 'psychiatric stroke'], tab: 'management', subTab: 'references' },
+              { name: 'Spinal Cord Stroke', keywords: ['spinal cord', 'anterior spinal artery', 'myelopathy', 'aortic dissection', 'paraplegia'], tab: 'management', subTab: 'references' },
+              { name: 'CTP Interpretation Guide', keywords: ['ctp', 'perfusion', 'tmax', 'cbv', 'cbf', 'rapid', 'penumbra', 'core'], tab: 'management', subTab: 'references' },
+              { name: 'FUNC Score', keywords: ['func', 'functional outcome', 'ich prognosis'], tab: 'management', subTab: 'calculators' },
+              { name: 'COMPASS Trial', keywords: ['compass', 'rivaroxaban aspirin', 'dual pathway', 'polyvascular', 'pad cad'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Nursing Parameters', keywords: ['nursing', 'parameters', 'call md', 'neuro checks', 'nurse communication'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Collateral Assessment', keywords: ['collateral', 'tan score', 'asitn', 'multiphase cta'], tab: 'management', subTab: 'references' }
             ];
 
             searchableItems.forEach(item => {
@@ -9804,7 +9869,7 @@ Clinician Name`;
             setPcAspectsRegions(getDefaultPcAspectsRegions());
             setGcsItems({ eye: 0, verbal: 0, motor: 0 });
             setMrsScore('');
-            setIchScoreItems({ gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false });
+            setIchScoreItems({ gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false, lobar: false, preCogImpairment: false });
             setAbcd2Items({ age60: false, bp: false, unilateralWeakness: false, speechDisturbance: false, duration: '', diabetes: false });
             setChads2vascItems({ chf: false, hypertension: false, age75: false, diabetes: false, strokeTia: false, vascular: false, age65: false, female: false });
             setRopeItems({ noHypertension: false, noDiabetes: false, noStrokeTia: false, nonsmoker: false, cortical: false, age: '' });
@@ -15598,6 +15663,62 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         className="w-full px-3 py-2 border border-red-300 rounded-lg text-sm focus:ring-2 focus:ring-red-500"
                                       />
                                     )}
+                                  </div>
+                                </details>
+                              </div>
+                            )}
+
+                            {/* ===== POST-EVT MONITORING ===== */}
+                            {telestrokeNote.evtRecommended && (
+                              <div className="bg-orange-50 border-2 border-orange-300 rounded-xl p-4 space-y-3">
+                                <h4 className="font-bold text-orange-900 flex items-center gap-2">
+                                  <i data-lucide="activity" className="w-4 h-4"></i>
+                                  Post-EVT Monitoring & Orders
+                                </h4>
+                                <p className="text-xs text-orange-700">Post-thrombectomy monitoring checklist. BP target: SBP &lt;180/105, avoid SBP &lt;140 (Class III: Harm per BEST-II/ENCHANTED2). Neuro checks q15min x 2h, q30min x 6h, q1h thereafter.</p>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                  {[
+                                    { field: 'postEvtBpConfirmed', label: 'BP target confirmed (<180, avoid <140)' },
+                                    { field: 'postEvtNeuroChecks', label: 'Neuro checks q15min x 2h initiated' },
+                                    { field: 'postEvtGroinCheck', label: 'Groin/access site check protocol initiated' },
+                                    { field: 'postEvtImagingOrdered', label: '24h NCHCT or DECT ordered' },
+                                    { field: 'postEvtAntiplateletTiming', label: 'Antiplatelet timing confirmed (24h post-TNK if given)' },
+                                    { field: 'postEvtIcuBed', label: 'ICU/step-down bed arranged' }
+                                  ].map(item => (
+                                    <label key={item.field} className="flex items-center gap-2 p-2 bg-white border border-orange-200 rounded-lg cursor-pointer text-sm">
+                                      <input
+                                        type="checkbox"
+                                        checked={telestrokeNote[item.field] || false}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, [item.field]: e.target.checked})}
+                                        className="w-4 h-4 text-orange-600"
+                                      />
+                                      <span className="text-orange-800">{item.label}</span>
+                                    </label>
+                                  ))}
+                                </div>
+                                <div className="space-y-2">
+                                  <label className="text-sm font-medium text-orange-800">tICI Score:</label>
+                                  <select value={telestrokeNote.ticiScore || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, ticiScore: e.target.value})}
+                                    className="w-full px-3 py-2 border border-orange-300 rounded-lg text-sm">
+                                    <option value="">-- Select tICI grade --</option>
+                                    <option value="0">0 — No perfusion</option>
+                                    <option value="1">1 — Penetration, no distal filling</option>
+                                    <option value="2a">2a — Partial filling (&lt;50% territory)</option>
+                                    <option value="2b">2b — Partial filling (≥50% territory)</option>
+                                    <option value="2c">2c — Near-complete perfusion (slow flow)</option>
+                                    <option value="3">3 — Complete perfusion</option>
+                                  </select>
+                                </div>
+                                <details className="bg-white border border-orange-200 rounded-lg">
+                                  <summary className="cursor-pointer p-2 text-sm font-semibold text-orange-800 hover:bg-orange-50 rounded-lg">
+                                    Post-EVT Complication Watch
+                                  </summary>
+                                  <div className="p-3 space-y-2 text-xs text-slate-700">
+                                    <p><strong>Reperfusion hemorrhage:</strong> Any neuro decline → stat NCHCT. Hold antithrombotics until hemorrhage ruled out.</p>
+                                    <p><strong>Groin complications:</strong> Check access site q15min x 2h, q30min x 4h. Watch for expanding hematoma, retroperitoneal bleed (back/flank pain, tachycardia, Hgb drop).</p>
+                                    <p><strong>Contrast nephropathy:</strong> IV hydration, monitor Cr at 24-48h if baseline CKD or diabetic nephropathy.</p>
+                                    <p><strong>Reocclusion:</strong> ~5-10% rate. If neuro worsening, consider repeat CTA and possible re-intervention.</p>
                                   </div>
                                 </details>
                               </div>
@@ -22995,6 +23116,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <p>NIHSS ≥8: CATALYST moderate severity — DOAC start day 3-5</p>
                           <p>NIHSS &gt;15: CATALYST severe — DOAC start day 6-14</p>
                         </div>
+                        <details className="mt-3 bg-amber-50 border border-amber-200 rounded-lg">
+                          <summary className="cursor-pointer p-2 text-xs font-semibold text-amber-800 hover:bg-amber-100 rounded-lg">NIHSS Scoring Pitfalls</summary>
+                          <div className="p-2 text-xs text-slate-700 space-y-1">
+                            <p><strong>1a (LOC):</strong> Do NOT score sedation/intubation as decreased LOC. Score best response. If patient requires stimulation only because of intubation/sedation, score 0.</p>
+                            <p><strong>3 (Visual):</strong> Must use finger counting or visual stimulus, NOT visual threat. Test each eye&apos;s temporal and nasal field.</p>
+                            <p><strong>5/6 (Motor):</strong> &quot;Drift&quot; = limb falls before 10s (arms) or 5s (legs). Amputation/fusion = 0, not UN. Test arms with palms down.</p>
+                            <p><strong>7 (Ataxia):</strong> Test ONLY if there is no weakness obscuring assessment. If limb is plegic, score 0 (not UN). Ataxia must be out of proportion to weakness.</p>
+                            <p><strong>9 (Language):</strong> Requires testing naming, reading, AND description — comprehension alone is insufficient. Use standardized picture card.</p>
+                            <p><strong>11 (Extinction):</strong> Must test BILATERAL SIMULTANEOUS visual AND tactile stimulation, not just unilateral.</p>
+                            <p><strong>Posterior circulation bias:</strong> Scale heavily weighted toward anterior/left MCA. Devastating posterior strokes (diplopia, vertigo, ataxia, dysphagia) may score 0-3. NIHSS 0 does NOT exclude stroke.</p>
+                            <p><strong>General rule:</strong> Score WORST performance during exam, not best. Do not coach the patient.</p>
+                          </div>
+                        </details>
                       </div>
                     </details>
 
@@ -23354,9 +23488,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 })()
                               : null,
                             age: telestrokeNote.age ? (parseInt(telestrokeNote.age) < 70 ? 2 : parseInt(telestrokeNote.age) <= 79 ? 1 : 0) : null,
-                            location: ichScoreItems.infratentorial ? 0 : 2,
+                            location: ichScoreItems.infratentorial ? 0 : ichScoreItems.lobar ? 2 : 1,
                             gcs: ichScoreItems.gcs === 'gcs34' ? 0 : ichScoreItems.gcs === 'gcs512' ? 1 : 2,
-                            cognitive: 1,
+                            cognitive: ichScoreItems.preCogImpairment ? 0 : 1,
                           };
                           const known = Object.values(funcItems).filter(v => v !== null);
                           const score = known.reduce((a, b) => a + b, 0);
@@ -23380,12 +23514,49 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="bg-white border rounded p-2">
                                   <p className="font-semibold text-rose-700">ICH Location</p>
                                   <p className="text-xs text-slate-600">Lobar: +2 | Deep: +1 | Infratentorial: +0</p>
-                                  <p className="text-xs mt-1 font-medium">Current: +{funcItems.location} ({ichScoreItems.infratentorial ? 'Infratentorial' : 'Supratentorial'})</p>
+                                  <div className="flex gap-2 mt-1">
+                                    {[
+                                      { val: 'lobar', label: 'Lobar', pts: 2 },
+                                      { val: 'deep', label: 'Deep', pts: 1 },
+                                      { val: 'infratentorial', label: 'Infratentorial', pts: 0 }
+                                    ].map(loc => (
+                                      <label key={loc.val} className={`flex items-center gap-1 text-xs px-2 py-1 rounded cursor-pointer border ${
+                                        (loc.val === 'infratentorial' && ichScoreItems.infratentorial) ||
+                                        (loc.val === 'lobar' && !ichScoreItems.infratentorial && ichScoreItems.lobar) ||
+                                        (loc.val === 'deep' && !ichScoreItems.infratentorial && !ichScoreItems.lobar)
+                                          ? 'bg-rose-100 border-rose-400 font-semibold' : 'bg-white border-slate-200'
+                                      }`}>
+                                        <input type="radio" name="func-location" className="sr-only"
+                                          checked={
+                                            (loc.val === 'infratentorial' && ichScoreItems.infratentorial) ||
+                                            (loc.val === 'lobar' && !ichScoreItems.infratentorial && ichScoreItems.lobar) ||
+                                            (loc.val === 'deep' && !ichScoreItems.infratentorial && !ichScoreItems.lobar)
+                                          }
+                                          onChange={() => setIchScoreItems({...ichScoreItems,
+                                            infratentorial: loc.val === 'infratentorial',
+                                            lobar: loc.val === 'lobar'
+                                          })}
+                                        />
+                                        {loc.label} (+{loc.pts})
+                                      </label>
+                                    ))}
+                                  </div>
                                 </div>
                                 <div className="bg-white border rounded p-2">
                                   <p className="font-semibold text-rose-700">GCS Score</p>
                                   <p className="text-xs text-slate-600">≥9: +2 | 5-8: +1 | 3-4: +0</p>
                                   <p className="text-xs mt-1 font-medium">Current: +{funcItems.gcs}</p>
+                                </div>
+                                <div className="bg-white border rounded p-2">
+                                  <p className="font-semibold text-rose-700">Pre-ICH Cognitive Status</p>
+                                  <p className="text-xs text-slate-600">No impairment: +1 | Pre-ICH dementia: +0</p>
+                                  <label className="flex items-center gap-2 mt-1 text-xs cursor-pointer">
+                                    <input type="checkbox" checked={ichScoreItems.preCogImpairment || false}
+                                      onChange={(e) => setIchScoreItems({...ichScoreItems, preCogImpairment: e.target.checked})}
+                                      className="w-3.5 h-3.5 text-rose-600" />
+                                    Pre-ICH cognitive impairment
+                                  </label>
+                                  <p className="text-xs mt-1 font-medium">Current: +{funcItems.cognitive}</p>
                                 </div>
                               </div>
                               <div className={`border rounded-lg p-3 ${funcOutcome.color}`}>
@@ -24875,6 +25046,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ['ref-pitfalls', 'Pitfalls'],
                         ['ref-imaging', 'Imaging F/U'],
                         ['ref-mimics', 'Mimics DDx'],
+                        ['ref-chameleons', 'Chameleons'],
+                        ['ref-spinalcord', 'Spinal Cord'],
+                        ['ref-ctp', 'CTP Guide'],
                         ['ref-orders', 'Admission Orders'],
                         ['ref-guidelines', 'Guidelines'],
                       ].map(([id, label]) => (
@@ -25045,7 +25219,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
                             <h4 className="font-bold text-amber-900 text-sm mb-2">ICH Pearls</h4>
                             <ul className="text-xs text-slate-700 space-y-1.5">
-                              <li><strong>BP control matters most in first 2h:</strong> Target SBP &lt;140 mmHg within 2h of presentation (INTERACT2). Nicardipine drip preferred for smooth control.</li>
+                              <li><strong>BP control matters most in first 2h:</strong> Target SBP &lt;140 mmHg within 2h (INTERACT2, Class IIb). Avoid SBP &lt;130 (ATACH-2 showed no benefit of intensive SBP 110-139 vs 140-179, with trend toward renal harm). Nicardipine drip preferred for smooth control.</li>
                               <li><strong>Anticoagulant reversal:</strong> This is the MOST time-sensitive intervention in ICH. Give PCC/idarucizumab BEFORE the CT in known anticoagulated patients.</li>
                               <li><strong>Spot sign on CTA:</strong> Contrast extravasation predicts hematoma expansion. If present → more aggressive BP control and close monitoring.</li>
                               <li><strong>IVH worsens prognosis:</strong> Consider EVD if hydrocephalus develops. Intraventricular alteplase (CLEAR III) reduces mortality but doesn't improve functional outcome.</li>
@@ -25263,6 +25437,140 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     </details>
 
+                    {/* Spinal Cord Stroke */}
+                    <details id="ref-spinalcord" className="bg-white border border-violet-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-violet-800 hover:bg-violet-50 rounded-lg flex items-center gap-2">
+                        <i data-lucide="activity" className="w-4 h-4 text-violet-600"></i>
+                        Spinal Cord Stroke
+                      </summary>
+                      <div className="px-4 pb-4 space-y-3">
+                        <p className="text-xs text-slate-600">Rare (~1% of all strokes) but devastating. Most commonly anterior spinal artery territory. Often missed initially. Key etiologies: aortic surgery/dissection, atherosclerosis, systemic hypotension, fibrocartilaginous embolism.</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="bg-violet-50 border border-violet-200 rounded-lg p-3">
+                            <h4 className="font-bold text-violet-900 text-sm mb-2">Clinical Syndromes</h4>
+                            <ul className="text-xs text-slate-700 space-y-1.5">
+                              <li><strong>Anterior spinal artery (most common):</strong> Bilateral motor loss below the level, loss of pain/temperature (spinothalamic), bowel/bladder dysfunction. <em>Preserved</em> proprioception and vibration (posterior columns spared).</li>
+                              <li><strong>Posterior spinal artery (rare):</strong> Loss of proprioception, vibration, fine touch. Motor relatively preserved. Sensory ataxia.</li>
+                              <li><strong>Central cord syndrome:</strong> Cape-like dissociated sensory loss, upper &gt; lower extremity weakness.</li>
+                              <li><strong>Brown-Séquard (unilateral):</strong> Ipsilateral motor + proprioception loss, contralateral pain/temperature loss. Uncommon in ischemia; consider sulcal artery occlusion.</li>
+                            </ul>
+                          </div>
+                          <div className="bg-violet-50 border border-violet-200 rounded-lg p-3">
+                            <h4 className="font-bold text-violet-900 text-sm mb-2">Workup &amp; Management</h4>
+                            <ul className="text-xs text-slate-700 space-y-1.5">
+                              <li><strong>MRI spine with DWI:</strong> Gold standard. DWI detects ischemia within hours. Sagittal &quot;pencil-like&quot; or axial &quot;owl-eye&quot; pattern.</li>
+                              <li><strong>CT aortography:</strong> Essential to exclude aortic dissection or post-surgical complications.</li>
+                              <li><strong>BP augmentation:</strong> MAP target ≥85-90 mmHg. Avoid hypotension.</li>
+                              <li><strong>CSF drainage:</strong> Post-aortic surgery: target CSF pressure &lt;10-15 cmH2O. Place lumbar drain early if deteriorating.</li>
+                              <li><strong>Antithrombotics:</strong> Antiplatelet therapy (extrapolated from cerebral ischemic stroke). Anticoagulation if embolic source.</li>
+                              <li><strong>Exclude mimics:</strong> Transverse myelitis, epidural abscess/hematoma, GBS, MS, compressive myelopathy.</li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="bg-amber-50 border border-amber-200 rounded-lg p-2">
+                          <p className="text-xs text-amber-800"><strong>Red flags:</strong> Acute bilateral leg weakness with dissociated sensory loss + recent aortic procedure or known aortic disease. Fibrocartilaginous embolism: young patient, onset during Valsalva/exertion, disc disease on MRI.</p>
+                        </div>
+                      </div>
+                    </details>
+
+                    {/* CTP Interpretation Guide */}
+                    <details id="ref-ctp" className="bg-white border border-cyan-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-cyan-800 hover:bg-cyan-50 rounded-lg flex items-center gap-2">
+                        <i data-lucide="scan" className="w-4 h-4 text-cyan-600"></i>
+                        CT Perfusion (CTP) Interpretation Guide
+                      </summary>
+                      <div className="px-4 pb-4 space-y-3">
+                        <p className="text-xs text-slate-600">CTP maps tissue perfusion to identify ischemic core and salvageable penumbra. Key to EVT decisions in extended windows (6-24h). Most centers use RAPID automated software.</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="bg-cyan-50 border border-cyan-200 rounded-lg p-3">
+                            <h4 className="font-bold text-cyan-900 text-sm mb-2">Perfusion Maps</h4>
+                            <ul className="text-xs text-slate-700 space-y-1.5">
+                              <li><strong>CBV (Cerebral Blood Volume):</strong> Reduced in irreversibly infarcted tissue. Low CBV = dead tissue.</li>
+                              <li><strong>CBF (Cerebral Blood Flow):</strong> Reduced in hypoperfused tissue. rCBF &lt;30% defines ischemic core in RAPID.</li>
+                              <li><strong>MTT (Mean Transit Time):</strong> Prolonged in ischemic tissue. MTT = CBV/CBF. High sensitivity but low specificity.</li>
+                              <li><strong>Tmax (Time to Maximum):</strong> Delay in contrast arrival. <strong>Tmax &gt;6s</strong> defines critically hypoperfused tissue (penumbra + core). Primary RAPID output.</li>
+                            </ul>
+                          </div>
+                          <div className="bg-cyan-50 border border-cyan-200 rounded-lg p-3">
+                            <h4 className="font-bold text-cyan-900 text-sm mb-2">Trial Criteria</h4>
+                            <div className="bg-white border rounded p-2 mb-2">
+                              <p className="text-xs font-semibold text-cyan-800">DEFUSE-3 (6-16h):</p>
+                              <ul className="text-xs text-slate-700 space-y-0.5 ml-2">
+                                <li>Core (rCBF &lt;30%): &lt;70 mL</li>
+                                <li>Tmax &gt;6s volume: 15-180 mL</li>
+                                <li>Mismatch ratio: ≥1.8</li>
+                                <li>Mismatch volume: ≥15 mL</li>
+                              </ul>
+                            </div>
+                            <div className="bg-white border rounded p-2">
+                              <p className="text-xs font-semibold text-cyan-800">DAWN (6-24h):</p>
+                              <ul className="text-xs text-slate-700 space-y-0.5 ml-2">
+                                <li>Group A: ≥80 yr, NIHSS ≥10, core &lt;21 mL</li>
+                                <li>Group B: &lt;80 yr, NIHSS ≥10, core &lt;31 mL</li>
+                                <li>Group C: &lt;80 yr, NIHSS ≥20, core 31-51 mL</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                          <h4 className="font-bold text-amber-800 text-xs mb-1">CTP Pitfalls</h4>
+                          <ul className="text-xs text-slate-700 space-y-1">
+                            <li><strong>Crossed cerebellar diaschisis:</strong> Contralateral cerebellar hypoperfusion from supratentorial stroke — not true cerebellar ischemia.</li>
+                            <li><strong>Chronic carotid stenosis:</strong> Ipsilateral Tmax delay without acute stroke. Correlate with DWI and clinical timing.</li>
+                            <li><strong>Low cardiac output:</strong> Global bilateral delay. All Tmax values elevated — not a focal lesion.</li>
+                            <li><strong>Posterior fossa:</strong> Limited scanner coverage may miss posterior circulation on some 64-slice scanners.</li>
+                            <li><strong>Core overestimation (&lt;90 min):</strong> RAPID may overestimate core in hyperacute phase. If clinical-imaging mismatch, proceed with treatment.</li>
+                            <li><strong>Motion artifact:</strong> Patient movement degrades maps. Repeat if maps are clearly artifactual.</li>
+                          </ul>
+                        </div>
+                        <details className="bg-blue-50 border border-blue-200 rounded-lg">
+                          <summary className="cursor-pointer p-2 text-xs font-semibold text-blue-800 hover:bg-blue-100 rounded-lg">Collateral Assessment Scoring</summary>
+                          <div className="p-2 text-xs text-slate-700 space-y-1.5">
+                            <p>Good collaterals independently predict better EVT outcomes and can support candidacy when CTP is unavailable or equivocal.</p>
+                            <p><strong>ASITN/SIR Collateral Flow Grading (0-4):</strong> 0 = no collaterals; 1 = slow collaterals to &lt;50% of MCA; 2 = slow to 100% of MCA; 3 = rapid to &lt;100% of MCA; 4 = complete and rapid. Grade 3-4 = good collaterals.</p>
+                            <p><strong>Tan Score (Multiphase CTA, 0-3):</strong> Used in ESCAPE trial. 0 = no filling in any phase; 1 = filling in some phases; 2 = delayed filling in late phases; 3 = normal pial arterial filling. Score 2-3 = good collaterals.</p>
+                            <p><strong>Single-phase CTA:</strong> Compare pial vessel opacification in affected vs unaffected hemisphere. &gt;50% filling on CTA = favorable collaterals.</p>
+                          </div>
+                        </details>
+                      </div>
+                    </details>
+
+                    {/* Stroke Chameleons — True Strokes Mimicking Non-Stroke Diagnoses */}
+                    <details id="ref-chameleons" className="bg-white border border-red-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-red-800 hover:bg-red-50 rounded-lg flex items-center gap-2">
+                        <i data-lucide="eye-off" className="w-4 h-4 text-red-600"></i>
+                        Stroke Chameleons — Missed Stroke Presentations
+                      </summary>
+                      <div className="px-4 pb-4 space-y-3">
+                        <p className="text-xs text-slate-600">Stroke chameleons are true strokes that present as non-stroke diagnoses and are therefore missed. More dangerous than mimics because they represent missed treatment opportunities. (Richoz B et al., Eur Stroke J 2020)</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                            <h4 className="font-bold text-red-900 text-sm mb-2">Common Chameleons</h4>
+                            <ul className="text-xs text-slate-700 space-y-1.5">
+                              <li><strong>Isolated vertigo/dizziness:</strong> PICA/AICA/vertebral artery stroke. Use HINTS exam — dangerous pattern (normal HIT, direction-changing nystagmus, skew deviation) has higher sensitivity than MRI in first 48h.</li>
+                              <li><strong>Acute confusional state:</strong> Right PCA territory, thalamic, or top-of-basilar infarcts can present as delirium without obvious motor deficits. Check visual fields.</li>
+                              <li><strong>Isolated headache:</strong> Vertebral/carotid dissection, CVT, or sentinel SAH. Always consider if headache is thunderclap, positional, or associated with neck pain.</li>
+                              <li><strong>Acute psychiatric symptoms:</strong> Right non-dominant hemisphere strokes can present with acute agitation, mania, or psychosis without hemiparesis.</li>
+                              <li><strong>Isolated nausea/vomiting:</strong> Lateral medullary (Wallenberg) syndrome. Check for Horner syndrome, crossed sensory findings, gait ataxia.</li>
+                            </ul>
+                          </div>
+                          <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                            <h4 className="font-bold text-red-900 text-sm mb-2">Less Common Chameleons</h4>
+                            <ul className="text-xs text-slate-700 space-y-1.5">
+                              <li><strong>Movement disorder onset:</strong> Hemichorea-hemiballismus from contralateral basal ganglia (subthalamic nucleus) infarction. Can present subacutely.</li>
+                              <li><strong>Bilateral weakness mimicking GBS:</strong> Bilateral pontine infarct can cause bilateral motor deficits. Check for facial weakness, eye movement abnormalities.</li>
+                              <li><strong>Amnesia (TGA-like):</strong> Bilateral hippocampal or thalamic infarction. Persistent amnesia beyond 24h or vascular risk factors should prompt DWI MRI.</li>
+                              <li><strong>Alien hand syndrome:</strong> ACA territory or corpus callosum infarction. Involuntary purposeful hand movements.</li>
+                              <li><strong>Monocular vision loss:</strong> Retinal artery occlusion IS a stroke (AHA/ASA 2021). Same workup as cerebral ischemia; CRAO has ~25% risk of subsequent cerebral event.</li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="bg-amber-50 border border-amber-200 rounded-lg p-2">
+                          <p className="text-xs text-amber-800"><strong>Key principle:</strong> If vascular risk factors are present and the differential includes stroke, obtain urgent vascular imaging (CTA head/neck) and DWI MRI. NIHSS of 0 does NOT exclude stroke — the scale is heavily weighted toward anterior circulation and misses many posterior and right-hemisphere presentations.</p>
+                        </div>
+                      </div>
+                    </details>
+
                     {/* Admission Order Checklists */}
                     <details id="ref-orders" className="bg-white border border-emerald-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-emerald-800 hover:bg-emerald-50 rounded-lg flex items-center gap-2">
@@ -25335,7 +25643,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                               <div className="space-y-1">
                                 <p className="font-bold text-red-700 mb-1">BP & Medications</p>
-                                <p>Target SBP &lt;140 mmHg (INTERACT2/ATACH-2)</p>
+                                <p>Target SBP &lt;140 mmHg (INTERACT2, Class IIb). Avoid SBP &lt;130 (ATACH-2: no benefit, possible harm).</p>
                                 <p>Nicardipine drip preferred (see BP section)</p>
                                 <p>Reversal agents if on anticoagulation (see ICH tab)</p>
                                 <p>Hold all antithrombotics</p>
