@@ -8914,6 +8914,7 @@ Clinician Name`;
             }
 
             // Triple therapy warning (DAPT + DOAC)
+            const meds = (n.medications || '').toLowerCase();
             const hasAntiplatelet = meds.includes('aspirin') || meds.includes('clopidogrel') || meds.includes('ticagrelor') || meds.includes('prasugrel');
             const hasAnticoag = n.lastDOACType || meds.includes('warfarin') || meds.includes('coumadin') || meds.includes('heparin');
             const hasDAPT = [meds.includes('aspirin'), meds.includes('clopidogrel'), meds.includes('ticagrelor'), meds.includes('prasugrel')].filter(Boolean).length >= 2;
