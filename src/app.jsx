@@ -484,21 +484,6 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           return copyPlainText(content.trim());
         };
 
-        const exportJSON = (fileName, data) => {
-          try {
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = fileName;
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            URL.revokeObjectURL(url);
-          } catch (e) {
-            console.warn('Export failed:', e);
-          }
-        };
 
 
         const importJSON = (file) => {
@@ -1080,19 +1065,6 @@ Clinician Name`;
             tnkContraindicationReviewed: false,
             tnkContraindicationReviewTime: '',
             decisionLog: [],
-            recommendations: {
-              neuroChecks: false,
-              noAntithrombotics: false,
-              bpControl: false,
-              followUpCT: false,
-              mri: false,
-              ekg: false,
-              echo: false,
-              lipids: false,
-              therapies: false,
-              dvtPpx: false,
-              neuroConsult: false
-            },
             // Phase 2: Guided Clinical Pathway fields
             ichBPManaged: false,
             ichReversalInitiated: false,
@@ -2911,7 +2883,7 @@ Clinician Name`;
               exclusionFlags: [
                 { id: 'priorStroke90d', label: 'Prior stroke <90 days', field: 'priorStroke90d' },
                 { id: 'priorICH', label: 'Prior intracranial hemorrhage', field: 'priorICH' },
-                { id: 'onAnticoag', label: 'On anticoagulation', field: 'noAnticoagulants', evaluate: (data) => data.telestrokeNote?.noAnticoagulants === false }
+                { id: 'onAnticoag', label: 'On anticoagulation', field: 'lastDOACType', evaluate: (data) => !!data.telestrokeNote?.lastDOACType }
               ]
             },
             STEP: {
@@ -3123,8 +3095,8 @@ Clinician Name`;
                     const vol = parseFloat(data.ichVolume);
                     return !isNaN(vol) && vol >= 2 && vol <= 60;
                   }, required: true },
-                { id: 'noAnticoag', label: 'Not on anticoagulants', field: 'noAnticoagulants', evaluate: (data) => {
-                    return data.telestrokeNote?.noAnticoagulants === true;
+                { id: 'noAnticoag', label: 'Not on anticoagulants', field: 'lastDOACType', evaluate: (data) => {
+                    return !data.telestrokeNote?.lastDOACType;
                   }, required: true },
                 { id: 'gcs', label: 'GCS ≥8 (not deeply comatose)', field: 'gcs', evaluate: (data) => trialGte(data.gcsScore, 8), required: true },
                 { id: 'premorbidMRS', label: 'Pre-stroke mRS ≤2', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 2), required: true }
@@ -5696,7 +5668,7 @@ Clinician Name`;
             ich: [
               { id: 'ich-bp', label: 'BP Management', section: 'vitals-section', check: (d) => !!d.telestrokeNote?.ichBPManaged },
               { id: 'ich-reversal', label: 'Anticoag Reversal', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.ichReversalInitiated,
-                skip: (d) => !!d.telestrokeNote?.noAnticoagulants },
+                skip: (d) => !d.telestrokeNote?.lastDOACType },
               { id: 'ich-neurosurg', label: 'Neurosurgery', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.ichNeurosurgeryConsulted },
               { id: 'recommendations', label: 'Recommendations', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.recommendationsText }
             ],
@@ -6222,20 +6194,24 @@ Clinician Name`;
           // =================================================================
           const calculateEnoxaparinDose = (weightKg, crCl) => {
             const weight = parseFloat(weightKg) || 0;
-            const renalClearance = parseFloat(crCl) || 100;
+            const parsedCrCl = parseFloat(crCl);
+            const renalClearance = (!isNaN(parsedCrCl) && parsedCrCl > 0) ? parsedCrCl : null;
             if (weight <= 0) return null;
-            const isRenalAdjusted = renalClearance < 30;
+            const crClUnknown = renalClearance === null;
+            const isRenalAdjusted = renalClearance !== null && renalClearance < 30;
             // Treatment dose: 1 mg/kg
             const treatmentDose = Math.round(weight * 1);
             // Prophylaxis dose: fixed 40 mg (30 mg if CrCl <30, 40 mg q12h if >100 kg)
             const prophylaxisDose = isRenalAdjusted ? 30 : 40;
             const prophylaxisFreq = weight > 100 && !isRenalAdjusted ? 'q12h' : 'daily';
+            const crClWarning = crClUnknown ? ' ⚠ CrCl unknown — verify renal function before dosing' : '';
             return {
               dose: isRenalAdjusted ? treatmentDose : treatmentDose,
               frequency: isRenalAdjusted ? 'daily' : 'BID',
               isRenalAdjusted,
-              note: isRenalAdjusted ? `Treatment: ${treatmentDose} mg SC daily (CrCl <30)` : `Treatment: ${treatmentDose} mg SC BID`,
-              prophylaxisNote: `VTE Prophylaxis: ${prophylaxisDose} mg SC ${prophylaxisFreq}${isRenalAdjusted ? ' (renal-adjusted)' : ''}${weight > 100 && !isRenalAdjusted ? ' (weight >100 kg)' : ''}`
+              crClUnknown,
+              note: (isRenalAdjusted ? `Treatment: ${treatmentDose} mg SC daily (CrCl <30)` : `Treatment: ${treatmentDose} mg SC BID`) + crClWarning,
+              prophylaxisNote: `VTE Prophylaxis: ${prophylaxisDose} mg SC ${prophylaxisFreq}${isRenalAdjusted ? ' (renal-adjusted)' : ''}${weight > 100 && !isRenalAdjusted ? ' (weight >100 kg)' : ''}` + crClWarning
             };
           };
 
@@ -6265,6 +6241,7 @@ Clinician Name`;
             const w = parseFloat(weight);
             const cr = parseFloat(creatinine);
             if (!a || !w || !cr || a <= 0 || w <= 0 || cr <= 0) return null;
+            if (a >= 140) return null;
             if (sex !== 'M' && sex !== 'F') return null;
             const sexFactor = (sex === 'F') ? 0.85 : 1.0;
             const crcl = ((140 - a) * w * sexFactor) / (72 * cr);
@@ -7614,7 +7591,7 @@ Clinician Name`;
               // Structured clinical data
               'diagnosis', 'premorbidMRS', 'affectedSide', 'weightEstimated', 'noAnticoagulants', 'contrastAllergy',
               'chiefComplaint', 'doorTime', 'needleTime', 'admitLocation', 'plateletsCoags',
-              'wakeUpStrokeWorkflow', 'recommendations', 'recommendationsText', 'consentKit',
+              'wakeUpStrokeWorkflow', 'recommendationsText', 'consentKit',
               // SAH/CVT/TIA pathway fields
               'sahGrade', 'sahGradeScale', 'sahBPManaged', 'sahNimodipine', 'sahEVDPlaced', 'sahAneurysmSecured', 'sahNeurosurgeryConsulted', 'sahSeizureProphylaxis', 'fisherGrade',
               'aspectsRegions', 'pcAspectsRegions', 'ticiScore',
@@ -7902,7 +7879,7 @@ Clinician Name`;
             const ctResults = telestrokeNote.ctResults || "[CT findings]";
             const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
             const ctpResults = telestrokeNote.ctpResults || "N/A";
-            const aspectsStr = aspectsScore ? ` ASPECTS: ${aspectsScore}.` : "";
+            const aspectsStr = (aspectsScore != null && aspectsScore < 10) ? ` ASPECTS: ${aspectsScore}.` : "";
             const vesselArr = telestrokeNote.vesselOcclusion || [];
             const vesselStr = vesselArr.length > 0 && !vesselArr.includes('None')
               ? ` Vessel occlusion: ${vesselArr.join(', ')}.` : "";
@@ -7965,7 +7942,7 @@ Clinician Name`;
               if (telestrokeNote.spO2) vitals.push(`SpO2 ${telestrokeNote.spO2}%`);
               if (telestrokeNote.temperature) vitals.push(`Temp ${telestrokeNote.temperature}°F`);
               note += `Vitals: ${vitals.join(', ')}, Glucose ${telestrokeNote.glucose || '___'}\n`;
-              note += `Labs: Plt/Coags ${telestrokeNote.plateletsCoags || '___'}, Cr ${telestrokeNote.creatinine || '___'}`;
+              note += `Labs: Plt ${telestrokeNote.plateletCount ? telestrokeNote.plateletCount + 'K' : '___'}, Cr ${telestrokeNote.creatinine || '___'}`;
               if (telestrokeNote.inr) note += `, INR ${telestrokeNote.inr}`;
               if (telestrokeNote.ptt) note += `, aPTT ${telestrokeNote.ptt}`;
               note += `\n`;
@@ -8011,7 +7988,7 @@ Clinician Name`;
                 note += `\nPost-TNK Status:\n`;
                 const postTnkComps = [];
                 if (telestrokeNote.sichDetected) postTnkComps.push('sICH DETECTED');
-                if (telestrokeNote.angioedema?.detected) postTnkComps.push('ANGIOEDEMA');
+                if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) postTnkComps.push('ANGIOEDEMA');
                 if (telestrokeNote.clinicalDeterioration) postTnkComps.push('CLINICAL DETERIORATION');
                 if (postTnkComps.length > 0) {
                   note += `- COMPLICATIONS: ${postTnkComps.join(', ')}\n`;
@@ -8264,6 +8241,7 @@ Clinician Name`;
               const dischVitals = [`BP ${telestrokeNote.presentingBP || '___'}`];
               if (telestrokeNote.heartRate) dischVitals.push(`HR ${telestrokeNote.heartRate}`);
               if (telestrokeNote.spO2) dischVitals.push(`SpO2 ${telestrokeNote.spO2}%`);
+              if (telestrokeNote.temperature) dischVitals.push(`Temp ${telestrokeNote.temperature}°F`);
               if (telestrokeNote.glucose) dischVitals.push(`Glucose ${telestrokeNote.glucose}`);
               note += `Presenting Vitals: ${dischVitals.join(', ')}\n\n`;
               note += `IMAGING:\n`;
@@ -8622,7 +8600,7 @@ Clinician Name`;
             if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) {
               const complications = [];
               if (telestrokeNote.sichDetected) complications.push('symptomatic ICH');
-              if (telestrokeNote.angioedemaDetected) complications.push('orolingual angioedema');
+              if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) complications.push('orolingual angioedema');
               if (telestrokeNote.reperfusionHemorrhage) complications.push('reperfusion hemorrhage');
               if (telestrokeNote.clinicalDeterioration) complications.push('clinical deterioration');
               if (complications.length > 0) {
@@ -9288,7 +9266,8 @@ Clinician Name`;
                 'Strict I/O, Foley catheter if ICU',
                 'Bowel protocol: docusate 100 mg BID standing + senna 8.6 mg PRN (avoid Valsalva straining — may worsen hemorrhage/raise ICP)'
               ];
-              if (nihss >= 10 || (telestrokeNote.gcs && parseInt(telestrokeNote.gcs) <= 12)) {
+              const ichGcsVal = calculateGCS(gcsItems);
+              if (nihss >= 10 || (ichGcsVal > 0 && ichGcsVal <= 12)) {
                 ichAdmitOrders.push('Consider EEG monitoring if unexplained decline in consciousness');
                 ichAdmitOrders.push('Neurosurgery consult for possible surgical evacuation (if eligible)');
               }
@@ -9962,14 +9941,13 @@ Clinician Name`;
               { name: 'Transfer Checklist', keywords: ['transfer', 'spoke', 'hub', 'transport'], tab: 'encounter' },
               { name: 'Hemorrhagic Transformation', keywords: ['hemorrhagic transformation', 'sich', 'symptomatic ich', 'post-tnk bleeding', 'ecass'], tab: 'management', subTab: 'ischemic' },
               { name: 'Stroke Mimic Workup', keywords: ['mimic', 'mimic workup', 'differential', 'seizure', 'migraine', 'conversion', 'functional'], tab: 'encounter' },
-              { name: 'Code Stroke Activation Criteria', keywords: ['code stroke', 'activation', 'alert', 'lvo alert', 'race scale', 'de-escalation', 'when to activate'], tab: 'management', subTab: 'reference' },
+              { name: 'Code Stroke Activation Criteria', keywords: ['code stroke', 'activation', 'alert', 'lvo alert', 'race scale', 'de-escalation', 'when to activate'], tab: 'management', subTab: 'references' },
               { name: 'Acute Deterioration', keywords: ['deterioration', 'worsening', 'decline', 'neuro change', 'acute change'], tab: 'management', subTab: 'ischemic' },
               { name: 'DOAC Reversal', keywords: ['doac reversal', 'pcc', 'kcentra', 'idarucizumab', 'praxbind', 'andexanet', 'xa inhibitor'], tab: 'management', subTab: 'ich' },
               { name: 'VTE Prophylaxis', keywords: ['vte', 'dvt', 'pe', 'prophylaxis', 'enoxaparin', 'heparin', 'scds', 'ipc'], tab: 'management', subTab: 'ischemic' },
               { name: 'Post-EVT Management', keywords: ['post evt', 'post thrombectomy', 'dect', 'reperfusion', 'tici'], tab: 'management', subTab: 'ischemic' },
               { name: 'Dissection Management', keywords: ['dissection', 'carotid dissection', 'vertebral dissection', 'cervical'], tab: 'management', subTab: 'ischemic' },
-              { name: 'Depression Screening', keywords: ['depression', 'phq', 'phq-2', 'phq-9', 'ssri', 'mood'], tab: 'management', subTab: 'ischemic' },
-              { name: 'PHASES Score (Aneurysm)', keywords: ['phases', 'aneurysm', 'rupture risk', 'unruptured'], tab: 'management', subTab: 'calculators' },
+              { name: 'Depression Screening', keywords: ['depression', 'phq', 'phq-2', 'phq-9', 'ssri', 'mood'], tab: 'encounter' },
               { name: 'Alteplase (tPA) Dosing', keywords: ['alteplase', 'tpa', 'activase', 'thrombolysis dose', 'bolus infusion'], tab: 'management', subTab: 'calculators' },
               { name: 'Bridging IVT + EVT', keywords: ['bridging', 'ivt before evt', 'direct to evt', 'swift direct', 'mr clean no iv'], tab: 'management', subTab: 'ischemic' },
               { name: 'ARCADIA (Atrial Cardiopathy)', keywords: ['arcadia', 'atrial cardiopathy', 'esus', 'cryptogenic', 'p-wave'], tab: 'management', subTab: 'ischemic' },
@@ -11030,7 +11008,7 @@ IMAGING:
 - Head CT: ${telestrokeNote.ctResults || 'pending'}
 - CTA Head/Neck: ${telestrokeNote.ctaResults || 'pending'}
 - CTP: ${telestrokeNote.ctpResults || 'pending'}
-- ASPECTS: ${aspectsScore || '__'}
+- ASPECTS: ${aspectsScore != null ? aspectsScore : '__'}
 
 ASSESSMENT: ${telestrokeNote.diagnosis || 'Acute ischemic stroke'}, NIHSS ${nihssDisplay}
 ${telestrokeNote.tnkRecommended ? `\nTNK: Recommended` : '\nTNK: Not Recommended'}
@@ -15339,7 +15317,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="space-y-2">
                                   {[
                                     { field: 'ichBPManaged', label: 'BP managed (SBP <140 target)', detail: 'Class IIa, INTERACT2; avoid <130' },
-                                    { field: 'ichReversalInitiated', label: 'Anticoag reversal ordered (if applicable)', detail: 'Skip if no anticoagulants', skipIf: telestrokeNote.noAnticoagulants },
+                                    { field: 'ichReversalInitiated', label: 'Anticoag reversal ordered (if applicable)', detail: 'Skip if no anticoagulants', skipIf: !telestrokeNote.lastDOACType },
                                     { field: 'ichNeurosurgeryConsulted', label: 'Neurosurgery consulted/evaluated', detail: 'Surgical candidacy assessed' }
                                   ].filter(item => !item.skipIf).map(item => (
                                     <label key={item.field} className="flex items-start gap-2 cursor-pointer">
@@ -19584,7 +19562,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 if (ct) note += `Head CT: ${ct}\n`;
                                 if (cta) note += `CTA Head/Neck: ${cta}\n`;
                                 if (telestrokeNote.ctpResults) note += `CTP: ${telestrokeNote.ctpResults}\n`;
-                                if (aspectsScore) note += `ASPECTS: ${aspectsScore}\n`;
+                                if (aspectsScore != null) note += `ASPECTS: ${aspectsScore}\n`;
                                 note += '\n';
 
                                 // Assessment
@@ -20222,7 +20200,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 exam += `\n\nVITALS:\nBP: ${telestrokeNote.presentingBP || 'N/A'}\nGlucose: ${telestrokeNote.glucose || 'N/A'}\nINR: ${telestrokeNote.inr || 'N/A'}\nPlt: ${telestrokeNote.plateletCount || 'N/A'}`;
                                 exam += `\n\nIMAGING:\nCT Head: ${telestrokeNote.ctResults || 'N/A'}\nCTA: ${telestrokeNote.ctaResults || 'N/A'}`;
                                 if (telestrokeNote.ctpResults) exam += `\nCTP: ${telestrokeNote.ctpResults}`;
-                                if (aspectsScore) exam += `\nASPECTS: ${aspectsScore}`;
+                                if (aspectsScore != null) exam += `\nASPECTS: ${aspectsScore}`;
                                 navigator.clipboard.writeText(exam).catch(() => {});
                                 setCopiedText('vid-exam'); setTimeout(() => setCopiedText(''), 2000);
                               }}
@@ -20814,7 +20792,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {telestrokeNote.presentingBP && <span className="text-slate-600">BP: {telestrokeNote.presentingBP}</span>}
                           {telestrokeNote.glucose && <span className="text-slate-600">Gluc: {telestrokeNote.glucose}</span>}
                           {telestrokeNote.inr && <span className="text-slate-600">INR: {telestrokeNote.inr}</span>}
-                          {telestrokeNote.platelets && <span className="text-slate-600">Plt: {telestrokeNote.platelets}</span>}
+                          {telestrokeNote.plateletCount && <span className="text-slate-600">Plt: {telestrokeNote.plateletCount}K</span>}
                           {telestrokeNote.tnkRecommended !== undefined && (
                             <span className={`font-semibold ${telestrokeNote.tnkRecommended ? 'text-emerald-700' : 'text-slate-500'}`}>
                               TNK: {telestrokeNote.tnkRecommended ? 'Yes' : 'No'}
