@@ -61,31 +61,18 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         const LAST_UPDATED_KEY = 'lastUpdated';
         const LEGACY_MIGRATION_KEY = 'legacyMigrated';
         const APP_DATA_SCHEMA_VERSION = 1;
+        // Default contacts are empty — users configure their own via Settings > Contact Directory
         const DEFAULT_CONTACTS = [
-          // Primary Hub
-          { id: 'stroke-phone', label: 'Stroke Phone', phone: '206-744-6789', note: 'Primary hub' },
-          { id: 'stat-pharmacy', label: 'STAT Pharmacy', phone: '206-744-2241', note: 'Primary hub' },
-          { id: 'rad-hotline', label: 'Stroke RAD Hotline', phone: '206-744-8484', note: 'Weekdays 0800-1700 only' },
-          { id: 'rad-reading-room', label: 'RAD Reading Room', phone: '206-744-6741', note: 'Non-urgent, all modalities' },
-          { id: 'rad-records', label: 'Radiology Records/File Room', phone: '206-744-3109', note: '24/7 — imaging pull/push, OSH requests, non-TC consults' },
-          { id: 'angio-suite', label: 'Angio Suite', phone: '206-744-3381', note: 'Primary hub' },
-          { id: 'stat-ct', label: 'STAT CT', phone: '206-744-7290', note: 'Primary hub' },
-          // Site B
-          { id: 'site-b-rad-coord', label: 'Site B Reading Room Coordinator', phone: '206-597-4249', note: 'Site B, Days 0800-1700' },
-          { id: 'site-b-neurorad-fellow', label: 'Site B Neuro Rad Fellow', phone: '206-598-7959', note: 'Site B, Days 0700-1900' },
-          { id: 'site-b-neurorad-resident', label: 'Site B Neuro Rad Resident', phone: '206-598-2068', note: 'Site B, Evenings 1700-0700' },
-          // Transfusion Support Services
-          { id: 'hub-transfusion', label: 'Hub Transfusion Services', phone: '206-744-3088', note: 'Primary hub — coagulopathy reversal' },
-          { id: 'site-b-transfusion', label: 'Site B Transfusion Services', phone: '206-598-6240', note: 'Site B' },
-          { id: 'site-c-transfusion', label: 'Site C Transfusion Services', phone: '206-668-2030', note: 'Site C' },
-          // Transfer / Pediatric
-          { id: 'site-c-transfer', label: 'Site C Transfer Center', phone: '206-520-7575', note: 'Site C stroke referrals' },
-          { id: 'peds-transfer', label: 'Pediatric Hospital Transfer Center', phone: '206-987-8899', note: 'Pediatric stroke transfers, consults' },
-          { id: 'ref-lab-adamts13', label: 'Reference Lab (ADAMTS13)', phone: '206-689-6543', note: 'ADAMTS13 testing M/W/F, samples before noon' },
-          // Neurosurgery / MIE
-          { id: 'mie-nsgy', label: 'MIE Neurosurgery Contact', phone: '206-409-6649', note: '6AM-10PM; MIE/ENRICH candidates' },
-          // IT
-          { id: 'it-helpdesk', label: 'IT Services Help Desk', phone: '206-520-2200', note: 'Stroke phone issues' }
+          { id: 'stroke-phone', label: 'Stroke Phone', phone: '', note: 'Primary hub' },
+          { id: 'stat-pharmacy', label: 'STAT Pharmacy', phone: '', note: '' },
+          { id: 'rad-hotline', label: 'Stroke RAD Hotline', phone: '', note: '' },
+          { id: 'rad-reading-room', label: 'RAD Reading Room', phone: '', note: '' },
+          { id: 'angio-suite', label: 'Angio Suite', phone: '', note: '' },
+          { id: 'stat-ct', label: 'STAT CT', phone: '', note: '' },
+          { id: 'transfusion', label: 'Transfusion Services', phone: '', note: '' },
+          { id: 'transfer-center', label: 'Transfer Center', phone: '', note: '' },
+          { id: 'neurosurgery', label: 'Neurosurgery On-Call', phone: '', note: '' },
+          { id: 'it-helpdesk', label: 'IT Help Desk', phone: '', note: '' }
         ];
 
         const parseStoredValue = (raw) => {
@@ -349,10 +336,10 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         // CHANGELOG
         // ============================================
         const CHANGELOG = [
-          { version: '2.5', date: '2025-06', items: ['Updated ICH algorithms to institutional pocket cards', 'Replaced EVT mermaid flowcharts with scannable tables', 'Added warfarin/DOAC reversal step-cards', 'Added post-thrombolytic ICH protocol', 'Added angioedema management', 'Added contrast allergy protocol', 'Added BP management quick reference'] },
+          { version: '2.5', date: '2025-06', items: ['Updated ICH algorithms to pocket cards', 'Replaced EVT mermaid flowcharts with scannable tables', 'Added warfarin/DOAC reversal step-cards', 'Added post-thrombolytic ICH protocol', 'Added angioedema management', 'Added contrast allergy protocol', 'Added BP management quick reference'] },
           { version: '2.6', date: '2025-07', items: ['Simplified encounter to Video Telestroke / Phone Consult', 'Removed inpatient/clinic contexts and quick/full mode toggle'] },
           { version: '3.0', date: '2025-08', items: ['Toast notification system replacing inline alerts', 'Replaced all confirm/prompt dialogs with styled modals', 'Persistent timer visible across all tabs', 'Encounter templates for common presentations', 'Encounter history with shift handoff support', 'Focus mode for active encounters', 'Calculator drawer with inline scoring', 'Section completion indicators', 'Keyboard shortcuts (Ctrl+Shift+C, Ctrl+K, etc.)', 'Improved mobile touch targets', 'Visual timeline for stroke events', 'Auto-filtering trials by patient characteristics', 'References search and filtering', 'Error boundaries for graceful failure recovery', 'Service worker for offline support'] },
-          { version: '3.1', date: '2025-09', items: ['Added vital signs (HR, SpO2, Temp) to encounter and notes', 'Added EKG/Telemetry input fields', 'GCS score included in all note templates', 'Weight unit toggle (kg/lbs) with auto-conversion', 'Edoxaban added to anticoagulant system', 'aPTT auto-blocks TNK when >40s', 'Standardized platelet units (K/μL) throughout', 'Inline lab validation badges (glucose, INR, platelets, aPTT)', 'Andexanet alfa aligned to institutional PCC-first protocol', 'Consent documentation in transfer notes', 'Fixed keyboard shortcut conflicts and section completion', 'Improved reset logic for new patients'] },
+          { version: '3.1', date: '2025-09', items: ['Added vital signs (HR, SpO2, Temp) to encounter and notes', 'Added EKG/Telemetry input fields', 'GCS score included in all note templates', 'Weight unit toggle (kg/lbs) with auto-conversion', 'Edoxaban added to anticoagulant system', 'aPTT auto-blocks TNK when >40s', 'Standardized platelet units (K/μL) throughout', 'Inline lab validation badges (glucose, INR, platelets, aPTT)', 'Andexanet alfa aligned to PCC-first protocol', 'Consent documentation in transfer notes', 'Fixed keyboard shortcut conflicts and section completion', 'Improved reset logic for new patients'] },
           { version: '3.2', date: '2025-10', items: ['Notes now show consultation type (Telephone vs Video Telestroke)', 'BP phase target included in consultation, transfer, and signout notes', 'TOAST classification in transfer and discharge notes', 'Anticoagulation details with DOAC timing in consultation note', 'Transfer note shows weight, premorbid mRS, contrast allergy flag', 'Dysphagia screening and VTE prophylaxis in discharge note', 'Transfer note alerts for NPO status and contrast allergy', 'SAH + anticoagulation reversal warning', 'GCS ≤8 airway protection alert', 'Edoxaban CrCl >95 reduced efficacy warning', 'Hypoglycemia + TNK escalated to error severity', 'BP phase auto-reverts when diagnosis changes', 'Fixed INR/aPTT orphaned comma in lab line', 'Trial eligibility reset on new case'] },
           { version: '3.3', date: '2025-11', items: ['CrCl calculator prioritized by diagnosis in calculator tab', 'Post-TNK neuro check schedule standardized (q15min×2h, q30min×6h, q1h×16h)', 'SAH seizure prophylaxis with specific indications in admission orders', 'Osmotic therapy data in discharge note (agent, Na+ target, osmolality)', 'Nutritional support and feeding route in discharge note', 'Falls risk screening in discharge note', 'Driving restrictions with commercial driver flag in discharge note', 'Clipboard fallback for insecure contexts (HTTP/dev builds)', 'Deep merge of stored data prevents crashes when new fields are added', 'All calculator copy buttons now have accessible labels', 'ICH Volume, Andexanet, and Enoxaparin calculators now sort by diagnosis priority'] }
         ];
@@ -2004,12 +1991,12 @@ Clinician Name`;
             BERINERT: {
               title: 'C1 Esterase Inhibitor (Berinert)',
               dosing: '20 IU/kg IV.',
-              note: 'Plasma-derived C1 esterase inhibitor. Per institutional protocol (Rev 11/2025): for refractory orolingual angioedema associated with IV thrombolytic. Refer to Epic Order set → IV Thrombolytic option: Management of Orolingual Angioedema.'
+              note: 'Plasma-derived C1 esterase inhibitor. For refractory orolingual angioedema associated with IV thrombolytic. Refer to local angioedema management protocol.'
             },
             HYDROCORT: {
               title: 'Hydrocortisone',
               dosing: '200 mg IV (OR Methylprednisolone 40 mg IV).',
-              note: 'Institutional LVO contrast allergy protocol: Immediately prior to contrast, give Hydrocortisone 200mg IV OR Methylprednisolone 40mg + Diphenhydramine 50mg IV. Requires pre-approval from Stroke phone, Emergency MD, AND Neuroradiology. Excludes known contrast-related anaphylaxis (cardiovascular collapse). Document consent + approving physicians.'
+              note: 'LVO contrast allergy protocol: Immediately prior to contrast, give Hydrocortisone 200mg IV OR Methylprednisolone 40mg + Diphenhydramine 50mg IV. Obtain verbal approval from Stroke attending, Emergency MD, AND Neuroradiology before proceeding. Excludes known contrast-related anaphylaxis (cardiovascular collapse). Document consent + approving physicians.'
             },
             FAMOTIDINE: {
               title: 'Famotidine',
@@ -2020,13 +2007,13 @@ Clinician Name`;
               title: 'Protamine (UFH)',
               classOfRec: 'Class IIa',
               dosing: '1 mg per 100 units UFH given in last 2-3h (max 50 mg/dose), slow IV over 10 min. Recheck anti-Xa; if >0.1 → additional 0.5 mg per 100 units (max cumulative 50 mg). (COR 2a/C)',
-              note: 'Institutional protocol (9/2025): Check anti-Xa level. If platelets <100K, send HIT antibodies and consult Hematology if positive.'
+              note: 'Check anti-Xa level. If platelets <100K, send HIT antibodies and consult Hematology if positive.'
             },
             PROT2: {
               title: 'Protamine (LMWH)',
               classOfRec: 'Class IIb',
               dosing: 'Last dose <8h: Protamine 50 mg IV. Last dose 8-24h: Protamine 25 mg IV. Last dose >24h: no reversal indicated. (COR 2b/C)',
-              note: 'Institutional protocol (9/2025): Protamine only partially reverses LMWH (~60% anti-Xa neutralization). Second dose may be considered if ongoing bleeding.'
+              note: 'Protamine only partially reverses LMWH (~60% anti-Xa neutralization). Second dose may be considered if ongoing bleeding.'
             },
             NICARDIPINE: {
               title: 'Nicardipine (Cardene)',
@@ -2715,27 +2702,16 @@ Clinician Name`;
 
           // CALLING SITES - Unified list for both telephone and video consults
           // =================================================================
+          // Calling sites — configure via Settings or enter manually per encounter
           const CALLING_SITES = [
-            { group: 'Network Sites', sites: ['Hub A', 'Hub B', 'Hub C'] },
-            { group: 'Video Partner Sites', sites: [
-              'Astria Sunnyside',
-              'Cascade Medical – Leavenworth',
-              'Columbia Basin-Ephrata',
-              'Confluence Health – Wenatchee',
-              'Island Health – Anacortes',
-              'Lourdes Health – Pasco',
-              'Mason General Hospital – Shelton',
-              'Snoqualmie Valley – Snoqualmie',
-              'St. Joseph Regional Medical Center – Lewiston, Idaho'
-            ]},
-            { group: 'PeaceHealth Sites', sites: [
-              'PeaceHealth Island - Friday Harbor',
-              'PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska',
-              'PeaceHealth St. Joseph Medical Center – Bellingham',
-              'PeaceHealth United General Medical Center – Sedro Woolley'
-            ]},
-            { group: 'Alaska Sites', sites: ['Petersburg, AK'] },
-            { group: 'Tri-Cities', sites: ['Trios Health – Kennewick'] }
+            { group: 'Hub Sites', sites: ['Hub A', 'Hub B', 'Hub C'] },
+            { group: 'Spoke Sites', sites: [
+              'Spoke Site 1',
+              'Spoke Site 2',
+              'Spoke Site 3',
+              'Spoke Site 4',
+              'Spoke Site 5'
+            ]}
           ];
 
           // =================================================================
@@ -2752,9 +2728,9 @@ Clinician Name`;
               thrombolysisThreshold: '48 hours since last dose',
               thrombolysisNote: 'Consider anti-Xa level if <48h - thrombolysis may be given if anti-Xa <30 ng/mL',
               ichReversal: {
-                primary: '4-Factor PCC (Kcentra) 2000 units IVPB (institutional protocol) or 50 IU/kg (max 5000 IU)',
+                primary: '4-Factor PCC (Kcentra) 2000 units IVPB (local protocol) or 50 IU/kg (max 5000 IU)',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Institutional protocol: 4F-PCC 2000 units IV first-line. Andexanet alfa is NOT available at institutional. AHA/ASA 2022 lists andexanet as Class IIa but PCC shows similar efficacy (Panos et al. Crit Care Med 2025). Discuss with Hematology if PCC ineffective.'
+                note: 'Suggested protocol: 4F-PCC 2000 units IV first-line. Andexanet alfa may not be available at all centers — check local formulary. AHA/ASA 2022 lists andexanet as Class IIa but PCC shows similar efficacy (Panos et al. Crit Care Med 2025). Discuss with Hematology if PCC ineffective.'
               },
               monitoring: 'Anti-Xa level (calibrated for apixaban)'
             },
@@ -2766,9 +2742,9 @@ Clinician Name`;
               thrombolysisThreshold: '48 hours since last dose',
               thrombolysisNote: 'Consider anti-Xa level if <48h - thrombolysis may be given if anti-Xa <30 ng/mL',
               ichReversal: {
-                primary: '4-Factor PCC (Kcentra) 2000 units IVPB (institutional protocol) or 50 IU/kg (max 5000 IU)',
+                primary: '4-Factor PCC (Kcentra) 2000 units IVPB (local protocol) or 50 IU/kg (max 5000 IU)',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Institutional protocol: 4F-PCC 2000 units IV first-line. Andexanet alfa is NOT available at institutional. AHA/ASA 2022 lists andexanet as Class IIa but PCC shows similar efficacy (Panos et al. Crit Care Med 2025). Discuss with Hematology if PCC ineffective.'
+                note: 'Suggested protocol: 4F-PCC 2000 units IV first-line. Andexanet alfa may not be available at all centers — check local formulary. AHA/ASA 2022 lists andexanet as Class IIa but PCC shows similar efficacy (Panos et al. Crit Care Med 2025). Discuss with Hematology if PCC ineffective.'
               },
               monitoring: 'Anti-Xa level (calibrated for rivaroxaban)'
             },
@@ -2794,7 +2770,7 @@ Clinician Name`;
               thrombolysisThreshold: '48 hours since last dose',
               thrombolysisNote: 'No calibrated specific assay widely available; Direct Xa Inhibitor screen may help exclude presence',
               ichReversal: {
-                primary: '4-Factor PCC (Kcentra) 2000 units IVPB (institutional protocol) or 50 IU/kg (max 5000 IU)',
+                primary: '4-Factor PCC (Kcentra) 2000 units IVPB (local protocol) or 50 IU/kg (max 5000 IU)',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
                 note: 'Andexanet alfa is NOT indicated for edoxaban reversal. 4F-PCC is the primary reversal agent. Consider PCC if no contraindications and Direct Xa Inhibitor screen elevated.'
               },
@@ -3507,8 +3483,8 @@ Clinician Name`;
               id: 'evt_standard',
               category: 'EVT',
               title: 'EVT for LVO within 6 hours',
-              recommendation: 'EVT recommended for anterior LVO (ICA, M1) within 6 hours of onset with NIHSS ≥6. ASPECTS 3-10: generally eligible per institutional protocol.',
-              detail: 'Institutional protocol: Early window (0-6h) — ASPECTS 3-10 generally eligible for EVT. ASPECTS 0-2: consider in very select cases; consider CTP to evaluate if estimated core volume ≤70-100cc. Do not delay transfer for TNK response. Administer TNK at spoke and transfer immediately for EVT evaluation.',
+              recommendation: 'EVT recommended for anterior LVO (ICA, M1) within 6 hours of onset with NIHSS ≥6. ASPECTS 3-10: generally eligible per local protocol.',
+              detail: 'Suggested protocol: Early window (0-6h) — ASPECTS 3-10 generally eligible for EVT. ASPECTS 0-2: consider in very select cases; consider CTP to evaluate if estimated core volume ≤70-100cc. Do not delay transfer for TNK response. Administer TNK at spoke and transfer immediately for EVT evaluation.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -3527,7 +3503,7 @@ Clinician Name`;
               category: 'EVT',
               title: 'EVT late window (6-24h)',
               recommendation: 'EVT recommended 6-24 hours from onset for anterior LVO with NIHSS ≥6 and ASPECTS 6-10. Requires favorable perfusion imaging or good collaterals.',
-              detail: 'Institutional protocol: Late window (6-24h) — ASPECTS 6-10 generally eligible. ASPECTS 3-5: generally eligible; consider CTP to evaluate if estimated core volume ≤100cc + mismatch present. ASPECTS 0-2: EVT benefit is unclear. Based on DAWN/DEFUSE-3 criteria. Age ≥80 requires NIHSS ≥10. Good collateral status on CTA may independently predict benefit when CTP unavailable.',
+              detail: 'Suggested protocol: Late window (6-24h) — ASPECTS 6-10 generally eligible. ASPECTS 3-5: generally eligible; consider CTP to evaluate if estimated core volume ≤100cc + mismatch present. ASPECTS 0-2: EVT benefit is unclear. Based on DAWN/DEFUSE-3 criteria. Age ≥80 requires NIHSS ≥10. Good collateral status on CTA may independently predict benefit when CTP unavailable.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -3547,7 +3523,7 @@ Clinician Name`;
               category: 'EVT',
               title: 'EVT for large core (ASPECTS 0-5, 0-6h)',
               recommendation: 'EVT is recommended for anterior LVO within 0-6 hours when ASPECTS is 3-5 (generally eligible). ASPECTS 0-2: consider in very select cases with CTP core ≤70-100cc.',
-              detail: 'Institutional protocol: ASPECTS 3-10 generally eligible in early window. ASPECTS 0-2: consider CTP to evaluate if estimated core volume ≤70-100cc. SVIN 2025 large-core guidance supports EVT across ASPECTS 0-5 in the early window based on LASTE, SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, and TESLA. Higher sICH risk with lower ASPECTS; discuss goals of care.',
+              detail: 'Suggested protocol: ASPECTS 3-10 generally eligible in early window. ASPECTS 0-2: consider CTP to evaluate if estimated core volume ≤70-100cc. SVIN 2025 large-core guidance supports EVT across ASPECTS 0-5 in the early window based on LASTE, SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, and TESLA. Higher sICH risk with lower ASPECTS; discuss goals of care.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'SVIN Large-Core EVT 2025',
@@ -3610,7 +3586,7 @@ Clinician Name`;
               category: 'EVT',
               title: 'EVT for basilar artery occlusion',
               recommendation: 'EVT is recommended for basilar artery occlusion within 24 hours of onset when NIHSS ≥10 and pc-ASPECTS ≥6.',
-              detail: 'Institutional protocol: Basilar EVT — LKW ≤24h, NIHSS ≥10, pc-ASPECTS ≥6. Based on ATTENTION and BAOCHE trials (2023). Benefit demonstrated up to 24 hours with significant deficit.',
+              detail: 'Suggested protocol: Basilar EVT — LKW ≤24h, NIHSS ≥10, pc-ASPECTS ≥6. Based on ATTENTION and BAOCHE trials (2023). Benefit demonstrated up to 24 hours with significant deficit.',
               classOfRec: 'I',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -3740,7 +3716,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
-              medications: ['Vitamin K 10 mg IV over 20 min', '4F-PCC (KCentra) 2000 units IVPB (institutional) or 25-50 IU/kg based on INR (AHA)'],
+              medications: ['Vitamin K 10 mg IV over 20 min', '4F-PCC (KCentra) 2000 units IVPB (fixed-dose) or 25-50 IU/kg based on INR (AHA)'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
@@ -3773,14 +3749,14 @@ Clinician Name`;
               id: 'reversal_xa_inhibitor',
               category: 'Reversal',
               title: 'Factor Xa inhibitor reversal in ICH',
-              recommendation: 'Administer 4F-PCC (Kcentra) 2000 units IVPB for ICH on apixaban/rivaroxaban/edoxaban (institutional protocol).',
-              detail: 'AHA/ASA 2022 lists andexanet alfa as Class IIa (LOE B-NR) for Xa inhibitor-associated ICH. Andexanet is NOT available at institutional. Institutional protocol: 4F-PCC 2000 units IV first-line. PCC shows similar efficacy to andexanet (Panos et al. Crit Care Med 2025). Consult Hematology ATTENDING for complex cases or if PCC ineffective.',
+              recommendation: 'Administer 4F-PCC (Kcentra) 2000 units IVPB for ICH on apixaban/rivaroxaban/edoxaban (local protocol).',
+              detail: 'AHA/ASA 2022 lists andexanet alfa as Class IIa (LOE B-NR) for Xa inhibitor-associated ICH. 4F-PCC 2000 units IV is a common first-line approach when andexanet is unavailable. PCC shows similar efficacy to andexanet (Panos et al. Crit Care Med 2025). Consult Hematology attending for complex cases or if PCC ineffective.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
-              guideline: 'AHA/ASA Spontaneous ICH 2022 (modified per institutional protocol)',
+              guideline: 'AHA/ASA Spontaneous ICH 2022 (modified per local protocol)',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
-              medications: ['4F-PCC (Kcentra) 2000 units IV immediately (institutional first-line)', 'Andexanet alfa NOT available at institutional (Class IIa per AHA/ASA 2022)'],
+              medications: ['4F-PCC (Kcentra) 2000 units IV immediately (first-line)', 'Andexanet alfa (Class IIa per AHA/ASA 2022) — check local formulary availability'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
@@ -3872,8 +3848,8 @@ Clinician Name`;
               id: 'ich_vte_heparin',
               category: 'Supportive Care',
               title: 'ICH: pharmacologic VTE prophylaxis timing',
-              recommendation: 'SQ heparin 48 hours after IPH onset per institutional protocol, once hematoma is stable on repeat imaging. SCDs/IPC in the interim.',
-              detail: 'Institutional protocol: SQ heparin at 48h after ICH onset. Use SCDs/IPC immediately on admission until pharmacologic prophylaxis initiated. AHA/ASA 2022: Low-dose UFH or LMWH at 24-48h may be reasonable (Class IIb). Balance thrombosis prevention against hematoma expansion risk; obtain a stability CT before starting.',
+              recommendation: 'SQ heparin 48 hours after IPH onset per local protocol, once hematoma is stable on repeat imaging. SCDs/IPC in the interim.',
+              detail: 'Suggested protocol: SQ heparin at 48h after ICH onset. Use SCDs/IPC immediately on admission until pharmacologic prophylaxis initiated. AHA/ASA 2022: Low-dose UFH or LMWH at 24-48h may be reasonable (Class IIb). Balance thrombosis prevention against hematoma expansion risk; obtain a stability CT before starting.',
               classOfRec: 'IIb',
               levelOfEvidence: 'C-LD',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -4121,10 +4097,10 @@ Clinician Name`;
               category: 'Secondary Prevention',
               title: 'ADAMTS13 testing in cryptogenic stroke workup',
               recommendation: 'Consider ADAMTS13 testing in cryptogenic stroke patients age <50 with platelet count <300K. Order when considering antiphospholipid testing (same trigger).',
-              detail: 'Institutional protocol: TTP can present as cryptogenic stroke without classic hematologic findings. ADAMTS13 <30% → emergent hematology consult for plasma exchange. Lab: reference lab (see contact directory), run M/W/F, samples before noon result same day. Send BEFORE day of discharge — low result requires emergent readmission.',
+              detail: 'Suggested protocol: TTP can present as cryptogenic stroke without classic hematologic findings. ADAMTS13 <30% → emergent hematology consult for plasma exchange. Lab: reference lab (see contact directory), run M/W/F, samples before noon result same day. Send BEFORE day of discharge — low result requires emergent readmission.',
               classOfRec: 'IIb',
               levelOfEvidence: 'C-LD',
-              guideline: 'Institutional Protocol; AHA/ASA Secondary Prevention 2021',
+              guideline: 'Local Protocol; AHA/ASA Secondary Prevention 2021',
               reference: 'Matthews et al. J Stroke Cerebrovasc Dis. 2022;31(6):106431. Chiasakul & Cuker. Hematology. 2018.',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
@@ -4139,11 +4115,11 @@ Clinician Name`;
               category: 'EVT',
               title: 'Direct-to-angio for stable LVO transfers',
               recommendation: 'For medically and neurologically STABLE transfer patients with LVO and last neuroimaging <3h who did NOT receive lytics: consider direct-to-angio (bypass repeat imaging in ED).',
-              detail: 'Institutional protocol: Goal door-to-puncture ≤45 min for transfer LVO cases. Assessment at triage by ED, Neuro, and IR. If all deem patient stable → transport directly to IR suite. Does NOT apply to: (1) clinical improvement with NIHSS <6, (2) neurologic worsening (NIHSS increase ≥4), (3) patients who received lytics at OSH, (4) unstable medical issues. Applies to transfers from network sites and other transfer sites.',
+              detail: 'Suggested protocol: Goal door-to-puncture ≤45 min for transfer LVO cases. Assessment at triage by ED, Neuro, and IR. If all deem patient stable → transport directly to IR suite. Does NOT apply to: (1) clinical improvement with NIHSS <6, (2) neurologic worsening (NIHSS increase ≥4), (3) patients who received lytics at OSH, (4) unstable medical issues. Applies to transfers from network sites and other transfer sites.',
               classOfRec: 'IIa',
               levelOfEvidence: 'C-EO',
-              guideline: 'Institutional Protocol',
-              reference: 'Institutional: Direct to Angio for LVO pts without lytics and within 3h of last neuroimaging.',
+              guideline: 'Local Protocol',
+              reference: 'Direct to Angio for LVO pts without lytics and within 3h of last neuroimaging.',
               conditions: (data) => {
                 const vessels = data.telestrokeNote?.vesselOcclusion || [];
                 const hasLVO = vessels.some(v => /ica|m1|basilar/i.test(v));
@@ -4156,10 +4132,10 @@ Clinician Name`;
               category: 'Acute',
               title: 'Neurosurgery consultation protocol',
               recommendation: 'Stroke phone attending must approve ALL neurosurgery consultations for IPH or ischemic stroke. No curbside/heads-up/FYI calls. Neurology resident evaluates first, then discusses with stroke phone attending.',
-              detail: 'Institutional protocol: (1) Neurology resident evaluates patient and discusses with stroke phone attending before ANY neurosurgery consult. (2) If stroke attending recommends against surgery → do NOT consult neurosurgery. (3) If disagreement → stroke attending and trauma neurosurgery attending discuss by phone. (4) Do NOT recommend surgical procedures to families without finalized, mutually agreed plan with neurosurgery. Trauma neurosurgery attending: via hospital operator or EMR On-Call Finder.',
+              detail: 'Suggested protocol: (1) Neurology resident evaluates patient and discusses with stroke phone attending before ANY neurosurgery consult. (2) If stroke attending recommends against surgery → do NOT consult neurosurgery. (3) If disagreement → stroke attending and trauma neurosurgery attending discuss by phone. (4) Do NOT recommend surgical procedures to families without finalized, mutually agreed plan with neurosurgery. Trauma neurosurgery attending: via hospital operator or on-call scheduling system.',
               classOfRec: 'N/A',
               levelOfEvidence: 'N/A',
-              guideline: 'Institutional Protocol',
+              guideline: 'Local Protocol',
               reference: 'Communication with Neurosurgery protocol.',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
@@ -4272,7 +4248,7 @@ Clinician Name`;
               category: 'Supportive Care',
               title: 'VTE prophylaxis',
               recommendation: 'IPC/SCDs on admission. Post-lytic: SQ heparin at 24h (after stable follow-up imaging). Post-ICH: SQ heparin at 48h (after stable repeat imaging). SCDs in the interim.',
-              detail: 'Institutional protocol: Post-thrombolysis — SQ heparin 24h after lytic administration, after follow-up CT shows no hemorrhage. Post-ICH — SQ heparin 48h after IPH onset, after stability CT. IPC/SCDs should be placed on admission for all immobile stroke patients and continued until pharmacologic prophylaxis initiated.',
+              detail: 'Suggested protocol: Post-thrombolysis — SQ heparin 24h after lytic administration, after follow-up CT shows no hemorrhage. Post-ICH — SQ heparin 48h after IPH onset, after stability CT. IPC/SCDs should be placed on admission for all immobile stroke patients and continued until pharmacologic prophylaxis initiated.',
               classOfRec: 'I',
               levelOfEvidence: 'B-R',
               guideline: 'AHA Systemic Complications of Acute Stroke 2024',
@@ -5176,12 +5152,12 @@ Clinician Name`;
               category: 'EVT',
               title: 'MeVO/distal occlusion EVT: NOT recommended routinely (exceptions below)',
               recommendation: 'EVT for M2-M4 MCA, ACA, and PCA occlusions is NOT recommended routinely (2025 trial data). EXCEPTION: Consider EVT in select cases of proximal/dominant M2 segment MCA occlusion ≤1cm of bifurcation when salvageable tissue present and LKW ≤24h.',
-              detail: 'Institutional protocol: MeVO — consider in select proximal or dominant M2 segment MCA occlusion ≤1cm of bifurcation in horizontal segment when there is evidence of salvageable tissue + LKW ≤24h. NOT recommended for M2-M4 MCA, ACA, and PCA occlusions. Trial data: ESCAPE-MeVO (NEJM 2025, n=530): No benefit of EVT for MeVO. Higher mortality in EVT group (13.3% vs 8.4%, HR 1.82). sICH higher (5.4% vs 2.2%). DISTAL (n=543): No benefit. DISCOUNT: Consistent negative results. Flag M2/M3 patients for clinical trial enrollment (e.g., STEP trial).',
+              detail: 'Suggested protocol: MeVO — consider in select proximal or dominant M2 segment MCA occlusion ≤1cm of bifurcation in horizontal segment when there is evidence of salvageable tissue + LKW ≤24h. NOT recommended for M2-M4 MCA, ACA, and PCA occlusions. Trial data: ESCAPE-MeVO (NEJM 2025, n=530): No benefit of EVT for MeVO. Higher mortality in EVT group (13.3% vs 8.4%, HR 1.82). sICH higher (5.4% vs 2.2%). DISTAL (n=543): No benefit. DISCOUNT: Consistent negative results. Flag M2/M3 patients for clinical trial enrollment (e.g., STEP trial).',
               classOfRec: 'III',
               levelOfEvidence: 'B-R',
               guideline: 'ESCAPE-MeVO (NEJM 2025); DISTAL (2025); DISCOUNT (2025)',
               reference: 'ESCAPE-MeVO: NEJM 2025. DISTAL: 2025. DISCOUNT: 2025.',
-              caveats: 'Institutional protocol permits consideration of proximal M2 EVT in highly select cases. Discuss with neurointerventionalist.',
+              caveats: 'Local protocol may permit consideration of proximal M2 EVT in highly select cases. Discuss with neurointerventionalist.',
               conditions: (data) => {
                 const vessels = data.telestrokeNote?.vesselOcclusion || [];
                 return vessels.some(v => /m2|m3|m4|distal|mevo|medium vessel/i.test(v));
@@ -5215,10 +5191,10 @@ Clinician Name`;
               category: 'EVT',
               title: 'Post-thrombectomy follow-up imaging (DECT/NCCT)',
               recommendation: 'Routine 24h NCCT (or DECT if available) for all post-EVT patients. Immediate NCCT/DECT if clinical deterioration, concern for ICH, or failed recanalization.',
-              detail: 'Institutional protocol: Post-thrombectomy imaging — (1) IMMEDIATE NCCT/DECT: clinical deterioration (new deficit, declining GCS), concern for hemorrhage, failed recanalization (mTICI 0-2a), or any symptomatic change. (2) ROUTINE 24h NCCT/DECT: stable patients with successful recanalization (mTICI 2b-3) — assess for hemorrhagic transformation before initiating antithrombotics. DECT advantage: dual-energy CT distinguishes iodine contrast staining from true hemorrhage, avoiding unnecessary delays in antithrombotic initiation. If DECT shows contrast staining only (no hemorrhage), may consider earlier antithrombotic start per neurointerventionalist recommendation.',
+              detail: 'Suggested protocol: Post-thrombectomy imaging — (1) IMMEDIATE NCCT/DECT: clinical deterioration (new deficit, declining GCS), concern for hemorrhage, failed recanalization (mTICI 0-2a), or any symptomatic change. (2) ROUTINE 24h NCCT/DECT: stable patients with successful recanalization (mTICI 2b-3) — assess for hemorrhagic transformation before initiating antithrombotics. DECT advantage: dual-energy CT distinguishes iodine contrast staining from true hemorrhage, avoiding unnecessary delays in antithrombotic initiation. If DECT shows contrast staining only (no hemorrhage), may consider earlier antithrombotic start per neurointerventionalist recommendation.',
               classOfRec: 'I',
               levelOfEvidence: 'C-EO',
-              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026; Institutional Protocol',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026; Local Protocol',
               reference: 'Powers WJ et al. Stroke. 2026.',
               conditions: (data) => {
                 return !!data.telestrokeNote?.evtRecommended;
@@ -5321,7 +5297,7 @@ Clinician Name`;
               category: 'Acute',
               title: 'Enoxaparin preferred over UFH for VTE prophylaxis',
               recommendation: 'Enoxaparin preferred over UFH for pharmacologic VTE prophylaxis. Post-lytic: start at 24h after stable imaging. Post-ICH: start at 48h after stable imaging. SCDs until then.',
-              detail: 'Institutional protocol: SQ heparin 24h after lytic, 48h after IPH. SCDs/IPC in the interim. PREVAIL trial: enoxaparin 40mg SC daily reduced VTE from 16% to 8.1% vs UFH. Duration: 10-14 days or until independently mobile. Anti-Xa monitoring (0.2-0.5 IU/mL) for BMI >40 or CrCl <30.',
+              detail: 'Suggested protocol: SQ heparin 24h after lytic, 48h after IPH. SCDs/IPC in the interim. PREVAIL trial: enoxaparin 40mg SC daily reduced VTE from 16% to 8.1% vs UFH. Duration: 10-14 days or until independently mobile. Anti-Xa monitoring (0.2-0.5 IU/mL) for BMI >40 or CrCl <30.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'PREVAIL; AHA/ASA 2019; ACCP 9th Ed',
@@ -6304,7 +6280,7 @@ Clinician Name`;
           };
 
           // =================================================================
-          // PCC DOSE CALCULATOR (AHA weight-based reference alongside institutional)
+          // PCC DOSE CALCULATOR (AHA weight-based reference alongside fixed-dose)
           // =================================================================
           const calculatePCCDose = (weightKg, inrVal) => {
             const weight = parseFloat(weightKg);
@@ -6315,7 +6291,7 @@ Clinician Name`;
             else if (!isNaN(inr) && inr >= 4 && inr <= 6) iuPerKg = 35;
             else if (!isNaN(inr) && inr > 6) iuPerKg = 50;
             const ahaDose = iuPerKg ? Math.min(Math.round(weight * iuPerKg), 5000) : null;
-            return { institutional: 2000, ahaDose, iuPerKg, weight };
+            return { fixedDose: 2000, ahaDose, iuPerKg, weight };
           };
 
           // =================================================================
@@ -8875,7 +8851,7 @@ Clinician Name`;
 
               if (occlusion === 'mvo-dominant') {
                 if ((window === '0-6' || window === '6-24') && mrs === '0-1') {
-                  return { classOfRec: 'IIb', label: 'EVT may be considered (select cases)', color: 'amber', rationale: ['Proximal/dominant M2 ≤1cm of bifurcation, salvageable tissue present, LKW ≤24h (institutional protocol)'] };
+                  return { classOfRec: 'IIb', label: 'EVT may be considered (select cases)', color: 'amber', rationale: ['Proximal/dominant M2 ≤1cm of bifurcation, salvageable tissue present, LKW ≤24h (local protocol)'] };
                 }
                 return result;
               }
@@ -8914,7 +8890,7 @@ Clinician Name`;
                   return result;
                 }
                 if (aspects === '0-2') {
-                  if (mrs === '0-1') return { classOfRec: 'IIb', label: 'EVT may be considered (very select cases)', color: 'amber', rationale: ['ASPECTS 0-2, mRS 0-1 — consider CTP to evaluate if core ≤70-100cc (institutional protocol)'] };
+                  if (mrs === '0-1') return { classOfRec: 'IIb', label: 'EVT may be considered (very select cases)', color: 'amber', rationale: ['ASPECTS 0-2, mRS 0-1 — consider CTP to evaluate if core ≤70-100cc (local protocol)'] };
                   return result;
                 }
               }
@@ -8924,10 +8900,10 @@ Clinician Name`;
                   return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 6-10, mRS 0-1, NIHSS ≥6 (DAWN/DEFUSE-3)'] };
                 }
                 if (aspects === '3-5' && mrs === '0-1') {
-                  return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1 — consider CTP: core ≤100cc + mismatch present (institutional protocol)'] };
+                  return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1 — consider CTP: core ≤100cc + mismatch present (local protocol)'] };
                 }
                 if (aspects === '0-2') {
-                  return { classOfRec: 'IDD', label: 'EVT benefit unclear', color: 'slate', rationale: ['ASPECTS 0-2 in late window — EVT benefit is unclear (institutional protocol)'] };
+                  return { classOfRec: 'IDD', label: 'EVT benefit unclear', color: 'slate', rationale: ['ASPECTS 0-2 in late window — EVT benefit is unclear (local protocol)'] };
                 }
                 return result;
               }
@@ -9318,7 +9294,7 @@ Clinician Name`;
                 const pccDoseNote = pccRef && pccRef.ahaDose ? ` [AHA weight-based: ${pccRef.ahaDose} units (${pccRef.iuPerKg} IU/kg)]` : '';
                 reversalOrders.push(
                   'Vitamin K 10 mg IV',
-                  `4F-PCC (Kcentra) 2000 units IV immediately (institutional fixed-dose protocol)${pccDoseNote}`,
+                  `4F-PCC (Kcentra) 2000 units IV immediately (fixed-dose protocol)${pccDoseNote}`,
                   inrTier,
                   'Recheck PT/INR at 30 min and q6h x 24h post-PCC',
                   'If INR >1.5 after PCC: page Hematology, consider 500 units PCC or 2-4 units FFP',
@@ -9337,11 +9313,11 @@ Clinician Name`;
                 reversalOrders.push(
                   'Assessment: STAT Direct Xa Inhibitor Screen — normal excludes significant anticoagulant effect',
                   'If ingestion <2h: activated charcoal (oral)',
-                  '4F-PCC (Kcentra) 2000 units IV immediately (institutional protocol)',
+                  '4F-PCC (Kcentra) 2000 units IV immediately (local protocol)',
                   'Recheck Direct Xa Inhibitor screen after PCC',
-                  'Andexanet alfa is NOT available at institutional. PCC is first-line.',
+                  'Andexanet alfa may not be available at all centers — check local formulary. PCC is first-line.',
                   'If renal failure: consider emergent dialysis (rivaroxaban 33%, edoxaban 50% renal clearance; apixaban not dialyzable)',
-                  'If PCC contraindicated: consult Hematology ATTENDING'
+                  'If PCC contraindicated: consult Hematology attending'
                 );
               } else if (onHeparin) {
                 reversalOrders.push(
@@ -9361,7 +9337,7 @@ Clinician Name`;
                   'Note: protamine only partially reverses LMWH (~60% anti-Xa neutralization)'
                 );
               }
-              // Additional blood product thresholds (institutional protocol 9/2025)
+              // Additional blood product thresholds
               reversalOrders.push(
                 '--- Additional Products (check labs) ---',
                 'If fibrinogen <125 mg/dL → 2 pools cryoprecipitate (10 individual units)',
@@ -9389,13 +9365,13 @@ Clinician Name`;
             if (isIschemic || isICH) {
               const vteOrders = ['Intermittent pneumatic compression (IPC) bilateral lower extremities — apply on admission'];
               if (isIschemic && n.tnkAdminTime) {
-                vteOrders.push('Pharmacologic VTE prophylaxis: HOLD 24 hours post-lytic (institutional protocol)');
+                vteOrders.push('Pharmacologic VTE prophylaxis: HOLD 24 hours post-lytic (local protocol)');
                 vteOrders.push('After 24h + stable follow-up CT: Enoxaparin 40 mg SC daily (or Heparin 5000 units SC q8h if CrCl <30)');
               } else if (isIschemic) {
                 vteOrders.push('Enoxaparin 40 mg SC daily (start within 24h if immobile)');
                 vteOrders.push('If CrCl <30: Heparin 5000 units SC q8h');
               } else if (isICH) {
-                vteOrders.push('Pharmacologic VTE prophylaxis: HOLD 48 hours after IPH onset (institutional protocol)');
+                vteOrders.push('Pharmacologic VTE prophylaxis: HOLD 48 hours after IPH onset (local protocol)');
                 vteOrders.push('After 48h + hematoma stability on repeat CT: Enoxaparin 40 mg SC daily (or Heparin 5000 units SC q8h if CrCl <30)');
               }
               if (weight > 100) vteOrders.push(`Weight ${weight} kg — consider enoxaparin 40 mg SC q12h for BMI-based dosing`);
@@ -11207,14 +11183,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             return () => window.removeEventListener('keydown', handleKeyDown);
           }, []);
 
-          const topLinks = [
-            { label: 'Regional Hospitals', url: 'https://rkalani1.github.io/telestroke-expansion-map/' },
-            { label: 'Stroke Clinic Pre-Visit Questionnaire', url: 'https://rkalani1.github.io/stroke-clinic-q/' }
-          ];
-          const encounterQuickLinks = [
-            { label: 'Pulsara', url: 'https://us-app.pulsara.com/user/login' },
-            { label: 'Teladoc Imaging', url: 'https://urldefense.com/v3/__https:/imaging.visitnow.org/studies__;!!K-Hz7m0Vt54!nECcOahuNh21d0jzlVH-mSie_Il2fvDWCKseicWktKKQwdj4xk9XfAX2s8QyVGAs0n-NvzXDLAHKDw%24' }
-          ];
+          const topLinks = [];
+          const encounterQuickLinks = [];
           const userQuickLinks = Array.isArray(settings.quickLinks) ? settings.quickLinks : [];
           const quickLinks = [...encounterQuickLinks, ...userQuickLinks, ...appConfig.institutionLinks].reduce((acc, link) => {
             if (!link || !link.url) return acc;
@@ -15476,7 +15446,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   { id: 'lowPlatelets', label: 'Platelet count <100,000', note: null },
                                   { id: 'warfarinElevatedINR', label: 'Warfarin use with PT >15s, INR >1.7, or aPTT >40s', note: null },
                                   { id: 'recentHeparin', label: 'Treatment-dose heparin/LMWH', note: '<24 hours' },
-                                  { id: 'unrupturedAneurysm10mm', label: 'Unruptured unsecured intracranial aneurysm >10mm', note: 'per institutional protocol' }
+                                  { id: 'unrupturedAneurysm10mm', label: 'Unruptured unsecured intracranial aneurysm >10mm', note: 'per local protocol' }
                                 ];
 
                                 const relativeContraindications = [
@@ -16390,7 +16360,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 <div>
                                   <h4 className="font-semibold text-emerald-700 mb-2">Anterior Circulation Large Vessel Occlusion:</h4>
-                                  <p className="text-xs text-slate-600 mb-2">institutional protocol + SVIN 2025 large-core guidance (baseline mRS 0-1, age 18-80).</p>
+                                  <p className="text-xs text-slate-600 mb-2">local protocol + SVIN 2025 large-core guidance (baseline mRS 0-1, age 18-80).</p>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
                                     <div className="bg-white p-2 rounded border">
                                       <p className="font-semibold text-emerald-700 text-xs mb-1">Early Window (0-6h):</p>
@@ -25014,7 +24984,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           );
                         })()}
                         <div className="mt-2 p-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">
-                          <strong>Institutional note:</strong> First-line Xa inhibitor reversal is 4F-PCC (Kcentra) 2000 units IVPB per institutional protocol. AHA/ASA 2022 ICH Guidelines list andexanet alfa as Class IIa ("reasonable") for Xa inhibitor-associated ICH. Consider andexanet if PCC unavailable, ineffective, or contraindicated. Monitor for thrombotic events (11% in ANNEXA-4).
+                          <strong>Practice note:</strong> First-line Xa inhibitor reversal is 4F-PCC (Kcentra) 2000 units IVPB. AHA/ASA 2022 ICH Guidelines list andexanet alfa as Class IIa ("reasonable") for Xa inhibitor-associated ICH. Consider andexanet if PCC unavailable, ineffective, or contraindicated. Monitor for thrombotic events (11% in ANNEXA-4).
                         </div>
                         <p className="text-xs text-slate-500 mt-1">ANNEXA-4 trial. Low-dose if last DOAC &ge;8h ago (or apixaban &le;5mg). High-dose if last dose &lt;8h ago (or rivaroxaban &gt;10mg, apixaban &gt;5mg). Monitor for thrombotic events post-reversal.</p>
                       </div>
