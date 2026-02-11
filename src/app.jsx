@@ -74,6 +74,14 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           { id: 'uw-rad-coord', label: 'UW Reading Room Coordinator', phone: '206-597-4249', note: 'UW Montlake, Days 0800-1700' },
           { id: 'uw-neurorad-fellow', label: 'UW Neuro Rad Fellow', phone: '206-598-7959', note: 'UW Montlake, Days 0700-1900' },
           { id: 'uw-neurorad-resident', label: 'UW Neuro Rad Resident', phone: '206-598-2068', note: 'UW Montlake, Evenings 1700-0700' },
+          // Transfusion Support Services
+          { id: 'hmc-transfusion', label: 'HMC Transfusion Services', phone: '206-744-3088', note: 'HMC — for coagulopathy reversal' },
+          { id: 'uw-ml-transfusion', label: 'UW-ML Transfusion Services', phone: '206-598-6240', note: 'UW Montlake' },
+          { id: 'uw-nw-transfusion', label: 'UW-NW Transfusion Services', phone: '206-668-2030', note: 'UW Northwest' },
+          // Transfer / Pediatric
+          { id: 'uw-nw-transfer', label: 'UW-NW Transfer Center', phone: '206-520-7575', note: 'UW MC-NW stroke referrals' },
+          { id: 'sch-mission', label: 'Seattle Children\'s Mission Control', phone: '206-987-8899', note: 'Pediatric stroke transfers, consults' },
+          { id: 'bloodworks-adamts13', label: 'BloodWorks NW (ADAMTS13)', phone: '206-689-6543', note: 'ADAMTS13 testing M/W/F, samples before noon' },
           // IT
           { id: 'it-helpdesk', label: 'IT Services Help Desk', phone: '206-520-2200', note: 'Stroke phone issues' }
         ];
@@ -2010,12 +2018,12 @@ Clinician Name`;
             BERINERT: {
               title: 'C1 Esterase Inhibitor (Berinert)',
               dosing: '20 IU/kg IV.',
-              note: 'Plasma-derived C1 esterase inhibitor. For refractory angioedema.'
+              note: 'Plasma-derived C1 esterase inhibitor. Per institutional protocol (Rev 11/2025): for refractory orolingual angioedema associated with IV thrombolytic. Refer to Epic Order set → IV Thrombolytic option: Management of Orolingual Angioedema.'
             },
             HYDROCORT: {
               title: 'Hydrocortisone',
-              dosing: '200 mg IV.',
-              note: 'For contrast allergy premedication in suspected LVO patients. Alternative: methylprednisolone 40 mg IV.'
+              dosing: '200 mg IV (OR Methylprednisolone 40 mg IV).',
+              note: 'Institutional LVO contrast allergy protocol: Immediately prior to contrast, give Hydrocortisone 200mg IV OR Methylprednisolone 40mg + Diphenhydramine 50mg IV. Requires pre-approval from Stroke phone, Emergency MD, AND Neuroradiology. Excludes known contrast-related anaphylaxis (cardiovascular collapse). Document consent + approving physicians.'
             },
             RANITIDINE: {
               title: 'Ranitidine/Famotidine',
@@ -2025,14 +2033,14 @@ Clinician Name`;
             PROT1: {
               title: 'Protamine (UFH)',
               classOfRec: 'Class IIa',
-              dosing: '1 mg per 100 units of heparin in last 2-3h (max 50 mg).',
-              note: 'Titrate to last heparin dose/time.'
+              dosing: '25 mg IV immediately. If anti-Xa >0.1 after infusion → additional 10 mg (max cumulative 55 mg). (COR 2a/C)',
+              note: 'Institutional protocol (9/2025): Check anti-Xa level. If platelets <100K, send HIT antibodies and consult Hematology if positive.'
             },
             PROT2: {
               title: 'Protamine (LMWH)',
               classOfRec: 'Class IIb',
-              dosing: 'Enoxaparin: 1 mg protamine per 1 mg enoxaparin if <8h; 0.5 mg per 1 mg if 8-12h.',
-              note: 'Second dose may be considered if ongoing bleeding.'
+              dosing: 'Last dose <8h: Protamine 50 mg IV. Last dose 8-24h: Protamine 25 mg IV. Last dose >24h: no reversal indicated. (COR 2b/C)',
+              note: 'Institutional protocol (9/2025): Protamine only partially reverses LMWH (~60% anti-Xa neutralization). Second dose may be considered if ongoing bleeding.'
             },
             NICARDIPINE: {
               title: 'Nicardipine (Cardene)',
@@ -2760,7 +2768,7 @@ Clinician Name`;
               ichReversal: {
                 primary: '4-Factor PCC (Kcentra) 2000 units IVPB (institutional protocol) or 50 IU/kg (max 5000 IU)',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Institutional protocol: 4F-PCC first-line. AHA/ASA 2022 ICH Guidelines list andexanet alfa as Class IIa ("reasonable") for Xa inhibitor-associated ICH. Consider andexanet if PCC unavailable or ineffective. Discuss with Hematology.'
+                note: 'Institutional protocol: 4F-PCC 2000 units IV first-line. Andexanet alfa is NOT available at UW Medicine. AHA/ASA 2022 lists andexanet as Class IIa but PCC shows similar efficacy (Panos et al. Crit Care Med 2025). Discuss with Hematology if PCC ineffective.'
               },
               monitoring: 'Anti-Xa level (calibrated for apixaban)'
             },
@@ -2774,7 +2782,7 @@ Clinician Name`;
               ichReversal: {
                 primary: '4-Factor PCC (Kcentra) 2000 units IVPB (institutional protocol) or 50 IU/kg (max 5000 IU)',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Institutional protocol: 4F-PCC first-line. AHA/ASA 2022 ICH Guidelines list andexanet alfa as Class IIa ("reasonable") for Xa inhibitor-associated ICH. Consider andexanet if PCC unavailable or ineffective. Discuss with Hematology.'
+                note: 'Institutional protocol: 4F-PCC 2000 units IV first-line. Andexanet alfa is NOT available at UW Medicine. AHA/ASA 2022 lists andexanet as Class IIa but PCC shows similar efficacy (Panos et al. Crit Care Med 2025). Discuss with Hematology if PCC ineffective.'
               },
               monitoring: 'Anti-Xa level (calibrated for rivaroxaban)'
             },
@@ -3780,13 +3788,13 @@ Clinician Name`;
               category: 'Reversal',
               title: 'Factor Xa inhibitor reversal in ICH',
               recommendation: 'Administer 4F-PCC (Kcentra) 2000 units IVPB for ICH on apixaban/rivaroxaban/edoxaban (institutional protocol).',
-              detail: 'AHA/ASA 2022 lists andexanet alfa as Class IIa (LOE B-NR) for Xa inhibitor-associated ICH. Institutional protocol favors PCC first-line due to cost, availability, and lower thrombotic risk. Andexanet remains a reasonable alternative, especially if PCC unavailable or ineffective. Consult Hematology for complex cases.',
+              detail: 'AHA/ASA 2022 lists andexanet alfa as Class IIa (LOE B-NR) for Xa inhibitor-associated ICH. Andexanet is NOT available at UW Medicine. Institutional protocol: 4F-PCC 2000 units IV first-line. PCC shows similar efficacy to andexanet (Panos et al. Crit Care Med 2025). Consult Hematology ATTENDING for complex cases or if PCC ineffective.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022 (modified per institutional protocol)',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
-              medications: ['4F-PCC (Kcentra) 2000 units IVPB (institutional first-line)', 'Andexanet alfa (Class IIa per AHA/ASA 2022 — consider if PCC unavailable/ineffective)'],
+              medications: ['4F-PCC (Kcentra) 2000 units IV immediately (institutional first-line)', 'Andexanet alfa NOT available at UW Medicine (Class IIa per AHA/ASA 2022)'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
@@ -4103,6 +4111,60 @@ Clinician Name`;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const age = parseInt(data.telestrokeNote?.age) || 0;
                 return (dx.includes('cryptogenic') || dx.includes('pfo') || dx.includes('esus')) && age >= 18 && age <= 60;
+              }
+            },
+
+            adamts13_cryptogenic: {
+              id: 'adamts13_cryptogenic',
+              category: 'Secondary Prevention',
+              title: 'ADAMTS13 testing in cryptogenic stroke workup',
+              recommendation: 'Consider ADAMTS13 testing in cryptogenic stroke patients age <50 with platelet count <300K. Order when considering antiphospholipid testing (same trigger).',
+              detail: 'Institutional protocol (UW Medicine): TTP can present as cryptogenic stroke without classic hematologic findings. ADAMTS13 <30% → emergent hematology consult for plasma exchange. Lab: BloodWorks NW (206-689-6543), run M/W/F, samples before noon result same day. Send BEFORE day of discharge — low result requires emergent readmission.',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'C-LD',
+              guideline: 'UW Medicine Institutional Protocol; AHA/ASA Secondary Prevention 2021',
+              reference: 'Matthews et al. J Stroke Cerebrovasc Dis. 2022;31(6):106431. Chiasakul & Cuker. Hematology. 2018.',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const age = parseInt(data.telestrokeNote?.age) || 0;
+                const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
+                return (dx.includes('cryptogenic') || dx.includes('esus') || toast === 'cryptogenic') && age < 50;
+              }
+            },
+
+            direct_to_angio: {
+              id: 'direct_to_angio',
+              category: 'EVT',
+              title: 'Direct-to-angio for stable LVO transfers',
+              recommendation: 'For medically and neurologically STABLE transfer patients with LVO and last neuroimaging <3h who did NOT receive lytics: consider direct-to-angio (bypass repeat imaging in ED).',
+              detail: 'Institutional protocol (UW Medicine): Goal door-to-puncture ≤45 min for transfer LVO cases. Assessment at triage by ED, Neuro, and IR. If all deem patient stable → transport directly to IR suite. Does NOT apply to: (1) clinical improvement with NIHSS <6, (2) neurologic worsening (NIHSS increase ≥4), (3) patients who received lytics at OSH, (4) unstable medical issues. Applies to transfers from UWML, UW-NW, and other sites.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'C-EO',
+              guideline: 'UW Medicine Institutional Protocol',
+              reference: 'Institutional: Direct to Angio for LVO pts without lytics and within 3h of last neuroimaging.',
+              conditions: (data) => {
+                const vessels = data.telestrokeNote?.vesselOcclusion || [];
+                const hasLVO = vessels.some(v => /ica|m1|basilar/i.test(v));
+                return hasLVO && !!data.telestrokeNote?.evtRecommended && !data.telestrokeNote?.tnkRecommended;
+              }
+            },
+
+            neurosurgery_communication: {
+              id: 'neurosurgery_communication',
+              category: 'Acute',
+              title: 'Neurosurgery consultation protocol',
+              recommendation: 'Stroke phone attending must approve ALL neurosurgery consultations for IPH or ischemic stroke. No curbside/heads-up/FYI calls. Neurology resident evaluates first, then discusses with stroke phone attending.',
+              detail: 'Institutional protocol (UW Medicine): (1) Neurology resident evaluates patient and discusses with stroke phone attending before ANY neurosurgery consult. (2) If stroke attending recommends against surgery → do NOT consult neurosurgery. (3) If disagreement → stroke attending and trauma neurosurgery attending discuss by phone. (4) Do NOT recommend surgical procedures to families without finalized, mutually agreed plan with neurosurgery. Trauma neurosurgery attending: via HMC operator or EMR On-Call Finder.',
+              classOfRec: 'N/A',
+              levelOfEvidence: 'N/A',
+              guideline: 'UW Medicine Institutional Protocol',
+              reference: 'Communication with Neurosurgery protocol.',
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                const isLargeIschemic = (dx.includes('ischemic') || dx.includes('stroke')) && nihss >= 15;
+                return isICH || isLargeIschemic;
               }
             },
 
@@ -8860,32 +8922,81 @@ Clinician Name`;
             const onWarfarin = meds.includes('warfarin') || meds.includes('coumadin');
             const onDabigatran = meds.includes('dabigatran') || meds.includes('pradaxa');
             const onXaI = meds.includes('apixaban') || meds.includes('eliquis') || meds.includes('rivaroxaban') || meds.includes('xarelto');
-            if (isICH && (onWarfarin || onDabigatran || onXaI)) {
+            const onHeparin = meds.includes('heparin') && !meds.includes('enoxaparin') && !meds.includes('lovenox') && !meds.includes('dalteparin');
+            const onLMWH = meds.includes('enoxaparin') || meds.includes('lovenox') || meds.includes('dalteparin') || meds.includes('tinzaparin');
+            if (isICH && (onWarfarin || onDabigatran || onXaI || onHeparin || onLMWH)) {
               const reversalOrders = [];
               if (onWarfarin) {
+                const inrVal = parseFloat(inr);
+                let inrTier = 'INR ≥2.0: 4F-PCC (COR 1/B)';
+                if (!isNaN(inrVal)) {
+                  if (inrVal >= 2.0) inrTier = `INR ${inrVal.toFixed(1)} ≥2.0 → 4F-PCC recommended (COR 1/B)`;
+                  else if (inrVal >= 1.6) inrTier = `INR ${inrVal.toFixed(1)} (1.6-1.9) → 4F-PCC recommended (COR 2b/C)`;
+                  else if (inrVal >= 1.3) inrTier = `INR ${inrVal.toFixed(1)} (1.3-1.5) → Consider 4F-PCC case-by-case (COR 2b/C)`;
+                  else inrTier = `INR ${inrVal.toFixed(1)} (<1.3) → PCC likely not needed; give Vitamin K`;
+                }
                 reversalOrders.push(
-                  'Vitamin K 10 mg IV over 20 minutes',
-                  `4F-PCC (KCentra) 25-50 IU/kg IV based on INR${inr ? ` (INR: ${inr})` : ''}`,
-                  'Recheck INR at 30-60 minutes; repeat PCC if INR >1.5',
-                  'Target INR <1.5 within 4 hours'
+                  'Vitamin K 10 mg IV',
+                  `4F-PCC (Kcentra) 2000 units IV immediately (institutional fixed-dose protocol)`,
+                  inrTier,
+                  'Recheck PT/INR at 30 min and q6h x 24h post-PCC',
+                  'If INR >1.5 after PCC: page Hematology, consider 500 units PCC or 2-4 units FFP',
+                  'If INR >1.5 at 24h: repeat Vitamin K 10 mg IV',
+                  'PCC contraindications: DIC, HIT (absolute); thrombotic event <6wk, prothrombotic condition (relative)'
                 );
               } else if (onDabigatran) {
                 reversalOrders.push(
-                  'Idarucizumab (Praxbind) 5g IV (2 x 2.5g vials, consecutive infusions)',
-                  'If idarucizumab unavailable: 4F-PCC 50 IU/kg IV',
-                  'Reversal is immediate with idarucizumab'
+                  'Assessment: STAT Thrombin Time (TT) — normal TT excludes significant dabigatran effect',
+                  'If ingestion <2h: activated charcoal (oral)',
+                  'Idarucizumab (Praxbind) 5g IV (2 x 2.5g, ≤15 min apart, each over 5-10 min)',
+                  'If idarucizumab unavailable: 4F-PCC 2000 units IV',
+                  'If renal failure: consider emergent dialysis (dabigatran 65% dialyzable)'
                 );
               } else if (onXaI) {
                 reversalOrders.push(
-                  '4F-PCC (Kcentra) 2000 units IVPB (institutional protocol)',
-                  'Recheck Direct Xa Inhibitor screen after PCC administration',
-                  'Andexanet alfa: Class IIa per AHA/ASA 2022 — consider if PCC unavailable or ineffective (institutional protocol: PCC first-line)',
-                  'If PCC contraindicated: consult Hematology'
+                  'Assessment: STAT Direct Xa Inhibitor Screen — normal excludes significant anticoagulant effect',
+                  'If ingestion <2h: activated charcoal (oral)',
+                  '4F-PCC (Kcentra) 2000 units IV immediately (institutional protocol)',
+                  'Recheck Direct Xa Inhibitor screen after PCC',
+                  'Andexanet alfa is NOT available at UW Medicine. PCC is first-line.',
+                  'If renal failure: consider emergent dialysis (rivaroxaban 33%, edoxaban 50% renal clearance; apixaban not dialyzable)',
+                  'If PCC contraindicated: consult Hematology ATTENDING'
+                );
+              } else if (onHeparin) {
+                reversalOrders.push(
+                  'Assessment: Anti-Xa level',
+                  'Protamine 25 mg IV immediately (COR 2a/C)',
+                  'Recheck anti-Xa after infusion',
+                  'If anti-Xa >0.1 → additional protamine 10 mg IV (max cumulative: 55 mg)',
+                  'If platelets <100K: send HIT antibodies, consult Hematology if positive'
+                );
+              } else if (onLMWH) {
+                reversalOrders.push(
+                  'Assessment: clinically significant hemorrhage (COR 2b/C)',
+                  'Last dose <8h: Protamine 50 mg IV',
+                  'Last dose 8-24h: Protamine 25 mg IV',
+                  'Last dose >24h: no reversal indicated',
+                  'Note: protamine only partially reverses LMWH (~60% anti-Xa neutralization)'
                 );
               }
+              // Additional blood product thresholds (institutional protocol 9/2025)
+              reversalOrders.push(
+                '--- Additional Products (check labs) ---',
+                'If fibrinogen <125 mg/dL → 2 units cryoprecipitate',
+                'If platelets <50K → 2 units platelets; 50-100K → 1 unit platelets',
+                'Antiplatelet agents: discontinue; platelet transfusion NOT recommended (PATCH, COR 3/B harm)'
+              );
+              // Monitoring
+              reversalOrders.push(
+                '--- Monitoring ---',
+                'Recheck STAT Emergency Stroke Panel 15-30 min post-reversal',
+                'Repeat PT/INR, CBC at 6h and 24h',
+                'Repeat CT Head at 6h and 24h (sooner if deterioration)'
+              );
+              const reversalLabel = onWarfarin ? 'Warfarin' : onDabigatran ? 'Dabigatran' : onXaI ? 'Xa Inhibitor' : onHeparin ? 'Heparin' : 'LMWH';
               bundles.push({
                 id: 'reversal',
-                label: `Anticoag Reversal (${onWarfarin ? 'Warfarin' : onDabigatran ? 'Dabigatran' : 'Xa Inhibitor'})`,
+                label: `Anticoag Reversal (${reversalLabel})`,
                 icon: 'shield-alert',
                 color: 'orange',
                 orders: reversalOrders
