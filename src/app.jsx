@@ -7199,8 +7199,7 @@ Clinician Name`;
                 e.preventDefault();
                 const note = generateTelestrokeNote();
                 if (note) {
-                  navigator.clipboard.writeText(note).catch(() => {});
-                  addToast('Consult note copied', 'success');
+                  copyToClipboard(note, 'consult-note');
                 }
                 return;
               }
@@ -8015,7 +8014,8 @@ Clinician Name`;
               if (transferAlerts.length > 0) {
                 note += `\nALERTS: ${transferAlerts.join('; ')}\n`;
               }
-              note += `\nRecommendations:\n${telestrokeNote.recommendationsText || '___'}\n`;
+              const txRecText = telestrokeNote.recommendationsText || '___';
+              note += `\nRecommendations:\n${txRecText.length > 500 ? txRecText.substring(0, 500) + '\n[...see full consultation note for details]' : txRecText}\n`;
               note += `\nPENDING AT TRANSFER:\n`;
               note += `- Follow-up CT: ${telestrokeNote.tnkRecommended ? '24h post-TNK' : 'Per clinical indication'}\n`;
               if (telestrokeNote.evtRecommended) note += `- EVT evaluation at receiving hub\n`;
@@ -8097,7 +8097,8 @@ Clinician Name`;
               }
               if (telestrokeNote.disposition) note += `\nDisposition: ${telestrokeNote.disposition}\n`;
               note += `\nActive issues / To-do:\n`;
-              note += `${telestrokeNote.recommendationsText || '- (none documented)'}\n`;
+              const soRecText = telestrokeNote.recommendationsText || '- (none documented)';
+              note += `${soRecText.length > 500 ? soRecText.substring(0, 500) + '\n[...see full consultation note]' : soRecText}\n`;
               return note;
             }
 
@@ -8184,7 +8185,8 @@ Clinician Name`;
               note += `   - Estimated discharge: ___\n`;
               note += `   - Disposition: ${telestrokeNote.disposition || '___'}\n`;
               note += `   - Rehab needs: ___\n\n`;
-              note += `RECOMMENDATIONS:\n${telestrokeNote.recommendationsText || '___'}\n`;
+              const progRecText2 = telestrokeNote.recommendationsText || '___';
+              note += `RECOMMENDATIONS:\n${progRecText2.length > 500 ? progRecText2.substring(0, 500) + '\n[...see full consultation note]' : progRecText2}\n`;
               return note;
             }
 
@@ -8381,7 +8383,8 @@ Clinician Name`;
               note += `- Difficulty walking or loss of balance\n`;
               note += `- Chest pain, shortness of breath, or signs of bleeding\n`;
               note += `- Call 911 immediately — do NOT drive yourself\n\n`;
-              note += `RECOMMENDATIONS:\n${telestrokeNote.recommendationsText || '___'}\n`;
+              const dischRecText = telestrokeNote.recommendationsText || '___';
+              note += `RECOMMENDATIONS:\n${dischRecText.length > 500 ? dischRecText.substring(0, 500) + '\n[...see full consultation note]' : dischRecText}\n`;
               return note;
             }
 
@@ -8431,6 +8434,11 @@ Clinician Name`;
             note = note.replace(/{diagnosis}/g, telestrokeNote.diagnosis || '');
             note = note.replace(/{tnkAdminTime}/g, formatTime(telestrokeNote.tnkAdminTime));
             note = note.replace(/{recommendationsText}/g, telestrokeNote.recommendationsText || '');
+            // Strip TNK narrative block if TNK was not recommended (prevents false clinical statements)
+            if (!telestrokeNote.tnkRecommended) {
+              note = note.replace(/After ensuring that there were no evident contraindications.*?brief time-out\.\n?/s, '');
+              note = note.replace(/BP prior to TNK administration:.*?\n/g, '');
+            }
             // Remove any unreplaced template placeholders (e.g., user-added custom fields)
             note = note.replace(/\{[a-zA-Z0-9_]+\}/g, '');
 
@@ -13810,9 +13818,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <button
                                 onClick={() => {
                                   const note = buildSmartNote();
-                                  navigator.clipboard.writeText(note).catch(() => {});
-                                  setCopiedText('smart-note');
-                                  setTimeout(() => setCopiedText(''), 2000);
+                                  copyToClipboard(note, 'smart-note');
                                 }}
                                 className="flex items-center gap-2 px-3 py-1.5 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors"
                               >
@@ -13829,9 +13835,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <button
                             onClick={() => {
                               const note = generateTelestrokeNote();
-                              navigator.clipboard.writeText(note).catch(() => {});
-                              setCopiedText('telephone-note');
-                              setTimeout(() => setCopiedText(''), 2000);
+                              copyToClipboard(note, 'telephone-note');
                             }}
                             className="w-full px-4 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium flex items-center justify-center gap-2"
                           >
@@ -13869,8 +13873,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 if (lkwTime) hpi += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
                                 if (telestrokeNote.medications) hpi += `Medications: ${telestrokeNote.medications}\n`;
                                 if (telestrokeNote.lastDOACType) hpi += `Anticoag: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType}${telestrokeNote.lastDOACDose ? `, last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()}` : ''}\n`;
-                                navigator.clipboard.writeText(hpi).catch(() => {});
-                                setCopiedText('tel-hpi'); setTimeout(() => setCopiedText(''), 2000);
+                                copyToClipboard(hpi, 'tel-hpi');
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-hpi' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
@@ -13882,8 +13885,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 let exam = `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
                                 if (telestrokeNote.nihssDetails) exam += ` (${telestrokeNote.nihssDetails})`;
                                 exam += `\nBP: ${telestrokeNote.presentingBP || 'N/A'}, Glucose: ${telestrokeNote.glucose || 'N/A'}, INR: ${telestrokeNote.inr || 'N/A'}, Plt: ${telestrokeNote.plateletCount || 'N/A'}`;
-                                navigator.clipboard.writeText(exam).catch(() => {});
-                                setCopiedText('tel-exam'); setTimeout(() => setCopiedText(''), 2000);
+                                copyToClipboard(exam, 'tel-exam');
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-exam' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
@@ -13897,8 +13899,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 mdm += `EVT: ${telestrokeNote.evtRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
                                 if (telestrokeNote.rationale) mdm += `Rationale: ${telestrokeNote.rationale}\n`;
                                 if (telestrokeNote.disposition) mdm += `Disposition: ${telestrokeNote.disposition}\n`;
-                                navigator.clipboard.writeText(mdm).catch(() => {});
-                                setCopiedText('tel-mdm'); setTimeout(() => setCopiedText(''), 2000);
+                                copyToClipboard(mdm, 'tel-mdm');
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-mdm' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
@@ -13910,8 +13911,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {(
                           <button
                             onClick={() => {
-                              navigator.clipboard.writeText(generateFollowUpBrief()).catch(() => {});
-                              setCopiedText('tel-followup'); setTimeout(() => setCopiedText(''), 2000);
+                              copyToClipboard(generateFollowUpBrief(), 'tel-followup');
                             }}
                             className={`w-full mt-2 px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-followup' ? 'bg-emerald-600 text-white' : 'bg-blue-100 text-blue-800 hover:bg-blue-200 border border-blue-300'}`}
                           >
@@ -15898,8 +15898,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 <button onClick={() => {
                                   const consentDoc = `EVT CONSENT DOCUMENTATION:\nMechanical thrombectomy was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${telestrokeNote.nihss || nihssScore || '***'}, vessel occlusion: ${(telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ') || '***'}).\nRisks discussed: intracranial hemorrhage (~5-6%), vessel injury, anesthesia complications, and the possibility that the procedure may not be successful.\nBenefits discussed: significantly improved chance of functional independence (NNT 3-4 based on pivotal trials).\nAlternatives discussed: medical management alone (associated with worse outcomes in setting of LVO).\nConsent: ${(telestrokeNote.consentKit || {}).evtConsentType === 'informed-consent' ? 'Informed consent obtained from patient/family' : (telestrokeNote.consentKit || {}).evtConsentType === 'presumed' ? 'Presumed consent — patient unable to provide consent, no surrogate available, treatment in best interest' : (telestrokeNote.consentKit || {}).evtConsentType === 'surrogate' ? 'Consent obtained from surrogate/family member' : (telestrokeNote.consentKit || {}).evtConsentType === 'declined' ? 'Patient/family declined after informed discussion' : '***'}`;
-                                  navigator.clipboard.writeText(consentDoc).catch(() => {});
-                                  setCopiedText('evt-consent'); setTimeout(() => setCopiedText(''), 2000);
+                                  copyToClipboard(consentDoc, 'evt-consent');
                                 }}
                                   className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'evt-consent' ? 'bg-emerald-600 text-white' : 'bg-orange-600 text-white hover:bg-orange-700'}`}>
                                   <i data-lucide={copiedText === 'evt-consent' ? 'check' : 'copy'} className="w-4 h-4"></i>
@@ -15927,8 +15926,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </label>
                                 <button onClick={() => {
                                   const transferDoc = `TNK CONSENT DOCUMENTATION:\nTenecteplase was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'}.\nTreatment window: within 4.5 hours of LKW (or mismatch imaging criteria for extended window).\nRisks discussed: symptomatic intracranial hemorrhage (up to 4%), allergic reaction (rare).\nBenefits discussed: improved chance of recovery without disability; earlier treatment provides greater benefit.\nAlternatives discussed: no thrombolytic treatment (associated with higher risk of disability).\nConsent: ${telestrokeNote.patientFamilyConsent ? 'Patient/family consent obtained' : telestrokeNote.presumedConsent ? 'Presumed consent — treatment in best interest' : '***'}\n\nTRANSFER DOCUMENTATION:\nPatient being transferred to comprehensive stroke center for ${telestrokeNote.evtRecommended ? 'mechanical thrombectomy evaluation and ' : ''}higher level of care.\nTransfer rationale: ${telestrokeNote.transferRationale || '***'}\nTransfer consent: ${(telestrokeNote.consentKit || {}).transferConsentDiscussed ? 'Discussed with patient/family' : 'Pending discussion'}`;
-                                  navigator.clipboard.writeText(transferDoc).catch(() => {});
-                                  setCopiedText('transfer-consent'); setTimeout(() => setCopiedText(''), 2000);
+                                  copyToClipboard(transferDoc, 'transfer-consent');
                                 }}
                                   className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'transfer-consent' ? 'bg-emerald-600 text-white' : 'bg-sky-600 text-white hover:bg-sky-700'}`}>
                                   <i data-lucide={copiedText === 'transfer-consent' ? 'check' : 'copy'} className="w-4 h-4"></i>
@@ -15941,8 +15939,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {telestrokeNote.tnkRecommended && telestrokeNote.tnkConsentDiscussed && !telestrokeNote.evtRecommended && !telestrokeNote.transferAccepted && (
                               <button onClick={() => {
                                 const tnkDoc = `TNK CONSENT DOCUMENTATION:\nTenecteplase was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${telestrokeNote.nihss || nihssScore || '***'}).\nTreatment window: within 4.5 hours of LKW (or mismatch imaging criteria for extended window).\nRisks discussed: symptomatic intracranial hemorrhage (up to 4%), allergic reaction (rare).\nBenefits discussed: improved chance of recovery without disability; earlier treatment provides greater benefit.\nAlternatives discussed: no thrombolytic treatment (associated with higher risk of disability).\nConsent: ${telestrokeNote.patientFamilyConsent ? 'Patient/family consent obtained' : telestrokeNote.presumedConsent ? 'Presumed consent — treatment in best interest' : '***'}`;
-                                navigator.clipboard.writeText(tnkDoc).catch(() => {});
-                                setCopiedText('tnk-consent'); setTimeout(() => setCopiedText(''), 2000);
+                                copyToClipboard(tnkDoc, 'tnk-consent');
                               }}
                                 className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'tnk-consent' ? 'bg-emerald-600 text-white' : 'bg-purple-600 text-white hover:bg-purple-700'}`}>
                                 <i data-lucide={copiedText === 'tnk-consent' ? 'check' : 'copy'} className="w-4 h-4"></i>
