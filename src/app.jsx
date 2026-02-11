@@ -11776,7 +11776,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
               {/* Navigation Tabs - Desktop Only - 3 Tabs */}
               <div className="mb-4 sm:mb-6 sticky top-0 z-30 app-nav" role="navigation" aria-label="Main navigation">
-                <nav className="flex justify-around gap-0 bg-white border border-slate-200 rounded-xl p-1" role="tablist">
+                <nav className="flex justify-around gap-0 bg-white border border-slate-200 rounded-xl p-1" role="tablist" aria-label="Main sections" onKeyDown={(e) => {
+                  const tabs = ['encounter', 'management', 'trials'];
+                  const currentIndex = tabs.indexOf(activeTab);
+                  let nextIndex;
+                  if (e.key === 'ArrowRight') { e.preventDefault(); nextIndex = (currentIndex + 1) % tabs.length; }
+                  else if (e.key === 'ArrowLeft') { e.preventDefault(); nextIndex = (currentIndex - 1 + tabs.length) % tabs.length; }
+                  else if (e.key === 'Home') { e.preventDefault(); nextIndex = 0; }
+                  else if (e.key === 'End') { e.preventDefault(); nextIndex = tabs.length - 1; }
+                  if (nextIndex !== undefined) { navigateTo(tabs[nextIndex]); const el = document.getElementById(`tab-${tabs[nextIndex]}`); if (el) el.focus(); }
+                }}>
                   {[
                     { id: 'encounter', name: 'Encounter', icon: 'activity' },
                     { id: 'management', name: 'Management', icon: 'layers' },
@@ -11786,12 +11795,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     return (
                       <button
                         key={tab.id}
+                        id={`tab-${tab.id}`}
                         onClick={() => {
                           navigateTo(tab.id);
                         }}
                         className={`tab-pill py-3 sm:py-2 px-4 text-sm flex items-center space-x-2 transition-all min-h-[44px] sm:min-h-0 ${isActive ? 'active' : 'inactive'}`}
                         role="tab"
                         aria-selected={isActive}
+                        aria-controls={`tabpanel-${tab.id}`}
+                        tabIndex={isActive ? 0 : -1}
                       >
                         <i data-lucide={tab.icon} className="w-4 h-4"></i>
                         <span>{tab.name}</span>
@@ -11806,7 +11818,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                 {/* CONSOLIDATED ENCOUNTER TAB */}
                 {activeTab === 'encounter' && (
-                  <div key="encounter-tab" className="space-y-4">
+                  <div key="encounter-tab" id="tabpanel-encounter" role="tabpanel" aria-labelledby="tab-encounter" className="space-y-4">
 
                     {/* ===== PATIENT SUMMARY STRIP ===== */}
                     {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) && (
@@ -12547,8 +12559,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500" />
                           </div>
                           <div>
-                            <label className="block text-xs font-medium text-slate-600 mb-1">Consult Time</label>
-                            <input type="time" value={telestrokeNote.consultStartTime || ''}
+                            <label htmlFor="input-consult-time" className="block text-xs font-medium text-slate-600 mb-1">Consult Time</label>
+                            <input id="input-consult-time" type="time" value={telestrokeNote.consultStartTime || ''}
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, consultStartTime: e.target.value})}
                               className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500" />
                           </div>
@@ -12565,6 +12577,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div className="grid grid-cols-2 gap-2">
                             <input
+                              aria-label="Last known well date"
                               type="date"
                               value={lkwTime ? `${lkwTime.getFullYear()}-${String(lkwTime.getMonth() + 1).padStart(2, '0')}-${String(lkwTime.getDate()).padStart(2, '0')}` : ''}
                               onChange={(e) => {
@@ -12582,6 +12595,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="w-full px-2 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500"
                             />
                             <input
+                              aria-label="Last known well time"
                               type="time"
                               value={lkwTime ? lkwTime.toTimeString().slice(0, 5) : ''}
                               onChange={(e) => {
@@ -12744,8 +12758,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {/* Demographics Row */}
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
                             <div>
-                              <label className="block text-xs font-medium text-slate-600 mb-1">Age</label>
+                              <label htmlFor="input-age" className="block text-xs font-medium text-slate-600 mb-1">Age</label>
                               <input
+                                id="input-age"
                                 type="number"
                                 min="0"
                                 max="120"
@@ -12755,8 +12770,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs font-medium text-slate-600 mb-1">Sex</label>
+                              <label htmlFor="input-sex" className="block text-xs font-medium text-slate-600 mb-1">Sex</label>
                               <select
+                                id="input-sex"
                                 value={telestrokeNote.sex}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, sex: e.target.value})}
                                 className={'w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 ' + (!telestrokeNote.sex ? 'border-amber-400 bg-amber-50' : 'border-slate-300')}
@@ -12768,7 +12784,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                             <div>
                               <div className="flex items-center justify-between mb-1">
-                                <label className="block text-xs font-medium text-slate-600">Weight</label>
+                                <label htmlFor="input-weight" className="block text-xs font-medium text-slate-600">Weight</label>
                                 <div className="flex bg-slate-100 rounded-md p-0.5">
                                   <button type="button" onClick={() => setWeightUnit('kg')}
                                     className={'px-2.5 py-1 text-sm rounded ' + (weightUnit === 'kg' ? 'bg-white shadow-sm font-semibold text-slate-900' : 'text-slate-500')}>kg</button>
@@ -12777,6 +12793,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                               </div>
                               <input
+                                id="input-weight"
                                 type="number"
                                 min={weightUnit === 'lbs' ? '44' : '20'} max={weightUnit === 'lbs' ? '770' : '350'}
                                 value={weightUnit === 'lbs' && telestrokeNote.weight ? String(Math.round(parseFloat(telestrokeNote.weight) * 2.20462)) : telestrokeNote.weight}
@@ -12802,8 +12819,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </label>
                             </div>
                             <div>
-                              <label className="block text-xs font-medium text-slate-600 mb-1">Cr (mg/dL)</label>
+                              <label htmlFor="input-creatinine" className="block text-xs font-medium text-slate-600 mb-1">Cr (mg/dL)</label>
                               <input
+                                id="input-creatinine"
                                 type="number"
                                 step="0.1" min="0.1" max="20"
                                 value={telestrokeNote.creatinine}
@@ -12813,8 +12831,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs font-medium text-slate-600 mb-1">Pre-stroke mRS</label>
+                              <label htmlFor="input-premorbid-mrs" className="block text-xs font-medium text-slate-600 mb-1">Pre-stroke mRS</label>
                               <select
+                                id="input-premorbid-mrs"
                                 value={telestrokeNote.premorbidMRS}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, premorbidMRS: e.target.value})}
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
@@ -13028,8 +13047,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">NIHSS Score (0-42)</label>
+                              <label htmlFor="input-nihss" className="block text-xs text-slate-600 mb-1">NIHSS Score (0-42)</label>
                               <input
+                                id="input-nihss"
                                 type="number"
                                 value={telestrokeNote.nihss}
                                 onChange={(e) => {
@@ -13078,8 +13098,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </h4>
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">BP</label>
+                              <label htmlFor="input-bp" className="block text-xs text-slate-600 mb-1">BP</label>
                               <input
+                                id="input-bp"
                                 type="text"
                                 value={telestrokeNote.presentingBP}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, presentingBP: e.target.value})}
@@ -13094,8 +13115,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">HR</label>
-                              <input type="number" min="20" max="300"
+                              <label htmlFor="input-hr" className="block text-xs text-slate-600 mb-1">HR</label>
+                              <input id="input-hr" type="number" min="20" max="300"
                                 value={telestrokeNote.heartRate}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, heartRate: e.target.value})}
                                 placeholder="bpm"
@@ -13103,8 +13124,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">SpO2</label>
-                              <input type="number" min="50" max="100"
+                              <label htmlFor="input-spo2" className="block text-xs text-slate-600 mb-1">SpO2</label>
+                              <input id="input-spo2" type="number" min="50" max="100"
                                 value={telestrokeNote.spO2}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, spO2: e.target.value})}
                                 placeholder="%"
@@ -13112,8 +13133,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">Temp</label>
-                              <input type="number" step="0.1" min="90" max="110"
+                              <label htmlFor="input-temp" className="block text-xs text-slate-600 mb-1">Temp</label>
+                              <input id="input-temp" type="number" step="0.1" min="90" max="110"
                                 value={telestrokeNote.temperature}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, temperature: e.target.value})}
                                 placeholder="°F"
@@ -13121,8 +13142,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">Glucose</label>
+                              <label htmlFor="input-glucose" className="block text-xs text-slate-600 mb-1">Glucose</label>
                               <input
+                                id="input-glucose"
                                 type="number"
                                 min="10" max="800"
                                 value={telestrokeNote.glucose}
@@ -13139,8 +13161,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {telestrokeNote.glucose && parseInt(telestrokeNote.glucose) < 60 && <p className="text-xs text-red-600 mt-0.5">Hypoglycemia - stroke mimic?</p>}
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">INR</label>
+                              <label htmlFor="input-inr" className="block text-xs text-slate-600 mb-1">INR</label>
                               <input
+                                id="input-inr"
                                 type="number"
                                 step="0.1" min="0.5" max="15"
                                 value={telestrokeNote.inr}
@@ -13156,8 +13179,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {telestrokeNote.inr && parseFloat(telestrokeNote.inr) > 1.7 && <p className="text-xs text-red-600 mt-0.5">TNK contraindicated (INR &gt;1.7)</p>}
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">Platelets</label>
+                              <label htmlFor="input-platelets" className="block text-xs text-slate-600 mb-1">Platelets</label>
                               <input
+                                id="input-platelets"
                                 type="number"
                                 min="1" max="1500"
                                 value={telestrokeNote.plateletCount}
@@ -20760,7 +20784,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* Management Combined Tab (Ischemic, ICH, Calculators, References) */}
                 {activeTab === 'management' && (
                   <ErrorBoundary>
-                  <div className="space-y-6">
+                  <div id="tabpanel-management" role="tabpanel" aria-labelledby="tab-management" className="space-y-6">
                     {/* ===== QUICK PATIENT SUMMARY CARD ===== */}
                     {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) && (
                       <div className="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-xl px-4 py-3">
@@ -20807,7 +20831,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         Current diagnosis is <strong>ICH</strong> — the <button onClick={() => setManagementSubTab('ich')} className="underline font-semibold hover:text-red-900">ICH Management</button> tab may be more relevant.
                       </div>
                     )}
-                    <div className="bg-white border border-slate-200 rounded-xl p-2 flex flex-wrap gap-2">
+                    <div className="bg-white border border-slate-200 rounded-xl p-2 flex flex-wrap gap-2" role="tablist" aria-label="Management sub-sections" onKeyDown={(e) => {
+                      const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators', 'references'];
+                      const ci = subTabs.indexOf(managementSubTab);
+                      let ni;
+                      if (e.key === 'ArrowRight') { e.preventDefault(); ni = (ci + 1) % subTabs.length; }
+                      else if (e.key === 'ArrowLeft') { e.preventDefault(); ni = (ci - 1 + subTabs.length) % subTabs.length; }
+                      else if (e.key === 'Home') { e.preventDefault(); ni = 0; }
+                      else if (e.key === 'End') { e.preventDefault(); ni = subTabs.length - 1; }
+                      if (ni !== undefined) { setManagementSubTab(subTabs[ni]); const el = document.getElementById(`mgmt-tab-${subTabs[ni]}`); if (el) el.focus(); }
+                    }}>
                       {[
                         { id: 'ich', label: 'ICH', icon: 'alert-triangle' },
                         { id: 'ischemic', label: 'Ischemic', icon: 'activity' },
@@ -20821,13 +20854,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         return (
                           <button
                             key={tab.id}
+                            id={`mgmt-tab-${tab.id}`}
                             onClick={() => setManagementSubTab(tab.id)}
                             className={`flex items-center gap-2 px-3 py-2.5 sm:py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 ${
                               isActive ? 'bg-blue-600 text-white' : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
                             }`}
                             role="tab"
                             aria-selected={isActive}
+                            aria-controls={`mgmt-tabpanel-${tab.id}`}
                             aria-label={`${tab.label} management tab`}
+                            tabIndex={isActive ? 0 : -1}
                           >
                             <i data-lucide={tab.icon} className="w-4 h-4"></i>
                             <span>{tab.label}</span>
@@ -20902,7 +20938,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* ICH Content */}
                     {managementSubTab === 'ich' && (
-                      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                      <div id="mgmt-tabpanel-ich" role="tabpanel" aria-labelledby="mgmt-tab-ich" className="bg-red-50 border border-red-200 rounded-lg p-4">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
                           <h2 className="text-xl font-semibold text-red-800">ICH Management</h2>
                           <span className="text-xs text-red-600 font-medium">Algorithmic workflow</span>
@@ -21580,7 +21616,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* Ischemic Stroke Management Content */}
                     {managementSubTab === 'ischemic' && (
-                      <div className="space-y-6">
+                      <div id="mgmt-tabpanel-ischemic" role="tabpanel" aria-labelledby="mgmt-tab-ischemic" className="space-y-6">
                         {/* Section TOC */}
                         <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
                           <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Jump to Section</p>
@@ -22692,7 +22728,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* SAH Management Content */}
                     {managementSubTab === 'sah' && (
-                      <div className="space-y-4">
+                      <div id="mgmt-tabpanel-sah" role="tabpanel" aria-labelledby="mgmt-tab-sah" className="space-y-4">
                         {/* SAH Quick Summary */}
                         <div className="bg-white border-l-4 border-l-purple-600 border border-slate-200 rounded-lg p-4">
                           <h3 className="text-lg font-bold text-purple-900 mb-1">Subarachnoid Hemorrhage Management</h3>
@@ -22966,7 +23002,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* TIA Management Content */}
                     {managementSubTab === 'tia' && (
-                      <div className="space-y-4">
+                      <div id="mgmt-tabpanel-tia" role="tabpanel" aria-labelledby="mgmt-tab-tia" className="space-y-4">
                         {/* TIA Header */}
                         <div className="bg-white border-l-4 border-l-orange-500 border border-slate-200 rounded-lg p-4">
                           <h3 className="text-lg font-bold text-orange-900 mb-1">TIA Management & Secondary Prevention</h3>
@@ -23167,7 +23203,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* CVT Management Content */}
                     {managementSubTab === 'cvt' && (
-                      <div className="space-y-4">
+                      <div id="mgmt-tabpanel-cvt" role="tabpanel" aria-labelledby="mgmt-tab-cvt" className="space-y-4">
                         {/* CVT Header */}
                         <div className="bg-white border-l-4 border-l-indigo-500 border border-slate-200 rounded-lg p-4">
                           <h2 className="text-xl font-bold text-indigo-900 flex items-center gap-2">
@@ -23374,7 +23410,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Calculators Content */}
                     {managementSubTab === 'calculators' && (
                   <GlobalPatientContext.Provider value={patientContextValue}>
-                  <div className="flex flex-col gap-4">
+                  <div id="mgmt-tabpanel-calculators" role="tabpanel" aria-labelledby="mgmt-tab-calculators" className="flex flex-col gap-4">
                     <CalculatorSync />
                     <CalculatorPatientSnapshot />
                     <div className="bg-white border border-indigo-200 rounded-lg p-3 flex flex-wrap items-center gap-3 text-xs">
@@ -25377,7 +25413,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* References & Evidence Content */}
                     {managementSubTab === 'references' && (
-                  <div className="space-y-6">
+                  <div id="mgmt-tabpanel-references" role="tabpanel" aria-labelledby="mgmt-tab-references" className="space-y-6">
 
                     {/* Evidence Filter */}
                     <div className="bg-white border border-slate-200 rounded-lg p-4">
@@ -27260,7 +27296,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* Uses trialsData object and TrialCard component */}
                 {/* ============================================ */}
                 {activeTab === 'trials' && (
-                  <div className="space-y-6">
+                  <div id="tabpanel-trials" role="tabpanel" aria-labelledby="tab-trials" className="space-y-6">
                     {/* Header Section with Patient Summary */}
                     <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-6 rounded-lg shadow-lg">
                       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
