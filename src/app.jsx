@@ -336,8 +336,8 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         // CLINICAL PEARLS
         // ============================================
         const CLINICAL_PEARLS = {
-          tnk: 'TNK 0.25 mg/kg is non-inferior to alteplase with lower sICH rates and simpler administration (AcT trial, 2022).',
-          evt: 'EVT benefit is time-dependent: NNT=3 at 3h, NNT=6 at 6h, NNT=10 at 12h (HERMES meta-analysis).',
+          tnk: 'TNK 0.25 mg/kg is non-inferior to alteplase with similar sICH rates (3.4% vs 3.2%) and simpler single-bolus administration (AcT trial, Lancet 2022).',
+          evt: 'EVT benefit is time-dependent: NNT ~2.6 overall at 0-6h (HERMES). Late-window with perfusion selection: NNT ~2.8 (DAWN), ~3.6 (DEFUSE-3). Every 15-min delay reduces benefit.',
           ich_bp: 'INTERACT3: Intensive BP lowering + bundle of care improves functional outcomes in ICH (Lancet 2023).',
           doac_timing: 'CATALYST/ELAN: Early DOAC restart (2-6 days) after mild-moderate ischemic stroke is safe and may reduce recurrence.',
           aspects: 'ASPECTS 6-10: Standard EVT eligibility. ASPECTS 3-5: Consider EVT for mRS 0-1 patients with anterior LVO (SELECT2, ANGEL-ASPECT).',
@@ -2011,7 +2011,7 @@ Clinician Name`;
             },
             EPI: {
               title: 'Epinephrine',
-              dosing: 'Epinephrine 0.3 mg IM (1 mg/mL solution) into anterolateral thigh. Nebulized: 0.5 mL of 1 mg/mL solution.',
+              dosing: 'Epinephrine 0.3 mg IM (1 mg/mL solution) into anterolateral thigh. Nebulized for upper airway edema: 3-5 mL of 1:1000 (1 mg/mL) solution, or racemic epinephrine 0.5 mL of 2.25%.',
               note: 'For worsening angioedema. IM preferred over SC (faster absorption per AHA/WAO guidelines). Use if symptoms progress despite methylprednisolone and diphenhydramine.'
             },
             ICATIBANT: {
@@ -2064,7 +2064,7 @@ Clinician Name`;
             NIMODIPINE: {
               title: 'Nimodipine (Nymalize)',
               dosing: '60 mg PO/NG q4h x 21 days. Start within 96h of SAH onset.',
-              note: 'Calcium channel blocker for SAH vasospasm prevention. Only proven agent to improve outcomes. If hypotension: reduce to 30 mg q4h temporarily. Do NOT give IV (risk of severe hypotension/cardiac arrest).'
+              note: 'Calcium channel blocker for SAH vasospasm prevention. Only proven agent to improve outcomes. If hypotension: reduce to 30 mg q2h (maintains daily dose while reducing peak levels). Do NOT give IV (risk of severe hypotension/cardiac arrest).'
             }
           }), []);
 
@@ -3432,8 +3432,8 @@ Clinician Name`;
               id: 'bp_ich_acute',
               category: 'Blood Pressure',
               title: 'ICH acute BP target',
-              recommendation: 'For ICH, target SBP <160 mmHg per institutional protocol (institutional). AHA/ASA 2022 suggests targeting SBP 140 may be reasonable (Class IIb). Avoid SBP <130.',
-              detail: 'Institutional protocol: SBP <160, DBP <105. AHA/ASA 2022 ICH guideline: for mild-moderate ICH with presenting SBP 150-220, targeting SBP 140 mmHg is safe and may be effective (Class IIb, LOE B-R). Avoid SBP <130 (Class III: Harm). Nicardipine infusion preferred. Maintain target for at least 24 hours.',
+              recommendation: 'For ICH with presenting SBP 150-220, acute lowering to SBP <140 mmHg is safe and reasonable (Class IIa, LOE B-R per AHA/ASA 2022; INTERACT2). Avoid SBP <130 (ATACH-2: no benefit, possible harm).',
+              detail: 'AHA/ASA 2022 ICH guideline: for ICH with presenting SBP 150-220, acute lowering to SBP 140 mmHg is safe and reasonable (Class IIa, LOE B-R, INTERACT2). Avoid SBP <130 (Class III: Harm, ATACH-2). For SBP >220, safety of intensive lowering is uncertain. Nicardipine infusion preferred. Maintain target for at least 24 hours.',
               classOfRec: 'IIb',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -5285,7 +5285,7 @@ Clinician Name`;
               category: 'Acute',
               title: 'Fever management in acute stroke',
               recommendation: 'Target temperature 36.0-37.5C. Treat fever >37.5C within 1 hour. Acetaminophen is first-line; avoid NSAIDs in stroke (Class III). Implement FeSS bundle: Fever-Sugar-Swallowing.',
-              detail: 'Stepwise protocol: (1) Infection workup + treat, (2) Scheduled acetaminophen 650-1000mg q6h, (3) Surface cooling + counter-warming, (4) IV magnesium 2g bolus, (5) Buspirone 30mg q8h. Use BSAS (0-3) to guide anti-shivering therapy. QASC trial: FeSS bundle reduced death/dependency by 16%.',
+              detail: 'Stepwise protocol: (1) Infection workup + treat, (2) Scheduled acetaminophen 650-1000mg q6h, (3) Surface cooling + counter-warming, (4) IV magnesium 2g bolus, (5) Buspirone 30mg q8h. Use BSAS (0-3) to guide anti-shivering therapy. QASC trial: FeSS bundle reduced death/dependency by 16%. Note: Prophylactic hypothermia (34-35°C) is NOT recommended for ischemic stroke (EuroHYP-1, Lancet Neurol 2019: neutral; Class III).',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
               guideline: 'NTCR 2023; ESO/QASC; AHA/ASA 2019',
@@ -8013,7 +8013,7 @@ Clinician Name`;
               note += `mTICI score: ${telestrokeNote.ticiScore || '___'}\n\n`;
               note += `POST-PROCEDURE:\n`;
               const procBp = bpPhaseTargets['post-evt'];
-              note += `- BP target: SBP <${procBp.systolic}/${procBp.diastolic} for 24h\n`;
+              note += `- BP target: SBP <${procBp.systolic}/${procBp.diastolic} for 24h; avoid SBP <140 (Class III: Harm per BEST-II/ENCHANTED2)\n`;
               note += `- Neurovascular checks q15min x 2h, then q30min x 4h\n`;
               note += `- Groin site checks q15min x 4h\n`;
               note += `- Hold antiplatelets/anticoagulants x 24h\n`;
@@ -8199,9 +8199,15 @@ Clinician Name`;
               }
               note += '\n';
               const dischMRS = (telestrokeNote.mrsAssessment || {}).discharge;
-              note += `DISCHARGE NIHSS: ___\n`;
+              note += `DISCHARGE NIHSS: ${nihssScore || '___'}\n`;
               note += `DISCHARGE mRS: ${dischMRS || '___'}\n\n`;
               note += `DISPOSITION: ${telestrokeNote.disposition || '___'}\n\n`;
+              // Key results for discharge
+              note += `KEY RESULTS:\n`;
+              note += `- Echo (TTE/TEE): ___\n`;
+              note += `- Carotid imaging: ___\n`;
+              note += `- LDL: ___ mg/dL  (target <70)\n`;
+              note += `- HbA1c: ___\n\n`;
               // Medication reconciliation
               note += `MEDICATION RECONCILIATION:\n`;
               note += `Home Medications: ${telestrokeNote.medications || '___'}\n`;
@@ -8226,6 +8232,10 @@ Clinician Name`;
               if (telestrokeNote.diagnosisCategory === 'ischemic' && telestrokeNote.toastClassification === 'large-artery') note += `- Carotid duplex or CTA neck in 3-6 months\n`;
               const isDissection = (telestrokeNote.ctaResults || '').toLowerCase().includes('dissect') || (telestrokeNote.toastClassification || '') === 'other-determined';
               if (isDissection) note += `- Repeat CTA/MRA neck at 3 months and 6 months (dissection follow-up — assess for recanalization, persistent stenosis, or pseudoaneurysm)\n`;
+              note += `\nFOLLOW-UP LABS:\n`;
+              note += `- Fasting lipid panel at 4-6 weeks (target LDL <70 mg/dL per TST trial)\n`;
+              if (dischSp.antiplateletRegimen && dischSp.antiplateletRegimen.includes('doac')) note += `- Renal function (Cr/eGFR) at 1-3 months for DOAC monitoring\n`;
+              if (telestrokeNote.diagnosisCategory === 'ischemic') note += `- HbA1c at 3 months if diabetic or new diagnosis\n`;
               note += '\n';
               note += `PATIENT EDUCATION:\n`;
               note += `- Stroke warning signs (BE-FAST)\n`;
@@ -8448,7 +8458,7 @@ Clinician Name`;
             // Add ICH-specific details
             if (telestrokeNote.diagnosisCategory === 'ich') {
               let ichNote = '\nICH Management:\n';
-              if (telestrokeNote.ichBPManaged) ichNote += '- BP managed (target SBP <160 per institutional protocol)\n';
+              if (telestrokeNote.ichBPManaged) ichNote += '- BP managed (target SBP <140 (Class IIa; avoid <130))\n';
               if (telestrokeNote.ichReversalInitiated) ichNote += '- Anticoagulation reversal initiated\n';
               if (telestrokeNote.ichNeurosurgeryConsulted) ichNote += '- Neurosurgery consulted\n';
               if (telestrokeNote.ichSeizureProphylaxis) ichNote += '- Seizure prophylaxis ordered\n';
@@ -8581,7 +8591,7 @@ Clinician Name`;
             if (dx === 'ich') {
               sentences.push('Diagnosis: Intracerebral hemorrhage.');
               const ichActions = [];
-              if (telestrokeNote.ichBPManaged) ichActions.push('BP management initiated (target SBP <160 per institutional protocol)');
+              if (telestrokeNote.ichBPManaged) ichActions.push('BP management initiated (target SBP <140 (Class IIa; avoid <130))');
               if (telestrokeNote.ichReversalInitiated) ichActions.push('anticoagulation reversal initiated');
               if (telestrokeNote.ichNeurosurgeryConsulted) ichActions.push('neurosurgery consulted');
               if (telestrokeNote.ichSeizureProphylaxis) ichActions.push('seizure prophylaxis ordered');
@@ -9065,7 +9075,7 @@ Clinician Name`;
                 icon: 'heart-pulse',
                 color: 'red',
                 orders: [
-                  'Target SBP <160 mmHg per institutional protocol (initiate within 2h of onset)',
+                  'Target SBP <140 mmHg within 2h of onset (Class IIa, INTERACT2). Avoid SBP <130 (ATACH-2).',
                   'Nicardipine 5 mg/hr IV, titrate by 2.5 mg/hr q5-15 min (max 15 mg/hr)',
                   'Avoid SBP <130 mmHg (renal AKI risk)',
                   `Current BP: ${n.presentingBP || '***'}`,
@@ -9239,6 +9249,7 @@ Clinician Name`;
                   'OR Hypertonic saline 3% 250 mL IV over 30 min (peripheral ok)',
                   'OR Mannitol 20% 1 g/kg IV over 20 min (peripheral ok)',
                   `${weight ? `Weight ${weight} kg → Mannitol ${Math.round(weight)} mL of 20% (= ${weight} g)` : 'Weight needed for mannitol dosing'}`,
+                  'Mannitol repeat dosing: 0.25-0.5 g/kg IV q4-6h PRN for ongoing ICP elevation (max ~2 g/kg/day). Hold if serum osmolality >320 or osmol gap >20.',
                   'Target Na+ 145-155 mEq/L for 3% NaCl; serum osmolality <320 for mannitol',
                   'Check BMP q6h (Na+, K+, osmolality), strict I/O'
                 );
@@ -9405,7 +9416,7 @@ Clinician Name`;
                 'tnk-admin': { title: 'Document TNK administration', detail: 'Capture administration time for DTN metrics.', cta: 'Add TNK time' },
                 'transfer': { title: 'Arrange transfer', detail: 'Coordinate transfer to EVT-capable center for LVO.', cta: 'Transfer checklist' },
                 'recommendations': { title: 'Finalize recommendations', detail: 'Complete the recommendation summary for handoff and documentation.', cta: 'Add recommendations' },
-                'ich-bp': { title: 'ICH: Manage blood pressure', detail: 'Target SBP <160 per institutional protocol (avoid <130). Nicardipine or labetalol.', cta: 'Manage BP' },
+                'ich-bp': { title: 'ICH: Manage blood pressure', detail: 'Target SBP <140 within 2h (Class IIa, INTERACT2). Avoid SBP <130 (ATACH-2). Nicardipine or labetalol.', cta: 'Manage BP' },
                 'ich-reversal': { title: 'ICH: Anticoagulation reversal', detail: 'Patient may be on anticoagulation. Review and order reversal agents.', cta: 'Order reversal' },
                 'ich-neurosurg': { title: 'ICH: Neurosurgery evaluation', detail: 'Document neurosurgery consultation for surgical candidacy assessment.', cta: 'Consult neurosurgery' },
                 'sah-grade': { title: 'SAH: Grade severity', detail: 'Enter Hunt & Hess or WFNS grade for SAH prognostication.', cta: 'Grade SAH' },
@@ -10752,7 +10763,7 @@ ${telestrokeNote.evtRecommended ? `EVT: Recommended` : 'EVT: Not Recommended'}`;
 
             const bpTarget = receivedTNK ? 'SBP <180, DBP <105 x 24h'
               : receivedEVT ? 'SBP <180, DBP <105 (avoid SBP <140)'
-              : diagCat === 'ich' ? 'SBP <160 per institutional protocol (avoid <130)'
+              : diagCat === 'ich' ? 'SBP <140 (Class IIa, INTERACT2; avoid <130 per ATACH-2)'
               : diagCat === 'sah' ? 'SBP <160 until aneurysm secured'
               : 'SBP <220, DBP <120 (if no thrombolysis)';
 
@@ -13139,7 +13150,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </label>
                                 </div>
                                 <div className="text-xs text-red-700 bg-red-100 rounded p-1.5">
-                                  TNK is contraindicated. Targets: SBP &lt;160 per institutional protocol, reverse anticoagulation if applicable, repeat CT in 6h, ICU admission.
+                                  TNK is contraindicated. Targets: SBP &lt;140 (Class IIa, INTERACT2; avoid &lt;130), reverse anticoagulation if applicable, repeat CT in 6h, ICU admission.
                                 </div>
                               </div>
                             )}
@@ -15009,7 +15020,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <h4 className="text-sm font-bold text-red-800 mb-2 uppercase tracking-wide">ICH Pathway Checklist</h4>
                                 <div className="space-y-2">
                                   {[
-                                    { field: 'ichBPManaged', label: 'BP managed (SBP <160 target)', detail: 'institutional protocol' },
+                                    { field: 'ichBPManaged', label: 'BP managed (SBP <140 target)', detail: 'Class IIa, INTERACT2; avoid <130' },
                                     { field: 'ichReversalInitiated', label: 'Anticoag reversal ordered (if applicable)', detail: 'Skip if no anticoagulants', skipIf: telestrokeNote.noAnticoagulants },
                                     { field: 'ichNeurosurgeryConsulted', label: 'Neurosurgery consulted/evaluated', detail: 'Surgical candidacy assessed' }
                                   ].filter(item => !item.skipIf).map(item => (
@@ -15719,6 +15730,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <p><strong>Groin complications:</strong> Check access site q15min x 2h, q30min x 4h. Watch for expanding hematoma, retroperitoneal bleed (back/flank pain, tachycardia, Hgb drop).</p>
                                     <p><strong>Contrast nephropathy:</strong> IV hydration, monitor Cr at 24-48h if baseline CKD or diabetic nephropathy.</p>
                                     <p><strong>Reocclusion:</strong> ~5-10% rate. If neuro worsening, consider repeat CTA and possible re-intervention.</p>
+                                    <p><strong>DECT interpretation (if ordered):</strong> Contrast staining = hyperdense on conventional CT but absent on virtual non-contrast (VNC) reconstruction → benign BBB disruption, antithrombotics may start earlier. True hemorrhage = hyperdense on BOTH conventional and VNC → hold antithrombotics, manage as hemorrhagic transformation. Mixed pattern → treat as hemorrhage.</p>
                                   </div>
                                 </details>
                               </div>
@@ -16409,7 +16421,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     />
                                     <div>
                                       <span className="text-sm font-medium text-slate-800">Seizure management addressed</span>
-                                      <span className="block text-xs text-slate-500">Prophylaxis for supratentorial lesions; levetiracetam preferred</span>
+                                      <span className="block text-xs text-slate-500">Treat acute seizures with levetiracetam; routine prophylaxis NOT recommended (AHA/ASA). EEG if supratentorial lesion with altered consciousness.</span>
                                     </div>
                                   </label>
 
@@ -17826,7 +17838,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       </select>
                                       {(telestrokeNote.carotidManagement || {}).symptomatic && ((telestrokeNote.carotidManagement || {}).stenosisDegree === '50-69' || (telestrokeNote.carotidManagement || {}).stenosisDegree === '70-99') && (
                                         <div className="mt-1 p-2 bg-emerald-100 rounded text-xs text-emerald-800">
-                                          <strong>Symptomatic {(telestrokeNote.carotidManagement || {}).stenosisDegree}%:</strong> CEA within 2 weeks recommended (Class I, LOE A). Benefit greatest when performed early (NNT = 5 for &ge;70%).
+                                          <strong>Symptomatic {(telestrokeNote.carotidManagement || {}).stenosisDegree}%:</strong> Timing depends on stroke severity — TIA/minor stroke (NIHSS 0-5): CEA within 48h-7 days for maximal benefit (Express/SOS-TIA). Moderate stroke (NIHSS 6-15): CEA at 2-4 weeks after stabilization. Large infarct (&gt;1/3 MCA): delay 4-6 weeks (risk of hyperperfusion syndrome). NNT = 5 for ≥70%.
                                         </div>
                                       )}
                                       {!(telestrokeNote.carotidManagement || {}).symptomatic && ((telestrokeNote.carotidManagement || {}).stenosisDegree === '70-99') && (
@@ -19158,7 +19170,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   }
                                 } else if (pathwayType === 'ich') {
                                   note += `PLAN:\n`;
-                                  if (telestrokeNote.ichBPManaged) note += `- BP management initiated (target SBP <160 per institutional protocol).\n`;
+                                  if (telestrokeNote.ichBPManaged) note += `- BP management initiated (target SBP <140 (Class IIa; avoid <130)).\n`;
                                   if (telestrokeNote.ichReversalInitiated) note += `- Anticoagulation reversal ordered.\n`;
                                   if (telestrokeNote.ichNeurosurgeryConsulted) note += `- Neurosurgery consulted.\n`;
                                 } else if (pathwayType === 'sah') {
@@ -20782,7 +20794,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                                 <p className="text-sm font-semibold text-red-800 mb-1">If worsening:</p>
                                 <ul className="text-sm space-y-1">
-                                  <li>• <button onClick={() => setProtocolModal(protocolDetailMap.EPI)} className="text-blue-600 underline hover:text-blue-800">Epinephrine 0.3 mg IM</button> (1 mg/mL, anterolateral thigh) or nebulizer 0.5 mL</li>
+                                  <li>• <button onClick={() => setProtocolModal(protocolDetailMap.EPI)} className="text-blue-600 underline hover:text-blue-800">Epinephrine 0.3 mg IM</button> (1 mg/mL, anterolateral thigh) or nebulized 3-5 mL of 1:1000</li>
                                   <li>• <button onClick={() => setProtocolModal(protocolDetailMap.ICATIBANT)} className="text-blue-600 underline hover:text-blue-800">Icatibant</button> (bradykinin B2 antagonist)</li>
                                   <li>• <button onClick={() => setProtocolModal(protocolDetailMap.BERINERT)} className="text-blue-600 underline hover:text-blue-800">C1 esterase inhibitor (Berinert) 20 IU/kg</button></li>
                                 </ul>
@@ -20848,7 +20860,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h4 className="text-sm font-semibold text-red-700 mb-2">Telestroke rapid actions (phone or video)</h4>
                               <ul className="text-sm space-y-1 text-slate-700">
                                 <li>Confirm anticoagulant/antiplatelet use and initiate reversal.</li>
-                                <li>Target SBP &lt;160; use IV nicardipine or clevidipine for smooth control.</li>
+                                <li>Target SBP &lt;140 (Class IIa, INTERACT2; avoid &lt;130 per ATACH-2). Use IV nicardipine or clevidipine for smooth control.</li>
                                 <li>Screen for transfer triggers: cerebellar ICH ≥15 mL with deterioration/brainstem compression/hydrocephalus, IVH with hydrocephalus requiring EVD, or worsening supratentorial ICH.</li>
                                 <li>Plan repeat imaging and close neuro checks; avoid new DNAR/withdrawal within first 24h if no preexisting limits.</li>
                               </ul>
@@ -21014,9 +21026,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-4 rounded border">
                             <h4 className="font-semibold text-red-600 mb-2">Blood Pressure Target</h4>
                             <ul className="text-sm space-y-1">
-                              <li><strong>Target:</strong> SBP &lt;160 mmHg.</li>
+                              <li><strong>Target:</strong> SBP &lt;140 mmHg within 2h (Class IIa, INTERACT2). Avoid SBP &lt;130 (ATACH-2).</li>
                               <li><strong>Smooth control:</strong> avoid peaks and variability.</li>
-                              <li><strong>Large/severe ICH or surgical candidates:</strong> safety of intensive BP lowering is uncertain.</li>
+                              <li><strong>SBP &gt;220 or very large ICH:</strong> safety of intensive lowering is uncertain; consider SBP &lt;160 with gradual reduction.</li>
                               <li><strong>Agent:</strong> IV nicardipine or clevidipine for titration.</li>
                             </ul>
                           </div>
@@ -21926,7 +21938,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <li><strong>Methylprednisolone:</strong> 125 mg IV</li>
                                 <li><strong>Diphenhydramine:</strong> 50 mg IV</li>
                                 <li><strong>Famotidine:</strong> 20 mg IV (H2 blocker)</li>
-                                <li><strong>If worsening: Epinephrine</strong> 0.3 mg IM (anterolateral thigh) or nebulizer 0.5 mL</li>
+                                <li><strong>If worsening: Epinephrine</strong> 0.3 mg IM (anterolateral thigh) or nebulized 3-5 mL of 1:1000</li>
                                 <li><strong>Icatibant</strong> (bradykinin B2 antagonist)</li>
                                 <li><strong>Berinert:</strong> 20 IU/kg IV (C1 esterase inhibitor)</li>
                               </ul>
@@ -22811,7 +22823,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 className="mt-0.5 rounded border-indigo-300 text-indigo-600" />
                               <div>
                                 <span className="text-sm font-medium text-slate-800">Seizure management addressed</span>
-                                <span className="block text-xs text-slate-500">Prophylaxis for supratentorial lesions; levetiracetam preferred</span>
+                                <span className="block text-xs text-slate-500">Treat acute seizures with levetiracetam; routine prophylaxis NOT recommended (AHA/ASA). EEG if supratentorial lesion with altered consciousness.</span>
                               </div>
                             </label>
                             <label className="flex items-start gap-2 cursor-pointer p-2 rounded-lg hover:bg-indigo-50">
@@ -25219,7 +25231,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
                             <h4 className="font-bold text-amber-900 text-sm mb-2">ICH Pearls</h4>
                             <ul className="text-xs text-slate-700 space-y-1.5">
-                              <li><strong>BP control matters most in first 2h:</strong> Target SBP &lt;140 mmHg within 2h (INTERACT2, Class IIb). Avoid SBP &lt;130 (ATACH-2 showed no benefit of intensive SBP 110-139 vs 140-179, with trend toward renal harm). Nicardipine drip preferred for smooth control.</li>
+                              <li><strong>BP control matters most in first 2h:</strong> Target SBP &lt;140 mmHg within 2h (INTERACT2, Class IIa). Avoid SBP &lt;130 (ATACH-2 showed no benefit of intensive SBP 110-139 vs 140-179, with trend toward renal harm). Nicardipine drip preferred for smooth control.</li>
                               <li><strong>Anticoagulant reversal:</strong> This is the MOST time-sensitive intervention in ICH. Give PCC/idarucizumab BEFORE the CT in known anticoagulated patients.</li>
                               <li><strong>Spot sign on CTA:</strong> Contrast extravasation predicts hematoma expansion. If present → more aggressive BP control and close monitoring.</li>
                               <li><strong>IVH worsens prognosis:</strong> Consider EVD if hydrocephalus develops. Intraventricular alteplase (CLEAR III) reduces mortality but doesn't improve functional outcome.</li>
@@ -25608,6 +25620,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p>BP meds per protocol (see BP section)</p>
                                 <p>Home medications (review for interactions)</p>
                                 <p>Hold anticoagulants per clinical situation</p>
+                                <p>Fever: Acetaminophen 650-1000 mg PO/PR q4-6h PRN temp &gt;37.8°C; target normothermia (SHINE: intensive glucose control is Class III Harm)</p>
+                                <p>Insulin protocol: target BG 140-180 mg/dL; avoid hypoglycemia (&lt;60 mg/dL)</p>
                               </div>
                               <div className="space-y-1">
                                 <p className="font-bold text-blue-700 mb-1">Labs & Imaging</p>
@@ -25643,7 +25657,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                               <div className="space-y-1">
                                 <p className="font-bold text-red-700 mb-1">BP & Medications</p>
-                                <p>Target SBP &lt;140 mmHg (INTERACT2, Class IIb). Avoid SBP &lt;130 (ATACH-2: no benefit, possible harm).</p>
+                                <p>Target SBP &lt;140 mmHg (INTERACT2, Class IIa, LOE B-R). Avoid SBP &lt;130 (ATACH-2: no benefit, possible harm).</p>
                                 <p>Nicardipine drip preferred (see BP section)</p>
                                 <p>Reversal agents if on anticoagulation (see ICH tab)</p>
                                 <p>Hold all antithrombotics</p>
@@ -25715,9 +25729,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
                               <div className="space-y-1">
                                 <p className="font-bold text-teal-700 mb-1">Risk Stratification</p>
-                                <p>Calculate ABCD2 score</p>
-                                <p>ABCD2 ≥4 OR DWI+ → admit for observation</p>
-                                <p>ABCD2 &lt;4 AND DWI- → consider rapid outpatient workup</p>
+                                <p>Admit ALL TIAs for urgent inpatient workup (Class I, LOE B-NR)</p>
+                                <p>Do NOT use ABCD2 alone for disposition (poor sensitivity)</p>
+                                <p>Rapid outpatient workup only if 24-48h evaluation can be guaranteed AND low-risk features</p>
                                 <p>Crescendo TIA → admit, treat as high-risk</p>
                               </div>
                               <div className="space-y-1">
