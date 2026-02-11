@@ -823,7 +823,7 @@ Medications: {medications}
 Objective:
 Vitals: BP {presentingBP}, HR {heartRate}, SpO2 {spO2}%, Temp {temperature}°F
 BP prior to TNK administration: {bpPreTNK} at {bpPreTNKTime}
-Labs: Glucose {glucose}, Plt/Coags {plateletsCoags}, Cr {creatinine}, INR {inr}{ptt}
+Labs: Glucose {glucose}, Plt {plateletCount}K, Cr {creatinine}, INR {inr}{ptt}
 Exam: NIHSS {nihss} {gcs}- {nihssDetails}
 
 Imaging: I personally reviewed imaging
@@ -898,8 +898,6 @@ Clinician Name`;
             // Telephone consult specific fields
             workingDiagnosis: '',
             briefHistory: '',
-            deficits: '',
-            imaging: '',
             chiefComplaint: '',
             lkwDate: new Date().toISOString().split('T')[0],
             lkwTime: new Date().toTimeString().slice(0, 5),
@@ -2013,7 +2011,7 @@ Clinician Name`;
             PROT1: {
               title: 'Protamine (UFH)',
               classOfRec: 'Class IIa',
-              dosing: '25 mg IV immediately. If anti-Xa >0.1 after infusion → additional 10 mg (max cumulative 55 mg). (COR 2a/C)',
+              dosing: '1 mg per 100 units UFH given in last 2-3h (max 50 mg/dose), slow IV over 10 min. Recheck anti-Xa; if >0.1 → additional 0.5 mg per 100 units (max cumulative 50 mg). (COR 2a/C)',
               note: 'Institutional protocol (9/2025): Check anti-Xa level. If platelets <100K, send HIT antibodies and consult Hematology if positive.'
             },
             PROT2: {
@@ -6241,7 +6239,7 @@ Clinician Name`;
             const w = parseFloat(weight);
             const cr = parseFloat(creatinine);
             if (!a || !w || !cr || a <= 0 || w <= 0 || cr <= 0) return null;
-            if (a >= 140) return null;
+            if (a > 120) return null;
             if (sex !== 'M' && sex !== 'F') return null;
             const sexFactor = (sex === 'F') ? 0.85 : 1.0;
             const crcl = ((140 - a) * w * sexFactor) / (72 * cr);
@@ -7574,7 +7572,7 @@ Clinician Name`;
               'tnkRecommended', 'evtRecommended', 'tnkContraindicationChecklist',
               'tnkContraindicationReviewed', 'tnkContraindicationReviewTime', 'tnkConsentDiscussed',
               'tnkConsentType', 'tnkConsentTime', 'tnkConsentWith',
-              'patientFamilyConsent', 'presumedConsent', 'preTNKSafetyPause', 'tnkAutoBlocked',
+              'patientFamilyConsent', 'presumedConsent', 'preTNKSafetyPause', 'tnkAutoBlocked', 'tnkAutoBlockReason',
               'postTnkNeuroChecksStarted', 'postTnkBpMonitoring', 'postTnkRepeatCTOrdered', 'postTnkAntiplateletHeld',
               'sichDetected', 'angioedemaDetected', 'reperfusionHemorrhage', 'clinicalDeterioration', 'complicationNotes',
               'ichBPManaged', 'ichReversalInitiated', 'ichNeurosurgeryConsulted', 'ichSeizureProphylaxis',
@@ -7935,6 +7933,7 @@ Clinician Name`;
               note += `HPI: ${telestrokeNote.symptoms || '___'}\n`;
               note += `PMH: ${telestrokeNote.pmh || '___'}\n`;
               note += `Medications: ${telestrokeNote.medications || '___'}\n`;
+              if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}\n`;
               if (telestrokeNote.contrastAllergy) note += `** CONTRAST ALLERGY **\n`;
               note += `\n`;
               const vitals = [`BP ${telestrokeNote.presentingBP || '___'}`];
@@ -7955,13 +7954,16 @@ Clinician Name`;
               note += `\n`;
               note += `Imaging:\n`;
               note += `- CT Head: ${telestrokeNote.ctResults || '___'}`;
-              if (aspectsScore != null) note += ` (ASPECTS ${aspectsScore}/10)`;
+              if (aspectsScore != null && aspectsScore < 10) note += ` (ASPECTS ${aspectsScore}/10)`;
+              const pcAspectsVal = calculatePCAspects(pcAspectsRegions);
+              if (pcAspectsVal >= 0 && pcAspectsVal < 10) note += ` (PC-ASPECTS ${pcAspectsVal}/10)`;
               note += `\n`;
               note += `- CTA: ${telestrokeNote.ctaResults || '___'}`;
               const transferVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
               if (transferVessels.length > 0) note += ` — Occlusion: ${transferVessels.join(', ')}`;
               note += `\n`;
               if (telestrokeNote.ctpResults) note += `- CTP: ${telestrokeNote.ctpResults}\n`;
+              if (telestrokeNote.ekgResults) note += `- EKG: ${telestrokeNote.ekgResults}\n`;
               note += `\nTreatment:\n`;
               if (telestrokeNote.tnkRecommended) {
                 const transferDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
@@ -8051,6 +8053,7 @@ Clinician Name`;
               if (telestrokeNote.creatinine) signoutLabs.push(`Cr ${telestrokeNote.creatinine}`);
               if (signoutLabs.length > 0) note += `Labs: ${signoutLabs.join(', ')}\n`;
               if (telestrokeNote.premorbidMRS != null && telestrokeNote.premorbidMRS !== '') note += `Pre-morbid mRS: ${telestrokeNote.premorbidMRS}\n`;
+              if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}\n`;
               note += '\n';
               note += `Treatment given:\n`;
               if (telestrokeNote.tnkRecommended) {
@@ -8401,7 +8404,8 @@ Clinician Name`;
             note = note.replace(/{bpPreTNK}/g, telestrokeNote.bpPreTNK || '');
             note = note.replace(/{bpPreTNKTime}/g, formatTime(telestrokeNote.bpPreTNKTime));
             note = note.replace(/{glucose}/g, telestrokeNote.glucose || '');
-            note = note.replace(/{plateletsCoags}/g, telestrokeNote.plateletsCoags || '');
+            note = note.replace(/{plateletCount}/g, telestrokeNote.plateletCount || '');
+            note = note.replace(/{plateletsCoags}/g, telestrokeNote.plateletsCoags || telestrokeNote.plateletCount || '');
             note = note.replace(/{creatinine}/g, telestrokeNote.creatinine || '');
             note = note.replace(/{nihss}/g, telestrokeNote.nihss || nihssScore || '');
             const gcsForNote = calculateGCS(gcsItems);
@@ -9329,10 +9333,11 @@ Clinician Name`;
                 );
               } else if (onHeparin) {
                 reversalOrders.push(
-                  'Assessment: Anti-Xa level',
-                  'Protamine 25 mg IV immediately (COR 2a/C)',
+                  'STOP heparin infusion immediately',
+                  'Assessment: Anti-Xa level, aPTT',
+                  'Protamine: 1 mg per 100 units UFH given in last 2-3h (max 50 mg/dose) — e.g., if 1500 units/hr x 2h = 3000 units → protamine 30 mg IV over 10 min (COR 2a/C)',
                   'Recheck anti-Xa after infusion',
-                  'If anti-Xa >0.1 → additional protamine 10 mg IV (max cumulative: 55 mg)',
+                  'If anti-Xa >0.1 → additional protamine 0.5 mg per 100 units, max cumulative 50 mg',
                   'If platelets <100K: send HIT antibodies, consult Hematology if positive'
                 );
               } else if (onLMWH) {
@@ -9937,7 +9942,7 @@ Clinician Name`;
               { name: 'Andexanet Dosing', keywords: ['andexanet', 'andexxa', 'reversal', 'factor xa'], tab: 'management', subTab: 'calculators' },
               { name: 'ICH Volume (ABC/2)', keywords: ['ich volume', 'abc', 'hematoma', 'volume'], tab: 'management', subTab: 'calculators' },
               { name: 'Contrast Allergy Protocol', keywords: ['contrast', 'allergy', 'premedication', 'ct angiography'], tab: 'management', subTab: 'ischemic' },
-              { name: 'Posterior Circulation Stroke', keywords: ['posterior', 'basilar', 'vertebral', 'cerebellar'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Posterior Circulation Stroke', keywords: ['posterior', 'basilar', 'vertebral', 'cerebellar', 'cannot miss', 'top of basilar', 'aica', 'wallenberg'], tab: 'management', subTab: 'ischemic' },
               { name: 'Transfer Checklist', keywords: ['transfer', 'spoke', 'hub', 'transport'], tab: 'encounter' },
               { name: 'Hemorrhagic Transformation', keywords: ['hemorrhagic transformation', 'sich', 'symptomatic ich', 'post-tnk bleeding', 'ecass'], tab: 'management', subTab: 'ischemic' },
               { name: 'Stroke Mimic Workup', keywords: ['mimic', 'mimic workup', 'differential', 'seizure', 'migraine', 'conversion', 'functional'], tab: 'encounter' },
@@ -10532,6 +10537,16 @@ Clinician Name`;
             return () => {
               window.removeEventListener('beforeunload', handleBeforeUnload);
               document.removeEventListener('visibilitychange', handleVisibilityChange);
+              // Flush any pending batched writes on cleanup
+              if (batchSaveTimerRef.current) {
+                clearTimeout(batchSaveTimerRef.current);
+                batchSaveTimerRef.current = null;
+              }
+              const pendingWrites = { ...pendingWritesRef.current };
+              pendingWritesRef.current = {};
+              for (const [k, v] of Object.entries(pendingWrites)) {
+                try { setKey(k, v); } catch (e) { /* best effort */ }
+              }
             };
           }, [telestrokeNote]);
 
@@ -10539,12 +10554,23 @@ Clinician Name`;
           // THROMBOLYSIS WINDOW TIMER & AUDIBLE ALERTS
           // ============================================================
 
-          // Web Audio API alert function
+          // Web Audio API alert function — reuse single AudioContext to avoid browser limit
+          const audioContextRef = useRef(null);
+          const getAudioContext = () => {
+            if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
+              audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioContextRef.current.state === 'suspended') {
+              audioContextRef.current.resume();
+            }
+            return audioContextRef.current;
+          };
+
           const playAlertTone = (alertType) => {
             if (alertsMuted) return;
 
             try {
-              const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+              const audioContext = getAudioContext();
 
               // Different tones for different alert types
               const toneConfigs = {
@@ -10596,7 +10622,7 @@ Clinician Name`;
 
             const checkAlertsAndUpdate = () => {
               const now = new Date();
-              const diffMs = now - lkwTime;
+              const diffMs = Math.max(0, now - lkwTime);
               const diffMinutes = diffMs / (1000 * 60);
               const remainingMinutes = (4.5 * 60) - diffMinutes; // Minutes until 4.5h window closes
 
@@ -12797,7 +12823,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => {
                                   const val = e.target.value;
                                   if (weightUnit === 'lbs') {
-                                    setTelestrokeNote(prev => ({...prev, weight: val ? String(Math.round(parseFloat(val) / 2.20462)) : ''}));
+                                    const parsed = parseFloat(val);
+                                    setTelestrokeNote(prev => ({...prev, weight: val && !isNaN(parsed) && isFinite(parsed) ? String(Math.round(parsed / 2.20462)) : ''}));
                                   } else {
                                     setTelestrokeNote(prev => ({...prev, weight: val}));
                                   }
@@ -21458,7 +21485,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <ul className="text-sm space-y-1">
                               <li><strong>Target:</strong> SBP &lt;140 mmHg within 2h (Class IIa, INTERACT2). Avoid SBP &lt;130 (ATACH-2).</li>
                               <li><strong>Smooth control:</strong> avoid peaks and variability.</li>
-                              <li><strong>SBP &gt;220 or very large ICH:</strong> safety of intensive lowering is uncertain; consider SBP &lt;160 with gradual reduction.</li>
+                              <li><strong>SBP &gt;220:</strong> Safety of intensive lowering is uncertain (Class IIb, LOE C-EO, AHA 2022). Reasonable to target modest reduction (SBP 140-160) using continuous IV infusion with close monitoring. Avoid rapid drops &gt;60 mmHg in the first hour. Consider starting nicardipine at a lower rate (2.5-5 mg/hr) and titrating slowly.</li>
                               <li><strong>Agent:</strong> IV nicardipine or clevidipine for titration.</li>
                             </ul>
                           </div>
@@ -22633,6 +22660,26 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </ul>
                               </div>
                             </div>
+                            {/* Cannot-Miss Posterior Circulation Patterns */}
+                            <div className="bg-red-50 border border-red-200 rounded-lg p-3 mt-4">
+                              <h4 className="font-semibold text-red-800 mb-2">Cannot-Miss Posterior Circulation Patterns</h4>
+                              <p className="text-xs text-slate-600 mb-2">High-yield pattern recognition for ED triage. If any pattern is present, obtain emergent CTA head/neck and consult stroke neurology.</p>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <ul className="text-sm space-y-1.5">
+                                  <li><strong className="text-red-700">Acute vertigo + ANY neuro sign</strong> = posterior fossa until proven otherwise (PICA, AICA, or vertebral occlusion)</li>
+                                  <li><strong className="text-red-700">Bilateral motor/sensory symptoms</strong> = basilar artery occlusion until proven otherwise</li>
+                                  <li><strong className="text-red-700">Horner + ipsilateral facial numbness</strong> = vertebral/PICA (Wallenberg) — CT often negative, MRI DWI required</li>
+                                  <li><strong className="text-red-700">Acute dysarthria + ataxia</strong> without cortical signs = lateral pontine or cerebellar stroke</li>
+                                </ul>
+                                <ul className="text-sm space-y-1.5">
+                                  <li><strong className="text-red-700">Sudden bilateral vision loss ± confusion</strong> = top-of-basilar (bilateral PCA + thalamic + midbrain) — may present as "AMS" or "confusion" without obvious motor deficits</li>
+                                  <li><strong className="text-red-700">Acute vertigo + hearing loss</strong> = AICA syndrome (not just labyrinthitis). Check: ipsilateral facial weakness, cerebellar ataxia, Horner</li>
+                                  <li><strong className="text-red-700">Acute nausea/vomiting only</strong> = can be sole presentation of medullary or cerebellar stroke. Apply HINTS if vestibular component</li>
+                                  <li><strong className="text-red-700">Fluctuating/waxing-waning deficits</strong> = basilar artery stenosis with flow-dependent ischemia — high risk of complete occlusion</li>
+                                </ul>
+                              </div>
+                              <p className="text-xs text-slate-500 mt-2 italic">NIHSS underscores posterior circulation strokes. A "low NIHSS" does NOT exclude significant posterior fossa pathology.</p>
+                            </div>
                           </div>
                         </div>
 
@@ -22688,6 +22735,31 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <li><strong>Young stroke (&lt;50):</strong> Dissection accounts for ~15-25% of ischemic strokes. Always consider in the workup.</li>
                                   <li><strong>Thrombolysis:</strong> TNK is NOT contraindicated in suspected dissection if within treatment window. Treat the stroke first.</li>
                                 </ul>
+                              </div>
+                            </div>
+                            <div className="bg-red-50 border border-red-200 rounded-lg p-3 mt-3">
+                              <h4 className="font-semibold text-red-800 text-sm mb-2">Intracranial vs Extracranial Vertebral Artery Dissection</h4>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div className="text-xs space-y-1">
+                                  <p className="font-semibold text-slate-700">Extracranial VA dissection:</p>
+                                  <ul className="space-y-0.5">
+                                    <li>• Most common at V3 segment (atlas loop)</li>
+                                    <li>• Usually causes ischemia (embolism to posterior circulation)</li>
+                                    <li>• Antiplatelet or anticoagulation per CADISS (either acceptable)</li>
+                                    <li>• SAH risk is very low</li>
+                                    <li>• Good prognosis; most heal within 3-6 months</li>
+                                  </ul>
+                                </div>
+                                <div className="text-xs space-y-1">
+                                  <p className="font-semibold text-red-700">Intracranial VA dissection:</p>
+                                  <ul className="space-y-0.5">
+                                    <li>• <strong className="text-red-700">Risk of SAH</strong> (intradural = no adventitial protection)</li>
+                                    <li>• If SAH present: anticoagulation is CONTRAINDICATED</li>
+                                    <li>• Urgent neurosurgical/neurointerventional consultation</li>
+                                    <li>• May extend into basilar artery → catastrophic occlusion risk</li>
+                                    <li>• Consider flow diverter or parent vessel sacrifice if recurrent SAH</li>
+                                  </ul>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -25938,7 +26010,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <li><strong>Seizure/Todd paralysis:</strong> Witnessed seizure activity, postictal state, gradual resolution. EEG if uncertain.</li>
                               <li><strong>Migraine with aura:</strong> Positive symptoms (scintillations, spreading paresthesias), headache history, gradual march over 20-60 min.</li>
                               <li><strong>Hypoglycemia:</strong> BG &lt;60 mg/dL, focal deficits resolve with glucose correction. Always check BG first.</li>
-                              <li><strong>Conversion disorder (FND):</strong> Inconsistent exam, Hoover sign, give-way weakness, non-anatomic sensory loss. Often young patients.</li>
+                              <li><strong>Conversion disorder (FND):</strong> Inconsistent exam, give-way weakness, non-anatomic sensory loss. Often young patients. <strong>Hoover sign:</strong> Place hand under the "weak" heel; ask patient to lift the <em>good</em> leg against resistance — involuntary downward pressure on the paretic side = positive (functional weakness). Absent hip extension = true weakness.</li>
                               <li><strong>Peripheral vertigo:</strong> HINTS exam peripheral pattern, no focal deficits. See HINTS section above.</li>
                             </ul>
                           </div>
