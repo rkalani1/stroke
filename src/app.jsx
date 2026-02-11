@@ -1943,7 +1943,7 @@ Clinician Name`;
             'post-tnk': { label: 'Post-TNK', systolic: 180, diastolic: 105 },
             'post-evt': { label: 'Post-EVT', systolic: 180, diastolic: 105 },
             'no-lytics': { label: 'No lytics/No EVT', systolic: 220, diastolic: 120 },
-            'ich': { label: 'ICH (institutional)', systolic: 160, diastolic: 105 },
+            'ich': { label: 'ICH (INTERACT2)', systolic: 140, diastolic: 105 },
             'sah': { label: 'SAH (pre-securing)', systolic: 160, diastolic: 105 },
             'sah-secured': { label: 'SAH (post-securing)', systolic: 140, diastolic: 90 },
             'cvt': { label: 'CVT (permissive)', systolic: 220, diastolic: 120 },
@@ -3434,7 +3434,7 @@ Clinician Name`;
               title: 'ICH acute BP target',
               recommendation: 'For ICH with presenting SBP 150-220, acute lowering to SBP <140 mmHg is safe and reasonable (Class IIa, LOE B-R per AHA/ASA 2022; INTERACT2). Avoid SBP <130 (ATACH-2: no benefit, possible harm).',
               detail: 'AHA/ASA 2022 ICH guideline: for ICH with presenting SBP 150-220, acute lowering to SBP 140 mmHg is safe and reasonable (Class IIa, LOE B-R, INTERACT2). Avoid SBP <130 (Class III: Harm, ATACH-2). For SBP >220, safety of intensive lowering is uncertain. Nicardipine infusion preferred. Maintain target for at least 24 hours.',
-              classOfRec: 'IIb',
+              classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
@@ -9320,7 +9320,7 @@ Clinician Name`;
               nursingOrders.push(`Activity: ${n.tnkAdminTime ? 'Bedrest HOB 30° x 24h post-lytic' : isSAH ? 'Bedrest HOB 30°, minimal stimulation' : 'Bedrest until stable neuro exam, then OOB with assist'}`);
               nursingOrders.push(`DVT prophylaxis: SCDs on admission. ${n.tnkAdminTime ? 'Hold SQ heparin 24h post-TNK' : isICH ? 'Hold SQ heparin 24-48h' : 'Start enoxaparin 40mg SC daily if immobile'}`);
               nursingOrders.push('IV: NS at 75 mL/hr (avoid D5W/hypotonic)');
-              nursingOrders.push(`Call MD if: NIHSS increase ≥2 points, SBP ${isICH ? '>160 or <110' : '>185 or <100'}, new headache/vomiting, any bleeding, O2 <94%, temperature >38°C, urine output <0.5 mL/kg/hr`);
+              nursingOrders.push(`Call MD if: NIHSS increase ≥2 points, SBP ${isICH ? '>140 or <110' : '>185 or <100'}, new headache/vomiting, any bleeding, O2 <94%, temperature >38°C, urine output <0.5 mL/kg/hr`);
               bundles.push({
                 id: 'nursing-params',
                 label: 'Nursing Parameters Sheet',
@@ -13128,7 +13128,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <input type="checkbox" checked={!!telestrokeNote.ichBPManaged}
                                       onChange={(e) => setTelestrokeNote({...telestrokeNote, ichBPManaged: e.target.checked})}
                                       className="w-3.5 h-3.5 text-red-600" />
-                                    <span>BP managed (target SBP &lt;160)</span>
+                                    <span>BP managed (target SBP &lt;140)</span>
                                   </label>
                                   <label className="flex items-center gap-2 cursor-pointer text-sm">
                                     <input type="checkbox" checked={!!telestrokeNote.ichReversalInitiated}
@@ -20873,7 +20873,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="bg-white border border-red-200 rounded-xl p-4">
                               <h4 className="text-sm font-semibold text-red-700 mb-2">Inpatient priorities</h4>
                               <ul className="text-sm space-y-1 text-slate-700">
-                                <li>Continue anticoagulant reversal, monitor for hematoma expansion, and maintain SBP &lt;160.</li>
+                                <li>Continue anticoagulant reversal, monitor for hematoma expansion, and maintain SBP &lt;140.</li>
                                 <li>Evaluate IVH/hydrocephalus for EVD and monitor for neurologic decline.</li>
                                 <li>Manage seizures, avoid prophylaxis without seizures, and use EEG when indicated.</li>
                                 <li>Implement supportive care bundle, early rehab, and structured goals-of-care discussions.</li>
@@ -21682,7 +21682,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
                                 <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105</li>
                                 <li><strong>After thrombectomy:</strong> SBP &lt;180, DBP &lt;105</li>
-                                <li><strong>IPH:</strong> SBP &lt;160, DBP &lt;105</li>
+                                <li><strong>IPH:</strong> SBP &lt;140, DBP &lt;105</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border">
