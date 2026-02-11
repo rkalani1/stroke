@@ -436,7 +436,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
               ? 'minor'
               : nihssVal <= 15
                 ? 'moderate'
-                : nihssVal > 21 && rule.days.verySevere
+                : nihssVal >= 21 && rule.days.verySevere
                   ? 'verySevere'
                   : 'severe';
           const days = rule.days[severity] ?? rule.days.severe ?? rule.days.moderate;
@@ -1702,7 +1702,7 @@ Clinician Name`;
             lobar: false, // FUNC Score: lobar vs deep supratentorial
             preCogImpairment: false // FUNC Score: pre-ICH cognitive impairment
           }));
-          const [ichVolumeParams, setIchVolumeParams] = useState({ a: '', b: '', thicknessMm: '', numSlices: '' });
+          const [ichVolumeParams, setIchVolumeParams] = useState(loadFromStorage('ichVolumeParams', { a: '', b: '', thicknessMm: '', numSlices: '' }));
 
           useEffect(() => {
             const { a, b, thicknessMm, numSlices } = ichVolumeParams;
@@ -6040,6 +6040,7 @@ Clinician Name`;
             const eye = Math.min(4, Math.max(0, parseInt(items.eye || 0) || 0));
             const verbal = Math.min(5, Math.max(0, parseInt(items.verbal || 0) || 0));
             const motor = Math.min(6, Math.max(0, parseInt(items.motor || 0) || 0));
+            if (eye === 0 || verbal === 0 || motor === 0) return 0;
             return eye + verbal + motor;
           };
 
@@ -6061,7 +6062,7 @@ Clinician Name`;
             if (items.age60) score += 1;
             if (items.bp) score += 1;
             if (items.unilateralWeakness) score += 2;
-            if (items.speechDisturbance) score += 1;
+            if (items.speechDisturbance && !items.unilateralWeakness) score += 1;
             if (items.duration === 'duration10') score += 1;
             else if (items.duration === 'duration60') score += 2;
             if (items.diabetes) score += 1;
@@ -6074,10 +6075,10 @@ Clinician Name`;
             if (items.chf) score += 1;
             if (items.hypertension) score += 1;
             if (items.age75) score += 2;
+            else if (items.age65) score += 1;
             if (items.diabetes) score += 1;
             if (items.strokeTia) score += 2;
             if (items.vascular) score += 1;
-            if (items.age65) score += 1;
             if (items.female) score += 1;
             return score;
           };
@@ -6191,7 +6192,7 @@ Clinician Name`;
             const crClWarning = crClUnknown ? ' ⚠ CrCl unknown — verify renal function before dosing' : '';
             const obesityWarning = treatmentDose > 150 ? ' ⚠ Treatment dose >150 mg — consider anti-Xa monitoring (target 0.5-1.0 IU/mL at 4h post-dose) for morbid obesity' : '';
             return {
-              dose: isRenalAdjusted ? treatmentDose : treatmentDose,
+              dose: treatmentDose,
               frequency: isRenalAdjusted ? 'daily' : 'BID',
               isRenalAdjusted,
               crClUnknown,
@@ -6201,8 +6202,8 @@ Clinician Name`;
           };
 
           const calculateAndexanetDose = (doacType, lastDoseHours, doacDoseMg) => {
-            const hours = parseFloat(lastDoseHours) || 0;
-            const doseMg = parseFloat(doacDoseMg) || 0;
+            const hours = Math.max(0, parseFloat(lastDoseHours) || 0);
+            const doseMg = Math.max(0, parseFloat(doacDoseMg) || 0);
             const isApixaban = (doacType || '').toLowerCase().includes('apixaban');
             const isRivaroxaban = (doacType || '').toLowerCase().includes('rivaroxaban');
             const lowDose = { regimen: 'low-dose', bolus: '400 mg IV over 15-30 min', infusion: '4 mg/min x 120 min (480 mg)', total: '880 mg', doseWarning: null };
@@ -8458,16 +8459,16 @@ Clinician Name`;
             note = note.replace(/{symptoms}/g, telestrokeNote.symptoms || '');
             note = note.replace(/{pmh}/g, telestrokeNote.pmh || '');
             note = note.replace(/{medications}/g, telestrokeNote.medications || '');
-            note = note.replace(/{presentingBP}/g, telestrokeNote.presentingBP || '');
-            note = note.replace(/{heartRate}/g, telestrokeNote.heartRate || '');
-            note = note.replace(/{spO2}/g, telestrokeNote.spO2 || '');
-            note = note.replace(/{temperature}/g, telestrokeNote.temperature || '');
-            note = note.replace(/{bpPreTNK}/g, telestrokeNote.bpPreTNK || '');
+            note = note.replace(/{presentingBP}/g, telestrokeNote.presentingBP || '___');
+            note = note.replace(/{heartRate}/g, telestrokeNote.heartRate || '___');
+            note = note.replace(/{spO2}/g, telestrokeNote.spO2 || '___');
+            note = note.replace(/{temperature}/g, telestrokeNote.temperature || '___');
+            note = note.replace(/{bpPreTNK}/g, telestrokeNote.bpPreTNK || '___');
             note = note.replace(/{bpPreTNKTime}/g, formatTime(telestrokeNote.bpPreTNKTime));
-            note = note.replace(/{glucose}/g, telestrokeNote.glucose || '');
-            note = note.replace(/{plateletCount}/g, telestrokeNote.plateletCount || '');
-            note = note.replace(/{plateletsCoags}/g, telestrokeNote.plateletCount || '');
-            note = note.replace(/{creatinine}/g, telestrokeNote.creatinine || '');
+            note = note.replace(/{glucose}/g, telestrokeNote.glucose || '___');
+            note = note.replace(/{plateletCount}/g, telestrokeNote.plateletCount || '___');
+            note = note.replace(/{plateletsCoags}/g, telestrokeNote.plateletCount || '___');
+            note = note.replace(/{creatinine}/g, telestrokeNote.creatinine || '___');
             note = note.replace(/{nihss}/g, telestrokeNote.nihss || nihssScore || '');
             const gcsForNote = calculateGCS(gcsItems);
             note = note.replace(/{gcs}/g, gcsForNote > 0 ? `| GCS: ${gcsForNote} ` : '');
@@ -9104,8 +9105,8 @@ Clinician Name`;
 
             // --- Out-of-range values ---
             const weight = parseFloat(n.weight);
-            if (!isNaN(weight) && (weight < 20 || weight > 300)) {
-              warnings.push({ id: 'weight-range', severity: 'error', msg: `Weight ${weight} kg is outside plausible range (20-300 kg)` });
+            if (!isNaN(weight) && (weight < 20 || weight > 350)) {
+              warnings.push({ id: 'weight-range', severity: 'error', msg: `Weight ${weight} kg is outside plausible range (20-350 kg)` });
             }
             const age = parseInt(n.age);
             if (!isNaN(age) && (age < 0 || age > 120)) {
@@ -10438,6 +10439,7 @@ Clinician Name`;
             debouncedSave('gcsItems', gcsItems);
             debouncedSave('mrsScore', mrsScore);
             debouncedSave('ichScoreItems', ichScoreItems);
+            debouncedSave('ichVolumeParams', ichVolumeParams);
             debouncedSave('abcd2Items', abcd2Items);
             debouncedSave('chads2vascItems', chads2vascItems);
             debouncedSave('ropeItems', ropeItems);
@@ -10449,7 +10451,7 @@ Clinician Name`;
             debouncedSave('autoSyncCalculators', autoSyncCalculators);
             debouncedSave('evtDecisionInputs', evtDecisionInputs);
             debouncedSave('doacProtocol', doacProtocol);
-          }, [nihssScore, aspectsScore, gcsItems, mrsScore, ichScoreItems, abcd2Items,
+          }, [nihssScore, aspectsScore, gcsItems, mrsScore, ichScoreItems, ichVolumeParams, abcd2Items,
               chads2vascItems, ropeItems, huntHessGrade, wfnsGrade, hasbledItems,
               rcvs2Items, phasesItems, autoSyncCalculators, evtDecisionInputs, doacProtocol]);
 
@@ -12910,7 +12912,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 min="0"
                                 max="120"
                                 value={telestrokeNote.age}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, age: e.target.value})}
+                                onChange={(e) => {
+                                  const raw = e.target.value;
+                                  if (raw === '') { setTelestrokeNote({...telestrokeNote, age: ''}); return; }
+                                  const parsed = parseInt(raw);
+                                  if (isNaN(parsed)) return;
+                                  const clamped = Math.max(0, Math.min(120, parsed));
+                                  setTelestrokeNote({...telestrokeNote, age: String(clamped)});
+                                }}
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
                               />
                             </div>
@@ -13200,9 +13209,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 type="number"
                                 value={telestrokeNote.nihss}
                                 onChange={(e) => {
-                                  const value = e.target.value;
-                                  setTelestrokeNote({...telestrokeNote, nihss: value});
-                                  setNihssScore(parseInt(value) || 0);
+                                  const raw = e.target.value;
+                                  if (raw === '') { setTelestrokeNote({...telestrokeNote, nihss: ''}); setNihssScore(0); return; }
+                                  const parsed = parseInt(raw);
+                                  if (isNaN(parsed)) return;
+                                  const clamped = Math.max(0, Math.min(42, parsed));
+                                  setTelestrokeNote({...telestrokeNote, nihss: String(clamped)});
+                                  setNihssScore(clamped);
                                 }}
                                 min="0"
                                 max="42"
@@ -14098,11 +14111,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <label className="block text-sm font-medium text-slate-700 mb-1">Age</label>
                               <input
                                 type="number"
+                                min="0"
+                                max="120"
                                 value={telestrokeNote.age}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, age: e.target.value})}
+                                onChange={(e) => {
+                                  const raw = e.target.value;
+                                  if (raw === '') { setTelestrokeNote({...telestrokeNote, age: ''}); return; }
+                                  const parsed = parseInt(raw);
+                                  if (isNaN(parsed)) return;
+                                  const clamped = Math.max(0, Math.min(120, parsed));
+                                  setTelestrokeNote({...telestrokeNote, age: String(clamped)});
+                                }}
                                 className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${telestrokeNote.age && (parseInt(telestrokeNote.age) < 0 || parseInt(telestrokeNote.age) > 120) ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
                                 placeholder=""
-                                min="0" max="120"
                               />
                               {telestrokeNote.age && parseInt(telestrokeNote.age) > 120 && <p className="text-xs text-red-600 mt-0.5">Check age value</p>}
                             </div>
@@ -24161,7 +24182,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               : null,
                             age: telestrokeNote.age ? (parseInt(telestrokeNote.age) < 70 ? 2 : parseInt(telestrokeNote.age) <= 79 ? 1 : 0) : null,
                             location: ichScoreItems.infratentorial ? 0 : ichScoreItems.lobar ? 2 : 1,
-                            gcs: ichScoreItems.gcs === 'gcs34' ? 0 : ichScoreItems.gcs === 'gcs512' ? 1 : 2,
+                            gcs: ichScoreItems.gcs === 'gcs34' ? 0 : ichScoreItems.gcs === 'gcs512' ? 1 : ichScoreItems.gcs ? 2 : null,
                             cognitive: ichScoreItems.preCogImpairment ? 0 : 1,
                           };
                           const known = Object.values(funcItems).filter(v => v !== null);
@@ -25114,14 +25135,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div>
                             <label className="text-xs text-slate-600">Hours since last DOAC dose</label>
-                            <input type="number" step="0.5" value={(telestrokeNote.andexanetCalc || {}).lastDoseHours || ''}
+                            <input type="number" step="0.5" min="0" value={(telestrokeNote.andexanetCalc || {}).lastDoseHours || ''}
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, andexanetCalc: {...(telestrokeNote.andexanetCalc || {}), lastDoseHours: e.target.value}})}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="hours" />
                           </div>
                         </div>
                         <div className="mb-3">
                           <label className="text-xs text-slate-600">DOAC dose (mg per dose)</label>
-                          <input type="number" step="0.5" value={(telestrokeNote.andexanetCalc || {}).doacDoseMg || ''}
+                          <input type="number" step="0.5" min="0" value={(telestrokeNote.andexanetCalc || {}).doacDoseMg || ''}
                             onChange={(e) => setTelestrokeNote({...telestrokeNote, andexanetCalc: {...(telestrokeNote.andexanetCalc || {}), doacDoseMg: e.target.value}})}
                             className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="e.g. 5 for apixaban 5mg BID" />
                         </div>
