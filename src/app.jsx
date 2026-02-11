@@ -890,10 +890,10 @@ Clinician Name`;
           ]);
 
           const getDefaultPcAspectsRegions = () => ([
-            { id: 'THAL', name: 'Thalami (bilateral)', checked: true, points: 1 },
+            { id: 'THAL-L', name: 'Left Thalamus', checked: true, points: 1 },
+            { id: 'THAL-R', name: 'Right Thalamus', checked: true, points: 1 },
             { id: 'MIDBRAIN', name: 'Midbrain', checked: true, points: 2 },
             { id: 'PONS', name: 'Pons', checked: true, points: 2 },
-            { id: 'MEDULLA', name: 'Medulla', checked: true, points: 1 },
             { id: 'CEREBELLUM-L', name: 'Left Cerebellar Hemisphere', checked: true, points: 1 },
             { id: 'CEREBELLUM-R', name: 'Right Cerebellar Hemisphere', checked: true, points: 1 },
             { id: 'PCA-L', name: 'Left Occipital Lobe (PCA Territory)', checked: true, points: 1 },
@@ -2916,7 +2916,7 @@ Clinician Name`;
               quickDescription: 'Adaptive platform for mild LVO or medium/distal vessel occlusions',
               keyTakeaways: [
                 'NIH StrokeNet adaptive platform with two domains: mild stroke with LVO (NIHSS 0-5) and medium/distal vessel occlusions (M2-M4, A1-A3, P1-P3)',
-                'ESCAPE-MeVO (2025) showed EVT benefit for M2/proximal M3 — STEP extends to more distal occlusions',
+                'ESCAPE-MeVO (2025) showed NO benefit of EVT for M2/proximal M3 (higher mortality in EVT arm) — STEP aims to identify subgroups that may benefit using adaptive design',
                 'Adaptive design allows rapid testing of multiple EVT devices and techniques'
               ],
               lookingFor: [
@@ -23526,7 +23526,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox" 
                               className="text-orange-600"
                               checked={abcd2Items.unilateralWeakness}
-                              onChange={(e) => setAbcd2Items({...abcd2Items, unilateralWeakness: e.target.checked})}
+                              onChange={(e) => setAbcd2Items({...abcd2Items, unilateralWeakness: e.target.checked, speechDisturbance: e.target.checked ? false : abcd2Items.speechDisturbance})}
                             />
                             <span className="text-sm">Unilateral weakness (+2)</span>
                           </label>
@@ -23537,9 +23537,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-orange-600"
                               checked={abcd2Items.speechDisturbance}
-                              onChange={(e) => setAbcd2Items({...abcd2Items, speechDisturbance: e.target.checked})}
+                              onChange={(e) => setAbcd2Items({...abcd2Items, speechDisturbance: e.target.checked, unilateralWeakness: e.target.checked ? false : abcd2Items.unilateralWeakness})}
+                              disabled={abcd2Items.unilateralWeakness}
                             />
-                            <span className="text-sm">Speech disturbance w/o weakness (+1)</span>
+                            <span className={`text-sm ${abcd2Items.unilateralWeakness ? 'text-slate-400' : ''}`}>Speech disturbance w/o weakness (+1)</span>
                           </label>
                           <p className="font-semibold text-sm mt-3 mb-1">Symptom Duration:</p>
                           {[{v:'duration60',l:'\u226560 minutes',p:'+2 points'},{v:'duration10',l:'10-59 minutes',p:'+1 point'},{v:'',l:'<10 minutes',p:'0 points'}].map(o => (
