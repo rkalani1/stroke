@@ -7922,12 +7922,30 @@ Clinician Name`;
               note += `DISCHARGE NIHSS: ___\n`;
               note += `DISCHARGE mRS: ${dischMRS || '___'}\n\n`;
               note += `DISPOSITION: ${telestrokeNote.disposition || '___'}\n\n`;
+              // Medication reconciliation
+              note += `MEDICATION RECONCILIATION:\n`;
+              note += `Home Medications: ${telestrokeNote.medications || '___'}\n`;
+              note += `Discharge Medications & Changes:\n`;
+              if (dischSp.antiplateletRegimen) note += `  - ${AP_LABELS_SHORT[dischSp.antiplateletRegimen] || dischSp.antiplateletRegimen} (NEW/CONTINUED)\n`;
+              if (dischSp.statinDose) note += `  - ${dischSp.statinDose.replace(/-/g, ' ')} (NEW/CONTINUED)\n`;
+              if (dischSp.bpMeds) note += `  - ${dischSp.bpMeds} (NEW/CONTINUED/ADJUSTED)\n`;
+              if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
+                note += `  - ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].name}: HELD — restart per CATALYST timing\n`;
+              }
+              note += `  - [Review and reconcile all home medications]\n\n`;
               note += `FOLLOW-UP:\n`;
-              note += `- Stroke/Neurology clinic: 1-2 weeks (review imaging, labs, secondary prevention)\n`;
+              const isTIA = (telestrokeNote.diagnosis || '').toLowerCase().includes('tia');
+              if (isTIA) {
+                note += `- URGENT Stroke/Neurology clinic: within 24-72 hours (TIA — high early recurrence risk)\n`;
+              } else {
+                note += `- Stroke/Neurology clinic: 1-2 weeks (review imaging, labs, secondary prevention)\n`;
+              }
               note += `- PCP: 1 week (BP, statin titration, medication reconciliation)\n`;
               if (ct.extendedMonitoringType) note += `- Cardiology: cardiac monitoring review (${ct.extendedMonitoringType})\n`;
               if (telestrokeNote.evtRecommended) note += `- Neurovascular: vascular imaging follow-up 3-6 months\n`;
               if (telestrokeNote.diagnosisCategory === 'ischemic' && telestrokeNote.toastClassification === 'large-artery') note += `- Carotid duplex or CTA neck in 3-6 months\n`;
+              const isDissection = (telestrokeNote.ctaResults || '').toLowerCase().includes('dissect') || (telestrokeNote.toastClassification || '') === 'other-determined';
+              if (isDissection) note += `- Repeat CTA/MRA neck at 3 months and 6 months (dissection follow-up — assess for recanalization, persistent stenosis, or pseudoaneurysm)\n`;
               note += '\n';
               note += `PATIENT EDUCATION:\n`;
               note += `- Stroke warning signs (BE-FAST)\n`;
@@ -16258,7 +16276,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 {(telestrokeNote.screeningTools || {}).phq2Score && (
                                   <div className={`mt-2 p-2 rounded text-sm font-medium ${(telestrokeNote.screeningTools || {}).phq2Positive ? 'bg-red-100 text-red-800' : 'bg-emerald-100 text-emerald-800'}`}>
                                     PHQ-2 Score: {(telestrokeNote.screeningTools || {}).phq2Score}/6
-                                    {(telestrokeNote.screeningTools || {}).phq2Positive ? ' — POSITIVE: Consider full PHQ-9, psychiatry/psychology referral' : ' — Negative screen'}
+                                    {(telestrokeNote.screeningTools || {}).phq2Positive ? ' — POSITIVE: Proceed to PHQ-9, consider referral' : ' — Negative screen'}
+                                  </div>
+                                )}
+                                {(telestrokeNote.screeningTools || {}).phq2Positive && (
+                                  <div className="mt-3 bg-red-50 border border-red-200 rounded-lg p-3">
+                                    <h5 className="font-semibold text-red-800 text-sm mb-2">Post-Stroke Depression Care Plan</h5>
+                                    <div className="text-xs text-slate-700 space-y-1">
+                                      <p><strong>1. Full PHQ-9:</strong> Complete 9-item questionnaire to quantify severity (5-9 mild, 10-14 moderate, 15-19 moderately severe, 20-27 severe).</p>
+                                      <p><strong>2. First-line therapy:</strong> Psychotherapy (CBT, behavioral activation) and structured exercise program. Class I evidence for mild-moderate PSD.</p>
+                                      <p><strong>3. SSRI pharmacotherapy:</strong> For moderate-severe PSD (PHQ-9 ≥10). Sertraline or escitalopram preferred. NOT for functional motor recovery (FOCUS, AFFINITY, EFFECTS trials — Class III: No Benefit).</p>
+                                      <p><strong>4. Monitoring:</strong> Check BMP at 2 weeks (SIADH/hyponatremia risk with SSRIs). Repeat PHQ-9 at 4-6 weeks. Assess for suicidality.</p>
+                                      <p><strong>5. Follow-up schedule:</strong> Screen at discharge, 1 month, 3 months, 6 months, 12 months post-stroke.</p>
+                                      <p><strong>6. Referral:</strong> Psychiatry if suicidal ideation, bipolar features, or refractory to initial treatment. Neuropsychology for cognitive-emotional overlap.</p>
+                                    </div>
                                   </div>
                                 )}
                               </div>
@@ -20499,6 +20530,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <li>&#x2022; <strong>SoSTART (2021):</strong> OAC restart associated with lower recurrent stroke without excess ICH (observational)</li>
                               <li>&#x2022; <strong>APACHE-AF (2021):</strong> Apixaban vs no anticoagulation &mdash; underpowered, trend favoring restart</li>
                               <li>&#x2022; <strong>PRESTIGE-AF (2024):</strong> DOAC restart reduced ischemic events without significant increase in ICH</li>
+                              <li>&#x2022; <strong>STROKE-CLOSE (2024):</strong> LAA closure (Watchman) showed lower composite endpoint vs DOAC in ICH patients with AF (HR 0.61). Particularly beneficial for lobar ICH with high rebleed risk.</li>
                               <li>&#x2022; <strong>DOAC preferred over warfarin</strong> for restart (lower ICH risk: 0.3-0.5%/yr vs 1%/yr)</li>
                             </ul>
                           </div>
