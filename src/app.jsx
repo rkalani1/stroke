@@ -1935,9 +1935,9 @@ Clinician Name`;
             'crcl': 'CrCl'
           };
           const calculatorPriorityList = calculatorPriorityMap[calculatorDiagnosisKey] || [];
-          const getCalculatorOrder = (id, fallback) => {
+          const getCalculatorOrder = (id, fallback = 0) => {
             const idx = calculatorPriorityList.indexOf(id);
-            if (idx === -1) return 0;
+            if (idx === -1) return fallback;
             return -1 * (calculatorPriorityList.length - idx);
           };
 
@@ -6717,8 +6717,9 @@ Clinician Name`;
             else if (vessels.includes('ICA')) vesselInfo = 'ICA';
             else if (vessels.includes('M2')) vesselInfo = 'M2';
             else if (telestrokeNote.ctaResults) {
-              if (telestrokeNote.ctaResults.toLowerCase().includes('m1')) vesselInfo = 'M1';
-              else if (telestrokeNote.ctaResults.toLowerCase().includes('ica')) vesselInfo = 'ICA';
+              const ctaLower = String(telestrokeNote.ctaResults).toLowerCase();
+              if (ctaLower.includes('m1')) vesselInfo = 'M1';
+              else if (ctaLower.includes('ica')) vesselInfo = 'ICA';
             }
 
             return {
@@ -6874,7 +6875,7 @@ Clinician Name`;
               GCS: calculateGCS(gcsItems),
               BP: telestrokeNote.presentingBP || '',
               HEMATOMA: telestrokeNote.ctResults || '',
-              IVH: telestrokeNote.ctResults ? (telestrokeNote.ctResults.toLowerCase().includes('ivh') ? 'IVH present' : 'No IVH') : '',
+              IVH: telestrokeNote.ctResults ? (String(telestrokeNote.ctResults).toLowerCase().includes('ivh') ? 'IVH present' : 'No IVH') : '',
               REVERSAL: telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType] ? ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].ichReversal?.primary || '' : ''
             };
           };
@@ -10273,13 +10274,15 @@ Clinician Name`;
             const elevatedAPTT = !Number.isNaN(pttVal) && pttVal > 40;
             const isICH = telestrokeNote.diagnosisCategory === 'ich' || telestrokeNote.diagnosisCategory === 'sah';
             const recentDOAC = telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== 'warfarin' && telestrokeNote.lastDOACType !== 'none';
-            const shouldBlock = warfarinWithHighINR || lowPlatelets || elevatedAPTT || isICH || recentDOAC;
+            const hasIE = !!telestrokeNote.infectiveEndocarditis;
+            const shouldBlock = warfarinWithHighINR || lowPlatelets || elevatedAPTT || isICH || recentDOAC || hasIE;
             if (shouldBlock) {
               const reasons = [];
               if (warfarinWithHighINR) reasons.push(`Warfarin with INR ${inrVal.toFixed(1)} (>1.7)`);
               if (lowPlatelets) reasons.push(`Platelets ${pltVal}K (<100K)`);
               if (elevatedAPTT) reasons.push(`aPTT ${pttVal}s (>40s)`);
               if (isICH) reasons.push(telestrokeNote.diagnosisCategory === 'sah' ? 'SAH diagnosis' : 'ICH diagnosis');
+              if (hasIE) reasons.push('Infective endocarditis (Class III: TNK contraindicated)');
               if (recentDOAC) {
                 const doacName = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType;
                 reasons.push(`Recent ${doacName}`);
@@ -10292,7 +10295,7 @@ Clinician Name`;
             } else if (telestrokeNote.tnkAutoBlocked) {
               setTelestrokeNote(prev => ({ ...prev, tnkAutoBlocked: false, tnkAutoBlockReason: '' }));
             }
-          }, [telestrokeNote.lastDOACType, telestrokeNote.inr, telestrokeNote.plateletCount, telestrokeNote.ptt, telestrokeNote.diagnosisCategory, telestrokeNote.tnkAutoBlocked]);
+          }, [telestrokeNote.lastDOACType, telestrokeNote.inr, telestrokeNote.plateletCount, telestrokeNote.ptt, telestrokeNote.diagnosisCategory, telestrokeNote.infectiveEndocarditis, telestrokeNote.tnkAutoBlocked]);
 
           useEffect(() => {
             const prev = decisionStateRef.current;
@@ -10357,6 +10360,13 @@ Clinician Name`;
               setTelestrokeNote(prev => ({ ...prev, bpPhase: 'post-tnk' }));
             }
           }, [telestrokeNote.tnkRecommended]);
+
+          // Auto-switch BP phase to post-EVT when EVT recommended (without TNK)
+          useEffect(() => {
+            if (telestrokeNote.evtRecommended && !telestrokeNote.tnkRecommended && telestrokeNote.bpPhase === 'pre-tnk') {
+              setTelestrokeNote(prev => ({ ...prev, bpPhase: 'post-evt' }));
+            }
+          }, [telestrokeNote.evtRecommended]);
 
           useEffect(() => {
             debouncedSave('telestrokeTemplate', editableTemplate);
@@ -15378,6 +15388,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               const updateChecklistItem = (id, value) => setTelestrokeNote({...telestrokeNote, tnkContraindicationChecklist: {...telestrokeNote.tnkContraindicationChecklist, [id]: value}});
 
                               const clearAllAndProceed = () => {
+                                // Block if auto-detected absolute contraindications exist (including IE, ICH/SAH, etc.)
+                                if (autoAbsolute.length > 0 || telestrokeNote.tnkAutoBlocked) {
+                                  addToast('Cannot proceed — absolute contraindication(s) detected. TNK is contraindicated.', 'error');
+                                  return;
+                                }
                                 setTelestrokeNote(prev => ({...prev, tnkContraindicationReviewed: true, tnkContraindicationReviewTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }), tnkRecommended: true}));
                               };
 
