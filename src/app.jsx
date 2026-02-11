@@ -2782,8 +2782,8 @@ Clinician Name`;
               class: 'Indirect Thrombin Inhibitor',
               halfLife: '1-2 hours',
               halfLifeNote: 'Dose-dependent, cleared faster at higher doses',
-              thrombolysisThreshold: '24 hours if therapeutic dosing',
-              thrombolysisNote: 'Contraindicated if aPTT >40s - wait for normalization',
+              thrombolysisThreshold: 'aPTT must be ≤40s (normal) at time of administration',
+              thrombolysisNote: 'UFH clearance is rapid (t½ 1-2h) but thrombolysis eligibility is aPTT-based, not time-based. Check aPTT; if >40s, wait and recheck.',
               ichReversal: {
                 primary: 'Protamine sulfate 1mg per 100 units UFH (last 2-3 hours)',
                 maxDose: 'Max 50mg protamine per dose',
@@ -2803,6 +2803,20 @@ Clinician Name`;
                 note: 'Protamine only partially reverses LMWH (~60% anti-Xa activity neutralized). Anti-Xa level guides additional dosing.'
               },
               monitoring: 'Anti-Xa level (preferred), aPTT (unreliable)'
+            },
+            fondaparinux: {
+              name: 'Fondaparinux (Arixtra)',
+              class: 'Indirect Factor Xa Inhibitor (synthetic pentasaccharide)',
+              halfLife: '17-21 hours',
+              halfLifeNote: 'Significantly prolonged in renal impairment (up to 72h if CrCl <30). Contraindicated if CrCl <30.',
+              thrombolysisThreshold: '48 hours since last dose (long half-life)',
+              thrombolysisNote: 'No specific reversal agent. Check anti-Xa level; thrombolysis may be considered if anti-Xa undetectable.',
+              ichReversal: {
+                primary: 'Recombinant Factor VIIa (rFVIIa) 90 mcg/kg IV — limited evidence',
+                alternative: '4-Factor PCC 50 IU/kg may partially correct, but not reliably studied for fondaparinux',
+                note: 'No specific reversal agent exists. Protamine is INEFFECTIVE. rFVIIa has been used off-label. Consider Hematology consult. Supportive care and time (long half-life) are primary strategy.'
+              },
+              monitoring: 'Anti-Xa level (calibrated for fondaparinux)'
             }
           };
 
@@ -6173,27 +6187,39 @@ Clinician Name`;
             const prophylaxisDose = isRenalAdjusted ? 30 : 40;
             const prophylaxisFreq = weight > 100 && !isRenalAdjusted ? 'q12h' : 'daily';
             const crClWarning = crClUnknown ? ' ⚠ CrCl unknown — verify renal function before dosing' : '';
+            const obesityWarning = treatmentDose > 150 ? ' ⚠ Treatment dose >150 mg — consider anti-Xa monitoring (target 0.5-1.0 IU/mL at 4h post-dose) for morbid obesity' : '';
             return {
               dose: isRenalAdjusted ? treatmentDose : treatmentDose,
               frequency: isRenalAdjusted ? 'daily' : 'BID',
               isRenalAdjusted,
               crClUnknown,
-              note: (isRenalAdjusted ? `Treatment: ${treatmentDose} mg SC daily (CrCl <30)` : `Treatment: ${treatmentDose} mg SC BID`) + crClWarning,
+              note: (isRenalAdjusted ? `Treatment: ${treatmentDose} mg SC daily (CrCl <30)` : `Treatment: ${treatmentDose} mg SC BID`) + crClWarning + obesityWarning,
               prophylaxisNote: `VTE Prophylaxis: ${prophylaxisDose} mg SC ${prophylaxisFreq}${isRenalAdjusted ? ' (renal-adjusted)' : ''}${weight > 100 && !isRenalAdjusted ? ' (weight >100 kg)' : ''}` + crClWarning
             };
           };
 
-          const calculateAndexanetDose = (doacType, lastDoseHours) => {
+          const calculateAndexanetDose = (doacType, lastDoseHours, doacDoseMg) => {
             const hours = parseFloat(lastDoseHours) || 0;
+            const doseMg = parseFloat(doacDoseMg) || 0;
             const isApixaban = (doacType || '').toLowerCase().includes('apixaban');
             const isRivaroxaban = (doacType || '').toLowerCase().includes('rivaroxaban');
+            const lowDose = { regimen: 'low-dose', bolus: '400 mg IV over 15-30 min', infusion: '4 mg/min x 120 min (480 mg)', total: '880 mg', doseWarning: null };
+            const highDose = { regimen: 'high-dose', bolus: '800 mg IV over 15-30 min', infusion: '8 mg/min x 120 min (960 mg)', total: '1760 mg', doseWarning: null };
             if (isApixaban) {
-              if (hours >= 8) return { regimen: 'low-dose', bolus: '400 mg IV over 15-30 min', infusion: '4 mg/min x 120 min (480 mg)', total: '880 mg', doseWarning: null };
-              return { regimen: 'high-dose', bolus: '800 mg IV over 15-30 min', infusion: '8 mg/min x 120 min (960 mg)', total: '1760 mg', doseWarning: 'Per FDA label: low-dose is correct for standard apixaban ≤5mg even if <8h. High-dose is only for apixaban >5mg (10mg) taken <8h ago. Verify actual DOAC dose.' };
+              // FDA label: low-dose for apixaban ≤5mg regardless of time, OR any dose ≥8h ago
+              if (hours >= 8) return lowDose;
+              if (doseMg > 0 && doseMg <= 5) return { ...lowDose, doseWarning: 'Low-dose regimen: apixaban dose ≤5 mg (per FDA label).' };
+              if (doseMg > 5) return { ...highDose, doseWarning: 'High-dose regimen: apixaban >5 mg and last dose <8h ago.' };
+              // Dose unknown, <8h — default low-dose with warning (standard dose is 5mg BID)
+              return { ...lowDose, doseWarning: 'DOAC dose not entered. Standard apixaban (5 mg BID) → low-dose. If patient was on 10 mg BID and last dose <8h, use high-dose. Enter DOAC dose to confirm.' };
             }
             if (isRivaroxaban) {
-              if (hours >= 8) return { regimen: 'low-dose', bolus: '400 mg IV over 15-30 min', infusion: '4 mg/min x 120 min (480 mg)', total: '880 mg', doseWarning: null };
-              return { regimen: 'high-dose', bolus: '800 mg IV over 15-30 min', infusion: '8 mg/min x 120 min (960 mg)', total: '1760 mg', doseWarning: 'Per FDA label: low-dose is correct for rivaroxaban ≤10mg even if <8h. High-dose is only for rivaroxaban >10mg taken <8h ago. Verify actual DOAC dose.' };
+              // FDA label: low-dose for rivaroxaban ≤10mg regardless of time, OR any dose ≥8h ago
+              if (hours >= 8) return lowDose;
+              if (doseMg > 0 && doseMg <= 10) return { ...lowDose, doseWarning: 'Low-dose regimen: rivaroxaban dose ≤10 mg (per FDA label).' };
+              if (doseMg > 10) return { ...highDose, doseWarning: 'High-dose regimen: rivaroxaban >10 mg and last dose <8h ago.' };
+              // Dose unknown, <8h — default high-dose with warning (common dose is 20mg)
+              return { ...highDose, doseWarning: 'DOAC dose not entered. Common rivaroxaban dose (20 mg daily) → high-dose. If patient was on ≤10 mg, use low-dose. Enter DOAC dose to confirm.' };
             }
             return { regimen: 'N/A', bolus: 'Not applicable for this DOAC', infusion: '', total: '', doseWarning: null };
           };
@@ -6562,11 +6588,14 @@ Clinician Name`;
               alerts.push({ severity: 'critical', label: diagCat === 'sah' ? 'SAH Diagnosis' : 'ICH Diagnosis', message: `${diagCat.toUpperCase()} diagnosis - Thrombolytics CONTRAINDICATED`, field: 'diagnosisCategory' });
             }
 
-            // Heparin/LMWH check
+            // Heparin/LMWH/Fondaparinux check
             const acType = data.telestrokeNote?.lastDOACType;
             if (acType === 'heparin' || acType === 'lmwh') {
               const acName = acType === 'heparin' ? 'Heparin' : 'LMWH';
               alerts.push({ severity: 'warning', label: `Recent ${acName}`, message: `${acName} use - Check aPTT (must be ≤40s for TNK eligibility)`, field: 'lastDOACType' });
+            }
+            if (acType === 'fondaparinux') {
+              alerts.push({ severity: 'warning', label: 'Fondaparinux', message: 'Fondaparinux (t½ 17-21h) — check anti-Xa level. No specific reversal. Thrombolysis may be considered if anti-Xa undetectable.', field: 'lastDOACType' });
             }
 
             // BP check (parse from string like "185/110")
@@ -6583,7 +6612,7 @@ Clinician Name`;
             // DOAC check (renal-adjusted clearance threshold)
             if (data.telestrokeNote?.lastDOACType && data.telestrokeNote?.lastDOACDose) {
               const doacType = data.telestrokeNote.lastDOACType;
-              if (doacType !== 'warfarin' && doacType !== 'heparin' && doacType !== 'lmwh' && doacType !== 'none') {
+              if (doacType !== 'warfarin' && doacType !== 'heparin' && doacType !== 'lmwh' && doacType !== 'fondaparinux' && doacType !== 'none') {
                 const lastDose = new Date(data.telestrokeNote.lastDOACDose);
                 const now = new Date();
                 const hoursSinceDose = (now - lastDose) / (1000 * 60 * 60);
@@ -7147,14 +7176,16 @@ Clinician Name`;
           // ============================================
           const sectionCompletion = useMemo(() => {
             const nihssPresent = telestrokeNote.nihss !== '' && telestrokeNote.nihss !== undefined && telestrokeNote.nihss !== null || nihssScore > 0;
-            const triage = [telestrokeNote.age, telestrokeNote.sex, lkwTime, nihssPresent].filter(Boolean).length;
+            const hasLabs = [telestrokeNote.glucose, telestrokeNote.plateletCount, telestrokeNote.inr].some(v => v !== '' && v !== undefined && v !== null);
+            const triage = [telestrokeNote.age, telestrokeNote.sex, lkwTime, nihssPresent, hasLabs].filter(Boolean).length;
             const decision = [telestrokeNote.ctResults, telestrokeNote.ctaResults, telestrokeNote.diagnosis].filter(Boolean).length;
             const treatmentDecided = telestrokeNote.tnkRecommended === true || telestrokeNote.tnkRecommended === false || telestrokeNote.evtRecommended === true || telestrokeNote.evtRecommended === false;
+            const dispositionSet = !!telestrokeNote.disposition;
             const docs = [telestrokeNote.rationale].filter(Boolean).length;
             return {
-              triage: { done: triage, total: 4, complete: triage >= 4 },
+              triage: { done: triage, total: 5, complete: triage >= 5 },
               decision: { done: decision, total: 3, complete: decision >= 3 },
-              orders: { done: treatmentDecided ? 1 : 0, total: 1, complete: treatmentDecided },
+              orders: { done: (treatmentDecided ? 1 : 0) + (dispositionSet ? 1 : 0), total: 2, complete: treatmentDecided && dispositionSet },
               docs: { done: docs, total: 1, complete: docs >= 1 }
             };
           }, [telestrokeNote, nihssScore, lkwTime]);
@@ -9146,6 +9177,9 @@ Clinician Name`;
             }
             if (glucose && glucose < 50 && n.tnkRecommended) {
               warnings.push({ id: 'tnk-glucose', severity: 'error', msg: `TNK recommended with glucose ${glucose} mg/dL — hypoglycemia can mimic stroke. Correct glucose and reassess before treating.` });
+            }
+            if (glucose && glucose > 400 && n.tnkRecommended) {
+              warnings.push({ id: 'tnk-hyperglycemia', severity: 'warn', msg: `TNK recommended with glucose ${glucose} mg/dL — severe hyperglycemia can mimic stroke and is associated with worse outcomes post-thrombolysis. Correct glucose; reassess if deficits improve.` });
             }
 
             // SAH + anticoagulation warning
@@ -13019,6 +13053,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <option value="warfarin">Warfarin (check INR)</option>
                                   <option value="heparin">Heparin UFH (check PTT)</option>
                                   <option value="lmwh">LMWH / Enoxaparin</option>
+                                  <option value="fondaparinux">Fondaparinux (Arixtra)</option>
                                 </select>
                               </div>
                               <div>
@@ -14167,6 +14202,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <option value="warfarin">Warfarin (check INR)</option>
                                     <option value="heparin">Heparin UFH (check PTT)</option>
                                     <option value="lmwh">LMWH / Enoxaparin</option>
+                                    <option value="fondaparinux">Fondaparinux (Arixtra)</option>
                                   </select>
                                 </div>
                                 <div>
@@ -25042,10 +25078,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="hours" />
                           </div>
                         </div>
+                        <div className="mb-3">
+                          <label className="text-xs text-slate-600">DOAC dose (mg per dose)</label>
+                          <input type="number" step="0.5" value={(telestrokeNote.andexanetCalc || {}).doacDoseMg || ''}
+                            onChange={(e) => setTelestrokeNote({...telestrokeNote, andexanetCalc: {...(telestrokeNote.andexanetCalc || {}), doacDoseMg: e.target.value}})}
+                            className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="e.g. 5 for apixaban 5mg BID" />
+                        </div>
                         {(() => {
                           const result = calculateAndexanetDose(
                             (telestrokeNote.andexanetCalc || {}).doacType,
-                            (telestrokeNote.andexanetCalc || {}).lastDoseHours
+                            (telestrokeNote.andexanetCalc || {}).lastDoseHours,
+                            (telestrokeNote.andexanetCalc || {}).doacDoseMg
                           );
                           if (result.regimen === 'N/A') return (
                             <p className="text-sm text-slate-500">Select apixaban or rivaroxaban. Andexanet not indicated for dabigatran (use idarucizumab) or edoxaban.</p>
