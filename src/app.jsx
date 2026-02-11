@@ -904,8 +904,6 @@ Clinician Name`;
             weightEstimated: false,
             lastDOACDose: '',
             lastDOACType: '',
-            arrivalTime: '',
-            strokeAlertTime: '',
             // DTN Time Metrics
             dtnEdArrival: '',
             dtnStrokeAlert: '',
@@ -927,7 +925,6 @@ Clinician Name`;
             bpPhase: 'pre-tnk',
             bpPostEVT: '',
             glucose: '',
-            plateletsCoags: '',
             creatinine: '',
             inr: '',
             ptt: '',
@@ -3742,7 +3739,7 @@ Clinician Name`;
               detail: 'AHA/ASA 2022 lists andexanet alfa as Class IIa (LOE B-NR) for Xa inhibitor-associated ICH. 4F-PCC 2000 units IV is a common first-line approach when andexanet is unavailable. PCC shows similar efficacy to andexanet (Panos et al. Crit Care Med 2025). Consult Hematology attending for complex cases or if PCC ineffective.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
-              guideline: 'AHA/ASA Spontaneous ICH 2022 (modified per local protocol)',
+              guideline: 'AHA/ASA Spontaneous ICH 2022 (modified per suggested protocol)',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
               medications: ['4F-PCC (Kcentra) 2000 units IV immediately (first-line)', 'Andexanet alfa (Class IIa per AHA/ASA 2022) — check local formulary availability'],
@@ -4086,10 +4083,10 @@ Clinician Name`;
               category: 'Secondary Prevention',
               title: 'ADAMTS13 testing in cryptogenic stroke workup',
               recommendation: 'Consider ADAMTS13 testing in cryptogenic stroke patients age <50 with platelet count <300K. Order when considering antiphospholipid testing (same trigger).',
-              detail: 'Suggested protocol: TTP can present as cryptogenic stroke without classic hematologic findings. ADAMTS13 <30% → emergent hematology consult for plasma exchange. Lab: reference lab (see contact directory), run M/W/F, samples before noon result same day. Send BEFORE day of discharge — low result requires emergent readmission.',
+              detail: 'TTP can present as cryptogenic stroke without classic hematologic findings. ADAMTS13 <30% → emergent hematology consult for plasma exchange. Lab: reference lab (check local turnaround time — may not be available daily). Send BEFORE day of discharge — low result requires emergent readmission.',
               classOfRec: 'IIb',
               levelOfEvidence: 'C-LD',
-              guideline: 'Local Protocol; AHA/ASA Secondary Prevention 2021',
+              guideline: 'Suggested Protocol; AHA/ASA Secondary Prevention 2021',
               reference: 'Matthews et al. J Stroke Cerebrovasc Dis. 2022;31(6):106431. Chiasakul & Cuker. Hematology. 2018.',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
@@ -4104,10 +4101,10 @@ Clinician Name`;
               category: 'EVT',
               title: 'Direct-to-angio for stable LVO transfers',
               recommendation: 'For medically and neurologically STABLE transfer patients with LVO and last neuroimaging <3h who did NOT receive lytics: consider direct-to-angio (bypass repeat imaging in ED).',
-              detail: 'Suggested protocol: Goal door-to-puncture ≤45 min for transfer LVO cases. Assessment at triage by ED, Neuro, and IR. If all deem patient stable → transport directly to IR suite. Does NOT apply to: (1) clinical improvement with NIHSS <6, (2) neurologic worsening (NIHSS increase ≥4), (3) patients who received lytics at OSH, (4) unstable medical issues. Applies to transfers from network sites and other transfer sites.',
+              detail: 'Suggested protocol: Goal door-to-puncture ≤45 min for transfer LVO cases. Assessment at triage by ED, Neuro, and IR. If all deem patient stable → transport directly to IR suite. Does NOT apply to: (1) clinical improvement with NIHSS <6, (2) neurologic worsening (NIHSS increase ≥4), (3) patients who received lytics at OSH, (4) unstable medical issues. Applies to transfers from referring facilities.',
               classOfRec: 'IIa',
               levelOfEvidence: 'C-EO',
-              guideline: 'Local Protocol',
+              guideline: 'Suggested Protocol',
               reference: 'Direct to Angio for LVO pts without lytics and within 3h of last neuroimaging.',
               conditions: (data) => {
                 const vessels = data.telestrokeNote?.vesselOcclusion || [];
@@ -4120,11 +4117,11 @@ Clinician Name`;
               id: 'neurosurgery_communication',
               category: 'Acute',
               title: 'Neurosurgery consultation protocol',
-              recommendation: 'Stroke phone attending must approve ALL neurosurgery consultations for IPH or ischemic stroke. No curbside/heads-up/FYI calls. Neurology resident evaluates first, then discusses with stroke phone attending.',
-              detail: 'Suggested protocol: (1) Neurology resident evaluates patient and discusses with stroke phone attending before ANY neurosurgery consult. (2) If stroke attending recommends against surgery → do NOT consult neurosurgery. (3) If disagreement → stroke attending and trauma neurosurgery attending discuss by phone. (4) Do NOT recommend surgical procedures to families without finalized, mutually agreed plan with neurosurgery. Trauma neurosurgery attending: via hospital operator or on-call scheduling system.',
+              recommendation: 'Neurology/stroke attending should approve neurosurgery consultations for IPH or large ischemic stroke. Structured communication reduces unnecessary consultations.',
+              detail: 'Suggested protocol: (1) Neurology team evaluates patient and discusses with stroke attending before consulting neurosurgery. (2) If stroke attending recommends against surgery, communicate this clearly. (3) If disagreement, stroke attending and neurosurgery attending discuss directly. (4) Do not recommend surgical procedures to families without a finalized, mutually agreed plan with neurosurgery.',
               classOfRec: 'N/A',
               levelOfEvidence: 'N/A',
-              guideline: 'Local Protocol',
+              guideline: 'Suggested Protocol',
               reference: 'Communication with Neurosurgery protocol.',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
@@ -5183,7 +5180,7 @@ Clinician Name`;
               detail: 'Suggested protocol: Post-thrombectomy imaging — (1) IMMEDIATE NCCT/DECT: clinical deterioration (new deficit, declining GCS), concern for hemorrhage, failed recanalization (mTICI 0-2a), or any symptomatic change. (2) ROUTINE 24h NCCT/DECT: stable patients with successful recanalization (mTICI 2b-3) — assess for hemorrhagic transformation before initiating antithrombotics. DECT advantage: dual-energy CT distinguishes iodine contrast staining from true hemorrhage, avoiding unnecessary delays in antithrombotic initiation. If DECT shows contrast staining only (no hemorrhage), may consider earlier antithrombotic start per neurointerventionalist recommendation.',
               classOfRec: 'I',
               levelOfEvidence: 'C-EO',
-              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026; Local Protocol',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026; Suggested Protocol',
               reference: 'Powers WJ et al. Stroke. 2026.',
               conditions: (data) => {
                 return !!data.telestrokeNote?.evtRecommended;
@@ -6863,7 +6860,7 @@ Clinician Name`;
               LVO: (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', '),
               WEIGHT_KG: telestrokeNote.weight || '',
               LKW: lkw,
-              ARRIVAL: telestrokeNote.arrivalTime || '',
+              ARRIVAL: telestrokeNote.dtnEdArrival ? new Date(telestrokeNote.dtnEdArrival).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '',
               CT_TIME: telestrokeNote.ctTime || '',
               CTA_TIME: telestrokeNote.ctaTime || '',
               CT_RESULTS: telestrokeNote.ctResults || '',
@@ -7538,7 +7535,7 @@ Clinician Name`;
               'callingSite', 'callingSiteOther',
               'alias', 'age', 'sex', 'weight', 'nihss', 'aspects', 'vesselOcclusion', 'diagnosisCategory',
               'toastClassification', 'secondaryPrevention',
-              'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'arrivalTime', 'strokeAlertTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
+              'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
               'presentingBP', 'heartRate', 'spO2', 'temperature', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT',
               'glucose', 'plateletCount', 'inr', 'ptt', 'creatinine', 'disablingDeficit',
               'tnkRecommended', 'evtRecommended', 'tnkContraindicationChecklist',
@@ -7560,7 +7557,7 @@ Clinician Name`;
               'symptoms', 'pmh', 'medications', 'rationale', 'allergies',
               // Structured clinical data
               'diagnosis', 'premorbidMRS', 'affectedSide', 'weightEstimated', 'contrastAllergy',
-              'chiefComplaint', 'doorTime', 'needleTime', 'admitLocation', 'plateletsCoags',
+              'chiefComplaint', 'doorTime', 'needleTime', 'admitLocation',
               'wakeUpStrokeWorkflow', 'recommendationsText', 'consentKit',
               // SAH/CVT/TIA pathway fields
               'sahGrade', 'sahGradeScale', 'sahBPManaged', 'sahNimodipine', 'sahEVDPlaced', 'sahAneurysmSecured', 'sahNeurosurgeryConsulted', 'sahSeizureProphylaxis', 'fisherGrade',
@@ -8425,7 +8422,7 @@ Clinician Name`;
             note = note.replace(/{bpPreTNKTime}/g, formatTime(telestrokeNote.bpPreTNKTime));
             note = note.replace(/{glucose}/g, telestrokeNote.glucose || '');
             note = note.replace(/{plateletCount}/g, telestrokeNote.plateletCount || '');
-            note = note.replace(/{plateletsCoags}/g, telestrokeNote.plateletsCoags || telestrokeNote.plateletCount || '');
+            note = note.replace(/{plateletsCoags}/g, telestrokeNote.plateletCount || '');
             note = note.replace(/{creatinine}/g, telestrokeNote.creatinine || '');
             note = note.replace(/{nihss}/g, telestrokeNote.nihss || nihssScore || '');
             const gcsForNote = calculateGCS(gcsItems);
@@ -8456,6 +8453,14 @@ Clinician Name`;
               note = note.replace(/After ensuring that there were no evident contraindications.*?brief time-out\.\n?/s, '');
               note = note.replace(/BP prior to TNK administration:.*?\n/g, '');
             }
+            // Add anticoagulation details into clinical body (before placeholder cleanup)
+            if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
+              const acInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
+              let acLine = `\nAnticoagulation: ${acInfo.name}`;
+              if (telestrokeNote.lastDOACDose) acLine += ` (last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()})`;
+              note += acLine + '\n';
+            }
+
             // Remove any unreplaced template placeholders (e.g., user-added custom fields)
             note = note.replace(/\{[a-zA-Z0-9_]+\}/g, '');
 
@@ -8471,14 +8476,6 @@ Clinician Name`;
             if (telestrokeNote.consultStartTime) metadataLines.push(`Consult Time: ${telestrokeNote.consultStartTime}`);
             if (metadataLines.length > 0) {
               note += `\n${metadataLines.join('\n')}\n`;
-            }
-
-            // Add anticoagulation details if present
-            if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
-              const acInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
-              let acLine = `\nAnticoagulation: ${acInfo.name}`;
-              if (telestrokeNote.lastDOACDose) acLine += ` (last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()})`;
-              note += acLine + '\n';
             }
 
             // Add BP target for continuity
@@ -8672,6 +8669,7 @@ Clinician Name`;
                 const monitored = [];
                 if (telestrokeNote.postTnkNeuroChecksStarted) monitored.push('neuro checks');
                 if (telestrokeNote.postTnkBpMonitoring) monitored.push('BP monitoring');
+                if (telestrokeNote.postTnkAntiplateletHeld) monitored.push('antithrombotics held 24h');
                 if (telestrokeNote.postTnkRepeatCTOrdered) monitored.push('repeat CT ordered');
                 if (monitored.length > 0) note += `\nPost-TNK Monitoring: ${monitored.join(', ')}. No complications noted.\n`;
               }
@@ -9106,7 +9104,7 @@ Clinician Name`;
             const lkw = parseTs(n.lkwDate, n.lkwTime);
             const ctTime = parseTs(n.ctDate, n.ctTime);
             const ctaTime = parseTs(n.ctaDate, n.ctaTime);
-            const arrival = parseDT(n.arrivalTime);
+            const arrival = parseDT(n.dtnEdArrival);
             const tnkTime = parseDT(n.tnkAdminTime);
 
             if (lkw && ctTime && ctTime < lkw) {
