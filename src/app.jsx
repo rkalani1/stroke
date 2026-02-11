@@ -430,7 +430,9 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
               ? 'minor'
               : nihssVal <= 15
                 ? 'moderate'
-                : 'severe';
+                : nihssVal > 21 && rule.days.verySevere
+                  ? 'verySevere'
+                  : 'severe';
           const days = rule.days[severity] ?? rule.days.severe ?? rule.days.moderate;
           const startDate = new Date(onset);
           startDate.setDate(startDate.getDate() + days);
@@ -1799,6 +1801,14 @@ Clinician Name`;
             female: false,
             sah: false
           }));
+          const [phasesItems, setPhasesItems] = useState(loadFromStorage('phasesItems', {
+            population: 'north_american',
+            hypertension: false,
+            age70: false,
+            size: '',
+            earlierSAH: false,
+            site: 'ica'
+          }));
           const [trialsCategory, setTrialsCategory] = useState('ischemic');
 
           const [strokeCodeForm, setStrokeCodeForm] = useState(loadFromStorage('strokeCodeForm', getDefaultStrokeCodeForm()));
@@ -2734,7 +2744,7 @@ Clinician Name`;
               ichReversal: {
                 primary: '4-Factor PCC (Kcentra) 2000 units IVPB (institutional protocol) or 50 IU/kg (max 5000 IU)',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Andexxa (andexanet alfa) is NOT recommended due to cost, availability, and thrombosis risk. Consider PCC ONLY if no contraindications and Direct Xa Inhibitor screen elevated.'
+                note: 'Institutional protocol: 4F-PCC first-line. AHA/ASA 2022 ICH Guidelines list andexanet alfa as Class IIa ("reasonable") for Xa inhibitor-associated ICH. Consider andexanet if PCC unavailable or ineffective. Discuss with Hematology.'
               },
               monitoring: 'Anti-Xa level (calibrated for apixaban)'
             },
@@ -2748,7 +2758,7 @@ Clinician Name`;
               ichReversal: {
                 primary: '4-Factor PCC (Kcentra) 2000 units IVPB (institutional protocol) or 50 IU/kg (max 5000 IU)',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Andexxa (andexanet alfa) is NOT recommended due to cost, availability, and thrombosis risk. Consider PCC ONLY if no contraindications and Direct Xa Inhibitor screen elevated.'
+                note: 'Institutional protocol: 4F-PCC first-line. AHA/ASA 2022 ICH Guidelines list andexanet alfa as Class IIa ("reasonable") for Xa inhibitor-associated ICH. Consider andexanet if PCC unavailable or ineffective. Discuss with Hematology.'
               },
               monitoring: 'Anti-Xa level (calibrated for rivaroxaban)'
             },
@@ -2776,7 +2786,7 @@ Clinician Name`;
               ichReversal: {
                 primary: '4-Factor PCC (Kcentra) 2000 units IVPB (institutional protocol) or 50 IU/kg (max 5000 IU)',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Andexxa (andexanet alfa) is NOT indicated for edoxaban. Consider PCC ONLY if no contraindications.'
+                note: 'Andexanet alfa is NOT indicated for edoxaban reversal. 4F-PCC is the primary reversal agent. Consider PCC if no contraindications and Direct Xa Inhibitor screen elevated.'
               },
               monitoring: 'Direct Xa Inhibitor screen (not widely calibrated for edoxaban)'
             },
@@ -3149,6 +3159,108 @@ Clinician Name`;
               exclusionFlags: [
                 { id: 'preDementia', label: 'Pre-existing dementia', field: 'preDementia' }
               ]
+            },
+            MOST: {
+              id: 'MOST',
+              name: 'MOST Trial',
+              nct: 'NCT05326139',
+              category: 'ischemic',
+              quickDescription: 'Multi-arm thrombolysis optimization: TNK dose-finding and adjunctive nerinetide',
+              keyTakeaways: [
+                'Adaptive platform testing TNK 0.40 mg/kg (higher dose) vs standard 0.25 mg/kg for AIS with LVO',
+                'Also testing nerinetide (NA-1) as neuroprotective adjunct to EVT',
+                'Could establish optimized TNK dosing for LVO patients proceeding to EVT'
+              ],
+              lookingFor: [
+                'Acute ischemic stroke with LVO',
+                'Eligible for IV thrombolysis',
+                'Within 4.5 hours from LKW',
+                'Age 18+'
+              ],
+              keyCriteria: [
+                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
+                { id: 'nihss', label: 'NIHSS ≥6', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 6), required: true },
+                { id: 'timeWindow', label: 'Within 4.5h from LKW', field: 'lkw', evaluate: (data) => {
+                    const hrs = data.hoursFromLKW;
+                    return hrs !== null && hrs <= 4.5;
+                  }, required: true },
+                { id: 'lvo', label: 'LVO confirmed (ICA/M1)', field: 'vesselOcclusion', evaluate: (data) => {
+                    const occlusion = data.telestrokeNote?.vesselOcclusion || [];
+                    return occlusion.some(v => ['ICA', 'M1'].includes(v));
+                  }, required: true },
+                { id: 'premorbidMRS', label: 'Pre-stroke mRS 0-1', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 1), required: true }
+              ],
+              exclusionFlags: [
+                { id: 'onAnticoag', label: 'On anticoagulation', field: 'onAnticoag' },
+                { id: 'hemorrhage', label: 'Evidence of hemorrhage on CT', field: 'hemorrhage' }
+              ]
+            },
+            CAPTIVA: {
+              id: 'CAPTIVA',
+              name: 'CAPTIVA Trial',
+              nct: 'NCT05047172',
+              category: 'ischemic',
+              quickDescription: 'Ticagrelor+ASA vs rivaroxaban+ASA vs clopidogrel+ASA for intracranial atherosclerosis',
+              keyTakeaways: [
+                'Three-arm trial for symptomatic intracranial atherosclerotic stenosis (ICAS) 70-99%',
+                'Tests ticagrelor+ASA and low-dose rivaroxaban+ASA against standard clopidogrel+ASA',
+                'Addresses a major unmet need — recurrent stroke risk is 12-20% at 1 year despite DAPT for ICAS'
+              ],
+              lookingFor: [
+                'Symptomatic intracranial stenosis 70-99%',
+                'Ischemic stroke or TIA attributed to ICAS',
+                'Within 21 days of qualifying event',
+                'Age ≥30'
+              ],
+              keyCriteria: [
+                { id: 'age', label: 'Age ≥30', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 30), required: true },
+                { id: 'diagnosis', label: 'Ischemic stroke or TIA', field: 'diagnosis', evaluate: (data) => {
+                    const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                    return dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
+                  }, required: true },
+                { id: 'icas', label: 'Intracranial stenosis 70-99% (ICAS)', field: 'ctaResults', evaluate: (data) => {
+                    const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
+                    return cta.includes('stenosis') || cta.includes('intracranial') || cta.includes('icas') || cta.includes('atheroscler');
+                  }, required: true },
+                { id: 'premorbidMRS', label: 'mRS ≤3', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 3), required: true }
+              ],
+              exclusionFlags: [
+                { id: 'cardioembolic', label: 'Cardioembolic source (AF, valve)', field: 'cardioembolic' },
+                { id: 'onAnticoag', label: 'On full-dose anticoagulation', field: 'onAnticoag' }
+              ]
+            },
+            RHAPSODY: {
+              id: 'RHAPSODY',
+              name: 'RHAPSODY Trial',
+              nct: 'NCT04953325',
+              category: 'ischemic',
+              quickDescription: '3K3A-APC neuroprotection after thrombolysis/EVT for moderate-severe AIS',
+              keyTakeaways: [
+                '3K3A-APC (activated protein C variant) showed signal for reduced ICH and improved outcomes in phase 2',
+                'First neuroprotective agent with mechanistic basis in stroke (anti-inflammatory, anti-apoptotic, BBB stabilization)',
+                'Given as IV infusion after reperfusion — does not delay standard treatment'
+              ],
+              lookingFor: [
+                'Moderate-severe acute ischemic stroke (NIHSS ≥5)',
+                'Received IVT and/or EVT',
+                'Can start study drug within 15h of LKW',
+                'Age 18+'
+              ],
+              keyCriteria: [
+                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
+                { id: 'nihss', label: 'NIHSS ≥5', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 5), required: true },
+                { id: 'reperfusion', label: 'Received IVT and/or EVT', field: 'tnkRecommended', evaluate: (data) => {
+                    return data.telestrokeNote?.tnkRecommended === true || data.telestrokeNote?.evtRecommended === true;
+                  }, required: true },
+                { id: 'timeWindow', label: 'Within 15h from LKW', field: 'lkw', evaluate: (data) => {
+                    const hrs = data.hoursFromLKW;
+                    return hrs !== null && hrs <= 15;
+                  }, required: true },
+                { id: 'premorbidMRS', label: 'Pre-stroke mRS 0-2', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 2), required: true }
+              ],
+              exclusionFlags: [
+                { id: 'hemorrhage', label: 'Symptomatic ICH', field: 'hemorrhage' }
+              ]
             }
           };
 
@@ -3508,19 +3620,37 @@ Clinician Name`;
             dapt_minor_stroke: {
               id: 'dapt_minor_stroke',
               category: 'Antithrombotic',
-              title: 'DAPT for minor stroke/TIA',
-              recommendation: 'Dual antiplatelet therapy (aspirin + clopidogrel) for 21 days in minor ischemic stroke (NIHSS <= 3) or high-risk TIA, then transition to single antiplatelet.',
-              detail: 'Start within 24 hours of onset. Loading dose: ASA 325 mg + clopidogrel 300 mg, then ASA 81 mg + clopidogrel 75 mg daily for 21 days. Based on CHANCE/POINT trials.',
+              title: 'DAPT for minor stroke/TIA (NIHSS ≤3)',
+              recommendation: 'Dual antiplatelet therapy (aspirin + clopidogrel) for 21 days in minor ischemic stroke (NIHSS ≤3) or high-risk TIA (ABCD2 ≥4), then transition to single antiplatelet.',
+              detail: 'Start within 24 hours of onset. Loading dose: ASA 325 mg + clopidogrel 300 mg, then ASA 81 mg + clopidogrel 75 mg daily for 21 days. Based on CHANCE/POINT trials. For CYP2C19 LOF carriers: consider ticagrelor 180 mg load + ASA, then ticagrelor 90 mg BID + ASA x 21 days, followed by ticagrelor monotherapy (CHANCE-2, Class IIb).',
               classOfRec: 'I',
               levelOfEvidence: 'A',
-              guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
-              reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
-              medications: ['ASA 325 mg load then 81 mg daily', 'Clopidogrel 300 mg load then 75 mg daily x 21 days'],
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'AIS 2026 Rec #12. CHANCE: Wang Y et al. NEJM 2013. POINT: Johnston SC et al. NEJM 2018. CHANCE-2: Wang Y et al. NEJM 2021.',
+              medications: ['ASA 325 mg load then 81 mg daily', 'Clopidogrel 300 mg load then 75 mg daily x 21 days', 'Alt (CYP2C19 LOF): Ticagrelor 180 mg load then 90 mg BID + ASA x 21 days'],
               conditions: (data) => {
                 const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
                 return isIschemic && nihss <= 3 && !data.telestrokeNote?.tnkRecommended;
+              }
+            },
+            dapt_ticagrelor_nihss5: {
+              id: 'dapt_ticagrelor_nihss5',
+              category: 'Antithrombotic',
+              title: 'Ticagrelor + ASA for minor stroke (NIHSS 4-5)',
+              recommendation: 'For NIHSS ≤5 noncardioembolic AIS or high-risk TIA (ABCD2 ≥6), DAPT with ticagrelor + aspirin for 30 days may be considered.',
+              detail: 'Ticagrelor 180 mg load + ASA 325 mg, then ticagrelor 90 mg BID + ASA 81 mg daily x 30 days (AIS-2026 Rec #13, Class IIb). This extends DAPT eligibility to NIHSS 4-5 patients using ticagrelor-based regimen. Standard clopidogrel-based DAPT (CHANCE/POINT) applies to NIHSS ≤3.',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'B-R',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
+              reference: 'AIS 2026 Rec #13. THALES: Johnston SC et al. NEJM 2020.',
+              medications: ['Ticagrelor 180 mg load then 90 mg BID x 30 days', 'ASA 325 mg load then 81 mg daily x 30 days'],
+              conditions: (data) => {
+                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
+                return isIschemic && nihss >= 4 && nihss <= 5 && !data.telestrokeNote?.tnkRecommended;
               }
             },
             anticoag_af_timing: {
@@ -3633,13 +3763,13 @@ Clinician Name`;
               category: 'Reversal',
               title: 'Factor Xa inhibitor reversal in ICH',
               recommendation: 'Administer 4F-PCC (Kcentra) 2000 units IVPB for ICH on apixaban/rivaroxaban/edoxaban (institutional protocol).',
-              detail: 'AHA/ASA 2022 lists andexanet alfa as Class IIa, but institutional protocol favors PCC due to cost, availability, and thrombosis risk with andexanet. Consult Hematology if PCC contraindicated.',
+              detail: 'AHA/ASA 2022 lists andexanet alfa as Class IIa (LOE B-NR) for Xa inhibitor-associated ICH. Institutional protocol favors PCC first-line due to cost, availability, and lower thrombotic risk. Andexanet remains a reasonable alternative, especially if PCC unavailable or ineffective. Consult Hematology for complex cases.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022 (modified per institutional protocol)',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
-              medications: ['4F-PCC (Kcentra) 2000 units IVPB (institutional)', 'Andexanet alfa NOT recommended per institutional protocol'],
+              medications: ['4F-PCC (Kcentra) 2000 units IVPB (institutional first-line)', 'Andexanet alfa (Class IIa per AHA/ASA 2022 — consider if PCC unavailable/ineffective)'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
@@ -5750,6 +5880,38 @@ Clinician Name`;
             return score;
           };
 
+          // Calculate PHASES score for unruptured intracranial aneurysm rupture risk
+          const calculatePHASESScore = (items) => {
+            let score = 0;
+            // Population
+            if (items.population === 'japanese') score += 3;
+            else if (items.population === 'finnish') score += 5;
+            // Hypertension
+            if (items.hypertension) score += 1;
+            // Age ≥70
+            if (items.age70) score += 1;
+            // Size
+            const size = parseFloat(items.size) || 0;
+            if (size >= 20) score += 10;
+            else if (size >= 10) score += 6;
+            else if (size >= 7) score += 3;
+            // Earlier SAH from different aneurysm
+            if (items.earlierSAH) score += 1;
+            // Site
+            if (items.site === 'mca') score += 2;
+            else if (items.site === 'aca_pcomm_posterior') score += 4;
+            return score;
+          };
+
+          const getPHASESRisk = (score) => {
+            if (score <= 2) return { risk: '0.4%', level: 'Very low' };
+            if (score <= 4) return { risk: '0.7%', level: 'Low' };
+            if (score <= 6) return { risk: '1.5%', level: 'Low-Moderate' };
+            if (score <= 8) return { risk: '2.4%', level: 'Moderate' };
+            if (score <= 10) return { risk: '3.6%', level: 'Moderate-High' };
+            return { risk: '17.8%', level: 'High' };
+          };
+
           // =================================================================
           // ICH VOLUME CALCULATOR (ABC/2 method)
           // =================================================================
@@ -6786,6 +6948,7 @@ Clinician Name`;
             setWfnsGrade('');
             setHasbledItems({ hypertension: false, renalDisease: false, liverDisease: false, stroke: false, bleeding: false, labileINR: false, elderly: false, drugs: false, alcohol: false });
             setRcvs2Items({ recurrentTCH: false, carotidInvolvement: false, vasoconstrictiveTrigger: false, female: false, sah: false });
+            setPhasesItems({ population: 'north_american', hypertension: false, age70: false, size: '', earlierSAH: false, site: 'ica' });
             setCurrentStep(0);
             setCompletedSteps([]);
             setShiftPatients([]);
@@ -8563,7 +8726,7 @@ Clinician Name`;
                 reversalOrders.push(
                   '4F-PCC (Kcentra) 2000 units IVPB (institutional protocol)',
                   'Recheck Direct Xa Inhibitor screen after PCC administration',
-                  'Andexanet alfa NOT recommended (cost, availability, thrombosis risk per institutional protocol)',
+                  'Andexanet alfa: Class IIa per AHA/ASA 2022 — consider if PCC unavailable or ineffective (institutional protocol: PCC first-line)',
                   'If PCC contraindicated: consult Hematology'
                 );
               }
@@ -9034,6 +9197,7 @@ Clinician Name`;
               { name: 'WFNS Scale', keywords: ['wfns', 'world federation', 'neurosurgical', 'sah', 'subarachnoid'], tab: 'management', subTab: 'calculators' },
               { name: 'HAS-BLED Score', keywords: ['hasbled', 'has-bled', 'bleeding', 'risk', 'anticoagulation'], tab: 'management', subTab: 'calculators' },
               { name: 'RCVS² Score', keywords: ['rcvs', 'rcvs2', 'vasoconstriction', 'thunderclap', 'headache'], tab: 'management', subTab: 'calculators' },
+              { name: 'PHASES Score (Aneurysm)', keywords: ['phases', 'aneurysm', 'rupture', 'unruptured', 'uia'], tab: 'management', subTab: 'calculators' },
               { name: 'Blood Pressure Management', keywords: ['bp', 'blood pressure', 'labetalol', 'nicardipine'], tab: 'management', subTab: 'ischemic' },
               { name: 'SAH Management', keywords: ['sah', 'subarachnoid', 'aneurysm', 'nimodipine', 'vasospasm'], tab: 'management', subTab: 'sah' },
               { name: 'TIA Management', keywords: ['tia', 'transient ischemic', 'abcd2', 'dual antiplatelet'], tab: 'management', subTab: 'tia' },
@@ -9128,6 +9292,7 @@ Clinician Name`;
             wfnsGrade,
             hasbledItems: { ...hasbledItems },
             rcvs2Items: { ...rcvs2Items },
+            phasesItems: { ...phasesItems },
             currentStep,
             completedSteps: Array.isArray(completedSteps) ? [...completedSteps] : [],
             aspectsRegionState: Array.isArray(aspectsRegionState)
@@ -9159,6 +9324,7 @@ Clinician Name`;
             setWfnsGrade(snapshot.wfnsGrade || '');
             setHasbledItems(snapshot.hasbledItems || { hypertension: false, renalDisease: false, liverDisease: false, stroke: false, bleeding: false, labileINR: false, elderly: false, drugs: false, alcohol: false });
             setRcvs2Items(snapshot.rcvs2Items || { recurrentTCH: false, carotidInvolvement: false, vasoconstrictiveTrigger: false, female: false, sah: false });
+            setPhasesItems(snapshot.phasesItems || { population: 'north_american', hypertension: false, age70: false, size: '', earlierSAH: false, site: 'ica' });
             setCurrentStep(Number.isFinite(snapshot.currentStep) ? snapshot.currentStep : 0);
             setCompletedSteps(Array.isArray(snapshot.completedSteps) ? snapshot.completedSteps : []);
             setAspectsRegionState(Array.isArray(snapshot.aspectsRegionState) && snapshot.aspectsRegionState.length
@@ -9197,6 +9363,7 @@ Clinician Name`;
             setWfnsGrade('');
             setHasbledItems({ hypertension: false, renalDisease: false, liverDisease: false, stroke: false, bleeding: false, labileINR: false, elderly: false, drugs: false, alcohol: false });
             setRcvs2Items({ recurrentTCH: false, carotidInvolvement: false, vasoconstrictiveTrigger: false, female: false, sah: false });
+            setPhasesItems({ population: 'north_american', hypertension: false, age70: false, size: '', earlierSAH: false, site: 'ica' });
             setCurrentStep(0);
             setCompletedSteps([]);
             setConsultationType(settings.defaultConsultationType || 'telephone');
@@ -9212,7 +9379,7 @@ Clinician Name`;
 
             const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',
                                   'abcd2Items', 'chads2vascItems', 'ropeItems', 'huntHessGrade', 'wfnsGrade',
-                                  'hasbledItems', 'rcvs2Items', 'strokeCodeForm', 'lkwTime',
+                                  'hasbledItems', 'rcvs2Items', 'phasesItems', 'strokeCodeForm', 'lkwTime',
                                   'currentStep', 'completedSteps', 'aspectsRegionState', 'pcAspectsRegions',
                                   'telestrokeNote', 'consultationType',
                                   'evtDecisionInputs', 'doacProtocol', 'nursingFlowsheetChecks'];
@@ -9397,12 +9564,13 @@ Clinician Name`;
             debouncedSave('wfnsGrade', wfnsGrade);
             debouncedSave('hasbledItems', hasbledItems);
             debouncedSave('rcvs2Items', rcvs2Items);
+            debouncedSave('phasesItems', phasesItems);
             debouncedSave('autoSyncCalculators', autoSyncCalculators);
             debouncedSave('evtDecisionInputs', evtDecisionInputs);
             debouncedSave('doacProtocol', doacProtocol);
           }, [nihssScore, aspectsScore, gcsItems, mrsScore, ichScoreItems, abcd2Items,
               chads2vascItems, ropeItems, huntHessGrade, wfnsGrade, hasbledItems,
-              rcvs2Items, autoSyncCalculators, evtDecisionInputs, doacProtocol]);
+              rcvs2Items, phasesItems, autoSyncCalculators, evtDecisionInputs, doacProtocol]);
 
           useEffect(() => {
             debouncedSave('strokeCodeForm', sanitizeStrokeCodeFormForStorage(strokeCodeForm));
@@ -16282,7 +16450,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), antiplateletRegimen: e.target.value}})}
                                   className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                                   <option value="">-- Select regimen --</option>
-                                  <option value="dapt-21">DAPT x 21 days (minor stroke/TIA, NIHSS &le;3)</option>
+                                  <option value="dapt-21">DAPT x 21d: ASA + clopidogrel (NIHSS &le;3, CHANCE/POINT)</option>
+                                  <option value="dapt-ticagrelor-30">DAPT x 30d: ASA + ticagrelor (NIHSS &le;5, THALES)</option>
+                                  <option value="dapt-cyp2c19">DAPT x 21d: ASA + ticagrelor (CYP2C19 LOF, CHANCE-2)</option>
                                   <option value="asa-mono">ASA 81-325 mg monotherapy</option>
                                   <option value="clopidogrel-mono">Clopidogrel 75 mg monotherapy</option>
                                   <option value="asa-er-dipyridamole">ASA/ER-Dipyridamole (Aggrenox)</option>
@@ -16609,8 +16779,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
                                 <h4 className="font-semibold text-orange-800 mb-2 text-sm">DAPT Duration & Auto-Stop</h4>
                                 <div className="text-xs text-slate-700 space-y-1">
-                                  <p><strong>Minor stroke/TIA (NIHSS ≤3):</strong> DAPT (ASA + clopidogrel) x 21 days, then monotherapy (CHANCE/POINT).</p>
-                                  <p><strong>CYP2C19 LOF carrier:</strong> ASA + ticagrelor x 30 days, then monotherapy (CHANCE-2).</p>
+                                  <p><strong>NIHSS ≤3:</strong> DAPT (ASA + clopidogrel) x 21 days, then monotherapy (CHANCE/POINT, Class I).</p>
+                                  <p><strong>NIHSS 4-5:</strong> ASA + ticagrelor x 30 days may be considered (THALES, Class IIb).</p>
+                                  <p><strong>CYP2C19 LOF carrier (NIHSS ≤3):</strong> ASA + ticagrelor x 21 days, then ticagrelor monotherapy (CHANCE-2, Class IIb).</p>
                                   <p className="text-red-600 font-medium">Class III (Harm): DAPT beyond 90 days increases bleeding risk without benefit (MATCH).</p>
                                   <p><strong>ICAD-specific:</strong> ASA 325mg + clopidogrel 75mg x 90 days, then ASA 325mg monotherapy (SAMMPRIS).</p>
                                 </div>
@@ -23442,6 +23613,85 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     </details>
 
+                    {/* PHASES Score — Unruptured Aneurysm Rupture Risk */}
+                    <details id="calc-phases" style={{ order: getCalculatorOrder('phases', 75) }} className="bg-teal-50 border border-teal-200 rounded-lg">
+                      <summary className="cursor-pointer p-3 font-semibold text-teal-800 hover:bg-teal-100 rounded-lg flex items-center justify-between">
+                        <span>PHASES Score (Aneurysm Rupture Risk)</span>
+                        <span className="text-sm font-normal text-teal-600">Score: {calculatePHASESScore(phasesItems)} — {getPHASESRisk(calculatePHASESScore(phasesItems)).risk} 5-yr risk</span>
+                      </summary>
+                      <div className="p-4">
+                        <p className="text-xs text-slate-600 mb-3">Predicts 5-year absolute risk of rupture for unruptured intracranial aneurysms. Useful for counseling in stroke prevention clinic.</p>
+                        <div className="space-y-3">
+                          <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1">Population</label>
+                            <select value={phasesItems.population}
+                              onChange={(e) => setPhasesItems({...phasesItems, population: e.target.value})}
+                              className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
+                              <option value="north_american">North American / European (0 pts)</option>
+                              <option value="japanese">Japanese (+3 pts)</option>
+                              <option value="finnish">Finnish (+5 pts)</option>
+                            </select>
+                          </div>
+                          <label className="flex items-center space-x-2">
+                            <input type="checkbox" className="text-teal-600"
+                              checked={phasesItems.hypertension}
+                              onChange={(e) => setPhasesItems({...phasesItems, hypertension: e.target.checked})} />
+                            <span className="text-sm">History of hypertension (+1)</span>
+                          </label>
+                          <label className="flex items-center space-x-2">
+                            <input type="checkbox" className="text-teal-600"
+                              checked={phasesItems.age70}
+                              onChange={(e) => setPhasesItems({...phasesItems, age70: e.target.checked})} />
+                            <span className="text-sm">Age ≥70 years (+1)</span>
+                          </label>
+                          <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1">Aneurysm size (mm)</label>
+                            <input type="number" step="0.1" min="0" max="50"
+                              className="w-full px-2 py-1 border border-slate-300 rounded text-sm"
+                              value={phasesItems.size}
+                              onChange={(e) => setPhasesItems({...phasesItems, size: e.target.value})}
+                              placeholder="Largest diameter in mm" />
+                            <div className="text-xs text-slate-500 mt-1">&lt;7mm: 0 pts | 7-9.9mm: +3 | 10-19.9mm: +6 | ≥20mm: +10</div>
+                          </div>
+                          <label className="flex items-center space-x-2">
+                            <input type="checkbox" className="text-teal-600"
+                              checked={phasesItems.earlierSAH}
+                              onChange={(e) => setPhasesItems({...phasesItems, earlierSAH: e.target.checked})} />
+                            <span className="text-sm">Earlier SAH from a different aneurysm (+1)</span>
+                          </label>
+                          <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1">Aneurysm site</label>
+                            <select value={phasesItems.site}
+                              onChange={(e) => setPhasesItems({...phasesItems, site: e.target.value})}
+                              className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
+                              <option value="ica">ICA (0 pts)</option>
+                              <option value="mca">MCA (+2 pts)</option>
+                              <option value="aca_pcomm_posterior">ACA / Pcomm / Posterior circulation (+4 pts)</option>
+                            </select>
+                          </div>
+                        </div>
+                        {(() => {
+                          const score = calculatePHASESScore(phasesItems);
+                          const { risk, level } = getPHASESRisk(score);
+                          const colorClass = score <= 4 ? 'bg-emerald-100 border-emerald-300 text-emerald-800'
+                            : score <= 8 ? 'bg-amber-100 border-amber-300 text-amber-800'
+                            : 'bg-red-100 border-red-300 text-red-800';
+                          return (
+                            <div className={`mt-3 p-3 rounded-lg border ${colorClass}`}>
+                              <p className="font-bold">PHASES Score: {score} — {level}</p>
+                              <p className="text-sm">5-year absolute rupture risk: <strong>{risk}</strong></p>
+                              <button onClick={() => copyToClipboard(`PHASES Score: ${score}, 5-year rupture risk: ${risk} (${level})`, 'PHASES Score')}
+                                className="mt-1 px-2 py-1 bg-white/60 rounded text-xs hover:bg-white/80" aria-label="Copy PHASES score to clipboard">Copy</button>
+                            </div>
+                          );
+                        })()}
+                        <div className="mt-2 text-xs text-slate-500">
+                          <p>Greving JP et al. <em>Lancet Neurol</em> 2014;13(1):59-66. PHASES: Population, Hypertension, Age, Size, Earlier SAH, Site.</p>
+                          <p className="mt-1">Note: PHASES score should be one factor in the treatment decision. Consider patient life expectancy, aneurysm morphology, family history, and patient preference.</p>
+                        </div>
+                      </div>
+                    </details>
+
                     {/* ICH Volume Calculator (ABC/2) */}
                     <details id="calc-ich-volume" style={{ order: getCalculatorOrder('ich-volume', 21) }} className="bg-red-50 border border-red-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-red-800 hover:bg-red-100 rounded-lg flex items-center justify-between">
@@ -23540,7 +23790,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           );
                         })()}
                         <div className="mt-2 p-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">
-                          <strong>Institutional note:</strong> Andexanet alfa is NOT recommended per institutional protocol due to cost, availability, and thrombosis risk. First-line Xa inhibitor reversal is 4F-PCC (Kcentra) 2000 units IVPB. This calculator is provided for reference only.
+                          <strong>Institutional note:</strong> First-line Xa inhibitor reversal is 4F-PCC (Kcentra) 2000 units IVPB per institutional protocol. AHA/ASA 2022 ICH Guidelines list andexanet alfa as Class IIa ("reasonable") for Xa inhibitor-associated ICH. Consider andexanet if PCC unavailable, ineffective, or contraindicated. Monitor for thrombotic events (11% in ANNEXA-4).
                         </div>
                         <p className="text-xs text-slate-500 mt-1">ANNEXA-4 trial. Low-dose if last DOAC &ge;8h ago (or apixaban &le;5mg). High-dose if last dose &lt;8h ago (or rivaroxaban &gt;10mg, apixaban &gt;5mg). Monitor for thrombotic events post-reversal.</p>
                       </div>
