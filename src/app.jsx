@@ -4540,7 +4540,7 @@ Clinician Name`;
               category: 'CVT Management',
               title: 'CVT: Thrombophilia workup',
               recommendation: 'Evaluate for underlying thrombophilia in unprovoked CVT, especially in young patients. Defer testing until after acute phase if possible.',
-              detail: 'Test for: Factor V Leiden, prothrombin G20210A, antithrombin III, protein C/S, antiphospholipid antibodies. Hormonal risk factors (OCP, pregnancy) are most common provoked cause. Test timing: some assays affected by acute thrombosis and anticoagulation.',
+              detail: 'Test for: Factor V Leiden, prothrombin G20210A, antithrombin III, protein C/S, antiphospholipid antibodies. Hormonal risk factors (OCP, pregnancy) are most common provoked cause. TIMING: Do NOT test protein C, protein S, or antithrombin during acute admission — levels are reduced by acute thrombosis, heparin (AT), and warfarin (protein C/S). Defer to outpatient testing at 2-4 weeks, off anticoagulation for protein-based assays. Genetic tests (FVL, PT G20210A) and APL antibodies can be sent acutely.',
               classOfRec: 'IIa',
               levelOfEvidence: 'C-LD',
               guideline: 'AHA Cerebral Venous Thrombosis 2024',
@@ -6440,6 +6440,7 @@ Clinician Name`;
               doorToCT: null,
               doorToNeedle: null,
               ctToNeedle: null,
+              doorToPuncture: null,
               timestamps: {}
             };
 
@@ -6477,6 +6478,17 @@ Clinician Name`;
               const diffMs = tnkAdmin - ctRead;
               const diffMins = Math.round(diffMs / (1000 * 60));
               metrics.ctToNeedle = diffMins;
+            }
+
+            // Door-to-Puncture (DTP): ED Arrival → Puncture time
+            if (edArrival && telestrokeNote.punctureTime) {
+              const [pH, pM] = telestrokeNote.punctureTime.split(':').map(Number);
+              if (!isNaN(pH) && !isNaN(pM)) {
+                const punctureDate = new Date(edArrival);
+                punctureDate.setHours(pH, pM, 0, 0);
+                if (punctureDate < edArrival) punctureDate.setDate(punctureDate.getDate() + 1);
+                metrics.doorToPuncture = Math.round((punctureDate - edArrival) / (1000 * 60));
+              }
             }
 
             return metrics;
@@ -9274,7 +9286,7 @@ Clinician Name`;
               // Additional blood product thresholds (institutional protocol 9/2025)
               reversalOrders.push(
                 '--- Additional Products (check labs) ---',
-                'If fibrinogen <125 mg/dL → 2 units cryoprecipitate',
+                'If fibrinogen <125 mg/dL → 2 pools cryoprecipitate (10 individual units)',
                 'If platelets <50K → 2 units platelets; 50-100K → 1 unit platelets',
                 'Antiplatelet agents: discontinue; platelet transfusion NOT recommended (PATCH, COR 3/B harm)'
               );
@@ -9353,7 +9365,7 @@ Clinician Name`;
                   'Hypertonic saline 23.4% 30 mL IV over 15 min via central line (for acute herniation)',
                   'OR Hypertonic saline 3% 250 mL IV over 30 min (peripheral ok)',
                   'OR Mannitol 20% 1 g/kg IV over 20 min (peripheral ok)',
-                  `${weight ? `Weight ${weight} kg → Mannitol ${Math.round(weight)} mL of 20% (= ${weight} g)` : 'Weight needed for mannitol dosing'}`,
+                  `${weight ? `Weight ${weight} kg → Mannitol ${Math.round(weight * 5)} mL of 20% (= ${weight} g)` : 'Weight needed for mannitol dosing'}`,
                   'Mannitol repeat dosing: 0.25-0.5 g/kg IV q4-6h PRN for ongoing ICP elevation (max ~2 g/kg/day). Hold if serum osmolality >320 or osmol gap >20.',
                   'Target Na+ 145-155 mEq/L for 3% NaCl; serum osmolality <320 for mannitol',
                   'Check BMP q6h (Na+, K+, osmolality), strict I/O'
@@ -9362,7 +9374,7 @@ Clinician Name`;
                 osmOrders.push(
                   'Consider osmotherapy if signs of herniation or progressive edema',
                   'Mannitol 20% 1 g/kg IV over 20 min (can give peripherally)',
-                  `${weight ? `Weight ${weight} kg → Mannitol ${Math.round(weight)} mL of 20%` : 'Weight needed for dosing'}`,
+                  `${weight ? `Weight ${weight} kg → Mannitol ${Math.round(weight * 5)} mL of 20% (= ${weight} g)` : 'Weight needed for dosing'}`,
                   'HOB 30 degrees, avoid hyperthermia, avoid hyponatremia'
                 );
               }
@@ -9388,7 +9400,7 @@ Clinician Name`;
                   'SECOND-LINE (if seizures persist >5 min after benzo):',
                   '  Levetiracetam 60 mg/kg IV (max 4500 mg) over 15 min',
                   '  OR Fosphenytoin 20 PE/kg IV (max 150 PE/min) — avoid in ICH if possible (hypotension risk)',
-                  '  OR Valproate 40 mg/kg IV (max 3000 mg) over 10 min — avoid if liver disease/pregnancy',
+                  '  OR Valproate 40 mg/kg IV (max 4500 mg) over 10 min — avoid if liver disease/pregnancy',
                   'REFRACTORY STATUS (>30 min): Intubation + continuous IV midazolam (0.2 mg/kg bolus, 0.05-2 mg/kg/hr) or propofol',
                   'Continuous EEG monitoring if: impaired consciousness, recurrent seizures, or post-status',
                   'Check glucose, electrolytes, AED levels. Treat fever aggressively.',
@@ -9497,7 +9509,7 @@ Clinician Name`;
           const scrollToSection = (id) => {
             const target = document.getElementById(id);
             if (!target) return;
-            const headerOffset = 24;
+            const headerOffset = 160;
             const top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
             window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
             if (!target.hasAttribute('tabindex')) {
@@ -9865,6 +9877,7 @@ Clinician Name`;
               { name: 'Transfer Checklist', keywords: ['transfer', 'spoke', 'hub', 'transport'], tab: 'encounter' },
               { name: 'Hemorrhagic Transformation', keywords: ['hemorrhagic transformation', 'sich', 'symptomatic ich', 'post-tnk bleeding', 'ecass'], tab: 'management', subTab: 'ischemic' },
               { name: 'Stroke Mimic Workup', keywords: ['mimic', 'mimic workup', 'differential', 'seizure', 'migraine', 'conversion', 'functional'], tab: 'encounter' },
+              { name: 'Code Stroke Activation Criteria', keywords: ['code stroke', 'activation', 'alert', 'lvo alert', 'race scale', 'de-escalation', 'when to activate'], tab: 'management', subTab: 'reference' },
               { name: 'Acute Deterioration', keywords: ['deterioration', 'worsening', 'decline', 'neuro change', 'acute change'], tab: 'management', subTab: 'ischemic' },
               { name: 'DOAC Reversal', keywords: ['doac reversal', 'pcc', 'kcentra', 'idarucizumab', 'praxbind', 'andexanet', 'xa inhibitor'], tab: 'management', subTab: 'ich' },
               { name: 'VTE Prophylaxis', keywords: ['vte', 'dvt', 'pe', 'prophylaxis', 'enoxaparin', 'heparin', 'scds', 'ipc'], tab: 'management', subTab: 'ischemic' },
@@ -11609,7 +11622,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 const elS = elapsedSeconds % 60;
                 const timerBg = totalHours < 3 ? 'from-emerald-600 to-emerald-700' : totalHours < 4 ? 'from-amber-500 to-amber-600' : totalHours < 4.5 ? 'from-orange-500 to-orange-600' : 'from-red-600 to-red-700';
                 return (
-                  <div className={`mb-3 bg-gradient-to-r ${timerBg} rounded-xl px-4 py-2 text-white flex flex-wrap items-center justify-between gap-2 ${alertFlashing ? 'alert-flash' : ''}`}>
+                  <div className={`mb-3 bg-gradient-to-r ${timerBg} rounded-xl px-4 py-2 text-white flex flex-wrap items-center justify-between gap-2 ${alertFlashing ? 'alert-flash' : ''}`} role="timer" aria-live="polite" aria-label="Stroke treatment window timer">
                     <div className="flex items-center gap-3">
                       <i data-lucide="clock" className="w-4 h-4"></i>
                       <span className="font-mono font-bold text-lg">{elH}h {String(elM).padStart(2,'0')}m {String(elS).padStart(2,'0')}s</span>
@@ -12682,9 +12695,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="block text-xs font-medium text-slate-600">Weight</label>
                                 <div className="flex bg-slate-100 rounded-md p-0.5">
                                   <button type="button" onClick={() => setWeightUnit('kg')}
-                                    className={'px-1.5 py-0.5 text-xs rounded ' + (weightUnit === 'kg' ? 'bg-white shadow-sm font-semibold text-slate-900' : 'text-slate-500')}>kg</button>
+                                    className={'px-2.5 py-1 text-sm rounded ' + (weightUnit === 'kg' ? 'bg-white shadow-sm font-semibold text-slate-900' : 'text-slate-500')}>kg</button>
                                   <button type="button" onClick={() => setWeightUnit('lbs')}
-                                    className={'px-1.5 py-0.5 text-xs rounded ' + (weightUnit === 'lbs' ? 'bg-white shadow-sm font-semibold text-slate-900' : 'text-slate-500')}>lbs</button>
+                                    className={'px-2.5 py-1 text-sm rounded ' + (weightUnit === 'lbs' ? 'bg-white shadow-sm font-semibold text-slate-900' : 'text-slate-500')}>lbs</button>
                                 </div>
                               </div>
                               <input
@@ -12708,7 +12721,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <label className="flex items-center gap-1.5 mt-1 cursor-pointer">
                                 <input type="checkbox" checked={!!telestrokeNote.weightEstimated}
                                   onChange={(e) => setTelestrokeNote({...telestrokeNote, weightEstimated: e.target.checked})}
-                                  className="w-3.5 h-3.5" />
+                                  className="w-4 h-4" />
                                 <span className={'text-xs ' + (telestrokeNote.weightEstimated ? 'text-amber-700 font-semibold' : 'text-slate-500')}>Estimated</span>
                               </label>
                             </div>
@@ -13846,7 +13859,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <label className="flex items-center gap-1.5 mt-1 cursor-pointer">
                                 <input type="checkbox" checked={!!telestrokeNote.weightEstimated}
                                   onChange={(e) => setTelestrokeNote({...telestrokeNote, weightEstimated: e.target.checked})}
-                                  className="w-3.5 h-3.5" />
+                                  className="w-4 h-4" />
                                 <span className={'text-xs ' + (telestrokeNote.weightEstimated ? 'text-amber-700 font-semibold' : 'text-slate-500')}>Estimated weight</span>
                               </label>
                             </div>
@@ -14413,7 +14426,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <button
                                       type="button"
                                       onClick={() => setTelestrokeNote({...telestrokeNote, doorTime: new Date().toTimeString().slice(0, 5)})}
-                                      className="text-[10px] font-semibold text-amber-800 hover:text-amber-900"
+                                      className="text-xs px-2 py-1 font-semibold text-amber-800 bg-amber-100 rounded hover:bg-amber-200 transition-colors"
                                     >
                                       Now
                                     </button>
@@ -14422,7 +14435,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     type="time"
                                     value={telestrokeNote.doorTime || ''}
                                     onChange={(e) => setTelestrokeNote({...telestrokeNote, doorTime: e.target.value})}
-                                    className="w-full px-2 py-1 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-yellow-500"
+                                    className="w-full px-2 py-1.5 border border-slate-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-yellow-500"
                                   />
                                 </div>
                                 <div>
@@ -14431,7 +14444,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <button
                                       type="button"
                                       onClick={() => setTelestrokeNote({...telestrokeNote, ctTime: new Date().toTimeString().slice(0, 5)})}
-                                      className="text-[10px] font-semibold text-amber-800 hover:text-amber-900"
+                                      className="text-xs px-2 py-1 font-semibold text-amber-800 bg-amber-100 rounded hover:bg-amber-200 transition-colors"
                                     >
                                       Now
                                     </button>
@@ -14440,7 +14453,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     type="time"
                                     value={telestrokeNote.ctTime || ''}
                                     onChange={(e) => setTelestrokeNote({...telestrokeNote, ctTime: e.target.value})}
-                                    className="w-full px-2 py-1 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-yellow-500"
+                                    className="w-full px-2 py-1.5 border border-slate-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-yellow-500"
                                   />
                                 </div>
                                 <div>
@@ -14449,7 +14462,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <button
                                       type="button"
                                       onClick={() => setTelestrokeNote({...telestrokeNote, needleTime: new Date().toTimeString().slice(0, 5)})}
-                                      className="text-[10px] font-semibold text-amber-800 hover:text-amber-900"
+                                      className="text-xs px-2 py-1 font-semibold text-amber-800 bg-amber-100 rounded hover:bg-amber-200 transition-colors"
                                     >
                                       Now
                                     </button>
@@ -14458,7 +14471,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     type="time"
                                     value={telestrokeNote.needleTime || ''}
                                     onChange={(e) => setTelestrokeNote({...telestrokeNote, needleTime: e.target.value})}
-                                    className="w-full px-2 py-1 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-yellow-500"
+                                    className="w-full px-2 py-1.5 border border-slate-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-yellow-500"
                                   />
                                 </div>
                                 <div>
@@ -14467,7 +14480,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <button
                                       type="button"
                                       onClick={() => setTelestrokeNote({...telestrokeNote, punctureTime: new Date().toTimeString().slice(0, 5)})}
-                                      className="text-[10px] font-semibold text-amber-800 hover:text-amber-900"
+                                      className="text-xs px-2 py-1 font-semibold text-amber-800 bg-amber-100 rounded hover:bg-amber-200 transition-colors"
                                     >
                                       Now
                                     </button>
@@ -14476,7 +14489,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     type="time"
                                     value={telestrokeNote.punctureTime || ''}
                                     onChange={(e) => setTelestrokeNote({...telestrokeNote, punctureTime: e.target.value})}
-                                    className="w-full px-2 py-1 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-yellow-500"
+                                    className="w-full px-2 py-1.5 border border-slate-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-yellow-500"
                                   />
                                 </div>
                               </div>
@@ -15966,22 +15979,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">ED Arrival (Door)</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnEdArrival && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnEdArrival); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnEdArrival: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">-1m</button>}
+                                        {telestrokeNote.dtnEdArrival && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnEdArrival); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnEdArrival: d.toISOString().slice(0, 16)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote({...telestrokeNote, dtnEdArrival: new Date().toISOString().slice(0, 16)})}
-                                          className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 transition-colors min-h-[36px]"
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnEdArrival && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnEdArrival); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnEdArrival: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">+1m</button>}
+                                        {telestrokeNote.dtnEdArrival && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnEdArrival); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnEdArrival: d.toISOString().slice(0, 16)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
                                       </div>
                                     </div>
                                     <input
                                       type="datetime-local"
                                       value={telestrokeNote.dtnEdArrival || ''}
                                       onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnEdArrival: e.target.value})}
-                                      className="w-full px-2 py-1 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-purple-500"
+                                      className="w-full px-2 py-1.5 border border-slate-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-purple-500"
                                     />
                                   </div>
 
@@ -15990,22 +16003,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">Stroke Alert Called</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnStrokeAlert && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnStrokeAlert); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">-1m</button>}
+                                        {telestrokeNote.dtnStrokeAlert && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnStrokeAlert); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: d.toISOString().slice(0, 16)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: new Date().toISOString().slice(0, 16)})}
-                                          className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 transition-colors min-h-[36px]"
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnStrokeAlert && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnStrokeAlert); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">+1m</button>}
+                                        {telestrokeNote.dtnStrokeAlert && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnStrokeAlert); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: d.toISOString().slice(0, 16)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
                                       </div>
                                     </div>
                                     <input
                                       type="datetime-local"
                                       value={telestrokeNote.dtnStrokeAlert || ''}
                                       onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: e.target.value})}
-                                      className="w-full px-2 py-1 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-purple-500"
+                                      className="w-full px-2 py-1.5 border border-slate-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-purple-500"
                                     />
                                   </div>
 
@@ -16014,22 +16027,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">CT Scan Started</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnCtStarted && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtStarted); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnCtStarted: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">-1m</button>}
+                                        {telestrokeNote.dtnCtStarted && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtStarted); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnCtStarted: d.toISOString().slice(0, 16)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote({...telestrokeNote, dtnCtStarted: new Date().toISOString().slice(0, 16)})}
-                                          className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 transition-colors min-h-[36px]"
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnCtStarted && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtStarted); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnCtStarted: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">+1m</button>}
+                                        {telestrokeNote.dtnCtStarted && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtStarted); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnCtStarted: d.toISOString().slice(0, 16)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
                                       </div>
                                     </div>
                                     <input
                                       type="datetime-local"
                                       value={telestrokeNote.dtnCtStarted || ''}
                                       onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnCtStarted: e.target.value})}
-                                      className="w-full px-2 py-1 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-purple-500"
+                                      className="w-full px-2 py-1.5 border border-slate-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-purple-500"
                                     />
                                   </div>
 
@@ -16038,22 +16051,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">CT Read/Cleared for TNK</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnCtRead && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtRead); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnCtRead: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">-1m</button>}
+                                        {telestrokeNote.dtnCtRead && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtRead); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnCtRead: d.toISOString().slice(0, 16)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote({...telestrokeNote, dtnCtRead: new Date().toISOString().slice(0, 16)})}
-                                          className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 transition-colors min-h-[36px]"
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnCtRead && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtRead); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnCtRead: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">+1m</button>}
+                                        {telestrokeNote.dtnCtRead && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtRead); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnCtRead: d.toISOString().slice(0, 16)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
                                       </div>
                                     </div>
                                     <input
                                       type="datetime-local"
                                       value={telestrokeNote.dtnCtRead || ''}
                                       onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnCtRead: e.target.value})}
-                                      className="w-full px-2 py-1 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-purple-500"
+                                      className="w-full px-2 py-1.5 border border-slate-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-purple-500"
                                     />
                                   </div>
 
@@ -16062,22 +16075,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">TNK Ordered</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnTnkOrdered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkOrdered); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">-1m</button>}
+                                        {telestrokeNote.dtnTnkOrdered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkOrdered); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: d.toISOString().slice(0, 16)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: new Date().toISOString().slice(0, 16)})}
-                                          className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 transition-colors min-h-[36px]"
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnTnkOrdered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkOrdered); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">+1m</button>}
+                                        {telestrokeNote.dtnTnkOrdered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkOrdered); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: d.toISOString().slice(0, 16)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
                                       </div>
                                     </div>
                                     <input
                                       type="datetime-local"
                                       value={telestrokeNote.dtnTnkOrdered || ''}
                                       onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: e.target.value})}
-                                      className="w-full px-2 py-1 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-purple-500"
+                                      className="w-full px-2 py-1.5 border border-slate-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-purple-500"
                                     />
                                   </div>
 
@@ -16086,22 +16099,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-bold text-emerald-700">TNK Administered (Needle)</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnTnkAdministered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkAdministered); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">-1m</button>}
+                                        {telestrokeNote.dtnTnkAdministered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkAdministered); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: d.toISOString().slice(0, 16)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: new Date().toISOString().slice(0, 16)})}
-                                          className="px-2 py-1 bg-emerald-600 text-white text-xs rounded hover:bg-emerald-700 transition-colors"
+                                          className="px-3 py-1.5 bg-emerald-600 text-white text-sm rounded hover:bg-emerald-700 transition-colors min-h-[36px]"
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnTnkAdministered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkAdministered); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">+1m</button>}
+                                        {telestrokeNote.dtnTnkAdministered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkAdministered); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: d.toISOString().slice(0, 16)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
                                       </div>
                                     </div>
                                     <input
                                       type="datetime-local"
                                       value={telestrokeNote.dtnTnkAdministered || ''}
                                       onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: e.target.value})}
-                                      className="w-full px-2 py-1 border border-emerald-300 rounded text-sm focus:ring-2 focus:ring-green-500"
+                                      className="w-full px-2 py-1.5 border border-emerald-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-green-500"
                                     />
                                   </div>
                                 </div>
@@ -16109,7 +16122,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 {/* Auto-calculated Time Metrics */}
                                 {(() => {
                                   const metrics = calculateDTNMetrics();
-                                  const hasSomeData = metrics.doorToCT !== null || metrics.doorToNeedle !== null || metrics.ctToNeedle !== null;
+                                  const hasSomeData = metrics.doorToCT !== null || metrics.doorToNeedle !== null || metrics.ctToNeedle !== null || metrics.doorToPuncture !== null;
 
                                   if (!hasSomeData) {
                                     return (
@@ -16185,6 +16198,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           </p>
                                           <p className="text-xs text-slate-500">Target: &lt;20 min</p>
                                         </div>
+
+                                        {/* Door-to-Puncture (DTP) */}
+                                        {metrics.doorToPuncture !== null && (
+                                          <div className={`p-3 rounded-lg border-2 text-center ${metrics.doorToPuncture <= 90 ? 'bg-emerald-100 border-emerald-500' : metrics.doorToPuncture <= 120 ? 'bg-amber-100 border-amber-500' : 'bg-red-100 border-red-500'}`}>
+                                            <p className="text-xs text-slate-700 mb-1 font-semibold">Door-to-Puncture (DTP)</p>
+                                            <p className={`text-2xl font-bold ${metrics.doorToPuncture <= 90 ? 'text-emerald-700' : metrics.doorToPuncture <= 120 ? 'text-amber-700' : 'text-red-700'}`}>
+                                              {metrics.doorToPuncture} min
+                                            </p>
+                                            <p className="text-xs text-slate-500">Target: &lt;90 min</p>
+                                          </div>
+                                        )}
                                       </div>
 
                                       {/* Benchmark Legend */}
@@ -25701,6 +25725,70 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <p><strong>If ESUS confirmed:</strong> Antiplatelet therapy (not anticoagulation) per NAVIGATE ESUS/RE-SPECT ESUS. Extended monitoring is key to finding AF.</p>
                             </div>
                           </details>
+                        </div>
+                      </div>
+                    </details>
+
+                    {/* Code Stroke Activation Criteria */}
+                    <details id="ref-code-stroke" className="bg-white border border-red-200 rounded-lg">
+                      <summary className="cursor-pointer p-4 font-semibold text-red-800 hover:bg-red-50 rounded-lg flex items-center gap-2">
+                        <i data-lucide="siren" className="w-4 h-4 text-red-600"></i>
+                        Code Stroke Activation Criteria
+                      </summary>
+                      <div className="px-4 pb-4 space-y-3">
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                          <h4 className="font-bold text-red-900 text-sm mb-2">ACTIVATE Code Stroke When ALL Present</h4>
+                          <ul className="text-xs text-slate-700 space-y-1.5">
+                            <li><strong>1. Acute focal neurological deficit</strong> — facial droop, arm/leg weakness, speech difficulty, visual field cut, neglect, ataxia, diplopia, dysarthria</li>
+                            <li><strong>2. Last known well (LKW) within 24 hours</strong> — or unknown onset (wake-up strokes may be eligible for intervention)</li>
+                            <li><strong>3. Age typically ≥18</strong> — pediatric stroke protocols differ; involve pediatric neurology early</li>
+                            <li><strong>4. No immediately obvious alternative</strong> — check glucose before activation if possible (BG &lt;60 mg/dL can mimic stroke)</li>
+                          </ul>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                            <h4 className="font-bold text-amber-900 text-sm mb-2">LVO Alert Criteria (Upgrade)</h4>
+                            <p className="text-xs text-slate-600 mb-2">Upgrade to LVO alert for potential emergent thrombectomy when:</p>
+                            <ul className="text-xs text-slate-700 space-y-1">
+                              <li>NIHSS ≥6 (or RACE ≥5, LAMS ≥4)</li>
+                              <li>Cortical signs: gaze deviation, neglect, aphasia, hemianopia</li>
+                              <li>Acute basilar symptoms: bilateral motor, LOC, locked-in presentation</li>
+                              <li>LKW within 24 hours (late-window EVT per DAWN/DEFUSE-3)</li>
+                            </ul>
+                          </div>
+                          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                            <h4 className="font-bold text-emerald-900 text-sm mb-2">De-escalation Criteria</h4>
+                            <p className="text-xs text-slate-600 mb-2">Consider standing down code when:</p>
+                            <ul className="text-xs text-slate-700 space-y-1">
+                              <li>NIHSS 0 with complete symptom resolution AND LKW &gt;4.5h (TIA pathway)</li>
+                              <li>Hypoglycemia (BG &lt;60) with deficits resolving after glucose correction</li>
+                              <li>Confirmed active seizure with improving postictal deficit</li>
+                              <li>Known chronic/stable deficits confirmed identical to prior baseline</li>
+                              <li>Onset clearly &gt;24 hours with no mismatch imaging indication</li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                          <h4 className="font-bold text-blue-900 text-sm mb-2">When NOT to Activate</h4>
+                          <ul className="text-xs text-slate-700 space-y-1">
+                            <li>Isolated dizziness without other posterior fossa signs (unless HINTS exam is central pattern)</li>
+                            <li>Isolated headache without focal deficits (unless thunderclap → SAH protocol)</li>
+                            <li>Chronic stable neurological deficits with no acute change</li>
+                            <li>Symptoms clearly explained by non-stroke diagnosis already established</li>
+                          </ul>
+                          <p className="text-xs text-red-700 font-semibold mt-2">When in doubt, ACTIVATE. It is always safer to stand down a code stroke than to miss a treatable stroke.</p>
+                        </div>
+                        <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                          <h4 className="font-bold text-purple-900 text-sm mb-2">Rapid LVO Screen: RACE Scale (Pre-CTA)</h4>
+                          <p className="text-xs text-slate-600 mb-2">Rapid Arterial oCclusion Evaluation — for use by EMS or spoke ED before CTA is available. Score ≥5 suggests LVO (sensitivity ~85%, specificity ~68%). (Perez de la Ossa N et al., Stroke 2014)</p>
+                          <div className="text-xs text-slate-700 space-y-1">
+                            <p><strong>Facial palsy:</strong> 0 = absent, 1 = mild, 2 = moderate-severe</p>
+                            <p><strong>Arm motor:</strong> 0 = normal, 1 = mild weakness, 2 = moderate-severe/plegia</p>
+                            <p><strong>Leg motor:</strong> 0 = normal, 1 = mild weakness, 2 = moderate-severe/plegia</p>
+                            <p><strong>Head/gaze deviation:</strong> 0 = absent, 1 = present</p>
+                            <p><strong>Aphasia (L) or Agnosia (R):</strong> 0 = absent, 1 = mild, 2 = moderate-severe</p>
+                            <p className="font-semibold mt-1">Total: 0-9. Score ≥5 → activate LVO alert, prioritize CTA, notify neurointerventional team.</p>
+                          </div>
                         </div>
                       </div>
                     </details>
