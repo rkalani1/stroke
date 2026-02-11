@@ -396,12 +396,12 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
             }
 
             const nowTime = now instanceof Date ? now : new Date();
-            const diffMs = nowTime - reference;
+            const diffMs = Math.max(0, nowTime - reference);
             const diffHrs = diffMs / (1000 * 60 * 60);
             const diffMins = (diffMs / (1000 * 60)) % 60;
             const timeFrom = {
               hours: Math.floor(diffHrs),
-              minutes: Math.floor(diffMins),
+              minutes: Math.floor(Math.abs(diffMins)),
               total: diffHrs,
               label: lkwUnknown ? 'Discovery' : 'LKW'
             };
@@ -1675,6 +1675,8 @@ Clinician Name`;
           const treatmentDecisionRef = useRef(null);
           const backupImportRef = useRef(null);
           const searchContainerRef = useRef(null);
+          const generateNoteRef = useRef(null);
+          const copyToClipboardRef = useRef(null);
           // mermaidInitializedRef removed — no more mermaid diagrams
           const decisionStateRef = useRef({
             tnkRecommended: false,
@@ -7195,12 +7197,12 @@ Clinician Name`;
           // ============================================
           useEffect(() => {
             const handleKeyDown = (e) => {
-              // Ctrl+Shift+C — Copy note
+              // Ctrl+Shift+C — Copy note (uses refs to avoid stale closures)
               if (e.ctrlKey && e.shiftKey && e.key === 'C') {
                 e.preventDefault();
-                const note = generateTelestrokeNote();
+                const note = generateNoteRef.current?.();
                 if (note) {
-                  copyToClipboard(note, 'consult-note');
+                  copyToClipboardRef.current?.(note, 'consult-note');
                 }
                 return;
               }
@@ -8797,6 +8799,8 @@ Clinician Name`;
               return `[Error generating note: ${err.message}. Please try again or report this issue.]`;
             }
           };
+          generateNoteRef.current = generateTelestrokeNote;
+          copyToClipboardRef.current = copyToClipboard;
 
           const buildSmartNote = () => {
             const age = telestrokeNote.age || 'Unknown age';
@@ -8916,12 +8920,12 @@ Clinician Name`;
           const calculateTimeFromLKW = () => {
             const reference = getReferenceTime();
             if (!reference) return null;
-            const diffMs = currentTime - reference.time;
+            const diffMs = Math.max(0, currentTime - reference.time);
             const diffHrs = diffMs / (1000 * 60 * 60);
             const diffMins = (diffMs / (1000 * 60)) % 60;
             return {
               hours: Math.floor(diffHrs),
-              minutes: Math.floor(diffMins),
+              minutes: Math.floor(Math.abs(diffMins)),
               total: diffHrs,
               label: reference.label
             };
@@ -10167,7 +10171,24 @@ Clinician Name`;
 
           const restoreCaseSnapshot = (snapshot) => {
             if (!snapshot) return;
-            const note = snapshot.telestrokeNote || getDefaultTelestrokeNote();
+            const defaults = getDefaultTelestrokeNote();
+            const savedNote = snapshot.telestrokeNote;
+            let note;
+            if (!savedNote) {
+              note = defaults;
+            } else {
+              note = { ...defaults };
+              for (const key of Object.keys(savedNote)) {
+                if (savedNote[key] !== undefined && savedNote[key] !== null) {
+                  if (typeof defaults[key] === 'object' && defaults[key] !== null && !Array.isArray(defaults[key])
+                      && typeof savedNote[key] === 'object' && !Array.isArray(savedNote[key])) {
+                    note[key] = { ...defaults[key], ...savedNote[key] };
+                  } else {
+                    note[key] = savedNote[key];
+                  }
+                }
+              }
+            }
             setTelestrokeNote(note);
             setStrokeCodeForm(snapshot.strokeCodeForm || getDefaultStrokeCodeForm());
             setPatientData(snapshot.patientData || {});
