@@ -248,8 +248,8 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           if (!config) return null;
           return React.createElement('div', { className: 'fixed inset-0 z-[200] flex items-center justify-center p-4' },
             React.createElement('div', { className: 'fixed inset-0 bg-black/40', onClick: () => { if (!config.required) onClose(null); } }),
-            React.createElement('div', { className: 'relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4' },
-              React.createElement('h3', { className: 'text-lg font-bold text-slate-900' }, config.title || 'Confirm'),
+            React.createElement('div', { className: 'relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'confirm-modal-title' },
+              React.createElement('h3', { id: 'confirm-modal-title', className: 'text-lg font-bold text-slate-900' }, config.title || 'Confirm'),
               config.message && React.createElement('p', { className: 'text-sm text-slate-600' }, config.message),
               config.input && React.createElement('div', { className: 'space-y-1' },
                 config.inputLabel && React.createElement('label', { className: 'block text-xs font-medium text-slate-700' }, config.inputLabel),
@@ -1054,7 +1054,6 @@ Clinician Name`;
               recentStroke: false,
               recentHeadTrauma: false,
               extensiveHypoattenuation: false,
-              intracranialNeoplasm: false,
               intracranialTumor: false,
               knownBleedingDiathesis: false,
               severeUncontrolledHTN: false,
@@ -1066,8 +1065,9 @@ Clinician Name`;
               pregnancy: false,
               seizureAtOnset: false,
               lowPlatelets: false,
-              elevatedINR: false,
-              elevatedPTT: false,
+              recentMI: false,
+              acutePericarditis: false,
+              elevatedAPTT: false,
               warfarinElevatedINR: false,
               recentHeparin: false,
               lowGlucose: false,
@@ -6896,7 +6896,7 @@ Clinician Name`;
               SEX: telestrokeNote.sex || '',
               NIHSS: telestrokeNote.nihss || nihssScore || '',
               DIAGNOSIS: telestrokeNote.diagnosis || '',
-              LVO: (telestrokeNote.vesselOcclusion || []).join(', '),
+              LVO: (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', '),
               WEIGHT_KG: telestrokeNote.weight || '',
               LKW: lkw,
               ARRIVAL: telestrokeNote.arrivalTime || '',
@@ -7817,7 +7817,8 @@ Clinician Name`;
             brief += `- CT Head: ${telestrokeNote.ctResults || 'N/A'}\n`;
             brief += `- CTA: ${telestrokeNote.ctaResults || 'N/A'}\n`;
             if (telestrokeNote.ctpResults) brief += `- CTP: ${telestrokeNote.ctpResults}\n`;
-            if ((telestrokeNote.vesselOcclusion || []).length > 0) brief += `- Vessel occlusion: ${(telestrokeNote.vesselOcclusion || []).join(', ')}\n`;
+            const briefVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
+            if (briefVessels.length > 0) brief += `- Vessel occlusion: ${briefVessels.join(', ')}\n`;
             brief += `\nCARDIAC WORKUP:\n`;
             if (cw.ecgComplete) brief += `- ECG: completed\n`;
             if (cw.telemetryOrdered) brief += `- Telemetry: ordered\n`;
@@ -7973,7 +7974,7 @@ Clinician Name`;
                 const transferDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
                 note += `- TNK${transferDose ? ` ${transferDose.calculatedDose} mg` : ''} ${telestrokeNote.tnkAdminTime ? 'administered at ' + (formatTime(telestrokeNote.tnkAdminTime) || '___') : 'recommended (not yet administered)'}\n`;
                 if (telestrokeNote.tnkConsentDiscussed) {
-                  note += `- Consent: ${telestrokeNote.tnkConsentType || 'informed'} consent`;
+                  note += `- Consent: ${telestrokeNote.tnkConsentType || '(type not specified)'} consent`;
                   if (telestrokeNote.tnkConsentWith) note += ` with ${telestrokeNote.tnkConsentWith}`;
                   if (telestrokeNote.tnkConsentTime) note += ` at ${telestrokeNote.tnkConsentTime}`;
                   note += `\n`;
@@ -8080,6 +8081,7 @@ Clinician Name`;
               if (telestrokeNote.clinicalDeterioration) signoutComps.push('clinical deterioration');
               if (signoutComps.length > 0) note += `- Complications: ${signoutComps.join(', ')}\n`;
               // Special populations
+              if (telestrokeNote.pregnancyStroke) note += `- PREGNANCY: OB/GYN co-management recommended\n`;
               if (telestrokeNote.activeCancer) note += `- ACTIVE CANCER: oncology co-management recommended\n`;
               if (telestrokeNote.sickleCellDisease) note += `- SICKLE CELL DISEASE: hematology co-management, exchange transfusion status\n`;
               if (telestrokeNote.infectiveEndocarditis) note += `- INFECTIVE ENDOCARDITIS: TNK contraindicated, infectious disease/cardiology co-management\n`;
@@ -8093,9 +8095,9 @@ Clinician Name`;
               if (sp.statinDose) note += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}\n`;
               // Consent
               if (telestrokeNote.tnkRecommended && telestrokeNote.tnkConsentDiscussed) {
-                const consentType = telestrokeNote.tnkConsentType || 'verbal';
+                const consentType = telestrokeNote.tnkConsentType || '(type not specified)';
                 const consentWith = telestrokeNote.tnkConsentWith || '';
-                note += `- Consent: ${consentType}${consentWith ? ` with ${consentWith}` : ''}${telestrokeNote.tnkConsentTime ? ` at ${formatTime(telestrokeNote.tnkConsentTime)}` : ''}\n`;
+                note += `- Consent: ${consentType}${consentWith ? ` with ${consentWith}` : ''}${telestrokeNote.tnkConsentTime ? ` at ${telestrokeNote.tnkConsentTime}` : ''}\n`;
               }
               if (telestrokeNote.disposition) note += `\nDisposition: ${telestrokeNote.disposition}\n`;
               note += `\nActive issues / To-do:\n`;
@@ -8475,7 +8477,6 @@ Clinician Name`;
                 'currentICH',
                 'largeInfarct',
                 'intracranialTumor',
-                'intracranialNeoplasm',
                 'aorticDissection',
                 'activeInternalBleeding',
                 'giMalignancy',
@@ -8507,7 +8508,11 @@ Clinician Name`;
                 'lecanemab',
                 'cerebralMicrobleeds',
                 'abnormalCoagUnknown',
-                'severeRenalFailure'
+                'severeRenalFailure',
+                'knownBleedingDiathesis',
+                'recentMI',
+                'acutePericarditis',
+                'elevatedAPTT'
               ];
               const absoluteChecked = absoluteKeys.filter(k => checklist[k]);
               const relativeChecked = relativeKeys.filter(k => checklist[k]);
@@ -8582,8 +8587,9 @@ Clinician Name`;
             }
 
             // Add vessel occlusion details
-            if ((telestrokeNote.vesselOcclusion || []).length > 0) {
-              note += `\nVessel Occlusion: ${(telestrokeNote.vesselOcclusion || []).join(', ')}\n`;
+            const consultVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
+            if (consultVessels.length > 0) {
+              note += `\nVessel Occlusion: ${consultVessels.join(', ')}\n`;
             }
 
             // Add ICH-specific details
@@ -8647,6 +8653,16 @@ Clinician Name`;
             if (di.statinInteraction) diItems.push(`Statin interaction: ${di.statinInteractionDrug} (dose adjustment needed)`);
             if (diItems.length > 0) {
               note += `\nDrug Interaction Alerts:\n${diItems.map(i => `- ${i}`).join('\n')}\n`;
+            }
+
+            // Special populations
+            const consultSpecialPops = [];
+            if (telestrokeNote.pregnancyStroke) consultSpecialPops.push('PREGNANCY — OB/GYN consultation recommended');
+            if (telestrokeNote.activeCancer) consultSpecialPops.push('ACTIVE CANCER — oncology co-management');
+            if (telestrokeNote.sickleCellDisease) consultSpecialPops.push('SICKLE CELL DISEASE — hematology co-management');
+            if (telestrokeNote.infectiveEndocarditis) consultSpecialPops.push('INFECTIVE ENDOCARDITIS — TNK contraindicated, ID/cardiology co-management');
+            if (consultSpecialPops.length > 0) {
+              note += `\nSpecial Populations:\n${consultSpecialPops.map(s => `- ${s}`).join('\n')}\n`;
             }
 
             // Add disposition
@@ -11694,7 +11710,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           TNK: {Math.floor(tnkRemainingMin/60)}h {tnkRemainingMin%60}m left
                         </span>
                       ) : (
-                        <span className="opacity-70">TNK closed</span>
+                        <span className="opacity-90">TNK closed</span>
                       )}
                       {evtEarlyRemaining > 0 ? (
                         <span>EVT early: {Math.floor(evtEarlyRemaining)}h {Math.floor((evtEarlyRemaining%1)*60)}m</span>
@@ -11861,7 +11877,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {completion && completion.complete ? (
                                 <i data-lucide="check-circle" className={`w-3 h-3 ${encounterPhase === phase.id ? 'text-white' : 'text-emerald-500'}`}></i>
                               ) : completion && completion.done > 0 ? (
-                                <span className={`text-[10px] ${encounterPhase === phase.id ? 'text-blue-200' : 'text-slate-400'}`}>
+                                <span className={`text-[10px] ${encounterPhase === phase.id ? 'text-white/80' : 'text-slate-500'}`}>
                                   {completion.done}/{completion.total}
                                 </span>
                               ) : null}
@@ -12318,7 +12334,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                telestrokeNote.wakeUpStrokeWorkflow.flair.noMarkedHyperintensity &&
                                telestrokeNote.wakeUpStrokeWorkflow.ageEligible &&
                                telestrokeNote.wakeUpStrokeWorkflow.nihssEligible && (
-                                <div className="bg-emerald-100 border border-emerald-300 rounded-lg p-2 text-emerald-800 font-semibold text-sm flex items-center gap-2">
+                                <div role="alert" className="bg-emerald-100 border border-emerald-300 rounded-lg p-2 text-emerald-800 font-semibold text-sm flex items-center gap-2">
                                   <i data-lucide="check-circle" className="w-4 h-4"></i>
                                   <span>Meets WAKE-UP criteria - Consider IV thrombolysis</span>
                                 </div>
@@ -13804,7 +13820,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 hpi += ` presenting with ${telestrokeNote.symptoms || '***'}.\n`;
                                 if (lkwTime) hpi += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
                                 if (telestrokeNote.medications) hpi += `Medications: ${telestrokeNote.medications}\n`;
-                                if (telestrokeNote.lastDOACType) hpi += `Anticoag: ${telestrokeNote.lastDOACType}${telestrokeNote.lastDOACDose ? `, last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()}` : ''}\n`;
+                                if (telestrokeNote.lastDOACType) hpi += `Anticoag: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType}${telestrokeNote.lastDOACDose ? `, last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()}` : ''}\n`;
                                 navigator.clipboard.writeText(hpi).catch(() => {});
                                 setCopiedText('tel-hpi'); setTimeout(() => setCopiedText(''), 2000);
                               }}
@@ -14177,7 +14193,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                             {/* NIHSS Severity Interpretation */}
                             {(telestrokeNote.nihss || nihssScore > 0) && (
-                              <div className={`p-2 rounded-lg text-center text-sm font-medium ${
+                              <div role="status" aria-live="polite" className={`p-2 rounded-lg text-center text-sm font-medium ${
                                 nihssScore === 0 ? 'bg-emerald-100 text-emerald-800' :
                                 nihssScore <= 4 ? 'bg-blue-100 text-blue-800' :
                                 nihssScore <= 15 ? 'bg-amber-100 text-amber-800' :
@@ -15833,7 +15849,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </select>
                                 </div>
                                 <button onClick={() => {
-                                  const consentDoc = `EVT CONSENT DOCUMENTATION:\nMechanical thrombectomy was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${telestrokeNote.nihss || nihssScore || '***'}, vessel occlusion: ${(telestrokeNote.vesselOcclusion || []).join(', ') || '***'}).\nRisks discussed: intracranial hemorrhage (~5-6%), vessel injury, anesthesia complications, and the possibility that the procedure may not be successful.\nBenefits discussed: significantly improved chance of functional independence (NNT 3-4 based on pivotal trials).\nAlternatives discussed: medical management alone (associated with worse outcomes in setting of LVO).\nConsent: ${(telestrokeNote.consentKit || {}).evtConsentType === 'informed-consent' ? 'Informed consent obtained from patient/family' : (telestrokeNote.consentKit || {}).evtConsentType === 'presumed' ? 'Presumed consent — patient unable to provide consent, no surrogate available, treatment in best interest' : (telestrokeNote.consentKit || {}).evtConsentType === 'surrogate' ? 'Consent obtained from surrogate/family member' : (telestrokeNote.consentKit || {}).evtConsentType === 'declined' ? 'Patient/family declined after informed discussion' : '***'}`;
+                                  const consentDoc = `EVT CONSENT DOCUMENTATION:\nMechanical thrombectomy was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${telestrokeNote.nihss || nihssScore || '***'}, vessel occlusion: ${(telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ') || '***'}).\nRisks discussed: intracranial hemorrhage (~5-6%), vessel injury, anesthesia complications, and the possibility that the procedure may not be successful.\nBenefits discussed: significantly improved chance of functional independence (NNT 3-4 based on pivotal trials).\nAlternatives discussed: medical management alone (associated with worse outcomes in setting of LVO).\nConsent: ${(telestrokeNote.consentKit || {}).evtConsentType === 'informed-consent' ? 'Informed consent obtained from patient/family' : (telestrokeNote.consentKit || {}).evtConsentType === 'presumed' ? 'Presumed consent — patient unable to provide consent, no surrogate available, treatment in best interest' : (telestrokeNote.consentKit || {}).evtConsentType === 'surrogate' ? 'Consent obtained from surrogate/family member' : (telestrokeNote.consentKit || {}).evtConsentType === 'declined' ? 'Patient/family declined after informed discussion' : '***'}`;
                                   navigator.clipboard.writeText(consentDoc).catch(() => {});
                                   setCopiedText('evt-consent'); setTimeout(() => setCopiedText(''), 2000);
                                 }}
@@ -20147,7 +20163,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 hpi += ` presenting with ${telestrokeNote.symptoms || '***'}.\n`;
                                 if (lkwTime) hpi += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
                                 if (telestrokeNote.medications) hpi += `Medications: ${telestrokeNote.medications}\n`;
-                                if (telestrokeNote.lastDOACType) hpi += `Anticoag: ${telestrokeNote.lastDOACType}${telestrokeNote.lastDOACDose ? `, last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()}` : ''}\n`;
+                                if (telestrokeNote.lastDOACType) hpi += `Anticoag: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType}${telestrokeNote.lastDOACDose ? `, last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()}` : ''}\n`;
                                 navigator.clipboard.writeText(hpi).catch(() => {});
                                 setCopiedText('vid-hpi'); setTimeout(() => setCopiedText(''), 2000);
                               }}
@@ -20342,7 +20358,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         <div className="text-4xl font-mono font-bold mt-1 tracking-tight">
                                           {elapsedHours}h {elapsedMins.toString().padStart(2, '0')}m {elapsedSecs.toString().padStart(2, '0')}s
                                         </div>
-                                        <p className={`text-xs mt-1 ${getTextColor()} opacity-75`}>
+                                        <p className={`text-xs mt-1 ${getTextColor()} opacity-90`}>
                                           {onsetLabel}: {onsetTimeDisplay}
                                         </p>
                                       </>
@@ -23591,7 +23607,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
                         <div className="text-right">
-                          <span className="text-xl font-bold text-slate-600">Score: {calculateGCS(gcsItems)}</span>
+                          <span className="text-xl font-bold text-slate-600" aria-live="polite">Score: {calculateGCS(gcsItems)}</span>
                           <div className="text-xs text-slate-500">Range: 3-15</div>
                         </div>
                         <button
@@ -24250,23 +24266,23 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                       
                       <div className="bg-white p-3 rounded border">
-                        <h4 className="font-semibold mb-2">Annual Stroke and Thromboembolism Risk</h4>
+                        <h4 className="font-semibold mb-2">Annual Stroke/TE Risk (Friberg et al., JACC 2012)</h4>
                         <div className="grid grid-cols-3 gap-4 text-sm">
                           <div>
-                            <p><strong>Score 0:</strong> 0.8%</p>
-                            <p><strong>Score 1:</strong> 2.0%</p>
-                            <p><strong>Score 2:</strong> 3.7%</p>
+                            <p><strong>Score 0:</strong> 0.2%</p>
+                            <p><strong>Score 1:</strong> 0.6%</p>
+                            <p><strong>Score 2:</strong> 2.2%</p>
                           </div>
                           <div>
-                            <p><strong>Score 3:</strong> 5.9%</p>
-                            <p><strong>Score 4:</strong> 9.3%</p>
-                            <p><strong>Score 5:</strong> 15.3%</p>
+                            <p><strong>Score 3:</strong> 3.2%</p>
+                            <p><strong>Score 4:</strong> 4.8%</p>
+                            <p><strong>Score 5:</strong> 7.2%</p>
                           </div>
                           <div>
-                            <p><strong>Score 6:</strong> 19.7%</p>
-                            <p><strong>Score 7:</strong> 21.5%</p>
-                            <p><strong>Score 8:</strong> 22.4%</p>
-                            <p><strong>Score 9:</strong> 23.6%</p>
+                            <p><strong>Score 6:</strong> 9.7%</p>
+                            <p><strong>Score 7:</strong> 11.2%</p>
+                            <p><strong>Score 8:</strong> 10.8%</p>
+                            <p><strong>Score 9:</strong> 12.2%</p>
                           </div>
                         </div>
                       </div>
@@ -27249,9 +27265,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-6 rounded-lg shadow-lg">
                       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                         <div>
-                          <h1 className="text-3xl font-bold flex items-center gap-3">
+                          <h2 className="text-3xl font-bold flex items-center gap-3">
                             <i data-lucide="flask-conical" className="w-7 h-7"></i> Clinical Trials
-                          </h1>
+                          </h2>
                           <p className="text-blue-100 mt-1">Reference for active clinical trials</p>
                         </div>
 
@@ -27613,9 +27629,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             {showChangelog && (
               <>
                 <div className="fixed inset-0 z-[150] bg-black/40" onClick={() => setShowChangelog(false)} role="presentation" aria-hidden="true"></div>
-                <div className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[28rem] max-h-[70vh] bg-white rounded-2xl shadow-2xl overflow-y-auto">
+                <div role="dialog" aria-modal="true" aria-labelledby="changelog-title" className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[28rem] max-h-[70vh] bg-white rounded-2xl shadow-2xl overflow-y-auto">
                   <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between z-10">
-                    <h2 className="text-base font-bold text-slate-900">What's New</h2>
+                    <h2 id="changelog-title" className="text-base font-bold text-slate-900">What's New</h2>
                     <button onClick={() => setShowChangelog(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close changelog"><i data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
                   </div>
                   <div className="p-4 space-y-4">
@@ -27644,9 +27660,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             {showKeyboardHelp && (
               <>
                 <div className="fixed inset-0 z-[150] bg-black/40" onClick={() => setShowKeyboardHelp(false)} role="presentation" aria-hidden="true"></div>
-                <div className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[24rem] bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <div role="dialog" aria-modal="true" aria-labelledby="keyboard-help-title" className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[24rem] bg-white rounded-2xl shadow-2xl overflow-hidden">
                   <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between">
-                    <h2 className="text-base font-bold text-slate-900">Keyboard Shortcuts</h2>
+                    <h2 id="keyboard-help-title" className="text-base font-bold text-slate-900">Keyboard Shortcuts</h2>
                     <button onClick={() => setShowKeyboardHelp(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close keyboard shortcuts"><i data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
                   </div>
                   <div className="p-4 space-y-3">
