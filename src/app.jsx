@@ -4380,6 +4380,22 @@ Clinician Name`;
                 return (dx.includes('sah') || dx.includes('subarachnoid')) && !data.telestrokeNote?.sahAneurysmSecured;
               }
             },
+            sah_bp_postsecuring: {
+              id: 'sah_bp_postsecuring',
+              category: 'SAH Management',
+              title: 'SAH: BP management (post-aneurysm securing)',
+              recommendation: 'After aneurysm secured: target SBP <140 mmHg baseline. During vasospasm/DCI window (days 4-14), induced hypertension with SBP target 160-200 may be used as rescue for symptomatic DCI.',
+              detail: 'Post-securing targets are less restrictive than pre-securing since rebleed risk is eliminated. During the DCI window, maintain euvolemia with isotonic saline — prophylactic hypervolemia/triple-H therapy is NOT recommended (Class III: No Benefit). Induced hypertension should only be initiated for symptomatic vasospasm/DCI (new focal deficit or declining exam) after aneurysm is secured. Consider endovascular rescue (intra-arterial verapamil/nicardipine, balloon angioplasty) for refractory vasospasm.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Aneurysmal SAH 2023',
+              reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370.',
+              medications: ['Vasopressor augmentation for symptomatic DCI: phenylephrine or norepinephrine drip to SBP 160-200', 'Maintain euvolemia with isotonic saline (avoid hypotonic fluids)'],
+              conditions: (data) => {
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                return (dx.includes('sah') || dx.includes('subarachnoid')) && !!data.telestrokeNote?.sahAneurysmSecured;
+              }
+            },
             sah_nimodipine: {
               id: 'sah_nimodipine',
               category: 'SAH Management',
@@ -5457,7 +5473,7 @@ Clinician Name`;
               category: 'Acute',
               title: 'Status epilepticus management in stroke',
               recommendation: 'SE first-line at 5 min: IV lorazepam 0.1 mg/kg (max 4 mg, repeat x1) or IM midazolam 10 mg if no IV access. Second-line at 20 min: fosphenytoin, LEV, or valproate (all equivalent per ESETT). Third-line at 40 min: anesthetic doses.',
-              detail: 'RAMPART trial: IM midazolam superior to IV lorazepam when no IV access. ESETT trial: LEV, fosphenytoin, and VPA equally effective for benzodiazepine-refractory SE (~45% each). Benzodiazepine underdosing occurs in >2/3 of cases.',
+              detail: 'RAMPART trial: IM midazolam superior to IV lorazepam when no IV access. ESETT trial: LEV, fosphenytoin, and VPA equally effective for benzodiazepine-refractory SE (~45% each). Benzodiazepine underdosing occurs in >2/3 of cases. Refractory SE (>30 min): Intubation + midazolam 0.2 mg/kg bolus then 0.05-2 mg/kg/hr OR propofol 1-2 mg/kg bolus then 20-80 mcg/kg/min. Target burst suppression on EEG x 24-48h, then slowly wean.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AES 2016 (AAN-endorsed); ESETT',
@@ -9467,7 +9483,10 @@ Clinician Name`;
                   '  Levetiracetam 60 mg/kg IV (max 4500 mg) over 15 min',
                   '  OR Fosphenytoin 20 PE/kg IV (max 150 PE/min) — avoid in ICH if possible (hypotension risk)',
                   '  OR Valproate 40 mg/kg IV (max 4500 mg) over 10 min — avoid if liver disease/pregnancy',
-                  'REFRACTORY STATUS (>30 min): Intubation + continuous IV midazolam (0.2 mg/kg bolus, 0.05-2 mg/kg/hr) or propofol',
+                  'REFRACTORY STATUS (>30 min): Intubation required',
+                  '  Midazolam: 0.2 mg/kg IV bolus, then 0.05-2 mg/kg/hr infusion (titrate to seizure suppression on EEG)',
+                  '  OR Propofol: 1-2 mg/kg IV bolus, then 20-80 mcg/kg/min infusion (titrate to burst suppression on EEG)',
+                  '  Target: burst suppression x 24-48h, then slowly wean over 24h with continuous EEG',
                   'Continuous EEG monitoring if: impaired consciousness, recurrent seizures, or post-status',
                   'Check glucose, electrolytes, AED levels. Treat fever aggressively.',
                   `${isICH ? 'ICH: Seizures may indicate hematoma expansion — STAT repeat CT' : isSAH ? 'SAH: Seizures may indicate rebleed — STAT repeat CT' : ''}`
@@ -23572,6 +23591,27 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <p><strong>11 (Extinction):</strong> Must test BILATERAL SIMULTANEOUS visual AND tactile stimulation, not just unilateral.</p>
                             <p><strong>Posterior circulation bias:</strong> Scale heavily weighted toward anterior/left MCA. Devastating posterior strokes (diplopia, vertigo, ataxia, dysphagia) may score 0-3. NIHSS 0 does NOT exclude stroke.</p>
                             <p><strong>General rule:</strong> Score WORST performance during exam, not best. Do not coach the patient.</p>
+                          </div>
+                        </details>
+                        <details className="mt-3 bg-blue-50 border border-blue-200 rounded-lg">
+                          <summary className="cursor-pointer p-2 text-xs font-semibold text-blue-800 hover:bg-blue-100 rounded-lg">NIHSS Exam Technique Guide (for telestroke coaching)</summary>
+                          <div className="p-2 text-xs text-slate-700 space-y-2">
+                            <p className="text-blue-700 font-semibold mb-1">Use this to coach spoke ED staff through each NIHSS item over video/phone.</p>
+                            <div className="space-y-1.5">
+                              <p><strong>1a. LOC:</strong> Observe alertness. If not alert, apply escalating stimuli: voice → loud voice → nail-bed pressure. Score response to each level. Do not attribute decreased LOC to sedation or intubation.</p>
+                              <p><strong>1b. LOC Questions:</strong> Ask: &quot;What month is it?&quot; and &quot;What is your age?&quot; Patient must answer both correctly (no partial credit). Intubated/dysarthric patients who approximate answers score 1. Do NOT accept pointing or gestures.</p>
+                              <p><strong>1c. LOC Commands:</strong> &quot;Open and close your eyes&quot; then &quot;Grip and release your non-paretic hand.&quot; If patient cannot use hands, substitute another one-step command. Score only first attempt. Demonstrate if there is a language barrier.</p>
+                              <p><strong>2. Best Gaze:</strong> Test horizontal eye movements only. Ask patient to look left and right, or track your finger. If patient cannot follow commands, use oculocephalic reflex (doll&apos;s eyes). Score only conjugate horizontal gaze deviation or gaze palsy.</p>
+                              <p><strong>3. Visual Fields:</strong> Test by finger counting or visual stimulus in all four quadrants. Patient fixates on your nose. Present 1-3 fingers in upper and lower temporal and nasal fields of each eye separately, or simultaneously if bilateral assessment needed. Do NOT use visual threat (finger poke) — it tests a different pathway. If one eye blind, test the other.</p>
+                              <p><strong>4. Facial Palsy:</strong> Ask patient to show teeth (or smile) AND raise eyebrows. Compare both sides. If patient cannot follow commands: observe symmetry of grimace to nail-bed pressure. Central palsy = lower face only; peripheral = upper and lower face.</p>
+                              <p><strong>5a/5b. Motor Arms:</strong> Position: arms extended 90° if sitting, 45° if supine, palms DOWN. Count aloud to 10. Score each arm separately. &quot;Drift&quot; = any downward movement before 10 seconds. If limb cannot be positioned against gravity due to pain/contracture, score best effort. Amputation/fusion = 0.</p>
+                              <p><strong>6a/6b. Motor Legs:</strong> Position: supine, each leg raised to 30° from bed. Count aloud to 5. Score each leg separately. &quot;Drift&quot; = leg falls to bed before 5 seconds. Test one leg at a time.</p>
+                              <p><strong>7. Limb Ataxia:</strong> Finger-nose-finger test (arms) and heel-shin test (legs). Patient must reach YOUR finger, not their own nose repeatedly. Test must be meaningful — do NOT test if limb is plegic (score 0) or if weakness obscures assessment. Ataxia must be OUT OF PROPORTION to weakness. Eyes open during testing.</p>
+                              <p><strong>8. Sensory:</strong> Use pinprick (broken tongue depressor or pin). Test face, arm, trunk, and leg bilaterally. Ask &quot;Does this feel sharp? Does it feel the same on both sides?&quot; If patient cannot report, score grimace asymmetry to noxious stimulus. Only stroke-related loss counts — pre-existing neuropathy = 0.</p>
+                              <p><strong>9. Best Language:</strong> Three required components: (1) Show cookie theft picture — patient describes the scene; (2) Naming card — patient names objects (feather, hammock, cactus); (3) Reading card — patient reads sentences aloud. Comprehension alone is NOT sufficient. If no cards available: ask patient to describe what happened, name objects in the room, read text on a clipboard. Mute/intubated who cannot write = score 3.</p>
+                              <p><strong>10. Dysarthria:</strong> Ask patient to read or repeat: &quot;You know how.&quot; &quot;Down to earth.&quot; &quot;I got home from work.&quot; &quot;Near the table in the dining room.&quot; &quot;They heard him speak on the radio last night.&quot; Score clarity. Intubated/mechanical barrier = UN. If patient has severe aphasia, score dysarthria from spontaneous speech.</p>
+                              <p><strong>11. Extinction/Inattention:</strong> Two simultaneous tests required: (1) VISUAL: Stand in front of patient, raise one finger on each side in peripheral fields simultaneously — ask &quot;Which side did you see?&quot; (2) TACTILE: With patient&apos;s eyes closed, touch both hands simultaneously — ask &quot;Where did I touch you?&quot; Both must be tested. Score only if one-sided extinction (perceives single stimuli but ignores one side during bilateral stimulation).</p>
+                            </div>
                           </div>
                         </details>
                       </div>
