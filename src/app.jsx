@@ -9052,8 +9052,12 @@ Clinician Name`;
               }
 
               if (window === '6-24') {
+                // Use encounter NIHSS for late-window check (DAWN requires ≥10, DEFUSE-3 requires ≥6)
+                const lateNihss = !isNaN(nihss) && nihss > 0 ? nihss : parseInt(telestrokeNote.nihss || nihssScore) || 0;
                 if (aspects === '6-10' && mrs === '0-1') {
-                  return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 6-10, mRS 0-1, NIHSS ≥6 (DAWN/DEFUSE-3)'] };
+                  if (lateNihss >= 6) return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: [`ASPECTS 6-10, mRS 0-1, NIHSS ${lateNihss} ≥6 (DAWN/DEFUSE-3)`] };
+                  if (lateNihss > 0 && lateNihss < 6) return { classOfRec: 'IIb', label: 'EVT may be considered (low NIHSS)', color: 'amber', rationale: [`Late window, ASPECTS 6-10, mRS 0-1, but NIHSS ${lateNihss} <6 — outside DAWN/DEFUSE-3 enrollment criteria`] };
+                  return { classOfRec: 'IDD', label: 'Enter NIHSS', color: 'amber', rationale: ['ASPECTS 6-10, mRS 0-1 — NIHSS ≥6 required for late-window Class I (DAWN/DEFUSE-3)'] };
                 }
                 if (aspects === '3-5' && mrs === '0-1') {
                   return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1 — consider CTP: core ≤100cc + mismatch present (local protocol)'] };
@@ -12576,21 +12580,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="flex items-center gap-2 cursor-pointer">
                                   <input
                                     type="checkbox"
-                                    checked={telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.timeWindow4_5to9h}
-                                    onChange={(e) => setTelestrokeNote({
-                                      ...telestrokeNote,
-                                      wakeUpStrokeWorkflow: {
-                                        ...telestrokeNote.wakeUpStrokeWorkflow,
-                                        extendCriteria: {...telestrokeNote.wakeUpStrokeWorkflow.extendCriteria, timeWindow4_5to9h: e.target.checked}
-                                      }
-                                    })}
-                                    className="w-4 h-4 rounded border-orange-400 text-orange-600"
-                                  />
-                                  <span>Time window 4.5-9 hours from LKW</span>
-                                </label>
-                                <label className="flex items-center gap-2 cursor-pointer">
-                                  <input
-                                    type="checkbox"
                                     checked={telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.premorbidMRSLt2}
                                     onChange={(e) => setTelestrokeNote({
                                       ...telestrokeNote,
@@ -13488,7 +13477,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               >
                                 <option value="">-- Not assessed --</option>
                                 <option value="good">Good (≥50% filling)</option>
-                                <option value="moderate">Moderate</option>
+                                <option value="moderate">Moderate (partial/delayed filling)</option>
                                 <option value="poor">Poor/Absent</option>
                               </select>
                             </div>
@@ -13545,7 +13534,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               if (!isNaN(core)) {
                                 const dawnA = age >= 80 && nihss >= 10 && core < 21;
                                 const dawnB = age < 80 && nihss >= 10 && core < 31;
-                                const dawnC = age < 80 && nihss >= 20 && core < 51;
+                                const dawnC = age < 80 && nihss >= 20 && core >= 31 && core < 51;
                                 const dawnEligible = dawnA || dawnB || dawnC;
                                 badges.push({ label: 'DAWN', eligible: dawnEligible,
                                   detail: dawnEligible
@@ -13555,11 +13544,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }
                               // DEFUSE-3 criteria (6-16h)
                               if (!isNaN(core)) {
-                                const defuseEligible = core < 70 && !isNaN(mismatchRatio) && mismatchRatio >= 1.8 && !isNaN(mismatchVol) && mismatchVol >= 15;
+                                const defuseEligible = core < 70 && !isNaN(mismatchRatio) && mismatchRatio >= 1.8 && !isNaN(mismatchVol) && mismatchVol >= 15 && !isNaN(penumbra) && penumbra <= 180;
                                 const reasons = [];
                                 if (core >= 70) reasons.push(`core ${core}≥70`);
                                 if (!isNaN(mismatchRatio) && mismatchRatio < 1.8) reasons.push(`ratio ${mismatchRatio.toFixed(1)}<1.8`);
                                 if (!isNaN(mismatchVol) && mismatchVol < 15) reasons.push(`mismatch vol ${mismatchVol.toFixed(0)}<15`);
+                                if (!isNaN(penumbra) && penumbra > 180) reasons.push(`penumbra ${penumbra}>180 (malignant profile)`);
                                 badges.push({ label: 'DEFUSE-3', eligible: defuseEligible,
                                   detail: defuseEligible
                                     ? `Core ${core}mL, ratio ${mismatchRatio.toFixed(1)}, mismatch ${mismatchVol.toFixed(0)}mL — eligible`
@@ -13568,7 +13558,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }
                               // EXTEND criteria (4.5-9h, wake-up stroke)
                               if (!isNaN(core)) {
-                                const extendEligible = core <= 70 && !isNaN(mismatchRatio) && mismatchRatio >= 1.2;
+                                const extendEligible = core <= 70 && !isNaN(mismatchRatio) && mismatchRatio >= 1.2 && !isNaN(mismatchVol) && mismatchVol >= 10;
                                 badges.push({ label: 'EXTEND', eligible: extendEligible,
                                   detail: extendEligible
                                     ? `Core ${core}mL, ratio ${!isNaN(mismatchRatio) ? mismatchRatio.toFixed(1) : '?'} — eligible for extended thrombolysis`
@@ -13750,7 +13740,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               if (nihss >= 10) sedanAuto += 1;
                               if (telestrokeNote.earlyInfarctSigns) sedanAuto += 1;
                               if (telestrokeNote.denseArterySign) sedanAuto += 1;
-                              const sedanRisk = sedanAuto <= 1 ? '~2%' : sedanAuto <= 3 ? '~5-8%' : '~12%+';
+                              const sedanRisk = sedanAuto === 0 ? '~1%' : sedanAuto === 1 ? '~3%' : sedanAuto === 2 ? '~5%' : sedanAuto === 3 ? '~9%' : sedanAuto === 4 ? '~16%' : '~28%+';
                               const span100 = age + nihss;
                               const span100Pos = span100 >= 100;
                               const riskLevel = sedanAuto >= 4 || span100Pos ? 'high' : sedanAuto >= 2 ? 'moderate' : 'low';
@@ -17327,14 +17317,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   {(() => {
                                     const rope = calculateROPEScore(ropeItems);
                                     if (rope === 0) return null;
-                                    const suggested = rope >= 7 ? 'probable' : rope >= 4 ? 'possible' : 'unlikely';
                                     const current = (telestrokeNote.cardiacWorkup || {}).pascalClassification;
                                     if (current) return null;
+                                    // Simplified PASCAL estimate — RoPE only (PFO anatomy not yet assessed)
+                                    // Full PASCAL requires shunt grade + ASA: RoPE≥7 + high-risk PFO = definite
+                                    const suggested = rope >= 7 ? 'probable' : rope >= 4 ? 'possible' : 'possible';
                                     return (
-                                      <button type="button" onClick={() => setTelestrokeNote({...telestrokeNote, cardiacWorkup: {...(telestrokeNote.cardiacWorkup || {}), pascalClassification: suggested}})}
-                                        className="mt-1 text-xs text-pink-600 hover:text-pink-800 underline">
-                                        Auto-suggest based on RoPE {rope}: {suggested} (click to apply)
-                                      </button>
+                                      <div className="mt-1 p-1.5 bg-pink-50 border border-pink-200 rounded text-xs text-pink-700">
+                                        <p className="font-medium">RoPE {rope} preliminary estimate: {suggested}</p>
+                                        <p className="text-pink-500 mt-0.5">Note: Full PASCAL requires PFO anatomy (shunt size, ASA). High-risk PFO + RoPE ≥7 = definite. Adjust after TEE.</p>
+                                        <button type="button" onClick={() => setTelestrokeNote({...telestrokeNote, cardiacWorkup: {...(telestrokeNote.cardiacWorkup || {}), pascalClassification: suggested}})}
+                                          className="mt-1 text-pink-600 hover:text-pink-800 underline font-medium">
+                                          Apply "{suggested}" as starting point
+                                        </button>
+                                      </div>
                                     );
                                   })()}
                                   <p className="text-xs text-slate-500 mt-1">PASCAL integrates: PFO anatomy (shunt size, ASA), age, clot/DVT source, Alternative etiologies, Lacunar vs cortical pattern. Closure recommended for definite/probable in patients age 18-60.</p>
@@ -24998,25 +24994,30 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* PASCAL Classification */}
                     <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-indigo-800 mb-3">PASCAL Classification</h3>
-                      
+                      <h3 className="text-lg font-semibold text-indigo-800 mb-3">PASCAL Classification (Kent et al., JAHA 2020)</h3>
+
                       <div className="space-y-4">
-                        <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold text-emerald-700 mb-2">Probable PFO-related stroke:</h4>
-                          <p className="text-sm">RoPE ≥7 + high-grade shunt / ASA</p>
+                        <div className="bg-white p-3 rounded border border-emerald-300">
+                          <h4 className="font-semibold text-emerald-700 mb-2">Definite PFO-related stroke (closure strongly recommended):</h4>
+                          <p className="text-sm">RoPE ≥7 + high-risk PFO (large shunt or atrial septal aneurysm)</p>
                         </div>
-                        
+
                         <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold text-amber-700 mb-2">Possible PFO-related stroke:</h4>
+                          <h4 className="font-semibold text-emerald-600 mb-2">Probable PFO-related stroke (closure reasonable):</h4>
                           <ul className="text-sm space-y-1">
-                            <li>• RoPE &lt;7 + high-grade shunt / ASA</li>
-                            <li>• RoPE ≥7 but no high-grade shunt / ASA</li>
+                            <li>• RoPE ≥7 + low-risk PFO (small shunt, no ASA)</li>
+                            <li>• RoPE &lt;7 + high-risk PFO (large shunt or ASA)</li>
                           </ul>
                         </div>
-                        
+
                         <div className="bg-white p-3 rounded border">
-                          <h4 className="font-semibold text-red-700 mb-2">Unlikely PFO-related stroke:</h4>
-                          <p className="text-sm">RoPE &lt;7, no high-grade shunt / ASA</p>
+                          <h4 className="font-semibold text-amber-700 mb-2">Possible PFO-related stroke (closure uncertain benefit):</h4>
+                          <p className="text-sm">RoPE &lt;7 + low-risk PFO, no clear alternative stroke etiology</p>
+                        </div>
+
+                        <div className="bg-white p-3 rounded border">
+                          <h4 className="font-semibold text-red-700 mb-2">Unlikely PFO-related stroke (closure not recommended):</h4>
+                          <p className="text-sm">Clear alternative stroke etiology identified (AF, LAA, etc.), regardless of PFO features</p>
                         </div>
                       </div>
                       </div>
@@ -25702,7 +25703,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             else items.push('Age ≤75 (0)');
                             if (nihss >= 10) { sedanScore += 1; items.push('NIHSS ≥10 (+1)'); }
                             else items.push('NIHSS <10 (0)');
-                            const risk = sedanScore <= 1 ? '~2%' : sedanScore <= 3 ? '~5-8%' : '~12%+';
+                            const risk = sedanScore === 0 ? '~1%' : sedanScore === 1 ? '~3%' : sedanScore === 2 ? '~5%' : sedanScore === 3 ? '~9%' : sedanScore === 4 ? '~16%' : '~28%+';
                             return (
                               <div>
                                 <div className="space-y-1 mb-2">
