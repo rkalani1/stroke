@@ -1493,6 +1493,7 @@ Clinician Name`;
               mriOrdered: false
             },
             dischargeChecklistReviewed: false,
+            dischargeNIHSS: '',
             // Inline calculator state
             ichVolumeCalc: { lengthCm: '', widthCm: '', slicesCm: '' },
             andexanetCalc: { doacType: '', lastDoseHours: '' },
@@ -7573,7 +7574,7 @@ Clinician Name`;
               'spasticity', 'centralPain', 'fatigue', 'substanceScreening', 'hormonalRisk',
               'palliativeCare', 'fallsRisk', 'pregnancyStroke', 'activeCancer', 'sickleCellDisease', 'infectiveEndocarditis', 'decompressiveCraniectomy', 'rehabReferral',
               // Discharge
-              'dischargeChecklist', 'dischargeChecklistReviewed', 'mrsAssessment',
+              'dischargeChecklist', 'dischargeChecklistReviewed', 'dischargeNIHSS', 'mrsAssessment',
               // Imaging and exam results
               'ctResults', 'ctaResults', 'ctpResults', 'ekgResults', 'nihssDetails',
               'briefHistory', 'workingDiagnosis',
@@ -8267,7 +8268,7 @@ Clinician Name`;
               }
               note += '\n';
               const dischMRS = (telestrokeNote.mrsAssessment || {}).discharge;
-              note += `DISCHARGE NIHSS: ${nihssScore || '___'}\n`;
+              note += `DISCHARGE NIHSS: ${telestrokeNote.dischargeNIHSS || nihssScore || '___'}${!telestrokeNote.dischargeNIHSS && nihssScore ? ' (admission — update before finalizing)' : ''}\n`;
               note += `DISCHARGE mRS: ${dischMRS || '___'}\n\n`;
               note += `DISPOSITION: ${telestrokeNote.disposition || '___'}\n\n`;
               // Key results for discharge
@@ -9206,10 +9207,11 @@ Clinician Name`;
               });
             }
 
-            // Anticoagulant Reversal
-            const onWarfarin = meds.includes('warfarin') || meds.includes('coumadin');
-            const onDabigatran = meds.includes('dabigatran') || meds.includes('pradaxa');
-            const onXaI = meds.includes('apixaban') || meds.includes('eliquis') || meds.includes('rivaroxaban') || meds.includes('xarelto');
+            // Anticoagulant Reversal — check structured dropdown first, then free-text
+            const acType = n.lastDOACType || '';
+            const onWarfarin = acType === 'warfarin' || meds.includes('warfarin') || meds.includes('coumadin');
+            const onDabigatran = acType === 'dabigatran' || meds.includes('dabigatran') || meds.includes('pradaxa');
+            const onXaI = ['apixaban', 'rivaroxaban', 'edoxaban'].includes(acType) || meds.includes('apixaban') || meds.includes('eliquis') || meds.includes('rivaroxaban') || meds.includes('xarelto');
             const onHeparin = meds.includes('heparin') && !meds.includes('enoxaparin') && !meds.includes('lovenox') && !meds.includes('dalteparin');
             const onLMWH = meds.includes('enoxaparin') || meds.includes('lovenox') || meds.includes('dalteparin') || meds.includes('tinzaparin');
             if (isICH && (onWarfarin || onDabigatran || onXaI || onHeparin || onLMWH)) {
@@ -10419,11 +10421,33 @@ Clinician Name`;
             }
           }, [aspectsScore]);
 
-          // Update current time every minute
+          // Update current time every 15 seconds (responsive during pre-LKW triage)
           useEffect(() => {
-            const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+            const timer = setInterval(() => setCurrentTime(new Date()), 15000);
             return () => clearInterval(timer);
           }, []);
+
+          // Flush pending saves on page unload/hide to prevent data loss
+          useEffect(() => {
+            const flushSave = () => {
+              try {
+                const data = sanitizeTelestrokeNoteForStorage(telestrokeNote);
+                setKey('telestrokeNote', data);
+              } catch (e) { /* best-effort */ }
+            };
+            const handleBeforeUnload = (e) => {
+              flushSave();
+            };
+            const handleVisibilityChange = () => {
+              if (document.visibilityState === 'hidden') flushSave();
+            };
+            window.addEventListener('beforeunload', handleBeforeUnload);
+            document.addEventListener('visibilitychange', handleVisibilityChange);
+            return () => {
+              window.removeEventListener('beforeunload', handleBeforeUnload);
+              document.removeEventListener('visibilitychange', handleVisibilityChange);
+            };
+          }, [telestrokeNote]);
 
           // ============================================================
           // THROMBOLYSIS WINDOW TIMER & AUDIBLE ALERTS
@@ -15941,13 +15965,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="bg-white p-3 rounded-lg border border-purple-200">
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">ED Arrival (Door)</label>
-                                      <button
-                                        type="button"
-                                        onClick={() => setTelestrokeNote({...telestrokeNote, dtnEdArrival: new Date().toISOString().slice(0, 16)})}
-                                        className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
-                                      >
-                                        Now
-                                      </button>
+                                      <div className="flex items-center gap-1">
+                                        {telestrokeNote.dtnEdArrival && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnEdArrival); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnEdArrival: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">-1m</button>}
+                                        <button
+                                          type="button"
+                                          onClick={() => setTelestrokeNote({...telestrokeNote, dtnEdArrival: new Date().toISOString().slice(0, 16)})}
+                                          className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                        >
+                                          Now
+                                        </button>
+                                        {telestrokeNote.dtnEdArrival && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnEdArrival); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnEdArrival: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">+1m</button>}
+                                      </div>
                                     </div>
                                     <input
                                       type="datetime-local"
@@ -15961,13 +15989,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="bg-white p-3 rounded-lg border border-purple-200">
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">Stroke Alert Called</label>
-                                      <button
-                                        type="button"
-                                        onClick={() => setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: new Date().toISOString().slice(0, 16)})}
-                                        className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
-                                      >
-                                        Now
-                                      </button>
+                                      <div className="flex items-center gap-1">
+                                        {telestrokeNote.dtnStrokeAlert && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnStrokeAlert); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">-1m</button>}
+                                        <button
+                                          type="button"
+                                          onClick={() => setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: new Date().toISOString().slice(0, 16)})}
+                                          className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                        >
+                                          Now
+                                        </button>
+                                        {telestrokeNote.dtnStrokeAlert && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnStrokeAlert); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">+1m</button>}
+                                      </div>
                                     </div>
                                     <input
                                       type="datetime-local"
@@ -15981,13 +16013,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="bg-white p-3 rounded-lg border border-purple-200">
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">CT Scan Started</label>
-                                      <button
-                                        type="button"
-                                        onClick={() => setTelestrokeNote({...telestrokeNote, dtnCtStarted: new Date().toISOString().slice(0, 16)})}
-                                        className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
-                                      >
-                                        Now
-                                      </button>
+                                      <div className="flex items-center gap-1">
+                                        {telestrokeNote.dtnCtStarted && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtStarted); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnCtStarted: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">-1m</button>}
+                                        <button
+                                          type="button"
+                                          onClick={() => setTelestrokeNote({...telestrokeNote, dtnCtStarted: new Date().toISOString().slice(0, 16)})}
+                                          className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                        >
+                                          Now
+                                        </button>
+                                        {telestrokeNote.dtnCtStarted && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtStarted); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnCtStarted: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">+1m</button>}
+                                      </div>
                                     </div>
                                     <input
                                       type="datetime-local"
@@ -16001,13 +16037,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="bg-white p-3 rounded-lg border border-purple-200">
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">CT Read/Cleared for TNK</label>
-                                      <button
-                                        type="button"
-                                        onClick={() => setTelestrokeNote({...telestrokeNote, dtnCtRead: new Date().toISOString().slice(0, 16)})}
-                                        className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
-                                      >
-                                        Now
-                                      </button>
+                                      <div className="flex items-center gap-1">
+                                        {telestrokeNote.dtnCtRead && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtRead); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnCtRead: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">-1m</button>}
+                                        <button
+                                          type="button"
+                                          onClick={() => setTelestrokeNote({...telestrokeNote, dtnCtRead: new Date().toISOString().slice(0, 16)})}
+                                          className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                        >
+                                          Now
+                                        </button>
+                                        {telestrokeNote.dtnCtRead && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtRead); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnCtRead: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">+1m</button>}
+                                      </div>
                                     </div>
                                     <input
                                       type="datetime-local"
@@ -16021,13 +16061,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="bg-white p-3 rounded-lg border border-purple-200">
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">TNK Ordered</label>
-                                      <button
-                                        type="button"
-                                        onClick={() => setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: new Date().toISOString().slice(0, 16)})}
-                                        className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
-                                      >
-                                        Now
-                                      </button>
+                                      <div className="flex items-center gap-1">
+                                        {telestrokeNote.dtnTnkOrdered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkOrdered); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">-1m</button>}
+                                        <button
+                                          type="button"
+                                          onClick={() => setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: new Date().toISOString().slice(0, 16)})}
+                                          className="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition-colors"
+                                        >
+                                          Now
+                                        </button>
+                                        {telestrokeNote.dtnTnkOrdered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkOrdered); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">+1m</button>}
+                                      </div>
                                     </div>
                                     <input
                                       type="datetime-local"
@@ -16041,13 +16085,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="bg-white p-3 rounded-lg border-2 border-emerald-400">
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-bold text-emerald-700">TNK Administered (Needle)</label>
-                                      <button
-                                        type="button"
-                                        onClick={() => setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: new Date().toISOString().slice(0, 16)})}
-                                        className="px-2 py-1 bg-emerald-600 text-white text-xs rounded hover:bg-emerald-700 transition-colors"
-                                      >
-                                        Now
-                                      </button>
+                                      <div className="flex items-center gap-1">
+                                        {telestrokeNote.dtnTnkAdministered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkAdministered); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">-1m</button>}
+                                        <button
+                                          type="button"
+                                          onClick={() => setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: new Date().toISOString().slice(0, 16)})}
+                                          className="px-2 py-1 bg-emerald-600 text-white text-xs rounded hover:bg-emerald-700 transition-colors"
+                                        >
+                                          Now
+                                        </button>
+                                        {telestrokeNote.dtnTnkAdministered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkAdministered); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: d.toISOString().slice(0, 16)}); }} className="px-1.5 py-0.5 bg-slate-200 text-slate-700 text-xs rounded hover:bg-slate-300">+1m</button>}
+                                      </div>
                                     </div>
                                     <input
                                       type="datetime-local"
@@ -19253,6 +19301,18 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   {telestrokeNote.dischargeChecklistReviewed ? 'Reviewed' : 'Mark Reviewed'}
                                 </button>
                               </div>
+                            </div>
+
+                            <div className="flex items-center gap-3 mb-3 p-2 bg-emerald-50 rounded-lg">
+                              <label className="text-sm font-medium text-emerald-800 whitespace-nowrap">Discharge NIHSS:</label>
+                              <input type="number" min="0" max="42"
+                                value={telestrokeNote.dischargeNIHSS}
+                                onChange={(e) => setTelestrokeNote({...telestrokeNote, dischargeNIHSS: e.target.value})}
+                                placeholder={nihssScore ? `${nihssScore} (admission)` : '___'}
+                                className="w-20 px-2 py-1 border rounded text-sm text-center" />
+                              {!telestrokeNote.dischargeNIHSS && nihssScore > 0 && (
+                                <span className="text-xs text-amber-600">Defaults to admission NIHSS — update before finalizing</span>
+                              )}
                             </div>
 
                             <div className="space-y-3">
