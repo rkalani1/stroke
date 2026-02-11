@@ -1053,7 +1053,10 @@ Clinician Name`;
               recentHeparin: false,
               lowGlucose: false,
               highGlucose: false,
-              recentDOAC: false
+              recentDOAC: false,
+              unrupturedAneurysm10mm: false,
+              cerebralMicrobleeds: false,
+              lecanemab: false
             },
             tnkContraindicationReviewed: false,
             tnkContraindicationReviewTime: '',
@@ -3404,8 +3407,8 @@ Clinician Name`;
               id: 'bp_ich_acute',
               category: 'Blood Pressure',
               title: 'ICH acute BP target',
-              recommendation: 'For mild to moderate ICH with SBP 150-220, target SBP 140 mmHg and maintain 130-150 mmHg.',
-              detail: 'Careful titration with smooth, sustained control is recommended. Avoid SBP <130 (Class III: Harm). Nicardipine infusion preferred. Maintain target for at least 24 hours.',
+              recommendation: 'For ICH, target SBP <160 mmHg per institutional protocol (UW Medicine). AHA/ASA 2022 suggests targeting SBP 140 may be reasonable (Class IIb). Avoid SBP <130.',
+              detail: 'Institutional protocol: SBP <160, DBP <105. AHA/ASA 2022 ICH guideline: for mild-moderate ICH with presenting SBP 150-220, targeting SBP 140 mmHg is safe and may be effective (Class IIb, LOE B-R). Avoid SBP <130 (Class III: Harm). Nicardipine infusion preferred. Maintain target for at least 24 hours.',
               classOfRec: 'IIb',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -3497,8 +3500,8 @@ Clinician Name`;
               id: 'evt_standard',
               category: 'EVT',
               title: 'EVT for LVO within 6 hours',
-              recommendation: 'EVT recommended for anterior LVO (ICA, M1) within 6 hours of onset with NIHSS >= 6 and ASPECTS >= 6.',
-              detail: 'Do not delay transfer for TNK response. Administer TNK at spoke and transfer immediately for EVT evaluation.',
+              recommendation: 'EVT recommended for anterior LVO (ICA, M1) within 6 hours of onset with NIHSS ≥6. ASPECTS 3-10: generally eligible per institutional protocol.',
+              detail: 'Institutional protocol (UW Medicine): Early window (0-6h) — ASPECTS 3-10 generally eligible for EVT. ASPECTS 0-2: consider in very select cases; consider CTP to evaluate if estimated core volume ≤70-100cc. Do not delay transfer for TNK response. Administer TNK at spoke and transfer immediately for EVT evaluation.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -3516,8 +3519,8 @@ Clinician Name`;
               id: 'evt_late_window',
               category: 'EVT',
               title: 'EVT late window (6-24h)',
-              recommendation: 'EVT recommended 6-24 hours from onset for anterior LVO with favorable perfusion imaging or good collaterals (NIHSS >= 6).',
-              detail: 'Based on DAWN/DEFUSE-3 criteria. Requires CT perfusion or MRI DWI/perfusion showing target mismatch. Age >= 80 requires NIHSS >= 10. Good collateral status on CTA may independently predict benefit in late window.',
+              recommendation: 'EVT recommended 6-24 hours from onset for anterior LVO with NIHSS ≥6 and ASPECTS 6-10. Requires favorable perfusion imaging or good collaterals.',
+              detail: 'Institutional protocol (UW Medicine): Late window (6-24h) — ASPECTS 6-10 generally eligible. ASPECTS 3-5: generally eligible; consider CTP to evaluate if estimated core volume ≤100cc + mismatch present. ASPECTS 0-2: EVT benefit is unclear. Based on DAWN/DEFUSE-3 criteria. Age ≥80 requires NIHSS ≥10. Good collateral status on CTA may independently predict benefit when CTP unavailable.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -3536,8 +3539,8 @@ Clinician Name`;
               id: 'evt_large_core_early',
               category: 'EVT',
               title: 'EVT for large core (ASPECTS 0-5, 0-6h)',
-              recommendation: 'EVT is recommended for anterior circulation LVO within 0-6 hours when ASPECTS is 0-5.',
-              detail: 'SVIN 2025 large-core guidance supports EVT across the ASPECTS 0-5 range in the early window based on LASTE, SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, and TESLA.',
+              recommendation: 'EVT is recommended for anterior LVO within 0-6 hours when ASPECTS is 3-5 (generally eligible). ASPECTS 0-2: consider in very select cases with CTP core ≤70-100cc.',
+              detail: 'Institutional protocol: ASPECTS 3-10 generally eligible in early window. ASPECTS 0-2: consider CTP to evaluate if estimated core volume ≤70-100cc. SVIN 2025 large-core guidance supports EVT across ASPECTS 0-5 in the early window based on LASTE, SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, and TESLA. Higher sICH risk with lower ASPECTS; discuss goals of care.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'SVIN Large-Core EVT 2025',
@@ -3599,18 +3602,19 @@ Clinician Name`;
               id: 'evt_basilar',
               category: 'EVT',
               title: 'EVT for basilar artery occlusion',
-              recommendation: 'EVT is recommended for basilar artery occlusion within 24 hours of symptom onset.',
-              detail: 'Based on ATTENTION and BAOCHE trials (2023). Benefit demonstrated up to 24 hours. Consider in posterior circulation strokes with significant deficit.',
+              recommendation: 'EVT is recommended for basilar artery occlusion within 24 hours of onset when NIHSS ≥10 and pc-ASPECTS ≥6.',
+              detail: 'Institutional protocol (UW Medicine): Basilar EVT — LKW ≤24h, NIHSS ≥10, pc-ASPECTS ≥6. Based on ATTENTION and BAOCHE trials (2023). Benefit demonstrated up to 24 hours with significant deficit.',
               classOfRec: 'I',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
+                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
                 const hasBasilar = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
                   /basilar/i.test(v)
                 );
-                return hasBasilar && timeFrom && timeFrom.total <= 24;
+                return hasBasilar && timeFrom && timeFrom.total <= 24 && nihss >= 10;
               }
             },
 
@@ -3861,8 +3865,8 @@ Clinician Name`;
               id: 'ich_vte_heparin',
               category: 'Supportive Care',
               title: 'ICH: pharmacologic VTE prophylaxis timing',
-              recommendation: 'Low-dose UFH or LMWH at 24-48 hours from ICH onset may be reasonable once hematoma is stable.',
-              detail: 'Balance thrombosis prevention against hematoma expansion risk; obtain a stability CT when feasible.',
+              recommendation: 'SQ heparin 48 hours after IPH onset per institutional protocol, once hematoma is stable on repeat imaging. SCDs/IPC in the interim.',
+              detail: 'Institutional protocol (UW Medicine): SQ heparin at 48h after ICH onset. Use SCDs/IPC immediately on admission until pharmacologic prophylaxis initiated. AHA/ASA 2022: Low-dose UFH or LMWH at 24-48h may be reasonable (Class IIb). Balance thrombosis prevention against hematoma expansion risk; obtain a stability CT before starting.',
               classOfRec: 'IIb',
               levelOfEvidence: 'C-LD',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -4111,8 +4115,8 @@ Clinician Name`;
               id: 'vte_prophylaxis',
               category: 'Supportive Care',
               title: 'VTE prophylaxis',
-              recommendation: 'Intermittent pneumatic compression (IPC) on admission. Add pharmacologic prophylaxis (LMWH or UFH) after 24-48 hours in immobile patients.',
-              detail: 'For ischemic stroke post-TNK: delay pharmacologic VTE prophylaxis 24 hours. For ICH: IPC immediately; consider pharmacologic prophylaxis after 24-48h if hematoma stable.',
+              recommendation: 'IPC/SCDs on admission. Post-lytic: SQ heparin at 24h (after stable follow-up imaging). Post-ICH: SQ heparin at 48h (after stable repeat imaging). SCDs in the interim.',
+              detail: 'Institutional protocol (UW Medicine): Post-thrombolysis — SQ heparin 24h after lytic administration, after follow-up CT shows no hemorrhage. Post-ICH — SQ heparin 48h after IPH onset, after stability CT. IPC/SCDs should be placed on admission for all immobile stroke patients and continued until pharmacologic prophylaxis initiated.',
               classOfRec: 'I',
               levelOfEvidence: 'B-R',
               guideline: 'AHA Systemic Complications of Acute Stroke 2024',
@@ -4944,13 +4948,14 @@ Clinician Name`;
             mevo_evt_not_recommended: {
               id: 'mevo_evt_not_recommended',
               category: 'EVT',
-              title: 'MeVO/distal occlusion EVT: NOT recommended routinely',
-              recommendation: 'EVT for medium vessel (M2/M3) and distal occlusions is NOT recommended routinely based on 2025 trial data. Consider clinical trial enrollment.',
-              detail: 'ESCAPE-MeVO (NEJM 2025, n=530): No benefit of EVT for MeVO. Higher mortality in EVT group (13.3% vs 8.4%, HR 1.82). sICH higher (5.4% vs 2.2%). DISTAL (n=543): No benefit. DISCOUNT: Consistent negative results. Post-hoc: possible heterogeneity by time, earlier presenters may benefit more. Future trials needed with different devices (aspiration, intra-arterial lytics). Flag M2/M3 patients for potential clinical trial enrollment (e.g., STEP trial).',
+              title: 'MeVO/distal occlusion EVT: NOT recommended routinely (exceptions below)',
+              recommendation: 'EVT for M2-M4 MCA, ACA, and PCA occlusions is NOT recommended routinely (2025 trial data). EXCEPTION: Consider EVT in select cases of proximal/dominant M2 segment MCA occlusion ≤1cm of bifurcation when salvageable tissue present and LKW ≤24h.',
+              detail: 'Institutional protocol (UW Medicine): MeVO — consider in select proximal or dominant M2 segment MCA occlusion ≤1cm of bifurcation in horizontal segment when there is evidence of salvageable tissue + LKW ≤24h. NOT recommended for M2-M4 MCA, ACA, and PCA occlusions. Trial data: ESCAPE-MeVO (NEJM 2025, n=530): No benefit of EVT for MeVO. Higher mortality in EVT group (13.3% vs 8.4%, HR 1.82). sICH higher (5.4% vs 2.2%). DISTAL (n=543): No benefit. DISCOUNT: Consistent negative results. Flag M2/M3 patients for clinical trial enrollment (e.g., STEP trial).',
               classOfRec: 'III',
               levelOfEvidence: 'B-R',
               guideline: 'ESCAPE-MeVO (NEJM 2025); DISTAL (2025); DISCOUNT (2025)',
               reference: 'ESCAPE-MeVO: NEJM 2025. DISTAL: 2025. DISCOUNT: 2025.',
+              caveats: 'Institutional protocol permits consideration of proximal M2 EVT in highly select cases. Discuss with neurointerventionalist.',
               conditions: (data) => {
                 const vessels = data.telestrokeNote?.vesselOcclusion || [];
                 return vessels.some(v => /m2|m3|m4|distal|mevo|medium vessel/i.test(v));
@@ -4971,6 +4976,24 @@ Clinician Name`;
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'ENCHANTED2/MT: Lancet 2022. OPTIMAL-BP: JAMA 2024. BP-TARGET: Lancet Neurol 2021.',
               medications: ['Nicardipine 5 mg/hr IV (titrate q5-15min, max 15)', 'Clevidipine 1-2 mg/hr IV'],
+              conditions: (data) => {
+                return !!data.telestrokeNote?.evtRecommended;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // POST-THROMBECTOMY DECT / FOLLOW-UP IMAGING
+            // ---------------------------------------------------------------
+            post_evt_dect: {
+              id: 'post_evt_dect',
+              category: 'EVT',
+              title: 'Post-thrombectomy follow-up imaging (DECT/NCCT)',
+              recommendation: 'Routine 24h NCCT (or DECT if available) for all post-EVT patients. Immediate NCCT/DECT if clinical deterioration, concern for ICH, or failed recanalization.',
+              detail: 'Institutional protocol (UW Medicine): Post-thrombectomy imaging — (1) IMMEDIATE NCCT/DECT: clinical deterioration (new deficit, declining GCS), concern for hemorrhage, failed recanalization (mTICI 0-2a), or any symptomatic change. (2) ROUTINE 24h NCCT/DECT: stable patients with successful recanalization (mTICI 2b-3) — assess for hemorrhagic transformation before initiating antithrombotics. DECT advantage: dual-energy CT distinguishes iodine contrast staining from true hemorrhage, avoiding unnecessary delays in antithrombotic initiation. If DECT shows contrast staining only (no hemorrhage), may consider earlier antithrombotic start per neurointerventionalist recommendation.',
+              classOfRec: 'I',
+              levelOfEvidence: 'C-EO',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026; Institutional Protocol',
+              reference: 'Powers WJ et al. Stroke. 2026.',
               conditions: (data) => {
                 return !!data.telestrokeNote?.evtRecommended;
               }
@@ -5071,8 +5094,8 @@ Clinician Name`;
               id: 'vte_enoxaparin_timing',
               category: 'Acute',
               title: 'Enoxaparin preferred over UFH for VTE prophylaxis',
-              recommendation: 'Enoxaparin preferred over UFH for pharmacologic VTE prophylaxis in stroke. Post-tPA: wait 24h + CT clear. Post-ICH: wait 24-48h + hematoma stability confirmed on repeat CT.',
-              detail: 'PREVAIL trial: enoxaparin 40mg SC daily reduced VTE from 16% to 8.1% vs UFH. Duration: 10-14 days or until independently mobile. Anti-Xa monitoring (0.2-0.5 IU/mL) for BMI >40 or CrCl <30.',
+              recommendation: 'Enoxaparin preferred over UFH for pharmacologic VTE prophylaxis. Post-lytic: start at 24h after stable imaging. Post-ICH: start at 48h after stable imaging. SCDs until then.',
+              detail: 'Institutional protocol (UW Medicine): SQ heparin 24h after lytic, 48h after IPH. SCDs/IPC in the interim. PREVAIL trial: enoxaparin 40mg SC daily reduced VTE from 16% to 8.1% vs UFH. Duration: 10-14 days or until independently mobile. Anti-Xa monitoring (0.2-0.5 IU/mL) for BMI >40 or CrCl <30.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'PREVAIL; AHA/ASA 2019; ACCP 9th Ed',
@@ -8060,7 +8083,8 @@ Clinician Name`;
                 'severeUncontrolledHTN',
                 'lowPlatelets',
                 'warfarinElevatedINR',
-                'recentHeparin'
+                'recentHeparin',
+                'unrupturedAneurysm10mm'
               ];
               const relativeKeys = [
                 'recentStroke',
@@ -8080,7 +8104,9 @@ Clinician Name`;
                 'vascularMalformation',
                 'priorICH',
                 'lecanemab',
-                'abnormalCoagUnknown'
+                'cerebralMicrobleeds',
+                'abnormalCoagUnknown',
+                'severeRenalFailure'
               ];
               const absoluteChecked = absoluteKeys.filter(k => checklist[k]);
               const relativeChecked = relativeKeys.filter(k => checklist[k]);
@@ -8143,7 +8169,7 @@ Clinician Name`;
             // Add ICH-specific details
             if (telestrokeNote.diagnosisCategory === 'ich') {
               let ichNote = '\nICH Management:\n';
-              if (telestrokeNote.ichBPManaged) ichNote += '- BP managed (target SBP 130-150)\n';
+              if (telestrokeNote.ichBPManaged) ichNote += '- BP managed (target SBP <160 per institutional protocol)\n';
               if (telestrokeNote.ichReversalInitiated) ichNote += '- Anticoagulation reversal initiated\n';
               if (telestrokeNote.ichNeurosurgeryConsulted) ichNote += '- Neurosurgery consulted\n';
               if (telestrokeNote.ichSeizureProphylaxis) ichNote += '- Seizure prophylaxis ordered\n';
@@ -8276,7 +8302,7 @@ Clinician Name`;
             if (dx === 'ich') {
               sentences.push('Diagnosis: Intracerebral hemorrhage.');
               const ichActions = [];
-              if (telestrokeNote.ichBPManaged) ichActions.push('BP management initiated (target SBP 130-150)');
+              if (telestrokeNote.ichBPManaged) ichActions.push('BP management initiated (target SBP <160 per institutional protocol)');
               if (telestrokeNote.ichReversalInitiated) ichActions.push('anticoagulation reversal initiated');
               if (telestrokeNote.ichNeurosurgeryConsulted) ichActions.push('neurosurgery consulted');
               if (telestrokeNote.ichSeizureProphylaxis) ichActions.push('seizure prophylaxis ordered');
@@ -8402,8 +8428,8 @@ Clinician Name`;
             }
 
               if (occlusion === 'mvo-dominant') {
-                if (window === '0-6' && aspects === '6-10' && mrs === '0-1') {
-                  return { classOfRec: 'IIa', label: 'EVT reasonable', color: 'emerald', rationale: ['Dominant M2, early window, ASPECTS 6-10, mRS 0-1'] };
+                if ((window === '0-6' || window === '6-24') && mrs === '0-1') {
+                  return { classOfRec: 'IIb', label: 'EVT may be considered (select cases)', color: 'amber', rationale: ['Proximal/dominant M2 ≤1cm of bifurcation, salvageable tissue present, LKW ≤24h (institutional protocol)'] };
                 }
                 return result;
               }
@@ -8440,14 +8466,20 @@ Clinician Name`;
                   return result;
                 }
                 if (aspects === '0-2') {
-                  if (mrs === '0-1') return { classOfRec: 'IIa', label: 'EVT reasonable', color: 'amber', rationale: ['ASPECTS 0-2, mRS 0-1, select patients without mass effect'] };
+                  if (mrs === '0-1') return { classOfRec: 'IIb', label: 'EVT may be considered (very select cases)', color: 'amber', rationale: ['ASPECTS 0-2, mRS 0-1 — consider CTP to evaluate if core ≤70-100cc (institutional protocol)'] };
                   return result;
                 }
               }
 
               if (window === '6-24') {
-                if ((aspects === '6-10' || aspects === '3-5') && mrs === '0-1') {
-                  return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['DAWN/DEFUSE-3 + large core data (ASPECTS 3-10, mRS 0-1, NIHSS ≥6)'] };
+                if (aspects === '6-10' && mrs === '0-1') {
+                  return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 6-10, mRS 0-1, NIHSS ≥6 (DAWN/DEFUSE-3)'] };
+                }
+                if (aspects === '3-5' && mrs === '0-1') {
+                  return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1 — consider CTP: core ≤100cc + mismatch present (institutional protocol)'] };
+                }
+                if (aspects === '0-2') {
+                  return { classOfRec: 'IDD', label: 'EVT benefit unclear', color: 'slate', rationale: ['ASPECTS 0-2 in late window — EVT benefit is unclear (institutional protocol)'] };
                 }
                 return result;
               }
@@ -8711,7 +8743,7 @@ Clinician Name`;
                 icon: 'heart-pulse',
                 color: 'red',
                 orders: [
-                  'Target SBP 130-150 mmHg (initiate within 2h of onset)',
+                  'Target SBP <160 mmHg per institutional protocol (initiate within 2h of onset)',
                   'Nicardipine 5 mg/hr IV, titrate by 2.5 mg/hr q5-15 min (max 15 mg/hr)',
                   'Avoid SBP <130 mmHg (renal AKI risk)',
                   `Current BP: ${n.presentingBP || '***'}`,
@@ -8761,14 +8793,14 @@ Clinician Name`;
             if (isIschemic || isICH) {
               const vteOrders = ['Intermittent pneumatic compression (IPC) bilateral lower extremities — apply on admission'];
               if (isIschemic && n.tnkAdminTime) {
-                vteOrders.push('Pharmacologic VTE prophylaxis: HOLD 24 hours post-TNK');
-                vteOrders.push('After 24h: Enoxaparin 40 mg SC daily (or Heparin 5000 units SC q8h if CrCl <30)');
+                vteOrders.push('Pharmacologic VTE prophylaxis: HOLD 24 hours post-lytic (institutional protocol)');
+                vteOrders.push('After 24h + stable follow-up CT: Enoxaparin 40 mg SC daily (or Heparin 5000 units SC q8h if CrCl <30)');
               } else if (isIschemic) {
-                vteOrders.push('Enoxaparin 40 mg SC daily (start within 24-48h if immobile)');
+                vteOrders.push('Enoxaparin 40 mg SC daily (start within 24h if immobile)');
                 vteOrders.push('If CrCl <30: Heparin 5000 units SC q8h');
               } else if (isICH) {
-                vteOrders.push('Pharmacologic VTE prophylaxis: consider after 24-48h if hematoma stable on repeat CT');
-                vteOrders.push('Enoxaparin 40 mg SC daily (or Heparin 5000 units SC q8h if CrCl <30)');
+                vteOrders.push('Pharmacologic VTE prophylaxis: HOLD 48 hours after IPH onset (institutional protocol)');
+                vteOrders.push('After 48h + hematoma stability on repeat CT: Enoxaparin 40 mg SC daily (or Heparin 5000 units SC q8h if CrCl <30)');
               }
               if (weight > 100) vteOrders.push(`Weight ${weight} kg — consider enoxaparin 40 mg SC q12h for BMI-based dosing`);
               bundles.push({
@@ -8933,7 +8965,7 @@ Clinician Name`;
                 'tnk-admin': { title: 'Document TNK administration', detail: 'Capture administration time for DTN metrics.', cta: 'Add TNK time' },
                 'transfer': { title: 'Arrange transfer', detail: 'Coordinate transfer to EVT-capable center for LVO.', cta: 'Transfer checklist' },
                 'recommendations': { title: 'Finalize recommendations', detail: 'Complete the recommendation summary for handoff and documentation.', cta: 'Add recommendations' },
-                'ich-bp': { title: 'ICH: Manage blood pressure', detail: 'Target SBP 130-150 mmHg (avoid <130). Initiate nicardipine or labetalol.', cta: 'Manage BP' },
+                'ich-bp': { title: 'ICH: Manage blood pressure', detail: 'Target SBP <160 per institutional protocol (avoid <130). Nicardipine or labetalol.', cta: 'Manage BP' },
                 'ich-reversal': { title: 'ICH: Anticoagulation reversal', detail: 'Patient may be on anticoagulation. Review and order reversal agents.', cta: 'Order reversal' },
                 'ich-neurosurg': { title: 'ICH: Neurosurgery evaluation', detail: 'Document neurosurgery consultation for surgical candidacy assessment.', cta: 'Consult neurosurgery' },
                 'sah-grade': { title: 'SAH: Grade severity', detail: 'Enter Hunt & Hess or WFNS grade for SAH prognostication.', cta: 'Grade SAH' },
@@ -10256,7 +10288,7 @@ ${telestrokeNote.evtRecommended ? `EVT: Recommended` : 'EVT: Not Recommended'}`;
 
             const bpTarget = receivedTNK ? 'SBP <180, DBP <105 x 24h'
               : receivedEVT ? 'SBP <180, DBP <105 (avoid SBP <140)'
-              : diagCat === 'ich' ? 'SBP <140 (target 130-150 if presenting SBP 150-220)'
+              : diagCat === 'ich' ? 'SBP <160 per institutional protocol (avoid <130)'
               : diagCat === 'sah' ? 'SBP <160 until aneurysm secured'
               : 'SBP <220, DBP <120 (if no thrombolysis)';
 
@@ -10266,9 +10298,9 @@ ${telestrokeNote.evtRecommended ? `EVT: Recommended` : 'EVT: Not Recommended'}`;
               : 'Aspirin 325mg LOAD, then 81mg daily';
 
             const dvt = receivedTNK
-              ? 'DVT prophylaxis: SCDs now; hold SQ heparin/enoxaparin x 24h post-TNK + CT clear'
+              ? 'DVT prophylaxis: SCDs now; SQ heparin at 24h post-lytic + stable follow-up CT'
               : diagCat === 'ich'
-              ? 'DVT prophylaxis: IPC immediately; SQ heparin after 24-48h if hematoma stable on repeat CT'
+              ? 'DVT prophylaxis: IPC immediately; SQ heparin at 48h after IPH onset if hematoma stable on repeat CT'
               : diagCat === 'sah'
               ? 'DVT prophylaxis: SCDs until aneurysm secured, then SQ heparin'
               : 'DVT prophylaxis: SCDs on admission; enoxaparin 40mg SC daily';
@@ -12623,7 +12655,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <input type="checkbox" checked={!!telestrokeNote.ichBPManaged}
                                       onChange={(e) => setTelestrokeNote({...telestrokeNote, ichBPManaged: e.target.checked})}
                                       className="w-3.5 h-3.5 text-red-600" />
-                                    <span>BP managed (target SBP 130-150)</span>
+                                    <span>BP managed (target SBP &lt;160)</span>
                                   </label>
                                   <label className="flex items-center gap-2 cursor-pointer text-sm">
                                     <input type="checkbox" checked={!!telestrokeNote.ichReversalInitiated}
@@ -12645,7 +12677,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </label>
                                 </div>
                                 <div className="text-xs text-red-700 bg-red-100 rounded p-1.5">
-                                  TNK is contraindicated. Targets: SBP 130-150, reverse anticoagulation if applicable, repeat CT in 6h, ICU admission.
+                                  TNK is contraindicated. Targets: SBP &lt;160 per institutional protocol, reverse anticoagulation if applicable, repeat CT in 6h, ICU admission.
                                 </div>
                               </div>
                             )}
@@ -14515,7 +14547,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <h4 className="text-sm font-bold text-red-800 mb-2 uppercase tracking-wide">ICH Pathway Checklist</h4>
                                 <div className="space-y-2">
                                   {[
-                                    { field: 'ichBPManaged', label: 'BP managed (SBP 130-150 target)', detail: 'AHA/ASA ICH 2022' },
+                                    { field: 'ichBPManaged', label: 'BP managed (SBP <160 target)', detail: 'UW Medicine institutional protocol' },
                                     { field: 'ichReversalInitiated', label: 'Anticoag reversal ordered (if applicable)', detail: 'Skip if no anticoagulants', skipIf: telestrokeNote.noAnticoagulants },
                                     { field: 'ichNeurosurgeryConsulted', label: 'Neurosurgery consulted/evaluated', detail: 'Surgical candidacy assessed' }
                                   ].filter(item => !item.skipIf).map(item => (
@@ -14620,14 +14652,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   { id: 'severeUncontrolledHTN', label: 'SBP >185 or DBP >110 mmHg', note: 'unresponsive to treatment' },
                                   { id: 'lowPlatelets', label: 'Platelet count <100,000', note: null },
                                   { id: 'warfarinElevatedINR', label: 'Warfarin use with PT >15s, INR >1.7, or aPTT >40s', note: null },
-                                  { id: 'recentHeparin', label: 'Treatment-dose heparin/LMWH', note: '<24 hours' }
+                                  { id: 'recentHeparin', label: 'Treatment-dose heparin/LMWH', note: '<24 hours' },
+                                  { id: 'unrupturedAneurysm10mm', label: 'Unruptured unsecured intracranial aneurysm >10mm', note: 'per institutional protocol' }
                                 ];
 
                                 const relativeContraindications = [
                                   // Cautionary - Consider risks/benefits
                                   { id: 'priorICH', label: 'Prior known non-traumatic intracranial hemorrhage', note: null },
                                   { id: 'vascularMalformation', label: 'Intracranial vascular malformation', note: 'unless severe neuro sx' },
-                                  { id: 'intracranialAneurysm', label: 'Intracranial aneurysm', note: 'no size cutoff' },
+                                  { id: 'intracranialAneurysm', label: 'Intracranial aneurysm (<10mm or secured)', note: 'cautionary; >10mm unsecured is absolute exclusion above' },
                                   { id: 'knownBleedingDiathesis', label: 'Known bleeding diathesis', note: null },
                                   { id: 'pregnancy', label: 'Pregnancy', note: 'consult OB/GYN ASAP' },
                                   { id: 'recentStroke', label: 'Recent ischemic stroke', note: '<3 months (relative)' },
@@ -15436,23 +15469,21 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 <div>
                                   <h4 className="font-semibold text-emerald-700 mb-2">Anterior Circulation Large Vessel Occlusion:</h4>
-                                  <p className="text-xs text-slate-600 mb-2">SVIN 2025 large-core guidance extends EVT eligibility to ASPECTS 0-5 in early window and 3-5 in late window (baseline mRS 0-1, age 18-80).</p>
+                                  <p className="text-xs text-slate-600 mb-2">UW Medicine institutional protocol + SVIN 2025 large-core guidance (baseline mRS 0-1, age 18-80).</p>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
                                     <div className="bg-white p-2 rounded border">
                                       <p className="font-semibold text-emerald-700 text-xs mb-1">Early Window (0-6h):</p>
                                       <ul className="space-y-1 ml-2 text-xs">
-                                        <li>• ASPECTS 6-10: Standard EVT candidate</li>
-                                        <li>• ASPECTS 3-5: Large core — EVT recommended (SVIN 2025)</li>
-                                        <li>• ASPECTS 0-2: May be considered early; higher sICH risk and low independence rates</li>
+                                        <li>• <strong>ASPECTS 3-10:</strong> Generally eligible for EVT</li>
+                                        <li>• <strong>ASPECTS 0-2:</strong> Consider in very select cases; consider CTP to evaluate if estimated core volume ≤70-100cc</li>
                                       </ul>
                                     </div>
                                     <div className="bg-white p-2 rounded border">
                                       <p className="font-semibold text-purple-700 text-xs mb-1">Late Window (6-24h):</p>
                                       <ul className="space-y-1 ml-2 text-xs">
-                                        <li>• ASPECTS 6-10: Standard EVT candidate (perfusion mismatch or good collaterals)</li>
-                                        <li>• ASPECTS 3-5: EVT recommended (SVIN 2025) if pre-stroke mRS 0-1</li>
-                                        <li>• ASPECTS 0-2: Benefit uncertain; consider trial/exceptional cases only</li>
-                                        <li>• CTP core 50-100 mL can support EVT (SELECT2/ANGEL-ASPECT)</li>
+                                        <li>• <strong>ASPECTS 6-10:</strong> Generally eligible for EVT</li>
+                                        <li>• <strong>ASPECTS 3-5:</strong> Generally eligible; consider CTP to evaluate if estimated core volume ≤100cc + mismatch present</li>
+                                        <li>• <strong>ASPECTS 0-2:</strong> EVT benefit is unclear</li>
                                       </ul>
                                     </div>
                                   </div>
@@ -18606,7 +18637,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   }
                                 } else if (pathwayType === 'ich') {
                                   note += `PLAN:\n`;
-                                  if (telestrokeNote.ichBPManaged) note += `- BP management initiated (target SBP 130-150).\n`;
+                                  if (telestrokeNote.ichBPManaged) note += `- BP management initiated (target SBP <160 per institutional protocol).\n`;
                                   if (telestrokeNote.ichReversalInitiated) note += `- Anticoagulation reversal ordered.\n`;
                                   if (telestrokeNote.ichNeurosurgeryConsulted) note += `- Neurosurgery consulted.\n`;
                                 } else if (pathwayType === 'sah') {
@@ -20647,9 +20678,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold border border-amber-300">May be considered</span>
                                   </div>
                                   <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700">ASPECTS 0-2, mRS 0-1, age &lt;80, no mass effect</span>
+                                    <span className="text-slate-700">ASPECTS 0-2, mRS 0-1 — consider CTP core ≤70-100cc</span>
                                     <span className="text-slate-400">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300">Reasonable</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold border border-amber-300">Very select cases</span>
                                   </div>
                                 </div>
                               </div>
@@ -20659,14 +20690,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-xs font-bold text-blue-600 mb-1.5">6 – 24 hours</p>
                                 <div className="space-y-1.5 text-xs">
                                   <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700">ASPECTS 3-10, mRS 0-1</span>
+                                    <span className="text-slate-700">ASPECTS 6-10, mRS 0-1</span>
+                                    <span className="text-slate-400">→</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-semibold">Recommended</span>
+                                  </div>
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-slate-700">ASPECTS 3-5, mRS 0-1 — consider CTP core ≤100cc + mismatch</span>
                                     <span className="text-slate-400">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-semibold">Recommended</span>
                                   </div>
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">ASPECTS 0-2</span>
                                     <span className="text-slate-400">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold border border-amber-300">Benefit uncertain</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold border border-slate-300">Benefit unclear</span>
                                   </div>
                                 </div>
                               </div>
@@ -20713,12 +20749,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="ml-2 pl-3 border-l-2 border-slate-200">
                                 <div className="space-y-1.5 text-xs">
                                   <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700">Dominant M2, 0-6h, NIHSS ≥6, ASPECTS 6-10, mRS 0-1</span>
+                                    <span className="text-slate-700">Proximal/dominant M2 ≤1cm of bifurcation, salvageable tissue, LKW ≤24h</span>
                                     <span className="text-slate-400">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300">Reasonable</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold border border-amber-300">May be considered (select cases)</span>
                                   </div>
                                   <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700">Non-dominant M2 / distal vessel occlusion</span>
+                                    <span className="text-slate-700">M2-M4 MCA, ACA, PCA occlusions</span>
                                     <span className="text-slate-400">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-semibold border border-red-300">Not recommended</span>
                                   </div>
