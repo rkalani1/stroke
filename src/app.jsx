@@ -3644,7 +3644,7 @@ Clinician Name`;
               category: 'Antithrombotic',
               title: 'Ticagrelor + ASA for minor stroke (NIHSS 4-5)',
               recommendation: 'For NIHSS ≤5 noncardioembolic AIS or high-risk TIA (ABCD2 ≥6), DAPT with ticagrelor + aspirin for 30 days may be considered.',
-              detail: 'Ticagrelor 180 mg load + ASA 325 mg, then ticagrelor 90 mg BID + ASA 81 mg daily x 30 days (AIS-2026 Rec #13, Class IIb). This extends DAPT eligibility to NIHSS 4-5 patients using ticagrelor-based regimen. Standard clopidogrel-based DAPT (CHANCE/POINT) applies to NIHSS ≤3.',
+              detail: 'Ticagrelor 180 mg load + ASA 325 mg, then ticagrelor 90 mg BID + ASA 81 mg daily x 30 days (AIS-2026 Rec #13, Class IIb). This extends DAPT eligibility to NIHSS 4-5 patients using ticagrelor-based regimen. Standard clopidogrel-based DAPT (CHANCE/POINT) applies to NIHSS ≤3. ⚠ Drug interactions: AVOID strong CYP3A4 inhibitors (ketoconazole, itraconazole, clarithromycin, ritonavir) and inducers (rifampin, phenytoin, carbamazepine). USE CAUTION with moderate CYP3A4 inhibitors (diltiazem, verapamil). Monitor for bradycardia (especially with beta-blockers or digoxin). Dyspnea occurs in ~14% — usually benign, self-resolving.',
               classOfRec: 'IIb',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -5954,14 +5954,18 @@ Clinician Name`;
             const weight = parseFloat(weightKg) || 0;
             const renalClearance = parseFloat(crCl) || 100;
             if (weight <= 0) return null;
-            const standardDose = Math.round(weight * 1);
-            const renalDose = Math.round(weight * 1);
             const isRenalAdjusted = renalClearance < 30;
+            // Treatment dose: 1 mg/kg
+            const treatmentDose = Math.round(weight * 1);
+            // Prophylaxis dose: fixed 40 mg (30 mg if CrCl <30, 40 mg q12h if >100 kg)
+            const prophylaxisDose = isRenalAdjusted ? 30 : 40;
+            const prophylaxisFreq = weight > 100 && !isRenalAdjusted ? 'q12h' : 'daily';
             return {
-              dose: isRenalAdjusted ? renalDose : standardDose,
+              dose: isRenalAdjusted ? treatmentDose : treatmentDose,
               frequency: isRenalAdjusted ? 'daily' : 'BID',
               isRenalAdjusted,
-              note: isRenalAdjusted ? `CrCl <30: ${renalDose} mg SC daily` : `${standardDose} mg SC BID`
+              note: isRenalAdjusted ? `Treatment: ${treatmentDose} mg SC daily (CrCl <30)` : `Treatment: ${treatmentDose} mg SC BID`,
+              prophylaxisNote: `VTE Prophylaxis: ${prophylaxisDose} mg SC ${prophylaxisFreq}${isRenalAdjusted ? ' (renal-adjusted)' : ''}${weight > 100 && !isRenalAdjusted ? ' (weight >100 kg)' : ''}`
             };
           };
 
@@ -8735,6 +8739,36 @@ Clinician Name`;
               });
             }
 
+            // Acute Labs
+            if (isIschemic || isICH || isSAH) {
+              const labOrders = [
+                'CBC with differential',
+                'BMP (glucose, creatinine, electrolytes)',
+                'PT/INR, aPTT',
+                'Troponin',
+                'Type & Screen'
+              ];
+              if (isICH || isSAH) {
+                labOrders.push('Fibrinogen level');
+                labOrders.push('Thrombin time (TT)');
+                labOrders.push('D-dimer');
+                labOrders.push('Direct Xa Inhibitor screen (if DOAC suspected)');
+              }
+              if (isIschemic) {
+                labOrders.push('Fasting lipid panel (can draw non-fasting acutely)');
+                labOrders.push('HbA1c');
+              }
+              labOrders.push('TSH (if not recent)');
+              labOrders.push('Urine drug screen (if clinical suspicion)');
+              bundles.push({
+                id: 'acute-labs',
+                label: `Acute ${isICH ? 'ICH' : isSAH ? 'SAH' : 'AIS'} Labs`,
+                icon: 'test-tubes',
+                color: 'indigo',
+                orders: labOrders
+              });
+            }
+
             // BP Management - ICH
             if (isICH) {
               bundles.push({
@@ -8750,6 +8784,32 @@ Clinician Name`;
                   'Maintain target for ≥24 hours',
                   'Recheck BP q15 min during active titration, then q1h once stable'
                 ]
+              });
+            }
+
+            // ICH Admission / Monitoring Orders
+            if (isICH) {
+              const ichAdmitOrders = [
+                'Admit to Neuro ICU / Step-down with continuous monitoring',
+                'Neuro checks q1h (NIHSS, GCS, pupils)',
+                'HOB 30 degrees',
+                'Repeat NCCT Head in 6 hours (assess for hematoma expansion)',
+                'NPO until formal swallow screen',
+                'Seizure precautions (avoid routine prophylactic ASMs unless cortical/lobar ICH with seizures)',
+                'IPC/SCDs on admission for VTE prophylaxis',
+                'Hold all antithrombotics — discuss restart timing at 48-72h if applicable',
+                'Strict I/O, Foley catheter if ICU'
+              ];
+              if (nihss >= 10 || (telestrokeNote.gcs && parseInt(telestrokeNote.gcs) <= 12)) {
+                ichAdmitOrders.push('Consider EEG monitoring if unexplained decline in consciousness');
+                ichAdmitOrders.push('Neurosurgery consult for possible surgical evacuation (if eligible)');
+              }
+              bundles.push({
+                id: 'ich-admit',
+                label: 'ICH Admission Orders',
+                icon: 'clipboard-list',
+                color: 'red',
+                orders: ichAdmitOrders
               });
             }
 
@@ -9262,7 +9322,16 @@ Clinician Name`;
               { name: 'ICH Volume (ABC/2)', keywords: ['ich volume', 'abc', 'hematoma', 'volume'], tab: 'management', subTab: 'calculators' },
               { name: 'Contrast Allergy Protocol', keywords: ['contrast', 'allergy', 'premedication', 'ct angiography'], tab: 'management', subTab: 'ischemic' },
               { name: 'Posterior Circulation Stroke', keywords: ['posterior', 'basilar', 'vertebral', 'cerebellar'], tab: 'management', subTab: 'ischemic' },
-              { name: 'Transfer Checklist', keywords: ['transfer', 'spoke', 'hub', 'transport'], tab: 'encounter' }
+              { name: 'Transfer Checklist', keywords: ['transfer', 'spoke', 'hub', 'transport'], tab: 'encounter' },
+              { name: 'Hemorrhagic Transformation', keywords: ['hemorrhagic transformation', 'sich', 'symptomatic ich', 'post-tnk bleeding', 'ecass'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Stroke Mimic Workup', keywords: ['mimic', 'mimic workup', 'differential', 'seizure', 'migraine', 'conversion', 'functional'], tab: 'encounter' },
+              { name: 'Acute Deterioration', keywords: ['deterioration', 'worsening', 'decline', 'neuro change', 'acute change'], tab: 'management', subTab: 'ischemic' },
+              { name: 'DOAC Reversal', keywords: ['doac reversal', 'pcc', 'kcentra', 'idarucizumab', 'praxbind', 'andexanet', 'xa inhibitor'], tab: 'management', subTab: 'ich' },
+              { name: 'VTE Prophylaxis', keywords: ['vte', 'dvt', 'pe', 'prophylaxis', 'enoxaparin', 'heparin', 'scds', 'ipc'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Post-EVT Management', keywords: ['post evt', 'post thrombectomy', 'dect', 'reperfusion', 'tici'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Dissection Management', keywords: ['dissection', 'carotid dissection', 'vertebral dissection', 'cervical'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Depression Screening', keywords: ['depression', 'phq', 'phq-2', 'phq-9', 'ssri', 'mood'], tab: 'management', subTab: 'ischemic' },
+              { name: 'PHASES Score (Aneurysm)', keywords: ['phases', 'aneurysm', 'rupture risk', 'unruptured'], tab: 'management', subTab: 'calculators' }
             ];
 
             searchableItems.forEach(item => {
@@ -20186,12 +20255,40 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                               </div>
 
+                              <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                                <p className="text-xs font-semibold text-purple-800 mb-2">ECASS Hemorrhagic Transformation Classification:</p>
+                                <div className="grid grid-cols-2 gap-2 text-xs">
+                                  <div className="bg-white p-2 rounded border">
+                                    <p className="font-semibold text-emerald-700">HI-1 (Asymptomatic)</p>
+                                    <p>Small petechiae along infarct margin</p>
+                                  </div>
+                                  <div className="bg-white p-2 rounded border">
+                                    <p className="font-semibold text-emerald-700">HI-2 (Asymptomatic)</p>
+                                    <p>Confluent petechiae within infarct, no mass effect</p>
+                                  </div>
+                                  <div className="bg-white p-2 rounded border">
+                                    <p className="font-semibold text-amber-700">PH-1 (Usually asymptomatic)</p>
+                                    <p>Blood clot ≤30% of infarct, mild mass effect</p>
+                                  </div>
+                                  <div className="bg-white p-2 rounded border">
+                                    <p className="font-semibold text-red-700">PH-2 (Often symptomatic)</p>
+                                    <p>Blood clot &gt;30% of infarct with significant mass effect → neurosurgery consult</p>
+                                  </div>
+                                </div>
+                                <p className="text-xs text-purple-700 mt-2"><strong>sICH definition:</strong> any hemorrhagic transformation + NIHSS increase ≥4 points from baseline (ECASS-II/SITS-MOST). PH-2 accounts for most sICH.</p>
+                              </div>
+
                               <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
-                                <p className="text-xs font-semibold text-slate-700 mb-1">Follow-up:</p>
+                                <p className="text-xs font-semibold text-slate-700 mb-1">Follow-up & Management:</p>
                                 <ul className="text-xs space-y-0.5 text-slate-600">
+                                  <li>• Target SBP &lt;140 mmHg for confirmed sICH</li>
+                                  <li>• Target fibrinogen &gt;200 mg/dL (repeat cryo if low)</li>
                                   <li>• If labs abnormal or uncontrolled bleeding → consult Hematology</li>
                                   <li>• Repeat hemorrhage panel q4h until normal</li>
-                                  <li>• Update family</li>
+                                  <li>• Repeat NCCT at 6h and 24h to assess stability</li>
+                                  <li>• PH-2 with mass effect → urgent neurosurgery evaluation</li>
+                                  <li>• Hold all antithrombotics until hemorrhage stable ≥24h</li>
+                                  <li>• Update family — document goals of care discussion</li>
                                 </ul>
                               </div>
                             </div>
@@ -23981,8 +24078,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           return (
                             <div className={`p-3 rounded-lg border ${result.isRenalAdjusted ? 'bg-amber-100 border-amber-300' : 'bg-emerald-100 border-emerald-300'}`}>
                               <p className="text-sm font-bold">{result.note}</p>
+                              <p className="text-sm font-semibold text-teal-700 mt-1">{result.prophylaxisNote}</p>
                               {result.isRenalAdjusted && <p className="text-xs text-amber-700">Renal dose adjustment applied (CrCl &lt;30 mL/min)</p>}
-                              <button onClick={() => copyToClipboard(result.note, 'Enoxaparin Dose')}
+                              <button onClick={() => copyToClipboard(`${result.note}\n${result.prophylaxisNote}`, 'Enoxaparin Dose')}
                                 className="mt-1 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300" aria-label="Copy enoxaparin dose to clipboard">Copy</button>
                             </div>
                           );
