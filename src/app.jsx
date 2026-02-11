@@ -62,11 +62,20 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         const LEGACY_MIGRATION_KEY = 'legacyMigrated';
         const APP_DATA_SCHEMA_VERSION = 1;
         const DEFAULT_CONTACTS = [
-          { id: 'stroke-phone', label: 'Stroke Phone', phone: '206-744-6789', note: '' },
-          { id: 'stat-pharmacy', label: 'STAT Pharmacy', phone: '206-744-2241', note: '' },
-          { id: 'rad-hotline', label: 'Stroke RAD Hotline', phone: '206-744-8484', note: 'Weekdays 8-5' },
-          { id: 'angio-suite', label: 'Angio Suite', phone: '206-744-3381', note: '' },
-          { id: 'stat-ct', label: 'STAT CT', phone: '206-744-7290', note: '' }
+          // HMC
+          { id: 'stroke-phone', label: 'Stroke Phone', phone: '206-744-6789', note: 'HMC' },
+          { id: 'stat-pharmacy', label: 'STAT Pharmacy', phone: '206-744-2241', note: 'HMC' },
+          { id: 'rad-hotline', label: 'HMC Stroke RAD Hotline', phone: '206-744-8484', note: 'Weekdays 0800-1700 only' },
+          { id: 'rad-reading-room', label: 'HMC RAD Reading Room', phone: '206-744-6741', note: 'Non-urgent, all modalities' },
+          { id: 'rad-records', label: 'HMC Radiology Records/File Room', phone: '206-744-3109', note: '24/7 — imaging pull/push, OSH requests, non-TC consults' },
+          { id: 'angio-suite', label: 'Angio Suite', phone: '206-744-3381', note: 'HMC' },
+          { id: 'stat-ct', label: 'STAT CT', phone: '206-744-7290', note: 'HMC' },
+          // UW Montlake
+          { id: 'uw-rad-coord', label: 'UW Reading Room Coordinator', phone: '206-597-4249', note: 'UW Montlake, Days 0800-1700' },
+          { id: 'uw-neurorad-fellow', label: 'UW Neuro Rad Fellow', phone: '206-598-7959', note: 'UW Montlake, Days 0700-1900' },
+          { id: 'uw-neurorad-resident', label: 'UW Neuro Rad Resident', phone: '206-598-2068', note: 'UW Montlake, Evenings 1700-0700' },
+          // IT
+          { id: 'it-helpdesk', label: 'IT Services Help Desk', phone: '206-520-2200', note: 'Stroke phone issues' }
         ];
 
         const parseStoredValue = (raw) => {
@@ -1922,9 +1931,13 @@ Clinician Name`;
             'post-tnk': { label: 'Post-TNK', systolic: 180, diastolic: 105 },
             'post-evt': { label: 'Post-EVT', systolic: 180, diastolic: 105 },
             'no-lytics': { label: 'No lytics/No EVT', systolic: 220, diastolic: 120 },
-            'ich': { label: 'ICH', systolic: 140, diastolic: 90 },
+            'ich': { label: 'ICH (institutional)', systolic: 160, diastolic: 105 },
             'sah': { label: 'SAH (pre-securing)', systolic: 160, diastolic: 105 },
-            'sah-secured': { label: 'SAH (post-securing)', systolic: 140, diastolic: 90 }
+            'sah-secured': { label: 'SAH (post-securing)', systolic: 140, diastolic: 90 },
+            'cvt': { label: 'CVT (permissive)', systolic: 220, diastolic: 120 },
+            'cvt-hemorrhage': { label: 'CVT with hemorrhage', systolic: 140, diastolic: 90 },
+            'pregnancy': { label: 'Pregnancy/Postpartum stroke', systolic: 160, diastolic: 110 },
+            'preeclampsia': { label: 'Preeclampsia/Eclampsia', systolic: 140, diastolic: 90 }
           };
           const currentBpPhase = telestrokeNote.bpPhase || 'pre-tnk';
           const currentBpTarget = bpPhaseTargets[currentBpPhase] || bpPhaseTargets['pre-tnk'];
@@ -7648,15 +7661,38 @@ Clinician Name`;
                 if (telestrokeNote.transportEta) note += ` | ETA: ${telestrokeNote.transportEta}`;
                 note += '\n';
               }
+              // Post-TNK Status
+              if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) {
+                note += `\nPost-TNK Status:\n`;
+                const postTnkComps = [];
+                if (telestrokeNote.sichDetected) postTnkComps.push('sICH DETECTED');
+                if (telestrokeNote.angioedema?.detected) postTnkComps.push('ANGIOEDEMA');
+                if (telestrokeNote.clinicalDeterioration) postTnkComps.push('CLINICAL DETERIORATION');
+                if (postTnkComps.length > 0) {
+                  note += `- COMPLICATIONS: ${postTnkComps.join(', ')}\n`;
+                } else {
+                  note += `- No post-TNK complications at time of transfer\n`;
+                }
+                note += `- Neuro checks q15 min x 2h, then q30 min x 6h, then q1h x 16h post-TNK\n`;
+                note += `- Hold antithrombotics x 24h post-TNK\n`;
+              }
+
               // Nursing/safety alerts for receiving team
               const transferAlerts = [];
               const transferDysphagia = telestrokeNote.dysphagiaScreening || {};
               if (transferDysphagia.bedsideScreenResult === 'fail') transferAlerts.push('NPO — failed dysphagia screen');
               if (telestrokeNote.contrastAllergy) transferAlerts.push('Contrast allergy');
+              if (telestrokeNote.pregnancyStroke) transferAlerts.push('PREGNANCY — consult OB');
+              const transferMeds = (telestrokeNote.medications || '').toLowerCase();
+              if (/nsaid|ibuprofen|naproxen|meloxicam/.test(transferMeds)) transferAlerts.push('On NSAID — hold with antiplatelet/anticoagulation');
               if (transferAlerts.length > 0) {
                 note += `\nALERTS: ${transferAlerts.join('; ')}\n`;
               }
               note += `\nRecommendations:\n${telestrokeNote.recommendationsText || '___'}\n`;
+              note += `\nPENDING AT TRANSFER:\n`;
+              note += `- Follow-up CT: ${telestrokeNote.tnkRecommended ? '24h post-TNK' : 'Per clinical indication'}\n`;
+              if (telestrokeNote.evtRecommended) note += `- EVT evaluation at receiving hub\n`;
+              note += `- Telestroke attending available for questions: [on-call stroke phone]\n`;
               return note;
             }
 
@@ -7985,6 +8021,13 @@ Clinician Name`;
                 note += `- Driving restrictions per state law\n`;
               }
               note += '\n';
+              note += `RED FLAGS — RETURN TO ED IMMEDIATELY IF:\n`;
+              note += `- New or worsening weakness, numbness, or speech difficulty\n`;
+              note += `- Sudden severe headache (worst headache of life)\n`;
+              note += `- Vision loss or double vision\n`;
+              note += `- Difficulty walking or loss of balance\n`;
+              note += `- Chest pain, shortness of breath, or signs of bleeding\n`;
+              note += `- Call 911 immediately — do NOT drive yourself\n\n`;
               note += `RECOMMENDATIONS:\n${telestrokeNote.recommendationsText || '___'}\n`;
               return note;
             }
