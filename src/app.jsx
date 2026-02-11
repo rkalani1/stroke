@@ -82,6 +82,8 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           { id: 'uw-nw-transfer', label: 'UW-NW Transfer Center', phone: '206-520-7575', note: 'UW MC-NW stroke referrals' },
           { id: 'sch-mission', label: 'Seattle Children\'s Mission Control', phone: '206-987-8899', note: 'Pediatric stroke transfers, consults' },
           { id: 'bloodworks-adamts13', label: 'BloodWorks NW (ADAMTS13)', phone: '206-689-6543', note: 'ADAMTS13 testing M/W/F, samples before noon' },
+          // Neurosurgery / MIE
+          { id: 'mie-levitt', label: 'Dr. Mike Levitt (MIE)', phone: '206-409-6649', note: '6AM-10PM; MIE/ENRICH candidates' },
           // IT
           { id: 'it-helpdesk', label: 'IT Services Help Desk', phone: '206-520-2200', note: 'Stroke phone issues' }
         ];
@@ -4003,8 +4005,8 @@ Clinician Name`;
             ich_mis_evac: {
               id: 'ich_mis_evac',
               category: 'ICH',
-              title: 'Minimally invasive ICH evacuation',
-              recommendation: 'For supratentorial ICH >20-30 mL with GCS 5-12, minimally invasive evacuation can be useful to reduce mortality.',
+              title: 'Minimally invasive ICH evacuation (MIE)',
+              recommendation: 'For spontaneous lobar IPH 30-80cc, ≤24h onset, NIHSS >5, GCS 5-15, age 18-80, mRS 0-1: consider MIE. Contact Dr. Mike Levitt 206-409-6649 (6AM-10PM).',
               detail: 'Select endoscopic or stereotactic aspiration approaches based on local expertise. Functional outcome benefit is uncertain.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
@@ -20588,24 +20590,33 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           <div className="bg-white p-3 rounded border">
-                            <h4 className="font-semibold text-emerald-600 mb-2">ENRICH Trial Inclusion (NCT02880878)</h4>
+                            <h4 className="font-semibold text-emerald-600 mb-2">ENRICH MIE Inclusion (NCT02880878)</h4>
                             <ul className="text-sm space-y-1">
-                              <li>• Spontaneous supratentorial lobar or basal ganglia ICH</li>
-                              <li>• ICH onset ≤24 hours</li>
-                              <li>• Age 18-80 years</li>
-                              <li>• GCS 5-14 and NIHSS ≥6</li>
+                              <li>• Spontaneous <strong>lobar</strong> IPH — no underlying lesion (tumor/AVM)</li>
                               <li>• ICH volume 30-80 cc</li>
+                              <li>• ≤24 hours of symptom onset</li>
+                              <li>• Age 18-80 years</li>
+                              <li>• NIHSS &gt;5</li>
+                              <li>• GCS 5-15</li>
                               <li>• Pre-morbid mRS 0-1</li>
                             </ul>
+                            <p className="text-xs text-emerald-700 mt-2 italic">* Reasonable to consider in cases 24-72h after onset and outside trial criteria — discuss with neurosurgery.</p>
                           </div>
 
                           <div className="bg-white p-3 rounded border">
-                            <h4 className="font-semibold text-red-600 mb-2">ENRICH Trial Exclusion</h4>
+                            <h4 className="font-semibold text-red-600 mb-2">ENRICH MIE Exclusion</h4>
                             <ul className="text-sm space-y-1">
                               <li>• Coagulopathy</li>
                               <li>• IVH &gt;50% either lateral ventricle</li>
-                              <li>• Thalamic/infratentorial ICH</li>
+                              <li>• Thalamic or infratentorial ICH</li>
+                              <li>• Underlying structural lesion (tumor, AVM)</li>
                             </ul>
+                            <div className="mt-3 bg-blue-50 border border-blue-200 rounded p-2">
+                              <p className="text-xs font-semibold text-blue-800">To discuss MIE candidates:</p>
+                              <p className="text-xs text-blue-700">Dr. Mike Levitt: <strong>206-409-6649</strong> (6AM-10PM)</p>
+                              <p className="text-xs text-blue-700">After 10PM: consult NSGY on-call, call Levitt after 6AM</p>
+                              <p className="text-xs text-blue-700 italic">Keep patient NPO until final decision made</p>
+                            </div>
                           </div>
                         </div>
 
