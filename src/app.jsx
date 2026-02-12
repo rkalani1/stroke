@@ -3494,11 +3494,13 @@ Clinician Name`;
               caveats: 'Collateral grading on multiphase CTA or single-phase CTA may support EVT candidacy when CTP unavailable.',
               conditions: (data) => {
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
+                const age = parseInt(data.telestrokeNote?.age, 10) || 0;
+                const minNIHSS = age >= 80 ? 10 : 6; // DAWN: age ≥80 requires NIHSS ≥10
                 const timeFrom = data.timeFromLKW;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
                   /ica|m1|mca|basilar/i.test(v)
                 );
-                return nihss >= 6 && timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && hasLVO;
+                return nihss >= minNIHSS && timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && hasLVO;
               }
             },
             evt_large_core_early: {
@@ -6614,6 +6616,9 @@ Clinician Name`;
                 } else {
                 const now = new Date();
                 const hoursSinceDose = (now - lastDose) / (1000 * 60 * 60);
+                if (hoursSinceDose < 0) {
+                  alerts.push({ severity: 'error', label: 'DOAC Time Error', message: 'Last DOAC dose is in the future — verify date/time entry', field: 'lastDOACDose' });
+                } else {
                 const crcl = calculateCrCl(data.telestrokeNote?.age, data.telestrokeNote?.weight, data.telestrokeNote?.sex, data.telestrokeNote?.creatinine);
                 const crclVal = crcl ? crcl.value : null;
                 const halfLifeMap = { apixaban: crclVal && crclVal < 30 ? 15 : 10, rivaroxaban: crclVal && crclVal < 30 ? 13 : 9, dabigatran: crclVal && crclVal < 30 ? 28 : crclVal && crclVal < 50 ? 18 : 14, edoxaban: crclVal && crclVal < 30 ? 16 : 12 };
@@ -6624,6 +6629,7 @@ Clinician Name`;
                   const doacName = ANTICOAGULANT_INFO[doacType]?.name || doacType;
                   const renalNote = crclVal && crclVal < 50 ? ` (CrCl ${Math.round(crclVal)} — clearance prolonged)` : !crclVal ? ' (CrCl unknown — enter for renal-adjusted estimate)' : '';
                   alerts.push({ severity: 'warning', label: 'Recent DOAC', message: `${doacName} ${hoursSinceDose.toFixed(0)}h ago${renalNote} - Check drug-specific assay`, field: 'lastDOACDose' });
+                }
                 }
                 }
               }
@@ -10818,6 +10824,15 @@ Clinician Name`;
             if (n.evtRecommended && !n.ticiScore) {
               warnings.push({ id: 'evt-no-tici', severity: 'warn', msg: 'EVT recommended but recanalization result (mTICI score) not documented — document post-procedure outcome.' });
             }
+            // EVT recommended but pre-mRS not documented or >2
+            if (n.evtRecommended) {
+              const mrs = parseInt(n.premorbidMRS, 10);
+              if (isNaN(mrs)) {
+                warnings.push({ id: 'evt-no-mrs', severity: 'warn', msg: 'EVT recommended but pre-stroke mRS not documented — most EVT trials required mRS ≤2.' });
+              } else if (mrs > 2) {
+                warnings.push({ id: 'evt-high-mrs', severity: 'error', msg: `EVT recommended but pre-stroke mRS is ${mrs} (>2) — most EVT trials excluded mRS >2. Consider TESTED trial if mRS 3-4.` });
+              }
+            }
 
             // Hemorrhagic transformation detected but antithrombotics not held
             if (n.hemorrhagicTransformation?.detected && !n.hemorrhagicTransformation?.antithromboticHeld) {
@@ -12096,9 +12111,38 @@ Clinician Name`;
             const elevatedAPTT = !Number.isNaN(pttVal) && pttVal > 40;
             const lowGlucose = !Number.isNaN(glucVal) && glucVal < 50;
             const isICH = telestrokeNote.diagnosisCategory === 'ich' || telestrokeNote.diagnosisCategory === 'sah';
-            const recentDOAC = telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== 'warfarin' && telestrokeNote.lastDOACType !== 'none';
+            // DOAC clearance-aware auto-block: only block if <97% cleared
+            const doacType = telestrokeNote.lastDOACType;
+            let recentDOAC = false;
+            let doacClearanceNote = '';
+            if (doacType && doacType !== 'warfarin' && doacType !== 'none') {
+              const lastDose = telestrokeNote.lastDOACDose ? new Date(telestrokeNote.lastDOACDose) : null;
+              if (lastDose && !Number.isNaN(lastDose.getTime())) {
+                const hoursSince = (Date.now() - lastDose.getTime()) / (1000 * 60 * 60);
+                if (hoursSince >= 0) {
+                  const crcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
+                  const crclVal = crcl ? crcl.value : null;
+                  const halfLifeMap = { apixaban: crclVal && crclVal < 30 ? 15 : 10, rivaroxaban: crclVal && crclVal < 30 ? 13 : 9, dabigatran: crclVal && crclVal < 30 ? 28 : crclVal && crclVal < 50 ? 18 : 14, edoxaban: crclVal && crclVal < 30 ? 16 : 12 };
+                  const estHalfLife = halfLifeMap[doacType] || 12;
+                  const halfLives = hoursSince / estHalfLife;
+                  const clearancePct = Math.min(99.9, (1 - Math.pow(0.5, halfLives)) * 100);
+                  if (clearancePct < 97) {
+                    recentDOAC = true;
+                    doacClearanceNote = ` (~${clearancePct.toFixed(0)}% cleared)`;
+                  }
+                } else {
+                  recentDOAC = true; // future date = can't calculate, block to be safe
+                  doacClearanceNote = ' (dose time in future — verify)';
+                }
+              } else {
+                recentDOAC = true; // no dose time entered, block to be safe
+                doacClearanceNote = ' (last dose time unknown)';
+              }
+            }
+            // Recent surgery auto-block
+            const recentSurgery = !!(telestrokeNote.tnkContraindicationChecklist?.recentIntracranialSurgery || telestrokeNote.tnkContraindicationChecklist?.recentMajorSurgery);
             const hasIE = !!telestrokeNote.infectiveEndocarditis;
-            const shouldBlock = warfarinWithHighINR || lowPlatelets || elevatedAPTT || lowGlucose || isICH || recentDOAC || hasIE;
+            const shouldBlock = warfarinWithHighINR || lowPlatelets || elevatedAPTT || lowGlucose || isICH || recentDOAC || hasIE || recentSurgery;
             if (shouldBlock) {
               const reasons = [];
               if (warfarinWithHighINR) reasons.push(`Warfarin with INR ${inrVal.toFixed(1)} (>1.7)`);
@@ -12108,8 +12152,14 @@ Clinician Name`;
               if (isICH) reasons.push(telestrokeNote.diagnosisCategory === 'sah' ? 'SAH diagnosis' : 'ICH diagnosis');
               if (hasIE) reasons.push('Infective endocarditis (Class III: TNK contraindicated)');
               if (recentDOAC) {
-                const doacName = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType;
-                reasons.push(`Recent ${doacName}`);
+                const doacName = ANTICOAGULANT_INFO[doacType]?.name || doacType;
+                reasons.push(`Recent ${doacName}${doacClearanceNote}`);
+              }
+              if (recentSurgery) {
+                const surgTypes = [];
+                if (telestrokeNote.tnkContraindicationChecklist?.recentIntracranialSurgery) surgTypes.push('intracranial/intraspinal');
+                if (telestrokeNote.tnkContraindicationChecklist?.recentMajorSurgery) surgTypes.push('major extracranial');
+                reasons.push(`Recent ${surgTypes.join(' & ')} surgery`);
               }
               const reasonStr = reasons.join('; ');
               setTelestrokeNote(prev => {
@@ -12119,7 +12169,7 @@ Clinician Name`;
             } else {
               setTelestrokeNote(prev => prev.tnkAutoBlocked ? { ...prev, tnkAutoBlocked: false, tnkAutoBlockReason: '' } : prev);
             }
-          }, [telestrokeNote.lastDOACType, telestrokeNote.inr, telestrokeNote.plateletCount, telestrokeNote.ptt, telestrokeNote.glucose, telestrokeNote.diagnosisCategory, telestrokeNote.infectiveEndocarditis]);
+          }, [telestrokeNote.lastDOACType, telestrokeNote.lastDOACDose, telestrokeNote.inr, telestrokeNote.plateletCount, telestrokeNote.ptt, telestrokeNote.glucose, telestrokeNote.diagnosisCategory, telestrokeNote.infectiveEndocarditis, telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.tnkContraindicationChecklist?.recentIntracranialSurgery, telestrokeNote.tnkContraindicationChecklist?.recentMajorSurgery]);
 
           useEffect(() => {
             const prev = decisionStateRef.current;
