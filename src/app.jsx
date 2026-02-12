@@ -7816,6 +7816,13 @@ Clinician Name`;
               const ctpParts = [];
               if (ctpS.coreVolume) ctpParts.push(`Core: ${ctpS.coreVolume} mL`);
               if (ctpS.penumbraVolume) ctpParts.push(`Penumbra: ${ctpS.penumbraVolume} mL`);
+              if (ctpS.coreVolume && ctpS.penumbraVolume) {
+                const c = parseFloat(ctpS.coreVolume), p = parseFloat(ctpS.penumbraVolume);
+                if (!isNaN(c) && !isNaN(p)) {
+                  if (c > 0) ctpParts.push(`Mismatch ratio: ${(p/c).toFixed(1)}`);
+                  else if (p > 0) ctpParts.push(`Mismatch ratio: Favorable (core=0)`);
+                }
+              }
               if (telestrokeNote.ctpResults) ctpParts.push(telestrokeNote.ctpResults);
               if (ctpParts.length > 0) brief += `- CTP: ${ctpParts.join('; ')}\n`;
             }
@@ -7984,7 +7991,10 @@ Clinician Name`;
                 if (ctpS.penumbraVolume) ctpParts.push(`Penumbra (Tmax>6s): ${ctpS.penumbraVolume} mL`);
                 if (ctpS.coreVolume && ctpS.penumbraVolume) {
                   const c = parseFloat(ctpS.coreVolume), p = parseFloat(ctpS.penumbraVolume);
-                  if (!isNaN(c) && !isNaN(p) && c > 0) ctpParts.push(`Mismatch ratio: ${(p/c).toFixed(1)}`);
+                  if (!isNaN(c) && !isNaN(p)) {
+                    if (c > 0) ctpParts.push(`Mismatch ratio: ${(p/c).toFixed(1)}`);
+                    else if (p > 0) ctpParts.push(`Mismatch ratio: Favorable (core=0)`);
+                  }
                 }
                 if (telestrokeNote.ctpResults) ctpParts.push(telestrokeNote.ctpResults);
                 if (ctpParts.length > 0) note += `- CTP: ${ctpParts.join('; ')}\n`;
@@ -8245,7 +8255,7 @@ Clinician Name`;
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
                 const progAcInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
                 note += `   - Pre-admission anticoagulant: ${progAcInfo.name}`;
-                if (telestrokeNote.doacTiming?.plannedRestartDate) note += ` — planned restart: ${telestrokeNote.doacTiming.plannedRestartDate}`;
+                if (telestrokeNote.doacTiming?.doacInitiationDay) note += ` — planned initiation: ${telestrokeNote.doacTiming.doacInitiationDay}`;
                 note += `\n`;
               }
               note += `   - Cardiac monitoring: ${(telestrokeNote.cardiacWorkup || {}).extendedMonitoringType || 'pending'}\n\n`;
@@ -8335,7 +8345,10 @@ Clinician Name`;
                 if (ctpS.penumbraVolume) ctpParts.push(`Penumbra: ${ctpS.penumbraVolume} mL`);
                 if (ctpS.coreVolume && ctpS.penumbraVolume) {
                   const c = parseFloat(ctpS.coreVolume), p = parseFloat(ctpS.penumbraVolume);
-                  if (!isNaN(c) && !isNaN(p) && c > 0) ctpParts.push(`Ratio: ${(p/c).toFixed(1)}`);
+                  if (!isNaN(c) && !isNaN(p)) {
+                    if (c > 0) ctpParts.push(`Ratio: ${(p/c).toFixed(1)}`);
+                    else if (p > 0) ctpParts.push(`Ratio: Favorable (core=0)`);
+                  }
                 }
                 if (telestrokeNote.ctpResults) ctpParts.push(telestrokeNote.ctpResults);
                 if (ctpParts.length > 0) note += `- CTP: ${ctpParts.join('; ')}\n`;
@@ -8423,6 +8436,15 @@ Clinician Name`;
               const falls = telestrokeNote.fallsRisk || {};
               if (falls.screenPerformed) {
                 note += `- Falls risk: ${falls.highRisk ? 'HIGH RISK' : 'standard risk'}${falls.preventionPlanInitiated ? ' — prevention plan initiated' : ''}${falls.balanceProgramReferral ? ', balance program referral' : ''}\n`;
+              }
+              // Screening tools
+              const dischSt = telestrokeNote.screeningTools || {};
+              if (dischSt.phq2Score || dischSt.mocaScore || dischSt.stopBangScore || dischSt.seizureRisk) {
+                note += `\nPOST-STROKE SCREENING:\n`;
+                if (dischSt.phq2Score) note += `- PHQ-2: ${dischSt.phq2Score}/6 (${dischSt.phq2Positive ? 'POSITIVE — consider full PHQ-9' : 'negative'})\n`;
+                if (dischSt.mocaScore) note += `- MoCA: ${dischSt.mocaScore}/30${dischSt.mocaReferral ? ' — neuropsych referral placed' : ''}\n`;
+                if (dischSt.stopBangScore) note += `- STOP-BANG: ${dischSt.stopBangScore}/8 (${parseInt(dischSt.stopBangScore) >= 5 ? 'HIGH risk' : parseInt(dischSt.stopBangScore) >= 3 ? 'INTERMEDIATE risk' : 'low risk'} OSA)\n`;
+                if (dischSt.seizureRisk) note += `- Seizure status: ${dischSt.seizureRisk.replace(/-/g, ' ')}\n`;
               }
               note += '\n';
               const dischMRS = (telestrokeNote.mrsAssessment || {}).discharge;
@@ -8531,7 +8553,21 @@ Clinician Name`;
             note = note.replace(/{aspects}/g, aspectsStr);
             const vesselStr = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ');
             note = note.replace(/{vesselOcclusion}/g, vesselStr ? `Occlusion: ${vesselStr}` : '');
-            note = note.replace(/{ctpResults}/g, telestrokeNote.ctpResults || 'N/A');
+            {
+              const ctpS = telestrokeNote.ctpStructured || {};
+              const ctpParts = [];
+              if (ctpS.coreVolume) ctpParts.push(`Core: ${ctpS.coreVolume} mL`);
+              if (ctpS.penumbraVolume) ctpParts.push(`Penumbra (Tmax>6s): ${ctpS.penumbraVolume} mL`);
+              if (ctpS.coreVolume && ctpS.penumbraVolume) {
+                const c = parseFloat(ctpS.coreVolume), p = parseFloat(ctpS.penumbraVolume);
+                if (!isNaN(c) && !isNaN(p)) {
+                  if (c > 0) ctpParts.push(`Mismatch ratio: ${(p/c).toFixed(1)}`);
+                  else if (p > 0) ctpParts.push(`Mismatch ratio: Favorable (core=0)`);
+                }
+              }
+              if (telestrokeNote.ctpResults) ctpParts.push(telestrokeNote.ctpResults);
+              note = note.replace(/{ctpResults}/g, ctpParts.length > 0 ? ctpParts.join('; ') : 'N/A');
+            }
             note = note.replace(/{diagnosis}/g, telestrokeNote.diagnosis || '');
             note = note.replace(/{tnkAdminTime}/g, formatTime(telestrokeNote.tnkAdminTime));
             note = note.replace(/{recommendationsText}/g, telestrokeNote.recommendationsText || '');
@@ -9271,7 +9307,7 @@ Clinician Name`;
             if (n.lastDOACType === 'edoxaban') {
               const edoCrCl = calculateCrCl(n.age, n.weight, n.sex, n.creatinine);
               if (edoCrCl && edoCrCl.value > 95) {
-                warnings.push({ id: 'edoxaban-crcl-high', severity: 'warn', msg: `Edoxaban with CrCl ${edoCrCl.value} mL/min (>95) — reduced efficacy per ENGAGE AF-TIMI 48, avoid edoxaban. Verify CrCl reflects baseline kidney function (not augmented renal clearance or post-rehydration).` });
+                warnings.push({ id: 'edoxaban-crcl-high', severity: 'error', msg: `Edoxaban with CrCl ${edoCrCl.value} mL/min (>95) — AVOID: reduced efficacy and increased stroke risk per ENGAGE AF-TIMI 48 and FDA labeling. Switch to alternative DOAC.` });
               }
             }
 
@@ -10304,13 +10340,21 @@ Clinician Name`;
             setEncounterPhase('phase-triage');
             setNoteTemplate('consult');
             setCalcDrawerOpen(false);
+            setLastAlertPlayed(null);
+            setAlertFlashing(false);
+            setElapsedSeconds(0);
+            setEditableTemplate(defaultTelestrokeTemplate);
+            setCriticalAlerts([]);
+            setDeidWarnings({});
+            setIchVolumeParams({ a: '', b: '', thicknessMm: '', numSlices: '' });
 
             const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',
                                   'abcd2Items', 'chads2vascItems', 'ropeItems', 'huntHessGrade', 'wfnsGrade',
                                   'hasbledItems', 'rcvs2Items', 'phasesItems', 'strokeCodeForm', 'lkwTime',
                                   'currentStep', 'completedSteps', 'aspectsRegionState', 'pcAspectsRegions',
                                   'telestrokeNote', 'consultationType',
-                                  'evtDecisionInputs', 'doacProtocol', 'nursingFlowsheetChecks'];
+                                  'evtDecisionInputs', 'doacProtocol', 'nursingFlowsheetChecks',
+                                  'ichVolumeParams'];
             keysToRemove.forEach((key) => removeKey(key));
 
             navigateTo('encounter');
@@ -19375,6 +19419,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <span className="text-xs">Falls risk screened</span>
                                   </label>
                                   <label className="flex items-center gap-2">
+                                    <input type="checkbox" checked={!!(telestrokeNote.fallsRisk || {}).highRisk}
+                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, fallsRisk: {...(telestrokeNote.fallsRisk || {}), highRisk: e.target.checked}})} />
+                                    <span className="text-xs font-semibold text-red-600">HIGH RISK</span>
+                                  </label>
+                                  <label className="flex items-center gap-2">
                                     <input type="checkbox" checked={!!(telestrokeNote.fallsRisk || {}).preventionPlanInitiated}
                                       onChange={(e) => setTelestrokeNote({...telestrokeNote, fallsRisk: {...(telestrokeNote.fallsRisk || {}), preventionPlanInitiated: e.target.checked}})} />
                                     <span className="text-xs">Prevention plan initiated</span>
@@ -24366,7 +24415,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               ? (() => {
                                   const cCm = parseFloat(ichVolumeParams.thicknessMm) / 10 * parseFloat(ichVolumeParams.numSlices);
                                   const vol = (parseFloat(ichVolumeParams.a) * parseFloat(ichVolumeParams.b) * cCm) / 2;
-                                  return isNaN(vol) || vol <= 0 ? null : vol < 30 ? 4 : vol < 60 ? 2 : 0;
+                                  return isNaN(vol) || vol <= 0 ? null : vol < 30 ? 4 : vol < 60 ? 2 : vol < 100 ? 1 : 0;
                                 })()
                               : null,
                             age: telestrokeNote.age ? (parseInt(telestrokeNote.age) < 70 ? 2 : parseInt(telestrokeNote.age) <= 79 ? 1 : 0) : null,
