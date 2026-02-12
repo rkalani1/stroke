@@ -220,7 +220,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
               t.type === 'warning' ? 'bg-amber-600 text-white border-amber-700' :
               'bg-slate-800 text-white border-slate-700'
             }`,
-            role: 'status'
+            role: t.type === 'error' ? 'alert' : 'status'
           },
             React.createElement('span', { className: 'flex-1' }, t.message),
             React.createElement('button', {
@@ -8641,6 +8641,67 @@ Clinician Name`;
                   if (ichAc.laaoConsidered) note += `- LAAO evaluation considered\n`;
                 }
               }
+              // Young adult workup (age <50)
+              {
+                const ya = telestrokeNote.youngAdultWorkup || {};
+                const age = parseInt(telestrokeNote.age, 10) || 0;
+                const hasTier1 = ya.tier1Items && Object.values(ya.tier1Items).some(Boolean);
+                const hasTier2 = ya.tier2Items && Object.values(ya.tier2Items).some(Boolean);
+                const hasTier3 = ya.tier3Items && Object.values(ya.tier3Items).some(Boolean);
+                if (age > 0 && age < 50 && (hasTier1 || hasTier2 || hasTier3)) {
+                  note += `\nYOUNG ADULT STROKE WORKUP (Age ${age}):\n`;
+                  if (hasTier1) {
+                    const t1 = ya.tier1Items;
+                    const done = [];
+                    if (t1.ctaMra) done.push('CTA/MRA');
+                    if (t1.tteBubble) done.push('TTE with bubble');
+                    if (t1.ecg) done.push('ECG');
+                    if (t1.telemetry) done.push('telemetry');
+                    if (t1.drugScreen) done.push('urine drug screen');
+                    if (t1.basicLabs) done.push('basic labs');
+                    note += `- Tier 1: ${done.join(', ')}\n`;
+                  }
+                  if (hasTier2) {
+                    const t2 = ya.tier2Items;
+                    const done = [];
+                    if (t2.tee) done.push('TEE');
+                    if (t2.extendedMonitoring) done.push('extended cardiac monitoring');
+                    if (t2.aplPanel) done.push('APL panel');
+                    note += `- Tier 2: ${done.join(', ')}\n`;
+                  }
+                  if (hasTier3) {
+                    const t3 = ya.tier3Items;
+                    const done = [];
+                    if (t3.rcvsWorkup) done.push('RCVS workup');
+                    if (t3.thrombophilia) done.push('thrombophilia panel');
+                    if (t3.fabry) done.push('Fabry screening');
+                    if (t3.cadasil) done.push('CADASIL testing');
+                    if (t3.vasculitis) done.push('vasculitis workup');
+                    note += `- Tier 3: ${done.join(', ')}\n`;
+                  }
+                }
+              }
+              // Falls risk assessment
+              {
+                const fr = telestrokeNote.fallsRisk || {};
+                if (fr.highRisk) {
+                  note += `\n*** FALLS RISK: HIGH ***\n`;
+                  note += `- ${fr.preventionPlanInitiated ? 'Prevention plan active' : 'Prevention plan NEEDED'}\n`;
+                  note += `- Bed alarm, sitter, floor mat, supervised ambulation only\n`;
+                  if (fr.balanceProgramReferral) note += `- PT/balance program referral placed\n`;
+                }
+              }
+              // Driving restrictions
+              {
+                const dr = telestrokeNote.drivingRestrictions || {};
+                if (dr.restrictionDuration || dr.counselingProvided) {
+                  note += `\nDRIVING RESTRICTIONS:\n`;
+                  if (dr.restrictionDuration) note += `- Period: ${dr.restrictionDuration}\n`;
+                  if (dr.residualDeficits) note += `- Rationale: ${dr.residualDeficits}\n`;
+                  if (dr.drivingEvalReferral) note += `- OT driving eval ordered — do NOT drive until cleared\n`;
+                  if (dr.commercialDriver) note += `- Commercial driver — DOT medical certification required\n`;
+                }
+              }
               // Drug interaction alerts
               {
                 const di = telestrokeNote.drugInteractions || {};
@@ -11053,6 +11114,22 @@ Clinician Name`;
               warnings.push({ id: 'doac-active-bleeding', severity: 'error', msg: `Active internal bleeding documented on patient with pre-admission ${acName} — hold anticoagulation restart. Manage active bleeding; consider reversal if not already initiated.` });
             }
 
+            // SAH grading scale completeness
+            if (n.diagnosisCategory === 'sah' && n.sahGrade && !n.sahGradeScale) {
+              warnings.push({ id: 'sah-grade-no-scale', severity: 'warn', msg: 'SAH Grade documented but grading scale not specified — select Hunt-Hess, WFNS, or Modified Fisher scale for clarity.' });
+            }
+
+            // BP phase-diagnosis coherence
+            if (n.diagnosisCategory === 'ich' && n.bpPhase && !['ich'].includes(n.bpPhase)) {
+              warnings.push({ id: 'bp-phase-ich-mismatch', severity: 'warn', msg: `ICH diagnosis but BP phase set to '${n.bpPhase}' — ICH guideline recommends SBP <140 (INTERACT3/AHA 2022). Set BP phase to ICH.` });
+            }
+            if (n.diagnosisCategory === 'sah' && n.bpPhase && !['sah', 'sah-secured'].includes(n.bpPhase)) {
+              warnings.push({ id: 'bp-phase-sah-mismatch', severity: 'warn', msg: `SAH diagnosis but BP phase set to '${n.bpPhase}' — SAH target is SBP <160 (pre-securing) or <140 (post-securing). Verify BP phase.` });
+            }
+            if (n.diagnosisCategory === 'ischemic' && ['ich', 'sah', 'sah-secured'].includes(n.bpPhase)) {
+              warnings.push({ id: 'bp-phase-ischemic-mismatch', severity: 'warn', msg: `Ischemic stroke diagnosis but BP phase set to '${n.bpPhase}' (hemorrhage target). Use pre-TNK (185/110) or post-TNK/EVT (180/105) for ischemic stroke.` });
+            }
+
             // Post-EVT BP <140 is Class III: Harm
             if (n.evtRecommended && n.bpPostEVT) {
               const bpMatch = n.bpPostEVT.match(/(\d+)/);
@@ -11088,7 +11165,7 @@ Clinician Name`;
                 color: 'red',
                 orders: [
                   'Target BP <185/110 mmHg prior to and during TNK',
-                  'Labetalol 10-20 mg IV push over 1-2 min, may repeat x1',
+                  'Labetalol 10-20 mg IV push over 1-2 min; if BP not controlled, repeat 40-80 mg IV q10min (max 300 mg total)',
                   'If BP not controlled: Nicardipine 5 mg/hr IV, titrate by 2.5 mg/hr q5-15 min (max 15 mg/hr)',
                   'If BP cannot be maintained <185/110: HOLD thrombolysis',
                   `Current BP: ${n.presentingBP || '***'}`,
@@ -11242,7 +11319,7 @@ Clinician Name`;
                 reversalOrders.push(
                   'STOP heparin infusion immediately',
                   'Assessment: Anti-Xa level, aPTT',
-                  'Protamine: 1 mg per 100 units UFH given in last 2-3h (max 50 mg/dose) — e.g., if 1500 units/hr x 2h = 3000 units → protamine 30 mg IV over 10 min (COR 2a/C)',
+                  'Protamine dosing: 1 mg per 100 units UFH infused in the PRECEDING 2-3 hours (max 50 mg/dose); if >3h since last dose, reduce to 0.5 mg/100 units — e.g., 1500 units/hr x 2h = 3000 units → protamine 30 mg IV over 10 min (COR 2a/C)',
                   'Recheck anti-Xa after infusion',
                   'If anti-Xa >0.1 → additional protamine 0.5 mg per 100 units, max cumulative 50 mg',
                   'If platelets <100K: send HIT antibodies, consult Hematology if positive'
@@ -13105,7 +13182,7 @@ Clinician Name`;
                 document.body.style.overflow = '';
                 document.body.style.paddingRight = '';
                 document.removeEventListener('keydown', trapFocus);
-                if (previouslyFocused && previouslyFocused.focus) previouslyFocused.focus();
+                if (previouslyFocused && previouslyFocused.isConnected && typeof previouslyFocused.focus === 'function') previouslyFocused.focus();
               };
             }
           }, [protocolModal, showChangelog, showKeyboardHelp, calcDrawerOpen, confirmConfig, settingsMenuOpen]);
@@ -13497,6 +13574,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       />
                       <i aria-hidden="true" data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-slate-400"></i>
 
+                      {searchOpen && searchContext === 'header' && (
+                        <div aria-live="polite" aria-atomic="true" className="sr-only">
+                          {searchResults.length > 0 ? `${searchResults.length} results found` : searchQuery.length >= 2 ? 'No results found' : ''}
+                        </div>
+                      )}
+
                       {searchOpen && searchContext === 'header' && searchResults.length > 0 && (
                         <div id="search-listbox" role="listbox" aria-label="Search results" className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white shadow-lg rounded-lg border max-h-96 overflow-y-auto z-50">
                           {(() => {
@@ -13781,7 +13864,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {alert.message}
                         </p>
                         <p className={`text-sm mt-1 ${
-                          alert.level === 'critical' ? 'text-red-700' : 'text-amber-700'
+                          alert.level === 'critical' ? 'text-red-800' : 'text-amber-800'
                         }`}>
                           {alert.action}
                         </p>
@@ -13879,6 +13962,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <button
                             onClick={() => setCalcDrawerOpen(true)}
                             className="ml-auto text-xs font-medium text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                            aria-label="Open calculators"
                             title="Open calculators"
                           >
                             <i aria-hidden="true" data-lucide="calculator" className="w-3.5 h-3.5"></i>
@@ -25997,6 +26081,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <button
                             onClick={() => copyToClipboard(`NIHSS: ${nihssScore}`, 'NIHSS Score')}
                             className="p-1.5 hover:bg-red-100 rounded transition-colors"
+                            aria-label="Copy NIHSS score to clipboard"
                           >
                             <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-red-600"></i>
                           </button>
