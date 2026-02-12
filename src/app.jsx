@@ -2920,7 +2920,7 @@ Clinician Name`;
                     return occlusion.length > 0;
                   }, required: true },
                 { id: 'domainMatch', label: 'Matches Low-NIHSS or MeVO domain', field: 'nihss', evaluate: (data) => {
-                    const nihss = parseInt(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss);
+                    const nihss = parseInt(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 10);
                     const occlusion = data.telestrokeNote?.vesselOcclusion || [];
                     // Low NIHSS domain: NIHSS 0-5 with ICA or M1
                     const lowNIHSSMatch = nihss <= 5 && (occlusion.includes('ICA') || occlusion.includes('M1'));
@@ -2952,7 +2952,7 @@ Clinician Name`;
               ],
               keyCriteria: [
                 { id: 'age', label: 'Age 18-79', field: 'age', evaluate: (data) => {
-                    const age = parseInt(data.telestrokeNote?.age || data.strokeCodeForm?.age);
+                    const age = parseInt(data.telestrokeNote?.age || data.strokeCodeForm?.age, 10);
                     return age >= 18 && age <= 79;
                   }, required: true },
                 { id: 'timeWindow', label: 'Within 16h from LKW', field: 'lkw', evaluate: (data) => {
@@ -2988,7 +2988,7 @@ Clinician Name`;
               keyCriteria: [
                 { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
                 { id: 'premorbidMRS', label: 'Pre-stroke mRS 3-4', field: 'premorbidMRS', evaluate: (data) => {
-                    const mrs = parseInt(data.telestrokeNote?.premorbidMRS);
+                    const mrs = parseInt(data.telestrokeNote?.premorbidMRS, 10);
                     return mrs >= 3 && mrs <= 4;
                   }, required: true },
                 { id: 'nihss', label: 'NIHSS ≥6', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 6), required: true },
@@ -3085,7 +3085,7 @@ Clinician Name`;
               ],
               keyCriteria: [
                 { id: 'age', label: 'Age 18-80', field: 'age', evaluate: (data) => {
-                    const age = parseInt(data.telestrokeNote?.age || data.strokeCodeForm?.age);
+                    const age = parseInt(data.telestrokeNote?.age || data.strokeCodeForm?.age, 10);
                     return age >= 18 && age <= 80;
                   }, required: true },
                 { id: 'ichConfirmed', label: 'ICH confirmed on imaging', field: 'diagnosis', evaluate: (data) => {
@@ -3514,7 +3514,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
-                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
                   /ica|m1|mca/i.test(v)
@@ -3534,7 +3534,7 @@ Clinician Name`;
               reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               caveats: 'Collateral grading on multiphase CTA or single-phase CTA may support EVT candidacy when CTP unavailable.',
               conditions: (data) => {
-                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
                   /ica|m1|mca/i.test(v)
@@ -3616,7 +3616,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
-                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
                 const hasBasilar = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
                   /basilar/i.test(v)
@@ -3640,7 +3640,7 @@ Clinician Name`;
               reference: 'AIS 2026 Rec #12. CHANCE: Wang Y et al. NEJM 2013. POINT: Johnston SC et al. NEJM 2018. CHANCE-2: Wang Y et al. NEJM 2021.',
               medications: ['ASA 325 mg load then 81 mg daily', 'Clopidogrel 300 mg load then 75 mg daily x 21 days', 'Alt (CYP2C19 LOF): Ticagrelor 180 mg load then 90 mg BID + ASA x 21 days'],
               conditions: (data) => {
-                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
                 return isIschemic && nihss <= 3 && !data.telestrokeNote?.tnkRecommended;
@@ -3658,7 +3658,7 @@ Clinician Name`;
               reference: 'AIS 2026 Rec #13. THALES: Johnston SC et al. NEJM 2020.',
               medications: ['Ticagrelor 180 mg load then 90 mg BID x 30 days', 'ASA 325 mg load then 81 mg daily x 30 days'],
               conditions: (data) => {
-                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
                 return isIschemic && nihss >= 4 && nihss <= 5 && !data.telestrokeNote?.tnkRecommended;
@@ -3931,7 +3931,7 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=34',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const gcs = parseInt(data.telestrokeNote?.gcs || data.telestrokeNote?.gcsTotal) || null;
+                const gcs = parseInt(data.telestrokeNote?.gcs || data.telestrokeNote?.gcsTotal, 10) || null;
                 return (dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral')) && gcs !== null && gcs <= 12;
               }
             },
@@ -3999,7 +3999,7 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=37',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const gcs = parseInt(data.telestrokeNote?.gcs || data.telestrokeNote?.gcsTotal) || null;
+                const gcs = parseInt(data.telestrokeNote?.gcs || data.telestrokeNote?.gcsTotal, 10) || null;
                 return (dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral')) && gcs !== null && gcs >= 5 && gcs <= 12;
               }
             },
@@ -4021,7 +4021,7 @@ Clinician Name`;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
                   /ica|m1|mca|basilar/i.test(v)
                 );
-                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 return hasLVO && nihss >= 6;
               }
             },
@@ -4071,8 +4071,8 @@ Clinician Name`;
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
-                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
-                const age = parseInt(data.telestrokeNote?.age) || 0;
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
+                const age = parseInt(data.telestrokeNote?.age, 10) || 0;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const isIschemic = dx.includes('ischemic') || dx.includes('mca') || dx.includes('malignant');
                 return isIschemic && nihss >= 15 && age > 0 && age < 60;
@@ -4111,7 +4111,7 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=48',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const age = parseInt(data.telestrokeNote?.age) || 0;
+                const age = parseInt(data.telestrokeNote?.age, 10) || 0;
                 return (dx.includes('cryptogenic') || dx.includes('pfo') || dx.includes('esus')) && age >= 18 && age <= 60;
               }
             },
@@ -4128,7 +4128,7 @@ Clinician Name`;
               reference: 'Matthews et al. J Stroke Cerebrovasc Dis. 2022;31(6):106431. Chiasakul & Cuker. Hematology. 2018.',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const age = parseInt(data.telestrokeNote?.age) || 0;
+                const age = parseInt(data.telestrokeNote?.age, 10) || 0;
                 const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
                 return (dx.includes('cryptogenic') || dx.includes('esus') || toast === 'cryptogenic') && age < 50;
               }
@@ -4164,7 +4164,7 @@ Clinician Name`;
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
-                const nihss = parseInt(data.telestrokeNote?.nihss) || data.nihssScore || 0;
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const isLargeIschemic = (dx.includes('ischemic') || dx.includes('stroke')) && nihss >= 15;
                 return isICH || isLargeIschemic;
               }
@@ -4294,7 +4294,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
-                const glucose = parseInt(data.telestrokeNote?.glucose) || 0;
+                const glucose = parseInt(data.telestrokeNote?.glucose, 10) || 0;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const isStroke = dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich');
                 return isStroke && (glucose > 180 || glucose < 60 || glucose === 0);
@@ -4454,7 +4454,7 @@ Clinician Name`;
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const isSAH = dx.includes('sah') || dx.includes('subarachnoid');
-                const grade = parseInt(data.telestrokeNote?.sahGrade) || 0;
+                const grade = parseInt(data.telestrokeNote?.sahGrade, 10) || 0;
                 return isSAH && grade >= 3;
               }
             },
@@ -4542,7 +4542,7 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456#page=2',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const age = parseInt(data.telestrokeNote?.age) || 0;
+                const age = parseInt(data.telestrokeNote?.age, 10) || 0;
                 return (dx.includes('cvt') || dx.includes('venous thrombosis') || dx.includes('cerebral venous') || dx.includes('dural sinus')) && age <= 60;
               }
             },
@@ -5067,7 +5067,7 @@ Clinician Name`;
               reference: 'CHANCE-2: NEJM 2021. 1-year follow-up: Neurology 2024. THALES: NEJM 2020.',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const nihss = parseInt(data.telestrokeNote?.nihss) || 0;
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || 0;
                 return (dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia')) && nihss <= 5;
               }
             },
@@ -5278,7 +5278,7 @@ Clinician Name`;
               reference: 'SAVE: NEJM 2016. CPAP meta-analysis: PMC 2023.',
               conditions: (data) => {
                 const screening = data.telestrokeNote?.screeningTools || {};
-                return (parseInt(screening.stopBangScore) || 0) >= 3 || !!screening.stopBangPositive;
+                return (parseInt(screening.stopBangScore, 10) || 0) >= 3 || !!screening.stopBangPositive;
               }
             },
 
@@ -5556,7 +5556,7 @@ Clinician Name`;
               guideline: 'AHA 2025 Palliative Care Statement; AHA/ASA 2022 ICH',
               reference: 'AHA Palliative Care: Stroke 2025.',
               conditions: (data) => {
-                const nihss = parseInt(data.telestrokeNote?.nihss) || 0;
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || 0;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 return nihss >= 20 || dx.includes('ich') || dx.includes('hemorrhag');
               }
@@ -5692,7 +5692,7 @@ Clinician Name`;
               { id: 'cvt-icp', label: 'ICP Management', section: 'cvt-management-section', check: (d) => !!d.telestrokeNote?.cvtIcpManaged },
               { id: 'cvt-seizure', label: 'Seizure Mgmt', section: 'cvt-management-section', check: (d) => !!d.telestrokeNote?.cvtSeizureManaged },
               { id: 'cvt-heme', label: 'Hematology', section: 'cvt-management-section', check: (d) => !!d.telestrokeNote?.cvtHematologyConsulted,
-                skip: (d) => { const age = parseInt(d.telestrokeNote?.age) || 0; return age > 60; } },
+                skip: (d) => { const age = parseInt(d.telestrokeNote?.age, 10) || 0; return age > 60; } },
               { id: 'recommendations', label: 'Recommendations', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.recommendationsText }
             ],
             tia: [
@@ -6119,7 +6119,7 @@ Clinician Name`;
             if (items.cortical) score += 1;
 
             // Age points
-            const age = parseInt(items.age) || 0;
+            const age = parseInt(items.age, 10) || 0;
             if (age >= 18 && age <= 29) score += 5;
             else if (age >= 30 && age <= 39) score += 4;
             else if (age >= 40 && age <= 49) score += 3;
@@ -6631,8 +6631,8 @@ Clinician Name`;
             const bp = data.telestrokeNote?.presentingBP || '';
             const bpMatch = bp.match(/(\d+)\s*\/\s*(\d+)/);
             if (bpMatch) {
-              const systolic = parseInt(bpMatch[1]);
-              const diastolic = parseInt(bpMatch[2]);
+              const systolic = parseInt(bpMatch[1], 10);
+              const diastolic = parseInt(bpMatch[2], 10);
               if (systolic > 185 || diastolic > 110) {
                 alerts.push({ severity: 'warning', label: 'Elevated BP', message: `${systolic}/${diastolic} exceeds 185/110 - Must lower before TNK`, field: 'presentingBP' });
               }
@@ -6664,8 +6664,8 @@ Clinician Name`;
             }
 
             // Age + NIHSS check (SPAN-100)
-            const age = parseInt(data.telestrokeNote?.age);
-            const nihss = parseInt(data.telestrokeNote?.nihss);
+            const age = parseInt(data.telestrokeNote?.age, 10);
+            const nihss = parseInt(data.telestrokeNote?.nihss, 10);
             if (!isNaN(age) && !isNaN(nihss) && (age + nihss >= 100)) {
               alerts.push({ severity: 'info', label: 'SPAN-100', message: `Age ${age} + NIHSS ${nihss} = ${age + nihss} ≥100 - Higher sICH risk`, field: 'nihss' });
             }
@@ -8017,7 +8017,7 @@ Clinician Name`;
                 brief += `\nSCREENING:\n`;
                 if (st.phq2Score) brief += `- PHQ-2: ${st.phq2Score}/6 (${st.phq2Positive ? 'POSITIVE — consider full PHQ-9' : 'negative'})\n`;
                 if (st.mocaScore) brief += `- MoCA: ${st.mocaScore}/30${st.mocaReferral ? ' — neuropsych referral' : ''}\n`;
-                if (st.stopBangScore) brief += `- STOP-BANG: ${st.stopBangScore}/8 (${parseInt(st.stopBangScore) >= 5 ? 'HIGH' : parseInt(st.stopBangScore) >= 3 ? 'INTERMEDIATE' : 'low'} OSA risk)\n`;
+                if (st.stopBangScore) brief += `- STOP-BANG: ${st.stopBangScore}/8 (${parseInt(st.stopBangScore, 10) >= 5 ? 'HIGH' : parseInt(st.stopBangScore, 10) >= 3 ? 'INTERMEDIATE' : 'low'} OSA risk)\n`;
                 if (st.seizureRisk) brief += `- Seizure: ${st.seizureRisk.replace(/-/g, ' ')}\n`;
               }
             }
@@ -8229,7 +8229,7 @@ Clinician Name`;
             const formatTime = (timeStr) => {
               if (!timeStr) return '';
               const [hours, minutes] = timeStr.split(':');
-              const hour = parseInt(hours);
+              const hour = parseInt(hours, 10);
               const ampm = hour >= 12 ? 'pm' : 'am';
               const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
               return `${displayHour}:${minutes} ${ampm}`;
@@ -9414,7 +9414,7 @@ Clinician Name`;
                 note += `\nPOST-STROKE SCREENING:\n`;
                 if (dischSt.phq2Score) note += `- PHQ-2: ${dischSt.phq2Score}/6 (${dischSt.phq2Positive ? 'POSITIVE — consider full PHQ-9' : 'negative'})\n`;
                 if (dischSt.mocaScore) note += `- MoCA: ${dischSt.mocaScore}/30${dischSt.mocaReferral ? ' — neuropsych referral placed' : ''}\n`;
-                if (dischSt.stopBangScore) note += `- STOP-BANG: ${dischSt.stopBangScore}/8 (${parseInt(dischSt.stopBangScore) >= 5 ? 'HIGH risk' : parseInt(dischSt.stopBangScore) >= 3 ? 'INTERMEDIATE risk' : 'low risk'} OSA)\n`;
+                if (dischSt.stopBangScore) note += `- STOP-BANG: ${dischSt.stopBangScore}/8 (${parseInt(dischSt.stopBangScore, 10) >= 5 ? 'HIGH risk' : parseInt(dischSt.stopBangScore, 10) >= 3 ? 'INTERMEDIATE risk' : 'low risk'} OSA)\n`;
                 if (dischSt.seizureRisk) note += `- Seizure status: ${dischSt.seizureRisk.replace(/-/g, ' ')}\n`;
               }
               note += '\n';
@@ -10203,7 +10203,7 @@ Clinician Name`;
             const occlusion = inputs.occlusion;
             const aspects = inputs.aspects;
             const mrs = inputs.mrs;
-            const nihss = parseInt(inputs.nihss);
+            const nihss = parseInt(inputs.nihss, 10);
             const pcAspects = inputs.pcAspects;
 
             const resolveWindow = () => {
@@ -10276,7 +10276,7 @@ Clinician Name`;
 
               if (window === '6-24') {
                 // Use encounter NIHSS for late-window check (DAWN requires ≥10, DEFUSE-3 requires ≥6)
-                const lateNihss = !isNaN(nihss) && nihss > 0 ? nihss : parseInt(telestrokeNote.nihss || nihssScore) || 0;
+                const lateNihss = !isNaN(nihss) && nihss > 0 ? nihss : parseInt(telestrokeNote.nihss || nihssScore, 10) || 0;
                 if (aspects === '6-10' && mrs === '0-1') {
                   if (lateNihss >= 6) return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: [`ASPECTS 6-10, mRS 0-1, NIHSS ${lateNihss} ≥6 (DAWN/DEFUSE-3)`] };
                   if (lateNihss > 0 && lateNihss < 6) return { classOfRec: 'IIb', label: 'EVT may be considered (low NIHSS)', color: 'amber', rationale: [`Late window, ASPECTS 6-10, mRS 0-1, but NIHSS ${lateNihss} <6 — outside DAWN/DEFUSE-3 enrollment criteria`] };
@@ -10326,7 +10326,7 @@ Clinician Name`;
             const patient = useGlobalPatient();
             useEffect(() => {
               if (!autoSyncCalculators || !patient) return;
-              const age = parseInt(patient.age);
+              const age = parseInt(patient.age, 10);
               const isFemale = patient.sex === 'F';
               if (!Number.isNaN(age)) {
                 setAbcd2Items(prev => (prev.age60 === (age >= 60) ? prev : { ...prev, age60: age >= 60 }));
@@ -10377,11 +10377,11 @@ Clinician Name`;
             if (!isNaN(weight) && (weight < 20 || weight > 350)) {
               warnings.push({ id: 'weight-range', severity: 'error', msg: `Weight ${weight} kg is outside plausible range (20-350 kg)` });
             }
-            const age = parseInt(n.age);
+            const age = parseInt(n.age, 10);
             if (!isNaN(age) && (age < 0 || age > 120)) {
               warnings.push({ id: 'age-range', severity: 'error', msg: `Age ${age} is outside plausible range` });
             }
-            const glucose = parseInt(n.glucose);
+            const glucose = parseInt(n.glucose, 10);
             if (!isNaN(glucose) && (glucose < 10 || glucose > 1500)) {
               warnings.push({ id: 'glucose-range', severity: 'error', msg: `Glucose ${glucose} mg/dL is outside plausible range` });
             }
@@ -10389,7 +10389,7 @@ Clinician Name`;
             if (!isNaN(inr) && (inr < 0.5 || inr > 20)) {
               warnings.push({ id: 'inr-range', severity: 'warn', msg: `INR ${inr} is unusual — verify result` });
             }
-            const platelets = parseInt(n.plateletCount);
+            const platelets = parseInt(n.plateletCount, 10);
             if (platelets && platelets < 10) {
               warnings.push({ id: 'plt-low', severity: 'warn', msg: `Platelets ${platelets}K — critically low, verify result` });
             }
@@ -10402,8 +10402,8 @@ Clinician Name`;
             const bpStr = n.presentingBP || '';
             const bpMatch = bpStr.match(/(\d+)\s*\/\s*(\d+)/);
             if (bpMatch) {
-              const sbp = parseInt(bpMatch[1]);
-              const dbp = parseInt(bpMatch[2]);
+              const sbp = parseInt(bpMatch[1], 10);
+              const dbp = parseInt(bpMatch[2], 10);
               if (sbp < 50 || sbp > 300) warnings.push({ id: 'sbp-range', severity: 'error', msg: `SBP ${sbp} mmHg is outside plausible range` });
               if (dbp < 20 || dbp > 200) warnings.push({ id: 'dbp-range', severity: 'error', msg: `DBP ${dbp} mmHg is outside plausible range` });
               if (dbp >= sbp) warnings.push({ id: 'bp-inversion', severity: 'error', msg: `DBP (${dbp}) >= SBP (${sbp}) — check BP entry` });
@@ -10552,7 +10552,7 @@ Clinician Name`;
             const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
             const isSAH = dx.includes('sah') || dx.includes('subarachnoid');
             const meds = (n.medications || '').toLowerCase();
-            const nihss = parseInt(n.nihss) || nihssScore || 0;
+            const nihss = parseInt(n.nihss, 10) || nihssScore || 0;
             const weight = parseFloat(n.weight) || 0;
             const bundles = [];
 
@@ -10973,7 +10973,7 @@ Clinician Name`;
 
           const getNextBestAction = () => {
             const timeFrom = calculateTimeFromLKW();
-            const nihss = parseInt(telestrokeNote.nihss) || nihssScore || 0;
+            const nihss = parseInt(telestrokeNote.nihss, 10) || nihssScore || 0;
             const dx = (telestrokeNote.diagnosis || '').toLowerCase();
             const pathwayType = getPathwayForDiagnosis(telestrokeNote.diagnosis);
 
@@ -11763,7 +11763,7 @@ Clinician Name`;
 
           useEffect(() => {
             const inrVal = parseFloat(telestrokeNote.inr);
-            const pltVal = parseInt(telestrokeNote.plateletCount);
+            const pltVal = parseInt(telestrokeNote.plateletCount, 10);
             const pttVal = parseFloat(telestrokeNote.ptt);
             const glucVal = parseFloat(telestrokeNote.glucose);
             const warfarinWithHighINR = telestrokeNote.lastDOACType === 'warfarin' && !Number.isNaN(inrVal) && inrVal > 1.7;
@@ -13626,7 +13626,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               if (e.target.value) {
                                 const [hours, minutes] = e.target.value.split(':');
                                 const newDate = lkwTime ? new Date(lkwTime) : new Date();
-                                newDate.setHours(parseInt(hours), parseInt(minutes));
+                                newDate.setHours(parseInt(hours, 10), parseInt(minutes, 10));
                                 setLkwTime(newDate);
                               }
                             }}
@@ -14047,7 +14047,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 if (e.target.value) {
                                   const [hours, minutes] = e.target.value.split(':');
                                   const newDate = lkwTime ? new Date(lkwTime) : new Date();
-                                  newDate.setHours(parseInt(hours), parseInt(minutes));
+                                  newDate.setHours(parseInt(hours, 10), parseInt(minutes, 10));
                                   setLkwTime(newDate);
                                 }
                               }}
@@ -14214,7 +14214,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => {
                                   const raw = e.target.value;
                                   if (raw === '') { setTelestrokeNote({...telestrokeNote, age: ''}); return; }
-                                  const parsed = parseInt(raw);
+                                  const parsed = parseInt(raw, 10);
                                   if (isNaN(parsed)) return;
                                   const clamped = Math.max(0, Math.min(120, parsed));
                                   setTelestrokeNote({...telestrokeNote, age: String(clamped)});
@@ -14517,7 +14517,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => {
                                   const raw = e.target.value;
                                   if (raw === '') { setTelestrokeNote({...telestrokeNote, nihss: ''}); setNihssScore(0); return; }
-                                  const parsed = parseInt(raw);
+                                  const parsed = parseInt(raw, 10);
                                   if (isNaN(parsed)) return;
                                   const clamped = Math.max(0, Math.min(42, parsed));
                                   setTelestrokeNote({...telestrokeNote, nihss: String(clamped)});
@@ -14587,7 +14587,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => {
                                   const raw = e.target.value;
                                   if (raw === '') { setTelestrokeNote({...telestrokeNote, heartRate: ''}); return; }
-                                  const parsed = parseInt(raw);
+                                  const parsed = parseInt(raw, 10);
                                   if (isNaN(parsed)) return;
                                   const clamped = Math.max(20, Math.min(300, parsed));
                                   setTelestrokeNote({...telestrokeNote, heartRate: String(clamped)});
@@ -14603,7 +14603,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => {
                                   const raw = e.target.value;
                                   if (raw === '') { setTelestrokeNote({...telestrokeNote, spO2: ''}); return; }
-                                  const parsed = parseInt(raw);
+                                  const parsed = parseInt(raw, 10);
                                   if (isNaN(parsed)) return;
                                   const clamped = Math.max(50, Math.min(100, parsed));
                                   setTelestrokeNote({...telestrokeNote, spO2: String(clamped)});
@@ -14638,23 +14638,23 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => {
                                   const raw = e.target.value;
                                   if (raw === '') { setTelestrokeNote({...telestrokeNote, glucose: ''}); return; }
-                                  const parsed = parseInt(raw);
+                                  const parsed = parseInt(raw, 10);
                                   if (isNaN(parsed)) return;
                                   const clamped = Math.max(10, Math.min(800, parsed));
                                   setTelestrokeNote({...telestrokeNote, glucose: String(clamped)});
                                 }}
                                 placeholder="mg/dL"
-                                aria-invalid={telestrokeNote.glucose && parseInt(telestrokeNote.glucose) < 60 ? 'true' : undefined}
-                                aria-describedby={telestrokeNote.glucose && parseInt(telestrokeNote.glucose) < 60 ? 'glucose-error' : undefined}
+                                aria-invalid={telestrokeNote.glucose && parseInt(telestrokeNote.glucose, 10) < 60 ? 'true' : undefined}
+                                aria-describedby={telestrokeNote.glucose && parseInt(telestrokeNote.glucose, 10) < 60 ? 'glucose-error' : undefined}
                                 className={`w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-green-500 ${(() => {
-                                  const g = parseInt(telestrokeNote.glucose);
+                                  const g = parseInt(telestrokeNote.glucose, 10);
                                   if (!telestrokeNote.glucose || isNaN(g)) return 'border-slate-300';
                                   if (g < 60) return 'border-red-400 bg-red-50';
                                   if (g > 400) return 'border-amber-400 bg-amber-50';
                                   return 'border-slate-300';
                                 })()}`}
                               />
-                              {telestrokeNote.glucose && parseInt(telestrokeNote.glucose) < 60 && <p id="glucose-error" role="alert" className="text-xs text-red-600 mt-0.5">Hypoglycemia - stroke mimic?</p>}
+                              {telestrokeNote.glucose && parseInt(telestrokeNote.glucose, 10) < 60 && <p id="glucose-error" role="alert" className="text-xs text-red-600 mt-0.5">Hypoglycemia - stroke mimic?</p>}
                             </div>
                             <div>
                               <label htmlFor="input-inr" className="block text-xs text-slate-600 mb-1">INR</label>
@@ -14685,16 +14685,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 value={telestrokeNote.plateletCount}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, plateletCount: e.target.value})}
                                 placeholder="K/uL"
-                                aria-invalid={telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount) < 100 ? 'true' : undefined}
-                                aria-describedby={telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount) < 100 ? 'platelets-error' : undefined}
+                                aria-invalid={telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount, 10) < 100 ? 'true' : undefined}
+                                aria-describedby={telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount, 10) < 100 ? 'platelets-error' : undefined}
                                 className={`w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-green-500 ${(() => {
-                                  const p = parseInt(telestrokeNote.plateletCount);
+                                  const p = parseInt(telestrokeNote.plateletCount, 10);
                                   if (!telestrokeNote.plateletCount || isNaN(p)) return 'border-slate-300';
                                   if (p < 100) return 'border-red-400 bg-red-50';
                                   return 'border-slate-300';
                                 })()}`}
                               />
-                              {telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount) < 100 && <p id="platelets-error" role="alert" className="text-xs text-red-600 mt-0.5">TNK contraindicated (plt &lt;100K)</p>}
+                              {telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount, 10) < 100 && <p id="platelets-error" role="alert" className="text-xs text-red-600 mt-0.5">TNK contraindicated (plt &lt;100K)</p>}
                             </div>
                           </div>
                           {/* BP Threshold Alert */}
@@ -14712,7 +14712,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           })()}
                           {/* Glucose Alert */}
                           {(() => {
-                            const glu = parseInt(telestrokeNote.glucose);
+                            const glu = parseInt(telestrokeNote.glucose, 10);
                             if (!glu) return null;
                             if (glu < 50) return <div className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">Hypoglycemia ({glu} mg/dL) - Correct before attributing symptoms to stroke</div>;
                             if (glu > 400) return <div className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">Severe hyperglycemia ({glu} mg/dL) - Insulin protocol, r/o DKA/HHS</div>;
@@ -14721,7 +14721,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           })()}
                           {/* Platelet Alert */}
                           {(() => {
-                            const plt = parseInt(telestrokeNote.plateletCount);
+                            const plt = parseInt(telestrokeNote.plateletCount, 10);
                             if (!plt) return null;
                             if (plt < 100) return <div className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">Plt {plt}K - TNK contraindicated if &lt;100K</div>;
                             return null;
@@ -14771,7 +14771,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <input
                                 type="number"
                                 value={aspectsScore}
-                                onChange={(e) => setAspectsScore(parseInt(e.target.value) || 0)}
+                                onChange={(e) => setAspectsScore(parseInt(e.target.value, 10) || 0)}
                                 min="0"
                                 max="10"
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
@@ -14836,8 +14836,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               if (isNaN(core) && isNaN(penumbra)) return null;
                               const mismatchVol = !isNaN(core) && !isNaN(penumbra) ? penumbra - core : NaN;
                               const mismatchRatio = !isNaN(core) && core > 0 && !isNaN(penumbra) ? penumbra / core : NaN;
-                              const age = parseInt(telestrokeNote.age) || 0;
-                              const nihss = parseInt(telestrokeNote.nihss || nihssScore) || 0;
+                              const age = parseInt(telestrokeNote.age, 10) || 0;
+                              const nihss = parseInt(telestrokeNote.nihss || nihssScore, 10) || 0;
                               const badges = [];
                               // DAWN criteria (6-24h)
                               if (!isNaN(core)) {
@@ -15039,9 +15039,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             )}
                             {/* Inline sICH Risk at TNK Decision Point */}
                             {telestrokeNote.tnkRecommended && (() => {
-                              const glucose = parseInt(telestrokeNote.glucose) || 0;
-                              const nihss = parseInt(telestrokeNote.nihss || nihssScore) || 0;
-                              const age = parseInt(telestrokeNote.age) || 0;
+                              const glucose = parseInt(telestrokeNote.glucose, 10) || 0;
+                              const nihss = parseInt(telestrokeNote.nihss || nihssScore, 10) || 0;
+                              const age = parseInt(telestrokeNote.age, 10) || 0;
                               let sedanAuto = 0;
                               if (glucose > 144 && glucose <= 216) sedanAuto += 1;
                               else if (glucose > 216) sedanAuto += 2;
@@ -15601,15 +15601,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => {
                                   const raw = e.target.value;
                                   if (raw === '') { setTelestrokeNote({...telestrokeNote, age: ''}); return; }
-                                  const parsed = parseInt(raw);
+                                  const parsed = parseInt(raw, 10);
                                   if (isNaN(parsed)) return;
                                   const clamped = Math.max(0, Math.min(120, parsed));
                                   setTelestrokeNote({...telestrokeNote, age: String(clamped)});
                                 }}
-                                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${telestrokeNote.age && (parseInt(telestrokeNote.age) < 0 || parseInt(telestrokeNote.age) > 120) ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
+                                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${telestrokeNote.age && (parseInt(telestrokeNote.age, 10) < 0 || parseInt(telestrokeNote.age, 10) > 120) ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
                                 placeholder=""
                               />
-                              {telestrokeNote.age && parseInt(telestrokeNote.age) > 120 && <p className="text-xs text-red-600 mt-0.5">Check age value</p>}
+                              {telestrokeNote.age && parseInt(telestrokeNote.age, 10) > 120 && <p className="text-xs text-red-600 mt-0.5">Check age value</p>}
                             </div>
                             <div>
                               <label className="block text-sm font-medium text-slate-700 mb-1">Sex</label>
@@ -15879,7 +15879,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   onChange={(e) => {
                                     const value = e.target.value;
                                     setTelestrokeNote({...telestrokeNote, nihss: value});
-                                    setNihssScore(parseInt(value) || 0);
+                                    setNihssScore(parseInt(value, 10) || 0);
                                   }}
                                   min="0"
                                   max="42"
@@ -15929,7 +15929,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div key={item.id} id={`nihss-item-${itemIndex}`} className={`bg-white p-3 rounded border transition-all ${patientData[item.id] ? 'border-emerald-300 bg-emerald-50/30' : ''}`}
                                   tabIndex={0}
                                   onKeyDown={(e) => {
-                                    const key = parseInt(e.key);
+                                    const key = parseInt(e.key, 10);
                                     if (!isNaN(key) && key >= 0 && key < item.options.length) {
                                       e.preventDefault();
                                       const option = item.options[key];
@@ -16612,9 +16612,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {(() => {
                             const timeFromLKW = calculateTimeFromLKW();
                             const hoursFromLKW = timeFromLKW ? timeFromLKW.total : null;
-                            const nihss = parseInt(telestrokeNote.nihss) || nihssScore || 0;
+                            const nihss = parseInt(telestrokeNote.nihss, 10) || nihssScore || 0;
                             const aspects = aspectsScore;
-                            const age = parseInt(telestrokeNote.age) || 0;
+                            const age = parseInt(telestrokeNote.age, 10) || 0;
                             const contraindications = detectContraindications({ telestrokeNote });
                             const criticalContraindications = contraindications.filter(c => c.severity === 'critical');
 
@@ -16912,7 +16912,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* Discordance Flags */}
                               {(() => {
                                 const flags = [];
-                                const nihss = parseInt(telestrokeNote.nihss) || nihssScore || 0;
+                                const nihss = parseInt(telestrokeNote.nihss, 10) || nihssScore || 0;
                                 const hasLVO = (telestrokeNote.vesselOcclusion || []).some(v =>
                                   /ICA|M1|basilar/i.test(v)
                                 );
@@ -17158,7 +17158,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               if (!isNaN(plateletsVal) && plateletsVal < 100) autoDetected.lowPlatelets = true;
                               const bpVal = telestrokeNote.presentingBP || '';
                               const bpMatchVal = bpVal.match(/(\d+)\s*\/\s*(\d+)/);
-                              if (bpMatchVal && (parseInt(bpMatchVal[1]) > 185 || parseInt(bpMatchVal[2]) > 110)) autoDetected.severeUncontrolledHTN = true;
+                              if (bpMatchVal && (parseInt(bpMatchVal[1], 10) > 185 || parseInt(bpMatchVal[2], 10) > 110)) autoDetected.severeUncontrolledHTN = true;
                               // DOAC detection
                               if (telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== '' && telestrokeNote.lastDOACType !== 'none' && telestrokeNote.lastDOACType !== 'warfarin' && telestrokeNote.lastDOACType !== 'heparin') {
                                 if (telestrokeNote.lastDOACDose) {
@@ -18362,7 +18362,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
 
                               {/* SAH Grade Warning */}
-                              {parseInt(telestrokeNote.sahGrade) >= 4 && (
+                              {parseInt(telestrokeNote.sahGrade, 10) >= 4 && (
                                 <div className="bg-red-50 border border-red-300 rounded-lg p-2 text-sm text-red-800">
                                   <strong>Poor-grade SAH (Grade {telestrokeNote.sahGrade}):</strong> Consider EVD placement, ICU admission, and early goals-of-care discussion. Avoid premature limitations of care.
                                 </div>
@@ -18860,7 +18860,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       value={(telestrokeNote.screeningTools || {}).phq2_q1 || ''}
                                       onChange={(e) => {
                                         const st = {...(telestrokeNote.screeningTools || {}), phq2_q1: e.target.value};
-                                        const score = (parseInt(st.phq2_q1) || 0) + (parseInt(st.phq2_q2) || 0);
+                                        const score = (parseInt(st.phq2_q1, 10) || 0) + (parseInt(st.phq2_q2, 10) || 0);
                                         st.phq2Score = score.toString();
                                         st.phq2Positive = score >= 3;
                                         setTelestrokeNote({...telestrokeNote, screeningTools: st});
@@ -18880,7 +18880,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       value={(telestrokeNote.screeningTools || {}).phq2_q2 || ''}
                                       onChange={(e) => {
                                         const st = {...(telestrokeNote.screeningTools || {}), phq2_q2: e.target.value};
-                                        const score = (parseInt(st.phq2_q1) || 0) + (parseInt(st.phq2_q2) || 0);
+                                        const score = (parseInt(st.phq2_q1, 10) || 0) + (parseInt(st.phq2_q2, 10) || 0);
                                         st.phq2Score = score.toString();
                                         st.phq2Positive = score >= 3;
                                         setTelestrokeNote({...telestrokeNote, screeningTools: st});
@@ -18942,9 +18942,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <span className="text-sm">Neuropsych referral</span>
                                   </label>
                                 </div>
-                                {parseInt((telestrokeNote.screeningTools || {}).mocaScore) > 0 && (
-                                  <div className={`mt-2 p-2 rounded text-sm ${parseInt((telestrokeNote.screeningTools || {}).mocaScore) >= 26 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
-                                    {parseInt((telestrokeNote.screeningTools || {}).mocaScore) >= 26 ? 'Normal cognition (>=26)' : `Below normal (${(telestrokeNote.screeningTools || {}).mocaScore}/30) — consider neuropsych referral`}
+                                {parseInt((telestrokeNote.screeningTools || {}).mocaScore, 10) > 0 && (
+                                  <div className={`mt-2 p-2 rounded text-sm ${parseInt((telestrokeNote.screeningTools || {}).mocaScore, 10) >= 26 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+                                    {parseInt((telestrokeNote.screeningTools || {}).mocaScore, 10) >= 26 ? 'Normal cognition (>=26)' : `Below normal (${(telestrokeNote.screeningTools || {}).mocaScore}/30) — consider neuropsych referral`}
                                   </div>
                                 )}
                                 <p className="text-xs text-slate-500 mt-1">Administer MoCA at follow-up (not acute phase). Add 1 point if education &le;12 years. <a href="https://mocatest.org" target="_blank" rel="noopener noreferrer" className="text-purple-600 underline">mocatest.org</a></p>
@@ -18980,9 +18980,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   ))}
                                 </div>
                                 {(telestrokeNote.screeningTools || {}).stopBangScore && (
-                                  <div className={`mt-2 p-2 rounded text-sm font-medium ${parseInt((telestrokeNote.screeningTools || {}).stopBangScore) >= 5 ? 'bg-red-100 text-red-800' : parseInt((telestrokeNote.screeningTools || {}).stopBangScore) >= 3 ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}`}>
+                                  <div className={`mt-2 p-2 rounded text-sm font-medium ${parseInt((telestrokeNote.screeningTools || {}).stopBangScore, 10) >= 5 ? 'bg-red-100 text-red-800' : parseInt((telestrokeNote.screeningTools || {}).stopBangScore, 10) >= 3 ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}`}>
                                     STOP-BANG: {(telestrokeNote.screeningTools || {}).stopBangScore}/8
-                                    {parseInt((telestrokeNote.screeningTools || {}).stopBangScore) >= 5 ? ' — HIGH risk OSA: order sleep study' : parseInt((telestrokeNote.screeningTools || {}).stopBangScore) >= 3 ? ' — INTERMEDIATE risk: consider sleep study' : ' — Low risk'}
+                                    {parseInt((telestrokeNote.screeningTools || {}).stopBangScore, 10) >= 5 ? ' — HIGH risk OSA: order sleep study' : parseInt((telestrokeNote.screeningTools || {}).stopBangScore, 10) >= 3 ? ' — INTERMEDIATE risk: consider sleep study' : ' — Low risk'}
                                   </div>
                                 )}
                               </div>
@@ -19485,7 +19485,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 {(telestrokeNote.anticoagBridging || {}).doacType && (telestrokeNote.anticoagBridging || {}).doacType !== 'warfarin' && (
                                   <div className="mt-2 p-2 bg-purple-100 rounded text-xs text-purple-800">
-                                    <strong>PAUSE Protocol:</strong> DOACs — NO heparin bridging needed (Class I, LOE A). Hold {(telestrokeNote.anticoagBridging || {}).procedureRisk === 'high' ? '2-3 days' : '1-2 days'} pre-procedure{(telestrokeNote.anticoagBridging || {}).crCl && parseInt((telestrokeNote.anticoagBridging || {}).crCl) < 50 && (telestrokeNote.anticoagBridging || {}).doacType === 'dabigatran' ? ' (extend to 4-5 days for dabigatran with CrCl <50)' : ''}. Resume 24-48h post-procedure (24h low risk, 48-72h high risk). BRIDGE trial: bridging with LMWH for warfarin increases bleeding without reducing thromboembolism.
+                                    <strong>PAUSE Protocol:</strong> DOACs — NO heparin bridging needed (Class I, LOE A). Hold {(telestrokeNote.anticoagBridging || {}).procedureRisk === 'high' ? '2-3 days' : '1-2 days'} pre-procedure{(telestrokeNote.anticoagBridging || {}).crCl && parseInt((telestrokeNote.anticoagBridging || {}).crCl, 10) < 50 && (telestrokeNote.anticoagBridging || {}).doacType === 'dabigatran' ? ' (extend to 4-5 days for dabigatran with CrCl <50)' : ''}. Resume 24-48h post-procedure (24h low risk, 48-72h high risk). BRIDGE trial: bridging with LMWH for warfarin increases bleeding without reducing thromboembolism.
                                   </div>
                                 )}
                                 {(telestrokeNote.anticoagBridging || {}).doacType === 'warfarin' && (
@@ -20643,7 +20643,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <input type="number" min="0" max="12" value={(telestrokeNote.substanceScreening || {}).alcoholAuditC || ''}
                                         onChange={(e) => setTelestrokeNote({...telestrokeNote, substanceScreening: {...(telestrokeNote.substanceScreening || {}), alcoholAuditC: e.target.value}})}
                                         className="w-16 px-2 py-1.5 border border-slate-300 rounded text-xs" placeholder="/12" />
-                                      {parseInt((telestrokeNote.substanceScreening || {}).alcoholAuditC) >= 4 && (
+                                      {parseInt((telestrokeNote.substanceScreening || {}).alcoholAuditC, 10) >= 4 && (
                                         <span className="text-xs text-red-600 font-semibold">POSITIVE — brief intervention</span>
                                       )}
                                     </div>
@@ -20728,7 +20728,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
 
                               {/* Young Adult Workup */}
-                              {parseInt(telestrokeNote.age) > 0 && parseInt(telestrokeNote.age) <= 50 && (
+                              {parseInt(telestrokeNote.age, 10) > 0 && parseInt(telestrokeNote.age, 10) <= 50 && (
                                 <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
                                   <h4 className="font-semibold text-indigo-800 mb-2">Young Adult Stroke Workup (Age &le;50)</h4>
                                   <div className="space-y-3">
@@ -21373,7 +21373,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   note += `\nSCREENING:\n`;
                                   if (st.phq2Score) note += `- PHQ-2: ${st.phq2Score}/6 (${st.phq2Positive ? 'POSITIVE' : 'negative'}).\n`;
                                   if (st.mocaScore) note += `- MoCA: ${st.mocaScore}/30${st.mocaReferral ? ' — neuropsych referral placed' : ''}.\n`;
-                                  if (st.stopBangScore) note += `- STOP-BANG: ${st.stopBangScore}/8 (${parseInt(st.stopBangScore) >= 5 ? 'HIGH risk' : parseInt(st.stopBangScore) >= 3 ? 'INTERMEDIATE risk' : 'low risk'} OSA).\n`;
+                                  if (st.stopBangScore) note += `- STOP-BANG: ${st.stopBangScore}/8 (${parseInt(st.stopBangScore, 10) >= 5 ? 'HIGH risk' : parseInt(st.stopBangScore, 10) >= 3 ? 'INTERMEDIATE risk' : 'low risk'} OSA).\n`;
                                   if (st.seizureRisk) note += `- Seizure status: ${st.seizureRisk.replace(/-/g, ' ')}.\n`;
                                 }
 
@@ -21591,7 +21591,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 // Substance / Hormonal
                                 const sub = telestrokeNote.substanceScreening || {};
                                 if (sub.alcoholAuditC || sub.substanceUseScreen) {
-                                  note += `\nSUBSTANCE SCREENING:${sub.alcoholAuditC ? ` AUDIT-C: ${sub.alcoholAuditC}${parseInt(sub.alcoholAuditC) >= 4 ? ' (POSITIVE)' : ''}.` : ''}${sub.alcoholCounseling ? ' Brief intervention provided.' : ''}${sub.substanceUseScreen ? ` Substances: ${sub.substancesIdentified || 'screened'}.` : ''}\n`;
+                                  note += `\nSUBSTANCE SCREENING:${sub.alcoholAuditC ? ` AUDIT-C: ${sub.alcoholAuditC}${parseInt(sub.alcoholAuditC, 10) >= 4 ? ' (POSITIVE)' : ''}.` : ''}${sub.alcoholCounseling ? ' Brief intervention provided.' : ''}${sub.substanceUseScreen ? ` Substances: ${sub.substancesIdentified || 'screened'}.` : ''}\n`;
                                 }
                                 const horm = telestrokeNote.hormonalRisk || {};
                                 if (horm.combinedOCPUse || horm.hrtUse || horm.migraineWithAura) {
@@ -25720,7 +25720,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   return isNaN(vol) || vol <= 0 ? null : vol < 30 ? 4 : vol < 60 ? 2 : vol < 100 ? 1 : 0;
                                 })()
                               : null,
-                            age: telestrokeNote.age ? (parseInt(telestrokeNote.age) < 70 ? 2 : parseInt(telestrokeNote.age) <= 79 ? 1 : 0) : null,
+                            age: telestrokeNote.age ? (parseInt(telestrokeNote.age, 10) < 70 ? 2 : parseInt(telestrokeNote.age, 10) <= 79 ? 1 : 0) : null,
                             location: ichScoreItems.infratentorial ? 0 : ichScoreItems.lobar ? 2 : 1,
                             gcs: ichScoreItems.gcs === 'gcs34' ? 0 : ichScoreItems.gcs === 'gcs512' ? 1 : ichScoreItems.gcs ? 2 : null,
                             cognitive: ichScoreItems.preCogImpairment ? 0 : 1,
@@ -27014,8 +27014,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h5 className="font-semibold text-sm text-slate-800 mb-2">SPAN-100 Index</h5>
                           <p className="text-xs text-slate-500 mb-2">Age + NIHSS ≥ 100 predicts higher symptomatic ICH risk and lower chance of good outcome after IV thrombolysis.</p>
                           {(() => {
-                            const age = parseInt(telestrokeNote.age) || 0;
-                            const nihss = parseInt(telestrokeNote.nihss || nihssScore) || 0;
+                            const age = parseInt(telestrokeNote.age, 10) || 0;
+                            const nihss = parseInt(telestrokeNote.nihss || nihssScore, 10) || 0;
                             const span = age + nihss;
                             const positive = span >= 100;
                             return (
@@ -27038,9 +27038,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h5 className="font-semibold text-sm text-slate-800 mb-2">SEDAN Score (sICH Risk Post-Thrombolysis)</h5>
                           <p className="text-xs text-slate-500 mb-2">Sugar + Early infarct signs + Dense artery + Age + NIHSS</p>
                           {(() => {
-                            const glucose = parseInt(telestrokeNote.glucose) || 0;
-                            const nihss = parseInt(telestrokeNote.nihss || nihssScore) || 0;
-                            const age = parseInt(telestrokeNote.age) || 0;
+                            const glucose = parseInt(telestrokeNote.glucose, 10) || 0;
+                            const nihss = parseInt(telestrokeNote.nihss || nihssScore, 10) || 0;
+                            const age = parseInt(telestrokeNote.age, 10) || 0;
                             let sedanScore = 0;
                             const items = [];
                             if (glucose > 144 && glucose <= 216) { sedanScore += 1; items.push('Glucose 145-216 (+1)'); }
@@ -27141,8 +27141,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="p-4">
                         <p className="text-xs text-slate-500 mb-3">Predicts 3-month outcome after IV thrombolysis. Auto-calculated from patient data where available.</p>
                         {(() => {
-                          const age = parseInt(telestrokeNote.age) || 0;
-                          const nihss = parseInt(telestrokeNote.nihss || nihssScore) || 0;
+                          const age = parseInt(telestrokeNote.age, 10) || 0;
+                          const nihss = parseInt(telestrokeNote.nihss || nihssScore, 10) || 0;
                           const glucose = parseFloat(telestrokeNote.glucose) || 0;
                           const glucoseMmol = glucose > 30 ? glucose / 18.0 : glucose;
 
@@ -27153,7 +27153,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           items.push({ label: 'Dense artery sign or early infarct on NCCT', value: '?', points: '+1-2', auto: false });
 
                           // R - mRS > 1 pre-stroke
-                          const mrs = parseInt(telestrokeNote.premorbidMRS);
+                          const mrs = parseInt(telestrokeNote.premorbidMRS, 10);
                           if (!isNaN(mrs) && mrs > 1) { score += 1; items.push({ label: `Pre-stroke mRS > 1 (mRS=${mrs})`, value: 'Yes', points: '+1', auto: true }); }
                           else items.push({ label: 'Pre-stroke mRS > 1', value: isNaN(mrs) ? '?' : 'No', points: mrs > 1 ? '+1' : '+0', auto: !isNaN(mrs) });
 
@@ -29229,7 +29229,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <span><strong>ENRICH:</strong> GCS 5-14 range met</span>
                             </div>
                           ) : null; })()}
-                          {telestrokeNote.age && parseInt(telestrokeNote.age) >= 18 && parseInt(telestrokeNote.age) <= 85 && (
+                          {telestrokeNote.age && parseInt(telestrokeNote.age, 10) >= 18 && parseInt(telestrokeNote.age, 10) <= 85 && (
                             <div className="flex items-center gap-1.5 text-slate-600 bg-slate-50 rounded-lg px-2 py-1.5">
                               <i data-lucide="info" className="w-3.5 h-3.5"></i>
                               <span>Age within most trial ranges (18-85)</span>
