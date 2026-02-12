@@ -1565,7 +1565,11 @@ Clinician Name`;
           const [currentTime, setCurrentTime] = useState(new Date());
           const [lkwTime, setLkwTime] = useState(() => {
             const storedLkwTime = loadFromStorage('lkwTime', null);
-            return storedLkwTime ? new Date(storedLkwTime) : new Date();
+            if (storedLkwTime) {
+              const parsed = new Date(storedLkwTime);
+              if (!Number.isNaN(parsed.getTime())) return parsed;
+            }
+            return new Date();
           });
 
           // Thrombolysis window alert state
@@ -6675,6 +6679,7 @@ Clinician Name`;
             const lkwTime = data.telestrokeNote?.lkwTime;
             if (lkwDate && lkwTime) {
               const lkw = new Date(`${lkwDate}T${lkwTime}`);
+              if (!Number.isNaN(lkw.getTime())) {
               const now = new Date();
               const hoursFromLKW = (now - lkw) / (1000 * 60 * 60);
               const wakeUpExtended = data.telestrokeNote?.wakeUpStrokeWorkflow?.extendEligible;
@@ -6682,6 +6687,7 @@ Clinician Name`;
                 alerts.push({ severity: 'warning', label: 'Late Window', message: `${hoursFromLKW.toFixed(1)}h from LKW - Verify imaging criteria`, field: 'lkwTime' });
               } else if (hoursFromLKW > 4.5 && data.telestrokeNote?.tnkRecommended && wakeUpExtended) {
                 alerts.push({ severity: 'info', label: 'Extended Window', message: `${hoursFromLKW.toFixed(1)}h from LKW - Wake-up stroke extended eligibility active`, field: 'lkwTime' });
+              }
               }
             }
 
@@ -8216,8 +8222,12 @@ Clinician Name`;
             try {
             // Convert Date to local ISO string for datetime-local inputs (avoids UTC offset bug)
             const toLocalISO = (d) => {
-              const off = d.getTimezoneOffset();
-              return new Date(d.getTime() - off * 60000).toISOString().slice(0, 16);
+              const yr = d.getFullYear();
+              const mo = String(d.getMonth() + 1).padStart(2, '0');
+              const dy = String(d.getDate()).padStart(2, '0');
+              const hr = String(d.getHours()).padStart(2, '0');
+              const mn = String(d.getMinutes()).padStart(2, '0');
+              return `${yr}-${mo}-${dy}T${hr}:${mn}`;
             };
 
             const formatDate = (dateStr) => {
@@ -23717,7 +23727,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           </div>
                           {(() => {
-                            const onsetDate = lkwDateForWindow && lkwTimeForWindow ? new Date(`${lkwDateForWindow}T${lkwTimeForWindow}`) : null;
+                            const onsetDate = lkwDateForWindow && lkwTimeForWindow ? (() => { const dt = new Date(`${lkwDateForWindow}T${lkwTimeForWindow}`); return Number.isNaN(dt.getTime()) ? null : dt; })() : null;
                             const result = calculateDOACStart(telestrokeNote.nihss || nihssScore, onsetDate, doacProtocol);
                             if (!result) {
                               return (
