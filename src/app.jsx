@@ -10844,6 +10844,22 @@ Clinician Name`;
               warnings.push({ id: 'hemorrhage-no-reversal', severity: 'error', msg: `${n.diagnosisCategory === 'sah' ? 'SAH' : 'ICH'} with pre-admission ${n.lastDOACType} but anticoagulation reversal not initiated — urgent reversal required.` });
             }
 
+            // CTP mismatch ratio < 1.0 — possible core/penumbra volume swap
+            const ctpCore = parseFloat(n.ctpStructured?.coreVolume);
+            const ctpPenumbra = parseFloat(n.ctpStructured?.penumbraVolume);
+            if (!isNaN(ctpCore) && ctpCore > 0 && !isNaN(ctpPenumbra) && ctpPenumbra < ctpCore) {
+              warnings.push({ id: 'ctp-mismatch-lt1', severity: 'warn', msg: `CTP penumbra (${ctpPenumbra}mL) < core (${ctpCore}mL) — mismatch ratio <1.0. Verify volumes are not swapped.` });
+            }
+
+            // Post-EVT BP <140 is Class III: Harm
+            if (n.evtRecommended && n.bpPostEVT) {
+              const bpMatch = n.bpPostEVT.match(/(\d+)/);
+              const sbp = bpMatch ? parseInt(bpMatch[1], 10) : NaN;
+              if (!isNaN(sbp) && sbp < 140) {
+                warnings.push({ id: 'post-evt-bp-too-low', severity: 'error', msg: `Post-EVT SBP ${sbp} mmHg — SBP <140 after successful reperfusion is Class III: Harm (ENCHANTED2/MT, OPTIMAL-BP). Target SBP <180/105.` });
+              }
+            }
+
             return warnings;
           };
 
@@ -12153,7 +12169,8 @@ Clinician Name`;
               if (hasIE) reasons.push('Infective endocarditis (Class III: TNK contraindicated)');
               if (recentDOAC) {
                 const doacName = ANTICOAGULANT_INFO[doacType]?.name || doacType;
-                reasons.push(`Recent ${doacName}${doacClearanceNote}`);
+                const dttNote = doacType === 'dabigatran' ? ' — check dTT/ECT; TNK may be given if dTT/ECT normal or aPTT <40s' : '';
+                reasons.push(`Recent ${doacName}${doacClearanceNote}${dttNote}`);
               }
               if (recentSurgery) {
                 const surgTypes = [];
