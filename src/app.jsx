@@ -15756,7 +15756,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {/* CTP Perfusion — Structured + Free Text */}
                           <div className="mt-2 bg-violet-50 border border-violet-200 rounded-lg p-2">
                             <p className="text-xs font-semibold text-violet-800 mb-1.5">CTP Perfusion (RAPID output)</p>
-                            <div className="grid grid-cols-3 gap-2 mb-1.5">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-1.5">
                               <div>
                                 <label htmlFor="input-ctp-core" className="block text-xs text-slate-600">Core (mL)</label>
                                 <input id="input-ctp-core" type="number" min="0" step="1"
@@ -19627,7 +19627,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* Aneurysm Characteristics */}
                               <div className="bg-purple-50 rounded-lg p-3">
                                 <div className="text-sm font-semibold text-purple-800 mb-2">Aneurysm Characteristics</div>
-                                <div className="grid grid-cols-3 gap-2">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                                   <div>
                                     <label htmlFor="input-sah-aneurysm-loc" className="block text-xs text-slate-600 mb-1">Location</label>
                                     <select id="input-sah-aneurysm-loc" value={telestrokeNote.sahAneurysmLocation || ''}
@@ -26678,15 +26678,30 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           { label: 'FFP (if no PCC)', dose: `10-15 mL/kg IV. Goal INR <1.5.${telestrokeNote.weight ? ` → ${Math.round(parseFloat(telestrokeNote.weight) * 12.5)} mL (~${Math.round(parseFloat(telestrokeNote.weight) * 12.5 / 250)} units)` : ''}`, color: 'amber' },
                           { label: 'Labetalol IV', dose: '10-20 mg IV q10-20min (max 300 mg). Alt: nicardipine 5 mg/h, titrate q5min by 2.5 mg/h (max 15).', color: 'slate' },
                           { label: 'Levetiracetam', dose: '1000-1500 mg IV load, then 500-1000 mg IV/PO q12h. For acute seizures.', color: 'indigo' }
-                        ].map(item => (
+                        ].map(item => {
+                          const colorMap = {
+                            emerald: 'border-emerald-200 hover:bg-emerald-50 text-emerald-800',
+                            blue: 'border-blue-200 hover:bg-blue-50 text-blue-800',
+                            purple: 'border-purple-200 hover:bg-purple-50 text-purple-800',
+                            red: 'border-red-200 hover:bg-red-50 text-red-800',
+                            rose: 'border-rose-200 hover:bg-rose-50 text-rose-800',
+                            amber: 'border-amber-200 hover:bg-amber-50 text-amber-800',
+                            slate: 'border-slate-200 hover:bg-slate-50 text-slate-800',
+                            indigo: 'border-indigo-200 hover:bg-indigo-50 text-indigo-800'
+                          };
+                          const classes = colorMap[item.color] || 'border-slate-200 hover:bg-slate-50 text-slate-800';
+                          const [borderClass, hoverClass, textClass] = classes.split(' ');
+                          return (
                           <button key={item.label} type="button"
+                            aria-label={`Copy ${item.label} dosing`}
                             onClick={() => copyToClipboard(`${item.label}: ${item.dose}`, 'dosing-ref')}
-                            className={`text-left px-3 py-2 bg-white border border-${item.color}-200 rounded-lg hover:bg-${item.color}-50 transition-colors group`}>
-                            <span className={`text-xs font-bold text-${item.color}-800 block`}>{item.label}</span>
+                            className={`text-left px-3 py-2 bg-white border ${borderClass} rounded-lg ${hoverClass} transition-colors group`}>
+                            <span className={`text-xs font-bold ${textClass} block`}>{item.label}</span>
                             <span className="text-xs text-slate-600 block">{item.dose}</span>
                             <span className="text-xs text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">Click to copy</span>
                           </button>
-                        ))}
+                          );
+                        })}
                       </div>
                     </details>
                     <CalculatorSync />
