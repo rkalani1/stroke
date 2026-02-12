@@ -11249,6 +11249,7 @@ Clinician Name`;
             }
 
             // NIHSS ≥25 with late-window EVT consideration
+            const nihss = parseInt(n.nihss, 10) || nihssScore || 0;
             if (!isNaN(nihss) && nihss >= 25 && n.evtRecommended) {
               const evtHrs = (tnkTime || ctTime) && lkw ? ((tnkTime || ctTime) - lkw) / (1000 * 60 * 60) : null;
               if (evtHrs && evtHrs > 6) {
