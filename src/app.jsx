@@ -14671,7 +14671,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <label key={item.key} className="flex items-center gap-2 cursor-pointer">
                                       <input type="checkbox"
                                         checked={(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {})[item.field]}
-                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), extendCriteria: {...(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {}), [item.field]: e.target.checked}}})}
+                                        onChange={(e) => { const checked = e.target.checked; const field = item.field; setTelestrokeNote(prev => ({...prev, wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), extendCriteria: {...(prev.wakeUpStrokeWorkflow?.extendCriteria || {}), [field]: checked}}})); }}
                                         className="w-3.5 h-3.5 rounded border-orange-400 text-orange-600" />
                                       <span>{item.label}</span>
                                     </label>
@@ -15007,11 +15007,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 value={telestrokeNote.nihss}
                                 onChange={(e) => {
                                   const raw = e.target.value;
-                                  if (raw === '') { setTelestrokeNote({...telestrokeNote, nihss: ''}); setNihssScore(0); return; }
+                                  if (raw === '') { setTelestrokeNote(prev => ({...prev, nihss: ''})); setNihssScore(0); return; }
                                   const parsed = parseInt(raw, 10);
                                   if (isNaN(parsed)) return;
                                   const clamped = Math.max(0, Math.min(42, parsed));
-                                  setTelestrokeNote({...telestrokeNote, nihss: String(clamped)});
+                                  setTelestrokeNote(prev => ({...prev, nihss: String(clamped)}));
                                   setNihssScore(clamped);
                                 }}
                                 min="0"
@@ -16416,7 +16416,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   value={telestrokeNote.nihss}
                                   onChange={(e) => {
                                     const value = e.target.value;
-                                    setTelestrokeNote({...telestrokeNote, nihss: value});
+                                    setTelestrokeNote(prev => ({...prev, nihss: value}));
                                     setNihssScore(parseInt(value, 10) || 0);
                                   }}
                                   min="0"
@@ -16475,7 +16475,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       setPatientData(newData);
                                       const newScore = calculateNIHSS(newData);
                                       setNihssScore(newScore);
-                                      setTelestrokeNote({...telestrokeNote, nihss: newScore.toString()});
+                                      setTelestrokeNote(prev => ({...prev, nihss: newScore.toString()}));
                                       // Auto-advance to next item
                                       if (itemIndex < nihssItems.length - 1) {
                                         setTimeout(() => {
@@ -16496,7 +16496,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           setPatientData(newData);
                                           const newScore = calculateNIHSS(newData);
                                           setNihssScore(newScore);
-                                          setTelestrokeNote({...telestrokeNote, nihss: newScore.toString()});
+                                          setTelestrokeNote(prev => ({...prev, nihss: newScore.toString()}));
                                           if (itemIndex < nihssItems.length - 1) {
                                             setTimeout(() => {
                                               const next = document.getElementById(`nihss-item-${itemIndex + 1}`);
@@ -17844,11 +17844,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       </div>
                                       <button
                                         type="button"
-                                        onClick={() => setTelestrokeNote({
-                                          ...telestrokeNote,
+                                        onClick={() => setTelestrokeNote(prev => ({
+                                          ...prev,
                                           tnkContraindicationReviewed: true,
                                           tnkContraindicationReviewTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-                                        })}
+                                        }))}
                                         className="px-3 py-1.5 bg-orange-600 text-white rounded-lg text-xs font-semibold hover:bg-orange-700"
                                       >
                                         Mark Reviewed
