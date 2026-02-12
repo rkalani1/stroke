@@ -11492,6 +11492,13 @@ Clinician Name`;
           };
 
           const resetCaseState = () => {
+            // Cancel pending batch save to prevent stale data from being re-persisted
+            if (batchSaveTimerRef.current) {
+              clearTimeout(batchSaveTimerRef.current);
+              batchSaveTimerRef.current = null;
+            }
+            pendingWritesRef.current = {};
+
             setPatientData({});
             setNihssScore(0);
             setAspectsScore(10);
@@ -11531,6 +11538,9 @@ Clinician Name`;
             setIchVolumeParams({ a: '', b: '', thicknessMm: '', numSlices: '' });
             setPathwayCollapsed(true);
             setGuidelineRecsExpanded(false);
+            setShiftPatients([]);
+            setCurrentPatientId(null);
+            setAutoSyncCalculators(true);
 
             const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',
                                   'abcd2Items', 'chads2vascItems', 'ropeItems', 'huntHessGrade', 'wfnsGrade',
@@ -11539,7 +11549,8 @@ Clinician Name`;
                                   'telestrokeNote', 'consultationType',
                                   'evtDecisionInputs', 'doacProtocol', 'nursingFlowsheetChecks',
                                   'ichVolumeParams', 'weightUnit', 'trialEligibility', 'encounterPhase', 'noteTemplate',
-                                  'telestrokeTemplate', 'shiftPatients', 'currentPatientId'];
+                                  'telestrokeTemplate', 'shiftPatients', 'currentPatientId',
+                                  'autoSyncCalculators', 'activeTab'];
             keysToRemove.forEach((key) => removeKey(key));
 
             navigateTo('encounter');
@@ -12756,6 +12767,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         onClick={() => setShowKeyboardHelp(true)}
                         className="hidden sm:inline-flex text-xs text-slate-500 hover:text-blue-600 transition-colors px-1.5 py-0.5 border border-slate-200 rounded"
                         title="Keyboard shortcuts (?)"
+                        aria-label="Keyboard shortcuts"
                       >
                         <i data-lucide="keyboard" className="w-3 h-3"></i>
                       </button>
@@ -13419,6 +13431,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       {telestrokeNote.callingSite === 'Other' && (
                         <input
                           type="text"
+                          aria-label="Other calling site name"
                           value={telestrokeNote.callingSiteOther}
                           onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSiteOther: e.target.value})}
                           className="w-full mt-2 px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -13534,12 +13547,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             <input
                               type="date"
+                              aria-label="Discovery date"
                               value={telestrokeNote.discoveryDate}
                               onChange={(e) => setTelestrokeNote({ ...telestrokeNote, discoveryDate: e.target.value })}
                               className="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500"
                             />
                             <input
                               type="time"
+                              aria-label="Discovery time"
                               value={telestrokeNote.discoveryTime}
                               onChange={(e) => setTelestrokeNote({ ...telestrokeNote, discoveryTime: e.target.value })}
                               className="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500"
@@ -14342,7 +14357,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   {clearancePct !== null && clearancePct >= 87 && clearancePct < 97 && ' — Check drug-specific assay before TNK'}
                                   {clearancePct !== null && clearancePct < 87 && ' — Drug likely still active, TNK high risk'}
                                 </div>
-                                {hoursSince !== null && <div className="text-slate-500">{info.thrombolysisNote}</div>}
+                                {hoursSince !== null && <div className="text-slate-700">{info.thrombolysisNote}</div>}
                               </div>
                               );
                             })()}
@@ -15729,7 +15744,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                               <div>
-                                <label className="block text-xs text-slate-500 mb-1">NIHSS Score (0-42)</label>
+                                <label className="block text-xs text-slate-700 mb-1">NIHSS Score (0-42)</label>
                                 <input
                                   type="number"
                                   value={telestrokeNote.nihss}
@@ -15744,7 +15759,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 />
                               </div>
                               <div>
-                                <label className="block text-xs text-slate-500 mb-1">Neurologic Deficits</label>
+                                <label className="block text-xs text-slate-700 mb-1">Neurologic Deficits</label>
                                 <input
                                   type="text"
                                   value={telestrokeNote.nihssDetails}
@@ -29246,7 +29261,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </div>
                     <div className="grid grid-cols-3 gap-2 text-xs">
                       <div>
-                        <label className="font-medium text-slate-500 block mb-1">Eye</label>
+                        <label className="font-medium text-slate-700 block mb-1">Eye</label>
                         {[{v:'4',l:'Spontaneous'},{v:'3',l:'Sound'},{v:'2',l:'Pain'},{v:'1',l:'None'}].map(o => (
                           <button key={o.v} onClick={() => setGcsItems({...gcsItems, eye: o.v})}
                             className={`w-full text-left px-2 py-1.5 rounded mb-0.5 transition-colors ${gcsItems.eye === o.v ? 'bg-blue-600 text-white' : 'hover:bg-slate-200 text-slate-700'}`}>
@@ -29255,7 +29270,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ))}
                       </div>
                       <div>
-                        <label className="font-medium text-slate-500 block mb-1">Verbal</label>
+                        <label className="font-medium text-slate-700 block mb-1">Verbal</label>
                         {[{v:'5',l:'Oriented'},{v:'4',l:'Confused'},{v:'3',l:'Words'},{v:'2',l:'Sounds'},{v:'1',l:'None'}].map(o => (
                           <button key={o.v} onClick={() => setGcsItems({...gcsItems, verbal: o.v})}
                             className={`w-full text-left px-2 py-1.5 rounded mb-0.5 transition-colors ${gcsItems.verbal === o.v ? 'bg-blue-600 text-white' : 'hover:bg-slate-200 text-slate-700'}`}>
@@ -29264,7 +29279,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ))}
                       </div>
                       <div>
-                        <label className="font-medium text-slate-500 block mb-1">Motor</label>
+                        <label className="font-medium text-slate-700 block mb-1">Motor</label>
                         {[{v:'6',l:'Obeys'},{v:'5',l:'Localizes'},{v:'4',l:'Withdraws'},{v:'3',l:'Flexion'},{v:'2',l:'Extension'},{v:'1',l:'None'}].map(o => (
                           <button key={o.v} onClick={() => setGcsItems({...gcsItems, motor: o.v})}
                             className={`w-full text-left px-2 py-1.5 rounded mb-0.5 transition-colors ${gcsItems.motor === o.v ? 'bg-blue-600 text-white' : 'hover:bg-slate-200 text-slate-700'}`}>
