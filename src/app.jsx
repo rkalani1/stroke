@@ -1905,9 +1905,9 @@ Clinician Name`;
             'post-evt': { label: 'Post-EVT', systolic: 180, diastolic: 105 },
             'no-lytics': { label: 'No lytics/No EVT', systolic: 220, diastolic: 120 },
             'ich': { label: 'ICH (INTERACT2)', systolic: 140, diastolic: 90 },
-            'sah': { label: 'SAH (pre-securing)', systolic: 160, diastolic: 105 },
-            'sah-secured': { label: 'SAH (post-securing)', systolic: 180, diastolic: 105 },
-            'cvt': { label: 'CVT (permissive)', systolic: 220, diastolic: 120 },
+            'sah': { label: 'SAH (pre-securing, target <160)', systolic: 160, diastolic: 100 },
+            'sah-secured': { label: 'SAH (post-securing)', systolic: 140, diastolic: 90 },
+            'cvt': { label: 'CVT (permissive)', systolic: 220, diastolic: 110 },
             'cvt-hemorrhage': { label: 'CVT with hemorrhage', systolic: 140, diastolic: 90 },
             'pregnancy': { label: 'Pregnancy/Postpartum stroke', systolic: 160, diastolic: 110 },
             'preeclampsia': { label: 'Preeclampsia/Eclampsia', systolic: 140, diastolic: 90 }
@@ -8001,6 +8001,28 @@ Clinician Name`;
               }
               if (telestrokeNote.collateralGrade) note += `- Collaterals: ${telestrokeNote.collateralGrade}\n`;
               if (telestrokeNote.ekgResults) note += `- EKG: ${telestrokeNote.ekgResults}\n`;
+              // Wake-up stroke evaluation
+              const transferWus = telestrokeNote.wakeUpStrokeWorkflow || {};
+              if (transferWus.isWakeUpStroke) {
+                note += `\nWAKE-UP / EXTENDED WINDOW ASSESSMENT:\n`;
+                note += `- MRI available: ${transferWus.mriAvailable ? 'Yes' : 'No'}\n`;
+                if (transferWus.mriAvailable) {
+                  if (transferWus.dwiPositive != null) note += `- DWI lesion: ${transferWus.dwiPositive ? 'Positive' : 'Negative'}\n`;
+                  if (transferWus.flairHyperintense != null) note += `- FLAIR: ${transferWus.flairHyperintense ? 'Hyperintense (unfavorable)' : 'No hyperintensity (DWI-FLAIR mismatch)'}\n`;
+                }
+                if (transferWus.extendEligible) {
+                  note += `- EXTEND criteria: Met\n`;
+                  const ext = transferWus.extendCriteria || {};
+                  const extMet = [];
+                  if (ext.nihss4to26) extMet.push('NIHSS 4-26');
+                  if (ext.premorbidMRSLt2) extMet.push('pre-mRS <2');
+                  if (ext.ischemicCoreLte70) extMet.push('core ≤70cc');
+                  if (ext.mismatchRatioGte1_2) extMet.push('mismatch ≥1.2');
+                  if (ext.timeWindow4_5to9h) extMet.push('4.5-9h window');
+                  if (extMet.length > 0) note += `  ${extMet.join(', ')}\n`;
+                }
+                if (transferWus.wakeUpEligible) note += `- WAKE-UP trial criteria: Met (DWI+/FLAIR-)\n`;
+              }
               note += `\nTreatment:\n`;
               if (telestrokeNote.tnkRecommended) {
                 const transferDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
@@ -10682,6 +10704,14 @@ Clinician Name`;
             debouncedSave('completedSteps', completedSteps);
           }, [completedSteps]);
 
+          useEffect(() => {
+            debouncedSave('shiftPatients', shiftPatients);
+          }, [shiftPatients]);
+
+          useEffect(() => {
+            debouncedSave('currentPatientId', currentPatientId);
+          }, [currentPatientId]);
+
           // Auto-populate Documentation form with Workflow data
           useEffect(() => {
             if (lkwTime) {
@@ -13055,7 +13085,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 type="number"
                                 step="0.1" min="0.1" max="20"
                                 value={telestrokeNote.creatinine}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, creatinine: e.target.value})}
+                                onChange={(e) => {
+                                  const raw = e.target.value;
+                                  if (raw === '') { setTelestrokeNote({...telestrokeNote, creatinine: ''}); return; }
+                                  const parsed = parseFloat(raw);
+                                  if (isNaN(parsed)) return;
+                                  const clamped = Math.max(0.1, Math.min(20, parsed));
+                                  setTelestrokeNote({...telestrokeNote, creatinine: String(clamped)});
+                                }}
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
                                 placeholder="e.g. 1.2"
                               />
@@ -13353,7 +13390,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <label htmlFor="input-hr" className="block text-xs text-slate-600 mb-1">HR</label>
                               <input id="input-hr" type="number" min="20" max="300"
                                 value={telestrokeNote.heartRate}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, heartRate: e.target.value})}
+                                onChange={(e) => {
+                                  const raw = e.target.value;
+                                  if (raw === '') { setTelestrokeNote({...telestrokeNote, heartRate: ''}); return; }
+                                  const parsed = parseInt(raw);
+                                  if (isNaN(parsed)) return;
+                                  const clamped = Math.max(20, Math.min(300, parsed));
+                                  setTelestrokeNote({...telestrokeNote, heartRate: String(clamped)});
+                                }}
                                 placeholder="bpm"
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
                               />
@@ -13362,7 +13406,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <label htmlFor="input-spo2" className="block text-xs text-slate-600 mb-1">SpO2</label>
                               <input id="input-spo2" type="number" min="50" max="100"
                                 value={telestrokeNote.spO2}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, spO2: e.target.value})}
+                                onChange={(e) => {
+                                  const raw = e.target.value;
+                                  if (raw === '') { setTelestrokeNote({...telestrokeNote, spO2: ''}); return; }
+                                  const parsed = parseInt(raw);
+                                  if (isNaN(parsed)) return;
+                                  const clamped = Math.max(50, Math.min(100, parsed));
+                                  setTelestrokeNote({...telestrokeNote, spO2: String(clamped)});
+                                }}
                                 placeholder="%"
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
                               />
@@ -13371,7 +13422,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <label htmlFor="input-temp" className="block text-xs text-slate-600 mb-1">Temp</label>
                               <input id="input-temp" type="number" step="0.1" min="90" max="110"
                                 value={telestrokeNote.temperature}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, temperature: e.target.value})}
+                                onChange={(e) => {
+                                  const raw = e.target.value;
+                                  if (raw === '') { setTelestrokeNote({...telestrokeNote, temperature: ''}); return; }
+                                  const parsed = parseFloat(raw);
+                                  if (isNaN(parsed)) return;
+                                  const clamped = Math.max(90, Math.min(110, parsed));
+                                  setTelestrokeNote({...telestrokeNote, temperature: String(clamped)});
+                                }}
                                 placeholder="°F"
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
                               />
@@ -13383,7 +13441,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 type="number"
                                 min="10" max="800"
                                 value={telestrokeNote.glucose}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, glucose: e.target.value})}
+                                onChange={(e) => {
+                                  const raw = e.target.value;
+                                  if (raw === '') { setTelestrokeNote({...telestrokeNote, glucose: ''}); return; }
+                                  const parsed = parseInt(raw);
+                                  if (isNaN(parsed)) return;
+                                  const clamped = Math.max(10, Math.min(800, parsed));
+                                  setTelestrokeNote({...telestrokeNote, glucose: String(clamped)});
+                                }}
                                 placeholder="mg/dL"
                                 className={`w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-green-500 ${(() => {
                                   const g = parseInt(telestrokeNote.glucose);
