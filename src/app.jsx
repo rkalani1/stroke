@@ -8598,11 +8598,30 @@ Clinician Name`;
               note += ` | LKW: ${telestrokeNote.lkwUnknown ? 'UNKNOWN (discovery-based)' : (formatTime(telestrokeNote.lkwTime) || '___')}\n`;
               if (telestrokeNote.codeStatus) note += `Code status: ${telestrokeNote.codeStatus}\n`;
               note += `\nBrief HPI: ${telestrokeNote.symptoms || '___'}\n\n`;
-              let imagingLine = `Key imaging: CT ${telestrokeNote.ctResults || '___'}; CTA ${telestrokeNote.ctaResults || '___'}`;
+              let imagingLine = `Key imaging: CT ${telestrokeNote.ctResults || '___'}`;
+              if (telestrokeNote.earlyInfarctSigns) imagingLine += ' (early infarct signs)';
+              if (telestrokeNote.denseArterySign) imagingLine += ' (hyperdense artery)';
+              imagingLine += `; CTA ${telestrokeNote.ctaResults || '___'}`;
               const signoutVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
               if (signoutVessels.length > 0) imagingLine += ` (${signoutVessels.join(', ')})`;
               if (aspectsScore != null) imagingLine += ` | ASPECTS ${aspectsScore}/10`;
+              const soPcAspects = calculatePCAspects(pcAspectsRegions);
+              if (soPcAspects >= 0 && soPcAspects < 10) imagingLine += ` | PC-ASPECTS ${soPcAspects}/10`;
               note += imagingLine + '\n';
+              {
+                const soCtpS = telestrokeNote.ctpStructured || {};
+                if (soCtpS.coreVolume || soCtpS.penumbraVolume) {
+                  const soCtp = [];
+                  if (soCtpS.coreVolume) soCtp.push(`Core: ${soCtpS.coreVolume} mL`);
+                  if (soCtpS.penumbraVolume) soCtp.push(`Penumbra: ${soCtpS.penumbraVolume} mL`);
+                  if (soCtpS.coreVolume && soCtpS.penumbraVolume) {
+                    const c = parseFloat(soCtpS.coreVolume), p = parseFloat(soCtpS.penumbraVolume);
+                    if (!isNaN(c) && !isNaN(p) && c > 0) soCtp.push(`Ratio: ${(p/c).toFixed(1)}`);
+                  }
+                  note += `CTP: ${soCtp.join('; ')}\n`;
+                }
+              }
+              if (telestrokeNote.collateralGrade) note += `Collaterals: ${telestrokeNote.collateralGrade}\n`;
               const signoutVitals = [`BP ${telestrokeNote.presentingBP || '___'}`];
               if (telestrokeNote.heartRate) signoutVitals.push(`HR ${telestrokeNote.heartRate}`);
               if (telestrokeNote.spO2) signoutVitals.push(`SpO2 ${telestrokeNote.spO2}%`);
@@ -8697,6 +8716,46 @@ Clinician Name`;
                 note += `- HT actions: ${htActions.join(', ')}\n`;
               }
               if (telestrokeNote.complicationNotes) note += `- Complication details: ${telestrokeNote.complicationNotes}\n`;
+              // Post-TNK monitoring
+              if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) {
+                note += `- Post-TNK: neuro checks q15min x2h, q30min x6h, q1h x16h; hold antithrombotics x24h\n`;
+              }
+              // ICH-specific (concise)
+              if (telestrokeNote.diagnosisCategory === 'ich') {
+                const snIchParts = [];
+                {
+                  const ichCalcSo = telestrokeNote.ichVolumeCalc || {};
+                  const ichVolSo = calculateICHVolume(ichCalcSo);
+                  if (ichVolSo && ichVolSo.volume) snIchParts.push(`vol ${ichVolSo.volume} mL${ichVolSo.isLarge ? ' (LARGE)' : ''}`);
+                }
+                if (telestrokeNote.ichBPManaged) snIchParts.push('BP managed');
+                if (telestrokeNote.ichReversalInitiated) snIchParts.push('reversal initiated');
+                if (telestrokeNote.ichNeurosurgeryConsulted) snIchParts.push('NSG consulted');
+                if (telestrokeNote.ichSeizureProphylaxis) snIchParts.push('seizure ppx');
+                if (snIchParts.length > 0) note += `- ICH: ${snIchParts.join(', ')}\n`;
+              }
+              // SAH-specific (concise)
+              {
+                const snIsSAH = (telestrokeNote.diagnosis || '').toLowerCase().includes('sah') || (telestrokeNote.diagnosis || '').toLowerCase().includes('subarachnoid');
+                if (snIsSAH) {
+                  const snSahParts = [];
+                  if (telestrokeNote.sahGrade) snSahParts.push(`Grade ${telestrokeNote.sahGrade}`);
+                  if (telestrokeNote.fisherGrade) snSahParts.push(`Fisher ${telestrokeNote.fisherGrade}`);
+                  if (telestrokeNote.sahBPManaged) snSahParts.push('BP managed');
+                  if (telestrokeNote.sahNimodipine) snSahParts.push('nimodipine');
+                  if (telestrokeNote.sahEVDPlaced) snSahParts.push('EVD');
+                  if (telestrokeNote.sahAneurysmSecured) snSahParts.push('aneurysm secured');
+                  if (snSahParts.length > 0) note += `- SAH: ${snSahParts.join(', ')}\n`;
+                }
+              }
+              // Safety alerts
+              {
+                const snAlerts = [];
+                const snDysph = telestrokeNote.dysphagiaScreening || {};
+                if (snDysph.bedsideScreenResult === 'fail') snAlerts.push('NPO (failed dysphagia screen)');
+                if (telestrokeNote.contrastAllergy) snAlerts.push('CONTRAST ALLERGY');
+                if (snAlerts.length > 0) note += `- ALERTS: ${snAlerts.join('; ')}\n`;
+              }
               // Drug interaction alerts
               {
                 const snDi = telestrokeNote.drugInteractions || {};
@@ -14516,6 +14575,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   setTelestrokeNote({...telestrokeNote, glucose: String(clamped)});
                                 }}
                                 placeholder="mg/dL"
+                                aria-invalid={telestrokeNote.glucose && parseInt(telestrokeNote.glucose) < 60 ? 'true' : undefined}
+                                aria-describedby={telestrokeNote.glucose && parseInt(telestrokeNote.glucose) < 60 ? 'glucose-error' : undefined}
                                 className={`w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-green-500 ${(() => {
                                   const g = parseInt(telestrokeNote.glucose);
                                   if (!telestrokeNote.glucose || isNaN(g)) return 'border-slate-300';
@@ -14524,7 +14585,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   return 'border-slate-300';
                                 })()}`}
                               />
-                              {telestrokeNote.glucose && parseInt(telestrokeNote.glucose) < 60 && <p className="text-xs text-red-600 mt-0.5">Hypoglycemia - stroke mimic?</p>}
+                              {telestrokeNote.glucose && parseInt(telestrokeNote.glucose) < 60 && <p id="glucose-error" role="alert" className="text-xs text-red-600 mt-0.5">Hypoglycemia - stroke mimic?</p>}
                             </div>
                             <div>
                               <label htmlFor="input-inr" className="block text-xs text-slate-600 mb-1">INR</label>
@@ -14534,6 +14595,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 step="0.1" min="0.5" max="15"
                                 value={telestrokeNote.inr}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, inr: e.target.value})}
+                                aria-invalid={telestrokeNote.inr && parseFloat(telestrokeNote.inr) > 1.7 ? 'true' : undefined}
+                                aria-describedby={telestrokeNote.inr && parseFloat(telestrokeNote.inr) > 1.7 ? 'inr-error' : undefined}
                                 className={`w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-green-500 ${(() => {
                                   const i = parseFloat(telestrokeNote.inr);
                                   if (!telestrokeNote.inr || isNaN(i)) return 'border-slate-300';
@@ -14542,7 +14605,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   return 'border-slate-300';
                                 })()}`}
                               />
-                              {telestrokeNote.inr && parseFloat(telestrokeNote.inr) > 1.7 && <p className="text-xs text-red-600 mt-0.5">TNK contraindicated (INR &gt;1.7)</p>}
+                              {telestrokeNote.inr && parseFloat(telestrokeNote.inr) > 1.7 && <p id="inr-error" role="alert" className="text-xs text-red-600 mt-0.5">TNK contraindicated (INR &gt;1.7)</p>}
                             </div>
                             <div>
                               <label htmlFor="input-platelets" className="block text-xs text-slate-600 mb-1">Platelets</label>
@@ -14553,6 +14616,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 value={telestrokeNote.plateletCount}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, plateletCount: e.target.value})}
                                 placeholder="K/uL"
+                                aria-invalid={telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount) < 100 ? 'true' : undefined}
+                                aria-describedby={telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount) < 100 ? 'platelets-error' : undefined}
                                 className={`w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-green-500 ${(() => {
                                   const p = parseInt(telestrokeNote.plateletCount);
                                   if (!telestrokeNote.plateletCount || isNaN(p)) return 'border-slate-300';
@@ -14560,7 +14625,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   return 'border-slate-300';
                                 })()}`}
                               />
-                              {telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount) < 100 && <p className="text-xs text-red-600 mt-0.5">TNK contraindicated (plt &lt;100K)</p>}
+                              {telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount) < 100 && <p id="platelets-error" role="alert" className="text-xs text-red-600 mt-0.5">TNK contraindicated (plt &lt;100K)</p>}
                             </div>
                           </div>
                           {/* BP Threshold Alert */}
@@ -16045,6 +16110,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     value={telestrokeNote.ptt}
                                     onChange={(e) => setTelestrokeNote({...telestrokeNote, ptt: e.target.value})}
                                     placeholder=""
+                                    aria-invalid={telestrokeNote.ptt && parseFloat(telestrokeNote.ptt) > 40 ? 'true' : undefined}
+                                    aria-describedby={telestrokeNote.ptt && parseFloat(telestrokeNote.ptt) > 40 ? 'aptt-error' : undefined}
                                     className={`w-full px-3 py-2 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 ${
                                       (() => {
                                         const a = parseFloat(telestrokeNote.ptt);
@@ -16059,7 +16126,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 {(() => {
                                   const a = parseFloat(telestrokeNote.ptt);
-                                  if (a && a > 40) return <p className="text-xs text-red-700 font-medium mt-0.5">Elevated aPTT — TNK relative CI</p>;
+                                  if (a && a > 40) return <p id="aptt-error" role="alert" className="text-xs text-red-700 font-medium mt-0.5">Elevated aPTT — TNK relative CI</p>;
                                   return null;
                                 })()}
                               </div>
