@@ -114,6 +114,9 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
             localStorage.setItem(STORAGE_PREFIX + LAST_UPDATED_KEY, JSON.stringify(Date.now()));
           } catch (e) {
             console.warn('Failed to update lastUpdated:', e);
+            if (e.name === 'QuotaExceededError' || e.code === 22) {
+              throw e;
+            }
           }
         };
 
@@ -6621,6 +6624,7 @@ Clinician Name`;
               const doacType = data.telestrokeNote.lastDOACType;
               if (doacType !== 'warfarin' && doacType !== 'heparin' && doacType !== 'lmwh' && doacType !== 'fondaparinux' && doacType !== 'none') {
                 const lastDose = new Date(data.telestrokeNote.lastDOACDose);
+                if (Number.isNaN(lastDose.getTime())) return;
                 const now = new Date();
                 const hoursSinceDose = (now - lastDose) / (1000 * 60 * 60);
                 const crcl = calculateCrCl(data.telestrokeNote?.age, data.telestrokeNote?.weight, data.telestrokeNote?.sex, data.telestrokeNote?.creatinine);
@@ -7944,6 +7948,10 @@ Clinician Name`;
               if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
               note += `\n`;
               note += `LKW: ${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}\n`;
+              if (telestrokeNote.discoveryDate || telestrokeNote.discoveryTime) {
+                const disc = [formatDate(telestrokeNote.discoveryDate), formatTime(telestrokeNote.discoveryTime)].filter(Boolean).join(' ');
+                note += `Discovery: ${disc}\n`;
+              }
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
               const transferGCS = calculateGCS(gcsItems);
               if (transferGCS > 0) note += ` | GCS: ${transferGCS}`;
@@ -7970,7 +7978,10 @@ Clinician Name`;
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
                 const txAcInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
                 note += `Anticoagulation: ${txAcInfo.name}`;
-                if (telestrokeNote.lastDOACDose) note += ` (last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()})`;
+                if (telestrokeNote.lastDOACDose) {
+                  const txDoseDate = new Date(telestrokeNote.lastDOACDose);
+                  if (!Number.isNaN(txDoseDate.getTime())) note += ` (last dose: ${txDoseDate.toLocaleString()})`;
+                }
                 note += `\n`;
               }
               note += `\n`;
@@ -8039,6 +8050,7 @@ Clinician Name`;
               if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) note += formatDTNForNote();
               const transferBp = bpPhaseTargets[telestrokeNote.bpPhase];
               if (transferBp) note += `- BP target: <${transferBp.systolic}/${transferBp.diastolic} (${transferBp.label})\n`;
+              if (telestrokeNote.rationale) note += `- Clinical rationale: ${telestrokeNote.rationale}\n`;
               if (telestrokeNote.transferRationale) note += `\nTransfer rationale: ${telestrokeNote.transferRationale}\n`;
               if (telestrokeNote.transportMode || telestrokeNote.transportEta) {
                 note += `${telestrokeNote.transferRationale ? '' : '\n'}Transport: ${telestrokeNote.transportMode || '___'}`;
@@ -8153,7 +8165,10 @@ Clinician Name`;
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
                 const acInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
                 note += `- Recent anticoagulant: ${acInfo.name}`;
-                if (telestrokeNote.lastDOACDose) note += ` (last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()})`;
+                if (telestrokeNote.lastDOACDose) {
+                  const snDoseDate = new Date(telestrokeNote.lastDOACDose);
+                  if (!Number.isNaN(snDoseDate.getTime())) note += ` (last dose: ${snDoseDate.toLocaleString()})`;
+                }
                 note += `\n`;
               }
               // Complications
@@ -8418,7 +8433,7 @@ Clinician Name`;
               note += `SECONDARY PREVENTION:\n`;
               const dischSp = telestrokeNote.secondaryPrevention || {};
               if (dischSp.antiplateletRegimen) note += `- Antithrombotic: ${AP_LABELS_SHORT[dischSp.antiplateletRegimen] || dischSp.antiplateletRegimen}\n`;
-              if (dischSp.statinDose) note += `- Statin: ${dischSp.statinDose.replace(/-/g, ' ')}\n`;
+              if (dischSp.statinDose) note += `- Statin: ${dischSp.statinDose.replace(/-/g, ' ')}${dischSp.ldlCurrent ? ` (LDL ${dischSp.ldlCurrent} mg/dL)` : ''}\n`;
               if (dischSp.bpTarget) note += `- BP Target: ${dischSp.bpTarget}\n`;
               if (dischSp.bpMeds) note += `- BP Medications: ${dischSp.bpMeds}\n`;
               const ct = telestrokeNote.cardiacWorkup || {};
@@ -8540,6 +8555,10 @@ Clinician Name`;
             note = note.replace(/{chiefComplaint}/g, telestrokeNote.chiefComplaint || '');
             note = note.replace(/{lkwDate}/g, formatDate(telestrokeNote.lkwDate));
             note = note.replace(/{lkwTime}/g, formatTime(telestrokeNote.lkwTime));
+            if (telestrokeNote.discoveryDate || telestrokeNote.discoveryTime) {
+              const disc = [formatDate(telestrokeNote.discoveryDate), formatTime(telestrokeNote.discoveryTime)].filter(Boolean).join(' ');
+              note = note.replace(/Last known well \(date\/time\):([^\n]*)\n/, `Last known well (date/time):$1\nDiscovery date/time: ${disc}\n`);
+            }
             note = note.replace(/{age}/g, telestrokeNote.age || '');
             note = note.replace(/{sex}/g, telestrokeNote.sex || '');
             note = note.replace(/{symptoms}/g, telestrokeNote.symptoms || '');
@@ -8602,7 +8621,10 @@ Clinician Name`;
             if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
               const acInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
               let acLine = `\nAnticoagulation: ${acInfo.name}`;
-              if (telestrokeNote.lastDOACDose) acLine += ` (last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()})`;
+              if (telestrokeNote.lastDOACDose) {
+                const cnDoseDate = new Date(telestrokeNote.lastDOACDose);
+                if (!Number.isNaN(cnDoseDate.getTime())) acLine += ` (last dose: ${cnDoseDate.toLocaleString()})`;
+              }
               note += acLine + '\n';
             }
 
@@ -8728,6 +8750,11 @@ Clinician Name`;
                 if (ext.timeWindow4_5to9h) extMet.push('4.5-9h window');
                 if (extMet.length > 0) note += `  ${extMet.join(', ')}\n`;
               }
+            }
+
+            // Treatment rationale
+            if (telestrokeNote.rationale) {
+              note += `\nClinical Rationale: ${telestrokeNote.rationale}\n`;
             }
 
             // Disabling deficit documentation
@@ -14317,7 +14344,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 hpi += ` presenting with ${telestrokeNote.symptoms || '***'}.\n`;
                                 if (lkwTime) hpi += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
                                 if (telestrokeNote.medications) hpi += `Medications: ${telestrokeNote.medications}\n`;
-                                if (telestrokeNote.lastDOACType) hpi += `Anticoag: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType}${telestrokeNote.lastDOACDose ? `, last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()}` : ''}\n`;
+                                if (telestrokeNote.lastDOACType) {
+                                  const hpiDoseDate = telestrokeNote.lastDOACDose ? new Date(telestrokeNote.lastDOACDose) : null;
+                                  const hpiDoseStr = hpiDoseDate && !Number.isNaN(hpiDoseDate.getTime()) ? `, last dose: ${hpiDoseDate.toLocaleString()}` : '';
+                                  hpi += `Anticoag: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType}${hpiDoseStr}\n`;
+                                }
                                 copyToClipboard(hpi, 'tel-hpi');
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-hpi' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
@@ -20199,6 +20230,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   note += `\nICH ANTICOAG RESUMPTION:\n`;
                                   if (ichAc.ichLocation) note += `- Location: ${ichAc.ichLocation}.\n`;
                                   if (ichAc.caaFeatures) note += `- CAA features present.\n`;
+                                  if (ichAc.chadsVascScore) note += `- CHA2DS2-VASc: ${ichAc.chadsVascScore}.\n`;
+                                  if (ichAc.hasbledScore) note += `- HAS-BLED: ${ichAc.hasbledScore}.\n`;
                                   note += `- Decision: ${ichAc.decision.replace(/-/g, ' ')}.\n`;
                                   if (ichAc.rationale) note += `- Rationale: ${ichAc.rationale}.\n`;
                                   if (ichAc.laaoConsidered) note += `- LAAO evaluation considered.\n`;
@@ -20209,7 +20242,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 if (sp.statinDose || sp.antiplateletRegimen || sp.bpTarget) {
                                   note += `\nSECONDARY PREVENTION:\n`;
                                   if (sp.antiplateletRegimen) note += `- Antithrombotic: ${sp.antiplateletRegimen.replace(/-/g, ' ')}.\n`;
-                                  if (sp.statinDose) note += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}${sp.inclisiranConsidered ? ' + inclisiran' : ''}.\n`;
+                                  if (sp.statinDose) note += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}${sp.inclisiranConsidered ? ' + inclisiran' : ''}${sp.ldlCurrent ? ` (LDL ${sp.ldlCurrent} mg/dL)` : ''}.\n`;
                                   if (sp.bpTarget) note += `- BP target: ${sp.bpTarget}${sp.bpIntensiveCandidate ? ' (intensive candidate)' : ''}.\n`;
                                   if (sp.diabetesManagement) note += `- Diabetes: ${sp.diabetesManagement.replace(/-/g, ' ')}.\n`;
                                   if (sp.glp1ra && sp.glp1ra !== 'not-indicated') note += `- GLP-1 RA: ${sp.glp1ra.replace(/-/g, ' ')}${sp.glp1raIndication ? ` (${sp.glp1raIndication.replace(/-/g, ' ')})` : ''}.\n`;
@@ -20679,7 +20712,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 hpi += ` presenting with ${telestrokeNote.symptoms || '***'}.\n`;
                                 if (lkwTime) hpi += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
                                 if (telestrokeNote.medications) hpi += `Medications: ${telestrokeNote.medications}\n`;
-                                if (telestrokeNote.lastDOACType) hpi += `Anticoag: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType}${telestrokeNote.lastDOACDose ? `, last dose: ${new Date(telestrokeNote.lastDOACDose).toLocaleString()}` : ''}\n`;
+                                if (telestrokeNote.lastDOACType) {
+                                  const vidDoseDate = telestrokeNote.lastDOACDose ? new Date(telestrokeNote.lastDOACDose) : null;
+                                  const vidDoseStr = vidDoseDate && !Number.isNaN(vidDoseDate.getTime()) ? `, last dose: ${vidDoseDate.toLocaleString()}` : '';
+                                  hpi += `Anticoag: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType}${vidDoseStr}\n`;
+                                }
                                 copyToClipboard(hpi, 'vid-hpi');
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-hpi' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
