@@ -8058,10 +8058,14 @@ Clinician Name`;
               note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}`;
               if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
               note += `\n`;
-              note += `LKW: ${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}\n`;
-              if (telestrokeNote.discoveryDate || telestrokeNote.discoveryTime) {
-                const disc = [formatDate(telestrokeNote.discoveryDate), formatTime(telestrokeNote.discoveryTime)].filter(Boolean).join(' ');
-                note += `Discovery: ${disc}\n`;
+              if (telestrokeNote.lkwUnknown) {
+                note += `LKW: UNKNOWN (wake-up stroke / unwitnessed)\n`;
+                if (telestrokeNote.discoveryDate || telestrokeNote.discoveryTime) {
+                  const disc = [formatDate(telestrokeNote.discoveryDate), formatTime(telestrokeNote.discoveryTime)].filter(Boolean).join(' ');
+                  note += `Discovery time: ${disc} (used for window calculation)\n`;
+                }
+              } else {
+                note += `LKW: ${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}\n`;
               }
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
               const transferGCS = calculateGCS(gcsItems);
@@ -8101,6 +8105,8 @@ Clinician Name`;
               if (aspectsScore != null && aspectsScore < 10) note += ` (ASPECTS ${aspectsScore}/10)`;
               const pcAspectsVal = calculatePCAspects(pcAspectsRegions);
               if (pcAspectsVal >= 0 && pcAspectsVal < 10) note += ` (PC-ASPECTS ${pcAspectsVal}/10)`;
+              if (telestrokeNote.earlyInfarctSigns) note += ` — early infarct signs present`;
+              if (telestrokeNote.denseArterySign) note += ` — hyperdense artery sign`;
               note += `\n`;
               note += `- CTA: ${telestrokeNote.ctaResults || '___'}`;
               const transferVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
@@ -8176,6 +8182,20 @@ Clinician Name`;
               if (telestrokeNote.evtRecommended) note += `- EVT recommended\n`;
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
               if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) note += formatDTNForNote();
+              else if (telestrokeNote.doorTime || telestrokeNote.needleTime) {
+                const dtnParts = [];
+                if (telestrokeNote.doorTime) dtnParts.push(`Door: ${telestrokeNote.doorTime}`);
+                if (telestrokeNote.needleTime) dtnParts.push(`Needle: ${telestrokeNote.needleTime}`);
+                if (telestrokeNote.doorTime && telestrokeNote.needleTime) {
+                  const [dH, dM] = telestrokeNote.doorTime.split(':').map(Number);
+                  const [nH, nM] = telestrokeNote.needleTime.split(':').map(Number);
+                  if (!isNaN(dH) && !isNaN(nH)) {
+                    const dtnMin = (nH * 60 + nM) - (dH * 60 + dM);
+                    if (dtnMin >= 0) dtnParts.push(`DTN: ${dtnMin} min`);
+                  }
+                }
+                note += `- ${dtnParts.join(' | ')}\n`;
+              }
               const transferBp = bpPhaseTargets[telestrokeNote.bpPhase];
               if (transferBp) note += `- BP target: <${transferBp.systolic}/${transferBp.diastolic} (${transferBp.label})\n`;
               // DOAC timing protocol
@@ -8251,6 +8271,7 @@ Clinician Name`;
                 note += `\nSAH Management:\n`;
                 if (telestrokeNote.sahGrade) note += `- ${telestrokeNote.sahGradeScale || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
                 if (telestrokeNote.fisherGrade) note += `- Modified Fisher Grade: ${telestrokeNote.fisherGrade}\n`;
+                if (telestrokeNote.sahBPManaged) note += `- BP managed (SBP <160 pre-securing)\n`;
                 if (telestrokeNote.sahNimodipine) note += `- Nimodipine: initiated\n`;
                 if (telestrokeNote.sahEVDPlaced) note += `- EVD: placed\n`;
                 if (telestrokeNote.sahAneurysmSecured) note += `- Aneurysm: secured\n`;
@@ -8310,7 +8331,7 @@ Clinician Name`;
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
               const signoutGCS = calculateGCS(gcsItems);
               if (signoutGCS > 0) note += ` | GCS: ${signoutGCS}`;
-              note += ` | LKW: ${formatTime(telestrokeNote.lkwTime) || '___'}\n`;
+              note += ` | LKW: ${telestrokeNote.lkwUnknown ? 'UNKNOWN (discovery-based)' : (formatTime(telestrokeNote.lkwTime) || '___')}\n`;
               if (telestrokeNote.codeStatus) note += `Code status: ${telestrokeNote.codeStatus}\n`;
               note += `\nBrief HPI: ${telestrokeNote.symptoms || '___'}\n\n`;
               let imagingLine = `Key imaging: CT ${telestrokeNote.ctResults || '___'}; CTA ${telestrokeNote.ctaResults || '___'}`;
@@ -8468,7 +8489,7 @@ Clinician Name`;
               note += `ASPECTS: ${aspectsScore != null ? aspectsScore + '/10' : 'N/A'}\n\n`;
               note += `INDICATION:\n`;
               note += `Acute ischemic stroke with large vessel occlusion (${(telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ') || '___'}).\n`;
-              note += `LKW: ${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}\n`;
+              note += `LKW: ${telestrokeNote.lkwUnknown ? 'Unknown — discovery-based timing' : `${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}`}\n`;
               if (telestrokeNote.tnkRecommended) {
                 const procDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
                 note += `IV TNK${procDose ? ` ${procDose.calculatedDose} mg` : ''} administered at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
@@ -8486,6 +8507,7 @@ Clinician Name`;
               note += `Reperfusion time: ___\n`;
               note += `mTICI score: ${telestrokeNote.ticiScore || '___'}\n\n`;
               note += `POST-PROCEDURE:\n`;
+              if (telestrokeNote.bpPostEVT) note += `- Post-EVT BP: ${telestrokeNote.bpPostEVT}\n`;
               const procBp = bpPhaseTargets['post-evt'];
               note += `- BP target: SBP <${procBp.systolic}/${procBp.diastolic} for 24h; avoid SBP <140 (Class III: Harm per BEST-II/ENCHANTED2)\n`;
               note += `- Neurovascular checks q15min x 2h, then q30min x 4h\n`;
@@ -8670,7 +8692,7 @@ Clinician Name`;
               note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}`;
               if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
               note += `\n`;
-              note += `Admission Date: ${formatDate(telestrokeNote.lkwDate) || '___'} (LKW date)\n`;
+              note += `Admission Date: ${formatDate(telestrokeNote.lkwDate) || '___'}${telestrokeNote.lkwUnknown ? ' (LKW unknown — wake-up stroke)' : ' (LKW date)'}\n`;
               note += `Discharge Date: ___\n\n`;
               note += `HOSPITAL COURSE:\n`;
               note += `${telestrokeNote.symptoms || '___'}\n`;
@@ -8791,6 +8813,7 @@ Clinician Name`;
                 note += '\nSAH MANAGEMENT:\n';
                 if (telestrokeNote.sahGrade) note += `- ${telestrokeNote.sahGradeScale || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
                 if (telestrokeNote.fisherGrade) note += `- Modified Fisher Grade: ${telestrokeNote.fisherGrade}\n`;
+                if (telestrokeNote.sahBPManaged) note += `- BP managed (SBP <160 pre-securing)\n`;
                 if (telestrokeNote.sahNimodipine) note += `- Nimodipine: initiated\n`;
                 if (telestrokeNote.sahEVDPlaced) note += `- EVD: placed\n`;
                 if (telestrokeNote.sahAneurysmSecured) note += `- Aneurysm: secured\n`;
@@ -8974,11 +8997,16 @@ Clinician Name`;
 
             // Replace all placeholders with actual values
             note = note.replace(/{chiefComplaint}/g, telestrokeNote.chiefComplaint || '');
-            note = note.replace(/{lkwDate}/g, formatDate(telestrokeNote.lkwDate));
-            note = note.replace(/{lkwTime}/g, formatTime(telestrokeNote.lkwTime));
-            if (telestrokeNote.discoveryDate || telestrokeNote.discoveryTime) {
-              const disc = [formatDate(telestrokeNote.discoveryDate), formatTime(telestrokeNote.discoveryTime)].filter(Boolean).join(' ');
-              note = note.replace(/Last known well \(date\/time\):([^\n]*)\n/, `Last known well (date/time):$1\nDiscovery date/time: ${disc}\n`);
+            if (telestrokeNote.lkwUnknown) {
+              note = note.replace(/{lkwDate}/g, 'UNKNOWN');
+              note = note.replace(/{lkwTime}/g, '(wake-up stroke / unwitnessed)');
+              if (telestrokeNote.discoveryDate || telestrokeNote.discoveryTime) {
+                const disc = [formatDate(telestrokeNote.discoveryDate), formatTime(telestrokeNote.discoveryTime)].filter(Boolean).join(' ');
+                note = note.replace(/Last known well \(date\/time\):([^\n]*)\n/, `Last known well (date/time):$1\nDiscovery date/time: ${disc} (used for window calculation)\n`);
+              }
+            } else {
+              note = note.replace(/{lkwDate}/g, formatDate(telestrokeNote.lkwDate));
+              note = note.replace(/{lkwTime}/g, formatTime(telestrokeNote.lkwTime));
             }
             note = note.replace(/{age}/g, telestrokeNote.age || '');
             note = note.replace(/{sex}/g, telestrokeNote.sex || '');
@@ -9000,7 +9028,12 @@ Clinician Name`;
             note = note.replace(/{gcs}/g, gcsForNote > 0 ? `| GCS: ${gcsForNote} ` : '');
             note = note.replace(/{nihssDetails}/g, telestrokeNote.nihssDetails || '');
             note = note.replace(/{ctTime}/g, formatTime(telestrokeNote.ctTime));
-            note = note.replace(/{ctResults}/g, telestrokeNote.ctResults || '');
+            {
+              let ctRes = telestrokeNote.ctResults || '';
+              if (telestrokeNote.earlyInfarctSigns) ctRes += (ctRes ? ' — ' : '') + 'early infarct signs present';
+              if (telestrokeNote.denseArterySign) ctRes += (ctRes ? ' — ' : '') + 'hyperdense artery sign';
+              note = note.replace(/{ctResults}/g, ctRes);
+            }
             note = note.replace(/{ctaDate}/g, formatDate(telestrokeNote.ctaDate));
             note = note.replace(/{ctaTime}/g, formatTime(telestrokeNote.ctaTime));
             note = note.replace(/{ctaResults}/g, telestrokeNote.ctaResults || '');
