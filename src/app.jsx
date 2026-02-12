@@ -1733,10 +1733,10 @@ Clinician Name`;
             const bVal = parseFloat(b);
             const tVal = parseFloat(thicknessMm);
             const nVal = parseFloat(numSlices);
-            if ([aVal, bVal, tVal, nVal].some(val => Number.isNaN(val))) return null;
+            if ([aVal, bVal, tVal, nVal].some(val => Number.isNaN(val) || val <= 0)) return null;
             const cCm = (tVal / 10) * nVal;
             const vol = (aVal * bVal * cCm) / 2;
-            if (Number.isNaN(vol)) return null;
+            if (Number.isNaN(vol) || vol <= 0) return null;
             return {
               value: vol,
               display: vol.toFixed(1),
@@ -8233,16 +8233,70 @@ Clinician Name`;
                 }
                 note += `\n`;
               }
+              // DOAC timing protocol
+              {
+                const snDoac = telestrokeNote.doacTiming || {};
+                if (snDoac.strokeSeverity || snDoac.doacAgent) {
+                  const dParts = [];
+                  if (snDoac.doacAgent) dParts.push(snDoac.doacAgent.replace(/-/g, ' '));
+                  if (snDoac.strokeSeverity) dParts.push(`severity ${snDoac.strokeSeverity} → ${snDoac.strokeSeverity === 'minor' ? 'start within 48h' : snDoac.strokeSeverity === 'moderate' ? 'start Day 3-5' : 'start Day 6-14'}`);
+                  if (snDoac.doacInitiationDay) dParts.push(`planned Day ${snDoac.doacInitiationDay}`);
+                  if (snDoac.hemorrhagicTransformation) dParts.push('HT — repeat imaging before initiation');
+                  note += `- DOAC plan: ${dParts.join('; ')}\n`;
+                }
+              }
+              // Cardiac workup
+              {
+                const snCw = telestrokeNote.cardiacWorkup || {};
+                const cwParts = [];
+                if (snCw.ecgComplete) cwParts.push('ECG done');
+                if (snCw.telemetryOrdered) cwParts.push('telemetry ordered');
+                if (snCw.echoOrdered) cwParts.push('echo ordered');
+                if (snCw.extendedMonitoringType) cwParts.push(`extended: ${snCw.extendedMonitoringType}`);
+                if (snCw.pfoEvaluation) cwParts.push(`PFO: ${snCw.pfoEvaluation.replace(/-/g, ' ')}`);
+                if (cwParts.length > 0) note += `- Cardiac workup: ${cwParts.join(', ')}\n`;
+              }
               // Complications
               const signoutComps = [];
               if (telestrokeNote.sichDetected) signoutComps.push('sICH');
-              if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) signoutComps.push('angioedema');
+              if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) {
+                const snAe = telestrokeNote.angioedema || {};
+                let snAeStr = 'angioedema';
+                if (snAe.severity) snAeStr += ` (${snAe.severity})`;
+                if (snAe.intubated) snAeStr += ' — INTUBATED';
+                else if (snAe.resolved) snAeStr += ' — resolved';
+                signoutComps.push(snAeStr);
+              }
               if (telestrokeNote.reperfusionHemorrhage) signoutComps.push('reperfusion hemorrhage');
               if (telestrokeNote.clinicalDeterioration) signoutComps.push('clinical deterioration');
               const htSignout = telestrokeNote.hemorrhagicTransformation || {};
               if (htSignout.detected) signoutComps.push(`HT${htSignout.classification ? ` (${htSignout.classification}${htSignout.symptomatic ? ', sxHT' : ''})` : ''}`);
               if (signoutComps.length > 0) note += `- Complications: ${signoutComps.join(', ')}\n`;
+              if (htSignout.detected && (htSignout.antithromboticHeld || htSignout.reimagingPlanned)) {
+                const htActions = [];
+                if (htSignout.antithromboticHeld) htActions.push('antithrombotics held');
+                if (htSignout.reimagingPlanned) htActions.push('repeat imaging planned');
+                note += `- HT actions: ${htActions.join(', ')}\n`;
+              }
               if (telestrokeNote.complicationNotes) note += `- Complication details: ${telestrokeNote.complicationNotes}\n`;
+              // Drug interaction alerts
+              {
+                const snDi = telestrokeNote.drugInteractions || {};
+                const snDiItems = [];
+                if (snDi.aedDoacInteraction) snDiItems.push(`AED-DOAC: ${snDi.aedType} (enzyme-inducing — consider warfarin)`);
+                if (snDi.statinInteraction) snDiItems.push(`Statin: ${snDi.statinInteractionDrug} (dose adjustment)`);
+                if (snDiItems.length > 0) note += `- DRUG INTERACTIONS: ${snDiItems.join('; ')}\n`;
+              }
+              // Decompressive craniectomy
+              {
+                const snDc = telestrokeNote.decompressiveCraniectomy || {};
+                if (snDc.considered) {
+                  note += `- CRANIECTOMY UNDER CONSIDERATION`;
+                  if (snDc.territorySize) note += ` — territory: ${snDc.territorySize}`;
+                  if (snDc.timing) note += `, window: ${snDc.timing}`;
+                  note += `\n`;
+                }
+              }
               // Special populations
               if (telestrokeNote.pregnancyStroke) note += `- PREGNANCY: OB/GYN co-management recommended\n`;
               if (telestrokeNote.activeCancer) note += `- ACTIVE CANCER: oncology co-management recommended\n`;
@@ -8334,12 +8388,43 @@ Clinician Name`;
               if (telestrokeNote.evtRecommended) note += `   - Post-EVT: mTICI ${telestrokeNote.ticiScore || '___'}\n`;
               const progComps = [];
               if (telestrokeNote.sichDetected) progComps.push('sICH');
-              if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) progComps.push('angioedema');
+              if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) {
+                const prAe = telestrokeNote.angioedema || {};
+                let prAeStr = 'angioedema';
+                if (prAe.severity) prAeStr += ` (${prAe.severity})`;
+                if (prAe.intubated) prAeStr += ' — INTUBATED';
+                else if (prAe.resolved) prAeStr += ' — resolved';
+                progComps.push(prAeStr);
+              }
               if (telestrokeNote.reperfusionHemorrhage) progComps.push('reperfusion hemorrhage');
               if (telestrokeNote.clinicalDeterioration) progComps.push('clinical deterioration');
               const htProg = telestrokeNote.hemorrhagicTransformation || {};
               if (htProg.detected) progComps.push(`HT${htProg.classification ? ` (${htProg.classification}${htProg.symptomatic ? ', symptomatic' : ''})` : ''}`);
               if (progComps.length > 0) note += `   - Complications: ${progComps.join(', ')}\n`;
+              if (htProg.detected && (htProg.antithromboticHeld || htProg.reimagingPlanned)) {
+                const prHtActions = [];
+                if (htProg.antithromboticHeld) prHtActions.push('antithrombotics held');
+                if (htProg.reimagingPlanned) prHtActions.push('repeat imaging planned');
+                note += `   - HT actions: ${prHtActions.join(', ')}\n`;
+              }
+              // Drug interaction alerts
+              {
+                const prDi = telestrokeNote.drugInteractions || {};
+                const prDiItems = [];
+                if (prDi.aedDoacInteraction) prDiItems.push(`AED-DOAC: ${prDi.aedType} (enzyme-inducing)`);
+                if (prDi.statinInteraction) prDiItems.push(`Statin: ${prDi.statinInteractionDrug}`);
+                if (prDiItems.length > 0) note += `   - Drug interactions: ${prDiItems.join('; ')}\n`;
+              }
+              // Decompressive craniectomy
+              {
+                const prDc = telestrokeNote.decompressiveCraniectomy || {};
+                if (prDc.considered) {
+                  note += `   - CRANIECTOMY under consideration`;
+                  if (prDc.territorySize) note += ` (${prDc.territorySize})`;
+                  if (prDc.timing) note += ` — window: ${prDc.timing}`;
+                  note += `\n`;
+                }
+              }
               if (telestrokeNote.activeCancer) note += `   - ACTIVE CANCER\n`;
               if (telestrokeNote.sickleCellDisease) note += `   - SICKLE CELL DISEASE\n`;
               if (telestrokeNote.infectiveEndocarditis) note += `   - INFECTIVE ENDOCARDITIS\n`;
@@ -8357,7 +8442,29 @@ Clinician Name`;
                 if (telestrokeNote.doacTiming?.doacInitiationDay) note += ` — planned initiation: ${telestrokeNote.doacTiming.doacInitiationDay}`;
                 note += `\n`;
               }
-              note += `   - Cardiac monitoring: ${(telestrokeNote.cardiacWorkup || {}).extendedMonitoringType || 'pending'}\n\n`;
+              // Enhanced DOAC timing
+              {
+                const prDoac = telestrokeNote.doacTiming || {};
+                if (prDoac.strokeSeverity || prDoac.doacAgent) {
+                  const prDoacParts = [];
+                  if (prDoac.doacAgent) prDoacParts.push(prDoac.doacAgent.replace(/-/g, ' '));
+                  if (prDoac.strokeSeverity) prDoacParts.push(`severity ${prDoac.strokeSeverity} → ${prDoac.strokeSeverity === 'minor' ? 'start within 48h' : prDoac.strokeSeverity === 'moderate' ? 'Day 3-5' : 'Day 6-14'}`);
+                  if (prDoac.hemorrhagicTransformation) prDoacParts.push('HT — repeat imaging first');
+                  note += `   - DOAC plan: ${prDoacParts.join('; ')}\n`;
+                }
+              }
+              // Enhanced cardiac workup
+              {
+                const prCw = telestrokeNote.cardiacWorkup || {};
+                const prCwParts = [];
+                if (prCw.ecgComplete) prCwParts.push('ECG done');
+                if (prCw.telemetryOrdered) prCwParts.push('telemetry ordered');
+                if (prCw.echoOrdered) prCwParts.push('echo ordered');
+                if (prCw.extendedMonitoringType) prCwParts.push(`extended: ${prCw.extendedMonitoringType}`);
+                else prCwParts.push('extended monitoring: pending');
+                if (prCw.pfoEvaluation) prCwParts.push(`PFO: ${prCw.pfoEvaluation.replace(/-/g, ' ')}`);
+                note += `   - Cardiac workup: ${prCwParts.join(', ')}\n\n`;
+              }
               note += `3. Disposition planning:\n`;
               note += `   - Estimated discharge: ___\n`;
               note += `   - Disposition: ${telestrokeNote.disposition || '___'}\n`;
@@ -11910,13 +12017,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {settingsMenuOpen && (
                           <>
                             <div className="fixed inset-0 z-40" onClick={() => setSettingsMenuOpen(false)} onKeyDown={(e) => e.key === 'Escape' && setSettingsMenuOpen(false)} role="presentation" aria-hidden="true"></div>
-                            <div className="absolute right-0 top-12 w-56 bg-white border border-slate-200 rounded-xl shadow-lg z-50 py-1 overflow-hidden">
+                            <div className="absolute right-0 top-12 w-56 max-w-[calc(100vw-2rem)] bg-white border border-slate-200 rounded-xl shadow-lg z-50 py-1 overflow-hidden">
                               {showDocumentActions && (
                                 <button
                                   onClick={() => { exportToPDF(); setSettingsMenuOpen(false); }}
                                   className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                                 >
-                                  <i data-lucide="download" className="w-4 h-4 text-slate-400"></i>
+                                  <i data-lucide="download" className="w-4 h-4 text-slate-500"></i>
                                   Export to PDF
                                 </button>
                               )}
@@ -11925,7 +12032,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   onClick={() => { handleShare(); setSettingsMenuOpen(false); }}
                                   className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                                 >
-                                  <i data-lucide="share-2" className="w-4 h-4 text-slate-400"></i>
+                                  <i data-lucide="share-2" className="w-4 h-4 text-slate-500"></i>
                                   Share
                                 </button>
                               )}
@@ -11934,14 +12041,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onClick={() => { setFocusMode(prev => !prev); setSettingsMenuOpen(false); }}
                                 className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                               >
-                                <i data-lucide={focusMode ? 'minimize-2' : 'maximize-2'} className="w-4 h-4 text-slate-400"></i>
+                                <i data-lucide={focusMode ? 'minimize-2' : 'maximize-2'} className="w-4 h-4 text-slate-500"></i>
                                 {focusMode ? 'Exit Focus Mode' : 'Focus Mode'}
                               </button>
                               <button
                                 onClick={() => { setShowChangelog(true); setSettingsMenuOpen(false); }}
                                 className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                               >
-                                <i data-lucide="sparkles" className="w-4 h-4 text-slate-400"></i>
+                                <i data-lucide="sparkles" className="w-4 h-4 text-slate-500"></i>
                                 What's New
                               </button>
                               {encounterHistory.length > 0 && (
@@ -11949,7 +12056,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   onClick={() => { setSettingsMenuOpen(false); scrollToSection('encounter-history-section'); }}
                                   className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                                 >
-                                  <i data-lucide="history" className="w-4 h-4 text-slate-400"></i>
+                                  <i data-lucide="history" className="w-4 h-4 text-slate-500"></i>
                                   Recent Encounters ({encounterHistory.length})
                                 </button>
                               )}
@@ -28157,7 +28264,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             <div className="fixed right-4 fab-offset fab-layer">
               {/* Expanded Contact Panel */}
               {fabExpanded && (
-                <div className="absolute bottom-16 right-0 w-72 bg-white rounded-lg shadow-2xl border-2 border-red-300 overflow-hidden animate-fadeIn">
+                <div className="absolute bottom-16 right-0 w-72 max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-2xl border-2 border-red-300 overflow-hidden animate-fadeIn">
                   <div className="bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-2 font-bold flex items-center justify-between">
                     <span className="flex items-center gap-2">
                       <i data-lucide="phone-call" className="w-4 h-4"></i>
