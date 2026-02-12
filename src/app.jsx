@@ -11039,6 +11039,16 @@ Clinician Name`;
               }
             }
 
+            // Apixaban dose reduction prompt when age ≥80 but weight/creatinine unknown
+            if (n.lastDOACType === 'apixaban') {
+              const apixAge = parseFloat(n.age);
+              const apixWt = parseFloat(n.weight);
+              const apixCr = parseFloat(n.creatinine);
+              if (!isNaN(apixAge) && apixAge >= 80 && (isNaN(apixWt) || isNaN(apixCr))) {
+                warnings.push({ id: 'apixaban-age-dose-check', severity: 'warn', msg: `Apixaban in patient age ${apixAge} (≥80) — dose reduction to 2.5 mg BID required if ≥2 of 3 criteria met: age ≥80, weight ≤60 kg, Cr ≥1.5. Enter weight and creatinine to confirm appropriate dose (ARISTOTLE, FDA label).` });
+              }
+            }
+
             // Fondaparinux CrCl <30 contraindication
             if (/fondaparinux/.test(meds)) {
               const fondCrCl = calculateCrCl(n.age, n.weight, n.sex, n.creatinine, n.height);
@@ -13952,10 +13962,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       ) : null}
                     </div>
                     <div className="flex items-center gap-1">
-                      <button onClick={toggleAlertMute} className="p-2 rounded-full hover:bg-white/20 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center" title={alertsMuted ? 'Unmute' : 'Mute'} aria-label={alertsMuted ? 'Unmute alerts' : 'Mute alerts'}>
+                      <button onClick={toggleAlertMute} aria-pressed={alertsMuted} className="p-2 rounded-full hover:bg-white/20 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center" title={alertsMuted ? 'Unmute' : 'Mute'} aria-label={alertsMuted ? 'Unmute alerts' : 'Mute alerts'}>
                         <i aria-hidden="true" data-lucide={alertsMuted ? 'volume-x' : 'volume-2'} className="w-4 h-4"></i>
                       </button>
-                      <button onClick={() => setFocusMode(prev => !prev)} className={`p-2 rounded-full hover:bg-white/20 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center ${focusMode ? 'bg-white/20' : ''}`} title={focusMode ? 'Exit focus mode' : 'Focus mode'} aria-label={focusMode ? 'Exit focus mode' : 'Enter focus mode'}>
+                      <button onClick={() => setFocusMode(prev => !prev)} aria-pressed={focusMode} className={`p-2 rounded-full hover:bg-white/20 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center ${focusMode ? 'bg-white/20' : ''}`} title={focusMode ? 'Exit focus mode' : 'Focus mode'} aria-label={focusMode ? 'Exit focus mode' : 'Enter focus mode'}>
                         <i aria-hidden="true" data-lucide={focusMode ? 'minimize-2' : 'maximize-2'} className="w-4 h-4"></i>
                       </button>
                     </div>
@@ -14123,7 +14133,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {completion && completion.complete ? (
                                 <i aria-hidden="true" data-lucide="check-circle" className={`w-3 h-3 ${encounterPhase === phase.id ? 'text-white' : 'text-emerald-500'}`}></i>
                               ) : completion && completion.done > 0 ? (
-                                <span className={`text-[10px] ${encounterPhase === phase.id ? 'text-white/80' : 'text-slate-500'}`}>
+                                <span className={`text-xs font-semibold ${encounterPhase === phase.id ? 'text-white/80' : 'text-slate-600'}`}>
                                   {completion.done}/{completion.total}
                                 </span>
                               ) : null}
@@ -15625,24 +15635,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <p className="text-xs font-semibold text-violet-800 mb-1.5">CTP Perfusion (RAPID output)</p>
                             <div className="grid grid-cols-3 gap-2 mb-1.5">
                               <div>
-                                <label className="block text-xs text-slate-600">Core (mL)</label>
-                                <input type="number" min="0" step="1"
+                                <label htmlFor="input-ctp-core" className="block text-xs text-slate-600">Core (mL)</label>
+                                <input id="input-ctp-core" type="number" min="0" step="1"
                                   value={(telestrokeNote.ctpStructured || {}).coreVolume || ''}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctpStructured: {...(prev.ctpStructured || {}), coreVolume: v}})); }}
                                   placeholder="CBF<30%"
                                   className="w-full px-2 py-1 border border-slate-300 rounded text-sm" />
                               </div>
                               <div>
-                                <label className="block text-xs text-slate-600">Penumbra (mL)</label>
-                                <input type="number" min="0" step="1"
+                                <label htmlFor="input-ctp-penumbra" className="block text-xs text-slate-600">Penumbra (mL)</label>
+                                <input id="input-ctp-penumbra" type="number" min="0" step="1"
                                   value={(telestrokeNote.ctpStructured || {}).penumbraVolume || ''}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctpStructured: {...(prev.ctpStructured || {}), penumbraVolume: v}})); }}
                                   placeholder="Tmax>6s"
                                   className="w-full px-2 py-1 border border-slate-300 rounded text-sm" />
                               </div>
                               <div>
-                                <label className="block text-xs text-slate-600">Mismatch Ratio</label>
-                                <input type="text" readOnly
+                                <label htmlFor="input-ctp-mismatch" className="block text-xs text-slate-600">Mismatch Ratio</label>
+                                <input id="input-ctp-mismatch" type="text" readOnly
                                   value={(() => {
                                     const c = parseFloat((telestrokeNote.ctpStructured || {}).coreVolume);
                                     const p = parseFloat((telestrokeNote.ctpStructured || {}).penumbraVolume);
@@ -16137,8 +16147,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="px-3 pb-3 space-y-2">
                                 <div className="grid grid-cols-2 gap-2">
                                   <div>
-                                    <label className="block text-xs text-slate-600 mb-0.5">Antithrombotic</label>
-                                    <select value={(telestrokeNote.secondaryPrevention || {}).antiplateletRegimen || ''}
+                                    <label htmlFor="input-antithrombotic" className="block text-xs text-slate-600 mb-0.5">Antithrombotic</label>
+                                    <select id="input-antithrombotic" value={(telestrokeNote.secondaryPrevention || {}).antiplateletRegimen || ''}
                                       onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), antiplateletRegimen: v}})); }}
                                       className="w-full px-2 py-1 border border-slate-300 rounded text-xs">
                                       <option value="">-- Select --</option>
@@ -16150,7 +16160,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <option value="anticoag-other">Anticoagulation (other)</option>
                                     </select>
                                     {(telestrokeNote.secondaryPrevention || {}).antiplateletRegimen === 'dapt-21' && (
-                                      <select value={(telestrokeNote.secondaryPrevention || {}).daptDuration || ''}
+                                      <select aria-label="DAPT duration" value={(telestrokeNote.secondaryPrevention || {}).daptDuration || ''}
                                         onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), daptDuration: v}})); }}
                                         className="w-full mt-1 px-2 py-1 border border-slate-300 rounded text-xs">
                                         <option value="">-- DAPT duration --</option>
@@ -16178,8 +16188,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     })()}
                                   </div>
                                   <div>
-                                    <label className="block text-xs text-slate-600 mb-0.5">Statin</label>
-                                    <select value={(telestrokeNote.secondaryPrevention || {}).statinDose || ''}
+                                    <label htmlFor="input-statin" className="block text-xs text-slate-600 mb-0.5">Statin</label>
+                                    <select id="input-statin" value={(telestrokeNote.secondaryPrevention || {}).statinDose || ''}
                                       onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), statinDose: v}})); }}
                                       className="w-full px-2 py-1 border border-slate-300 rounded text-xs">
                                       <option value="">-- Select --</option>
@@ -16193,8 +16203,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 <div className="grid grid-cols-2 gap-2">
                                   <div>
-                                    <label className="block text-xs text-slate-600 mb-0.5">BP Target</label>
-                                    <select value={(telestrokeNote.secondaryPrevention || {}).bpTarget || ''}
+                                    <label htmlFor="input-bp-target" className="block text-xs text-slate-600 mb-0.5">BP Target</label>
+                                    <select id="input-bp-target" value={(telestrokeNote.secondaryPrevention || {}).bpTarget || ''}
                                       onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), bpTarget: v}})); }}
                                       className="w-full px-2 py-1 border border-slate-300 rounded text-xs">
                                       <option value="">-- Select --</option>
@@ -16204,8 +16214,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </select>
                                   </div>
                                   <div>
-                                    <label className="block text-xs text-slate-600 mb-0.5">BP Meds</label>
-                                    <input type="text" value={(telestrokeNote.secondaryPrevention || {}).bpMeds || ''}
+                                    <label htmlFor="input-bp-meds" className="block text-xs text-slate-600 mb-0.5">BP Meds</label>
+                                    <input id="input-bp-meds" type="text" value={(telestrokeNote.secondaryPrevention || {}).bpMeds || ''}
                                       onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), bpMeds: v}})); }}
                                       placeholder="e.g., Amlodipine 5mg"
                                       className="w-full px-2 py-1 border border-slate-300 rounded text-xs" />
@@ -16863,9 +16873,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="space-y-3">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                               <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Presenting BP</label>
+                                <label htmlFor="input-presenting-bp" className="block text-sm font-medium text-slate-700 mb-1">Presenting BP</label>
                                 <div className="flex items-center gap-2">
                                   <input
+                                    id="input-presenting-bp"
                                     type="text"
                                     value={telestrokeNote.presentingBP}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, presentingBP: v})); }}
@@ -16967,9 +16978,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             )}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                               <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Glucose</label>
+                                <label htmlFor="input-glucose" className="block text-sm font-medium text-slate-700 mb-1">Glucose</label>
                                 <div className="flex items-center">
                                   <input
+                                    id="input-glucose"
                                     type="number"
                                     value={telestrokeNote.glucose}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, glucose: v})); }}
@@ -18943,7 +18955,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         {metrics.doorToNeedle === null && (
                                           <div className="bg-white p-3 rounded-lg border border-slate-200 text-center">
                                             <p className="text-xs text-slate-600 mb-1">Door-to-Needle (DTN)</p>
-                                            <p className="text-2xl font-bold text-slate-400">--</p>
+                                            <p className="text-2xl font-bold text-slate-500" aria-label="No value entered">--</p>
                                             <p className="text-xs text-slate-500">Target: &lt;45 min</p>
                                           </div>
                                         )}
@@ -19981,14 +19993,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <h4 className="font-semibold text-red-800 mb-2">Blood Pressure Target</h4>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                   <div>
-                                    <label className="text-xs text-slate-600">Current BP Meds</label>
-                                    <input type="text" value={(telestrokeNote.secondaryPrevention || {}).bpMeds || ''}
+                                    <label htmlFor="input-bp-meds-mgmt" className="text-xs text-slate-600">Current BP Meds</label>
+                                    <input id="input-bp-meds-mgmt" type="text" value={(telestrokeNote.secondaryPrevention || {}).bpMeds || ''}
                                       onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), bpMeds: v}})); }}
                                       className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="e.g., lisinopril 10mg, amlodipine 5mg" />
                                   </div>
                                   <div>
-                                    <label className="text-xs text-slate-600">Target</label>
-                                    <select value={(telestrokeNote.secondaryPrevention || {}).bpTarget || ''}
+                                    <label htmlFor="input-bp-target-mgmt" className="text-xs text-slate-600">Target</label>
+                                    <select id="input-bp-target-mgmt" value={(telestrokeNote.secondaryPrevention || {}).bpTarget || ''}
                                       onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), bpTarget: v}})); }}
                                       className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                                       <option value="">Select</option>
@@ -29185,7 +29197,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                           key={action.id}
                                                           type="button"
                                                           onClick={() => navigateTo(action.target.tab, { subTab: action.target.subTab })}
-                                                          className="px-2 py-1 text-[10px] font-semibold rounded-full border border-indigo-200 text-indigo-700 hover:bg-indigo-100"
+                                                          className="px-3 py-1.5 text-xs font-semibold rounded-full border border-indigo-200 text-indigo-700 hover:bg-indigo-100 min-h-[32px]"
                                                         >
                                                           {action.label}
                                                         </button>
