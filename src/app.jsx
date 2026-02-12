@@ -9523,6 +9523,9 @@ Clinician Name`;
               if (telestrokeNote.ctpResults) ctpParts.push(telestrokeNote.ctpResults);
               note = note.replace(/{ctpResults}/g, ctpParts.length > 0 ? ctpParts.join('; ') : 'N/A');
             }
+            if (telestrokeNote.collateralGrade) {
+              note = note.replace(/CTP:([^\n]*)\n/, `CTP:$1\nCollaterals: ${telestrokeNote.collateralGrade}\n`);
+            }
             note = note.replace(/{diagnosis}/g, telestrokeNote.diagnosis || '');
             note = note.replace(/{tnkAdminTime}/g, formatTime(telestrokeNote.tnkAdminTime));
             note = note.replace(/{recommendationsText}/g, telestrokeNote.recommendationsText || '');
@@ -9998,6 +10001,29 @@ Clinician Name`;
                 note += telestrokeNote.disposition || 'Pending';
               }
               note += '\n';
+            }
+
+            // VTE prophylaxis
+            {
+              const cnVte = telestrokeNote.vteProphylaxis || {};
+              if (cnVte.ipc || cnVte.ipcApplied || cnVte.pharmacologic || cnVte.pharmacoProphylaxis) {
+                const cnVteItems = [];
+                if (cnVte.ipc || cnVte.ipcApplied) cnVteItems.push('IPC/SCDs in place');
+                if (cnVte.pharmacologic || cnVte.pharmacoProphylaxis) cnVteItems.push(`pharmacologic: ${cnVte.pharmacologicAgent || cnVte.pharmacoProphylaxis || 'ordered'}`);
+                note += `\nVTE Prophylaxis: ${cnVteItems.join(', ')}\n`;
+              }
+            }
+            // Rehab referrals
+            {
+              const cnRr = telestrokeNote.rehabReferral || {};
+              const cnRrItems = [];
+              if (cnRr.pt) cnRrItems.push('PT');
+              if (cnRr.ot) cnRrItems.push('OT');
+              if (cnRr.slp) cnRrItems.push('SLP');
+              if (cnRr.neuropsych) cnRrItems.push('neuropsych');
+              if (cnRr.socialWork) cnRrItems.push('social work');
+              if (cnRr.vocationalRehab) cnRrItems.push('vocational rehab');
+              if (cnRrItems.length > 0) note += `Rehab Referrals: ${cnRrItems.join(', ')}\n`;
             }
 
             // Add discharge checklist summary
