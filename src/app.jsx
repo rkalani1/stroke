@@ -9160,8 +9160,16 @@ Clinician Name`;
               if (sp.smokingStatus === 'current') note += `- STOP SMOKING — this is the most important change you can make. Ask your doctor about quit aids\n`;
               else note += `- Do not smoke or use tobacco\n`;
               note += `- Take medications as prescribed — do not stop without talking to your doctor\n`;
-              note += `- Exercise regularly (at least 30 min/day, 5 days/week — walking counts!)\n`;
-              note += `- Eat a heart-healthy diet (low salt, plenty of fruits/vegetables, Mediterranean-style)\n`;
+              if (sp.exercisePlan) {
+                note += `- Exercise: ${sp.exercisePlan}${sp.exerciseMinPerWeek ? ` (goal: ${sp.exerciseMinPerWeek} min/week)` : ''}\n`;
+              } else {
+                note += `- Exercise regularly (at least 30 min/day, 5 days/week — walking counts!)\n`;
+              }
+              if (sp.dietPlan) {
+                note += `- Diet: ${sp.dietPlan}\n`;
+              } else {
+                note += `- Eat a heart-healthy diet (low salt, plenty of fruits/vegetables, Mediterranean-style)\n`;
+              }
               note += `- Limit alcohol (no more than 1 drink/day for women, 2 for men)\n`;
               if (telestrokeNote.weight) note += `- Maintain a healthy weight\n`;
               note += '\n';
@@ -9190,6 +9198,7 @@ Clinician Name`;
                 note += '\n';
               }
               note += `FOLLOW-UP APPOINTMENTS:\n`;
+              if (sp.followUpTimeline) note += `Recommended timeline: ${sp.followUpTimeline}\n`;
               const edIsTIA = (telestrokeNote.diagnosis || '').toLowerCase().includes('tia');
               const edIsICH = telestrokeNote.diagnosisCategory === 'ich';
               if (edIsTIA) {
@@ -9465,6 +9474,13 @@ Clinician Name`;
               }
               if (dischSp.glp1ra && dischSp.glp1ra !== 'not-indicated') note += `- GLP-1 RA: ${dischSp.glp1ra.replace(/-/g, ' ')}\n`;
               if (dischSp.sglt2i && dischSp.sglt2i !== 'not-indicated') note += `- SGLT2i: ${dischSp.sglt2i.replace(/-/g, ' ')}\n`;
+              if (dischSp.exercisePlan) {
+                let exLine = `- Exercise: ${dischSp.exercisePlan}`;
+                if (dischSp.exerciseMinPerWeek) exLine += ` (${dischSp.exerciseMinPerWeek} min/week)`;
+                note += exLine + '\n';
+              }
+              if (dischSp.dietPlan) note += `- Diet: ${dischSp.dietPlan}\n`;
+              if (dischSp.followUpTimeline) note += `- Follow-up timeline: ${dischSp.followUpTimeline}\n`;
               // DOAC timing
               {
                 const dcDoac = telestrokeNote.doacTiming || {};
@@ -11828,7 +11844,8 @@ Clinician Name`;
                                   'evtDecisionInputs', 'doacProtocol', 'nursingFlowsheetChecks',
                                   'ichVolumeParams', 'weightUnit', 'trialEligibility', 'encounterPhase', 'noteTemplate',
                                   'telestrokeTemplate', 'shiftPatients', 'currentPatientId',
-                                  'autoSyncCalculators', 'activeTab'];
+                                  'autoSyncCalculators', 'activeTab',
+                                  'thrombolysisAlertsMuted', 'encounterHistory'];
             keysToRemove.forEach((key) => removeKey(key));
 
             navigateTo('encounter');
@@ -12056,10 +12073,10 @@ Clinician Name`;
                 if (prev.tnkAutoBlocked && prev.tnkRecommended === false && prev.tnkAutoBlockReason === reasonStr) return prev;
                 return { ...prev, tnkRecommended: false, tnkAutoBlocked: true, tnkAutoBlockReason: reasonStr };
               });
-            } else if (telestrokeNote.tnkAutoBlocked) {
-              setTelestrokeNote(prev => ({ ...prev, tnkAutoBlocked: false, tnkAutoBlockReason: '' }));
+            } else {
+              setTelestrokeNote(prev => prev.tnkAutoBlocked ? { ...prev, tnkAutoBlocked: false, tnkAutoBlockReason: '' } : prev);
             }
-          }, [telestrokeNote.lastDOACType, telestrokeNote.inr, telestrokeNote.plateletCount, telestrokeNote.ptt, telestrokeNote.glucose, telestrokeNote.diagnosisCategory, telestrokeNote.infectiveEndocarditis, telestrokeNote.tnkAutoBlocked]);
+          }, [telestrokeNote.lastDOACType, telestrokeNote.inr, telestrokeNote.plateletCount, telestrokeNote.ptt, telestrokeNote.glucose, telestrokeNote.diagnosisCategory, telestrokeNote.infectiveEndocarditis]);
 
           useEffect(() => {
             const prev = decisionStateRef.current;
@@ -14326,11 +14343,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <input type="checkbox"
                                         checked={item.path.includes('.') ? (telestrokeNote.wakeUpStrokeWorkflow?.[item.path.split('.')[0]] || {})[item.path.split('.')[1]] : telestrokeNote.wakeUpStrokeWorkflow?.[item.path]}
                                         onChange={(e) => {
+                                          const checked = e.target.checked;
                                           if (item.path.includes('.')) {
                                             const [parent, child] = item.path.split('.');
-                                            setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), [parent]: {...(telestrokeNote.wakeUpStrokeWorkflow?.[parent] || {}), [child]: e.target.checked}}});
+                                            setTelestrokeNote(prev => ({...prev, wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), [parent]: {...(prev.wakeUpStrokeWorkflow?.[parent] || {}), [child]: checked}}}));
                                           } else {
-                                            setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), [item.path]: e.target.checked}});
+                                            setTelestrokeNote(prev => ({...prev, wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), [item.path]: checked}}));
                                           }
                                         }}
                                         className="w-3.5 h-3.5 rounded border-purple-400 text-purple-600" />
@@ -17425,7 +17443,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               else if (telestrokeNote.tnkContraindicationReviewed) { badgeColor = 'bg-emerald-500 text-white'; badgeText = 'No contraindications'; badgeIcon = 'check'; }
                               else { badgeColor = 'bg-slate-400 text-white'; badgeText = 'Not reviewed'; badgeIcon = '?'; }
 
-                              const updateChecklistItem = (id, value) => setTelestrokeNote({...telestrokeNote, tnkContraindicationChecklist: {...telestrokeNote.tnkContraindicationChecklist, [id]: value}});
+                              const updateChecklistItem = (id, value) => setTelestrokeNote(prev => ({...prev, tnkContraindicationChecklist: {...(prev.tnkContraindicationChecklist || {}), [id]: value}}));
 
                               const clearAllAndProceed = () => {
                                 // Block if auto-detected absolute contraindications exist (including IE, ICH/SAH, etc.)
@@ -29528,7 +29546,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             )}
 
             {/* Emergency Contacts FAB - Floating Action Button */}
-            <div className="fixed right-4 fab-offset fab-layer">
+            {fabExpanded && (
+              <div className="fixed inset-0 z-40" onClick={() => setFabExpanded(false)} aria-hidden="true"></div>
+            )}
+            <div className="fixed right-4 fab-offset fab-layer z-50">
               {/* Expanded Contact Panel */}
               {fabExpanded && (
                 <div className="absolute bottom-16 right-0 w-72 max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-2xl border-2 border-red-300 overflow-hidden animate-fadeIn">
