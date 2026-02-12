@@ -12110,6 +12110,13 @@ Clinician Name`;
           useEffect(() => {
             if (lkwTime) {
               debouncedSave('lkwTime', lkwTime.toISOString());
+              // Sync Date state → telestrokeNote string fields for note templates
+              const dateStr = `${lkwTime.getFullYear()}-${String(lkwTime.getMonth() + 1).padStart(2, '0')}-${String(lkwTime.getDate()).padStart(2, '0')}`;
+              const timeStr = lkwTime.toTimeString().slice(0, 5);
+              setTelestrokeNote(prev => {
+                if (prev.lkwDate === dateStr && prev.lkwTime === timeStr) return prev;
+                return { ...prev, lkwDate: dateStr, lkwTime: timeStr };
+              });
             }
           }, [lkwTime]);
 
