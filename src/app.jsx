@@ -4859,7 +4859,7 @@ Clinician Name`;
               category: 'Antithrombotic',
               title: 'Early DOAC initiation in AF-related stroke (CATALYST)',
               recommendation: 'For AF-related ischemic stroke without large hemorrhagic transformation, DOAC initiation within 4 days reduces recurrent ischemic stroke vs. later initiation (\u22655 days).',
-              detail: 'CATALYST IPDMA (Lancet 2025, n=5,441): Early DOAC (\u22644 days) reduced primary composite (recurrent ischemic stroke, sICH, or unclassified stroke) by 30% (OR 0.70, P=0.039). No increase in sICH. Timing guidance: Mild stroke (NIHSS \u22648): start \u22644 days. Moderate stroke (NIHSS 8-15): 3-5 days. Severe stroke/large HT: 6-14 days, individualized. Reassess imaging before starting if concern for hemorrhagic transformation.',
+              detail: 'CATALYST IPDMA (Lancet 2025, n=5,441): Early DOAC (≤4 days) reduced primary composite (recurrent ischemic stroke, sICH, or unclassified stroke) by 30% (OR 0.70, P=0.039). No increase in sICH. Timing guidance for MEDICALLY MANAGED strokes: Mild (NIHSS ≤8): start ≤4 days. Moderate (NIHSS 8-15): 3-5 days. Severe/large HT: 6-14 days. POST-THROMBOLYSIS CAVEAT: CATALYST enrolled predominantly medically managed strokes. If IV TNK/tPA was given, defer DOAC by 3-5 additional days (peak hemorrhagic transformation risk day 1-3 post-thrombolysis). Repeat imaging at day 2-3 to rule out symptomatic HT before starting DOAC. Post-TNK timing: Mild post-TNK → day 3-5; Moderate post-TNK → day 5-7; Severe post-TNK → day 7-14.',
               classOfRec: 'IIa',
               levelOfEvidence: 'A',
               guideline: 'CATALYST IPDMA 2025',
@@ -4880,7 +4880,7 @@ Clinician Name`;
               category: 'Complications',
               title: 'Hemorrhagic transformation management',
               recommendation: 'Classify hemorrhagic transformation using ECASS criteria (HI-1, HI-2, PH-1, PH-2). Symptomatic ICH (PH-2 or neurological worsening) requires emergent management.',
-              detail: 'ECASS Classification: HI-1 (small petechiae along infarct margin), HI-2 (confluent petechiae within infarct, no mass effect), PH-1 (blood clots \u226430% of infarct, mild mass effect), PH-2 (blood clots >30% of infarct with significant mass effect). For symptomatic HT post-TNK: STAT CT, cryoprecipitate 10 units (target fibrinogen >200 mg/dL), TXA 1g IV over 10 min, platelets if <100K. Hold all antithrombotics. PH-1/PH-2 require ICU admission. Repeat imaging at 24h.',
+              detail: 'ECASS Classification: HI-1 (small petechiae along infarct margin), HI-2 (confluent petechiae within infarct, no mass effect), PH-1 (blood clots ≤30% of infarct, mild mass effect), PH-2 (blood clots >30% with significant mass effect). SYMPTOMATIC HT MANAGEMENT (PH-2 or NIHSS worsening ≥4): (1) STOP TNK infusion immediately if still running. (2) STAT CT head. (3) STAT labs: CBC, PT/INR, aPTT, fibrinogen, type & screen. (4) Cryoprecipitate 10 units IV (target fibrinogen >200 mg/dL); give empirically if fibrinogen result delayed. (5) TXA 1g IV over 10 min AFTER cryoprecipitate started. (6) Platelet transfusion 6-10 units if platelets <100K; recheck CBC 15-30 min post-transfusion. (7) Hold all antithrombotics and antiplatelet agents. (8) Target SBP <140 mmHg. (9) NEUROSURGERY CONSULTATION for: ICH volume >30 mL, >30% hematoma expansion, IVH with mass effect, midline shift >5 mm, herniation risk, or refractory coagulopathy. (10) ICU admission for PH-1/PH-2. (11) Repeat imaging at 24h.',
               classOfRec: 'I',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -6503,7 +6503,11 @@ Clinician Name`;
                 const punctureDate = new Date(edArrival);
                 punctureDate.setHours(pH, pM, 0, 0);
                 if (punctureDate < edArrival) punctureDate.setDate(punctureDate.getDate() + 1);
-                metrics.doorToPuncture = Math.round((punctureDate - edArrival) / (1000 * 60));
+                const dtpMinutes = Math.round((punctureDate - edArrival) / (1000 * 60));
+                // Cap at 24h — values >24h likely indicate data entry error
+                if (dtpMinutes >= 0 && dtpMinutes <= 1440) {
+                  metrics.doorToPuncture = dtpMinutes;
+                }
               }
             }
 
@@ -9915,8 +9919,8 @@ Clinician Name`;
               note += allergyLine + '\n';
             }
 
-            // Remove any unreplaced template placeholders (e.g., user-added custom fields)
-            note = note.replace(/\{[a-zA-Z0-9_]+\}/g, '');
+            // Replace unreplaced template placeholders with visible markers for clinical safety
+            note = note.replace(/\{([a-zA-Z0-9_]+)\}/g, '[___]');
 
             // Add consultation type header
             const consultLabel = consultationType === 'telephone' ? 'TELEPHONE CONSULTATION NOTE' : 'TELESTROKE VIDEO CONSULTATION NOTE';
