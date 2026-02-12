@@ -1644,6 +1644,8 @@ Clinician Name`;
           const searchContainerRef = useRef(null);
           const generateNoteRef = useRef(null);
           const copyToClipboardRef = useRef(null);
+          const navigateToRef = useRef(null);
+          const exportToPDFRef = useRef(null);
           // mermaidInitializedRef removed — no more mermaid diagrams
           const decisionStateRef = useRef({
             tnkRecommended: false,
@@ -7211,8 +7213,8 @@ Clinician Name`;
                 }
                 return;
               }
-              // Ctrl+K — Toggle calculators
-              if (e.ctrlKey && e.key === 'k') {
+              // Ctrl+Shift+K — Toggle calculators (Ctrl+K reserved for search)
+              if (e.ctrlKey && e.shiftKey && (e.key === 'k' || e.key === 'K')) {
                 e.preventDefault();
                 setCalcDrawerOpen(prev => !prev);
                 return;
@@ -7384,6 +7386,7 @@ Clinician Name`;
               setSearchContext('header');
             }
           };
+          navigateToRef.current = navigateTo;
 
           const setSearchHighlight = (id) => {
             updateAppData((prev) => ({
@@ -7759,7 +7762,7 @@ Clinician Name`;
               addToast('PDF export failed — try again', 'error');
             }
           };
-
+          exportToPDFRef.current = exportToPDF;
 
           const handleShare = async () => {
             const shareData = {
@@ -10624,6 +10627,43 @@ Clinician Name`;
               warnings.push({ id: 'endocarditis-stroke', severity: 'critical', msg: 'Infective endocarditis — AVOID anticoagulation (increases hemorrhagic transformation risk). Order: blood cultures x2, STAT TTE → TEE, CTA head/neck (mycotic aneurysm screen), ID consult. EVT is preferred for LVO (TNK is contraindicated). Monitor for hemorrhagic conversion.' });
             }
 
+            // TNK recommended with NIHSS 0
+            const nihss = parseInt(n.nihss, 10);
+            if (n.tnkRecommended && nihss === 0) {
+              warnings.push({ id: 'tnk-nihss-zero', severity: 'error', msg: 'TNK recommended with NIHSS 0 — thrombolysis is not indicated for non-disabling symptoms. Re-examine patient and verify NIHSS scoring before treatment.' });
+            }
+
+            // LVO identified but EVT not recommended — prompt documentation
+            if (hasLVO && n.evtRecommended === false) {
+              warnings.push({ id: 'lvo-no-evt', severity: 'warn', msg: 'LVO identified but EVT not pursued — document reason (e.g., ASPECTS <6, large core, premorbid mRS ≥3, goals of care, time window, access issues)' });
+            }
+
+            // DOAC + TNK without last dose timing documented
+            if (n.tnkRecommended && n.lastDOACType && n.lastDOACType !== 'none' && n.lastDOACType !== 'warfarin' && n.lastDOACType !== 'heparin' && n.lastDOACType !== 'lmwh' && n.lastDOACType !== 'fondaparinux' && !n.lastDOACDose) {
+              warnings.push({ id: 'doac-tnk-no-timing', severity: 'error', msg: `TNK recommended on ${ANTICOAGULANT_INFO[n.lastDOACType] ? ANTICOAGULANT_INFO[n.lastDOACType].name : n.lastDOACType} but last dose time not documented — DOAC half-life timing is critical for thrombolysis safety. Document last dose or check anti-Xa/dTT level.` });
+            }
+
+            // Weight missing for weight-based dosing (TNK or enoxaparin)
+            if (n.tnkRecommended && !n.weight) {
+              warnings.push({ id: 'tnk-no-weight', severity: 'error', msg: 'TNK recommended but weight not documented — TNK dosing is weight-based (0.25 mg/kg, max 25 mg). Obtain weight before administration.' });
+            }
+
+            // Discharge checklist core items incomplete
+            {
+              const dc = n.dischargeChecklist || {};
+              const coreItems = [
+                { key: 'antiplateletOrAnticoag', label: 'antithrombotic' },
+                { key: 'statinPrescribed', label: 'statin' },
+                { key: 'followUpNeurology', label: 'neurology f/u' },
+                { key: 'followUpPCP', label: 'PCP f/u' },
+                { key: 'patientEducation', label: 'patient education' }
+              ];
+              const missing = coreItems.filter(i => !dc[i.key]);
+              if (n.dischargeChecklistReviewed && missing.length > 0) {
+                warnings.push({ id: 'discharge-checklist-incomplete', severity: 'warn', msg: `Discharge checklist marked reviewed but ${missing.length} core item${missing.length > 1 ? 's' : ''} incomplete: ${missing.map(i => i.label).join(', ')}` });
+              }
+            }
+
             return warnings;
           };
 
@@ -12688,8 +12728,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 return;
               }
 
-              // Ignore remaining shortcuts if user is typing in an input/textarea
-              if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+              // Ignore remaining shortcuts if user is typing in an input/textarea/select
+              if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT' || e.target.isContentEditable) {
                 return;
               }
 
@@ -12714,13 +12754,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               if (tabMap[e.key] && !e.metaKey && !e.ctrlKey && !e.altKey) {
                 e.preventDefault();
                 const target = tabMap[e.key];
-                navigateTo(target.tab, { subTab: target.subTab });
+                navigateToRef.current?.(target.tab, { subTab: target.subTab });
               }
 
               // Ctrl/Cmd + E: Export to PDF
               if ((e.metaKey || e.ctrlKey) && e.key === 'e') {
                 e.preventDefault();
-                exportToPDF();
+                exportToPDFRef.current?.();
               }
 
               // ? key: Show keyboard shortcuts help
@@ -29420,7 +29460,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <h2 id="calc-drawer-title" className="text-base font-semibold text-slate-900 flex items-center gap-2">
                       <i data-lucide="calculator" className="w-4 h-4 text-blue-600"></i>
                       Calculators
-                      <kbd className="text-xs text-slate-500 font-mono ml-2">Ctrl+K</kbd>
+                      <kbd className="text-xs text-slate-500 font-mono ml-2">Ctrl+Shift+K</kbd>
                     </h2>
                     <button onClick={() => setCalcDrawerOpen(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close">
                       <i data-lucide="x" className="w-5 h-5 text-slate-500"></i>
@@ -29559,6 +29599,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       { keys: 'Ctrl + 3', action: 'Trials tab' },
                       { keys: 'Ctrl+Shift+C', action: 'Copy consult note' },
                       { keys: 'Ctrl + K', action: 'Open search' },
+                      { keys: 'Ctrl+Shift+K', action: 'Toggle calculators' },
                       { keys: '/', action: 'Focus search' },
                       { keys: 'Ctrl+Shift+F', action: 'Toggle focus mode' },
                       { keys: 'Esc', action: 'Close modal / dialog' },
