@@ -8376,7 +8376,15 @@ Clinician Name`;
                   note += `- DISABLING DEFICIT: TNK recommended despite NIHSS ${telestrokeNote.nihss || nihssScore || '___'} based on significant functional impairment\n`;
                 }
               }
-              if (telestrokeNote.evtRecommended) note += `- EVT recommended\n`;
+              if (telestrokeNote.evtRecommended) {
+                note += `- EVT recommended\n`;
+                if ((telestrokeNote.consentKit || {}).evtConsentDiscussed) {
+                  const evtConType = (telestrokeNote.consentKit || {}).evtConsentType;
+                  note += `- EVT consent: ${evtConType || '(type not specified)'}`;
+                  if ((telestrokeNote.consentKit || {}).evtConsentTime) note += ` at ${telestrokeNote.consentKit.evtConsentTime}`;
+                  note += `\n`;
+                }
+              }
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
               if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) note += formatDTNForNote();
               else if (telestrokeNote.doorTime || telestrokeNote.needleTime) {
@@ -9020,7 +9028,15 @@ Clinician Name`;
               note += `Pain: ___/10\n`;
               note += `New complaints: ___\n\n`;
               note += `OBJECTIVE:\n`;
-              note += `Vitals: T___ HR___ BP___ RR___ SpO2___\n`;
+              {
+                const pnVitals = [];
+                pnVitals.push(`T${telestrokeNote.temperature || '___'}`);
+                pnVitals.push(`HR${telestrokeNote.heartRate || '___'}`);
+                pnVitals.push(`BP${telestrokeNote.presentingBP || '___'}`);
+                pnVitals.push(`RR___`);
+                pnVitals.push(`SpO2${telestrokeNote.spO2 ? telestrokeNote.spO2 + '%' : '___'}`);
+                note += `Vitals: ${pnVitals.join(' ')}\n`;
+              }
               note += `I/O: ___\n`;
               note += `NIHSS: ${telestrokeNote.dischargeNIHSS || telestrokeNote.nihss || nihssScore || '___'} (admission: ${telestrokeNote.nihss || nihssScore || '___'})\n`;
               note += `Neuro exam: ___\n\n`;
@@ -9030,7 +9046,16 @@ Clinician Name`;
               if (telestrokeNote.denseArterySign) note += ' (hyperdense artery sign)';
               note += '\n';
               note += `- CTA: ${telestrokeNote.ctaResults || '___'}\n`;
-              note += `- Labs: ___\n`;
+              {
+                const pnLabs = [];
+                if (telestrokeNote.creatinine) pnLabs.push(`Cr ${telestrokeNote.creatinine}`);
+                if (telestrokeNote.inr) pnLabs.push(`INR ${telestrokeNote.inr}`);
+                if (telestrokeNote.pt) pnLabs.push(`PT ${telestrokeNote.pt}s`);
+                if (telestrokeNote.ptt) pnLabs.push(`aPTT ${telestrokeNote.ptt}`);
+                if (telestrokeNote.plateletCount) pnLabs.push(`Plt ${telestrokeNote.plateletCount}K`);
+                if (telestrokeNote.glucose) pnLabs.push(`Gluc ${telestrokeNote.glucose}`);
+                note += `- Labs: ${pnLabs.length > 0 ? pnLabs.join(', ') : '___'}\n`;
+              }
               // Wake-up stroke evaluation
               {
                 const prWus = telestrokeNote.wakeUpStrokeWorkflow || {};
