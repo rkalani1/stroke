@@ -935,10 +935,8 @@ Clinician Name`;
             allergies: '',
             contrastAllergy: false,
             nihss: '',
-            aspects: '',
             nihssDetails: '',
             disablingDeficit: false,
-            imagingReviewed: true,
             ctDate: new Date().toISOString().split('T')[0],
             ctTime: '',
             ctResults: '',
@@ -7605,7 +7603,7 @@ Clinician Name`;
             const allowedKeys = [
               'consultStartTime', 'callerName', 'callerRole', 'attendingPhysician',
               'callingSite', 'callingSiteOther',
-              'alias', 'age', 'sex', 'weight', 'nihss', 'aspects', 'vesselOcclusion', 'diagnosisCategory',
+              'alias', 'age', 'sex', 'weight', 'nihss', 'vesselOcclusion', 'diagnosisCategory',
               'toastClassification', 'secondaryPrevention',
               'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
               'presentingBP', 'heartRate', 'spO2', 'temperature', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT',
@@ -7617,7 +7615,7 @@ Clinician Name`;
               'postTnkNeuroChecksStarted', 'postTnkBpMonitoring', 'postTnkRepeatCTOrdered', 'postTnkAntiplateletHeld',
               'sichDetected', 'angioedemaDetected', 'reperfusionHemorrhage', 'clinicalDeterioration', 'complicationNotes',
               'ichBPManaged', 'ichReversalInitiated', 'ichNeurosurgeryConsulted', 'ichSeizureProphylaxis',
-              'imagingReviewed', 'transferAccepted', 'transferImagingShared', 'transferLabsSent', 'transferIVAccess', 'transferBPStable', 'transferFamilyNotified',
+              'transferAccepted', 'transferImagingShared', 'transferLabsSent', 'transferIVAccess', 'transferBPStable', 'transferFamilyNotified',
               'transferRationale', 'disposition', 'codeStatus',
               'transferImagingShareMethod', 'transferImagingShareLink', 'transportMode', 'transportEta', 'transportNotes',
               'lastDOACType', 'lastDOACDose',
@@ -7983,10 +7981,135 @@ Clinician Name`;
               if (rr.vocational) rrItems.push('Vocational rehab');
               if (rrItems.length > 0) brief += `\nREHAB REFERRALS: ${rrItems.join(', ')}\n`;
             }
+            // Screening tools
+            {
+              const st = telestrokeNote.screeningTools || {};
+              if (st.phq2Score || st.mocaScore || st.stopBangScore || st.seizureRisk) {
+                brief += `\nSCREENING:\n`;
+                if (st.phq2Score) brief += `- PHQ-2: ${st.phq2Score}/6 (${st.phq2Positive ? 'POSITIVE — consider full PHQ-9' : 'negative'})\n`;
+                if (st.mocaScore) brief += `- MoCA: ${st.mocaScore}/30${st.mocaReferral ? ' — neuropsych referral' : ''}\n`;
+                if (st.stopBangScore) brief += `- STOP-BANG: ${st.stopBangScore}/8 (${parseInt(st.stopBangScore) >= 5 ? 'HIGH' : parseInt(st.stopBangScore) >= 3 ? 'INTERMEDIATE' : 'low'} OSA risk)\n`;
+                if (st.seizureRisk) brief += `- Seizure: ${st.seizureRisk.replace(/-/g, ' ')}\n`;
+              }
+            }
+            // Fever management
+            {
+              const fever = telestrokeNote.feverManagement || {};
+              if (fever.feverDetected || fever.feverProtocolInitiated) {
+                brief += `\nFEVER MANAGEMENT:\n`;
+                if (fever.maxTemp) brief += `- Max temp: ${fever.maxTemp}°C\n`;
+                if (fever.feverProtocolInitiated) brief += `- FeSS bundle initiated\n`;
+                if (fever.infectionWorkupSent) brief += `- Infection workup sent\n`;
+                if (fever.escalationLevel) brief += `- Escalation: ${fever.escalationLevel.replace(/-/g, ' ')}\n`;
+              }
+            }
+            // Osmotic therapy
+            {
+              const osm = telestrokeNote.osmoticTherapy || {};
+              if (osm.agentUsed) {
+                brief += `\nOSMOTIC THERAPY:\n`;
+                brief += `- Agent: ${osm.agentUsed}${osm.indication ? ` for ${osm.indication.replace(/-/g, ' ')}` : ''}\n`;
+                if (osm.sodiumTarget) brief += `- Na+ target: ${osm.sodiumTarget} mEq/L\n`;
+                if (osm.serumOsmolality) brief += `- Serum osm: ${osm.serumOsmolality} mOsm/kg${parseFloat(osm.serumOsmolality) > 320 ? ' (>320 — hold mannitol)' : ''}\n`;
+              }
+            }
+            // Nutritional support
+            {
+              const nutr = telestrokeNote.nutritionalSupport || {};
+              if (nutr.feedingRoute) {
+                brief += `\nNUTRITION: ${nutr.feedingRoute}`;
+                if (nutr.pegConsiderationDay) brief += ` | PEG consideration day ${nutr.pegConsiderationDay}`;
+                brief += '\n';
+              }
+            }
+            // Palliative care / GOC
+            {
+              const pall = telestrokeNote.palliativeCare || {};
+              if (pall.goalsOfCareDiscussed || pall.consultOrdered) {
+                brief += `\nGOALS OF CARE:\n`;
+                if (pall.goalsOfCareDiscussed) brief += `- GOC discussed${pall.goalsOfCareOutcome ? `: ${pall.goalsOfCareOutcome.replace(/-/g, ' ')}` : ''}\n`;
+                if (pall.consultOrdered) brief += `- Palliative care consult ordered\n`;
+              }
+            }
+            // Pathway-specific
+            if (telestrokeNote.diagnosisCategory === 'cvt') {
+              const fuCvtAc = telestrokeNote.cvtAnticoag || {};
+              if (fuCvtAc.acutePhase || fuCvtAc.transitionAgent || fuCvtAc.duration) {
+                brief += `\nCVT ANTICOAGULATION:\n`;
+                if (fuCvtAc.acutePhase) brief += `- Acute: ${fuCvtAc.acutePhase.replace(/-/g, ' ')}\n`;
+                if (fuCvtAc.transitionAgent) brief += `- Transition: ${fuCvtAc.transitionAgent}\n`;
+                if (fuCvtAc.duration) brief += `- Duration: ${fuCvtAc.duration}\n`;
+                if (fuCvtAc.apsStatus) brief += `- APS confirmed — warfarin mandatory\n`;
+              }
+            }
+            {
+              const fuCarotid = telestrokeNote.carotidManagement || {};
+              if (fuCarotid.stenosisDegree) {
+                brief += `\nCAROTID: ${fuCarotid.stenosisSide || ''} ${fuCarotid.stenosisDegree}% stenosis${fuCarotid.symptomatic ? ' (symptomatic)' : ''}`;
+                if (fuCarotid.intervention) brief += ` → ${fuCarotid.intervention.replace(/-/g, ' ')}`;
+                brief += '\n';
+              }
+            }
+            {
+              const fuEsus = telestrokeNote.esusWorkup || {};
+              if (fuEsus.cardiacMonitoringType || fuEsus.afDetected || fuEsus.hypercoagWorkup) {
+                brief += `\nESUS/CRYPTOGENIC:\n`;
+                if (fuEsus.cardiacMonitoringType) brief += `- Monitoring: ${fuEsus.cardiacMonitoringType.replace(/-/g, ' ')}\n`;
+                if (fuEsus.afDetected) brief += `- AF DETECTED\n`;
+                if (fuEsus.hypercoagWorkup) brief += `- Hypercoag workup ordered\n`;
+              }
+            }
+            {
+              const fuDiss = telestrokeNote.dissectionPathway || {};
+              if (fuDiss.antithromboticType || fuDiss.imagingFollowUp) {
+                brief += `\nDISSECTION:\n`;
+                if (fuDiss.antithromboticType) brief += `- Antithrombotic: ${fuDiss.antithromboticType.replace(/-/g, ' ')}\n`;
+                if (fuDiss.imagingFollowUp) brief += `- Vascular imaging f/u: ${fuDiss.imagingFollowUp}\n`;
+              }
+            }
+            {
+              const fuIchAc = telestrokeNote.ichAnticoagResumption || {};
+              if (fuIchAc.decision) {
+                brief += `\nICH ANTICOAG RESUMPTION:\n`;
+                brief += `- Decision: ${fuIchAc.decision.replace(/-/g, ' ')}\n`;
+                if (fuIchAc.chadsVascScore) brief += `- CHA2DS2-VASc: ${fuIchAc.chadsVascScore}\n`;
+                if (fuIchAc.laaoConsidered) brief += `- LAAO evaluation considered\n`;
+              }
+            }
+            // mRS tracking
+            {
+              const mrs = telestrokeNote.mrsAssessment || {};
+              const mrsEntries = Object.entries(mrs).filter(([k, v]) => v);
+              if (mrsEntries.length > 0) {
+                brief += `\nmRS TRACKING: ${mrsEntries.map(([k, v]) => `${k}: ${v}`).join(', ')}\n`;
+              }
+            }
+            // Driving restrictions
+            {
+              const drv = telestrokeNote.drivingRestrictions || {};
+              if (drv.counselingProvided) {
+                brief += `\nDRIVING: restricted${drv.restrictionDuration ? ` x ${drv.restrictionDuration}` : ''}${drv.commercialDriver ? ' (COMMERCIAL — DMV notification)' : ''}\n`;
+              }
+            }
+            // Falls risk
+            {
+              const falls = telestrokeNote.fallsRisk || {};
+              if (falls.screenPerformed) {
+                brief += `FALLS: ${falls.highRisk ? 'HIGH RISK' : 'standard'}${falls.preventionPlanInitiated ? ' — prevention plan' : ''}${falls.balanceProgramReferral ? ', balance program' : ''}\n`;
+              }
+            }
+            // Anticoag bridging
+            {
+              const bridge = telestrokeNote.anticoagBridging || {};
+              if (bridge.doacType) {
+                brief += `\nPERIPROCEDURAL ANTICOAG: ${bridge.doacType}${bridge.crCl ? `, CrCl ${bridge.crCl}` : ''}${bridge.procedureRisk ? `, ${bridge.procedureRisk} bleed risk` : ''}\n`;
+              }
+            }
             brief += `\nFOLLOW-UP PLAN:\n`;
             const dc = telestrokeNote.dischargeChecklist || {};
-            if (dc.followUpNeurology) brief += `- Neurology follow-up\n`;
-            if (dc.followUpPCP) brief += `- PCP follow-up\n`;
+            if (dc.followUpNeurology) brief += `- Neurology follow-up${dc.followUpNeurologyTimeframe ? ` (${dc.followUpNeurologyTimeframe})` : ''}\n`;
+            if (dc.followUpPCP) brief += `- PCP follow-up${dc.followUpPCPTimeframe ? ` (${dc.followUpPCPTimeframe})` : ''}\n`;
+            if (dc.followUpCardiology) brief += `- Cardiology follow-up\n`;
             if (sp.followUpTimeline) brief += `- Timeline: ${sp.followUpTimeline}\n`;
             if (telestrokeNote.recommendationsText) brief += `\nADDITIONAL RECOMMENDATIONS:\n${telestrokeNote.recommendationsText}\n`;
             return brief;
