@@ -7638,7 +7638,7 @@ Clinician Name`;
               // Discharge
               'dischargeChecklist', 'dischargeChecklistReviewed', 'dischargeNIHSS', 'mrsAssessment',
               // Imaging and exam results
-              'ctResults', 'ctaResults', 'ctpResults', 'ekgResults', 'nihssDetails',
+              'ctResults', 'ctaResults', 'ctpResults', 'ctpStructured', 'collateralGrade', 'earlyInfarctSigns', 'denseArterySign', 'ekgResults', 'nihssDetails',
               // Inline calculator state
               'ichVolumeCalc', 'andexanetCalc', 'crclCalc', 'enoxCalc'
             ];
@@ -8588,16 +8588,37 @@ Clinician Name`;
               // Post-treatment complications
               const dischComplications = [];
               if (telestrokeNote.sichDetected) dischComplications.push('symptomatic ICH (sICH)');
-              if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) dischComplications.push('orolingual angioedema');
+              if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) {
+                const dcAe = telestrokeNote.angioedema || {};
+                let dcAeStr = 'orolingual angioedema';
+                if (dcAe.severity) dcAeStr += ` (${dcAe.severity})`;
+                if (dcAe.intubated) dcAeStr += ' — required intubation';
+                else if (dcAe.resolved) dcAeStr += ' — resolved';
+                dischComplications.push(dcAeStr);
+              }
               if (telestrokeNote.reperfusionHemorrhage) dischComplications.push('reperfusion hemorrhage');
               if (telestrokeNote.clinicalDeterioration) dischComplications.push('clinical deterioration');
               const htDisch = telestrokeNote.hemorrhagicTransformation || {};
               if (htDisch.detected) dischComplications.push(`hemorrhagic transformation${htDisch.classification ? ` (ECASS ${htDisch.classification}${htDisch.symptomatic ? ', symptomatic' : ''})` : ''}`);
               if (dischComplications.length > 0) note += `- Complications: ${dischComplications.join(', ')}\n`;
+              if (htDisch.detected && (htDisch.antithromboticHeld || htDisch.reimagingPlanned || htDisch.managementActions)) {
+                if (htDisch.managementActions) note += `- HT management: ${htDisch.managementActions}\n`;
+                if (htDisch.antithromboticHeld) note += `- Antithrombotics held due to HT\n`;
+              }
               if (telestrokeNote.complicationNotes) note += `- Complication details: ${telestrokeNote.complicationNotes}\n`;
+              if (telestrokeNote.pregnancyStroke) note += `- Pregnancy-associated stroke: OB/GYN co-management\n`;
               if (telestrokeNote.activeCancer) note += `- Active cancer: oncology co-management\n`;
               if (telestrokeNote.sickleCellDisease) note += `- Sickle cell disease: hematology co-management\n`;
               if (telestrokeNote.infectiveEndocarditis) note += `- Infective endocarditis: ID/cardiology co-management\n`;
+              // Decompressive craniectomy
+              {
+                const dcCran = telestrokeNote.decompressiveCraniectomy || {};
+                if (dcCran.considered) {
+                  note += `- Decompressive craniectomy: considered`;
+                  if (dcCran.territorySize) note += ` (${dcCran.territorySize})`;
+                  note += `\n`;
+                }
+              }
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
                 note += `- Pre-admission anticoagulation: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].name}\n`;
               }
@@ -8616,12 +8637,53 @@ Clinician Name`;
               note += '\n';
               note += `SECONDARY PREVENTION:\n`;
               const dischSp = telestrokeNote.secondaryPrevention || {};
-              if (dischSp.antiplateletRegimen) note += `- Antithrombotic: ${AP_LABELS_SHORT[dischSp.antiplateletRegimen] || dischSp.antiplateletRegimen}\n`;
-              if (dischSp.statinDose) note += `- Statin: ${dischSp.statinDose.replace(/-/g, ' ')}${dischSp.ldlCurrent ? ` (LDL ${dischSp.ldlCurrent} mg/dL)` : ''}\n`;
-              if (dischSp.bpTarget) note += `- BP Target: ${dischSp.bpTarget}\n`;
-              if (dischSp.bpMeds) note += `- BP Medications: ${dischSp.bpMeds}\n`;
-              const ct = telestrokeNote.cardiacWorkup || {};
-              if (ct.extendedMonitoringType) note += `- Cardiac monitoring: ${ct.extendedMonitoringType}\n`;
+              if (dischSp.antiplateletRegimen) {
+                let apLine = `- Antithrombotic: ${AP_LABELS_SHORT[dischSp.antiplateletRegimen] || dischSp.antiplateletRegimen}`;
+                if (dischSp.daptDuration) apLine += ` (DAPT ${dischSp.daptDuration})`;
+                note += apLine + '\n';
+              }
+              if (dischSp.statinDose) {
+                let statLine = `- Statin: ${dischSp.statinDose.replace(/-/g, ' ')}`;
+                if (dischSp.ezetimibeAdded) statLine += ' + ezetimibe';
+                if (dischSp.pcsk9Added) statLine += ' + PCSK9i';
+                if (dischSp.ldlCurrent) statLine += ` (LDL ${dischSp.ldlCurrent} mg/dL)`;
+                note += statLine + '\n';
+              }
+              if (dischSp.bpTarget) note += `- BP Target: ${dischSp.bpTarget}${dischSp.bpMeds ? ` (on ${dischSp.bpMeds})` : ''}\n`;
+              if (dischSp.diabetesManagement && dischSp.diabetesManagement !== 'no-diabetes') note += `- Diabetes: ${dischSp.diabetesManagement.replace(/-/g, ' ')}\n`;
+              if (dischSp.smokingStatus && dischSp.smokingStatus !== 'never') {
+                note += `- Smoking: ${dischSp.smokingStatus.replace(/-/g, ' ')}${dischSp.smokingCessationRx ? ` — ${dischSp.smokingCessationRx}` : ''}\n`;
+              }
+              if (dischSp.glp1ra && dischSp.glp1ra !== 'not-indicated') note += `- GLP-1 RA: ${dischSp.glp1ra.replace(/-/g, ' ')}\n`;
+              if (dischSp.sglt2i && dischSp.sglt2i !== 'not-indicated') note += `- SGLT2i: ${dischSp.sglt2i.replace(/-/g, ' ')}\n`;
+              // DOAC timing
+              {
+                const dcDoac = telestrokeNote.doacTiming || {};
+                if (dcDoac.strokeSeverity || dcDoac.doacAgent) {
+                  const dcDoacParts = [];
+                  if (dcDoac.doacAgent) dcDoacParts.push(dcDoac.doacAgent.replace(/-/g, ' '));
+                  if (dcDoac.strokeSeverity) dcDoacParts.push(`severity ${dcDoac.strokeSeverity}`);
+                  if (dcDoac.doacInitiationDay) dcDoacParts.push(`planned Day ${dcDoac.doacInitiationDay}`);
+                  note += `- DOAC plan: ${dcDoacParts.join('; ')}\n`;
+                }
+              }
+              // Drug interaction alerts
+              {
+                const dcDi = telestrokeNote.drugInteractions || {};
+                if (dcDi.aedDoacInteraction) note += `- Drug interaction: AED-DOAC (${dcDi.aedType}) — enzyme-inducing, consider warfarin\n`;
+                if (dcDi.statinInteraction) note += `- Drug interaction: Statin (${dcDi.statinInteractionDrug}) — dose adjustment needed\n`;
+              }
+              // Full cardiac workup
+              {
+                const dcCw = telestrokeNote.cardiacWorkup || {};
+                const dcCwParts = [];
+                if (dcCw.ecgComplete) dcCwParts.push('ECG done');
+                if (dcCw.telemetryOrdered) dcCwParts.push('telemetry');
+                if (dcCw.echoOrdered) dcCwParts.push('echo ordered');
+                if (dcCw.extendedMonitoringType) dcCwParts.push(`extended: ${dcCw.extendedMonitoringType}`);
+                if (dcCw.pfoEvaluation) dcCwParts.push(`PFO: ${dcCw.pfoEvaluation.replace(/-/g, ' ')}`);
+                if (dcCwParts.length > 0) note += `- Cardiac workup: ${dcCwParts.join(', ')}\n`;
+              }
               note += '\n';
               // Dysphagia and VTE status
               const dysphagia = telestrokeNote.dysphagiaScreening || {};
@@ -8671,6 +8733,18 @@ Clinician Name`;
               const dischMRS = (telestrokeNote.mrsAssessment || {}).discharge;
               note += `DISCHARGE NIHSS: ${telestrokeNote.dischargeNIHSS || nihssScore || '___'}${!telestrokeNote.dischargeNIHSS && nihssScore ? ' (admission — update before finalizing)' : ''}\n`;
               note += `DISCHARGE mRS: ${dischMRS || '___'}\n\n`;
+              // Rehab referrals
+              {
+                const rehab = telestrokeNote.rehabReferral || {};
+                const rehabItems = [];
+                if (rehab.pt) rehabItems.push('PT');
+                if (rehab.ot) rehabItems.push('OT');
+                if (rehab.slp) rehabItems.push('SLP');
+                if (rehab.neuropsych) rehabItems.push('neuropsych');
+                if (rehab.socialWork) rehabItems.push('social work');
+                if (rehab.vocationalRehab) rehabItems.push('vocational rehab');
+                if (rehabItems.length > 0) note += `REHAB REFERRALS: ${rehabItems.join(', ')}\n\n`;
+              }
               note += `DISPOSITION: ${telestrokeNote.disposition || '___'}\n`;
               note += `CODE STATUS: ${telestrokeNote.codeStatus || '___'}\n\n`;
               // Key results for discharge
@@ -10587,7 +10661,7 @@ Clinician Name`;
                                   'currentStep', 'completedSteps', 'aspectsRegionState', 'pcAspectsRegions',
                                   'telestrokeNote', 'consultationType',
                                   'evtDecisionInputs', 'doacProtocol', 'nursingFlowsheetChecks',
-                                  'ichVolumeParams'];
+                                  'ichVolumeParams', 'weightUnit', 'trialEligibility', 'encounterPhase', 'noteTemplate'];
             keysToRemove.forEach((key) => removeKey(key));
 
             navigateTo('encounter');
