@@ -3398,7 +3398,7 @@ Clinician Name`;
               reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               caveats: 'Based on ENCHANTED2/MT (2023) and OPTIMAL-BP (2024). Applies to successful reperfusion (mTICI 2b-3).',
               conditions: (data) => {
-                return !!data.telestrokeNote?.evtRecommended;
+                return !!data.telestrokeNote?.evtRecommended && !!data.telestrokeNote?.ticiScore;
               }
             },
             bp_ich_acute: {
@@ -8212,8 +8212,8 @@ Clinician Name`;
             const vesselArr = telestrokeNote.vesselOcclusion || [];
             const vesselStr = vesselArr.length > 0 && !vesselArr.includes('None')
               ? ` Vessel occlusion: ${vesselArr.join(', ')}.` : "";
-            const tnkStatus = telestrokeNote.diagnosisCategory === 'ich' ? "N/A (ICH)" : telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
-            const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
+            const tnkStatus = telestrokeNote.diagnosisCategory !== 'ischemic' ? `N/A (${telestrokeNote.diagnosisCategory === 'sah' ? 'SAH' : 'ICH'})` : telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
+            const evtStatus = telestrokeNote.diagnosisCategory !== 'ischemic' ? `N/A (${telestrokeNote.diagnosisCategory === 'sah' ? 'SAH' : 'ICH'})` : telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
             const rationale = telestrokeNote.rationale || "[rationale]";
             const site = telestrokeNote.callingSite ? `[${telestrokeNote.callingSite}] ` : '';
             // LKW unknown handling
@@ -9042,7 +9042,7 @@ Clinician Name`;
                   let ctpLine = `CTP: Core ${prCtp.coreVolume} mL`;
                   if (prCtp.penumbraVolume) ctpLine += `, Penumbra ${prCtp.penumbraVolume} mL`;
                   const pc = parseFloat(prCtp.coreVolume), pp = parseFloat(prCtp.penumbraVolume);
-                  if (!isNaN(pc) && !isNaN(pp) && pc > 0) ctpLine += `, Ratio ${(pp/pc).toFixed(1)}`;
+                  if (!isNaN(pc) && !isNaN(pp) && pc > 0) { const ratio = pp / pc; ctpLine += `, Ratio ${isFinite(ratio) && ratio < 1000 ? ratio.toFixed(1) : '>999'}`; }
                   note += ctpLine + '\n';
                 }
               }
@@ -10543,12 +10543,15 @@ Clinician Name`;
           const calculateTimeFromLKW = () => {
             const reference = getReferenceTime();
             if (!reference) return null;
-            const diffMs = Math.max(0, currentTime - reference.time);
+            const diffMs = currentTime - reference.time;
+            if (diffMs < 0) {
+              return { hours: 0, minutes: 0, total: 0, label: reference.label, futureWarning: true };
+            }
             const diffHrs = diffMs / (1000 * 60 * 60);
             const diffMins = (diffMs / (1000 * 60)) % 60;
             return {
               hours: Math.floor(diffHrs),
-              minutes: Math.floor(Math.abs(diffMins)),
+              minutes: Math.floor(diffMins),
               total: diffHrs,
               label: reference.label
             };
@@ -10812,6 +10815,13 @@ Clinician Name`;
             }
             if (hasLVO && n.evtRecommended === false && n.diagnosisCategory === 'ischemic') {
               warnings.push({ id: 'lvo-no-evt', severity: 'warn', msg: 'LVO detected but EVT not recommended — document reason (e.g., late window without perfusion imaging, patient/family declined, contraindication).' });
+            }
+            // Future LKW detection
+            {
+              const tf = calculateTimeFromLKW && calculateTimeFromLKW();
+              if (tf && tf.futureWarning) {
+                warnings.push({ id: 'future-lkw', severity: 'error', msg: `${tf.label} time is in the future — check date/time entry. Treatment windows cannot be calculated from a future reference time.` });
+              }
             }
             if (n.tnkRecommended && inr > 1.7) {
               warnings.push({ id: 'tnk-inr', severity: 'error', msg: `TNK recommended with INR ${inr} — INR >1.7 is a contraindication` });
@@ -13288,7 +13298,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             : lkwTime
               ? lkwTime.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
               : 'Not set';
-          const lkwElapsed = timeFromLKW ? `${timeFromLKW.hours}h ${timeFromLKW.minutes}m` : null;
+          const lkwElapsed = timeFromLKW ? (timeFromLKW.futureWarning ? 'FUTURE' : `${timeFromLKW.hours}h ${timeFromLKW.minutes}m`) : null;
           const ageDisplay = telestrokeNote.age !== undefined && String(telestrokeNote.age).trim() !== ''
             ? String(telestrokeNote.age).trim()
             : '--';
@@ -15523,7 +15533,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </select>
                             </div>
 
-                            {telestrokeNote.diagnosisCategory !== 'ich' && (
+                            {telestrokeNote.diagnosisCategory === 'ischemic' && (
                             <div className="grid grid-cols-2 gap-3">
                               <label className="flex items-center gap-2 p-2 bg-emerald-50 border border-emerald-200 rounded-lg cursor-pointer">
                                 <input
