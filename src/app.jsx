@@ -1931,8 +1931,8 @@ Clinician Name`;
           const protocolDetailMap = useMemo(() => ({
             PCC: {
               title: '4F-PCC (Kcentra)',
-              dosing: 'PCC (Kcentra) 2000 units IVPB x1.',
-              note: 'Check PT/INR at 15-30 min, 6h, and 24h after PCC. If INR >1.5 at 15-30 min → consult hematology for additional PCC. If INR >1.5 at 24h → repeat vitamin K 10 mg IV over 30 min.'
+              dosing: 'PCC (Kcentra) weight-based: INR 2-3.9 → 25 IU/kg; INR 4-6 → 35 IU/kg; INR >6 → 50 IU/kg (max 5000 IU). Use PCC calculator for exact dose.',
+              note: 'Give simultaneously with vitamin K 10 mg IV. Check PT/INR at 15-30 min, 6h, and 24h after PCC. If INR >1.5 at 15-30 min → consult hematology for additional PCC. If INR >1.5 at 24h → repeat vitamin K 10 mg IV over 30 min.'
             },
             PCC_DOAC: {
               title: '4F-PCC for DOAC Reversal',
@@ -7918,8 +7918,10 @@ Clinician Name`;
               if (ctpS.coreVolume && ctpS.penumbraVolume) {
                 const c = parseFloat(ctpS.coreVolume), p = parseFloat(ctpS.penumbraVolume);
                 if (!isNaN(c) && !isNaN(p)) {
-                  if (c > 0) ctpParts.push(`Mismatch ratio: ${(p/c).toFixed(1)}`);
-                  else if (p > 0) ctpParts.push(`Mismatch ratio: Favorable (core=0)`);
+                  if (c > 0) {
+                    const ratio = p / c;
+                    ctpParts.push(`Mismatch ratio: ${isFinite(ratio) && ratio < 1000 ? ratio.toFixed(1) : '>999'}`);
+                  } else if (p > 0) ctpParts.push(`Mismatch ratio: Favorable (core=0)`);
                 }
               }
               if (telestrokeNote.ctpResults) ctpParts.push(telestrokeNote.ctpResults);
@@ -8261,7 +8263,7 @@ Clinician Name`;
               if (pCtpS.coreVolume) parts.push(`Core: ${pCtpS.coreVolume}mL`);
               if (pCtpS.penumbraVolume) parts.push(`Penumbra: ${pCtpS.penumbraVolume}mL`);
               const c = parseFloat(pCtpS.coreVolume), p = parseFloat(pCtpS.penumbraVolume);
-              if (!isNaN(c) && !isNaN(p) && c > 0) parts.push(`Ratio: ${(p/c).toFixed(1)}`);
+              if (!isNaN(c) && !isNaN(p) && c > 0) { const r = p/c; parts.push(`Ratio: ${isFinite(r) && r < 1000 ? r.toFixed(1) : '>999'}`); }
               ctpExtra = ` (${parts.join(', ')})`;
             }
             return `${site}${age} year old ${sex}${wtStr} with ${pmh} who presents with ${symptoms}. ${lkwStr}.${gcsStr}${mrsStr} NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${ctExtra}${aspectsStr}${ichVolStr}${vesselStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}${ctpExtra}.${collatStr}${wusStr} TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}.${compStr} Rationale: ${rationale}.`;
@@ -8379,7 +8381,7 @@ Clinician Name`;
                 if (ctpS.coreVolume && ctpS.penumbraVolume) {
                   const c = parseFloat(ctpS.coreVolume), p = parseFloat(ctpS.penumbraVolume);
                   if (!isNaN(c) && !isNaN(p)) {
-                    if (c > 0) ctpParts.push(`Mismatch ratio: ${(p/c).toFixed(1)}`);
+                    if (c > 0) { const r = p/c; ctpParts.push(`Mismatch ratio: ${isFinite(r) && r < 1000 ? r.toFixed(1) : '>999'}`); }
                     else if (p > 0) ctpParts.push(`Mismatch ratio: Favorable (core=0)`);
                   }
                 }
@@ -8760,7 +8762,7 @@ Clinician Name`;
                   if (soCtpS.penumbraVolume) soCtp.push(`Penumbra: ${soCtpS.penumbraVolume} mL`);
                   if (soCtpS.coreVolume && soCtpS.penumbraVolume) {
                     const c = parseFloat(soCtpS.coreVolume), p = parseFloat(soCtpS.penumbraVolume);
-                    if (!isNaN(c) && !isNaN(p) && c > 0) soCtp.push(`Ratio: ${(p/c).toFixed(1)}`);
+                    if (!isNaN(c) && !isNaN(p) && c > 0) { const r = p/c; soCtp.push(`Ratio: ${isFinite(r) && r < 1000 ? r.toFixed(1) : '>999'}`); }
                   }
                   note += `CTP: ${soCtp.join('; ')}\n`;
                 }
@@ -9399,7 +9401,7 @@ Clinician Name`;
                 if (ctpS.coreVolume && ctpS.penumbraVolume) {
                   const c = parseFloat(ctpS.coreVolume), p = parseFloat(ctpS.penumbraVolume);
                   if (!isNaN(c) && !isNaN(p)) {
-                    if (c > 0) ctpParts.push(`Ratio: ${(p/c).toFixed(1)}`);
+                    if (c > 0) { const r = p/c; ctpParts.push(`Ratio: ${isFinite(r) && r < 1000 ? r.toFixed(1) : '>999'}`); }
                     else if (p > 0) ctpParts.push(`Ratio: Favorable (core=0)`);
                   }
                 }
@@ -9874,8 +9876,10 @@ Clinician Name`;
               if (ctpS.coreVolume && ctpS.penumbraVolume) {
                 const c = parseFloat(ctpS.coreVolume), p = parseFloat(ctpS.penumbraVolume);
                 if (!isNaN(c) && !isNaN(p)) {
-                  if (c > 0) ctpParts.push(`Mismatch ratio: ${(p/c).toFixed(1)}`);
-                  else if (p > 0) ctpParts.push(`Mismatch ratio: Favorable (core=0)`);
+                  if (c > 0) {
+                    const ratio = p / c;
+                    ctpParts.push(`Mismatch ratio: ${isFinite(ratio) && ratio < 1000 ? ratio.toFixed(1) : '>999'}`);
+                  } else if (p > 0) ctpParts.push(`Mismatch ratio: Favorable (core=0)`);
                 }
               }
               if (telestrokeNote.ctpResults) ctpParts.push(telestrokeNote.ctpResults);
@@ -10027,7 +10031,7 @@ Clinician Name`;
                 if (evtCtp.penumbraVolume) ctpLine += `, Penumbra ${evtCtp.penumbraVolume} mL`;
                 if (evtCtp.coreVolume && evtCtp.penumbraVolume) {
                   const c = parseFloat(evtCtp.coreVolume), p = parseFloat(evtCtp.penumbraVolume);
-                  if (!isNaN(c) && !isNaN(p) && c > 0) ctpLine += `, Ratio ${(p/c).toFixed(1)}`;
+                  if (!isNaN(c) && !isNaN(p) && c > 0) { const r = p/c; ctpLine += `, Ratio ${isFinite(r) && r < 1000 ? r.toFixed(1) : '>999'}`; }
                 }
                 note += ctpLine + '\n';
               }
@@ -10796,8 +10800,14 @@ Clinician Name`;
             if (n.tnkRecommended && n.diagnosisCategory === 'ich') {
               warnings.push({ id: 'tnk-ich', severity: 'error', msg: 'TNK recommended but diagnosis is ICH — thrombolysis is contraindicated in hemorrhagic stroke' });
             }
+            if (n.tnkRecommended && parseInt(n.nihss, 10) === 0) {
+              warnings.push({ id: 'tnk-nihss-zero', severity: 'error', msg: 'TNK recommended with NIHSS 0 — no neurological deficit documented. Verify clinical indication before proceeding.' });
+            }
             if (n.evtRecommended && !hasLVO && (n.vesselOcclusion || []).length === 0) {
               warnings.push({ id: 'evt-no-lvo', severity: 'warn', msg: 'EVT recommended but no vessel occlusion documented — verify CTA findings' });
+            }
+            if (hasLVO && n.evtRecommended === false && n.diagnosisCategory === 'ischemic') {
+              warnings.push({ id: 'lvo-no-evt', severity: 'warn', msg: 'LVO detected but EVT not recommended — document reason (e.g., late window without perfusion imaging, patient/family declined, contraindication).' });
             }
             if (n.tnkRecommended && inr > 1.7) {
               warnings.push({ id: 'tnk-inr', severity: 'error', msg: `TNK recommended with INR ${inr} — INR >1.7 is a contraindication` });
@@ -11529,7 +11539,7 @@ Clinician Name`;
               ichScore: typeof calculateICHScore === 'function' ? calculateICHScore(ichScoreItems) : 0
             };
             return Object.values(GUIDELINE_RECOMMENDATIONS).filter(rec => {
-              try { return rec.conditions(data); } catch { return false; }
+              try { return rec.conditions(data); } catch (err) { console.warn(`Guideline condition failed for "${rec.id || 'unknown'}":`, err.message); return false; }
             });
           };
 
@@ -15307,7 +15317,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   value={(() => {
                                     const c = parseFloat((telestrokeNote.ctpStructured || {}).coreVolume);
                                     const p = parseFloat((telestrokeNote.ctpStructured || {}).penumbraVolume);
-                                    if (!isNaN(c) && !isNaN(p) && c > 0) return (p / c).toFixed(1);
+                                    if (!isNaN(c) && !isNaN(p) && c > 0) { const r = p / c; return isFinite(r) && r < 1000 ? r.toFixed(1) : '>999'; }
                                     if (!isNaN(c) && c === 0 && !isNaN(p) && p > 0) return '∞';
                                     return '';
                                   })()}
@@ -15351,7 +15361,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 if (!isNaN(penumbra) && penumbra > 180) reasons.push(`penumbra ${penumbra}>180 (malignant profile)`);
                                 badges.push({ label: 'DEFUSE-3', eligible: defuseEligible,
                                   detail: defuseEligible
-                                    ? `Core ${core}mL, ratio ${mismatchRatio.toFixed(1)}, mismatch ${mismatchVol.toFixed(0)}mL — eligible`
+                                    ? `Core ${core}mL, ratio ${isFinite(mismatchRatio) ? mismatchRatio.toFixed(1) : '?'}, mismatch ${mismatchVol.toFixed(0)}mL — imaging criteria met (note: DEFUSE-3 enrolled 6-16h only; DAWN extends to 24h)`
                                     : `Not met: ${reasons.join('; ') || 'insufficient data'}`
                                 });
                               }
