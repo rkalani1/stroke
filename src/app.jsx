@@ -8152,7 +8152,25 @@ Clinician Name`;
                 wusStr = extCount === 5 ? ' EXTEND eligible.' : ` EXTEND ${extCount}/5.`;
               }
             }
-            return `${site}${age} year old ${sex} with ${pmh} who presents with ${symptoms}. ${lkwStr}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${ctExtra}${aspectsStr}${ichVolStr}${vesselStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}.${wusStr} TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}.${compStr} Rationale: ${rationale}.`;
+            // Weight, GCS, premorbid mRS
+            const wtStr = telestrokeNote.weight ? ` Wt: ${telestrokeNote.weight}kg${telestrokeNote.weightEstimated ? '(est)' : ''}.` : '';
+            const gcsVal = typeof calculateGCS === 'function' ? calculateGCS(gcsItems) : null;
+            const gcsStr = gcsVal ? ` GCS: ${gcsVal}.` : '';
+            const mrsStr = telestrokeNote.premorbidMRS ? ` Pre-mRS: ${telestrokeNote.premorbidMRS}.` : '';
+            // Collateral grade
+            const collatStr = telestrokeNote.collateralGrade ? ` Collaterals: ${telestrokeNote.collateralGrade}.` : '';
+            // Structured CTP
+            const pCtpS = telestrokeNote.ctpStructured || {};
+            let ctpExtra = '';
+            if (pCtpS.coreVolume || pCtpS.penumbraVolume) {
+              const parts = [];
+              if (pCtpS.coreVolume) parts.push(`Core: ${pCtpS.coreVolume}mL`);
+              if (pCtpS.penumbraVolume) parts.push(`Penumbra: ${pCtpS.penumbraVolume}mL`);
+              const c = parseFloat(pCtpS.coreVolume), p = parseFloat(pCtpS.penumbraVolume);
+              if (!isNaN(c) && !isNaN(p) && c > 0) parts.push(`Ratio: ${(p/c).toFixed(1)}`);
+              ctpExtra = ` (${parts.join(', ')})`;
+            }
+            return `${site}${age} year old ${sex}${wtStr} with ${pmh} who presents with ${symptoms}. ${lkwStr}.${gcsStr}${mrsStr} NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${ctExtra}${aspectsStr}${ichVolStr}${vesselStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}${ctpExtra}.${collatStr}${wusStr} TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}.${compStr} Rationale: ${rationale}.`;
           };
           const generatePulsaraPreview = () => {
             const age = telestrokeNote.age || "***";
@@ -8879,7 +8897,10 @@ Clinician Name`;
               note += `NIHSS: ${telestrokeNote.dischargeNIHSS || telestrokeNote.nihss || nihssScore || '___'} (admission: ${telestrokeNote.nihss || nihssScore || '___'})\n`;
               note += `Neuro exam: ___\n\n`;
               note += `LABS/IMAGING:\n`;
-              note += `- CT Head: ${telestrokeNote.ctResults || '___'}\n`;
+              note += `- CT Head: ${telestrokeNote.ctResults || '___'}`;
+              if (telestrokeNote.earlyInfarctSigns) note += ' (early infarct signs)';
+              if (telestrokeNote.denseArterySign) note += ' (hyperdense artery sign)';
+              note += '\n';
               note += `- CTA: ${telestrokeNote.ctaResults || '___'}\n`;
               note += `- Labs: ___\n`;
               // Wake-up stroke evaluation
@@ -8997,6 +9018,19 @@ Clinician Name`;
               let note = `STROKE PATIENT EDUCATION\n${'='.repeat(40)}\n\n`;
               note += `Dear Patient / Family,\n\n`;
               note += `You have been diagnosed with: ${telestrokeNote.diagnosis || '___'}\n\n`;
+              // Treatment history
+              {
+                const txItems = [];
+                if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) txItems.push('a clot-dissolving medication (tenecteplase/TNK) through your IV');
+                if (telestrokeNote.evtRecommended) txItems.push('a catheter-based procedure to remove the blood clot (thrombectomy)');
+                if (telestrokeNote.diagnosisCategory === 'ich') txItems.push('treatment for bleeding in the brain including blood pressure control and monitoring');
+                if (txItems.length > 0) {
+                  note += `YOUR TREATMENT:\n`;
+                  note += `During your hospital stay, you received:\n`;
+                  txItems.forEach(t => { note += `- ${t}\n`; });
+                  note += '\n';
+                }
+              }
               note += `WHAT IS A STROKE?\n`;
               note += `A stroke happens when blood flow to part of the brain is blocked (ischemic stroke) or when a blood vessel in the brain bursts (hemorrhagic stroke). Without blood flow, brain cells begin to die.\n\n`;
               note += `WARNING SIGNS — BE FAST:\n`;
@@ -9081,7 +9115,10 @@ Clinician Name`;
               if (telestrokeNote.glucose) dischVitals.push(`Glucose ${telestrokeNote.glucose}`);
               note += `Presenting Vitals: ${dischVitals.join(', ')}\n\n`;
               note += `IMAGING:\n`;
-              note += `- CT Head: ${telestrokeNote.ctResults || '___'}\n`;
+              note += `- CT Head: ${telestrokeNote.ctResults || '___'}`;
+              if (telestrokeNote.earlyInfarctSigns) note += ' (early infarct signs)';
+              if (telestrokeNote.denseArterySign) note += ' (hyperdense artery sign)';
+              note += '\n';
               if (aspectsScore !== null && aspectsScore !== undefined) note += `- ASPECTS: ${aspectsScore}/10\n`;
               note += `- CTA: ${telestrokeNote.ctaResults || '___'}`;
               const dischVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
