@@ -8012,6 +8012,17 @@ Clinician Name`;
               }
               if (telestrokeNote.collateralGrade) note += `- Collaterals: ${telestrokeNote.collateralGrade}\n`;
               if (telestrokeNote.ekgResults) note += `- EKG: ${telestrokeNote.ekgResults}\n`;
+              // Cardiac workup summary
+              {
+                const cw = telestrokeNote.cardiacWorkup || {};
+                const cwItems = [];
+                if (cw.ecgComplete) cwItems.push('ECG completed');
+                if (cw.telemetryOrdered) cwItems.push('telemetry ordered');
+                if (cw.echoOrdered) cwItems.push('echo ordered');
+                if (cw.extendedMonitoringType) cwItems.push(`extended monitoring: ${cw.extendedMonitoringType}`);
+                if (cw.pfoEvaluation) cwItems.push(`PFO: ${cw.pfoEvaluation.replace(/-/g, ' ')}`);
+                if (cwItems.length > 0) note += `- Cardiac workup: ${cwItems.join(', ')}\n`;
+              }
               // Wake-up stroke evaluation
               const transferWus = telestrokeNote.wakeUpStrokeWorkflow || {};
               if (transferWus.isWakeUpStroke) {
@@ -8050,6 +8061,19 @@ Clinician Name`;
               if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) note += formatDTNForNote();
               const transferBp = bpPhaseTargets[telestrokeNote.bpPhase];
               if (transferBp) note += `- BP target: <${transferBp.systolic}/${transferBp.diastolic} (${transferBp.label})\n`;
+              // DOAC timing protocol
+              {
+                const doac = telestrokeNote.doacTiming || {};
+                if (doac.strokeSeverity || doac.doacAgent) {
+                  note += `- DOAC plan: `;
+                  const doacParts = [];
+                  if (doac.doacAgent) doacParts.push(doac.doacAgent.replace(/-/g, ' '));
+                  if (doac.strokeSeverity) doacParts.push(`severity ${doac.strokeSeverity} → ${doac.strokeSeverity === 'minor' ? 'start within 48h' : doac.strokeSeverity === 'moderate' ? 'start Day 3-5' : 'start Day 6-14'}`);
+                  if (doac.doacInitiationDay) doacParts.push(`planned Day ${doac.doacInitiationDay}`);
+                  if (doac.hemorrhagicTransformation) doacParts.push('HT present — repeat imaging before initiation');
+                  note += doacParts.join('; ') + '\n';
+                }
+              }
               if (telestrokeNote.rationale) note += `- Clinical rationale: ${telestrokeNote.rationale}\n`;
               if (telestrokeNote.transferRationale) note += `\nTransfer rationale: ${telestrokeNote.transferRationale}\n`;
               if (telestrokeNote.transportMode || telestrokeNote.transportEta) {
@@ -8071,7 +8095,15 @@ Clinician Name`;
                 note += `\nPost-TNK Status:\n`;
                 const postTnkComps = [];
                 if (telestrokeNote.sichDetected) postTnkComps.push('sICH DETECTED');
-                if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) postTnkComps.push('ANGIOEDEMA');
+                if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) {
+                  const ae = telestrokeNote.angioedema || {};
+                  let aeStr = 'ANGIOEDEMA';
+                  if (ae.severity) aeStr += ` (${ae.severity})`;
+                  if (ae.aceInhibitorUse) aeStr += ' — ACEi use';
+                  if (ae.intubated) aeStr += ' — INTUBATED';
+                  else if (ae.resolved) aeStr += ' — resolved';
+                  postTnkComps.push(aeStr);
+                }
                 if (telestrokeNote.clinicalDeterioration) postTnkComps.push('CLINICAL DETERIORATION');
                 const ht = telestrokeNote.hemorrhagicTransformation || {};
                 if (ht.detected) postTnkComps.push(`hemorrhagic transformation${ht.classification ? ` (${ht.classification}${ht.symptomatic ? ', symptomatic' : ''})` : ''}`);
@@ -8083,6 +8115,17 @@ Clinician Name`;
                 if (telestrokeNote.complicationNotes) note += `- Complication details: ${telestrokeNote.complicationNotes}\n`;
                 note += `- Neuro checks q15 min x 2h, then q30 min x 6h, then q1h x 16h post-TNK\n`;
                 note += `- Hold antithrombotics x 24h post-TNK\n`;
+              }
+              // Hemorrhagic transformation (non-TNK patients)
+              if (!(telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime)) {
+                const htNonTnk = telestrokeNote.hemorrhagicTransformation || {};
+                if (htNonTnk.detected) {
+                  note += `\nHemorrhagic Transformation:\n`;
+                  note += `- Classification: ${htNonTnk.classification || 'unclassified'}${htNonTnk.symptomatic ? ' (SYMPTOMATIC)' : ''}\n`;
+                  if (htNonTnk.managementActions) note += `- Management: ${htNonTnk.managementActions}\n`;
+                  if (htNonTnk.antithromboticHeld) note += `- Antithrombotics held\n`;
+                  if (htNonTnk.reimagingPlanned) note += `- Repeat imaging planned\n`;
+                }
               }
 
               // SAH-specific data
@@ -8096,6 +8139,25 @@ Clinician Name`;
                 if (telestrokeNote.sahAneurysmSecured) note += `- Aneurysm: secured\n`;
                 if (telestrokeNote.sahNeurosurgeryConsulted) note += `- Neurosurgery: consulted\n`;
                 if (telestrokeNote.sahSeizureProphylaxis) note += `- Seizure prophylaxis: initiated\n`;
+              }
+              // Drug interaction alerts
+              {
+                const di = telestrokeNote.drugInteractions || {};
+                const diItems = [];
+                if (di.aedDoacInteraction) diItems.push(`AED-DOAC: ${di.aedType} (enzyme-inducing — consider warfarin instead)`);
+                if (di.statinInteraction) diItems.push(`Statin: ${di.statinInteractionDrug} (dose adjustment needed)`);
+                if (diItems.length > 0) note += `\nDRUG INTERACTIONS:\n${diItems.map(i => `- ${i}`).join('\n')}\n`;
+              }
+              // Decompressive craniectomy consideration
+              {
+                const dc = telestrokeNote.decompressiveCraniectomy || {};
+                if (dc.considered) {
+                  note += `\nDECOMPRESSIVE CRANIECTOMY:\n`;
+                  note += `- Being considered for malignant MCA infarction\n`;
+                  if (dc.territorySize) note += `- Territory: ${dc.territorySize}\n`;
+                  if (dc.timing) note += `- Timing window: ${dc.timing}\n`;
+                  note += `- Neurosurgery evaluation needed at receiving center\n`;
+                }
               }
               // Nursing/safety alerts for receiving team
               const transferAlerts = [];
