@@ -485,17 +485,46 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
               reject(new Error('No file provided'));
               return;
             }
+            if (file.size > 10 * 1024 * 1024) {
+              reject(new Error('File too large (>10MB) — likely not a valid case export'));
+              return;
+            }
+            if (file.type && !file.type.includes('json') && !file.type.includes('text')) {
+              reject(new Error('Invalid file type — expected JSON'));
+              return;
+            }
             const reader = new FileReader();
             reader.onload = () => {
               try {
                 const parsed = JSON.parse(reader.result);
-                if (!parsed || typeof parsed !== 'object') {
-                  reject(new Error('Invalid JSON structure'));
+                if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+                  reject(new Error('Invalid JSON structure — expected an object'));
                   return;
+                }
+                // Schema validation: must have recognizable app structure
+                const hasAppData = parsed.schemaVersion || parsed.appData;
+                const hasCaseData = parsed.telestrokeNote || parsed.strokeCodeForm || parsed.patientData;
+                if (!hasAppData && !hasCaseData) {
+                  reject(new Error('Unrecognized file format — missing telestrokeNote, strokeCodeForm, or schemaVersion'));
+                  return;
+                }
+                // Validate telestrokeNote shape if present
+                const note = parsed.telestrokeNote || parsed.appData?.telestrokeNote;
+                if (note) {
+                  if (typeof note !== 'object' || Array.isArray(note)) {
+                    reject(new Error('Invalid telestrokeNote — expected an object'));
+                    return;
+                  }
+                  // Check for unexpected executable content
+                  const noteStr = JSON.stringify(note);
+                  if (/<script/i.test(noteStr) || /javascript:/i.test(noteStr)) {
+                    reject(new Error('Import blocked — file contains potentially unsafe content'));
+                    return;
+                  }
                 }
                 resolve(parsed);
               } catch (e) {
-                reject(e);
+                reject(new Error('Invalid JSON — ' + e.message));
               }
             };
             reader.onerror = () => reject(reader.error || new Error('File read failed'));
@@ -2834,7 +2863,7 @@ Clinician Name`;
               ],
               keyCriteria: [
                 { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
-                { id: 'nihss', label: 'NIHSS ≥6 (or 4-5 disabling)', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 4), required: true },
+                { id: 'nihss', label: 'NIHSS ≥6 (or 4-5 disabling)', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 6), required: true },
                 { id: 'timeWindow', label: '4.5-24h from LKW', field: 'lkw', evaluate: (data) => {
                     const hrs = data.hoursFromLKW;
                     return hrs !== null && hrs >= 4.5 && hrs <= 24;
@@ -3718,13 +3747,13 @@ Clinician Name`;
               category: 'Reversal',
               title: 'Dabigatran reversal in ICH',
               recommendation: 'Administer idarucizumab (Praxbind) 5g IV (2 x 2.5g) for ICH on dabigatran.',
-              detail: 'Reversal is immediate with idarucizumab. If unavailable, aPCC or PCC may be considered.',
+              detail: 'Reversal is immediate with idarucizumab. If unavailable, 4F-PCC 50 IU/kg IV is preferred (aPCC is second-line).',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
-              medications: ['Idarucizumab (Praxbind) 5g IV', 'Alt: aPCC/PCC if unavailable'],
+              medications: ['Idarucizumab (Praxbind) 5g IV', 'Alt: 4F-PCC 50 IU/kg IV if idarucizumab unavailable', 'Alt: aPCC (FEIBA) 50 IU/kg if both unavailable'],
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
@@ -6739,8 +6768,20 @@ Clinician Name`;
               setSaveStatus('saving');
               const writes = { ...pendingWritesRef.current };
               pendingWritesRef.current = {};
+              let anyFailed = false;
               for (const [k, v] of Object.entries(writes)) {
-                saveWithExpiration(k, v);
+                try {
+                  saveWithExpiration(k, v);
+                } catch (e) {
+                  // Re-queue failed writes so they retry on next flush
+                  pendingWritesRef.current[k] = v;
+                  anyFailed = true;
+                  console.error('Partial save failed for key:', k, e);
+                }
+              }
+              if (anyFailed) {
+                setSaveStatus('error');
+                addToast('Some data failed to save — will retry automatically.', 'error');
               }
             }, 1000);
           }, []);
