@@ -6114,7 +6114,7 @@ Clinician Name`;
             if (items.vasoconstrictiveTrigger) score += 3;
             if (items.female) score += 1;
             if (items.sah) score += 1; // Convexity SAH favors RCVS
-            return score;
+            return Math.max(0, score);
           };
 
           // Calculate PHASES score for unruptured intracranial aneurysm rupture risk
@@ -6394,10 +6394,10 @@ Clinician Name`;
             if (isNaN(inrValue) || inrValue < 2) {
               unitsPerKg = 25;
               description = 'INR <2 or unknown';
-            } else if (inrValue >= 2 && inrValue <= 4) {
+            } else if (inrValue >= 2 && inrValue < 4) {
               unitsPerKg = 25;
-              description = 'INR 2-4';
-            } else if (inrValue > 4 && inrValue <= 6) {
+              description = 'INR 2-3.9';
+            } else if (inrValue >= 4 && inrValue <= 6) {
               unitsPerKg = 35;
               description = 'INR 4-6';
             } else {
@@ -8279,6 +8279,7 @@ Clinician Name`;
               note += `Vitals: ${vitals.join(', ')}, Glucose ${telestrokeNote.glucose || '___'}\n`;
               note += `Labs: Plt ${telestrokeNote.plateletCount ? telestrokeNote.plateletCount + 'K' : '___'}, Cr ${telestrokeNote.creatinine || '___'}`;
               if (telestrokeNote.inr) note += `, INR ${telestrokeNote.inr}`;
+              if (telestrokeNote.pt) note += `, PT ${telestrokeNote.pt}s`;
               if (telestrokeNote.ptt) note += `, aPTT ${telestrokeNote.ptt}`;
               note += `\n`;
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
@@ -8931,7 +8932,7 @@ Clinician Name`;
               if (telestrokeNote.weight) note += ` | ${telestrokeNote.weight} kg`;
               note += '\n';
               note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}`;
-              if (telestrokeNote.toastClassification) note += ` (${telestrokeNote.toastClassification})`;
+              if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
               note += '\n';
               if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}${telestrokeNote.contrastAllergy ? ' **CONTRAST ALLERGY**' : ''}\n`;
               else if (telestrokeNote.contrastAllergy) note += `Allergies: **CONTRAST ALLERGY**\n`;
@@ -8943,7 +8944,9 @@ Clinician Name`;
               }
               if (telestrokeNote.creatinine) note += '\n';
               if (telestrokeNote.inr) note += `INR: ${telestrokeNote.inr}\n`;
+              if (telestrokeNote.pt) note += `PT: ${telestrokeNote.pt}s\n`;
               if (telestrokeNote.plateletCount) note += `Plt: ${telestrokeNote.plateletCount}K\n`;
+              if (telestrokeNote.glucose) note += `Glucose: ${telestrokeNote.glucose} mg/dL\n`;
               {
                 const procVitals = [];
                 if (telestrokeNote.presentingBP) procVitals.push(`BP ${telestrokeNote.presentingBP}`);
@@ -9200,7 +9203,7 @@ Clinician Name`;
               if (sp.bpMeds) note += `- Blood pressure medication: ${sp.bpMeds}\n`;
               // Anticoagulation information
               {
-                const edDoac = telestrokeNote.doacType || telestrokeNote.anticoagulant;
+                const edDoac = telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== 'none' ? (ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType) : null;
                 const edDoacTiming = telestrokeNote.doacTiming || {};
                 if (edDoac || (sp.antiplateletRegimen || '').includes('doac') || (sp.antiplateletRegimen || '').includes('anticoag')) {
                   note += `\nANTICOAGULATION (BLOOD THINNER):\n`;
@@ -9963,8 +9966,9 @@ Clinician Name`;
               const evtVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
               if (evtVessels.length > 0) note += `- Vessel occlusion: ${evtVessels.join(', ')}\n`;
               if (telestrokeNote.collateralGrade) note += `- Collaterals: ${telestrokeNote.collateralGrade}\n`;
-              if (telestrokeNote.doacType) note += `- Anticoagulation: ${telestrokeNote.doacType}\n`;
-              else if (telestrokeNote.anticoagulant) note += `- Anticoagulation: ${telestrokeNote.anticoagulant}\n`;
+              if (telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== 'none') {
+                note += `- Anticoagulation: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType}\n`;
+              }
               if (telestrokeNote.premorbidMRS != null) note += `- Pre-morbid mRS: ${telestrokeNote.premorbidMRS}\n`;
               if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) note += `- TNK pre-treatment: administered at ${formatTime(telestrokeNote.tnkAdminTime)}\n`;
             }
@@ -18038,7 +18042,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     if (!isNaN(cc) && !isNaN(cp) && cc > 0) cdCtpStr += `, Ratio ${(cp/cc).toFixed(1)}`;
                                   }
                                   const cdCollat = telestrokeNote.collateralGrade || null;
-                                  const cdAnticoag = telestrokeNote.doacType ? `on ${telestrokeNote.doacType}` : telestrokeNote.anticoagulant ? `on ${telestrokeNote.anticoagulant}` : null;
+                                  const cdAnticoag = telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== 'none' ? `on ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType}` : null;
                                   const cdTnk = telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime ? `IV TNK administered at ${formatTime(telestrokeNote.tnkAdminTime)}` : null;
                                   const cdMrs = telestrokeNote.premorbidMRS != null ? telestrokeNote.premorbidMRS : null;
                                   let cdClinical = '';
