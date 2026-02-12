@@ -1494,7 +1494,7 @@ Clinician Name`;
           // actionsOpen removed — handled by settings menu
           const [encounterPhase, setEncounterPhase] = useState('phase-triage');
           const [clinicalContext, setClinicalContext] = useState('phone');
-          const [noteTemplate, setNoteTemplate] = useState('consult');
+          const [noteTemplate, setNoteTemplate] = useState(loadFromStorage('noteTemplate', 'consult'));
           const [calcDrawerOpen, setCalcDrawerOpen] = useState(false);
           const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
           // Phase 2: Guided Clinical Pathway UI state
@@ -1614,7 +1614,7 @@ Clinician Name`;
 
           // Focus mode
           const [focusMode, setFocusMode] = useState(false);
-          const [weightUnit, setWeightUnit] = useState('kg'); // 'kg' or 'lbs' — stored value is always kg
+          const [weightUnit, setWeightUnit] = useState(loadFromStorage('weightUnit', 'kg')); // 'kg' or 'lbs' — stored value is always kg
 
           // Online/offline status
           const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
@@ -3476,7 +3476,7 @@ Clinician Name`;
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca/i.test(v)
+                  /ica|m1|mca|basilar/i.test(v)
                 );
                 return nihss >= 6 && timeFrom && timeFrom.total <= 6 && hasLVO;
               }
@@ -3496,7 +3496,7 @@ Clinician Name`;
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca/i.test(v)
+                  /ica|m1|mca|basilar/i.test(v)
                 );
                 return nihss >= 6 && timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && hasLVO;
               }
@@ -3517,7 +3517,7 @@ Clinician Name`;
                 const timeFrom = data.timeFromLKW;
                 const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca/i.test(v)
+                  /ica|m1|mca|basilar/i.test(v)
                 );
                 return !!timeFrom && timeFrom.total <= 6 && aspects !== null && aspects <= 5 && hasLVO;
               }
@@ -3538,7 +3538,7 @@ Clinician Name`;
                 const timeFrom = data.timeFromLKW;
                 const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca/i.test(v)
+                  /ica|m1|mca|basilar/i.test(v)
                 );
                 return !!timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && aspects !== null && aspects >= 3 && aspects <= 5 && hasLVO;
               }
@@ -3559,7 +3559,7 @@ Clinician Name`;
                 const timeFrom = data.timeFromLKW;
                 const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca/i.test(v)
+                  /ica|m1|mca|basilar/i.test(v)
                 );
                 return !!timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && aspects !== null && aspects <= 2 && hasLVO;
               }
@@ -12064,9 +12064,11 @@ Clinician Name`;
             debouncedSave('autoSyncCalculators', autoSyncCalculators);
             debouncedSave('evtDecisionInputs', evtDecisionInputs);
             debouncedSave('doacProtocol', doacProtocol);
+            debouncedSave('noteTemplate', noteTemplate);
+            debouncedSave('weightUnit', weightUnit);
           }, [nihssScore, aspectsScore, gcsItems, mrsScore, ichScoreItems, ichVolumeParams, abcd2Items,
               chads2vascItems, ropeItems, huntHessGrade, wfnsGrade, hasbledItems,
-              rcvs2Items, phasesItems, autoSyncCalculators, evtDecisionInputs, doacProtocol]);
+              rcvs2Items, phasesItems, autoSyncCalculators, evtDecisionInputs, doacProtocol, noteTemplate, weightUnit]);
 
           useEffect(() => {
             debouncedSave('strokeCodeForm', sanitizeStrokeCodeFormForStorage(strokeCodeForm));
@@ -12299,7 +12301,7 @@ Clinician Name`;
               const pendingWrites = { ...pendingWritesRef.current };
               pendingWritesRef.current = {};
               for (const [k, v] of Object.entries(pendingWrites)) {
-                try { setKey(k, v); } catch (e) { if (e.name === 'QuotaExceededError' || e.code === 22) { addToast('Storage full — data may not be saved. Export your note or clear old data.', 'error'); break; } }
+                try { setKey(k, v); } catch (e) { if (e.name === 'QuotaExceededError' || e.code === 22) { addToast('Storage full — data may not be saved. Export your note or clear old data.', 'error'); } }
               }
             };
           }, [telestrokeNote]);
@@ -14739,10 +14741,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     CrCl not available — using normal renal function estimate. Enter age, weight, sex, and creatinine for renal-adjusted clearance.
                                   </div>
                                 )}
-                                {hoursSince !== null ? (
+                                {hoursSince !== null && halfLives !== null ? (
                                   <div className="flex justify-between font-semibold">
                                     <span>{Math.floor(hoursSince)}h since last dose ({halfLives.toFixed(1)} half-lives)</span>
-                                    <span>~{clearancePct.toFixed(0)}% cleared</span>
+                                    <span>~{clearancePct !== null ? clearancePct.toFixed(0) : '?'}% cleared</span>
                                   </div>
                                 ) : (
                                   <div className="text-amber-700 font-medium">Enter last dose time to calculate clearance estimate</div>
