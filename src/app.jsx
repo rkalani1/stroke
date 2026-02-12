@@ -8847,10 +8847,29 @@ Clinician Name`;
               if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}${telestrokeNote.contrastAllergy ? ' **CONTRAST ALLERGY**' : ''}\n`;
               else if (telestrokeNote.contrastAllergy) note += `Allergies: **CONTRAST ALLERGY**\n`;
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n`;
-              note += `ASPECTS: ${aspectsScore != null ? aspectsScore + '/10' : 'N/A'}\n\n`;
+              if (telestrokeNote.premorbidMRS != null) note += `Pre-morbid mRS: ${telestrokeNote.premorbidMRS}\n`;
+              note += `ASPECTS: ${aspectsScore != null ? aspectsScore + '/10' : 'N/A'}\n`;
+              note += `CT Head: ${telestrokeNote.ctResults || '___'}`;
+              if (telestrokeNote.earlyInfarctSigns) note += ' (early infarct signs)';
+              if (telestrokeNote.denseArterySign) note += ' (hyperdense artery sign)';
+              note += '\n';
+              if (telestrokeNote.collateralGrade) note += `Collaterals: ${telestrokeNote.collateralGrade}\n`;
+              {
+                const prCtp = telestrokeNote.ctpStructured || {};
+                if (prCtp.coreVolume) {
+                  let ctpLine = `CTP: Core ${prCtp.coreVolume} mL`;
+                  if (prCtp.penumbraVolume) ctpLine += `, Penumbra ${prCtp.penumbraVolume} mL`;
+                  const pc = parseFloat(prCtp.coreVolume), pp = parseFloat(prCtp.penumbraVolume);
+                  if (!isNaN(pc) && !isNaN(pp) && pc > 0) ctpLine += `, Ratio ${(pp/pc).toFixed(1)}`;
+                  note += ctpLine + '\n';
+                }
+              }
+              note += '\n';
               note += `INDICATION:\n`;
               note += `Acute ischemic stroke with large vessel occlusion (${(telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ') || '___'}).\n`;
               note += `LKW: ${telestrokeNote.lkwUnknown ? 'Unknown — discovery-based timing' : `${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}`}\n`;
+              if (telestrokeNote.doacType) note += `Anticoagulation: ${telestrokeNote.doacType}\n`;
+              else if (telestrokeNote.anticoagulant) note += `Anticoagulation: ${telestrokeNote.anticoagulant}\n`;
               if (telestrokeNote.tnkRecommended) {
                 const procDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
                 note += `IV TNK${procDose ? ` ${procDose.calculatedDose} mg` : ''} administered at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
@@ -8863,7 +8882,13 @@ Clinician Name`;
               note += `Guide catheter: ___\n`;
               note += `Technique: ___ (aspiration, stent retriever, combined)\n`;
               note += `Number of passes: ___\n`;
-              note += `Complications: ___ (none, perforation, dissection, distal embolization)\n`;
+              {
+                const procComps = [];
+                const procHt = telestrokeNote.hemorrhagicTransformation || {};
+                if (procHt.detected) procComps.push(`hemorrhagic transformation (PH type ${procHt.phType || '___'})`);
+                if ((telestrokeNote.angioedema || {}).detected) procComps.push('angioedema');
+                note += `Complications: ${procComps.length > 0 ? procComps.join(', ') : '___ (none, perforation, dissection, distal embolization)'}\n`;
+              }
               note += `Groin puncture time: ${telestrokeNote.punctureTime || '___'}\n`;
               note += `Reperfusion time: ___\n`;
               note += `mTICI score: ${telestrokeNote.ticiScore || '___'}\n\n`;
@@ -9712,6 +9737,11 @@ Clinician Name`;
               }
               const evtVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
               if (evtVessels.length > 0) note += `- Vessel occlusion: ${evtVessels.join(', ')}\n`;
+              if (telestrokeNote.collateralGrade) note += `- Collaterals: ${telestrokeNote.collateralGrade}\n`;
+              if (telestrokeNote.doacType) note += `- Anticoagulation: ${telestrokeNote.doacType}\n`;
+              else if (telestrokeNote.anticoagulant) note += `- Anticoagulation: ${telestrokeNote.anticoagulant}\n`;
+              if (telestrokeNote.premorbidMRS != null) note += `- Pre-morbid mRS: ${telestrokeNote.premorbidMRS}\n`;
+              if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) note += `- TNK pre-treatment: administered at ${formatTime(telestrokeNote.tnkAdminTime)}\n`;
             }
 
             // Add TOAST classification and workup plan
@@ -17489,7 +17519,29 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </select>
                                 </div>
                                 <button onClick={() => {
-                                  const consentDoc = `EVT CONSENT DOCUMENTATION:\nMechanical thrombectomy was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${telestrokeNote.nihss || nihssScore || '***'}, vessel occlusion: ${(telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ') || '***'}).\nRisks discussed: intracranial hemorrhage (~5-6%), vessel injury, anesthesia complications, and the possibility that the procedure may not be successful.\nBenefits discussed: significantly improved chance of functional independence (NNT 3-4 based on pivotal trials).\nAlternatives discussed: medical management alone (associated with worse outcomes in setting of LVO).\nConsent: ${(telestrokeNote.consentKit || {}).evtConsentType === 'informed-consent' ? 'Informed consent obtained from patient/family' : (telestrokeNote.consentKit || {}).evtConsentType === 'presumed' ? 'Presumed consent — patient unable to provide consent, no surrogate available, treatment in best interest' : (telestrokeNote.consentKit || {}).evtConsentType === 'surrogate' ? 'Consent obtained from surrogate/family member' : (telestrokeNote.consentKit || {}).evtConsentType === 'declined' ? 'Patient/family declined after informed discussion' : '***'}`;
+                                  const cdLkw = telestrokeNote.lkwUnknown ? 'Unknown (wake-up/unwitnessed)' + (telestrokeNote.discoveryTime ? ` — discovery ${telestrokeNote.discoveryTime}` : '') : telestrokeNote.lkwTime ? formatTime(telestrokeNote.lkwTime) : '***';
+                                  const cdAspects = aspectsScore != null ? `${aspectsScore}/10` : null;
+                                  const cdCtp = telestrokeNote.ctpStructured || {};
+                                  let cdCtpStr = '';
+                                  if (cdCtp.coreVolume) {
+                                    cdCtpStr = `Core ${cdCtp.coreVolume} mL`;
+                                    if (cdCtp.penumbraVolume) cdCtpStr += `, Penumbra ${cdCtp.penumbraVolume} mL`;
+                                    const cc = parseFloat(cdCtp.coreVolume), cp = parseFloat(cdCtp.penumbraVolume);
+                                    if (!isNaN(cc) && !isNaN(cp) && cc > 0) cdCtpStr += `, Ratio ${(cp/cc).toFixed(1)}`;
+                                  }
+                                  const cdCollat = telestrokeNote.collateralGrade || null;
+                                  const cdAnticoag = telestrokeNote.doacType ? `on ${telestrokeNote.doacType}` : telestrokeNote.anticoagulant ? `on ${telestrokeNote.anticoagulant}` : null;
+                                  const cdTnk = telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime ? `IV TNK administered at ${formatTime(telestrokeNote.tnkAdminTime)}` : null;
+                                  const cdMrs = telestrokeNote.premorbidMRS != null ? telestrokeNote.premorbidMRS : null;
+                                  let cdClinical = '';
+                                  cdClinical += `\nLKW: ${cdLkw}`;
+                                  if (cdAspects) cdClinical += `\nASPECTS: ${cdAspects}`;
+                                  if (cdCtpStr) cdClinical += `\nCTP: ${cdCtpStr}`;
+                                  if (cdCollat) cdClinical += `\nCollaterals: ${cdCollat}`;
+                                  if (cdAnticoag) cdClinical += `\nAnticoagulation: ${cdAnticoag}`;
+                                  if (cdTnk) cdClinical += `\n${cdTnk}`;
+                                  if (cdMrs != null) cdClinical += `\nPre-morbid mRS: ${cdMrs}`;
+                                  const consentDoc = `EVT CONSENT DOCUMENTATION:\nMechanical thrombectomy was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${telestrokeNote.nihss || nihssScore || '***'}, vessel occlusion: ${(telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ') || '***'}).${cdClinical}\nRisks discussed: intracranial hemorrhage (~5-6%), vessel injury, anesthesia complications, and the possibility that the procedure may not be successful.\nBenefits discussed: significantly improved chance of functional independence (NNT 3-4 based on pivotal trials).\nAlternatives discussed: medical management alone (associated with worse outcomes in setting of LVO).\nConsent: ${(telestrokeNote.consentKit || {}).evtConsentType === 'informed-consent' ? 'Informed consent obtained from patient/family' : (telestrokeNote.consentKit || {}).evtConsentType === 'presumed' ? 'Presumed consent — patient unable to provide consent, no surrogate available, treatment in best interest' : (telestrokeNote.consentKit || {}).evtConsentType === 'surrogate' ? 'Consent obtained from surrogate/family member' : (telestrokeNote.consentKit || {}).evtConsentType === 'declined' ? 'Patient/family declined after informed discussion' : '***'}`;
                                   copyToClipboard(consentDoc, 'evt-consent');
                                 }}
                                   className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'evt-consent' ? 'bg-emerald-600 text-white' : 'bg-orange-600 text-white hover:bg-orange-700'}`}>
