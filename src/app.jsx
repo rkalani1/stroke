@@ -3398,7 +3398,7 @@ Clinician Name`;
               reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               caveats: 'Based on ENCHANTED2/MT (2023) and OPTIMAL-BP (2024). Applies to successful reperfusion (mTICI 2b-3).',
               conditions: (data) => {
-                return !!data.telestrokeNote?.evtRecommended && !!data.telestrokeNote?.ticiScore;
+                return !!data.telestrokeNote?.evtRecommended;
               }
             },
             bp_ich_acute: {
@@ -6276,7 +6276,7 @@ Clinician Name`;
             let adjBwCrCl = null;
             if (isObese && h > 0) {
               const heightIn = h / 2.54;
-              const ibw = sex === 'M' ? 50 + 2.3 * (heightIn - 60) : 45.5 + 2.3 * (heightIn - 60);
+              const ibw = Math.max(30, sex === 'M' ? 50 + 2.3 * (heightIn - 60) : 45.5 + 2.3 * (heightIn - 60));
               const adjBw = ibw + 0.4 * (w - ibw);
               adjBwCrCl = Math.round(((140 - a) * adjBw * sexFactor) / (72 * cr) * 10) / 10;
             }
@@ -14946,8 +14946,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 warfarin: 40, heparin: 1.5, enoxaparin: crclVal && crclVal < 30 ? 7 : 4.5
                               };
                               const estHalfLife = halfLifeMap[telestrokeNote.lastDOACType] || 12;
-                              const halfLives = hoursSince ? hoursSince / estHalfLife : null;
-                              const clearancePct = halfLives ? Math.min(99.9, (1 - Math.pow(0.5, halfLives)) * 100) : null;
+                              const halfLives = hoursSince != null ? hoursSince / estHalfLife : null;
+                              const clearancePct = halfLives != null ? Math.min(99.9, (1 - Math.pow(0.5, halfLives)) * 100) : null;
                               const missingCrCl = !crclVal && ['apixaban','rivaroxaban','dabigatran','enoxaparin'].includes(telestrokeNote.lastDOACType);
                               const clearanceColor = clearancePct === null ? 'bg-orange-50 border-orange-200' : clearancePct >= 97 ? 'bg-emerald-50 border-emerald-200' : clearancePct >= 87 ? 'bg-amber-50 border-amber-200' : 'bg-red-50 border-red-200';
                               return (
@@ -15417,9 +15417,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {['ICA', 'M1', 'M2', 'M3', 'A1', 'A2', 'P1', 'P2', 'Basilar', 'None'].map(vessel => (
                                 <button key={vessel} type="button"
                                   onClick={() => {
-                                    const current = telestrokeNote.vesselOcclusion || [];
-                                    const updated = current.includes(vessel) ? current.filter(v => v !== vessel) : [...current.filter(v => v !== 'None'), ...(vessel === 'None' ? [] : [vessel]), ...(vessel === 'None' ? ['None'] : [])];
-                                    setTelestrokeNote({...telestrokeNote, vesselOcclusion: vessel === 'None' ? ['None'] : updated.filter(v => v !== 'None')});
+                                    setTelestrokeNote(prev => {
+                                      const current = prev.vesselOcclusion || [];
+                                      const updated = current.includes(vessel) ? current.filter(v => v !== vessel) : [...current.filter(v => v !== 'None'), ...(vessel === 'None' ? [] : [vessel]), ...(vessel === 'None' ? ['None'] : [])];
+                                      return {...prev, vesselOcclusion: vessel === 'None' ? ['None'] : updated.filter(v => v !== 'None')};
+                                    });
                                   }}
                                   className={`px-2 py-1 text-xs rounded-full font-medium transition-colors ${
                                     (telestrokeNote.vesselOcclusion || []).includes(vessel) ? 'bg-blue-600 text-white' : 'bg-white border border-blue-200 text-blue-700 hover:bg-blue-100'
