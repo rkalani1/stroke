@@ -11731,6 +11731,15 @@ Clinician Name`;
                   if (typeof defaults[key] === 'object' && defaults[key] !== null && !Array.isArray(defaults[key])
                       && typeof savedNote[key] === 'object' && !Array.isArray(savedNote[key])) {
                     note[key] = { ...defaults[key], ...savedNote[key] };
+                    // Two-level deep merge: restore default sub-objects (e.g. wakeUpStrokeWorkflow.dwi)
+                    for (const subKey of Object.keys(defaults[key])) {
+                      if (typeof defaults[key][subKey] === 'object' && defaults[key][subKey] !== null && !Array.isArray(defaults[key][subKey])
+                          && typeof note[key][subKey] === 'object' && note[key][subKey] !== null && !Array.isArray(note[key][subKey])) {
+                        note[key][subKey] = { ...defaults[key][subKey], ...note[key][subKey] };
+                      } else if (note[key][subKey] === undefined || note[key][subKey] === null) {
+                        note[key][subKey] = defaults[key][subKey];
+                      }
+                    }
                   } else {
                     note[key] = savedNote[key];
                   }
@@ -17447,11 +17456,18 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               const clearAllAndProceed = () => {
                                 // Block if auto-detected absolute contraindications exist (including IE, ICH/SAH, etc.)
-                                if (autoAbsolute.length > 0 || telestrokeNote.tnkAutoBlocked) {
+                                if (autoAbsolute.length > 0) {
                                   addToast('Cannot proceed — absolute contraindication(s) detected. TNK is contraindicated.', 'error');
                                   return;
                                 }
-                                setTelestrokeNote(prev => ({...prev, tnkContraindicationReviewed: true, tnkContraindicationReviewTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }), tnkRecommended: true}));
+                                // Use functional updater to check current tnkAutoBlocked (avoids stale closure)
+                                setTelestrokeNote(prev => {
+                                  if (prev.tnkAutoBlocked) {
+                                    setTimeout(() => addToast('Cannot proceed — absolute contraindication(s) detected. TNK is contraindicated.', 'error'), 0);
+                                    return prev;
+                                  }
+                                  return {...prev, tnkContraindicationReviewed: true, tnkContraindicationReviewTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }), tnkRecommended: true};
+                                });
                               };
 
                               // Auto-detected items for prominent banner
