@@ -51,7 +51,7 @@
   .sticky,
   .no-print,
   .fixed,
-  [role="alert"] {
+  [role="alert"].toast-alert {
     display: none !important;
   }
 

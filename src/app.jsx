@@ -214,7 +214,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
             'aria-atomic': 'true'
           }, toasts.map(t => React.createElement('div', {
             key: t.id,
-            className: `pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-xl shadow-lg border text-sm font-medium transition-all animate-toast-in ${
+            className: `pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-xl shadow-lg border text-sm font-medium transition-all animate-toast-in toast-alert ${
               t.type === 'success' ? 'bg-emerald-600 text-white border-emerald-700' :
               t.type === 'error' ? 'bg-red-600 text-white border-red-700' :
               t.type === 'warning' ? 'bg-amber-600 text-white border-amber-700' :
@@ -1935,7 +1935,7 @@ Clinician Name`;
           const protocolDetailMap = useMemo(() => ({
             PCC: {
               title: '4F-PCC (Kcentra)',
-              dosing: 'PCC (Kcentra) weight-based: INR 2-3.9 → 25 IU/kg; INR 4-6 → 35 IU/kg; INR >6 → 50 IU/kg (max 5000 IU). Use PCC calculator for exact dose.',
+              dosing: 'PCC (Kcentra) weight-based: INR 1.3-3.9 → 25 IU/kg; INR 4-6 → 35 IU/kg; INR >6 → 50 IU/kg (max 5000 IU). INR <1.3: PCC likely not needed. Use PCC calculator for exact dose.',
               note: 'Give simultaneously with vitamin K 10 mg IV. Check PT/INR at 15-30 min, 6h, and 24h after PCC. If INR >1.5 at 15-30 min → consult hematology for additional PCC. If INR >1.5 at 24h → repeat vitamin K 10 mg IV over 30 min.'
             },
             PCC_DOAC: {
@@ -6413,28 +6413,34 @@ Clinician Name`;
             let unitsPerKg;
             let description;
 
-            if (isNaN(inrValue) || inrValue < 2) {
+            if (isNaN(inrValue)) {
               unitsPerKg = 25;
-              description = 'INR <2 or unknown';
-            } else if (inrValue >= 2 && inrValue < 4) {
+              description = 'INR unknown — using default 25 IU/kg';
+            } else if (inrValue < 1.3) {
+              unitsPerKg = null;
+              description = 'INR <1.3 — PCC likely not needed; give Vitamin K 10 mg IV';
+            } else if (inrValue < 2) {
               unitsPerKg = 25;
-              description = 'INR 2-3.9';
-            } else if (inrValue >= 4 && inrValue <= 6) {
+              description = 'INR 1.3-1.9 — consider PCC 25 IU/kg (COR 2b/C)';
+            } else if (inrValue < 4) {
+              unitsPerKg = 25;
+              description = 'INR 2.0-3.9 — PCC 25 IU/kg (COR 1/B)';
+            } else if (inrValue <= 6) {
               unitsPerKg = 35;
-              description = 'INR 4-6';
+              description = 'INR 4.0-6.0 — PCC 35 IU/kg (COR 1/B)';
             } else {
               unitsPerKg = 50;
-              description = 'INR >6';
+              description = 'INR >6 — PCC 50 IU/kg (COR 1/B)';
             }
 
-            const totalDose = Math.min(weight * unitsPerKg, 5000); // Max 5000 IU
+            const totalDose = unitsPerKg ? Math.min(weight * unitsPerKg, 5000) : null;
 
             return {
               weightKg: weight,
               inr: inrValue || 'unknown',
               unitsPerKg,
-              totalDose: Math.round(totalDose),
-              isMaxDose: weight * unitsPerKg >= 5000,
+              totalDose: totalDose ? Math.round(totalDose) : null,
+              isMaxDose: unitsPerKg ? weight * unitsPerKg >= 5000 : false,
               description
             };
           };
@@ -8564,7 +8570,7 @@ Clinician Name`;
               const isDiagSAH = telestrokeNote.diagnosisCategory === 'sah';
               if (isDiagSAH) {
                 note += `\nSAH Management:\n`;
-                if (telestrokeNote.sahGrade) note += `- ${telestrokeNote.sahGradeScale || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
+                if (telestrokeNote.sahGrade) note += `- ${{'huntHess': 'Hunt & Hess Grade', 'wfns': 'WFNS Grade'}[telestrokeNote.sahGradeScale] || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
                 if (telestrokeNote.fisherGrade) note += `- Modified Fisher Grade: ${telestrokeNote.fisherGrade}\n`;
                 if (telestrokeNote.sahBPManaged) note += `- BP managed (SBP <160 pre-securing)\n`;
                 if (telestrokeNote.sahNimodipine) note += `- Nimodipine: initiated\n`;
@@ -9573,7 +9579,7 @@ Clinician Name`;
               const dischIsSAH = telestrokeNote.diagnosisCategory === 'sah';
               if (dischIsSAH) {
                 note += '\nSAH MANAGEMENT:\n';
-                if (telestrokeNote.sahGrade) note += `- ${telestrokeNote.sahGradeScale || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
+                if (telestrokeNote.sahGrade) note += `- ${{'huntHess': 'Hunt & Hess Grade', 'wfns': 'WFNS Grade'}[telestrokeNote.sahGradeScale] || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
                 if (telestrokeNote.fisherGrade) note += `- Modified Fisher Grade: ${telestrokeNote.fisherGrade}\n`;
                 if (telestrokeNote.sahBPManaged) note += `- BP managed (SBP <160 pre-securing)\n`;
                 if (telestrokeNote.sahNimodipine) note += `- Nimodipine: initiated\n`;
@@ -10232,7 +10238,7 @@ Clinician Name`;
             // Add SAH-specific details
             if (telestrokeNote.diagnosisCategory === 'sah') {
               let sahNote = '\nSAH Management:\n';
-              if (telestrokeNote.sahGrade) sahNote += `- ${telestrokeNote.sahGradeScale || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
+              if (telestrokeNote.sahGrade) sahNote += `- ${{'huntHess': 'Hunt & Hess Grade', 'wfns': 'WFNS Grade'}[telestrokeNote.sahGradeScale] || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
               if (telestrokeNote.fisherGrade) sahNote += `- Modified Fisher Grade: ${telestrokeNote.fisherGrade}\n`;
               if (telestrokeNote.sahBPManaged) sahNote += `- BP managed (SBP <160 pre-securing)\n`;
               if (telestrokeNote.sahNimodipine) sahNote += `- Nimodipine 60 mg q4h started\n`;
@@ -11154,7 +11160,7 @@ Clinician Name`;
               const bpMatch = n.bpPostEVT.match(/(\d+)/);
               const sbp = bpMatch ? parseInt(bpMatch[1], 10) : NaN;
               if (!isNaN(sbp) && sbp < 140) {
-                warnings.push({ id: 'post-evt-bp-too-low', severity: 'error', msg: `Post-EVT SBP ${sbp} mmHg — SBP <140 after successful reperfusion is Class III: Harm (ENCHANTED2/MT, OPTIMAL-BP). Target SBP <180/105.` });
+                warnings.push({ id: 'post-evt-bp-too-low', severity: 'error', msg: `Post-EVT SBP ${sbp} mmHg — SBP <140 after successful reperfusion is Class III: Harm (ENCHANTED2/MT, BEST-II 2024). SBP <130 associated with worse outcomes. Target SBP 140-180/105.` });
               }
             }
 
@@ -11294,7 +11300,8 @@ Clinician Name`;
             const onXaI = ['apixaban', 'rivaroxaban', 'edoxaban'].includes(acType) || meds.includes('apixaban') || meds.includes('eliquis') || meds.includes('rivaroxaban') || meds.includes('xarelto');
             const onHeparin = meds.includes('heparin') && !meds.includes('enoxaparin') && !meds.includes('lovenox') && !meds.includes('dalteparin');
             const onLMWH = meds.includes('enoxaparin') || meds.includes('lovenox') || meds.includes('dalteparin') || meds.includes('tinzaparin');
-            if (isICH && (onWarfarin || onDabigatran || onXaI || onHeparin || onLMWH)) {
+            const onFondaparinux = acType === 'fondaparinux' || meds.includes('fondaparinux') || meds.includes('arixtra');
+            if (isICH && (onWarfarin || onDabigatran || onXaI || onHeparin || onLMWH || onFondaparinux)) {
               const reversalOrders = [];
               if (onWarfarin) {
                 const inrVal = parseFloat(inr);
@@ -11302,7 +11309,7 @@ Clinician Name`;
                 if (!isNaN(inrVal)) {
                   if (inrVal >= 2.0) inrTier = `INR ${inrVal.toFixed(1)} ≥2.0 → 4F-PCC recommended (COR 1/B)`;
                   else if (inrVal >= 1.6) inrTier = `INR ${inrVal.toFixed(1)} (1.6-1.9) → 4F-PCC recommended (COR 2b/C)`;
-                  else if (inrVal >= 1.3) inrTier = `INR ${inrVal.toFixed(1)} (1.3-1.5) → Consider 4F-PCC case-by-case (COR 2b/C)`;
+                  else if (inrVal >= 1.3) inrTier = `INR ${inrVal.toFixed(1)} (1.3-1.5) → 4F-PCC 25 IU/kg may be considered (COR 2b/C): recommend if ICH expanding, volume >30 mL, or high-risk location`;
                   else inrTier = `INR ${inrVal.toFixed(1)} (<1.3) → PCC likely not needed; give Vitamin K`;
                 }
                 const pccRef = calculatePCCDose(telestrokeNote.weight, inr);
@@ -11322,7 +11329,8 @@ Clinician Name`;
                   'If ingestion <2h: activated charcoal (oral)',
                   'Idarucizumab (Praxbind) 5g IV (2 x 2.5g, ≤15 min apart, each over 5-10 min)',
                   'If idarucizumab unavailable: 4F-PCC 2000 units IV',
-                  'If renal failure: consider emergent dialysis (dabigatran 65% dialyzable)'
+                  'If renal failure: consider emergent dialysis (dabigatran 65% dialyzable)',
+                  'REBOUND RISK: Idarucizumab t½ ~40 min; dabigatran levels may return within 24h. Recheck TT/dTT at 12h and 24h post-reversal. Consider anticoag restart timing 24-48h post-ICH if hemostasis achieved and indication (AF, VTE) is strong — discuss with Neurology/Hematology.'
                 );
               } else if (onXaI) {
                 reversalOrders.push(
@@ -11351,6 +11359,17 @@ Clinician Name`;
                   'Last dose >12h: likely unnecessary — check anti-Xa',
                   'Note: protamine only partially reverses LMWH (~60% anti-Xa neutralization)'
                 );
+              } else if (onFondaparinux) {
+                reversalOrders.push(
+                  'Assessment: STAT anti-Xa level (calibrated for fondaparinux)',
+                  'NO SPECIFIC REVERSAL AGENT for fondaparinux (t½ 17-21 hours)',
+                  'Supportive care + time is mainstay (drug is 100% renally cleared)',
+                  '4F-PCC 50 IU/kg may partially correct coagulopathy — not reliably studied, consider as rescue therapy',
+                  'rFVIIa (NovoSeven) 90 mcg/kg — off-label, consider only for life-threatening hemorrhage after Hematology consultation',
+                  'If severe renal failure (CrCl <30): clearance significantly prolonged; consider dialysis consultation (fondaparinux ~40% renally cleared)',
+                  'Protamine does NOT reverse fondaparinux',
+                  'Consult Hematology for persistent hemorrhage despite supportive measures'
+                );
               }
               // Additional blood product thresholds
               reversalOrders.push(
@@ -11366,7 +11385,7 @@ Clinician Name`;
                 'Repeat PT/INR, CBC at 6h and 24h',
                 'Repeat CT Head at 6h and 24h (sooner if deterioration)'
               );
-              const reversalLabel = onWarfarin ? 'Warfarin' : onDabigatran ? 'Dabigatran' : onXaI ? 'Xa Inhibitor' : onHeparin ? 'Heparin' : 'LMWH';
+              const reversalLabel = onWarfarin ? 'Warfarin' : onDabigatran ? 'Dabigatran' : onXaI ? 'Xa Inhibitor' : onHeparin ? 'Heparin' : onFondaparinux ? 'Fondaparinux' : 'LMWH';
               bundles.push({
                 id: 'reversal',
                 label: `Anticoag Reversal (${reversalLabel})`,
@@ -13506,7 +13525,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
               {/* Offline Indicator */}
               {!isOnline && (
-                <div className="bg-amber-500 text-white px-4 py-2 text-center text-sm font-medium flex items-center justify-center gap-2" role="alert">
+                <div className="bg-amber-500 text-white px-4 py-2 text-center text-sm font-medium flex items-center justify-center gap-2 no-print" role="alert">
                   <i aria-hidden="true" data-lucide="wifi-off" className="w-4 h-4"></i>
                   <span>You are offline — changes are saved locally</span>
                 </div>
@@ -13569,6 +13588,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           setSearchContext('header');
                         }}
                         onKeyDown={(e) => {
+                          if (e.key === 'Escape') {
+                            e.preventDefault();
+                            setSearchOpen(false);
+                            setSearchQuery('');
+                            setSearchActiveIndex(-1);
+                            return;
+                          }
                           if (!searchOpen || !searchResults.length) return;
                           const total = searchResults.length;
                           if (e.key === 'ArrowDown') {
@@ -18276,8 +18302,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                                     <div className="mt-3 space-y-2">
                                       <div>
-                                        <label className="block text-xs font-medium text-slate-600 mb-1">Consent type</label>
+                                        <label htmlFor="input-consent-type" className="block text-xs font-medium text-slate-600 mb-1">Consent type</label>
                                         <select
+                                          id="input-consent-type"
                                           value={telestrokeNote.tnkConsentType || ''}
                                           onChange={(e) => {
                                             const val = e.target.value;
@@ -18299,14 +18326,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       </div>
                                       <div className="grid grid-cols-2 gap-2">
                                         <div>
-                                          <label className="block text-xs font-medium text-slate-600 mb-1">Consent time</label>
-                                          <input type="time" value={telestrokeNote.tnkConsentTime || ''}
+                                          <label htmlFor="input-consent-time" className="block text-xs font-medium text-slate-600 mb-1">Consent time</label>
+                                          <input id="input-consent-time" type="time" value={telestrokeNote.tnkConsentTime || ''}
                                             onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, tnkConsentTime: v})); }}
                                             className="w-full px-2 py-1.5 border border-purple-200 rounded-lg text-sm focus:ring-2 focus:ring-purple-500" />
                                         </div>
                                         <div>
-                                          <label className="block text-xs font-medium text-slate-600 mb-1">Discussed with</label>
-                                          <input type="text" value={telestrokeNote.tnkConsentWith || ''}
+                                          <label htmlFor="input-consent-with" className="block text-xs font-medium text-slate-600 mb-1">Discussed with</label>
+                                          <input id="input-consent-with" type="text" value={telestrokeNote.tnkConsentWith || ''}
                                             onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, tnkConsentWith: v})); }}
                                             placeholder="Patient, wife, son..."
                                             className="w-full px-2 py-1.5 border border-purple-200 rounded-lg text-sm focus:ring-2 focus:ring-purple-500" />
@@ -19130,8 +19157,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* SAH Grade */}
                               <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                  <label className="block text-xs font-medium text-slate-600 mb-1">Grading Scale</label>
+                                  <label htmlFor="input-sah-scale" className="block text-xs font-medium text-slate-600 mb-1">Grading Scale</label>
                                   <select
+                                    id="input-sah-scale"
                                     value={telestrokeNote.sahGradeScale || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, sahGradeScale: v})); }}
                                     className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm"
@@ -19142,8 +19170,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </select>
                                 </div>
                                 <div>
-                                  <label className="block text-xs font-medium text-slate-600 mb-1">Grade</label>
+                                  <label htmlFor="input-sah-grade" className="block text-xs font-medium text-slate-600 mb-1">Grade</label>
                                   <select
+                                    id="input-sah-grade"
                                     value={telestrokeNote.sahGrade || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, sahGrade: v})); }}
                                     className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm"
@@ -22560,8 +22589,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h4 className="font-semibold text-slate-700 mb-2">Transfer</h4>
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
-                                  <label className="block text-xs font-medium text-slate-600 mb-1">Transport mode</label>
+                                  <label htmlFor="input-transport-mode" className="block text-xs font-medium text-slate-600 mb-1">Transport mode</label>
                                   <select
+                                    id="input-transport-mode"
                                     value={telestrokeNote.transportMode || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({ ...prev, transportMode: v })); }}
                                     className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
@@ -22574,8 +22604,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </select>
                                 </div>
                                 <div>
-                                  <label className="block text-xs font-medium text-slate-600 mb-1">ETA (time)</label>
+                                  <label htmlFor="input-transport-eta" className="block text-xs font-medium text-slate-600 mb-1">ETA (time)</label>
                                   <input
+                                    id="input-transport-eta"
                                     type="datetime-local"
                                     value={telestrokeNote.transportEta || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({ ...prev, transportEta: v })); }}
@@ -22584,8 +22615,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                               </div>
                               <div className="mt-3">
-                                <label className="block text-xs font-medium text-slate-600 mb-1">Transport notes</label>
+                                <label htmlFor="input-transport-notes" className="block text-xs font-medium text-slate-600 mb-1">Transport notes</label>
                                 <textarea
+                                  id="input-transport-notes"
                                   value={telestrokeNote.transportNotes || ''}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({ ...prev, transportNotes: v })); }}
                                   rows="2"
@@ -22594,8 +22626,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 />
                               </div>
                               <div className="mt-3">
-                                <label className="block text-xs font-medium text-slate-600 mb-1">Transfer decision note</label>
+                                <label htmlFor="input-transfer-rationale" className="block text-xs font-medium text-slate-600 mb-1">Transfer decision note</label>
                                 <textarea
+                                  id="input-transfer-rationale"
                                   value={telestrokeNote.transferRationale || ''}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({ ...prev, transferRationale: v })); }}
                                   rows="3"
