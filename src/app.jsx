@@ -11440,7 +11440,7 @@ Clinician Name`;
                                   'telestrokeNote', 'consultationType',
                                   'evtDecisionInputs', 'doacProtocol', 'nursingFlowsheetChecks',
                                   'ichVolumeParams', 'weightUnit', 'trialEligibility', 'encounterPhase', 'noteTemplate',
-                                  'telestrokeTemplate'];
+                                  'telestrokeTemplate', 'shiftPatients', 'currentPatientId'];
             keysToRemove.forEach((key) => removeKey(key));
 
             navigateTo('encounter');
