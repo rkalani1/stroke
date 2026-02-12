@@ -330,7 +330,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           tnk: 'TNK 0.25 mg/kg is non-inferior to alteplase with similar sICH rates (3.4% vs 3.2%) and simpler single-bolus administration (AcT trial, Lancet 2022).',
           evt: 'EVT benefit is time-dependent: NNT ~2.6 overall at 0-6h (HERMES). Late-window with perfusion selection: NNT ~2.8 (DAWN), ~3.6 (DEFUSE-3). Every 15-min delay reduces benefit.',
           ich_bp: 'INTERACT3: Intensive BP lowering + bundle of care improves functional outcomes in ICH (Lancet 2023).',
-          doac_timing: 'ELAN/CATALYST: Early DOAC restart after ischemic stroke — mild (NIHSS <8): 48h; moderate (NIHSS 8-15): day 3-5; severe (NIHSS ≥16): day 6-7 with repeat imaging.',
+          doac_timing: 'ELAN/CATALYST: Early DOAC restart after ischemic stroke — mild (NIHSS <8): 48h; moderate (NIHSS 8-15): day 3-5; severe (NIHSS ≥16): day 6-14 with repeat imaging.',
           aspects: 'ASPECTS 6-10: Standard EVT eligibility. ASPECTS 3-5: Consider EVT for mRS 0-1 patients with anterior LVO (SELECT2, ANGEL-ASPECT).',
           pcc: 'Fixed-dose PCC (2000 units) for warfarin reversal in ICH — check INR at 15-30 min post-infusion.',
           wakeup: 'DWI-FLAIR mismatch suggests onset <4.5h; CTP mismatch allows treatment up to 9h from midpoint of sleep (WAKE-UP, EXTEND).'
@@ -11052,9 +11052,14 @@ Clinician Name`;
                 warnings.push({ id: 'prasugrel-lowweight', severity: 'warn', msg: `Prasugrel with weight ${wt}kg (<60) — FDA WARNING: increased bleeding risk. Consider maintenance dose reduction to 5mg daily (TRITON-TIMI 38).` });
               }
               // Prasugrel is contraindicated with prior stroke/TIA — check PMH
-              if (/prior.*(stroke|cva|tia)|h\/o.*(stroke|cva|tia)|(stroke|cva|tia).*history/.test((n.pmh || '').toLowerCase())) {
+              if (/prior.*(stroke|cva|tia)|h\/o.*(stroke|cva|tia)|(stroke|cva|tia).*history|s\/p.*(stroke|cva|tia)|cerebral infarct|ischemic stroke|hx of.*(stroke|tia)|previous.*(stroke|cva|tia)/.test((n.pmh || '').toLowerCase())) {
                 warnings.push({ id: 'prasugrel-prior-stroke', severity: 'error', msg: 'Prasugrel with history of prior stroke/TIA — CONTRAINDICATED per FDA labeling (TRITON-TIMI 38: net clinical harm in prior CVA/TIA subgroup). Switch to ticagrelor or clopidogrel.' });
               }
+            }
+
+            // PPI-clopidogrel interaction (omeprazole/esomeprazole reduce CYP2C19 activation)
+            if (/clopidogrel|plavix/.test(meds) && /omeprazole|esomeprazole|prilosec|nexium/.test(meds)) {
+              warnings.push({ id: 'ppi-clopidogrel', severity: 'error', msg: 'Clopidogrel + omeprazole/esomeprazole — FDA WARNING: omeprazole/esomeprazole inhibit CYP2C19 and reduce clopidogrel active metabolite by ~45%. Switch PPI to pantoprazole (no significant CYP2C19 interaction) or consider alternative antiplatelet (ticagrelor). Famotidine (H2RA) is also a safe alternative for acid suppression.' });
             }
 
             // Pregnancy + TNK warning
@@ -11654,7 +11659,7 @@ Clinician Name`;
 
           // Now button component for timestamp fields
           const NowButton = ({ onClick, label }) => (
-            <button type="button" onClick={onClick} className="px-2 py-1 text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors whitespace-nowrap" title={label || 'Set to current time'}>
+            <button type="button" onClick={onClick} className="px-2 py-1 text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors whitespace-nowrap min-h-[36px]" title={label || 'Set to current time'}>
               Now
             </button>
           );
@@ -13558,7 +13563,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <button
                         type="button"
                         onClick={() => setProtocolModal(null)}
-                        className="text-slate-500 hover:text-slate-700"
+                        className="text-slate-500 hover:text-slate-700 min-h-[36px] min-w-[36px] flex items-center justify-center"
                         aria-label="Close protocol"
                       >
                         <i aria-hidden="true" data-lucide="x" className="w-5 h-5"></i>
@@ -13603,8 +13608,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </h1>
                       <button
                         onClick={() => setShowChangelog(true)}
-                        className="text-xs text-slate-500 hover:text-blue-600 transition-colors"
+                        className="text-xs text-slate-500 hover:text-blue-600 transition-colors min-h-[36px]"
                         title="What's new"
+                        aria-label={`Version ${APP_VERSION} — view changelog`}
                       >
                         {APP_VERSION}
                       </button>
@@ -13679,7 +13685,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         className="pl-8 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-48 md:w-64"
                         aria-label="Search trials, management tools, and references"
                       />
-                      <i aria-hidden="true" data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-slate-400"></i>
+                      <i aria-hidden="true" data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-slate-500"></i>
 
                       {searchOpen && searchContext === 'header' && (
                         <div aria-live="polite" aria-atomic="true" className="sr-only">
@@ -14439,8 +14445,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 discoveryDate: new Date().toISOString().split('T')[0],
                                 discoveryTime: new Date().toTimeString().slice(0, 5)
                               }))}
-                              className="text-xs font-semibold text-purple-700 hover:text-purple-900"
+                              className="text-xs font-semibold text-purple-700 hover:text-purple-900 min-h-[36px]"
                               type="button"
+                              aria-label="Set discovery time to now"
                             >
                               Use Now
                             </button>
@@ -15138,8 +15145,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                           {/* Medications */}
                           <div className="mb-3">
-                            <label className="block text-xs font-medium text-slate-600 mb-1">Medications</label>
+                            <label htmlFor="input-medications" className="block text-xs font-medium text-slate-600 mb-1">Medications</label>
                             <input
+                              id="input-medications"
                               type="text"
                               value={telestrokeNote.medications}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, medications: v})); }}
@@ -15584,8 +15592,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">Collaterals (CTA)</label>
+                              <label htmlFor="input-collateral-grade" className="block text-xs text-slate-600 mb-1">Collaterals (CTA)</label>
                               <select
+                                id="input-collateral-grade"
                                 value={telestrokeNote.collateralGrade || ''}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, collateralGrade: v})); }}
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
@@ -15838,6 +15847,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, tnkRecommended: c})); }}
                                   disabled={telestrokeNote.tnkAutoBlocked}
                                   className="w-4 h-4 text-emerald-600 disabled:opacity-50"
+                                  aria-label={telestrokeNote.tnkAutoBlocked ? 'TNK Recommended — disabled due to contraindication' : 'TNK Recommended'}
                                 />
                                 <span className={`text-sm font-medium ${telestrokeNote.tnkAutoBlocked ? 'text-slate-500 line-through' : 'text-emerald-800'}`}>TNK Recommended</span>
                               </label>
@@ -16492,11 +16502,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-sm font-medium text-slate-700 mb-1">
+                              <label htmlFor="phone-input-premorbid-mrs" className="block text-sm font-medium text-slate-700 mb-1">
                                 Pre-stroke mRS
                                 <span className="ml-1 text-xs text-blue-600 font-normal">(trials)</span>
                               </label>
                               <select
+                                id="phone-input-premorbid-mrs"
                                 value={telestrokeNote.premorbidMRS}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, premorbidMRS: v})); }}
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -28199,11 +28210,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                           aria-label="Filter evidence documents"
                         />
-                        <i aria-hidden="true" data-lucide="search" className="w-5 h-5 absolute left-3 top-2.5 text-slate-400"></i>
+                        <i aria-hidden="true" data-lucide="search" className="w-5 h-5 absolute left-3 top-2.5 text-slate-500"></i>
                         {evidenceFilter && (
                           <button
+                            type="button"
                             onClick={() => setEvidenceFilter('')}
-                            className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600"
+                            className="absolute right-3 top-1 text-slate-500 hover:text-slate-700 min-h-[36px] min-w-[36px] flex items-center justify-center"
                             aria-label="Clear filter"
                           >
                             <i aria-hidden="true" data-lucide="x" className="w-5 h-5"></i>
@@ -28270,7 +28282,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ['ref-orders', 'Admission Orders'],
                         ['ref-guidelines', 'Guidelines'],
                       ].map(([id, label]) => (
-                        <button key={id} onClick={() => { const el = document.getElementById(id); if (el) { if (el.tagName === 'DETAILS') el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}} className="px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-blue-100 text-slate-700 hover:text-blue-700 rounded-full border border-slate-200 hover:border-blue-300 transition-colors">{label}</button>
+                        <button key={id} onClick={() => { const el = document.getElementById(id); if (el) { if (el.tagName === 'DETAILS') el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}} className="px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-blue-100 text-slate-700 hover:text-blue-700 rounded-full border border-slate-200 hover:border-blue-300 transition-colors min-h-[36px]">{label}</button>
                       ))}
                     </div>
 
