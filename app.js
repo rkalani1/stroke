@@ -89,7 +89,7 @@ Time Metrics:
 `),t.allergies?o+=`Allergies: ${t.allergies}${t.contrastAllergy?" **CONTRAST ALLERGY**":""}
 `:t.contrastAllergy&&(o+=`Allergies: **CONTRAST ALLERGY**
 `),t.medications&&(o+=`Medications: ${t.medications}
-`);{let u=[];t.plateletCount&&u.push(`Plt ${t.plateletCount}K`),t.creatinine&&u.push(`Cr ${t.creatinine}`),t.inr&&u.push(`INR ${t.inr}`),t.ptt&&u.push(`aPTT ${t.ptt}`),t.glucose&&u.push(`Glucose ${t.glucose}`),u.length>0&&(o+=`Labs: ${u.join(", ")}
+`);{let u=[];t.plateletCount&&u.push(`Plt ${t.plateletCount}K`),t.creatinine&&u.push(`Cr ${t.creatinine}`),t.inr&&u.push(`INR ${t.inr}`),t.pt&&u.push(`PT ${t.pt}s`),t.ptt&&u.push(`aPTT ${t.ptt}`),t.glucose&&u.push(`Glucose ${t.glucose}`),u.length>0&&(o+=`Labs: ${u.join(", ")}
 `)}if(o+=`
 ACUTE COURSE:
 `,t.tnkRecommended){let u=t.weight?Xe(t.weight):null;o+=`- TNK${u?` ${u.calculatedDose} mg`:""} administered${t.tnkAdminTime?` at ${t.tnkAdminTime}`:""}
@@ -395,7 +395,7 @@ Brief HPI: ${t.symptoms||"___"}
 `}}t.collateralGrade&&(c+=`Collaterals: ${t.collateralGrade}
 `),t.ekgResults&&(c+=`EKG: ${t.ekgResults}
 `);let k=[`BP ${t.presentingBP||"___"}`];t.heartRate&&k.push(`HR ${t.heartRate}`),t.spO2&&k.push(`SpO2 ${t.spO2}%`),t.temperature&&k.push(`Temp ${t.temperature}\xB0F`),t.glucose&&k.push(`Glucose ${t.glucose}`),c+=`Vitals: ${k.join(", ")}
-`;let _=[];t.inr&&_.push(`INR ${t.inr}`),t.ptt&&_.push(`aPTT ${t.ptt}`),t.plateletCount&&_.push(`Plt ${t.plateletCount}K`),t.creatinine&&_.push(`Cr ${t.creatinine}`),_.length>0&&(c+=`Labs: ${_.join(", ")}
+`;let _=[];t.inr&&_.push(`INR ${t.inr}`),t.pt&&_.push(`PT ${t.pt}s`),t.ptt&&_.push(`aPTT ${t.ptt}`),t.plateletCount&&_.push(`Plt ${t.plateletCount}K`),t.creatinine&&_.push(`Cr ${t.creatinine}`),_.length>0&&(c+=`Labs: ${_.join(", ")}
 `),t.premorbidMRS!=null&&t.premorbidMRS!==""&&(c+=`Pre-morbid mRS: ${t.premorbidMRS}
 `),t.allergies&&(c+=`Allergies: ${t.allergies}
 `);{let x=t.wakeUpStrokeWorkflow||{};if(x.isWakeUpStroke){let g=x.dwi||{},A=x.flair||{};if(x.mriAvailable){let Z=g.positiveForLesion&&A.noMarkedHyperintensity&&x.ageEligible&&x.nihssEligible;c+=`Wake-up stroke: MRI \u2014 DWI ${g.positiveForLesion?"+":"-"}/FLAIR ${A.noMarkedHyperintensity?"-":"+"}${Z?" \u2192 WAKE-UP eligible":""}
