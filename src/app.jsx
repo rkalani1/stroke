@@ -10776,7 +10776,7 @@ Clinician Name`;
               if (!Number.isNaN(age)) {
                 setAbcd2Items(prev => (prev.age60 === (age >= 60) ? prev : { ...prev, age60: age >= 60 }));
                 setIchScoreItems(prev => (prev.age80 === (age >= 80) ? prev : { ...prev, age80: age >= 80 }));
-                setHasbledItems(prev => (prev.elderly === (age > 65) ? prev : { ...prev, elderly: age > 65 }));
+                setHasbledItems(prev => (prev.elderly === (age >= 65) ? prev : { ...prev, elderly: age >= 65 }));
                 setChads2vascItems(prev => {
                   const age75 = age >= 75;
                   const age65 = age >= 65 && age < 75;
@@ -10912,7 +10912,7 @@ Clinician Name`;
               const hasBasilar = (n.vesselOcclusion || []).some(v => /basilar/i.test(v));
               const evtNihss = parseInt(n.nihss, 10) || nihssScore || 0;
               if (n.evtRecommended && hasBasilar && evtNihss > 0 && evtNihss < 10) {
-                warnings.push({ id: 'basilar-evt-nihss', severity: 'warn', msg: `EVT for basilar occlusion with NIHSS ${evtNihss} — ATTENTION/BAOCHE trials required NIHSS ≥10 for posterior circulation EVT. Verify deficit severity supports thrombectomy benefit.` });
+                warnings.push({ id: 'basilar-evt-nihss', severity: 'error', msg: `EVT for basilar occlusion with NIHSS ${evtNihss} (<10) — ATTENTION/BAOCHE trials required NIHSS ≥10 for posterior circulation EVT eligibility. Do not proceed without confirming NIHSS ≥10.` });
               }
             }
             if (n.evtRecommended && !hasLVO && (n.vesselOcclusion || []).length === 0) {
@@ -10956,7 +10956,9 @@ Clinician Name`;
               warnings.push({ id: 'tnk-ptt', severity: 'error', msg: `TNK recommended with aPTT ${ptt}s — aPTT >40s is a relative contraindication` });
             }
             if (glucose && glucose < 50 && n.tnkRecommended) {
-              warnings.push({ id: 'tnk-glucose', severity: 'error', msg: `TNK recommended with glucose ${glucose} mg/dL — hypoglycemia can mimic stroke. Correct glucose and reassess before treating.` });
+              warnings.push({ id: 'tnk-glucose', severity: 'error', msg: `TNK recommended with glucose ${glucose} mg/dL (<50) — hypoglycemia is a contraindication to thrombolysis. Correct glucose to >100 mg/dL and reassess neurologic deficit before proceeding.` });
+            } else if (glucose && glucose >= 50 && glucose <= 60 && n.tnkRecommended) {
+              warnings.push({ id: 'tnk-glucose-borderline', severity: 'warn', msg: `TNK recommended with glucose ${glucose} mg/dL (50-60) — borderline hypoglycemia can mimic stroke symptoms. Recommend correcting to >100 mg/dL and reassessing deficit before thrombolysis.` });
             }
             if (glucose && glucose > 400 && n.tnkRecommended) {
               warnings.push({ id: 'tnk-hyperglycemia', severity: 'warn', msg: `TNK recommended with glucose ${glucose} mg/dL — severe hyperglycemia can mimic stroke and is associated with worse outcomes post-thrombolysis. Correct glucose; reassess if deficits improve.` });
@@ -11039,6 +11041,22 @@ Clinician Name`;
               warnings.push({ id: 'ticagrelor-cyp3a4', severity: 'error', msg: 'Ticagrelor + strong CYP3A4 inhibitor detected — CONTRAINDICATED per FDA labeling. Strong CYP3A4 inhibitors (ketoconazole, itraconazole, clarithromycin, ritonavir) substantially increase ticagrelor exposure and bleeding risk. Switch antiplatelet or discontinue interacting drug.' });
             }
 
+            // Prasugrel safety warnings (FDA Black Box)
+            if (/prasugrel|effient/.test(meds)) {
+              const age = parseFloat(n.age);
+              const wt = parseFloat(n.weight);
+              if (!isNaN(age) && age >= 75) {
+                warnings.push({ id: 'prasugrel-age75', severity: 'error', msg: `Prasugrel in patient age ${age} (≥75) — FDA BLACK BOX WARNING: generally not recommended due to increased fatal/intracranial bleeding risk, except in high-risk situations (diabetes, prior MI) where benefit may outweigh risk. Consider ticagrelor or clopidogrel alternative.` });
+              }
+              if (!isNaN(wt) && wt < 60) {
+                warnings.push({ id: 'prasugrel-lowweight', severity: 'warn', msg: `Prasugrel with weight ${wt}kg (<60) — FDA WARNING: increased bleeding risk. Consider maintenance dose reduction to 5mg daily (TRITON-TIMI 38).` });
+              }
+              // Prasugrel is contraindicated with prior stroke/TIA — check PMH
+              if (/prior.*(stroke|cva|tia)|h\/o.*(stroke|cva|tia)|(stroke|cva|tia).*history/.test((n.pmh || '').toLowerCase())) {
+                warnings.push({ id: 'prasugrel-prior-stroke', severity: 'error', msg: 'Prasugrel with history of prior stroke/TIA — CONTRAINDICATED per FDA labeling (TRITON-TIMI 38: net clinical harm in prior CVA/TIA subgroup). Switch to ticagrelor or clopidogrel.' });
+              }
+            }
+
             // Pregnancy + TNK warning
             if (n.tnkRecommended && n.pregnancyStroke) {
               warnings.push({ id: 'tnk-pregnancy', severity: 'warn', msg: 'TNK recommended in pregnancy — weigh bleeding risk carefully, especially if postpartum or recent cesarean/neuraxial anesthesia' });
@@ -11103,7 +11121,7 @@ Clinician Name`;
             // Post-TNK DOAC restart timing guidance
             if (n.tnkAdminTime && n.lastDOACType && ['apixaban', 'rivaroxaban', 'dabigatran', 'edoxaban'].includes(n.lastDOACType) && !(n.doacTiming || {}).doacInitiationDay) {
               const tnkNihss = parseInt(n.nihss, 10) || nihssScore || 0;
-              const restartGuidance = tnkNihss < 8 ? 'mild (NIHSS <8): day 5-7' : tnkNihss <= 15 ? 'moderate (NIHSS 8-15): day 7-10' : 'severe (NIHSS ≥16): day 10-14';
+              const restartGuidance = tnkNihss < 8 ? 'mild (NIHSS <8): day 3-5 post-TNK' : tnkNihss <= 15 ? 'moderate (NIHSS 8-15): day 5-7 post-TNK' : 'severe (NIHSS ≥16): day 6-14 post-TNK';
               warnings.push({ id: 'post-tnk-doac-restart', severity: 'warn', msg: `Post-TNK DOAC restart timing not documented — ${restartGuidance}. Repeat imaging day 2-3 to rule out symptomatic hemorrhagic transformation before restarting. Set DOAC initiation day in DOAC Timing section. (CATALYST/ELAN)` });
             }
 
@@ -15133,7 +15151,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   key={med}
                                   type="button"
                                   onClick={() => appendMedication(med)}
-                                  className="px-2 py-1 text-xs font-semibold rounded-full border border-purple-200 text-purple-700 hover:bg-purple-50"
+                                  className="px-3 py-1.5 text-xs font-semibold rounded-full border border-purple-200 text-purple-700 hover:bg-purple-50 min-h-[36px]"
                                 >
                                   + {med}
                                 </button>
@@ -15146,8 +15164,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <span className="text-sm font-medium text-amber-800 inline-flex items-center gap-1"><i aria-hidden="true" data-lucide="pill" className="w-3.5 h-3.5"></i> Anticoagulation Status</span>
                             <div className="grid grid-cols-2 gap-3 mt-2">
                               <div>
-                                <label className="block text-xs text-slate-600 mb-1">Anticoagulant Type</label>
+                                <label htmlFor="input-anticoag-type" className="block text-xs text-slate-600 mb-1">Anticoagulant Type</label>
                                 <select
+                                  id="input-anticoag-type"
                                   value={telestrokeNote.lastDOACType}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, lastDOACType: v})); }}
                                   className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500"
@@ -15164,8 +15183,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </select>
                               </div>
                               <div>
-                                <label className="block text-xs text-slate-600 mb-1">Last Dose</label>
+                                <label htmlFor="input-last-dose" className="block text-xs text-slate-600 mb-1">Last Dose</label>
                                 <input
+                                  id="input-last-dose"
                                   type="datetime-local"
                                   value={telestrokeNote.lastDOACDose}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, lastDOACDose: v})); }}
@@ -15175,7 +15195,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <button
                                     type="button"
                                     onClick={() => setTelestrokeNote(prev => ({...prev, lastDOACDose: toLocalISO(new Date())}))}
-                                    className="px-2 py-1 text-xs font-semibold rounded-full border border-amber-200 text-amber-700 hover:bg-amber-50"
+                                    className="px-3 py-1.5 text-xs font-semibold rounded-full border border-amber-200 text-amber-700 hover:bg-amber-50 min-h-[36px]"
                                   >
                                     Dose now
                                   </button>
@@ -15185,14 +15205,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       const past = new Date(Date.now() - (49 * 60 * 60 * 1000));
                                       setTelestrokeNote(prev => ({...prev, lastDOACDose: toLocalISO(past)}));
                                     }}
-                                    className="px-2 py-1 text-xs font-semibold rounded-full border border-amber-200 text-amber-700 hover:bg-amber-50"
+                                    className="px-3 py-1.5 text-xs font-semibold rounded-full border border-amber-200 text-amber-700 hover:bg-amber-50 min-h-[36px]"
                                   >
                                     &gt;48h ago
                                   </button>
                                   <button
                                     type="button"
                                     onClick={() => setTelestrokeNote(prev => ({...prev, lastDOACDose: ''}))}
-                                    className="px-2 py-1 text-xs font-semibold rounded-full border border-amber-200 text-amber-700 hover:bg-amber-50"
+                                    className="px-3 py-1.5 text-xs font-semibold rounded-full border border-amber-200 text-amber-700 hover:bg-amber-50 min-h-[36px]"
                                   >
                                     Unknown
                                   </button>
@@ -15290,8 +15310,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">Neurologic Deficits</label>
+                              <label htmlFor="input-nihss-details" className="block text-xs text-slate-600 mb-1">Neurologic Deficits</label>
                               <input
+                                id="input-nihss-details"
                                 type="text"
                                 value={telestrokeNote.nihssDetails}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, nihssDetails: v})); }}
@@ -15609,7 +15630,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   className="w-full px-2 py-1 border border-slate-200 rounded text-sm bg-slate-50 text-center font-medium" />
                               </div>
                             </div>
-                            <input type="text" value={telestrokeNote.ctpResults}
+                            <input type="text" aria-label="Additional CTP perfusion notes" value={telestrokeNote.ctpResults}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctpResults: v})); }}
                               placeholder="Additional CTP notes..."
                               className="w-full px-2 py-1 border border-slate-300 rounded text-xs" />
@@ -15687,6 +15708,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="flex flex-wrap gap-1.5">
                               {['ICA', 'M1', 'M2', 'M3', 'A1', 'A2', 'P1', 'P2', 'Basilar', 'None'].map(vessel => (
                                 <button key={vessel} type="button"
+                                  aria-pressed={(telestrokeNote.vesselOcclusion || []).includes(vessel)}
+                                  aria-label={`${vessel} vessel occlusion`}
                                   onClick={() => {
                                     setTelestrokeNote(prev => {
                                       const current = prev.vesselOcclusion || [];
@@ -15694,7 +15717,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       return {...prev, vesselOcclusion: vessel === 'None' ? ['None'] : updated.filter(v => v !== 'None')};
                                     });
                                   }}
-                                  className={`px-2 py-1 text-xs rounded-full font-medium transition-colors ${
+                                  className={`px-3 py-1.5 text-xs rounded-full font-medium transition-colors min-h-[36px] ${
                                     (telestrokeNote.vesselOcclusion || []).includes(vessel) ? 'bg-blue-600 text-white' : 'bg-white border border-blue-200 text-blue-700 hover:bg-blue-100'
                                   }`}>
                                   {vessel}
@@ -16008,8 +16031,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 space-y-2">
                                 <h5 className="text-sm font-semibold text-blue-800">Transfer Checklist</h5>
                                 <div>
-                                  <label className="block text-xs text-slate-600 mb-0.5">Receiving Facility</label>
-                                  <input type="text" value={telestrokeNote.transferReceivingFacility || ''}
+                                  <label htmlFor="input-transfer-facility" className="block text-xs text-slate-600 mb-0.5">Receiving Facility</label>
+                                  <input id="input-transfer-facility" type="text" value={telestrokeNote.transferReceivingFacility || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, transferReceivingFacility: v})); }}
                                     placeholder="e.g., Regional Medical Center"
                                     className="w-full px-2 py-1 border border-slate-300 rounded text-xs" />
@@ -16044,8 +16067,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </select>
                                   </div>
                                   <div>
-                                    <label className="block text-xs text-slate-600 mb-0.5">ETA</label>
-                                    <input type="text" value={telestrokeNote.transportEta || ''}
+                                    <label htmlFor="input-transport-eta" className="block text-xs text-slate-600 mb-0.5">ETA</label>
+                                    <input id="input-transport-eta" type="text" value={telestrokeNote.transportEta || ''}
                                       onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, transportEta: v})); }}
                                       placeholder="e.g., 45 min"
                                       className="w-full px-2 py-1 border border-slate-300 rounded text-xs" />
@@ -16519,8 +16542,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div className="space-y-3">
                             <div>
-                              <label className="block text-sm font-medium text-slate-700 mb-1">Presenting Symptoms</label>
+                              <label htmlFor="phone-input-symptoms" className="block text-sm font-medium text-slate-700 mb-1">Presenting Symptoms</label>
                               <textarea
+                                id="phone-input-symptoms"
                                 value={telestrokeNote.symptoms}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, symptoms: v})); }}
                                 placeholder="e.g., R hemiparesis, aphasia, facial droop, dysarthria"
@@ -16529,8 +16553,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-sm font-medium text-slate-700 mb-1">Relevant PMH</label>
+                              <label htmlFor="phone-input-pmh" className="block text-sm font-medium text-slate-700 mb-1">Relevant PMH</label>
                               <input
+                                id="phone-input-pmh"
                                 type="text"
                                 value={telestrokeNote.pmh}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, pmh: v})); }}
@@ -16539,8 +16564,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-sm font-medium text-slate-700 mb-1">Medications</label>
+                              <label htmlFor="phone-input-medications" className="block text-sm font-medium text-slate-700 mb-1">Medications</label>
                               <textarea
+                                id="phone-input-medications"
                                 value={telestrokeNote.medications}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, medications: v})); }}
                                 placeholder="e.g., ASA 81mg, atorvastatin 40mg, lisinopril 10mg, apixaban 5mg BID"
@@ -16556,8 +16582,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                               <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                  <label className="block text-xs text-slate-600 mb-1">Anticoagulant Type</label>
+                                  <label htmlFor="phone-input-anticoag-type" className="block text-xs text-slate-600 mb-1">Anticoagulant Type</label>
                                   <select
+                                    id="phone-input-anticoag-type"
                                     value={telestrokeNote.lastDOACType}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, lastDOACType: v})); }}
                                     className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
@@ -17210,9 +17237,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 />
                               </div>
                               <div className="flex items-center justify-between mb-1">
-                                <span className="text-xs font-medium text-slate-600">CT Results</span>
+                                <label htmlFor="phone-input-ct-results" className="text-xs font-medium text-slate-600">CT Results</label>
                               </div>
                               <textarea
+                                id="phone-input-ct-results"
                                 value={telestrokeNote.ctResults}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctResults: v})); }}
                                 placeholder="e.g., No acute ICH, early ischemic changes L MCA territory"
@@ -17355,9 +17383,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 />
                               </div>
                               <div className="flex items-center justify-between mb-1">
-                                <span className="text-xs font-medium text-slate-600">CTA Results</span>
+                                <label htmlFor="phone-input-cta-results" className="text-xs font-medium text-slate-600">CTA Results</label>
                               </div>
                               <textarea
+                                id="phone-input-cta-results"
                                 value={telestrokeNote.ctaResults}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctaResults: v})); }}
                                 placeholder="e.g., L M1 occlusion, patent ICA bilaterally, good collaterals"
@@ -18576,6 +18605,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     ))}
                                     {(telestrokeNote.sichDetected || telestrokeNote.clinicalDeterioration) && (
                                       <textarea
+                                        aria-label="Complication documentation notes"
                                         value={telestrokeNote.complicationNotes || ''}
                                         onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, complicationNotes: v})); }}
                                         placeholder="Describe complication, timing, and management taken..."
@@ -18617,8 +18647,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   ))}
                                 </div>
                                 <div className="space-y-2">
-                                  <label className="text-sm font-medium text-orange-800">tICI Score:</label>
-                                  <select value={telestrokeNote.ticiScore || ''}
+                                  <label htmlFor="input-tici-score" className="text-sm font-medium text-orange-800">tICI Score:</label>
+                                  <select id="input-tici-score" value={telestrokeNote.ticiScore || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ticiScore: v})); }}
                                     className="w-full px-3 py-2 border border-orange-300 rounded-lg text-sm">
                                     <option value="">-- Select tICI grade --</option>
@@ -20329,11 +20359,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             ) : crclVal !== null && crclVal <= 50 ? (
                                               <><strong>DOSE REDUCTION:</strong> Edoxaban <strong>30mg daily</strong> (CrCl {crclVal} mL/min{edoxWeightReduce ? `, wt ${patientWt}kg ≤60` : ''}). {!edoxWeightReduce ? 'Also reduce if wt ≤60kg or concomitant P-gp inhibitor. ' : ''}(ENGAGE AF-TIMI 48)</>
                                             ) : edoxWeightReduce ? (
-                                              <><strong>DOSE REDUCTION:</strong> Edoxaban <strong>30mg daily</strong> — weight {patientWt}kg ≤60kg requires dose reduction regardless of CrCl{crclVal !== null ? ` (CrCl ${crclVal})` : ''}. Also reduce for concomitant P-gp inhibitor. (ENGAGE AF-TIMI 48)</>
+                                              <><strong>DOSE REDUCTION:</strong> Edoxaban <strong>30mg daily</strong> — weight {patientWt}kg ≤60kg requires dose reduction regardless of CrCl{crclVal !== null ? ` (CrCl ${crclVal})` : ''}. Also reduce for concomitant P-gp inhibitor (verapamil, dronedarone, ketoconazole, erythromycin, cyclosporine). (ENGAGE AF-TIMI 48)</>
                                             ) : crclVal !== null ? (
-                                              <><strong>Standard dose: Edoxaban 60mg daily</strong> (CrCl {crclVal} mL/min). Reduce to 30mg if wt ≤60kg or concomitant P-gp inhibitor. (ENGAGE AF-TIMI 48)</>
+                                              <><strong>Standard dose: Edoxaban 60mg daily</strong> (CrCl {crclVal} mL/min). Reduce to 30mg if wt ≤60kg or concomitant P-gp inhibitor (verapamil, dronedarone, ketoconazole, erythromycin, cyclosporine). (ENGAGE AF-TIMI 48)</>
                                             ) : (
-                                              <>Edoxaban 30mg daily if CrCl 15-50 or weight ≤60kg or concomitant P-gp inhibitor. Avoid if CrCl &gt;95 (reduced efficacy, ENGAGE AF-TIMI 48).</>
+                                              <>Edoxaban 30mg daily if CrCl 15-50 or weight ≤60kg or concomitant P-gp inhibitor (verapamil, dronedarone, ketoconazole, erythromycin, cyclosporine). Avoid if CrCl &gt;95 (reduced efficacy, ENGAGE AF-TIMI 48).</>
                                             )}
                                           </div>
                                           );
@@ -20468,7 +20498,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       </label>
                                       {(telestrokeNote.hemorrhagicTransformation || {}).detected && (
                                         <div className="space-y-2 ml-6">
-                                          <select value={(telestrokeNote.hemorrhagicTransformation || {}).classification || ''}
+                                          <select aria-label="ECASS hemorrhagic transformation classification" value={(telestrokeNote.hemorrhagicTransformation || {}).classification || ''}
                                             onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, hemorrhagicTransformation: {...(prev.hemorrhagicTransformation || {}), classification: v}})); }}
                                             className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                                             <option value="">ECASS Classification</option>
@@ -20890,7 +20920,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <h4 className="font-semibold text-red-800 mb-2">ICH: Anticoagulation Resumption Decision</h4>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <div className="space-y-2">
-                                      <select value={(telestrokeNote.ichAnticoagResumption || {}).ichLocation || ''}
+                                      <select aria-label="ICH location for anticoag resumption decision" value={(telestrokeNote.ichAnticoagResumption || {}).ichLocation || ''}
                                         onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ichAnticoagResumption: {...(prev.ichAnticoagResumption || {}), ichLocation: v}})); }}
                                         className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                                         <option value="">ICH location</option>
@@ -20920,7 +20950,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       </div>
                                     </div>
                                     <div className="space-y-2">
-                                      <select value={(telestrokeNote.ichAnticoagResumption || {}).decision || ''}
+                                      <select aria-label="Anticoagulation resumption decision" value={(telestrokeNote.ichAnticoagResumption || {}).decision || ''}
                                         onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ichAnticoagResumption: {...(prev.ichAnticoagResumption || {}), decision: v}})); }}
                                         className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                                         <option value="">Decision</option>
@@ -20935,7 +20965,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, ichAnticoagResumption: {...(prev.ichAnticoagResumption || {}), laaoConsidered: c}})); }} />
                                         <span className="text-sm">LAAO evaluation considered</span>
                                       </label>
-                                      <textarea value={(telestrokeNote.ichAnticoagResumption || {}).rationale || ''}
+                                      <textarea aria-label="Anticoagulation resumption rationale" value={(telestrokeNote.ichAnticoagResumption || {}).rationale || ''}
                                         onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ichAnticoagResumption: {...(prev.ichAnticoagResumption || {}), rationale: v}})); }}
                                         className="w-full px-2 py-1 border border-slate-300 rounded text-xs" rows="2" placeholder="Rationale for decision..." />
                                       {(telestrokeNote.ichAnticoagResumption || {}).caaFeatures && (
