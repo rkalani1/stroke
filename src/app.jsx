@@ -6685,6 +6685,22 @@ Clinician Name`;
               }
             }
 
+            // ACE inhibitor angioedema risk pre-TNK
+            const medsLower = (data.telestrokeNote?.medications || '').toLowerCase();
+            if (/lisinopril|enalapril|ramipril|captopril|benazepril|fosinopril|quinapril|perindopril|trandolapril|moexipril/.test(medsLower)) {
+              alerts.push({ severity: 'warning', label: 'ACE-I + TNK', message: 'ACE inhibitor detected — 5x increased angioedema risk with thrombolysis. Prepare airway management.', field: 'medications' });
+            }
+
+            // Dual antiplatelet therapy detection
+            const antiplatelets = [];
+            if (/aspirin|asa\b|ecotrin/.test(medsLower)) antiplatelets.push('aspirin');
+            if (/clopidogrel|plavix/.test(medsLower)) antiplatelets.push('clopidogrel');
+            if (/ticagrelor|brilinta/.test(medsLower)) antiplatelets.push('ticagrelor');
+            if (/prasugrel|effient/.test(medsLower)) antiplatelets.push('prasugrel');
+            if (antiplatelets.length >= 2) {
+              alerts.push({ severity: 'warning', label: 'DAPT', message: `Dual antiplatelet (${antiplatelets.join(' + ')}) — increased hemorrhage risk with TNK. Weigh benefit vs bleed risk.`, field: 'medications' });
+            }
+
             return alerts;
           };
 
@@ -10445,6 +10461,16 @@ Clinician Name`;
               warnings.push({ id: 'dual-antithrombotic', severity: 'warn', msg: 'Patient on antiplatelet + anticoagulant — increased bleeding risk. Verify indication for combination therapy.' });
             }
 
+            // DAPT + TNK hemorrhage risk
+            if (hasDAPT && n.tnkRecommended) {
+              warnings.push({ id: 'dapt-tnk', severity: 'warn', msg: 'DAPT detected with TNK recommended — increased hemorrhage risk. Benefit usually outweighs risk for disabling stroke, but closely monitor for sICH.' });
+            }
+
+            // ACE inhibitor + TNK angioedema risk
+            if (n.tnkRecommended && /lisinopril|enalapril|ramipril|captopril|benazepril|fosinopril|quinapril|perindopril|trandolapril|moexipril/.test(meds)) {
+              warnings.push({ id: 'acei-tnk', severity: 'warn', msg: 'ACE inhibitor + TNK — 5x increased orolingual angioedema risk. Prepare: suction, nebulized epinephrine, IV dexamethasone, intubation equipment at bedside. Monitor tongue/lips q15min x 2h post-TNK.' });
+            }
+
             // Edoxaban + CrCl >95 warning
             if (n.lastDOACType === 'edoxaban') {
               const edoCrCl = calculateCrCl(n.age, n.weight, n.sex, n.creatinine);
@@ -11710,18 +11736,21 @@ Clinician Name`;
             const inrVal = parseFloat(telestrokeNote.inr);
             const pltVal = parseInt(telestrokeNote.plateletCount);
             const pttVal = parseFloat(telestrokeNote.ptt);
+            const glucVal = parseFloat(telestrokeNote.glucose);
             const warfarinWithHighINR = telestrokeNote.lastDOACType === 'warfarin' && !Number.isNaN(inrVal) && inrVal > 1.7;
             const lowPlatelets = !Number.isNaN(pltVal) && pltVal < 100;
             const elevatedAPTT = !Number.isNaN(pttVal) && pttVal > 40;
+            const lowGlucose = !Number.isNaN(glucVal) && glucVal < 50;
             const isICH = telestrokeNote.diagnosisCategory === 'ich' || telestrokeNote.diagnosisCategory === 'sah';
             const recentDOAC = telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== 'warfarin' && telestrokeNote.lastDOACType !== 'none';
             const hasIE = !!telestrokeNote.infectiveEndocarditis;
-            const shouldBlock = warfarinWithHighINR || lowPlatelets || elevatedAPTT || isICH || recentDOAC || hasIE;
+            const shouldBlock = warfarinWithHighINR || lowPlatelets || elevatedAPTT || lowGlucose || isICH || recentDOAC || hasIE;
             if (shouldBlock) {
               const reasons = [];
               if (warfarinWithHighINR) reasons.push(`Warfarin with INR ${inrVal.toFixed(1)} (>1.7)`);
               if (lowPlatelets) reasons.push(`Platelets ${pltVal}K (<100K)`);
               if (elevatedAPTT) reasons.push(`aPTT ${pttVal}s (>40s)`);
+              if (lowGlucose) reasons.push(`Glucose ${glucVal} mg/dL (<50) — correct and update to unblock`);
               if (isICH) reasons.push(telestrokeNote.diagnosisCategory === 'sah' ? 'SAH diagnosis' : 'ICH diagnosis');
               if (hasIE) reasons.push('Infective endocarditis (Class III: TNK contraindicated)');
               if (recentDOAC) {
@@ -11736,7 +11765,7 @@ Clinician Name`;
             } else if (telestrokeNote.tnkAutoBlocked) {
               setTelestrokeNote(prev => ({ ...prev, tnkAutoBlocked: false, tnkAutoBlockReason: '' }));
             }
-          }, [telestrokeNote.lastDOACType, telestrokeNote.inr, telestrokeNote.plateletCount, telestrokeNote.ptt, telestrokeNote.diagnosisCategory, telestrokeNote.infectiveEndocarditis, telestrokeNote.tnkAutoBlocked]);
+          }, [telestrokeNote.lastDOACType, telestrokeNote.inr, telestrokeNote.plateletCount, telestrokeNote.ptt, telestrokeNote.glucose, telestrokeNote.diagnosisCategory, telestrokeNote.infectiveEndocarditis, telestrokeNote.tnkAutoBlocked]);
 
           useEffect(() => {
             const prev = decisionStateRef.current;
@@ -12769,11 +12798,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           return (
             <div className="relative">
               {protocolModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-label={protocolModal.title}>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="protocol-modal-title">
                   <div className="w-full max-w-lg bg-white rounded-xl shadow-xl border border-slate-200">
                     <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200">
                       <div>
-                        <h3 className="text-lg font-semibold text-slate-900">{protocolModal.title}</h3>
+                        <h3 id="protocol-modal-title" className="text-lg font-semibold text-slate-900">{protocolModal.title}</h3>
                         <p className="text-xs text-slate-500">{protocolModal.classOfRec}</p>
                       </div>
                       <button
@@ -17069,9 +17098,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   { id: 'lecanemab', label: 'Lecanemab or other Alzheimer medications', note: 'ARIA risk' },
                                   { id: 'extensiveHypoattenuation', label: 'Extensive clear hypoattenuation', note: 're-evaluate onset/benefit; not automatic exclusion' },
                                   { id: 'recentDOAC', label: 'Recent DOAC use', note: '<48h; consider drug level/reversal' },
-                                  { id: 'lowGlucose', label: 'Blood glucose <50 mg/dL', note: 'correct and reassess deficits' },
+                                  { id: 'lowGlucose', label: 'Blood glucose <50 mg/dL', note: 'correct and reassess deficits — auto-blocks TNK until corrected' },
                                   { id: 'highGlucose', label: 'Blood glucose >400 mg/dL', note: 'correct and reassess deficits' },
                                   { id: 'elevatedAPTT', label: 'aPTT >40 seconds', note: 'coagulopathy — confirm anticoagulant status' },
+                                  { id: 'dualAntiplatelet', label: 'Dual antiplatelet therapy (DAPT)', note: 'increased hemorrhage risk with thrombolysis' },
+                                  { id: 'aceInhibitor', label: 'ACE inhibitor use', note: '5x angioedema risk with TNK — prepare airway' },
                                 { id: 'severeRenalFailure', label: 'Severe renal failure (Cr >3 or CrCl <25)', note: 'increased bleeding risk' }
                               ];
 
@@ -17130,6 +17161,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }
                               if (/enoxaparin|lovenox|heparin/.test(medsText)) {
                                 autoDetected.recentHeparin = true;
+                              }
+                              // ACE inhibitor angioedema risk
+                              if (/lisinopril|enalapril|ramipril|captopril|benazepril|fosinopril|quinapril|perindopril|trandolapril|moexipril/.test(medsText)) {
+                                autoDetected.aceInhibitor = true;
+                              }
+                              // Dual antiplatelet therapy
+                              const daptAgents = [];
+                              if (/aspirin|asa\b|ecotrin/.test(medsText)) daptAgents.push('aspirin');
+                              if (/clopidogrel|plavix/.test(medsText)) daptAgents.push('clopidogrel');
+                              if (/ticagrelor|brilinta/.test(medsText)) daptAgents.push('ticagrelor');
+                              if (/prasugrel|effient/.test(medsText)) daptAgents.push('prasugrel');
+                              if (daptAgents.length >= 2) {
+                                autoDetected.dualAntiplatelet = true;
                               }
 
                               const absoluteChecked = absoluteContraindications.filter(c => checklist[c.id] || autoDetected[c.id]);
@@ -29281,9 +29325,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             {calcDrawerOpen && (
               <>
                 <div className="fixed inset-0 z-50 bg-black/30" onClick={() => setCalcDrawerOpen(false)} role="presentation" aria-hidden="true"></div>
-                <div className="fixed inset-x-0 bottom-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-50 w-full sm:w-[32rem] sm:max-h-[85vh] bg-white sm:rounded-2xl rounded-t-2xl shadow-2xl overflow-y-auto" role="dialog" aria-modal="true" aria-label="Clinical Calculators">
+                <div className="fixed inset-x-0 bottom-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-50 w-full sm:w-[32rem] sm:max-h-[85vh] bg-white sm:rounded-2xl rounded-t-2xl shadow-2xl overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="calc-drawer-title">
                   <div className="sticky top-0 bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between z-10">
-                    <h2 className="text-base font-semibold text-slate-900 flex items-center gap-2">
+                    <h2 id="calc-drawer-title" className="text-base font-semibold text-slate-900 flex items-center gap-2">
                       <i data-lucide="calculator" className="w-4 h-4 text-blue-600"></i>
                       Calculators
                       <kbd className="text-xs text-slate-500 font-mono ml-2">Ctrl+K</kbd>
