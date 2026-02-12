@@ -16524,7 +16524,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           }
                                         }}
                                       >
-                                        <span className={patientData[item.id] === option ? 'text-blue-200' : 'text-slate-400'}>[{optionIndex}]</span> {option}
+                                        <span className={patientData[item.id] === option ? 'text-white/70' : 'text-slate-400'}>[{optionIndex}]</span> {option}
                                       </button>
                                     ))}
                                   </div>
@@ -17424,11 +17424,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         } else if (newCategory === 'mimic') {
                                           newDiagnosis = 'Stroke mimic';
                                         }
-                                        setTelestrokeNote({
-                                          ...telestrokeNote,
+                                        setTelestrokeNote(prev => ({
+                                          ...prev,
                                           diagnosisCategory: newCategory,
                                           diagnosis: newDiagnosis
-                                        });
+                                        }));
                                       }}
                                       className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border-2 ${
                                         isSelected
@@ -18383,7 +18383,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <input
                                       type="datetime-local"
                                       value={telestrokeNote.dtnEdArrival || ''}
-                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnEdArrival: e.target.value})}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, dtnEdArrival: v})); }}
                                       className="w-full px-2 py-1.5 border border-slate-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-purple-500"
                                     />
                                   </div>
@@ -18431,7 +18431,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <input
                                       type="datetime-local"
                                       value={telestrokeNote.dtnCtStarted || ''}
-                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnCtStarted: e.target.value})}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, dtnCtStarted: v})); }}
                                       className="w-full px-2 py-1.5 border border-slate-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-purple-500"
                                     />
                                   </div>
@@ -18455,7 +18455,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <input
                                       type="datetime-local"
                                       value={telestrokeNote.dtnCtRead || ''}
-                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnCtRead: e.target.value})}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, dtnCtRead: v})); }}
                                       className="w-full px-2 py-1.5 border border-slate-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-purple-500"
                                     />
                                   </div>
@@ -18479,7 +18479,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <input
                                       type="datetime-local"
                                       value={telestrokeNote.dtnTnkOrdered || ''}
-                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: e.target.value})}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, dtnTnkOrdered: v})); }}
                                       className="w-full px-2 py-1.5 border border-slate-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-purple-500"
                                     />
                                   </div>
@@ -18503,7 +18503,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <input
                                       type="datetime-local"
                                       value={telestrokeNote.dtnTnkAdministered || ''}
-                                      onChange={(e) => setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: e.target.value})}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, dtnTnkAdministered: v})); }}
                                       className="w-full px-2 py-1.5 border border-emerald-300 rounded text-base sm:text-sm focus:ring-2 focus:ring-green-500"
                                     />
                                   </div>
@@ -26120,7 +26120,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${ichScoreItems.gcs === o.v ? 'bg-red-700 text-white border-red-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
                               onClick={() => setIchScoreItems({...ichScoreItems, gcs: o.v})}
                             >
-                              {o.l} <span className={ichScoreItems.gcs === o.v ? 'text-red-200' : 'text-slate-400'}>({o.p})</span>
+                              {o.l} <span className={ichScoreItems.gcs === o.v ? 'text-white/70' : 'text-slate-400'}>({o.p})</span>
                             </button>
                           ))}
                           <hr className="my-3" />
@@ -26542,7 +26542,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors mb-1 ${abcd2Items.duration === o.v ? 'bg-orange-600 text-white border-orange-600 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
                               onClick={() => setAbcd2Items({...abcd2Items, duration: o.v})}
                             >
-                              {o.l} <span className={abcd2Items.duration === o.v ? 'text-orange-200' : 'text-slate-400'}>({o.p})</span>
+                              {o.l} <span className={abcd2Items.duration === o.v ? 'text-white/70' : 'text-slate-400'}>({o.p})</span>
                             </button>
                           ))}
                           <hr className="my-3" />
@@ -27469,9 +27469,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <button key={region.id} type="button"
                                 className={`flex flex-col items-center p-2 rounded-lg border-2 transition-colors text-center ${isAffected ? 'bg-red-600 text-white border-red-600' : 'bg-white border-slate-200 hover:bg-blue-50 hover:border-blue-300'}`}
                                 onClick={() => {
+                                  const rid = region.id, toggled = !isAffected;
+                                  setTelestrokeNote(prev => {
+                                    const newRegions = {...(prev.aspectsRegions || {}), [rid]: toggled};
+                                    return {...prev, aspectsRegions: newRegions};
+                                  });
                                   const newRegions = {...(telestrokeNote.aspectsRegions || {}), [region.id]: !isAffected};
                                   const score = 10 - Object.values(newRegions).filter(Boolean).length;
-                                  setTelestrokeNote({...telestrokeNote, aspectsRegions: newRegions});
                                   if (typeof setAspectsScore === 'function') setAspectsScore(score);
                                   // Sync to calculator drawer state (array format: checked=true means normal)
                                   setAspectsRegionState(prev => prev.map(r => r.id === region.id ? {...r, checked: isAffected} : r));
@@ -27479,7 +27483,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 title={region.desc}
                               >
                                 <span className="font-bold text-sm">{region.label}</span>
-                                <span className={`text-[10px] ${isAffected ? 'text-red-200' : 'text-slate-400'}`}>{region.desc}</span>
+                                <span className={`text-[10px] ${isAffected ? 'text-white/70' : 'text-slate-400'}`}>{region.desc}</span>
                               </button>
                             );
                           })}
@@ -27531,10 +27535,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             return (
                               <button key={region.id} type="button"
                                 className={`flex flex-col items-center p-2 rounded-lg border-2 transition-colors ${isAffected ? 'bg-red-600 text-white border-red-600' : 'bg-white border-slate-200 hover:bg-blue-50'}`}
-                                onClick={() => setTelestrokeNote({...telestrokeNote, pcAspectsRegions: {...(telestrokeNote.pcAspectsRegions || {}), [region.id]: !isAffected}})}
+                                onClick={() => { const rid = region.id, toggled = !isAffected; setTelestrokeNote(prev => ({...prev, pcAspectsRegions: {...(prev.pcAspectsRegions || {}), [rid]: toggled}})); }}
                               >
                                 <span className="font-bold text-xs">{region.label}</span>
-                                <span className={`text-[10px] ${isAffected ? 'text-red-200' : 'text-slate-400'}`}>{region.pts}pt{region.pts > 1 ? 's' : ''}</span>
+                                <span className={`text-[10px] ${isAffected ? 'text-white/70' : 'text-slate-400'}`}>{region.pts}pt{region.pts > 1 ? 's' : ''}</span>
                               </button>
                             );
                           })}
