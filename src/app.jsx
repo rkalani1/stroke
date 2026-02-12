@@ -1049,6 +1049,47 @@ Clinician Name`;
             sahNeurosurgeryConsulted: false,
             sahSeizureProphylaxis: false,
             fisherGrade: '',
+            sahAneurysmLocation: '',
+            sahAneurysmSize: '',
+            sahSecuringMethod: '',
+            sahVasospasmMonitoring: {
+              tcdOrdered: false,
+              neuroChecksQ1h: false,
+              sodiumMonitoring: false,
+              dciSuspected: false,
+              inducedHypertension: false,
+              notes: ''
+            },
+            // ICH surgical assessment
+            ichSurgicalCriteria: {
+              cerebellarGt15mL: false,
+              hydrocephalus: false,
+              midlineShift: false,
+              clinicalDeterioration: false,
+              surgeryDiscussed: false,
+              surgeryDecision: ''
+            },
+            // Stroke territory & phenotype
+            strokeTerritory: '',
+            strokePhenotype: '',
+            // Family communication
+            familyCommunication: {
+              discussed: false,
+              withWhom: '',
+              topicsDiscussed: '',
+              time: ''
+            },
+            // Symptom trajectory
+            symptomTrajectory: '',
+            symptomOnsetNIHSS: '',
+            // Post-TNK monitoring
+            postTNKMonitoring: {
+              neuroChecksQ15min: false,
+              bpChecksQ15min: false,
+              bleedingWatch: false,
+              repeatImagingOrdered: false,
+              cardiacMonitoring: false
+            },
             // ASPECTS regions
             aspectsRegions: { C: false, L: false, IC: false, I: false, M1: false, M2: false, M3: false, M4: false, M5: false, M6: false },
             pcAspectsRegions: { pons: false, midbrain: false, cerebL: false, cerebR: false, pcaL: false, pcaR: false, thalL: false, thalR: false },
@@ -7692,6 +7733,9 @@ Clinician Name`;
               'wakeUpStrokeWorkflow', 'recommendationsText', 'consentKit',
               // SAH/CVT/TIA pathway fields
               'sahGrade', 'sahGradeScale', 'sahBPManaged', 'sahNimodipine', 'sahEVDPlaced', 'sahAneurysmSecured', 'sahNeurosurgeryConsulted', 'sahSeizureProphylaxis', 'fisherGrade',
+              'sahAneurysmLocation', 'sahAneurysmSize', 'sahSecuringMethod', 'sahVasospasmMonitoring',
+              'ichSurgicalCriteria', 'strokeTerritory', 'strokePhenotype',
+              'familyCommunication', 'symptomTrajectory', 'symptomOnsetNIHSS', 'postTNKMonitoring',
               'aspectsRegions', 'pcAspectsRegions', 'ticiScore',
               'cvtAnticoagStarted', 'cvtAnticoagType', 'cvtIcpManaged', 'cvtSeizureManaged', 'cvtHematologyConsulted',
               'tiaWorkup', 'tiaWorkupReviewed',
@@ -8578,6 +8622,18 @@ Clinician Name`;
                 if (telestrokeNote.sahAneurysmSecured) note += `- Aneurysm: secured\n`;
                 if (telestrokeNote.sahNeurosurgeryConsulted) note += `- Neurosurgery: consulted\n`;
                 if (telestrokeNote.sahSeizureProphylaxis) note += `- Seizure prophylaxis: initiated\n`;
+                if (telestrokeNote.sahAneurysmLocation) note += `- Aneurysm location: ${telestrokeNote.sahAneurysmLocation}\n`;
+                if (telestrokeNote.sahAneurysmSize) note += `- Aneurysm size: ${telestrokeNote.sahAneurysmSize} mm\n`;
+                if (telestrokeNote.sahSecuringMethod) note += `- Securing method: ${telestrokeNote.sahSecuringMethod}\n`;
+                const vmTx = telestrokeNote.sahVasospasmMonitoring || {};
+                const vmTxItems = [];
+                if (vmTx.tcdOrdered) vmTxItems.push('TCD ordered');
+                if (vmTx.neuroChecksQ1h) vmTxItems.push('neuro checks q1h');
+                if (vmTx.sodiumMonitoring) vmTxItems.push('sodium monitoring');
+                if (vmTx.dciSuspected) vmTxItems.push('DCI suspected');
+                if (vmTx.inducedHypertension) vmTxItems.push('induced hypertension initiated');
+                if (vmTxItems.length) note += `- Vasospasm/DCI monitoring: ${vmTxItems.join(', ')}\n`;
+                if (vmTx.notes) note += `- DCI notes: ${vmTx.notes}\n`;
               }
               // CVT-specific data
               if (telestrokeNote.diagnosisCategory === 'cvt') {
@@ -10245,6 +10301,11 @@ Clinician Name`;
               if (telestrokeNote.sahAneurysmSecured) sahNote += `- Aneurysm securing plan documented\n`;
               if (telestrokeNote.sahEVDPlaced) sahNote += `- EVD placed\n`;
               if (telestrokeNote.sahSeizureProphylaxis) sahNote += `- Seizure prophylaxis ordered\n`;
+              if (telestrokeNote.sahAneurysmLocation) sahNote += `- Aneurysm: ${telestrokeNote.sahAneurysmLocation}${telestrokeNote.sahAneurysmSize ? `, ${telestrokeNote.sahAneurysmSize} mm` : ''}\n`;
+              if (telestrokeNote.sahSecuringMethod) sahNote += `- Securing: ${telestrokeNote.sahSecuringMethod}\n`;
+              const vmDc = telestrokeNote.sahVasospasmMonitoring || {};
+              if (vmDc.dciSuspected) sahNote += `- DCI suspected during hospitalization\n`;
+              if (vmDc.inducedHypertension) sahNote += `- Induced hypertension used for DCI rescue\n`;
               if (sahNote !== '\nSAH Management:\n') note += sahNote;
             }
 
@@ -15865,6 +15926,84 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </select>
                             </div>
 
+                            {/* Stroke Territory & Phenotype */}
+                            {(telestrokeNote.diagnosisCategory === 'ischemic' || telestrokeNote.diagnosisCategory === 'tia') && (
+                              <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                  <label htmlFor="input-stroke-territory" className="block text-xs text-slate-600 mb-1">Vascular Territory</label>
+                                  <select id="input-stroke-territory" value={telestrokeNote.strokeTerritory || ''}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, strokeTerritory: v})); }}
+                                    className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500">
+                                    <option value="">-- Territory --</option>
+                                    <option value="MCA">MCA (middle cerebral artery)</option>
+                                    <option value="ACA">ACA (anterior cerebral artery)</option>
+                                    <option value="PCA">PCA (posterior cerebral artery)</option>
+                                    <option value="basilar">Basilar artery</option>
+                                    <option value="vertebral">Vertebral artery</option>
+                                    <option value="cerebellar">Cerebellar (PICA/AICA/SCA)</option>
+                                    <option value="lacunar">Lacunar / perforator</option>
+                                    <option value="watershed">Watershed / border zone</option>
+                                    <option value="multi">Multi-territory</option>
+                                  </select>
+                                </div>
+                                <div>
+                                  <label htmlFor="input-stroke-phenotype" className="block text-xs text-slate-600 mb-1">Stroke Phenotype</label>
+                                  <select id="input-stroke-phenotype" value={telestrokeNote.strokePhenotype || ''}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, strokePhenotype: v})); }}
+                                    className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500">
+                                    <option value="">-- Phenotype --</option>
+                                    <option value="cortical-lvo">Cortical — large vessel occlusion</option>
+                                    <option value="cortical-embolic">Cortical — embolic pattern</option>
+                                    <option value="lacunar">Lacunar / small vessel</option>
+                                    <option value="posterior">Posterior circulation</option>
+                                    <option value="dissection">Arterial dissection</option>
+                                    <option value="watershed">Hemodynamic / watershed</option>
+                                    <option value="cardioembolic">Cardioembolic</option>
+                                  </select>
+                                </div>
+                              </div>
+                            )}
+                            {['basilar', 'vertebral', 'cerebellar'].includes(telestrokeNote.strokeTerritory) && (
+                              <div className="bg-blue-50 border border-blue-300 rounded-lg p-2 text-xs text-blue-800">
+                                <strong>Posterior circulation:</strong> Consider pc-ASPECTS (if available), extended EVT window for basilar occlusion (BAOCHE/ATTENTION: up to 24h), and higher index of suspicion for missed diagnosis. Ataxia, vertigo, diplopia, and dysarthria without hemiparesis may be overlooked.
+                              </div>
+                            )}
+
+                            {/* Symptom Trajectory */}
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <label htmlFor="input-symptom-trajectory" className="block text-xs text-slate-600 mb-1">Symptom Trajectory</label>
+                                <select id="input-symptom-trajectory" value={telestrokeNote.symptomTrajectory || ''}
+                                  onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, symptomTrajectory: v})); }}
+                                  className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500">
+                                  <option value="">-- Trajectory --</option>
+                                  <option value="stable">Stable since onset</option>
+                                  <option value="improving">Improving</option>
+                                  <option value="fluctuating">Fluctuating</option>
+                                  <option value="worsening">Worsening</option>
+                                  <option value="resolved">Completely resolved</option>
+                                </select>
+                              </div>
+                              <div>
+                                <label htmlFor="input-onset-nihss" className="block text-xs text-slate-600 mb-1">Estimated Onset NIHSS</label>
+                                <input id="input-onset-nihss" type="number" min="0" max="42"
+                                  value={telestrokeNote.symptomOnsetNIHSS || ''}
+                                  onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, symptomOnsetNIHSS: v})); }}
+                                  placeholder="If different from current"
+                                  className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500" />
+                              </div>
+                            </div>
+                            {telestrokeNote.symptomTrajectory === 'worsening' && (
+                              <div className="bg-red-50 border border-red-300 rounded-lg p-2 text-xs text-red-800">
+                                <strong>Worsening symptoms:</strong> Consider repeat imaging to rule out hemorrhagic transformation, edema, or new infarction. If post-tPA/TNK, assess for sICH. If LVO, reassess EVT candidacy.
+                              </div>
+                            )}
+                            {telestrokeNote.symptomTrajectory === 'resolved' && telestrokeNote.diagnosisCategory === 'ischemic' && (
+                              <div className="bg-amber-50 border border-amber-300 rounded-lg p-2 text-xs text-amber-800">
+                                <strong>Resolved symptoms with ischemic diagnosis:</strong> Consider TIA vs minor stroke. If DWI positive, this is a completed stroke despite resolution. ABCD2 score may help risk-stratify. Dual antiplatelet (DAPT) x21 days if minor stroke (NIHSS &le;3) or high-risk TIA.
+                              </div>
+                            )}
+
                             {telestrokeNote.diagnosisCategory === 'ischemic' && (
                             <div className="grid grid-cols-2 gap-3">
                               <label className="flex items-center gap-2 p-2 bg-emerald-50 border border-emerald-200 rounded-lg cursor-pointer">
@@ -15963,6 +16102,48 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 <div className="text-xs text-red-700 bg-red-100 rounded p-1.5">
                                   TNK is contraindicated. Targets: SBP &lt;140 (Class IIa, INTERACT2; avoid &lt;130), reverse anticoagulation if applicable, repeat CT in 6h, ICU admission.
+                                </div>
+
+                                {/* ICH Surgical Decision Triggers */}
+                                <div className="mt-3 bg-red-100 border border-red-300 rounded-lg p-3">
+                                  <div className="text-sm font-semibold text-red-800 mb-2">Surgical Assessment</div>
+                                  <div className="space-y-1.5">
+                                    {[
+                                      { key: 'cerebellarGt15mL', label: 'Cerebellar ICH >15 mL or >3 cm', detail: 'Class I indication for surgical evacuation if deteriorating' },
+                                      { key: 'hydrocephalus', label: 'Obstructive hydrocephalus', detail: 'EVD placement indicated' },
+                                      { key: 'midlineShift', label: 'Midline shift / herniation risk', detail: 'Consider decompressive craniectomy or evacuation' },
+                                      { key: 'clinicalDeterioration', label: 'Clinical deterioration', detail: 'GCS drop >=2 points or pupil asymmetry — urgent neurosurgery' },
+                                      { key: 'surgeryDiscussed', label: 'Surgery discussed with neurosurgery', detail: 'Document time and decision' }
+                                    ].map(item => (
+                                      <label key={item.key} className="flex items-start gap-2 cursor-pointer">
+                                        <input type="checkbox"
+                                          checked={!!(telestrokeNote.ichSurgicalCriteria || {})[item.key]}
+                                          onChange={(e) => { const k = item.key, c = e.target.checked; setTelestrokeNote(prev => ({...prev, ichSurgicalCriteria: {...(prev.ichSurgicalCriteria || {}), [k]: c}})); }}
+                                          className="mt-0.5 w-4 h-4 text-red-600" />
+                                        <div>
+                                          <span className="text-sm font-medium text-slate-800">{item.label}</span>
+                                          <span className="block text-xs text-slate-500">{item.detail}</span>
+                                        </div>
+                                      </label>
+                                    ))}
+                                    <select value={(telestrokeNote.ichSurgicalCriteria || {}).surgeryDecision || ''}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ichSurgicalCriteria: {...(prev.ichSurgicalCriteria || {}), surgeryDecision: v}})); }}
+                                      aria-label="Surgical decision"
+                                      className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm mt-1">
+                                      <option value="">-- Surgical decision --</option>
+                                      <option value="evacuate">Surgical evacuation planned</option>
+                                      <option value="evd">EVD placement only</option>
+                                      <option value="mie">Minimally invasive evacuation (MIE)</option>
+                                      <option value="observe">Observe with repeat imaging</option>
+                                      <option value="comfort">Comfort measures — goals-of-care discussion</option>
+                                      <option value="not-candidate">Not a surgical candidate</option>
+                                    </select>
+                                  </div>
+                                  {((telestrokeNote.ichSurgicalCriteria || {}).cerebellarGt15mL || (telestrokeNote.ichSurgicalCriteria || {}).clinicalDeterioration) && !(telestrokeNote.ichSurgicalCriteria || {}).surgeryDiscussed && (
+                                    <div className="mt-2 bg-red-200 border border-red-500 rounded p-2 text-xs text-red-900 font-bold">
+                                      URGENT: Surgical criteria met — neurosurgery must be contacted immediately.
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             )}
@@ -19376,6 +19557,99 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   ))}
                                 </div>
                               </div>
+
+                              {/* Aneurysm Characteristics */}
+                              <div className="bg-purple-50 rounded-lg p-3">
+                                <div className="text-sm font-semibold text-purple-800 mb-2">Aneurysm Characteristics</div>
+                                <div className="grid grid-cols-3 gap-2">
+                                  <div>
+                                    <label htmlFor="input-sah-aneurysm-loc" className="block text-xs text-slate-600 mb-1">Location</label>
+                                    <select id="input-sah-aneurysm-loc" value={telestrokeNote.sahAneurysmLocation || ''}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, sahAneurysmLocation: v})); }}
+                                      className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm">
+                                      <option value="">-- Location --</option>
+                                      <option value="AComm">AComm (anterior communicating)</option>
+                                      <option value="PComm">PComm (posterior communicating)</option>
+                                      <option value="MCA">MCA bifurcation</option>
+                                      <option value="ICA">ICA (internal carotid)</option>
+                                      <option value="basilar-tip">Basilar tip</option>
+                                      <option value="PICA">PICA</option>
+                                      <option value="SCA">SCA</option>
+                                      <option value="pericallosal">Pericallosal</option>
+                                      <option value="ophthalmic">Ophthalmic</option>
+                                      <option value="other">Other</option>
+                                      <option value="unknown">Not yet identified</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label htmlFor="input-sah-aneurysm-size" className="block text-xs text-slate-600 mb-1">Size (mm)</label>
+                                    <input id="input-sah-aneurysm-size" type="number" min="0" step="0.5"
+                                      value={telestrokeNote.sahAneurysmSize || ''}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, sahAneurysmSize: v})); }}
+                                      placeholder="mm"
+                                      className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm" />
+                                  </div>
+                                  <div>
+                                    <label htmlFor="input-sah-securing" className="block text-xs text-slate-600 mb-1">Securing Plan</label>
+                                    <select id="input-sah-securing" value={telestrokeNote.sahSecuringMethod || ''}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, sahSecuringMethod: v})); }}
+                                      className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm">
+                                      <option value="">-- Method --</option>
+                                      <option value="coiling">Endovascular coiling</option>
+                                      <option value="clipping">Surgical clipping</option>
+                                      <option value="flow-diverter">Flow diverter</option>
+                                      <option value="hybrid">Hybrid approach</option>
+                                      <option value="conservative">Conservative (not amenable)</option>
+                                      <option value="pending">Pending neurosurgery/IR decision</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                {telestrokeNote.sahAneurysmLocation && ['basilar-tip', 'PICA', 'SCA'].includes(telestrokeNote.sahAneurysmLocation) && (
+                                  <div className="mt-2 bg-red-50 border border-red-300 rounded p-2 text-xs text-red-800">
+                                    <strong>Posterior circulation aneurysm:</strong> Higher rebleeding risk pre-securing. Prioritize early securing within 24h. Monitor closely for brainstem compression.
+                                  </div>
+                                )}
+                                {parseFloat(telestrokeNote.sahAneurysmSize) >= 25 && (
+                                  <div className="mt-2 bg-amber-50 border border-amber-300 rounded p-2 text-xs text-amber-800">
+                                    <strong>Giant aneurysm ({telestrokeNote.sahAneurysmSize} mm):</strong> Higher procedural complexity. Consider flow diverter or hybrid approach. Multidisciplinary planning recommended.
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Vasospasm / DCI Monitoring Protocol */}
+                              <div className="bg-amber-50 rounded-lg p-3">
+                                <div className="text-sm font-semibold text-amber-800 mb-2">Vasospasm / DCI Monitoring (Days 4-14)</div>
+                                <div className="space-y-2">
+                                  {[
+                                    { key: 'tcdOrdered', label: 'TCD ultrasound ordered/scheduled', detail: 'Daily TCD days 3-14; MCA velocity >120 cm/s concerning, >200 cm/s = severe vasospasm' },
+                                    { key: 'neuroChecksQ1h', label: 'Neuro checks q1h ordered', detail: 'New deficit, confusion, or decreased consciousness may signal DCI' },
+                                    { key: 'sodiumMonitoring', label: 'Sodium monitoring (q6-8h)', detail: 'SIADH vs cerebral salt wasting — both cause hyponatremia; treatment differs' },
+                                    { key: 'dciSuspected', label: 'DCI suspected', detail: 'New focal deficit or decreased consciousness not explained by hydrocephalus, rebleeding, or metabolic cause' },
+                                    { key: 'inducedHypertension', label: 'Induced hypertension initiated', detail: 'SBP 160-200 with phenylephrine/norepinephrine for symptomatic DCI after aneurysm secured' }
+                                  ].map(item => (
+                                    <label key={item.key} className="flex items-start gap-2 cursor-pointer">
+                                      <input type="checkbox"
+                                        checked={!!(telestrokeNote.sahVasospasmMonitoring || {})[item.key]}
+                                        onChange={(e) => { const k = item.key, c = e.target.checked; setTelestrokeNote(prev => ({...prev, sahVasospasmMonitoring: {...(prev.sahVasospasmMonitoring || {}), [k]: c}})); }}
+                                        className="mt-0.5 rounded border-amber-300 text-amber-600" />
+                                      <div>
+                                        <span className="text-sm font-medium text-slate-800">{item.label}</span>
+                                        <span className="block text-xs text-slate-500">{item.detail}</span>
+                                      </div>
+                                    </label>
+                                  ))}
+                                  <input type="text" aria-label="Vasospasm monitoring notes"
+                                    value={(telestrokeNote.sahVasospasmMonitoring || {}).notes || ''}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, sahVasospasmMonitoring: {...(prev.sahVasospasmMonitoring || {}), notes: v}})); }}
+                                    placeholder="Additional vasospasm/DCI notes..."
+                                    className="w-full px-2 py-1 border border-slate-300 rounded text-xs mt-1" />
+                                </div>
+                                {!!(telestrokeNote.sahVasospasmMonitoring || {}).dciSuspected && !telestrokeNote.sahAneurysmSecured && (
+                                  <div className="mt-2 bg-red-100 border border-red-400 rounded p-2 text-xs text-red-900 font-medium">
+                                    Caution: Induced hypertension for DCI is contraindicated until aneurysm is secured (rebleeding risk).
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </div>
                         )}
@@ -22249,6 +22523,100 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         )}
 
+                        {/* Post-TNK Monitoring Protocol */}
+                        {telestrokeNote.tnkRecommended && telestrokeNote.diagnosisCategory === 'ischemic' && (
+                          <div className="bg-white border-2 border-emerald-300 rounded-xl p-4 shadow-md">
+                            <h3 className="text-md font-bold text-emerald-900 mb-2 flex items-center gap-2">
+                              <i aria-hidden="true" data-lucide="activity" className="w-4 h-4"></i>
+                              Post-Thrombolytic Monitoring Protocol
+                            </h3>
+                            <div className="space-y-2">
+                              {[
+                                { key: 'neuroChecksQ15min', label: 'Neuro checks q15min x 2h, then q30min x 6h, then q1h x 16h', detail: 'Document NIHSS at 2h and 24h post-TNK' },
+                                { key: 'bpChecksQ15min', label: 'BP checks q15min x 2h (target <180/105)', detail: 'Nicardipine or labetalol IV if exceeded' },
+                                { key: 'bleedingWatch', label: 'Bleeding precautions initiated', detail: 'No arterial punctures, NG tubes, or Foley for 24h if possible. Hold anticoag/antiplatelet 24h.' },
+                                { key: 'repeatImagingOrdered', label: 'Repeat imaging ordered (CT at 24h)', detail: 'Before starting anticoagulation or antiplatelet therapy' },
+                                { key: 'cardiacMonitoring', label: 'Continuous cardiac monitoring', detail: 'Assess for reperfusion arrhythmias, troponin at baseline and 6h' }
+                              ].map(item => (
+                                <label key={item.key} className="flex items-start gap-2 cursor-pointer">
+                                  <input type="checkbox"
+                                    checked={!!(telestrokeNote.postTNKMonitoring || {})[item.key]}
+                                    onChange={(e) => { const k = item.key, c = e.target.checked; setTelestrokeNote(prev => ({...prev, postTNKMonitoring: {...(prev.postTNKMonitoring || {}), [k]: c}})); }}
+                                    className="mt-0.5 w-4 h-4 text-emerald-600" />
+                                  <div>
+                                    <span className="text-sm font-medium text-slate-800">{item.label}</span>
+                                    <span className="block text-xs text-slate-500">{item.detail}</span>
+                                  </div>
+                                </label>
+                              ))}
+                            </div>
+                            {/* sICH Risk Estimation */}
+                            {(() => {
+                              let sichRisk = 0;
+                              const age = parseInt(telestrokeNote.age, 10);
+                              const nihss = parseInt(telestrokeNote.nihss || nihssScore, 10);
+                              const glucose = parseFloat(telestrokeNote.glucose);
+                              if (age >= 80) sichRisk++;
+                              if (nihss >= 20) sichRisk++;
+                              if (glucose > 400) sichRisk++;
+                              if ((telestrokeNote.pmh || '').toLowerCase().includes('diabet')) sichRisk++;
+                              if (aspectsScore != null && aspectsScore <= 4) sichRisk++;
+                              const label = sichRisk >= 3 ? 'High' : sichRisk >= 1 ? 'Moderate' : 'Low';
+                              const color = sichRisk >= 3 ? 'bg-red-50 border-red-300 text-red-800' : sichRisk >= 1 ? 'bg-amber-50 border-amber-300 text-amber-800' : 'bg-emerald-50 border-emerald-300 text-emerald-800';
+                              return (
+                                <div className={`mt-3 border rounded-lg p-2 text-xs ${color}`}>
+                                  <strong>sICH Risk Estimate: {label}</strong> ({sichRisk}/5 factors: age &ge;80, NIHSS &ge;20, glucose &gt;400, diabetes, ASPECTS &le;4)
+                                  {sichRisk >= 3 && <span className="block mt-1">Consider intensive monitoring and early goals-of-care discussion if sICH occurs.</span>}
+                                </div>
+                              );
+                            })()}
+                          </div>
+                        )}
+
+                        {/* Family / Caregiver Communication Log */}
+                        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                          <h3 className="text-md font-bold text-slate-800 mb-2 flex items-center gap-2">
+                            <i aria-hidden="true" data-lucide="users" className="w-4 h-4"></i>
+                            Family Communication
+                          </h3>
+                          <div className="space-y-2">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input type="checkbox"
+                                checked={!!(telestrokeNote.familyCommunication || {}).discussed}
+                                onChange={(e) => { const c = e.target.checked; const now = c ? new Date().toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false}) : ''; setTelestrokeNote(prev => ({...prev, familyCommunication: {...(prev.familyCommunication || {}), discussed: c, time: c ? now : (prev.familyCommunication || {}).time}})); }}
+                                className="w-4 h-4 text-slate-600" />
+                              <span className="text-sm font-medium text-slate-700">Family/surrogate discussion completed</span>
+                            </label>
+                            {!!(telestrokeNote.familyCommunication || {}).discussed && (
+                              <div className="grid grid-cols-2 gap-2 ml-6">
+                                <div>
+                                  <label htmlFor="input-family-whom" className="block text-xs text-slate-600 mb-1">Discussed with</label>
+                                  <input id="input-family-whom" type="text"
+                                    value={(telestrokeNote.familyCommunication || {}).withWhom || ''}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, familyCommunication: {...(prev.familyCommunication || {}), withWhom: v}})); }}
+                                    placeholder="e.g., spouse, daughter (POA)"
+                                    className="w-full px-2 py-1 border border-slate-300 rounded text-sm" />
+                                </div>
+                                <div>
+                                  <label htmlFor="input-family-time" className="block text-xs text-slate-600 mb-1">Time</label>
+                                  <input id="input-family-time" type="time"
+                                    value={(telestrokeNote.familyCommunication || {}).time || ''}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, familyCommunication: {...(prev.familyCommunication || {}), time: v}})); }}
+                                    className="w-full px-2 py-1 border border-slate-300 rounded text-sm" />
+                                </div>
+                                <div className="col-span-2">
+                                  <label htmlFor="input-family-topics" className="block text-xs text-slate-600 mb-1">Topics discussed</label>
+                                  <input id="input-family-topics" type="text"
+                                    value={(telestrokeNote.familyCommunication || {}).topicsDiscussed || ''}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, familyCommunication: {...(prev.familyCommunication || {}), topicsDiscussed: v}})); }}
+                                    placeholder="Diagnosis, prognosis, treatment plan, goals of care..."
+                                    className="w-full px-2 py-1 border border-slate-300 rounded text-sm" />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
                         {/* Section 7: Recommendations */}
                         <div id="recommendations-section" className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
@@ -22292,6 +22660,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 if (telestrokeNote.nihssDetails) note += ` (${telestrokeNote.nihssDetails})`;
                                 if (nihss) note += '\n';
                                 if (bp) note += `Presenting BP: ${bp}\n`;
+                                if (telestrokeNote.affectedSide) note += `Affected side: ${telestrokeNote.affectedSide}\n`;
+                                if (telestrokeNote.strokeTerritory) note += `Vascular territory: ${telestrokeNote.strokeTerritory}\n`;
+                                if (telestrokeNote.strokePhenotype) note += `Stroke phenotype: ${telestrokeNote.strokePhenotype}\n`;
+                                if (telestrokeNote.symptomTrajectory) note += `Symptom trajectory: ${telestrokeNote.symptomTrajectory}\n`;
+                                if (telestrokeNote.symptomOnsetNIHSS) note += `Estimated onset NIHSS: ${telestrokeNote.symptomOnsetNIHSS}\n`;
                                 note += '\n';
 
                                 // Imaging
@@ -22325,6 +22698,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   if (telestrokeNote.ichBPManaged) note += `- BP management initiated (target SBP <140 (Class IIa; avoid <130)).\n`;
                                   if (telestrokeNote.ichReversalInitiated) note += `- Anticoagulation reversal ordered.\n`;
                                   if (telestrokeNote.ichNeurosurgeryConsulted) note += `- Neurosurgery consulted.\n`;
+                                  const ichSurg = telestrokeNote.ichSurgicalCriteria || {};
+                                  if (ichSurg.surgeryDecision) note += `- Surgical decision: ${ichSurg.surgeryDecision}.\n`;
+                                  if (ichSurg.cerebellarGt15mL) note += `- Cerebellar ICH >15 mL identified.\n`;
+                                  if (ichSurg.hydrocephalus) note += `- Obstructive hydrocephalus present.\n`;
                                 } else if (pathwayType === 'sah') {
                                   note += `PLAN:\n`;
                                   if (telestrokeNote.sahGrade) note += `- SAH Grade: ${telestrokeNote.sahGrade} (${telestrokeNote.sahGradeScale === 'huntHess' ? 'Hunt & Hess' : telestrokeNote.sahGradeScale === 'wfns' ? 'WFNS' : 'scale not specified'})\n`;
@@ -22333,6 +22710,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   if (telestrokeNote.sahEVDPlaced) note += `- EVD placed for hydrocephalus management.\n`;
                                   if (telestrokeNote.sahNeurosurgeryConsulted) note += `- Neurosurgery consulted for aneurysm securing.\n`;
                                   if (telestrokeNote.sahAneurysmSecured) note += `- Aneurysm securing plan documented.\n`;
+                                  if (telestrokeNote.sahAneurysmLocation) note += `- Aneurysm: ${telestrokeNote.sahAneurysmLocation}${telestrokeNote.sahAneurysmSize ? `, ${telestrokeNote.sahAneurysmSize} mm` : ''}\n`;
+                                  if (telestrokeNote.sahSecuringMethod) note += `- Securing plan: ${telestrokeNote.sahSecuringMethod}\n`;
+                                  const vmC = telestrokeNote.sahVasospasmMonitoring || {};
+                                  const vmCItems = [];
+                                  if (vmC.tcdOrdered) vmCItems.push('TCD monitoring');
+                                  if (vmC.neuroChecksQ1h) vmCItems.push('neuro checks q1h');
+                                  if (vmC.sodiumMonitoring) vmCItems.push('sodium q6-8h');
+                                  if (vmC.dciSuspected) vmCItems.push('DCI suspected');
+                                  if (vmC.inducedHypertension) vmCItems.push('induced hypertension');
+                                  if (vmCItems.length) note += `- DCI monitoring: ${vmCItems.join(', ')}.\n`;
                                 } else if (pathwayType === 'cvt') {
                                   note += `PLAN:\n`;
                                   if (telestrokeNote.cvtAnticoagStarted) note += `- Anticoagulation initiated (${telestrokeNote.cvtAnticoagType || 'agent selected'}).\n`;
@@ -22692,6 +23079,26 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     const missing = t.criteria.filter(c => c.status === 'unknown').map(c => c.label).join(', ');
                                     note += `- NEEDS INFO: ${t.trialName} (${cfg?.nct || ''}) — missing: ${missing}.\n`;
                                   });
+                                }
+
+                                // Post-TNK monitoring
+                                const ptm = telestrokeNote.postTNKMonitoring || {};
+                                const ptmItems = [];
+                                if (ptm.neuroChecksQ15min) ptmItems.push('neuro checks q15min x 2h');
+                                if (ptm.bpChecksQ15min) ptmItems.push('BP checks q15min x 2h');
+                                if (ptm.bleedingWatch) ptmItems.push('bleeding precautions');
+                                if (ptm.repeatImagingOrdered) ptmItems.push('repeat CT at 24h ordered');
+                                if (ptm.cardiacMonitoring) ptmItems.push('continuous cardiac monitoring');
+                                if (ptmItems.length) note += `\nPOST-THROMBOLYTIC MONITORING:\n- ${ptmItems.join('\n- ')}\n`;
+
+                                // Family communication
+                                const fc = telestrokeNote.familyCommunication || {};
+                                if (fc.discussed) {
+                                  note += `\nFAMILY COMMUNICATION:\n`;
+                                  note += `- Discussion with ${fc.withWhom || 'family/surrogate'}`;
+                                  if (fc.time) note += ` at ${fc.time}`;
+                                  note += `.\n`;
+                                  if (fc.topicsDiscussed) note += `- Topics: ${fc.topicsDiscussed}\n`;
                                 }
 
                                 setTelestrokeNote(prev => ({...prev, recommendationsText: note}));
