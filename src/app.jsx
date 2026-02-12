@@ -3714,8 +3714,8 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=21',
               medications: ['Atorvastatin 80 mg daily', 'Rosuvastatin 20-40 mg daily', 'Ezetimibe 10 mg if LDL not at goal'],
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia') || dx.includes('lvo');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return cat === 'ischemic' || cat === 'tia';
               }
             },
 
@@ -7309,6 +7309,8 @@ Clinician Name`;
                 if (calcDrawerOpen) { setCalcDrawerOpen(false); return; }
                 if (protocolModal) { setProtocolModal(null); return; }
                 if (confirmConfig) { handleConfirmClose(null); return; }
+                if (searchOpen) { setSearchOpen(false); return; }
+                if (settingsMenuOpen) { setSettingsMenuOpen(false); return; }
                 if (focusMode) { setFocusMode(false); return; }
                 return;
               }
@@ -14054,7 +14056,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </label>
                       <select
                         value={telestrokeNote.callingSite}
-                        onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSite: e.target.value, callingSiteOther: e.target.value === 'Other' ? telestrokeNote.callingSiteOther : ''})}
+                        onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, callingSite: v, callingSiteOther: v === 'Other' ? prev.callingSiteOther : ''})); }}
                         className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="">-- Select Site --</option>
@@ -14070,7 +14072,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           type="text"
                           aria-label="Other calling site name"
                           value={telestrokeNote.callingSiteOther}
-                          onChange={(e) => setTelestrokeNote({...telestrokeNote, callingSiteOther: e.target.value})}
+                          onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, callingSiteOther: v})); }}
                           className="w-full mt-2 px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                           placeholder="Enter site name..."
                         />
@@ -14151,13 +14153,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             checked={telestrokeNote.lkwUnknown}
                             onChange={(e) => {
                               const nextValue = e.target.checked;
-                              setTelestrokeNote({
-                                ...telestrokeNote,
+                              setTelestrokeNote(prev => ({
+                                ...prev,
                                 lkwUnknown: nextValue,
-                                wakeUpStrokeWorkflow: { ...(telestrokeNote.wakeUpStrokeWorkflow || {}), isWakeUpStroke: nextValue },
-                                discoveryDate: nextValue ? (telestrokeNote.discoveryDate || new Date().toISOString().split('T')[0]) : telestrokeNote.discoveryDate,
-                                discoveryTime: nextValue ? (telestrokeNote.discoveryTime || new Date().toTimeString().slice(0, 5)) : telestrokeNote.discoveryTime
-                              });
+                                wakeUpStrokeWorkflow: { ...(prev.wakeUpStrokeWorkflow || {}), isWakeUpStroke: nextValue },
+                                discoveryDate: nextValue ? (prev.discoveryDate || new Date().toISOString().split('T')[0]) : prev.discoveryDate,
+                                discoveryTime: nextValue ? (prev.discoveryTime || new Date().toTimeString().slice(0, 5)) : prev.discoveryTime
+                              }));
                             }}
                             className="w-5 h-5 rounded border-2 border-purple-400 text-purple-600 focus:ring-purple-500"
                           />
@@ -14186,14 +14188,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="date"
                               aria-label="Discovery date"
                               value={telestrokeNote.discoveryDate}
-                              onChange={(e) => setTelestrokeNote({ ...telestrokeNote, discoveryDate: e.target.value })}
+                              onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, discoveryDate: v})); }}
                               className="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500"
                             />
                             <input
                               type="time"
                               aria-label="Discovery time"
                               value={telestrokeNote.discoveryTime}
-                              onChange={(e) => setTelestrokeNote({ ...telestrokeNote, discoveryTime: e.target.value })}
+                              onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, discoveryTime: v})); }}
                               className="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500"
                             />
                           </div>
@@ -14487,14 +14489,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div>
                             <label className="block text-xs font-medium text-slate-600 mb-1">Caller Name</label>
                             <input type="text" value={telestrokeNote.callerName}
-                              onChange={(e) => setTelestrokeNote({...telestrokeNote, callerName: e.target.value})}
+                              onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, callerName: v})); }}
                               placeholder="e.g., Dr. Smith"
                               className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500" />
                           </div>
                           <div>
                             <label className="block text-xs font-medium text-slate-600 mb-1">Caller Role</label>
                             <select value={telestrokeNote.callerRole}
-                              onChange={(e) => setTelestrokeNote({...telestrokeNote, callerRole: e.target.value})}
+                              onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, callerRole: v})); }}
                               className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500">
                               <option value="">--</option>
                               <option value="ED Physician">ED Physician</option>
@@ -14508,14 +14510,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div>
                             <label className="block text-xs font-medium text-slate-600 mb-1">Attending</label>
                             <input type="text" value={telestrokeNote.attendingPhysician}
-                              onChange={(e) => setTelestrokeNote({...telestrokeNote, attendingPhysician: e.target.value})}
+                              onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, attendingPhysician: v})); }}
                               placeholder="Attending name"
                               className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500" />
                           </div>
                           <div>
                             <label htmlFor="input-consult-time" className="block text-xs font-medium text-slate-600 mb-1">Consult Time</label>
                             <input id="input-consult-time" type="time" value={telestrokeNote.consultStartTime || ''}
-                              onChange={(e) => setTelestrokeNote({...telestrokeNote, consultStartTime: e.target.value})}
+                              onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, consultStartTime: v})); }}
                               className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500" />
                           </div>
                         </div>
@@ -14723,11 +14725,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 value={telestrokeNote.age}
                                 onChange={(e) => {
                                   const raw = e.target.value;
-                                  if (raw === '') { setTelestrokeNote({...telestrokeNote, age: ''}); return; }
+                                  if (raw === '') { setTelestrokeNote(prev => ({...prev, age: ''})); return; }
                                   const parsed = parseInt(raw, 10);
                                   if (isNaN(parsed)) return;
                                   const clamped = Math.max(0, Math.min(120, parsed));
-                                  setTelestrokeNote({...telestrokeNote, age: String(clamped)});
+                                  setTelestrokeNote(prev => ({...prev, age: String(clamped)}));
                                 }}
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
                               />
@@ -14737,7 +14739,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <select
                                 id="input-sex"
                                 value={telestrokeNote.sex}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, sex: e.target.value})}
+                                onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, sex: v})); }}
                                 className={'w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 ' + (!telestrokeNote.sex ? 'border-amber-400 bg-amber-50' : 'border-slate-300')}
                               >
                                 <option value="">--</option>
@@ -14791,11 +14793,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 value={telestrokeNote.creatinine}
                                 onChange={(e) => {
                                   const raw = e.target.value;
-                                  if (raw === '') { setTelestrokeNote({...telestrokeNote, creatinine: ''}); return; }
+                                  if (raw === '') { setTelestrokeNote(prev => ({...prev, creatinine: ''})); return; }
                                   const parsed = parseFloat(raw);
                                   if (isNaN(parsed)) return;
                                   const clamped = Math.max(0.1, Math.min(20, parsed));
-                                  setTelestrokeNote({...telestrokeNote, creatinine: String(clamped)});
+                                  setTelestrokeNote(prev => ({...prev, creatinine: String(clamped)}));
                                 }}
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
                                 placeholder="e.g. 1.2"
@@ -15148,11 +15150,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 value={telestrokeNote.glucose}
                                 onChange={(e) => {
                                   const raw = e.target.value;
-                                  if (raw === '') { setTelestrokeNote({...telestrokeNote, glucose: ''}); return; }
+                                  if (raw === '') { setTelestrokeNote(prev => ({...prev, glucose: ''})); return; }
                                   const parsed = parseInt(raw, 10);
                                   if (isNaN(parsed)) return;
                                   const clamped = Math.max(10, Math.min(800, parsed));
-                                  setTelestrokeNote({...telestrokeNote, glucose: String(clamped)});
+                                  setTelestrokeNote(prev => ({...prev, glucose: String(clamped)}));
                                 }}
                                 placeholder="mg/dL"
                                 aria-invalid={telestrokeNote.glucose && parseInt(telestrokeNote.glucose, 10) < 60 ? 'true' : undefined}
@@ -15174,7 +15176,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 type="number"
                                 step="0.1" min="0.5" max="15"
                                 value={telestrokeNote.inr}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, inr: e.target.value})}
+                                onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, inr: v})); }}
                                 aria-invalid={telestrokeNote.inr && parseFloat(telestrokeNote.inr) > 1.7 ? 'true' : undefined}
                                 aria-describedby={telestrokeNote.inr && parseFloat(telestrokeNote.inr) > 1.7 ? 'inr-error' : undefined}
                                 className={`w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-green-500 ${(() => {
@@ -15194,7 +15196,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 type="number"
                                 step="0.1" min="5" max="120"
                                 value={telestrokeNote.pt}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, pt: e.target.value})}
+                                onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, pt: v})); }}
                                 placeholder="seconds"
                                 aria-invalid={telestrokeNote.pt && parseFloat(telestrokeNote.pt) > 15 ? 'true' : undefined}
                                 aria-describedby={telestrokeNote.pt && parseFloat(telestrokeNote.pt) > 15 ? 'pt-error' : undefined}
@@ -15215,7 +15217,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 type="number"
                                 min="1" max="1500"
                                 value={telestrokeNote.plateletCount}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, plateletCount: e.target.value})}
+                                onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, plateletCount: v})); }}
                                 placeholder="K/uL"
                                 aria-invalid={telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount, 10) < 100 ? 'true' : undefined}
                                 aria-describedby={telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount, 10) < 100 ? 'platelets-error' : undefined}
@@ -16157,11 +16159,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 value={telestrokeNote.age}
                                 onChange={(e) => {
                                   const raw = e.target.value;
-                                  if (raw === '') { setTelestrokeNote({...telestrokeNote, age: ''}); return; }
+                                  if (raw === '') { setTelestrokeNote(prev => ({...prev, age: ''})); return; }
                                   const parsed = parseInt(raw, 10);
                                   if (isNaN(parsed)) return;
                                   const clamped = Math.max(0, Math.min(120, parsed));
-                                  setTelestrokeNote({...telestrokeNote, age: String(clamped)});
+                                  setTelestrokeNote(prev => ({...prev, age: String(clamped)}));
                                 }}
                                 className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${telestrokeNote.age && (parseInt(telestrokeNote.age, 10) < 0 || parseInt(telestrokeNote.age, 10) > 120) ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
                                 placeholder=""
@@ -16172,7 +16174,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <label className="block text-sm font-medium text-slate-700 mb-1">Sex</label>
                               <select
                                 value={telestrokeNote.sex}
-                                onChange={(e) => setTelestrokeNote({...telestrokeNote, sex: e.target.value})}
+                                onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, sex: v})); }}
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                               >
                                 <option value="M">M</option>
@@ -16652,7 +16654,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <input
                                     type="number"
                                     value={telestrokeNote.glucose}
-                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, glucose: e.target.value})}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, glucose: v})); }}
                                     placeholder=""
                                     className={`w-full px-3 py-2 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 ${
                                       (() => {
@@ -16680,7 +16682,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <input
                                   type="number"
                                   value={telestrokeNote.inr}
-                                  onChange={(e) => setTelestrokeNote({...telestrokeNote, inr: e.target.value})}
+                                  onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, inr: v})); }}
                                   placeholder=""
                                   className={`w-full px-3 py-2 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 ${
                                     (() => {
@@ -16708,7 +16710,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <input
                                     type="number"
                                     value={telestrokeNote.plateletCount}
-                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, plateletCount: e.target.value})}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, plateletCount: v})); }}
                                     placeholder="K/μL"
                                     className={`w-full px-3 py-2 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 ${
                                       (() => {
@@ -16734,7 +16736,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <input
                                     type="number"
                                     value={telestrokeNote.ptt}
-                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, ptt: e.target.value})}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ptt: v})); }}
                                     placeholder=""
                                     aria-invalid={telestrokeNote.ptt && parseFloat(telestrokeNote.ptt) > 40 ? 'true' : undefined}
                                     aria-describedby={telestrokeNote.ptt && parseFloat(telestrokeNote.ptt) > 40 ? 'aptt-error' : undefined}
