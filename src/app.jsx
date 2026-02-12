@@ -6588,7 +6588,7 @@ Clinician Name`;
             const glucose = parseFloat(data.telestrokeNote?.glucose);
             if (!isNaN(glucose)) {
               if (glucose < 50) {
-                alerts.push({ severity: 'warning', label: 'Hypoglycemia', message: `Glucose ${glucose} mg/dL - Correct immediately; if deficits persist, IVT remains eligible`, field: 'glucose' });
+                alerts.push({ severity: 'critical', label: 'Hypoglycemia — TNK CONTRAINDICATION', message: `Glucose ${glucose} mg/dL (<50) — CONTRAINDICATION to thrombolysis. Correct to >100 mg/dL and reassess neurologic deficit before TNK eligibility.`, field: 'glucose' });
               } else if (glucose > 400) {
                 alerts.push({ severity: 'warning', label: 'Severe hyperglycemia', message: `Glucose ${glucose} mg/dL - Correct; if deficits persist, IVT remains eligible`, field: 'glucose' });
               }
@@ -12657,10 +12657,10 @@ Clinician Name`;
 
           // Auto-switch BP phase to post-TNK when TNK is administered
           useEffect(() => {
-            if (telestrokeNote.tnkRecommended) {
+            if (telestrokeNote.tnkAdminTime) {
               setTelestrokeNote(prev => prev.bpPhase === 'pre-tnk' ? { ...prev, bpPhase: 'post-tnk' } : prev);
             }
-          }, [telestrokeNote.tnkRecommended]);
+          }, [telestrokeNote.tnkAdminTime]);
 
           // Auto-switch BP phase to post-EVT when EVT recommended (without TNK)
           useEffect(() => {
@@ -14274,7 +14274,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             >
                               <i aria-hidden="true" data-lucide={tmpl.icon} className="w-5 h-5 text-blue-600"></i>
                               <span className="text-xs font-semibold text-slate-800">{tmpl.label}</span>
-                              <span className="text-[10px] text-slate-500">{tmpl.description}</span>
+                              <span className="text-xs text-slate-500">{tmpl.description}</span>
                             </button>
                           ))}
                         </div>
@@ -16854,7 +16854,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           }
                                         }}
                                       >
-                                        <span className={patientData[item.id] === option ? 'text-white/70' : 'text-slate-400'}>[{optionIndex}]</span> {option}
+                                        <span className={patientData[item.id] === option ? 'text-white/70' : 'text-slate-500'}>[{optionIndex}]</span> {option}
                                       </button>
                                     ))}
                                   </div>
@@ -24804,7 +24804,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   className="w-full mt-1 px-2 py-1 border border-slate-200 rounded text-sm"
                                   placeholder="e.g. 172/98"
                                 />
-                                <p className="text-[10px] text-slate-500 mt-1">Uses Post-EVT, then Pre-TNK, then Presenting BP.</p>
+                                <p className="text-xs text-slate-500 mt-1">Uses Post-EVT, then Pre-TNK, then Presenting BP.</p>
                               </div>
                               <div className={`rounded-lg p-2 border ${bpWithinTarget === null ? 'bg-slate-50 border-slate-200' : bpWithinTarget ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}`}>
                                 <p className="text-xs uppercase tracking-wide text-slate-500">Status</p>
@@ -24812,7 +24812,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   {bpWithinTarget === null ? 'Enter BP to check' : bpWithinTarget ? 'Within target' : 'Above target'}
                                 </p>
                                 {bpWithinTarget === false && (
-                                  <p className="text-[10px] text-red-600 mt-1">Consider IV antihypertensive titration.</p>
+                                  <p className="text-xs text-red-600 mt-1">Consider IV antihypertensive titration.</p>
                                 )}
                               </div>
                             </div>
@@ -24980,7 +24980,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             onChange={(e) => setNursingFlowsheetChecks(prev => ({ ...prev, [item.time]: e.target.checked }))}
                                           />
                                           <span>{item.time}</span>
-                                          <span className="text-[10px] text-slate-500">{item.label}</span>
+                                          <span className="text-xs text-slate-500">{item.label}</span>
                                         </label>
                                       ))}
                                     </div>
@@ -26365,11 +26365,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div>
                             <p className="font-bold text-slate-700 mb-1">Class of Recommendation (COR)</p>
                             <div className="space-y-1">
-                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-semibold text-[10px]">Class I</span><span>Strong benefit, should be performed</span></div>
-                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold text-[10px] border border-emerald-300">Class IIa</span><span>Reasonable, benefit likely outweighs risk</span></div>
-                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold text-[10px] border border-amber-300">Class IIb</span><span>May be considered, benefit uncertain</span></div>
-                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-red-100 text-red-800 font-semibold text-[10px] border border-red-300">Class III: No Benefit</span><span>Not useful</span></div>
-                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-red-600 text-white font-semibold text-[10px]">Class III: Harm</span><span>Harmful, should NOT be performed</span></div>
+                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-semibold text-xs">Class I</span><span>Strong benefit, should be performed</span></div>
+                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold text-xs border border-emerald-300">Class IIa</span><span>Reasonable, benefit likely outweighs risk</span></div>
+                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold text-xs border border-amber-300">Class IIb</span><span>May be considered, benefit uncertain</span></div>
+                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-red-100 text-red-800 font-semibold text-xs border border-red-300">Class III: No Benefit</span><span>Not useful</span></div>
+                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-red-600 text-white font-semibold text-xs">Class III: Harm</span><span>Harmful, should NOT be performed</span></div>
                             </div>
                           </div>
                           <div>
@@ -26525,7 +26525,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${ichScoreItems.gcs === o.v ? 'bg-red-700 text-white border-red-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
                               onClick={() => setIchScoreItems(prev => ({...prev, gcs: o.v}))}
                             >
-                              {o.l} <span className={ichScoreItems.gcs === o.v ? 'text-white/70' : 'text-slate-400'}>({o.p})</span>
+                              {o.l} <span className={ichScoreItems.gcs === o.v ? 'text-white/70' : 'text-slate-500'}>({o.p})</span>
                             </button>
                           ))}
                           <hr className="my-3" />
@@ -26947,7 +26947,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors mb-1 ${abcd2Items.duration === o.v ? 'bg-orange-600 text-white border-orange-600 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
                               onClick={() => setAbcd2Items(prev => ({...prev, duration: o.v}))}
                             >
-                              {o.l} <span className={abcd2Items.duration === o.v ? 'text-white/70' : 'text-slate-400'}>({o.p})</span>
+                              {o.l} <span className={abcd2Items.duration === o.v ? 'text-white/70' : 'text-slate-500'}>({o.p})</span>
                             </button>
                           ))}
                           <hr className="my-3" />
@@ -27554,8 +27554,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <span className="text-sm">Age ≥70 years (+1)</span>
                           </label>
                           <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">Aneurysm size (mm)</label>
-                            <input type="number" step="0.1" min="0" max="50"
+                            <label htmlFor="input-phases-size" className="block text-sm font-medium text-slate-700 mb-1">Aneurysm size (mm)</label>
+                            <input id="input-phases-size" type="number" step="0.1" min="0" max="50"
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm"
                               value={phasesItems.size}
                               onChange={(e) => setPhasesItems(prev => ({...prev, size: e.target.value}))}
@@ -27569,8 +27569,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <span className="text-sm">Earlier SAH from a different aneurysm (+1)</span>
                           </label>
                           <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">Aneurysm site</label>
-                            <select value={phasesItems.site}
+                            <label htmlFor="input-phases-site" className="block text-sm font-medium text-slate-700 mb-1">Aneurysm site</label>
+                            <select id="input-phases-site" value={phasesItems.site}
                               onChange={(e) => setPhasesItems(prev => ({...prev, site: e.target.value}))}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                               <option value="ica">ICA (0 pts)</option>
@@ -27897,7 +27897,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 title={region.desc}
                               >
                                 <span className="font-bold text-sm">{region.label}</span>
-                                <span className={`text-[10px] ${isAffected ? 'text-white/70' : 'text-slate-400'}`}>{region.desc}</span>
+                                <span className={`text-[10px] ${isAffected ? 'text-white/70' : 'text-slate-500'}`}>{region.desc}</span>
                               </button>
                             );
                           })}
@@ -27906,7 +27906,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           const score = 10 - Object.values(telestrokeNote.aspectsRegions || {}).filter(Boolean).length;
                           const colorMap = score >= 6 ? { bg: 'bg-emerald-50 border-emerald-200', text: 'text-emerald-700' } : score >= 3 ? { bg: 'bg-amber-50 border-amber-200', text: 'text-amber-700' } : { bg: 'bg-red-50 border-red-200', text: 'text-red-700' };
                           return (
-                            <div className={`p-3 rounded-lg border ${colorMap.bg}`}>
+                            <div className={`p-3 rounded-lg border ${colorMap.bg}`} aria-live="polite" aria-atomic="true">
                               <div className="flex items-center justify-between">
                                 <span className={`text-2xl font-bold ${colorMap.text}`}>ASPECTS: {score}</span>
                                 <span className={`text-sm font-semibold ${colorMap.text}`}>
@@ -27952,7 +27952,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onClick={() => { const rid = region.id, toggled = !isAffected; setTelestrokeNote(prev => ({...prev, pcAspectsRegions: {...(prev.pcAspectsRegions || {}), [rid]: toggled}})); }}
                               >
                                 <span className="font-bold text-xs">{region.label}</span>
-                                <span className={`text-[10px] ${isAffected ? 'text-white/70' : 'text-slate-400'}`}>{region.pts}pt{region.pts > 1 ? 's' : ''}</span>
+                                <span className={`text-[10px] ${isAffected ? 'text-white/70' : 'text-slate-500'}`}>{region.pts}pt{region.pts > 1 ? 's' : ''}</span>
                               </button>
                             );
                           })}
@@ -27962,7 +27962,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           const deducted = (r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0);
                           const score = 10 - deducted;
                           return (
-                            <div className={`p-3 rounded-lg ${score >= 6 ? 'bg-emerald-50 border border-emerald-200' : 'bg-red-50 border border-red-200'}`}>
+                            <div className={`p-3 rounded-lg ${score >= 6 ? 'bg-emerald-50 border border-emerald-200' : 'bg-red-50 border border-red-200'}`} aria-live="polite" aria-atomic="true">
                               <span className={`text-2xl font-bold ${score >= 6 ? 'text-emerald-700' : 'text-red-700'}`}>PC-ASPECTS: {score}</span>
                               <span className={`ml-2 text-sm ${score >= 6 ? 'text-emerald-600' : 'text-red-600'}`}>
                                 {score >= 6 ? 'Favorable for basilar EVT (ATTENTION/BAOCHE trials)' : 'Poor prognosis — EVT benefit uncertain'}
@@ -28030,7 +28030,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             const span = age + nihss;
                             const positive = span >= 100;
                             return (
-                              <div className={`p-3 rounded-lg ${positive ? 'bg-red-50 border border-red-200' : 'bg-emerald-50 border border-emerald-200'}`}>
+                              <div className={`p-3 rounded-lg ${positive ? 'bg-red-50 border border-red-200' : 'bg-emerald-50 border border-emerald-200'}`} aria-live="polite" aria-atomic="true">
                                 <div className="flex items-center justify-between">
                                   <span className={`text-xl font-bold ${positive ? 'text-red-700' : 'text-emerald-700'}`}>
                                     Age ({age || '?'}) + NIHSS ({nihss || '?'}) = {age && nihss ? span : '?'}
@@ -28075,7 +28075,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </div>
                                   ))}
                                 </div>
-                                <div className={`p-2 rounded ${sedanScore >= 3 ? 'bg-red-50 border border-red-200' : 'bg-amber-50 border border-amber-200'}`}>
+                                <div className={`p-2 rounded ${sedanScore >= 3 ? 'bg-red-50 border border-red-200' : 'bg-amber-50 border border-amber-200'}`} aria-live="polite" aria-atomic="true">
                                   <span className="font-bold text-sm">SEDAN: {sedanScore}/6</span>
                                   <span className="ml-2 text-xs text-slate-600">Estimated sICH risk: {risk}</span>
                                 </div>
@@ -28198,12 +28198,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <span className="text-slate-700">{item.label}</span>
                                     <div className="flex items-center gap-2">
                                       <span className={`font-mono text-xs ${item.auto ? 'text-purple-600' : 'text-slate-500'}`}>{item.points}</span>
-                                      {item.auto ? <span className="text-emerald-600 text-[10px]">auto</span> : <span className="text-slate-500 text-[10px]">manual</span>}
+                                      {item.auto ? <span className="text-emerald-600 text-xs">auto</span> : <span className="text-slate-500 text-xs">manual</span>}
                                     </div>
                                   </div>
                                 ))}
                               </div>
-                              <div className={`p-3 rounded-lg border ${prognosis.bg}`}>
+                              <div className={`p-3 rounded-lg border ${prognosis.bg}`} aria-live="polite" aria-atomic="true">
                                 <div className="flex items-center justify-between">
                                   <span className={`text-lg font-bold ${prognosis.text2}`}>DRAGON: {score} (auto-components)</span>
                                   <span className={`text-xs px-2 py-1 rounded ${prognosis.badge} text-white font-bold`}>
@@ -28562,7 +28562,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <summary className="cursor-pointer p-2 text-sm font-medium text-red-900 hover:bg-red-100 rounded-lg">{item.q}</summary>
                             <div className="px-3 pb-2">
                               <p className="text-xs text-slate-700 mt-1">{item.a}</p>
-                              <p className="text-[10px] text-slate-500 mt-1 italic">Ref: {item.ref}</p>
+                              <p className="text-xs text-slate-500 mt-1 italic">Ref: {item.ref}</p>
                             </div>
                           </details>
                         ))}
