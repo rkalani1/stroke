@@ -1539,7 +1539,7 @@ Clinician Name`;
           const [notice, setNotice] = useState(null);
           const [clearUndo, setClearUndo] = useState(null);
           const [storageExpired, setStorageExpired] = useState(INITIAL_STORAGE_EXPIRED);
-          const [actionsOpen, setActionsOpen] = useState(false);
+          // actionsOpen removed — handled by settings menu
           const [encounterPhase, setEncounterPhase] = useState('phase-triage');
           const [clinicalContext, setClinicalContext] = useState('phone');
           const [noteTemplate, setNoteTemplate] = useState('consult');
@@ -8262,6 +8262,7 @@ Clinician Name`;
               note += `\n`;
               if (telestrokeNote.affectedSide) note += `Affected side: ${telestrokeNote.affectedSide}\n`;
               if (telestrokeNote.codeStatus) note += `Code status: ${telestrokeNote.codeStatus}\n`;
+              if (telestrokeNote.admitLocation) note += `Disposition: ${telestrokeNote.admitLocation}\n`;
               note += `\n`;
               note += `HPI: ${telestrokeNote.symptoms || '___'}\n`;
               note += `PMH: ${telestrokeNote.pmh || '___'}\n`;
@@ -8613,6 +8614,7 @@ Clinician Name`;
               if (signoutGCS > 0) note += ` | GCS: ${signoutGCS}`;
               note += ` | LKW: ${telestrokeNote.lkwUnknown ? 'UNKNOWN (discovery-based)' : (formatTime(telestrokeNote.lkwTime) || '___')}\n`;
               if (telestrokeNote.codeStatus) note += `Code status: ${telestrokeNote.codeStatus}\n`;
+              if (telestrokeNote.admitLocation) note += `Location: ${telestrokeNote.admitLocation}\n`;
               note += `\nBrief HPI: ${telestrokeNote.symptoms || '___'}\n\n`;
               let imagingLine = `Key imaging: CT ${telestrokeNote.ctResults || '___'}`;
               if (telestrokeNote.earlyInfarctSigns) imagingLine += ' (early infarct signs)';
@@ -8866,6 +8868,8 @@ Clinician Name`;
               let note = `EVT PROCEDURE NOTE\n${'='.repeat(40)}\n\n`;
               note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}\n`;
               note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}\n`;
+              if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}${telestrokeNote.contrastAllergy ? ' **CONTRAST ALLERGY**' : ''}\n`;
+              else if (telestrokeNote.contrastAllergy) note += `Allergies: **CONTRAST ALLERGY**\n`;
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n`;
               note += `ASPECTS: ${aspectsScore != null ? aspectsScore + '/10' : 'N/A'}\n\n`;
               note += `INDICATION:\n`;
@@ -8904,7 +8908,9 @@ Clinician Name`;
               note += `Date: ${new Date().toLocaleDateString()}\n`;
               note += `Hospital Day #: ___\n`;
               note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}\n`;
-              note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}\n\n`;
+              note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}\n`;
+              if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}${telestrokeNote.contrastAllergy ? ' **CONTRAST ALLERGY**' : ''}\n`;
+              note += '\n';
               note += `SUBJECTIVE:\n`;
               note += `Patient reports: ___\n`;
               note += `Pain: ___/10\n`;
@@ -9578,6 +9584,14 @@ Clinician Name`;
               note += acLine + '\n';
             }
 
+            // Add allergies if not already in template body
+            if (telestrokeNote.allergies || telestrokeNote.contrastAllergy) {
+              let allergyLine = '\nAllergies: ';
+              if (telestrokeNote.allergies) allergyLine += telestrokeNote.allergies;
+              if (telestrokeNote.contrastAllergy) allergyLine += (telestrokeNote.allergies ? ' ' : '') + '**CONTRAST ALLERGY**';
+              note += allergyLine + '\n';
+            }
+
             // Remove any unreplaced template placeholders (e.g., user-added custom fields)
             note = note.replace(/\{[a-zA-Z0-9_]+\}/g, '');
 
@@ -9604,6 +9618,13 @@ Clinician Name`;
             // Add DTN metrics if TNK was administered
             if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) {
               note += formatDTNForNote();
+            } else if (telestrokeNote.tnkRecommended && telestrokeNote.doorTime && telestrokeNote.needleTime) {
+              const [cnDH, cnDM] = telestrokeNote.doorTime.split(':').map(Number);
+              const [cnNH, cnNM] = telestrokeNote.needleTime.split(':').map(Number);
+              if (!isNaN(cnDH) && !isNaN(cnDM) && !isNaN(cnNH) && !isNaN(cnNM)) {
+                const cnDtn = (cnNH * 60 + cnNM) - (cnDH * 60 + cnDM);
+                if (cnDtn >= 0) note += `\nDoor-to-Needle: ${cnDtn} min (Door: ${telestrokeNote.doorTime}, Needle: ${telestrokeNote.needleTime})\n`;
+              }
             }
 
             // Add contraindication review status if reviewed
@@ -12427,7 +12448,7 @@ Clinician Name`;
             if (isMounted) {
               lucide.createIcons();
             }
-          }, [activeTab, copiedText, notice, searchOpen, actionsOpen, isMounted, focusMode, managementSubTab, calcDrawerOpen, protocolModal, encounterPhase]);
+          }, [activeTab, copiedText, notice, searchOpen, isMounted, focusMode, managementSubTab, calcDrawerOpen, protocolModal, encounterPhase]);
 
           // Documentation generation functions
           const generateHPI = () => {
@@ -12972,9 +12993,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       {/* Settings Menu */}
                       <div className="relative">
                         <button
+                          id="settings-menu-trigger"
                           onClick={() => setSettingsMenuOpen((prev) => !prev)}
                           className="flex items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-600"
                           aria-expanded={settingsMenuOpen}
+                          aria-haspopup="true"
+                          aria-controls={settingsMenuOpen ? 'settings-menu' : undefined}
                           aria-label="Settings menu"
                         >
                           <i data-lucide="settings" className="w-4 h-4"></i>
@@ -12983,9 +13007,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {settingsMenuOpen && (
                           <>
                             <div className="fixed inset-0 z-40" onClick={() => setSettingsMenuOpen(false)} onKeyDown={(e) => e.key === 'Escape' && setSettingsMenuOpen(false)} role="presentation" aria-hidden="true"></div>
-                            <div className="absolute right-0 top-12 w-56 max-w-[calc(100vw-2rem)] bg-white border border-slate-200 rounded-xl shadow-lg z-50 py-1 overflow-hidden">
+                            <div id="settings-menu" role="menu" aria-labelledby="settings-menu-trigger" className="absolute right-0 top-12 w-56 max-w-[calc(100vw-2rem)] bg-white border border-slate-200 rounded-xl shadow-lg z-50 py-1 overflow-hidden">
                               {showDocumentActions && (
                                 <button
+                                  role="menuitem"
                                   onClick={() => { exportToPDF(); setSettingsMenuOpen(false); }}
                                   className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                                 >
@@ -12995,6 +13020,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               )}
                               {showDocumentActions && (
                                 <button
+                                  role="menuitem"
                                   onClick={() => { handleShare(); setSettingsMenuOpen(false); }}
                                   className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                                 >
@@ -13004,6 +13030,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               )}
                               <div className="border-t border-slate-100 my-1"></div>
                               <button
+                                role="menuitem"
                                 onClick={() => { setFocusMode(prev => !prev); setSettingsMenuOpen(false); }}
                                 className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                               >
@@ -13011,6 +13038,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 {focusMode ? 'Exit Focus Mode' : 'Focus Mode'}
                               </button>
                               <button
+                                role="menuitem"
                                 onClick={() => { setShowChangelog(true); setSettingsMenuOpen(false); }}
                                 className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                               >
@@ -13019,6 +13047,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </button>
                               {encounterHistory.length > 0 && (
                                 <button
+                                  role="menuitem"
                                   onClick={() => { setSettingsMenuOpen(false); scrollToSection('encounter-history-section'); }}
                                   className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                                 >
@@ -13026,8 +13055,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   Recent Encounters ({encounterHistory.length})
                                 </button>
                               )}
-                              <div className="border-t border-slate-100 my-1"></div>
+                              <div className="border-t border-slate-100 my-1" role="separator"></div>
                               <button
+                                role="menuitem"
                                 onClick={() => { handleClearLocalData(); setSettingsMenuOpen(false); }}
                                 className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 text-sm text-red-600 transition-colors"
                               >
