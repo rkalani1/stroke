@@ -6263,7 +6263,7 @@ Clinician Name`;
             const a = parseFloat(age);
             const w = parseFloat(weight);
             const cr = parseFloat(creatinine);
-            if (!a || !w || !cr || a <= 0 || w <= 0 || cr <= 0) return null;
+            if (!a || !w || !cr || a <= 0 || w <= 0 || cr < 0.1) return null;
             if (a > 120) return null;
             if (sex !== 'M' && sex !== 'F') return null;
             const sexFactor = (sex === 'F') ? 0.85 : 1.0;
@@ -6297,9 +6297,9 @@ Clinician Name`;
             const weight = parseFloat(weightKg);
             if (isNaN(weight) || weight <= 0 || weight > 350) return null;
 
-            // TNK dosing: 0.25 mg/kg, maximum 25 mg
+            // TNK dosing: 0.25 mg/kg, maximum 25 mg, rounded to nearest 0.5 mg (syringe precision)
             const rawDose = weight * 0.25;
-            const finalDose = Math.min(rawDose, 25);
+            const finalDose = Math.min(Math.round(rawDose * 2) / 2, 25);
 
             // Pre-calculated doses for common weight ranges
             const doseTable = [
@@ -13891,7 +13891,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             const metrics = calculateDTNMetrics();
                             if (metrics.doorToNeedle !== null) {
                               const b = getDTNBenchmark(metrics.doorToNeedle);
-                              return <div className="ml-3 self-center"><span className={`px-2.5 py-1 rounded-full font-bold text-xs ${b.color === 'green' ? 'bg-emerald-500 text-white' : b.color === 'yellow' ? 'bg-amber-500 text-white' : 'bg-red-500 text-white'}`}>DTN {metrics.doorToNeedle}m</span></div>;
+                              return <div className="ml-3 self-center"><span className={`px-2.5 py-1 rounded-full font-bold text-xs ${b.color === 'green' ? 'bg-emerald-500 text-white' : b.color === 'yellow' ? 'bg-amber-500 text-white' : 'bg-red-500 text-white'}`}>DTN {metrics.doorToNeedle}m ({b.label})</span></div>;
                             }
                             return null;
                           })()}
