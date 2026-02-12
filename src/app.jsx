@@ -11013,6 +11013,32 @@ Clinician Name`;
               }
             }
 
+            // DOAC-specific CrCl contraindication checks
+            {
+              const doacCrCl = calculateCrCl(n.age, n.weight, n.sex, n.creatinine, n.height);
+              if (doacCrCl) {
+                if (n.lastDOACType === 'rivaroxaban' && doacCrCl.value < 15) {
+                  warnings.push({ id: 'rivaroxaban-crcl-contra', severity: 'error', msg: `Rivaroxaban with CrCl ${doacCrCl.value} mL/min (<15) — CONTRAINDICATED per FDA labeling (ROCKET-AF excluded CrCl <30; post-hoc data suggest harm <15). Switch to alternative agent or consult nephrology.` });
+                }
+                if (n.lastDOACType === 'dabigatran' && doacCrCl.value < 15) {
+                  warnings.push({ id: 'dabigatran-crcl-contra', severity: 'error', msg: `Dabigatran with CrCl ${doacCrCl.value} mL/min (<15) — AVOID per FDA labeling (RE-LY excluded CrCl <30). No dosing recommendation available for severe renal impairment. Consider warfarin with INR monitoring or consult nephrology.` });
+                }
+              }
+            }
+
+            // Fondaparinux CrCl <30 contraindication
+            if (/fondaparinux/.test(meds)) {
+              const fondCrCl = calculateCrCl(n.age, n.weight, n.sex, n.creatinine, n.height);
+              if (fondCrCl && fondCrCl.value < 30) {
+                warnings.push({ id: 'fondaparinux-crcl-contra', severity: 'error', msg: `Fondaparinux on medication list with CrCl ${fondCrCl.value} mL/min (<30) — CONTRAINDICATED. Fondaparinux is renally eliminated; half-life increases to 72h with severe renal impairment. Use alternative VTE prophylaxis (UFH preferred if CrCl <30).` });
+              }
+            }
+
+            // Ticagrelor + strong CYP3A4 inhibitor interaction
+            if (/ticagrelor|brilinta/.test(meds) && /ketoconazole|itraconazole|clarithromycin|ritonavir|nelfinavir/.test(meds)) {
+              warnings.push({ id: 'ticagrelor-cyp3a4', severity: 'error', msg: 'Ticagrelor + strong CYP3A4 inhibitor detected — CONTRAINDICATED per FDA labeling. Strong CYP3A4 inhibitors (ketoconazole, itraconazole, clarithromycin, ritonavir) substantially increase ticagrelor exposure and bleeding risk. Switch antiplatelet or discontinue interacting drug.' });
+            }
+
             // Pregnancy + TNK warning
             if (n.tnkRecommended && n.pregnancyStroke) {
               warnings.push({ id: 'tnk-pregnancy', severity: 'warn', msg: 'TNK recommended in pregnancy — weigh bleeding risk carefully, especially if postpartum or recent cesarean/neuraxial anesthesia' });
@@ -14873,7 +14899,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             setTelestrokeNote(prev => ({...prev, wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), [item.path]: checked}}));
                                           }
                                         }}
-                                        className="w-3.5 h-3.5 rounded border-purple-400 text-purple-600" />
+                                        className="w-4 h-4 rounded border-purple-400 text-purple-600" />
                                       <span>{item.label}</span>
                                     </label>
                                   ))}
@@ -14898,7 +14924,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <input type="checkbox"
                                         checked={(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {})[item.field]}
                                         onChange={(e) => { const checked = e.target.checked; const field = item.field; setTelestrokeNote(prev => ({...prev, wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), extendCriteria: {...(prev.wakeUpStrokeWorkflow?.extendCriteria || {}), [field]: checked}}})); }}
-                                        className="w-3.5 h-3.5 rounded border-orange-400 text-orange-600" />
+                                        className="w-4 h-4 rounded border-orange-400 text-orange-600" />
                                       <span>{item.label}</span>
                                     </label>
                                   ))}
@@ -15045,7 +15071,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             if (!crcl) return null;
                             const colorClass = crcl.isLow ? 'bg-red-50 border-red-200 text-red-800' : crcl.isBorderline ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-emerald-50 border-emerald-200 text-emerald-800';
                             return (
-                              <div className={`mb-3 border rounded-lg p-2 text-sm ${colorClass}`}>
+                              <div className={`mb-3 border rounded-lg p-2 text-sm ${colorClass}`} role="status" aria-live="polite">
                                 <div className="flex items-center justify-between">
                                   <span className="font-medium">CrCl (Cockcroft-Gault): <span className="font-bold">{crcl.value} mL/min</span> — {crcl.label}</span>
                                   {crcl.isLow && <span className="text-xs font-semibold px-2 py-0.5 bg-red-200 rounded-full">Renal dose adjustment required</span>}
@@ -15068,9 +15094,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                             <div>
                               <div className="flex items-center justify-between mb-1">
-                                <label className="block text-xs font-medium text-slate-600">Presenting Symptoms</label>
+                                <label htmlFor="input-symptoms" className="block text-xs font-medium text-slate-600">Presenting Symptoms</label>
                               </div>
                               <textarea
+                                id="input-symptoms"
                                 value={telestrokeNote.symptoms}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, symptoms: v})); }}
                                 rows="2"
@@ -15079,9 +15106,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                             <div>
                               <div className="flex items-center justify-between mb-1">
-                                <label className="block text-xs font-medium text-slate-600">Relevant PMH</label>
+                                <label htmlFor="input-pmh" className="block text-xs font-medium text-slate-600">Relevant PMH</label>
                               </div>
                               <textarea
+                                id="input-pmh"
                                 value={telestrokeNote.pmh}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, pmh: v})); }}
                                 rows="2"
@@ -15498,8 +15526,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </h4>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">CT Head</label>
+                              <label htmlFor="input-ct-results" className="block text-xs text-slate-600 mb-1">CT Head</label>
                               <textarea
+                                id="input-ct-results"
                                 value={telestrokeNote.ctResults}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctResults: v})); }}
                                 rows="2"
@@ -15508,8 +15537,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">CTA Head/Neck</label>
+                              <label htmlFor="input-cta-results" className="block text-xs text-slate-600 mb-1">CTA Head/Neck</label>
                               <textarea
+                                id="input-cta-results"
                                 value={telestrokeNote.ctaResults}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctaResults: v})); }}
                                 rows="2"
@@ -15827,13 +15857,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <label className="flex items-center gap-1 text-xs cursor-pointer">
                                       <input type="checkbox" checked={!!telestrokeNote.earlyInfarctSigns}
                                         onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, earlyInfarctSigns: c})); }}
-                                        className="w-3 h-3" />
+                                        className="w-4 h-4" />
                                       Early infarct signs on CT (+1)
                                     </label>
                                     <label className="flex items-center gap-1 text-xs cursor-pointer">
                                       <input type="checkbox" checked={!!telestrokeNote.denseArterySign}
                                         onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, denseArterySign: c})); }}
-                                        className="w-3 h-3" />
+                                        className="w-4 h-4" />
                                       Dense artery sign (+1)
                                     </label>
                                   </div>
@@ -15849,25 +15879,25 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <label className="flex items-center gap-2 cursor-pointer text-sm">
                                     <input type="checkbox" checked={!!telestrokeNote.ichBPManaged}
                                       onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, ichBPManaged: c})); }}
-                                      className="w-3.5 h-3.5 text-red-600" />
+                                      className="w-4 h-4 text-red-600" />
                                     <span>BP managed (target SBP &lt;140)</span>
                                   </label>
                                   <label className="flex items-center gap-2 cursor-pointer text-sm">
                                     <input type="checkbox" checked={!!telestrokeNote.ichReversalInitiated}
                                       onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, ichReversalInitiated: c})); }}
-                                      className="w-3.5 h-3.5 text-red-600" />
+                                      className="w-4 h-4 text-red-600" />
                                     <span>Anticoag reversal initiated</span>
                                   </label>
                                   <label className="flex items-center gap-2 cursor-pointer text-sm">
                                     <input type="checkbox" checked={!!telestrokeNote.ichNeurosurgeryConsulted}
                                       onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, ichNeurosurgeryConsulted: c})); }}
-                                      className="w-3.5 h-3.5 text-red-600" />
+                                      className="w-4 h-4 text-red-600" />
                                     <span>Neurosurgery consulted</span>
                                   </label>
                                   <label className="flex items-center gap-2 cursor-pointer text-sm">
                                     <input type="checkbox" checked={!!telestrokeNote.ichSeizureProphylaxis}
                                       onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, ichSeizureProphylaxis: c})); }}
-                                      className="w-3.5 h-3.5 text-red-600" />
+                                      className="w-4 h-4 text-red-600" />
                                     <span>Seizure prophylaxis</span>
                                   </label>
                                 </div>
@@ -15926,8 +15956,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             )}
 
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">Rationale</label>
+                              <label htmlFor="input-rationale" className="block text-xs text-slate-600 mb-1">Rationale</label>
                               <textarea
+                                id="input-rationale"
                                 value={telestrokeNote.rationale}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, rationale: v})); }}
                                 rows="2"
@@ -15937,8 +15968,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
 
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">Disposition</label>
+                              <label htmlFor="input-disposition" className="block text-xs text-slate-600 mb-1">Disposition</label>
                               <select
+                                id="input-disposition"
                                 value={telestrokeNote.disposition || ''}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, disposition: v})); }}
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
@@ -15955,8 +15987,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
 
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">Code Status</label>
+                              <label htmlFor="input-code-status" className="block text-xs text-slate-600 mb-1">Code Status</label>
                               <select
+                                id="input-code-status"
                                 value={telestrokeNote.codeStatus || ''}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, codeStatus: v})); }}
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
@@ -15993,15 +16026,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <label key={item.key} className="flex items-center gap-2 cursor-pointer">
                                       <input type="checkbox" checked={!!telestrokeNote[item.key]}
                                         onChange={(e) => { const k = item.key, c = e.target.checked; setTelestrokeNote(prev => ({...prev, [k]: c})); }}
-                                        className="w-3.5 h-3.5 text-blue-600" />
+                                        className="w-4 h-4 text-blue-600" />
                                       <span>{item.label}</span>
                                     </label>
                                   ))}
                                 </div>
                                 <div className="grid grid-cols-2 gap-2">
                                   <div>
-                                    <label className="block text-xs text-slate-600 mb-0.5">Transport Mode</label>
-                                    <select value={telestrokeNote.transportMode || ''}
+                                    <label htmlFor="input-transport-mode" className="block text-xs text-slate-600 mb-0.5">Transport Mode</label>
+                                    <select id="input-transport-mode" value={telestrokeNote.transportMode || ''}
                                       onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, transportMode: v})); }}
                                       className="w-full px-2 py-1 border border-slate-300 rounded text-xs">
                                       <option value="">--</option>
@@ -16140,7 +16173,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center justify-between mb-3">
                             <h4 className="text-md font-bold text-blue-900 flex items-center gap-2">
                               <i aria-hidden="true" data-lucide="clipboard-check" className="w-4 h-4"></i>
-                              Recommendations
+                              <label htmlFor="input-recommendations">Recommendations</label>
                             </h4>
                             <button
                               type="button"
@@ -16155,6 +16188,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </button>
                           </div>
                           <textarea
+                            id="input-recommendations"
                             value={telestrokeNote.recommendationsText}
                             onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, recommendationsText: v})); }}
                             placeholder="Click 'Generate Auto-Note' or type recommendations..."
@@ -26677,7 +26711,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <label className="flex items-center gap-2 mt-1 text-xs cursor-pointer">
                                     <input type="checkbox" checked={ichScoreItems.preCogImpairment || false}
                                       onChange={(e) => setIchScoreItems(prev => ({...prev, preCogImpairment: e.target.checked}))}
-                                      className="w-3.5 h-3.5 text-rose-600" />
+                                      className="w-4 h-4 text-rose-600" />
                                     Pre-ICH cognitive impairment
                                   </label>
                                   <p className="text-xs mt-1 font-medium">Current: +{funcItems.cognitive}</p>
