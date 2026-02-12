@@ -1595,6 +1595,7 @@ Clinician Name`;
           // Confirmation modal state (replaces confirm/prompt)
           const [confirmConfig, setConfirmConfig] = useState(null);
           const alertFlashTimeoutRef = useRef(null);
+          const lastAlertPlayedRef = useRef(null);
           const confirmResolveRef = useRef(null);
           const showConfirm = React.useCallback((config) => {
             return new Promise((resolve) => {
@@ -12143,8 +12144,9 @@ Clinician Name`;
               for (const threshold of alertThresholds) {
                 // Check if we're within 30 seconds of this threshold
                 const diff = Math.abs(remainingMinutes - threshold.minutesRemaining);
-                if (diff < 0.5 && lastAlertPlayed !== threshold.id && remainingMinutes >= -1) {
+                if (diff < 0.5 && lastAlertPlayedRef.current !== threshold.id && remainingMinutes >= -1) {
                   // Play alert and flash
+                  lastAlertPlayedRef.current = threshold.id;
                   setLastAlertPlayed(threshold.id);
                   playAlertTone(threshold.id);
                   setAlertFlashing(true);
@@ -12167,10 +12169,11 @@ Clinician Name`;
               clearInterval(timer);
               if (alertFlashTimeoutRef.current) clearTimeout(alertFlashTimeoutRef.current);
             };
-          }, [lkwTime, alertsMuted, lastAlertPlayed]);
+          }, [lkwTime, alertsMuted]);
 
           // Reset last alert when LKW changes
           useEffect(() => {
+            lastAlertPlayedRef.current = null;
             setLastAlertPlayed(null);
             setAlertFlashing(false);
           }, [lkwTime]);
@@ -15737,7 +15740,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       </div>
                                     </div>
                                     <div className="bg-white rounded p-2 border border-orange-200">
-                                      <div className="text-slate-500 mb-0.5">tPA/TNK Threshold</div>
+                                      <div className="text-slate-600 mb-0.5">tPA/TNK Threshold</div>
                                       <div className="font-semibold text-slate-800">
                                         {ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].thrombolysisThreshold}
                                       </div>
@@ -20148,7 +20151,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="bg-white border border-indigo-200 rounded-lg p-3 space-y-3">
                                     <div className="flex items-center gap-2">
                                       <span className="text-sm font-bold text-indigo-800">Na+ Correction Rate Calculator</span>
-                                      <span className="text-xs text-slate-500">ODS/CPM Safety Monitor</span>
+                                      <span className="text-xs text-slate-700">ODS/CPM Safety Monitor</span>
                                     </div>
 
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -20312,7 +20315,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                 <p>per 24h (ODS risk)</p>
                                               </div>
                                             </div>
-                                            <p className="mt-1 text-slate-500">If overcorrected: DDAVP 2 mcg IV q8h + D5W infusion to re-lower Na+. Target reversal to &le;8 mEq/L/24h from baseline.</p>
+                                            <p className="mt-1 text-slate-700">If overcorrected: DDAVP 2 mcg IV q8h + D5W infusion to re-lower Na+. Target reversal to &le;8 mEq/L/24h from baseline.</p>
                                           </div>
                                         </div>
                                       );
@@ -22449,7 +22452,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="safety-section" className="bg-white border border-slate-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
                         <span>Safety checks</span>
-                        <span className="text-xs text-slate-500">{safetyChecksCompleted}/{safetyChecks.length} complete</span>
+                        <span className="text-xs text-slate-700">{safetyChecksCompleted}/{safetyChecks.length} complete</span>
                       </summary>
                       <div className="p-4 space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -27004,7 +27007,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* SPAN-100 */}
                         <div className="bg-white rounded-lg p-3 border border-slate-200">
                           <h5 className="font-semibold text-sm text-slate-800 mb-2">SPAN-100 Index</h5>
-                          <p className="text-xs text-slate-500 mb-2">Age + NIHSS ≥ 100 predicts higher symptomatic ICH risk and lower chance of good outcome after IV thrombolysis.</p>
+                          <p className="text-xs text-slate-700 mb-2">Age + NIHSS ≥ 100 predicts higher symptomatic ICH risk and lower chance of good outcome after IV thrombolysis.</p>
                           {(() => {
                             const age = parseInt(telestrokeNote.age, 10) || 0;
                             const nihss = parseInt(telestrokeNote.nihss || nihssScore, 10) || 0;
@@ -29302,6 +29305,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </button>
                   </div>
                   <div className="divide-y divide-slate-100">
+                    {quickContacts.length === 0 && (
+                      <div className="px-4 py-6 text-center text-sm text-slate-500">
+                        <i data-lucide="users" className="w-6 h-6 mx-auto mb-2 text-slate-400"></i>
+                        <p>No contacts configured</p>
+                        <p className="text-xs mt-1">Add contacts in Settings &rarr; Contact Directory</p>
+                      </div>
+                    )}
                     {quickContacts.map((contact) => {
                       const rawPhone = contact.phone || '';
                       const digits = rawPhone.replace(/[^\d+]/g, '');
