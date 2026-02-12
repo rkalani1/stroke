@@ -3370,7 +3370,7 @@ Clinician Name`;
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const timeFrom = data.timeFromLKW;
-                const inWindow = timeFrom && timeFrom.total < 4.5;
+                const inWindow = timeFrom && timeFrom.total <= 4.5;
                 return isIschemic && (inWindow || data.telestrokeNote?.tnkRecommended);
               }
             },
@@ -3470,7 +3470,7 @@ Clinician Name`;
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const timeFrom = data.timeFromLKW;
-                return isIschemic && timeFrom && timeFrom.total < 4.5;
+                return isIschemic && timeFrom && timeFrom.total <= 4.5;
               }
             },
             tnk_extended_imaging: {
@@ -3671,7 +3671,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021 + CATALYST Meta-Analysis 2025',
               reference: 'Fischer U et al. Lancet Neurol. 2025. CATALYST: Collaboration for Antithrombotic Timing After Acute Ischaemic Stroke.',
               medications: ['Apixaban 5 mg BID (preferred)', 'Rivaroxaban 20 mg daily', 'Dabigatran 150 mg BID'],
-              caveats: 'Timing categories per CATALYST: minor (NIHSS <8, small infarct) 48h; moderate (NIHSS 8-15) day 3-5; severe (NIHSS >15 or large infarct) day 6-14. Reassess imaging before starting if any concern for hemorrhagic transformation.',
+              caveats: 'Timing categories per CATALYST: mild (NIHSS <8, small infarct) 48h; moderate (NIHSS 8-15) day 3-5; severe (NIHSS ≥16 or large infarct) day 6-14. Reassess imaging before starting if any concern for hemorrhagic transformation.',
               conditions: (data) => {
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
                 const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
@@ -4689,7 +4689,7 @@ Clinician Name`;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
                 const timeFrom = data.timeFromLKW;
-                return (dx.includes('dissect') || cta.includes('dissect')) && timeFrom && timeFrom.total < 4.5;
+                return (dx.includes('dissect') || cta.includes('dissect')) && timeFrom && timeFrom.total <= 4.5;
               }
             },
 
@@ -11147,7 +11147,7 @@ Clinician Name`;
             // Post-TNK DOAC restart timing guidance
             if (n.tnkAdminTime && n.lastDOACType && ['apixaban', 'rivaroxaban', 'dabigatran', 'edoxaban'].includes(n.lastDOACType) && !(n.doacTiming || {}).doacInitiationDay) {
               const tnkNihss = parseInt(n.nihss, 10) || nihssScore || 0;
-              const restartGuidance = tnkNihss < 8 ? 'mild (NIHSS <8): day 3-5 post-TNK' : tnkNihss <= 15 ? 'moderate (NIHSS 8-15): day 5-7 post-TNK' : 'severe (NIHSS ≥16): day 6-14 post-TNK';
+              const restartGuidance = tnkNihss < 8 ? 'mild (NIHSS <8): 48h post-TNK (after 24h TNK hold)' : tnkNihss <= 15 ? 'moderate (NIHSS 8-15): day 3-5 post-TNK' : 'severe (NIHSS ≥16): day 6-14 post-TNK';
               warnings.push({ id: 'post-tnk-doac-restart', severity: 'warn', msg: `Post-TNK DOAC restart timing not documented — ${restartGuidance}. Repeat imaging day 2-3 to rule out symptomatic hemorrhagic transformation before restarting. Set DOAC initiation day in DOAC Timing section. (CATALYST/ELAN)` });
             }
 
@@ -13725,7 +13725,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               return acc;
                             }, {})).map(([group, items]) => (
                               <div key={group} role="group" aria-label={group}>
-                                <div className="px-3 py-1 text-[11px] uppercase tracking-wider text-slate-500 bg-slate-50 border-b" role="presentation">
+                                <div className="px-3 py-1 text-xs uppercase tracking-wider text-slate-500 bg-slate-50 border-b" role="presentation">
                                   {group}
                                 </div>
                                 {items.map((result) => {
@@ -14006,7 +14006,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       {alert.level !== 'critical' && (
                         <button
                           onClick={() => setCriticalAlerts(prev => prev.filter(a => a.id !== alert.id))}
-                          className="text-slate-400 hover:text-slate-600 flex-shrink-0"
+                          className="text-slate-500 hover:text-slate-700 flex-shrink-0 min-h-[36px] min-w-[36px] flex items-center justify-center"
                           aria-label="Dismiss alert"
                         >
                           <i aria-hidden="true" data-lucide="x" className="w-5 h-5"></i>
@@ -17996,7 +17996,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <li>• No hemorrhage on imaging</li>
                                     <li>• Class IIa, LOE B-R (EXTEND, WAKE-UP)</li>
                                   </ul>
-                                  <p className="text-[11px] text-slate-500 mt-2">4.5-24h IVT remains investigational and should be limited to clinical trials (e.g., TIMELESS/SISTER).</p>
+                                  <p className="text-xs text-slate-600 mt-2">4.5-24h IVT remains investigational and should be limited to clinical trials (e.g., TIMELESS/SISTER).</p>
                                 </div>
                                 <div>
                                   <h4 className="font-semibold text-blue-700 mb-2">WAKE-UP Stroke:</h4>
@@ -19214,7 +19214,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             <div key={c.id} className="flex items-center gap-2 text-xs">
                                               {c.status === 'met' && <span className="text-emerald-600 font-bold w-4 text-center">&#10003;</span>}
                                               {c.status === 'not_met' && <span className="text-red-600 font-bold w-4 text-center">&#10007;</span>}
-                                              {c.status === 'unknown' && <span className="text-slate-400 font-bold w-4 text-center">&#9679;</span>}
+                                              {c.status === 'unknown' && <span className="text-slate-500 font-bold w-4 text-center">&#9679;</span>}
                                               <span className={c.status === 'met' ? 'text-emerald-800' : c.status === 'not_met' ? 'text-red-800 line-through' : 'text-slate-600'}>
                                                 {c.label}{c.required ? '' : ' (optional)'}
                                               </span>
@@ -23429,7 +23429,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                               {cards.map((card) => (
                                 <div key={card.label} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
-                                  <p className="text-[11px] uppercase tracking-wide text-slate-500">{card.label}</p>
+                                  <p className="text-xs uppercase tracking-wide text-slate-500">{card.label}</p>
                                   <p className="text-sm font-semibold text-slate-900">{card.value || '--'}</p>
                                 </div>
                               ))}
@@ -23996,7 +23996,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 />
                               </div>
                             </div>
-                            <p className="text-[11px] text-slate-500 mt-3">
+                            <p className="text-xs text-slate-500 mt-3">
                               Auto-flags volume ≥30 mL (predictive of worse outcomes and surgical consideration).
                             </p>
                           </div>
@@ -24370,7 +24370,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* LVO */}
                             <div className="bg-white rounded-xl border-l-4 border-blue-600 p-3 shadow-sm">
                               <p className="font-semibold text-blue-800 text-sm mb-2">LVO (ICA-T / M1)</p>
-                              <p className="text-[11px] text-slate-500 mb-2">NIHSS ≥6 unless otherwise specified</p>
+                              <p className="text-xs text-slate-600 mb-2">NIHSS ≥6 unless otherwise specified</p>
 
                               {/* 0-6h */}
                               <div className="ml-2 mb-3 pl-3 border-l-2 border-blue-200">
@@ -24504,7 +24504,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             </div>
 
-                            <div className="flex flex-wrap gap-2 text-[11px] text-slate-500">
+                            <div className="flex flex-wrap gap-2 text-xs text-slate-500">
                               <span><span className="inline-block w-3 h-3 rounded-full bg-emerald-600 align-middle mr-1"></span>Recommended</span>
                               <span><span className="inline-block w-3 h-3 rounded-full bg-emerald-100 border border-emerald-300 align-middle mr-1"></span>Reasonable</span>
                               <span><span className="inline-block w-3 h-3 rounded-full bg-amber-100 border border-amber-300 align-middle mr-1"></span>May be considered / Uncertain</span>
@@ -24851,10 +24851,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <table className="w-full text-sm border-collapse">
                                     <thead>
                                       <tr className="bg-blue-100">
-                                        <th className="border border-blue-200 px-2 py-1 text-left">Step</th>
-                                        <th className="border border-blue-200 px-2 py-1 text-left">Dose</th>
-                                        <th className="border border-blue-200 px-2 py-1 text-left">Timing</th>
-                                        <th className="border border-blue-200 px-2 py-1 text-left">Cumulative</th>
+                                        <th scope="col" className="border border-blue-200 px-2 py-1 text-left">Step</th>
+                                        <th scope="col" className="border border-blue-200 px-2 py-1 text-left">Dose</th>
+                                        <th scope="col" className="border border-blue-200 px-2 py-1 text-left">Timing</th>
+                                        <th scope="col" className="border border-blue-200 px-2 py-1 text-left">Cumulative</th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -24880,9 +24880,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <table className="w-full text-sm border-collapse">
                                     <thead>
                                       <tr className="bg-purple-100">
-                                        <th className="border border-purple-200 px-2 py-1 text-left">Step</th>
-                                        <th className="border border-purple-200 px-2 py-1 text-left">Rate</th>
-                                        <th className="border border-purple-200 px-2 py-1 text-left">Instructions</th>
+                                        <th scope="col" className="border border-purple-200 px-2 py-1 text-left">Step</th>
+                                        <th scope="col" className="border border-purple-200 px-2 py-1 text-left">Rate</th>
+                                        <th scope="col" className="border border-purple-200 px-2 py-1 text-left">Instructions</th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -25631,9 +25631,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <table className="w-full text-sm border-collapse">
                               <thead>
                                 <tr className="bg-slate-100">
-                                  <th className="border border-slate-200 px-3 py-2 text-left font-semibold">Feature</th>
-                                  <th className="border border-slate-200 px-3 py-2 text-left font-semibold text-amber-700">Cerebral Salt Wasting</th>
-                                  <th className="border border-slate-200 px-3 py-2 text-left font-semibold text-blue-700">SIADH</th>
+                                  <th scope="col" className="border border-slate-200 px-3 py-2 text-left font-semibold">Feature</th>
+                                  <th scope="col" className="border border-slate-200 px-3 py-2 text-left font-semibold text-amber-700">Cerebral Salt Wasting</th>
+                                  <th scope="col" className="border border-slate-200 px-3 py-2 text-left font-semibold text-blue-700">SIADH</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -25780,12 +25780,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <table className="w-full text-sm border-collapse">
                               <thead>
                                 <tr className="bg-slate-100">
-                                  <th className="border border-slate-200 px-3 py-2 text-left">Score</th>
-                                  <th className="border border-slate-200 px-3 py-2 text-left">Risk Level</th>
-                                  <th className="border border-slate-200 px-3 py-2 text-left">2-Day Stroke Risk</th>
-                                  <th className="border border-slate-200 px-3 py-2 text-left">7-Day</th>
-                                  <th className="border border-slate-200 px-3 py-2 text-left">90-Day</th>
-                                  <th className="border border-slate-200 px-3 py-2 text-left">Action</th>
+                                  <th scope="col" className="border border-slate-200 px-3 py-2 text-left">Score</th>
+                                  <th scope="col" className="border border-slate-200 px-3 py-2 text-left">Risk Level</th>
+                                  <th scope="col" className="border border-slate-200 px-3 py-2 text-left">2-Day Stroke Risk</th>
+                                  <th scope="col" className="border border-slate-200 px-3 py-2 text-left">7-Day</th>
+                                  <th scope="col" className="border border-slate-200 px-3 py-2 text-left">90-Day</th>
+                                  <th scope="col" className="border border-slate-200 px-3 py-2 text-left">Action</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -26100,9 +26100,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <table className="w-full text-sm border-collapse">
                               <thead>
                                 <tr className="bg-indigo-50">
-                                  <th className="border border-indigo-200 px-3 py-2 text-left text-indigo-800">Scenario</th>
-                                  <th className="border border-indigo-200 px-3 py-2 text-left text-indigo-800">Duration</th>
-                                  <th className="border border-indigo-200 px-3 py-2 text-left text-indigo-800">Agent</th>
+                                  <th scope="col" className="border border-indigo-200 px-3 py-2 text-left text-indigo-800">Scenario</th>
+                                  <th scope="col" className="border border-indigo-200 px-3 py-2 text-left text-indigo-800">Duration</th>
+                                  <th scope="col" className="border border-indigo-200 px-3 py-2 text-left text-indigo-800">Agent</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -27188,7 +27188,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.elderly}
                               onChange={(e) => setHasbledItems(prev => ({...prev, elderly: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>E</strong>lderly (age &gt;65) (+1)</span>
+                            <span className="text-sm"><strong>E</strong>lderly (age ≥65) (+1)</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -29094,7 +29094,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             aria-label="Search guideline recommendations"
                           />
-                          <i aria-hidden="true" data-lucide="search" className="w-4 h-4 absolute left-3 top-2.5 text-slate-400"></i>
+                          <i aria-hidden="true" data-lucide="search" className="w-4 h-4 absolute left-3 top-2.5 text-slate-500"></i>
                         </div>
                         <select
                           value={guidelineLibraryGuideline}
