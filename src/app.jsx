@@ -315,7 +315,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           { id: 'blank', label: 'Blank Encounter', icon: 'file-plus', description: 'Start fresh', defaults: {} },
           { id: 'acute-lvo', label: 'Acute LVO', icon: 'zap', description: 'Large vessel occlusion workup', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'Ischemic stroke - LVO' } },
           { id: 'tia', label: 'TIA Workup', icon: 'activity', description: 'Transient ischemic attack evaluation', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'TIA' } },
-          { id: 'wakeup', label: 'Wake-up Stroke', icon: 'moon', description: 'Unknown onset / wake-up presentation', defaults: { diagnosisCategory: 'ischemic', lkwUnknown: true } },
+          { id: 'wakeup', label: 'Wake-up Stroke', icon: 'moon', description: 'Unknown onset / wake-up presentation', defaults: { diagnosisCategory: 'ischemic', lkwUnknown: true, wakeUpStrokeWorkflow: { isWakeUpStroke: true } } },
           { id: 'ich-anticoag', label: 'ICH on Anticoagulation', icon: 'alert-triangle', description: 'Hemorrhage with reversal needed', defaults: { diagnosisCategory: 'ich', diagnosis: 'Intracerebral hemorrhage' } },
           { id: 'sah', label: 'SAH', icon: 'droplets', description: 'Subarachnoid hemorrhage management', defaults: { diagnosisCategory: 'sah', diagnosis: 'Subarachnoid hemorrhage' } },
           { id: 'posterior', label: 'Posterior Circulation', icon: 'brain', description: 'Basilar/vertebral stroke', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'Posterior circulation stroke' } },
@@ -952,6 +952,7 @@ Clinician Name`;
             denseArterySign: false,
             ekgResults: '',
             wakeUpStrokeWorkflow: {
+              isWakeUpStroke: false,
               mriAvailable: null,
               dwi: {
                 positiveForLesion: false,
@@ -1819,6 +1820,15 @@ Clinician Name`;
                 if (typeof defaults[key] === 'object' && defaults[key] !== null && !Array.isArray(defaults[key])
                     && typeof saved[key] === 'object' && !Array.isArray(saved[key])) {
                   merged[key] = { ...defaults[key], ...saved[key] };
+                  // Two-level deep merge: restore default sub-objects (e.g. wakeUpStrokeWorkflow.dwi)
+                  for (const subKey of Object.keys(defaults[key])) {
+                    if (typeof defaults[key][subKey] === 'object' && defaults[key][subKey] !== null && !Array.isArray(defaults[key][subKey])
+                        && typeof merged[key][subKey] === 'object' && merged[key][subKey] !== null && !Array.isArray(merged[key][subKey])) {
+                      merged[key][subKey] = { ...defaults[key][subKey], ...merged[key][subKey] };
+                    } else if (merged[key][subKey] === undefined || merged[key][subKey] === null) {
+                      merged[key][subKey] = defaults[key][subKey];
+                    }
+                  }
                 } else {
                   merged[key] = saved[key];
                 }
@@ -7887,6 +7897,70 @@ Clinician Name`;
               if (doac.doacInitiationDay) brief += `- Planned initiation: ${doac.doacInitiationDay}\n`;
               if (doac.hemorrhagicTransformation) brief += `- HT present: repeat imaging before DOAC initiation\n`;
             }
+            // Angioedema management detail
+            if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) {
+              const ae = telestrokeNote.angioedema || {};
+              brief += `\nANGIOEDEMA:\n`;
+              let aeStr = `- Status: detected`;
+              if (ae.severity) aeStr += ` (${ae.severity})`;
+              if (ae.aceInhibitorUse) aeStr += ' — ACEi use';
+              if (ae.intubated) aeStr += ' — INTUBATED';
+              else if (ae.resolved) aeStr += ' — resolved';
+              brief += aeStr + '\n';
+            }
+            // Non-TNK hemorrhagic transformation
+            {
+              const ht = telestrokeNote.hemorrhagicTransformation || {};
+              if (ht.detected) {
+                brief += `\nHEMORRHAGIC TRANSFORMATION:\n`;
+                brief += `- Classification: ${ht.classification || 'unclassified'}${ht.symptomatic ? ' (SYMPTOMATIC)' : ''}\n`;
+                if (ht.managementActions) brief += `- Management: ${ht.managementActions}\n`;
+                if (ht.antithromboticHeld) brief += `- Antithrombotics held\n`;
+                if (ht.reimagingPlanned) brief += `- Repeat imaging planned\n`;
+              }
+            }
+            // Drug interaction alerts
+            {
+              const di = telestrokeNote.drugInteractions || {};
+              const diItems = [];
+              if (di.aedDoacInteraction) diItems.push(`AED-DOAC: ${di.aedType || 'enzyme-inducing AED'} (consider warfarin instead)`);
+              if (di.statinInteraction) diItems.push(`Statin: ${di.statinInteractionDrug || 'interacting drug'} (dose adjustment needed)`);
+              if (diItems.length > 0) {
+                brief += `\nDRUG INTERACTIONS:\n`;
+                diItems.forEach(i => brief += `- ${i}\n`);
+              }
+            }
+            // Decompressive craniectomy consideration
+            {
+              const dcr = telestrokeNote.decompressiveCraniectomy || {};
+              if (dcr.considered) {
+                brief += `\nDECOMPRESSIVE CRANIECTOMY:\n`;
+                brief += `- Being considered for malignant MCA infarction\n`;
+                if (dcr.territorySize) brief += `- Territory: ${dcr.territorySize}\n`;
+                if (dcr.timing) brief += `- Timing window: ${dcr.timing}\n`;
+              }
+            }
+            // VTE prophylaxis
+            {
+              const vte = telestrokeNote.vteProphylaxis || {};
+              if (vte.ipc || vte.pharmacologic) {
+                brief += `\nVTE PROPHYLAXIS:\n`;
+                if (vte.ipc) brief += `- IPC/SCDs in place\n`;
+                if (vte.pharmacologic) brief += `- Pharmacologic: ${vte.pharmacologicAgent || 'ordered'}\n`;
+              }
+            }
+            // Rehab referrals
+            {
+              const rr = telestrokeNote.rehabReferral || {};
+              const rrItems = [];
+              if (rr.pt) rrItems.push('PT');
+              if (rr.ot) rrItems.push('OT');
+              if (rr.slp) rrItems.push('SLP');
+              if (rr.neuropsych) rrItems.push('Neuropsych');
+              if (rr.socialWork) rrItems.push('Social work');
+              if (rr.vocational) rrItems.push('Vocational rehab');
+              if (rrItems.length > 0) brief += `\nREHAB REFERRALS: ${rrItems.join(', ')}\n`;
+            }
             brief += `\nFOLLOW-UP PLAN:\n`;
             const dc = telestrokeNote.dischargeChecklist || {};
             if (dc.followUpNeurology) brief += `- Neurology follow-up\n`;
@@ -12796,6 +12870,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               setTelestrokeNote({
                                 ...telestrokeNote,
                                 lkwUnknown: nextValue,
+                                wakeUpStrokeWorkflow: { ...(telestrokeNote.wakeUpStrokeWorkflow || {}), isWakeUpStroke: nextValue },
                                 discoveryDate: nextValue ? (telestrokeNote.discoveryDate || new Date().toISOString().split('T')[0]) : telestrokeNote.discoveryDate,
                                 discoveryTime: nextValue ? (telestrokeNote.discoveryTime || new Date().toTimeString().slice(0, 5)) : telestrokeNote.discoveryTime
                               });
@@ -12858,10 +12933,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <button
                                 onClick={() => setTelestrokeNote({
                                   ...telestrokeNote,
-                                  wakeUpStrokeWorkflow: {...telestrokeNote.wakeUpStrokeWorkflow, mriAvailable: true}
+                                  wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), mriAvailable: true}
                                 })}
                                 className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                                  telestrokeNote.wakeUpStrokeWorkflow.mriAvailable === true
+                                  telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable === true
                                     ? 'bg-purple-600 text-white'
                                     : 'bg-white border-2 border-purple-300 text-purple-700 hover:bg-purple-100'
                                 }`}
@@ -12871,10 +12946,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <button
                                 onClick={() => setTelestrokeNote({
                                   ...telestrokeNote,
-                                  wakeUpStrokeWorkflow: {...telestrokeNote.wakeUpStrokeWorkflow, mriAvailable: false}
+                                  wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), mriAvailable: false}
                                 })}
                                 className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                                  telestrokeNote.wakeUpStrokeWorkflow.mriAvailable === false
+                                  telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable === false
                                     ? 'bg-orange-600 text-white'
                                     : 'bg-white border-2 border-orange-300 text-orange-700 hover:bg-orange-100'
                                 }`}
@@ -12885,7 +12960,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
 
                           {/* WAKE-UP Trial Criteria (MRI-guided) */}
-                          {telestrokeNote.wakeUpStrokeWorkflow.mriAvailable === true && (
+                          {telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable === true && (
                             <div className="bg-white border border-purple-200 rounded-lg p-3 space-y-2">
                               <div className="font-bold text-purple-800 flex items-center gap-2">
                                 <i data-lucide="flask-conical" className="w-4 h-4 text-purple-600"></i>
@@ -12897,12 +12972,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="flex items-center gap-2 cursor-pointer">
                                   <input
                                     type="checkbox"
-                                    checked={telestrokeNote.wakeUpStrokeWorkflow.dwi.positiveForLesion}
+                                    checked={telestrokeNote.wakeUpStrokeWorkflow?.dwi?.positiveForLesion}
                                     onChange={(e) => setTelestrokeNote({
                                       ...telestrokeNote,
                                       wakeUpStrokeWorkflow: {
-                                        ...telestrokeNote.wakeUpStrokeWorkflow,
-                                        dwi: {...telestrokeNote.wakeUpStrokeWorkflow.dwi, positiveForLesion: e.target.checked}
+                                        ...(telestrokeNote.wakeUpStrokeWorkflow || {}),
+                                        dwi: {...(telestrokeNote.wakeUpStrokeWorkflow?.dwi || {}), positiveForLesion: e.target.checked}
                                       }
                                     })}
                                     className="w-4 h-4 rounded border-purple-400 text-purple-600"
@@ -12912,12 +12987,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="flex items-center gap-2 cursor-pointer">
                                   <input
                                     type="checkbox"
-                                    checked={telestrokeNote.wakeUpStrokeWorkflow.flair.noMarkedHyperintensity}
+                                    checked={telestrokeNote.wakeUpStrokeWorkflow?.flair?.noMarkedHyperintensity}
                                     onChange={(e) => setTelestrokeNote({
                                       ...telestrokeNote,
                                       wakeUpStrokeWorkflow: {
-                                        ...telestrokeNote.wakeUpStrokeWorkflow,
-                                        flair: {...telestrokeNote.wakeUpStrokeWorkflow.flair, noMarkedHyperintensity: e.target.checked}
+                                        ...(telestrokeNote.wakeUpStrokeWorkflow || {}),
+                                        flair: {...(telestrokeNote.wakeUpStrokeWorkflow?.flair || {}), noMarkedHyperintensity: e.target.checked}
                                       }
                                     })}
                                     className="w-4 h-4 rounded border-purple-400 text-purple-600"
@@ -12927,10 +13002,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="flex items-center gap-2 cursor-pointer">
                                   <input
                                     type="checkbox"
-                                    checked={telestrokeNote.wakeUpStrokeWorkflow.ageEligible}
+                                    checked={telestrokeNote.wakeUpStrokeWorkflow?.ageEligible}
                                     onChange={(e) => setTelestrokeNote({
                                       ...telestrokeNote,
-                                      wakeUpStrokeWorkflow: {...telestrokeNote.wakeUpStrokeWorkflow, ageEligible: e.target.checked}
+                                      wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), ageEligible: e.target.checked}
                                     })}
                                     className="w-4 h-4 rounded border-purple-400 text-purple-600"
                                   />
@@ -12939,10 +13014,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="flex items-center gap-2 cursor-pointer">
                                   <input
                                     type="checkbox"
-                                    checked={telestrokeNote.wakeUpStrokeWorkflow.nihssEligible}
+                                    checked={telestrokeNote.wakeUpStrokeWorkflow?.nihssEligible}
                                     onChange={(e) => setTelestrokeNote({
                                       ...telestrokeNote,
-                                      wakeUpStrokeWorkflow: {...telestrokeNote.wakeUpStrokeWorkflow, nihssEligible: e.target.checked}
+                                      wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), nihssEligible: e.target.checked}
                                     })}
                                     className="w-4 h-4 rounded border-purple-400 text-purple-600"
                                   />
@@ -12950,10 +13025,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </label>
                               </div>
                               {/* Eligibility Summary */}
-                              {telestrokeNote.wakeUpStrokeWorkflow.dwi.positiveForLesion &&
-                               telestrokeNote.wakeUpStrokeWorkflow.flair.noMarkedHyperintensity &&
-                               telestrokeNote.wakeUpStrokeWorkflow.ageEligible &&
-                               telestrokeNote.wakeUpStrokeWorkflow.nihssEligible && (
+                              {telestrokeNote.wakeUpStrokeWorkflow?.dwi?.positiveForLesion &&
+                               telestrokeNote.wakeUpStrokeWorkflow?.flair?.noMarkedHyperintensity &&
+                               telestrokeNote.wakeUpStrokeWorkflow?.ageEligible &&
+                               telestrokeNote.wakeUpStrokeWorkflow?.nihssEligible && (
                                 <div role="alert" className="bg-emerald-100 border border-emerald-300 rounded-lg p-2 text-emerald-800 font-semibold text-sm flex items-center gap-2">
                                   <i data-lucide="check-circle" className="w-4 h-4"></i>
                                   <span>Meets WAKE-UP criteria - Consider IV thrombolysis</span>
@@ -12968,7 +13043,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           )}
 
                           {/* EXTEND Trial Criteria (Perfusion-guided) */}
-                          {telestrokeNote.wakeUpStrokeWorkflow.mriAvailable === false && (
+                          {telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable === false && (
                             <div className="bg-white border border-orange-200 rounded-lg p-3 space-y-2">
                               <div className="font-bold text-orange-800 flex items-center gap-2">
                                 <i data-lucide="brain" className="w-4 h-4 text-orange-600"></i>
@@ -12980,12 +13055,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="flex items-center gap-2 cursor-pointer">
                                   <input
                                     type="checkbox"
-                                    checked={telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.nihss4to26}
+                                    checked={telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.nihss4to26}
                                     onChange={(e) => setTelestrokeNote({
                                       ...telestrokeNote,
                                       wakeUpStrokeWorkflow: {
-                                        ...telestrokeNote.wakeUpStrokeWorkflow,
-                                        extendCriteria: {...telestrokeNote.wakeUpStrokeWorkflow.extendCriteria, nihss4to26: e.target.checked}
+                                        ...(telestrokeNote.wakeUpStrokeWorkflow || {}),
+                                        extendCriteria: {...(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {}), nihss4to26: e.target.checked}
                                       }
                                     })}
                                     className="w-4 h-4 rounded border-orange-400 text-orange-600"
@@ -12995,12 +13070,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="flex items-center gap-2 cursor-pointer">
                                   <input
                                     type="checkbox"
-                                    checked={telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.premorbidMRSLt2}
+                                    checked={telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.premorbidMRSLt2}
                                     onChange={(e) => setTelestrokeNote({
                                       ...telestrokeNote,
                                       wakeUpStrokeWorkflow: {
-                                        ...telestrokeNote.wakeUpStrokeWorkflow,
-                                        extendCriteria: {...telestrokeNote.wakeUpStrokeWorkflow.extendCriteria, premorbidMRSLt2: e.target.checked}
+                                        ...(telestrokeNote.wakeUpStrokeWorkflow || {}),
+                                        extendCriteria: {...(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {}), premorbidMRSLt2: e.target.checked}
                                       }
                                     })}
                                     className="w-4 h-4 rounded border-orange-400 text-orange-600"
@@ -13010,12 +13085,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="flex items-center gap-2 cursor-pointer">
                                   <input
                                     type="checkbox"
-                                    checked={telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.ischemicCoreLte70}
+                                    checked={telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.ischemicCoreLte70}
                                     onChange={(e) => setTelestrokeNote({
                                       ...telestrokeNote,
                                       wakeUpStrokeWorkflow: {
-                                        ...telestrokeNote.wakeUpStrokeWorkflow,
-                                        extendCriteria: {...telestrokeNote.wakeUpStrokeWorkflow.extendCriteria, ischemicCoreLte70: e.target.checked}
+                                        ...(telestrokeNote.wakeUpStrokeWorkflow || {}),
+                                        extendCriteria: {...(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {}), ischemicCoreLte70: e.target.checked}
                                       }
                                     })}
                                     className="w-4 h-4 rounded border-orange-400 text-orange-600"
@@ -13025,12 +13100,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="flex items-center gap-2 cursor-pointer">
                                   <input
                                     type="checkbox"
-                                    checked={telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.mismatchRatioGte1_2}
+                                    checked={telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.mismatchRatioGte1_2}
                                     onChange={(e) => setTelestrokeNote({
                                       ...telestrokeNote,
                                       wakeUpStrokeWorkflow: {
-                                        ...telestrokeNote.wakeUpStrokeWorkflow,
-                                        extendCriteria: {...telestrokeNote.wakeUpStrokeWorkflow.extendCriteria, mismatchRatioGte1_2: e.target.checked}
+                                        ...(telestrokeNote.wakeUpStrokeWorkflow || {}),
+                                        extendCriteria: {...(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {}), mismatchRatioGte1_2: e.target.checked}
                                       }
                                     })}
                                     className="w-4 h-4 rounded border-orange-400 text-orange-600"
@@ -13040,12 +13115,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="flex items-center gap-2 cursor-pointer">
                                   <input
                                     type="checkbox"
-                                    checked={telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.timeWindow4_5to9h}
+                                    checked={telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.timeWindow4_5to9h}
                                     onChange={(e) => setTelestrokeNote({
                                       ...telestrokeNote,
                                       wakeUpStrokeWorkflow: {
-                                        ...telestrokeNote.wakeUpStrokeWorkflow,
-                                        extendCriteria: {...telestrokeNote.wakeUpStrokeWorkflow.extendCriteria, timeWindow4_5to9h: e.target.checked}
+                                        ...(telestrokeNote.wakeUpStrokeWorkflow || {}),
+                                        extendCriteria: {...(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {}), timeWindow4_5to9h: e.target.checked}
                                       }
                                     })}
                                     className="w-4 h-4 rounded border-orange-400 text-orange-600"
@@ -13054,11 +13129,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </label>
                               </div>
                               {/* Eligibility Summary */}
-                              {telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.nihss4to26 &&
-                               telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.premorbidMRSLt2 &&
-                               telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.ischemicCoreLte70 &&
-                               telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.mismatchRatioGte1_2 &&
-                               telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.timeWindow4_5to9h && (
+                              {telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.nihss4to26 &&
+                               telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.premorbidMRSLt2 &&
+                               telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.ischemicCoreLte70 &&
+                               telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.mismatchRatioGte1_2 &&
+                               telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.timeWindow4_5to9h && (
                                 <div className="bg-emerald-100 border border-emerald-300 rounded-lg p-2 text-emerald-800 font-semibold text-sm flex items-center gap-2">
                                   <i data-lucide="check-circle" className="w-4 h-4"></i>
                                   <span>Meets EXTEND criteria - Consider IV thrombolysis</span>
@@ -13068,11 +13143,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           )}
 
                           {/* Imaging Recommendation Auto-suggest */}
-                          {telestrokeNote.wakeUpStrokeWorkflow.mriAvailable !== null && (
+                          {telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable !== null && (
                             <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                               <div className="font-semibold text-blue-800 mb-2 flex items-center gap-1"><i data-lucide="clipboard-list" className="w-4 h-4"></i> Suggested Imaging Recommendation:</div>
                               <div className="text-sm text-blue-900 bg-white rounded p-2 border border-blue-200">
-                                {telestrokeNote.wakeUpStrokeWorkflow.mriAvailable === true
+                                {telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable === true
                                   ? "Obtain MRI brain with DWI/FLAIR to assess for DWI-FLAIR mismatch (WAKE-UP trial criteria). If positive DWI lesion with no corresponding FLAIR hyperintensity, patient may be candidate for IV thrombolysis."
                                   : "Obtain CT Perfusion to assess for perfusion mismatch (EXTEND trial criteria). If ischemic core ≤70mL with mismatch ratio ≥1.2, patient may be candidate for IV thrombolysis in extended window."
                                 }
@@ -13232,6 +13307,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   setTelestrokeNote({
                                     ...telestrokeNote,
                                     lkwUnknown: nextValue,
+                                    wakeUpStrokeWorkflow: { ...(telestrokeNote.wakeUpStrokeWorkflow || {}), isWakeUpStroke: nextValue },
                                     discoveryDate: nextValue ? (telestrokeNote.discoveryDate || new Date().toISOString().split('T')[0]) : telestrokeNote.discoveryDate,
                                     discoveryTime: nextValue ? (telestrokeNote.discoveryTime || new Date().toTimeString().slice(0, 5)) : telestrokeNote.discoveryTime
                                   });
@@ -13271,19 +13347,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="space-y-2">
                                 <div className="text-sm font-semibold text-purple-800">Is MRI with DWI-FLAIR available?</div>
                                 <div className="flex gap-2">
-                                  <button onClick={() => setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...telestrokeNote.wakeUpStrokeWorkflow, mriAvailable: true}})}
-                                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${telestrokeNote.wakeUpStrokeWorkflow.mriAvailable === true ? 'bg-purple-600 text-white' : 'bg-white border border-purple-300 text-purple-700 hover:bg-purple-100'}`}>
+                                  <button onClick={() => setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), mriAvailable: true}})}
+                                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable === true ? 'bg-purple-600 text-white' : 'bg-white border border-purple-300 text-purple-700 hover:bg-purple-100'}`}>
                                     Yes - MRI
                                   </button>
-                                  <button onClick={() => setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...telestrokeNote.wakeUpStrokeWorkflow, mriAvailable: false}})}
-                                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${telestrokeNote.wakeUpStrokeWorkflow.mriAvailable === false ? 'bg-orange-600 text-white' : 'bg-white border border-orange-300 text-orange-700 hover:bg-orange-100'}`}>
+                                  <button onClick={() => setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), mriAvailable: false}})}
+                                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable === false ? 'bg-orange-600 text-white' : 'bg-white border border-orange-300 text-orange-700 hover:bg-orange-100'}`}>
                                     No - Use CTP
                                   </button>
                                 </div>
                               </div>
 
                               {/* WAKE-UP Trial Criteria */}
-                              {telestrokeNote.wakeUpStrokeWorkflow.mriAvailable === true && (
+                              {telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable === true && (
                                 <div className="bg-white border border-purple-200 rounded-lg p-2 space-y-1 text-sm">
                                   <div className="font-bold text-purple-800">WAKE-UP Trial Criteria</div>
                                   {[
@@ -13294,27 +13370,27 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   ].map(item => (
                                     <label key={item.key} className="flex items-center gap-2 cursor-pointer">
                                       <input type="checkbox"
-                                        checked={item.path.includes('.') ? telestrokeNote.wakeUpStrokeWorkflow[item.path.split('.')[0]][item.path.split('.')[1]] : telestrokeNote.wakeUpStrokeWorkflow[item.path]}
+                                        checked={item.path.includes('.') ? (telestrokeNote.wakeUpStrokeWorkflow?.[item.path.split('.')[0]] || {})[item.path.split('.')[1]] : telestrokeNote.wakeUpStrokeWorkflow?.[item.path]}
                                         onChange={(e) => {
                                           if (item.path.includes('.')) {
                                             const [parent, child] = item.path.split('.');
-                                            setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...telestrokeNote.wakeUpStrokeWorkflow, [parent]: {...telestrokeNote.wakeUpStrokeWorkflow[parent], [child]: e.target.checked}}});
+                                            setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), [parent]: {...(telestrokeNote.wakeUpStrokeWorkflow?.[parent] || {}), [child]: e.target.checked}}});
                                           } else {
-                                            setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...telestrokeNote.wakeUpStrokeWorkflow, [item.path]: e.target.checked}});
+                                            setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), [item.path]: e.target.checked}});
                                           }
                                         }}
                                         className="w-3.5 h-3.5 rounded border-purple-400 text-purple-600" />
                                       <span>{item.label}</span>
                                     </label>
                                   ))}
-                                  {telestrokeNote.wakeUpStrokeWorkflow.dwi.positiveForLesion && telestrokeNote.wakeUpStrokeWorkflow.flair.noMarkedHyperintensity && telestrokeNote.wakeUpStrokeWorkflow.ageEligible && telestrokeNote.wakeUpStrokeWorkflow.nihssEligible && (
+                                  {telestrokeNote.wakeUpStrokeWorkflow?.dwi?.positiveForLesion && telestrokeNote.wakeUpStrokeWorkflow?.flair?.noMarkedHyperintensity && telestrokeNote.wakeUpStrokeWorkflow?.ageEligible && telestrokeNote.wakeUpStrokeWorkflow?.nihssEligible && (
                                     <div className="bg-emerald-100 border border-emerald-300 rounded p-1.5 text-emerald-800 font-semibold text-xs">Meets WAKE-UP criteria - Consider IV thrombolysis</div>
                                   )}
                                 </div>
                               )}
 
                               {/* EXTEND Trial Criteria */}
-                              {telestrokeNote.wakeUpStrokeWorkflow.mriAvailable === false && (
+                              {telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable === false && (
                                 <div className="bg-white border border-orange-200 rounded-lg p-2 space-y-1 text-sm">
                                   <div className="font-bold text-orange-800">EXTEND Trial Criteria</div>
                                   {[
@@ -13326,13 +13402,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   ].map(item => (
                                     <label key={item.key} className="flex items-center gap-2 cursor-pointer">
                                       <input type="checkbox"
-                                        checked={telestrokeNote.wakeUpStrokeWorkflow.extendCriteria[item.field]}
-                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...telestrokeNote.wakeUpStrokeWorkflow, extendCriteria: {...telestrokeNote.wakeUpStrokeWorkflow.extendCriteria, [item.field]: e.target.checked}}})}
+                                        checked={(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {})[item.field]}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), extendCriteria: {...(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {}), [item.field]: e.target.checked}}})}
                                         className="w-3.5 h-3.5 rounded border-orange-400 text-orange-600" />
                                       <span>{item.label}</span>
                                     </label>
                                   ))}
-                                  {telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.nihss4to26 && telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.premorbidMRSLt2 && telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.ischemicCoreLte70 && telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.mismatchRatioGte1_2 && telestrokeNote.wakeUpStrokeWorkflow.extendCriteria.timeWindow4_5to9h && (
+                                  {telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.nihss4to26 && telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.premorbidMRSLt2 && telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.ischemicCoreLte70 && telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.mismatchRatioGte1_2 && telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.timeWindow4_5to9h && (
                                     <div className="bg-emerald-100 border border-emerald-300 rounded p-1.5 text-emerald-800 font-semibold text-xs">Meets EXTEND criteria - Consider IV thrombolysis</div>
                                   )}
                                 </div>
@@ -16061,7 +16137,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 if (nihss >= 4 && isTIA) {
                                   flags.push({ key: 'nihss-tia', color: 'amber', text: `NIHSS ${nihss} with TIA diagnosis — consider reclassifying as acute ischemic stroke if deficits persist` });
                                 }
-                                if (timeFrom && timeFrom.total > 24 && telestrokeNote.wakeUpStrokeWorkflow && telestrokeNote.wakeUpStrokeWorkflow.mriAvailable !== undefined) {
+                                if (timeFrom && timeFrom.total > 24 && telestrokeNote.wakeUpStrokeWorkflow && telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable !== undefined) {
                                   flags.push({ key: 'lkw-wakeup', color: 'amber', text: 'LKW >24h with wake-up stroke evaluation — verify onset window estimate for treatment eligibility' });
                                 }
 
