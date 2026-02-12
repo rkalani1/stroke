@@ -766,13 +766,13 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
 
 Chief complaint: {chiefComplaint}
 Last known well (date/time): {lkwDate} {lkwTime}
-HPI: {age} year old {sex} p/w {symptoms} at {lkwTime}
+HPI: {hpiDemographics} p/w {symptoms} at {lkwTime}
 Relevant PMH: {pmh}
 Medications: {medications}
 
 Objective:
 Vitals: BP {presentingBP}, HR {heartRate}, SpO2 {spO2}%, Temp {temperature}°F
-BP prior to TNK administration: {bpPreTNK} at {bpPreTNKTime}
+{bpPreTNKLine}
 Labs: Glucose {glucose}, Plt {plateletCount}K, Cr {creatinine}, INR {inr}{ptt}
 Exam: NIHSS {nihss} {gcs}- {nihssDetails}
 
@@ -6175,12 +6175,20 @@ Clinician Name`;
             const prophylaxisFreq = weight > 100 && !isRenalAdjusted ? 'q12h' : 'daily';
             const crClWarning = crClUnknown ? ' ⚠ CrCl unknown — verify renal function before dosing' : '';
             const obesityWarning = treatmentDose > 150 ? ' ⚠ Treatment dose >150 mg — consider anti-Xa monitoring (target 0.5-1.0 IU/mL at 4h post-dose) for morbid obesity' : '';
+            // Once-daily treatment: 1.5 mg/kg (alternative to BID, max ~180 mg)
+            const dailyTreatmentDose = Math.round(weight * 1.5);
+            const dailyTreatmentNote = isRenalAdjusted
+              ? `Daily treatment: ${treatmentDose} mg SC daily (CrCl <30 — use 1 mg/kg daily)`
+              : `Daily treatment (alternative): ${dailyTreatmentDose} mg SC daily`;
+            const dailyTreatmentWarning = dailyTreatmentDose > 180 ? ' ⚠ Daily dose >180 mg — consider BID dosing with anti-Xa monitoring' : '';
             return {
               dose: treatmentDose,
+              dailyDose: dailyTreatmentDose,
               frequency: isRenalAdjusted ? 'daily' : 'BID',
               isRenalAdjusted,
               crClUnknown,
               note: (isRenalAdjusted ? `Treatment: ${treatmentDose} mg SC daily (CrCl <30)` : `Treatment: ${treatmentDose} mg SC BID`) + crClWarning + obesityWarning,
+              dailyTreatmentNote: dailyTreatmentNote + dailyTreatmentWarning + crClWarning,
               prophylaxisNote: `VTE Prophylaxis: ${prophylaxisDose} mg SC ${prophylaxisFreq}${isRenalAdjusted ? ' (renal-adjusted)' : ''}${weight > 100 && !isRenalAdjusted ? ' (weight >100 kg)' : ''}` + crClWarning
             };
           };
@@ -8224,6 +8232,7 @@ Clinician Name`;
               const transferConsultLabel = consultationType === 'telephone' ? 'Telephone Consult' : 'Video Telestroke';
               let note = `TRANSFER SUMMARY (${transferConsultLabel})\n${'='.repeat(40)}\n\n`;
               if (telestrokeNote.callingSite) note += `From: ${telestrokeNote.callingSite}\n`;
+              if (telestrokeNote.callerName) note += `Caller: ${telestrokeNote.callerName}${telestrokeNote.callerRole ? ` (${telestrokeNote.callerRole})` : ''}\n`;
               note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}`;
               if (telestrokeNote.weight) note += ` | Wt: ${telestrokeNote.weight} kg${telestrokeNote.weightEstimated ? ' (estimated)' : ''}`;
               note += `\n`;
@@ -8321,7 +8330,7 @@ Clinician Name`;
                 if (transferWus.mriAvailable) {
                   const twDwi = transferWus.dwi || {};
                   const twFlair = transferWus.flair || {};
-                  if (twDwi.positiveForLesion) note += `- DWI: Positive lesion\n`;
+                  if (twDwi.positiveForLesion) note += `- DWI: Positive lesion${twDwi.lesionVolume ? ` (volume: ${twDwi.lesionVolume} mL)` : ''}\n`;
                   if (twFlair.noMarkedHyperintensity) note += `- FLAIR: No marked hyperintensity (DWI-FLAIR mismatch — favorable)\n`;
                   if (transferWus.ageEligible) note += `- Age: Eligible (18-80)\n`;
                   if (transferWus.nihssEligible) note += `- NIHSS: ≤25\n`;
@@ -8345,11 +8354,17 @@ Clinician Name`;
               if (telestrokeNote.tnkRecommended) {
                 const transferDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
                 note += `- TNK${transferDose ? ` ${transferDose.calculatedDose} mg` : ''} ${telestrokeNote.tnkAdminTime ? 'administered at ' + (formatTime(telestrokeNote.tnkAdminTime) || '___') : 'recommended (not yet administered)'}\n`;
+                if (telestrokeNote.tnkContraindicationReviewed) {
+                  note += `- Contraindication review: completed${telestrokeNote.tnkContraindicationReviewTime ? ` at ${telestrokeNote.tnkContraindicationReviewTime}` : ''}\n`;
+                }
                 if (telestrokeNote.tnkConsentDiscussed) {
                   note += `- Consent: ${telestrokeNote.tnkConsentType || '(type not specified)'} consent`;
                   if (telestrokeNote.tnkConsentWith) note += ` with ${telestrokeNote.tnkConsentWith}`;
                   if (telestrokeNote.tnkConsentTime) note += ` at ${telestrokeNote.tnkConsentTime}`;
                   note += `\n`;
+                }
+                if (telestrokeNote.disablingDeficit) {
+                  note += `- DISABLING DEFICIT: TNK recommended despite NIHSS ${telestrokeNote.nihss || nihssScore || '___'} based on significant functional impairment\n`;
                 }
               }
               if (telestrokeNote.evtRecommended) note += `- EVT recommended\n`;
@@ -8630,9 +8645,10 @@ Clinician Name`;
               const signoutConsultLabel = consultationType === 'telephone' ? 'Telephone' : 'Video Telestroke';
               let note = `SIGNOUT / HANDOFF (${signoutConsultLabel})\n${'='.repeat(40)}\n\n`;
               if (telestrokeNote.callingSite) note += `Site: ${telestrokeNote.callingSite}\n`;
-              note += `${telestrokeNote.age || '___'} ${telestrokeNote.sex || '___'} — ${telestrokeNote.diagnosis || '___'}`;
+              note += `${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'} — ${telestrokeNote.diagnosis || '___'}`;
               if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
               note += '\n';
+              if (telestrokeNote.affectedSide) note += `Affected side: ${telestrokeNote.affectedSide}\n`;
               if (telestrokeNote.weight) note += `Weight: ${telestrokeNote.weight} kg\n`;
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
               const signoutGCS = calculateGCS(gcsItems);
@@ -8960,6 +8976,7 @@ Clinician Name`;
               note += `Hospital Day #: ___\n`;
               note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}\n`;
               note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}\n`;
+              if (telestrokeNote.affectedSide) note += `Affected side: ${telestrokeNote.affectedSide}\n`;
               if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}${telestrokeNote.contrastAllergy ? ' **CONTRAST ALLERGY**' : ''}\n`;
               note += '\n';
               note += `SUBJECTIVE:\n`;
@@ -9185,7 +9202,7 @@ Clinician Name`;
               note += `- Primary care: 1 week\n`;
               note += `- Rehabilitation therapy: as arranged\n`;
               if (telestrokeNote.cardiacWorkup?.extendedMonitoringType) note += `- Cardiology: heart monitoring follow-up (${telestrokeNote.cardiacWorkup.extendedMonitoringType})\n`;
-              if (telestrokeNote.carotidManagement?.interventionPlanned) note += `- Vascular surgery: carotid procedure follow-up\n`;
+              if (telestrokeNote.carotidManagement?.intervention) note += `- Vascular surgery: carotid procedure follow-up\n`;
               note += `\nBring this document and a list of ALL your medications to every appointment.\n`;
               note += `If you have any questions, call your doctor's office.\n`;
               return note;
@@ -9251,7 +9268,7 @@ Clinician Name`;
                   if (dcWus.mriAvailable) {
                     const dcDwi = dcWus.dwi || {};
                     const dcFlair = dcWus.flair || {};
-                    if (dcDwi.positiveForLesion) note += `- DWI: Positive lesion\n`;
+                    if (dcDwi.positiveForLesion) note += `- DWI: Positive lesion${dcDwi.lesionVolume ? ` (volume: ${dcDwi.lesionVolume} mL)` : ''}\n`;
                     if (dcFlair.noMarkedHyperintensity) note += `- FLAIR: No hyperintensity (DWI-FLAIR mismatch)\n`;
                     if (dcDwi.positiveForLesion && dcFlair.noMarkedHyperintensity && dcWus.ageEligible && dcWus.nihssEligible) {
                       note += `- Met WAKE-UP trial criteria → IV thrombolysis administered per protocol\n`;
@@ -9274,6 +9291,8 @@ Clinician Name`;
               if (telestrokeNote.tnkRecommended) {
                 const dischDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
                 note += `- IV TNK ${dischDose ? dischDose.calculatedDose + ' mg' : ''} ${telestrokeNote.tnkAdminTime ? 'at ' + (formatTime(telestrokeNote.tnkAdminTime) || '___') : '(recommended, not yet administered)'}\n`;
+                if (telestrokeNote.tnkContraindicationReviewed) note += `- Contraindication review completed${telestrokeNote.tnkContraindicationReviewTime ? ` at ${telestrokeNote.tnkContraindicationReviewTime}` : ''}\n`;
+                if (telestrokeNote.disablingDeficit) note += `- DISABLING DEFICIT noted — TNK despite NIHSS ${telestrokeNote.nihss || nihssScore || '___'}\n`;
                 if (telestrokeNote.dtnTnkAdministered) note += formatDTNForNote();
               }
               if (telestrokeNote.evtRecommended) note += `- Mechanical thrombectomy${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
@@ -9424,6 +9443,12 @@ Clinician Name`;
               if (dischSp.antiplateletRegimen) {
                 let apLine = `- Antithrombotic: ${AP_LABELS_SHORT[dischSp.antiplateletRegimen] || dischSp.antiplateletRegimen}`;
                 if (dischSp.daptDuration) apLine += ` (DAPT ${dischSp.daptDuration})`;
+                if (dischSp.cyp2c19Tested && dischSp.cyp2c19Result) {
+                  const cypLabels = { 'normal': 'normal metabolizer', 'intermediate': 'intermediate metabolizer', 'poor-metabolizer': 'poor metabolizer (LOF)', 'ultra-rapid': 'ultra-rapid metabolizer' };
+                  apLine += ` — CYP2C19: ${cypLabels[dischSp.cyp2c19Result] || dischSp.cyp2c19Result}`;
+                } else if (dischSp.cyp2c19Tested) {
+                  apLine += ' — CYP2C19: tested, result pending';
+                }
                 note += apLine + '\n';
               }
               if (dischSp.statinDose) {
@@ -9633,6 +9658,13 @@ Clinician Name`;
             }
             note = note.replace(/{age}/g, telestrokeNote.age || '');
             note = note.replace(/{sex}/g, telestrokeNote.sex || '');
+            // Conditional HPI demographics — avoid " year old" when age empty
+            {
+              const ageStr = telestrokeNote.age;
+              const sexStr = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : telestrokeNote.sex || '';
+              const demo = ageStr ? `${ageStr} year old ${sexStr}`.trim() : (sexStr || '___');
+              note = note.replace(/{hpiDemographics}/g, demo);
+            }
             note = note.replace(/{symptoms}/g, telestrokeNote.symptoms || '');
             note = note.replace(/{pmh}/g, telestrokeNote.pmh || '');
             note = note.replace(/{medications}/g, telestrokeNote.medications || '');
@@ -9642,6 +9674,13 @@ Clinician Name`;
             note = note.replace(/{temperature}/g, telestrokeNote.temperature || '___');
             note = note.replace(/{bpPreTNK}/g, telestrokeNote.bpPreTNK || '___');
             note = note.replace(/{bpPreTNKTime}/g, formatTime(telestrokeNote.bpPreTNKTime));
+            // Conditional BP pre-TNK line — avoid "BP X at " when time is empty
+            {
+              const bpVal = telestrokeNote.bpPreTNK;
+              const bpTime = formatTime(telestrokeNote.bpPreTNKTime);
+              const bpLine = bpVal ? `BP prior to TNK administration: ${bpVal}${bpTime ? ` at ${bpTime}` : ''}` : '';
+              note = note.replace(/{bpPreTNKLine}/g, bpLine);
+            }
             note = note.replace(/{glucose}/g, telestrokeNote.glucose || '___');
             note = note.replace(/{plateletCount}/g, telestrokeNote.plateletCount || '___');
             note = note.replace(/{plateletsCoags}/g, telestrokeNote.plateletCount || '___');
@@ -9859,7 +9898,7 @@ Clinician Name`;
               if (wus.mriAvailable) {
                 const cwDwi = wus.dwi || {};
                 const cwFlair = wus.flair || {};
-                if (cwDwi.positiveForLesion) note += `- DWI: Positive lesion\n`;
+                if (cwDwi.positiveForLesion) note += `- DWI: Positive lesion${cwDwi.lesionVolume ? ` (volume: ${cwDwi.lesionVolume} mL)` : ''}\n`;
                 if (cwFlair.noMarkedHyperintensity) note += `- FLAIR: No marked hyperintensity (DWI-FLAIR mismatch — favorable)\n`;
                 if (wus.ageEligible) note += `- Age: Eligible (18-80)\n`;
                 if (wus.nihssEligible) note += `- NIHSS: ≤25\n`;
@@ -12687,6 +12726,20 @@ Clinician Name`;
             }));
           }, [activeTab, managementSubTab]);
 
+          // Lock body scroll when full-screen modals are open
+          useEffect(() => {
+            const anyModalOpen = !!protocolModal || showChangelog || showKeyboardHelp || calcDrawerOpen || !!confirmConfig;
+            if (anyModalOpen) {
+              const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+              document.body.style.overflow = 'hidden';
+              document.body.style.paddingRight = `${scrollbarWidth}px`;
+              return () => {
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+              };
+            }
+          }, [protocolModal, showChangelog, showKeyboardHelp, calcDrawerOpen, confirmConfig]);
+
           // Reinitialize icons when needed
           useEffect(() => {
             if (isMounted) {
@@ -12948,8 +13001,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             <div className="relative">
               <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-medium">Skip to main content</a>
               {protocolModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="protocol-modal-title">
-                  <div className="w-full max-w-lg bg-white rounded-xl shadow-xl border border-slate-200">
+                <div className="fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="protocol-modal-title" onClick={() => setProtocolModal(null)}>
+                  <div className="w-full max-w-lg bg-white rounded-xl shadow-xl border border-slate-200" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200">
                       <div>
                         <h3 id="protocol-modal-title" className="text-lg font-semibold text-slate-900">{protocolModal.title}</h3>
@@ -13127,7 +13180,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </button>
                         {settingsMenuOpen && (
                           <>
-                            <div className="fixed inset-0 z-40" onClick={() => setSettingsMenuOpen(false)} onKeyDown={(e) => e.key === 'Escape' && setSettingsMenuOpen(false)} role="presentation" aria-hidden="true"></div>
+                            <div className="fixed inset-0 z-50" onClick={() => setSettingsMenuOpen(false)} onKeyDown={(e) => e.key === 'Escape' && setSettingsMenuOpen(false)} role="presentation" aria-hidden="true"></div>
                             <div id="settings-menu" role="menu" aria-labelledby="settings-menu-trigger" className="absolute right-0 top-12 w-56 max-w-[calc(100vw-2rem)] bg-white border border-slate-200 rounded-xl shadow-lg z-50 py-1 overflow-hidden">
                               {showDocumentActions && (
                                 <button
@@ -18605,6 +18658,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       >
                                         <option value="">-- Select agent --</option>
                                         <option value="enoxaparin">Enoxaparin 1 mg/kg SC q12h</option>
+                                        <option value="enoxaparin-daily">Enoxaparin 1.5 mg/kg SC daily</option>
                                         <option value="ufh">UFH weight-based (aPTT 60-80s)</option>
                                         <option value="other">Other</option>
                                       </select>
@@ -27020,14 +27074,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           return (
                             <div className={`p-3 rounded-lg border ${result.isRenalAdjusted ? 'bg-amber-100 border-amber-300' : 'bg-emerald-100 border-emerald-300'}`}>
                               <p className="text-sm font-bold">{result.note}</p>
+                              {!result.isRenalAdjusted && <p className="text-sm text-slate-600 mt-0.5">{result.dailyTreatmentNote}</p>}
                               <p className="text-sm font-semibold text-teal-700 mt-1">{result.prophylaxisNote}</p>
                               {result.isRenalAdjusted && <p className="text-xs text-amber-700">Renal dose adjustment applied (CrCl &lt;30 mL/min)</p>}
-                              <button onClick={() => copyToClipboard(`${result.note}\n${result.prophylaxisNote}`, 'Enoxaparin Dose')}
+                              <button onClick={() => copyToClipboard(`${result.note}\n${result.dailyTreatmentNote}\n${result.prophylaxisNote}`, 'Enoxaparin Dose')}
                                 className="mt-1 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300" aria-label="Copy enoxaparin dose to clipboard">Copy</button>
                             </div>
                           );
                         })()}
-                        <p className="text-xs text-slate-500 mt-2">Treatment dose: 1 mg/kg SC BID. CrCl &lt;30: 1 mg/kg SC daily. For DVT prophylaxis: 40 mg SC daily (30 mg if CrCl &lt;30). Check anti-Xa levels for extremes of weight.</p>
+                        <p className="text-xs text-slate-500 mt-2">Treatment: 1 mg/kg SC BID (standard) or 1.5 mg/kg SC daily (alternative). CrCl &lt;30: 1 mg/kg SC daily. Prophylaxis: 40 mg SC daily (30 mg if CrCl &lt;30). Check anti-Xa for extremes of weight.</p>
                       </div>
                     </details>
 
@@ -27060,7 +27115,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   const newRegions = {...(telestrokeNote.aspectsRegions || {}), [region.id]: !isAffected};
                                   const score = 10 - Object.values(newRegions).filter(Boolean).length;
                                   setTelestrokeNote({...telestrokeNote, aspectsRegions: newRegions});
-                                  if (typeof setAspectsScore === 'function') setAspectsScore(score.toString());
+                                  if (typeof setAspectsScore === 'function') setAspectsScore(score);
+                                  // Sync to calculator drawer state (array format: checked=true means normal)
+                                  setAspectsRegionState(prev => prev.map(r => r.id === region.id ? {...r, checked: isAffected} : r));
                                 }}
                                 title={region.desc}
                               >
@@ -27089,7 +27146,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           );
                         })()}
-                        <button type="button" onClick={() => { setTelestrokeNote(prev => ({...prev, aspectsRegions: {}})); if (typeof setAspectsScore === 'function') setAspectsScore('10'); }}
+                        <button type="button" onClick={() => { setTelestrokeNote(prev => ({...prev, aspectsRegions: {}})); if (typeof setAspectsScore === 'function') setAspectsScore(10); setAspectsRegionState(getDefaultAspectsRegionState()); }}
                           className="mt-2 text-xs text-slate-500 hover:text-slate-700 underline">Reset all regions</button>
                       </div>
                     </details>
