@@ -11642,7 +11642,7 @@ Clinician Name`;
                   'IV isotonic saline for euvolemia — avoid hypovolemia',
                   'Seizure prophylaxis (if cortical SAH, IVH, poor-grade HH 3-5, or seizure at onset): Levetiracetam 500-1000 mg IV/PO q12h x 3-7 days — avoid prolonged routine prophylaxis',
                   'Stool softener (docusate 100 mg BID) — avoid straining',
-                  'Magnesium sulfate: Target Mg2+ ≥2.0 mg/dL. Check q12h. Replete aggressively — hypomagnesemia worsens vasospasm.',
+                  'Magnesium sulfate: Target Mg2+ ≥2.0 mg/dL (≥0.8 mmol/L). Check q12h. Replete aggressively — hypomagnesemia worsens vasospasm.',
                   'Neurosurgery/neurointerventional consult for aneurysm securing',
                   'Neuro checks q1h, strict I/O, HOB 30 degrees'
                 ]
@@ -11680,7 +11680,7 @@ Clinician Name`;
 
           // Now button component for timestamp fields
           const NowButton = ({ onClick, label }) => (
-            <button type="button" onClick={onClick} className="px-2 py-1 text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors whitespace-nowrap min-h-[36px]" title={label || 'Set to current time'}>
+            <button type="button" onClick={onClick} className="px-2 py-1 text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap min-h-[36px]" title={label || 'Set to current time'}>
               Now
             </button>
           );
@@ -13584,7 +13584,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <button
                         type="button"
                         onClick={() => setProtocolModal(null)}
-                        className="text-slate-500 hover:text-slate-700 min-h-[36px] min-w-[36px] flex items-center justify-center"
+                        className="text-slate-500 hover:text-slate-700 min-h-[36px] min-w-[36px] flex items-center justify-center rounded-lg focus:ring-2 focus:ring-blue-500"
                         aria-label="Close protocol"
                       >
                         <i aria-hidden="true" data-lucide="x" className="w-5 h-5"></i>
@@ -16320,7 +16320,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <span className="font-semibold text-indigo-800 text-sm">Pulsara Summary</span>
                               <button
                                 onClick={() => { copyToClipboard(generatePulsaraSummary(), 'tel-pulsara'); }}
-                                className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors"
+                                className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 transition-colors"
                               >
                                 <i aria-hidden="true" data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-4 h-4"></i>
                                 {copiedText === 'tel-pulsara' ? 'Copied!' : 'Copy Pulsara'}
@@ -16338,7 +16338,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   const note = buildSmartNote();
                                   copyToClipboard(note, 'smart-note');
                                 }}
-                                className="flex items-center gap-2 px-3 py-1.5 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors"
+                                className="flex items-center gap-2 px-3 py-1.5 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 transition-colors"
                               >
                                 <i aria-hidden="true" data-lucide={copiedText === 'smart-note' ? 'check' : 'copy'} className="w-4 h-4"></i>
                                 {copiedText === 'smart-note' ? 'Copied!' : 'Copy Smart Note'}
@@ -16355,7 +16355,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               const note = generateTelestrokeNote();
                               copyToClipboard(note, 'telephone-note');
                             }}
-                            className="w-full px-4 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium flex items-center justify-center gap-2"
+                            className="w-full px-4 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 focus:ring-2 focus:ring-amber-500 transition-colors font-medium flex items-center justify-center gap-2"
                           >
                             <i aria-hidden="true" data-lucide="copy" className="w-4 h-4"></i>
                             {copiedText === 'telephone-note' ? 'Copied!' : `Copy ${
@@ -16372,7 +16372,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   await navigator.share({ title: `Stroke Consult — ${telestrokeNote.diagnosis || 'Note'}`, text: note });
                                 } catch (err) { /* user cancelled */ }
                               }}
-                              className="w-full px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
+                              className="w-full px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 focus:ring-2 focus:ring-blue-500 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
                             >
                               <i aria-hidden="true" data-lucide="share-2" className="w-4 h-4"></i>
                               Share Note
@@ -18749,15 +18749,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">ED Arrival (Door)</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnEdArrival && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnEdArrival); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnEdArrival: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
+                                        {telestrokeNote.dtnEdArrival && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnEdArrival); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnEdArrival: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 focus:ring-2 focus:ring-purple-500 min-h-[36px]" aria-label="ED arrival minus 1 minute">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote(prev => ({...prev, dtnEdArrival: toLocalISO(new Date())}))}
-                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 transition-colors min-h-[36px]"
+                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 transition-colors min-h-[36px]"
+                                          aria-label="Set ED arrival to now"
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnEdArrival && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnEdArrival); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnEdArrival: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
+                                        {telestrokeNote.dtnEdArrival && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnEdArrival); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnEdArrival: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 focus:ring-2 focus:ring-purple-500 min-h-[36px]" aria-label="ED arrival plus 1 minute">+1m</button>}
                                       </div>
                                     </div>
                                     <input
@@ -18773,15 +18774,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">Stroke Alert Called</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnStrokeAlert && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnStrokeAlert); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnStrokeAlert: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
+                                        {telestrokeNote.dtnStrokeAlert && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnStrokeAlert); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnStrokeAlert: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 focus:ring-2 focus:ring-purple-500 min-h-[36px]" aria-label="Stroke alert minus 1 minute">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote(prev => ({...prev, dtnStrokeAlert: toLocalISO(new Date())}))}
-                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 transition-colors min-h-[36px]"
+                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 transition-colors min-h-[36px]"
+                                          aria-label="Set stroke alert to now"
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnStrokeAlert && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnStrokeAlert); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnStrokeAlert: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
+                                        {telestrokeNote.dtnStrokeAlert && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnStrokeAlert); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnStrokeAlert: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 focus:ring-2 focus:ring-purple-500 min-h-[36px]" aria-label="Stroke alert plus 1 minute">+1m</button>}
                                       </div>
                                     </div>
                                     <input
@@ -18797,15 +18799,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">CT Scan Started</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnCtStarted && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnCtStarted); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnCtStarted: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
+                                        {telestrokeNote.dtnCtStarted && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnCtStarted); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnCtStarted: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 focus:ring-2 focus:ring-purple-500 min-h-[36px]" aria-label="CT scan minus 1 minute">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote(prev => ({...prev, dtnCtStarted: toLocalISO(new Date())}))}
-                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 transition-colors min-h-[36px]"
+                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 transition-colors min-h-[36px]"
+                                          aria-label="Set CT scan to now"
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnCtStarted && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnCtStarted); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnCtStarted: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
+                                        {telestrokeNote.dtnCtStarted && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnCtStarted); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnCtStarted: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 focus:ring-2 focus:ring-purple-500 min-h-[36px]" aria-label="CT scan plus 1 minute">+1m</button>}
                                       </div>
                                     </div>
                                     <input
@@ -18821,15 +18824,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">CT Read/Cleared for TNK</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnCtRead && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnCtRead); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnCtRead: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
+                                        {telestrokeNote.dtnCtRead && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnCtRead); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnCtRead: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 focus:ring-2 focus:ring-purple-500 min-h-[36px]" aria-label="CT read minus 1 minute">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote(prev => ({...prev, dtnCtRead: toLocalISO(new Date())}))}
-                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 transition-colors min-h-[36px]"
+                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 transition-colors min-h-[36px]"
+                                          aria-label="Set CT read to now"
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnCtRead && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnCtRead); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnCtRead: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
+                                        {telestrokeNote.dtnCtRead && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnCtRead); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnCtRead: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 focus:ring-2 focus:ring-purple-500 min-h-[36px]" aria-label="CT read plus 1 minute">+1m</button>}
                                       </div>
                                     </div>
                                     <input
@@ -18845,15 +18849,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">TNK Ordered</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnTnkOrdered && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnTnkOrdered); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnTnkOrdered: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
+                                        {telestrokeNote.dtnTnkOrdered && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnTnkOrdered); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnTnkOrdered: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 focus:ring-2 focus:ring-purple-500 min-h-[36px]" aria-label="TNK ordered minus 1 minute">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote(prev => ({...prev, dtnTnkOrdered: toLocalISO(new Date())}))}
-                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 transition-colors min-h-[36px]"
+                                          className="px-3 py-1.5 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 transition-colors min-h-[36px]"
+                                          aria-label="Set TNK ordered to now"
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnTnkOrdered && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnTnkOrdered); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnTnkOrdered: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
+                                        {telestrokeNote.dtnTnkOrdered && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnTnkOrdered); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnTnkOrdered: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 focus:ring-2 focus:ring-purple-500 min-h-[36px]" aria-label="TNK ordered plus 1 minute">+1m</button>}
                                       </div>
                                     </div>
                                     <input
@@ -18869,15 +18874,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-bold text-emerald-700">TNK Administered (Needle)</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnTnkAdministered && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnTnkAdministered); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnTnkAdministered: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
+                                        {telestrokeNote.dtnTnkAdministered && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnTnkAdministered); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnTnkAdministered: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 focus:ring-2 focus:ring-emerald-500 min-h-[36px]" aria-label="TNK administered minus 1 minute">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote(prev => ({...prev, dtnTnkAdministered: toLocalISO(new Date())}))}
-                                          className="px-3 py-1.5 bg-emerald-600 text-white text-sm rounded hover:bg-emerald-700 transition-colors min-h-[36px]"
+                                          className="px-3 py-1.5 bg-emerald-600 text-white text-sm rounded hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 transition-colors min-h-[36px]"
+                                          aria-label="Set TNK administered to now"
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnTnkAdministered && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnTnkAdministered); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnTnkAdministered: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
+                                        {telestrokeNote.dtnTnkAdministered && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnTnkAdministered); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnTnkAdministered: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 focus:ring-2 focus:ring-emerald-500 min-h-[36px]" aria-label="TNK administered plus 1 minute">+1m</button>}
                                       </div>
                                     </div>
                                     <input
@@ -22703,7 +22709,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <span className="font-semibold text-indigo-800 text-sm">Pulsara Summary</span>
                             <button
                               onClick={() => { copyToClipboard(generatePulsaraSummary(), 'tel-pulsara'); }}
-                              className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors"
+                              className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 transition-colors"
                             >
                               <i aria-hidden="true" data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-4 h-4"></i>
                               {copiedText === 'tel-pulsara' ? 'Copied!' : 'Copy Pulsara'}
@@ -22864,7 +22870,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   const note = generateTelestrokeNote();
                                   copyToClipboard(note, 'encounter-note');
                                 }}
-                                className="flex items-center gap-2 px-3 py-2 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors"
+                                className="flex items-center gap-2 px-3 py-2 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 transition-colors"
                               >
                                 <i aria-hidden="true" data-lucide={copiedText === 'encounter-note' ? 'check' : 'copy'} className="w-4 h-4"></i>
                                 {copiedText === 'encounter-note' ? 'Copied!' : 'Copy Full Note'}
@@ -22880,7 +22886,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   const note = buildSmartNote();
                                   copyToClipboard(note, 'smart-note-encounter');
                                 }}
-                                className="flex items-center gap-2 px-3 py-1.5 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors"
+                                className="flex items-center gap-2 px-3 py-1.5 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 transition-colors"
                               >
                                 <i aria-hidden="true" data-lucide={copiedText === 'smart-note-encounter' ? 'check' : 'copy'} className="w-4 h-4"></i>
                                 {copiedText === 'smart-note-encounter' ? 'Copied!' : 'Copy Smart Note'}
@@ -22909,7 +22915,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 }
                                 copyToClipboard(hpi, 'vid-hpi');
                               }}
-                              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-hpi' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
+                              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 focus:ring-2 focus:ring-blue-500 ${copiedText === 'vid-hpi' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
                               <i aria-hidden="true" data-lucide={copiedText === 'vid-hpi' ? 'check' : 'copy'} className="w-3 h-3"></i>
                               HPI Data
@@ -22924,7 +22930,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 if (aspectsScore != null) exam += `\nASPECTS: ${aspectsScore}`;
                                 copyToClipboard(exam, 'vid-exam');
                               }}
-                              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-exam' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
+                              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 focus:ring-2 focus:ring-blue-500 ${copiedText === 'vid-exam' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
                               <i aria-hidden="true" data-lucide={copiedText === 'vid-exam' ? 'check' : 'copy'} className="w-3 h-3"></i>
                               Exam / NIHSS
@@ -22939,7 +22945,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 if (telestrokeNote.recommendationsText) mdm += `\n${telestrokeNote.recommendationsText}`;
                                 copyToClipboard(mdm, 'vid-mdm');
                               }}
-                              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-mdm' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
+                              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 focus:ring-2 focus:ring-blue-500 ${copiedText === 'vid-mdm' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
                               <i aria-hidden="true" data-lucide={copiedText === 'vid-mdm' ? 'check' : 'copy'} className="w-3 h-3"></i>
                               MDM / Plan
@@ -22951,7 +22957,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             onClick={() => {
                               copyToClipboard(generateFollowUpBrief(), 'vid-followup');
                             }}
-                            className={`w-full mb-3 px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-followup' ? 'bg-emerald-600 text-white' : 'bg-blue-100 text-blue-800 hover:bg-blue-200 border border-blue-300'}`}
+                            className={`w-full mb-3 px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 focus:ring-2 focus:ring-blue-500 ${copiedText === 'vid-followup' ? 'bg-emerald-600 text-white' : 'bg-blue-100 text-blue-800 hover:bg-blue-200 border border-blue-300'}`}
                           >
                             <i aria-hidden="true" data-lucide={copiedText === 'vid-followup' ? 'check' : 'file-output'} className="w-3 h-3"></i>
                             {copiedText === 'vid-followup' ? 'Copied!' : 'Copy Follow-up Brief (Clinic Handoff)'}
@@ -24378,22 +24384,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="space-y-1.5 text-xs">
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">ASPECTS 3-10, mRS 0-1</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-semibold">Recommended</span>
                                   </div>
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">ASPECTS 6-10, mRS 2</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300">Reasonable</span>
                                   </div>
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">ASPECTS 6-10, mRS 3-4</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold border border-amber-300">May be considered</span>
                                   </div>
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">ASPECTS 0-2, mRS 0-1 — consider CTP core ≤70-100cc</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold border border-amber-300">Very select cases</span>
                                   </div>
                                 </div>
@@ -24405,17 +24411,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="space-y-1.5 text-xs">
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">ASPECTS 6-10, mRS 0-1</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-semibold">Recommended</span>
                                   </div>
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">ASPECTS 3-5, mRS 0-1 — consider CTP core ≤100cc + mismatch</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-semibold">Recommended</span>
                                   </div>
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">ASPECTS 0-2</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold border border-slate-300">Benefit unclear</span>
                                   </div>
                                 </div>
@@ -24426,7 +24432,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-xs font-bold text-slate-500 mb-1.5">&gt;24 hours</p>
                                 <div className="text-xs flex items-center gap-1.5">
                                   <span className="text-slate-500">Any</span>
-                                  <span className="text-slate-400">→</span>
+                                  <span className="text-slate-500">→</span>
                                   <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold border border-slate-300">Individualized</span>
                                 </div>
                               </div>
@@ -24440,17 +24446,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="space-y-1.5 text-xs">
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">mRS 0-1, NIHSS ≥10</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-semibold">Recommended</span>
                                   </div>
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">NIHSS 6-9</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold border border-amber-300">May be considered</span>
                                   </div>
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-500">mRS 2+</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold border border-slate-300">Individualized</span>
                                   </div>
                                 </div>
@@ -24464,12 +24470,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="space-y-1.5 text-xs">
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">Proximal/dominant M2 ≤1cm of bifurcation, salvageable tissue, LKW ≤24h</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold border border-amber-300">May be considered (select cases)</span>
                                   </div>
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">M2-M4 MCA, ACA, PCA occlusions</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-semibold border border-red-300">Not recommended</span>
                                   </div>
                                 </div>
@@ -24487,17 +24493,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="space-y-1.5 text-xs">
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">Age 6-17y, 0-24h, salvageable tissue</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300">Reasonable</span>
                                   </div>
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">Age 28d-5y, 0-24h, salvageable tissue</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold border border-amber-300">May be considered</span>
                                   </div>
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-500">Neonates (0-28d) / &gt;24h</span>
-                                    <span className="text-slate-400">→</span>
+                                    <span className="text-slate-500">→</span>
                                     <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold border border-slate-300">Individualized</span>
                                   </div>
                                 </div>
@@ -26509,7 +26515,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         const label = ichScore >= 4 ? 'High mortality risk' : ichScore >= 2 ? 'Moderate risk' : 'Lower risk';
                         const tone = ichScore >= 4 ? 'bg-red-50 border-red-200 text-red-800' : ichScore >= 2 ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-emerald-50 border-emerald-200 text-emerald-800';
                         return (
-                          <div className={`mt-2 border rounded-lg p-2 text-xs ${tone}`}>
+                          <div className={`mt-2 border rounded-lg p-2 text-xs ${tone}`} aria-live="polite" aria-atomic="true">
                             <span className="font-semibold">Interpretation:</span> {label} (ICH Score {ichScore})
                             <span className="ml-2 font-semibold">30-day mortality: {mortality}</span>
                             <p className="mt-1 text-slate-500">Hemphill et al., Stroke 2001; validated in multiple cohorts</p>
@@ -26939,7 +26945,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               onChange={(e) => setAbcd2Items(prev => ({...prev, speechDisturbance: e.target.checked, unilateralWeakness: e.target.checked ? false : prev.unilateralWeakness}))}
                               disabled={abcd2Items.unilateralWeakness}
                             />
-                            <span className={`text-sm ${abcd2Items.unilateralWeakness ? 'text-slate-400' : ''}`}>Speech disturbance w/o weakness (+1)</span>
+                            <span className={`text-sm ${abcd2Items.unilateralWeakness ? 'text-slate-500 line-through' : ''}`}>Speech disturbance w/o weakness (+1)</span>
                           </label>
                           <p className="font-semibold text-sm mt-3 mb-1">Symptom Duration:</p>
                           {[{v:'duration60',l:'\u226560 minutes',p:'+2 points'},{v:'duration10',l:'10-59 minutes',p:'+1 point'},{v:'',l:'<10 minutes',p:'0 points'}].map(o => (
@@ -27210,7 +27216,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </label>
                         </div>
 
-                        <div className="bg-white p-3 rounded border">
+                        <div className="bg-white p-3 rounded border" aria-live="polite" aria-atomic="true">
                           <h4 className="font-semibold text-pink-700 mb-2">Annual Bleeding Risk</h4>
                           <div className="text-sm space-y-1">
                             <p className={calculateHASBLEDScore(hasbledItems) === 0 ? "font-bold text-pink-600" : ""}><strong>Score 0:</strong> 1.13% per year</p>
@@ -27310,7 +27316,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="bg-white p-3 rounded border">
+                        <div className="bg-white p-3 rounded border" aria-live="polite" aria-atomic="true">
                           <h4 className="font-semibold mb-2">PFO-attributable fraction</h4>
                           <div className="text-sm">
                             <p className={calculateROPEScore(ropeItems) <= 3 ? "font-bold text-blue-600" : ""}><strong>Score 0-3:</strong> 0-23%</p>
@@ -27586,7 +27592,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             : score <= 8 ? 'bg-amber-100 border-amber-300 text-amber-800'
                             : 'bg-red-100 border-red-300 text-red-800';
                           return (
-                            <div className={`mt-3 p-3 rounded-lg border ${colorClass}`}>
+                            <div className={`mt-3 p-3 rounded-lg border ${colorClass}`} aria-live="polite" aria-atomic="true">
                               <p className="font-bold">PHASES Score: {score} — {level}</p>
                               <p className="text-sm">5-year absolute rupture risk: <strong>{risk}</strong></p>
                               <button onClick={() => copyToClipboard(`PHASES Score: ${score}, 5-year rupture risk: ${risk} (${level})`, 'PHASES Score')}
@@ -30295,7 +30301,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   const note = generateTelestrokeNote();
                   copyToClipboard(note, 'Consult Note');
                 }}
-                className="fixed left-4 fab-offset z-50 flex items-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors no-print"
+                className="fixed left-4 fab-offset z-50 flex items-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors no-print"
                 title="Copy consult note to clipboard"
               >
                 <i aria-hidden="true" data-lucide="clipboard-copy" className="w-4 h-4"></i>
@@ -30394,7 +30400,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       Calculators
                       <kbd className="text-xs text-slate-500 font-mono ml-2">Ctrl+Shift+K</kbd>
                     </h2>
-                    <button onClick={() => setCalcDrawerOpen(false)} className="p-2 hover:bg-slate-100 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center" aria-label="Close calculators">
+                    <button onClick={() => setCalcDrawerOpen(false)} className="p-2 hover:bg-slate-100 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center focus:ring-2 focus:ring-blue-500" aria-label="Close calculators">
                       <i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i>
                     </button>
                   </div>
@@ -30452,9 +30458,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { label: 'ICH Score', desc: 'ICH prognosis', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }},
                         { label: 'Hunt & Hess', desc: 'SAH severity', action: () => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }}
                       ].map(c => (
-                        <button key={c.label} onClick={c.action} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 text-left">
+                        <button key={c.label} onClick={c.action} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 focus:ring-2 focus:ring-blue-500 text-left">
                           <div><div className="font-medium text-sm text-slate-900">{c.label}</div><div className="text-xs text-slate-500">{c.desc}</div></div>
-                          <i aria-hidden="true" data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-400"></i>
+                          <i aria-hidden="true" data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-500"></i>
                         </button>
                       ))}
                     </div>
@@ -30467,9 +30473,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { label: 'ROPE', desc: 'PFO attribution' },
                         { label: 'RCVS\u00B2', desc: 'Vasoconstriction' }
                       ].map(c => (
-                        <button key={c.label} onClick={() => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 text-left">
+                        <button key={c.label} onClick={() => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 focus:ring-2 focus:ring-blue-500 text-left">
                           <div><div className="font-medium text-sm text-slate-900">{c.label}</div><div className="text-xs text-slate-500">{c.desc}</div></div>
-                          <i aria-hidden="true" data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-400"></i>
+                          <i aria-hidden="true" data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-500"></i>
                         </button>
                       ))}
                     </div>
@@ -30479,9 +30485,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { label: 'CrCl / eGFR', desc: 'Renal function' },
                         { label: 'ICH Volume', desc: 'ABC/2 method' }
                       ].map(c => (
-                        <button key={c.label} onClick={() => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 text-left">
+                        <button key={c.label} onClick={() => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 focus:ring-2 focus:ring-blue-500 text-left">
                           <div><div className="font-medium text-sm text-slate-900">{c.label}</div><div className="text-xs text-slate-500">{c.desc}</div></div>
-                          <i aria-hidden="true" data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-400"></i>
+                          <i aria-hidden="true" data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-500"></i>
                         </button>
                       ))}
                     </div>
@@ -30497,7 +30503,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 <div role="dialog" aria-modal="true" aria-labelledby="changelog-title" className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[28rem] max-h-[70vh] bg-white rounded-2xl shadow-2xl overflow-y-auto">
                   <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between z-10">
                     <h2 id="changelog-title" className="text-base font-bold text-slate-900">What's New</h2>
-                    <button onClick={() => setShowChangelog(false)} className="p-2 hover:bg-slate-100 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center" aria-label="Close changelog"><i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
+                    <button onClick={() => setShowChangelog(false)} className="p-2 hover:bg-slate-100 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center focus:ring-2 focus:ring-blue-500" aria-label="Close changelog"><i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
                   </div>
                   <div className="p-4 space-y-4">
                     {CHANGELOG.map((release) => (
@@ -30528,7 +30534,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 <div role="dialog" aria-modal="true" aria-labelledby="keyboard-help-title" className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[24rem] bg-white rounded-2xl shadow-2xl overflow-hidden">
                   <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between">
                     <h2 id="keyboard-help-title" className="text-base font-bold text-slate-900">Keyboard Shortcuts</h2>
-                    <button onClick={() => setShowKeyboardHelp(false)} className="p-2 hover:bg-slate-100 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center" aria-label="Close keyboard shortcuts"><i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
+                    <button onClick={() => setShowKeyboardHelp(false)} className="p-2 hover:bg-slate-100 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center focus:ring-2 focus:ring-blue-500" aria-label="Close keyboard shortcuts"><i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
                   </div>
                   <div className="p-4 space-y-3">
                     {[
