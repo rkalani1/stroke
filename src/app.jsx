@@ -9240,7 +9240,14 @@ Clinician Name`;
               if (telestrokeNote.spO2) dischVitals.push(`SpO2 ${telestrokeNote.spO2}%`);
               if (telestrokeNote.temperature) dischVitals.push(`Temp ${telestrokeNote.temperature}°F`);
               if (telestrokeNote.glucose) dischVitals.push(`Glucose ${telestrokeNote.glucose}`);
-              note += `Presenting Vitals: ${dischVitals.join(', ')}\n\n`;
+              note += `Presenting Vitals: ${dischVitals.join(', ')}\n`;
+              const dischLabs = [];
+              if (telestrokeNote.creatinine) dischLabs.push(`Cr ${telestrokeNote.creatinine}`);
+              if (telestrokeNote.inr) dischLabs.push(`INR ${telestrokeNote.inr}`);
+              if (telestrokeNote.ptt) dischLabs.push(`PTT ${telestrokeNote.ptt}`);
+              if (telestrokeNote.plateletCount) dischLabs.push(`Plt ${telestrokeNote.plateletCount}K`);
+              if (dischLabs.length > 0) note += `Pertinent Labs: ${dischLabs.join(', ')}\n`;
+              note += `\n`;
               note += `IMAGING:\n`;
               note += `- CT Head: ${telestrokeNote.ctResults || '___'}`;
               if (telestrokeNote.earlyInfarctSigns) note += ' (early infarct signs)';
@@ -10795,6 +10802,26 @@ Clinician Name`;
               if (n.dischargeChecklistReviewed && missing.length > 0) {
                 warnings.push({ id: 'discharge-checklist-incomplete', severity: 'warn', msg: `Discharge checklist marked reviewed but ${missing.length} core item${missing.length > 1 ? 's' : ''} incomplete: ${missing.map(i => i.label).join(', ')}` });
               }
+            }
+
+            // TNK recommended but active internal bleeding documented
+            if (n.tnkRecommended && n.tnkContraindicationChecklist?.activeInternalBleeding) {
+              warnings.push({ id: 'tnk-active-bleeding', severity: 'error', msg: 'TNK recommended but active internal bleeding documented in contraindication checklist — this is an ABSOLUTE contraindication to thrombolysis.' });
+            }
+
+            // EVT recommended but no recanalization result documented
+            if (n.evtRecommended && !n.ticiScore) {
+              warnings.push({ id: 'evt-no-tici', severity: 'warn', msg: 'EVT recommended but recanalization result (mTICI score) not documented — document post-procedure outcome.' });
+            }
+
+            // Hemorrhagic transformation detected but antithrombotics not held
+            if (n.hemorrhagicTransformation?.detected && !n.hemorrhagicTransformation?.antithromboticHeld) {
+              warnings.push({ id: 'ht-antithrombotics-not-held', severity: 'error', msg: 'Hemorrhagic transformation documented but antithrombotics not marked as held — verify medication management.' });
+            }
+
+            // SAH with anticoagulation but no reversal agent specified
+            if (n.diagnosisCategory === 'sah' && n.lastDOACType && !n.reversalAgent) {
+              warnings.push({ id: 'sah-no-reversal', severity: 'error', msg: `SAH with pre-admission ${n.lastDOACType} but no reversal agent specified — urgent reversal required.` });
             }
 
             return warnings;
@@ -12752,16 +12779,48 @@ Clinician Name`;
             }));
           }, [activeTab, managementSubTab]);
 
-          // Lock body scroll when full-screen modals are open
+          // Lock body scroll + focus trap when full-screen modals are open
           useEffect(() => {
             const anyModalOpen = !!protocolModal || showChangelog || showKeyboardHelp || calcDrawerOpen || !!confirmConfig;
             if (anyModalOpen) {
               const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
               document.body.style.overflow = 'hidden';
               document.body.style.paddingRight = `${scrollbarWidth}px`;
+              // Focus trap: keep Tab within the open modal dialog
+              const previouslyFocused = document.activeElement;
+              const trapFocus = (e) => {
+                if (e.key !== 'Tab') return;
+                const modal = document.querySelector('[role="dialog"], [aria-modal="true"]');
+                if (!modal) return;
+                const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                if (focusable.length === 0) return;
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                  e.preventDefault();
+                  last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                  e.preventDefault();
+                  first.focus();
+                } else if (!modal.contains(document.activeElement)) {
+                  e.preventDefault();
+                  first.focus();
+                }
+              };
+              document.addEventListener('keydown', trapFocus);
+              // Auto-focus first focusable element in modal
+              requestAnimationFrame(() => {
+                const modal = document.querySelector('[role="dialog"], [aria-modal="true"]');
+                if (modal) {
+                  const first = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                  if (first) first.focus();
+                }
+              });
               return () => {
                 document.body.style.overflow = '';
                 document.body.style.paddingRight = '';
+                document.removeEventListener('keydown', trapFocus);
+                if (previouslyFocused && previouslyFocused.focus) previouslyFocused.focus();
               };
             }
           }, [protocolModal, showChangelog, showKeyboardHelp, calcDrawerOpen, confirmConfig]);
@@ -18035,7 +18094,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">ED Arrival (Door)</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnEdArrival && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnEdArrival); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnEdArrival: toLocalISO(d)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
+                                        {telestrokeNote.dtnEdArrival && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnEdArrival); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnEdArrival: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote({...telestrokeNote, dtnEdArrival: toLocalISO(new Date())})}
@@ -18043,7 +18102,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnEdArrival && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnEdArrival); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnEdArrival: toLocalISO(d)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
+                                        {telestrokeNote.dtnEdArrival && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnEdArrival); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnEdArrival: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
                                       </div>
                                     </div>
                                     <input
@@ -18059,7 +18118,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">Stroke Alert Called</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnStrokeAlert && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnStrokeAlert); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: toLocalISO(d)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
+                                        {telestrokeNote.dtnStrokeAlert && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnStrokeAlert); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnStrokeAlert: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: toLocalISO(new Date())})}
@@ -18067,7 +18126,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnStrokeAlert && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnStrokeAlert); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnStrokeAlert: toLocalISO(d)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
+                                        {telestrokeNote.dtnStrokeAlert && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnStrokeAlert); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnStrokeAlert: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
                                       </div>
                                     </div>
                                     <input
@@ -18083,7 +18142,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">CT Scan Started</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnCtStarted && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtStarted); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnCtStarted: toLocalISO(d)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
+                                        {telestrokeNote.dtnCtStarted && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnCtStarted); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnCtStarted: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote({...telestrokeNote, dtnCtStarted: toLocalISO(new Date())})}
@@ -18091,7 +18150,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnCtStarted && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtStarted); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnCtStarted: toLocalISO(d)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
+                                        {telestrokeNote.dtnCtStarted && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnCtStarted); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnCtStarted: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
                                       </div>
                                     </div>
                                     <input
@@ -18107,7 +18166,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">CT Read/Cleared for TNK</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnCtRead && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtRead); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnCtRead: toLocalISO(d)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
+                                        {telestrokeNote.dtnCtRead && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnCtRead); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnCtRead: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote({...telestrokeNote, dtnCtRead: toLocalISO(new Date())})}
@@ -18115,7 +18174,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnCtRead && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnCtRead); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnCtRead: toLocalISO(d)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
+                                        {telestrokeNote.dtnCtRead && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnCtRead); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnCtRead: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
                                       </div>
                                     </div>
                                     <input
@@ -18131,7 +18190,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-medium text-slate-700">TNK Ordered</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnTnkOrdered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkOrdered); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: toLocalISO(d)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
+                                        {telestrokeNote.dtnTnkOrdered && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnTnkOrdered); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnTnkOrdered: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: toLocalISO(new Date())})}
@@ -18139,7 +18198,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnTnkOrdered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkOrdered); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnTnkOrdered: toLocalISO(d)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
+                                        {telestrokeNote.dtnTnkOrdered && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnTnkOrdered); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnTnkOrdered: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
                                       </div>
                                     </div>
                                     <input
@@ -18155,7 +18214,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="flex items-center justify-between mb-2">
                                       <label className="text-sm font-bold text-emerald-700">TNK Administered (Needle)</label>
                                       <div className="flex items-center gap-1">
-                                        {telestrokeNote.dtnTnkAdministered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkAdministered); d.setMinutes(d.getMinutes() - 1); setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: toLocalISO(d)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
+                                        {telestrokeNote.dtnTnkAdministered && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnTnkAdministered); d.setMinutes(d.getMinutes() - 1); return {...prev, dtnTnkAdministered: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">-1m</button>}
                                         <button
                                           type="button"
                                           onClick={() => setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: toLocalISO(new Date())})}
@@ -18163,7 +18222,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         >
                                           Now
                                         </button>
-                                        {telestrokeNote.dtnTnkAdministered && <button type="button" onClick={() => { const d = new Date(telestrokeNote.dtnTnkAdministered); d.setMinutes(d.getMinutes() + 1); setTelestrokeNote({...telestrokeNote, dtnTnkAdministered: toLocalISO(d)}); }} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
+                                        {telestrokeNote.dtnTnkAdministered && <button type="button" onClick={() => setTelestrokeNote(prev => { const d = new Date(prev.dtnTnkAdministered); d.setMinutes(d.getMinutes() + 1); return {...prev, dtnTnkAdministered: toLocalISO(d)}; })} className="px-2.5 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 min-h-[36px]">+1m</button>}
                                       </div>
                                     </div>
                                     <input
@@ -22057,7 +22116,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     });
                                     if (reason === null) return;
                                     const note = buildTransferDecisionText('accept', reason || '');
-                                    setTelestrokeNote({ ...telestrokeNote, transferAccepted: true, transferRationale: note });
+                                    setTelestrokeNote(prev => ({ ...prev, transferAccepted: true, transferRationale: note }));
                                     copyToClipboard(note, 'transfer-accept');
                                   }}
                                   className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700"
@@ -22079,7 +22138,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     });
                                     if (!reason) return;
                                     const note = buildTransferDecisionText('decline', String(reason));
-                                    setTelestrokeNote({ ...telestrokeNote, transferAccepted: false, transferRationale: note });
+                                    setTelestrokeNote(prev => ({ ...prev, transferAccepted: false, transferRationale: note }));
                                     copyToClipboard(note, 'transfer-decline');
                                   }}
                                   className="px-3 py-2 bg-red-600 text-white rounded-lg text-xs font-semibold hover:bg-red-700"
@@ -27012,9 +27071,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div>
                             <label className="text-xs text-slate-600">Sex</label>
-                            <select value={(telestrokeNote.crclCalc || {}).sex || telestrokeNote.sex || 'M'}
+                            <select value={(telestrokeNote.crclCalc || {}).sex || telestrokeNote.sex || ''}
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, crclCalc: {...(telestrokeNote.crclCalc || {}), sex: e.target.value}})}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
+                              <option value="">Select</option>
                               <option value="M">Male</option>
                               <option value="F">Female</option>
                             </select>
@@ -29547,7 +29607,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             </div>
 
             {/* Persistent Copy Note Button - Encounter tab only */}
-            {activeTab === 'encounter' && (telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) && (
+            {activeTab === 'encounter' && !calcDrawerOpen && (telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) && (
               <button
                 onClick={() => {
                   const note = generateTelestrokeNote();
@@ -29562,10 +29622,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             )}
 
             {/* Emergency Contacts FAB - Floating Action Button */}
-            {fabExpanded && (
+            {!calcDrawerOpen && fabExpanded && (
               <div className="fixed inset-0 z-40" onClick={() => setFabExpanded(false)} aria-hidden="true"></div>
             )}
-            <div className="fixed right-4 fab-offset fab-layer z-50">
+            <div className={`fixed right-4 fab-offset fab-layer z-50${calcDrawerOpen ? ' hidden' : ''}`}>
               {/* Expanded Contact Panel */}
               {fabExpanded && (
                 <div className="absolute bottom-16 right-0 w-72 max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-2xl border-2 border-red-300 overflow-hidden animate-fadeIn">
