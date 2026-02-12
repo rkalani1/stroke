@@ -17,8 +17,6 @@ import svinLargeCore2025 from './guidelines/svin-large-core-2025.json';
 import tiaEd2023 from './guidelines/tia-ed-2023.json';
 
         const { useState, useEffect, useRef, useMemo, useContext } = React;
-        const { Calculator, Clock, Brain, AlertTriangle, FileText, CheckCircle, Moon, Sun, Download, Copy, Search, Check, Info } = lucide;
-
         const APP_VERSION = (window.strokeAppStorage && window.strokeAppStorage.appVersion) || 'unknown';
         const STORAGE_PREFIX = (window.strokeAppStorage && window.strokeAppStorage.prefix) || 'strokeApp:';
         const APP_DATA_KEY = (window.strokeAppStorage && window.strokeAppStorage.appDataKey) || 'stroke.appData.v2';
@@ -190,11 +188,14 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
             return new Date().toISOString();
           }
         };
-        const formatLocalDateTime = (value) => {
-          if (!value) return '';
-          const date = new Date(value);
-          if (Number.isNaN(date.getTime())) return '';
-          return date.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        const safeParseDt = (val) => {
+          if (!val) return null;
+          const d = new Date(val);
+          return Number.isNaN(d.getTime()) ? null : d;
+        };
+        const safeFormatTime = (val) => {
+          const d = safeParseDt(val);
+          return d ? d.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null;
         };
 
         const GlobalPatientContext = React.createContext(null);
@@ -204,8 +205,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         // TOAST NOTIFICATION SYSTEM
         // ============================================
         let toastIdCounter = 0;
-        const ToastContext = React.createContext(null);
-        const useToast = () => useContext(ToastContext);
+
 
         const ToastContainer = ({ toasts, removeToast }) => {
           return React.createElement('div', {
@@ -359,7 +359,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
 
         const getWindowStatusFromTime = (timeFromLKW) => {
           if (!timeFromLKW) return null;
-          if (timeFromLKW.total <= 4.5) {
+          if (timeFromLKW.total < 4.5) {
             if (timeFromLKW.total < 3) {
               return { color: 'green', message: 'Within TNK window (<3h)', urgent: false, eligible: 'tnk' };
             }
@@ -651,55 +651,6 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
             } else {
               console.warn('Failed to save app data:', e);
             }
-          }
-        };
-
-        const bufferToBase64 = (buffer) => {
-          const bytes = new Uint8Array(buffer);
-          let binary = '';
-          bytes.forEach((b) => {
-            binary += String.fromCharCode(b);
-          });
-          return btoa(binary);
-        };
-
-        const base64ToBuffer = (base64) => {
-          const binary = atob(base64);
-          const bytes = new Uint8Array(binary.length);
-          for (let i = 0; i < binary.length; i += 1) {
-            bytes[i] = binary.charCodeAt(i);
-          }
-          return bytes;
-        };
-
-        const derivePinHash = async (pin, saltBase64 = null) => {
-          const encoder = new TextEncoder();
-          const salt = saltBase64 ? base64ToBuffer(saltBase64) : crypto.getRandomValues(new Uint8Array(16));
-          const keyMaterial = await crypto.subtle.importKey(
-            'raw',
-            encoder.encode(pin),
-            { name: 'PBKDF2' },
-            false,
-            ['deriveBits']
-          );
-          const derivedBits = await crypto.subtle.deriveBits(
-            { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
-            keyMaterial,
-            256
-          );
-          return {
-            salt: bufferToBase64(salt),
-            hash: bufferToBase64(derivedBits)
-          };
-        };
-
-        const verifyPinHash = async (pin, salt, expectedHash) => {
-          try {
-            const derived = await derivePinHash(pin, salt);
-            return derived.hash === expectedHash;
-          } catch (e) {
-            console.warn('PIN verification failed:', e);
-            return false;
           }
         };
 
@@ -1231,12 +1182,6 @@ Clinician Name`;
               mobilizationStarted: false,
               sessionFrequency: '',
               contraindications: ''
-            },
-            // Post-TNK BP Monitoring Tracker
-            postTnkBpTracker: {
-              monitoringActive: false,
-              bpReadings: [],
-              lastBpTime: ''
             },
             // VTE Prophylaxis
             vteProphylaxis: {
@@ -3196,7 +3141,7 @@ Clinician Name`;
                 { id: 'nihss', label: 'NIHSS ≥6', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 6), required: true },
                 { id: 'timeWindow', label: 'Within 4.5h from LKW', field: 'lkw', evaluate: (data) => {
                     const hrs = data.hoursFromLKW;
-                    return hrs !== null && hrs <= 4.5;
+                    return hrs !== null && hrs < 4.5;
                   }, required: true },
                 { id: 'lvo', label: 'LVO confirmed (ICA/M1)', field: 'vesselOcclusion', evaluate: (data) => {
                     const occlusion = data.telestrokeNote?.vesselOcclusion || [];
@@ -3380,7 +3325,7 @@ Clinician Name`;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('lvo');
                 const timeFrom = data.timeFromLKW;
-                const inWindow = timeFrom && timeFrom.total <= 4.5;
+                const inWindow = timeFrom && timeFrom.total < 4.5;
                 return isIschemic && (inWindow || data.telestrokeNote?.tnkRecommended);
               }
             },
@@ -3482,7 +3427,7 @@ Clinician Name`;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('lvo');
                 const timeFrom = data.timeFromLKW;
-                return isIschemic && timeFrom && timeFrom.total <= 4.5;
+                return isIschemic && timeFrom && timeFrom.total < 4.5;
               }
             },
             tnk_extended_imaging: {
@@ -4712,7 +4657,7 @@ Clinician Name`;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
                 const timeFrom = data.timeFromLKW;
-                return (dx.includes('dissect') || cta.includes('dissect')) && timeFrom && timeFrom.total <= 4.5;
+                return (dx.includes('dissect') || cta.includes('dissect')) && timeFrom && timeFrom.total < 4.5;
               }
             },
 
@@ -6464,18 +6409,18 @@ Clinician Name`;
               timestamps: {}
             };
 
-            // Parse timestamps
-            const edArrival = telestrokeNote.dtnEdArrival ? new Date(telestrokeNote.dtnEdArrival) : null;
-            const ctStarted = telestrokeNote.dtnCtStarted ? new Date(telestrokeNote.dtnCtStarted) : null;
-            const ctRead = telestrokeNote.dtnCtRead ? new Date(telestrokeNote.dtnCtRead) : null;
-            const tnkAdmin = telestrokeNote.dtnTnkAdministered ? new Date(telestrokeNote.dtnTnkAdministered) : null;
+            // Parse timestamps (validated)
+            const edArrival = safeParseDt(telestrokeNote.dtnEdArrival);
+            const ctStarted = safeParseDt(telestrokeNote.dtnCtStarted);
+            const ctRead = safeParseDt(telestrokeNote.dtnCtRead);
+            const tnkAdmin = safeParseDt(telestrokeNote.dtnTnkAdministered);
 
             metrics.timestamps = {
               edArrival,
-              strokeAlert: telestrokeNote.dtnStrokeAlert ? new Date(telestrokeNote.dtnStrokeAlert) : null,
+              strokeAlert: safeParseDt(telestrokeNote.dtnStrokeAlert),
               ctStarted,
               ctRead,
-              tnkOrdered: telestrokeNote.dtnTnkOrdered ? new Date(telestrokeNote.dtnTnkOrdered) : null,
+              tnkOrdered: safeParseDt(telestrokeNote.dtnTnkOrdered),
               tnkAdmin
             };
 
@@ -6877,7 +6822,7 @@ Clinician Name`;
             const { formState } = patient;
             setTelestrokeNote(formState.telestrokeNote);
             setStrokeCodeForm(formState.strokeCodeForm);
-            setLkwTime(formState.lkwTime ? new Date(formState.lkwTime) : null);
+            setLkwTime(safeParseDt(formState.lkwTime));
             setNihssScore(formState.nihssScore);
             setAspectsScore(formState.aspectsScore);
             setMrsScore(formState.mrsScore);
@@ -7661,7 +7606,7 @@ Clinician Name`;
               'esusWorkup', 'doacTiming', 'hemorrhagicTransformation', 'angioedema',
               'ichAnticoagResumption', 'carotidManagement', 'cvtAnticoag',
               // Nursing/management
-              'dysphagiaScreening', 'earlyMobilization', 'vteProphylaxis', 'postTnkBpTracker', 'feverManagement',
+              'dysphagiaScreening', 'earlyMobilization', 'vteProphylaxis', 'feverManagement',
               'osmoticTherapy', 'nutritionalSupport',
               // Drug interactions and bridging
               'drugInteractions', 'anticoagBridging',
@@ -8390,8 +8335,9 @@ Clinician Name`;
                   const [dH, dM] = telestrokeNote.doorTime.split(':').map(Number);
                   const [nH, nM] = telestrokeNote.needleTime.split(':').map(Number);
                   if (!isNaN(dH) && !isNaN(dM) && !isNaN(nH) && !isNaN(nM)) {
-                    const dtnMin = (nH * 60 + nM) - (dH * 60 + dM);
-                    if (dtnMin >= 0) dtnParts.push(`DTN: ${dtnMin} min`);
+                    let dtnMin = (nH * 60 + nM) - (dH * 60 + dM);
+                    if (dtnMin < 0) dtnMin += 1440;
+                    dtnParts.push(`DTN: ${dtnMin} min`);
                   }
                 }
                 note += `- ${dtnParts.join(' | ')}\n`;
@@ -8690,8 +8636,9 @@ Clinician Name`;
                   const [sdH, sdM] = telestrokeNote.doorTime.split(':').map(Number);
                   const [snH, snM] = telestrokeNote.needleTime.split(':').map(Number);
                   if (!isNaN(sdH) && !isNaN(sdM) && !isNaN(snH) && !isNaN(snM)) {
-                    const snDtn = (snH * 60 + snM) - (sdH * 60 + sdM);
-                    if (snDtn >= 0) note += `  DTN: ${snDtn} min\n`;
+                    let snDtn = (snH * 60 + snM) - (sdH * 60 + sdM);
+                    if (snDtn < 0) snDtn += 1440;
+                    note += `  DTN: ${snDtn} min\n`;
                   }
                 }
               }
@@ -9633,8 +9580,9 @@ Clinician Name`;
               const [cnDH, cnDM] = telestrokeNote.doorTime.split(':').map(Number);
               const [cnNH, cnNM] = telestrokeNote.needleTime.split(':').map(Number);
               if (!isNaN(cnDH) && !isNaN(cnDM) && !isNaN(cnNH) && !isNaN(cnNM)) {
-                const cnDtn = (cnNH * 60 + cnNM) - (cnDH * 60 + cnDM);
-                if (cnDtn >= 0) note += `\nDoor-to-Needle: ${cnDtn} min (Door: ${telestrokeNote.doorTime}, Needle: ${telestrokeNote.needleTime})\n`;
+                let cnDtn = (cnNH * 60 + cnNM) - (cnDH * 60 + cnDM);
+                if (cnDtn < 0) cnDtn += 1440;
+                note += `\nDoor-to-Needle: ${cnDtn} min (Door: ${telestrokeNote.doorTime}, Needle: ${telestrokeNote.needleTime})\n`;
               }
             }
 
@@ -11483,7 +11431,7 @@ Clinician Name`;
             setTelestrokeNote(note);
             setStrokeCodeForm(snapshot.strokeCodeForm || getDefaultStrokeCodeForm());
             setPatientData(snapshot.patientData || {});
-            setLkwTime(snapshot.lkwTime ? new Date(snapshot.lkwTime) : null);
+            setLkwTime(safeParseDt(snapshot.lkwTime));
             setNihssScore(snapshot.nihssScore || 0);
             setAspectsScore(Number.isFinite(snapshot.aspectsScore) ? snapshot.aspectsScore : 10);
             setMrsScore(snapshot.mrsScore || '');
@@ -12440,10 +12388,6 @@ Clinician Name`;
           }, [activeTab, routeReady, managementSubTab]);
 
           useEffect(() => {
-            setActionsOpen(false);
-          }, [activeTab]);
-
-          useEffect(() => {
             if (activeTab !== 'management') return;
             updateAppData((prev) => ({
               ...prev,
@@ -12711,130 +12655,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             : '';
           const hasNihssInputs = nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '');
           const nihssDisplay = nihssFromNote || (hasNihssInputs ? String(nihssScore) : '--');
-          const algorithmToneStyles = {
-            slate: {
-              border: 'border-slate-200',
-              badge: 'bg-slate-100 text-slate-700 border-slate-300',
-              text: 'text-slate-800',
-              icon: 'text-slate-500',
-              surface: 'bg-slate-50',
-              line: 'bg-slate-300',
-              lineBorder: 'border-slate-300',
-              stroke: '#cbd5e1'
-            },
-            red: {
-              border: 'border-red-200',
-              badge: 'bg-red-100 text-red-700 border-red-300',
-              text: 'text-red-800',
-              icon: 'text-red-500',
-              surface: 'bg-red-50',
-              line: 'bg-red-200',
-              lineBorder: 'border-red-300',
-              stroke: '#fecaca'
-            },
-            blue: {
-              border: 'border-blue-200',
-              badge: 'bg-blue-100 text-blue-700 border-blue-300',
-              text: 'text-blue-800',
-              icon: 'text-blue-500',
-              surface: 'bg-blue-50',
-              line: 'bg-blue-200',
-              lineBorder: 'border-blue-300',
-              stroke: '#bfdbfe'
-            }
-          };
-          const AlgorithmStep = ({ index, title, tag, tagTone, items, note, tone = 'slate', icon }) => {
-            const toneStyles = algorithmToneStyles[tone] || algorithmToneStyles.slate;
-            const badgeLabel = index ? index.replace(/^Step\s*/i, '') : '';
-            return (
-              <div className="relative pl-10">
-                <div className={`absolute left-0 top-3 w-8 h-8 rounded-full border-2 ${toneStyles.badge} flex items-center justify-center text-[10px] font-bold`}>
-                  {badgeLabel}
-                </div>
-                <div className={`bg-white border ${toneStyles.border} rounded-lg p-3 shadow-sm`}>
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-start gap-2">
-                      {icon && <i data-lucide={icon} className={`w-4 h-4 mt-0.5 ${toneStyles.icon}`}></i>}
-                      <div>
-                        <p className="text-[10px] uppercase tracking-wide text-slate-500 font-semibold">{index}</p>
-                        <h4 className={`text-sm font-semibold ${toneStyles.text}`}>{title}</h4>
-                      </div>
-                    </div>
-                    {tag && (
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${tagTone || 'bg-slate-100 text-slate-700'}`}>
-                        {tag}
-                      </span>
-                    )}
-                  </div>
-                  {note && <p className="text-xs text-slate-500 mt-1">{note}</p>}
-                  {items && items.length > 0 && (
-                    <ul className="mt-2 text-sm text-slate-700 space-y-1 list-disc list-inside">
-                      {items.map((item, idx) => (
-                        <li key={`${index}-${idx}`}>{item}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-            );
-          };
-          const AlgorithmDecision = ({ index, title, note, tone = 'slate' }) => {
-            const toneStyles = algorithmToneStyles[tone] || algorithmToneStyles.slate;
-            const badgeLabel = index ? index.replace(/^Step\s*/i, '') : '';
-            return (
-              <div className="flex flex-col items-center">
-                <div className={`mb-2 w-8 h-8 rounded-full border-2 ${toneStyles.badge} flex items-center justify-center text-[10px] font-bold`}>
-                  {badgeLabel}
-                </div>
-                <div className="relative w-24 h-24">
-                  <div className={`absolute inset-0 rotate-45 border-2 ${toneStyles.border} bg-white`}></div>
-                  <div className="absolute inset-0 flex items-center justify-center text-center px-2">
-                    <p className={`text-xs font-semibold ${toneStyles.text}`}>{title}</p>
-                  </div>
-                </div>
-                {note && <p className="mt-2 text-xs text-slate-500 text-center max-w-xs">{note}</p>}
-              </div>
-            );
-          };
-          const AlgorithmArrow = ({ direction = 'down', label }) => (
-            <div className={`flex ${direction === 'right' ? 'justify-start' : 'justify-center'} text-slate-400`}>
-              <div className="flex flex-col items-center">
-                <div className="h-4 w-px bg-slate-300"></div>
-                <i data-lucide={direction === 'right' ? 'arrow-right' : 'arrow-down'} className="w-4 h-4"></i>
-                {label && <span className="text-[10px] uppercase tracking-wide text-slate-500 mt-1">{label}</span>}
-              </div>
-            </div>
-          );
-          const AlgorithmSplit = ({ tone = 'slate', leftLabel, rightLabel }) => {
-            const toneStyles = algorithmToneStyles[tone] || algorithmToneStyles.slate;
-            return (
-              <div className="flex flex-col items-center gap-2 py-1">
-                <svg
-                  className="w-full max-w-md h-6"
-                  viewBox="0 0 320 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <line x1="160" y1="0" x2="160" y2="10" stroke={toneStyles.stroke} strokeWidth="2" strokeLinecap="round" />
-                  <line x1="160" y1="10" x2="36" y2="10" stroke={toneStyles.stroke} strokeWidth="2" strokeLinecap="round" />
-                  <line x1="160" y1="10" x2="284" y2="10" stroke={toneStyles.stroke} strokeWidth="2" strokeLinecap="round" />
-                  <polygon points="28,10 36,4 36,16" fill={toneStyles.stroke} />
-                  <polygon points="292,10 284,4 284,16" fill={toneStyles.stroke} />
-                </svg>
-                {(leftLabel || rightLabel) && (
-                  <div className="w-full max-w-md grid grid-cols-2 text-[10px] uppercase tracking-wide text-slate-500">
-                    <span className="text-left">{leftLabel || ''}</span>
-                    <span className="text-right">{rightLabel || ''}</span>
-                  </div>
-                )}
-              </div>
-            );
-          };
-
-          // ICH algorithms removed — replaced with JSX step-cards below
-
-          // Ischemic EVT algorithms removed — replaced with JSX tables below
-
           return (
             <div className="relative">
               <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-medium">Skip to main content</a>
@@ -13375,9 +13195,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="flex items-start gap-0 text-xs min-w-0 sm:min-w-max relative">
                           {[
                             { label: 'LKW', time: lkwTime ? lkwTime.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-blue-500', line: 'bg-blue-200' },
-                            { label: 'Door', time: telestrokeNote.dtnEdArrival ? new Date(telestrokeNote.dtnEdArrival).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-purple-500', line: 'bg-purple-200' },
-                            { label: 'Alert', time: telestrokeNote.dtnStrokeAlert ? new Date(telestrokeNote.dtnStrokeAlert).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-amber-500', line: 'bg-amber-200' },
-                            { label: 'CT', time: telestrokeNote.dtnCtStarted ? new Date(telestrokeNote.dtnCtStarted).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-slate-500', line: 'bg-slate-200' },
+                            { label: 'Door', time: safeFormatTime(telestrokeNote.dtnEdArrival), dot: 'bg-purple-500', line: 'bg-purple-200' },
+                            { label: 'Alert', time: safeFormatTime(telestrokeNote.dtnStrokeAlert), dot: 'bg-amber-500', line: 'bg-amber-200' },
+                            { label: 'CT', time: safeFormatTime(telestrokeNote.dtnCtStarted), dot: 'bg-slate-500', line: 'bg-slate-200' },
                             { label: 'TNK', time: telestrokeNote.tnkAdminTime || null, dot: 'bg-emerald-500', line: 'bg-emerald-200' },
                             { label: 'Puncture', time: telestrokeNote.punctureTime || null, dot: 'bg-indigo-500', line: 'bg-indigo-200' }
                           ].filter(t => t.time).map((t, i, arr) => (
@@ -16640,7 +16460,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               tnkRec = { eligible: false, reason: 'Set LKW time to evaluate', confidence: 'low' };
                             } else if (nihss <= 5 && !telestrokeNote.disablingDeficit) {
                               tnkRec = { eligible: false, reason: `NIHSS ${nihss} with non-disabling symptoms — IVT not recommended (Class III)`, confidence: 'medium' };
-                            } else if (hoursFromLKW <= 4.5) {
+                            } else if (hoursFromLKW < 4.5) {
                               if (nihss >= 4 || telestrokeNote.nihssDetails || telestrokeNote.disablingDeficit) {
                                 tnkRec = { eligible: true, reason: `Within 4.5h window, NIHSS ${nihss}`, confidence: 'high' };
                               }
