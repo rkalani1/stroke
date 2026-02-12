@@ -1160,6 +1160,7 @@ Clinician Name`;
             consentKit: {
               evtConsentDiscussed: false,
               evtConsentType: '',
+              evtConsentTime: '',
               transferConsentDiscussed: false,
               consentDocCopied: false
             },
@@ -7286,11 +7287,11 @@ Clinician Name`;
               }
               // Escape — Close modals
               if (e.key === 'Escape') {
-                if (calcDrawerOpen) { setCalcDrawerOpen(false); return; }
-                if (protocolModal) { setProtocolModal(null); return; }
-                if (confirmConfig) { handleConfirmClose(null); return; }
-                if (searchOpen) { setSearchOpen(false); return; }
                 if (settingsMenuOpen) { setSettingsMenuOpen(false); return; }
+                if (searchOpen) { setSearchOpen(false); return; }
+                if (confirmConfig) { handleConfirmClose(null); return; }
+                if (protocolModal) { setProtocolModal(null); return; }
+                if (calcDrawerOpen) { setCalcDrawerOpen(false); return; }
                 if (focusMode) { setFocusMode(false); return; }
                 return;
               }
@@ -10155,8 +10156,8 @@ Clinician Name`;
               if (telestrokeNote.sahGrade) sahNote += `- ${telestrokeNote.sahGradeScale || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
               if (telestrokeNote.fisherGrade) sahNote += `- Modified Fisher Grade: ${telestrokeNote.fisherGrade}\n`;
               if (telestrokeNote.sahBPManaged) sahNote += `- BP managed (SBP <160 pre-securing)\n`;
-              if (telestrokeNote.sahNimodipineStarted) sahNote += `- Nimodipine 60 mg q4h started\n`;
-              if (telestrokeNote.sahAneurysmSecured) sahNote += `- Aneurysm secured (${telestrokeNote.sahSecuringMethod || 'method not specified'})\n`;
+              if (telestrokeNote.sahNimodipine) sahNote += `- Nimodipine 60 mg q4h started\n`;
+              if (telestrokeNote.sahAneurysmSecured) sahNote += `- Aneurysm securing plan documented\n`;
               if (telestrokeNote.sahEVDPlaced) sahNote += `- EVD placed\n`;
               if (telestrokeNote.sahSeizureProphylaxis) sahNote += `- Seizure prophylaxis ordered\n`;
               if (sahNote !== '\nSAH Management:\n') note += sahNote;
@@ -10856,6 +10857,16 @@ Clinician Name`;
               warnings.push({ id: 'tnk-hyperglycemia', severity: 'warn', msg: `TNK recommended with glucose ${glucose} mg/dL — severe hyperglycemia can mimic stroke and is associated with worse outcomes post-thrombolysis. Correct glucose; reassess if deficits improve.` });
             }
 
+            // Heparin/LMWH + TNK bleeding risk
+            if (n.tnkRecommended) {
+              const meds = (n.medications || '').toLowerCase();
+              const onUFH = meds.includes('heparin') && !meds.includes('enoxaparin') && !meds.includes('lovenox') && !meds.includes('dalteparin');
+              const onLMWH = meds.includes('enoxaparin') || meds.includes('lovenox') || meds.includes('dalteparin');
+              if (onUFH || onLMWH) {
+                warnings.push({ id: 'heparin-tnk', severity: 'warn', msg: `TNK recommended on active ${onUFH ? 'heparin' : 'LMWH'} — increased bleeding risk. Verify aPTT and consider holding for thrombolytic window.` });
+              }
+            }
+
             // SAH + anticoagulation warning
             if (n.diagnosisCategory === 'sah' && (n.lastDOACType || n.lastDOACDose)) {
               const acName = n.lastDOACType && ANTICOAGULANT_INFO[n.lastDOACType] ? ANTICOAGULANT_INFO[n.lastDOACType].name : 'anticoagulant';
@@ -11261,7 +11272,7 @@ Clinician Name`;
             }
 
             // DAPT Loading
-            if (isIschemic && nihss <= 5 && !n.tnkRecommended) {
+            if (isIschemic && nihss <= 5 && !n.tnkRecommended && !n.evtRecommended) {
               const daptOrders = nihss <= 3 ? [
                   'Aspirin 325 mg PO x1 (loading dose)',
                   'Clopidogrel 300 mg PO x1 (loading dose)',
@@ -11591,7 +11602,7 @@ Clinician Name`;
             setPatientData(newData);
             const newScore = calculateNIHSS(newData);
             setNihssScore(newScore);
-            setTelestrokeNote({ ...telestrokeNote, nihss: newScore.toString() });
+            setTelestrokeNote(prev => ({ ...prev, nihss: newScore.toString() }));
           };
 
           // Treatment validation
@@ -17556,7 +17567,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <input
                                         type="checkbox"
                                         checked={telestrokeNote[item.field] || false}
-                                        onChange={(e) => setTelestrokeNote({ ...telestrokeNote, [item.field]: e.target.checked })}
+                                        onChange={(e) => { const v = e.target.checked; const f = item.field; setTelestrokeNote(prev => ({ ...prev, [f]: v })); }}
                                         className="mt-0.5 rounded border-red-300 text-red-600 focus:ring-red-500"
                                       />
                                       <div>
@@ -17592,7 +17603,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <input
                                       type="checkbox"
                                       checked={telestrokeNote.disablingDeficit}
-                                      onChange={(e) => setTelestrokeNote({ ...telestrokeNote, disablingDeficit: e.target.checked })}
+                                      onChange={(e) => { const v = e.target.checked; setTelestrokeNote(prev => ({ ...prev, disablingDeficit: v })); }}
                                       className="w-4 h-4 rounded border-amber-400 text-amber-600 focus:ring-amber-500"
                                     />
                                     Deficit is disabling (override for NIHSS 0-5)
@@ -18113,19 +18124,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="space-y-2">
                                   <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                                     <input type="checkbox" checked={!!(telestrokeNote.consentKit || {}).evtConsentDiscussed}
-                                      onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, consentKit: {...(prev.consentKit || {}), evtConsentDiscussed: c}})); }}
+                                      onChange={(e) => { const c = e.target.checked; const now = c ? new Date().toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false}) : ''; setTelestrokeNote(prev => ({...prev, consentKit: {...(prev.consentKit || {}), evtConsentDiscussed: c, evtConsentTime: c ? now : ''}})); }}
                                       className="w-4 h-4" />
                                     EVT risks/benefits discussed with patient/family
                                   </label>
-                                  <select value={(telestrokeNote.consentKit || {}).evtConsentType || ''}
-                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, consentKit: {...(prev.consentKit || {}), evtConsentType: v}})); }}
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
-                                    <option value="">-- Consent status --</option>
-                                    <option value="informed-consent">Informed consent obtained</option>
-                                    <option value="presumed">Presumed consent (patient unable, no surrogate available)</option>
-                                    <option value="surrogate">Surrogate/family consent obtained</option>
-                                    <option value="declined">Patient/family declined EVT</option>
-                                  </select>
+                                  <div className="flex gap-2">
+                                    <select value={(telestrokeNote.consentKit || {}).evtConsentType || ''}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, consentKit: {...(prev.consentKit || {}), evtConsentType: v}})); }}
+                                      className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm">
+                                      <option value="">-- Consent status --</option>
+                                      <option value="informed-consent">Informed consent obtained</option>
+                                      <option value="presumed">Presumed consent (patient unable, no surrogate available)</option>
+                                      <option value="surrogate">Surrogate/family consent obtained</option>
+                                      <option value="declined">Patient/family declined EVT</option>
+                                    </select>
+                                    <input type="time" value={(telestrokeNote.consentKit || {}).evtConsentTime || ''}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, consentKit: {...(prev.consentKit || {}), evtConsentTime: v}})); }}
+                                      className="w-28 px-2 py-2 border border-slate-300 rounded-lg text-sm" />
+                                  </div>
                                 </div>
                                 <button onClick={() => {
                                   const cdLkw = telestrokeNote.lkwUnknown ? 'Unknown (wake-up/unwitnessed)' + (telestrokeNote.discoveryTime ? ` — discovery ${telestrokeNote.discoveryTime}` : '') : telestrokeNote.lkwTime ? formatTime(telestrokeNote.lkwTime) : '***';
@@ -22315,7 +22331,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <label className="block text-xs font-medium text-slate-600 mb-1">Transport mode</label>
                                   <select
                                     value={telestrokeNote.transportMode || ''}
-                                    onChange={(e) => setTelestrokeNote({ ...telestrokeNote, transportMode: e.target.value })}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({ ...prev, transportMode: v })); }}
                                     className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
                                   >
                                     <option value="">-- Select --</option>
@@ -22330,7 +22346,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <input
                                     type="datetime-local"
                                     value={telestrokeNote.transportEta || ''}
-                                    onChange={(e) => setTelestrokeNote({ ...telestrokeNote, transportEta: e.target.value })}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({ ...prev, transportEta: v })); }}
                                     className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
                                   />
                                 </div>
@@ -22339,7 +22355,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="block text-xs font-medium text-slate-600 mb-1">Transport notes</label>
                                 <textarea
                                   value={telestrokeNote.transportNotes || ''}
-                                  onChange={(e) => setTelestrokeNote({ ...telestrokeNote, transportNotes: e.target.value })}
+                                  onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({ ...prev, transportNotes: v })); }}
                                   rows="2"
                                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
                                   placeholder="Air/ground contact, staging, or special considerations"
@@ -22349,7 +22365,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="block text-xs font-medium text-slate-600 mb-1">Transfer decision note</label>
                                 <textarea
                                   value={telestrokeNote.transferRationale || ''}
-                                  onChange={(e) => setTelestrokeNote({ ...telestrokeNote, transferRationale: e.target.value })}
+                                  onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({ ...prev, transferRationale: v })); }}
                                   rows="3"
                                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
                                   placeholder="Auto-generate or type the transfer decision note..."
