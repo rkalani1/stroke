@@ -360,7 +360,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
 
         const getWindowStatusFromTime = (timeFromLKW) => {
           if (!timeFromLKW) return null;
-          if (timeFromLKW.total < 4.5) {
+          if (timeFromLKW.total <= 4.5) {
             if (timeFromLKW.total < 3) {
               return { color: 'green', message: 'Within TNK window (<3h)', urgent: false, eligible: 'tnk' };
             }
@@ -11019,11 +11019,22 @@ Clinician Name`;
             {
               const doacCrCl = calculateCrCl(n.age, n.weight, n.sex, n.creatinine, n.height);
               if (doacCrCl) {
-                if (n.lastDOACType === 'rivaroxaban' && doacCrCl.value < 15) {
-                  warnings.push({ id: 'rivaroxaban-crcl-contra', severity: 'error', msg: `Rivaroxaban with CrCl ${doacCrCl.value} mL/min (<15) — CONTRAINDICATED per FDA labeling (ROCKET-AF excluded CrCl <30; post-hoc data suggest harm <15). Switch to alternative agent or consult nephrology.` });
+                if (n.lastDOACType === 'rivaroxaban') {
+                  if (doacCrCl.value < 15) {
+                    warnings.push({ id: 'rivaroxaban-crcl-contra', severity: 'error', msg: `Rivaroxaban with CrCl ${doacCrCl.value} mL/min (<15) — CONTRAINDICATED per FDA labeling. Switch to alternative agent or consult nephrology.` });
+                  } else if (doacCrCl.value < 30) {
+                    warnings.push({ id: 'rivaroxaban-crcl-reduce', severity: 'error', msg: `Rivaroxaban with CrCl ${doacCrCl.value} mL/min (15-29) — DOSE REDUCTION REQUIRED to 15 mg daily (FDA labeling). ROCKET-AF excluded CrCl <30; use with caution. Consider apixaban (better renal data) or warfarin.` });
+                  }
                 }
-                if (n.lastDOACType === 'dabigatran' && doacCrCl.value < 15) {
-                  warnings.push({ id: 'dabigatran-crcl-contra', severity: 'error', msg: `Dabigatran with CrCl ${doacCrCl.value} mL/min (<15) — AVOID per FDA labeling (RE-LY excluded CrCl <30). No dosing recommendation available for severe renal impairment. Consider warfarin with INR monitoring or consult nephrology.` });
+                if (n.lastDOACType === 'dabigatran') {
+                  if (doacCrCl.value < 15) {
+                    warnings.push({ id: 'dabigatran-crcl-contra', severity: 'error', msg: `Dabigatran with CrCl ${doacCrCl.value} mL/min (<15) — AVOID per FDA labeling (RE-LY excluded CrCl <30). No dosing recommendation available. Consider warfarin with INR monitoring or consult nephrology.` });
+                  } else if (doacCrCl.value < 30) {
+                    warnings.push({ id: 'dabigatran-crcl-caution', severity: 'warn', msg: `Dabigatran with CrCl ${doacCrCl.value} mL/min (15-29) — RE-LY excluded CrCl <30. FDA labeling: 75 mg BID only with concurrent P-gp inhibitor (dronedarone, ketoconazole). Consider switching to apixaban or warfarin.` });
+                  }
+                }
+                if (n.lastDOACType === 'edoxaban' && doacCrCl.value > 95) {
+                  warnings.push({ id: 'edoxaban-high-crcl', severity: 'warn', msg: `Edoxaban with CrCl ${doacCrCl.value} mL/min (>95) — REDUCED EFFICACY vs warfarin per ENGAGE AF-TIMI 48 and FDA labeling. Consider switching to warfarin (INR 2-3), apixaban, or rivaroxaban for stroke prevention in AF.` });
                 }
               }
             }
@@ -13941,10 +13952,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       ) : null}
                     </div>
                     <div className="flex items-center gap-1">
-                      <button onClick={toggleAlertMute} className="p-2 rounded-full hover:bg-white/20 transition-colors" title={alertsMuted ? 'Unmute' : 'Mute'} aria-label={alertsMuted ? 'Unmute alerts' : 'Mute alerts'}>
+                      <button onClick={toggleAlertMute} className="p-2 rounded-full hover:bg-white/20 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center" title={alertsMuted ? 'Unmute' : 'Mute'} aria-label={alertsMuted ? 'Unmute alerts' : 'Mute alerts'}>
                         <i aria-hidden="true" data-lucide={alertsMuted ? 'volume-x' : 'volume-2'} className="w-4 h-4"></i>
                       </button>
-                      <button onClick={() => setFocusMode(prev => !prev)} className={`p-2 rounded-full hover:bg-white/20 transition-colors ${focusMode ? 'bg-white/20' : ''}`} title={focusMode ? 'Exit focus mode' : 'Focus mode'} aria-label={focusMode ? 'Exit focus mode' : 'Enter focus mode'}>
+                      <button onClick={() => setFocusMode(prev => !prev)} className={`p-2 rounded-full hover:bg-white/20 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center ${focusMode ? 'bg-white/20' : ''}`} title={focusMode ? 'Exit focus mode' : 'Focus mode'} aria-label={focusMode ? 'Exit focus mode' : 'Enter focus mode'}>
                         <i aria-hidden="true" data-lucide={focusMode ? 'minimize-2' : 'maximize-2'} className="w-4 h-4"></i>
                       </button>
                     </div>
@@ -14319,11 +14330,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Calling Site Dropdown - Shared for all consult types */}
                     {(
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <label className="block text-sm font-medium text-blue-900 mb-1">
+                      <label htmlFor="input-calling-site" className="block text-sm font-medium text-blue-900 mb-1">
                         <i aria-hidden="true" data-lucide="map-pin" className="w-4 h-4 inline mr-1"></i>
                         Calling Site
                       </label>
                       <select
+                        id="input-calling-site"
                         value={telestrokeNote.callingSite}
                         onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, callingSite: v, callingSiteOther: v === 'Other' ? prev.callingSiteOther : ''})); }}
                         className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -14373,10 +14385,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div className="min-w-0">
                           <div className="flex items-center justify-between mb-1">
-                            <label className="block text-sm font-medium text-blue-900">Date</label>
+                            <label htmlFor="lkw-date" className="block text-sm font-medium text-blue-900">Date</label>
                             <NowButton onClick={() => setLkwTime(new Date())} label="Set LKW to now" />
                           </div>
                           <input
+                            id="lkw-date"
                             type="date"
                             value={lkwTime ? `${lkwTime.getFullYear()}-${String(lkwTime.getMonth() + 1).padStart(2, '0')}-${String(lkwTime.getDate()).padStart(2, '0')}` : ''}
                             onChange={(e) => {
@@ -14396,8 +14409,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           />
                         </div>
                         <div className="min-w-0">
-                          <label className="block text-sm font-medium text-blue-900 mb-1">Time</label>
+                          <label htmlFor="lkw-time" className="block text-sm font-medium text-blue-900 mb-1">Time</label>
                           <input
+                            id="lkw-time"
                             type="time"
                             value={lkwTime ? lkwTime.toTimeString().slice(0, 5) : ''}
                             onChange={(e) => {
@@ -15769,8 +15783,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </h4>
                           <div className="space-y-3">
                             <div>
-                              <label className="block text-sm font-medium text-slate-700 mb-1">Suspected Diagnosis</label>
+                              <label htmlFor="input-diagnosis" className="block text-sm font-medium text-slate-700 mb-1">Suspected Diagnosis</label>
                               <select
+                                id="input-diagnosis"
                                 value={telestrokeNote.diagnosis}
                                 onChange={(e) => {
                                   const newDx = e.target.value;
@@ -15825,8 +15840,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
 
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">Affected Side</label>
+                              <label htmlFor="input-affected-side" className="block text-xs text-slate-600 mb-1">Affected Side</label>
                               <select
+                                id="input-affected-side"
                                 value={telestrokeNote.affectedSide || ''}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, affectedSide: v})); }}
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
@@ -19614,7 +19630,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <p className="text-xs text-slate-500 mt-1">PASCAL integrates: PFO anatomy (shunt size, ASA), age, clot/DVT source, Alternative etiologies, Lacunar vs cortical pattern. Closure recommended for definite/probable in patients age 18-60.</p>
                                 </div>
                               )}
-                              {(telestrokeNote.toastClassification === 'cryptogenic' || telestrokeNote.toastClassification === 'cardioembolism') && (
+                              {telestrokeNote.toastClassification === 'large-artery' && (
                                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm">
                                   <h4 className="font-semibold text-blue-800 mb-1">sICAS Management (AAN 2022)</h4>
                                   <ul className="space-y-1 ml-4 text-blue-700">
@@ -30366,7 +30382,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       Calculators
                       <kbd className="text-xs text-slate-500 font-mono ml-2">Ctrl+Shift+K</kbd>
                     </h2>
-                    <button onClick={() => setCalcDrawerOpen(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close">
+                    <button onClick={() => setCalcDrawerOpen(false)} className="p-2 hover:bg-slate-100 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center" aria-label="Close calculators">
                       <i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i>
                     </button>
                   </div>
@@ -30469,7 +30485,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 <div role="dialog" aria-modal="true" aria-labelledby="changelog-title" className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[28rem] max-h-[70vh] bg-white rounded-2xl shadow-2xl overflow-y-auto">
                   <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between z-10">
                     <h2 id="changelog-title" className="text-base font-bold text-slate-900">What's New</h2>
-                    <button onClick={() => setShowChangelog(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close changelog"><i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
+                    <button onClick={() => setShowChangelog(false)} className="p-2 hover:bg-slate-100 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center" aria-label="Close changelog"><i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
                   </div>
                   <div className="p-4 space-y-4">
                     {CHANGELOG.map((release) => (
@@ -30500,7 +30516,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 <div role="dialog" aria-modal="true" aria-labelledby="keyboard-help-title" className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[24rem] bg-white rounded-2xl shadow-2xl overflow-hidden">
                   <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between">
                     <h2 id="keyboard-help-title" className="text-base font-bold text-slate-900">Keyboard Shortcuts</h2>
-                    <button onClick={() => setShowKeyboardHelp(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close keyboard shortcuts"><i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
+                    <button onClick={() => setShowKeyboardHelp(false)} className="p-2 hover:bg-slate-100 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center" aria-label="Close keyboard shortcuts"><i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
                   </div>
                   <div className="p-4 space-y-3">
                     {[
