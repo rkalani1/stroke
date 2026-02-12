@@ -8233,6 +8233,7 @@ Clinician Name`;
             const formatDate = (dateStr) => {
               if (!dateStr) return '';
               const date = new Date(dateStr);
+              if (Number.isNaN(date.getTime())) return String(dateStr);
               return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear().toString().slice(-2)}`;
             };
 
@@ -11979,14 +11980,14 @@ Clinician Name`;
               const pendingWrites = { ...pendingWritesRef.current };
               pendingWritesRef.current = {};
               for (const [k, v] of Object.entries(pendingWrites)) {
-                try { setKey(k, v); } catch (e) { /* best effort */ }
+                try { setKey(k, v); } catch (e) { if (e.name === 'QuotaExceededError' || e.code === 22) { addToast('Storage full — data may not be saved. Export your note or clear old data.', 'error'); break; } }
               }
             };
           }, [telestrokeNote]);
 
           // Storage quota exceeded listener
           React.useEffect(() => {
-            const handleQuota = () => addToast('Storage nearly full — consider clearing old cases to prevent data loss', 'error');
+            const handleQuota = () => addToast('Storage full — data may not be saved. Export your note and clear old data via Settings > Clear All Data.', 'error');
             document.addEventListener('storage-quota-exceeded', handleQuota);
             return () => document.removeEventListener('storage-quota-exceeded', handleQuota);
           }, []);
@@ -13371,7 +13372,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* ===== STROKE TIMELINE STRIP — connected visual timeline ===== */}
                     {(lkwTime || telestrokeNote.dtnEdArrival || telestrokeNote.tnkAdminTime) && (
                       <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 overflow-x-auto no-scrollbar">
-                        <div className="flex items-start gap-0 text-xs min-w-max relative">
+                        <div className="flex items-start gap-0 text-xs min-w-0 sm:min-w-max relative">
                           {[
                             { label: 'LKW', time: lkwTime ? lkwTime.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-blue-500', line: 'bg-blue-200' },
                             { label: 'Door', time: telestrokeNote.dtnEdArrival ? new Date(telestrokeNote.dtnEdArrival).toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-purple-500', line: 'bg-purple-200' },
@@ -14452,7 +14453,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* Show anticoagulant info if selected */}
                             {telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType] && (() => {
                               const info = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
-                              const hoursSince = telestrokeNote.lastDOACDose ? Math.max(0, (new Date() - new Date(telestrokeNote.lastDOACDose)) / (1000 * 60 * 60)) : null;
+                              const hoursSince = (() => { if (!telestrokeNote.lastDOACDose) return null; const d = new Date(telestrokeNote.lastDOACDose); return Number.isNaN(d.getTime()) ? null : Math.max(0, (new Date() - d) / (1000 * 60 * 60)); })();
                               const crcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
                               const crclVal = crcl ? crcl.value : null;
                               // Estimate effective half-life based on renal function
@@ -17172,15 +17173,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               // DOAC detection
                               if (telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== '' && telestrokeNote.lastDOACType !== 'none' && telestrokeNote.lastDOACType !== 'warfarin' && telestrokeNote.lastDOACType !== 'heparin') {
                                 if (telestrokeNote.lastDOACDose) {
-                                  const hoursSinceDOAC = (new Date() - new Date(telestrokeNote.lastDOACDose)) / (1000 * 60 * 60);
-                                  if (hoursSinceDOAC < 48) autoDetected.recentDOAC = true;
+                                  const doacDoseDate = new Date(telestrokeNote.lastDOACDose);
+                                  const hoursSinceDOAC = Number.isNaN(doacDoseDate.getTime()) ? NaN : (new Date() - doacDoseDate) / (1000 * 60 * 60);
+                                  if (!isNaN(hoursSinceDOAC) && hoursSinceDOAC < 48) autoDetected.recentDOAC = true;
+                                  else if (isNaN(hoursSinceDOAC)) autoDetected.recentDOAC = true; // assume recent if date unparseable
                                 } else { autoDetected.recentDOAC = true; }
                               }
                               // Heparin detection
                               if (telestrokeNote.lastDOACType === 'heparin') {
                                 if (telestrokeNote.lastDOACDose) {
-                                  const hoursSinceHeparin = (new Date() - new Date(telestrokeNote.lastDOACDose)) / (1000 * 60 * 60);
-                                  if (hoursSinceHeparin < 24) autoDetected.recentHeparin = true;
+                                  const hepDoseDate = new Date(telestrokeNote.lastDOACDose);
+                                  const hoursSinceHeparin = Number.isNaN(hepDoseDate.getTime()) ? NaN : (new Date() - hepDoseDate) / (1000 * 60 * 60);
+                                  if (!isNaN(hoursSinceHeparin) && hoursSinceHeparin < 24) autoDetected.recentHeparin = true;
+                                  else if (isNaN(hoursSinceHeparin)) autoDetected.recentHeparin = true; // assume recent if date unparseable
                                 } else { autoDetected.recentHeparin = true; }
                               }
                               // Warfarin with elevated INR
