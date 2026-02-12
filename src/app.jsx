@@ -10899,10 +10899,21 @@ Clinician Name`;
               warnings.push({ id: 'evt-mimic', severity: 'error', msg: 'EVT recommended but diagnosis is stroke mimic — thrombectomy is not indicated. Clear EVT recommendation.' });
             }
             if (n.evtRecommended && !n.nihss && !nihssScore) {
-              warnings.push({ id: 'evt-no-nihss', severity: 'warn', msg: 'EVT recommended but NIHSS not documented — all EVT trials required NIHSS ≥6. Enter NIHSS before transfer.' });
+              warnings.push({ id: 'evt-no-nihss', severity: 'error', msg: 'EVT recommended but NIHSS not documented — EVT eligibility requires NIHSS ≥6 per HERMES/MR CLEAN. Document NIHSS before transfer.' });
+            }
+            if (n.tnkRecommended && (!n.nihss || n.nihss === '')) {
+              warnings.push({ id: 'tnk-no-nihss', severity: 'error', msg: 'TNK recommended but NIHSS not documented — all thrombolysis trials required NIHSS assessment. Enter NIHSS before proceeding.' });
             }
             if (n.tnkRecommended && parseInt(n.nihss, 10) === 0) {
               warnings.push({ id: 'tnk-nihss-zero', severity: 'error', msg: 'TNK recommended with NIHSS 0 — no neurological deficit documented. Verify clinical indication before proceeding.' });
+            }
+            // Basilar EVT: ATTENTION/BAOCHE required NIHSS ≥10
+            {
+              const hasBasilar = (n.vesselOcclusion || []).some(v => /basilar/i.test(v));
+              const evtNihss = parseInt(n.nihss, 10) || nihssScore || 0;
+              if (n.evtRecommended && hasBasilar && evtNihss > 0 && evtNihss < 10) {
+                warnings.push({ id: 'basilar-evt-nihss', severity: 'warn', msg: `EVT for basilar occlusion with NIHSS ${evtNihss} — ATTENTION/BAOCHE trials required NIHSS ≥10 for posterior circulation EVT. Verify deficit severity supports thrombectomy benefit.` });
+              }
             }
             if (n.evtRecommended && !hasLVO && (n.vesselOcclusion || []).length === 0) {
               warnings.push({ id: 'evt-no-lvo', severity: 'warn', msg: 'EVT recommended but no vessel occlusion documented — verify CTA findings' });
@@ -11061,6 +11072,13 @@ Clinician Name`;
             // DOAC + TNK without last dose timing documented
             if (n.tnkRecommended && n.lastDOACType && n.lastDOACType !== 'none' && n.lastDOACType !== 'warfarin' && n.lastDOACType !== 'heparin' && n.lastDOACType !== 'lmwh' && n.lastDOACType !== 'fondaparinux' && !n.lastDOACDose) {
               warnings.push({ id: 'doac-tnk-no-timing', severity: 'error', msg: `TNK recommended on ${ANTICOAGULANT_INFO[n.lastDOACType] ? ANTICOAGULANT_INFO[n.lastDOACType].name : n.lastDOACType} but last dose time not documented — DOAC half-life timing is critical for thrombolysis safety. Document last dose or check anti-Xa/dTT level.` });
+            }
+
+            // Post-TNK DOAC restart timing guidance
+            if (n.tnkAdminTime && n.lastDOACType && ['apixaban', 'rivaroxaban', 'dabigatran', 'edoxaban'].includes(n.lastDOACType) && !(n.doacTiming || {}).doacInitiationDay) {
+              const tnkNihss = parseInt(n.nihss, 10) || nihssScore || 0;
+              const restartGuidance = tnkNihss < 8 ? 'mild (NIHSS <8): day 5-7' : tnkNihss <= 15 ? 'moderate (NIHSS 8-15): day 7-10' : 'severe (NIHSS ≥16): day 10-14';
+              warnings.push({ id: 'post-tnk-doac-restart', severity: 'warn', msg: `Post-TNK DOAC restart timing not documented — ${restartGuidance}. Repeat imaging day 2-3 to rule out symptomatic hemorrhagic transformation before restarting. Set DOAC initiation day in DOAC Timing section. (CATALYST/ELAN)` });
             }
 
             // Weight missing for weight-based dosing (TNK or enoxaparin)
@@ -16368,7 +16386,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   setTelestrokeNote(prev => ({...prev, age: String(clamped)}));
                                 }}
                                 className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${telestrokeNote.age && (parseInt(telestrokeNote.age, 10) < 0 || parseInt(telestrokeNote.age, 10) > 120) ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
-                                placeholder=""
+                                placeholder="yrs"
                               />
                               {telestrokeNote.age && parseInt(telestrokeNote.age, 10) > 120 && <p className="text-xs text-red-600 mt-0.5">Check age value</p>}
                             </div>
@@ -16394,7 +16412,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   value={telestrokeNote.weight}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, weight: v})); }}
                                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${telestrokeNote.weight && (parseFloat(telestrokeNote.weight) > 300 || parseFloat(telestrokeNote.weight) < 10) ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
-                                  placeholder=""
+                                  placeholder="kg"
                                   min="0" max="500"
                                 />
                                 <span className="ml-1 text-xs text-slate-500">kg</span>
@@ -16453,7 +16471,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="text"
                               value={telestrokeNote.chiefComplaint}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, chiefComplaint: v})); }}
-                              placeholder=""
+                              placeholder="e.g., sudden L-sided weakness, speech difficulty"
                               className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                             />
                           </div>
@@ -16471,7 +16489,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <textarea
                                 value={telestrokeNote.symptoms}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, symptoms: v})); }}
-                                placeholder=""
+                                placeholder="e.g., R hemiparesis, aphasia, facial droop, dysarthria"
                                 rows="2"
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                               />
@@ -16482,7 +16500,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 type="text"
                                 value={telestrokeNote.pmh}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, pmh: v})); }}
-                                placeholder=""
+                                placeholder="e.g., AFib, HTN, DM2, prior CVA, CAD"
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                               />
                             </div>
@@ -16491,7 +16509,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <textarea
                                 value={telestrokeNote.medications}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, medications: v})); }}
-                                placeholder=""
+                                placeholder="e.g., ASA 81mg, atorvastatin 40mg, lisinopril 10mg, apixaban 5mg BID"
                                 rows="2"
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                               />
@@ -17163,7 +17181,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <textarea
                                 value={telestrokeNote.ctResults}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctResults: v})); }}
-                                placeholder=""
+                                placeholder="e.g., No acute ICH, early ischemic changes L MCA territory"
                                 rows="2"
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                               />
@@ -17308,7 +17326,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <textarea
                                 value={telestrokeNote.ctaResults}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctaResults: v})); }}
-                                placeholder=""
+                                placeholder="e.g., L M1 occlusion, patent ICA bilaterally, good collaterals"
                                 rows="3"
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                               />
@@ -17318,12 +17336,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-xs font-semibold text-blue-800 mb-2">
                                   <i aria-hidden="true" data-lucide="flask-conical" className="w-3 h-3 inline"></i> Vessel Occlusion <span className="font-normal">(for trial screening)</span>
                                 </p>
-                                <div className="flex flex-wrap gap-2">
-                                  {['ICA', 'M1', 'M2', 'M3', 'M4', 'A1', 'A2', 'A3', 'P1', 'P2', 'P3'].map(vessel => (
-                                    <label key={vessel} className="flex items-center gap-1 cursor-pointer">
+                                <div className="flex flex-wrap gap-1.5">
+                                  {['ICA', 'M1', 'M2', 'M3', 'M4', 'A1', 'A2', 'A3', 'P1', 'P2', 'P3', 'Basilar'].map(vessel => {
+                                    const vesselNames = { ICA: 'Internal carotid artery', M1: 'MCA M1', M2: 'MCA M2', M3: 'MCA M3', M4: 'MCA M4', A1: 'ACA A1', A2: 'ACA A2', A3: 'ACA A3', P1: 'PCA P1', P2: 'PCA P2', P3: 'PCA P3', Basilar: 'Basilar artery' };
+                                    const isChecked = (telestrokeNote.vesselOcclusion || []).includes(vessel);
+                                    return (
+                                    <label key={vessel} className="flex items-center gap-1.5 cursor-pointer py-1 px-1 min-h-[36px]">
                                       <input
                                         type="checkbox"
-                                        checked={(telestrokeNote.vesselOcclusion || []).includes(vessel)}
+                                        aria-label={`${vesselNames[vessel] || vessel} occlusion`}
+                                        checked={isChecked}
                                         onChange={(e) => {
                                           const current = telestrokeNote.vesselOcclusion || [];
                                           const updated = e.target.checked
@@ -17331,15 +17353,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             : current.filter(v => v !== vessel);
                                           setTelestrokeNote(prev => ({...prev, vesselOcclusion: updated}));
                                         }}
-                                        className="w-3 h-3"
+                                        className="w-4 h-4"
                                       />
-                                      <span className={`text-xs px-2 py-0.5 rounded ${
-                                        (telestrokeNote.vesselOcclusion || []).includes(vessel)
+                                      <span className={`text-xs px-2 py-1 rounded ${
+                                        isChecked
                                           ? 'bg-blue-600 text-white font-semibold'
                                           : 'bg-slate-200 text-slate-700'
                                       }`}>{vessel}</span>
                                     </label>
-                                  ))}
+                                    );
+                                  })}
                                   {(telestrokeNote.vesselOcclusion || []).length === 0 && (
                                     <span className="text-xs text-slate-500 italic">None selected</span>
                                   )}
@@ -20251,29 +20274,36 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             ) : crclVal !== null && crclVal < 30 ? (
                                               <><strong>DOSE REDUCTION:</strong> Dabigatran <strong>75mg BID</strong> (CrCl {crclVal} mL/min). Idarucizumab available for reversal. (RE-LY, RE-VERSE AD)</>
                                             ) : crclVal !== null && crclVal < 50 ? (
-                                              <><strong>Consider reduced dose:</strong> Dabigatran 75mg BID per FDA labeling for CrCl 30-49 with high bleed risk, or 150mg BID if standard risk (CrCl {crclVal} mL/min). (RE-LY)</>
+                                              <><strong>Consider reduced dose:</strong> Dabigatran <strong>75mg BID</strong> per FDA labeling for CrCl 30-49 with concomitant P-gp inhibitor (dronedarone, ketoconazole) or high bleed risk; otherwise <strong>150mg BID</strong> (CrCl {crclVal} mL/min). (RE-LY)</>
                                             ) : crclVal !== null ? (
-                                              <><strong>Standard dose: Dabigatran 150mg BID</strong> (CrCl {crclVal} mL/min). (RE-LY)</>
+                                              <><strong>Standard dose: Dabigatran 150mg BID</strong> (CrCl {crclVal} mL/min). Reduce to 75mg BID if concomitant P-gp inhibitor (dronedarone, ketoconazole). (RE-LY)</>
                                             ) : (
-                                              <>Dabigatran 75mg BID if CrCl 15-30. Avoid if CrCl &lt;15. Idarucizumab for reversal (RE-LY, RE-VERSE AD).</>
+                                              <>Dabigatran 75mg BID if CrCl 15-30, or CrCl 30-50 with P-gp inhibitor (dronedarone, ketoconazole). Avoid if CrCl &lt;15. Idarucizumab for reversal (RE-LY, RE-VERSE AD).</>
                                             )}
                                           </div>
                                         )}
-                                        {selectedDoac === 'edoxaban' && (
-                                          <div className={`mt-1 p-2 rounded text-xs ${crclVal !== null && crclVal > 95 ? 'bg-red-100 border border-red-300 text-red-800' : crclVal !== null && crclVal < 15 ? 'bg-red-100 border border-red-300 text-red-800' : crclVal !== null && crclVal <= 50 ? 'bg-amber-100 border border-amber-200 text-amber-800' : 'bg-emerald-50 border border-emerald-200 text-emerald-800'}`}>
+                                        {selectedDoac === 'edoxaban' && (() => {
+                                          const edoxWeightReduce = patientWt > 0 && patientWt <= 60;
+                                          const edoxNeedsReduction = (crclVal !== null && crclVal <= 50) || edoxWeightReduce;
+                                          const edoxAvoid = crclVal !== null && (crclVal > 95 || crclVal < 15);
+                                          return (
+                                          <div className={`mt-1 p-2 rounded text-xs ${edoxAvoid ? 'bg-red-100 border border-red-300 text-red-800' : edoxNeedsReduction ? 'bg-amber-100 border border-amber-200 text-amber-800' : 'bg-emerald-50 border border-emerald-200 text-emerald-800'}`}>
                                             {crclVal !== null && crclVal > 95 ? (
                                               <><strong>AVOID:</strong> Edoxaban has <strong>reduced efficacy</strong> with CrCl &gt;95 mL/min (patient: {crclVal}). Use alternative DOAC. (ENGAGE AF-TIMI 48)</>
                                             ) : crclVal !== null && crclVal < 15 ? (
                                               <><strong>AVOID:</strong> Edoxaban not recommended with CrCl &lt;15 mL/min (patient: {crclVal}).</>
                                             ) : crclVal !== null && crclVal <= 50 ? (
-                                              <><strong>DOSE REDUCTION:</strong> Edoxaban <strong>30mg daily</strong> (CrCl {crclVal} mL/min). Also reduce if wt ≤60kg or concomitant P-gp inhibitor. (ENGAGE AF-TIMI 48)</>
+                                              <><strong>DOSE REDUCTION:</strong> Edoxaban <strong>30mg daily</strong> (CrCl {crclVal} mL/min{edoxWeightReduce ? `, wt ${patientWt}kg ≤60` : ''}). {!edoxWeightReduce ? 'Also reduce if wt ≤60kg or concomitant P-gp inhibitor. ' : ''}(ENGAGE AF-TIMI 48)</>
+                                            ) : edoxWeightReduce ? (
+                                              <><strong>DOSE REDUCTION:</strong> Edoxaban <strong>30mg daily</strong> — weight {patientWt}kg ≤60kg requires dose reduction regardless of CrCl{crclVal !== null ? ` (CrCl ${crclVal})` : ''}. Also reduce for concomitant P-gp inhibitor. (ENGAGE AF-TIMI 48)</>
                                             ) : crclVal !== null ? (
-                                              <><strong>Standard dose: Edoxaban 60mg daily</strong> (CrCl {crclVal} mL/min). (ENGAGE AF-TIMI 48)</>
+                                              <><strong>Standard dose: Edoxaban 60mg daily</strong> (CrCl {crclVal} mL/min). Reduce to 30mg if wt ≤60kg or concomitant P-gp inhibitor. (ENGAGE AF-TIMI 48)</>
                                             ) : (
                                               <>Edoxaban 30mg daily if CrCl 15-50 or weight ≤60kg or concomitant P-gp inhibitor. Avoid if CrCl &gt;95 (reduced efficacy, ENGAGE AF-TIMI 48).</>
                                             )}
                                           </div>
-                                        )}
+                                          );
+                                        })()}
                                       </div>
                                     );
                                   })()}
@@ -30272,33 +30302,39 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <span className="text-lg font-bold text-slate-600">{calculateGCS(gcsItems) || '—'}</span>
                     </div>
                     <div className="grid grid-cols-3 gap-2 text-xs">
-                      <div>
-                        <label className="font-medium text-slate-700 block mb-1">Eye</label>
+                      <fieldset className="border-0 p-0 m-0">
+                        <legend className="font-medium text-slate-700 block mb-1">Eye</legend>
+                        <div role="radiogroup" aria-label="GCS Eye Opening Response">
                         {[{v:'4',l:'Spontaneous'},{v:'3',l:'Sound'},{v:'2',l:'Pain'},{v:'1',l:'None'}].map(o => (
-                          <button key={o.v} onClick={() => setGcsItems(prev => ({...prev, eye: o.v}))}
-                            className={`w-full text-left px-2 py-1.5 rounded mb-0.5 transition-colors ${gcsItems.eye === o.v ? 'bg-blue-600 text-white' : 'hover:bg-slate-200 text-slate-700'}`}>
+                          <button key={o.v} role="radio" aria-checked={gcsItems.eye === o.v} aria-label={`Eye ${o.l} (${o.v} points)`} onClick={() => setGcsItems(prev => ({...prev, eye: o.v}))}
+                            className={`w-full text-left px-2 py-2.5 rounded mb-0.5 min-h-[36px] transition-colors ${gcsItems.eye === o.v ? 'bg-blue-600 text-white font-medium' : 'hover:bg-slate-200 text-slate-700'}`}>
                             {o.v} - {o.l}
                           </button>
                         ))}
-                      </div>
-                      <div>
-                        <label className="font-medium text-slate-700 block mb-1">Verbal</label>
+                        </div>
+                      </fieldset>
+                      <fieldset className="border-0 p-0 m-0">
+                        <legend className="font-medium text-slate-700 block mb-1">Verbal</legend>
+                        <div role="radiogroup" aria-label="GCS Verbal Response">
                         {[{v:'5',l:'Oriented'},{v:'4',l:'Confused'},{v:'3',l:'Words'},{v:'2',l:'Sounds'},{v:'1',l:'None'}].map(o => (
-                          <button key={o.v} onClick={() => setGcsItems(prev => ({...prev, verbal: o.v}))}
-                            className={`w-full text-left px-2 py-1.5 rounded mb-0.5 transition-colors ${gcsItems.verbal === o.v ? 'bg-blue-600 text-white' : 'hover:bg-slate-200 text-slate-700'}`}>
+                          <button key={o.v} role="radio" aria-checked={gcsItems.verbal === o.v} aria-label={`Verbal ${o.l} (${o.v} points)`} onClick={() => setGcsItems(prev => ({...prev, verbal: o.v}))}
+                            className={`w-full text-left px-2 py-2.5 rounded mb-0.5 min-h-[36px] transition-colors ${gcsItems.verbal === o.v ? 'bg-blue-600 text-white font-medium' : 'hover:bg-slate-200 text-slate-700'}`}>
                             {o.v} - {o.l}
                           </button>
                         ))}
-                      </div>
-                      <div>
-                        <label className="font-medium text-slate-700 block mb-1">Motor</label>
+                        </div>
+                      </fieldset>
+                      <fieldset className="border-0 p-0 m-0">
+                        <legend className="font-medium text-slate-700 block mb-1">Motor</legend>
+                        <div role="radiogroup" aria-label="GCS Motor Response">
                         {[{v:'6',l:'Obeys'},{v:'5',l:'Localizes'},{v:'4',l:'Withdraws'},{v:'3',l:'Flexion'},{v:'2',l:'Extension'},{v:'1',l:'None'}].map(o => (
-                          <button key={o.v} onClick={() => setGcsItems(prev => ({...prev, motor: o.v}))}
-                            className={`w-full text-left px-2 py-1.5 rounded mb-0.5 transition-colors ${gcsItems.motor === o.v ? 'bg-blue-600 text-white' : 'hover:bg-slate-200 text-slate-700'}`}>
+                          <button key={o.v} role="radio" aria-checked={gcsItems.motor === o.v} aria-label={`Motor ${o.l} (${o.v} points)`} onClick={() => setGcsItems(prev => ({...prev, motor: o.v}))}
+                            className={`w-full text-left px-2 py-2.5 rounded mb-0.5 min-h-[36px] transition-colors ${gcsItems.motor === o.v ? 'bg-blue-600 text-white font-medium' : 'hover:bg-slate-200 text-slate-700'}`}>
                             {o.v} - {o.l}
                           </button>
                         ))}
-                      </div>
+                        </div>
+                      </fieldset>
                     </div>
                   </div>
 
