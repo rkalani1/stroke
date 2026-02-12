@@ -7765,10 +7765,12 @@ Clinician Name`;
             }).join(' ');
           };
 
+          const copyTimeoutRef = React.useRef(null);
           const copyToClipboard = (text, label) => {
             const onSuccess = () => {
               setCopiedText(label);
-              setTimeout(() => setCopiedText(''), 2000);
+              if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
+              copyTimeoutRef.current = setTimeout(() => { setCopiedText(''); copyTimeoutRef.current = null; }, 2000);
               addToast(`${label} copied to clipboard`, 'success');
             };
             if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -8328,7 +8330,7 @@ Clinician Name`;
                   note += `Discovery time: ${disc} (used for window calculation)\n`;
                 }
               } else {
-                note += `LKW: ${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}\n`;
+                note += `LKW: ${[formatDate(telestrokeNote.lkwDate), formatTime(telestrokeNote.lkwTime)].filter(Boolean).join(' ') || '___'}\n`;
               }
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
               const transferGCS = calculateGCS(gcsItems);
@@ -8982,7 +8984,8 @@ Clinician Name`;
               if (sp.antiplateletRegimen) {
                 note += `- Antithrombotic: ${AP_LABELS_SHORT[sp.antiplateletRegimen] || sp.antiplateletRegimen}\n`;
               }
-              if (sp.statinDose) note += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}\n`;
+              if (sp.statinDose) { let soStatLine = `- Statin: ${sp.statinDose.replace(/-/g, ' ')}`; if (sp.ldlCurrent) soStatLine += ` (LDL ${sp.ldlCurrent})`; note += soStatLine + '\n'; }
+              if (sp.cyp2c19Tested && sp.cyp2c19Result) note += `- CYP2C19: ${sp.cyp2c19Result.replace(/-/g, ' ')}\n`;
               // Consent
               if (telestrokeNote.tnkRecommended && telestrokeNote.tnkConsentDiscussed) {
                 const consentType = telestrokeNote.tnkConsentType || '(type not specified)';
@@ -9049,7 +9052,7 @@ Clinician Name`;
               note += '\n';
               note += `INDICATION:\n`;
               note += `Acute ischemic stroke with large vessel occlusion (${(telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ') || '___'}).\n`;
-              note += `LKW: ${telestrokeNote.lkwUnknown ? 'Unknown — discovery-based timing' : `${formatDate(telestrokeNote.lkwDate)} ${formatTime(telestrokeNote.lkwTime)}`}\n`;
+              note += `LKW: ${telestrokeNote.lkwUnknown ? 'Unknown — discovery-based timing' : [formatDate(telestrokeNote.lkwDate), formatTime(telestrokeNote.lkwTime)].filter(Boolean).join(' ') || '___'}\n`;
               if (telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== 'none') {
                 const procDoacName = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType;
                 note += `Anticoagulation: ${procDoacName}`;
@@ -9204,7 +9207,8 @@ Clinician Name`;
               note += `2. Secondary prevention:\n`;
               const progSp = telestrokeNote.secondaryPrevention || {};
               if (progSp.antiplateletRegimen) note += `   - Antithrombotic: ${AP_LABELS_SHORT[progSp.antiplateletRegimen] || progSp.antiplateletRegimen}\n`;
-              if (progSp.statinDose) note += `   - Statin: ${progSp.statinDose.replace(/-/g, ' ')}\n`;
+              if (progSp.statinDose) { let statLine = `   - Statin: ${progSp.statinDose.replace(/-/g, ' ')}`; if (progSp.ldlCurrent) statLine += ` (LDL ${progSp.ldlCurrent} mg/dL)`; note += statLine + '\n'; } else if (progSp.statinDose !== undefined) { note += `   - Statin: ___\n`; }
+              if (progSp.cyp2c19Tested && progSp.cyp2c19Result) note += `   - CYP2C19: ${progSp.cyp2c19Result} — ${progSp.cyp2c19Result === 'poor-metabolizer' || progSp.cyp2c19Result === 'intermediate-metabolizer' ? 'consider ticagrelor over clopidogrel' : 'standard clopidogrel dosing appropriate'}\n`;
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
                 const progAcInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
                 note += `   - Pre-admission anticoagulant: ${progAcInfo.name}`;
@@ -13053,12 +13057,12 @@ Clinician Name`;
             }
           }, [protocolModal, showChangelog, showKeyboardHelp, calcDrawerOpen, confirmConfig]);
 
-          // Reinitialize icons when needed
+          // Reinitialize icons when tab or major layout changes
           useEffect(() => {
             if (isMounted) {
-              lucide.createIcons();
+              requestAnimationFrame(() => lucide.createIcons());
             }
-          }, [activeTab, copiedText, notice, searchOpen, isMounted, focusMode, managementSubTab, calcDrawerOpen, protocolModal, encounterPhase]);
+          }, [activeTab, isMounted, managementSubTab, encounterPhase]);
 
           // Documentation generation functions
           const generateHPI = () => {
