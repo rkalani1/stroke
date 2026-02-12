@@ -8315,7 +8315,9 @@ Clinician Name`;
               if (!isNaN(c) && !isNaN(p) && c > 0) { const r = p/c; parts.push(`Ratio: ${isFinite(r) && r < 1000 ? r.toFixed(1) : '>999'}`); }
               ctpExtra = ` (${parts.join(', ')})`;
             }
-            return `${site}${age} year old ${sex}${wtStr} with ${pmh} who presents with ${symptoms}. ${lkwStr}.${gcsStr}${mrsStr} NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${ctExtra}${aspectsStr}${ichVolStr}${vesselStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}${ctpExtra}.${collatStr}${wusStr} TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}.${compStr} Rationale: ${rationale}.`;
+            const territoryStr = telestrokeNote.strokeTerritory ? ` Territory: ${telestrokeNote.strokeTerritory}.` : '';
+            const trajectoryStr = telestrokeNote.symptomTrajectory ? ` Trajectory: ${telestrokeNote.symptomTrajectory}.` : '';
+            return `${site}${age} year old ${sex}${wtStr} with ${pmh} who presents with ${symptoms}. ${lkwStr}.${gcsStr}${mrsStr} NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${ctExtra}${aspectsStr}${ichVolStr}${vesselStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}${ctpExtra}.${collatStr}${wusStr}${territoryStr}${trajectoryStr} TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}.${compStr} Rationale: ${rationale}.`;
           };
           const generatePulsaraPreview = () => {
             const age = telestrokeNote.age || "***";
@@ -8413,6 +8415,8 @@ Clinician Name`;
                 }
                 note += `\n`;
               }
+              if (telestrokeNote.strokeTerritory) note += `Territory: ${telestrokeNote.strokeTerritory}${telestrokeNote.strokePhenotype ? ` (${telestrokeNote.strokePhenotype})` : ''}\n`;
+              if (telestrokeNote.symptomTrajectory) note += `Trajectory: ${telestrokeNote.symptomTrajectory}\n`;
               note += `\n`;
               note += `Imaging:\n`;
               note += `- CT Head: ${telestrokeNote.ctResults || '___'}`;
@@ -8608,6 +8612,12 @@ Clinician Name`;
                 if (telestrokeNote.ichReversalInitiated) ichTransfer += '- Anticoagulation reversal initiated\n';
                 if (telestrokeNote.ichNeurosurgeryConsulted) ichTransfer += '- Neurosurgery consulted\n';
                 if (telestrokeNote.ichSeizureProphylaxis) ichTransfer += '- Seizure prophylaxis ordered\n';
+                const ichSurgTx = telestrokeNote.ichSurgicalCriteria || {};
+                if (ichSurgTx.cerebellarGt15mL) ichTransfer += '- SURGICAL: Cerebellar ICH >15 mL\n';
+                if (ichSurgTx.hydrocephalus) ichTransfer += '- SURGICAL: Obstructive hydrocephalus\n';
+                if (ichSurgTx.midlineShift) ichTransfer += '- Midline shift / herniation risk\n';
+                if (ichSurgTx.clinicalDeterioration) ichTransfer += '- Clinical deterioration\n';
+                if (ichSurgTx.surgeryDecision) ichTransfer += `- Surgical decision: ${ichSurgTx.surgeryDecision}\n`;
                 if (ichTransfer !== '\nICH Management:\n') note += ichTransfer;
               }
               // SAH-specific data
@@ -8849,6 +8859,13 @@ Clinician Name`;
               }
               const txRecText = telestrokeNote.recommendationsText || '___';
               note += `\nRecommendations:\n${txRecText.length > 500 ? txRecText.substring(0, 500) + '\n[...see full consultation note for details]' : txRecText}\n`;
+              // Family communication
+              const txFc = telestrokeNote.familyCommunication || {};
+              if (txFc.discussed) {
+                note += `\nFamily Communication:\n`;
+                note += `- Discussed with ${txFc.withWhom || 'family'}${txFc.time ? ` at ${txFc.time}` : ''}\n`;
+                if (txFc.topicsDiscussed) note += `- Topics: ${txFc.topicsDiscussed}\n`;
+              }
               note += `\nPENDING AT TRANSFER:\n`;
               note += `- Follow-up CT: ${telestrokeNote.tnkRecommended ? '24h post-TNK' : 'Per clinical indication'}\n`;
               if (telestrokeNote.evtRecommended) note += `- EVT evaluation at receiving hub\n`;
@@ -8913,6 +8930,8 @@ Clinician Name`;
               if (telestrokeNote.creatinine) signoutLabs.push(`Cr ${telestrokeNote.creatinine}`);
               if (signoutLabs.length > 0) note += `Labs: ${signoutLabs.join(', ')}\n`;
               if (telestrokeNote.premorbidMRS != null && telestrokeNote.premorbidMRS !== '') note += `Pre-morbid mRS: ${telestrokeNote.premorbidMRS}\n`;
+              if (telestrokeNote.strokeTerritory) note += `Territory: ${telestrokeNote.strokeTerritory}${telestrokeNote.strokePhenotype ? ` (${telestrokeNote.strokePhenotype})` : ''}\n`;
+              if (telestrokeNote.symptomTrajectory) note += `Trajectory: ${telestrokeNote.symptomTrajectory}${telestrokeNote.symptomOnsetNIHSS ? ` (onset NIHSS ~${telestrokeNote.symptomOnsetNIHSS})` : ''}\n`;
               if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}\n`;
               // Wake-up stroke evaluation (concise)
               {
@@ -9006,7 +9025,16 @@ Clinician Name`;
               if (telestrokeNote.complicationNotes) note += `- Complication details: ${telestrokeNote.complicationNotes}\n`;
               // Post-TNK monitoring
               if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) {
-                note += `- Post-TNK: neuro checks q15min x2h, q30min x6h, q1h x16h; hold antithrombotics x24h\n`;
+                const snPtm = telestrokeNote.postTNKMonitoring || {};
+                const snPtmItems = [];
+                if (snPtm.neuroChecksQ15min) snPtmItems.push('neuro checks q15min x2h');
+                if (snPtm.bpChecksQ15min) snPtmItems.push('BP q15min x2h');
+                if (snPtm.bleedingWatch) snPtmItems.push('bleeding precautions');
+                if (snPtm.repeatImagingOrdered) snPtmItems.push('24h CT ordered');
+                if (snPtm.cardiacMonitoring) snPtmItems.push('cardiac monitor');
+                note += snPtmItems.length > 0
+                  ? `- Post-TNK: ${snPtmItems.join(', ')}; hold antithrombotics x24h\n`
+                  : `- Post-TNK: neuro checks q15min x2h, q30min x6h, q1h x16h; hold antithrombotics x24h\n`;
               }
               // ICH-specific (concise)
               if (telestrokeNote.diagnosisCategory === 'ich') {
@@ -9020,6 +9048,10 @@ Clinician Name`;
                 if (telestrokeNote.ichReversalInitiated) snIchParts.push('reversal initiated');
                 if (telestrokeNote.ichNeurosurgeryConsulted) snIchParts.push('NSG consulted');
                 if (telestrokeNote.ichSeizureProphylaxis) snIchParts.push('seizure ppx');
+                const snIchSurg = telestrokeNote.ichSurgicalCriteria || {};
+                if (snIchSurg.cerebellarGt15mL) snIchParts.push('cerebellar >15mL');
+                if (snIchSurg.hydrocephalus) snIchParts.push('hydrocephalus');
+                if (snIchSurg.surgeryDecision) snIchParts.push(`surgery: ${snIchSurg.surgeryDecision}`);
                 if (snIchParts.length > 0) note += `- ICH: ${snIchParts.join(', ')}\n`;
               }
               // SAH-specific (concise)
@@ -9033,6 +9065,12 @@ Clinician Name`;
                   if (telestrokeNote.sahNimodipine) snSahParts.push('nimodipine');
                   if (telestrokeNote.sahEVDPlaced) snSahParts.push('EVD');
                   if (telestrokeNote.sahAneurysmSecured) snSahParts.push('aneurysm secured');
+                  if (telestrokeNote.sahAneurysmLocation) snSahParts.push(`aneurysm: ${telestrokeNote.sahAneurysmLocation}${telestrokeNote.sahAneurysmSize ? ` ${telestrokeNote.sahAneurysmSize}mm` : ''}`);
+                  if (telestrokeNote.sahSecuringMethod) snSahParts.push(`securing: ${telestrokeNote.sahSecuringMethod}`);
+                  const snVm = telestrokeNote.sahVasospasmMonitoring || {};
+                  if (snVm.dciSuspected) snSahParts.push('DCI SUSPECTED');
+                  if (snVm.inducedHypertension) snSahParts.push('induced HTN');
+                  if (snVm.tcdOrdered) snSahParts.push('TCD monitoring');
                   if (snSahParts.length > 0) note += `- SAH: ${snSahParts.join(', ')}\n`;
                 }
               }
@@ -9115,6 +9153,11 @@ Clinician Name`;
                 const consentType = telestrokeNote.tnkConsentType || '(type not specified)';
                 const consentWith = telestrokeNote.tnkConsentWith || '';
                 note += `- Consent: ${consentType}${consentWith ? ` with ${consentWith}` : ''}${telestrokeNote.tnkConsentTime ? ` at ${telestrokeNote.tnkConsentTime}` : ''}\n`;
+              }
+              // Family communication
+              const snFc = telestrokeNote.familyCommunication || {};
+              if (snFc.discussed) {
+                note += `- Family: discussed with ${snFc.withWhom || 'family'}${snFc.time ? ` at ${snFc.time}` : ''}${snFc.topicsDiscussed ? ` — ${snFc.topicsDiscussed}` : ''}\n`;
               }
               if (telestrokeNote.disposition) note += `\nDisposition: ${telestrokeNote.disposition}\n`;
               note += `\nActive issues / To-do:\n`;
@@ -9225,6 +9268,8 @@ Clinician Name`;
               note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}\n`;
               note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}\n`;
               if (telestrokeNote.affectedSide) note += `Affected side: ${telestrokeNote.affectedSide}\n`;
+              if (telestrokeNote.strokeTerritory) note += `Territory: ${telestrokeNote.strokeTerritory}${telestrokeNote.strokePhenotype ? ` (${telestrokeNote.strokePhenotype})` : ''}\n`;
+              if (telestrokeNote.symptomTrajectory) note += `Trajectory: ${telestrokeNote.symptomTrajectory}\n`;
               if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}${telestrokeNote.contrastAllergy ? ' **CONTRAST ALLERGY**' : ''}\n`;
               note += '\n';
               note += `SUBJECTIVE:\n`;
@@ -9280,7 +9325,17 @@ Clinician Name`;
               note += `\n`;
               note += `ASSESSMENT & PLAN:\n`;
               note += `1. Acute stroke management:\n`;
-              if (telestrokeNote.tnkRecommended) note += `   - Post-TNK: monitoring complete / ongoing\n`;
+              if (telestrokeNote.tnkRecommended) {
+                const prPtm = telestrokeNote.postTNKMonitoring || {};
+                const prPtmItems = [];
+                if (prPtm.neuroChecksQ15min) prPtmItems.push('neuro checks');
+                if (prPtm.bpChecksQ15min) prPtmItems.push('BP monitoring');
+                if (prPtm.repeatImagingOrdered) prPtmItems.push('24h CT ordered');
+                if (prPtm.cardiacMonitoring) prPtmItems.push('cardiac monitoring');
+                note += prPtmItems.length > 0
+                  ? `   - Post-TNK: ${prPtmItems.join(', ')} — ongoing\n`
+                  : `   - Post-TNK: monitoring complete / ongoing\n`;
+              }
               if (telestrokeNote.evtRecommended) note += `   - Post-EVT: mTICI ${telestrokeNote.ticiScore || '___'}\n`;
               const progComps = [];
               if (telestrokeNote.sichDetected) progComps.push('sICH');
@@ -9366,7 +9421,12 @@ Clinician Name`;
               note += `   - Estimated discharge: ___\n`;
               note += `   - Disposition: ${telestrokeNote.disposition || '___'}\n`;
               if (telestrokeNote.codeStatus) note += `   - Code status: ${telestrokeNote.codeStatus}\n`;
-              note += `   - Rehab needs: ___\n\n`;
+              note += `   - Rehab needs: ___\n`;
+              const prFc = telestrokeNote.familyCommunication || {};
+              if (prFc.discussed) {
+                note += `   - Family: discussed with ${prFc.withWhom || 'family'}${prFc.time ? ` at ${prFc.time}` : ''}${prFc.topicsDiscussed ? ` — ${prFc.topicsDiscussed}` : ''}\n`;
+              }
+              note += '\n';
               const progRecText2 = telestrokeNote.recommendationsText || '___';
               note += `RECOMMENDATIONS:\n${progRecText2.length > 500 ? progRecText2.substring(0, 500) + '\n[...see full consultation note]' : progRecText2}\n`;
               return note;
