@@ -419,7 +419,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         const DOAC_PROTOCOLS = {
           catalyst: {
             label: 'CATALYST early-start (default)',
-            days: { minor: 2, moderate: 3, severe: 6 }
+            days: { minor: 1, moderate: 3, severe: 6 }
           },
           '1-3-6-12': {
             label: '1-3-6-12 rule',
@@ -435,7 +435,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           const rule = DOAC_PROTOCOLS[protocol] || DOAC_PROTOCOLS.catalyst;
           const severity = Number.isNaN(nihssVal)
             ? 'moderate'
-            : nihssVal <= 8
+            : nihssVal < 8
               ? 'minor'
               : nihssVal <= 15
                 ? 'moderate'
@@ -1909,7 +1909,7 @@ Clinician Name`;
             'post-tnk': { label: 'Post-TNK', systolic: 180, diastolic: 105 },
             'post-evt': { label: 'Post-EVT', systolic: 180, diastolic: 105 },
             'no-lytics': { label: 'No lytics/No EVT', systolic: 220, diastolic: 120 },
-            'ich': { label: 'ICH (INTERACT2)', systolic: 140, diastolic: 90 },
+            'ich': { label: 'ICH (INTERACT3/AHA 2022)', systolic: 140, diastolic: 90 },
             'sah': { label: 'SAH (pre-securing, target <160)', systolic: 160, diastolic: 100 },
             'sah-secured': { label: 'SAH (post-securing)', systolic: 140, diastolic: 90 },
             'cvt': { label: 'CVT (permissive)', systolic: 220, diastolic: 110 },
@@ -9088,11 +9088,22 @@ Clinician Name`;
             if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) {
               const complications = [];
               if (telestrokeNote.sichDetected) complications.push('symptomatic ICH');
-              if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) complications.push('orolingual angioedema');
+              if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) {
+                const cnAe = telestrokeNote.angioedema || {};
+                let cnAeStr = 'orolingual angioedema';
+                if (cnAe.severity) cnAeStr += ` (${cnAe.severity})`;
+                if (cnAe.aceInhibitorUse) cnAeStr += ' — ACEi use';
+                if (cnAe.intubated) cnAeStr += ' — INTUBATED';
+                else if (cnAe.resolved) cnAeStr += ' — resolved';
+                complications.push(cnAeStr);
+              }
               if (telestrokeNote.reperfusionHemorrhage) complications.push('reperfusion hemorrhage');
               if (telestrokeNote.clinicalDeterioration) complications.push('clinical deterioration');
+              const cnHt = telestrokeNote.hemorrhagicTransformation || {};
+              if (cnHt.detected) complications.push(`HT${cnHt.classification ? ` (${cnHt.classification}${cnHt.symptomatic ? ', symptomatic' : ''})` : ''}`);
               if (complications.length > 0) {
                 note += `\nPost-Thrombolysis Complications: ${complications.join(', ')}`;
+                if (cnHt.detected && cnHt.antithromboticHeld) note += '\nAntithrombotics held due to HT';
                 if (telestrokeNote.complicationNotes) note += `\n${telestrokeNote.complicationNotes}`;
                 note += '\n';
               } else {
@@ -9102,6 +9113,38 @@ Clinician Name`;
                 if (telestrokeNote.postTnkAntiplateletHeld) monitored.push('antithrombotics held 24h');
                 if (telestrokeNote.postTnkRepeatCTOrdered) monitored.push('repeat CT ordered');
                 if (monitored.length > 0) note += `\nPost-TNK Monitoring: ${monitored.join(', ')}. No complications noted.\n`;
+              }
+            }
+
+            // Non-TNK hemorrhagic transformation
+            if (!(telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime)) {
+              const cnHtNonTnk = telestrokeNote.hemorrhagicTransformation || {};
+              if (cnHtNonTnk.detected) {
+                note += `\nHemorrhagic Transformation: ${cnHtNonTnk.classification || 'unclassified'}${cnHtNonTnk.symptomatic ? ' (SYMPTOMATIC)' : ''}`;
+                if (cnHtNonTnk.antithromboticHeld) note += ' — antithrombotics held';
+                if (cnHtNonTnk.reimagingPlanned) note += ', repeat imaging planned';
+                note += '\n';
+              }
+            }
+            // Cardiac workup
+            {
+              const cnCw = telestrokeNote.cardiacWorkup || {};
+              const cnCwParts = [];
+              if (cnCw.ecgComplete) cnCwParts.push('ECG completed');
+              if (cnCw.telemetryOrdered) cnCwParts.push('telemetry ordered');
+              if (cnCw.echoOrdered) cnCwParts.push('echo ordered');
+              if (cnCw.extendedMonitoringType) cnCwParts.push(`extended monitoring: ${cnCw.extendedMonitoringType}`);
+              if (cnCw.pfoEvaluation) cnCwParts.push(`PFO: ${cnCw.pfoEvaluation.replace(/-/g, ' ')}${cnCw.pascalClassification ? ` (PASCAL: ${cnCw.pascalClassification})` : ''}`);
+              if (cnCwParts.length > 0) note += `\nCardiac Workup: ${cnCwParts.join(', ')}\n`;
+            }
+            // Decompressive craniectomy
+            {
+              const cnDc = telestrokeNote.decompressiveCraniectomy || {};
+              if (cnDc.considered) {
+                note += `\nDecompressive Craniectomy: under consideration`;
+                if (cnDc.territorySize) note += ` — territory: ${cnDc.territorySize}`;
+                if (cnDc.timing) note += `, window: ${cnDc.timing}`;
+                note += '\n';
               }
             }
 
@@ -9127,6 +9170,19 @@ Clinician Name`;
             }
             if (spItems.length > 0) {
               note += `\nSecondary Prevention:\n${spItems.map(i => `- ${i}`).join('\n')}\n`;
+            }
+
+            // DOAC timing protocol
+            {
+              const cnDoac = telestrokeNote.doacTiming || {};
+              if (cnDoac.strokeSeverity || cnDoac.doacAgent) {
+                const cnDoacParts = [];
+                if (cnDoac.doacAgent) cnDoacParts.push(cnDoac.doacAgent.replace(/-/g, ' '));
+                if (cnDoac.strokeSeverity) cnDoacParts.push(`severity ${cnDoac.strokeSeverity} → ${cnDoac.strokeSeverity === 'minor' ? 'start within 48h' : cnDoac.strokeSeverity === 'moderate' ? 'Day 3-5' : 'Day 6-14'}`);
+                if (cnDoac.doacInitiationDay) cnDoacParts.push(`planned Day ${cnDoac.doacInitiationDay}`);
+                if (cnDoac.hemorrhagicTransformation) cnDoacParts.push('HT — repeat imaging before initiation');
+                note += `\nDOAC Timing: ${cnDoacParts.join('; ')}\n`;
+              }
             }
 
             // Add drug interaction alerts
