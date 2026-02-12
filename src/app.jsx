@@ -952,6 +952,7 @@ Clinician Name`;
             admitLocation: '',
             recommendationsText: '',
             transferAccepted: false,
+            transferReceivingFacility: '',
             transferRationale: '',
             transferImagingShareMethod: '',
             transferImagingShareLink: '',
@@ -7592,7 +7593,7 @@ Clinician Name`;
               'postTnkNeuroChecksStarted', 'postTnkBpMonitoring', 'postTnkRepeatCTOrdered', 'postTnkAntiplateletHeld',
               'sichDetected', 'angioedemaDetected', 'reperfusionHemorrhage', 'clinicalDeterioration', 'complicationNotes',
               'ichBPManaged', 'ichReversalInitiated', 'ichNeurosurgeryConsulted', 'ichSeizureProphylaxis',
-              'transferAccepted', 'transferImagingShared', 'transferLabsSent', 'transferIVAccess', 'transferBPStable', 'transferFamilyNotified',
+              'transferAccepted', 'transferReceivingFacility', 'transferImagingShared', 'transferLabsSent', 'transferIVAccess', 'transferBPStable', 'transferFamilyNotified',
               'transferRationale', 'disposition', 'codeStatus',
               'transferImagingShareMethod', 'transferImagingShareLink', 'transportMode', 'transportEta', 'transportNotes',
               'lastDOACType', 'lastDOACDose',
@@ -7822,7 +7823,7 @@ Clinician Name`;
               brief += `- TNK${fuDose ? ` ${fuDose.calculatedDose} mg` : ''} administered${telestrokeNote.tnkAdminTime ? ` at ${telestrokeNote.tnkAdminTime}` : ''}\n`;
             }
             if (telestrokeNote.evtRecommended) brief += `- EVT recommended/performed\n`;
-            if (telestrokeNote.transferAccepted) brief += `- Transferred to comprehensive stroke center\n`;
+            if (telestrokeNote.transferAccepted) brief += `- Transferred to ${telestrokeNote.transferReceivingFacility || 'comprehensive stroke center'}\n`;
             if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) brief += `- Medical management\n`;
             brief += `\nIMAGING:\n`;
             brief += `- CT Head: ${telestrokeNote.ctResults || 'N/A'}\n`;
@@ -8576,6 +8577,46 @@ Clinician Name`;
               if (/nsaid|ibuprofen|naproxen|meloxicam/.test(transferMeds)) transferAlerts.push('On NSAID — hold with antiplatelet/anticoagulation');
               if (transferAlerts.length > 0) {
                 note += `\nALERTS: ${transferAlerts.join('; ')}\n`;
+              }
+              // VTE prophylaxis status
+              {
+                const txVte = telestrokeNote.vteProphylaxis || {};
+                if (txVte.ipcApplied || txVte.pharmacoProphylaxis) {
+                  const txVteItems = [];
+                  if (txVte.ipcApplied) txVteItems.push('IPC/SCDs in place');
+                  if (txVte.pharmacoProphylaxis) txVteItems.push(`pharmacologic: ${txVte.pharmacoProphylaxis}${txVte.enoxaparinDose ? ` ${txVte.enoxaparinDose}` : ''}`);
+                  if (txVte.postTpaTimerStarted) txVteItems.push('post-TNK 24h hold in effect');
+                  note += `VTE prophylaxis: ${txVteItems.join('; ')}\n`;
+                } else if (telestrokeNote.tnkRecommended) {
+                  note += `VTE prophylaxis: pharmacologic held (post-TNK 24h) — IPC/SCDs recommended\n`;
+                }
+              }
+              // Nutritional/feeding status
+              {
+                const txNutr = telestrokeNote.nutritionalSupport || {};
+                const txDysph = telestrokeNote.dysphagiaScreening || {};
+                if (txDysph.bedsideScreenPerformed || txNutr.feedingRoute) {
+                  let feedingLine = 'Feeding status: ';
+                  if (txDysph.bedsideScreenResult === 'fail') feedingLine += 'NPO (failed swallow screen)';
+                  else if (txDysph.bedsideScreenResult === 'pass') feedingLine += 'Cleared for PO';
+                  else if (txDysph.npoStatus) feedingLine += 'NPO';
+                  else feedingLine += 'Swallow evaluation pending';
+                  if (txNutr.feedingRoute && txNutr.feedingRoute !== 'po') feedingLine += ` — ${txNutr.feedingRoute.toUpperCase()} in place`;
+                  if (txDysph.slpConsultOrdered) feedingLine += ' — SLP consult ordered';
+                  note += feedingLine + '\n';
+                }
+              }
+              // Osmotic therapy (ICH/SAH)
+              {
+                const txOsm = telestrokeNote.osmoticTherapy || {};
+                if (txOsm.agentUsed || txOsm.indication) {
+                  note += `Osmotic therapy: ${txOsm.agentUsed || 'agent not specified'}`;
+                  if (txOsm.sodiumTarget) note += ` — Na+ target: ${txOsm.sodiumTarget}`;
+                  if (txOsm.correctionRate) note += ` — rate: ${txOsm.correctionRate}`;
+                  if (txOsm.serumSodium) note += ` — current Na+: ${txOsm.serumSodium}`;
+                  if (txOsm.serumOsmolality) note += ` — Osm: ${txOsm.serumOsmolality}`;
+                  note += '\n';
+                }
               }
               const txRecText = telestrokeNote.recommendationsText || '___';
               note += `\nRecommendations:\n${txRecText.length > 500 ? txRecText.substring(0, 500) + '\n[...see full consultation note for details]' : txRecText}\n`;
@@ -9544,6 +9585,31 @@ Clinician Name`;
               note += `- Difficulty walking or loss of balance\n`;
               note += `- Chest pain, shortness of breath, or signs of bleeding\n`;
               note += `- Call 911 immediately — do NOT drive yourself\n\n`;
+              // Goals of care / palliative care
+              {
+                const pall = telestrokeNote.palliativeCare || {};
+                if (pall.goalsOfCareDiscussed || pall.consultOrdered) {
+                  note += `GOALS OF CARE:\n`;
+                  if (pall.goalsOfCareDiscussed) note += `- Goals of care discussion: completed${pall.goalsOfCareOutcome ? ` — ${pall.goalsOfCareOutcome.replace(/-/g, ' ')}` : ''}\n`;
+                  if (pall.consultOrdered) note += `- Palliative care consult ordered\n`;
+                  if (pall.dnrPostponementAlert) note += `- DNR/POLST status: reviewed\n`;
+                  note += '\n';
+                }
+              }
+              // Perioperative anticoag bridging (PAUSE protocol)
+              {
+                const bridge = telestrokeNote.anticoagBridging || {};
+                if (bridge.bridgingNeeded || bridge.doacType) {
+                  note += `PERIOPERATIVE ANTICOAGULATION (PAUSE PROTOCOL):\n`;
+                  if (bridge.doacType) note += `- Agent: ${bridge.doacType}\n`;
+                  if (bridge.crCl) note += `- CrCl: ${bridge.crCl} mL/min\n`;
+                  if (bridge.procedureRisk) note += `- Procedure bleeding risk: ${bridge.procedureRisk}\n`;
+                  if (bridge.holdDays) note += `- Hold: ${bridge.holdDays} days pre-procedure\n`;
+                  if (bridge.resumeDay) note += `- Resume: Day ${bridge.resumeDay} post-procedure\n`;
+                  if (bridge.warfarinBridgeIndication) note += `- Warfarin bridging: ${bridge.warfarinBridgeIndication}\n`;
+                  note += '\n';
+                }
+              }
               const dischRecText = telestrokeNote.recommendationsText || '___';
               note += `RECOMMENDATIONS:\n${dischRecText.length > 500 ? dischRecText.substring(0, 500) + '\n[...see full consultation note]' : dischRecText}\n`;
               if (telestrokeNote.attendingPhysician) note += `\nAttending Physician: ${telestrokeNote.attendingPhysician}\n`;
@@ -10097,7 +10163,7 @@ Clinician Name`;
             if (telestrokeNote.disposition || telestrokeNote.transferAccepted) {
               note += `\nDisposition: `;
               if (telestrokeNote.transferAccepted) {
-                note += `Transfer to comprehensive stroke center`;
+                note += `Transfer to ${telestrokeNote.transferReceivingFacility || 'comprehensive stroke center'}`;
                 if (telestrokeNote.transportMode) note += ` via ${telestrokeNote.transportMode}`;
                 if (telestrokeNote.transportEta) note += ` (ETA: ${telestrokeNote.transportEta})`;
               } else {
@@ -10244,7 +10310,7 @@ Clinician Name`;
             if (telestrokeNote.disposition) {
               sentences.push(`Disposition: ${telestrokeNote.disposition}.`);
             } else if (telestrokeNote.transferAccepted) {
-              let dispo = 'Transfer to comprehensive stroke center';
+              let dispo = `Transfer to ${telestrokeNote.transferReceivingFacility || 'comprehensive stroke center'}`;
               if (telestrokeNote.transportMode) dispo += ` via ${telestrokeNote.transportMode}`;
               sentences.push(`${dispo}.`);
             }
@@ -10631,6 +10697,19 @@ Clinician Name`;
             const nihss = parseInt(n.nihss, 10);
             if (n.tnkRecommended && nihss === 0) {
               warnings.push({ id: 'tnk-nihss-zero', severity: 'error', msg: 'TNK recommended with NIHSS 0 — thrombolysis is not indicated for non-disabling symptoms. Re-examine patient and verify NIHSS scoring before treatment.' });
+            }
+
+            // Pediatric patient warning (age <18)
+            if (!isNaN(age) && age < 18) {
+              warnings.push({ id: 'pediatric-age', severity: 'critical', msg: `Age ${age} — PEDIATRIC patient. Standard adult stroke protocols may not apply. Consult pediatric neurology. TNK dosing, BP targets, and EVT criteria differ in children. Consider: moyamoya, sickle cell, cardiac, and metabolic etiologies.` });
+            }
+
+            // NIHSS ≥25 with late-window EVT consideration
+            if (!isNaN(nihss) && nihss >= 25 && n.evtRecommended) {
+              const evtHrs = (tnkTime || ctTime) && lkw ? ((tnkTime || ctTime) - lkw) / (1000 * 60 * 60) : null;
+              if (evtHrs && evtHrs > 6) {
+                warnings.push({ id: 'nihss25-late-evt', severity: 'warn', msg: `NIHSS ${nihss} (≥25) in late window (${evtHrs.toFixed(1)}h) — very severe deficit with potential large core. Confirm ASPECTS ≥6 and favorable CTP mismatch. Higher risk of futile recanalization and sICH. Discuss prognosis and goals of care with family.` });
+              }
             }
 
             // LVO identified but EVT not recommended — prompt documentation
@@ -15249,6 +15328,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {(telestrokeNote.disposition === 'Transfer to CSC' || telestrokeNote.disposition === 'Transfer to PSC') && (
                               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 space-y-2">
                                 <h5 className="text-sm font-semibold text-blue-800">Transfer Checklist</h5>
+                                <div>
+                                  <label className="block text-xs text-slate-600 mb-0.5">Receiving Facility</label>
+                                  <input type="text" value={telestrokeNote.transferReceivingFacility || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, transferReceivingFacility: e.target.value})}
+                                    placeholder="e.g., Regional Medical Center"
+                                    className="w-full px-2 py-1 border border-slate-300 rounded text-xs" />
+                                </div>
                                 <div className="grid grid-cols-2 gap-1.5 text-sm">
                                   {[
                                     { key: 'transferAccepted', label: 'Accepting facility contacted' },
@@ -21391,7 +21477,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     note += `- IV TNK: Not recommended.\n`;
                                   }
                                   if (telestrokeNote.evtRecommended) {
-                                    note += `- EVT: Recommended. Transfer to EVT-capable center.\n`;
+                                    note += `- EVT: Recommended. Transfer to ${telestrokeNote.transferReceivingFacility || 'EVT-capable center'}.\n`;
                                   }
                                 } else if (pathwayType === 'ich') {
                                   note += `PLAN:\n`;
