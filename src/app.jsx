@@ -1371,7 +1371,13 @@ Clinician Name`;
               aphasiaReferral30d: false,
               cognitiveScreenDischarge: false,
               cognitiveScreen3mo: false,
-              neuropsychReferral: false
+              neuropsychReferral: false,
+              caregiver_strokeSigns: false,
+              caregiver_medicationAdmin: false,
+              caregiver_bpMonitoring: false,
+              caregiver_safeTransfers: false,
+              caregiver_dysphagiaDiet: false,
+              caregiver_emergencyPlan: false
             },
             // Phase 4: Discharge Checklist
             dischargeChecklist: {
@@ -11546,7 +11552,7 @@ Clinician Name`;
             setPcAspectsRegions(Array.isArray(snapshot.pcAspectsRegions) && snapshot.pcAspectsRegions.length
               ? snapshot.pcAspectsRegions
               : getDefaultPcAspectsRegions());
-            setConsultationType(snapshot.consultationType || settings.defaultConsultationType || 'videoTelestroke');
+            setConsultationType(snapshot.consultationType || settings.defaultConsultationType || 'telephone');
             setCurrentPatientId(snapshot.currentPatientId || null);
             decisionStateRef.current = {
               tnkRecommended: note.tnkRecommended,
@@ -11569,7 +11575,7 @@ Clinician Name`;
             setPatientData({});
             setNihssScore(0);
             setAspectsScore(10);
-            setLkwTime(null);
+            setLkwTime(new Date());
             setStrokeCodeForm(getDefaultStrokeCodeForm());
             setAspectsRegionState(getDefaultAspectsRegionState());
             setPcAspectsRegions(getDefaultPcAspectsRegions());
@@ -11608,6 +11614,7 @@ Clinician Name`;
             setShiftPatients([]);
             setCurrentPatientId(null);
             setAutoSyncCalculators(true);
+            decisionStateRef.current = { tnkRecommended: false, evtRecommended: false, transferAccepted: false, tnkContraindicationReviewed: false, tnkConsentDiscussed: false, tnkAdminTime: null };
 
             const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',
                                   'abcd2Items', 'chads2vascItems', 'ropeItems', 'huntHessGrade', 'wfnsGrade',
@@ -15237,6 +15244,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <option value="doac-af">DOAC for AF</option>
                                       <option value="anticoag-other">Anticoagulation (other)</option>
                                     </select>
+                                    {(telestrokeNote.secondaryPrevention || {}).antiplateletRegimen === 'dapt-21' && (
+                                      <select value={(telestrokeNote.secondaryPrevention || {}).daptDuration || ''}
+                                        onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), daptDuration: e.target.value}})}
+                                        className="w-full mt-1 px-2 py-1 border border-slate-300 rounded text-xs">
+                                        <option value="">-- DAPT duration --</option>
+                                        <option value="21 days">21 days (POINT/CHANCE)</option>
+                                        <option value="30 days">30 days</option>
+                                        <option value="90 days">90 days (CHANCE-2/THALES)</option>
+                                      </select>
+                                    )}
                                     {(() => {
                                       const sp = telestrokeNote.secondaryPrevention || {};
                                       const ap = sp.antiplateletRegimen || '';
@@ -19077,6 +19094,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <option value="doac-af">DOAC for AF (per CATALYST timing)</option>
                                   <option value="anticoag-other">Anticoagulation (other indication)</option>
                                 </select>
+                                {((telestrokeNote.secondaryPrevention || {}).antiplateletRegimen || '').startsWith('dapt') && (
+                                  <select value={(telestrokeNote.secondaryPrevention || {}).daptDuration || ''}
+                                    onChange={(e) => setTelestrokeNote({...telestrokeNote, secondaryPrevention: {...(telestrokeNote.secondaryPrevention || {}), daptDuration: e.target.value}})}
+                                    className="w-full mt-2 px-2 py-1 border border-slate-300 rounded text-sm">
+                                    <option value="">-- DAPT duration --</option>
+                                    <option value="21 days">21 days (POINT/CHANCE)</option>
+                                    <option value="30 days">30 days (THALES)</option>
+                                    <option value="90 days">90 days (CHANCE-2)</option>
+                                  </select>
+                                )}
                               </div>
 
                               {/* Diabetes, Smoking, Exercise, Diet */}
@@ -20197,7 +20224,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       const [rH, rM] = repT.split(':').map(Number);
                                       if (isNaN(bH) || isNaN(bM) || isNaN(rH) || isNaN(rM)) return <p className="text-xs text-slate-500 italic">Enter valid times to calculate correction rate.</p>;
                                       let hoursElapsed = (rH + rM / 60) - (bH + bM / 60);
-                                      if (hoursElapsed <= 0) hoursElapsed += 24; // crossed midnight
+                                      if (hoursElapsed < 0) hoursElapsed += 24; // crossed midnight
                                       if (hoursElapsed < 0.1) return <p className="text-xs text-red-600">Times too close — check entries.</p>;
 
                                       const naDelta = repNa - baseNa;
