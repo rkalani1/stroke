@@ -9077,14 +9077,34 @@ Clinician Name`;
               if (sp.antiplateletRegimen) note += `- Blood thinner: ${AP_LABELS_SHORT[sp.antiplateletRegimen] || sp.antiplateletRegimen} — Take as prescribed, do NOT skip doses\n`;
               if (sp.statinDose) note += `- Cholesterol medication: ${sp.statinDose.replace(/-/g, ' ')} — Take daily\n`;
               if (sp.bpMeds) note += `- Blood pressure medication: ${sp.bpMeds}\n`;
-              note += `\nLIFESTYLE CHANGES:\n`;
-              note += `- Control blood pressure (target: ${sp.bpTarget || '<130/80'})\n`;
-              note += `- Take medications as prescribed\n`;
-              note += `- Exercise regularly (30 min/day, 5 days/week)\n`;
-              note += `- Eat a healthy diet (low salt, Mediterranean)\n`;
-              note += `- Stop smoking\n`;
-              note += `- Limit alcohol\n`;
-              note += `- Monitor blood sugar if diabetic\n\n`;
+              // Anticoagulation information
+              {
+                const edDoac = telestrokeNote.doacType || telestrokeNote.anticoagulant;
+                const edDoacTiming = telestrokeNote.doacTiming || {};
+                if (edDoac || (sp.antiplateletRegimen || '').includes('doac') || (sp.antiplateletRegimen || '').includes('anticoag')) {
+                  note += `\nANTICOAGULATION (BLOOD THINNER):\n`;
+                  if (edDoac) note += `- You are prescribed: ${edDoac}\n`;
+                  note += `- This medication helps prevent blood clots and reduces your risk of another stroke\n`;
+                  note += `- Take at the SAME TIME every day. Do NOT skip doses — even one missed dose increases stroke risk\n`;
+                  note += `- Tell ALL your doctors and dentists that you take a blood thinner\n`;
+                  note += `- Seek immediate medical attention if you experience unusual bleeding, blood in urine/stool, or severe bruising\n`;
+                  if (edDoacTiming.restartDate) note += `- Restart date: ${edDoacTiming.restartDate}\n`;
+                  note += '\n';
+                }
+              }
+              // Patient-specific risk factors
+              note += `\nYOUR RISK FACTORS:\n`;
+              note += `Understanding and managing your personal risk factors is key to preventing another stroke:\n`;
+              note += `- Control blood pressure (target: ${sp.bpTarget || '<130/80'}) — check daily at home\n`;
+              if (sp.diabetesManagement && sp.diabetesManagement !== 'no-diabetes') note += `- Manage diabetes: take medications as directed, target A1c <7%\n`;
+              if (sp.smokingStatus === 'current') note += `- STOP SMOKING — this is the most important change you can make. Ask your doctor about quit aids\n`;
+              else note += `- Do not smoke or use tobacco\n`;
+              note += `- Take medications as prescribed — do not stop without talking to your doctor\n`;
+              note += `- Exercise regularly (at least 30 min/day, 5 days/week — walking counts!)\n`;
+              note += `- Eat a heart-healthy diet (low salt, plenty of fruits/vegetables, Mediterranean-style)\n`;
+              note += `- Limit alcohol (no more than 1 drink/day for women, 2 for men)\n`;
+              if (telestrokeNote.weight) note += `- Maintain a healthy weight\n`;
+              note += '\n';
               note += `WHEN TO CALL 911:\n`;
               note += `- Any new stroke symptoms (BE FAST)\n`;
               note += `- Severe headache\n`;
@@ -9111,14 +9131,20 @@ Clinician Name`;
               }
               note += `FOLLOW-UP APPOINTMENTS:\n`;
               const edIsTIA = (telestrokeNote.diagnosis || '').toLowerCase().includes('tia');
+              const edIsICH = telestrokeNote.diagnosisCategory === 'ich';
               if (edIsTIA) {
                 note += `- Stroke clinic: URGENT — within 24-72 hours\n`;
+              } else if (edIsICH) {
+                note += `- Neurology/Neurosurgery: 2-4 weeks\n`;
               } else {
                 note += `- Stroke clinic: 1-2 weeks\n`;
               }
               note += `- Primary care: 1 week\n`;
               note += `- Rehabilitation therapy: as arranged\n`;
-              if (telestrokeNote.cardiacWorkup?.extendedMonitoringType) note += `- Cardiology: heart monitoring follow-up\n`;
+              if (telestrokeNote.cardiacWorkup?.extendedMonitoringType) note += `- Cardiology: heart monitoring follow-up (${telestrokeNote.cardiacWorkup.extendedMonitoringType})\n`;
+              if (telestrokeNote.carotidManagement?.interventionPlanned) note += `- Vascular surgery: carotid procedure follow-up\n`;
+              note += `\nBring this document and a list of ALL your medications to every appointment.\n`;
+              note += `If you have any questions, call your doctor's office.\n`;
               return note;
             }
 
