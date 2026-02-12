@@ -7829,9 +7829,10 @@ Clinician Name`;
               const fuDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
               brief += `- TNK${fuDose ? ` ${fuDose.calculatedDose} mg` : ''} administered${telestrokeNote.tnkAdminTime ? ` at ${telestrokeNote.tnkAdminTime}` : ''}\n`;
             }
-            if (telestrokeNote.evtRecommended) brief += `- EVT recommended/performed\n`;
+            if (telestrokeNote.evtRecommended) brief += `- EVT recommended/performed${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
             if (telestrokeNote.transferAccepted) brief += `- Transferred to ${telestrokeNote.transferReceivingFacility || 'comprehensive stroke center'}\n`;
             if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) brief += `- Medical management\n`;
+            if (telestrokeNote.affectedSide) brief += `- Affected side: ${telestrokeNote.affectedSide}\n`;
             brief += `\nIMAGING:\n`;
             brief += `- CT Head: ${telestrokeNote.ctResults || 'N/A'}\n`;
             brief += `- CTA: ${telestrokeNote.ctaResults || 'N/A'}\n`;
@@ -7853,6 +7854,7 @@ Clinician Name`;
             if (telestrokeNote.collateralGrade) brief += `- Collaterals: ${telestrokeNote.collateralGrade}\n`;
             const briefVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
             if (briefVessels.length > 0) brief += `- Vessel occlusion: ${briefVessels.join(', ')}\n`;
+            if (telestrokeNote.ekgResults) brief += `- EKG: ${telestrokeNote.ekgResults}\n`;
             // Wake-up stroke evaluation
             {
               const fuWus = telestrokeNote.wakeUpStrokeWorkflow || {};
@@ -8681,6 +8683,7 @@ Clinician Name`;
                 }
               }
               if (telestrokeNote.collateralGrade) note += `Collaterals: ${telestrokeNote.collateralGrade}\n`;
+              if (telestrokeNote.ekgResults) note += `EKG: ${telestrokeNote.ekgResults}\n`;
               const signoutVitals = [`BP ${telestrokeNote.presentingBP || '___'}`];
               if (telestrokeNote.heartRate) signoutVitals.push(`HR ${telestrokeNote.heartRate}`);
               if (telestrokeNote.spO2) signoutVitals.push(`SpO2 ${telestrokeNote.spO2}%`);
@@ -8726,7 +8729,8 @@ Clinician Name`;
                   }
                 }
               }
-              if (telestrokeNote.evtRecommended) note += `- EVT recommended/performed\n`;
+              if (telestrokeNote.tnkRecommended && telestrokeNote.disablingDeficit) note += `  DISABLING DEFICIT — TNK despite NIHSS ${telestrokeNote.nihss || nihssScore || '___'}\n`;
+              if (telestrokeNote.evtRecommended) note += `- EVT recommended/performed${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
               // Anticoagulation status
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
@@ -8967,6 +8971,7 @@ Clinician Name`;
               note += `- Hold antiplatelets/anticoagulants x 24h\n`;
               note += `- Repeat CT at 24h\n`;
               note += `- Bedrest with HOB 30° x 6h post-sheath removal\n`;
+              if (telestrokeNote.dischargeNIHSS) note += `\nPost-procedure NIHSS: ${telestrokeNote.dischargeNIHSS}\n`;
               return note;
             }
 
@@ -10819,9 +10824,9 @@ Clinician Name`;
               warnings.push({ id: 'ht-antithrombotics-not-held', severity: 'error', msg: 'Hemorrhagic transformation documented but antithrombotics not marked as held — verify medication management.' });
             }
 
-            // SAH with anticoagulation but no reversal agent specified
-            if (n.diagnosisCategory === 'sah' && n.lastDOACType && !n.reversalAgent) {
-              warnings.push({ id: 'sah-no-reversal', severity: 'error', msg: `SAH with pre-admission ${n.lastDOACType} but no reversal agent specified — urgent reversal required.` });
+            // SAH or ICH with anticoagulation but reversal not initiated
+            if ((n.diagnosisCategory === 'sah' || n.diagnosisCategory === 'ich') && n.lastDOACType && !n.ichReversalInitiated) {
+              warnings.push({ id: 'hemorrhage-no-reversal', severity: 'error', msg: `${n.diagnosisCategory === 'sah' ? 'SAH' : 'ICH'} with pre-admission ${n.lastDOACType} but anticoagulation reversal not initiated — urgent reversal required.` });
             }
 
             return warnings;
