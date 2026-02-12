@@ -3044,8 +3044,7 @@ Clinician Name`;
               keyCriteria: [
                 { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
                 { id: 'ichConfirmed', label: 'ICH confirmed', field: 'diagnosis', evaluate: (data) => {
-                    const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                    return dx.includes('ich') || dx.includes('hemorrhage') || dx.includes('hemorrhagic');
+                    return data.telestrokeNote?.diagnosisCategory === 'ich';
                   }, required: true },
                 { id: 'afib', label: 'Atrial fibrillation', field: 'pmh', evaluate: (data) => {
                     const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
@@ -3080,9 +3079,9 @@ Clinician Name`;
                     return age >= 18 && age <= 80;
                   }, required: true },
                 { id: 'ichConfirmed', label: 'ICH confirmed on imaging', field: 'diagnosis', evaluate: (data) => {
-                    const dx = (data.telestrokeNote?.diagnosis || data.strokeCodeForm?.diagnosis || '').toLowerCase();
+                    const cat = data.telestrokeNote?.diagnosisCategory;
                     const ct = (data.telestrokeNote?.ctResults || data.strokeCodeForm?.ctResults || '').toLowerCase();
-                    return dx.includes('ich') || dx.includes('hemorrhage') || ct.includes('hemorrhage') || ct.includes('bleed');
+                    return cat === 'ich' || ct.includes('hemorrhage') || ct.includes('bleed');
                   }, required: true },
                 { id: 'timeWindow', label: 'Within 2h of onset', field: 'lkw', evaluate: (data) => {
                     const hrs = data.hoursFromLKW;
@@ -3153,8 +3152,8 @@ Clinician Name`;
               keyCriteria: [
                 { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
                 { id: 'strokeConfirmed', label: 'Stroke confirmed', field: 'diagnosis', evaluate: (data) => {
-                    const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                    return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('sah');
+                    const cat = data.telestrokeNote?.diagnosisCategory;
+                    return !!cat && cat !== 'mimic';
                   }, required: true }
               ],
               exclusionFlags: [
@@ -3216,8 +3215,8 @@ Clinician Name`;
               keyCriteria: [
                 { id: 'age', label: 'Age ≥30', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 30), required: true },
                 { id: 'diagnosis', label: 'Ischemic stroke or TIA', field: 'diagnosis', evaluate: (data) => {
-                    const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                    return dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
+                    const cat = data.telestrokeNote?.diagnosisCategory;
+                    return cat === 'ischemic' || cat === 'tia';
                   }, required: true },
                 { id: 'icas', label: 'Intracranial stenosis 70-99% (ICAS)', field: 'ctaResults', evaluate: (data) => {
                     const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
@@ -3364,8 +3363,8 @@ Clinician Name`;
               reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               medications: ['Labetalol 10-20 mg IV', 'Nicardipine 5 mg/hr IV'],
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('lvo');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const timeFrom = data.timeFromLKW;
                 const inWindow = timeFrom && timeFrom.total < 4.5;
                 return isIschemic && (inWindow || data.telestrokeNote?.tnkRecommended);
@@ -3414,8 +3413,7 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=17',
               medications: ['Nicardipine 5 mg/hr IV (titrate to 15 mg/hr)', 'Labetalol 10-20 mg IV bolus PRN'],
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
               }
             },
             bp_ich_avoid_low: {
@@ -3430,8 +3428,7 @@ Clinician Name`;
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=17',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
               }
             },
             bp_ischemic_no_lysis: {
@@ -3445,8 +3442,8 @@ Clinician Name`;
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('lvo');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isIschemic = cat === 'ischemic' || cat === 'tia';
                 return isIschemic && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
               }
             },
@@ -3675,8 +3672,8 @@ Clinician Name`;
                 const hasAF = pmh.includes('afib') || pmh.includes('atrial fib') || pmh.includes('a-fib') || pmh.includes('af ') ||
                               meds.includes('apixaban') || meds.includes('rivaroxaban') || meds.includes('eliquis') || meds.includes('xarelto') ||
                               meds.includes('warfarin') || meds.includes('coumadin') || meds.includes('dabigatran') || meds.includes('pradaxa');
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isIschemic = dx.includes('ischemic') || dx.includes('stroke');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isIschemic = cat === 'ischemic' || cat === 'tia';
                 return isIschemic && hasAF;
               }
             },
@@ -3692,9 +3689,11 @@ Clinician Name`;
               reference: 'AAN Practice Advisory 2022. Reaffirmed 2025.',
               medications: ['ASA 325 mg daily (after 90-day DAPT)', 'Clopidogrel 75 mg daily x 90 days', 'High-intensity statin'],
               conditions: (data) => {
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
-                return dx.includes('intracranial') || dx.includes('icas') || cta.includes('intracranial stenosis') || cta.includes('icas');
+                return isIschemic && (dx.includes('intracranial') || dx.includes('icas') || cta.includes('intracranial stenosis') || cta.includes('icas'));
               }
             },
 
@@ -3735,9 +3734,8 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
               medications: ['Vitamin K 10 mg IV over 20 min', '4F-PCC (KCentra) 2000 units IVPB (fixed-dose) or 25-50 IU/kg based on INR (AHA)'],
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
-                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const onWarfarin = meds.includes('warfarin') || meds.includes('coumadin');
                 return isICH && onWarfarin;
               }
@@ -3755,9 +3753,8 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
               medications: ['Idarucizumab (Praxbind) 5g IV', 'Alt: 4F-PCC 50 IU/kg IV if idarucizumab unavailable', 'Alt: aPCC (FEIBA) 50 IU/kg if both unavailable'],
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
-                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const onDabigatran = meds.includes('dabigatran') || meds.includes('pradaxa');
                 return isICH && onDabigatran;
               }
@@ -3775,9 +3772,8 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
               medications: ['4F-PCC (Kcentra) 2000 units IV immediately (first-line)', 'Andexanet alfa (Class IIa per AHA/ASA 2022) — check local formulary availability'],
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
-                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const onXaInhibitor = meds.includes('apixaban') || meds.includes('eliquis') ||
                                       meds.includes('rivaroxaban') || meds.includes('xarelto');
                 return isICH && onXaInhibitor;
@@ -3796,9 +3792,8 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=23',
               medications: ['Desmopressin 0.3 mcg/kg IV x1'],
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
-                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const onAntiplatelet = meds.includes('aspirin') || meds.includes('asa') ||
                   meds.includes('clopidogrel') || meds.includes('plavix') ||
                   meds.includes('ticagrelor') || meds.includes('brilinta') ||
@@ -3819,9 +3814,8 @@ Clinician Name`;
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=23',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
-                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const onAspirin = meds.includes('aspirin') || meds.includes('asa');
                 return isICH && onAspirin && !!data.telestrokeNote?.ichNeurosurgeryConsulted;
               }
@@ -3838,9 +3832,8 @@ Clinician Name`;
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=23',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
-                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const onAspirin = meds.includes('aspirin') || meds.includes('asa');
                 return isICH && onAspirin && !data.telestrokeNote?.ichNeurosurgeryConsulted;
               }
@@ -3857,8 +3850,7 @@ Clinician Name`;
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=29',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
               }
             },
             ich_vte_heparin: {
@@ -3873,8 +3865,7 @@ Clinician Name`;
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=29',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
               }
             },
             ich_vte_stockings: {
@@ -3889,8 +3880,7 @@ Clinician Name`;
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=29',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
               }
             },
             ich_seizure_clinical: {
@@ -3905,10 +3895,9 @@ Clinician Name`;
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=34',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const sx = (data.telestrokeNote?.symptoms || '').toLowerCase();
-                return (dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral')) &&
-                  (sx.includes('seizure') || sx.includes('convulsion'));
+                return isICH && (sx.includes('seizure') || sx.includes('convulsion'));
               }
             },
             ich_seizure_eeg: {
@@ -3923,9 +3912,9 @@ Clinician Name`;
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=34',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const gcs = parseInt(data.telestrokeNote?.gcs || data.telestrokeNote?.gcsTotal, 10) || null;
-                return (dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral')) && gcs !== null && gcs <= 12;
+                return isICH && gcs !== null && gcs <= 12;
               }
             },
             ich_seizure_cEEG: {
@@ -3940,8 +3929,7 @@ Clinician Name`;
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=34',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
               }
             },
             ich_seizure_prophylaxis: {
@@ -3956,8 +3944,7 @@ Clinician Name`;
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=34',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
               }
             },
             ich_evd_ivh: {
@@ -3972,9 +3959,8 @@ Clinician Name`;
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=39',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const ct = (data.telestrokeNote?.ctResults || '').toLowerCase();
-                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const hasIVH = ct.includes('ivh') || ct.includes('intraventricular');
                 return isICH && hasIVH;
               }
@@ -3991,9 +3977,9 @@ Clinician Name`;
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=37',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const gcs = parseInt(data.telestrokeNote?.gcs || data.telestrokeNote?.gcsTotal, 10) || null;
-                return (dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral')) && gcs !== null && gcs >= 5 && gcs <= 12;
+                return isICH && gcs !== null && gcs >= 5 && gcs <= 12;
               }
             },
 
@@ -4030,9 +4016,9 @@ Clinician Name`;
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: getGuidelineUrl('AHA/ASA Spontaneous ICH 2022') + '#page=42',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const ct = (data.telestrokeNote?.ctResults || '').toLowerCase();
-                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const isCerebellar = ct.includes('cerebell') || dx.includes('cerebell') || ct.includes('posterior fossa');
                 return isICH && isCerebellar;
               }
@@ -4048,9 +4034,10 @@ Clinician Name`;
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'STICH: Lancet 2005;365:387-97. STICH-II: Lancet 2013;382:397-408. MISTIE-III: Lancet 2019;393:1021-32.',
               conditions: (data) => {
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
+                const ct = (data.telestrokeNote?.ctResults || '').toLowerCase();
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
-                return isICH && !dx.includes('cerebell');
+                return isICH && !ct.includes('cerebell') && !dx.includes('cerebell');
               }
             },
             decompressive_craniectomy: {
@@ -4066,8 +4053,7 @@ Clinician Name`;
               conditions: (data) => {
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const age = parseInt(data.telestrokeNote?.age, 10) || 0;
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isIschemic = dx.includes('ischemic') || dx.includes('mca') || dx.includes('malignant');
+                const isIschemic = data.telestrokeNote?.diagnosisCategory === 'ischemic';
                 return isIschemic && nihss >= 15 && age > 0 && age < 60;
               }
             },
@@ -4103,9 +4089,12 @@ Clinician Name`;
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=48',
               conditions: (data) => {
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
                 const age = parseInt(data.telestrokeNote?.age, 10) || 0;
-                return (dx.includes('cryptogenic') || dx.includes('pfo') || dx.includes('esus')) && age >= 18 && age <= 60;
+                return isIschemic && (dx.includes('cryptogenic') || dx.includes('pfo') || dx.includes('esus') || toast === 'cryptogenic') && age >= 18 && age <= 60;
               }
             },
 
@@ -4120,10 +4109,12 @@ Clinician Name`;
               guideline: 'Suggested Protocol; AHA/ASA Secondary Prevention 2021',
               reference: 'Matthews et al. J Stroke Cerebrovasc Dis. 2022;31(6):106431. Chiasakul & Cuker. Hematology. 2018.',
               conditions: (data) => {
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const age = parseInt(data.telestrokeNote?.age, 10) || 0;
                 const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
-                return (dx.includes('cryptogenic') || dx.includes('esus') || toast === 'cryptogenic') && age < 50;
+                return isIschemic && (dx.includes('cryptogenic') || dx.includes('esus') || toast === 'cryptogenic') && age < 50;
               }
             },
 
@@ -4155,10 +4146,10 @@ Clinician Name`;
               guideline: 'Suggested Protocol',
               reference: 'Communication with Neurosurgery protocol.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isICH = cat === 'ich';
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
-                const isLargeIschemic = (dx.includes('ischemic') || dx.includes('stroke')) && nihss >= 15;
+                const isLargeIschemic = cat === 'ischemic' && nihss >= 15;
                 return isICH || isLargeIschemic;
               }
             },
@@ -4214,8 +4205,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Spontaneous ICH 2022 + STROKE-CLOSE 2024',
               reference: 'STROKE-CLOSE: Nielsen TH et al. Lancet. 2024.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const afib = (data.telestrokeNote?.ekgFindings || '').toLowerCase().includes('fib') ||
                              (data.telestrokeNote?.ekgFindings || '').toLowerCase().includes('af');
                 return isICH && afib;
@@ -4256,8 +4246,8 @@ Clinician Name`;
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('hemorrhag');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             },
             vte_prophylaxis: {
@@ -4272,8 +4262,8 @@ Clinician Name`;
               reference: 'AHA Scientific Statement 2024. DOI: 10.1161/STR.0000000000000477',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000477#page=6',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('hemorrhag');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             },
             glycemic_management: {
@@ -4288,8 +4278,8 @@ Clinician Name`;
               reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
                 const glucose = parseInt(data.telestrokeNote?.glucose, 10) || 0;
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isStroke = dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isStroke = !!cat && cat !== 'mimic';
                 return isStroke && (glucose > 180 || glucose < 60 || glucose === 0);
               }
             },
@@ -4305,8 +4295,8 @@ Clinician Name`;
               reference: 'AHA Scientific Statement 2024. DOI: 10.1161/STR.0000000000000477',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000477#page=4',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('hemorrhag');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             },
 
@@ -4324,8 +4314,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Spontaneous ICH 2022 + AHA Palliative Care in Stroke 2024',
               reference: 'Greenberg SM et al. Stroke. 2022. DOI: 10.1161/STR.0000000000000407; AHA 2024. DOI: 10.1161/STR.0000000000000479',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const ichScore = data.ichScore || 0;
                 return isICH && ichScore >= 3;
               }
@@ -4739,8 +4728,8 @@ Clinician Name`;
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return cat === 'ischemic' || cat === 'tia';
               }
             },
             discharge_statin: {
@@ -4755,8 +4744,8 @@ Clinician Name`;
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=21',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return cat === 'ischemic' || cat === 'tia';
               }
             },
             discharge_bp_management: {
@@ -4771,8 +4760,8 @@ Clinician Name`;
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=20',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('tia');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             },
 
@@ -4790,9 +4779,9 @@ Clinician Name`;
               guideline: 'AHA/ASA Spontaneous ICH 2022 + PRESTIGE-AF/ENRICH-AF 2025',
               reference: 'PRESTIGE-AF: Lancet 2025; SoSTART: Lancet Neurol 2021; APACHE-AF: Lancet Neurol 2021',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const hasAF = (data.telestrokeNote?.pmh || '').toLowerCase().includes('fib') || (data.telestrokeNote?.pmh || '').toLowerCase().includes('af');
-                return (dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral')) && hasAF;
+                return isICH && hasAF;
               }
             },
 
@@ -4865,8 +4854,8 @@ Clinician Name`;
               guideline: 'CATALYST IPDMA 2025',
               reference: 'CATALYST: Lancet 2025. Pooled TIMING, ELAN, OPTIMAS, START.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('lvo');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const hasAF = (data.telestrokeNote?.pmh || '').toLowerCase().includes('fib') || (data.telestrokeNote?.pmh || '').toLowerCase().includes('af');
                 return isIschemic && hasAF;
               }
@@ -4958,8 +4947,8 @@ Clinician Name`;
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Powers WJ et al. Stroke. 2026.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('sah');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             },
 
@@ -4977,8 +4966,8 @@ Clinician Name`;
               guideline: 'AVERT Phase III (Lancet 2015); VA/DoD Stroke Rehab CPG 2024',
               reference: 'AVERT: Lancet 2015;386:46-55.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             },
 
@@ -5017,8 +5006,8 @@ Clinician Name`;
               reference: 'SELECT: NEJM 2023. SUSTAIN-6: NEJM 2016. SOUL: 2025.',
               conditions: (data) => {
                 const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isStroke = dx.includes('stroke') || dx.includes('ischemic') || dx.includes('tia');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isStroke = cat === 'ischemic' || cat === 'tia';
                 const hasDM = pmh.includes('diabet') || pmh.includes('dm') || pmh.includes('a1c');
                 const hasObesity = pmh.includes('obes') || pmh.includes('bmi');
                 return isStroke && (hasDM || hasObesity);
@@ -5039,9 +5028,10 @@ Clinician Name`;
               guideline: 'AHA/ASA 2021; TST (Lancet Neurol 2020); FOURIER (AHA 2025)',
               reference: 'TST: Lancet Neurol 2020. SPARCL: NEJM 2006. FOURIER subanalysis: AHA 2025.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
-                return (dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia')) && (toast.includes('athero') || toast === '' || toast.includes('undetermined'));
+                return isIschemic && (toast.includes('athero') || toast === '' || toast.includes('undetermined'));
               }
             },
 
@@ -5059,9 +5049,10 @@ Clinician Name`;
               guideline: 'CHANCE-2 (NEJM 2021); THALES (NEJM 2020)',
               reference: 'CHANCE-2: NEJM 2021. 1-year follow-up: Neurology 2024. THALES: NEJM 2020.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || 0;
-                return (dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia')) && nihss <= 5;
+                return isIschemic && nihss <= 5;
               }
             },
 
@@ -5079,11 +5070,11 @@ Clinician Name`;
               guideline: 'CONVINCE (Lancet 2024); Meta-analysis (eClinicalMedicine 2024)',
               reference: 'CONVINCE: Lancet 2024. CHANCE-3: BMJ 2024. Meta-analysis: eClinicalMedicine 2024.',
               conditions: (data) => {
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isStroke = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
                 const hasCAD = pmh.includes('cad') || pmh.includes('coronary') || pmh.includes('mi') || pmh.includes('stent') || pmh.includes('cabg');
-                return isStroke && hasCAD;
+                return isIschemic && hasCAD;
               }
             },
 
@@ -5251,8 +5242,8 @@ Clinician Name`;
               guideline: 'AHA/ASA 2021; FOCUS (Lancet 2019); AFFINITY (JAMA Neurol 2020)',
               reference: 'FOCUS: Lancet 2019. AFFINITY: JAMA Neurology 2020.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('tia');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             },
 
@@ -5289,8 +5280,8 @@ Clinician Name`;
               guideline: 'AHA/ASA 2024; PREDIMED; Italian National Guidelines 2025',
               reference: 'PREDIMED: NEJM 2018. Meta-analysis: Wiley 2024.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('tia');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             },
             // VTE PROPHYLAXIS
@@ -5305,8 +5296,8 @@ Clinician Name`;
               guideline: 'AHA/ASA 2019 AIS; AHA/ASA 2022 ICH; CLOTS 3',
               reference: 'CLOTS 3: Lancet 2013.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('hemorrhag');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             },
             vte_enoxaparin_timing: {
@@ -5320,8 +5311,8 @@ Clinician Name`;
               guideline: 'PREVAIL; AHA/ASA 2019; ACCP 9th Ed',
               reference: 'PREVAIL: Stroke 2007.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             },
             // FEVER MANAGEMENT
@@ -5336,8 +5327,8 @@ Clinician Name`;
               guideline: 'NTCR 2023; ESO/QASC; AHA/ASA 2019',
               reference: 'QASC: Lancet 2011.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich') || dx.includes('sah');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             },
             // OSMOTIC THERAPY
@@ -5352,8 +5343,9 @@ Clinician Name`;
               guideline: 'NCS Guidelines; ENLS Protocol',
               reference: 'NCS Osmotic Therapy: Neurocrit Care 2020.',
               conditions: (data) => {
+                const cat = data.telestrokeNote?.diagnosisCategory;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('mca') || dx.includes('edema');
+                return cat === 'ich' || dx.includes('edema') || dx.includes('malignant') || dx.includes('herniat');
               }
             },
             // NUTRITION
@@ -5383,8 +5375,7 @@ Clinician Name`;
               guideline: 'AHA/ASA 2022 ICH; PATCH Trial',
               reference: 'PATCH: Lancet 2016.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('ich') || dx.includes('hemorrhag');
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
               }
             },
             // ICH SCORE DISCLAIMER
@@ -5399,8 +5390,7 @@ Clinician Name`;
               guideline: 'AHA/ASA 2022 ICH',
               reference: 'Hemphill et al. ICH Score: Stroke 2001; 2022 ICH Guidelines.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('ich') || dx.includes('hemorrhag');
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
               }
             },
             // PERMISSIVE HYPERTENSION
@@ -5415,10 +5405,8 @@ Clinician Name`;
               guideline: 'AHA/ASA 2019 AIS; CSBP Acute 2022',
               reference: 'AHA/ASA AIS Guidelines 2019.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isIschemic = dx.includes('ischemic') || dx.includes('stroke');
-                const isHemorrhagic = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral') || dx.includes('bleed') || dx.includes('sah') || dx.includes('subarachnoid');
-                return isIschemic && !isHemorrhagic;
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return cat === 'ischemic' || cat === 'tia';
               }
             },
             // BASILAR ARTERY OCCLUSION EVT
@@ -5482,9 +5470,9 @@ Clinician Name`;
               guideline: 'AHA/ASA Secondary Prevention 2021',
               reference: 'COMPASS: Eikelboom JW et al. NEJM 2017;377:1319-1330.',
               conditions: (data) => {
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const hx = (data.telestrokeNote?.medicalHistory || '').toLowerCase();
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('tia');
                 const hasPolyvasc = hx.includes('cad') || hx.includes('coronary') || hx.includes('pad') || hx.includes('peripheral arterial') || hx.includes('mi') || hx.includes('cabg') || hx.includes('stent');
                 return isIschemic && hasPolyvasc;
               }
@@ -5517,8 +5505,8 @@ Clinician Name`;
               guideline: 'AHA/ASA Rehab 2016; AAN BoNT Guideline 2016',
               reference: 'AAN BoNT Guideline: Neurology 2016.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             },
             // CENTRAL POST-STROKE PAIN
@@ -5533,8 +5521,8 @@ Clinician Name`;
               guideline: 'NeuPSIG; EFNS Guidelines; AAN PDN 2022',
               reference: 'NeuPSIG: Pain 2015.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             },
             // PALLIATIVE CARE
@@ -5550,8 +5538,7 @@ Clinician Name`;
               reference: 'AHA Palliative Care: Stroke 2025.',
               conditions: (data) => {
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || 0;
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return nihss >= 20 || dx.includes('ich') || dx.includes('hemorrhag');
+                return nihss >= 20 || data.telestrokeNote?.diagnosisCategory === 'ich';
               }
             },
             // ALCOHOL SCREENING
@@ -5567,8 +5554,8 @@ Clinician Name`;
               reference: 'AHA/ASA Secondary Prevention 2021.',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000475#page=40',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('tia');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             },
             // HORMONAL RISK
@@ -5633,8 +5620,8 @@ Clinician Name`;
               guideline: 'AHA/ASA Rehab 2016',
               reference: 'AHA/ASA Rehab Guideline 2016.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('stroke') || dx.includes('ischemic') || dx.includes('ich');
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                return !!cat && cat !== 'mimic';
               }
             }
           };
@@ -7342,7 +7329,7 @@ Clinician Name`;
             };
             document.addEventListener('keydown', handleKeyDown);
             return () => document.removeEventListener('keydown', handleKeyDown);
-          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode]);
+          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode, settingsMenuOpen, searchOpen]);
 
 
           // Persist shift patients to localStorage
@@ -10819,7 +10806,7 @@ Clinician Name`;
             if (n.evtRecommended && !hasLVO && (n.vesselOcclusion || []).length === 0) {
               warnings.push({ id: 'evt-no-lvo', severity: 'warn', msg: 'EVT recommended but no vessel occlusion documented — verify CTA findings' });
             }
-            if (hasLVO && n.evtRecommended === false && n.diagnosisCategory === 'ischemic') {
+            if (hasLVO && !n.evtRecommended && n.diagnosisCategory === 'ischemic') {
               warnings.push({ id: 'lvo-no-evt', severity: 'warn', msg: 'LVO detected but EVT not recommended — document reason (e.g., late window without perfusion imaging, patient/family declined, contraindication).' });
             }
             // Future LKW detection + time window violations
@@ -10935,11 +10922,7 @@ Clinician Name`;
               warnings.push({ id: 'endocarditis-stroke', severity: 'critical', msg: 'Infective endocarditis — AVOID anticoagulation (increases hemorrhagic transformation risk). Order: blood cultures x2, STAT TTE → TEE, CTA head/neck (mycotic aneurysm screen), ID consult. EVT is preferred for LVO (TNK is contraindicated). Monitor for hemorrhagic conversion.' });
             }
 
-            // TNK recommended with NIHSS 0
-            const nihss = parseInt(n.nihss, 10);
-            if (n.tnkRecommended && nihss === 0) {
-              warnings.push({ id: 'tnk-nihss-zero', severity: 'error', msg: 'TNK recommended with NIHSS 0 — thrombolysis is not indicated for non-disabling symptoms. Re-examine patient and verify NIHSS scoring before treatment.' });
-            }
+            // (duplicate tnk-nihss-zero removed — already checked above at line 10816)
 
             // Pediatric patient warning (age <18)
             if (!isNaN(age) && age < 18) {
@@ -11038,10 +11021,10 @@ Clinician Name`;
           // =============================================
           const getOrderBundles = () => {
             const n = telestrokeNote;
-            const dx = (n.diagnosis || '').toLowerCase();
-            const isIschemic = dx.includes('ischemic') || dx.includes('stroke') || dx.includes('lvo');
-            const isICH = dx.includes('ich') || dx.includes('hemorrhag') || dx.includes('intracerebral');
-            const isSAH = dx.includes('sah') || dx.includes('subarachnoid');
+            const cat = n.diagnosisCategory;
+            const isIschemic = cat === 'ischemic' || cat === 'tia';
+            const isICH = cat === 'ich';
+            const isSAH = cat === 'sah';
             const meds = (n.medications || '').toLowerCase();
             const nihss = parseInt(n.nihss, 10) || nihssScore || 0;
             const weight = parseFloat(n.weight) || 0;
@@ -13072,7 +13055,7 @@ Clinician Name`;
                 if (previouslyFocused && previouslyFocused.focus) previouslyFocused.focus();
               };
             }
-          }, [protocolModal, showChangelog, showKeyboardHelp, calcDrawerOpen, confirmConfig]);
+          }, [protocolModal, showChangelog, showKeyboardHelp, calcDrawerOpen, confirmConfig, settingsMenuOpen]);
 
           // Reinitialize icons when tab or major layout changes
           useEffect(() => {
@@ -26043,7 +26026,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {[{v:'4',l:'Spontaneous'},{v:'3',l:'To sound'},{v:'2',l:'To pain'},{v:'1',l:'None'}].map(o => (
                             <button key={o.v} type="button"
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${gcsItems.eye === o.v ? 'bg-slate-700 text-white border-slate-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
-                              onClick={() => setGcsItems({...gcsItems, eye: o.v})}
+                              onClick={() => setGcsItems(prev => ({...prev, eye: o.v}))}
                             >
                               <span className="font-mono mr-1">{o.v}</span> {o.l}
                             </button>
@@ -26054,7 +26037,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {[{v:'5',l:'Oriented'},{v:'4',l:'Confused'},{v:'3',l:'Inappropriate'},{v:'2',l:'Incomprehensible'},{v:'1',l:'None'}].map(o => (
                             <button key={o.v} type="button"
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${gcsItems.verbal === o.v ? 'bg-slate-700 text-white border-slate-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
-                              onClick={() => setGcsItems({...gcsItems, verbal: o.v})}
+                              onClick={() => setGcsItems(prev => ({...prev, verbal: o.v}))}
                             >
                               <span className="font-mono mr-1">{o.v}</span> {o.l}
                             </button>
@@ -26065,7 +26048,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {[{v:'6',l:'Obeying'},{v:'5',l:'Localizing'},{v:'4',l:'Flexing'},{v:'3',l:'Abnormal flexion'},{v:'2',l:'Extending'},{v:'1',l:'None'}].map(o => (
                             <button key={o.v} type="button"
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${gcsItems.motor === o.v ? 'bg-slate-700 text-white border-slate-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
-                              onClick={() => setGcsItems({...gcsItems, motor: o.v})}
+                              onClick={() => setGcsItems(prev => ({...prev, motor: o.v}))}
                             >
                               <span className="font-mono mr-1">{o.v}</span> {o.l}
                             </button>
@@ -30002,7 +29985,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div>
                         <label className="font-medium text-slate-700 block mb-1">Eye</label>
                         {[{v:'4',l:'Spontaneous'},{v:'3',l:'Sound'},{v:'2',l:'Pain'},{v:'1',l:'None'}].map(o => (
-                          <button key={o.v} onClick={() => setGcsItems({...gcsItems, eye: o.v})}
+                          <button key={o.v} onClick={() => setGcsItems(prev => ({...prev, eye: o.v}))}
                             className={`w-full text-left px-2 py-1.5 rounded mb-0.5 transition-colors ${gcsItems.eye === o.v ? 'bg-blue-600 text-white' : 'hover:bg-slate-200 text-slate-700'}`}>
                             {o.v} - {o.l}
                           </button>
@@ -30011,7 +29994,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div>
                         <label className="font-medium text-slate-700 block mb-1">Verbal</label>
                         {[{v:'5',l:'Oriented'},{v:'4',l:'Confused'},{v:'3',l:'Words'},{v:'2',l:'Sounds'},{v:'1',l:'None'}].map(o => (
-                          <button key={o.v} onClick={() => setGcsItems({...gcsItems, verbal: o.v})}
+                          <button key={o.v} onClick={() => setGcsItems(prev => ({...prev, verbal: o.v}))}
                             className={`w-full text-left px-2 py-1.5 rounded mb-0.5 transition-colors ${gcsItems.verbal === o.v ? 'bg-blue-600 text-white' : 'hover:bg-slate-200 text-slate-700'}`}>
                             {o.v} - {o.l}
                           </button>
@@ -30020,7 +30003,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div>
                         <label className="font-medium text-slate-700 block mb-1">Motor</label>
                         {[{v:'6',l:'Obeys'},{v:'5',l:'Localizes'},{v:'4',l:'Withdraws'},{v:'3',l:'Flexion'},{v:'2',l:'Extension'},{v:'1',l:'None'}].map(o => (
-                          <button key={o.v} onClick={() => setGcsItems({...gcsItems, motor: o.v})}
+                          <button key={o.v} onClick={() => setGcsItems(prev => ({...prev, motor: o.v}))}
                             className={`w-full text-left px-2 py-1.5 rounded mb-0.5 transition-colors ${gcsItems.motor === o.v ? 'bg-blue-600 text-white' : 'hover:bg-slate-200 text-slate-700'}`}>
                             {o.v} - {o.l}
                           </button>
