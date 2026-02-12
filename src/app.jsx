@@ -1050,7 +1050,7 @@ Clinician Name`;
             fisherGrade: '',
             // ASPECTS regions
             aspectsRegions: { C: false, L: false, IC: false, I: false, M1: false, M2: false, M3: false, M4: false, M5: false, M6: false },
-            pcAspectsRegions: { pons: false, midbrain: false, cerebellumL: false, cerebellumR: false, pcaL: false, pcaR: false, thalamusL: false, thalamusR: false },
+            pcAspectsRegions: { pons: false, midbrain: false, cerebL: false, cerebR: false, pcaL: false, pcaR: false, thalL: false, thalR: false },
             ticiScore: '',
             // Phase 4: CVT fields
             cvtAnticoagStarted: false,
@@ -8287,8 +8287,11 @@ Clinician Name`;
 
             const formatTime = (timeStr) => {
               if (!timeStr) return '';
-              const [hours, minutes] = timeStr.split(':');
-              const hour = parseInt(hours, 10);
+              const parts = timeStr.split(':');
+              if (parts.length < 2) return String(timeStr);
+              const hour = parseInt(parts[0], 10);
+              const minutes = parts[1];
+              if (isNaN(hour)) return String(timeStr);
               const ampm = hour >= 12 ? 'pm' : 'am';
               const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
               return `${displayHour}:${minutes} ${ampm}`;
@@ -10913,6 +10916,11 @@ Clinician Name`;
               warnings.push({ id: 'tnk-pregnancy', severity: 'warn', msg: 'TNK recommended in pregnancy — weigh bleeding risk carefully, especially if postpartum or recent cesarean/neuraxial anesthesia' });
             }
 
+            // EVT in pregnancy — obstetric precautions
+            if (n.evtRecommended && n.pregnancyStroke) {
+              warnings.push({ id: 'evt-pregnancy', severity: 'warn', msg: 'EVT in pregnancy — use pelvic lead shielding during angiography. Minimize fluoroscopy time. Coordinate with OB before and after procedure. Post-procedure fetal monitoring required. Iodinated contrast acceptable when benefit outweighs risk.' });
+            }
+
             // Cardiac complication warning (troponin/EKG)
             const ekgLower = (n.ekgResults || '').toLowerCase();
             if (/stemi|st.?elevation|acute.?mi|st.?changes/.test(ekgLower)) {
@@ -11019,6 +11027,12 @@ Clinician Name`;
             const ctpPenumbra = parseFloat(n.ctpStructured?.penumbraVolume);
             if (!isNaN(ctpCore) && ctpCore > 0 && !isNaN(ctpPenumbra) && ctpPenumbra < ctpCore) {
               warnings.push({ id: 'ctp-mismatch-lt1', severity: 'warn', msg: `CTP penumbra (${ctpPenumbra}mL) < core (${ctpCore}mL) — mismatch ratio <1.0. Verify volumes are not swapped.` });
+            }
+
+            // Active bleeding + anticoagulation — hold restart
+            if (n.tnkContraindicationChecklist?.activeInternalBleeding && n.lastDOACType && n.lastDOACType !== 'none') {
+              const acName = ANTICOAGULANT_INFO[n.lastDOACType]?.name || n.lastDOACType;
+              warnings.push({ id: 'doac-active-bleeding', severity: 'error', msg: `Active internal bleeding documented on patient with pre-admission ${acName} — hold anticoagulation restart. Manage active bleeding; consider reversal if not already initiated.` });
             }
 
             // Post-EVT BP <140 is Class III: Harm
@@ -13966,7 +13980,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               key={tmpl.id}
                               onClick={() => {
                                 if (tmpl.defaults && Object.keys(tmpl.defaults).length > 0) {
-                                  setTelestrokeNote(prev => ({ ...prev, ...tmpl.defaults }));
+                                  setTelestrokeNote(prev => {
+                                    const updated = { ...prev, ...tmpl.defaults };
+                                    // Clear stale treatment flags when diagnosis category changes
+                                    if (tmpl.defaults.diagnosisCategory && tmpl.defaults.diagnosisCategory !== prev.diagnosisCategory) {
+                                      if (tmpl.defaults.diagnosisCategory !== 'ischemic') {
+                                        updated.tnkRecommended = false;
+                                        updated.evtRecommended = false;
+                                      }
+                                      if (tmpl.defaults.diagnosisCategory !== 'ich') {
+                                        updated.ichReversalInitiated = false;
+                                      }
+                                    }
+                                    return updated;
+                                  });
                                   if (tmpl.defaults.diagnosisCategory === 'ich') {
                                     setManagementSubTab('ich');
                                   }
@@ -27505,7 +27532,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-pc-aspects" style={{ order: getCalculatorOrder('pc-aspects', 16) }} className="bg-blue-50 border border-blue-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-blue-800 hover:bg-blue-100 rounded-lg flex items-center justify-between">
                         <span>PC-ASPECTS (Posterior Circulation)</span>
-                        <span className="text-sm font-normal text-blue-600">Score: {10 - Object.values(telestrokeNote.pcAspectsRegions || {}).filter(Boolean).length}/10</span>
+                        <span className="text-sm font-normal text-blue-600">Score: {(() => { const r = telestrokeNote.pcAspectsRegions || {}; return 10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0)); })()}/10</span>
                       </summary>
                       <div className="p-4">
                         <p className="text-xs text-slate-600 mb-3">Click regions with early ischemic changes. Used for basilar artery EVT eligibility (≥6 favors intervention).</p>
