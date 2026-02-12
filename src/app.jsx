@@ -345,7 +345,8 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           { version: '3.0', date: '2025-08', items: ['Toast notification system replacing inline alerts', 'Replaced all confirm/prompt dialogs with styled modals', 'Persistent timer visible across all tabs', 'Encounter templates for common presentations', 'Encounter history with shift handoff support', 'Focus mode for active encounters', 'Calculator drawer with inline scoring', 'Section completion indicators', 'Keyboard shortcuts (Ctrl+Shift+C, Ctrl+K, etc.)', 'Improved mobile touch targets', 'Visual timeline for stroke events', 'Auto-filtering trials by patient characteristics', 'References search and filtering', 'Error boundaries for graceful failure recovery', 'Service worker for offline support'] },
           { version: '3.1', date: '2025-09', items: ['Added vital signs (HR, SpO2, Temp) to encounter and notes', 'Added EKG/Telemetry input fields', 'GCS score included in all note templates', 'Weight unit toggle (kg/lbs) with auto-conversion', 'Edoxaban added to anticoagulant system', 'aPTT auto-blocks TNK when >40s', 'Standardized platelet units (K/μL) throughout', 'Inline lab validation badges (glucose, INR, platelets, aPTT)', 'Andexanet alfa aligned to PCC-first protocol', 'Consent documentation in transfer notes', 'Fixed keyboard shortcut conflicts and section completion', 'Improved reset logic for new patients'] },
           { version: '3.2', date: '2025-10', items: ['Notes now show consultation type (Telephone vs Video Telestroke)', 'BP phase target included in consultation, transfer, and signout notes', 'TOAST classification in transfer and discharge notes', 'Anticoagulation details with DOAC timing in consultation note', 'Transfer note shows weight, premorbid mRS, contrast allergy flag', 'Dysphagia screening and VTE prophylaxis in discharge note', 'Transfer note alerts for NPO status and contrast allergy', 'SAH + anticoagulation reversal warning', 'GCS ≤8 airway protection alert', 'Edoxaban CrCl >95 reduced efficacy warning', 'Hypoglycemia + TNK escalated to error severity', 'BP phase auto-reverts when diagnosis changes', 'Fixed INR/aPTT orphaned comma in lab line', 'Trial eligibility reset on new case'] },
-          { version: '3.3', date: '2025-11', items: ['CrCl calculator prioritized by diagnosis in calculator tab', 'Post-TNK neuro check schedule standardized (q15min×2h, q30min×6h, q1h×16h)', 'SAH seizure prophylaxis with specific indications in admission orders', 'Osmotic therapy data in discharge note (agent, Na+ target, osmolality)', 'Nutritional support and feeding route in discharge note', 'Falls risk screening in discharge note', 'Driving restrictions with commercial driver flag in discharge note', 'Clipboard fallback for insecure contexts (HTTP/dev builds)', 'Deep merge of stored data prevents crashes when new fields are added', 'All calculator copy buttons now have accessible labels', 'ICH Volume, Andexanet, and Enoxaparin calculators now sort by diagnosis priority'] }
+          { version: '3.3', date: '2025-11', items: ['CrCl calculator prioritized by diagnosis in calculator tab', 'Post-TNK neuro check schedule standardized (q15min×2h, q30min×6h, q1h×16h)', 'SAH seizure prophylaxis with specific indications in admission orders', 'Osmotic therapy data in discharge note (agent, Na+ target, osmolality)', 'Nutritional support and feeding route in discharge note', 'Falls risk screening in discharge note', 'Driving restrictions with commercial driver flag in discharge note', 'Clipboard fallback for insecure contexts (HTTP/dev builds)', 'Deep merge of stored data prevents crashes when new fields are added', 'All calculator copy buttons now have accessible labels', 'ICH Volume, Andexanet, and Enoxaparin calculators now sort by diagnosis priority'] },
+          { version: '3.4', date: '2026-02', items: ['SAH aneurysm characteristics (location, size, securing method) with posterior circulation and giant aneurysm alerts', 'SAH vasospasm/DCI monitoring protocol (TCD, neuro checks, sodium, induced HTN) with safety guard', 'ICH surgical decision support (cerebellar >15mL, hydrocephalus, midline shift, deterioration) with neurosurgery urgency alert', 'Stroke vascular territory selector (MCA/ACA/PCA/basilar/vertebral/cerebellar/lacunar/watershed) with posterior circulation guidance', 'Stroke phenotype classifier (cortical-LVO, embolic, lacunar, posterior, dissection, watershed, cardioembolic)', 'Symptom trajectory tracking (stable/improving/fluctuating/worsening/resolved) with clinical alerts', 'Post-thrombolytic monitoring protocol checklist with sICH risk calculator (5 factors)', 'Family/surrogate communication log with auto-timestamp', 'All new fields integrated into consult, transfer, signout, progress, discharge, and Pulsara templates', 'Fixed GCS reference in ICH guideline conditions (seizure prophylaxis, MIE eligibility)', 'Fixed FUNC score GCS 13-15 returning null instead of 2 points', 'State cleanup on diagnosis category change includes nested objects'] }
         ];
 
         const parseBloodPressure = (bpString) => {
@@ -8637,9 +8638,9 @@ Clinician Name`;
                 if (telestrokeNote.sahSecuringMethod) note += `- Securing method: ${telestrokeNote.sahSecuringMethod}\n`;
                 const vmTx = telestrokeNote.sahVasospasmMonitoring || {};
                 const vmTxItems = [];
-                if (vmTx.tcdOrdered) vmTxItems.push('TCD ordered');
+                if (vmTx.tcdOrdered) vmTxItems.push('TCD monitoring');
                 if (vmTx.neuroChecksQ1h) vmTxItems.push('neuro checks q1h');
-                if (vmTx.sodiumMonitoring) vmTxItems.push('sodium monitoring');
+                if (vmTx.sodiumMonitoring) vmTxItems.push('sodium q6-8h');
                 if (vmTx.dciSuspected) vmTxItems.push('DCI suspected');
                 if (vmTx.inducedHypertension) vmTxItems.push('induced hypertension initiated');
                 if (vmTxItems.length) note += `- Vasospasm/DCI monitoring: ${vmTxItems.join(', ')}\n`;
@@ -18023,6 +18024,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                               updated.ichBPManaged = false;
                                               updated.ichNeurosurgeryConsulted = false;
                                               updated.ichSeizureProphylaxis = false;
+                                              updated.ichSurgicalCriteria = { cerebellarGt15mL: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
                                             }
                                             if (newCategory !== 'sah') {
                                               updated.sahGrade = '';
@@ -18034,6 +18036,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                               updated.sahNeurosurgeryConsulted = false;
                                               updated.sahSeizureProphylaxis = false;
                                               updated.fisherGrade = '';
+                                              updated.sahAneurysmLocation = '';
+                                              updated.sahAneurysmSize = '';
+                                              updated.sahSecuringMethod = '';
+                                              updated.sahVasospasmMonitoring = { tcdOrdered: false, neuroChecksQ1h: false, sodiumMonitoring: false, dciSuspected: false, inducedHypertension: false, notes: '' };
                                             }
                                             if (newCategory !== 'cvt') {
                                               updated.cvtAnticoagStarted = false;
@@ -22780,6 +22786,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   if (vmC.dciSuspected) vmCItems.push('DCI suspected');
                                   if (vmC.inducedHypertension) vmCItems.push('induced hypertension');
                                   if (vmCItems.length) note += `- DCI monitoring: ${vmCItems.join(', ')}.\n`;
+                                  if (vmC.notes) note += `- DCI notes: ${vmC.notes}\n`;
                                 } else if (pathwayType === 'cvt') {
                                   note += `PLAN:\n`;
                                   if (telestrokeNote.cvtAnticoagStarted) note += `- Anticoagulation initiated (${telestrokeNote.cvtAnticoagType || 'agent selected'}).\n`;
@@ -26655,6 +26662,33 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {managementSubTab === 'calculators' && (
                   <GlobalPatientContext.Provider value={patientContextValue}>
                   <div id="mgmt-tabpanel-calculators" role="tabpanel" aria-labelledby="mgmt-tab-calculators" className="flex flex-col gap-4">
+                    {/* Quick Dosing Reference */}
+                    <details className="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-xl p-3">
+                      <summary className="font-bold text-orange-900 text-sm cursor-pointer flex items-center gap-2">
+                        <i aria-hidden="true" data-lucide="pill" className="w-4 h-4"></i>
+                        Quick Dosing Reference
+                      </summary>
+                      <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+                        {[
+                          { label: 'TNK (Tenecteplase)', dose: `0.25 mg/kg IV bolus (max 25 mg)${telestrokeNote.weight ? ` → ${Math.min(25, Math.round(parseFloat(telestrokeNote.weight) * 0.25 * 2) / 2)} mg` : ''}`, color: 'emerald' },
+                          { label: 'Alteplase (tPA)', dose: `0.9 mg/kg IV (max 90 mg): 10% bolus, 90% over 60 min${telestrokeNote.weight ? ` → ${Math.min(90, Math.round(parseFloat(telestrokeNote.weight) * 0.9 * 10) / 10)} mg` : ''}`, color: 'blue' },
+                          { label: 'Nimodipine (SAH)', dose: '60 mg PO/NG q4h x 21 days. If hypotension: 30 mg q2h.', color: 'purple' },
+                          { label: 'PCC / Kcentra', dose: `INR 2-3.9: 25 IU/kg (max 2500); INR 4-6: 35 IU/kg (max 3500); INR >6: 50 IU/kg (max 5000)${telestrokeNote.weight ? ` → at 25 IU/kg: ${Math.round(parseFloat(telestrokeNote.weight) * 25)} IU` : ''}`, color: 'red' },
+                          { label: 'Idarucizumab', dose: '5 g IV (two 2.5 g vials) over 5-10 min. For dabigatran reversal.', color: 'rose' },
+                          { label: 'FFP (if no PCC)', dose: `10-15 mL/kg IV. Goal INR <1.5.${telestrokeNote.weight ? ` → ${Math.round(parseFloat(telestrokeNote.weight) * 12.5)} mL (~${Math.round(parseFloat(telestrokeNote.weight) * 12.5 / 250)} units)` : ''}`, color: 'amber' },
+                          { label: 'Labetalol IV', dose: '10-20 mg IV q10-20min (max 300 mg). Alt: nicardipine 5 mg/h, titrate q5min by 2.5 mg/h (max 15).', color: 'slate' },
+                          { label: 'Levetiracetam', dose: '1000-1500 mg IV load, then 500-1000 mg IV/PO q12h. For acute seizures.', color: 'indigo' }
+                        ].map(item => (
+                          <button key={item.label} type="button"
+                            onClick={() => copyToClipboard(`${item.label}: ${item.dose}`, 'dosing-ref')}
+                            className={`text-left px-3 py-2 bg-white border border-${item.color}-200 rounded-lg hover:bg-${item.color}-50 transition-colors group`}>
+                            <span className={`text-xs font-bold text-${item.color}-800 block`}>{item.label}</span>
+                            <span className="text-xs text-slate-600 block">{item.dose}</span>
+                            <span className="text-xs text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">Click to copy</span>
+                          </button>
+                        ))}
+                      </div>
+                    </details>
                     <CalculatorSync />
                     <CalculatorPatientSnapshot />
                     <div className="bg-white border border-indigo-200 rounded-lg p-3 flex flex-wrap items-center gap-3 text-xs">
