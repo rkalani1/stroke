@@ -5931,7 +5931,7 @@ Clinician Name`;
                     return (
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
                         <h4 className="font-bold text-blue-800 mb-2 text-sm flex items-center gap-1.5">
-                          <i data-lucide="lightbulb" className="w-4 h-4"></i>
+                          <i aria-hidden="true" data-lucide="lightbulb" className="w-4 h-4"></i>
                           Key Takeaways
                         </h4>
                         <ul className="space-y-1">
@@ -13348,7 +13348,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         className="text-slate-500 hover:text-slate-700"
                         aria-label="Close protocol"
                       >
-                        <i data-lucide="x" className="w-5 h-5"></i>
+                        <i aria-hidden="true" data-lucide="x" className="w-5 h-5"></i>
                       </button>
                     </div>
                     <div className="p-4 space-y-3 text-sm text-slate-700">
@@ -13375,7 +13375,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               {/* Offline Indicator */}
               {!isOnline && (
                 <div className="bg-amber-500 text-white px-4 py-2 text-center text-sm font-medium flex items-center justify-center gap-2" role="alert">
-                  <i data-lucide="wifi-off" className="w-4 h-4"></i>
+                  <i aria-hidden="true" data-lucide="wifi-off" className="w-4 h-4"></i>
                   <span>You are offline — changes are saved locally</span>
                 </div>
               )}
@@ -13401,7 +13401,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         title="Keyboard shortcuts (?)"
                         aria-label="Keyboard shortcuts"
                       >
-                        <i data-lucide="keyboard" className="w-3 h-3"></i>
+                        <i aria-hidden="true" data-lucide="keyboard" className="w-3 h-3"></i>
                       </button>
                     </div>
                     {topLinks.length > 0 && (
@@ -13414,7 +13414,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             rel="noopener noreferrer"
                             className="flex items-center gap-1.5 px-2 py-1 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-md transition-colors"
                           >
-                            <i data-lucide="external-link" className="w-3 h-3"></i>
+                            <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
                             <span>{link.label}</span>
                           </a>
                         ))}
@@ -13439,7 +13439,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         className="pl-8 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-48 md:w-64"
                         aria-label="Search trials, management tools, and references"
                       />
-                      <i data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-slate-400"></i>
+                      <i aria-hidden="true" data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-slate-400"></i>
 
                       {searchOpen && searchContext === 'header' && searchResults.length > 0 && (
                         <div role="listbox" aria-label="Search results" className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white shadow-lg rounded-lg border max-h-96 overflow-y-auto z-50">
@@ -13476,7 +13476,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       )}
                     </div>
                     <div className="text-xs text-slate-500 flex items-center gap-1" role="status" aria-live="polite" title={saveStatus === 'saving' ? 'Saving...' : lastSaved ? `Saved ${new Date(lastSaved).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}` : 'Saved'}>
-                      <i data-lucide={saveStatus === 'saving' ? 'loader' : 'check-circle'} className={`w-3 h-3 ${saveStatus === 'saving' ? 'text-amber-500 animate-spin' : 'text-emerald-500'}`}></i>
+                      <i aria-hidden="true" data-lucide={saveStatus === 'saving' ? 'loader' : 'check-circle'} className={`w-3 h-3 ${saveStatus === 'saving' ? 'text-amber-500 animate-spin' : 'text-emerald-500'}`}></i>
                       <span className="hidden sm:inline">{saveStatus === 'saving' ? 'Saving' : 'Saved'}</span>
                     </div>
 
@@ -13487,7 +13487,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         aria-label="Start new case"
                         title="Start a new case (clears current inputs)"
                       >
-                        <i data-lucide="user-plus" className="w-4 h-4"></i>
+                        <i aria-hidden="true" data-lucide="user-plus" className="w-4 h-4"></i>
                         <span>New Case</span>
                       </button>
 
@@ -13502,7 +13502,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           aria-controls={settingsMenuOpen ? 'settings-menu' : undefined}
                           aria-label="Settings menu"
                         >
-                          <i data-lucide="settings" className="w-4 h-4"></i>
+                          <i aria-hidden="true" data-lucide="settings" className="w-4 h-4"></i>
                           <span className="hidden sm:inline">More</span>
                         </button>
                         {settingsMenuOpen && (
@@ -13515,7 +13515,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   onClick={() => { exportToPDF(); setSettingsMenuOpen(false); }}
                                   className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                                 >
-                                  <i data-lucide="download" className="w-4 h-4 text-slate-500"></i>
+                                  <i aria-hidden="true" data-lucide="download" className="w-4 h-4 text-slate-500"></i>
                                   Export to PDF
                                 </button>
                               )}
@@ -13525,7 +13525,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   onClick={() => { handleShare(); setSettingsMenuOpen(false); }}
                                   className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                                 >
-                                  <i data-lucide="share-2" className="w-4 h-4 text-slate-500"></i>
+                                  <i aria-hidden="true" data-lucide="share-2" className="w-4 h-4 text-slate-500"></i>
                                   Share
                                 </button>
                               )}
@@ -13535,7 +13535,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onClick={() => { setFocusMode(prev => !prev); setSettingsMenuOpen(false); }}
                                 className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                               >
-                                <i data-lucide={focusMode ? 'minimize-2' : 'maximize-2'} className="w-4 h-4 text-slate-500"></i>
+                                <i aria-hidden="true" data-lucide={focusMode ? 'minimize-2' : 'maximize-2'} className="w-4 h-4 text-slate-500"></i>
                                 {focusMode ? 'Exit Focus Mode' : 'Focus Mode'}
                               </button>
                               <button
@@ -13543,7 +13543,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onClick={() => { setShowChangelog(true); setSettingsMenuOpen(false); }}
                                 className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                               >
-                                <i data-lucide="sparkles" className="w-4 h-4 text-slate-500"></i>
+                                <i aria-hidden="true" data-lucide="sparkles" className="w-4 h-4 text-slate-500"></i>
                                 What's New
                               </button>
                               {encounterHistory.length > 0 && (
@@ -13552,7 +13552,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   onClick={() => { setSettingsMenuOpen(false); scrollToSection('encounter-history-section'); }}
                                   className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
                                 >
-                                  <i data-lucide="history" className="w-4 h-4 text-slate-500"></i>
+                                  <i aria-hidden="true" data-lucide="history" className="w-4 h-4 text-slate-500"></i>
                                   Recent Encounters ({encounterHistory.length})
                                 </button>
                               )}
@@ -13562,7 +13562,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onClick={() => { handleClearLocalData(); setSettingsMenuOpen(false); }}
                                 className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 text-sm text-red-600 transition-colors"
                               >
-                                <i data-lucide="trash-2" className="w-4 h-4"></i>
+                                <i aria-hidden="true" data-lucide="trash-2" className="w-4 h-4"></i>
                                 Clear all data
                               </button>
                             </div>
@@ -13604,7 +13604,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {clearUndo && (
                   <div className="mt-2 p-3 rounded-lg border border-blue-200 bg-blue-50 text-blue-900 text-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <i data-lucide="rotate-ccw" className="w-4 h-4"></i>
+                      <i aria-hidden="true" data-lucide="rotate-ccw" className="w-4 h-4"></i>
                       <span>Case cleared. Undo available for 30 seconds.</span>
                     </div>
                     <button
@@ -13620,7 +13620,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* Success Notification */}
                 {copiedText && (
                   <div className="mt-2 p-2 bg-emerald-100 border border-emerald-400 text-emerald-700 rounded-lg text-sm flex items-center gap-2">
-                    <i data-lucide="check" className="w-4 h-4"></i>
+                    <i aria-hidden="true" data-lucide="check" className="w-4 h-4"></i>
                     <span>{copiedText} copied to clipboard!</span>
                   </div>
                 )}
@@ -13628,7 +13628,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {Object.keys(deidWarnings).length > 0 && (
                   <div className="mt-2 p-2 bg-amber-50 border border-amber-200 text-amber-800 rounded-lg text-xs">
                     <div className="flex items-center gap-2 font-semibold">
-                      <i data-lucide="alert-triangle" className="w-4 h-4"></i>
+                      <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4"></i>
                       <span>Possible identifiers detected</span>
                     </div>
                     <div className="mt-1">
@@ -13660,7 +13660,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 return (
                   <div className={`mb-3 bg-gradient-to-r ${timerBg} rounded-xl px-4 py-2 text-white flex flex-wrap items-center justify-between gap-2 ${alertFlashing ? 'alert-flash' : ''}`} role="timer" aria-live="polite" aria-label="Stroke treatment window timer">
                     <div className="flex items-center gap-3">
-                      <i data-lucide="clock" className="w-4 h-4"></i>
+                      <i aria-hidden="true" data-lucide="clock" className="w-4 h-4"></i>
                       <span className="font-mono font-bold text-lg">{elH}h {String(elM).padStart(2,'0')}m {String(elS).padStart(2,'0')}s</span>
                       <span className="text-xs opacity-80">from {timeFromLKW.label || 'LKW'}</span>
                     </div>
@@ -13680,10 +13680,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </div>
                     <div className="flex items-center gap-1">
                       <button onClick={toggleAlertMute} className="p-2 rounded-full hover:bg-white/20 transition-colors" title={alertsMuted ? 'Unmute' : 'Mute'} aria-label={alertsMuted ? 'Unmute alerts' : 'Mute alerts'}>
-                        <i data-lucide={alertsMuted ? 'volume-x' : 'volume-2'} className="w-4 h-4"></i>
+                        <i aria-hidden="true" data-lucide={alertsMuted ? 'volume-x' : 'volume-2'} className="w-4 h-4"></i>
                       </button>
                       <button onClick={() => setFocusMode(prev => !prev)} className={`p-2 rounded-full hover:bg-white/20 transition-colors ${focusMode ? 'bg-white/20' : ''}`} title={focusMode ? 'Exit focus mode' : 'Focus mode'} aria-label={focusMode ? 'Exit focus mode' : 'Enter focus mode'}>
-                        <i data-lucide={focusMode ? 'minimize-2' : 'maximize-2'} className="w-4 h-4"></i>
+                        <i aria-hidden="true" data-lucide={focusMode ? 'minimize-2' : 'maximize-2'} className="w-4 h-4"></i>
                       </button>
                     </div>
                   </div>
@@ -13726,7 +13726,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           className="text-slate-400 hover:text-slate-600 flex-shrink-0"
                           aria-label="Dismiss alert"
                         >
-                          <i data-lucide="x" className="w-5 h-5"></i>
+                          <i aria-hidden="true" data-lucide="x" className="w-5 h-5"></i>
                         </button>
                       )}
                     </div>
@@ -13765,7 +13765,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         aria-controls={`tabpanel-${tab.id}`}
                         tabIndex={isActive ? 0 : -1}
                       >
-                        <i data-lucide={tab.icon} className="w-4 h-4"></i>
+                        <i aria-hidden="true" data-lucide={tab.icon} className="w-4 h-4"></i>
                         <span>{tab.name}</span>
                       </button>
                     );
@@ -13796,7 +13796,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           )}
                           {lkwElapsed && (
                             <span className="text-slate-600">
-                              <i data-lucide="clock" className="w-3.5 h-3.5 inline mr-1"></i>
+                              <i aria-hidden="true" data-lucide="clock" className="w-3.5 h-3.5 inline mr-1"></i>
                               {onsetLabel}: {lkwElapsed}
                             </span>
                           )}
@@ -13815,7 +13815,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             className="ml-auto text-xs font-medium text-blue-600 hover:text-blue-800 flex items-center gap-1"
                             title="Open calculators"
                           >
-                            <i data-lucide="calculator" className="w-3.5 h-3.5"></i>
+                            <i aria-hidden="true" data-lucide="calculator" className="w-3.5 h-3.5"></i>
                             <span className="hidden sm:inline">Calculators</span>
                           </button>
                         </div>
@@ -13847,7 +13847,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             >
                               {phase.label}
                               {completion && completion.complete ? (
-                                <i data-lucide="check-circle" className={`w-3 h-3 ${encounterPhase === phase.id ? 'text-white' : 'text-emerald-500'}`}></i>
+                                <i aria-hidden="true" data-lucide="check-circle" className={`w-3 h-3 ${encounterPhase === phase.id ? 'text-white' : 'text-emerald-500'}`}></i>
                               ) : completion && completion.done > 0 ? (
                                 <span className={`text-[10px] ${encounterPhase === phase.id ? 'text-white/80' : 'text-slate-500'}`}>
                                   {completion.done}/{completion.total}
@@ -13915,7 +13915,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 : 'text-slate-500 hover:bg-slate-100'
                             }`}
                           >
-                            <i data-lucide={ctx.icon} className="w-3 h-3"></i>
+                            <i aria-hidden="true" data-lucide={ctx.icon} className="w-3 h-3"></i>
                             {ctx.label}
                           </button>
                         ))}
@@ -13939,13 +13939,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-sm space-y-0.5">
                           {requiredFields.length > 0 && (
                             <div className="flex items-center gap-2">
-                              <i data-lucide="alert-circle" className="w-3.5 h-3.5 text-red-500 shrink-0"></i>
+                              <i aria-hidden="true" data-lucide="alert-circle" className="w-3.5 h-3.5 text-red-500 shrink-0"></i>
                               <span className="text-red-700"><span className="font-semibold">Required:</span> {requiredFields.map(f => f.name).join(', ')}</span>
                             </div>
                           )}
                           {recommendedFields.length > 0 && (
                             <div className="flex items-center gap-2">
-                              <i data-lucide="alert-triangle" className="w-3.5 h-3.5 text-amber-500 shrink-0"></i>
+                              <i aria-hidden="true" data-lucide="alert-triangle" className="w-3.5 h-3.5 text-amber-500 shrink-0"></i>
                               <span className="text-amber-700"><span className="font-medium">Recommended:</span> {recommendedFields.map(f => f.name).join(', ')}</span>
                             </div>
                           )}
@@ -13957,7 +13957,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {!telestrokeNote.age && !nihssScore && !telestrokeNote.diagnosis && (
                       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
                         <h3 className="text-sm font-semibold text-blue-900 mb-3 flex items-center gap-2">
-                          <i data-lucide="layout-grid" className="w-4 h-4"></i>
+                          <i aria-hidden="true" data-lucide="layout-grid" className="w-4 h-4"></i>
                           Quick Start Templates
                         </h3>
                         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
@@ -13975,7 +13975,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }}
                               className="flex flex-col items-center gap-1.5 px-3 py-3 bg-white border border-blue-200 rounded-xl hover:bg-blue-50 hover:border-blue-400 transition-all text-center"
                             >
-                              <i data-lucide={tmpl.icon} className="w-5 h-5 text-blue-600"></i>
+                              <i aria-hidden="true" data-lucide={tmpl.icon} className="w-5 h-5 text-blue-600"></i>
                               <span className="text-xs font-semibold text-slate-800">{tmpl.label}</span>
                               <span className="text-[10px] text-slate-500">{tmpl.description}</span>
                             </button>
@@ -13988,7 +13988,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {encounterHistory.length > 0 && !telestrokeNote.age && (
                       <details id="encounter-history-section" className="bg-slate-50 border border-slate-200 rounded-xl">
                         <summary className="cursor-pointer px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 rounded-xl flex items-center gap-2">
-                          <i data-lucide="history" className="w-4 h-4 text-slate-500"></i>
+                          <i aria-hidden="true" data-lucide="history" className="w-4 h-4 text-slate-500"></i>
                           Recent Encounters ({encounterHistory.length})
                         </summary>
                         <div className="px-4 pb-3 space-y-1.5">
@@ -14027,7 +14027,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="flex items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
                             >
-                              <i data-lucide="external-link" className="w-5 h-5"></i>
+                              <i aria-hidden="true" data-lucide="external-link" className="w-5 h-5"></i>
                               <div className="flex flex-col">
                                 <span>{link.label}</span>
                                 {link.note && (
@@ -14044,7 +14044,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {(
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <label className="block text-sm font-medium text-blue-900 mb-1">
-                        <i data-lucide="map-pin" className="w-4 h-4 inline mr-1"></i>
+                        <i aria-hidden="true" data-lucide="map-pin" className="w-4 h-4 inline mr-1"></i>
                         Calling Site
                       </label>
                       <select
@@ -14078,7 +14078,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <div id="lkw-section" className="bg-blue-50 border border-blue-200 rounded-xl p-4">
                       <div className="flex items-center justify-between mb-2">
                         <label className="block font-semibold text-blue-900">
-                          <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
+                          <i aria-hidden="true" data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
                           Last Known Well Time *
                         </label>
                         <button
@@ -14165,11 +14165,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center justify-between mb-2">
                             <span className="text-sm font-semibold text-purple-800">Discovery Time</span>
                             <button
-                              onClick={() => setTelestrokeNote({
-                                ...telestrokeNote,
+                              onClick={() => setTelestrokeNote(prev => ({...prev,
                                 discoveryDate: new Date().toISOString().split('T')[0],
                                 discoveryTime: new Date().toTimeString().slice(0, 5)
-                              })}
+                              }))}
                               className="text-xs font-semibold text-purple-700 hover:text-purple-900"
                               type="button"
                             >
@@ -14204,7 +14203,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       {telestrokeNote.lkwUnknown && (
                         <div className="mt-3 bg-purple-50 border border-purple-200 rounded-xl p-4 space-y-4">
                           <div className="flex items-center gap-2">
-                            <span className="text-lg font-bold text-purple-900"><i data-lucide="moon" className="w-5 h-5 inline mr-1"></i> Wake-up Stroke Evaluation</span>
+                            <span className="text-lg font-bold text-purple-900"><i aria-hidden="true" data-lucide="moon" className="w-5 h-5 inline mr-1"></i> Wake-up Stroke Evaluation</span>
                           </div>
 
                           {/* MRI Availability Decision Point */}
@@ -14212,10 +14211,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="font-semibold text-purple-800">Is MRI with DWI-FLAIR available?</div>
                             <div className="flex gap-2">
                               <button
-                                onClick={() => setTelestrokeNote({
-                                  ...telestrokeNote,
-                                  wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), mriAvailable: true}
-                                })}
+                                onClick={() => setTelestrokeNote(prev => ({...prev,
+                                  wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), mriAvailable: true}
+                                }))}
                                 className={`px-4 py-2 rounded-lg font-medium transition-all ${
                                   telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable === true
                                     ? 'bg-purple-600 text-white'
@@ -14225,10 +14223,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 Yes - MRI Available
                               </button>
                               <button
-                                onClick={() => setTelestrokeNote({
-                                  ...telestrokeNote,
-                                  wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), mriAvailable: false}
-                                })}
+                                onClick={() => setTelestrokeNote(prev => ({...prev,
+                                  wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), mriAvailable: false}
+                                }))}
                                 className={`px-4 py-2 rounded-lg font-medium transition-all ${
                                   telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable === false
                                     ? 'bg-orange-600 text-white'
@@ -14244,7 +14241,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable === true && (
                             <div className="bg-white border border-purple-200 rounded-lg p-3 space-y-2">
                               <div className="font-bold text-purple-800 flex items-center gap-2">
-                                <i data-lucide="flask-conical" className="w-4 h-4 text-purple-600"></i>
+                                <i aria-hidden="true" data-lucide="flask-conical" className="w-4 h-4 text-purple-600"></i>
                                 <span>WAKE-UP Trial Criteria (MRI-guided)</span>
                                 <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa1804355" target="_blank" rel="noopener noreferrer"
                                    className="text-xs text-purple-600 hover:underline">[NEJM 2018]</a>
@@ -14254,13 +14251,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <input
                                     type="checkbox"
                                     checked={telestrokeNote.wakeUpStrokeWorkflow?.dwi?.positiveForLesion}
-                                    onChange={(e) => setTelestrokeNote({
-                                      ...telestrokeNote,
+                                    onChange={(e) => setTelestrokeNote(prev => ({...prev,
                                       wakeUpStrokeWorkflow: {
-                                        ...(telestrokeNote.wakeUpStrokeWorkflow || {}),
-                                        dwi: {...(telestrokeNote.wakeUpStrokeWorkflow?.dwi || {}), positiveForLesion: e.target.checked}
+                                        ...(prev.wakeUpStrokeWorkflow || {}),
+                                        dwi: {...(prev.wakeUpStrokeWorkflow?.dwi || {}), positiveForLesion: e.target.checked}
                                       }
-                                    })}
+                                    }))}
                                     className="w-4 h-4 rounded border-purple-400 text-purple-600"
                                   />
                                   <span>DWI positive lesion visible</span>
@@ -14269,13 +14265,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <input
                                     type="checkbox"
                                     checked={telestrokeNote.wakeUpStrokeWorkflow?.flair?.noMarkedHyperintensity}
-                                    onChange={(e) => setTelestrokeNote({
-                                      ...telestrokeNote,
+                                    onChange={(e) => setTelestrokeNote(prev => ({...prev,
                                       wakeUpStrokeWorkflow: {
-                                        ...(telestrokeNote.wakeUpStrokeWorkflow || {}),
-                                        flair: {...(telestrokeNote.wakeUpStrokeWorkflow?.flair || {}), noMarkedHyperintensity: e.target.checked}
+                                        ...(prev.wakeUpStrokeWorkflow || {}),
+                                        flair: {...(prev.wakeUpStrokeWorkflow?.flair || {}), noMarkedHyperintensity: e.target.checked}
                                       }
-                                    })}
+                                    }))}
                                     className="w-4 h-4 rounded border-purple-400 text-purple-600"
                                   />
                                   <span>No marked parenchymal hyperintensity on FLAIR</span>
@@ -14284,10 +14279,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <input
                                     type="checkbox"
                                     checked={telestrokeNote.wakeUpStrokeWorkflow?.ageEligible}
-                                    onChange={(e) => setTelestrokeNote({
-                                      ...telestrokeNote,
-                                      wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), ageEligible: e.target.checked}
-                                    })}
+                                    onChange={(e) => setTelestrokeNote(prev => ({...prev,
+                                      wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), ageEligible: e.target.checked}
+                                    }))}
                                     className="w-4 h-4 rounded border-purple-400 text-purple-600"
                                   />
                                   <span>Age 18-80 years</span>
@@ -14296,10 +14290,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <input
                                     type="checkbox"
                                     checked={telestrokeNote.wakeUpStrokeWorkflow?.nihssEligible}
-                                    onChange={(e) => setTelestrokeNote({
-                                      ...telestrokeNote,
-                                      wakeUpStrokeWorkflow: {...(telestrokeNote.wakeUpStrokeWorkflow || {}), nihssEligible: e.target.checked}
-                                    })}
+                                    onChange={(e) => setTelestrokeNote(prev => ({...prev,
+                                      wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), nihssEligible: e.target.checked}
+                                    }))}
                                     className="w-4 h-4 rounded border-purple-400 text-purple-600"
                                   />
                                   <span>NIHSS ≤25</span>
@@ -14311,7 +14304,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                telestrokeNote.wakeUpStrokeWorkflow?.ageEligible &&
                                telestrokeNote.wakeUpStrokeWorkflow?.nihssEligible && (
                                 <div role="alert" className="bg-emerald-100 border border-emerald-300 rounded-lg p-2 text-emerald-800 font-semibold text-sm flex items-center gap-2">
-                                  <i data-lucide="check-circle" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="check-circle" className="w-4 h-4"></i>
                                   <span>Meets WAKE-UP criteria - Consider IV thrombolysis</span>
                                 </div>
                               )}
@@ -14327,7 +14320,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable === false && (
                             <div className="bg-white border border-orange-200 rounded-lg p-3 space-y-2">
                               <div className="font-bold text-orange-800 flex items-center gap-2">
-                                <i data-lucide="brain" className="w-4 h-4 text-orange-600"></i>
+                                <i aria-hidden="true" data-lucide="brain" className="w-4 h-4 text-orange-600"></i>
                                 <span>EXTEND Trial Criteria (Perfusion Imaging)</span>
                                 <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa1813046" target="_blank" rel="noopener noreferrer"
                                    className="text-xs text-orange-600 hover:underline">[NEJM 2019]</a>
@@ -14337,13 +14330,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <input
                                     type="checkbox"
                                     checked={telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.nihss4to26}
-                                    onChange={(e) => setTelestrokeNote({
-                                      ...telestrokeNote,
+                                    onChange={(e) => setTelestrokeNote(prev => ({...prev,
                                       wakeUpStrokeWorkflow: {
-                                        ...(telestrokeNote.wakeUpStrokeWorkflow || {}),
-                                        extendCriteria: {...(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {}), nihss4to26: e.target.checked}
+                                        ...(prev.wakeUpStrokeWorkflow || {}),
+                                        extendCriteria: {...(prev.wakeUpStrokeWorkflow?.extendCriteria || {}), nihss4to26: e.target.checked}
                                       }
-                                    })}
+                                    }))}
                                     className="w-4 h-4 rounded border-orange-400 text-orange-600"
                                   />
                                   <span>NIHSS 4-26</span>
@@ -14352,13 +14344,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <input
                                     type="checkbox"
                                     checked={telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.premorbidMRSLt2}
-                                    onChange={(e) => setTelestrokeNote({
-                                      ...telestrokeNote,
+                                    onChange={(e) => setTelestrokeNote(prev => ({...prev,
                                       wakeUpStrokeWorkflow: {
-                                        ...(telestrokeNote.wakeUpStrokeWorkflow || {}),
-                                        extendCriteria: {...(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {}), premorbidMRSLt2: e.target.checked}
+                                        ...(prev.wakeUpStrokeWorkflow || {}),
+                                        extendCriteria: {...(prev.wakeUpStrokeWorkflow?.extendCriteria || {}), premorbidMRSLt2: e.target.checked}
                                       }
-                                    })}
+                                    }))}
                                     className="w-4 h-4 rounded border-orange-400 text-orange-600"
                                   />
                                   <span>Pre-morbid mRS &lt;2</span>
@@ -14367,13 +14358,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <input
                                     type="checkbox"
                                     checked={telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.ischemicCoreLte70}
-                                    onChange={(e) => setTelestrokeNote({
-                                      ...telestrokeNote,
+                                    onChange={(e) => setTelestrokeNote(prev => ({...prev,
                                       wakeUpStrokeWorkflow: {
-                                        ...(telestrokeNote.wakeUpStrokeWorkflow || {}),
-                                        extendCriteria: {...(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {}), ischemicCoreLte70: e.target.checked}
+                                        ...(prev.wakeUpStrokeWorkflow || {}),
+                                        extendCriteria: {...(prev.wakeUpStrokeWorkflow?.extendCriteria || {}), ischemicCoreLte70: e.target.checked}
                                       }
-                                    })}
+                                    }))}
                                     className="w-4 h-4 rounded border-orange-400 text-orange-600"
                                   />
                                   <span>Ischemic core ≤70mL</span>
@@ -14382,13 +14372,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <input
                                     type="checkbox"
                                     checked={telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.mismatchRatioGte1_2}
-                                    onChange={(e) => setTelestrokeNote({
-                                      ...telestrokeNote,
+                                    onChange={(e) => setTelestrokeNote(prev => ({...prev,
                                       wakeUpStrokeWorkflow: {
-                                        ...(telestrokeNote.wakeUpStrokeWorkflow || {}),
-                                        extendCriteria: {...(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {}), mismatchRatioGte1_2: e.target.checked}
+                                        ...(prev.wakeUpStrokeWorkflow || {}),
+                                        extendCriteria: {...(prev.wakeUpStrokeWorkflow?.extendCriteria || {}), mismatchRatioGte1_2: e.target.checked}
                                       }
-                                    })}
+                                    }))}
                                     className="w-4 h-4 rounded border-orange-400 text-orange-600"
                                   />
                                   <span>Mismatch ratio ≥1.2</span>
@@ -14397,13 +14386,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <input
                                     type="checkbox"
                                     checked={telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.timeWindow4_5to9h}
-                                    onChange={(e) => setTelestrokeNote({
-                                      ...telestrokeNote,
+                                    onChange={(e) => setTelestrokeNote(prev => ({...prev,
                                       wakeUpStrokeWorkflow: {
-                                        ...(telestrokeNote.wakeUpStrokeWorkflow || {}),
-                                        extendCriteria: {...(telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria || {}), timeWindow4_5to9h: e.target.checked}
+                                        ...(prev.wakeUpStrokeWorkflow || {}),
+                                        extendCriteria: {...(prev.wakeUpStrokeWorkflow?.extendCriteria || {}), timeWindow4_5to9h: e.target.checked}
                                       }
-                                    })}
+                                    }))}
                                     className="w-4 h-4 rounded border-orange-400 text-orange-600"
                                   />
                                   <span>Time 4.5-9 hours OR wake-up stroke</span>
@@ -14416,7 +14404,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.mismatchRatioGte1_2 &&
                                telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.timeWindow4_5to9h && (
                                 <div className="bg-emerald-100 border border-emerald-300 rounded-lg p-2 text-emerald-800 font-semibold text-sm flex items-center gap-2">
-                                  <i data-lucide="check-circle" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="check-circle" className="w-4 h-4"></i>
                                   <span>Meets EXTEND criteria - Consider IV thrombolysis</span>
                                 </div>
                               )}
@@ -14426,7 +14414,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {/* Imaging Recommendation Auto-suggest */}
                           {telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable !== null && (
                             <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                              <div className="font-semibold text-blue-800 mb-2 flex items-center gap-1"><i data-lucide="clipboard-list" className="w-4 h-4"></i> Suggested Imaging Recommendation:</div>
+                              <div className="font-semibold text-blue-800 mb-2 flex items-center gap-1"><i aria-hidden="true" data-lucide="clipboard-list" className="w-4 h-4"></i> Suggested Imaging Recommendation:</div>
                               <div className="text-sm text-blue-900 bg-white rounded p-2 border border-blue-200">
                                 {telestrokeNote.wakeUpStrokeWorkflow?.mriAvailable === true
                                   ? "Obtain MRI brain with DWI/FLAIR to assess for DWI-FLAIR mismatch (WAKE-UP trial criteria). If positive DWI lesion with no corresponding FLAIR hyperintensity, patient may be candidate for IV thrombolysis."
@@ -14450,7 +14438,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg p-4 shadow-lg">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                             <div>
-                              <h3 className="text-xl font-bold flex items-center gap-2"><i data-lucide="phone" className="w-5 h-5"></i> Telephone Consult</h3>
+                              <h3 className="text-xl font-bold flex items-center gap-2"><i aria-hidden="true" data-lucide="phone" className="w-5 h-5"></i> Telephone Consult</h3>
                               {telestrokeNote.consultStartTime && (
                                 <span className="text-xs opacity-80">Started {telestrokeNote.consultStartTime}</span>
                               )}
@@ -14519,7 +14507,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 shadow-md">
                           <div className="flex items-center justify-between mb-1">
                             <label className="block text-sm font-medium text-amber-900">
-                              <i data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
+                              <i aria-hidden="true" data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
                               Last Known Well
                             </label>
                             <NowButton onClick={() => setLkwTime(new Date())} label="Set LKW to now" />
@@ -14585,13 +14573,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 checked={telestrokeNote.lkwUnknown}
                                 onChange={(e) => {
                                   const nextValue = e.target.checked;
-                                  setTelestrokeNote({
-                                    ...telestrokeNote,
+                                  setTelestrokeNote(prev => ({...prev,
                                     lkwUnknown: nextValue,
-                                    wakeUpStrokeWorkflow: { ...(telestrokeNote.wakeUpStrokeWorkflow || {}), isWakeUpStroke: nextValue },
-                                    discoveryDate: nextValue ? (telestrokeNote.discoveryDate || new Date().toISOString().split('T')[0]) : telestrokeNote.discoveryDate,
-                                    discoveryTime: nextValue ? (telestrokeNote.discoveryTime || new Date().toTimeString().slice(0, 5)) : telestrokeNote.discoveryTime
-                                  });
+                                    wakeUpStrokeWorkflow: { ...(prev.wakeUpStrokeWorkflow || {}), isWakeUpStroke: nextValue },
+                                    discoveryDate: nextValue ? (prev.discoveryDate || new Date().toISOString().split('T')[0]) : prev.discoveryDate,
+                                    discoveryTime: nextValue ? (prev.discoveryTime || new Date().toTimeString().slice(0, 5)) : prev.discoveryTime
+                                  }));
                                 }}
                                 className="w-4 h-4 rounded border-2 border-purple-400 text-purple-600 focus:ring-purple-500"
                               />
@@ -14604,11 +14591,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="flex items-center justify-between">
                                 <span className="text-sm font-semibold text-purple-800">Discovery Time</span>
                                 <button
-                                  onClick={() => setTelestrokeNote({
-                                    ...telestrokeNote,
+                                  onClick={() => setTelestrokeNote(prev => ({...prev,
                                     discoveryDate: new Date().toISOString().split('T')[0],
                                     discoveryTime: new Date().toTimeString().slice(0, 5)
-                                  })}
+                                  }))}
                                   className="text-xs font-semibold text-purple-700 hover:text-purple-900"
                                   type="button"
                                 >
@@ -14702,7 +14688,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Section 2: Patient Info + History */}
                         <div id="patient-info-section" className="bg-white border border-purple-200 rounded-xl p-4 shadow-md">
                           <h4 className="text-md font-bold text-purple-900 mb-3 flex items-center gap-2">
-                            <i data-lucide="user" className="w-4 h-4"></i>
+                            <i aria-hidden="true" data-lucide="user" className="w-4 h-4"></i>
                             Patient Info & History
                           </h4>
 
@@ -14832,7 +14818,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {/* TNK Dose Display */}
                           {telestrokeNote.weight && calculateTNKDose(telestrokeNote.weight) && (
                             <div className="mb-3 bg-orange-50 border border-orange-200 rounded-lg p-2 flex items-center justify-between text-sm">
-                              <span className="text-orange-800 font-medium inline-flex items-center gap-1"><i data-lucide="syringe" className="w-3.5 h-3.5"></i> TNK Dose: <span className="font-bold">{calculateTNKDose(telestrokeNote.weight).calculatedDose} mg</span></span>
+                              <span className="text-orange-800 font-medium inline-flex items-center gap-1"><i aria-hidden="true" data-lucide="syringe" className="w-3.5 h-3.5"></i> TNK Dose: <span className="font-bold">{calculateTNKDose(telestrokeNote.weight).calculatedDose} mg</span></span>
                               <span className="text-xs text-orange-600">{calculateTNKDose(telestrokeNote.weight).volume}</span>
                             </div>
                           )}
@@ -14888,7 +14874,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                           {/* Anticoagulation Status */}
                           <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
-                            <span className="text-sm font-medium text-amber-800 inline-flex items-center gap-1"><i data-lucide="pill" className="w-3.5 h-3.5"></i> Anticoagulation Status</span>
+                            <span className="text-sm font-medium text-amber-800 inline-flex items-center gap-1"><i aria-hidden="true" data-lucide="pill" className="w-3.5 h-3.5"></i> Anticoagulation Status</span>
                             <div className="grid grid-cols-2 gap-3 mt-2">
                               <div>
                                 <label className="block text-xs text-slate-600 mb-1">Anticoagulant Type</label>
@@ -14972,7 +14958,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 {missingCrCl && (
                                   <div className="text-amber-700 font-medium flex items-center gap-1">
-                                    <i data-lucide="alert-triangle" className="w-3 h-3"></i>
+                                    <i aria-hidden="true" data-lucide="alert-triangle" className="w-3 h-3"></i>
                                     CrCl not available — using normal renal function estimate. Enter age, weight, sex, and creatinine for renal-adjusted clearance.
                                   </div>
                                 )}
@@ -15006,7 +14992,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div id="nihss-section" className="bg-white border border-red-200 rounded-xl p-4 shadow-md">
                           <div className="flex items-center justify-between mb-3">
                             <h4 className="text-md font-bold text-red-900 flex items-center gap-2">
-                              <i data-lucide="brain" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="brain" className="w-4 h-4"></i>
                               NIHSS Examination
                             </h4>
                             <span className="text-2xl font-bold text-red-600">Score: {nihssScore}</span>
@@ -15065,7 +15051,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Section 4: Vitals & Labs */}
                         <div id="vitals-section" className="bg-white border border-emerald-200 rounded-xl p-4 shadow-md">
                           <h4 className="text-md font-bold text-emerald-900 mb-3 flex items-center gap-2">
-                            <i data-lucide="activity" className="w-4 h-4"></i>
+                            <i aria-hidden="true" data-lucide="activity" className="w-4 h-4"></i>
                             Vitals & Labs
                           </h4>
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -15266,7 +15252,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Section 5: Imaging */}
                         <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-md">
                           <h4 className="text-md font-bold text-blue-900 mb-3 flex items-center gap-2">
-                            <i data-lucide="scan" className="w-4 h-4"></i>
+                            <i aria-hidden="true" data-lucide="scan" className="w-4 h-4"></i>
                             Imaging Review
                           </h4>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -15475,7 +15461,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Section 6: Treatment Decision */}
                         <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
                           <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                            <i data-lucide="stethoscope" className="w-5 h-5 text-blue-600"></i>
+                            <i aria-hidden="true" data-lucide="stethoscope" className="w-5 h-5 text-blue-600"></i>
                             Diagnosis & Treatment Decision
                           </h4>
                           <div className="space-y-3">
@@ -15822,7 +15808,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {telestrokeNote.diagnosisCategory === 'ischemic' && (
                               <details className="bg-emerald-50 border border-emerald-200 rounded-lg">
                                 <summary className="p-3 text-sm font-semibold text-emerald-800 cursor-pointer flex items-center gap-2">
-                                  <i data-lucide="chevron-right" className="w-3.5 h-3.5"></i>
+                                  <i aria-hidden="true" data-lucide="chevron-right" className="w-3.5 h-3.5"></i>
                                   Quick Secondary Prevention
                                 </summary>
                                 <div className="px-3 pb-3 space-y-2">
@@ -15912,7 +15898,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-md">
                           <div className="flex items-center justify-between mb-3">
                             <h4 className="text-md font-bold text-blue-900 flex items-center gap-2">
-                              <i data-lucide="clipboard-check" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="clipboard-check" className="w-4 h-4"></i>
                               Recommendations
                             </h4>
                             <button
@@ -15923,7 +15909,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }}
                               className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition-colors"
                             >
-                              <i data-lucide="file-text" className="w-3 h-3"></i>
+                              <i aria-hidden="true" data-lucide="file-text" className="w-3 h-3"></i>
                               Generate Auto-Note
                             </button>
                           </div>
@@ -15959,7 +15945,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="space-y-1.5">
                               {missing.length > 0 && (
                                 <div className="bg-amber-50 border border-amber-300 rounded-lg px-3 py-2 flex items-start gap-2">
-                                  <i data-lucide="alert-triangle" className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0"></i>
+                                  <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0"></i>
                                   <span className="text-xs text-amber-800">
                                     <span className="font-semibold">Incomplete:</span> {missing.join(', ')}
                                   </span>
@@ -15967,7 +15953,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               )}
                               {safetyGaps.length > 0 && (
                                 <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2 flex items-start gap-2">
-                                  <i data-lucide="shield-alert" className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0"></i>
+                                  <i aria-hidden="true" data-lucide="shield-alert" className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0"></i>
                                   <span className="text-xs text-red-700">
                                     <span className="font-semibold">Safety-critical:</span> {safetyGaps.join(', ')}
                                   </span>
@@ -16002,7 +15988,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onClick={() => { copyToClipboard(generatePulsaraSummary(), 'tel-pulsara'); }}
                                 className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors"
                               >
-                                <i data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                <i aria-hidden="true" data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-4 h-4"></i>
                                 {copiedText === 'tel-pulsara' ? 'Copied!' : 'Copy Pulsara'}
                               </button>
                             </div>
@@ -16020,7 +16006,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 }}
                                 className="flex items-center gap-2 px-3 py-1.5 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors"
                               >
-                                <i data-lucide={copiedText === 'smart-note' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                <i aria-hidden="true" data-lucide={copiedText === 'smart-note' ? 'check' : 'copy'} className="w-4 h-4"></i>
                                 {copiedText === 'smart-note' ? 'Copied!' : 'Copy Smart Note'}
                               </button>
                             </div>
@@ -16037,7 +16023,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             }}
                             className="w-full px-4 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium flex items-center justify-center gap-2"
                           >
-                            <i data-lucide="copy" className="w-4 h-4"></i>
+                            <i aria-hidden="true" data-lucide="copy" className="w-4 h-4"></i>
                             {copiedText === 'telephone-note' ? 'Copied!' : `Copy ${
                               noteTemplate === 'consult' ? 'Consult Note' : noteTemplate === 'transfer' ? 'Transfer Summary' : noteTemplate === 'signout' ? 'Signout' : noteTemplate === 'discharge' ? 'Discharge Summary' : noteTemplate === 'procedure' ? 'Procedure Note' : noteTemplate === 'progress' ? 'Progress Note' : noteTemplate === 'patient-ed' ? 'Patient Education' : 'Follow-up Brief'
                             }`}
@@ -16054,7 +16040,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }}
                               className="w-full px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
                             >
-                              <i data-lucide="share-2" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="share-2" className="w-4 h-4"></i>
                               Share Note
                             </button>
                           )}
@@ -16079,7 +16065,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-hpi' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
-                              <i data-lucide={copiedText === 'tel-hpi' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                              <i aria-hidden="true" data-lucide={copiedText === 'tel-hpi' ? 'check' : 'copy'} className="w-3 h-3"></i>
                               HPI Data
                             </button>
                             <button
@@ -16091,7 +16077,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-exam' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
-                              <i data-lucide={copiedText === 'tel-exam' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                              <i aria-hidden="true" data-lucide={copiedText === 'tel-exam' ? 'check' : 'copy'} className="w-3 h-3"></i>
                               Exam / NIHSS
                             </button>
                             <button
@@ -16105,7 +16091,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-mdm' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
-                              <i data-lucide={copiedText === 'tel-mdm' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                              <i aria-hidden="true" data-lucide={copiedText === 'tel-mdm' ? 'check' : 'copy'} className="w-3 h-3"></i>
                               MDM / Plan
                             </button>
                           </div>
@@ -16117,7 +16103,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             }}
                             className={`w-full mt-2 px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'tel-followup' ? 'bg-emerald-600 text-white' : 'bg-blue-100 text-blue-800 hover:bg-blue-200 border border-blue-300'}`}
                           >
-                            <i data-lucide={copiedText === 'tel-followup' ? 'check' : 'file-output'} className="w-3 h-3"></i>
+                            <i aria-hidden="true" data-lucide={copiedText === 'tel-followup' ? 'check' : 'file-output'} className="w-3 h-3"></i>
                             {copiedText === 'tel-followup' ? 'Copied!' : 'Copy Follow-up Brief (Clinic Handoff)'}
                           </button>
                           )}
@@ -16140,7 +16126,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div id="phone-patient-info-section" className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-blue-900">1. Patient Info</h3>
-                            <i data-lucide="user" className="w-5 h-5 text-blue-600"></i>
+                            <i aria-hidden="true" data-lucide="user" className="w-5 h-5 text-blue-600"></i>
                           </div>
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                             <div>
@@ -16221,7 +16207,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {telestrokeNote.weight && calculateTNKDose(telestrokeNote.weight) && (
                             <div className="mt-2 bg-orange-50 border border-orange-200 rounded-lg p-2 flex items-center justify-between">
                               <div className="flex items-center gap-2">
-                                <span className="text-orange-800 font-medium inline-flex items-center gap-1"><i data-lucide="syringe" className="w-3.5 h-3.5"></i> TNK Dose:</span>
+                                <span className="text-orange-800 font-medium inline-flex items-center gap-1"><i aria-hidden="true" data-lucide="syringe" className="w-3.5 h-3.5"></i> TNK Dose:</span>
                                 <span className="text-lg font-bold text-orange-700">{calculateTNKDose(telestrokeNote.weight).calculatedDose} mg</span>
                                 <span className="text-sm text-orange-600">({calculateTNKDose(telestrokeNote.weight).volume})</span>
                               </div>
@@ -16244,7 +16230,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-white border border-purple-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-purple-900">2. History & Medications</h3>
-                            <i data-lucide="file-text" className="w-5 h-5 text-purple-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-5 h-5 text-purple-600"></i>
                           </div>
                           <div className="space-y-3">
                             <div>
@@ -16281,7 +16267,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* DOAC Status for thrombolysis eligibility */}
                             <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 space-y-2">
                               <div className="flex items-center gap-2">
-                                <span className="text-sm font-medium text-amber-800 inline-flex items-center gap-1"><i data-lucide="pill" className="w-3.5 h-3.5"></i> Anticoagulation Status</span>
+                                <span className="text-sm font-medium text-amber-800 inline-flex items-center gap-1"><i aria-hidden="true" data-lucide="pill" className="w-3.5 h-3.5"></i> Anticoagulation Status</span>
                               </div>
                               <div className="grid grid-cols-2 gap-3">
                                 <div>
@@ -16343,7 +16329,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   {/* Thrombolysis Note */}
                                   {ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].thrombolysisNote && (
                                     <div className="text-xs text-orange-700 bg-orange-100 p-2 rounded flex items-start gap-1">
-                                      <i data-lucide="alert-triangle" className="w-4 h-4 text-amber-600"></i>
+                                      <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-amber-600"></i>
                                       <span>{ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].thrombolysisNote}</span>
                                     </div>
                                   )}
@@ -16406,7 +16392,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h3 className="text-lg font-bold text-red-900">3. NIHSS Examination</h3>
                             <div className="flex items-center gap-2">
                               <span className="text-2xl font-bold text-red-600">Score: {nihssScore}</span>
-                              <i data-lucide="brain" className="w-5 h-5 text-red-600"></i>
+                              <i aria-hidden="true" data-lucide="brain" className="w-5 h-5 text-red-600"></i>
                             </div>
                           </div>
 
@@ -16473,7 +16459,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {/* Full NIHSS Calculator (Collapsible) with keyboard auto-advance */}
                           <details className="bg-slate-50 border border-slate-200 rounded-lg">
                             <summary className="cursor-pointer p-3 font-semibold text-slate-800 hover:bg-slate-100 rounded-lg">
-                              <i data-lucide="chart-no-axes-column-increasing" className="w-4 h-4 inline"></i> Full NIHSS Calculator (Click to expand)
+                              <i aria-hidden="true" data-lucide="chart-no-axes-column-increasing" className="w-4 h-4 inline"></i> Full NIHSS Calculator (Click to expand)
                             </summary>
                             <div className="p-4 space-y-3">
                               <p className="text-xs text-slate-500 italic">Tip: Press number keys (0-4) to select score for focused item. Auto-advances to next item.</p>
@@ -16533,7 +16519,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-white border border-emerald-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-emerald-900">4. Vitals & Labs</h3>
-                            <i data-lucide="activity" className="w-5 h-5 text-emerald-600"></i>
+                            <i aria-hidden="true" data-lucide="activity" className="w-5 h-5 text-emerald-600"></i>
                           </div>
                           <div className="space-y-3">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -16755,7 +16741,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                             {/* Critical Timestamps for DTN/DTP */}
                             <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
-                              <h4 className="font-semibold text-amber-800 mb-2 flex items-center gap-1"><i data-lucide="clock" className="w-4 h-4"></i> Critical Timestamps</h4>
+                              <h4 className="font-semibold text-amber-800 mb-2 flex items-center gap-1"><i aria-hidden="true" data-lucide="clock" className="w-4 h-4"></i> Critical Timestamps</h4>
                               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                 <div>
                                   <div className="flex items-center justify-between mb-1">
@@ -16913,7 +16899,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-white border-2 border-indigo-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-indigo-900">5. Imaging Review</h3>
-                            <i data-lucide="image" className="w-5 h-5 text-indigo-600"></i>
+                            <i aria-hidden="true" data-lucide="image" className="w-5 h-5 text-indigo-600"></i>
                           </div>
                           <div className="mb-3 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs text-indigo-800">
                             Do <strong>not</strong> delay IV thrombolysis for CTA/CTP or routine labs unless there is a specific clinical concern
@@ -17002,7 +16988,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* ASPECTS Calculator (Collapsible) */}
                             <details className="bg-blue-50 border border-blue-200 rounded-lg">
                               <summary className="cursor-pointer p-3 font-semibold text-blue-800 hover:bg-blue-100 rounded-lg">
-                                <i data-lucide="grid-3x3" className="w-4 h-4 inline"></i> Full ASPECTS Calculator (Click to expand)
+                                <i aria-hidden="true" data-lucide="grid-3x3" className="w-4 h-4 inline"></i> Full ASPECTS Calculator (Click to expand)
                               </summary>
                               <div className="p-4">
                                 <div className="text-center mb-3">
@@ -17033,7 +17019,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* PC-ASPECTS Calculator (Collapsible) */}
                             <details className="bg-purple-50 border border-purple-200 rounded-lg">
                               <summary className="cursor-pointer p-3 font-semibold text-purple-800 hover:bg-purple-100 rounded-lg">
-                                <i data-lucide="grid-3x3" className="w-4 h-4 inline"></i> PC-ASPECTS Calculator (Posterior Circulation)
+                                <i aria-hidden="true" data-lucide="grid-3x3" className="w-4 h-4 inline"></i> PC-ASPECTS Calculator (Posterior Circulation)
                               </summary>
                               <div className="p-4">
                                 <div className="flex justify-between items-center mb-3">
@@ -17097,7 +17083,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* Vessel Occlusion Quick Select for Trial Eligibility */}
                               <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded-lg">
                                 <p className="text-xs font-semibold text-blue-800 mb-2">
-                                  <i data-lucide="flask-conical" className="w-3 h-3 inline"></i> Vessel Occlusion <span className="font-normal">(for trial screening)</span>
+                                  <i aria-hidden="true" data-lucide="flask-conical" className="w-3 h-3 inline"></i> Vessel Occlusion <span className="font-normal">(for trial screening)</span>
                                 </p>
                                 <div className="flex flex-wrap gap-2">
                                   {['ICA', 'M1', 'M2', 'M3', 'M4', 'A1', 'A2', 'A3', 'P1', 'P2', 'P3'].map(vessel => (
@@ -17157,7 +17143,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div id="treatment-decision" ref={treatmentDecisionRef} className="bg-white border border-orange-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-orange-900">6. Treatment Decision</h3>
-                            <i data-lucide="zap" className="w-5 h-5 text-orange-600"></i>
+                            <i aria-hidden="true" data-lucide="zap" className="w-5 h-5 text-orange-600"></i>
                           </div>
 
                           {/* Auto Treatment Recommendation */}
@@ -17270,7 +17256,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 {/* Clinical Pearls — contextual evidence */}
                                 <details className="mt-3 bg-blue-50 border border-blue-200 rounded-lg">
                                   <summary className="cursor-pointer px-3 py-2 text-xs font-semibold text-blue-800 hover:bg-blue-100 rounded-lg flex items-center gap-1.5">
-                                    <i data-lucide="lightbulb" className="w-3.5 h-3.5 text-blue-500"></i>
+                                    <i aria-hidden="true" data-lucide="lightbulb" className="w-3.5 h-3.5 text-blue-500"></i>
                                     Clinical Pearls
                                   </summary>
                                   <div className="px-3 pb-2 space-y-1.5 text-xs text-blue-800">
@@ -17300,7 +17286,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 {criticalAlerts.length > 0 && (
                                   <div className="bg-red-100 border-2 border-red-400 rounded-lg p-3">
                                     <div className="flex items-center gap-2 mb-2">
-                                      <span className="text-red-700 font-bold inline-flex items-center gap-1"><i data-lucide="alert-circle" className="w-4 h-4"></i> CRITICAL CONTRAINDICATION{criticalAlerts.length > 1 ? 'S' : ''}</span>
+                                      <span className="text-red-700 font-bold inline-flex items-center gap-1"><i aria-hidden="true" data-lucide="alert-circle" className="w-4 h-4"></i> CRITICAL CONTRAINDICATION{criticalAlerts.length > 1 ? 'S' : ''}</span>
                                     </div>
                                     <ul className="space-y-1">
                                       {criticalAlerts.map((alert, idx) => (
@@ -17316,7 +17302,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 {warningAlerts.length > 0 && (
                                   <div className="bg-amber-50 border-2 border-amber-400 rounded-lg p-3">
                                     <div className="flex items-center gap-2 mb-2">
-                                      <span className="text-amber-700 font-bold inline-flex items-center gap-1"><i data-lucide="alert-triangle" className="w-4 h-4"></i> CAUTION{warningAlerts.length > 1 ? 'S' : ''}</span>
+                                      <span className="text-amber-700 font-bold inline-flex items-center gap-1"><i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4"></i> CAUTION{warningAlerts.length > 1 ? 'S' : ''}</span>
                                     </div>
                                     <ul className="space-y-1">
                                       {warningAlerts.map((alert, idx) => (
@@ -17334,7 +17320,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <ul className="space-y-1">
                                       {infoAlerts.map((alert, idx) => (
                                         <li key={idx} className="text-sm text-blue-800 flex items-start gap-2">
-                                          <i data-lucide="info" className="w-4 h-4 text-blue-500"></i>
+                                          <i aria-hidden="true" data-lucide="info" className="w-4 h-4 text-blue-500"></i>
                                           <span>{alert.message}</span>
                                         </li>
                                       ))}
@@ -17431,7 +17417,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           : 'bg-white text-slate-700 border-slate-300 hover:border-slate-400'
                                       }`}
                                     >
-                                      <i data-lucide={option.icon} className="w-4 h-4"></i>
+                                      <i aria-hidden="true" data-lucide={option.icon} className="w-4 h-4"></i>
                                       {option.label}
                                     </button>
                                   );
@@ -17488,7 +17474,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <div key={f.key} className={`flex items-start gap-2 px-3 py-2 rounded-lg text-sm font-medium ${
                                         f.color === 'red' ? 'bg-red-50 text-red-800 border border-red-300' : 'bg-amber-50 text-amber-800 border border-amber-300'
                                       }`}>
-                                        <i data-lucide="alert-triangle" className="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                                        <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 mt-0.5 flex-shrink-0"></i>
                                         <span>{f.text}</span>
                                       </div>
                                     ))}
@@ -17506,14 +17492,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <details className={`mt-2 border rounded-lg ${errors.length > 0 ? 'bg-red-50 border-red-300' : 'bg-amber-50 border-amber-300'}`} open={errors.length > 0}>
                                     <summary className={`cursor-pointer px-3 py-2 text-sm font-semibold flex items-center justify-between ${errors.length > 0 ? 'text-red-800' : 'text-amber-800'}`}>
                                       <span className="flex items-center gap-2">
-                                        <i data-lucide="shield-alert" className="w-4 h-4"></i>
+                                        <i aria-hidden="true" data-lucide="shield-alert" className="w-4 h-4"></i>
                                         Data Consistency Check ({errors.length > 0 ? `${errors.length} error${errors.length > 1 ? 's' : ''}` : ''}{errors.length > 0 && warns.length > 0 ? ', ' : ''}{warns.length > 0 ? `${warns.length} warning${warns.length > 1 ? 's' : ''}` : ''})
                                       </span>
                                     </summary>
                                     <div className="px-3 pb-2 space-y-1">
                                       {checks.map(c => (
                                         <div key={c.id} className={`flex items-start gap-2 text-sm px-2 py-1 rounded ${c.severity === 'error' ? 'text-red-800 bg-red-100/60' : 'text-amber-800 bg-amber-100/60'}`}>
-                                          <i data-lucide={c.severity === 'error' ? 'x-circle' : 'alert-triangle'} className="w-3.5 h-3.5 mt-0.5 flex-shrink-0"></i>
+                                          <i aria-hidden="true" data-lucide={c.severity === 'error' ? 'x-circle' : 'alert-triangle'} className="w-3.5 h-3.5 mt-0.5 flex-shrink-0"></i>
                                           <span>{c.msg}</span>
                                         </div>
                                       ))}
@@ -17950,7 +17936,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 {/* TNK Dosing Calculator */}
                                 <div className="bg-white border border-emerald-300 rounded-lg p-3 space-y-2">
                                   <div className="flex items-center justify-between">
-                                    <span className="text-sm font-semibold text-emerald-800 inline-flex items-center gap-1"><i data-lucide="syringe" className="w-3.5 h-3.5"></i> TNK Dosing Calculator</span>
+                                    <span className="text-sm font-semibold text-emerald-800 inline-flex items-center gap-1"><i aria-hidden="true" data-lucide="syringe" className="w-3.5 h-3.5"></i> TNK Dosing Calculator</span>
                                     <span className="text-xs text-slate-500">0.25 mg/kg, max 25 mg</span>
                                   </div>
 
@@ -17973,7 +17959,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     if (!doseCalc) {
                                       return (
                                         <div className="text-sm text-amber-600 bg-amber-50 px-3 py-2 rounded-lg border border-amber-200">
-                                          <i data-lucide="alert-triangle" className="w-3.5 h-3.5 inline"></i> Enter patient weight to calculate TNK dose
+                                          <i aria-hidden="true" data-lucide="alert-triangle" className="w-3.5 h-3.5 inline"></i> Enter patient weight to calculate TNK dose
                                         </div>
                                       );
                                     }
@@ -17985,7 +17971,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         <div className={`px-4 py-2 ${doseCalc.isMaxDose ? 'bg-gradient-to-r from-amber-500 to-amber-600' : 'bg-gradient-to-r from-green-500 to-emerald-600'}`}>
                                           <div className="flex items-center justify-between">
                                             <span className="text-white font-bold text-lg flex items-center gap-2">
-                                              <i data-lucide="syringe" className="w-6 h-6 text-white"></i>
+                                              <i aria-hidden="true" data-lucide="syringe" className="w-6 h-6 text-white"></i>
                                               TNK DOSING
                                             </span>
                                             {doseCalc.isMaxDose && (
@@ -18021,7 +18007,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           {telestrokeNote.weightEstimated && (
                                             <div className="mt-2 px-3 py-2 bg-red-100 border border-red-300 rounded-lg text-center">
                                               <span className="text-sm font-bold text-red-800">
-                                                <i data-lucide="alert-triangle" className="w-4 h-4 inline mr-1"></i>
+                                                <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 inline mr-1"></i>
                                                 WEIGHT IS ESTIMATED — Confirm actual weight before administering TNK
                                               </span>
                                             </div>
@@ -18113,7 +18099,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {telestrokeNote.evtRecommended && (
                               <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 space-y-3">
                                 <h4 className="font-bold text-orange-900 flex items-center gap-2">
-                                  <i data-lucide="message-circle" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="message-circle" className="w-4 h-4"></i>
                                   EVT Consent Communication Kit
                                 </h4>
                                 <div className="bg-white border border-orange-200 rounded-lg p-3 text-sm text-slate-700 space-y-2">
@@ -18170,7 +18156,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   copyToClipboard(consentDoc, 'evt-consent');
                                 }}
                                   className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'evt-consent' ? 'bg-emerald-600 text-white' : 'bg-orange-600 text-white hover:bg-orange-700'}`}>
-                                  <i data-lucide={copiedText === 'evt-consent' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide={copiedText === 'evt-consent' ? 'check' : 'copy'} className="w-4 h-4"></i>
                                   {copiedText === 'evt-consent' ? 'Copied!' : 'Copy EVT Consent Documentation'}
                                 </button>
                               </div>
@@ -18180,7 +18166,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {telestrokeNote.transferAccepted && (
                               <div className="bg-sky-50 border-2 border-sky-300 rounded-lg p-4 space-y-3">
                                 <h4 className="font-bold text-sky-900 flex items-center gap-2">
-                                  <i data-lucide="ambulance" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="ambulance" className="w-4 h-4"></i>
                                   Transfer Communication Kit
                                 </h4>
                                 <div className="bg-white border border-sky-200 rounded-lg p-3 text-sm text-slate-700 space-y-2">
@@ -18198,7 +18184,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   copyToClipboard(transferDoc, 'transfer-consent');
                                 }}
                                   className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'transfer-consent' ? 'bg-emerald-600 text-white' : 'bg-sky-600 text-white hover:bg-sky-700'}`}>
-                                  <i data-lucide={copiedText === 'transfer-consent' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide={copiedText === 'transfer-consent' ? 'check' : 'copy'} className="w-4 h-4"></i>
                                   {copiedText === 'transfer-consent' ? 'Copied!' : 'Copy Consent + Transfer Documentation'}
                                 </button>
                               </div>
@@ -18211,7 +18197,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 copyToClipboard(tnkDoc, 'tnk-consent');
                               }}
                                 className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'tnk-consent' ? 'bg-emerald-600 text-white' : 'bg-purple-600 text-white hover:bg-purple-700'}`}>
-                                <i data-lucide={copiedText === 'tnk-consent' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                <i aria-hidden="true" data-lucide={copiedText === 'tnk-consent' ? 'check' : 'copy'} className="w-4 h-4"></i>
                                 {copiedText === 'tnk-consent' ? 'Copied!' : 'Copy TNK Consent Documentation'}
                               </button>
                             )}
@@ -18220,7 +18206,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime && (
                               <div className="bg-rose-50 border-2 border-rose-300 rounded-xl p-4 space-y-3">
                                 <h4 className="font-bold text-rose-900 flex items-center gap-2">
-                                  <i data-lucide="heart-pulse" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="heart-pulse" className="w-4 h-4"></i>
                                   Post-Thrombolysis Monitoring
                                 </h4>
                                 <p className="text-xs text-rose-700">Monitor for complications. Neuro checks + BP q15min x 2h, then q30min x 6h, then q1h x 16h. Avoid anticoagulants/antiplatelets x 24h. Repeat CT at 24h or if clinical deterioration.</p>
@@ -18281,7 +18267,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {telestrokeNote.evtRecommended && (
                               <div className="bg-orange-50 border-2 border-orange-300 rounded-xl p-4 space-y-3">
                                 <h4 className="font-bold text-orange-900 flex items-center gap-2">
-                                  <i data-lucide="activity" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="activity" className="w-4 h-4"></i>
                                   Post-EVT Monitoring & Orders
                                 </h4>
                                 <p className="text-xs text-orange-700">Post-thrombectomy monitoring checklist. BP target: SBP &lt;180/105, avoid SBP &lt;140 (Class III: Harm per BEST-II/ENCHANTED2). Neuro checks q15min x 2h, q30min x 6h, q1h thereafter.</p>
@@ -18341,7 +18327,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {<details id="time-metrics-section" className="bg-purple-50 border border-purple-200 rounded-xl" open={telestrokeNote.tnkRecommended}>
                               <summary className="cursor-pointer p-3 font-semibold text-purple-800 hover:bg-purple-100 rounded-lg flex items-center justify-between">
                                 <span className="flex items-center gap-2">
-                                  <i data-lucide="timer" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="timer" className="w-4 h-4"></i>
                                   Time Metrics (DTN Tracker)
                                 </span>
                                 {(() => {
@@ -18525,7 +18511,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   return (
                                     <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-4 border-2 border-purple-300">
                                       <h5 className="font-bold text-purple-900 mb-3 flex items-center gap-2">
-                                        <i data-lucide="chart-column" className="w-4 h-4"></i>
+                                        <i aria-hidden="true" data-lucide="chart-column" className="w-4 h-4"></i>
                                         Calculated Intervals
                                       </h5>
                                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -18619,7 +18605,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* EVT Eligibility (Collapsible — hidden in clinic) */}
                             {<details className="bg-blue-50 border border-blue-200 rounded-lg">
                               <summary className="cursor-pointer p-3 font-semibold text-blue-800 hover:bg-blue-100 rounded-lg">
-                                <i data-lucide="wrench" className="w-4 h-4 inline"></i> EVT Eligibility Criteria (Click to expand)
+                                <i aria-hidden="true" data-lucide="wrench" className="w-4 h-4 inline"></i> EVT Eligibility Criteria (Click to expand)
                               </summary>
                               <div className="p-4 space-y-3 text-sm">
                                 <div>
@@ -18705,7 +18691,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <details open={guidelineRecsExpanded} onToggle={(e) => setGuidelineRecsExpanded(e.target.open)}>
                                 <summary className="cursor-pointer p-4 font-semibold text-indigo-900 hover:bg-indigo-50 rounded-lg flex items-center justify-between">
                                   <span className="flex items-center gap-2">
-                                    <i data-lucide="book-open" className="w-5 h-5 text-indigo-600"></i>
+                                    <i aria-hidden="true" data-lucide="book-open" className="w-5 h-5 text-indigo-600"></i>
                                     Guideline Recommendations ({recs.length})
                                   </span>
                                   <span className="text-xs text-indigo-500 font-normal">Evidence-based, auto-matched to patient data</span>
@@ -18741,7 +18727,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                     if (!url) return null;
                                                     return (
                                                       <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 ml-1.5 text-indigo-600 hover:text-indigo-800 font-medium" title={'View: ' + rec.guideline}>
-                                                        <i data-lucide="external-link" className="w-3 h-3"></i>
+                                                        <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
                                                         <span>Source</span>
                                                       </a>
                                                     );
@@ -18782,7 +18768,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <details className={'border-2 rounded-lg ' + (eligible.length > 0 ? 'bg-emerald-50 border-emerald-300' : needsInfo.length > 0 ? 'bg-purple-50 border-purple-300' : 'bg-slate-50 border-slate-300')} open={hasMatches}>
                               <summary className="cursor-pointer p-3 font-semibold hover:bg-opacity-70 rounded-lg flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                  <i data-lucide="flask-conical" className="w-5 h-5 text-purple-600"></i>
+                                  <i aria-hidden="true" data-lucide="flask-conical" className="w-5 h-5 text-purple-600"></i>
                                   <span className={eligible.length > 0 ? 'text-emerald-900' : 'text-purple-900'}>Trial Eligibility Auto-Matcher</span>
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -18894,7 +18880,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div id="sah-management-section" className="bg-white border border-purple-200 rounded-xl p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-purple-900 flex items-center gap-2">
-                                <i data-lucide="zap" className="w-5 h-5"></i>
+                                <i aria-hidden="true" data-lucide="zap" className="w-5 h-5"></i>
                                 SAH Management (2023 AHA/ASA)
                               </h3>
                             </div>
@@ -18994,7 +18980,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div id="cvt-management-section" className="bg-white border-2 border-indigo-300 rounded-lg p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-indigo-900 flex items-center gap-2">
-                                <i data-lucide="git-branch" className="w-5 h-5"></i>
+                                <i aria-hidden="true" data-lucide="git-branch" className="w-5 h-5"></i>
                                 CVT Management (2024 AHA)
                               </h3>
                             </div>
@@ -19087,7 +19073,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white border border-orange-200 rounded-xl p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-orange-900 flex items-center gap-2">
-                                <i data-lucide="clipboard-check" className="w-5 h-5"></i>
+                                <i aria-hidden="true" data-lucide="clipboard-check" className="w-5 h-5"></i>
                                 TIA Rapid Workup Checklist
                               </h3>
                               <div className="flex items-center gap-2">
@@ -19123,10 +19109,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <input
                                     type="checkbox"
                                     checked={!!(telestrokeNote.tiaWorkup || {})[item.key]}
-                                    onChange={(e) => setTelestrokeNote({
-                                      ...telestrokeNote,
-                                      tiaWorkup: { ...(telestrokeNote.tiaWorkup || {}), [item.key]: e.target.checked }
-                                    })}
+                                    onChange={(e) => setTelestrokeNote(prev => ({...prev,
+                                      tiaWorkup: { ...(prev.tiaWorkup || {}), [item.key]: e.target.checked }
+                                    }))}
                                     className="rounded border-orange-300 text-orange-600"
                                   />
                                   <span className="text-sm text-slate-700">{item.label}</span>
@@ -19141,7 +19126,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white border-2 border-violet-300 rounded-lg p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-violet-900 flex items-center gap-2">
-                                <i data-lucide="layers" className="w-5 h-5"></i>
+                                <i aria-hidden="true" data-lucide="layers" className="w-5 h-5"></i>
                                 TOAST Etiologic Classification
                               </h3>
                             </div>
@@ -19170,7 +19155,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white border-2 border-pink-300 rounded-lg p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-pink-900 flex items-center gap-2">
-                                <i data-lucide="heart" className="w-5 h-5"></i>
+                                <i aria-hidden="true" data-lucide="heart" className="w-5 h-5"></i>
                                 Cardiac Workup
                               </h3>
                             </div>
@@ -19281,7 +19266,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-blue-900 flex items-center gap-2">
-                                <i data-lucide="clipboard-list" className="w-5 h-5"></i>
+                                <i aria-hidden="true" data-lucide="clipboard-list" className="w-5 h-5"></i>
                                 Etiology Workup Planner
                               </h3>
                               <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
@@ -19366,7 +19351,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     copyToClipboard(workupText, 'workup-plan');
                                   }}
                                     className={`w-full mt-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'workup-plan' ? 'bg-emerald-600 text-white' : 'bg-blue-600 text-white hover:bg-blue-700'}`}>
-                                    <i data-lucide={copiedText === 'workup-plan' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                    <i aria-hidden="true" data-lucide={copiedText === 'workup-plan' ? 'check' : 'copy'} className="w-4 h-4"></i>
                                     {copiedText === 'workup-plan' ? 'Copied!' : 'Copy Workup Plan'}
                                   </button>
                                 </div>
@@ -19380,7 +19365,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white border border-red-200 rounded-xl p-4 shadow-md">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-red-900 flex items-center gap-2">
-                                <i data-lucide="git-branch" className="w-5 h-5"></i>
+                                <i aria-hidden="true" data-lucide="git-branch" className="w-5 h-5"></i>
                                 Cervical Artery Dissection Pathway
                               </h3>
                             </div>
@@ -19434,7 +19419,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <details className="bg-white border border-blue-200 rounded-xl shadow-md">
                             <summary className="cursor-pointer p-4 font-semibold text-blue-900 hover:bg-blue-50 rounded-lg flex items-center justify-between">
                               <span className="flex items-center gap-2">
-                                <i data-lucide="scan" className="w-5 h-5 text-blue-600"></i>
+                                <i aria-hidden="true" data-lucide="scan" className="w-5 h-5 text-blue-600"></i>
                                 Post-Stroke Screening Tools
                               </span>
                               <span className="text-xs text-blue-500 font-normal">PHQ-2, MoCA, STOP-BANG, Seizure Risk</span>
@@ -19601,7 +19586,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <details className="bg-white border border-emerald-200 rounded-xl shadow-md">
                             <summary className="cursor-pointer p-4 font-semibold text-emerald-900 hover:bg-emerald-50 rounded-lg flex items-center justify-between">
                               <span className="flex items-center gap-2">
-                                <i data-lucide="shield" className="w-5 h-5 text-emerald-600"></i>
+                                <i aria-hidden="true" data-lucide="shield" className="w-5 h-5 text-emerald-600"></i>
                                 Secondary Prevention Dashboard
                               </span>
                               <span className="text-xs text-emerald-500 font-normal">BP, LDL, Diabetes, Smoking, Exercise, Diet</span>
@@ -20130,7 +20115,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <details className="bg-white border border-orange-200 rounded-xl shadow-md">
                             <summary className="cursor-pointer p-4 font-semibold text-orange-900 hover:bg-orange-50 rounded-lg flex items-center justify-between">
                               <span className="flex items-center gap-2">
-                                <i data-lucide="clipboard-list" className="w-5 h-5 text-orange-600"></i>
+                                <i aria-hidden="true" data-lucide="clipboard-list" className="w-5 h-5 text-orange-600"></i>
                                 Acute Care Protocols
                               </span>
                               <span className="text-xs text-orange-500 font-normal">HT, Angioedema, Dysphagia, Mobilization, Hyperglycemia, DOAC Timing, Carotid, ESUS, ICH Anticoag</span>
@@ -21053,7 +21038,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <details className="bg-white border-2 border-violet-300 rounded-lg shadow-md">
                             <summary className="cursor-pointer p-4 font-semibold text-violet-900 hover:bg-violet-50 rounded-lg flex items-center justify-between">
                               <span className="flex items-center gap-2">
-                                <i data-lucide="calendar" className="w-5 h-5 text-violet-600"></i>
+                                <i aria-hidden="true" data-lucide="calendar" className="w-5 h-5 text-violet-600"></i>
                                 Follow-Up Clinic Tools
                               </span>
                               <span className="text-xs text-violet-500 font-normal">mRS, Driving, RTW, Spasticity, Pain, Fatigue, Alcohol, Travel</span>
@@ -21396,7 +21381,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <details className="bg-white border border-amber-200 rounded-xl shadow-md">
                             <summary className="cursor-pointer p-4 font-semibold text-amber-900 hover:bg-amber-50 rounded-lg flex items-center justify-between">
                               <span className="flex items-center gap-2">
-                                <i data-lucide="users" className="w-5 h-5 text-amber-600"></i>
+                                <i aria-hidden="true" data-lucide="users" className="w-5 h-5 text-amber-600"></i>
                                 Special Populations &amp; Rehab
                               </span>
                               <span className="text-xs text-amber-500 font-normal">Pregnancy, Craniectomy, Rehab Referral</span>
@@ -21721,7 +21706,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div id="discharge-checklist-section" className="bg-white border border-emerald-200 rounded-xl p-4 shadow-sm">
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-lg font-bold text-emerald-900 flex items-center gap-2">
-                                <i data-lucide="clipboard-list" className="w-5 h-5"></i>
+                                <i aria-hidden="true" data-lucide="clipboard-list" className="w-5 h-5"></i>
                                 Discharge Checklist
                               </h3>
                               <div className="flex items-center gap-2">
@@ -21795,13 +21780,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           <input
                                             type="checkbox"
                                             checked={!!(telestrokeNote.dischargeChecklist || {})[item.key]}
-                                            onChange={(e) => setTelestrokeNote({
-                                              ...telestrokeNote,
+                                            onChange={(e) => setTelestrokeNote(prev => ({...prev,
                                               dischargeChecklist: {
-                                                ...(telestrokeNote.dischargeChecklist || {}),
+                                                ...(prev.dischargeChecklist || {}),
                                                 [item.key]: e.target.checked
                                               }
-                                            })}
+                                            }))}
                                             className="rounded border-emerald-300 text-emerald-600"
                                           />
                                           <span className="text-sm text-slate-700">{item.label}</span>
@@ -21810,13 +21794,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           <input
                                             type="text"
                                             value={(telestrokeNote.dischargeChecklist || {})[item.hasDetail] || ''}
-                                            onChange={(e) => setTelestrokeNote({
-                                              ...telestrokeNote,
+                                            onChange={(e) => setTelestrokeNote(prev => ({...prev,
                                               dischargeChecklist: {
-                                                ...(telestrokeNote.dischargeChecklist || {}),
+                                                ...(prev.dischargeChecklist || {}),
                                                 [item.hasDetail]: e.target.value
                                               }
-                                            })}
+                                            }))}
                                             placeholder={item.detailPlaceholder}
                                             className="ml-6 w-[calc(100%-1.5rem)] px-2 py-1 border border-emerald-200 rounded text-xs focus:ring-1 focus:ring-emerald-500 mb-1"
                                           />
@@ -21838,7 +21821,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div id="recommendations-section" className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-blue-900">7. Recommendations</h3>
-                            <i data-lucide="clipboard-check" className="w-5 h-5 text-blue-600"></i>
+                            <i aria-hidden="true" data-lucide="clipboard-check" className="w-5 h-5 text-blue-600"></i>
                           </div>
 
                           {/* Auto-Note Generation Button */}
@@ -22283,7 +22266,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }}
                               className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
                             >
-                              <i data-lucide="file-text" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="file-text" className="w-4 h-4"></i>
                               Generate Auto-Note
                             </button>
                             <span className="text-xs text-slate-500 ml-2">Populates note from patient data + guideline citations</span>
@@ -22311,7 +22294,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               onClick={() => { copyToClipboard(generatePulsaraSummary(), 'tel-pulsara'); }}
                               className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors"
                             >
-                              <i data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-4 h-4"></i>
                               {copiedText === 'tel-pulsara' ? 'Copied!' : 'Copy Pulsara'}
                             </button>
                           </div>
@@ -22457,7 +22440,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 shadow-md mt-4">
                           <div className="flex items-center justify-between mb-3">
                             <h4 className="font-bold text-slate-800 flex items-center gap-2">
-                              <i data-lucide="file-text" className="w-5 h-5"></i>
+                              <i aria-hidden="true" data-lucide="file-text" className="w-5 h-5"></i>
                               Telestroke Note - Epic
                             </h4>
                             <div className="flex gap-2 flex-wrap">
@@ -22468,7 +22451,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 }}
                                 className="flex items-center gap-2 px-3 py-2 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors"
                               >
-                                <i data-lucide={copiedText === 'encounter-note' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                <i aria-hidden="true" data-lucide={copiedText === 'encounter-note' ? 'check' : 'copy'} className="w-4 h-4"></i>
                                 {copiedText === 'encounter-note' ? 'Copied!' : 'Copy Full Note'}
                               </button>
                             </div>
@@ -22484,7 +22467,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 }}
                                 className="flex items-center gap-2 px-3 py-1.5 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors"
                               >
-                                <i data-lucide={copiedText === 'smart-note-encounter' ? 'check' : 'copy'} className="w-4 h-4"></i>
+                                <i aria-hidden="true" data-lucide={copiedText === 'smart-note-encounter' ? 'check' : 'copy'} className="w-4 h-4"></i>
                                 {copiedText === 'smart-note-encounter' ? 'Copied!' : 'Copy Smart Note'}
                               </button>
                             </div>
@@ -22513,7 +22496,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-hpi' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
-                              <i data-lucide={copiedText === 'vid-hpi' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                              <i aria-hidden="true" data-lucide={copiedText === 'vid-hpi' ? 'check' : 'copy'} className="w-3 h-3"></i>
                               HPI Data
                             </button>
                             <button
@@ -22528,7 +22511,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-exam' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
-                              <i data-lucide={copiedText === 'vid-exam' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                              <i aria-hidden="true" data-lucide={copiedText === 'vid-exam' ? 'check' : 'copy'} className="w-3 h-3"></i>
                               Exam / NIHSS
                             </button>
                             <button
@@ -22543,7 +22526,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }}
                               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-mdm' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                             >
-                              <i data-lucide={copiedText === 'vid-mdm' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                              <i aria-hidden="true" data-lucide={copiedText === 'vid-mdm' ? 'check' : 'copy'} className="w-3 h-3"></i>
                               MDM / Plan
                             </button>
                           </div>
@@ -22555,7 +22538,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             }}
                             className={`w-full mb-3 px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 ${copiedText === 'vid-followup' ? 'bg-emerald-600 text-white' : 'bg-blue-100 text-blue-800 hover:bg-blue-200 border border-blue-300'}`}
                           >
-                            <i data-lucide={copiedText === 'vid-followup' ? 'check' : 'file-output'} className="w-3 h-3"></i>
+                            <i aria-hidden="true" data-lucide={copiedText === 'vid-followup' ? 'check' : 'file-output'} className="w-3 h-3"></i>
                             {copiedText === 'vid-followup' ? 'Copied!' : 'Copy Follow-up Brief (Clinic Handoff)'}
                           </button>
                           )}
@@ -22637,8 +22620,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   title={timerSidebarCollapsed ? 'Expand timer' : 'Collapse timer'}
                                   aria-label={timerSidebarCollapsed ? 'Expand treatment timer' : 'Collapse treatment timer'}
                                 >
-                                  <i data-lucide={timerSidebarCollapsed ? 'chevron-right' : 'chevron-down'} className="w-4 h-4"></i>
-                                  <i data-lucide="clock" className="w-5 h-5"></i>
+                                  <i aria-hidden="true" data-lucide={timerSidebarCollapsed ? 'chevron-right' : 'chevron-down'} className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="clock" className="w-5 h-5"></i>
                                   {timerSidebarCollapsed ? (
                                     <span className="text-sm font-mono">
                                       {elapsedHours}h {elapsedMins.toString().padStart(2, '0')}m
@@ -22878,7 +22861,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <details className="bg-white border-2 border-indigo-200 rounded-lg shadow-md overflow-hidden">
                             <summary className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white p-3 cursor-pointer hover:from-indigo-600 hover:to-purple-600 transition-colors">
                               <span className="font-bold text-sm flex items-center gap-2">
-                                <i data-lucide="flask-conical" className="w-4 h-4"></i> Clinical Trial Details
+                                <i aria-hidden="true" data-lucide="flask-conical" className="w-4 h-4"></i> Clinical Trial Details
                                 <span className="text-xs opacity-75">(click to expand full descriptions)</span>
                               </span>
                             </summary>
@@ -23128,7 +23111,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Contextual guidance based on diagnosis */}
                     {!telestrokeNote.diagnosisCategory && (
                       <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 flex items-start gap-3">
-                        <i data-lucide="info" className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0"></i>
+                        <i aria-hidden="true" data-lucide="info" className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0"></i>
                         <div className="text-sm text-blue-800">
                           <strong>No diagnosis set.</strong> Set a working diagnosis on the Encounter tab to activate pathway-specific management recommendations and auto-populate relevant protocols.
                         </div>
@@ -23136,13 +23119,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     )}
                     {telestrokeNote.diagnosisCategory === 'ischemic' && managementSubTab === 'ich' && (
                       <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 text-sm text-blue-800 flex items-center gap-2">
-                        <i data-lucide="arrow-right" className="w-4 h-4"></i>
+                        <i aria-hidden="true" data-lucide="arrow-right" className="w-4 h-4"></i>
                         Current diagnosis is <strong>ischemic stroke</strong> — the <button onClick={() => setManagementSubTab('ischemic')} className="underline font-semibold hover:text-blue-900">Ischemic Stroke</button> tab may be more relevant.
                       </div>
                     )}
                     {telestrokeNote.diagnosisCategory === 'ich' && managementSubTab === 'ischemic' && (
                       <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-2 text-sm text-red-800 flex items-center gap-2">
-                        <i data-lucide="arrow-right" className="w-4 h-4"></i>
+                        <i aria-hidden="true" data-lucide="arrow-right" className="w-4 h-4"></i>
                         Current diagnosis is <strong>ICH</strong> — the <button onClick={() => setManagementSubTab('ich')} className="underline font-semibold hover:text-red-900">ICH Management</button> tab may be more relevant.
                       </div>
                     )}
@@ -23180,7 +23163,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             aria-label={`${tab.label} management tab`}
                             tabIndex={isActive ? 0 : -1}
                           >
-                            <i data-lucide={tab.icon} className="w-4 h-4"></i>
+                            <i aria-hidden="true" data-lucide={tab.icon} className="w-4 h-4"></i>
                             <span>{tab.label}</span>
                           </button>
                         );
@@ -23211,7 +23194,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-white border-2 border-emerald-300 rounded-xl shadow-sm">
                           <div className="p-3 font-semibold text-emerald-900 flex items-center justify-between border-b border-emerald-200">
                             <span className="flex items-center gap-2">
-                              <i data-lucide="clipboard-list" className="w-5 h-5 text-emerald-600"></i>
+                              <i aria-hidden="true" data-lucide="clipboard-list" className="w-5 h-5 text-emerald-600"></i>
                               Order Bundles — Quick Copy ({bundles.length})
                             </span>
                             <span className="text-xs text-emerald-600 font-normal">Patient-specific, copy to clipboard</span>
@@ -23221,7 +23204,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div key={b.id} className={`border rounded-lg p-3 ${colorMap[b.color] || 'bg-slate-50 border-slate-200 text-slate-900'}`}>
                                 <div className="flex items-center justify-between mb-2">
                                   <span className="font-semibold text-sm flex items-center gap-1.5">
-                                    <i data-lucide={b.icon} className="w-4 h-4"></i>
+                                    <i aria-hidden="true" data-lucide={b.icon} className="w-4 h-4"></i>
                                     {b.label}
                                   </span>
                                   <button
@@ -23231,7 +23214,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     }}
                                     className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-white rounded-lg transition-colors ${copiedText === 'bundle-' + b.id ? 'bg-emerald-600' : (btnColorMap[b.color] || 'bg-slate-600 hover:bg-slate-700')}`}
                                   >
-                                    <i data-lucide={copiedText === 'bundle-' + b.id ? 'check' : 'copy'} className="w-3 h-3"></i>
+                                    <i aria-hidden="true" data-lucide={copiedText === 'bundle-' + b.id ? 'check' : 'copy'} className="w-3 h-3"></i>
                                     {copiedText === 'bundle-' + b.id ? 'Copied!' : 'Copy'}
                                   </button>
                                 </div>
@@ -23280,7 +23263,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {/* === WARFARIN REVERSAL === */}
                           <details className="bg-white border border-red-200 rounded-xl shadow-sm">
                             <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
-                              <i data-lucide="pill" className="w-4 h-4 text-red-600"></i>
+                              <i aria-hidden="true" data-lucide="pill" className="w-4 h-4 text-red-600"></i>
                               Warfarin Reversal Guide
                             </summary>
                             <div className="p-4 space-y-3">
@@ -23328,7 +23311,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {/* === DOAC REVERSAL === */}
                           <details className="bg-white border border-red-200 rounded-xl shadow-sm">
                             <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
-                              <i data-lucide="pill" className="w-4 h-4 text-purple-600"></i>
+                              <i aria-hidden="true" data-lucide="pill" className="w-4 h-4 text-purple-600"></i>
                               DOAC Reversal Guide
                             </summary>
                             <div className="p-4 space-y-3">
@@ -23391,7 +23374,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {/* === POST-THROMBOLYTIC ICH SUSPICION === */}
                           <details className="bg-white border border-red-200 rounded-xl shadow-sm">
                             <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
-                              <i data-lucide="alert-triangle" className="w-4 h-4 text-red-600"></i>
+                              <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-red-600"></i>
                               Post-Thrombolytic ICH Suspicion Algorithm
                             </summary>
                             <div className="p-4 space-y-3">
@@ -23507,7 +23490,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {/* === ANGIOEDEMA MANAGEMENT === */}
                           <details className="bg-white border border-red-200 rounded-xl shadow-sm">
                             <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
-                              <i data-lucide="shield-alert" className="w-4 h-4 text-orange-600"></i>
+                              <i aria-hidden="true" data-lucide="shield-alert" className="w-4 h-4 text-orange-600"></i>
                               Angioedema Management
                             </summary>
                             <div className="p-4 space-y-3">
@@ -24443,7 +24426,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                           <details className="bg-white border border-blue-200 rounded-lg mb-4">
                             <summary className="p-3 text-sm font-semibold text-blue-800 cursor-pointer flex items-center gap-2">
-                              <i data-lucide="chevron-right" className="w-3.5 h-3.5"></i>
+                              <i aria-hidden="true" data-lucide="chevron-right" className="w-3.5 h-3.5"></i>
                               IV Antihypertensive Titration Protocols
                             </summary>
                             <div className="px-3 pb-3 space-y-3">
@@ -25565,7 +25548,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* CVT Header */}
                         <div className="bg-white border-l-4 border-l-indigo-500 border border-slate-200 rounded-lg p-4">
                           <h2 className="text-xl font-bold text-indigo-900 flex items-center gap-2">
-                            <i data-lucide="git-branch" className="w-6 h-6"></i>
+                            <i aria-hidden="true" data-lucide="git-branch" className="w-6 h-6"></i>
                             Cerebral Venous Thrombosis (CVT) Management
                           </h2>
                           <p className="text-sm text-slate-600 mt-1">AHA/ASA 2024 Guidelines — CSBP 2024</p>
@@ -25574,7 +25557,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* CVT Treatment Checklist */}
                         <div className="bg-white border border-indigo-200 rounded-lg p-4">
                           <h3 className="text-base font-bold text-indigo-800 mb-3 flex items-center gap-2">
-                            <i data-lucide="clipboard-check" className="w-5 h-5"></i>
+                            <i aria-hidden="true" data-lucide="clipboard-check" className="w-5 h-5"></i>
                             Acute Management Checklist
                           </h3>
                           <div className="space-y-2">
@@ -25738,7 +25721,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <details className="bg-white border border-indigo-200 rounded-lg">
                           <summary className="cursor-pointer p-4 font-semibold text-indigo-800 hover:bg-indigo-50 rounded-lg flex items-center justify-between">
                             <span>CVT in Special Populations</span>
-                            <i data-lucide="chevron-down" className="w-4 h-4"></i>
+                            <i aria-hidden="true" data-lucide="chevron-down" className="w-4 h-4"></i>
                           </summary>
                           <div className="p-4 pt-0 space-y-3 text-sm">
                             <div className="bg-pink-50 border border-pink-200 rounded-lg p-3">
@@ -25810,7 +25793,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-xl p-4 shadow-md">
                         <div className="flex items-center justify-between mb-2">
                           <h2 className="text-lg font-bold text-purple-900 flex items-center gap-2">
-                            <i data-lucide="flask-conical" className="w-5 h-5"></i> Score → Trial Implications
+                            <i aria-hidden="true" data-lucide="flask-conical" className="w-5 h-5"></i> Score → Trial Implications
                           </h2>
                           {telestrokeNote.age && (
                             <span className="text-sm text-purple-700">
@@ -25836,7 +25819,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 )}
                                 {nihssScore > 8 && (
                                   <li className="text-blue-700">
-                                    <i data-lucide="circle" className="w-3 h-3 inline text-blue-500"></i> <strong>STEP MeVO arm</strong>: Check for M2/M3 occlusion
+                                    <i aria-hidden="true" data-lucide="circle" className="w-3 h-3 inline text-blue-500"></i> <strong>STEP MeVO arm</strong>: Check for M2/M3 occlusion
                                   </li>
                                 )}
                                 {nihssScore < 4 && (
@@ -25857,7 +25840,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <ul className="space-y-1 text-xs text-slate-700">
                                   {gcs >= 5 && gcs <= 14 && (
                                     <li className="text-blue-700">
-                                      <i data-lucide="circle" className="w-3 h-3 inline text-blue-500"></i> <strong>ENRICH range</strong>: GCS 5-14 for MIE consideration
+                                      <i aria-hidden="true" data-lucide="circle" className="w-3 h-3 inline text-blue-500"></i> <strong>ENRICH range</strong>: GCS 5-14 for MIE consideration
                                     </li>
                                   )}
                                   {gcs > 14 && (
@@ -25894,7 +25877,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             onClick={() => copyToClipboard(`NIHSS: ${nihssScore}`, 'NIHSS Score')}
                             className="p-1.5 hover:bg-red-100 rounded transition-colors"
                           >
-                            <i data-lucide="copy" className="w-4 h-4 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-red-600"></i>
                           </button>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3 text-xs">
@@ -26031,7 +26014,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           aria-label="Copy GCS score to clipboard"
                           title="Copy to clipboard"
                         >
-                          <i data-lucide="copy" className="w-4 h-4 text-slate-600"></i>
+                          <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-slate-600"></i>
                         </button>
                       </div>
 
@@ -26099,7 +26082,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           aria-label="Copy ICH score to clipboard"
                           title="Copy to clipboard"
                         >
-                          <i data-lucide="copy" className="w-4 h-4 text-red-600"></i>
+                          <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-red-600"></i>
                         </button>
                       </div>
 
@@ -26421,7 +26404,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             aria-label="Copy mRS score to clipboard"
                             title="Copy to clipboard"
                           >
-                            <i data-lucide="copy" className="w-4 h-4 text-slate-600"></i>
+                            <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-slate-600"></i>
                           </button>
                         )}
                       </div>
@@ -26486,7 +26469,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           aria-label="Copy ABCD² score to clipboard"
                           title="Copy to clipboard"
                         >
-                          <i data-lucide="copy" className="w-4 h-4 text-orange-600"></i>
+                          <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-orange-600"></i>
                         </button>
                       </div>
 
@@ -26605,7 +26588,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           aria-label="Copy CHADS₂-VASc score to clipboard"
                           title="Copy to clipboard"
                         >
-                          <i data-lucide="copy" className="w-4 h-4 text-purple-600"></i>
+                          <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-purple-600"></i>
                         </button>
                       </div>
 
@@ -26723,7 +26706,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             aria-label="Copy HAS-BLED score to clipboard"
                             title="Copy to clipboard"
                           >
-                            <i data-lucide="copy" className="w-4 h-4 text-pink-600"></i>
+                            <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-pink-600"></i>
                           </button>
                         </div>
 
@@ -26839,7 +26822,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           aria-label="Copy ROPE score to clipboard"
                           title="Copy to clipboard"
                         >
-                          <i data-lucide="copy" className="w-4 h-4 text-blue-600"></i>
+                          <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-blue-600"></i>
                         </button>
                       </div>
 
@@ -26985,7 +26968,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             aria-label="Copy RCVS² score to clipboard"
                             title="Copy to clipboard"
                           >
-                            <i data-lucide="copy" className="w-4 h-4 text-blue-600"></i>
+                            <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-blue-600"></i>
                           </button>
                         </div>
 
@@ -27682,7 +27665,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-tici" style={{ order: getCalculatorOrder('tici', 18) }} className="bg-emerald-50 border border-emerald-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-emerald-800 hover:bg-emerald-100 rounded-lg flex items-center justify-between">
                         <span>mTICI Reperfusion Score (Post-EVT)</span>
-                        <i data-lucide="chevron-down" className="w-4 h-4"></i>
+                        <i aria-hidden="true" data-lucide="chevron-down" className="w-4 h-4"></i>
                       </summary>
                       <div className="p-4 space-y-2">
                         <p className="text-xs text-slate-500 mb-3">Modified Treatment in Cerebral Ischemia. Select the grade that best describes post-procedure reperfusion.</p>
@@ -27713,7 +27696,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <span className="font-bold text-sm">mTICI {grade}</span>
                                     <span className="ml-2 text-sm">{label}</span>
                                   </div>
-                                  {isSelected && <i data-lucide="check" className="w-5 h-5"></i>}
+                                  {isSelected && <i aria-hidden="true" data-lucide="check" className="w-5 h-5"></i>}
                                 </div>
                                 <p className={`text-xs mt-0.5 ${isSelected ? 'opacity-80' : 'text-slate-500'}`}>{desc}</p>
                               </button>
@@ -27739,7 +27722,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-dragon" style={{ order: getCalculatorOrder('dragon', 26) }} className="bg-purple-50 border border-purple-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-purple-800 hover:bg-purple-100 rounded-lg flex items-center justify-between">
                         <span>DRAGON Score (IVT Outcome Prediction)</span>
-                        <i data-lucide="chevron-down" className="w-4 h-4"></i>
+                        <i aria-hidden="true" data-lucide="chevron-down" className="w-4 h-4"></i>
                       </summary>
                       <div className="p-4">
                         <p className="text-xs text-slate-500 mb-3">Predicts 3-month outcome after IV thrombolysis. Auto-calculated from patient data where available.</p>
@@ -27830,14 +27813,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                           aria-label="Filter evidence documents"
                         />
-                        <i data-lucide="search" className="w-5 h-5 absolute left-3 top-2.5 text-slate-400"></i>
+                        <i aria-hidden="true" data-lucide="search" className="w-5 h-5 absolute left-3 top-2.5 text-slate-400"></i>
                         {evidenceFilter && (
                           <button
                             onClick={() => setEvidenceFilter('')}
                             className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600"
                             aria-label="Clear filter"
                           >
-                            <i data-lucide="x" className="w-5 h-5"></i>
+                            <i aria-hidden="true" data-lucide="x" className="w-5 h-5"></i>
                           </button>
                         )}
                       </div>
@@ -27857,7 +27840,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           rel="noopener noreferrer"
                           className="flex flex-1 items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
                         >
-                          <i data-lucide="external-link" className="w-5 h-5"></i>
+                          <i aria-hidden="true" data-lucide="external-link" className="w-5 h-5"></i>
                           <span>OpenEvidence</span>
                         </a>
                       </div>
@@ -27868,7 +27851,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           rel="noopener noreferrer"
                           className="flex flex-1 items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
                         >
-                          <i data-lucide="external-link" className="w-5 h-5"></i>
+                          <i aria-hidden="true" data-lucide="external-link" className="w-5 h-5"></i>
                           <span>UpToDate</span>
                         </a>
                       </div>
@@ -27879,7 +27862,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           rel="noopener noreferrer"
                           className="flex flex-1 items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
                         >
-                          <i data-lucide="external-link" className="w-5 h-5"></i>
+                          <i aria-hidden="true" data-lucide="external-link" className="w-5 h-5"></i>
                           <span>Asta (Ai2)</span>
                         </a>
                       </div>
@@ -27908,7 +27891,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* HINTS Exam Protocol */}
                     <details id="ref-hints" className="bg-white border border-violet-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-violet-800 hover:bg-violet-50 rounded-lg flex items-center gap-2">
-                        <i data-lucide="eye" className="w-4 h-4 text-violet-600"></i>
+                        <i aria-hidden="true" data-lucide="eye" className="w-4 h-4 text-violet-600"></i>
                         HINTS Exam — Acute Vestibular Syndrome
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -27943,7 +27926,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* CVT Monitoring Parameters */}
                     <details id="ref-cvt" className="bg-white border border-teal-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-teal-800 hover:bg-teal-50 rounded-lg flex items-center gap-2">
-                        <i data-lucide="activity" className="w-4 h-4 text-teal-600"></i>
+                        <i aria-hidden="true" data-lucide="activity" className="w-4 h-4 text-teal-600"></i>
                         CVT Monitoring Parameters
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -27992,7 +27975,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Neuroprognostication Framework */}
                     <details id="ref-prognosis" className="bg-white border border-rose-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-rose-800 hover:bg-rose-50 rounded-lg flex items-center gap-2">
-                        <i data-lucide="heart-pulse" className="w-4 h-4 text-rose-600"></i>
+                        <i aria-hidden="true" data-lucide="heart-pulse" className="w-4 h-4 text-rose-600"></i>
                         Neuroprognostication &amp; Goals of Care
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -28038,7 +28021,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Clinical Pearls for Trainees */}
                     <details id="ref-pearls" className="bg-white border border-indigo-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-indigo-800 hover:bg-indigo-50 rounded-lg flex items-center gap-2">
-                        <i data-lucide="lightbulb" className="w-4 h-4 text-indigo-600"></i>
+                        <i aria-hidden="true" data-lucide="lightbulb" className="w-4 h-4 text-indigo-600"></i>
                         Clinical Pearls for Trainees
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -28092,7 +28075,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Trainee Pitfalls — Common Mistakes */}
                     <details id="ref-pitfalls" className="bg-white border border-red-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-red-800 hover:bg-red-50 rounded-lg flex items-center gap-2">
-                        <i data-lucide="triangle-alert" className="w-4 h-4 text-red-600"></i>
+                        <i aria-hidden="true" data-lucide="triangle-alert" className="w-4 h-4 text-red-600"></i>
                         Common Trainee Pitfalls
                       </summary>
                       <div className="px-4 pb-4 space-y-2">
@@ -28163,7 +28146,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Imaging Follow-Up Protocols */}
                     <details id="ref-imaging" className="bg-white border border-cyan-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-cyan-800 hover:bg-cyan-50 rounded-lg flex items-center gap-2">
-                        <i data-lucide="scan" className="w-4 h-4 text-cyan-600"></i>
+                        <i aria-hidden="true" data-lucide="scan" className="w-4 h-4 text-cyan-600"></i>
                         Imaging Follow-Up Protocols by Diagnosis
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -28248,7 +28231,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Code Stroke Activation Criteria */}
                     <details id="ref-code-stroke" className="bg-white border border-red-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-red-800 hover:bg-red-50 rounded-lg flex items-center gap-2">
-                        <i data-lucide="siren" className="w-4 h-4 text-red-600"></i>
+                        <i aria-hidden="true" data-lucide="siren" className="w-4 h-4 text-red-600"></i>
                         Code Stroke Activation Criteria
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -28312,7 +28295,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Stroke Mimic DDx Tool */}
                     <details id="ref-mimics" className="bg-white border border-orange-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-orange-800 hover:bg-orange-50 rounded-lg flex items-center gap-2">
-                        <i data-lucide="shield-alert" className="w-4 h-4 text-orange-600"></i>
+                        <i aria-hidden="true" data-lucide="shield-alert" className="w-4 h-4 text-orange-600"></i>
                         Stroke Mimic Differential Diagnosis
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -28353,7 +28336,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Spinal Cord Stroke */}
                     <details id="ref-spinalcord" className="bg-white border border-violet-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-violet-800 hover:bg-violet-50 rounded-lg flex items-center gap-2">
-                        <i data-lucide="activity" className="w-4 h-4 text-violet-600"></i>
+                        <i aria-hidden="true" data-lucide="activity" className="w-4 h-4 text-violet-600"></i>
                         Spinal Cord Stroke
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -28389,7 +28372,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* CTP Interpretation Guide */}
                     <details id="ref-ctp" className="bg-white border border-cyan-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-cyan-800 hover:bg-cyan-50 rounded-lg flex items-center gap-2">
-                        <i data-lucide="scan" className="w-4 h-4 text-cyan-600"></i>
+                        <i aria-hidden="true" data-lucide="scan" className="w-4 h-4 text-cyan-600"></i>
                         CT Perfusion (CTP) Interpretation Guide
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -28451,7 +28434,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Stroke Chameleons — True Strokes Mimicking Non-Stroke Diagnoses */}
                     <details id="ref-chameleons" className="bg-white border border-red-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-red-800 hover:bg-red-50 rounded-lg flex items-center gap-2">
-                        <i data-lucide="eye-off" className="w-4 h-4 text-red-600"></i>
+                        <i aria-hidden="true" data-lucide="eye-off" className="w-4 h-4 text-red-600"></i>
                         Stroke Chameleons — Missed Stroke Presentations
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -28487,7 +28470,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Admission Order Checklists */}
                     <details id="ref-orders" className="bg-white border border-emerald-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-emerald-800 hover:bg-emerald-50 rounded-lg flex items-center gap-2">
-                        <i data-lucide="clipboard-list" className="w-4 h-4 text-emerald-600"></i>
+                        <i aria-hidden="true" data-lucide="clipboard-list" className="w-4 h-4 text-emerald-600"></i>
                         Admission Order Checklists
                       </summary>
                       <div className="px-4 pb-4 space-y-4">
@@ -28685,7 +28668,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             aria-label="Search guideline recommendations"
                           />
-                          <i data-lucide="search" className="w-4 h-4 absolute left-3 top-2.5 text-slate-400"></i>
+                          <i aria-hidden="true" data-lucide="search" className="w-4 h-4 absolute left-3 top-2.5 text-slate-400"></i>
                         </div>
                         <select
                           value={guidelineLibraryGuideline}
@@ -28770,13 +28753,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                   <div className="flex flex-wrap items-center gap-2 mt-1 text-xs">
                                                     {rec.sourceUrl && (
                                                       <a href={rec.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-indigo-600 hover:text-indigo-800 font-medium">
-                                                        <i data-lucide="external-link" className="w-3 h-3"></i>
+                                                        <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
                                                         <span>Publisher</span>
                                                       </a>
                                                     )}
                                                     {rec.pdfSourceUrl && (
                                                       <a href={rec.pdfSourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-indigo-600 hover:text-indigo-800 font-medium">
-                                                        <i data-lucide="external-link" className="w-3 h-3"></i>
+                                                        <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
                                                         <span>PDF p.{rec.page}</span>
                                                       </a>
                                                     )}
@@ -28816,13 +28799,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details className="bg-white border border-slate-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg">
                         <span>Aneurysms & Vascular Malformations</span>
-                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
                       </summary>
                       <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - Unruptured Cerebral Aneurysms */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">Unruptured Cerebral Aneurysms</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
@@ -28835,7 +28818,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -28843,7 +28826,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -28851,7 +28834,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -28865,13 +28848,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details className="bg-white border border-slate-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg">
                         <span>Antiplatelet Therapy</span>
-                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
                       </summary>
                       <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - DAPT Minor Stroke-TIA Trials */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">DAPT Minor Stroke-TIA Trials</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
@@ -28884,7 +28867,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -28892,7 +28875,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -28900,7 +28883,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -28908,7 +28891,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Document 2 - DAPT After Ischemic Stroke-TIA */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="image" className="w-6 h-6 text-emerald-600"></i>
+                            <i aria-hidden="true" data-lucide="image" className="w-6 h-6 text-emerald-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">DAPT After Ischemic Stroke-TIA</h4>
                               <p className="text-xs text-slate-500">Infographic - Match Patient to Trial</p>
@@ -28921,7 +28904,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -28929,7 +28912,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -28937,7 +28920,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -28951,13 +28934,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details className="bg-white border border-slate-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg">
                         <span>Cerebral Small Vessel Disease</span>
-                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
                       </summary>
                       <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - Lacunar Stroke */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">Lacunar Stroke</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
@@ -28970,7 +28953,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -28978,7 +28961,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -28986,7 +28969,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -29000,13 +28983,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details className="bg-white border border-slate-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg">
                         <span>Critical Appraisal</span>
-                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
                       </summary>
                       <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - Interpretation of Clinical Trials */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">Interpretation of Clinical Trials</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
@@ -29019,7 +29002,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -29027,7 +29010,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -29035,7 +29018,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -29043,7 +29026,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* External Link - CEBM Oxford Resources */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="external-link" className="w-6 h-6 text-blue-600"></i>
+                            <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-blue-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">CEBM Oxford Resources</h4>
                               <p className="text-xs text-slate-500">Centre for Evidence-Based Medicine - University of Oxford</p>
@@ -29056,7 +29039,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="external-link" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
                               Visit
                             </a>
                           </div>
@@ -29070,13 +29053,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details className="bg-white border border-slate-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg">
                         <span>Endovascular Therapy</span>
-                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
                       </summary>
                       <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - Large Core Anterior Circulation LVO EVT Trials */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">Large Core Anterior Circulation LVO EVT Trials</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
@@ -29089,7 +29072,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -29097,7 +29080,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -29105,7 +29088,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -29114,7 +29097,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Document 2 - Basilar Artery Occlusion EVT Trials */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">Basilar Artery Occlusion EVT Trials</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
@@ -29127,7 +29110,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -29135,7 +29118,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -29143,7 +29126,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -29152,7 +29135,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Document 3 - MeVO & Distal Vessel Occlusion EVT Trials */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">MeVO & Distal Vessel Occlusion EVT Trials</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
@@ -29165,7 +29148,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -29173,7 +29156,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -29181,7 +29164,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -29195,7 +29178,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details className="bg-white border border-slate-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg">
                         <span>Risk Factors</span>
-                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
                       </summary>
                       <div className="space-y-4 p-4 pt-0">
 
@@ -29206,7 +29189,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* Document 1 - Timing of Anticoagulation after AF-Related Stroke */}
                             <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                               <div className="flex items-center gap-3 flex-1">
-                                <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                                <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                                 <div className="flex-1">
                                   <h5 className="text-sm font-medium text-slate-900">Timing of Anticoagulation after AF-Related Stroke</h5>
                                   <p className="text-xs text-slate-500">PDF Document</p>
@@ -29219,7 +29202,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   rel="noopener noreferrer"
                                   className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                                 >
-                                  <i data-lucide="eye" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                                   View
                                 </a>
                                 <a
@@ -29227,7 +29210,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   download
                                   className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                                 >
-                                  <i data-lucide="download" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                                   Download
                                 </a>
                                 <button
@@ -29235,7 +29218,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                                   title="Email this document"
                                 >
-                                  <i data-lucide="mail" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                                   Email
                                 </button>
                               </div>
@@ -29244,7 +29227,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* Document 2 - Atrial Fibrillation & Secondary Stroke Prevention */}
                             <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                               <div className="flex items-center gap-3 flex-1">
-                                <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                                <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                                 <div className="flex-1">
                                   <h5 className="text-sm font-medium text-slate-900">Atrial Fibrillation & Secondary Stroke Prevention</h5>
                                   <p className="text-xs text-slate-500">PDF Document</p>
@@ -29257,7 +29240,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   rel="noopener noreferrer"
                                   className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                                 >
-                                  <i data-lucide="eye" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                                   View
                                 </a>
                                 <a
@@ -29265,7 +29248,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   download
                                   className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                                 >
-                                  <i data-lucide="download" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                                   Download
                                 </a>
                                 <button
@@ -29273,7 +29256,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                                   title="Email this document"
                                 >
-                                  <i data-lucide="mail" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                                   Email
                                 </button>
                               </div>
@@ -29282,7 +29265,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* Document 3 - 2023 AHA AFib Guidelines */}
                             <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                               <div className="flex items-center gap-3 flex-1">
-                                <i data-lucide="external-link" className="w-6 h-6 text-purple-600"></i>
+                                <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-purple-600"></i>
                                 <div className="flex-1">
                                   <h5 className="text-sm font-medium text-slate-900">2023 AHA AFib Guidelines</h5>
                                   <p className="text-xs text-slate-500">External Link - AHA Journals</p>
@@ -29295,7 +29278,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   rel="noopener noreferrer"
                                   className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
                                 >
-                                  <i data-lucide="external-link" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
                                   Open Link
                                 </a>
                               </div>
@@ -29304,7 +29287,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* Document 4 - 2024 ESC AFib Guidelines */}
                             <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                               <div className="flex items-center gap-3 flex-1">
-                                <i data-lucide="external-link" className="w-6 h-6 text-purple-600"></i>
+                                <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-purple-600"></i>
                                 <div className="flex-1">
                                   <h5 className="text-sm font-medium text-slate-900">2024 ESC AFib Guidelines</h5>
                                   <p className="text-xs text-slate-500">External Link - European Heart Journal</p>
@@ -29317,7 +29300,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   rel="noopener noreferrer"
                                   className="px-3 py-2 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors flex items-center gap-1"
                                 >
-                                  <i data-lucide="external-link" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
                                   Open Link
                                 </a>
                               </div>
@@ -29326,7 +29309,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* Document 5 - AFib Stroke EPI519 */}
                             <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                               <div className="flex items-center gap-3 flex-1">
-                                <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                                <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                                 <div className="flex-1">
                                   <h5 className="text-sm font-medium text-slate-900">AFib Stroke EPI519</h5>
                                   <p className="text-xs text-slate-500">PDF Document</p>
@@ -29339,7 +29322,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   rel="noopener noreferrer"
                                   className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                                 >
-                                  <i data-lucide="eye" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                                   View
                                 </a>
                                 <a
@@ -29347,7 +29330,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   download
                                   className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                                 >
-                                  <i data-lucide="download" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                                   Download
                                 </a>
                                 <button
@@ -29355,7 +29338,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                                   title="Email this document"
                                 >
-                                  <i data-lucide="mail" className="w-4 h-4"></i>
+                                  <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                                   Email
                                 </button>
                               </div>
@@ -29366,7 +29349,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Diabetes and stroke */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">Diabetes and stroke</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
@@ -29379,7 +29362,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -29387,7 +29370,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -29395,7 +29378,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -29404,7 +29387,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Lipids and Cerebrovascular Disease */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">Lipids and Cerebrovascular Disease</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
@@ -29417,7 +29400,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -29425,7 +29408,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -29433,7 +29416,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -29447,13 +29430,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details className="bg-white border border-slate-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg">
                         <span>Thrombolytic Therapy</span>
-                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
                       </summary>
                       <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - Thrombolytic Therapy AIS 4.5-24h RCTs */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">Thrombolytic Therapy AIS 4.5-24h RCTs</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
@@ -29466,7 +29449,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -29474,7 +29457,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -29482,7 +29465,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -29491,7 +29474,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Document 2 - WAKE-UP Trial */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="external-link" className="w-6 h-6 text-blue-600"></i>
+                            <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-blue-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">WAKE-UP Trial</h4>
                               <p className="text-xs text-slate-500">External Link - New England Journal of Medicine</p>
@@ -29504,7 +29487,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="external-link" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
                               Open Link
                             </a>
                           </div>
@@ -29518,13 +29501,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details className="bg-white border border-slate-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg">
                         <span>Exam</span>
-                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
                       </summary>
                       <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - Differentiating Delirium from Aphasia */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">Differentiating Acute Confusional State (Delirium) from Aphasia</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
@@ -29537,7 +29520,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -29545,7 +29528,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -29553,7 +29536,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -29562,7 +29545,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Document 2 - Coma Exam */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">Coma Exam</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
@@ -29575,7 +29558,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -29583,7 +29566,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -29591,7 +29574,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -29605,13 +29588,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details className="bg-white border border-slate-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg">
                         <span>Large Artery Disease</span>
-                        <i data-lucide="chevron-down" className="w-5 h-5"></i>
+                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
                       </summary>
                       <div className="space-y-3 p-4 pt-0">
                         {/* Document 1 - Symptomatic Cervical Carotid Artery Stenosis */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">Symptomatic Cervical Carotid Artery Stenosis</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
@@ -29624,7 +29607,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -29632,7 +29615,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -29640,7 +29623,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -29648,7 +29631,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Document 2 - CREST-2 Trial */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">CREST-2 Trial (December 2025)</h4>
                               <p className="text-xs text-slate-500">PDF Document</p>
@@ -29661,7 +29644,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="eye" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
                             </a>
                             <a
@@ -29669,7 +29652,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               download
                               className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
-                              <i data-lucide="download" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
@@ -29677,7 +29660,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
-                              <i data-lucide="mail" className="w-4 h-4"></i>
+                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
                               Email
                             </button>
                           </div>
@@ -29706,7 +29689,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                         <div>
                           <h2 className="text-3xl font-bold flex items-center gap-3">
-                            <i data-lucide="flask-conical" className="w-7 h-7"></i> Clinical Trials
+                            <i aria-hidden="true" data-lucide="flask-conical" className="w-7 h-7"></i> Clinical Trials
                           </h2>
                           <p className="text-blue-100 mt-1">Reference for active clinical trials</p>
                         </div>
@@ -29722,7 +29705,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           ? 'bg-blue-50 border-blue-300 text-blue-800'
                           : 'bg-red-50 border-red-300 text-red-800'
                       }`}>
-                        <i data-lucide="target" className="w-5 h-5"></i>
+                        <i aria-hidden="true" data-lucide="target" className="w-5 h-5"></i>
                         <div>
                           <span className="font-semibold">
                             Patient Diagnosis: {telestrokeNote.diagnosisCategory === 'ischemic' ? 'Suspected Ischemic Stroke' : 'ICH'}
@@ -29791,7 +29774,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           >
                             {isRecommended && (
                               <span className="absolute -top-2 -right-1 text-xs bg-amber-400 text-amber-900 px-1.5 py-0.5 rounded-full font-bold">
-                                <i data-lucide="star" className="w-3 h-3 inline"></i>
+                                <i aria-hidden="true" data-lucide="star" className="w-3 h-3 inline"></i>
                               </span>
                             )}
                             {getCategoryName(category)} ({trialCount})
@@ -29804,7 +29787,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {(telestrokeNote.age || nihssScore > 0) && (
                       <div className="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-xl p-4">
                         <h3 className="text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
-                          <i data-lucide="user-check" className="w-4 h-4 text-blue-600"></i>
+                          <i aria-hidden="true" data-lucide="user-check" className="w-4 h-4 text-blue-600"></i>
                           Patient-Specific Trial Relevance
                         </h3>
                         <div className="flex flex-wrap gap-2 text-xs">
@@ -29816,25 +29799,25 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                           {nihssScore >= 4 && trialsCategory === 'ischemic' && (
                             <div className="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 rounded-lg px-2 py-1.5">
-                              <i data-lucide="check-circle" className="w-3.5 h-3.5"></i>
+                              <i aria-hidden="true" data-lucide="check-circle" className="w-3.5 h-3.5"></i>
                               <span><strong>SISTER:</strong> NIHSS {'\u2265'}4 threshold met{nihssScore <= 5 ? ' (requires disabling deficit)' : ''}</span>
                             </div>
                           )}
                           {nihssScore > 0 && nihssScore <= 5 && trialsCategory === 'ischemic' && (
                             <div className="flex items-center gap-1.5 text-amber-700 bg-amber-50 rounded-lg px-2 py-1.5">
-                              <i data-lucide="alert-circle" className="w-3.5 h-3.5"></i>
+                              <i aria-hidden="true" data-lucide="alert-circle" className="w-3.5 h-3.5"></i>
                               <span><strong>STEP mild arm:</strong> Check for LVO</span>
                             </div>
                           )}
                           {(() => { const gcs = calculateGCS(gcsItems); return gcs >= 5 && gcs <= 14 && trialsCategory === 'ich' ? (
                             <div className="flex items-center gap-1.5 text-blue-700 bg-blue-50 rounded-lg px-2 py-1.5">
-                              <i data-lucide="check-circle" className="w-3.5 h-3.5"></i>
+                              <i aria-hidden="true" data-lucide="check-circle" className="w-3.5 h-3.5"></i>
                               <span><strong>ENRICH:</strong> GCS 5-14 range met</span>
                             </div>
                           ) : null; })()}
                           {telestrokeNote.age && parseInt(telestrokeNote.age, 10) >= 18 && parseInt(telestrokeNote.age, 10) <= 85 && (
                             <div className="flex items-center gap-1.5 text-slate-600 bg-slate-50 rounded-lg px-2 py-1.5">
-                              <i data-lucide="info" className="w-3.5 h-3.5"></i>
+                              <i aria-hidden="true" data-lucide="info" className="w-3.5 h-3.5"></i>
                               <span>Age within most trial ranges (18-85)</span>
                             </div>
                           )}
@@ -29889,7 +29872,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 className="fixed left-4 fab-offset z-50 flex items-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors no-print"
                 title="Copy consult note to clipboard"
               >
-                <i data-lucide="clipboard-copy" className="w-4 h-4"></i>
+                <i aria-hidden="true" data-lucide="clipboard-copy" className="w-4 h-4"></i>
                 <span className="text-sm font-medium hidden sm:inline">Copy Note</span>
               </button>
             )}
@@ -29904,7 +29887,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 <div className="absolute bottom-16 right-0 w-72 max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-2xl border-2 border-red-300 overflow-hidden animate-fadeIn">
                   <div className="bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-2 font-bold flex items-center justify-between">
                     <span className="flex items-center gap-2">
-                      <i data-lucide="phone-call" className="w-4 h-4"></i>
+                      <i aria-hidden="true" data-lucide="phone-call" className="w-4 h-4"></i>
                       Quick Contacts
                     </span>
                     <button
@@ -29912,13 +29895,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       className="hover:bg-red-700 rounded p-1 transition-colors"
                       aria-label="Close contacts"
                     >
-                      <i data-lucide="x" className="w-4 h-4"></i>
+                      <i aria-hidden="true" data-lucide="x" className="w-4 h-4"></i>
                     </button>
                   </div>
                   <div className="divide-y divide-slate-100">
                     {quickContacts.length === 0 && (
                       <div className="px-4 py-6 text-center text-sm text-slate-500">
-                        <i data-lucide="users" className="w-6 h-6 mx-auto mb-2 text-slate-400"></i>
+                        <i aria-hidden="true" data-lucide="users" className="w-6 h-6 mx-auto mb-2 text-slate-400"></i>
                         <p>No contacts configured</p>
                         <p className="text-xs mt-1">Add contacts in Settings &rarr; Contact Directory</p>
                       </div>
@@ -29935,7 +29918,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           onClick={() => setFabExpanded(false)}
                         >
                           <div className="bg-red-100 rounded-full p-2">
-                            <i data-lucide="phone" className="w-5 h-5 text-red-600"></i>
+                            <i aria-hidden="true" data-lucide="phone" className="w-5 h-5 text-red-600"></i>
                           </div>
                           <div>
                             <div className="font-semibold text-slate-900 text-sm">{contact.label || 'Contact'}</div>
@@ -29944,7 +29927,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {contact.note ? ` (${contact.note})` : ''}
                             </div>
                           </div>
-                          <i data-lucide="external-link" className="w-4 h-4 text-slate-400 ml-auto"></i>
+                          <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4 text-slate-400 ml-auto"></i>
                         </a>
                       );
                     })}
@@ -29963,7 +29946,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 aria-expanded={fabExpanded}
                 title="Emergency Contacts"
               >
-                <i data-lucide="phone" className="w-6 h-6 text-white"></i>
+                <i aria-hidden="true" data-lucide="phone" className="w-6 h-6 text-white"></i>
               </button>
 
               {/* Tooltip when collapsed */}
@@ -29981,12 +29964,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 <div className="fixed inset-x-0 bottom-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-50 w-full sm:w-[32rem] sm:max-h-[85vh] bg-white sm:rounded-2xl rounded-t-2xl shadow-2xl overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="calc-drawer-title">
                   <div className="sticky top-0 bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between z-10">
                     <h2 id="calc-drawer-title" className="text-base font-semibold text-slate-900 flex items-center gap-2">
-                      <i data-lucide="calculator" className="w-4 h-4 text-blue-600"></i>
+                      <i aria-hidden="true" data-lucide="calculator" className="w-4 h-4 text-blue-600"></i>
                       Calculators
                       <kbd className="text-xs text-slate-500 font-mono ml-2">Ctrl+Shift+K</kbd>
                     </h2>
                     <button onClick={() => setCalcDrawerOpen(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close">
-                      <i data-lucide="x" className="w-5 h-5 text-slate-500"></i>
+                      <i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i>
                     </button>
                   </div>
 
@@ -30039,7 +30022,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       ].map(c => (
                         <button key={c.label} onClick={c.action} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 text-left">
                           <div><div className="font-medium text-sm text-slate-900">{c.label}</div><div className="text-xs text-slate-500">{c.desc}</div></div>
-                          <i data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-400"></i>
+                          <i aria-hidden="true" data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-400"></i>
                         </button>
                       ))}
                     </div>
@@ -30054,7 +30037,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       ].map(c => (
                         <button key={c.label} onClick={() => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 text-left">
                           <div><div className="font-medium text-sm text-slate-900">{c.label}</div><div className="text-xs text-slate-500">{c.desc}</div></div>
-                          <i data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-400"></i>
+                          <i aria-hidden="true" data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-400"></i>
                         </button>
                       ))}
                     </div>
@@ -30066,7 +30049,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       ].map(c => (
                         <button key={c.label} onClick={() => { setCalcDrawerOpen(false); navigateTo('management', { subTab: 'calculators' }); }} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 text-left">
                           <div><div className="font-medium text-sm text-slate-900">{c.label}</div><div className="text-xs text-slate-500">{c.desc}</div></div>
-                          <i data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-400"></i>
+                          <i aria-hidden="true" data-lucide="chevron-right" className="w-3.5 h-3.5 text-slate-400"></i>
                         </button>
                       ))}
                     </div>
@@ -30082,7 +30065,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 <div role="dialog" aria-modal="true" aria-labelledby="changelog-title" className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[28rem] max-h-[70vh] bg-white rounded-2xl shadow-2xl overflow-y-auto">
                   <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between z-10">
                     <h2 id="changelog-title" className="text-base font-bold text-slate-900">What's New</h2>
-                    <button onClick={() => setShowChangelog(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close changelog"><i data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
+                    <button onClick={() => setShowChangelog(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close changelog"><i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
                   </div>
                   <div className="p-4 space-y-4">
                     {CHANGELOG.map((release) => (
@@ -30113,7 +30096,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 <div role="dialog" aria-modal="true" aria-labelledby="keyboard-help-title" className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[24rem] bg-white rounded-2xl shadow-2xl overflow-hidden">
                   <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between">
                     <h2 id="keyboard-help-title" className="text-base font-bold text-slate-900">Keyboard Shortcuts</h2>
-                    <button onClick={() => setShowKeyboardHelp(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close keyboard shortcuts"><i data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
+                    <button onClick={() => setShowKeyboardHelp(false)} className="p-2 hover:bg-slate-100 rounded-lg" aria-label="Close keyboard shortcuts"><i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
                   </div>
                   <div className="p-4 space-y-3">
                     {[
