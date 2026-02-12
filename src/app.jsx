@@ -217,7 +217,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
             className: `pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-xl shadow-lg border text-sm font-medium transition-all animate-toast-in ${
               t.type === 'success' ? 'bg-emerald-600 text-white border-emerald-700' :
               t.type === 'error' ? 'bg-red-600 text-white border-red-700' :
-              t.type === 'warning' ? 'bg-amber-500 text-white border-amber-600' :
+              t.type === 'warning' ? 'bg-amber-600 text-white border-amber-700' :
               'bg-slate-800 text-white border-slate-700'
             }`,
             role: 'status'
@@ -1573,6 +1573,7 @@ Clinician Name`;
           const [searchResults, setSearchResults] = useState([]);
           const [searchOpen, setSearchOpen] = useState(false);
           const [searchContext, setSearchContext] = useState('header');
+          const [searchActiveIndex, setSearchActiveIndex] = useState(-1);
           const [evidenceFilter, setEvidenceFilter] = useState('');
           const [guidelineLibraryQuery, setGuidelineLibraryQuery] = useState('');
           const [guidelineLibraryGuideline, setGuidelineLibraryGuideline] = useState('');
@@ -8356,7 +8357,9 @@ Clinician Name`;
               note += `Imaging:\n`;
               note += `- CT Head: ${telestrokeNote.ctResults || '___'}`;
               if (aspectsScore != null && aspectsScore < 10) note += ` (ASPECTS ${aspectsScore}/10)`;
-              const pcAspectsVal = calculatePCAspects(pcAspectsRegions);
+              const pcAspectsArr = calculatePCAspects(pcAspectsRegions);
+              const pcAspectsObj = (() => { const r = telestrokeNote.pcAspectsRegions || {}; return 10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0)); })();
+              const pcAspectsVal = pcAspectsArr < 10 ? pcAspectsArr : pcAspectsObj;
               if (pcAspectsVal >= 0 && pcAspectsVal < 10) note += ` (PC-ASPECTS ${pcAspectsVal}/10)`;
               if (telestrokeNote.earlyInfarctSigns) note += ` — early infarct signs present`;
               if (telestrokeNote.denseArterySign) note += ` — hyperdense artery sign`;
@@ -8743,7 +8746,9 @@ Clinician Name`;
               const signoutVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
               if (signoutVessels.length > 0) imagingLine += ` (${signoutVessels.join(', ')})`;
               if (aspectsScore != null) imagingLine += ` | ASPECTS ${aspectsScore}/10`;
-              const soPcAspects = calculatePCAspects(pcAspectsRegions);
+              const soPcAspectsArr = calculatePCAspects(pcAspectsRegions);
+              const soPcAspectsObj = (() => { const r = telestrokeNote.pcAspectsRegions || {}; return 10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0)); })();
+              const soPcAspects = soPcAspectsArr < 10 ? soPcAspectsArr : soPcAspectsObj;
               if (soPcAspects >= 0 && soPcAspects < 10) imagingLine += ` | PC-ASPECTS ${soPcAspects}/10`;
               note += imagingLine + '\n';
               {
@@ -10998,6 +11003,19 @@ Clinician Name`;
               warnings.push({ id: 'tnk-active-bleeding', severity: 'error', msg: 'TNK recommended but active internal bleeding documented in contraindication checklist — this is an ABSOLUTE contraindication to thrombolysis.' });
             }
 
+            // TNK + recent major surgery or head trauma
+            if (n.tnkRecommended && (n.tnkContraindicationChecklist?.recentIntracranialSurgery || n.tnkContraindicationChecklist?.recentMajorSurgery)) {
+              const surgTypes = [];
+              if (n.tnkContraindicationChecklist.recentIntracranialSurgery) surgTypes.push('intracranial/intraspinal');
+              if (n.tnkContraindicationChecklist.recentMajorSurgery) surgTypes.push('major extracranial');
+              warnings.push({ id: 'tnk-recent-surgery', severity: 'error', msg: `TNK recommended but recent ${surgTypes.join(' & ')} surgery documented — relative contraindication within 14 days–3 months. Verify timing and clinical justification.` });
+            }
+
+            // EVT recommended but ASPECTS < 6 — outside standard eligibility
+            if (n.evtRecommended && aspectsScore != null && aspectsScore < 6) {
+              warnings.push({ id: 'evt-low-aspects', severity: 'error', msg: `EVT recommended but ASPECTS ${aspectsScore} (<6) — outside standard eligibility criteria (HERMES, MR CLEAN). Consider SELECT2/ANGEL-ASPECT criteria (ASPECTS 3-5 for mRS 0-1 patients with anterior LVO). Document rationale.` });
+            }
+
             // EVT recommended but no recanalization result documented
             if (n.evtRecommended && !n.ticiScore) {
               warnings.push({ id: 'evt-no-tici', severity: 'warn', msg: 'EVT recommended but recanalization result (mTICI score) not documented — document post-procedure outcome.' });
@@ -12784,9 +12802,13 @@ Clinician Name`;
             return () => window.removeEventListener('storage', handleStorageChange);
           }, []);
 
-          // Perform search when query changes
+          // Perform search when query changes (debounced)
           useEffect(() => {
-            performSearch(searchQuery);
+            const timer = setTimeout(() => {
+              performSearch(searchQuery);
+              setSearchActiveIndex(-1);
+            }, 200);
+            return () => clearTimeout(timer);
           }, [searchQuery]);
 
           // De-ID warning scan for free-text inputs
@@ -13450,42 +13472,72 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           setSearchOpen(true);
                           setSearchContext('header');
                         }}
+                        onKeyDown={(e) => {
+                          if (!searchOpen || !searchResults.length) return;
+                          const total = searchResults.length;
+                          if (e.key === 'ArrowDown') {
+                            e.preventDefault();
+                            setSearchActiveIndex(prev => (prev + 1) % total);
+                          } else if (e.key === 'ArrowUp') {
+                            e.preventDefault();
+                            setSearchActiveIndex(prev => (prev <= 0 ? total - 1 : prev - 1));
+                          } else if (e.key === 'Enter' && searchActiveIndex >= 0 && searchActiveIndex < total) {
+                            e.preventDefault();
+                            searchResults[searchActiveIndex].action();
+                            setSearchOpen(false);
+                            setSearchQuery('');
+                          }
+                        }}
+                        role="combobox"
+                        aria-expanded={searchOpen && searchResults.length > 0}
+                        aria-controls="search-listbox"
+                        aria-activedescendant={searchActiveIndex >= 0 ? `search-opt-${searchActiveIndex}` : undefined}
                         className="pl-8 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-48 md:w-64"
                         aria-label="Search trials, management tools, and references"
                       />
                       <i aria-hidden="true" data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-slate-400"></i>
 
                       {searchOpen && searchContext === 'header' && searchResults.length > 0 && (
-                        <div role="listbox" aria-label="Search results" className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white shadow-lg rounded-lg border max-h-96 overflow-y-auto z-50">
-                          {Object.entries(searchResults.reduce((acc, result) => {
-                            const key = result.type || 'Results';
-                            if (!acc[key]) acc[key] = [];
-                            acc[key].push(result);
-                            return acc;
-                          }, {})).map(([group, items]) => (
-                            <div key={group} role="group" aria-label={group}>
-                              <div className="px-3 py-1 text-[11px] uppercase tracking-wider text-slate-500 bg-slate-50 border-b" role="presentation">
-                                {group}
+                        <div id="search-listbox" role="listbox" aria-label="Search results" className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white shadow-lg rounded-lg border max-h-96 overflow-y-auto z-50">
+                          {(() => {
+                            let flatIdx = 0;
+                            return Object.entries(searchResults.reduce((acc, result) => {
+                              const key = result.type || 'Results';
+                              if (!acc[key]) acc[key] = [];
+                              acc[key].push(result);
+                              return acc;
+                            }, {})).map(([group, items]) => (
+                              <div key={group} role="group" aria-label={group}>
+                                <div className="px-3 py-1 text-[11px] uppercase tracking-wider text-slate-500 bg-slate-50 border-b" role="presentation">
+                                  {group}
+                                </div>
+                                {items.map((result) => {
+                                  const idx = flatIdx++;
+                                  const isActive = idx === searchActiveIndex;
+                                  return (
+                                    <button
+                                      role="option"
+                                      id={`search-opt-${idx}`}
+                                      key={`search-${idx}`}
+                                      aria-selected={isActive}
+                                      onClick={() => { result.action(); setSearchOpen(false); setSearchQuery(''); }}
+                                      onMouseEnter={() => setSearchActiveIndex(idx)}
+                                      className={`w-full text-left p-3 border-b transition-colors ${isActive ? 'bg-blue-100' : 'hover:bg-blue-50'}`}
+                                    >
+                                      <div className="flex items-start justify-between">
+                                        <div className="flex-1">
+                                          <p className="font-semibold text-sm">{result.title}</p>
+                                          {result.description && (
+                                            <p className="text-xs text-slate-600 mt-1">{result.description}</p>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </button>
+                                  );
+                                })}
                               </div>
-                              {items.map((result, index) => (
-                                <button
-                                  role="option"
-                                  key={`${group}-${index}`}
-                                  onClick={result.action}
-                                  className="w-full text-left p-3 hover:bg-blue-50 border-b transition-colors"
-                                >
-                                  <div className="flex items-start justify-between">
-                                    <div className="flex-1">
-                                      <p className="font-semibold text-sm">{result.title}</p>
-                                      {result.description && (
-                                        <p className="text-xs text-slate-600 mt-1">{result.description}</p>
-                                      )}
-                                    </div>
-                                  </div>
-                                </button>
-                              ))}
-                            </div>
-                          ))}
+                            ));
+                          })()}
                         </div>
                       )}
                     </div>
@@ -13521,7 +13573,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </button>
                         {settingsMenuOpen && (
                           <>
-                            <div className="fixed inset-0 z-50" onClick={() => setSettingsMenuOpen(false)} onKeyDown={(e) => e.key === 'Escape' && setSettingsMenuOpen(false)} role="presentation" aria-hidden="true"></div>
+                            <div className="fixed inset-0 z-50" onClick={() => setSettingsMenuOpen(false)} role="presentation" aria-hidden="true"></div>
                             <div id="settings-menu" role="menu" aria-labelledby="settings-menu-trigger" className="absolute right-0 top-12 w-56 max-w-[calc(100vw-2rem)] bg-white border border-slate-200 rounded-xl shadow-lg z-50 py-1 overflow-hidden">
                               {showDocumentActions && (
                                 <button
@@ -17432,11 +17484,45 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         } else if (newCategory === 'mimic') {
                                           newDiagnosis = 'Stroke mimic';
                                         }
-                                        setTelestrokeNote(prev => ({
-                                          ...prev,
-                                          diagnosisCategory: newCategory,
-                                          diagnosis: newDiagnosis
-                                        }));
+                                        setTelestrokeNote(prev => {
+                                          const updated = {
+                                            ...prev,
+                                            diagnosisCategory: newCategory,
+                                            diagnosis: newDiagnosis
+                                          };
+                                          // Clear stale treatment flags when diagnosis category changes
+                                          if (newCategory !== prev.diagnosisCategory) {
+                                            if (newCategory !== 'ischemic') {
+                                              updated.tnkRecommended = false;
+                                              updated.evtRecommended = false;
+                                            }
+                                            if (newCategory !== 'ich') {
+                                              updated.ichReversalInitiated = false;
+                                              updated.ichBPManaged = false;
+                                              updated.ichNeurosurgeryConsulted = false;
+                                              updated.ichSeizureProphylaxis = false;
+                                            }
+                                            if (newCategory !== 'sah') {
+                                              updated.sahGrade = '';
+                                              updated.sahGradeScale = '';
+                                              updated.sahBPManaged = false;
+                                              updated.sahNimodipine = false;
+                                              updated.sahEVDPlaced = false;
+                                              updated.sahAneurysmSecured = false;
+                                              updated.sahNeurosurgeryConsulted = false;
+                                              updated.sahSeizureProphylaxis = false;
+                                              updated.fisherGrade = '';
+                                            }
+                                            if (newCategory !== 'cvt') {
+                                              updated.cvtAnticoagStarted = false;
+                                              updated.cvtAnticoagType = '';
+                                              updated.cvtIcpManaged = false;
+                                              updated.cvtSeizureManaged = false;
+                                              updated.cvtHematologyConsulted = false;
+                                            }
+                                          }
+                                          return updated;
+                                        });
                                       }}
                                       className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border-2 ${
                                         isSelected
@@ -20202,6 +20288,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                               onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, hemorrhagicTransformation: {...(prev.hemorrhagicTransformation || {}), reimagingPlanned: c}})); }} />
                                             <span className="text-xs">Repeat imaging planned</span>
                                           </label>
+                                          <label className="block text-xs font-medium mt-2">Management Actions:</label>
+                                          <textarea
+                                            value={(telestrokeNote.hemorrhagicTransformation || {}).managementActions || ''}
+                                            onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, hemorrhagicTransformation: {...(prev.hemorrhagicTransformation || {}), managementActions: v}})); }}
+                                            placeholder="e.g., Cryoprecipitate 10U, TXA 1g IV, neurosurgery consulted..."
+                                            className="w-full px-2 py-1 border border-slate-300 rounded text-xs h-16"
+                                            aria-label="Hemorrhagic transformation management actions"
+                                          />
                                         </div>
                                       )}
                                     </div>
