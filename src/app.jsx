@@ -10820,11 +10820,24 @@ Clinician Name`;
             if (hasLVO && n.evtRecommended === false && n.diagnosisCategory === 'ischemic') {
               warnings.push({ id: 'lvo-no-evt', severity: 'warn', msg: 'LVO detected but EVT not recommended — document reason (e.g., late window without perfusion imaging, patient/family declined, contraindication).' });
             }
-            // Future LKW detection
+            // Future LKW detection + time window violations
             {
               const tf = calculateTimeFromLKW && calculateTimeFromLKW();
               if (tf && tf.futureWarning) {
                 warnings.push({ id: 'future-lkw', severity: 'error', msg: `${tf.label} time is in the future — check date/time entry. Treatment windows cannot be calculated from a future reference time.` });
+              }
+              if (tf && !tf.futureWarning && tf.total > 24 && n.evtRecommended) {
+                warnings.push({ id: 'evt-window-violation', severity: 'critical', msg: `EVT recommended ${tf.total.toFixed(1)}h from ${tf.label} — outside 24-hour guideline window. No anterior circulation EVT data beyond 24h. Verify basilar-specific eligibility (ATTENTION/BAOCHE) if applicable.` });
+              }
+              if (tf && !tf.futureWarning && tf.total > 4.5 && n.tnkRecommended && !n.wakeUpStrokeWorkflow?.isWakeUpStroke && !n.wakeUpStrokeWorkflow?.extendEligible) {
+                warnings.push({ id: 'tnk-window-caution', severity: 'warn', msg: `TNK recommended ${tf.total.toFixed(1)}h from ${tf.label} — beyond standard 4.5h window. Verify extended-window eligibility (EXTEND, wake-up stroke protocol).` });
+              }
+            }
+            // EVT platelet threshold
+            {
+              const evtPlt = parseInt(n.plateletCount, 10);
+              if (n.evtRecommended && !isNaN(evtPlt) && evtPlt < 50) {
+                warnings.push({ id: 'evt-low-platelets', severity: 'critical', msg: `EVT recommended with platelets ${evtPlt}K (<50K) — procedural bleeding risk. Platelet transfusion required before thrombectomy.` });
               }
             }
             if (n.tnkRecommended && inr > 1.7) {
@@ -11932,7 +11945,8 @@ Clinician Name`;
             shiftPatients: Array.isArray(shiftPatients) ? [...shiftPatients] : [],
             encounterPhase,
             noteTemplate,
-            elapsedSeconds
+            elapsedSeconds,
+            autoSyncCalculators
           });
 
           const restoreCaseSnapshot = (snapshot) => {
@@ -12001,6 +12015,7 @@ Clinician Name`;
             if (snapshot.encounterPhase) setEncounterPhase(snapshot.encounterPhase);
             if (snapshot.noteTemplate) setNoteTemplate(snapshot.noteTemplate);
             if (Number.isFinite(snapshot.elapsedSeconds)) setElapsedSeconds(snapshot.elapsedSeconds);
+            if (snapshot.autoSyncCalculators !== undefined) setAutoSyncCalculators(snapshot.autoSyncCalculators);
             decisionStateRef.current = {
               tnkRecommended: note.tnkRecommended,
               evtRecommended: note.evtRecommended,
@@ -12278,7 +12293,7 @@ Clinician Name`;
             const pltVal = parseInt(telestrokeNote.plateletCount, 10);
             const pttVal = parseFloat(telestrokeNote.ptt);
             const glucVal = parseFloat(telestrokeNote.glucose);
-            const warfarinWithHighINR = telestrokeNote.lastDOACType === 'warfarin' && !Number.isNaN(inrVal) && inrVal > 1.7;
+            const warfarinWithHighINR = (telestrokeNote.lastDOACType === 'warfarin' || telestrokeNote.lastDOACType === 'none' || !telestrokeNote.lastDOACType) && !Number.isNaN(inrVal) && inrVal > 1.7;
             const warfarinWithHighPT = telestrokeNote.lastDOACType === 'warfarin' && !Number.isNaN(ptVal) && ptVal > 15;
             const lowPlatelets = !Number.isNaN(pltVal) && pltVal < 100;
             const elevatedAPTT = !Number.isNaN(pttVal) && pttVal > 40;
@@ -12318,7 +12333,7 @@ Clinician Name`;
             const shouldBlock = warfarinWithHighINR || warfarinWithHighPT || lowPlatelets || elevatedAPTT || lowGlucose || isICH || recentDOAC || hasIE || recentSurgery;
             if (shouldBlock) {
               const reasons = [];
-              if (warfarinWithHighINR) reasons.push(`Warfarin with INR ${inrVal.toFixed(1)} (>1.7)`);
+              if (warfarinWithHighINR) reasons.push(`INR ${inrVal.toFixed(1)} (>1.7)${telestrokeNote.lastDOACType === 'warfarin' ? ' — warfarin' : ' — elevated INR'}`);
               if (warfarinWithHighPT) reasons.push(`Warfarin with PT ${ptVal.toFixed(1)}s (>15s)`);
               if (lowPlatelets) reasons.push(`Platelets ${pltVal}K (<100K)`);
               if (elevatedAPTT) reasons.push(`aPTT ${pttVal}s (>40s)`);
