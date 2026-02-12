@@ -5826,10 +5826,8 @@ Clinician Name`;
             }, 150);
           };
 
-          // Toggle trial details
-
-          // Create trial card component
-          const TrialCard = ({ trial, category }) => {
+          // Render trial card — called as function (not JSX component) to preserve <details> open state across re-renders
+          const renderTrialCard = (trial, category, key) => {
             const getCategoryColor = (cat) => {
               switch(cat) {
                 case 'ischemic': return 'bg-blue-600 text-white';
@@ -5859,6 +5857,7 @@ Clinician Name`;
 
             return (
               <details
+                key={key}
                 id={`trial-${trialSlug}`}
                 className={`bg-white rounded-lg shadow-md overflow-hidden border-2 ${getCategoryBorderColor(category)} hover:shadow-lg transition-shadow`}
               >
@@ -11934,16 +11933,7 @@ Clinician Name`;
           // Mermaid initialization and strokeMermaidClick removed — algorithms now use JSX
 
 
-          useEffect(() => {
-            decisionStateRef.current = {
-              tnkRecommended: telestrokeNote.tnkRecommended,
-              evtRecommended: telestrokeNote.evtRecommended,
-              transferAccepted: telestrokeNote.transferAccepted,
-              tnkContraindicationReviewed: telestrokeNote.tnkContraindicationReviewed,
-              tnkConsentDiscussed: telestrokeNote.tnkConsentDiscussed,
-              tnkAdminTime: telestrokeNote.tnkAdminTime
-            };
-          }, []);
+          // decisionStateRef initialization removed — the effect at line ~12035 handles this with proper deps
 
           // Persist consultation type
           useEffect(() => {
@@ -12091,17 +12081,17 @@ Clinician Name`;
 
           // Auto-switch BP phase to post-TNK when TNK is administered
           useEffect(() => {
-            if (telestrokeNote.tnkRecommended && telestrokeNote.bpPhase === 'pre-tnk') {
-              setTelestrokeNote(prev => ({ ...prev, bpPhase: 'post-tnk' }));
+            if (telestrokeNote.tnkRecommended) {
+              setTelestrokeNote(prev => prev.bpPhase === 'pre-tnk' ? { ...prev, bpPhase: 'post-tnk' } : prev);
             }
           }, [telestrokeNote.tnkRecommended]);
 
           // Auto-switch BP phase to post-EVT when EVT recommended (without TNK)
           useEffect(() => {
-            if (telestrokeNote.evtRecommended && !telestrokeNote.tnkRecommended && telestrokeNote.bpPhase === 'pre-tnk') {
-              setTelestrokeNote(prev => ({ ...prev, bpPhase: 'post-evt' }));
+            if (telestrokeNote.evtRecommended && !telestrokeNote.tnkRecommended) {
+              setTelestrokeNote(prev => prev.bpPhase === 'pre-tnk' ? { ...prev, bpPhase: 'post-evt' } : prev);
             }
-          }, [telestrokeNote.evtRecommended]);
+          }, [telestrokeNote.evtRecommended, telestrokeNote.tnkRecommended]);
 
           useEffect(() => {
             debouncedSave('telestrokeTemplate', editableTemplate);
@@ -12369,7 +12359,11 @@ Clinician Name`;
             };
 
             const results = evaluateAllTrials(evaluationData);
-            setTrialEligibility(results);
+            setTrialEligibility(prev => {
+              const prevStr = JSON.stringify(prev);
+              const nextStr = JSON.stringify(results);
+              return prevStr === nextStr ? prev : results;
+            });
           }, [telestrokeNote, strokeCodeForm, aspectsScore, nihssScore, mrsScore, gcsItems, lkwTime]);
 
           // Monitor scroll position for Part 6 (Treatment Decision) visibility
@@ -12471,8 +12465,17 @@ Clinician Name`;
                 nextWarnings[label] = matches;
               }
             });
-            setDeidWarnings(nextWarnings);
-          }, [settings.deidMode, telestrokeNote, strokeCodeForm]);
+            setDeidWarnings(prev => {
+              const prevStr = JSON.stringify(prev);
+              const nextStr = JSON.stringify(nextWarnings);
+              return prevStr === nextStr ? prev : nextWarnings;
+            });
+          }, [settings.deidMode,
+            telestrokeNote.chiefComplaint, telestrokeNote.symptoms, telestrokeNote.pmh,
+            telestrokeNote.medications, telestrokeNote.ctResults, telestrokeNote.ctaResults,
+            telestrokeNote.ekgResults, telestrokeNote.diagnosis, telestrokeNote.recommendationsText,
+            strokeCodeForm.hx, strokeCodeForm.sx, strokeCodeForm.def,
+            strokeCodeForm.hct, strokeCodeForm.cta, strokeCodeForm.ctp, strokeCodeForm.rec_reason]);
 
 
           useEffect(() => {
@@ -29430,15 +29433,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <h3 className="text-xl font-semibold text-slate-700 ml-4">
                                     {subsection.title}
                                   </h3>
-                                  {subsection.trials.map((trial, index) => (
-                                    <TrialCard key={index} trial={trial} category={trialsCategory} />
-                                  ))}
+                                  {subsection.trials.map((trial, index) =>
+                                    renderTrialCard(trial, trialsCategory, index)
+                                  )}
                                 </div>
                               ))
                             ) : (
-                              categoryData.trials.map((trial, index) => (
-                                <TrialCard key={index} trial={trial} category={trialsCategory} />
-                              ))
+                              categoryData.trials.map((trial, index) =>
+                                renderTrialCard(trial, trialsCategory, index)
+                              )
                             )}
                           </div>
                         );
