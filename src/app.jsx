@@ -237,7 +237,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           const [inputValue, setInputValue] = React.useState(config.defaultValue || '');
           if (!config) return null;
           return React.createElement('div', { className: 'fixed inset-0 z-[200] flex items-center justify-center p-4' },
-            React.createElement('div', { className: 'fixed inset-0 bg-black/40', onClick: () => { if (!config.required) onClose(null); } }),
+            React.createElement('div', { className: 'fixed inset-0 bg-black/40', onClick: () => { if (!config.required) onClose(null); }, role: 'presentation', 'aria-hidden': 'true' }),
             React.createElement('div', { className: 'relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'confirm-modal-title' },
               React.createElement('h3', { id: 'confirm-modal-title', className: 'text-lg font-bold text-slate-900' }, config.title || 'Confirm'),
               config.message && React.createElement('p', { className: 'text-sm text-slate-600' }, config.message),
@@ -8673,6 +8673,14 @@ Clinician Name`;
               if (telestrokeNote.tnkRecommended) {
                 const signoutDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
                 note += `- TNK${signoutDose ? ` ${signoutDose.calculatedDose} mg` : ''} ${telestrokeNote.tnkAdminTime ? 'at ' + (formatTime(telestrokeNote.tnkAdminTime) || '___') : '(recommended, not yet administered)'}\n`;
+                if (telestrokeNote.doorTime && telestrokeNote.needleTime) {
+                  const [sdH, sdM] = telestrokeNote.doorTime.split(':').map(Number);
+                  const [snH, snM] = telestrokeNote.needleTime.split(':').map(Number);
+                  if (!isNaN(sdH) && !isNaN(sdM) && !isNaN(snH) && !isNaN(snM)) {
+                    const snDtn = (snH * 60 + snM) - (sdH * 60 + sdM);
+                    if (snDtn >= 0) note += `  DTN: ${snDtn} min\n`;
+                  }
+                }
               }
               if (telestrokeNote.evtRecommended) note += `- EVT recommended/performed\n`;
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
@@ -9446,7 +9454,7 @@ Clinician Name`;
                 note += `- Stroke/Neurology clinic: 1-2 weeks (review imaging, labs, secondary prevention)\n`;
               }
               note += `- PCP: 1 week (BP, statin titration, medication reconciliation)\n`;
-              if (ct.extendedMonitoringType) note += `- Cardiology: cardiac monitoring review (${ct.extendedMonitoringType})\n`;
+              if (dcCw.extendedMonitoringType) note += `- Cardiology: cardiac monitoring review (${dcCw.extendedMonitoringType})\n`;
               if (telestrokeNote.evtRecommended) note += `- Neurovascular: vascular imaging follow-up 3-6 months\n`;
               if (telestrokeNote.diagnosisCategory === 'ischemic' && telestrokeNote.toastClassification === 'large-artery') note += `- Carotid duplex or CTA neck in 3-6 months\n`;
               const isDissection = (telestrokeNote.ctaResults || '').toLowerCase().includes('dissect') || (telestrokeNote.toastClassification || '') === 'other-determined';
@@ -12797,6 +12805,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
           return (
             <div className="relative">
+              <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-medium">Skip to main content</a>
               {protocolModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="protocol-modal-title">
                   <div className="w-full max-w-lg bg-white rounded-xl shadow-xl border border-slate-200">
@@ -12911,19 +12920,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <i data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-slate-400"></i>
 
                       {searchOpen && searchContext === 'header' && searchResults.length > 0 && (
-                        <div className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white shadow-lg rounded-lg border max-h-96 overflow-y-auto z-50">
+                        <div role="listbox" aria-label="Search results" className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white shadow-lg rounded-lg border max-h-96 overflow-y-auto z-50">
                           {Object.entries(searchResults.reduce((acc, result) => {
                             const key = result.type || 'Results';
                             if (!acc[key]) acc[key] = [];
                             acc[key].push(result);
                             return acc;
                           }, {})).map(([group, items]) => (
-                            <div key={group}>
-                              <div className="px-3 py-1 text-[11px] uppercase tracking-wider text-slate-500 bg-slate-50 border-b">
+                            <div key={group} role="group" aria-label={group}>
+                              <div className="px-3 py-1 text-[11px] uppercase tracking-wider text-slate-500 bg-slate-50 border-b" role="presentation">
                                 {group}
                               </div>
                               {items.map((result, index) => (
                                 <button
+                                  role="option"
                                   key={`${group}-${index}`}
                                   onClick={result.action}
                                   className="w-full text-left p-3 hover:bg-blue-50 border-b transition-colors"
