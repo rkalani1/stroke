@@ -330,7 +330,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           tnk: 'TNK 0.25 mg/kg is non-inferior to alteplase with similar sICH rates (3.4% vs 3.2%) and simpler single-bolus administration (AcT trial, Lancet 2022).',
           evt: 'EVT benefit is time-dependent: NNT ~2.6 overall at 0-6h (HERMES). Late-window with perfusion selection: NNT ~2.8 (DAWN), ~3.6 (DEFUSE-3). Every 15-min delay reduces benefit.',
           ich_bp: 'INTERACT3: Intensive BP lowering + bundle of care improves functional outcomes in ICH (Lancet 2023).',
-          doac_timing: 'CATALYST/ELAN: Early DOAC restart (2-6 days) after mild-moderate ischemic stroke is safe and may reduce recurrence.',
+          doac_timing: 'ELAN/CATALYST: Early DOAC restart after ischemic stroke — mild (NIHSS <8): 48h; moderate (NIHSS 8-15): day 3-5; severe (NIHSS ≥16): day 6-7 with repeat imaging.',
           aspects: 'ASPECTS 6-10: Standard EVT eligibility. ASPECTS 3-5: Consider EVT for mRS 0-1 patients with anterior LVO (SELECT2, ANGEL-ASPECT).',
           pcc: 'Fixed-dose PCC (2000 units) for warfarin reversal in ICH — check INR at 15-30 min post-infusion.',
           wakeup: 'DWI-FLAIR mismatch suggests onset <4.5h; CTP mismatch allows treatment up to 9h from midpoint of sleep (WAKE-UP, EXTEND).'
@@ -3726,7 +3726,7 @@ Clinician Name`;
               category: 'Reversal',
               title: 'Warfarin reversal in ICH',
               recommendation: 'Administer IV Vitamin K 10 mg + 4-factor PCC (KCentra) for ICH on warfarin. Target INR <1.5 within 4 hours.',
-              detail: '4F-PCC preferred over FFP for rapid INR correction; give vitamin K after PCC to prevent rebound INR. Recheck INR at 30-60 minutes and repeat PCC if needed.',
+              detail: '4F-PCC preferred over FFP for rapid INR correction; give vitamin K after PCC to prevent rebound INR. Recheck INR at 15-30 minutes and repeat PCC if needed.',
               classOfRec: 'I',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -4336,8 +4336,7 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436#page=13',
               medications: ['Nicardipine 5 mg/hr IV (titrate to 15 mg/hr)', 'Labetalol 10-20 mg IV bolus PRN'],
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return (dx.includes('sah') || dx.includes('subarachnoid')) && !data.telestrokeNote?.sahAneurysmSecured;
+                return data.telestrokeNote?.diagnosisCategory === 'sah' && !data.telestrokeNote?.sahAneurysmSecured;
               }
             },
             sah_bp_postsecuring: {
@@ -4352,8 +4351,7 @@ Clinician Name`;
               reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370.',
               medications: ['Vasopressor augmentation for symptomatic DCI: phenylephrine or norepinephrine drip to SBP 160-200', 'Maintain euvolemia with isotonic saline (avoid hypotonic fluids)'],
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return (dx.includes('sah') || dx.includes('subarachnoid')) && !!data.telestrokeNote?.sahAneurysmSecured;
+                return data.telestrokeNote?.diagnosisCategory === 'sah' && !!data.telestrokeNote?.sahAneurysmSecured;
               }
             },
             sah_nimodipine: {
@@ -4369,8 +4367,7 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436#page=26',
               medications: ['Nimodipine 60 mg PO/NG q4h x 21 days'],
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('sah') || dx.includes('subarachnoid');
+                return data.telestrokeNote?.diagnosisCategory === 'sah';
               }
             },
             sah_seizure: {
@@ -4386,8 +4383,7 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436#page=31',
               medications: ['Levetiracetam 500-1000 mg IV/PO q12h (preferred)', 'Avoid phenytoin if possible'],
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('sah') || dx.includes('subarachnoid');
+                return data.telestrokeNote?.diagnosisCategory === 'sah';
               }
             },
             sah_aneurysm_securing: {
@@ -4402,8 +4398,7 @@ Clinician Name`;
               reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436#page=14',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return (dx.includes('sah') || dx.includes('subarachnoid')) && !data.telestrokeNote?.sahAneurysmSecured;
+                return data.telestrokeNote?.diagnosisCategory === 'sah' && !data.telestrokeNote?.sahAneurysmSecured;
               }
             },
             sah_euvolemia: {
@@ -4418,8 +4413,7 @@ Clinician Name`;
               reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436#page=20',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('sah') || dx.includes('subarachnoid');
+                return data.telestrokeNote?.diagnosisCategory === 'sah';
               }
             },
             sah_evd: {
@@ -4434,8 +4428,7 @@ Clinician Name`;
               reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436#page=30',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const isSAH = dx.includes('sah') || dx.includes('subarachnoid');
+                const isSAH = data.telestrokeNote?.diagnosisCategory === 'sah';
                 const grade = parseInt(data.telestrokeNote?.sahGrade, 10) || 0;
                 return isSAH && grade >= 3;
               }
@@ -8551,7 +8544,7 @@ Clinician Name`;
                 if (ichTransfer !== '\nICH Management:\n') note += ichTransfer;
               }
               // SAH-specific data
-              const isDiagSAH = (telestrokeNote.diagnosis || '').toLowerCase().includes('sah') || (telestrokeNote.diagnosis || '').toLowerCase().includes('subarachnoid');
+              const isDiagSAH = telestrokeNote.diagnosisCategory === 'sah';
               if (isDiagSAH) {
                 note += `\nSAH Management:\n`;
                 if (telestrokeNote.sahGrade) note += `- ${telestrokeNote.sahGradeScale || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
@@ -8889,7 +8882,7 @@ Clinician Name`;
               }
               // SAH-specific (concise)
               {
-                const snIsSAH = (telestrokeNote.diagnosis || '').toLowerCase().includes('sah') || (telestrokeNote.diagnosis || '').toLowerCase().includes('subarachnoid');
+                const snIsSAH = telestrokeNote.diagnosisCategory === 'sah';
                 if (snIsSAH) {
                   const snSahParts = [];
                   if (telestrokeNote.sahGrade) snSahParts.push(`Grade ${telestrokeNote.sahGrade}`);
@@ -9497,7 +9490,7 @@ Clinician Name`;
                 if (ichDisch !== '\nICH MANAGEMENT:\n') note += ichDisch;
               }
               // SAH-specific data
-              const dischIsSAH = (telestrokeNote.diagnosis || '').toLowerCase().includes('sah') || (telestrokeNote.diagnosis || '').toLowerCase().includes('subarachnoid');
+              const dischIsSAH = telestrokeNote.diagnosisCategory === 'sah';
               if (dischIsSAH) {
                 note += '\nSAH MANAGEMENT:\n';
                 if (telestrokeNote.sahGrade) note += `- ${telestrokeNote.sahGradeScale || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
@@ -10154,6 +10147,19 @@ Clinician Name`;
               if (telestrokeNote.ichNeurosurgeryConsulted) ichNote += '- Neurosurgery consulted\n';
               if (telestrokeNote.ichSeizureProphylaxis) ichNote += '- Seizure prophylaxis ordered\n';
               if (ichNote !== '\nICH Management:\n') note += ichNote;
+            }
+
+            // Add SAH-specific details
+            if (telestrokeNote.diagnosisCategory === 'sah') {
+              let sahNote = '\nSAH Management:\n';
+              if (telestrokeNote.sahGrade) sahNote += `- ${telestrokeNote.sahGradeScale || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
+              if (telestrokeNote.fisherGrade) sahNote += `- Modified Fisher Grade: ${telestrokeNote.fisherGrade}\n`;
+              if (telestrokeNote.sahBPManaged) sahNote += `- BP managed (SBP <160 pre-securing)\n`;
+              if (telestrokeNote.sahNimodipineStarted) sahNote += `- Nimodipine 60 mg q4h started\n`;
+              if (telestrokeNote.sahAneurysmSecured) sahNote += `- Aneurysm secured (${telestrokeNote.sahSecuringMethod || 'method not specified'})\n`;
+              if (telestrokeNote.sahEVDPlaced) sahNote += `- EVD placed\n`;
+              if (telestrokeNote.sahSeizureProphylaxis) sahNote += `- Seizure prophylaxis ordered\n`;
+              if (sahNote !== '\nSAH Management:\n') note += sahNote;
             }
 
             // Add post-thrombolysis complications
@@ -13354,13 +13360,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 </div>
               )}
               <div className="app-shell max-w-7xl mx-auto p-4 sm:p-8 overflow-x-hidden" role="main">
-              {/* Skip Navigation Link for Screen Readers */}
-              <a
-                href="#main-content"
-                className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg"
-              >
-                Skip to main content
-              </a>
 
               {/* Offline Indicator */}
               {!isOnline && (
@@ -26109,7 +26108,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {[{v:'gcs34',l:'GCS 3-4',p:'+2 points'},{v:'gcs512',l:'GCS 5-12',p:'+1 point'},{v:'',l:'GCS 13-15',p:'0 points'}].map(o => (
                             <button key={o.v} type="button"
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${ichScoreItems.gcs === o.v ? 'bg-red-700 text-white border-red-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
-                              onClick={() => setIchScoreItems({...ichScoreItems, gcs: o.v})}
+                              onClick={() => setIchScoreItems(prev => ({...prev, gcs: o.v}))}
                             >
                               {o.l} <span className={ichScoreItems.gcs === o.v ? 'text-white/70' : 'text-slate-400'}>({o.p})</span>
                             </button>
@@ -26120,7 +26119,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox" 
                               className="text-red-600"
                               checked={ichScoreItems.age80}
-                              onChange={(e) => setIchScoreItems({...ichScoreItems, age80: e.target.checked})}
+                              onChange={(e) => setIchScoreItems(prev => ({...prev, age80: e.target.checked}))}
                             />
                             <span className="text-sm">Age ≥80 (+1)</span>
                           </label>
@@ -26161,7 +26160,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     className="w-full pl-3 pr-8 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all shadow-sm"
                                     placeholder="0.0"
                                     value={ichVolumeParams.a}
-                                    onChange={(e) => setIchVolumeParams({...ichVolumeParams, a: e.target.value})}
+                                    onChange={(e) => setIchVolumeParams(prev => ({...prev, a: e.target.value}))}
                                   />
                                   <span className="absolute right-3 top-2 text-xs text-slate-500 font-medium">cm</span>
                                 </div>
@@ -26174,7 +26173,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     className="w-full pl-3 pr-8 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all shadow-sm"
                                     placeholder="0.0"
                                     value={ichVolumeParams.b}
-                                    onChange={(e) => setIchVolumeParams({...ichVolumeParams, b: e.target.value})}
+                                    onChange={(e) => setIchVolumeParams(prev => ({...prev, b: e.target.value}))}
                                   />
                                   <span className="absolute right-3 top-2 text-xs text-slate-500 font-medium">cm</span>
                                 </div>
@@ -26190,7 +26189,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     className="w-full pl-3 pr-8 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all shadow-sm"
                                     placeholder="e.g. 5"
                                     value={ichVolumeParams.thicknessMm}
-                                    onChange={(e) => setIchVolumeParams({...ichVolumeParams, thicknessMm: e.target.value})}
+                                    onChange={(e) => setIchVolumeParams(prev => ({...prev, thicknessMm: e.target.value}))}
                                   />
                                   <span className="absolute right-3 top-2 text-xs text-slate-500 font-medium">mm</span>
                                 </div>
@@ -26203,7 +26202,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     className="w-full pl-3 pr-8 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all shadow-sm"
                                     placeholder="0"
                                     value={ichVolumeParams.numSlices}
-                                    onChange={(e) => setIchVolumeParams({...ichVolumeParams, numSlices: e.target.value})}
+                                    onChange={(e) => setIchVolumeParams(prev => ({...prev, numSlices: e.target.value}))}
                                   />
                                   <span className="absolute right-3 top-2 text-xs text-slate-500 font-medium">#</span>
                                 </div>
@@ -26239,7 +26238,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 type="checkbox" 
                                 className="sr-only"
                                 checked={ichScoreItems.volume30}
-                                onChange={(e) => setIchScoreItems({...ichScoreItems, volume30: e.target.checked})}
+                                onChange={(e) => setIchScoreItems(prev => ({...prev, volume30: e.target.checked}))}
                               />
                               <span className={`text-sm ${ichScoreItems.volume30 ? 'font-medium text-slate-900' : 'text-slate-600'}`}>ICH volume ≥30 cc (+1)</span>
                             </label>
@@ -26256,7 +26255,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 type="checkbox" 
                                 className="sr-only"
                                 checked={ichScoreItems.ivh}
-                                onChange={(e) => setIchScoreItems({...ichScoreItems, ivh: e.target.checked})}
+                                onChange={(e) => setIchScoreItems(prev => ({...prev, ivh: e.target.checked}))}
                               />
                               <span className={`text-sm ${ichScoreItems.ivh ? 'font-medium text-slate-900' : 'text-slate-600'}`}>Intraventricular hemorrhage (+1)</span>
                             </label>
@@ -26273,7 +26272,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 type="checkbox" 
                                 className="sr-only"
                                 checked={ichScoreItems.infratentorial}
-                                onChange={(e) => setIchScoreItems({...ichScoreItems, infratentorial: e.target.checked})}
+                                onChange={(e) => setIchScoreItems(prev => ({...prev, infratentorial: e.target.checked}))}
                               />
                               <span className={`text-sm ${ichScoreItems.infratentorial ? 'font-medium text-slate-900' : 'text-slate-600'}`}>Infratentorial origin (+1)</span>
                             </label>
@@ -26345,10 +26344,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             (loc.val === 'lobar' && !ichScoreItems.infratentorial && ichScoreItems.lobar) ||
                                             (loc.val === 'deep' && !ichScoreItems.infratentorial && !ichScoreItems.lobar)
                                           }
-                                          onChange={() => setIchScoreItems({...ichScoreItems,
+                                          onChange={() => setIchScoreItems(prev => ({...prev,
                                             infratentorial: loc.val === 'infratentorial',
                                             lobar: loc.val === 'lobar'
-                                          })}
+                                          }))}
                                         />
                                         {loc.label} (+{loc.pts})
                                       </label>
@@ -26365,7 +26364,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <p className="text-xs text-slate-600">No impairment: +1 | Pre-ICH dementia: +0</p>
                                   <label className="flex items-center gap-2 mt-1 text-xs cursor-pointer">
                                     <input type="checkbox" checked={ichScoreItems.preCogImpairment || false}
-                                      onChange={(e) => setIchScoreItems({...ichScoreItems, preCogImpairment: e.target.checked})}
+                                      onChange={(e) => setIchScoreItems(prev => ({...prev, preCogImpairment: e.target.checked}))}
                                       className="w-3.5 h-3.5 text-rose-600" />
                                     Pre-ICH cognitive impairment
                                   </label>
@@ -26493,7 +26492,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox" 
                               className="text-orange-600"
                               checked={abcd2Items.age60}
-                              onChange={(e) => setAbcd2Items({...abcd2Items, age60: e.target.checked})}
+                              onChange={(e) => setAbcd2Items(prev => ({...prev, age60: e.target.checked}))}
                             />
                             <span className="text-sm">Age ≥60 (+1)</span>
                           </label>
@@ -26502,7 +26501,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox" 
                               className="text-orange-600"
                               checked={abcd2Items.bp}
-                              onChange={(e) => setAbcd2Items({...abcd2Items, bp: e.target.checked})}
+                              onChange={(e) => setAbcd2Items(prev => ({...prev, bp: e.target.checked}))}
                             />
                             <span className="text-sm">BP: SBP≥140 or DBP≥90 (+1)</span>
                           </label>
@@ -26511,7 +26510,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox" 
                               className="text-orange-600"
                               checked={abcd2Items.unilateralWeakness}
-                              onChange={(e) => setAbcd2Items({...abcd2Items, unilateralWeakness: e.target.checked, speechDisturbance: e.target.checked ? false : abcd2Items.speechDisturbance})}
+                              onChange={(e) => setAbcd2Items(prev => ({...prev, unilateralWeakness: e.target.checked, speechDisturbance: e.target.checked ? false : prev.speechDisturbance}))}
                             />
                             <span className="text-sm">Unilateral weakness (+2)</span>
                           </label>
@@ -26522,7 +26521,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-orange-600"
                               checked={abcd2Items.speechDisturbance}
-                              onChange={(e) => setAbcd2Items({...abcd2Items, speechDisturbance: e.target.checked, unilateralWeakness: e.target.checked ? false : abcd2Items.unilateralWeakness})}
+                              onChange={(e) => setAbcd2Items(prev => ({...prev, speechDisturbance: e.target.checked, unilateralWeakness: e.target.checked ? false : prev.unilateralWeakness}))}
                               disabled={abcd2Items.unilateralWeakness}
                             />
                             <span className={`text-sm ${abcd2Items.unilateralWeakness ? 'text-slate-400' : ''}`}>Speech disturbance w/o weakness (+1)</span>
@@ -26531,7 +26530,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {[{v:'duration60',l:'\u226560 minutes',p:'+2 points'},{v:'duration10',l:'10-59 minutes',p:'+1 point'},{v:'',l:'<10 minutes',p:'0 points'}].map(o => (
                             <button key={o.v || 'none'} type="button"
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors mb-1 ${abcd2Items.duration === o.v ? 'bg-orange-600 text-white border-orange-600 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
-                              onClick={() => setAbcd2Items({...abcd2Items, duration: o.v})}
+                              onClick={() => setAbcd2Items(prev => ({...prev, duration: o.v}))}
                             >
                               {o.l} <span className={abcd2Items.duration === o.v ? 'text-white/70' : 'text-slate-400'}>({o.p})</span>
                             </button>
@@ -26542,7 +26541,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-orange-600"
                               checked={abcd2Items.diabetes}
-                              onChange={(e) => setAbcd2Items({...abcd2Items, diabetes: e.target.checked})}
+                              onChange={(e) => setAbcd2Items(prev => ({...prev, diabetes: e.target.checked}))}
                             />
                             <span className="text-sm">Diabetes mellitus (+1)</span>
                           </label>
@@ -26600,7 +26599,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox" 
                             className="text-purple-600"
                             checked={chads2vascItems.age65}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, age65: e.target.checked, age75: e.target.checked ? false : chads2vascItems.age75})}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, age65: e.target.checked, age75: e.target.checked ? false : prev.age75}))}
                           />
                           <span className="text-sm">Age 65-74 (+1)</span>
                         </label>
@@ -26609,7 +26608,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox"
                             className="text-purple-600"
                             checked={chads2vascItems.age75}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, age75: e.target.checked, age65: e.target.checked ? false : chads2vascItems.age65})}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, age75: e.target.checked, age65: e.target.checked ? false : prev.age65}))}
                           />
                           <span className="text-sm">Age ≥75 (+2)</span>
                         </label>
@@ -26618,7 +26617,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox" 
                             className="text-purple-600"
                             checked={chads2vascItems.chf}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, chf: e.target.checked})}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, chf: e.target.checked}))}
                           />
                           <span className="text-sm">CHF (+1)</span>
                         </label>
@@ -26627,7 +26626,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox" 
                             className="text-purple-600"
                             checked={chads2vascItems.hypertension}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, hypertension: e.target.checked})}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, hypertension: e.target.checked}))}
                           />
                           <span className="text-sm">Hypertension (+1)</span>
                         </label>
@@ -26636,7 +26635,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox" 
                             className="text-purple-600"
                             checked={chads2vascItems.diabetes}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, diabetes: e.target.checked})}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, diabetes: e.target.checked}))}
                           />
                           <span className="text-sm">Diabetes (+1)</span>
                         </label>
@@ -26645,7 +26644,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox" 
                             className="text-purple-600"
                             checked={chads2vascItems.strokeTia}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, strokeTia: e.target.checked})}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, strokeTia: e.target.checked}))}
                           />
                           <span className="text-sm">Stroke/TIA (+2)</span>
                         </label>
@@ -26654,7 +26653,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox" 
                             className="text-purple-600"
                             checked={chads2vascItems.vascular}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, vascular: e.target.checked})}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, vascular: e.target.checked}))}
                           />
                           <span className="text-sm">Vascular disease (+1)</span>
                         </label>
@@ -26663,7 +26662,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox" 
                             className="text-purple-600"
                             checked={chads2vascItems.female}
-                            onChange={(e) => setChads2vascItems({...chads2vascItems, female: e.target.checked})}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, female: e.target.checked}))}
                           />
                           <span className="text-sm">Female sex (+1)</span>
                         </label>
@@ -26718,7 +26717,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-pink-600"
                               checked={hasbledItems.hypertension}
-                              onChange={(e) => setHasbledItems({...hasbledItems, hypertension: e.target.checked})}
+                              onChange={(e) => setHasbledItems(prev => ({...prev, hypertension: e.target.checked}))}
                             />
                             <span className="text-sm"><strong>H</strong>ypertension (uncontrolled SBP &gt;160) (+1)</span>
                           </label>
@@ -26727,7 +26726,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-pink-600"
                               checked={hasbledItems.renalDisease}
-                              onChange={(e) => setHasbledItems({...hasbledItems, renalDisease: e.target.checked})}
+                              onChange={(e) => setHasbledItems(prev => ({...prev, renalDisease: e.target.checked}))}
                             />
                             <span className="text-sm"><strong>A</strong>bnormal renal function (dialysis, transplant, Cr &gt;2.6) (+1)</span>
                           </label>
@@ -26736,7 +26735,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-pink-600"
                               checked={hasbledItems.liverDisease}
-                              onChange={(e) => setHasbledItems({...hasbledItems, liverDisease: e.target.checked})}
+                              onChange={(e) => setHasbledItems(prev => ({...prev, liverDisease: e.target.checked}))}
                             />
                             <span className="text-sm"><strong>A</strong>bnormal liver function (cirrhosis, bilirubin &gt;2x, AST/ALT &gt;3x) (+1)</span>
                           </label>
@@ -26745,7 +26744,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-pink-600"
                               checked={hasbledItems.stroke}
-                              onChange={(e) => setHasbledItems({...hasbledItems, stroke: e.target.checked})}
+                              onChange={(e) => setHasbledItems(prev => ({...prev, stroke: e.target.checked}))}
                             />
                             <span className="text-sm"><strong>S</strong>troke history (+1)</span>
                           </label>
@@ -26754,7 +26753,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-pink-600"
                               checked={hasbledItems.bleeding}
-                              onChange={(e) => setHasbledItems({...hasbledItems, bleeding: e.target.checked})}
+                              onChange={(e) => setHasbledItems(prev => ({...prev, bleeding: e.target.checked}))}
                             />
                             <span className="text-sm"><strong>B</strong>leeding history or predisposition (+1)</span>
                           </label>
@@ -26763,7 +26762,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-pink-600"
                               checked={hasbledItems.labileINR}
-                              onChange={(e) => setHasbledItems({...hasbledItems, labileINR: e.target.checked})}
+                              onChange={(e) => setHasbledItems(prev => ({...prev, labileINR: e.target.checked}))}
                             />
                             <span className="text-sm"><strong>L</strong>abile INR (TTR &lt;60%) (+1)</span>
                           </label>
@@ -26772,7 +26771,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-pink-600"
                               checked={hasbledItems.elderly}
-                              onChange={(e) => setHasbledItems({...hasbledItems, elderly: e.target.checked})}
+                              onChange={(e) => setHasbledItems(prev => ({...prev, elderly: e.target.checked}))}
                             />
                             <span className="text-sm"><strong>E</strong>lderly (age &gt;65) (+1)</span>
                           </label>
@@ -26781,7 +26780,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-pink-600"
                               checked={hasbledItems.drugs}
-                              onChange={(e) => setHasbledItems({...hasbledItems, drugs: e.target.checked})}
+                              onChange={(e) => setHasbledItems(prev => ({...prev, drugs: e.target.checked}))}
                             />
                             <span className="text-sm"><strong>D</strong>rugs (antiplatelet agents, NSAIDs) (+1)</span>
                           </label>
@@ -26790,7 +26789,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-pink-600"
                               checked={hasbledItems.alcohol}
-                              onChange={(e) => setHasbledItems({...hasbledItems, alcohol: e.target.checked})}
+                              onChange={(e) => setHasbledItems(prev => ({...prev, alcohol: e.target.checked}))}
                             />
                             <span className="text-sm"><strong>D</strong> (cont.) Alcohol use (≥8 drinks/week) (+1)</span>
                           </label>
@@ -26835,7 +26834,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox" 
                               className="text-blue-600"
                               checked={ropeItems.noHypertension}
-                              onChange={(e) => setRopeItems({...ropeItems, noHypertension: e.target.checked})}
+                              onChange={(e) => setRopeItems(prev => ({...prev, noHypertension: e.target.checked}))}
                             />
                             <span className="text-sm">No history of hypertension (+1)</span>
                           </label>
@@ -26844,7 +26843,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox" 
                               className="text-blue-600"
                               checked={ropeItems.noDiabetes}
-                              onChange={(e) => setRopeItems({...ropeItems, noDiabetes: e.target.checked})}
+                              onChange={(e) => setRopeItems(prev => ({...prev, noDiabetes: e.target.checked}))}
                             />
                             <span className="text-sm">No history of diabetes (+1)</span>
                           </label>
@@ -26853,7 +26852,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox" 
                               className="text-blue-600"
                               checked={ropeItems.noStrokeTia}
-                              onChange={(e) => setRopeItems({...ropeItems, noStrokeTia: e.target.checked})}
+                              onChange={(e) => setRopeItems(prev => ({...prev, noStrokeTia: e.target.checked}))}
                             />
                             <span className="text-sm">No history of stroke or TIA (+1)</span>
                           </label>
@@ -26864,7 +26863,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox" 
                               className="text-blue-600"
                               checked={ropeItems.nonsmoker}
-                              onChange={(e) => setRopeItems({...ropeItems, nonsmoker: e.target.checked})}
+                              onChange={(e) => setRopeItems(prev => ({...prev, nonsmoker: e.target.checked}))}
                             />
                             <span className="text-sm">Nonsmoker (+1)</span>
                           </label>
@@ -26873,7 +26872,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox" 
                               className="text-blue-600"
                               checked={ropeItems.cortical}
-                              onChange={(e) => setRopeItems({...ropeItems, cortical: e.target.checked})}
+                              onChange={(e) => setRopeItems(prev => ({...prev, cortical: e.target.checked}))}
                             />
                             <span className="text-sm">Cortical infarct (+1)</span>
                           </label>
@@ -26883,7 +26882,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="number"
                               className="w-full px-3 py-1 border border-slate-300 rounded-md text-sm"
                               value={ropeItems.age}
-                              onChange={(e) => setRopeItems({...ropeItems, age: e.target.value})}
+                              onChange={(e) => setRopeItems(prev => ({...prev, age: e.target.value}))}
                               placeholder="Enter age"
                               min="18"
                               max="100"
@@ -26980,7 +26979,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-blue-600"
                               checked={rcvs2Items.recurrentTCH}
-                              onChange={(e) => setRcvs2Items({...rcvs2Items, recurrentTCH: e.target.checked})}
+                              onChange={(e) => setRcvs2Items(prev => ({...prev, recurrentTCH: e.target.checked}))}
                             />
                             <span className="text-sm">Recurrent thunderclap headaches (+5)</span>
                           </label>
@@ -26989,7 +26988,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-blue-600"
                               checked={rcvs2Items.carotidInvolvement}
-                              onChange={(e) => setRcvs2Items({...rcvs2Items, carotidInvolvement: e.target.checked})}
+                              onChange={(e) => setRcvs2Items(prev => ({...prev, carotidInvolvement: e.target.checked}))}
                             />
                             <span className="text-sm">Intracranial carotid artery involvement (-2)</span>
                           </label>
@@ -26998,7 +26997,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-blue-600"
                               checked={rcvs2Items.vasoconstrictiveTrigger}
-                              onChange={(e) => setRcvs2Items({...rcvs2Items, vasoconstrictiveTrigger: e.target.checked})}
+                              onChange={(e) => setRcvs2Items(prev => ({...prev, vasoconstrictiveTrigger: e.target.checked}))}
                             />
                             <span className="text-sm">Vasoconstrictive trigger exposure (+3)</span>
                           </label>
@@ -27007,7 +27006,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-blue-600"
                               checked={rcvs2Items.female}
-                              onChange={(e) => setRcvs2Items({...rcvs2Items, female: e.target.checked})}
+                              onChange={(e) => setRcvs2Items(prev => ({...prev, female: e.target.checked}))}
                             />
                             <span className="text-sm">Female sex (+1)</span>
                           </label>
@@ -27016,7 +27015,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-blue-600"
                               checked={rcvs2Items.sah}
-                              onChange={(e) => setRcvs2Items({...rcvs2Items, sah: e.target.checked})}
+                              onChange={(e) => setRcvs2Items(prev => ({...prev, sah: e.target.checked}))}
                             />
                             <span className="text-sm">Subarachnoid hemorrhage on imaging (+1)</span>
                           </label>
@@ -27120,7 +27119,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">Population</label>
                             <select value={phasesItems.population}
-                              onChange={(e) => setPhasesItems({...phasesItems, population: e.target.value})}
+                              onChange={(e) => setPhasesItems(prev => ({...prev, population: e.target.value}))}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                               <option value="north_american">North American / European (0 pts)</option>
                               <option value="japanese">Japanese (+3 pts)</option>
@@ -27130,13 +27129,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <label className="flex items-center space-x-2">
                             <input type="checkbox" className="text-teal-600"
                               checked={phasesItems.hypertension}
-                              onChange={(e) => setPhasesItems({...phasesItems, hypertension: e.target.checked})} />
+                              onChange={(e) => setPhasesItems(prev => ({...prev, hypertension: e.target.checked}))} />
                             <span className="text-sm">History of hypertension (+1)</span>
                           </label>
                           <label className="flex items-center space-x-2">
                             <input type="checkbox" className="text-teal-600"
                               checked={phasesItems.age70}
-                              onChange={(e) => setPhasesItems({...phasesItems, age70: e.target.checked})} />
+                              onChange={(e) => setPhasesItems(prev => ({...prev, age70: e.target.checked}))} />
                             <span className="text-sm">Age ≥70 years (+1)</span>
                           </label>
                           <div>
@@ -27144,20 +27143,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <input type="number" step="0.1" min="0" max="50"
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm"
                               value={phasesItems.size}
-                              onChange={(e) => setPhasesItems({...phasesItems, size: e.target.value})}
+                              onChange={(e) => setPhasesItems(prev => ({...prev, size: e.target.value}))}
                               placeholder="Largest diameter in mm" />
                             <div className="text-xs text-slate-500 mt-1">&lt;7mm: 0 pts | 7-9.9mm: +3 | 10-19.9mm: +6 | ≥20mm: +10</div>
                           </div>
                           <label className="flex items-center space-x-2">
                             <input type="checkbox" className="text-teal-600"
                               checked={phasesItems.earlierSAH}
-                              onChange={(e) => setPhasesItems({...phasesItems, earlierSAH: e.target.checked})} />
+                              onChange={(e) => setPhasesItems(prev => ({...prev, earlierSAH: e.target.checked}))} />
                             <span className="text-sm">Earlier SAH from a different aneurysm (+1)</span>
                           </label>
                           <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">Aneurysm site</label>
                             <select value={phasesItems.site}
-                              onChange={(e) => setPhasesItems({...phasesItems, site: e.target.value})}
+                              onChange={(e) => setPhasesItems(prev => ({...prev, site: e.target.value}))}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                               <option value="ica">ICA (0 pts)</option>
                               <option value="mca">MCA (+2 pts)</option>
