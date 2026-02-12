@@ -8265,6 +8265,20 @@ Clinician Name`;
                 }
               }
 
+              // ICH-specific data
+              if (telestrokeNote.diagnosisCategory === 'ich') {
+                let ichTransfer = '\nICH Management:\n';
+                {
+                  const ichCalc = telestrokeNote.ichVolumeCalc || {};
+                  const ichVol = calculateICHVolume(ichCalc);
+                  if (ichVol && ichVol.volume) ichTransfer += `- ICH volume (ABC/2): ${ichVol.volume} mL${ichVol.isLarge ? ' (LARGE)' : ''}\n`;
+                }
+                if (telestrokeNote.ichBPManaged) ichTransfer += '- BP managed (target SBP <140 per INTERACT3/AHA 2022)\n';
+                if (telestrokeNote.ichReversalInitiated) ichTransfer += '- Anticoagulation reversal initiated\n';
+                if (telestrokeNote.ichNeurosurgeryConsulted) ichTransfer += '- Neurosurgery consulted\n';
+                if (telestrokeNote.ichSeizureProphylaxis) ichTransfer += '- Seizure prophylaxis ordered\n';
+                if (ichTransfer !== '\nICH Management:\n') note += ichTransfer;
+              }
               // SAH-specific data
               const isDiagSAH = (telestrokeNote.diagnosis || '').toLowerCase().includes('sah') || (telestrokeNote.diagnosis || '').toLowerCase().includes('subarachnoid');
               if (isDiagSAH) {
@@ -8807,6 +8821,20 @@ Clinician Name`;
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
                 note += `- Pre-admission anticoagulation: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].name}\n`;
               }
+              // ICH-specific data
+              if (telestrokeNote.diagnosisCategory === 'ich') {
+                let ichDisch = '\nICH MANAGEMENT:\n';
+                {
+                  const ichCalcD = telestrokeNote.ichVolumeCalc || {};
+                  const ichVolD = calculateICHVolume(ichCalcD);
+                  if (ichVolD && ichVolD.volume) ichDisch += `- ICH volume (ABC/2): ${ichVolD.volume} mL${ichVolD.isLarge ? ' (LARGE)' : ''}\n`;
+                }
+                if (telestrokeNote.ichBPManaged) ichDisch += '- BP managed (target SBP <140 per INTERACT3/AHA 2022)\n';
+                if (telestrokeNote.ichReversalInitiated) ichDisch += '- Anticoagulation reversal initiated\n';
+                if (telestrokeNote.ichNeurosurgeryConsulted) ichDisch += '- Neurosurgery consulted\n';
+                if (telestrokeNote.ichSeizureProphylaxis) ichDisch += '- Seizure prophylaxis ordered\n';
+                if (ichDisch !== '\nICH MANAGEMENT:\n') note += ichDisch;
+              }
               // SAH-specific data
               const dischIsSAH = (telestrokeNote.diagnosis || '').toLowerCase().includes('sah') || (telestrokeNote.diagnosis || '').toLowerCase().includes('subarachnoid');
               if (dischIsSAH) {
@@ -9027,15 +9055,15 @@ Clinician Name`;
             const gcsForNote = calculateGCS(gcsItems);
             note = note.replace(/{gcs}/g, gcsForNote > 0 ? `| GCS: ${gcsForNote} ` : '');
             note = note.replace(/{nihssDetails}/g, telestrokeNote.nihssDetails || '');
-            note = note.replace(/{ctTime}/g, formatTime(telestrokeNote.ctTime));
+            note = note.replace(/{ctTime}/g, [formatDate(telestrokeNote.ctDate), formatTime(telestrokeNote.ctTime)].filter(Boolean).join(' '));
             {
               let ctRes = telestrokeNote.ctResults || '';
               if (telestrokeNote.earlyInfarctSigns) ctRes += (ctRes ? ' — ' : '') + 'early infarct signs present';
               if (telestrokeNote.denseArterySign) ctRes += (ctRes ? ' — ' : '') + 'hyperdense artery sign';
               note = note.replace(/{ctResults}/g, ctRes);
             }
-            note = note.replace(/{ctaDate}/g, formatDate(telestrokeNote.ctaDate));
-            note = note.replace(/{ctaTime}/g, formatTime(telestrokeNote.ctaTime));
+            note = note.replace(/{ctaDate}/g, formatDate(telestrokeNote.ctaDate) || '');
+            note = note.replace(/{ctaTime}/g, [formatDate(telestrokeNote.ctaDate), formatTime(telestrokeNote.ctaTime)].filter(Boolean).join(' '));
             note = note.replace(/{ctaResults}/g, telestrokeNote.ctaResults || '');
             note = note.replace(/{ekgResults}/g, telestrokeNote.ekgResults || '');
             const inrVal = telestrokeNote.inr || '';
@@ -9280,6 +9308,11 @@ Clinician Name`;
             // Add ICH-specific details
             if (telestrokeNote.diagnosisCategory === 'ich') {
               let ichNote = '\nICH Management:\n';
+              {
+                const ichCalc = telestrokeNote.ichVolumeCalc || {};
+                const ichVol = calculateICHVolume(ichCalc);
+                if (ichVol && ichVol.volume) ichNote += `- ICH volume (ABC/2): ${ichVol.volume} mL${ichVol.isLarge ? ' (LARGE)' : ''}\n`;
+              }
               if (telestrokeNote.ichBPManaged) ichNote += '- BP managed (target SBP <140 (Class IIa; avoid <130))\n';
               if (telestrokeNote.ichReversalInitiated) ichNote += '- Anticoagulation reversal initiated\n';
               if (telestrokeNote.ichNeurosurgeryConsulted) ichNote += '- Neurosurgery consulted\n';
