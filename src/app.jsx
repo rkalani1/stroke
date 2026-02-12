@@ -910,6 +910,7 @@ Clinician Name`;
             bpPostEVT: '',
             glucose: '',
             creatinine: '',
+            height: '',
             inr: '',
             pt: '',
             ptt: '',
@@ -1866,6 +1867,7 @@ Clinician Name`;
             age: telestrokeNote.age,
             sex: telestrokeNote.sex,
             weight: telestrokeNote.weight,
+            height: telestrokeNote.height,
             creatinine: telestrokeNote.creatinine,
             diagnosis: telestrokeNote.diagnosis,
             diagnosisCategory: telestrokeNote.diagnosisCategory,
@@ -3547,12 +3549,13 @@ Clinician Name`;
               caveats: 'Trial eligibility generally required pre-stroke mRS 0-1 and age 18-80. Higher sICH risk; discuss goals of care.',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/SVIN.124.001581#page=10',
               conditions: (data) => {
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
                 const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
                   /ica|m1|mca|basilar/i.test(v)
                 );
-                return !!timeFrom && timeFrom.total <= 6 && aspects !== null && aspects <= 5 && hasLVO;
+                return nihss >= 6 && !!timeFrom && timeFrom.total <= 6 && aspects !== null && aspects <= 5 && hasLVO;
               }
             },
             evt_large_core_late: {
@@ -3568,12 +3571,13 @@ Clinician Name`;
               caveats: 'Eligibility often required pre-stroke mRS 0-1 and age 18-80. Discuss goals of care and higher hemorrhage risk.',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/SVIN.124.001581#page=10',
               conditions: (data) => {
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
                 const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
                   /ica|m1|mca|basilar/i.test(v)
                 );
-                return !!timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && aspects !== null && aspects >= 3 && aspects <= 5 && hasLVO;
+                return nihss >= 6 && !!timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && aspects !== null && aspects >= 3 && aspects <= 5 && hasLVO;
               }
             },
             evt_large_core_uncertain: {
@@ -6310,11 +6314,16 @@ Clinician Name`;
             const inr = parseFloat(inrVal);
             if (isNaN(weight) || weight <= 0 || weight > 350) return null;
             let iuPerKg = null;
-            if (!isNaN(inr) && inr >= 2 && inr < 4) iuPerKg = 25;
-            else if (!isNaN(inr) && inr >= 4 && inr <= 6) iuPerKg = 35;
-            else if (!isNaN(inr) && inr > 6) iuPerKg = 50;
+            let inrTierNote = '';
+            if (!isNaN(inr)) {
+              if (inr < 1.3) { iuPerKg = null; inrTierNote = 'INR <1.3 — PCC likely not needed; give Vitamin K 10 mg IV'; }
+              else if (inr < 2) { iuPerKg = 25; inrTierNote = 'INR 1.3-1.9 — consider 4F-PCC 25 IU/kg (COR 2b/C)'; }
+              else if (inr < 4) { iuPerKg = 25; inrTierNote = 'INR 2.0-3.9 — 4F-PCC 25 IU/kg (COR 1/B)'; }
+              else if (inr <= 6) { iuPerKg = 35; inrTierNote = 'INR 4.0-6.0 — 4F-PCC 35 IU/kg (COR 1/B)'; }
+              else { iuPerKg = 50; inrTierNote = 'INR >6 — 4F-PCC 50 IU/kg (COR 1/B)'; }
+            }
             const ahaDose = iuPerKg ? Math.min(Math.round(weight * iuPerKg), 5000) : null;
-            return { fixedDose: 2000, ahaDose, iuPerKg, weight };
+            return { fixedDose: 2000, ahaDose, iuPerKg, weight, inrTierNote };
           };
 
           // =================================================================
@@ -6637,7 +6646,7 @@ Clinician Name`;
                 if (hoursSinceDose < 0) {
                   alerts.push({ severity: 'error', label: 'DOAC Time Error', message: 'Last DOAC dose is in the future — verify date/time entry', field: 'lastDOACDose' });
                 } else {
-                const crcl = calculateCrCl(data.telestrokeNote?.age, data.telestrokeNote?.weight, data.telestrokeNote?.sex, data.telestrokeNote?.creatinine);
+                const crcl = calculateCrCl(data.telestrokeNote?.age, data.telestrokeNote?.weight, data.telestrokeNote?.sex, data.telestrokeNote?.creatinine, data.telestrokeNote?.height);
                 const crclVal = crcl ? crcl.value : null;
                 const halfLifeMap = { apixaban: crclVal && crclVal < 30 ? 15 : 10, rivaroxaban: crclVal && crclVal < 30 ? 13 : 9, dabigatran: crclVal && crclVal < 30 ? 28 : crclVal && crclVal < 50 ? 18 : 14, edoxaban: crclVal && crclVal < 30 ? 16 : 12 };
                 const estHalfLife = halfLifeMap[doacType] || 12;
@@ -7649,7 +7658,7 @@ Clinician Name`;
             const allowedKeys = [
               'consultStartTime', 'callerName', 'callerRole', 'attendingPhysician',
               'callingSite', 'callingSiteOther',
-              'alias', 'age', 'sex', 'weight', 'nihss', 'vesselOcclusion', 'diagnosisCategory',
+              'alias', 'age', 'sex', 'weight', 'height', 'nihss', 'vesselOcclusion', 'diagnosisCategory',
               'toastClassification', 'secondaryPrevention',
               'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
               'presentingBP', 'heartRate', 'spO2', 'temperature', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT',
@@ -8306,6 +8315,7 @@ Clinician Name`;
               if (telestrokeNote.callerName) note += `Caller: ${telestrokeNote.callerName}${telestrokeNote.callerRole ? ` (${telestrokeNote.callerRole})` : ''}\n`;
               note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}`;
               if (telestrokeNote.weight) note += ` | Wt: ${telestrokeNote.weight} kg${telestrokeNote.weightEstimated ? ' (estimated)' : ''}`;
+              if (telestrokeNote.height) note += ` | Ht: ${telestrokeNote.height} cm`;
               note += `\n`;
               note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}`;
               if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
@@ -9068,8 +9078,8 @@ Clinician Name`;
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n`;
               if (telestrokeNote.creatinine) note += `Cr: ${telestrokeNote.creatinine}`;
               if (telestrokeNote.creatinine && telestrokeNote.age && telestrokeNote.weight && telestrokeNote.sex) {
-                const procCrcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
-                if (procCrcl) note += ` (CrCl ${procCrcl.value} mL/min)`;
+                const procCrcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
+                if (procCrcl) note += ` (CrCl ${procCrcl.value} mL/min${procCrcl.adjBwValue ? `, AdjBW CrCl ${procCrcl.adjBwValue}` : ''})`;
               }
               if (telestrokeNote.creatinine) note += '\n';
               if (telestrokeNote.inr) note += `INR: ${telestrokeNote.inr}\n`;
@@ -10876,6 +10886,15 @@ Clinician Name`;
             if (n.tnkRecommended && n.diagnosisCategory === 'ich') {
               warnings.push({ id: 'tnk-ich', severity: 'error', msg: 'TNK recommended but diagnosis is ICH — thrombolysis is contraindicated in hemorrhagic stroke' });
             }
+            if (n.tnkRecommended && n.diagnosisCategory === 'mimic') {
+              warnings.push({ id: 'tnk-mimic', severity: 'error', msg: 'TNK recommended but diagnosis is stroke mimic — thrombolysis is contraindicated. Clear TNK recommendation.' });
+            }
+            if (n.evtRecommended && n.diagnosisCategory === 'mimic') {
+              warnings.push({ id: 'evt-mimic', severity: 'error', msg: 'EVT recommended but diagnosis is stroke mimic — thrombectomy is not indicated. Clear EVT recommendation.' });
+            }
+            if (n.evtRecommended && !n.nihss && !nihssScore) {
+              warnings.push({ id: 'evt-no-nihss', severity: 'warn', msg: 'EVT recommended but NIHSS not documented — all EVT trials required NIHSS ≥6. Enter NIHSS before transfer.' });
+            }
             if (n.tnkRecommended && parseInt(n.nihss, 10) === 0) {
               warnings.push({ id: 'tnk-nihss-zero', severity: 'error', msg: 'TNK recommended with NIHSS 0 — no neurological deficit documented. Verify clinical indication before proceeding.' });
             }
@@ -10971,7 +10990,7 @@ Clinician Name`;
 
             // Edoxaban + CrCl >95 warning
             if (n.lastDOACType === 'edoxaban') {
-              const edoCrCl = calculateCrCl(n.age, n.weight, n.sex, n.creatinine);
+              const edoCrCl = calculateCrCl(n.age, n.weight, n.sex, n.creatinine, n.height);
               if (edoCrCl && edoCrCl.value > 95) {
                 warnings.push({ id: 'edoxaban-crcl-high', severity: 'error', msg: `Edoxaban with CrCl ${edoCrCl.value} mL/min (>95) — AVOID: reduced efficacy and increased stroke risk per ENGAGE AF-TIMI 48 and FDA labeling. Switch to alternative DOAC.` });
               }
@@ -12419,7 +12438,7 @@ Clinician Name`;
               if (lastDose && !Number.isNaN(lastDose.getTime())) {
                 const hoursSince = (Date.now() - lastDose.getTime()) / (1000 * 60 * 60);
                 if (hoursSince >= 0) {
-                  const crcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
+                  const crcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
                   const crclVal = crcl ? crcl.value : null;
                   const halfLifeMap = { apixaban: crclVal && crclVal < 30 ? 15 : 10, rivaroxaban: crclVal && crclVal < 30 ? 13 : 9, dabigatran: crclVal && crclVal < 30 ? 28 : crclVal && crclVal < 50 ? 18 : 14, edoxaban: crclVal && crclVal < 30 ? 16 : 12 };
                   const estHalfLife = halfLifeMap[doacType] || 12;
@@ -14631,15 +14650,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Consultation Metadata */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                           <div>
-                            <label className="block text-xs font-medium text-slate-600 mb-1">Caller Name</label>
-                            <input type="text" value={telestrokeNote.callerName}
+                            <label htmlFor="input-caller-name" className="block text-xs font-medium text-slate-600 mb-1">Caller Name</label>
+                            <input id="input-caller-name" type="text" value={telestrokeNote.callerName}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, callerName: v})); }}
                               placeholder="e.g., Dr. Smith"
                               className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500" />
                           </div>
                           <div>
-                            <label className="block text-xs font-medium text-slate-600 mb-1">Caller Role</label>
-                            <select value={telestrokeNote.callerRole}
+                            <label htmlFor="input-caller-role" className="block text-xs font-medium text-slate-600 mb-1">Caller Role</label>
+                            <select id="input-caller-role" value={telestrokeNote.callerRole}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, callerRole: v})); }}
                               className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500">
                               <option value="">--</option>
@@ -14652,8 +14671,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </select>
                           </div>
                           <div>
-                            <label className="block text-xs font-medium text-slate-600 mb-1">Attending</label>
-                            <input type="text" value={telestrokeNote.attendingPhysician}
+                            <label htmlFor="input-attending" className="block text-xs font-medium text-slate-600 mb-1">Attending</label>
+                            <input id="input-attending" type="text" value={telestrokeNote.attendingPhysician}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, attendingPhysician: v})); }}
                               placeholder="Attending name"
                               className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500" />
@@ -14927,6 +14946,18 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </label>
                             </div>
                             <div>
+                              <label htmlFor="input-height" className="block text-xs font-medium text-slate-600 mb-1">Height (cm)</label>
+                              <input
+                                id="input-height"
+                                type="number"
+                                min="100" max="250" step="1"
+                                value={telestrokeNote.height}
+                                onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, height: v})); }}
+                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
+                                placeholder="e.g. 170"
+                              />
+                            </div>
+                            <div>
                               <label htmlFor="input-creatinine" className="block text-xs font-medium text-slate-600 mb-1">Cr (mg/dL)</label>
                               <input
                                 id="input-creatinine"
@@ -14966,14 +14997,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                           {/* Auto-calculated CrCl Display */}
                           {(() => {
-                            const crcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
+                            const crcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
                             if (!crcl) return null;
                             const colorClass = crcl.isLow ? 'bg-red-50 border-red-200 text-red-800' : crcl.isBorderline ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-emerald-50 border-emerald-200 text-emerald-800';
                             return (
-                              <div className={`mb-3 border rounded-lg p-2 flex items-center justify-between text-sm ${colorClass}`}>
-                                <span className="font-medium">CrCl (Cockcroft-Gault): <span className="font-bold">{crcl.value} mL/min</span> — {crcl.label}</span>
-                                {crcl.isLow && <span className="text-xs font-semibold px-2 py-0.5 bg-red-200 rounded-full">Renal dose adjustment required</span>}
-                                {crcl.isBorderline && <span className="text-xs font-semibold px-2 py-0.5 bg-amber-200 rounded-full">Check DOAC dosing</span>}
+                              <div className={`mb-3 border rounded-lg p-2 text-sm ${colorClass}`}>
+                                <div className="flex items-center justify-between">
+                                  <span className="font-medium">CrCl (Cockcroft-Gault): <span className="font-bold">{crcl.value} mL/min</span> — {crcl.label}</span>
+                                  {crcl.isLow && <span className="text-xs font-semibold px-2 py-0.5 bg-red-200 rounded-full">Renal dose adjustment required</span>}
+                                  {crcl.isBorderline && <span className="text-xs font-semibold px-2 py-0.5 bg-amber-200 rounded-full">Check DOAC dosing</span>}
+                                </div>
+                                {crcl.obesityWarning && <p className="text-xs mt-1 font-medium text-amber-800">{crcl.obesityWarning}</p>}
                               </div>
                             );
                           })()}
@@ -15097,7 +15131,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType] && (() => {
                               const info = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
                               const hoursSince = (() => { if (!telestrokeNote.lastDOACDose) return null; const d = new Date(telestrokeNote.lastDOACDose); return Number.isNaN(d.getTime()) ? null : Math.max(0, (new Date() - d) / (1000 * 60 * 60)); })();
-                              const crcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
+                              const crcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
                               const crclVal = crcl ? crcl.value : null;
                               // Estimate effective half-life based on renal function
                               // References: apixaban t½ 8-15h (severe renal), rivaroxaban 9-13h, dabigatran 14-28h
@@ -15815,7 +15849,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="flex items-start gap-1"><span className="text-purple-500 font-bold">9.</span> CNS infection (meningitis, encephalitis)</div>
                                   <div className="flex items-start gap-1"><span className="text-purple-500 font-bold">10.</span> Brain tumor / mass lesion</div>
                                 </div>
-                                <div className="text-xs text-purple-700 bg-purple-100 rounded p-1.5 mt-1">
+                                <div className="text-xs text-purple-900 bg-purple-100 rounded p-1.5 mt-1">
                                   <strong>Key checks:</strong> Fingerstick glucose, tox screen, EEG if seizure suspected, MRI DWI to exclude infarct, CBC/BMP/TSH. Consider HINTS exam for posterior fossa symptoms.
                                 </div>
                               </div>
@@ -16347,6 +16381,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </label>
                             </div>
                             <div>
+                              <label className="block text-sm font-medium text-slate-700 mb-1">Height <span className="text-xs text-slate-500 font-normal">(cm)</span></label>
+                              <input
+                                type="number" min="100" max="250" step="1"
+                                value={telestrokeNote.height}
+                                onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, height: v})); }}
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                placeholder="cm"
+                              />
+                            </div>
+                            <div>
                               <label className="block text-sm font-medium text-slate-700 mb-1">
                                 Pre-stroke mRS
                                 <span className="ml-1 text-xs text-blue-600 font-normal">(trials)</span>
@@ -16491,7 +16535,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                                   {/* Thrombolysis Note */}
                                   {ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].thrombolysisNote && (
-                                    <div className="text-xs text-orange-700 bg-orange-100 p-2 rounded flex items-start gap-1">
+                                    <div className="text-xs text-orange-900 bg-orange-100 p-2 rounded flex items-start gap-1">
                                       <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-amber-600"></i>
                                       <span>{ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].thrombolysisNote}</span>
                                     </div>
@@ -17205,7 +17249,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         className="w-4 h-4"
                                       />
                                       <span className="text-sm flex-1">{region.name}</span>
-                                      <span className="text-xs font-semibold text-purple-700 bg-purple-100 px-2 py-1 rounded">
+                                      <span className="text-xs font-semibold text-purple-900 bg-purple-100 px-2 py-1 rounded">
                                         {region.points} {region.points === 1 ? 'point' : 'points'}
                                       </span>
                                     </label>
@@ -17918,7 +17962,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }
                               // Creatinine / severe renal failure
                               const crVal = parseFloat(telestrokeNote.creatinine);
-                              const patCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
+                              const patCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
                               if ((!isNaN(crVal) && crVal > 3) || (patCrCl && patCrCl.value < 25)) {
                                 autoDetected.severeRenalFailure = true;
                               }
@@ -20117,7 +20161,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                                   {/* DOAC Dose Reduction Criteria — Dynamic Renal Safety Engine */}
                                   {(() => {
-                                    const patientCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
+                                    const patientCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
                                     const crclVal = patientCrCl ? patientCrCl.value : null;
                                     const patientAge = parseFloat(telestrokeNote.age) || 0;
                                     const patientWt = parseFloat(telestrokeNote.weight) || 0;
@@ -27544,19 +27588,28 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="mg/dL" />
                           </div>
                         </div>
+                        <div className="mb-3">
+                          <label className="text-xs text-slate-600">Height (cm) — for obesity-adjusted CrCl</label>
+                          <input type="number" min="100" max="250" step="1" value={(telestrokeNote.crclCalc || {}).height || telestrokeNote.height || ''}
+                            onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, crclCalc: {...(prev.crclCalc || {}), height: v}})); }}
+                            className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="cm (optional — enables BMI/AdjBW calculation)" />
+                        </div>
                         {(() => {
                           const result = calculateCrCl(
                             (telestrokeNote.crclCalc || {}).age || telestrokeNote.age,
                             (telestrokeNote.crclCalc || {}).weight || telestrokeNote.weight,
                             (telestrokeNote.crclCalc || {}).sex || telestrokeNote.sex,
-                            (telestrokeNote.crclCalc || {}).cr || telestrokeNote.creatinine
+                            (telestrokeNote.crclCalc || {}).cr || telestrokeNote.creatinine,
+                            (telestrokeNote.crclCalc || {}).height || telestrokeNote.height
                           );
                           if (!result) return <p className="text-xs text-slate-500 italic">Enter age, weight, sex, and creatinine to calculate.</p>;
                           const colorClass = result.isLow ? 'bg-red-100 border-red-300' : result.isBorderline ? 'bg-amber-100 border-amber-300' : 'bg-emerald-100 border-emerald-300';
                           return (
                             <div className={`p-3 rounded-lg border ${colorClass}`}>
                               <p className="text-lg font-bold">CrCl: {result.value} mL/min</p>
+                              {result.adjBwValue && <p className="text-sm font-bold text-amber-800">Adjusted Body Weight CrCl: {result.adjBwValue} mL/min (BMI {result.bmi})</p>}
                               <p className="text-sm font-medium">{result.label}</p>
+                              {result.obesityWarning && <p className="text-xs mt-1 text-amber-700 font-medium">{result.obesityWarning}</p>}
                               <div className="mt-2 text-xs space-y-1">
                                 {result.renalCategory === 'severe-dialysis' && <p className="text-red-700 font-semibold">Avoid DOACs. Consider warfarin or consult nephrology.</p>}
                                 {result.renalCategory === 'severe' && (
@@ -27611,13 +27664,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div>
                             <label className="text-xs text-slate-600">CrCl (mL/min)</label>
-                            <input type="number" value={(telestrokeNote.enoxCalc || {}).crCl || (() => { const c = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine); return c ? c.value : ''; })() || ''}
+                            <input type="number" value={(telestrokeNote.enoxCalc || {}).crCl || (() => { const c = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height); return c ? c.value : ''; })() || ''}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, enoxCalc: {...(prev.enoxCalc || {}), crCl: v}})); }}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="mL/min (auto from demographics)" />
                           </div>
                         </div>
                         {(() => {
-                          const autoCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine);
+                          const autoCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
                           const result = calculateEnoxaparinDose(
                             (telestrokeNote.enoxCalc || {}).weightKg || telestrokeNote.weight,
                             (telestrokeNote.enoxCalc || {}).crCl || (autoCrCl ? autoCrCl.value : '')
