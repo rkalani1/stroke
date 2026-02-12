@@ -210,7 +210,8 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         const ToastContainer = ({ toasts, removeToast }) => {
           return React.createElement('div', {
             className: 'fixed bottom-20 left-1/2 -translate-x-1/2 z-[100] flex flex-col-reverse gap-2 pointer-events-none max-w-md w-full px-4',
-            'aria-live': 'polite'
+            'aria-live': 'polite',
+            'aria-atomic': 'true'
           }, toasts.map(t => React.createElement('div', {
             key: t.id,
             className: `pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-xl shadow-lg border text-sm font-medium transition-all animate-toast-in ${
@@ -1582,7 +1583,8 @@ Clinician Name`;
 
           // Toast notification system
           const [toasts, setToasts] = useState([]);
-          const addToast = React.useCallback((message, type = 'info', duration = 3000) => {
+          const addToast = React.useCallback((message, type = 'info', duration) => {
+            if (duration === undefined) duration = type === 'error' ? 6000 : 3000;
             const id = ++toastIdCounter;
             setToasts(prev => [...prev.slice(-4), { id, message, type }]);
             if (duration > 0) {
@@ -6674,6 +6676,29 @@ Clinician Name`;
             if (/prasugrel|effient/.test(medsLower)) antiplatelets.push('prasugrel');
             if (antiplatelets.length >= 2) {
               alerts.push({ severity: 'warning', label: 'DAPT', message: `Dual antiplatelet (${antiplatelets.join(' + ')}) — increased hemorrhage risk with TNK. Weigh benefit vs bleed risk.`, field: 'medications' });
+            }
+
+            // PT check
+            const ptVal = parseFloat(data.telestrokeNote?.pt);
+            if (!isNaN(ptVal) && ptVal > 15) {
+              alerts.push({ severity: 'critical', label: 'Elevated PT', message: `PT ${ptVal.toFixed(1)}s (>15s) — tPA/TNK CONTRAINDICATED`, field: 'pt' });
+            }
+
+            // Pediatric age exclusion
+            if (!isNaN(age) && age < 18) {
+              alerts.push({ severity: 'critical', label: 'Pediatric Patient', message: `Age ${age} (<18) — IV thrombolysis eligibility requires age ≥18 per AHA/ASA guidelines`, field: 'age' });
+            }
+
+            // Pregnancy + DOAC contraindication
+            if (data.telestrokeNote?.pregnancyStroke && ['apixaban', 'rivaroxaban', 'dabigatran', 'edoxaban'].includes(acType)) {
+              const pregnancyDoacName = ANTICOAGULANT_INFO[acType]?.name || acType;
+              alerts.push({ severity: 'critical', label: 'Pregnancy + DOAC', message: `Pregnant/postpartum on ${pregnancyDoacName} — DOACs contraindicated in pregnancy. Switch to LMWH or UFH.`, field: 'pregnancyStroke' });
+            }
+
+            // Low weight warning for thrombolytic dosing
+            const weight = parseFloat(data.telestrokeNote?.weight);
+            if (!isNaN(weight) && weight > 0 && weight < 30) {
+              alerts.push({ severity: 'warning', label: 'Low Weight', message: `Weight ${weight} kg (<30 kg) — verify actual weight; thrombolytic dosing may be subtherapeutic`, field: 'weight' });
             }
 
             return alerts;
@@ -15056,7 +15081,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   return 'border-slate-300';
                                 })()}`}
                               />
-                              {telestrokeNote.glucose && parseInt(telestrokeNote.glucose, 10) < 60 && <p id="glucose-error" role="alert" className="text-xs text-red-600 mt-0.5">Hypoglycemia - stroke mimic?</p>}
+                              {telestrokeNote.glucose && parseInt(telestrokeNote.glucose, 10) < 60 && <p id="glucose-error" role="alert" className="text-xs text-red-600 font-semibold mt-0.5">WARNING: Hypoglycemia - stroke mimic?</p>}
                             </div>
                             <div>
                               <label htmlFor="input-inr" className="block text-xs text-slate-600 mb-1">INR</label>
@@ -15076,7 +15101,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   return 'border-slate-300';
                                 })()}`}
                               />
-                              {telestrokeNote.inr && parseFloat(telestrokeNote.inr) > 1.7 && <p id="inr-error" role="alert" className="text-xs text-red-600 mt-0.5">TNK contraindicated (INR &gt;1.7)</p>}
+                              {telestrokeNote.inr && parseFloat(telestrokeNote.inr) > 1.7 && <p id="inr-error" role="alert" className="text-xs text-red-600 font-semibold mt-0.5">CONTRAINDICATED: TNK — INR &gt;1.7</p>}
                             </div>
                             <div>
                               <label htmlFor="input-pt" className="block text-xs text-slate-600 mb-1">PT</label>
@@ -15097,7 +15122,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   return 'border-slate-300';
                                 })()}`}
                               />
-                              {telestrokeNote.pt && parseFloat(telestrokeNote.pt) > 15 && <p id="pt-error" role="alert" className="text-xs text-red-600 mt-0.5">TNK contraindicated (PT &gt;15s)</p>}
+                              {telestrokeNote.pt && parseFloat(telestrokeNote.pt) > 15 && <p id="pt-error" role="alert" className="text-xs text-red-600 font-semibold mt-0.5">CONTRAINDICATED: TNK — PT &gt;15s</p>}
                             </div>
                             <div>
                               <label htmlFor="input-platelets" className="block text-xs text-slate-600 mb-1">Platelets</label>
@@ -15117,7 +15142,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   return 'border-slate-300';
                                 })()}`}
                               />
-                              {telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount, 10) < 100 && <p id="platelets-error" role="alert" className="text-xs text-red-600 mt-0.5">TNK contraindicated (plt &lt;100K)</p>}
+                              {telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount, 10) < 100 && <p id="platelets-error" role="alert" className="text-xs text-red-600 font-semibold mt-0.5">CONTRAINDICATED: TNK — Plt &lt;100K</p>}
                             </div>
                           </div>
                           {/* BP Threshold Alert */}
