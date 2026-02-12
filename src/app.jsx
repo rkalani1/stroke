@@ -25956,7 +25956,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
-                        <div className="space-y-1">
+                        <div className="space-y-1" role="group" aria-label="Eye Opening">
                           <h4 className="font-semibold text-sm mb-1">Eye Opening</h4>
                           {[{v:'4',l:'Spontaneous'},{v:'3',l:'To sound'},{v:'2',l:'To pain'},{v:'1',l:'None'}].map(o => (
                             <button key={o.v} type="button"
@@ -25967,7 +25967,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </button>
                           ))}
                         </div>
-                        <div className="space-y-1">
+                        <div className="space-y-1" role="group" aria-label="Verbal Response">
                           <h4 className="font-semibold text-sm mb-1">Verbal Response</h4>
                           {[{v:'5',l:'Oriented'},{v:'4',l:'Confused'},{v:'3',l:'Inappropriate'},{v:'2',l:'Incomprehensible'},{v:'1',l:'None'}].map(o => (
                             <button key={o.v} type="button"
@@ -25978,7 +25978,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </button>
                           ))}
                         </div>
-                        <div className="space-y-1">
+                        <div className="space-y-1" role="group" aria-label="Motor Response">
                           <h4 className="font-semibold text-sm mb-1">Motor Response</h4>
                           {[{v:'6',l:'Obeying'},{v:'5',l:'Localizing'},{v:'4',l:'Flexing'},{v:'3',l:'Abnormal flexion'},{v:'2',l:'Extending'},{v:'1',l:'None'}].map(o => (
                             <button key={o.v} type="button"
@@ -25997,7 +25997,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         const tone = gcs <= 8 ? 'bg-red-50 border-red-200 text-red-800' : gcs <= 12 ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-emerald-50 border-emerald-200 text-emerald-800';
                         return (
                           <div className={`mt-3 border rounded-lg p-2 text-xs ${tone}`}>
-                            <span className="font-semibold">Interpretation:</span> {label} brain injury (GCS {gcs})
+                            <span className="font-semibold">Interpretation:</span> {label === 'Severe' ? 'SEVERE' : label === 'Moderate' ? 'MODERATE' : 'Mild'} brain injury (GCS {gcs}){gcs <= 8 ? ' — consider intubation for airway protection' : ''}
                           </div>
                         );
                       })()}
