@@ -8013,7 +8013,43 @@ Clinician Name`;
             const evtStatus = telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
             const rationale = telestrokeNote.rationale || "[rationale]";
             const site = telestrokeNote.callingSite ? `[${telestrokeNote.callingSite}] ` : '';
-            return `${site}${age} year old ${sex} with ${pmh} who presents with ${symptoms}. Last known well is ${lkw} ${lkwDate}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${aspectsStr}${vesselStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}. TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}. Rationale: ${rationale}.`;
+            // LKW unknown handling
+            const lkwStr = telestrokeNote.lkwUnknown
+              ? `Last known well: UNKNOWN (wake-up stroke). Discovery: ${telestrokeNote.discoveryTime || '[time]'} ${telestrokeNote.discoveryDate || '[date]'}`
+              : `Last known well is ${lkw} ${lkwDate}`;
+            // Early infarct signs
+            let ctExtra = '';
+            if (telestrokeNote.earlyInfarctSigns) ctExtra += ' Early infarct signs.';
+            if (telestrokeNote.denseArterySign) ctExtra += ' Hyperdense artery sign.';
+            // Complications
+            let compStr = '';
+            if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) compStr += ' ANGIOEDEMA.';
+            if ((telestrokeNote.hemorrhagicTransformation || {}).detected) compStr += ' HT.';
+            if (telestrokeNote.sichDetected) compStr += ' sICH.';
+            if ((telestrokeNote.decompressiveCraniectomy || {}).considered) compStr += ' Craniectomy considered.';
+            // ICH volume
+            let ichVolStr = '';
+            if (telestrokeNote.diagnosisCategory === 'ich') {
+              const pIchCalc = telestrokeNote.ichVolumeCalc || {};
+              const pIchVol = calculateICHVolume(pIchCalc);
+              if (pIchVol && pIchVol.volume) ichVolStr = ` ICH vol: ${pIchVol.volume} mL${pIchVol.isLarge ? ' (LARGE)' : ''}.`;
+            }
+            // Wake-up stroke
+            let wusStr = '';
+            const pWus = telestrokeNote.wakeUpStrokeWorkflow || {};
+            if (pWus.isWakeUpStroke) {
+              if (pWus.mriAvailable) {
+                const pDwi = pWus.dwi || {};
+                const pFlair = pWus.flair || {};
+                const wakeUpMet = pDwi.positiveForLesion && pFlair.noMarkedHyperintensity && pWus.ageEligible && pWus.nihssEligible;
+                wusStr = wakeUpMet ? ' WAKE-UP eligible.' : ' Wake-up eval in progress.';
+              } else if (pWus.mriAvailable === false) {
+                const pExt = pWus.extendCriteria || {};
+                const extCount = [pExt.nihss4to26, pExt.premorbidMRSLt2, pExt.ischemicCoreLte70, pExt.mismatchRatioGte1_2, pExt.timeWindow4_5to9h].filter(Boolean).length;
+                wusStr = extCount === 5 ? ' EXTEND eligible.' : ` EXTEND ${extCount}/5.`;
+              }
+            }
+            return `${site}${age} year old ${sex} with ${pmh} who presents with ${symptoms}. ${lkwStr}. NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${ctExtra}${aspectsStr}${ichVolStr}${vesselStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}.${wusStr} TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}.${compStr} Rationale: ${rationale}.`;
           };
           const generatePulsaraPreview = () => {
             const age = telestrokeNote.age || "***";
@@ -8292,6 +8328,84 @@ Clinician Name`;
                 if (telestrokeNote.sahNeurosurgeryConsulted) note += `- Neurosurgery: consulted\n`;
                 if (telestrokeNote.sahSeizureProphylaxis) note += `- Seizure prophylaxis: initiated\n`;
               }
+              // CVT-specific data
+              if (telestrokeNote.diagnosisCategory === 'cvt') {
+                let cvtTransfer = '\nCVT MANAGEMENT:\n';
+                if (telestrokeNote.cvtAnticoagStarted) cvtTransfer += `- Anticoagulation initiated (${telestrokeNote.cvtAnticoagType || 'agent selected'})\n`;
+                if (telestrokeNote.cvtIcpManaged) cvtTransfer += `- ICP management addressed\n`;
+                if (telestrokeNote.cvtSeizureManaged) cvtTransfer += `- Seizure management addressed\n`;
+                if (telestrokeNote.cvtHematologyConsulted) cvtTransfer += `- Hematology consulted for thrombophilia workup\n`;
+                const cvtAc = telestrokeNote.cvtAnticoag || {};
+                if (cvtAc.acutePhase) cvtTransfer += `- Acute phase: ${cvtAc.acutePhase.replace(/-/g, ' ')}\n`;
+                if (cvtAc.transitionAgent) cvtTransfer += `- Transition agent: ${cvtAc.transitionAgent}\n`;
+                if (cvtAc.duration) cvtTransfer += `- Duration: ${cvtAc.duration}\n`;
+                if (cvtAc.apsStatus) cvtTransfer += `- APS confirmed — warfarin mandatory\n`;
+                if (cvtTransfer !== '\nCVT MANAGEMENT:\n') note += cvtTransfer;
+              }
+              // TIA workup
+              {
+                const tiaW = telestrokeNote.tiaWorkup || {};
+                const tiaItems = [];
+                if (tiaW.mriDwi) tiaItems.push('MRI DWI');
+                if (tiaW.ctaHeadNeck) tiaItems.push('CTA Head/Neck');
+                if (tiaW.ecg12Lead) tiaItems.push('12-lead ECG');
+                if (tiaW.telemetry) tiaItems.push('telemetry');
+                if (tiaW.echo) tiaItems.push('echo');
+                if (tiaW.labsCbc) tiaItems.push('CBC');
+                if (tiaW.labsBmp) tiaItems.push('BMP');
+                if (tiaW.labsA1c) tiaItems.push('HbA1c');
+                if (tiaW.labsLipids) tiaItems.push('lipid panel');
+                if (tiaW.labsTsh) tiaItems.push('TSH');
+                if (tiaItems.length > 0) {
+                  note += `\nTIA WORKUP:\n`;
+                  note += `- Completed: ${tiaItems.join(', ')}\n`;
+                  note += `- ${tiaItems.length}/${Object.keys(tiaW).length} items completed\n`;
+                }
+              }
+              // Dissection pathway
+              {
+                const diss = telestrokeNote.dissectionPathway || {};
+                if (diss.antithromboticType || diss.imagingFollowUp) {
+                  note += `\nDISSECTION MANAGEMENT:\n`;
+                  if (diss.antithromboticType) note += `- Antithrombotic: ${diss.antithromboticType.replace(/-/g, ' ')}\n`;
+                  if (diss.imagingFollowUp) note += `- Vascular imaging follow-up: ${diss.imagingFollowUp}\n`;
+                  note += `- Cervical manipulation avoidance counseled\n`;
+                }
+              }
+              // Carotid management
+              {
+                const carotid = telestrokeNote.carotidManagement || {};
+                if (carotid.stenosisDegree) {
+                  note += `\nCAROTID: ${carotid.stenosisSide || ''} ${carotid.stenosisDegree}% stenosis${carotid.symptomatic ? ' (symptomatic)' : ' (asymptomatic)'}\n`;
+                  if (carotid.intervention) note += `- Plan: ${carotid.intervention.replace(/-/g, ' ')}\n`;
+                }
+              }
+              // ESUS/Cryptogenic workup
+              {
+                const esus = telestrokeNote.esusWorkup || {};
+                if (esus.cardiacMonitoringType || esus.teePerformed || esus.hypercoagWorkup) {
+                  note += `\nESUS/CRYPTOGENIC WORKUP:\n`;
+                  if (esus.cardiacMonitoringType) note += `- Cardiac monitoring: ${esus.cardiacMonitoringType.replace(/-/g, ' ')}\n`;
+                  if (esus.teePerformed) note += `- TEE: performed${esus.teeFindings ? ` — ${esus.teeFindings}` : ''}\n`;
+                  if (esus.afDetected) note += `- AF DETECTED on monitoring\n`;
+                  if (esus.hypercoagWorkup) note += `- Hypercoagulable workup ordered\n`;
+                  if (esus.esusAntiplatelet) note += `- Antithrombotic: ${esus.esusAntiplatelet.replace(/-/g, ' ')}\n`;
+                }
+              }
+              // ICH anticoagulation resumption
+              {
+                const ichAc = telestrokeNote.ichAnticoagResumption || {};
+                if (ichAc.decision) {
+                  note += `\nICH ANTICOAG RESUMPTION:\n`;
+                  if (ichAc.ichLocation) note += `- Location: ${ichAc.ichLocation}\n`;
+                  if (ichAc.caaFeatures) note += `- CAA features present\n`;
+                  if (ichAc.chadsVascScore) note += `- CHA2DS2-VASc: ${ichAc.chadsVascScore}\n`;
+                  if (ichAc.hasbledScore) note += `- HAS-BLED: ${ichAc.hasbledScore}\n`;
+                  note += `- Decision: ${ichAc.decision.replace(/-/g, ' ')}\n`;
+                  if (ichAc.rationale) note += `- Rationale: ${ichAc.rationale}\n`;
+                  if (ichAc.laaoConsidered) note += `- LAAO evaluation considered\n`;
+                }
+              }
               // Drug interaction alerts
               {
                 const di = telestrokeNote.drugInteractions || {};
@@ -8464,6 +8578,40 @@ Clinician Name`;
                   if (snDc.timing) note += `, window: ${snDc.timing}`;
                   note += `\n`;
                 }
+              }
+              // Pathway-specific (concise)
+              if (telestrokeNote.diagnosisCategory === 'cvt') {
+                const snCvtParts = [];
+                if (telestrokeNote.cvtAnticoagStarted) snCvtParts.push(`anticoag (${telestrokeNote.cvtAnticoagType || '?'})`);
+                if (telestrokeNote.cvtIcpManaged) snCvtParts.push('ICP managed');
+                if (telestrokeNote.cvtSeizureManaged) snCvtParts.push('seizure managed');
+                if (snCvtParts.length > 0) note += `- CVT: ${snCvtParts.join(', ')}\n`;
+              }
+              {
+                const snTiaW = telestrokeNote.tiaWorkup || {};
+                const snTiaCount = Object.values(snTiaW).filter(Boolean).length;
+                if (snTiaCount > 0) note += `- TIA workup: ${snTiaCount}/${Object.keys(snTiaW).length} items completed\n`;
+              }
+              {
+                const snDiss = telestrokeNote.dissectionPathway || {};
+                if (snDiss.antithromboticType) note += `- Dissection: ${snDiss.antithromboticType.replace(/-/g, ' ')}${snDiss.imagingFollowUp ? `, f/u: ${snDiss.imagingFollowUp}` : ''}\n`;
+              }
+              {
+                const snCarotid = telestrokeNote.carotidManagement || {};
+                if (snCarotid.stenosisDegree) note += `- Carotid: ${snCarotid.stenosisSide || ''} ${snCarotid.stenosisDegree}% ${snCarotid.symptomatic ? '(sx)' : '(asx)'}${snCarotid.intervention ? ` → ${snCarotid.intervention.replace(/-/g, ' ')}` : ''}\n`;
+              }
+              {
+                const snEsus = telestrokeNote.esusWorkup || {};
+                const snEsusParts = [];
+                if (snEsus.cardiacMonitoringType) snEsusParts.push(snEsus.cardiacMonitoringType.replace(/-/g, ' '));
+                if (snEsus.teePerformed) snEsusParts.push('TEE done');
+                if (snEsus.afDetected) snEsusParts.push('AF DETECTED');
+                if (snEsus.hypercoagWorkup) snEsusParts.push('hypercoag workup');
+                if (snEsusParts.length > 0) note += `- ESUS workup: ${snEsusParts.join(', ')}\n`;
+              }
+              {
+                const snIchAc = telestrokeNote.ichAnticoagResumption || {};
+                if (snIchAc.decision) note += `- ICH anticoag: ${snIchAc.decision.replace(/-/g, ' ')}${snIchAc.chadsVascScore ? ` (CHA2DS2-VASc ${snIchAc.chadsVascScore})` : ''}\n`;
               }
               // Special populations
               if (telestrokeNote.pregnancyStroke) note += `- PREGNANCY: OB/GYN co-management recommended\n`;
@@ -8693,10 +8841,35 @@ Clinician Name`;
               note += `- Severe headache\n`;
               note += `- Seizures\n`;
               note += `- Difficulty breathing\n\n`;
+              // Driving restrictions
+              const edDrv = telestrokeNote.drivingRestrictions || {};
+              if (edDrv.counselingProvided) {
+                note += `DRIVING:\n`;
+                note += `- You must NOT drive for ${edDrv.restrictionDuration || 'a period determined by your doctor'}\n`;
+                if (edDrv.commercialDriver) note += `- As a commercial driver, additional DMV reporting is required\n`;
+                note += `- You will need clearance from your neurologist before driving again\n\n`;
+              }
+              // Rehab referrals
+              const edRehab = telestrokeNote.rehabReferral || {};
+              const edRehabItems = [];
+              if (edRehab.pt) edRehabItems.push('Physical Therapy');
+              if (edRehab.ot) edRehabItems.push('Occupational Therapy');
+              if (edRehab.slp) edRehabItems.push('Speech-Language Therapy');
+              if (edRehabItems.length > 0) {
+                note += `YOUR REHABILITATION:\n`;
+                edRehabItems.forEach(r => { note += `- ${r}: Attend all sessions as scheduled\n`; });
+                note += '\n';
+              }
               note += `FOLLOW-UP APPOINTMENTS:\n`;
-              note += `- Stroke clinic: 1-2 weeks\n`;
+              const edIsTIA = (telestrokeNote.diagnosis || '').toLowerCase().includes('tia');
+              if (edIsTIA) {
+                note += `- Stroke clinic: URGENT — within 24-72 hours\n`;
+              } else {
+                note += `- Stroke clinic: 1-2 weeks\n`;
+              }
               note += `- Primary care: 1 week\n`;
               note += `- Rehabilitation therapy: as arranged\n`;
+              if (telestrokeNote.cardiacWorkup?.extendedMonitoringType) note += `- Cardiology: heart monitoring follow-up\n`;
               return note;
             }
 
@@ -8847,6 +9020,82 @@ Clinician Name`;
                 if (telestrokeNote.sahAneurysmSecured) note += `- Aneurysm: secured\n`;
                 if (telestrokeNote.sahNeurosurgeryConsulted) note += `- Neurosurgery: consulted\n`;
                 if (telestrokeNote.sahSeizureProphylaxis) note += `- Seizure prophylaxis: initiated\n`;
+              }
+              // CVT-specific data
+              if (telestrokeNote.diagnosisCategory === 'cvt') {
+                let cvtDisch = '\nCVT MANAGEMENT:\n';
+                if (telestrokeNote.cvtAnticoagStarted) cvtDisch += `- Anticoagulation initiated (${telestrokeNote.cvtAnticoagType || 'agent selected'})\n`;
+                if (telestrokeNote.cvtIcpManaged) cvtDisch += `- ICP management addressed\n`;
+                if (telestrokeNote.cvtSeizureManaged) cvtDisch += `- Seizure management addressed\n`;
+                if (telestrokeNote.cvtHematologyConsulted) cvtDisch += `- Hematology consulted for thrombophilia workup\n`;
+                const dcCvtAc = telestrokeNote.cvtAnticoag || {};
+                if (dcCvtAc.acutePhase) cvtDisch += `- Acute phase: ${dcCvtAc.acutePhase.replace(/-/g, ' ')}\n`;
+                if (dcCvtAc.transitionAgent) cvtDisch += `- Transition agent: ${dcCvtAc.transitionAgent}\n`;
+                if (dcCvtAc.duration) cvtDisch += `- Duration: ${dcCvtAc.duration}\n`;
+                if (dcCvtAc.apsStatus) cvtDisch += `- APS confirmed — warfarin mandatory\n`;
+                if (cvtDisch !== '\nCVT MANAGEMENT:\n') note += cvtDisch;
+              }
+              // TIA workup
+              {
+                const tiaWD = telestrokeNote.tiaWorkup || {};
+                const tiaItemsD = [];
+                if (tiaWD.mriDwi) tiaItemsD.push('MRI DWI');
+                if (tiaWD.ctaHeadNeck) tiaItemsD.push('CTA Head/Neck');
+                if (tiaWD.ecg12Lead) tiaItemsD.push('12-lead ECG');
+                if (tiaWD.telemetry) tiaItemsD.push('telemetry');
+                if (tiaWD.echo) tiaItemsD.push('echo');
+                if (tiaWD.labsCbc) tiaItemsD.push('CBC');
+                if (tiaWD.labsBmp) tiaItemsD.push('BMP');
+                if (tiaWD.labsA1c) tiaItemsD.push('HbA1c');
+                if (tiaWD.labsLipids) tiaItemsD.push('lipid panel');
+                if (tiaWD.labsTsh) tiaItemsD.push('TSH');
+                if (tiaItemsD.length > 0) {
+                  note += `\nTIA WORKUP:\n`;
+                  note += `- Completed: ${tiaItemsD.join(', ')}\n`;
+                }
+              }
+              // Dissection pathway
+              {
+                const dissD = telestrokeNote.dissectionPathway || {};
+                if (dissD.antithromboticType || dissD.imagingFollowUp) {
+                  note += `\nDISSECTION MANAGEMENT:\n`;
+                  if (dissD.antithromboticType) note += `- Antithrombotic: ${dissD.antithromboticType.replace(/-/g, ' ')}\n`;
+                  if (dissD.imagingFollowUp) note += `- Vascular imaging follow-up: ${dissD.imagingFollowUp}\n`;
+                }
+              }
+              // Carotid management
+              {
+                const carotidD = telestrokeNote.carotidManagement || {};
+                if (carotidD.stenosisDegree) {
+                  note += `\nCAROTID: ${carotidD.stenosisSide || ''} ${carotidD.stenosisDegree}% stenosis${carotidD.symptomatic ? ' (symptomatic)' : ' (asymptomatic)'}\n`;
+                  if (carotidD.intervention) note += `- Plan: ${carotidD.intervention.replace(/-/g, ' ')}\n`;
+                }
+              }
+              // ESUS/Cryptogenic workup
+              {
+                const esusD = telestrokeNote.esusWorkup || {};
+                if (esusD.cardiacMonitoringType || esusD.teePerformed || esusD.hypercoagWorkup) {
+                  note += `\nESUS/CRYPTOGENIC WORKUP:\n`;
+                  if (esusD.cardiacMonitoringType) note += `- Cardiac monitoring: ${esusD.cardiacMonitoringType.replace(/-/g, ' ')}\n`;
+                  if (esusD.teePerformed) note += `- TEE: performed${esusD.teeFindings ? ` — ${esusD.teeFindings}` : ''}\n`;
+                  if (esusD.afDetected) note += `- AF DETECTED on monitoring\n`;
+                  if (esusD.hypercoagWorkup) note += `- Hypercoagulable workup ordered\n`;
+                  if (esusD.esusAntiplatelet) note += `- Antithrombotic: ${esusD.esusAntiplatelet.replace(/-/g, ' ')}\n`;
+                }
+              }
+              // ICH anticoagulation resumption
+              {
+                const ichAcD = telestrokeNote.ichAnticoagResumption || {};
+                if (ichAcD.decision) {
+                  note += `\nICH ANTICOAG RESUMPTION:\n`;
+                  if (ichAcD.ichLocation) note += `- Location: ${ichAcD.ichLocation}\n`;
+                  if (ichAcD.caaFeatures) note += `- CAA features present\n`;
+                  if (ichAcD.chadsVascScore) note += `- CHA2DS2-VASc: ${ichAcD.chadsVascScore}\n`;
+                  if (ichAcD.hasbledScore) note += `- HAS-BLED: ${ichAcD.hasbledScore}\n`;
+                  note += `- Decision: ${ichAcD.decision.replace(/-/g, ' ')}\n`;
+                  if (ichAcD.rationale) note += `- Rationale: ${ichAcD.rationale}\n`;
+                  if (ichAcD.laaoConsidered) note += `- LAAO evaluation considered\n`;
+                }
               }
               note += '\n';
               note += `SECONDARY PREVENTION:\n`;
@@ -9197,13 +9446,33 @@ Clinician Name`;
 
             // Add EVT consent documentation
             if (telestrokeNote.evtRecommended && (telestrokeNote.consentKit || {}).evtConsentDiscussed) {
-              note += `\nEVT Consent: Risks and benefits of mechanical thrombectomy discussed with patient/family. `;
+              note += `\nEVT Consent: Risks and benefits of mechanical thrombectomy discussed with patient/family.\n`;
               const evtType = (telestrokeNote.consentKit || {}).evtConsentType;
-              if (evtType === 'informed-consent') note += 'Informed consent obtained.';
-              else if (evtType === 'presumed') note += 'Presumed consent — patient unable, no surrogate available.';
-              else if (evtType === 'surrogate') note += 'Surrogate/family consent obtained.';
-              else if (evtType === 'declined') note += 'Patient/family declined after informed discussion.';
-              note += '\n';
+              if (evtType === 'informed-consent') note += '- Informed consent obtained.\n';
+              else if (evtType === 'presumed') note += '- Presumed consent — patient unable, no surrogate available.\n';
+              else if (evtType === 'surrogate') note += '- Surrogate/family consent obtained.\n';
+              else if (evtType === 'declined') note += '- Patient/family declined after informed discussion.\n';
+              // Supporting clinical data for EVT decision
+              if (telestrokeNote.lkwUnknown) {
+                note += `- LKW: Unknown (wake-up/unwitnessed)`;
+                if (telestrokeNote.discoveryTime) note += ` — discovery ${telestrokeNote.discoveryTime}`;
+                note += '\n';
+              } else if (telestrokeNote.lkwTime) {
+                note += `- LKW: ${formatTime(telestrokeNote.lkwTime)}\n`;
+              }
+              if (aspectsScore != null) note += `- ASPECTS: ${aspectsScore}/10\n`;
+              const evtCtp = telestrokeNote.ctpStructured || {};
+              if (evtCtp.coreVolume) {
+                let ctpLine = `- CTP: Core ${evtCtp.coreVolume} mL`;
+                if (evtCtp.penumbraVolume) ctpLine += `, Penumbra ${evtCtp.penumbraVolume} mL`;
+                if (evtCtp.coreVolume && evtCtp.penumbraVolume) {
+                  const c = parseFloat(evtCtp.coreVolume), p = parseFloat(evtCtp.penumbraVolume);
+                  if (!isNaN(c) && !isNaN(p) && c > 0) ctpLine += `, Ratio ${(p/c).toFixed(1)}`;
+                }
+                note += ctpLine + '\n';
+              }
+              const evtVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
+              if (evtVessels.length > 0) note += `- Vessel occlusion: ${evtVessels.join(', ')}\n`;
             }
 
             // Add TOAST classification and workup plan
@@ -9381,6 +9650,85 @@ Clinician Name`;
                 if (cnDc.territorySize) note += ` — territory: ${cnDc.territorySize}`;
                 if (cnDc.timing) note += `, window: ${cnDc.timing}`;
                 note += '\n';
+              }
+            }
+
+            // CVT management
+            if (telestrokeNote.diagnosisCategory === 'cvt') {
+              let cnCvt = '\nCVT Management:\n';
+              if (telestrokeNote.cvtAnticoagStarted) cnCvt += `- Anticoagulation initiated (${telestrokeNote.cvtAnticoagType || 'agent selected'})\n`;
+              if (telestrokeNote.cvtIcpManaged) cnCvt += `- ICP management addressed\n`;
+              if (telestrokeNote.cvtSeizureManaged) cnCvt += `- Seizure management addressed\n`;
+              if (telestrokeNote.cvtHematologyConsulted) cnCvt += `- Hematology consulted for thrombophilia workup\n`;
+              const cnCvtAc = telestrokeNote.cvtAnticoag || {};
+              if (cnCvtAc.acutePhase) cnCvt += `- Acute phase: ${cnCvtAc.acutePhase.replace(/-/g, ' ')}\n`;
+              if (cnCvtAc.transitionAgent) cnCvt += `- Transition agent: ${cnCvtAc.transitionAgent}\n`;
+              if (cnCvtAc.duration) cnCvt += `- Duration: ${cnCvtAc.duration}\n`;
+              if (cnCvtAc.apsStatus) cnCvt += `- APS confirmed — warfarin mandatory\n`;
+              if (cnCvt !== '\nCVT Management:\n') note += cnCvt;
+            }
+            // TIA workup
+            {
+              const cnTiaW = telestrokeNote.tiaWorkup || {};
+              const cnTiaItems = [];
+              if (cnTiaW.mriDwi) cnTiaItems.push('MRI DWI');
+              if (cnTiaW.ctaHeadNeck) cnTiaItems.push('CTA Head/Neck');
+              if (cnTiaW.ecg12Lead) cnTiaItems.push('12-lead ECG');
+              if (cnTiaW.telemetry) cnTiaItems.push('telemetry');
+              if (cnTiaW.echo) cnTiaItems.push('echo');
+              if (cnTiaW.labsCbc) cnTiaItems.push('CBC');
+              if (cnTiaW.labsBmp) cnTiaItems.push('BMP');
+              if (cnTiaW.labsA1c) cnTiaItems.push('HbA1c');
+              if (cnTiaW.labsLipids) cnTiaItems.push('lipid panel');
+              if (cnTiaW.labsTsh) cnTiaItems.push('TSH');
+              if (cnTiaItems.length > 0) {
+                note += `\nTIA Workup:\n`;
+                note += `- Completed: ${cnTiaItems.join(', ')}\n`;
+                note += `- ${cnTiaItems.length}/${Object.keys(cnTiaW).length} items completed\n`;
+              }
+            }
+            // Dissection pathway
+            {
+              const cnDiss = telestrokeNote.dissectionPathway || {};
+              if (cnDiss.antithromboticType || cnDiss.imagingFollowUp) {
+                note += `\nDissection Management:\n`;
+                if (cnDiss.antithromboticType) note += `- Antithrombotic: ${cnDiss.antithromboticType.replace(/-/g, ' ')}\n`;
+                if (cnDiss.imagingFollowUp) note += `- Vascular imaging follow-up: ${cnDiss.imagingFollowUp}\n`;
+                note += `- Cervical manipulation avoidance counseled\n`;
+              }
+            }
+            // Carotid management
+            {
+              const cnCarotid = telestrokeNote.carotidManagement || {};
+              if (cnCarotid.stenosisDegree) {
+                note += `\nCarotid: ${cnCarotid.stenosisSide || ''} ${cnCarotid.stenosisDegree}% stenosis${cnCarotid.symptomatic ? ' (symptomatic)' : ' (asymptomatic)'}\n`;
+                if (cnCarotid.intervention) note += `- Plan: ${cnCarotid.intervention.replace(/-/g, ' ')}\n`;
+              }
+            }
+            // ESUS/Cryptogenic workup
+            {
+              const cnEsus = telestrokeNote.esusWorkup || {};
+              if (cnEsus.cardiacMonitoringType || cnEsus.teePerformed || cnEsus.hypercoagWorkup) {
+                note += `\nESUS/Cryptogenic Workup:\n`;
+                if (cnEsus.cardiacMonitoringType) note += `- Cardiac monitoring: ${cnEsus.cardiacMonitoringType.replace(/-/g, ' ')}\n`;
+                if (cnEsus.teePerformed) note += `- TEE: performed${cnEsus.teeFindings ? ` — ${cnEsus.teeFindings}` : ''}\n`;
+                if (cnEsus.afDetected) note += `- AF DETECTED on monitoring\n`;
+                if (cnEsus.hypercoagWorkup) note += `- Hypercoagulable workup ordered\n`;
+                if (cnEsus.esusAntiplatelet) note += `- Antithrombotic: ${cnEsus.esusAntiplatelet.replace(/-/g, ' ')}\n`;
+              }
+            }
+            // ICH anticoagulation resumption
+            {
+              const cnIchAc = telestrokeNote.ichAnticoagResumption || {};
+              if (cnIchAc.decision) {
+                note += `\nICH Anticoag Resumption:\n`;
+                if (cnIchAc.ichLocation) note += `- Location: ${cnIchAc.ichLocation}\n`;
+                if (cnIchAc.caaFeatures) note += `- CAA features present\n`;
+                if (cnIchAc.chadsVascScore) note += `- CHA2DS2-VASc: ${cnIchAc.chadsVascScore}\n`;
+                if (cnIchAc.hasbledScore) note += `- HAS-BLED: ${cnIchAc.hasbledScore}\n`;
+                note += `- Decision: ${cnIchAc.decision.replace(/-/g, ' ')}\n`;
+                if (cnIchAc.rationale) note += `- Rationale: ${cnIchAc.rationale}\n`;
+                if (cnIchAc.laaoConsidered) note += `- LAAO evaluation considered\n`;
               }
             }
 
