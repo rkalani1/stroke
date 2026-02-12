@@ -11505,7 +11505,17 @@ Clinician Name`;
               ? pcAspectsRegions.map((item) => ({ ...item }))
               : [],
             consultationType,
-            currentPatientId
+            currentPatientId,
+            evtDecisionInputs: { ...evtDecisionInputs },
+            doacProtocol,
+            nursingFlowsheetChecks: { ...nursingFlowsheetChecks },
+            weightUnit,
+            trialEligibility: { ...trialEligibility },
+            ichVolumeParams: { ...ichVolumeParams },
+            shiftPatients: Array.isArray(shiftPatients) ? [...shiftPatients] : [],
+            encounterPhase,
+            noteTemplate,
+            elapsedSeconds
           });
 
           const restoreCaseSnapshot = (snapshot) => {
@@ -11555,6 +11565,16 @@ Clinician Name`;
               : getDefaultPcAspectsRegions());
             setConsultationType(snapshot.consultationType || settings.defaultConsultationType || 'telephone');
             setCurrentPatientId(snapshot.currentPatientId || null);
+            setEvtDecisionInputs(snapshot.evtDecisionInputs || { population: 'adult', occlusion: 'lvo', timeWindow: 'auto', aspects: '6-10', mrs: '0-1', nihss: '', pcAspects: '>=6' });
+            setDoacProtocol(snapshot.doacProtocol || 'catalyst');
+            setNursingFlowsheetChecks(snapshot.nursingFlowsheetChecks || {});
+            setWeightUnit(snapshot.weightUnit || 'kg');
+            setTrialEligibility(snapshot.trialEligibility || {});
+            setIchVolumeParams(snapshot.ichVolumeParams || { a: '', b: '', thicknessMm: '', numSlices: '' });
+            setShiftPatients(Array.isArray(snapshot.shiftPatients) ? snapshot.shiftPatients : []);
+            if (snapshot.encounterPhase) setEncounterPhase(snapshot.encounterPhase);
+            if (snapshot.noteTemplate) setNoteTemplate(snapshot.noteTemplate);
+            if (Number.isFinite(snapshot.elapsedSeconds)) setElapsedSeconds(snapshot.elapsedSeconds);
             decisionStateRef.current = {
               tnkRecommended: note.tnkRecommended,
               evtRecommended: note.evtRecommended,
@@ -14474,6 +14494,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 }}
                                 min="0"
                                 max="42"
+                                step="1"
                                 className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xl font-bold text-center focus:ring-2 focus:ring-red-500"
                               />
                             </div>
@@ -14723,6 +14744,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => setAspectsScore(parseInt(e.target.value, 10) || 0)}
                                 min="0"
                                 max="10"
+                                step="1"
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
                               />
                             </div>
@@ -16065,7 +16087,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         return 'border-emerald-400 bg-emerald-50';
                                       })()
                                     }`}
-                                    min="0"
+                                    min="10" max="800"
                                   />
                                   <span className="ml-1 text-xs text-slate-500">mg/dL</span>
                                 </div>
@@ -16094,7 +16116,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     })()
                                   }`}
                                   step="0.1"
-                                  min="0"
+                                  min="0.5" max="15"
                                 />
                                 {(() => {
                                   const i = parseFloat(telestrokeNote.inr);
@@ -16120,7 +16142,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         return 'border-emerald-400 bg-emerald-50';
                                       })()
                                     }`}
-                                    min="0" max="1500"
+                                    min="1" max="1500"
                                   />
                                   <span className="ml-1 text-xs text-slate-500">K/μL</span>
                                 </div>
@@ -16148,7 +16170,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         return 'border-emerald-400 bg-emerald-50';
                                       })()
                                     }`}
-                                    min="0"
+                                    min="10" max="200"
                                   />
                                   <span className="ml-1 text-xs text-slate-500">sec</span>
                                 </div>
@@ -20158,7 +20180,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <div>
                                         <label className="block text-xs font-medium text-slate-600 mb-0.5">Baseline Na+ (mEq/L)</label>
                                         <div className="flex items-center gap-1">
-                                          <input type="number" step="0.1"
+                                          <input type="number" step="0.1" min="100" max="180"
                                             value={(telestrokeNote.osmoticTherapy || {}).baselineNa || ''}
                                             onChange={(e) => setTelestrokeNote({...telestrokeNote, osmoticTherapy: {...(telestrokeNote.osmoticTherapy || {}), baselineNa: e.target.value}})}
                                             placeholder="e.g. 138"
@@ -20174,7 +20196,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       </div>
                                       <div>
                                         <label className="block text-xs font-medium text-slate-600 mb-0.5">Repeat Na+ (mEq/L)</label>
-                                        <input type="number" step="0.1"
+                                        <input type="number" step="0.1" min="100" max="180"
                                           value={(telestrokeNote.osmoticTherapy || {}).repeatNa || ''}
                                           onChange={(e) => setTelestrokeNote({...telestrokeNote, osmoticTherapy: {...(telestrokeNote.osmoticTherapy || {}), repeatNa: e.target.value}})}
                                           placeholder="e.g. 148"
@@ -21148,7 +21170,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                             <div className="flex items-center gap-3 mb-3 p-2 bg-emerald-50 rounded-lg">
                               <label className="text-sm font-medium text-emerald-800 whitespace-nowrap">Discharge NIHSS:</label>
-                              <input type="number" min="0" max="42"
+                              <input type="number" min="0" max="42" step="1"
                                 value={telestrokeNote.dischargeNIHSS}
                                 onChange={(e) => setTelestrokeNote({...telestrokeNote, dischargeNIHSS: e.target.value})}
                                 placeholder={nihssScore ? `${nihssScore} (admission)` : '___'}
@@ -22960,7 +22982,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div>
                                 <label className="block text-xs text-slate-500 mb-1">A (cm)</label>
                                 <input
-                                  type="number"
+                                  type="number" min="0.1" max="20" step="0.1"
                                   value={ichVolumeParams.a}
                                   onChange={(e) => setIchVolumeParams(prev => ({ ...prev, a: e.target.value }))}
                                   className="w-full px-2 py-1.5 border border-slate-200 rounded-lg"
@@ -22970,7 +22992,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div>
                                 <label className="block text-xs text-slate-500 mb-1">B (cm)</label>
                                 <input
-                                  type="number"
+                                  type="number" min="0.1" max="20" step="0.1"
                                   value={ichVolumeParams.b}
                                   onChange={(e) => setIchVolumeParams(prev => ({ ...prev, b: e.target.value }))}
                                   className="w-full px-2 py-1.5 border border-slate-200 rounded-lg"
@@ -22980,7 +23002,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div>
                                 <label className="block text-xs text-slate-500 mb-1">Slice thickness (mm)</label>
                                 <input
-                                  type="number"
+                                  type="number" min="1" max="10" step="0.5"
                                   value={ichVolumeParams.thicknessMm}
                                   onChange={(e) => setIchVolumeParams(prev => ({ ...prev, thicknessMm: e.target.value }))}
                                   className="w-full px-2 py-1.5 border border-slate-200 rounded-lg"
@@ -22990,7 +23012,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div>
                                 <label className="block text-xs text-slate-500 mb-1">Slices w/ ICH</label>
                                 <input
-                                  type="number"
+                                  type="number" min="1" max="100" step="1"
                                   value={ichVolumeParams.numSlices}
                                   onChange={(e) => setIchVolumeParams(prev => ({ ...prev, numSlices: e.target.value }))}
                                   className="w-full px-2 py-1.5 border border-slate-200 rounded-lg"
@@ -26675,14 +26697,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div>
                             <label className="text-xs text-slate-600">Hours since last DOAC dose</label>
-                            <input type="number" step="0.5" min="0" value={(telestrokeNote.andexanetCalc || {}).lastDoseHours || ''}
+                            <input type="number" step="0.5" min="0" max="240" value={(telestrokeNote.andexanetCalc || {}).lastDoseHours || ''}
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, andexanetCalc: {...(telestrokeNote.andexanetCalc || {}), lastDoseHours: e.target.value}})}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="hours" />
                           </div>
                         </div>
                         <div className="mb-3">
                           <label className="text-xs text-slate-600">DOAC dose (mg per dose)</label>
-                          <input type="number" step="0.5" min="0" value={(telestrokeNote.andexanetCalc || {}).doacDoseMg || ''}
+                          <input type="number" step="0.5" min="0" max="60" value={(telestrokeNote.andexanetCalc || {}).doacDoseMg || ''}
                             onChange={(e) => setTelestrokeNote({...telestrokeNote, andexanetCalc: {...(telestrokeNote.andexanetCalc || {}), doacDoseMg: e.target.value}})}
                             className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="e.g. 5 for apixaban 5mg BID" />
                         </div>
@@ -26728,13 +26750,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
                           <div>
                             <label className="text-xs text-slate-600">Age</label>
-                            <input type="number" value={(telestrokeNote.crclCalc || {}).age || telestrokeNote.age || ''}
+                            <input type="number" min="18" max="120" value={(telestrokeNote.crclCalc || {}).age || telestrokeNote.age || ''}
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, crclCalc: {...(telestrokeNote.crclCalc || {}), age: e.target.value}})}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="years" />
                           </div>
                           <div>
                             <label className="text-xs text-slate-600">Weight (kg)</label>
-                            <input type="number" value={(telestrokeNote.crclCalc || {}).weight || telestrokeNote.weight || ''}
+                            <input type="number" min="20" max="350" value={(telestrokeNote.crclCalc || {}).weight || telestrokeNote.weight || ''}
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, crclCalc: {...(telestrokeNote.crclCalc || {}), weight: e.target.value}})}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="kg" />
                           </div>
@@ -26749,7 +26771,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div>
                             <label className="text-xs text-slate-600">Serum Cr (mg/dL)</label>
-                            <input type="number" step="0.1" value={(telestrokeNote.crclCalc || {}).cr || telestrokeNote.creatinine || ''}
+                            <input type="number" step="0.1" min="0.1" max="20" value={(telestrokeNote.crclCalc || {}).cr || telestrokeNote.creatinine || ''}
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, crclCalc: {...(telestrokeNote.crclCalc || {}), cr: e.target.value}})}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="mg/dL" />
                           </div>
@@ -26815,7 +26837,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="grid grid-cols-2 gap-3 mb-3">
                           <div>
                             <label className="text-xs text-slate-600">Weight (kg)</label>
-                            <input type="number" value={(telestrokeNote.enoxCalc || {}).weightKg || telestrokeNote.weight || ''}
+                            <input type="number" min="20" max="350" value={(telestrokeNote.enoxCalc || {}).weightKg || telestrokeNote.weight || ''}
                               onChange={(e) => setTelestrokeNote({...telestrokeNote, enoxCalc: {...(telestrokeNote.enoxCalc || {}), weightKg: e.target.value}})}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="kg" />
                           </div>
