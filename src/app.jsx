@@ -7822,9 +7822,22 @@ Clinician Name`;
             const fuGCS = calculateGCS(gcsItems);
             if (fuGCS > 0) brief += ` | GCS: ${fuGCS}`;
             brief += `\n`;
+            if (telestrokeNote.weight) brief += `Weight: ${telestrokeNote.weight} kg${telestrokeNote.weightEstimated ? ' (estimated)' : ''}\n`;
+            if (telestrokeNote.premorbidMRS != null && telestrokeNote.premorbidMRS !== '') brief += `Pre-mRS: ${telestrokeNote.premorbidMRS}\n`;
             if (telestrokeNote.toastClassification) {
-
               brief += `Etiology (TOAST): ${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}\n`;
+            }
+            if (telestrokeNote.allergies) brief += `Allergies: ${telestrokeNote.allergies}${telestrokeNote.contrastAllergy ? ' **CONTRAST ALLERGY**' : ''}\n`;
+            else if (telestrokeNote.contrastAllergy) brief += `Allergies: **CONTRAST ALLERGY**\n`;
+            if (telestrokeNote.medications) brief += `Medications: ${telestrokeNote.medications}\n`;
+            {
+              const fuLabs = [];
+              if (telestrokeNote.plateletCount) fuLabs.push(`Plt ${telestrokeNote.plateletCount}K`);
+              if (telestrokeNote.creatinine) fuLabs.push(`Cr ${telestrokeNote.creatinine}`);
+              if (telestrokeNote.inr) fuLabs.push(`INR ${telestrokeNote.inr}`);
+              if (telestrokeNote.ptt) fuLabs.push(`aPTT ${telestrokeNote.ptt}`);
+              if (telestrokeNote.glucose) fuLabs.push(`Glucose ${telestrokeNote.glucose}`);
+              if (fuLabs.length > 0) brief += `Labs: ${fuLabs.join(', ')}\n`;
             }
             brief += `\nACUTE COURSE:\n`;
             if (telestrokeNote.tnkRecommended) {
@@ -8348,7 +8361,7 @@ Clinician Name`;
                 if (telestrokeNote.doorTime && telestrokeNote.needleTime) {
                   const [dH, dM] = telestrokeNote.doorTime.split(':').map(Number);
                   const [nH, nM] = telestrokeNote.needleTime.split(':').map(Number);
-                  if (!isNaN(dH) && !isNaN(nH)) {
+                  if (!isNaN(dH) && !isNaN(dM) && !isNaN(nH) && !isNaN(nM)) {
                     const dtnMin = (nH * 60 + nM) - (dH * 60 + dM);
                     if (dtnMin >= 0) dtnParts.push(`DTN: ${dtnMin} min`);
                   }
@@ -15001,10 +15014,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 />
                                 {telestrokeNote.tnkAdminTime && (() => {
                                   const [h, m] = telestrokeNote.tnkAdminTime.split(':').map(Number);
+                                  if (isNaN(h) || isNaN(m)) return null;
                                   const now = currentTime;
                                   const tnkDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
                                   const diffMin = Math.round((now - tnkDate) / 60000);
-                                  if (diffMin < 0 || diffMin > 1440) return null;
+                                  if (isNaN(diffMin) || diffMin < 0 || diffMin > 1440) return null;
                                   const color = diffMin <= 60 ? 'text-emerald-700 bg-emerald-50' : diffMin <= 180 ? 'text-amber-700 bg-amber-50' : 'text-red-700 bg-red-50';
                                   return (
                                     <div className={`mt-1 px-2 py-1 rounded text-xs font-medium ${color}`}>
@@ -16135,6 +16149,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   {telestrokeNote.needleTime && (() => {
                                     const [doorH, doorM] = telestrokeNote.doorTime.split(':').map(Number);
                                     const [needleH, needleM] = telestrokeNote.needleTime.split(':').map(Number);
+                                    if (isNaN(doorH) || isNaN(doorM) || isNaN(needleH) || isNaN(needleM)) return null;
                                     let dtn = (needleH * 60 + needleM) - (doorH * 60 + doorM);
                                     if (dtn < 0) dtn += 1440; // Handle midnight crossing
                                     const isGood = dtn <= 60;
@@ -16151,6 +16166,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   {telestrokeNote.punctureTime && (() => {
                                     const [doorH, doorM] = telestrokeNote.doorTime.split(':').map(Number);
                                     const [punctureH, punctureM] = telestrokeNote.punctureTime.split(':').map(Number);
+                                    if (isNaN(doorH) || isNaN(doorM) || isNaN(punctureH) || isNaN(punctureM)) return null;
                                     let dtp = (punctureH * 60 + punctureM) - (doorH * 60 + doorM);
                                     if (dtp < 0) dtp += 1440; // Handle midnight crossing
                                     const isGood = dtp <= 90;
@@ -16169,6 +16185,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {telestrokeNote.doorTime && (() => {
                                 const [doorH, doorM] = telestrokeNote.doorTime.split(':').map(Number);
+                                if (isNaN(doorH) || isNaN(doorM)) return null;
                                 const nowH = currentTime.getHours();
                                 const nowM = currentTime.getMinutes();
                                 let minutesSinceDoor = (nowH * 60 + nowM) - (doorH * 60 + doorM);
@@ -20062,6 +20079,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       // Calculate hours between measurements
                                       const [bH, bM] = baseT.split(':').map(Number);
                                       const [rH, rM] = repT.split(':').map(Number);
+                                      if (isNaN(bH) || isNaN(bM) || isNaN(rH) || isNaN(rM)) return <p className="text-xs text-slate-500 italic">Enter valid times to calculate correction rate.</p>;
                                       let hoursElapsed = (rH + rM / 60) - (bH + bM / 60);
                                       if (hoursElapsed <= 0) hoursElapsed += 24; // crossed midnight
                                       if (hoursElapsed < 0.1) return <p className="text-xs text-red-600">Times too close — check entries.</p>;
@@ -21328,6 +21346,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     const rNa = parseFloat(osm.repeatNa);
                                     const [bHn, bMn] = osm.baselineNaTime.split(':').map(Number);
                                     const [rHn, rMn] = osm.repeatNaTime.split(':').map(Number);
+                                    if (!isNaN(bHn) && !isNaN(bMn) && !isNaN(rHn) && !isNaN(rMn)) {
                                     let hrsE = (rHn + rMn / 60) - (bHn + bMn / 60);
                                     if (hrsE <= 0) hrsE += 24;
                                     if (hrsE > 0.1 && !isNaN(bNa) && !isNaN(rNa)) {
@@ -21336,6 +21355,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       note += `- Na+ correction: ${delta > 0 ? '+' : ''}${delta.toFixed(1)} mEq/L in ${hrsE.toFixed(1)}h (projected 24h: ${proj24 > 0 ? '+' : ''}${proj24.toFixed(1)} mEq/L).`;
                                       if (Math.abs(proj24) > 10) note += ` WARNING: EXCEEDS SAFE LIMIT (>10 mEq/L/24h).`;
                                       note += '\n';
+                                    }
                                     }
                                   }
                                   if (osm.sodiumTarget) note += `- Na+ target: ${osm.sodiumTarget} mEq/L.\n`;
