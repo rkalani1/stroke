@@ -3919,8 +3919,8 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=34',
               conditions: (data) => {
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
-                const gcs = parseInt(data.telestrokeNote?.gcs || data.telestrokeNote?.gcsTotal, 10) || null;
-                return isICH && gcs !== null && gcs <= 12;
+                const gcs = data.gcsScore || null;
+                return isICH && gcs !== null && gcs >= 3 && gcs <= 12;
               }
             },
             ich_seizure_cEEG: {
@@ -3984,7 +3984,7 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=37',
               conditions: (data) => {
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
-                const gcs = parseInt(data.telestrokeNote?.gcs || data.telestrokeNote?.gcsTotal, 10) || null;
+                const gcs = data.gcsScore || null;
                 return isICH && gcs !== null && gcs >= 5 && gcs <= 12;
               }
             },
@@ -11803,6 +11803,7 @@ Clinician Name`;
               telestrokeNote,
               nihssScore,
               aspectsScore,
+              gcsScore: calculateGCS(gcsItems),
               timeFromLKW: timeFrom,
               ichScore: typeof calculateICHScore === 'function' ? calculateICHScore(ichScoreItems) : 0
             };
@@ -16302,6 +16303,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center justify-between mb-3">
                             <h4 className="text-md font-bold text-slate-800">Copy Notes</h4>
                             <select value={noteTemplate} onChange={(e) => setNoteTemplate(e.target.value)}
+                              aria-label="Note template"
                               className="text-xs border border-slate-300 rounded-lg px-2 py-1 focus:ring-2 focus:ring-blue-500">
                               <option value="consult">Consult Note</option>
                               <option value="transfer">Transfer Summary</option>
@@ -18510,6 +18512,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="flex gap-2">
                                     <select value={(telestrokeNote.consentKit || {}).evtConsentType || ''}
                                       onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, consentKit: {...(prev.consentKit || {}), evtConsentType: v}})); }}
+                                      aria-label="EVT consent status"
                                       className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm">
                                       <option value="">-- Consent status --</option>
                                       <option value="informed-consent">Informed consent obtained</option>
@@ -20073,6 +20076,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <h4 className="font-semibold text-emerald-800 mb-2">Antiplatelet / Antithrombotic Selection</h4>
                                 <select value={(telestrokeNote.secondaryPrevention || {}).antiplateletRegimen || ''}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), antiplateletRegimen: v}})); }}
+                                  aria-label="Antiplatelet regimen"
                                   className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                                   <option value="">-- Select regimen --</option>
                                   <option value="dapt-21">DAPT x 21d: ASA + clopidogrel (NIHSS &le;3, CHANCE/POINT)</option>
@@ -20102,6 +20106,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <h4 className="font-semibold text-orange-800 mb-2 text-sm">Diabetes</h4>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).diabetesManagement || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), diabetesManagement: v}})); }}
+                                    aria-label="Diabetes management"
                                     className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                                     <option value="">Select</option>
                                     <option value="no-diabetes">No diabetes</option>
@@ -20114,6 +20119,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <h4 className="font-semibold text-blue-800 mb-2 text-sm">Smoking</h4>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).smokingStatus || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), smokingStatus: v}})); }}
+                                    aria-label="Smoking status"
                                     className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                                     <option value="">Select</option>
                                     <option value="never">Never smoker</option>
@@ -20126,6 +20132,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <h4 className="font-semibold text-blue-800 mb-2 text-sm">Exercise</h4>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).exercisePlan || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), exercisePlan: v}})); }}
+                                    aria-label="Exercise plan"
                                     className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                                     <option value="">Select</option>
                                     <option value="active">Already physically active (&ge;150 min/wk)</option>
@@ -20143,6 +20150,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <h4 className="font-semibold text-lime-800 mb-2 text-sm">Diet</h4>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).dietPlan || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), dietPlan: v}})); }}
+                                    aria-label="Diet plan"
                                     className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                                     <option value="">Select</option>
                                     <option value="mediterranean">Mediterranean diet (Class I — PREDIMED, 2024 AHA upgrade)</option>
@@ -20152,6 +20160,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </select>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).dietAdherence || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), dietAdherence: v}})); }}
+                                    aria-label="Diet adherence"
                                     className="w-full px-2 py-1 border border-slate-300 rounded text-xs mt-1">
                                     <option value="">Adherence</option>
                                     <option value="good">Good adherence</option>
@@ -20167,6 +20176,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <h4 className="font-semibold text-violet-800 mb-2 text-sm">GLP-1 Receptor Agonist</h4>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).glp1ra || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), glp1ra: v}})); }}
+                                    aria-label="GLP-1 receptor agonist"
                                     className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                                     <option value="">Select</option>
                                     <option value="semaglutide-2.4">Semaglutide 2.4 mg SC weekly</option>
@@ -20177,6 +20187,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </select>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).glp1raIndication || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), glp1raIndication: v}})); }}
+                                    aria-label="GLP-1 RA indication"
                                     className="w-full px-2 py-1 border border-slate-300 rounded text-xs mt-1">
                                     <option value="">Indication</option>
                                     <option value="overweight-ascvd">Overweight/obesity + ASCVD (SELECT trial)</option>
@@ -20189,6 +20200,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <h4 className="font-semibold text-sky-800 mb-2 text-sm">SGLT2 Inhibitor</h4>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).sglt2i || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), sglt2i: v}})); }}
+                                    aria-label="SGLT2 inhibitor"
                                     className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                                     <option value="">Select</option>
                                     <option value="empagliflozin">Empagliflozin 10mg daily</option>
@@ -20198,6 +20210,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </select>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).sglt2iIndication || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), sglt2iIndication: v}})); }}
+                                    aria-label="SGLT2i indication"
                                     className="w-full px-2 py-1 border border-slate-300 rounded text-xs mt-1">
                                     <option value="">Indication</option>
                                     <option value="hf">Heart failure (HFrEF or HFpEF)</option>
@@ -20216,6 +20229,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </label>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).colchicineIndication || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), colchicineIndication: v}})); }}
+                                    aria-label="Colchicine indication"
                                     className="w-full px-2 py-1 border border-slate-300 rounded text-xs">
                                     <option value="">Indication</option>
                                     <option value="atherosclerotic-stroke">Atherosclerotic stroke with hsCRP elevation</option>
@@ -20234,6 +20248,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   {(telestrokeNote.secondaryPrevention || {}).cyp2c19Tested && (
                                     <select value={(telestrokeNote.secondaryPrevention || {}).cyp2c19Result || ''}
                                       onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), cyp2c19Result: v}})); }}
+                                      aria-label="CYP2C19 result"
                                       className="w-full px-2 py-1 border border-slate-300 rounded text-xs">
                                       <option value="">Result</option>
                                       <option value="normal-metabolizer">Normal metabolizer (*1/*1) — clopidogrel OK</option>
@@ -20502,6 +20517,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <h4 className="font-semibold text-slate-800 mb-2">Follow-Up Timeline</h4>
                                 <select value={(telestrokeNote.secondaryPrevention || {}).followUpTimeline || ''}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), followUpTimeline: v}})); }}
+                                  aria-label="Follow-up timeline"
                                   className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
                                   <option value="">-- Select follow-up plan --</option>
                                   <option value="24-72h">24-72 hours (TIA, high recurrence risk, ABCD2 ≥4)</option>
@@ -21235,7 +21251,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       const naDelta = repNa - baseNa;
                                       const ratePerHour = naDelta / hoursElapsed;
                                       const projected24h = ratePerHour * 24;
-                                      const projectedFrom0 = (hoursElapsed > 0) ? (naDelta / hoursElapsed) * 24 : 0;
 
                                       // ODS risk thresholds
                                       const isRapid = Math.abs(projected24h) > 10;
@@ -26722,7 +26737,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               : null,
                             age: telestrokeNote.age ? (parseInt(telestrokeNote.age, 10) < 70 ? 2 : parseInt(telestrokeNote.age, 10) <= 79 ? 1 : 0) : null,
                             location: ichScoreItems.infratentorial ? 0 : ichScoreItems.lobar ? 2 : 1,
-                            gcs: ichScoreItems.gcs === 'gcs34' ? 0 : ichScoreItems.gcs === 'gcs512' ? 1 : ichScoreItems.gcs ? 2 : null,
+                            gcs: ichScoreItems.gcs === 'gcs34' ? 0 : ichScoreItems.gcs === 'gcs512' ? 1 : 2,
                             cognitive: ichScoreItems.preCogImpairment ? 0 : 1,
                           };
                           const known = Object.values(funcItems).filter(v => v !== null);
