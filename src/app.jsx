@@ -2246,59 +2246,6 @@ Clinician Name`;
                                 ]
                             },
                             {
-                                name: "PICASSO Trial",
-                                nct: "NCT05611242",
-                                phase: "Phase 3 RCT",
-                                status: "",
-                                description: "Mechanical thrombectomy with vs without acute carotid stenting for tandem lesions",
-                                inclusion: [
-                                    "Age 18-79 years",
-                                    "Acute ischemic stroke in the anterior circulation",
-                                    "Tandem lesion consisting of:",
-                                    "• Proximal carotid artery stenosis 70-100% by NASCET criteria or complete occlusion",
-                                    "• Intracranial large vessel occlusion (ICA terminus, M1, or proximal M2)",
-                                    "Within 16 hours from stroke onset or last known well",
-                                    "Pre-stroke mRS 0-2",
-                                    "NIHSS ≥4",
-                                    "For presentation ≤6 hours: ASPECTS ≥7 on non-contrast CT",
-                                    "For presentation >6-16 hours:",
-                                    "• ASPECTS ≥7 AND",
-                                    "• Ischemic core volume <50cc on perfusion imaging",
-                                    "• Mismatch ratio >1.8",
-                                    "• Mismatch volume >15cc",
-                                    "Ability to undergo groin puncture within treatment window",
-                                    "Informed consent obtained"
-                                ],
-                                exclusion: [
-                                    "Proximal carotid stenosis secondary to dissection",
-                                    "Proximal carotid stenosis secondary to vasculitis",
-                                    "Pre-stroke mRS >2",
-                                    "Known hemorrhagic diathesis",
-                                    "Known coagulation factor deficiency",
-                                    "Absolute contraindications to antiplatelet therapy",
-                                    "Need for acute therapeutic anticoagulation that cannot be stopped",
-                                    "Platelet count <100,000/μL",
-                                    "INR >1.7",
-                                    "aPTT >1.5x normal",
-                                    "Blood glucose <50mg/dL or >400mg/dL",
-                                    "Serum creatinine >3.0mg/dL unless on dialysis",
-                                    "Evidence of intracranial hemorrhage on baseline CT/MRI",
-                                    "Clinical suspicion of subarachnoid hemorrhage",
-                                    "Large territory infarction (>1/3 MCA territory)",
-                                    "Known severe contrast allergy that cannot be adequately pre-medicated",
-                                    "Known pregnancy or positive pregnancy test",
-                                    "Life expectancy <90 days due to comorbid conditions",
-                                    "Enrollment in another interventional clinical trial",
-                                    "Previous carotid endarterectomy or carotid stenting on affected side",
-                                    "Contralateral carotid occlusion",
-                                    "Intracranial stenosis in addition to the tandem lesion",
-                                    "Known cardiac source of embolism requiring anticoagulation",
-                                    "Recent MI within 30 days with ongoing cardiac issues",
-                                    "Severe or unstable congestive heart failure",
-                                    "Uncontrolled hypertension (SBP >185 or DBP >110 despite treatment)"
-                                ]
-                            },
-                            {
                                 name: "TESTED",
                                 nct: "NCT05911568",
                                 phase: "Comparative Effectiveness",
@@ -2399,6 +2346,36 @@ Clinician Name`;
                                     "Terminal illness with life expectancy <1 year",
                                     "Previous enrollment in DISCOVERY",
                                     "Planned move out of area within study period"
+                                ]
+                            },
+                            {
+                                name: "CLARITY Trial",
+                                nct: "NCT07174414",
+                                phase: "Phase 3",
+                                status: "Not yet recruiting",
+                                description: "Cilostazol for Prevention of Recurrent Stroke Trial: adding cilostazol vs placebo to single antiplatelet therapy after recent stroke/TIA",
+                                inclusion: [
+                                    "Age ≥40 years",
+                                    "Diagnosis of stroke or TIA within the last 180 days",
+                                    "Currently taking aspirin OR clopidogrel (not both) for secondary prevention"
+                                ],
+                                exclusion: [
+                                    "Spontaneous intracranial hemorrhage within the last 2 years",
+                                    "Moderate to severe heart failure",
+                                    "Life expectancy <6 months"
+                                ]
+                            },
+                            {
+                                name: "INTERCEPT Trial",
+                                nct: "NCT05723926",
+                                phase: "",
+                                status: "",
+                                description: "Carotid Implants for PreveNtion of STrokE ReCurrEnce from Large Vessel Occlusion in atrial fibrillation patients treated with oral anticoagulation",
+                                inclusion: [
+                                    "See site-specific enrollment criteria"
+                                ],
+                                exclusion: [
+                                    "See site-specific exclusion criteria"
                                 ]
                             }
                         ]
@@ -2606,6 +2583,19 @@ Clinician Name`;
                                     "History of thromboembolic disease within 30 days",
                                     "Pregnancy",
                                     "Life expectancy <3 months from pre-existing condition"
+                                ]
+                            },
+                            {
+                                name: "MINUTE Trial",
+                                nct: "NCT07260916",
+                                phase: "",
+                                status: "",
+                                description: "Intracerebral hemorrhage trial (see ClinicalTrials.gov for full protocol details)",
+                                inclusion: [
+                                    "See site-specific enrollment criteria"
+                                ],
+                                exclusion: [
+                                    "See site-specific exclusion criteria"
                                 ]
                             }
                         ]
@@ -18171,6 +18161,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="font-medium text-slate-700 mb-1">Active ICH Trials:</div>
                                   <ul className="text-slate-600 space-y-0.5 ml-4">
                                     <li>• <strong>FASTEST</strong> – rFVIIa within 2h for hematoma expansion</li>
+                                    <li>• <strong>MINUTE</strong> – Intracerebral hemorrhage trial (NCT07260916)</li>
                                     <li>• <strong>SATURN</strong> – Statin continuation vs stop after lobar ICH</li>
                                     <li>• <strong>ASPIRE</strong> – Apixaban vs aspirin post-ICH with AF</li>
                                     <li>• <strong>cAPPricorn-1</strong> – Intrathecal mivelsiran for CAA</li>
@@ -23831,6 +23822,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="bg-red-50 p-3 rounded-lg border border-red-200">
                                     <p className="font-semibold text-red-800">FASTEST Trial (NCT03496883)</p>
                                     <p className="text-sm text-slate-700">Recombinant Factor VIIa (rFVIIa) for acute ICH within 2 HOURS of symptom onset to prevent hematoma expansion. Age 18-80, hematoma volume 2-60 mL, IVH score ≤7, GCS ≥8, not on anticoagulation. Very narrow time window.</p>
+                                  </div>
+
+                                  <div className="bg-red-50 p-3 rounded-lg border border-red-200">
+                                    <p className="font-semibold text-red-800">MINUTE Trial (NCT07260916)</p>
+                                    <p className="text-sm text-gray-700">Intracerebral hemorrhage trial. Refer to ClinicalTrials.gov for full protocol details and current enrollment criteria.</p>
                                   </div>
 
                                   <div className="bg-red-50 p-3 rounded-lg border border-red-200">
