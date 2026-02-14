@@ -2355,27 +2355,54 @@ Clinician Name`;
                                 status: "Not yet recruiting",
                                 description: "Cilostazol for Prevention of Recurrent Stroke Trial: adding cilostazol vs placebo to single antiplatelet therapy after recent stroke/TIA",
                                 inclusion: [
-                                    "Age ≥40 years",
-                                    "Diagnosis of stroke or TIA within the last 180 days",
-                                    "Currently taking aspirin OR clopidogrel (not both) for secondary prevention"
+                                    "History of ischemic stroke OR transient ischemic attack (TIA) in the 180 days prior to enrollment",
+                                    "Currently taking antiplatelet medication as standard of care"
                                 ],
                                 exclusion: [
-                                    "Spontaneous intracranial hemorrhage within the last 2 years",
+                                    "History of spontaneous intracranial hemorrhage within the prior 2 years",
                                     "Moderate to severe heart failure",
-                                    "Life expectancy <6 months"
+                                    "Any condition that the investigator judges would pose significant hazard if investigational therapy is initiated"
                                 ]
                             },
                             {
                                 name: "INTERCEPT Trial",
                                 nct: "NCT05723926",
-                                phase: "",
-                                status: "",
+                                phase: "Not Applicable",
+                                status: "Recruiting",
                                 description: "Carotid Implants for PreveNtion of STrokE ReCurrEnce from Large Vessel Occlusion in atrial fibrillation patients treated with oral anticoagulation",
                                 inclusion: [
-                                    "See site-specific enrollment criteria"
+                                    "Age >55 years",
+                                    "Ischemic stroke attributed to large vessel occlusion (LVO) with initial NIHSS >5",
+                                    "Neurological and functional status (NIHSS and mRS), assessed 4 weeks to 20 months after index stroke, is stable and reflects residual index-stroke disability",
+                                    "Residual disability from index stroke due to hemiparesis with mRS 2-4",
+                                    "On oral anticoagulation for atrial fibrillation (DOAC or VKA) with at least one high-risk recurrent stroke criterion:",
+                                    "• High-risk PFO by PASCAL",
+                                    "• Spontaneous echocardiographic contrast in LAA",
+                                    "• LAA peak flow velocity ≤20 cm/s",
+                                    "• Spontaneous echocardiographic contrast in left atrium",
+                                    "• Left atrial peak flow velocity ≤20 cm/s",
+                                    "Signed informed consent"
                                 ],
                                 exclusion: [
-                                    "See site-specific exclusion criteria"
+                                    "History of intracerebral hemorrhage prior to randomization",
+                                    "Severe disability before index stroke (mRS >4)",
+                                    "Neurological or non-neurological condition leading to severe pre-index-stroke disability (mRS >4)",
+                                    "Life expectancy <1 year",
+                                    "High bleeding risk (HAS-BLED score >3)",
+                                    "Other indication for oral anticoagulation apart from atrial fibrillation, including:",
+                                    "• Venous thromboembolism",
+                                    "• Prosthetic valve replacement",
+                                    "• Severe mitral stenosis",
+                                    "LAA anatomy unsuitable for closure device",
+                                    "Prior surgeries/procedures involving left atrial appendage, including:",
+                                    "• Prior surgical LAA closure or excision",
+                                    "• Prior transcatheter closure of PFO/ASD",
+                                    "Carotid artery stenosis >70% on the index-stroke side",
+                                    "Carotid artery stent on the index-stroke side",
+                                    "Existing indication for carotid intervention after randomization",
+                                    "Ischemic stroke due to cervical artery dissection",
+                                    "Inability to participate in follow-up program",
+                                    "Current participation in another interventional trial"
                                 ]
                             }
                         ]
@@ -2552,50 +2579,41 @@ Clinician Name`;
                                 ]
                             },
                             {
-                                name: "FASTEST Trial",
-                                nct: "NCT03496883",
-                                phase: "Phase 3",
-                                status: "Actively recruiting",
-                                description: "Recombinant Factor VIIa (rFVIIa) for acute ICH within 2 hours of symptom onset to prevent hematoma expansion",
-                                inclusion: [
-                                    "Age 18-80 years",
-                                    "Spontaneous supratentorial ICH confirmed by CT",
-                                    "ICH symptom onset ≤2 hours before treatment",
-                                    "Hematoma volume 2-60 mL",
-                                    "Intraventricular hemorrhage (IVH) score ≤7",
-                                    "Glasgow Coma Scale ≥8",
-                                    "Able to receive study drug within 2 hours of symptom onset",
-                                    "Informed consent from patient or legally authorized representative"
-                                ],
-                                exclusion: [
-                                    "On anticoagulation therapy (warfarin, DOAC, heparin)",
-                                    "Known coagulopathy",
-                                    "Secondary ICH:",
-                                    "• Trauma",
-                                    "• Known vascular malformation (AVM, aneurysm)",
-                                    "• Brain tumor",
-                                    "• Hemorrhagic conversion of ischemic stroke",
-                                    "• Dural venous sinus thrombosis",
-                                    "Brainstem hemorrhage excluded; cerebellar hemorrhage permitted",
-                                    "Planned surgical evacuation within 24 hours",
-                                    "Pre-existing severe disability (mRS >2)",
-                                    "Known allergy to rFVIIa",
-                                    "History of thromboembolic disease within 30 days",
-                                    "Pregnancy",
-                                    "Life expectancy <3 months from pre-existing condition"
-                                ]
-                            },
-                            {
                                 name: "MINUTE Trial",
                                 nct: "NCT07260916",
-                                phase: "",
-                                status: "",
-                                description: "Intracerebral hemorrhage trial (see ClinicalTrials.gov for full protocol details)",
+                                phase: "Phase 2",
+                                status: "Not yet recruiting",
+                                description: "Multi-arm pilot trial of intravenous glibenclamide and blood-pressure treatment strategy in acute spontaneous intracerebral hemorrhage with CTA spot sign",
                                 inclusion: [
-                                    "See site-specific enrollment criteria"
+                                    "Age ≥18 years",
+                                    "Acute spontaneous supratentorial intracerebral hemorrhage",
+                                    "Presentation within 6 hours from symptom onset or last known well",
+                                    "Baseline Glasgow Coma Scale >4",
+                                    "Baseline NIHSS >6",
+                                    "Baseline ICH volume 5-80 mL",
+                                    "Pre-event modified Rankin Scale <3",
+                                    "Persistent systolic blood pressure >140 mmHg despite at least one antihypertensive treatment",
+                                    "Initial CTA demonstrates active contrast extravasation (spot sign)",
+                                    "Willing and able to comply with protocol and follow-up"
                                 ],
                                 exclusion: [
-                                    "See site-specific exclusion criteria"
+                                    "Secondary cause of intracerebral hemorrhage, including:",
+                                    "• Trauma",
+                                    "• Aneurysm",
+                                    "• Arteriovenous malformation",
+                                    "• Dural arteriovenous fistula",
+                                    "• Brain tumor",
+                                    "• Hemorrhagic transformation of ischemic stroke",
+                                    "Brainstem hemorrhage",
+                                    "Large intraventricular hemorrhage as primary diagnosis",
+                                    "Need for immediate surgery at presentation",
+                                    "Baseline INR >1.4 or platelet count <100,000/mm3",
+                                    "Use of anticoagulant medication within 48 hours",
+                                    "Known allergy or hypersensitivity to glibenclamide or formulation excipients",
+                                    "Severe renal impairment (eGFR <30 mL/min/1.73m²)",
+                                    "Active severe hepatic disease",
+                                    "Pregnancy or breastfeeding",
+                                    "Participation in another interventional trial that may confound outcomes"
                                 ]
                             }
                         ]
@@ -3090,54 +3108,6 @@ Clinician Name`;
               ],
               exclusionFlags: [
                 { id: 'mechValve', label: 'Mechanical heart valve', field: 'mechValve' }
-              ]
-            },
-            FASTEST: {
-              id: 'FASTEST',
-              name: 'FASTEST Trial',
-              nct: 'NCT03496883',
-              category: 'ich',
-              quickDescription: 'rFVIIa within 2 hours of ICH onset for hematoma expansion prevention',
-              keyTakeaways: [
-                'Hematoma expansion occurs in ~30% of ICH patients and is the strongest modifiable predictor of poor outcome',
-                'Ultra-early rFVIIa (within 2 hours) targets the window before expansion is complete',
-                'Very narrow time window (2h from onset) — requires rapid screening at spoke sites'
-              ],
-              lookingFor: [
-                'Acute ICH within 2 HOURS of symptom onset',
-                'Hematoma volume 2-60 mL',
-                'Not on anticoagulants',
-                'Age 18-80'
-              ],
-              keyCriteria: [
-                { id: 'age', label: 'Age 18-80', field: 'age', evaluate: (data) => {
-                    const age = parseInt(data.telestrokeNote?.age || data.strokeCodeForm?.age, 10);
-                    return age >= 18 && age <= 80;
-                  }, required: true },
-                { id: 'ichConfirmed', label: 'ICH confirmed on imaging', field: 'diagnosis', evaluate: (data) => {
-                    const cat = data.telestrokeNote?.diagnosisCategory;
-                    const ct = (data.telestrokeNote?.ctResults || data.strokeCodeForm?.ctResults || '').toLowerCase();
-                    return cat === 'ich' || ct.includes('hemorrhage') || ct.includes('bleed');
-                  }, required: true },
-                { id: 'timeWindow', label: 'Within 2h of onset', field: 'lkw', evaluate: (data) => {
-                    const hrs = data.hoursFromLKW;
-                    return hrs !== null && hrs <= 2;
-                  }, required: true },
-                { id: 'volume', label: 'Hematoma 2-60 mL', field: 'ichVolume', evaluate: (data) => {
-                    const vol = parseFloat(data.ichVolume);
-                    return !isNaN(vol) && vol >= 2 && vol <= 60;
-                  }, required: true },
-                { id: 'noAnticoag', label: 'Not on anticoagulants', field: 'lastDOACType', evaluate: (data) => {
-                    return !data.telestrokeNote?.lastDOACType;
-                  }, required: true },
-                { id: 'gcs', label: 'GCS ≥8 (not deeply comatose)', field: 'gcs', evaluate: (data) => trialGte(data.gcsScore, 8), required: true },
-                { id: 'premorbidMRS', label: 'Pre-stroke mRS ≤2', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 2), required: true }
-              ],
-              exclusionFlags: [
-                { id: 'onAnticoag', label: 'On anticoagulation', field: 'onAnticoag' },
-                { id: 'largeIVH', label: 'IVH score >7', field: 'largeIVH' },
-                { id: 'brainstem', label: 'Brainstem hemorrhage', field: 'brainstemICH' },
-                { id: 'secondary', label: 'Secondary ICH (trauma, AVM, tumor)', field: 'secondaryICH' }
               ]
             },
             VERIFY: {
@@ -18160,7 +18130,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="mt-3 text-sm">
                                   <div className="font-medium text-slate-700 mb-1">Active ICH Trials:</div>
                                   <ul className="text-slate-600 space-y-0.5 ml-4">
-                                    <li>• <strong>FASTEST</strong> – rFVIIa within 2h for hematoma expansion</li>
                                     <li>• <strong>MINUTE</strong> – Intracerebral hemorrhage trial (NCT07260916)</li>
                                     <li>• <strong>SATURN</strong> – Statin continuation vs stop after lobar ICH</li>
                                     <li>• <strong>ASPIRE</strong> – Apixaban vs aspirin post-ICH with AF</li>
@@ -23820,13 +23789,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <h4 className="font-bold text-red-800 border-b pb-2">Active ICH Trials</h4>
 
                                   <div className="bg-red-50 p-3 rounded-lg border border-red-200">
-                                    <p className="font-semibold text-red-800">FASTEST Trial (NCT03496883)</p>
-                                    <p className="text-sm text-slate-700">Recombinant Factor VIIa (rFVIIa) for acute ICH within 2 HOURS of symptom onset to prevent hematoma expansion. Age 18-80, hematoma volume 2-60 mL, IVH score ≤7, GCS ≥8, not on anticoagulation. Very narrow time window.</p>
-                                  </div>
-
-                                  <div className="bg-red-50 p-3 rounded-lg border border-red-200">
                                     <p className="font-semibold text-red-800">MINUTE Trial (NCT07260916)</p>
-                                    <p className="text-sm text-gray-700">Intracerebral hemorrhage trial. Refer to ClinicalTrials.gov for full protocol details and current enrollment criteria.</p>
+                                    <p className="text-sm text-slate-700">Multi-arm pilot trial evaluating intravenous glibenclamide and blood-pressure strategy in acute spontaneous ICH with CTA spot sign. Enrollment requires supratentorial ICH, 6-hour window, NIHSS &gt;6, ICH volume 5-80 mL, and persistent SBP &gt;140 despite initial treatment.</p>
                                   </div>
 
                                   <div className="bg-red-50 p-3 rounded-lg border border-red-200">
