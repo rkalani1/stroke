@@ -592,6 +592,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
             allowFreeTextStorage: false,
             ttlHoursOverride: null,
             defaultConsultationType: 'videoTelestroke',
+            workflowPersona: 'senior',
             contacts: DEFAULT_CONTACTS,
           });
 
@@ -603,6 +604,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
             lastActiveTab: 'encounter',
             lastShiftBoardId: null,
             lastManagementSubTab: 'ich',
+            lastLibrarySection: 'management',
             legacyMigratedAt: null,
             searchHighlightId: null,
           },
@@ -718,6 +720,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         const INITIAL_STORAGE_EXPIRED = applyStorageExpiration(initialTtlHours);
 
         const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators', 'references'];
+        const LIBRARY_SECTIONS = ['management', 'trials'];
         const LEGACY_MANAGEMENT_TABS = {
           ich: 'ich',
           protocols: 'ischemic',
@@ -734,7 +737,10 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         };
 
         const VALID_TABS = [
+          'dashboard',
           'encounter',
+          'library',
+          'settings',
           'management',
           'trials'
         ];
@@ -750,10 +756,16 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           const sub = parts[1];
 
           switch (root) {
+            case 'dashboard':
+              return { tab: 'dashboard' };
             case 'home':
               return { tab: 'encounter' };
             case 'encounter':
               return { tab: 'encounter' };
+            case 'library':
+              return { tab: 'library', sub: LIBRARY_SECTIONS.includes(sub) ? sub : 'management' };
+            case 'settings':
+              return { tab: 'settings' };
             case 'management':
               return { tab: 'management', sub: normalizeManagementSubTab(sub) };
             case 'ich':
@@ -770,8 +782,16 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
 
         const buildHashRoute = (tab, sub) => {
           switch (tab) {
+            case 'dashboard':
+              return '#/dashboard';
             case 'encounter':
               return '#/encounter';
+            case 'library': {
+              const librarySub = LIBRARY_SECTIONS.includes(sub) ? sub : 'management';
+              return `#/library/${librarySub}`;
+            }
+            case 'settings':
+              return '#/settings';
             case 'management': {
               const managementSub = normalizeManagementSubTab(sub);
               return managementSub ? `#/management/${managementSub}` : '#/management';
@@ -1540,6 +1560,8 @@ Clinician Name`;
 
           const [appData, setAppData] = useState(() => INITIAL_APP_DATA);
           const settings = appData.settings || getDefaultSettings();
+          const userPersona = settings.workflowPersona === 'trainee' ? 'trainee' : 'senior';
+          const isTraineeMode = userPersona === 'trainee';
 
           const updateAppData = (updater) => {
             setAppData((prev) => {
@@ -1551,6 +1573,7 @@ Clinician Name`;
           const initialActiveTab = (() => {
             const storedTab = appData.uiState.lastActiveTab || 'encounter';
             if (LEGACY_MANAGEMENT_TABS[storedTab]) return 'management';
+            if (storedTab === 'management' || storedTab === 'trials') return 'library';
             return storedTab;
           })();
           const initialManagementSubTab = (() => {
@@ -1559,8 +1582,14 @@ Clinician Name`;
             const legacySubTab = LEGACY_MANAGEMENT_TABS[appData.uiState.lastActiveTab];
             return legacySubTab || 'ich';
           })();
+          const initialLibrarySection = (() => {
+            const stored = String(appData.uiState.lastLibrarySection || '').toLowerCase();
+            if (LIBRARY_SECTIONS.includes(stored)) return stored;
+            return appData.uiState.lastActiveTab === 'trials' ? 'trials' : 'management';
+          })();
 
           const [activeTab, setActiveTab] = useState(initialActiveTab);
+          const [librarySection, setLibrarySection] = useState(initialLibrarySection);
           const [routeReady, setRouteReady] = useState(false);
           const [notice, setNotice] = useState(null);
           const [clearUndo, setClearUndo] = useState(null);
@@ -1650,9 +1679,6 @@ Clinician Name`;
 
           const [managementSubTab, setManagementSubTab] = useState(initialManagementSubTab);
           // Management flags removed — all sections now render unconditionally
-
-          // Emergency Contacts FAB state
-          const [fabExpanded, setFabExpanded] = useState(false);
 
           // Toast notification system
           const [toasts, setToasts] = useState([]);
@@ -2111,12 +2137,12 @@ Clinician Name`;
           // Keyboard shortcuts
           useEffect(() => {
             const handler = (e) => {
-              // Ctrl+1-4 for tab switching
+              // Ctrl+1-4 for primary tab switching
               if (e.ctrlKey && !e.shiftKey && !e.altKey) {
-                const tabMap = { '1': 'encounter', '2': 'management', '3': 'trials' };
+                const tabMap = { '1': 'dashboard', '2': 'encounter', '3': 'library', '4': 'settings' };
                 if (tabMap[e.key]) {
                   e.preventDefault();
-                  setActiveTab(tabMap[e.key]);
+                  navigateTo(tabMap[e.key]);
                 }
               }
               // Escape to close modals
@@ -5759,7 +5785,7 @@ Clinician Name`;
             const config = TRIAL_ELIGIBILITY_CONFIG[trialId];
             if (!config) return;
 
-            setActiveTab('trials');
+            navigateTo('library', { subTab: 'trials' });
 
             // Create the same slug used in TrialCard from the trial name
             const trialSlug = config.name.toLowerCase()
@@ -7321,7 +7347,6 @@ Clinician Name`;
 
             setConsultationType(getDefaultSettings().defaultConsultationType || 'videoTelestroke');
             setManagementSubTab('ich');
-            setFabExpanded(false);
             setAlertsMuted(false);
             setLastAlertPlayed(null);
             setAlertFlashing(false);
@@ -7357,18 +7382,33 @@ Clinician Name`;
             const rawTab = tab || 'encounter';
             const legacySubTab = LEGACY_MANAGEMENT_TABS[rawTab];
             let nextTab = rawTab;
+            let nextLibrarySection = librarySection;
 
             if (legacySubTab) {
-              nextTab = 'management';
+              nextTab = 'library';
             } else if (!VALID_TABS.includes(nextTab)) {
               nextTab = 'encounter';
             }
 
+            if (rawTab === 'management') {
+              nextTab = 'library';
+              nextLibrarySection = 'management';
+            } else if (rawTab === 'trials') {
+              nextTab = 'library';
+              nextLibrarySection = 'trials';
+            } else if (rawTab === 'library') {
+              nextLibrarySection = LIBRARY_SECTIONS.includes(subTab) ? subTab : nextLibrarySection || 'management';
+            }
+
             let nextManagementSubTab = managementSubTab;
-            if (nextTab === 'management') {
+            if (nextTab === 'management' || nextTab === 'library') {
               const resolvedSubTab = normalizeManagementSubTab(subTab) || legacySubTab || managementSubTab || 'ich';
               nextManagementSubTab = resolvedSubTab;
               setManagementSubTab(resolvedSubTab);
+            }
+
+            if (nextTab === 'library') {
+              setLibrarySection(nextLibrarySection);
             }
 
             setActiveTab(nextTab);
@@ -7378,7 +7418,8 @@ Clinician Name`;
               uiState: {
                 ...prev.uiState,
                 lastActiveTab: nextTab,
-                lastManagementSubTab: nextTab === 'management' ? nextManagementSubTab : prev.uiState.lastManagementSubTab
+                lastManagementSubTab: (nextTab === 'management' || nextTab === 'library') ? nextManagementSubTab : prev.uiState.lastManagementSubTab,
+                lastLibrarySection: nextTab === 'library' ? nextLibrarySection : prev.uiState.lastLibrarySection
               }
             }));
 
@@ -10791,7 +10832,42 @@ Clinician Name`;
                 const gcsCategory = gcsTotal <= 4 ? 'gcs34' : gcsTotal <= 12 ? 'gcs512' : '';
                 setIchScoreItems(prev => (prev.gcs === gcsCategory ? prev : { ...prev, gcs: gcsCategory }));
               }
-            }, [autoSyncCalculators, patient?.age, patient?.sex, gcsItems]);
+
+              // Sync calculator inputs from encounter once and keep them aligned
+              setTelestrokeNote((prev) => {
+                const incomingCrcl = {
+                  age: patient.age || '',
+                  weight: patient.weight || '',
+                  sex: patient.sex || '',
+                  cr: patient.creatinine || '',
+                  height: patient.height || ''
+                };
+                const prevCrcl = prev.crclCalc || {};
+                const mergedCrcl = { ...prevCrcl, ...incomingCrcl };
+
+                const doacType = (prev.lastDOACType || '').toLowerCase();
+                const andexType = doacType === 'apixaban' || doacType === 'rivaroxaban' ? doacType : (prev.andexanetCalc || {}).doacType || '';
+                const prevAndex = prev.andexanetCalc || {};
+                const mergedAndex = { ...prevAndex, doacType: andexType };
+
+                const prevBridge = prev.anticoagBridging || {};
+                const mergedBridge = {
+                  ...prevBridge,
+                  crCl: prevBridge.crCl || ''
+                };
+
+                const crclChanged = ['age', 'weight', 'sex', 'cr', 'height'].some((k) => String(prevCrcl[k] || '') !== String(mergedCrcl[k] || ''));
+                const andexChanged = String(prevAndex.doacType || '') !== String(mergedAndex.doacType || '');
+
+                if (!crclChanged && !andexChanged) return prev;
+                return {
+                  ...prev,
+                  crclCalc: mergedCrcl,
+                  andexanetCalc: mergedAndex,
+                  anticoagBridging: mergedBridge
+                };
+              });
+            }, [autoSyncCalculators, patient?.age, patient?.sex, patient?.weight, patient?.height, patient?.creatinine, gcsItems]);
             return null;
           };
 
@@ -11911,6 +11987,55 @@ Clinician Name`;
             const results = [];
             const lowerQuery = query.toLowerCase();
             const scoreFor = (parts, boost = 0) => rankText(lowerQuery, parts) + boost;
+
+            // Command-style shortcuts
+            const nihssCommand = lowerQuery.match(/^(?:nihss|set nihss)\s+(\d{1,2})$/i);
+            if (nihssCommand) {
+              const parsed = Math.max(0, Math.min(42, parseInt(nihssCommand[1], 10)));
+              if (Number.isFinite(parsed)) {
+                results.push({
+                  type: 'Command',
+                  title: `Set NIHSS to ${parsed}`,
+                  description: 'Updates encounter NIHSS and jumps to triage',
+                  score: 1000,
+                  action: () => {
+                    setNihssScore(parsed);
+                    setTelestrokeNote((prev) => ({ ...prev, nihss: String(parsed) }));
+                    navigateTo('encounter', { clearSearch: true });
+                    setTimeout(() => scrollToSection('nihss-section'), 100);
+                  }
+                });
+              }
+            }
+            const ageCommand = lowerQuery.match(/^(?:age|set age)\s+(\d{1,3})$/i);
+            if (ageCommand) {
+              const parsed = Math.max(0, Math.min(120, parseInt(ageCommand[1], 10)));
+              if (Number.isFinite(parsed)) {
+                results.push({
+                  type: 'Command',
+                  title: `Set age to ${parsed}`,
+                  description: 'Updates patient age',
+                  score: 950,
+                  action: () => {
+                    setTelestrokeNote((prev) => ({ ...prev, age: String(parsed) }));
+                    navigateTo('encounter', { clearSearch: true });
+                    setTimeout(() => scrollToSection('patient-info-section'), 100);
+                  }
+                });
+              }
+            }
+            if (lowerQuery === 'reversal' || lowerQuery === 'ich reversal') {
+              results.push({
+                type: 'Command',
+                title: 'Open ICH reversal protocol',
+                description: 'Jump to hemorrhage reversal workflow',
+                score: 900,
+                action: () => {
+                  navigateTo('library', { subTab: 'management' });
+                  setManagementSubTab('ich');
+                }
+              });
+            }
 
             // Search in trials
             Object.entries(trialsData).forEach(([category, data]) => {
@@ -13124,8 +13249,15 @@ Clinician Name`;
               }
               const parsed = parseHashRoute(window.location.hash);
               if (parsed && VALID_TABS.includes(parsed.tab)) {
-                setActiveTab(parsed.tab);
-                if (parsed.tab === 'management') {
+                if (parsed.tab === 'management' || parsed.tab === 'trials') {
+                  setActiveTab('library');
+                  setLibrarySection(parsed.tab === 'trials' ? 'trials' : 'management');
+                } else {
+                  setActiveTab(parsed.tab);
+                }
+                if (parsed.tab === 'library') {
+                  setLibrarySection(LIBRARY_SECTIONS.includes(parsed.sub) ? parsed.sub : 'management');
+                } else if (parsed.tab === 'management') {
                   const resolvedSubTab = normalizeManagementSubTab(parsed.sub) ||
                     normalizeManagementSubTab(appData.uiState.lastManagementSubTab) ||
                     'ich';
@@ -13136,13 +13268,20 @@ Clinician Name`;
               const savedTab = appData.uiState.lastActiveTab || getKey('activeTab', null);
               if (savedTab) {
                 if (LEGACY_MANAGEMENT_TABS[savedTab]) {
-                  setActiveTab('management');
+                  setActiveTab('library');
+                  setLibrarySection('management');
                   setManagementSubTab(LEGACY_MANAGEMENT_TABS[savedTab]);
                   return;
                 }
                 if (savedTab === 'management') {
-                  setActiveTab('management');
+                  setActiveTab('library');
+                  setLibrarySection('management');
                   setManagementSubTab(normalizeManagementSubTab(appData.uiState.lastManagementSubTab) || 'ich');
+                  return;
+                }
+                if (savedTab === 'trials') {
+                  setActiveTab('library');
+                  setLibrarySection('trials');
                   return;
                 }
                 if (VALID_TABS.includes(savedTab)) {
@@ -13168,14 +13307,16 @@ Clinician Name`;
           // Keep hash in sync with the active view
           useEffect(() => {
             if (!routeReady) return;
-            const nextHash = buildHashRoute(activeTab, managementSubTab);
+            const hashSub = activeTab === 'library' ? librarySection : managementSubTab;
+            const nextHash = buildHashRoute(activeTab, hashSub);
             if (window.location.hash !== nextHash) {
               window.location.hash = nextHash;
             }
-          }, [activeTab, routeReady, managementSubTab]);
+          }, [activeTab, routeReady, managementSubTab, librarySection]);
 
           useEffect(() => {
-            if (activeTab !== 'management') return;
+            const shouldPersist = activeTab === 'management' || (activeTab === 'library' && librarySection === 'management');
+            if (!shouldPersist) return;
             updateAppData((prev) => ({
               ...prev,
               uiState: {
@@ -13183,7 +13324,18 @@ Clinician Name`;
                 lastManagementSubTab: managementSubTab
               }
             }));
-          }, [activeTab, managementSubTab]);
+          }, [activeTab, managementSubTab, librarySection]);
+
+          useEffect(() => {
+            if (activeTab !== 'library') return;
+            updateAppData((prev) => ({
+              ...prev,
+              uiState: {
+                ...prev.uiState,
+                lastLibrarySection: librarySection
+              }
+            }));
+          }, [activeTab, librarySection]);
 
           // Lock body scroll + focus trap when full-screen modals are open
           useEffect(() => {
@@ -13356,7 +13508,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 setShowKeyboardHelp(false);
                 setCalcDrawerOpen(false);
                 setSettingsMenuOpen(false);
-                setFabExpanded(false);
                 setProtocolModal(null);
                 return;
               }
@@ -13379,9 +13530,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
               // Number keys for tab navigation (only outside encounter tab to avoid conflict with phase shortcuts)
               const tabMap = {
-                '1': { tab: 'encounter' },
-                '2': { tab: 'management', subTab: 'ischemic' },
-                '3': { tab: 'management', subTab: 'calculators' }
+                '1': { tab: 'dashboard' },
+                '2': { tab: 'encounter' },
+                '3': { tab: 'library', subTab: 'management' },
+                '4': { tab: 'library', subTab: 'trials' }
               };
 
               if (tabMap[e.key] && !e.metaKey && !e.ctrlKey && !e.altKey) {
@@ -13432,7 +13584,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           }, { items: [], seen: new Set() }).items;
           const ttlDisplayHours = appConfig.ttlHoursOverride || DEFAULT_TTL_HOURS;
           const showDocumentActions = true;
-          const showEncounterActions = activeTab === 'encounter';
+          const showEncounterActionBar = activeTab === 'encounter' && !calcDrawerOpen && (telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis);
           const todayDate = new Date().toISOString().slice(0, 10);
           const hasLegacyKeys = LEGACY_KEYS.some((key) => {
             try {
@@ -13441,16 +13593,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               return false;
             }
           });
-          const quickContacts = Array.isArray(settings.contacts) && settings.contacts.length
-            ? settings.contacts
-            : DEFAULT_CONTACTS;
           const toolShortcuts = [
             { id: 'patient-info-section', label: 'Patient Info' },
             { id: 'lkw-section', label: 'LKW / Discovery' },
             { id: 'nihss-section', label: 'NIHSS' },
             { id: 'vitals-section', label: 'Vitals' },
             { id: 'treatment-decision', label: 'Treatment' },
-            { id: 'time-metrics-section', label: 'DTN / DTP' },
             { id: 'sah-management-section', label: 'SAH Mgmt' },
             { id: 'cvt-management-section', label: 'CVT Mgmt' },
             { id: 'discharge-checklist-section', label: 'Discharge' },
@@ -13532,7 +13680,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   </div>
                 </div>
               )}
-              <div className="app-shell max-w-7xl mx-auto p-4 sm:p-8 overflow-x-hidden" role="main">
+              <div className={`app-shell max-w-7xl mx-auto p-4 sm:p-8 overflow-x-hidden ${showEncounterActionBar ? 'pb-24 sm:pb-28' : ''}`} role="main">
 
               {/* Offline Indicator */}
               {!isOnline && (
@@ -13932,10 +14080,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 </div>
               )}
 
-              {/* Navigation Tabs - Desktop Only - 3 Tabs */}
+              {/* Primary Navigation */}
               <div className="mb-4 sm:mb-6 sticky top-0 z-30 app-nav" role="navigation" aria-label="Main navigation">
                 <nav className="flex justify-around gap-0 bg-white border border-slate-200 rounded-xl p-1" role="tablist" aria-label="Main sections" onKeyDown={(e) => {
-                  const tabs = ['encounter', 'management', 'trials'];
+                  const tabs = ['dashboard', 'encounter', 'library', 'settings'];
                   const currentIndex = tabs.indexOf(activeTab);
                   let nextIndex;
                   if (e.key === 'ArrowRight') { e.preventDefault(); nextIndex = (currentIndex + 1) % tabs.length; }
@@ -13945,9 +14093,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   if (nextIndex !== undefined) { navigateTo(tabs[nextIndex]); const el = document.getElementById(`tab-${tabs[nextIndex]}`); if (el) el.focus(); }
                 }}>
                   {[
+                    { id: 'dashboard', name: 'Dashboard', icon: 'layout-dashboard' },
                     { id: 'encounter', name: 'Encounter', icon: 'activity' },
-                    { id: 'management', name: 'Management', icon: 'layers' },
-                    { id: 'trials', name: 'Trials', icon: 'file-text' }
+                    { id: 'library', name: 'Library', icon: 'library' },
+                    { id: 'settings', name: 'Settings', icon: 'settings' }
                   ].map(tab => {
                     const isActive = activeTab === tab.id;
                     return (
@@ -13973,6 +14122,61 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
               {/* Content */}
               <div id="main-content" className="space-y-6 sm:space-y-8" role="region" aria-label="Main content area">
+
+                {activeTab === 'dashboard' && (
+                  <div id="tabpanel-dashboard" role="tabpanel" aria-labelledby="tab-dashboard" className="space-y-4">
+                    <div className="bg-white border border-slate-200 rounded-xl p-4">
+                      <div className="flex items-center justify-between gap-3 flex-wrap">
+                        <div>
+                          <h2 className="text-xl font-semibold text-slate-900">Dashboard</h2>
+                          <p className="text-sm text-slate-600">Rapid overview and case launch controls.</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => { startNewPatient(); navigateTo('encounter'); }}
+                            className="px-3 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700"
+                          >
+                            New Case
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => navigateTo('encounter')}
+                            className="px-3 py-2 rounded-lg border border-slate-300 text-slate-700 text-sm font-semibold hover:bg-slate-50"
+                          >
+                            Resume Encounter
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <div className="bg-white border border-slate-200 rounded-xl p-4">
+                        <p className="text-xs uppercase tracking-wide text-slate-500">Current Case</p>
+                        <p className="text-sm font-semibold text-slate-900 mt-1">{(telestrokeNote.age || '--')}{telestrokeNote.sex || ''} • NIHSS {telestrokeNote.nihss || nihssScore || '--'}</p>
+                        <p className="text-xs text-slate-600 mt-1">{telestrokeNote.diagnosis || 'Diagnosis pending'}</p>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          <button type="button" onClick={() => { navigateTo('encounter'); scrollToSection('phase-decision'); }} className="px-2.5 py-1.5 rounded border border-orange-200 bg-orange-50 text-orange-800 text-xs font-semibold hover:bg-orange-100">Go to Decision</button>
+                          <button type="button" onClick={() => { navigateTo('encounter'); scrollToSection('recommendations-section'); }} className="px-2.5 py-1.5 rounded border border-blue-200 bg-blue-50 text-blue-800 text-xs font-semibold hover:bg-blue-100">Go to Documentation</button>
+                        </div>
+                      </div>
+                      <div className="bg-white border border-slate-200 rounded-xl p-4">
+                        <p className="text-xs uppercase tracking-wide text-slate-500">Shift List</p>
+                        <p className="text-2xl font-bold text-slate-900 mt-1">{shiftPatients.length}</p>
+                        <p className="text-xs text-slate-600 mt-1">Saved patient snapshots</p>
+                        <button type="button" onClick={() => navigateTo('encounter')} className="mt-3 px-2.5 py-1.5 rounded border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-50">Open Encounter Workspace</button>
+                      </div>
+                      <div className="bg-white border border-slate-200 rounded-xl p-4">
+                        <p className="text-xs uppercase tracking-wide text-slate-500">Library Access</p>
+                        <p className="text-sm text-slate-700 mt-1">Trials, protocols, references, and calculators.</p>
+                        <div className="mt-3 flex gap-2">
+                          <button type="button" onClick={() => navigateTo('library', { subTab: 'management' })} className="px-2.5 py-1.5 rounded border border-indigo-200 bg-indigo-50 text-indigo-800 text-xs font-semibold hover:bg-indigo-100">Protocols</button>
+                          <button type="button" onClick={() => navigateTo('library', { subTab: 'trials' })} className="px-2.5 py-1.5 rounded border border-indigo-200 bg-indigo-50 text-indigo-800 text-xs font-semibold hover:bg-indigo-100">Trials</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* CONSOLIDATED ENCOUNTER TAB */}
                 {activeTab === 'encounter' && (
@@ -14017,19 +14221,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 overflow-x-auto no-scrollbar">
                         <div className="flex items-start gap-0 text-xs min-w-0 sm:min-w-max relative">
                           {[
-                            { label: 'LKW', time: lkwTime ? lkwTime.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-blue-500', line: 'bg-blue-200' },
-                            { label: 'Door', time: safeFormatTime(telestrokeNote.dtnEdArrival), dot: 'bg-purple-500', line: 'bg-purple-200' },
-                            { label: 'Alert', time: safeFormatTime(telestrokeNote.dtnStrokeAlert), dot: 'bg-amber-500', line: 'bg-amber-200' },
-                            { label: 'CT', time: safeFormatTime(telestrokeNote.dtnCtStarted), dot: 'bg-slate-500', line: 'bg-slate-200' },
-                            { label: 'TNK', time: telestrokeNote.tnkAdminTime || null, dot: 'bg-emerald-500', line: 'bg-emerald-200' },
-                            { label: 'Puncture', time: telestrokeNote.punctureTime || null, dot: 'bg-indigo-500', line: 'bg-indigo-200' }
+                            { label: 'LKW', target: 'lkw-section', time: lkwTime ? lkwTime.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-blue-500', line: 'bg-blue-200' },
+                            { label: 'Door', target: 'lkw-section', time: safeFormatTime(telestrokeNote.dtnEdArrival), dot: 'bg-purple-500', line: 'bg-purple-200' },
+                            { label: 'Alert', target: 'phase-triage', time: safeFormatTime(telestrokeNote.dtnStrokeAlert), dot: 'bg-amber-500', line: 'bg-amber-200' },
+                            { label: 'CT', target: 'phase-triage', time: safeFormatTime(telestrokeNote.dtnCtStarted), dot: 'bg-slate-500', line: 'bg-slate-200' },
+                            { label: 'TNK', target: 'treatment-decision', time: telestrokeNote.tnkAdminTime || null, dot: 'bg-emerald-500', line: 'bg-emerald-200' },
+                            { label: 'Puncture', target: 'phase-management', time: telestrokeNote.punctureTime || null, dot: 'bg-indigo-500', line: 'bg-indigo-200' }
                           ].filter(t => t.time).map((t, i, arr) => (
                             <React.Fragment key={t.label}>
-                              <div className="flex flex-col items-center min-w-[60px]">
+                              <button
+                                type="button"
+                                onClick={() => scrollToSection(t.target)}
+                                className="flex flex-col items-center min-w-[60px] rounded-lg px-1 py-0.5 hover:bg-slate-50 focus:ring-2 focus:ring-blue-500"
+                                aria-label={`Jump to ${t.label} section`}
+                              >
                                 <div className={`w-3 h-3 rounded-full ${t.dot} ring-2 ring-white shadow-sm z-10`}></div>
                                 <span className="font-semibold text-slate-700 mt-1">{t.label}</span>
                                 <span className="font-mono text-slate-500">{t.time}</span>
-                              </div>
+                              </button>
                               {i < arr.length - 1 && (
                                 <div className={`flex-1 h-0.5 ${t.line} self-center mt-1.5 min-w-[24px] -mx-1`} style={{marginTop: '5px'}}></div>
                               )}
@@ -14104,6 +14313,36 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           )}
                         </div>
                       ) : null;
+                    })()}
+
+                    {(() => {
+                      const pathway = telestrokeNote.diagnosisCategory || getPathwayForDiagnosis(telestrokeNote.diagnosis || '');
+                      const pathwaySubTab = ['ischemic', 'ich', 'sah', 'tia', 'cvt'].includes(pathway) ? pathway : null;
+                      if (!pathwaySubTab) return null;
+                      const pathwayLabelMap = {
+                        ischemic: 'Ischemic Pathway',
+                        ich: 'Hemorrhagic (ICH) Pathway',
+                        sah: 'SAH Pathway',
+                        tia: 'TIA/Prevention Pathway',
+                        cvt: 'CVT Pathway'
+                      };
+                      return (
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2">
+                          <div className="text-sm text-slate-700">
+                            <span className="font-semibold">Condition pathway:</span> {pathwayLabelMap[pathwaySubTab]}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              navigateTo('library', { subTab: 'management' });
+                              setManagementSubTab(pathwaySubTab);
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800"
+                          >
+                            Open pathway
+                          </button>
+                        </div>
+                      );
                     })()}
 
                     {/* ===== ENCOUNTER TEMPLATES (shown when no data entered yet) ===== */}
@@ -16801,7 +17040,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <i aria-hidden="true" data-lucide="chart-no-axes-column-increasing" className="w-4 h-4 inline"></i> Full NIHSS Calculator (Click to expand)
                             </summary>
                             <div className="p-4 space-y-3">
-                              <p className="text-xs text-slate-500 italic">Tip: Press number keys (0-4) to select score for focused item. Auto-advances to next item.</p>
+                              {isTraineeMode && (
+                                <p className="text-xs text-slate-500 italic">Tip: Press number keys (0-4) to select score for focused item. Auto-advances to next item.</p>
+                              )}
                               {nihssItems.map((item, itemIndex) => (
                                 <div key={item.id} id={`nihss-item-${itemIndex}`} className={`bg-white p-3 rounded border transition-all ${patientData[item.id] ? 'border-emerald-300 bg-emerald-50/30' : ''}`}
                                   tabIndex={0}
@@ -17449,17 +17690,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
 
                                 {/* Clinical Pearls — contextual evidence */}
-                                <details className="mt-3 bg-blue-50 border border-blue-200 rounded-lg">
-                                  <summary className="cursor-pointer px-3 py-2 text-xs font-semibold text-blue-800 hover:bg-blue-100 rounded-lg flex items-center gap-1.5">
-                                    <i aria-hidden="true" data-lucide="lightbulb" className="w-3.5 h-3.5 text-blue-500"></i>
-                                    Clinical Pearls
-                                  </summary>
-                                  <div className="px-3 pb-2 space-y-1.5 text-xs text-blue-800">
-                                    {tnkRec.eligible && <p className="flex gap-1.5"><span className="shrink-0 text-blue-500">*</span>{CLINICAL_PEARLS.tnk}</p>}
-                                    {evtRec.eligible && <p className="flex gap-1.5"><span className="shrink-0 text-blue-500">*</span>{CLINICAL_PEARLS.evt}</p>}
-                                    <p className="flex gap-1.5"><span className="shrink-0 text-blue-500">*</span>{CLINICAL_PEARLS.aspects}</p>
-                                  </div>
-                                </details>
+                                {isTraineeMode && (
+                                  <details className="mt-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                    <summary className="cursor-pointer px-3 py-2 text-xs font-semibold text-blue-800 hover:bg-blue-100 rounded-lg flex items-center gap-1.5">
+                                      <i aria-hidden="true" data-lucide="lightbulb" className="w-3.5 h-3.5 text-blue-500"></i>
+                                      Clinical Pearls
+                                    </summary>
+                                    <div className="px-3 pb-2 space-y-1.5 text-xs text-blue-800">
+                                      {tnkRec.eligible && <p className="flex gap-1.5"><span className="shrink-0 text-blue-500">*</span>{CLINICAL_PEARLS.tnk}</p>}
+                                      {evtRec.eligible && <p className="flex gap-1.5"><span className="shrink-0 text-blue-500">*</span>{CLINICAL_PEARLS.evt}</p>}
+                                      <p className="flex gap-1.5"><span className="shrink-0 text-blue-500">*</span>{CLINICAL_PEARLS.aspects}</p>
+                                    </div>
+                                  </details>
+                                )}
 
                               </div>
                             );
@@ -22791,6 +23034,72 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       {/* RIGHT COLUMN - Live Preview & Tools (1/3 width on desktop, full width on mobile) */}
                       <div className={`lg:col-span-1 space-y-4`}>
 
+                        {(() => {
+                          const cues = [];
+                          const ageVal = parseInt(telestrokeNote.age, 10);
+                          const nihssVal = parseInt(telestrokeNote.nihss || nihssScore, 10);
+                          const tf = calculateTimeFromLKW();
+                          const hoursFromLkw = tf ? tf.total : null;
+                          const dxPath = getPathwayForDiagnosis(telestrokeNote.diagnosis || telestrokeNote.diagnosisCategory || '');
+
+                          if (!Number.isNaN(ageVal) && ageVal >= 80) {
+                            cues.push({
+                              tone: 'guideline',
+                              title: 'Age >80',
+                              text: 'Confirm pre-stroke baseline function and large-core selection constraints before EVT recommendations.'
+                            });
+                          }
+                          if (!Number.isNaN(nihssVal) && nihssVal <= 5 && (telestrokeNote.vesselOcclusion || []).some(v => ['ICA', 'M1', 'M2'].includes(v))) {
+                            cues.push({
+                              tone: 'guideline',
+                              title: 'Low NIHSS with LVO',
+                              text: 'Re-check disabling deficits and EVT candidacy pathway; low NIHSS does not always equal low-risk.'
+                            });
+                          }
+                          if (hoursFromLkw !== null && hoursFromLkw > 4.5 && hoursFromLkw <= 9) {
+                            cues.push({
+                              tone: 'info',
+                              title: 'Extended lysis window',
+                              text: 'Mismatch imaging criteria should be explicitly documented before thrombolysis recommendation.'
+                            });
+                          }
+                          if (dxPath === 'ich') {
+                            cues.push({
+                              tone: 'safety',
+                              title: 'ICH pathway',
+                              text: 'Prioritize reversal sequence, BP control, and surgical trigger screening before documentation.'
+                            });
+                          }
+                          if ((telestrokeNote.lastDOACType || '') && (telestrokeNote.lastDOACType || '') !== 'none') {
+                            cues.push({
+                              tone: 'safety',
+                              title: 'Anticoagulant present',
+                              text: 'Ensure last-dose timing and coagulation assay status are captured before final lytic decision.'
+                            });
+                          }
+
+                          if (cues.length === 0) return null;
+                          const palette = {
+                            safety: 'bg-red-50 border-red-200 text-red-900',
+                            guideline: 'bg-blue-50 border-blue-200 text-blue-900',
+                            info: 'bg-slate-50 border-slate-200 text-slate-800'
+                          };
+
+                          return (
+                            <div className="bg-white border border-slate-200 rounded-lg p-3">
+                              <h4 className="text-sm font-semibold text-slate-900 mb-2">Clinical Assistant</h4>
+                              <div className="space-y-2">
+                                {cues.slice(0, 3).map((cue, idx) => (
+                                  <div key={`${cue.title}-${idx}`} className={`rounded-lg border px-2.5 py-2 text-xs ${palette[cue.tone] || palette.info}`}>
+                                    <p className="font-semibold">{cue.title}</p>
+                                    <p className="mt-0.5">{cue.text}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })()}
+
                         {/* Treatment Window Countdown - Enhanced with Elapsed Timer & Audible Alerts */}
                         {(() => {
                           const timeFromLKW = calculateTimeFromLKW();
@@ -23071,108 +23380,75 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           );
                         })()}
 
-                        {/* ============================================ */}
-                        {/* DETAILED CLINICAL TRIAL INFORMATION         */}
-                        {/* Expanded descriptions for Video Telestroke  */}
-                        {/* ============================================ */}
-                        {consultationType === 'videoTelestroke' && telestrokeNote.diagnosisCategory && (
-                          <details className="bg-white border-2 border-indigo-200 rounded-lg shadow-md overflow-hidden">
-                            <summary className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white p-3 cursor-pointer hover:from-indigo-600 hover:to-purple-600 transition-colors">
-                              <span className="font-bold text-sm flex items-center gap-2">
-                                <i aria-hidden="true" data-lucide="flask-conical" className="w-4 h-4"></i> Clinical Trial Details
-                                <span className="text-xs opacity-75">(click to expand full descriptions)</span>
-                              </span>
-                            </summary>
+                        {/* Active trial snapshot (uses the same trial source as Library > Trials) */}
+                        {(() => {
+                          const trialCategory = getTrialTabCategory(telestrokeNote.diagnosisCategory, telestrokeNote.diagnosis);
+                          if (!trialCategory) return null;
+                          const categoryData = trialsData[trialCategory];
+                          if (!categoryData) return null;
+                          const categoryTrials = categoryData.hasSubsections
+                            ? Object.values(categoryData.subsections).reduce((acc, subsection) => acc.concat(subsection.trials || []), [])
+                            : (categoryData.trials || []);
+                          if (!categoryTrials.length) return null;
 
-                            <div className="p-4 space-y-4 max-h-96 overflow-y-auto">
-                              {telestrokeNote.diagnosisCategory === 'ischemic' && (
-                                <div className="space-y-3">
-                                  <h4 className="font-bold text-indigo-800 border-b pb-2">Active Ischemic Stroke Trials</h4>
+                          const trialStatusByNct = Object.values(trialEligibility || {}).reduce((acc, result) => {
+                            if (result && result.nct) acc[result.nct] = result.status;
+                            return acc;
+                          }, {});
+                          const statusTone = {
+                            eligible: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                            needs_info: 'bg-amber-100 text-amber-800 border-amber-200',
+                            not_eligible: 'bg-slate-100 text-slate-700 border-slate-200',
+                            pending: 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                          };
+                          const statusLabel = {
+                            eligible: 'Eligible',
+                            needs_info: 'Needs Info',
+                            not_eligible: 'Not Eligible',
+                            pending: 'Review'
+                          };
 
-                                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                                    <p className="font-semibold text-blue-800">SISTER Trial (NCT05948566)</p>
-                                    <p className="text-sm text-slate-700">TS23 (monoclonal antibody to α2-antiplasmin) for late thrombolysis in acute ischemic stroke patients presenting 4.5-24 hours from last known well. Anterior circulation, NIHSS ≥4, favorable perfusion imaging (mismatch ratio &gt;1.2, core &lt;70cc). No IV thrombolysis or EVT with clot engagement.</p>
-                                  </div>
-
-                                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                                    <p className="font-semibold text-blue-800">STEP-EVT Trial (NCT06289985)</p>
-                                    <p className="text-sm text-slate-700">NIH StrokeNet adaptive platform trial optimizing endovascular therapy for mild stroke (NIHSS 0-5 with LVO) and medium/distal vessel occlusions (M2, M3, A1-A3, P1-P3). Within 24 hours, pre-stroke mRS ≤2.</p>
-                                  </div>
-
-                                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                                    <p className="font-semibold text-blue-800">PICASSO Trial (NCT05611242)</p>
-                                    <p className="text-sm text-slate-700">Mechanical thrombectomy with vs without acute carotid stenting for tandem lesions. Age 18-79, tandem lesion (carotid stenosis 70-100% + intracranial LVO), within 16 hours, NIHSS ≥4, ASPECTS ≥7.</p>
-                                  </div>
-
-                                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                                    <p className="font-semibold text-blue-800">TESTED Trial (NCT05911568)</p>
-                                    <p className="text-sm text-slate-700">EVT vs medical therapy in LVO patients with pre-existing disability (mRS 3-4 for ≥3 months). Within 24 hours, NIHSS ≥6, ASPECTS ≥3. Includes ICA terminus, M1, dominant M2.</p>
-                                  </div>
-
-                                  <div className="bg-emerald-50 p-3 rounded-lg border border-emerald-200">
-                                    <p className="font-semibold text-emerald-800">VERIFY Study (NCT05338697) - Observational</p>
-                                    <p className="text-sm text-slate-700">Early TMS/MRI/clinical measures to predict upper extremity motor recovery. Acute ischemic stroke within 7 days with upper extremity weakness. Pre-stroke mRS ≤2. Inpatient enrollment opportunity.</p>
-                                  </div>
-
-                                  <div className="bg-emerald-50 p-3 rounded-lg border border-emerald-200">
-                                    <p className="font-semibold text-emerald-800">DISCOVERY Study (NCT04916210) - Observational</p>
-                                    <p className="text-sm text-slate-700">Cognitive trajectories and biomarkers after stroke (includes AIS/ICH/SAH). Baseline visit within 6 weeks, fluent in English/Spanish, needs study partner with regular contact.</p>
-                                  </div>
-
-                                  <div className="bg-purple-50 p-3 rounded-lg border border-purple-200">
-                                    <p className="font-semibold text-purple-800">ESUS Imaging Study (NCT03820375) - Observational</p>
-                                    <p className="text-sm text-slate-700">Cardiac and intracranial vessel wall MRI to reclassify ESUS. Within 30 days of index stroke, age ≥18, ESUS diagnosis. Helps identify occult cardioembolic or atherosclerotic sources.</p>
-                                  </div>
-
-                                  <div className="bg-purple-50 p-3 rounded-lg border border-purple-200">
-                                    <p className="font-semibold text-purple-800">MOCHA Imaging (PMC8821414) - Observational</p>
-                                    <p className="text-sm text-slate-700">Automated intracranial vessel-wall analysis for non-stenotic ICAD detection. Patients with atherosclerotic risk factors (age &gt;50/60, HTN, DM, hyperlipidemia, obesity, smoking). High-resolution MRI vessel wall imaging required.</p>
-                                  </div>
-                                </div>
-                              )}
-
-                              {telestrokeNote.diagnosisCategory === 'ich' && (
-                                <div className="space-y-3">
-                                  <h4 className="font-bold text-red-800 border-b pb-2">Active ICH Trials</h4>
-
-                                  <div className="bg-red-50 p-3 rounded-lg border border-red-200">
-                                    <p className="font-semibold text-red-800">MINUTE Trial (NCT07260916)</p>
-                                    <p className="text-sm text-slate-700">Multi-arm pilot trial evaluating intravenous glibenclamide and blood-pressure strategy in acute spontaneous ICH with CTA spot sign. Enrollment requires supratentorial ICH, 6-hour window, NIHSS &gt;6, ICH volume 5-80 mL, and persistent SBP &gt;140 despite initial treatment.</p>
-                                  </div>
-
-                                  <div className="bg-red-50 p-3 rounded-lg border border-red-200">
-                                    <p className="font-semibold text-red-800">SATURN Trial (NCT03936361)</p>
-                                    <p className="text-sm text-slate-700">Statin continuation vs discontinuation after LOBAR ICH. Age ≥50, must already be on statin therapy at ICH onset. Randomization within 7 days. Excludes deep/basal ganglia ICH, recent MI.</p>
-                                  </div>
-
-                                  <div className="bg-red-50 p-3 rounded-lg border border-red-200">
-                                    <p className="font-semibold text-red-800">ASPIRE Trial (NCT03907046)</p>
-                                    <p className="text-sm text-slate-700">Apixaban vs aspirin for stroke prevention after ICH in patients with atrial fibrillation. Randomization 14-180 days post-ICH, CHA2DS2-VASc ≥2, mRS ≤4. Excludes mechanical valves, recent DVT/PE.</p>
-                                  </div>
-
-                                  <div className="bg-orange-50 p-3 rounded-lg border border-orange-200">
-                                    <p className="font-semibold text-orange-800">cAPPricorn-1 Trial (NCT06393712)</p>
-                                    <p className="text-sm text-slate-700">Intrathecal ALN-APP (mivelsiran) for cerebral amyloid angiopathy. Sporadic CAA (age ≥50, Boston Criteria v2.0) or Dutch-type hereditary CAA (age ≥30, E693Q APP variant). Prior symptomatic lobar ICH ≥90 days ago. Requires lumbar punctures.</p>
-                                  </div>
-
-                                  <div className="bg-emerald-50 p-3 rounded-lg border border-emerald-200">
-                                    <p className="font-semibold text-emerald-800">MIRROR Registry (NCT04494295) - Observational</p>
-                                    <p className="text-sm text-slate-700">Minimally invasive endoscopic ICH evacuation using Aurora Surgiscope System. Spontaneous supratentorial ICH ≥20mL, surgery within 24 hours, NIHSS &gt;5, baseline mRS ≤2, GCS ≥5.</p>
-                                  </div>
-
-                                  <div className="bg-emerald-50 p-3 rounded-lg border border-emerald-200">
-                                    <p className="font-semibold text-emerald-800">DISCOVERY Study - ICH Cohort (NCT04916210) - Observational</p>
-                                    <p className="text-sm text-slate-700">Cognitive trajectories and biomarkers after ICH. Baseline visit within 6 weeks, fluent in English/Spanish, needs study partner with regular contact. Expected survival ≥1 year.</p>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-
-                            <div className="bg-indigo-50 p-2 text-center border-t border-indigo-200">
-                              <p className="text-xs text-indigo-700">For full eligibility criteria, visit the Trials tab or ClinicalTrials.gov</p>
-                            </div>
-                          </details>
-                        )}
+                          return (
+                            <details className="bg-white border border-indigo-200 rounded-lg shadow-sm" open>
+                              <summary className="cursor-pointer px-3 py-2.5 font-semibold text-indigo-900 hover:bg-indigo-50 rounded-lg flex items-center justify-between">
+                                <span className="flex items-center gap-2">
+                                  <i aria-hidden="true" data-lucide="flask-conical" className="w-4 h-4 text-indigo-600"></i>
+                                  Active Trials ({trialCategory === 'ich' ? 'ICH' : 'Ischemic'})
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    navigateTo('library', { subTab: 'trials' });
+                                    setTrialsCategory(trialCategory);
+                                  }}
+                                  className="text-xs font-semibold text-indigo-700 hover:text-indigo-900 underline"
+                                >
+                                  Open full library
+                                </button>
+                              </summary>
+                              <div className="px-3 pb-3 space-y-2">
+                                {categoryTrials.slice(0, 6).map((trial) => {
+                                  const status = trialStatusByNct[trial.nct] || 'pending';
+                                  return (
+                                    <div key={trial.nct || trial.name} className="border border-slate-200 rounded-lg p-2.5 bg-slate-50">
+                                      <div className="flex items-center justify-between gap-2">
+                                        <p className="text-sm font-semibold text-slate-900">{trial.name}</p>
+                                        <span className={`px-2 py-0.5 rounded-full text-[11px] font-semibold border ${statusTone[status] || statusTone.not_eligible}`}>
+                                          {statusLabel[status] || 'Not Eligible'}
+                                        </span>
+                                      </div>
+                                      <p className="text-xs text-slate-600 mt-1">{trial.description}</p>
+                                      {trial.nct && (
+                                        <p className="text-[11px] text-slate-500 mt-1">{trial.nct}</p>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </details>
+                          );
+                        })()}
 
 
                         {/* ============================================ */}
@@ -23276,10 +23552,103 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 )}
 
 
+                {activeTab === 'settings' && (
+                  <div id="tabpanel-settings" role="tabpanel" aria-labelledby="tab-settings" className="space-y-4">
+                    <div className="bg-white border border-slate-200 rounded-xl p-4">
+                      <h2 className="text-xl font-semibold text-slate-900">Settings</h2>
+                      <p className="text-sm text-slate-600 mt-1">User preferences and workflow controls.</p>
+                    </div>
+
+                    <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-4">
+                      <div>
+                        <p className="text-sm font-semibold text-slate-900 mb-2">User Mode</p>
+                        <div className="flex flex-wrap gap-2">
+                          {[
+                            { id: 'senior', label: 'Senior Rapid', note: 'Minimal prompts, action-first layout' },
+                            { id: 'trainee', label: 'Trainee Guided', note: 'Show coaching tips and teaching prompts' }
+                          ].map((mode) => (
+                            <button
+                              key={mode.id}
+                              type="button"
+                              onClick={() => updateSettings({ workflowPersona: mode.id })}
+                              className={`px-3 py-2 rounded-lg text-sm font-semibold border ${
+                                userPersona === mode.id
+                                  ? 'bg-blue-600 text-white border-blue-600'
+                                  : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                              }`}
+                            >
+                              {mode.label}
+                            </button>
+                          ))}
+                        </div>
+                        <p className="text-xs text-slate-500 mt-1">
+                          {userPersona === 'trainee' ? 'Trainee mode is active.' : 'Senior rapid mode is active.'}
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <label className="flex items-center justify-between gap-3 border border-slate-200 rounded-lg px-3 py-2">
+                          <span className="text-sm text-slate-700">Focus Mode</span>
+                          <input type="checkbox" checked={focusMode} onChange={(e) => setFocusMode(e.target.checked)} />
+                        </label>
+                        <label className="flex items-center justify-between gap-3 border border-slate-200 rounded-lg px-3 py-2">
+                          <span className="text-sm text-slate-700">De-ID Scanning</span>
+                          <input type="checkbox" checked={settings.deidMode} onChange={(e) => updateSettings({ deidMode: e.target.checked })} />
+                        </label>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">Default Consult Type</label>
+                          <select
+                            value={settings.defaultConsultationType || 'videoTelestroke'}
+                            onChange={(e) => updateSettings({ defaultConsultationType: e.target.value })}
+                            className="mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg"
+                          >
+                            <option value="videoTelestroke">Video Telestroke</option>
+                            <option value="telephone">Telephone</option>
+                          </select>
+                        </div>
+                        <div className="flex items-end gap-2">
+                          <button type="button" onClick={exportToPDF} className="px-3 py-2 rounded-lg border border-slate-300 text-slate-700 text-sm font-semibold hover:bg-slate-50">Export PDF</button>
+                          <button type="button" onClick={handleClearLocalData} className="px-3 py-2 rounded-lg border border-red-300 text-red-700 text-sm font-semibold hover:bg-red-50">Clear Local Data</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'library' && (
+                  <div className="bg-white border border-slate-200 rounded-xl p-3">
+                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                      <div>
+                        <h2 className="text-lg font-semibold text-slate-900">Library</h2>
+                        <p className="text-xs text-slate-600">Unified protocols, calculators, references, and trial index.</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setLibrarySection('management')}
+                          className={`px-3 py-1.5 rounded-lg text-sm font-semibold ${librarySection === 'management' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
+                        >
+                          Protocols & Tools
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setLibrarySection('trials')}
+                          className={`px-3 py-1.5 rounded-lg text-sm font-semibold ${librarySection === 'trials' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
+                        >
+                          Trials
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Management Combined Tab (Ischemic, ICH, Calculators, References) */}
-                {activeTab === 'management' && (
+                {(activeTab === 'management' || (activeTab === 'library' && librarySection === 'management')) && (
                   <ErrorBoundary>
-                  <div id="tabpanel-management" role="tabpanel" aria-labelledby="tab-management" className="space-y-6">
+                  <div id="tabpanel-management" role="tabpanel" aria-labelledby="tab-library" className="space-y-6">
                     {/* ===== QUICK PATIENT SUMMARY CARD ===== */}
                     {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) && (
                       <div className="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-xl px-4 py-3">
@@ -26000,9 +26369,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           checked={autoSyncCalculators}
                           onChange={(e) => setAutoSyncCalculators(e.target.checked)}
                         />
-                        Auto-sync calculators with patient age/sex
+                        Auto-sync calculators with encounter data
                       </label>
-                      <span className="text-slate-500">Updates CHA₂DS₂-VASc, HAS-BLED, ABCD², ICH Score, ROPE, and RCVS².</span>
+                      <span className="text-slate-500">Updates score tools plus CrCl/DOAC calculator inputs from age, sex, weight, and creatinine.</span>
                     </div>
                     {calculatorPriorityList.length > 0 && (
                       <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs">
@@ -29932,7 +30301,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* CLINICAL TRIALS TAB                          */}
                 {/* Uses trialsData object and TrialCard component */}
                 {/* ============================================ */}
-                {activeTab === 'trials' && (
+                {(activeTab === 'trials' || (activeTab === 'library' && librarySection === 'trials')) && (
                   <div id="tabpanel-trials" role="tabpanel" aria-labelledby="tab-trials" className="space-y-6">
                     {/* Header Section with Patient Summary */}
                     <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-6 rounded-lg shadow-lg">
@@ -30112,100 +30481,47 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
             </div>
 
-            {/* Persistent Copy Note Button - Encounter tab only */}
-            {activeTab === 'encounter' && !calcDrawerOpen && (telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) && (
-              <button
-                onClick={() => {
-                  const note = generateTelestrokeNote();
-                  copyToClipboard(note, 'Consult Note');
-                }}
-                className="fixed left-4 fab-offset z-50 flex items-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors no-print"
-                title="Copy consult note to clipboard"
-              >
-                <i aria-hidden="true" data-lucide="clipboard-copy" className="w-4 h-4"></i>
-                <span className="text-sm font-medium hidden sm:inline">Copy Note</span>
-              </button>
-            )}
-
-            {/* Emergency Contacts FAB - Floating Action Button */}
-            {!calcDrawerOpen && fabExpanded && (
-              <div className="fixed inset-0 z-40" onClick={() => setFabExpanded(false)} aria-hidden="true"></div>
-            )}
-            <div className={`fixed right-4 fab-offset fab-layer z-50${calcDrawerOpen ? ' hidden' : ''}`}>
-              {/* Expanded Contact Panel */}
-              {fabExpanded && (
-                <div className="absolute bottom-16 right-0 w-72 max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-2xl border-2 border-red-300 overflow-hidden animate-fadeIn">
-                  <div className="bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-2 font-bold flex items-center justify-between">
-                    <span className="flex items-center gap-2">
-                      <i aria-hidden="true" data-lucide="phone-call" className="w-4 h-4"></i>
-                      Quick Contacts
-                    </span>
-                    <button
-                      onClick={() => setFabExpanded(false)}
-                      className="hover:bg-red-700 rounded p-1 transition-colors"
-                      aria-label="Close contacts"
-                    >
-                      <i aria-hidden="true" data-lucide="x" className="w-4 h-4"></i>
-                    </button>
-                  </div>
-                  <div className="divide-y divide-slate-100">
-                    {quickContacts.length === 0 && (
-                      <div className="px-4 py-6 text-center text-sm text-slate-500">
-                        <i aria-hidden="true" data-lucide="users" className="w-6 h-6 mx-auto mb-2 text-slate-400"></i>
-                        <p>No contacts configured</p>
-                        <p className="text-xs mt-1">Add contacts in Settings &rarr; Contact Directory</p>
+            {/* Sticky Action Bar - single encounter workflow rail */}
+            {showEncounterActionBar && (
+              <div className="fixed inset-x-0 bottom-0 z-40 no-print">
+                <div className="mx-auto max-w-7xl px-2 sm:px-4 pb-2 sm:pb-3">
+                  <div className="bg-white/95 backdrop-blur border border-slate-200 shadow-lg rounded-xl px-3 py-2 sm:px-4 sm:py-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                      <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        <i aria-hidden="true" data-lucide="list-checks" className="w-3.5 h-3.5"></i>
+                        Next Steps
                       </div>
-                    )}
-                    {quickContacts.map((contact) => {
-                      const rawPhone = contact.phone || '';
-                      const digits = rawPhone.replace(/[^\d+]/g, '');
-                      const telHref = digits ? `tel:${digits.startsWith('+') ? digits : `+1${digits}`}` : '#';
-                      return (
-                        <a
-                          key={contact.id || contact.label}
-                          href={telHref}
-                          className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-colors"
-                          onClick={() => setFabExpanded(false)}
+                      <div className="flex flex-wrap items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => scrollToSection('treatment-decision')}
+                          className="px-3 py-2 rounded-lg text-xs font-semibold border border-red-200 bg-red-50 text-red-700 hover:bg-red-100"
                         >
-                          <div className="bg-red-100 rounded-full p-2">
-                            <i aria-hidden="true" data-lucide="phone" className="w-5 h-5 text-red-600"></i>
-                          </div>
-                          <div>
-                            <div className="font-semibold text-slate-900 text-sm">{contact.label || 'Contact'}</div>
-                            <div className="text-xs text-slate-500">
-                              {contact.phone || 'Add phone'}
-                              {contact.note ? ` (${contact.note})` : ''}
-                            </div>
-                          </div>
-                          <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4 text-slate-400 ml-auto"></i>
-                        </a>
-                      );
-                    })}
-                  </div>
-                  <div className="bg-slate-50 px-4 py-2 text-xs text-slate-500 text-center">
-                    Tap number to call directly
+                          1. Check Contraindications
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => scrollToSection('treatment-decision')}
+                          className="px-3 py-2 rounded-lg text-xs font-semibold border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100"
+                        >
+                          2. Calculate TNK Dose
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const note = generateTelestrokeNote();
+                            copyToClipboard(note, 'Consult Note');
+                          }}
+                          className="px-3 py-2 rounded-lg text-xs font-semibold border border-emerald-300 bg-emerald-600 text-white hover:bg-emerald-700"
+                        >
+                          3. Copy Consult Note
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              )}
-
-              {/* FAB Button */}
-              <button
-                onClick={() => setFabExpanded(!fabExpanded)}
-                className="w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700"
-                aria-label="Toggle emergency contacts"
-                aria-expanded={fabExpanded}
-                title="Emergency Contacts"
-              >
-                <i aria-hidden="true" data-lucide="phone" className="w-6 h-6 text-white"></i>
-              </button>
-
-              {/* Tooltip when collapsed */}
-              {!fabExpanded && (
-                <div className="absolute bottom-16 right-0 bg-slate-900 text-white text-xs py-1 px-2 rounded whitespace-nowrap opacity-0 hover:opacity-100 pointer-events-none transition-opacity hidden md:block">
-                  Quick Contacts
-                </div>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* ===== CALCULATOR DRAWER — with inline GCS + quick nav ===== */}
             {calcDrawerOpen && (
