@@ -13456,7 +13456,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             { id: 'discharge-checklist-section', label: 'Discharge' },
             { id: 'recommendations-section', label: 'Recommendations' },
             { id: 'handoff-section', label: 'Handoff' },
-            { id: 'safety-section', label: 'Safety' },
           ];
           const roleOptions = [
             { value: 'consult', label: 'Consult' },
@@ -13466,8 +13465,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             { value: 'transfer', label: 'Transfer' }
           ];
           const timeFromLKW = calculateTimeFromLKW();
-          const safetyChecks = getSafetyChecks();
-          const safetyChecksCompleted = safetyChecks.filter((item) => item.complete).length;
           const windowStatus = telestrokeNote.lkwUnknown
             ? { color: 'gray', message: timeFromLKW ? 'Discovery-based timing' : 'LKW unknown' }
             : getWindowStatus(timeFromLKW) || { color: 'gray', message: 'Set LKW time' };
@@ -20075,9 +20072,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                               </div>
 
-                              {/* DAPT Auto-Stop Alert */}
+                              {/* DAPT Duration Guidance */}
                               <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                                <h4 className="font-semibold text-orange-800 mb-2 text-sm">DAPT Duration & Auto-Stop</h4>
+                                <h4 className="font-semibold text-orange-800 mb-2 text-sm">DAPT Duration</h4>
                                 <div className="text-xs text-slate-700 space-y-1">
                                   <p><strong>NIHSS ≤3:</strong> DAPT (ASA + clopidogrel) x 21 days, then monotherapy (CHANCE/POINT, Class I).</p>
                                   <p><strong>NIHSS 4-5:</strong> ASA + ticagrelor x 30 days may be considered (THALES, Class IIb).</p>
@@ -20085,6 +20082,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <p className="text-red-600 font-medium">Class III (Harm): DAPT beyond 90 days increases bleeding risk without benefit (MATCH).</p>
                                   <p><strong>ICAD-specific:</strong> ASA 325mg + clopidogrel 75mg x 90 days, then ASA 325mg monotherapy (SAMMPRIS).</p>
                                 </div>
+                              </div>
+
+                              <div className="bg-white border border-slate-200 rounded-lg p-3">
+                                <h4 className="font-semibold text-slate-800 mb-2 text-sm">DAPT Duration Trial-Matching Figure</h4>
+                                <img
+                                  src="documents/antiplatelet/DAPT%20After%20Ischemic%20Stroke-TIA.jpeg"
+                                  alt="DAPT duration after ischemic stroke/TIA trial-matching summary"
+                                  className="w-full h-auto rounded border border-slate-200"
+                                  loading="lazy"
+                                />
                               </div>
 
                               {/* Anticoagulant Bridging - PAUSE Protocol */}
@@ -23240,27 +23247,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         );
                       })()}
                     </div>
-                    )}
-
-                    {(
-                    <details id="safety-section" className="bg-white border border-slate-200 rounded-lg">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
-                        <span>Safety checks</span>
-                        <span className="text-xs text-slate-700">{safetyChecksCompleted}/{safetyChecks.length} complete</span>
-                      </summary>
-                      <div className="p-4 space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                          {safetyChecks.map((check) => (
-                            <div key={check.id} className={`flex items-center gap-2 p-2 rounded-lg border ${
-                              check.complete ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-amber-50 border-amber-200 text-amber-800'
-                            }`}>
-                              <span className="text-xs font-bold">{check.complete ? 'Done' : '!'}</span>
-                              <span className="text-sm">{check.label}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </details>
                     )}
 
                     {telestrokeNote.diagnosisCategory === 'mimic' && (
