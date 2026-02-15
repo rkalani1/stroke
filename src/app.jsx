@@ -11768,8 +11768,21 @@ Clinician Name`;
             </button>
           );
 
+          const resolveSectionCandidates = (id) => {
+            if (id === 'patient-info-section') {
+              if (consultationType === 'videoTelestroke') {
+                return ['phone-patient-info-section', 'patient-info-section'];
+              }
+              return ['patient-info-section', 'phone-patient-info-section'];
+            }
+            return [id];
+          };
+
           const scrollToSection = (id) => {
-            const target = document.getElementById(id);
+            const candidateIds = resolveSectionCandidates(id);
+            const target = candidateIds
+              .map((candidateId) => document.getElementById(candidateId))
+              .find((candidateEl) => !!candidateEl);
             if (!target) return;
             const headerOffset = 160;
             const top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
@@ -13574,7 +13587,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           }, []);
 
           const topLinks = [];
-          const encounterQuickLinks = [];
+          const encounterQuickLinks = [
+            { label: 'Stroke Clinic Pre-Visit Questionnaire', url: 'https://rkalani1.github.io/stroke-clinic-q/', note: 'Pre-visit checklist and initial screening' }
+          ];
           const userQuickLinks = Array.isArray(settings.quickLinks) ? settings.quickLinks : [];
           const quickLinks = [...encounterQuickLinks, ...userQuickLinks, ...appConfig.institutionLinks].reduce((acc, link) => {
             if (!link || !link.url) return acc;
@@ -13591,6 +13606,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const ttlDisplayHours = appConfig.ttlHoursOverride || DEFAULT_TTL_HOURS;
           const showDocumentActions = true;
           const showEncounterActions = activeTab === 'encounter';
+          const nextBestAction = getNextBestAction();
           const todayDate = new Date().toISOString().slice(0, 10);
           const hasLegacyKeys = LEGACY_KEYS.some((key) => {
             try {
@@ -14393,6 +14409,36 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* ===== TRIAGE SECTION ===== */}
                     <div id="phase-triage"></div>
+
+                    {nextBestAction?.cta ? (
+                      <div className="bg-slate-900/90 text-white rounded-xl px-4 py-3 space-y-3">
+                        <div>
+                          <p className="text-xs font-semibold tracking-wide text-emerald-200">Next Step</p>
+                          <h3 className="text-lg font-semibold">{nextBestAction.title}</h3>
+                          <p className="text-sm text-slate-100/80 mt-1">{nextBestAction.detail}</p>
+                        </div>
+                        <button
+                          onClick={nextBestAction.action}
+                          className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-emerald-500 text-white font-semibold text-sm hover:bg-emerald-400 focus:ring-2 focus:ring-emerald-300 min-h-[40px]"
+                        >
+                          {nextBestAction.cta}
+                        </button>
+                        {!!nextBestAction.progress?.total && (
+                          <div>
+                            <p className="text-xs text-slate-300">
+                              Progress: {nextBestAction.progress.completedCount}/{nextBestAction.progress.totalSteps ?? nextBestAction.progress.total}
+                            </p>
+                            <div className="mt-1 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-emerald-400 rounded-full transition-[width] duration-300"
+                                style={{ width: `${nextBestAction.progress.percentage || 0}%` }}
+                                aria-hidden="true"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ) : null}
 
                     {quickLinks.length > 0 && (
                       <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
