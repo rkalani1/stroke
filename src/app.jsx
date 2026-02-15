@@ -5845,6 +5845,13 @@ Clinician Name`;
               .replace(/[^a-z0-9]/g, '-')
               .replace(/-+/g, '-')
               .replace(/^-|-$/g, '');
+            const criteriaPreviewCount = settings.workflowPersona === 'trainee' ? 8 : 6;
+            const inclusionItems = Array.isArray(trial.inclusion) ? trial.inclusion : [];
+            const exclusionItems = Array.isArray(trial.exclusion) ? trial.exclusion : [];
+            const inclusionPreview = inclusionItems.slice(0, criteriaPreviewCount);
+            const exclusionPreview = exclusionItems.slice(0, criteriaPreviewCount);
+            const inclusionRemainder = inclusionItems.slice(criteriaPreviewCount);
+            const exclusionRemainder = exclusionItems.slice(criteriaPreviewCount);
 
             return (
               <details
@@ -5900,6 +5907,17 @@ Clinician Name`;
                 </summary>
 
                 <div className="bg-slate-50 p-4 border-t border-slate-200">
+                  <div className="mb-4 flex flex-wrap items-center gap-2 text-xs">
+                    <span className="px-2.5 py-1 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-800 font-semibold">
+                      Inclusion: {inclusionItems.length}
+                    </span>
+                    <span className="px-2.5 py-1 rounded-full border border-red-200 bg-red-50 text-red-800 font-semibold">
+                      Exclusion: {exclusionItems.length}
+                    </span>
+                    <span className="px-2.5 py-1 rounded-full border border-slate-200 bg-white text-slate-600">
+                      Scan top criteria first, then expand full list
+                    </span>
+                  </div>
                   {/* Key Takeaways - pulled from TRIAL_ELIGIBILITY_CONFIG by NCT */}
                   {(() => {
                     const matchedConfig = Object.values(TRIAL_ELIGIBILITY_CONFIG).find(c => c.nct === trial.nct);
@@ -5925,24 +5943,54 @@ Clinician Name`;
                     <div>
                       <h4 className="font-bold text-emerald-700 mb-3 text-lg">Inclusion Criteria</h4>
                       <ul className="space-y-2">
-                        {trial.inclusion.map((item, idx) => (
+                        {inclusionPreview.map((item, idx) => (
                           <li key={idx} className="flex items-start">
                             <span className="text-emerald-500 mr-2 mt-1">•</span>
-                            <span className="text-slate-700 text-sm">{item}</span>
+                            <span className="text-slate-700 text-sm leading-relaxed">{item}</span>
                           </li>
                         ))}
                       </ul>
+                      {inclusionRemainder.length > 0 && (
+                        <details className="mt-3 rounded-lg border border-emerald-200 bg-white">
+                          <summary className="cursor-pointer px-3 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">
+                            Show remaining {inclusionRemainder.length} inclusion criteria
+                          </summary>
+                          <ul className="px-3 pb-3 space-y-2">
+                            {inclusionRemainder.map((item, idx) => (
+                              <li key={`inc-rem-${idx}`} className="flex items-start">
+                                <span className="text-emerald-500 mr-2 mt-1">•</span>
+                                <span className="text-slate-700 text-sm leading-relaxed">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </details>
+                      )}
                     </div>
                     <div>
                       <h4 className="font-bold text-red-700 mb-3 text-lg">Exclusion Criteria</h4>
                       <ul className="space-y-2">
-                        {trial.exclusion.map((item, idx) => (
+                        {exclusionPreview.map((item, idx) => (
                           <li key={idx} className="flex items-start">
                             <span className="text-red-500 mr-2 mt-1">•</span>
-                            <span className="text-slate-700 text-sm">{item}</span>
+                            <span className="text-slate-700 text-sm leading-relaxed">{item}</span>
                           </li>
                         ))}
                       </ul>
+                      {exclusionRemainder.length > 0 && (
+                        <details className="mt-3 rounded-lg border border-red-200 bg-white">
+                          <summary className="cursor-pointer px-3 py-2 text-sm font-semibold text-red-800 hover:bg-red-50">
+                            Show remaining {exclusionRemainder.length} exclusion criteria
+                          </summary>
+                          <ul className="px-3 pb-3 space-y-2">
+                            {exclusionRemainder.map((item, idx) => (
+                              <li key={`exc-rem-${idx}`} className="flex items-start">
+                                <span className="text-red-500 mr-2 mt-1">•</span>
+                                <span className="text-slate-700 text-sm leading-relaxed">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </details>
+                      )}
                     </div>
                   </div>
                   {trial.nct.startsWith('NCT') && (
