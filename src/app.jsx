@@ -5639,6 +5639,14 @@ Clinician Name`;
             return 'shared';
           };
 
+          const getTrialTabCategory = (diagnosisCategory = '', diagnosis = '') => {
+            const pathway = diagnosisCategory || getPathwayForDiagnosis(diagnosis);
+            if (!pathway || pathway === 'shared') return null;
+            if (pathway === 'sah' || pathway === 'ich') return 'ich';
+            if (pathway === 'tia' || pathway === 'ischemic') return 'ischemic';
+            return null;
+          };
+
           // =================================================================
           // ELIGIBILITY EVALUATION FUNCTION
           // =================================================================
@@ -12544,10 +12552,13 @@ Clinician Name`;
 
           // Auto-switch trial category when diagnosis category changes
           useEffect(() => {
-            if (telestrokeNote.diagnosisCategory === 'ischemic' || telestrokeNote.diagnosisCategory === 'ich') {
-              setTrialsCategory(telestrokeNote.diagnosisCategory);
-            }
-          }, [telestrokeNote.diagnosisCategory]);
+            const inferredTrialCategory = getTrialTabCategory(telestrokeNote.diagnosisCategory, telestrokeNote.diagnosis);
+            if (!inferredTrialCategory) return;
+
+            setTrialsCategory((prev) => {
+              return prev === inferredTrialCategory ? prev : inferredTrialCategory;
+            });
+          }, [telestrokeNote.diagnosisCategory, telestrokeNote.diagnosis]);
 
           // Auto-set BP phase based on diagnosis and treatment context
           useEffect(() => {
@@ -18985,9 +18996,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {(() => {
                           const allTrialIds = Object.keys(TRIAL_ELIGIBILITY_CONFIG);
                           if (allTrialIds.length === 0) return null;
+                          const activeTrialCategory = getTrialTabCategory(telestrokeNote.diagnosisCategory, telestrokeNote.diagnosis) || trialsCategory;
 
                           // Use the pre-computed trialEligibility state (updated by useEffect)
-                          const results = Object.values(trialEligibility).filter(Boolean);
+                          const results = Object.values(trialEligibility)
+                            .filter(Boolean)
+                            .filter((trial) => trial.category === activeTrialCategory);
                           if (results.length === 0) return null;
 
                           const eligible = results.filter(r => r.status === 'eligible');
