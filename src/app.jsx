@@ -30718,9 +30718,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   </div>
                   <div className="p-4 space-y-3">
                     {[
-                      { keys: 'Ctrl + 1', action: 'Encounter tab' },
-                      { keys: 'Ctrl + 2', action: 'Management tab' },
-                      { keys: 'Ctrl + 3', action: 'Trials tab' },
+                      { keys: 'Ctrl + 1', action: 'Dashboard tab' },
+                      { keys: 'Ctrl + 2', action: 'Encounter tab' },
+                      { keys: 'Ctrl + 3', action: 'Library tab' },
+                      { keys: 'Ctrl + 4', action: 'Settings tab' },
+                      { keys: '1 / 2 / 3 / 4', action: 'Encounter phase: Triage / Decision / Management / Documentation' },
                       { keys: 'Ctrl+Shift+C', action: 'Copy consult note' },
                       { keys: 'Ctrl + K', action: 'Open search' },
                       { keys: 'Ctrl+Shift+K', action: 'Toggle calculators' },
