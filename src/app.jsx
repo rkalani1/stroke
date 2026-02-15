@@ -5817,6 +5817,15 @@ Clinician Name`;
             }, 180);
           };
 
+          const setVisibleTrialCardsOpen = (shouldOpen) => {
+            requestAnimationFrame(() => {
+              const trialCards = document.querySelectorAll('#tabpanel-trials details[id^="trial-"]');
+              trialCards.forEach((card) => {
+                card.open = !!shouldOpen;
+              });
+            });
+          };
+
           // Render trial card — called as function (not JSX component) to preserve <details> open state across re-renders
           const renderTrialCard = (trial, category, key) => {
             const getCategoryColor = (cat) => {
@@ -30470,6 +30479,26 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </button>
                         );
                       })}
+                    </div>
+
+                    <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+                      <span className="text-xs text-slate-500">Trial card view controls</span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setVisibleTrialCardsOpen(true)}
+                          className="px-3 py-1.5 rounded-lg border border-blue-200 bg-blue-50 text-blue-700 text-xs font-semibold hover:bg-blue-100"
+                        >
+                          Expand Visible
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setVisibleTrialCardsOpen(false)}
+                          className="px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-50"
+                        >
+                          Collapse Visible
+                        </button>
+                      </div>
                     </div>
 
                     {/* Patient-based Trial Relevance Summary */}
