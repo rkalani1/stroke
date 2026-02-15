@@ -17841,7 +17841,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <li>• No hemorrhage on imaging</li>
                                     <li>• Class IIa, LOE B-R (EXTEND, WAKE-UP)</li>
                                   </ul>
-                                  <p className="text-xs text-slate-600 mt-2">4.5-24h IVT remains investigational and should be limited to clinical trials (e.g., TIMELESS/SISTER).</p>
                                 </div>
                                 <div>
                                   <h4 className="font-semibold text-blue-700 mb-2">WAKE-UP Stroke:</h4>
@@ -17850,18 +17849,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <li>• MRI with DWI-FLAIR mismatch (DWI+, FLAIR-)</li>
                                     <li>• TNK 0.25 mg/kg IV bolus (max 25 mg)</li>
                                     <li>• Discuss lower certainty of benefit and hemorrhage risk</li>
-                                  </ul>
-                                </div>
-                                <div>
-                                  <h4 className="font-semibold text-amber-700 mb-2">2026 Relaxed Contraindication Notes:</h4>
-                                  <ul className="space-y-1 ml-4">
-                                    <li>• Pregnancy is a relative (not absolute) contraindication — consult OB/GYN</li>
-                                    <li>• Prior stroke &lt;90 days: relative CI; weigh severity of current vs prior</li>
-                                    <li>• Age &gt;80, prior stroke + DM, or NIHSS &gt;25 are <strong>not</strong> exclusions in 3-4.5h if deficits are disabling</li>
-                                    <li>• Extra-axial intracranial neoplasm: NOT a contraindication</li>
-                                    <li>• Seizure at onset: may treat if deficit clearly from stroke, not postictal</li>
-                                    <li>• Lecanemab / anti-amyloid therapy: relative CI due to ARIA risk</li>
-                                    <li>• DOAC within 48h: check drug-specific assay; if below threshold, may treat</li>
                                   </ul>
                                 </div>
                               </div>
