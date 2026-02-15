@@ -2141,28 +2141,6 @@ Clinician Name`;
             }
           }, [telestrokeNote.diagnosisCategory]);
 
-          // Keyboard shortcuts
-          useEffect(() => {
-            const handler = (e) => {
-              // Ctrl+1-4 for primary tab switching
-              if (e.ctrlKey && !e.shiftKey && !e.altKey) {
-                const tabMap = { '1': 'dashboard', '2': 'encounter', '3': 'library', '4': 'settings' };
-                if (tabMap[e.key]) {
-                  e.preventDefault();
-                  navigateTo(tabMap[e.key]);
-                }
-              }
-              // Escape to close modals
-              if (e.key === 'Escape') {
-                if (protocolModal) setProtocolModal(null);
-                if (showChangelog) setShowChangelog(false);
-                if (showKeyboardHelp) setShowKeyboardHelp(false);
-              }
-            };
-            window.addEventListener('keydown', handler);
-            return () => window.removeEventListener('keydown', handler);
-          }, [protocolModal, showChangelog, showKeyboardHelp]);
-
           // Trials data
           const trialsData = {
             ischemic: {
@@ -7260,60 +7238,128 @@ Clinician Name`;
           // ============================================
           useEffect(() => {
             const handleKeyDown = (e) => {
-              // Ctrl+Shift+C — Copy note (uses refs to avoid stale closures)
-              if (e.ctrlKey && e.shiftKey && e.key === 'C') {
-                e.preventDefault();
-                const note = generateNoteRef.current?.();
-                if (note) {
-                  copyToClipboardRef.current?.(note, 'consult-note');
-                }
-                return;
-              }
-              // Ctrl+Shift+K — Toggle calculators (Ctrl+K reserved for search)
-              if (e.ctrlKey && e.shiftKey && (e.key === 'k' || e.key === 'K')) {
-                e.preventDefault();
-                setCalcDrawerOpen(prev => !prev);
-                return;
-              }
-              // Escape — Close modals
-              if (e.key === 'Escape') {
+              const primary = e.metaKey || e.ctrlKey;
+              const key = String(e.key || '');
+              const lowerKey = key.toLowerCase();
+              const targetTag = e.target?.tagName?.toLowerCase?.() || '';
+              const targetIsInput = targetTag === 'input' || targetTag === 'textarea' || targetTag === 'select' || !!e.target?.isContentEditable;
+              const activeTag = document.activeElement?.tagName?.toLowerCase?.() || '';
+              const activeIsInput = activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select' || !!document.activeElement?.isContentEditable;
+
+              // Escape — close one layer at a time
+              if (key === 'Escape') {
                 if (settingsMenuOpen) { setSettingsMenuOpen(false); return; }
                 if (searchOpen) { setSearchOpen(false); return; }
+                if (showKeyboardHelp) { setShowKeyboardHelp(false); return; }
+                if (showChangelog) { setShowChangelog(false); return; }
                 if (confirmConfig) { handleConfirmClose(null); return; }
                 if (protocolModal) { setProtocolModal(null); return; }
                 if (calcDrawerOpen) { setCalcDrawerOpen(false); return; }
                 if (focusMode) { setFocusMode(false); return; }
                 return;
               }
-              // Ctrl+F — Toggle focus mode
-              if (e.ctrlKey && e.shiftKey && e.key === 'F') {
+
+              // Cmd/Ctrl + K — open global search
+              if (primary && !e.shiftKey && !e.altKey && lowerKey === 'k') {
+                e.preventDefault();
+                setSearchOpen(true);
+                setSearchContext('header');
+                requestAnimationFrame(() => {
+                  document.querySelector('input[placeholder*="Search"]')?.focus();
+                });
+                return;
+              }
+
+              // "/" — focus search when not typing
+              if (!primary && !e.altKey && key === '/' && !targetIsInput) {
+                e.preventDefault();
+                setSearchOpen(true);
+                setSearchContext('header');
+                requestAnimationFrame(() => {
+                  document.querySelector('input[placeholder*="Search"]')?.focus();
+                });
+                return;
+              }
+
+              // "?" — toggle keyboard help (outside inputs)
+              if (!primary && !e.altKey && key === '?' && !targetIsInput) {
+                e.preventDefault();
+                setShowKeyboardHelp(prev => !prev);
+                return;
+              }
+
+              // Ctrl/Cmd+Shift+C — copy consult note
+              if (primary && e.shiftKey && !e.altKey && lowerKey === 'c') {
+                e.preventDefault();
+                const note = generateNoteRef.current?.();
+                if (note) copyToClipboardRef.current?.(note, 'consult-note');
+                return;
+              }
+
+              // Ctrl/Cmd+Shift+K — toggle calculators
+              if (primary && e.shiftKey && !e.altKey && lowerKey === 'k') {
+                e.preventDefault();
+                setCalcDrawerOpen(prev => !prev);
+                return;
+              }
+
+              // Ctrl/Cmd+Shift+F — toggle focus mode
+              if (primary && e.shiftKey && !e.altKey && lowerKey === 'f') {
                 e.preventDefault();
                 setFocusMode(prev => !prev);
                 return;
               }
-              // 1-4 keys (when not in input) — Switch encounter phases
-              if (!e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey) {
-                const tagName = e.target.tagName.toLowerCase();
-                if (tagName === 'input' || tagName === 'textarea' || tagName === 'select' || e.target.isContentEditable) return;
-                const phaseMap = { '1': 'phase-triage', '2': 'phase-decision', '3': 'phase-management', '4': 'phase-documentation' };
-                if (phaseMap[e.key] && activeTab === 'encounter') {
+
+              // Ctrl/Cmd + E — export PDF
+              if (primary && !e.shiftKey && !e.altKey && lowerKey === 'e') {
+                e.preventDefault();
+                exportToPDFRef.current?.();
+                return;
+              }
+
+              // Ctrl/Cmd + 1/2/3/4 — tab navigation
+              if (primary && !e.shiftKey && !e.altKey) {
+                const tabMap = {
+                  '1': { tab: 'dashboard' },
+                  '2': { tab: 'encounter' },
+                  '3': { tab: 'library' },
+                  '4': { tab: 'settings' }
+                };
+                if (tabMap[key]) {
                   e.preventDefault();
-                  setEncounterPhase(phaseMap[e.key]);
-                  scrollToSection(phaseMap[e.key]);
+                  const target = tabMap[key];
+                  navigateToRef.current?.(target.tab, { subTab: target.subTab });
                   return;
                 }
-                // M key — Mute/unmute timer alerts
-                if (e.key === 'm' || e.key === 'M') {
-                  if (activeTab === 'encounter') {
-                    toggleAlertMute();
-                    return;
-                  }
+              }
+
+              // Remaining plain-key shortcuts should not fire while typing
+              if (targetIsInput || activeIsInput) return;
+
+              // 1/2/3/4 — switch encounter phases when in encounter tab
+              if (!primary && !e.altKey && !e.shiftKey) {
+                const phaseMap = {
+                  '1': 'phase-triage',
+                  '2': 'phase-decision',
+                  '3': 'phase-management',
+                  '4': 'phase-documentation'
+                };
+                if (phaseMap[key] && activeTab === 'encounter') {
+                  e.preventDefault();
+                  setEncounterPhase(phaseMap[key]);
+                  scrollToSection(phaseMap[key]);
+                  return;
+                }
+                // M key — mute/unmute timer alerts (encounter only)
+                if (lowerKey === 'm' && activeTab === 'encounter') {
+                  toggleAlertMute();
+                  return;
                 }
               }
             };
             document.addEventListener('keydown', handleKeyDown);
             return () => document.removeEventListener('keydown', handleKeyDown);
-          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode, settingsMenuOpen, searchOpen]);
+          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode, settingsMenuOpen, searchOpen, showKeyboardHelp, showChangelog]);
 
 
           // Persist shift patients to localStorage
@@ -13426,12 +13472,12 @@ Clinician Name`;
             }
           }, [protocolModal, showChangelog, showKeyboardHelp, calcDrawerOpen, confirmConfig, settingsMenuOpen]);
 
-          // Reinitialize icons when tab or major layout changes
+          // Reinitialize icons when tab/layout/modal content changes
           useEffect(() => {
             if (isMounted) {
               requestAnimationFrame(() => lucide.createIcons());
             }
-          }, [activeTab, isMounted, managementSubTab, encounterPhase]);
+          }, [activeTab, isMounted, managementSubTab, encounterPhase, showKeyboardHelp, showChangelog, settingsMenuOpen, searchOpen, calcDrawerOpen, protocolModal, confirmConfig]);
 
           // Documentation generation functions
           const generateHPI = () => {
@@ -13531,76 +13577,6 @@ IMAGING:
 ${callCriteria}
 NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : 'q4h x 24h, then daily'}`;
           };
-
-          // Keyboard shortcuts
-          React.useEffect(() => {
-            const handleKeyDown = (e) => {
-              // Global shortcuts — work even when typing in inputs
-              // Cmd/Ctrl + K: Open search
-              if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-                e.preventDefault();
-                setSearchOpen(true);
-                setSearchContext('header');
-                document.querySelector('input[placeholder*="Search"]')?.focus();
-                return;
-              }
-
-              // Escape: Close search/modals
-              if (e.key === 'Escape') {
-                setSearchOpen(false);
-                setShowKeyboardHelp(false);
-                setCalcDrawerOpen(false);
-                setSettingsMenuOpen(false);
-                setProtocolModal(null);
-                return;
-              }
-
-              // Ignore remaining shortcuts if user is typing in an input/textarea/select
-              if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT' || e.target.isContentEditable) {
-                return;
-              }
-
-              // "/" key: Focus search (only outside inputs)
-              if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey) {
-                e.preventDefault();
-                setSearchOpen(true);
-                setSearchContext('header');
-                document.querySelector('input[placeholder*="Search"]')?.focus();
-              }
-
-              const inInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName);
-              if (inInput) return;
-
-              // Number keys for tab navigation (only outside encounter tab to avoid conflict with phase shortcuts)
-              const tabMap = {
-                '1': { tab: 'dashboard' },
-                '2': { tab: 'encounter' },
-                '3': { tab: 'library', subTab: 'management' },
-                '4': { tab: 'library', subTab: 'trials' }
-              };
-
-              if (tabMap[e.key] && !e.metaKey && !e.ctrlKey && !e.altKey) {
-                e.preventDefault();
-                const target = tabMap[e.key];
-                navigateToRef.current?.(target.tab, { subTab: target.subTab });
-              }
-
-              // Ctrl/Cmd + E: Export to PDF
-              if ((e.metaKey || e.ctrlKey) && e.key === 'e') {
-                e.preventDefault();
-                exportToPDFRef.current?.();
-              }
-
-              // ? key: Show keyboard shortcuts help
-              if (e.key === '?' && !e.metaKey && !e.ctrlKey) {
-                e.preventDefault();
-                setShowKeyboardHelp(prev => !prev);
-              }
-            };
-
-            window.addEventListener('keydown', handleKeyDown);
-            return () => window.removeEventListener('keydown', handleKeyDown);
-          }, []);
 
           const topLinks = [
             { label: 'Stroke Clinic Pre-Visit Questionnaire', url: 'https://rkalani1.github.io/stroke-clinic-q/', note: 'Pre-visit checklist and initial screening' },
@@ -30718,16 +30694,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   </div>
                   <div className="p-4 space-y-3">
                     {[
-                      { keys: 'Ctrl + 1', action: 'Dashboard tab' },
-                      { keys: 'Ctrl + 2', action: 'Encounter tab' },
-                      { keys: 'Ctrl + 3', action: 'Library tab' },
-                      { keys: 'Ctrl + 4', action: 'Settings tab' },
+                      { keys: 'Ctrl/Cmd + 1', action: 'Dashboard tab' },
+                      { keys: 'Ctrl/Cmd + 2', action: 'Encounter tab' },
+                      { keys: 'Ctrl/Cmd + 3', action: 'Library tab' },
+                      { keys: 'Ctrl/Cmd + 4', action: 'Settings tab' },
                       { keys: '1 / 2 / 3 / 4', action: 'Encounter phase: Triage / Decision / Management / Documentation' },
-                      { keys: 'Ctrl+Shift+C', action: 'Copy consult note' },
-                      { keys: 'Ctrl + K', action: 'Open search' },
-                      { keys: 'Ctrl+Shift+K', action: 'Toggle calculators' },
+                      { keys: 'Ctrl/Cmd + Shift + C', action: 'Copy consult note' },
+                      { keys: 'Ctrl/Cmd + K', action: 'Open search' },
+                      { keys: 'Ctrl/Cmd + Shift + K', action: 'Toggle calculators' },
                       { keys: '/', action: 'Focus search' },
-                      { keys: 'Ctrl+Shift+F', action: 'Toggle focus mode' },
+                      { keys: 'Ctrl/Cmd + Shift + F', action: 'Toggle focus mode' },
                       { keys: 'Esc', action: 'Close modal / dialog' },
                       { keys: '?', action: 'Toggle this help' }
                     ].map(({ keys, action }) => (
