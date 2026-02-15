@@ -1596,7 +1596,10 @@ Clinician Name`;
           const [storageExpired, setStorageExpired] = useState(INITIAL_STORAGE_EXPIRED);
           // actionsOpen removed — handled by settings menu
           const [encounterPhase, setEncounterPhase] = useState('phase-triage');
-          const [clinicalContext, setClinicalContext] = useState('phone');
+          const [clinicalContext, setClinicalContext] = useState(() => {
+            const consultMode = loadFromStorage('consultationType', settings.defaultConsultationType || 'telephone');
+            return consultMode === 'videoTelestroke' ? 'acute' : 'phone';
+          });
           const [noteTemplate, setNoteTemplate] = useState(loadFromStorage('noteTemplate', 'consult'));
           const [calcDrawerOpen, setCalcDrawerOpen] = useState(false);
           const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
@@ -1676,6 +1679,10 @@ Clinician Name`;
           // CONSULTATION TYPE: Telephone, Video Telestroke
           // ============================================
           const [consultationType, setConsultationType] = useState(loadFromStorage('consultationType', settings.defaultConsultationType || 'telephone'));
+          useEffect(() => {
+            const nextContext = consultationType === 'videoTelestroke' ? 'acute' : 'phone';
+            setClinicalContext((prev) => (prev === nextContext ? prev : nextContext));
+          }, [consultationType]);
 
           const [managementSubTab, setManagementSubTab] = useState(initialManagementSubTab);
           // Management flags removed — all sections now render unconditionally
