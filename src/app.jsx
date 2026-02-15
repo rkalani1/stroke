@@ -5817,6 +5817,28 @@ Clinician Name`;
             }, 150);
           };
 
+          const navigateToTrialCard = (trialName, category) => {
+            if (!trialName) return;
+            navigateTo('library', { subTab: 'trials' });
+            if (category) setTrialsCategory(category);
+            const trialSlug = String(trialName).toLowerCase()
+              .replace(/\s+trial$/i, '')
+              .replace(/[^a-z0-9]/g, '-')
+              .replace(/-+/g, '-')
+              .replace(/^-|-$/g, '');
+            setTimeout(() => {
+              const trialElement = document.getElementById(`trial-${trialSlug}`);
+              if (trialElement) {
+                trialElement.open = true;
+                trialElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                trialElement.classList.add('ring-4', 'ring-blue-400', 'ring-opacity-75');
+                setTimeout(() => {
+                  trialElement.classList.remove('ring-4', 'ring-blue-400', 'ring-opacity-75');
+                }, 2000);
+              }
+            }, 180);
+          };
+
           // Render trial card — called as function (not JSX component) to preserve <details> open state across re-renders
           const renderTrialCard = (trial, category, key) => {
             const getCategoryColor = (cat) => {
@@ -12043,6 +12065,21 @@ Clinician Name`;
                 }
               });
             }
+            const nctCommand = lowerQuery.match(/^(?:nct[:\s-]*)?(nct\d{8})$/i);
+            if (nctCommand) {
+              const targetNct = nctCommand[1].toUpperCase();
+              const trialConfigMatch = Object.entries(TRIAL_ELIGIBILITY_CONFIG).find(([, cfg]) => cfg && cfg.nct === targetNct);
+              if (trialConfigMatch) {
+                const [trialId, cfg] = trialConfigMatch;
+                results.push({
+                  type: 'Command',
+                  title: `Open ${targetNct}`,
+                  description: `${cfg.name} trial`,
+                  score: 980,
+                  action: () => navigateToTrial(trialId)
+                });
+              }
+            }
 
             // Search in trials
             Object.entries(trialsData).forEach(([category, data]) => {
@@ -12058,8 +12095,7 @@ Clinician Name`;
                         description: trial.description.substring(0, 100) + '...',
                         score,
                         action: () => {
-                          setTrialsCategory(category);
-                          navigateTo('trials', { clearSearch: true });
+                          navigateToTrialCard(trial.name, category);
                         }
                       });
                     }
@@ -17678,14 +17714,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                                   {/* EVT Recommendation */}
                                   <div className={`p-3 rounded-lg border-2 ${
-                                    evtRec.eligible ? 'bg-purple-100 border-purple-400' :
+                                    evtRec.eligible ? 'bg-blue-100 border-blue-400' :
                                     evtRec.confidence === 'low' ? 'bg-slate-100 border-slate-300' :
                                     'bg-red-50 border-red-300'
                                   }`}>
                                     <div className="flex items-center justify-between mb-2">
                                       <span className="font-bold text-slate-800">EVT (Thrombectomy)</span>
                                       {evtRec.eligible ? (
-                                        <span className="px-2 py-1 bg-purple-500 text-white text-xs font-bold rounded">CONSIDER</span>
+                                        <span className="px-2 py-1 bg-blue-500 text-white text-xs font-bold rounded">CONSIDER</span>
                                       ) : evtRec.confidence === 'low' ? (
                                         <span className="px-2 py-1 bg-slate-400 text-white text-xs font-bold rounded">PENDING</span>
                                       ) : (
@@ -28500,8 +28536,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ['ref-hints', 'HINTS Exam'],
                         ['ref-cvt', 'CVT'],
                         ['ref-prognosis', 'Prognosis'],
-                        ['ref-pearls', 'Clinical Pearls'],
-                        ['ref-pitfalls', 'Pitfalls'],
+                        ...(isTraineeMode ? [['ref-pearls', 'Clinical Pearls'], ['ref-pitfalls', 'Pitfalls']] : []),
                         ['ref-imaging', 'Imaging F/U'],
                         ['ref-mimics', 'Mimics DDx'],
                         ['ref-chameleons', 'Chameleons'],
@@ -28645,6 +28680,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Clinical Pearls for Trainees */}
+                    {isTraineeMode && (
                     <details id="ref-pearls" className="bg-white border border-indigo-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-indigo-800 hover:bg-indigo-50 rounded-lg flex items-center gap-2">
                         <i aria-hidden="true" data-lucide="lightbulb" className="w-4 h-4 text-indigo-600"></i>
@@ -28697,8 +28733,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
                       </div>
                     </details>
+                    )}
 
                     {/* Trainee Pitfalls — Common Mistakes */}
+                    {isTraineeMode && (
                     <details id="ref-pitfalls" className="bg-white border border-red-200 rounded-lg">
                       <summary className="cursor-pointer p-4 font-semibold text-red-800 hover:bg-red-50 rounded-lg flex items-center gap-2">
                         <i aria-hidden="true" data-lucide="triangle-alert" className="w-4 h-4 text-red-600"></i>
@@ -28768,6 +28806,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ))}
                       </div>
                     </details>
+                    )}
 
                     {/* Imaging Follow-Up Protocols */}
                     <details id="ref-imaging" className="bg-white border border-cyan-200 rounded-lg">
