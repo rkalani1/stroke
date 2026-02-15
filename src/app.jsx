@@ -17,7 +17,6 @@ import svinLargeCore2025 from './guidelines/svin-large-core-2025.json';
 import tiaEd2023 from './guidelines/tia-ed-2023.json';
 
         const { useState, useEffect, useRef, useMemo, useContext } = React;
-        const APP_VERSION = (window.strokeAppStorage && window.strokeAppStorage.appVersion) || 'unknown';
         const STORAGE_PREFIX = (window.strokeAppStorage && window.strokeAppStorage.prefix) || 'strokeApp:';
         const APP_DATA_KEY = (window.strokeAppStorage && window.strokeAppStorage.appDataKey) || 'stroke.appData.v2';
         const LEGACY_KEYS = (window.strokeAppStorage && window.strokeAppStorage.legacyKeys) || [
@@ -5627,77 +5626,6 @@ Clinician Name`;
             }
           };
 
-          // =================================================================
-          // CLINICAL PATHWAY DEFINITIONS
-          // Type-specific step sequences for guided encounter workflow
-          // =================================================================
-          const CLINICAL_PATHWAY_STEPS = {
-            shared: [
-              { id: 'patient-info', label: 'Patient Info', section: 'patient-info-section', check: (d) => !!(d.telestrokeNote?.age && d.telestrokeNote?.symptoms) },
-              { id: 'lkw', label: 'Last Known Well', section: 'lkw-section', check: (d) => !!(d.lkwTime || d.telestrokeNote?.lkwUnknown) },
-              { id: 'nihss', label: 'NIHSS', section: 'nihss-section', check: (d) => !!(d.telestrokeNote?.nihss || d.nihssComplete) },
-              { id: 'vitals', label: 'Vitals/Labs', section: 'vitals-section', check: (d) => !!d.telestrokeNote?.presentingBP },
-              { id: 'imaging', label: 'Imaging', section: 'imaging-section', check: (d) => !!d.telestrokeNote?.ctResults },
-              { id: 'diagnosis', label: 'Diagnosis', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.diagnosis }
-            ],
-            ischemic: [
-              { id: 'tnk-contraindications', label: 'TNK Screen', section: 'tnk-contraindications', check: (d) => !!d.telestrokeNote?.tnkContraindicationReviewed,
-                skip: (d) => { const t = d.timeFromLKW; return t && t.total > 4.5; } },
-              { id: 'tnk-decision', label: 'TNK Decision', section: 'treatment-decision', check: (d) => d.telestrokeNote?.tnkRecommended === true || d.telestrokeNote?.tnkRecommended === false,
-                skip: (d) => { const t = d.timeFromLKW; return t && t.total > 4.5; } },
-              { id: 'evt-eval', label: 'EVT Evaluation', section: 'treatment-decision', check: (d) => d.telestrokeNote?.evtRecommended === true || d.telestrokeNote?.evtRecommended === false },
-              { id: 'tnk-admin', label: 'TNK Admin', section: 'time-metrics-section', check: (d) => !!d.telestrokeNote?.tnkAdminTime,
-                skip: (d) => !d.telestrokeNote?.tnkRecommended },
-              { id: 'transfer', label: 'Transfer', section: 'transfer-section', check: (d) => !!d.telestrokeNote?.transferAccepted || !!d.telestrokeNote?.disposition,
-                skip: (d) => !d.telestrokeNote?.evtRecommended && !(d.telestrokeNote?.vesselOcclusion || []).some(v => /ica|m1|mca|basilar/i.test(v)) },
-              { id: 'recommendations', label: 'Recommendations', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.recommendationsText }
-            ],
-            ich: [
-              { id: 'ich-bp', label: 'BP Management', section: 'vitals-section', check: (d) => !!d.telestrokeNote?.ichBPManaged },
-              { id: 'ich-reversal', label: 'Anticoag Reversal', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.ichReversalInitiated,
-                skip: (d) => !d.telestrokeNote?.lastDOACType },
-              { id: 'ich-neurosurg', label: 'Neurosurgery', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.ichNeurosurgeryConsulted },
-              { id: 'recommendations', label: 'Recommendations', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.recommendationsText }
-            ],
-            sah: [
-              { id: 'sah-grade', label: 'SAH Grade', section: 'sah-management-section', check: (d) => !!d.telestrokeNote?.sahGrade },
-              { id: 'sah-bp', label: 'BP Management', section: 'sah-management-section', check: (d) => !!d.telestrokeNote?.sahBPManaged },
-              { id: 'sah-nimodipine', label: 'Nimodipine', section: 'sah-management-section', check: (d) => !!d.telestrokeNote?.sahNimodipine },
-              { id: 'sah-neurosurg', label: 'Neurosurgery', section: 'sah-management-section', check: (d) => !!d.telestrokeNote?.sahNeurosurgeryConsulted },
-              { id: 'sah-aneurysm', label: 'Aneurysm Securing', section: 'sah-management-section', check: (d) => !!d.telestrokeNote?.sahAneurysmSecured,
-                skip: (d) => { const ct = (d.telestrokeNote?.ctaResults || '').toLowerCase(); return ct.includes('no aneurysm'); } },
-              { id: 'recommendations', label: 'Recommendations', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.recommendationsText }
-            ],
-            cvt: [
-              { id: 'cvt-anticoag', label: 'Anticoagulation', section: 'cvt-management-section', check: (d) => !!d.telestrokeNote?.cvtAnticoagStarted },
-              { id: 'cvt-icp', label: 'ICP Management', section: 'cvt-management-section', check: (d) => !!d.telestrokeNote?.cvtIcpManaged },
-              { id: 'cvt-seizure', label: 'Seizure Mgmt', section: 'cvt-management-section', check: (d) => !!d.telestrokeNote?.cvtSeizureManaged },
-              { id: 'cvt-heme', label: 'Hematology', section: 'cvt-management-section', check: (d) => !!d.telestrokeNote?.cvtHematologyConsulted,
-                skip: (d) => { const age = parseInt(d.telestrokeNote?.age, 10) || 0; return age > 60; } },
-              { id: 'recommendations', label: 'Recommendations', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.recommendationsText }
-            ],
-            tia: [
-              { id: 'tia-imaging', label: 'MRI DWI', section: 'imaging-section', check: (d) => !!d.telestrokeNote?.tiaWorkup?.mriDwi },
-              { id: 'tia-vascular', label: 'CTA/MRA', section: 'imaging-section', check: (d) => !!d.telestrokeNote?.tiaWorkup?.ctaHeadNeck },
-              { id: 'tia-ecg', label: 'ECG', section: 'vitals-section', check: (d) => !!d.telestrokeNote?.tiaWorkup?.ecg12Lead },
-              { id: 'tia-telemetry', label: 'Telemetry', section: 'vitals-section', check: (d) => !!d.telestrokeNote?.tiaWorkup?.telemetry },
-              { id: 'tia-echo', label: 'Echo', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.tiaWorkup?.echo },
-              { id: 'tia-labs', label: 'Labs', section: 'vitals-section', check: (d) => !!(d.telestrokeNote?.tiaWorkup?.labsCbc && d.telestrokeNote?.tiaWorkup?.labsLipids) },
-              { id: 'tia-etiology', label: 'TOAST Classification', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.toastClassification },
-              { id: 'tia-prevention', label: 'Secondary Prevention', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.recommendationsText }
-            ],
-            dissection: [
-              { id: 'dissection-imaging', label: 'Vascular Imaging', section: 'imaging-section', check: (d) => !!d.telestrokeNote?.ctaResults },
-              { id: 'dissection-antithrombotic', label: 'Antithrombotic', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.dissectionPathway?.antithromboticStarted },
-              { id: 'dissection-followup', label: 'Imaging Follow-Up Plan', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.dissectionPathway?.imagingFollowUp },
-              { id: 'recommendations', label: 'Recommendations', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.recommendationsText }
-            ],
-            mimic: [
-              { id: 'alt-workup', label: 'Alternative Workup', section: 'treatment-decision', check: (d) => !!d.telestrokeNote?.diagnosis },
-              { id: 'disposition', label: 'Disposition', section: 'recommendations-section', check: (d) => !!d.telestrokeNote?.disposition || !!d.telestrokeNote?.recommendationsText }
-            ]
-          };
-
           const getPathwayForDiagnosis = (diagnosis) => {
             if (!diagnosis) return 'shared';
             const dx = diagnosis.toLowerCase();
@@ -7263,25 +7191,6 @@ Clinician Name`;
               return next;
             });
           }, [telestrokeNote, nihssScore, consultationType]);
-
-          // ============================================
-          // SECTION COMPLETION TRACKING
-          // ============================================
-          const sectionCompletion = useMemo(() => {
-            const nihssPresent = telestrokeNote.nihss !== '' && telestrokeNote.nihss !== undefined && telestrokeNote.nihss !== null || nihssScore > 0;
-            const hasLabs = [telestrokeNote.glucose, telestrokeNote.plateletCount, telestrokeNote.inr].some(v => v !== '' && v !== undefined && v !== null);
-            const triage = [telestrokeNote.age, telestrokeNote.sex, lkwTime, nihssPresent, hasLabs].filter(Boolean).length;
-            const decision = [telestrokeNote.ctResults, telestrokeNote.ctaResults, telestrokeNote.diagnosis].filter(Boolean).length;
-            const treatmentDecided = telestrokeNote.tnkRecommended === true || telestrokeNote.tnkRecommended === false || telestrokeNote.evtRecommended === true || telestrokeNote.evtRecommended === false;
-            const dispositionSet = !!telestrokeNote.disposition;
-            const docs = [telestrokeNote.rationale].filter(Boolean).length;
-            return {
-              triage: { done: triage, total: 5, complete: triage >= 5 },
-              decision: { done: decision, total: 3, complete: decision >= 3 },
-              orders: { done: (treatmentDecided ? 1 : 0) + (dispositionSet ? 1 : 0), total: 2, complete: treatmentDecided && dispositionSet },
-              docs: { done: docs, total: 1, complete: docs >= 1 }
-            };
-          }, [telestrokeNote, nihssScore, lkwTime]);
 
           // ============================================
           // KEYBOARD SHORTCUTS
@@ -11793,105 +11702,6 @@ Clinician Name`;
             target.focus({ preventScroll: true });
           };
 
-          const getNextBestAction = () => {
-            const timeFrom = calculateTimeFromLKW();
-            const nihss = parseInt(telestrokeNote.nihss, 10) || nihssScore || 0;
-            const dx = (telestrokeNote.diagnosis || '').toLowerCase();
-            const pathwayType = getPathwayForDiagnosis(telestrokeNote.diagnosis);
-
-            // Build data context for pathway step checks
-            const pathwayData = {
-              telestrokeNote,
-              lkwTime,
-              nihssScore,
-              nihssComplete: isNIHSSComplete(),
-              aspectsScore,
-              timeFromLKW: timeFrom,
-              ichScore: typeof calculateICHScore === 'function' ? calculateICHScore(ichScoreItems) : 0
-            };
-
-            // Determine applicable steps: shared + type-specific
-            const sharedSteps = CLINICAL_PATHWAY_STEPS.shared;
-            const typeSteps = CLINICAL_PATHWAY_STEPS[pathwayType] || [];
-            const allSteps = [...sharedSteps, ...typeSteps];
-
-            // Filter out skipped steps and compute progress
-            const activeSteps = allSteps.filter(step => !step.skip || !step.skip(pathwayData));
-            const completedCount = activeSteps.filter(step => step.check(pathwayData)).length;
-            const totalSteps = activeSteps.length;
-            const percentage = totalSteps > 0 ? Math.round((completedCount / totalSteps) * 100) : 0;
-
-            // Determine current phase label
-            let phase = 'Assessment';
-            if (pathwayType !== 'shared') {
-              if (completedCount === totalSteps) {
-                phase = 'Complete';
-              } else if (completedCount > sharedSteps.filter(s => !s.skip || !s.skip(pathwayData)).length) {
-                phase = pathwayType === 'ischemic' ? 'Ischemic Pathway' : pathwayType === 'ich' ? 'ICH Pathway' : pathwayType === 'sah' ? 'SAH Pathway' : pathwayType === 'cvt' ? 'CVT Pathway' : pathwayType === 'tia' ? 'TIA Pathway' : pathwayType === 'dissection' ? 'Dissection Pathway' : 'Workup';
-              } else {
-                phase = 'Initial Assessment';
-              }
-            }
-
-            // Find the first incomplete step
-            const nextStep = activeSteps.find(step => !step.check(pathwayData));
-
-            // Build the action for the next incomplete step
-            let action = null;
-            if (nextStep) {
-              const stepActions = {
-                'patient-info': { title: 'Capture core details', detail: 'Enter age and presenting symptoms to drive recommendations.', cta: 'Go to Patient Info' },
-                'lkw': { title: 'Set last known well', detail: 'Time from onset is required to determine treatment windows.', cta: 'Set LKW' },
-                'nihss': { title: 'Enter NIHSS score', detail: 'Use quick entry or guided NIHSS to calculate severity.', cta: 'Enter NIHSS' },
-                'vitals': { title: 'Add presenting BP', detail: 'BP drives TNK eligibility and safety checks.', cta: 'Enter BP' },
-                'imaging': { title: 'Review imaging', detail: 'Document CT/CTA findings to determine treatment pathway.', cta: 'Add imaging' },
-                'diagnosis': { title: 'Set diagnosis', detail: 'Establish working diagnosis to activate type-specific pathway.', cta: 'Set diagnosis' },
-                'tnk-contraindications': { title: 'Review TNK contraindications', detail: 'Complete the contraindication checklist before recommending TNK.', cta: 'Review contraindications' },
-                'tnk-decision': { title: 'TNK decision', detail: 'Patient is within TNK window. Confirm eligibility and document decision.', cta: 'Review treatment' },
-                'evt-eval': { title: 'Evaluate for EVT', detail: 'Assess LVO, NIHSS, and imaging for thrombectomy candidacy.', cta: 'Evaluate EVT' },
-                'tnk-admin': { title: 'Document TNK administration', detail: 'Capture administration time for DTN metrics.', cta: 'Add TNK time' },
-                'transfer': { title: 'Arrange transfer', detail: 'Coordinate transfer to EVT-capable center for LVO.', cta: 'Transfer checklist' },
-                'recommendations': { title: 'Finalize recommendations', detail: 'Complete the recommendation summary for handoff and documentation.', cta: 'Add recommendations' },
-                'ich-bp': { title: 'ICH: Manage blood pressure', detail: 'Target SBP <140 within 2h (Class IIa, INTERACT2). Avoid SBP <130 (ATACH-2). Nicardipine or labetalol.', cta: 'Manage BP' },
-                'ich-reversal': { title: 'ICH: Anticoagulation reversal', detail: 'Patient may be on anticoagulation. Review and order reversal agents.', cta: 'Order reversal' },
-                'ich-neurosurg': { title: 'ICH: Neurosurgery evaluation', detail: 'Document neurosurgery consultation for surgical candidacy assessment.', cta: 'Consult neurosurgery' },
-                'sah-grade': { title: 'SAH: Grade severity', detail: 'Enter Hunt & Hess or WFNS grade for SAH prognostication.', cta: 'Grade SAH' },
-                'sah-bp': { title: 'SAH: Manage blood pressure', detail: 'Target SBP <160 (pre-securing) or <140 (post-securing) per 2023 AHA/ASA SAH guidelines.', cta: 'Manage BP' },
-                'sah-nimodipine': { title: 'SAH: Start nimodipine', detail: 'Nimodipine 60 mg q4h x 21 days for vasospasm prevention (Class I, LOE A).', cta: 'Order nimodipine' },
-                'sah-neurosurg': { title: 'SAH: Neurosurgery consult', detail: 'Urgent neurosurgery consultation for aneurysm securing strategy.', cta: 'Consult neurosurgery' },
-                'sah-aneurysm': { title: 'SAH: Aneurysm securing', detail: 'Document plan for aneurysm securing (clip vs coil) within 24 hours.', cta: 'Document plan' },
-                'cvt-anticoag': { title: 'CVT: Start anticoagulation', detail: 'Initiate LMWH or UFH per 2024 AHA CVT guideline, even with hemorrhagic transformation.', cta: 'Start anticoag' },
-                'cvt-icp': { title: 'CVT: ICP management', detail: 'Assess and manage elevated intracranial pressure. HOB elevation, acetazolamide if needed.', cta: 'Manage ICP' },
-                'cvt-seizure': { title: 'CVT: Seizure management', detail: 'Assess seizure risk and initiate prophylaxis if supratentorial lesion.', cta: 'Manage seizures' },
-                'cvt-heme': { title: 'CVT: Hematology consult', detail: 'Thrombophilia workup for young patients or unprovoked CVT.', cta: 'Consult hematology' },
-                'alt-workup': { title: 'Alternative workup', detail: 'Document alternative diagnosis and appropriate workup.', cta: 'Document workup' },
-                'disposition': { title: 'Determine disposition', detail: 'Set disposition plan for stroke mimic.', cta: 'Set disposition' }
-              };
-              const stepAction = stepActions[nextStep.id] || { title: nextStep.label, detail: 'Complete this step to advance the pathway.', cta: 'Go' };
-              action = {
-                ...stepAction,
-                action: () => scrollToSection(nextStep.section),
-                stepId: nextStep.id
-              };
-            }
-
-            // Return enriched object with progress metadata
-            return {
-              ...action,
-              progress: {
-                completedCount,
-                totalSteps,
-                percentage,
-                phase,
-                steps: activeSteps.map(step => ({
-                  id: step.id,
-                  label: step.label,
-                  completed: step.check(pathwayData)
-                }))
-              }
-            };
-          };
-
           // Get guideline recommendations matching current patient data
           const getContextualRecommendations = () => {
             const timeFrom = calculateTimeFromLKW();
@@ -13586,9 +13396,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             return () => window.removeEventListener('keydown', handleKeyDown);
           }, []);
 
-          const topLinks = [];
+          const topLinks = [
+            { label: 'Stroke Clinic Pre-Visit Questionnaire', url: 'https://rkalani1.github.io/stroke-clinic-q/', note: 'Pre-visit checklist and initial screening' },
+            { label: 'Regional Hospitals', url: 'https://rkalani1.github.io/telestroke-expansion-map/', note: 'Regional telestroke center coverage map' }
+          ];
           const encounterQuickLinks = [
-            { label: 'Stroke Clinic Pre-Visit Questionnaire', url: 'https://rkalani1.github.io/stroke-clinic-q/', note: 'Pre-visit checklist and initial screening' }
+            { label: 'Telestroke Website', url: 'https://intranet.neurology.uw.edu/telestroke-provider-resources/' },
+            { label: 'UW Medicine', url: 'https://access.uwmedicine.org/logon/LogonPoint/tmindex.html' },
+            { label: 'OpenEvidence', url: 'https://www.openevidence.com' },
+            { label: 'UpToDate', url: 'https://www.uptodate.com' }
           ];
           const userQuickLinks = Array.isArray(settings.quickLinks) ? settings.quickLinks : [];
           const quickLinks = [...encounterQuickLinks, ...userQuickLinks, ...appConfig.institutionLinks].reduce((acc, link) => {
@@ -13606,7 +13422,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const ttlDisplayHours = appConfig.ttlHoursOverride || DEFAULT_TTL_HOURS;
           const showDocumentActions = true;
           const showEncounterActions = activeTab === 'encounter';
-          const nextBestAction = getNextBestAction();
           const todayDate = new Date().toISOString().slice(0, 10);
           const hasLegacyKeys = LEGACY_KEYS.some((key) => {
             try {
@@ -13727,14 +13542,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-900 to-indigo-800 bg-clip-text text-transparent">
                         Stroke
                       </h1>
-                      <button
-                        onClick={() => setShowChangelog(true)}
-                        className="text-xs text-slate-500 hover:text-blue-600 transition-colors min-h-[36px]"
-                        title="What's new"
-                        aria-label={`Version ${APP_VERSION} — view changelog`}
-                      >
-                        {APP_VERSION}
-                      </button>
                       <button
                         onClick={() => setShowKeyboardHelp(true)}
                         className="hidden sm:inline-flex text-xs text-slate-500 hover:text-blue-600 transition-colors px-1.5 py-0.5 border border-slate-200 rounded"
@@ -14193,55 +14000,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {windowStatus.message}
                             </span>
                           )}
-                          <button
-                            onClick={() => setCalcDrawerOpen(true)}
-                            className="ml-auto text-xs font-medium text-blue-600 hover:text-blue-800 flex items-center gap-1"
-                            aria-label="Open calculators"
-                            title="Open calculators"
-                          >
-                            <i aria-hidden="true" data-lucide="calculator" className="w-3.5 h-3.5"></i>
-                            <span className="hidden sm:inline">Calculators</span>
-                          </button>
                         </div>
                       </div>
                     )}
-
-                    {/* ===== ENCOUNTER SECTION NAVIGATION with completion indicators ===== */}
-                    <div className="bg-white border border-slate-200 rounded-lg p-0.5 sticky top-28 z-10">
-                      <nav className="flex gap-0.5 overflow-x-auto no-scrollbar" aria-label="Encounter sections">
-                        {[
-                          { id: 'phase-triage', label: 'Triage', key: 'triage' },
-                          { id: 'phase-decision', label: 'Decision', key: 'decision' },
-                          { id: 'phase-management', label: 'Orders', key: 'orders' },
-                          { id: 'phase-documentation', label: 'Docs', key: 'docs' }
-                        ].map((phase) => {
-                          const completion = sectionCompletion[phase.key];
-                          return (
-                            <button
-                              key={phase.id}
-                              onClick={() => {
-                                setEncounterPhase(phase.id);
-                                scrollToSection(phase.id);
-                              }}
-                              className={`flex-1 px-3 py-2.5 sm:py-1.5 rounded-md text-xs font-medium transition-all flex items-center justify-center gap-1.5 min-h-[44px] sm:min-h-0 ${
-                                encounterPhase === phase.id
-                                  ? 'bg-blue-600 text-white'
-                                  : 'text-slate-500 hover:bg-slate-100'
-                              }`}
-                            >
-                              {phase.label}
-                              {completion && completion.complete ? (
-                                <i aria-hidden="true" data-lucide="check-circle" className={`w-3 h-3 ${encounterPhase === phase.id ? 'text-white' : 'text-emerald-500'}`}></i>
-                              ) : completion && completion.done > 0 ? (
-                                <span className={`text-xs font-semibold ${encounterPhase === phase.id ? 'text-white/80' : 'text-slate-600'}`}>
-                                  {completion.done}/{completion.total}
-                                </span>
-                              ) : null}
-                            </button>
-                          );
-                        })}
-                      </nav>
-                    </div>
 
                     {/* ===== STROKE TIMELINE STRIP — connected visual timeline ===== */}
                     {(lkwTime || telestrokeNote.dtnEdArrival || telestrokeNote.tnkAdminTime) && (
@@ -14409,36 +14170,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* ===== TRIAGE SECTION ===== */}
                     <div id="phase-triage"></div>
-
-                    {nextBestAction?.cta ? (
-                      <div className="bg-slate-900/90 text-white rounded-xl px-4 py-3 space-y-3">
-                        <div>
-                          <p className="text-xs font-semibold tracking-wide text-emerald-200">Next Step</p>
-                          <h3 className="text-lg font-semibold">{nextBestAction.title}</h3>
-                          <p className="text-sm text-slate-100/80 mt-1">{nextBestAction.detail}</p>
-                        </div>
-                        <button
-                          onClick={nextBestAction.action}
-                          className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-emerald-500 text-white font-semibold text-sm hover:bg-emerald-400 focus:ring-2 focus:ring-emerald-300 min-h-[40px]"
-                        >
-                          {nextBestAction.cta}
-                        </button>
-                        {!!nextBestAction.progress?.total && (
-                          <div>
-                            <p className="text-xs text-slate-300">
-                              Progress: {nextBestAction.progress.completedCount}/{nextBestAction.progress.totalSteps ?? nextBestAction.progress.total}
-                            </p>
-                            <div className="mt-1 h-1.5 bg-slate-700 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-emerald-400 rounded-full transition-[width] duration-300"
-                                style={{ width: `${nextBestAction.progress.percentage || 0}%` }}
-                                aria-hidden="true"
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ) : null}
 
                     {quickLinks.length > 0 && (
                       <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
