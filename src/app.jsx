@@ -1685,6 +1685,7 @@ Clinician Name`;
           const [callingSiteCollapsed, setCallingSiteCollapsed] = useState(false);
           const [lkwCardCollapsed, setLkwCardCollapsed] = useState(false);
           const [readinessCardCollapsed, setReadinessCardCollapsed] = useState(false);
+          const [snapshotShowAll, setSnapshotShowAll] = useState(false);
 
           // ============================================
           // CONSULTATION TYPE: Telephone, Video Telestroke
@@ -15153,8 +15154,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       ];
                       const missingCount = snapshotItems.filter((item) => item.value === '--').length;
                       const allMissing = missingCount === snapshotItems.length;
+                      const hasMixedCompletion = missingCount > 0 && missingCount < snapshotItems.length;
+                      const visibleSnapshotItems = hasMixedCompletion && !snapshotShowAll
+                        ? snapshotItems.filter((item) => item.value === '--')
+                        : snapshotItems;
                       return (
-                        <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                        <div id="case-snapshot-card" className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
                           {allMissing ? (
                             <div className="flex flex-wrap items-center justify-between gap-2">
                               <span className="text-xs text-slate-500">
@@ -15170,28 +15175,39 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </button>
                             </div>
                           ) : (
-                            <div className="flex flex-wrap items-center gap-1.5">
-                              <span className="text-[11px] uppercase tracking-wide font-semibold text-slate-500 mr-1">
-                                Case Snapshot
-                                <span className="ml-1 text-slate-400 normal-case">{missingCount} missing</span>
-                              </span>
-                              {snapshotItems.map((item) => {
-                                const isMissing = item.value === '--';
-                                return (
-                                  <button
-                                    key={`snapshot-${item.label}`}
-                                    type="button"
-                                    onClick={() => jumpToEncounterField(item.field)}
-                                    className={`px-2 py-0.5 rounded-full border text-xs font-medium transition-colors ${
-                                      isMissing
-                                        ? 'border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100'
-                                        : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-100'
-                                    }`}
-                                  >
-                                    <span className="font-semibold">{item.label}:</span> {item.value}
-                                  </button>
-                                );
-                              })}
+                            <div className="flex flex-wrap items-start justify-between gap-2">
+                              <div className="flex flex-wrap items-center gap-1.5 min-w-0">
+                                <span className="text-[11px] uppercase tracking-wide font-semibold text-slate-500 mr-1">
+                                  Case Snapshot
+                                  <span className="ml-1 text-slate-400 normal-case">{missingCount} missing</span>
+                                </span>
+                                {visibleSnapshotItems.map((item) => {
+                                  const isMissing = item.value === '--';
+                                  return (
+                                    <button
+                                      key={`snapshot-${item.label}`}
+                                      type="button"
+                                      onClick={() => jumpToEncounterField(item.field)}
+                                      className={`px-2 py-0.5 rounded-full border text-xs font-medium transition-colors ${
+                                        isMissing
+                                          ? 'border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100'
+                                          : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-100'
+                                      }`}
+                                    >
+                                      <span className="font-semibold">{item.label}:</span> {item.value}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                              {hasMixedCompletion && (
+                                <button
+                                  type="button"
+                                  onClick={() => setSnapshotShowAll((prev) => !prev)}
+                                  className="px-2 py-0.5 rounded-full border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold"
+                                >
+                                  {snapshotShowAll ? 'Show missing' : 'Show all'}
+                                </button>
+                              )}
                             </div>
                           )}
                         </div>
