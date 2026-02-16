@@ -13111,7 +13111,6 @@ Clinician Name`;
               if (generateNewId) {
                 setCurrentPatientId(generatePatientId());
               }
-              showNotice('New case started.', 'success');
               return;
             }
             const confirmed = await showConfirm({
