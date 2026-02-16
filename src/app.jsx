@@ -15145,6 +15145,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   Next: {nextField}
                                 </button>
                               )}
+                              {nextField === 'LKW' && !lkwTime && !telestrokeNote.lkwUnknown && (
+                                <button
+                                  type="button"
+                                  onClick={() => setLkwTime(new Date())}
+                                  className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-800 text-xs font-semibold"
+                                >
+                                  Set LKW Now
+                                </button>
+                              )}
                             </div>
                           </div>
                           {showReadinessDetails && (
