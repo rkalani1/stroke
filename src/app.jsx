@@ -15119,7 +15119,25 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       } = encounterReadiness;
                       const canCollapseReadiness = requiredFields.length === 0;
                       const showReadinessDetails = !(canCollapseReadiness && readinessCardCollapsed);
-                      return missing.length > 0 ? (
+                      if (missing.length === 0) {
+                        return (
+                          <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 text-sm">
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                              <span className="text-xs font-semibold uppercase tracking-wide text-emerald-800">
+                                Case Readiness: Complete ({trackedFields.length}/{trackedFields.length})
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => scrollToSection('recommendations-section')}
+                                className="px-2 py-0.5 rounded-full border border-emerald-300 bg-white hover:bg-emerald-100 text-emerald-800 text-xs font-semibold"
+                              >
+                                Go to note
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      }
+                      return (
                         <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-sm space-y-2">
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <span className="text-xs font-semibold uppercase tracking-wide text-amber-800">
@@ -15200,7 +15218,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </>
                           )}
                         </div>
-                      ) : null;
+                      );
                     })()}
 
                     {(() => {
