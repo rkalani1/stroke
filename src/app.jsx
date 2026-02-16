@@ -13094,6 +13094,26 @@ Clinician Name`;
 
           const clearCurrentCase = async (options = {}) => {
             const { generateNewId = false } = options;
+            const hasMeaningfulCaseData = Boolean(
+              telestrokeNote.age ||
+              telestrokeNote.diagnosis ||
+              telestrokeNote.nihss ||
+              nihssScore > 0 ||
+              lkwTime ||
+              telestrokeNote.ctResults ||
+              telestrokeNote.ctaResults ||
+              telestrokeNote.symptoms ||
+              telestrokeNote.pmh ||
+              telestrokeNote.disposition
+            );
+            if (!hasMeaningfulCaseData) {
+              resetCaseState();
+              if (generateNewId) {
+                setCurrentPatientId(generatePatientId());
+              }
+              showNotice('New case started.', 'success');
+              return;
+            }
             const confirmed = await showConfirm({
               title: 'Start New Case',
               message: 'Current inputs will be cleared. You can undo for 30 seconds.',
