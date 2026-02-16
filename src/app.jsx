@@ -15282,6 +15282,18 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </button>
                                 </>
                               )}
+                              {nextField === 'NIHSS' && !(
+                                (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '') ||
+                                nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '')
+                              ) && (
+                                <button
+                                  type="button"
+                                  onClick={applyNihssAllNormal}
+                                  className="px-2 py-0.5 rounded-full border border-blue-300 bg-white hover:bg-blue-100 text-blue-700 text-xs font-semibold"
+                                >
+                                  NIHSS 0
+                                </button>
+                              )}
                             </div>
                           </div>
                           {showReadinessDetails && (
@@ -15448,6 +15460,18 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       Dx: SAH
                                     </button>
                                   </>
+                                )}
+                                {nextSnapshotItem?.field === 'NIHSS' && !(
+                                  (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '') ||
+                                  nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '')
+                                ) && (
+                                  <button
+                                    type="button"
+                                    onClick={applyNihssAllNormal}
+                                    className="px-2 py-0.5 rounded-full border border-blue-300 bg-white hover:bg-blue-100 text-blue-700 text-xs font-semibold"
+                                  >
+                                    NIHSS 0
+                                  </button>
                                 )}
                                 {nextSnapshotItem && (
                                   <button
