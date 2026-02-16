@@ -14834,6 +14834,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               {(() => {
                 const timeFromLKW = calculateTimeFromLKW();
                 if (!timeFromLKW) {
+                  if (activeTab !== 'encounter') return null;
                   return (
                     <div className="mb-3 bg-slate-100 border border-slate-200 rounded-xl px-4 py-2 text-slate-700 flex flex-wrap items-center justify-between gap-2">
                       <div className="flex items-center gap-2 text-sm">
