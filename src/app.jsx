@@ -15244,11 +15244,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ? (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '' ? String(telestrokeNote.nihss) : String(nihssScore))
                         : '--';
                       const snapshotItems = [
-                        { label: lkwSnapshotLabel, value: lkwDisplay, field: 'LKW' },
                         { label: 'Age', value: telestrokeNote.age || '--', field: 'Age' },
+                        { label: lkwSnapshotLabel, value: lkwDisplay, field: 'LKW' },
+                        { label: 'Diagnosis', value: telestrokeNote.diagnosis || '--', field: 'Diagnosis' },
                         { label: 'NIHSS', value: snapshotNihssValue, field: 'NIHSS' },
                         { label: 'CT Head', value: telestrokeNote.ctResults ? 'Documented' : '--', field: 'CT Head' },
-                        { label: 'Diagnosis', value: telestrokeNote.diagnosis || '--', field: 'Diagnosis' },
                         { label: 'Disposition', value: telestrokeNote.disposition || '--', field: 'Disposition' }
                       ];
                       const missingCount = snapshotItems.filter((item) => item.value === '--').length;
