@@ -14311,6 +14311,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const workflowRailCompletedCount = workflowRailSteps.filter((step) => step.done).length;
           const workflowRailNextStep = workflowRailSteps.find((step) => !step.done) || null;
           const workflowRailProgressLabel = `${workflowRailCompletedCount}/${workflowRailSteps.length} complete`;
+          const requiredFieldsRemaining = encounterReadiness.required.length;
           const workflowRailPrimary = encounterReadiness.nextField
             ? {
                 id: 'next-field',
@@ -31632,6 +31633,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <span className="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-[11px] font-semibold text-slate-600 whitespace-nowrap">
                           {workflowRailProgressLabel}
                         </span>
+                        {requiredFieldsRemaining > 0 && (
+                          <span className="px-2 py-0.5 rounded-full border border-amber-200 bg-amber-50 text-[11px] font-semibold text-amber-700 whitespace-nowrap">
+                            Required left: {requiredFieldsRemaining}
+                          </span>
+                        )}
                       </div>
                       <div className="flex items-center gap-2">
                         <button
