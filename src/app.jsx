@@ -31556,11 +31556,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <button
                           type="button"
                           onClick={() => setActionBarCollapsed((prev) => !prev)}
-                          className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 min-h-[32px] min-w-[32px] flex items-center justify-center"
+                          className="px-2 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 min-h-[32px] min-w-[32px] flex items-center justify-center gap-1"
                           aria-label={actionBarCollapsed ? 'Expand workflow rail' : 'Collapse workflow rail'}
                           title={actionBarCollapsed ? 'Expand workflow rail' : 'Collapse workflow rail'}
                         >
-                          <i aria-hidden="true" data-lucide={actionBarCollapsed ? 'chevron-up' : 'chevron-down'} className="w-4 h-4"></i>
+                          <span className="text-[11px] font-semibold sm:hidden">{actionBarCollapsed ? 'Show' : 'Hide'}</span>
+                          <i aria-hidden="true" data-lucide={actionBarCollapsed ? 'chevron-up' : 'chevron-down'} className="w-4 h-4 shrink-0"></i>
                         </button>
                       </div>
                     </div>
