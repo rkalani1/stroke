@@ -15256,7 +15256,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       const allMissing = missingCount === snapshotItems.length;
                       const hasMixedCompletion = missingCount > 0 && missingCount < snapshotItems.length;
                       const snapshotStatusLabel = missingCount === 0 ? 'complete' : `${missingCount} missing`;
-                      const nextSnapshotField = snapshotItems.find((item) => item.value === '--')?.field || null;
+                      const nextSnapshotItem = snapshotItems.find((item) => item.value === '--') || null;
                       const visibleSnapshotItems = hasMixedCompletion && !snapshotShowAll
                         ? snapshotItems.filter((item) => item.value === '--')
                         : snapshotItems;
@@ -15302,7 +15302,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 })}
                               </div>
                               <div className="flex items-center gap-2">
-                                {nextSnapshotField === 'LKW' && !lkwTime && !telestrokeNote.lkwUnknown && (
+                                {nextSnapshotItem?.field === 'LKW' && !lkwTime && !telestrokeNote.lkwUnknown && (
                                   <button
                                     type="button"
                                     onClick={() => setLkwTime(new Date())}
@@ -15311,13 +15311,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     Set LKW Now
                                   </button>
                                 )}
-                                {nextSnapshotField && (
+                                {nextSnapshotItem && (
                                   <button
                                     type="button"
-                                    onClick={() => jumpToEncounterField(nextSnapshotField)}
+                                    onClick={() => jumpToEncounterField(nextSnapshotItem.field)}
                                     className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-800 text-xs font-semibold"
                                   >
-                                    Next: {nextSnapshotField}
+                                    Next: {nextSnapshotItem.label}
                                   </button>
                                 )}
                                 {hasMixedCompletion && (
