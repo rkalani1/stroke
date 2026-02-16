@@ -15255,6 +15255,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       const allMissing = missingCount === snapshotItems.length;
                       const hasMixedCompletion = missingCount > 0 && missingCount < snapshotItems.length;
                       const snapshotStatusLabel = missingCount === 0 ? 'complete' : `${missingCount} missing`;
+                      const nextSnapshotField = snapshotItems.find((item) => item.value === '--')?.field || null;
                       const visibleSnapshotItems = hasMixedCompletion && !snapshotShowAll
                         ? snapshotItems.filter((item) => item.value === '--')
                         : snapshotItems;
@@ -15299,15 +15300,26 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   );
                                 })}
                               </div>
-                              {hasMixedCompletion && (
-                                <button
-                                  type="button"
-                                  onClick={() => setSnapshotShowAll((prev) => !prev)}
-                                  className="px-2 py-0.5 rounded-full border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold"
-                                >
-                                  {snapshotShowAll ? 'Show missing' : 'Show all'}
-                                </button>
-                              )}
+                              <div className="flex items-center gap-2">
+                                {nextSnapshotField && (
+                                  <button
+                                    type="button"
+                                    onClick={() => jumpToEncounterField(nextSnapshotField)}
+                                    className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-800 text-xs font-semibold"
+                                  >
+                                    Next: {nextSnapshotField}
+                                  </button>
+                                )}
+                                {hasMixedCompletion && (
+                                  <button
+                                    type="button"
+                                    onClick={() => setSnapshotShowAll((prev) => !prev)}
+                                    className="px-2 py-0.5 rounded-full border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold"
+                                  >
+                                    {snapshotShowAll ? 'Show missing' : 'Show all'}
+                                  </button>
+                                )}
+                              </div>
                             </div>
                           )}
                         </div>
