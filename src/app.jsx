@@ -13756,62 +13756,84 @@ Clinician Name`;
             };
           }, []);
 
-          // Load optional local config (ignored if missing)
+          // Load config bundle.
+          // `config.example.json` is always loaded.
+          // Optional local override is opt-in on localhost via `?localConfig=1` or `?config=local`.
           useEffect(() => {
             let cancelled = false;
             const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-            const configUrl = isLocalhost ? 'config.local.json' : 'config.example.json';
+            const params = new URLSearchParams(window.location.search);
+            const useLocalOverride = isLocalhost && (params.get('localConfig') === '1' || params.get('config') === 'local');
 
-            fetch(configUrl, { cache: 'no-store' })
-              .then((response) => {
-                if (response.status === 404) {
-                  if (!cancelled) {
-                    removeKey('ttlHoursOverride');
-                    setTtlHours(DEFAULT_TTL_HOURS);
-                    setConfigLoaded(true);
+            const applyConfigData = (data) => {
+              if (typeof data !== 'object' || Array.isArray(data)) {
+                throw new Error('Config format invalid');
+              }
+              const links = Array.isArray(data.institutionLinks) ? data.institutionLinks : [];
+              const sanitizedLinks = links
+                .filter((link) => link && typeof link === 'object')
+                .map((link) => ({
+                  label: String(link.label || '').trim(),
+                  url: String(link.url || '').trim(),
+                  note: String(link.note || '').trim()
+                }))
+                .filter((link) => link.url);
+              const ttlOverride = typeof data.ttlHoursOverride === 'number' &&
+                Number.isFinite(data.ttlHoursOverride) &&
+                data.ttlHoursOverride > 0
+                ? data.ttlHoursOverride
+                : null;
+              setAppConfig({ institutionLinks: sanitizedLinks, ttlHoursOverride: ttlOverride });
+              if (ttlOverride) {
+                setTtlHours(ttlOverride);
+                setKey('ttlHoursOverride', ttlOverride, { skipLastUpdated: true });
+              } else {
+                removeKey('ttlHoursOverride');
+                setTtlHours(DEFAULT_TTL_HOURS);
+              }
+              setConfigLoaded(true);
+            };
+
+            const loadConfig = async () => {
+              try {
+                const baseResponse = await fetch('config.example.json', { cache: 'no-store' });
+                if (!baseResponse.ok) {
+                  throw new Error('Base config fetch failed');
+                }
+                let mergedConfig = await baseResponse.json();
+
+                if (useLocalOverride) {
+                  try {
+                    const localResponse = await fetch('config.local.json', { cache: 'no-store' });
+                    if (localResponse.ok) {
+                      const localConfig = await localResponse.json();
+                      if (localConfig && typeof localConfig === 'object' && !Array.isArray(localConfig)) {
+                        mergedConfig = {
+                          ...mergedConfig,
+                          ...localConfig,
+                          institutionLinks: Array.isArray(localConfig.institutionLinks)
+                            ? localConfig.institutionLinks
+                            : mergedConfig.institutionLinks
+                        };
+                      }
+                    }
+                  } catch (localErr) {
+                    console.warn('Optional local config load failed:', localErr);
                   }
-                  return null;
                 }
-                if (!response.ok) {
-                  throw new Error('Config fetch failed');
-                }
-                return response.json();
-              })
-              .then((data) => {
-                if (cancelled || !data) return;
-                if (typeof data !== 'object' || Array.isArray(data)) {
-                  throw new Error('Config format invalid');
-                }
-                const links = Array.isArray(data.institutionLinks) ? data.institutionLinks : [];
-                const sanitizedLinks = links
-                  .filter((link) => link && typeof link === 'object')
-                  .map((link) => ({
-                    label: String(link.label || '').trim(),
-                    url: String(link.url || '').trim(),
-                    note: String(link.note || '').trim()
-                  }))
-                  .filter((link) => link.url);
-                const ttlOverride = typeof data.ttlHoursOverride === 'number' &&
-                  Number.isFinite(data.ttlHoursOverride) &&
-                  data.ttlHoursOverride > 0
-                  ? data.ttlHoursOverride
-                  : null;
-                setAppConfig({ institutionLinks: sanitizedLinks, ttlHoursOverride: ttlOverride });
-                if (ttlOverride) {
-                  setTtlHours(ttlOverride);
-                  setKey('ttlHoursOverride', ttlOverride, { skipLastUpdated: true });
-                } else {
-                  removeKey('ttlHoursOverride');
-                }
-                setConfigLoaded(true);
-              })
-              .catch((err) => {
+
+                if (cancelled) return;
+                applyConfigData(mergedConfig);
+              } catch (err) {
                 if (cancelled) return;
                 console.warn('Config load failed:', err);
                 removeKey('ttlHoursOverride');
                 setTtlHours(DEFAULT_TTL_HOURS);
                 setConfigLoaded(true);
-              });
+              }
+            };
+
+            loadConfig();
 
             return () => {
               cancelled = true;
