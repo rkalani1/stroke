@@ -15188,6 +15188,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       const missingCount = snapshotItems.filter((item) => item.value === '--').length;
                       const allMissing = missingCount === snapshotItems.length;
                       const hasMixedCompletion = missingCount > 0 && missingCount < snapshotItems.length;
+                      const snapshotStatusLabel = missingCount === 0 ? 'complete' : `${missingCount} missing`;
                       const visibleSnapshotItems = hasMixedCompletion && !snapshotShowAll
                         ? snapshotItems.filter((item) => item.value === '--')
                         : snapshotItems;
@@ -15211,8 +15212,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="flex flex-wrap items-start justify-between gap-2">
                               <div className="flex flex-wrap items-center gap-1.5 min-w-0">
                                 <span className="text-[11px] uppercase tracking-wide font-semibold text-slate-500 mr-1">
-                                  Case Snapshot
-                                  <span className="ml-1 text-slate-400 normal-case">{missingCount} missing</span>
+                                  Case Snapshot:{' '}
+                                  <span className="ml-1 text-slate-400 normal-case">{snapshotStatusLabel}</span>
                                 </span>
                                 {visibleSnapshotItems.map((item) => {
                                   const isMissing = item.value === '--';
