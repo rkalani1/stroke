@@ -15091,6 +15091,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <p className="text-xs uppercase tracking-wide text-slate-500">Current Case</p>
                         <p className="text-sm font-semibold text-slate-900 mt-1">{(telestrokeNote.age || '--')}{telestrokeNote.sex || ''} • NIHSS {telestrokeNote.nihss || nihssScore || '--'}</p>
                         <p className="text-xs text-slate-600 mt-1">{telestrokeNote.diagnosis || 'Diagnosis pending'}</p>
+                        <p className="text-xs text-slate-500 mt-1">
+                          Readiness: {encounterReadiness.completedCount}/{encounterReadiness.trackedFields.length} ({encounterReadiness.readinessPercent}%)
+                        </p>
                         <div className="mt-2">
                           {encounterReadiness.nextField ? (
                             <button
