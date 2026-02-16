@@ -1872,6 +1872,7 @@ Clinician Name`;
             site: 'ica'
           }));
           const [trialsCategory, setTrialsCategory] = useState('ischemic');
+          const [trialsRecruitingOnly, setTrialsRecruitingOnly] = useState(false);
 
           const [strokeCodeForm, setStrokeCodeForm] = useState(loadFromStorage('strokeCodeForm', getDefaultStrokeCodeForm()));
           const [aspectsRegionState, setAspectsRegionState] = useState(loadFromStorage('aspectsRegionState', getDefaultAspectsRegionState()));
@@ -5817,6 +5818,29 @@ Clinician Name`;
             }, 180);
           };
 
+          const isTrialActivelyRecruiting = (trial) => {
+            const status = String(trial?.status || '').toLowerCase().trim();
+            if (!status) return false;
+            if (status.includes('not yet recruiting')) return false;
+            if (status.includes('active, not recruiting')) return false;
+            if (status.includes('closed') || status.includes('completed') || status.includes('terminated') || status.includes('withdrawn') || status.includes('suspended')) return false;
+            return status.includes('recruiting') || status.includes('enrolling');
+          };
+
+          const filterTrialsForDisplay = (trials = []) => {
+            if (!trialsRecruitingOnly) return trials;
+            return trials.filter((trial) => isTrialActivelyRecruiting(trial));
+          };
+
+          const countTrialsInCategory = (categoryData, { filtered = false } = {}) => {
+            if (!categoryData) return 0;
+            const listForCount = (trials) => (filtered ? filterTrialsForDisplay(trials) : (trials || []));
+            if (categoryData.hasSubsections) {
+              return Object.values(categoryData.subsections).reduce((acc, subsection) => acc + listForCount(subsection.trials).length, 0);
+            }
+            return listForCount(categoryData.trials).length;
+          };
+
           const setVisibleTrialCardsOpen = (shouldOpen) => {
             requestAnimationFrame(() => {
               const trialCards = document.querySelectorAll('#tabpanel-trials details[id^="trial-"]');
@@ -7495,6 +7519,7 @@ Clinician Name`;
             setCopiedText('');
             setCriticalAlerts([]);
             setTrialsCategory('ischemic');
+            setTrialsRecruitingOnly(false);
             setSaveStatus('saved');
             setLastSaved(null);
             setNotice(null);
@@ -11918,6 +11943,40 @@ Clinician Name`;
             target.focus({ preventScroll: true });
           };
 
+          const jumpToEncounterField = (fieldName) => {
+            const fieldTargets = {
+              Age: { phase: 'phase-triage', section: 'patient-info-section', focusIds: ['input-age', 'phone-input-age'] },
+              LKW: { phase: 'phase-triage', section: 'lkw-section', focusIds: ['lkw-time', 'lkw-date'] },
+              Diagnosis: { phase: 'phase-decision', section: 'treatment-decision', focusIds: ['input-diagnosis'] },
+              NIHSS: { phase: 'phase-triage', section: 'nihss-section', focusIds: ['input-nihss', 'phone-input-nihss'] },
+              'CT Head': { phase: 'phase-triage', section: 'imaging-section', focusIds: ['input-ct-results', 'phone-input-ct-results'] },
+              Disposition: { phase: 'phase-documentation', section: 'discharge-checklist-section', focusIds: ['input-disposition'] }
+            };
+            const target = fieldTargets[fieldName];
+            if (!target) return;
+
+            navigateTo('encounter');
+            if (target.phase) setEncounterPhase(target.phase);
+
+            requestAnimationFrame(() => {
+              if (target.section) scrollToSection(target.section);
+              window.setTimeout(() => {
+                const focusEl = (target.focusIds || [])
+                  .map((id) => document.getElementById(id))
+                  .find((el) => !!el);
+                if (!focusEl) return;
+                focusEl.focus({ preventScroll: false });
+                if (typeof focusEl.select === 'function') {
+                  focusEl.select();
+                }
+                focusEl.classList.add('ring-2', 'ring-blue-400');
+                window.setTimeout(() => {
+                  focusEl.classList.remove('ring-2', 'ring-blue-400');
+                }, 1200);
+              }, 220);
+            });
+          };
+
           // Get guideline recommendations matching current patient data
           const getContextualRecommendations = () => {
             const timeFrom = calculateTimeFromLKW();
@@ -14362,29 +14421,65 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* ===== MISSING FIELDS WARNING ===== */}
                     {(() => {
-                      const required = [
+                      const trackedFields = [
                         { name: 'Age', value: telestrokeNote.age },
                         { name: 'Sex', value: telestrokeNote.sex },
                         { name: 'LKW', value: lkwTime },
                         { name: 'NIHSS', value: telestrokeNote.nihss || nihssScore },
                         { name: 'CT Head', value: telestrokeNote.ctResults },
-                        { name: 'Diagnosis', value: telestrokeNote.diagnosis }
+                        { name: 'Diagnosis', value: telestrokeNote.diagnosis },
+                        { name: 'Disposition', value: telestrokeNote.disposition }
                       ];
-                      const missing = required.filter(f => !f.value);
+                      const missing = trackedFields.filter(f => !f.value);
+                      const completedCount = trackedFields.length - missing.length;
+                      const readinessPercent = Math.round((completedCount / trackedFields.length) * 100);
                       const requiredFields = missing.filter(f => ['Age', 'LKW', 'Diagnosis'].includes(f.name));
                       const recommendedFields = missing.filter(f => ['NIHSS', 'CT Head', 'Disposition'].includes(f.name));
-                      return missing.length > 0 && missing.length < required.length ? (
-                        <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-sm space-y-0.5">
+                      return missing.length > 0 && missing.length < trackedFields.length ? (
+                        <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-sm space-y-2">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-amber-800">
+                              Case Readiness: {completedCount}/{trackedFields.length}
+                            </span>
+                            <span className="text-xs text-amber-700">{readinessPercent}% complete</span>
+                          </div>
+                          <div className="h-1.5 w-full rounded-full bg-amber-100 overflow-hidden">
+                            <div className="h-full bg-amber-500 transition-all" style={{ width: `${readinessPercent}%` }}></div>
+                          </div>
                           {requiredFields.length > 0 && (
                             <div className="flex items-center gap-2">
                               <i aria-hidden="true" data-lucide="alert-circle" className="w-3.5 h-3.5 text-red-500 shrink-0"></i>
-                              <span className="text-red-700"><span className="font-semibold">Required:</span> {requiredFields.map(f => f.name).join(', ')}</span>
+                              <div className="text-red-700 flex flex-wrap items-center gap-1.5">
+                                <span className="font-semibold">Required:</span>
+                                {requiredFields.map((field) => (
+                                  <button
+                                    key={`required-${field.name}`}
+                                    type="button"
+                                    onClick={() => jumpToEncounterField(field.name)}
+                                    className="px-2 py-0.5 rounded-full border border-red-300 bg-white hover:bg-red-100 text-red-700 text-xs font-semibold"
+                                  >
+                                    {field.name}
+                                  </button>
+                                ))}
+                              </div>
                             </div>
                           )}
                           {recommendedFields.length > 0 && (
                             <div className="flex items-center gap-2">
                               <i aria-hidden="true" data-lucide="alert-triangle" className="w-3.5 h-3.5 text-amber-500 shrink-0"></i>
-                              <span className="text-amber-700"><span className="font-medium">Recommended:</span> {recommendedFields.map(f => f.name).join(', ')}</span>
+                              <div className="text-amber-700 flex flex-wrap items-center gap-1.5">
+                                <span className="font-medium">Recommended:</span>
+                                {recommendedFields.map((field) => (
+                                  <button
+                                    key={`recommended-${field.name}`}
+                                    type="button"
+                                    onClick={() => jumpToEncounterField(field.name)}
+                                    className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-700 text-xs font-semibold"
+                                  >
+                                    {field.name}
+                                  </button>
+                                ))}
+                              </div>
                             </div>
                           )}
                         </div>
@@ -14989,7 +15084,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         {/* Section 1b: Last Known Well */}
-                        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 shadow-md">
+                        <div id="lkw-section" className="bg-amber-50 border border-amber-200 rounded-xl p-4 shadow-md">
                           <div className="flex items-center justify-between mb-1">
                             <label className="block text-sm font-medium text-amber-900">
                               <i aria-hidden="true" data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
@@ -15756,7 +15851,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         {/* Section 5: Imaging */}
-                        <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-md">
+                        <div id="imaging-section" className="bg-white border border-blue-200 rounded-xl p-4 shadow-md">
                           <h4 className="text-md font-bold text-blue-900 mb-3 flex items-center gap-2">
                             <i aria-hidden="true" data-lucide="scan" className="w-4 h-4"></i>
                             Imaging Review
@@ -15970,7 +16065,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div id="phase-decision"></div>
 
                         {/* Section 6: Treatment Decision */}
-                        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                        <div id="treatment-decision" ref={treatmentDecisionRef} className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
                           <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
                             <i aria-hidden="true" data-lucide="stethoscope" className="w-5 h-5 text-blue-600"></i>
                             Diagnosis & Treatment Decision
@@ -16769,8 +16864,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                             <div>
-                              <label className="block text-sm font-medium text-slate-700 mb-1">Age</label>
+                              <label htmlFor="phone-input-age" className="block text-sm font-medium text-slate-700 mb-1">Age</label>
                               <input
+                                id="phone-input-age"
                                 type="number"
                                 min="0"
                                 max="120"
@@ -17041,7 +17137,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         {/* Section 3: NIHSS Examination */}
-                        <div className="bg-white border border-red-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                        <div id="nihss-section" className="bg-white border border-red-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-red-900">3. NIHSS Examination</h3>
                             <div className="flex items-center gap-2">
@@ -17064,8 +17160,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                               <div>
-                                <label className="block text-xs text-slate-700 mb-1">NIHSS Score (0-42)</label>
+                                <label htmlFor="phone-input-nihss" className="block text-xs text-slate-700 mb-1">NIHSS Score (0-42)</label>
                                 <input
+                                  id="phone-input-nihss"
                                   type="number"
                                   value={telestrokeNote.nihss}
                                   onChange={(e) => {
@@ -17401,7 +17498,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         {/* Section 5: Imaging Review */}
-                        <div className="bg-white border-2 border-indigo-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                        <div id="imaging-section" className="bg-white border-2 border-indigo-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-indigo-900">5. Imaging Review</h3>
                             <i aria-hidden="true" data-lucide="image" className="w-5 h-5 text-indigo-600"></i>
@@ -30431,9 +30528,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <div className="flex flex-wrap gap-2 mb-6">
                       {Object.keys(trialsData).map(category => {
                         const categoryData = trialsData[category];
-                        const trialCount = categoryData.hasSubsections
-                          ? Object.values(categoryData.subsections).reduce((acc, sub) => acc + sub.trials.length, 0)
-                          : categoryData.trials.length;
+                        const totalTrialCount = countTrialsInCategory(categoryData, { filtered: false });
+                        const visibleTrialCount = countTrialsInCategory(categoryData, { filtered: true });
+                        const displayCount = trialsRecruitingOnly ? `${visibleTrialCount}/${totalTrialCount}` : `${totalTrialCount}`;
 
                         const getCategoryColor = (cat) => {
                           switch(cat) {
@@ -30475,15 +30572,28 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <i aria-hidden="true" data-lucide="star" className="w-3 h-3 inline"></i>
                               </span>
                             )}
-                            {getCategoryName(category)} ({trialCount})
+                            {getCategoryName(category)} ({displayCount})
                           </button>
                         );
                       })}
                     </div>
 
                     <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-                      <span className="text-xs text-slate-500">Trial card view controls</span>
+                      <span className="text-xs text-slate-500">
+                        Trial card controls{trialsRecruitingOnly ? ' • showing recruiting/enrolling only' : ''}
+                      </span>
                       <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setTrialsRecruitingOnly((prev) => !prev)}
+                          className={`px-3 py-1.5 rounded-lg border text-xs font-semibold transition-colors ${
+                            trialsRecruitingOnly
+                              ? 'border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+                              : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          {trialsRecruitingOnly ? 'Recruiting Only: On' : 'Recruiting Only'}
+                        </button>
                         <button
                           type="button"
                           onClick={() => setVisibleTrialCardsOpen(true)}
@@ -30547,24 +30657,41 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <div className="space-y-4">
                       {(() => {
                         const categoryData = trialsData[trialsCategory];
+                        const visibleTrialCount = countTrialsInCategory(categoryData, { filtered: true });
                         return (
                           <div className="space-y-4">
                             <h2 className="text-2xl font-bold text-slate-800 border-b-2 border-slate-300 pb-2">
                               {categoryData.title}
                             </h2>
+                            {trialsRecruitingOnly && visibleTrialCount === 0 && (
+                              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800 flex flex-wrap items-center justify-between gap-2">
+                                <span>No actively recruiting/enrolling trials in this category. Switch filter off to view all studies.</span>
+                                <button
+                                  type="button"
+                                  onClick={() => setTrialsRecruitingOnly(false)}
+                                  className="px-3 py-1.5 rounded-lg border border-amber-300 bg-white text-amber-800 text-xs font-semibold hover:bg-amber-100"
+                                >
+                                  Show All Trials
+                                </button>
+                              </div>
+                            )}
                             {categoryData.hasSubsections ? (
-                              Object.entries(categoryData.subsections).map(([subKey, subsection]) => (
-                                <div key={subKey} className="space-y-4">
-                                  <h3 className="text-xl font-semibold text-slate-700 ml-4">
-                                    {subsection.title}
-                                  </h3>
-                                  {subsection.trials.map((trial, index) =>
-                                    renderTrialCard(trial, trialsCategory, index)
-                                  )}
-                                </div>
-                              ))
+                              Object.entries(categoryData.subsections).map(([subKey, subsection]) => {
+                                const visibleTrials = filterTrialsForDisplay(subsection.trials);
+                                if (visibleTrials.length === 0) return null;
+                                return (
+                                  <div key={subKey} className="space-y-4">
+                                    <h3 className="text-xl font-semibold text-slate-700 ml-4">
+                                      {subsection.title}
+                                    </h3>
+                                    {visibleTrials.map((trial, index) =>
+                                      renderTrialCard(trial, trialsCategory, `${subKey}-${index}`)
+                                    )}
+                                  </div>
+                                );
+                              })
                             ) : (
-                              categoryData.trials.map((trial, index) =>
+                              filterTrialsForDisplay(categoryData.trials).map((trial, index) =>
                                 renderTrialCard(trial, trialsCategory, index)
                               )
                             )}
