@@ -14439,6 +14439,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const workflowRailHint = encounterReadiness.nextField
             ? `Next required field: ${encounterReadiness.nextField}`
             : (workflowRailNextStep ? `Next step: ${workflowRailNextStep.label}` : 'Workflow rail complete');
+          const openEncounterAtField = (fieldName) => {
+            navigateTo('encounter');
+            window.setTimeout(() => jumpToEncounterField(fieldName), 120);
+          };
           const todayDate = new Date().toISOString().slice(0, 10);
           const hasLegacyKeys = LEGACY_KEYS.some((key) => {
             try {
@@ -15087,6 +15091,21 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <p className="text-xs uppercase tracking-wide text-slate-500">Current Case</p>
                         <p className="text-sm font-semibold text-slate-900 mt-1">{(telestrokeNote.age || '--')}{telestrokeNote.sex || ''} • NIHSS {telestrokeNote.nihss || nihssScore || '--'}</p>
                         <p className="text-xs text-slate-600 mt-1">{telestrokeNote.diagnosis || 'Diagnosis pending'}</p>
+                        <div className="mt-2">
+                          {encounterReadiness.nextField ? (
+                            <button
+                              type="button"
+                              onClick={() => openEncounterAtField(encounterReadiness.nextField)}
+                              className="px-2.5 py-1 rounded-full border border-amber-300 bg-amber-50 text-amber-800 text-xs font-semibold hover:bg-amber-100"
+                            >
+                              Next required: {encounterReadiness.nextField}
+                            </button>
+                          ) : (
+                            <span className="inline-flex px-2.5 py-1 rounded-full border border-emerald-300 bg-emerald-50 text-emerald-800 text-xs font-semibold">
+                              Core fields complete
+                            </span>
+                          )}
+                        </div>
                         <div className="mt-3 flex flex-wrap gap-2">
                           <button type="button" onClick={() => { navigateTo('encounter'); scrollToSection('phase-decision'); }} className="px-2.5 py-1.5 rounded border border-orange-200 bg-orange-50 text-orange-800 text-xs font-semibold hover:bg-orange-100">Go to Decision</button>
                           <button type="button" onClick={() => { navigateTo('encounter'); scrollToSection('recommendations-section'); }} className="px-2.5 py-1.5 rounded border border-blue-200 bg-blue-50 text-blue-800 text-xs font-semibold hover:bg-blue-100">Go to Documentation</button>
