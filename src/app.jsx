@@ -14955,44 +14955,73 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     )}
 
                     {/* ===== STROKE TIMELINE STRIP — connected visual timeline ===== */}
-                    {(lkwTime || telestrokeNote.dtnEdArrival || telestrokeNote.tnkAdminTime) && (
-                      <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 overflow-x-auto no-scrollbar">
-                        <div className="flex items-start gap-0 text-xs min-w-0 sm:min-w-max relative">
-                          {[
-                            { label: 'LKW', target: 'lkw-section', time: lkwTime ? lkwTime.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-blue-500', line: 'bg-blue-200' },
-                            { label: 'Door', target: 'lkw-section', time: safeFormatTime(telestrokeNote.dtnEdArrival), dot: 'bg-purple-500', line: 'bg-purple-200' },
-                            { label: 'Alert', target: 'phase-triage', time: safeFormatTime(telestrokeNote.dtnStrokeAlert), dot: 'bg-amber-500', line: 'bg-amber-200' },
-                            { label: 'CT', target: 'phase-triage', time: safeFormatTime(telestrokeNote.dtnCtStarted), dot: 'bg-slate-500', line: 'bg-slate-200' },
-                            { label: 'TNK', target: 'treatment-decision', time: telestrokeNote.tnkAdminTime || null, dot: 'bg-emerald-500', line: 'bg-emerald-200' },
-                            { label: 'Puncture', target: 'phase-management', time: telestrokeNote.punctureTime || null, dot: 'bg-indigo-500', line: 'bg-indigo-200' }
-                          ].filter(t => t.time).map((t, i, arr) => (
-                            <React.Fragment key={t.label}>
+                    {(() => {
+                      const timelineEvents = [
+                        { label: 'LKW', target: 'lkw-section', time: lkwTime ? lkwTime.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-blue-500', line: 'bg-blue-200' },
+                        { label: 'Door', target: 'lkw-section', time: safeFormatTime(telestrokeNote.dtnEdArrival), dot: 'bg-purple-500', line: 'bg-purple-200' },
+                        { label: 'Alert', target: 'phase-triage', time: safeFormatTime(telestrokeNote.dtnStrokeAlert), dot: 'bg-amber-500', line: 'bg-amber-200' },
+                        { label: 'CT', target: 'phase-triage', time: safeFormatTime(telestrokeNote.dtnCtStarted), dot: 'bg-slate-500', line: 'bg-slate-200' },
+                        { label: 'TNK', target: 'treatment-decision', time: telestrokeNote.tnkAdminTime || null, dot: 'bg-emerald-500', line: 'bg-emerald-200' },
+                        { label: 'Puncture', target: 'phase-management', time: telestrokeNote.punctureTime || null, dot: 'bg-indigo-500', line: 'bg-indigo-200' }
+                      ].filter((event) => event.time);
+                      if (timelineEvents.length === 0) return null;
+
+                      const metrics = calculateDTNMetrics();
+                      const dtnBadge = metrics.doorToNeedle !== null ? (() => {
+                        const benchmark = getDTNBenchmark(metrics.doorToNeedle);
+                        return (
+                          <span className={`px-2.5 py-1 rounded-full font-bold text-xs ${benchmark.color === 'green' ? 'bg-emerald-500 text-white' : benchmark.color === 'yellow' ? 'bg-amber-500 text-white' : 'bg-red-500 text-white'}`}>
+                            DTN {metrics.doorToNeedle}m ({benchmark.label})
+                          </span>
+                        );
+                      })() : null;
+
+                      if (timelineEvents.length === 1) {
+                        const event = timelineEvents[0];
+                        return (
+                          <div className="bg-white border border-slate-200 rounded-xl px-3 py-2">
+                            <div className="flex items-center justify-between gap-2">
                               <button
                                 type="button"
-                                onClick={() => scrollToSection(t.target)}
-                                className="flex flex-col items-center min-w-[60px] rounded-lg px-1 py-0.5 hover:bg-slate-50 focus:ring-2 focus:ring-blue-500"
-                                aria-label={`Jump to ${t.label} section`}
+                                onClick={() => scrollToSection(event.target)}
+                                className="flex items-center gap-2 rounded-lg px-1.5 py-1 hover:bg-slate-50 focus:ring-2 focus:ring-blue-500"
+                                aria-label={`Jump to ${event.label} section`}
                               >
-                                <div className={`w-3 h-3 rounded-full ${t.dot} ring-2 ring-white shadow-sm z-10`}></div>
-                                <span className="font-semibold text-slate-700 mt-1">{t.label}</span>
-                                <span className="font-mono text-slate-500">{t.time}</span>
+                                <div className={`w-2.5 h-2.5 rounded-full ${event.dot} ring-2 ring-white shadow-sm`}></div>
+                                <span className="text-xs font-semibold text-slate-700">{event.label}</span>
+                                <span className="text-xs font-mono text-slate-500">{event.time}</span>
                               </button>
-                              {i < arr.length - 1 && (
-                                <div className={`flex-1 h-0.5 ${t.line} self-center mt-1.5 min-w-[24px] -mx-1`} style={{marginTop: '5px'}}></div>
-                              )}
-                            </React.Fragment>
-                          ))}
-                          {(() => {
-                            const metrics = calculateDTNMetrics();
-                            if (metrics.doorToNeedle !== null) {
-                              const b = getDTNBenchmark(metrics.doorToNeedle);
-                              return <div className="ml-3 self-center"><span className={`px-2.5 py-1 rounded-full font-bold text-xs ${b.color === 'green' ? 'bg-emerald-500 text-white' : b.color === 'yellow' ? 'bg-amber-500 text-white' : 'bg-red-500 text-white'}`}>DTN {metrics.doorToNeedle}m ({b.label})</span></div>;
-                            }
-                            return null;
-                          })()}
+                              {dtnBadge}
+                            </div>
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 overflow-x-auto no-scrollbar">
+                          <div className="flex items-start gap-0 text-xs min-w-0 sm:min-w-max relative">
+                            {timelineEvents.map((event, index, list) => (
+                              <React.Fragment key={event.label}>
+                                <button
+                                  type="button"
+                                  onClick={() => scrollToSection(event.target)}
+                                  className="flex flex-col items-center min-w-[60px] rounded-lg px-1 py-0.5 hover:bg-slate-50 focus:ring-2 focus:ring-blue-500"
+                                  aria-label={`Jump to ${event.label} section`}
+                                >
+                                  <div className={`w-3 h-3 rounded-full ${event.dot} ring-2 ring-white shadow-sm z-10`}></div>
+                                  <span className="font-semibold text-slate-700 mt-1">{event.label}</span>
+                                  <span className="font-mono text-slate-500">{event.time}</span>
+                                </button>
+                                {index < list.length - 1 && (
+                                  <div className={`flex-1 h-0.5 ${event.line} self-center mt-1.5 min-w-[24px] -mx-1`} style={{marginTop: '5px'}}></div>
+                                )}
+                              </React.Fragment>
+                            ))}
+                            {dtnBadge ? <div className="ml-3 self-center">{dtnBadge}</div> : null}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    })()}
 
                     {/* ===== CONSULTATION TYPE ===== */}
                     <div className="flex items-center gap-2 px-1">
