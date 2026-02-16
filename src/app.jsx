@@ -1685,6 +1685,7 @@ Clinician Name`;
           const [callingSiteCollapsed, setCallingSiteCollapsed] = useState(false);
           const [lkwCardCollapsed, setLkwCardCollapsed] = useState(false);
           const [readinessCardCollapsed, setReadinessCardCollapsed] = useState(false);
+          const [showAllRecommendedReadiness, setShowAllRecommendedReadiness] = useState(false);
           const [snapshotShowAll, setSnapshotShowAll] = useState(false);
           const [inputEntryFocused, setInputEntryFocused] = useState(false);
 
@@ -12367,6 +12368,12 @@ Clinician Name`;
             telestrokeNote.nihss
           ]);
 
+          useEffect(() => {
+            if (encounterReadiness.recommended.length <= 3) {
+              setShowAllRecommendedReadiness(false);
+            }
+          }, [encounterReadiness.recommended.length]);
+
           const QUICK_SEARCH_COMMANDS = [
             { value: 'next required', label: 'next required', hint: 'Jump to highest-priority missing field' },
             { value: 'dx ischemic', label: 'dx ischemic', hint: 'Set diagnosis and pathway to ischemic stroke' },
@@ -15105,6 +15112,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <p className="text-xs uppercase tracking-wide text-slate-500">Current Case</p>
                         <p className="text-sm font-semibold text-slate-900 mt-1">{dashboardDemographicsLabel} • {dashboardNihssLabel}</p>
                         <p className="text-xs text-slate-600 mt-1">{telestrokeNote.diagnosis || 'Diagnosis pending'}</p>
+                        <p className="text-xs text-slate-500 mt-1">Timing: {lkwSummaryLabel}</p>
+                        {windowStatus && windowStatus.color !== 'gray' && (
+                          <span className={`inline-flex mt-1 px-2 py-0.5 rounded-full border text-[11px] font-semibold ${windowToneClass}`}>
+                            {windowStatus.message}
+                          </span>
+                        )}
                         <p className="text-xs text-slate-500 mt-1">
                           Readiness: {encounterReadiness.completedCount}/{encounterReadiness.trackedFields.length} ({encounterReadiness.readinessPercent}%)
                         </p>
@@ -15365,6 +15378,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       } = encounterReadiness;
                       const canCollapseReadiness = requiredFields.length === 0;
                       const showReadinessDetails = !(canCollapseReadiness && readinessCardCollapsed);
+                      const visibleRecommendedFields = showAllRecommendedReadiness
+                        ? recommendedFields
+                        : recommendedFields.slice(0, isNarrowViewport ? 2 : 3);
+                      const hiddenRecommendedCount = Math.max(0, recommendedFields.length - visibleRecommendedFields.length);
                       if (missing.length === 0) {
                         return (
                           <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 text-sm">
@@ -15525,7 +15542,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <i aria-hidden="true" data-lucide="alert-triangle" className="hidden sm:block w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5 sm:mt-0"></i>
                                   <div className="text-amber-700 flex flex-wrap items-center gap-1.5 min-w-0">
                                     <span className="font-medium">Recommended:</span>
-                                    {recommendedFields.map((field) => (
+                                    {visibleRecommendedFields.map((field) => (
                                       <button
                                         key={`recommended-${field.name}`}
                                         type="button"
@@ -15535,6 +15552,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         {field.name}
                                       </button>
                                     ))}
+                                    {hiddenRecommendedCount > 0 && (
+                                      <button
+                                        type="button"
+                                        onClick={() => setShowAllRecommendedReadiness(true)}
+                                        className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-700 text-xs font-semibold"
+                                      >
+                                        Show {hiddenRecommendedCount} more
+                                      </button>
+                                    )}
+                                    {showAllRecommendedReadiness && recommendedFields.length > 3 && (
+                                      <button
+                                        type="button"
+                                        onClick={() => setShowAllRecommendedReadiness(false)}
+                                        className="px-2 py-0.5 rounded-full border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold"
+                                      >
+                                        Show fewer
+                                      </button>
+                                    )}
                                   </div>
                                 </div>
                               )}
