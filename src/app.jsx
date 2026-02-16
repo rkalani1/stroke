@@ -1,3 +1,6 @@
+import React, { useState, useEffect, useRef, useMemo, useContext } from 'react';
+import { createRoot } from 'react-dom/client';
+import { createIcons, icons } from 'lucide';
 import ais2026 from './guidelines/ais-2026.json';
 import cancerStroke2026 from './guidelines/cancer-stroke-2026.json';
 import cardiacBrainHealth2024 from './guidelines/cardiac-brain-health-2024.json';
@@ -16,7 +19,6 @@ import systemicComplications2024 from './guidelines/systemic-complications-2024.
 import svinLargeCore2025 from './guidelines/svin-large-core-2025.json';
 import tiaEd2023 from './guidelines/tia-ed-2023.json';
 
-        const { useState, useEffect, useRef, useMemo, useContext } = React;
         const STORAGE_PREFIX = (window.strokeAppStorage && window.strokeAppStorage.prefix) || 'strokeApp:';
         const APP_DATA_KEY = (window.strokeAppStorage && window.strokeAppStorage.appDataKey) || 'stroke.appData.v2';
         const LEGACY_KEYS = (window.strokeAppStorage && window.strokeAppStorage.legacyKeys) || [
@@ -7447,7 +7449,7 @@ Clinician Name`;
             };
             document.addEventListener('keydown', handleKeyDown);
             return () => document.removeEventListener('keydown', handleKeyDown);
-          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode, settingsMenuOpen, searchOpen, showKeyboardHelp, showChangelog, encounterReadiness.nextField]);
+          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode, settingsMenuOpen, searchOpen, showKeyboardHelp, showChangelog, telestrokeNote.age, telestrokeNote.sex, telestrokeNote.nihss, telestrokeNote.ctResults, telestrokeNote.diagnosis, telestrokeNote.disposition, lkwTime, nihssScore]);
 
 
           // Persist shift patients to localStorage
@@ -13839,7 +13841,7 @@ Clinician Name`;
 
           // Initialize component, routing, and icons on mount
           useEffect(() => {
-            lucide.createIcons();
+            createIcons({ icons });
 
             const resolveRoute = () => {
               if (storageExpired && !hasHandledExpiredRef.current) {
@@ -13897,7 +13899,7 @@ Clinician Name`;
 
             requestAnimationFrame(() => {
               setIsMounted(true);
-              lucide.createIcons();
+              createIcons({ icons });
             });
 
             window.addEventListener('hashchange', resolveRoute);
@@ -13986,7 +13988,7 @@ Clinician Name`;
           // Reinitialize icons when tab/layout/modal content changes
           useEffect(() => {
             if (isMounted) {
-              requestAnimationFrame(() => lucide.createIcons());
+              requestAnimationFrame(() => createIcons({ icons }));
             }
           }, [activeTab, isMounted, managementSubTab, encounterPhase, showKeyboardHelp, showChangelog, settingsMenuOpen, searchOpen, calcDrawerOpen, protocolModal, confirmConfig]);
 
@@ -31407,8 +31409,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
         };
 
         // Render the component
-        const root = ReactDOM.createRoot(document.getElementById('root'));
+        const root = createRoot(document.getElementById('root'));
         root.render(<StrokeClinicalTool />);
 
         // Initialize Lucide icons
-        lucide.createIcons();
+        createIcons({ icons });
