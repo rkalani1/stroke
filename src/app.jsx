@@ -14975,6 +14975,42 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     })()}
 
                     {(() => {
+                      const snapshotItems = [
+                        { label: 'Age', value: telestrokeNote.age || '--', field: 'Age' },
+                        { label: 'NIHSS', value: telestrokeNote.nihss || (nihssScore > 0 ? String(nihssScore) : '--'), field: 'NIHSS' },
+                        { label: 'CT Head', value: telestrokeNote.ctResults ? 'Documented' : '--', field: 'CT Head' },
+                        { label: 'Diagnosis', value: telestrokeNote.diagnosis || '--', field: 'Diagnosis' },
+                        { label: 'Disposition', value: telestrokeNote.disposition || '--', field: 'Disposition' }
+                      ];
+                      const hasAnyValue = snapshotItems.some((item) => item.value !== '--');
+                      if (!hasAnyValue) return null;
+                      return (
+                        <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <span className="text-[11px] uppercase tracking-wide font-semibold text-slate-500 mr-1">Case Snapshot</span>
+                            {snapshotItems.map((item) => {
+                              const isMissing = item.value === '--';
+                              return (
+                                <button
+                                  key={`snapshot-${item.label}`}
+                                  type="button"
+                                  onClick={() => jumpToEncounterField(item.field)}
+                                  className={`px-2 py-0.5 rounded-full border text-xs font-medium transition-colors ${
+                                    isMissing
+                                      ? 'border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100'
+                                      : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-100'
+                                  }`}
+                                >
+                                  <span className="font-semibold">{item.label}:</span> {item.value}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {(() => {
                       const pathway = telestrokeNote.diagnosisCategory || getPathwayForDiagnosis(telestrokeNote.diagnosis || '');
                       const pathwaySubTab = ['ischemic', 'ich', 'sah', 'tia', 'cvt'].includes(pathway) ? pathway : null;
                       if (!pathwaySubTab) return null;
