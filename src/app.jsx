@@ -1720,7 +1720,6 @@ Clinician Name`;
           const alertFlashTimeoutRef = useRef(null);
           const lastAlertPlayedRef = useRef(null);
           const confirmResolveRef = useRef(null);
-          const quickLinksAutoCollapsedRef = useRef(false);
           const callingSiteAutoCollapsedRef = useRef(false);
           const lkwAutoCollapsedRef = useRef(false);
           const readinessAutoCollapsedRef = useRef(false);
@@ -1977,19 +1976,6 @@ Clinician Name`;
             discoveryTime: telestrokeNote.discoveryTime,
             now: currentTime
           });
-
-          useEffect(() => {
-            const hasCoreEncounterData = Boolean(
-              telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis || lkwTime
-            );
-            if (hasCoreEncounterData && !quickLinksAutoCollapsedRef.current) {
-              setQuickLinksCollapsed(true);
-              quickLinksAutoCollapsedRef.current = true;
-            } else if (!hasCoreEncounterData) {
-              setQuickLinksCollapsed(false);
-              quickLinksAutoCollapsedRef.current = false;
-            }
-          }, [telestrokeNote.age, telestrokeNote.diagnosis, nihssScore, lkwTime]);
 
           useEffect(() => {
             const hasCallingSite = Boolean(telestrokeNote.callingSite);
