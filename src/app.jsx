@@ -1679,7 +1679,7 @@ Clinician Name`;
           const [actionBarCollapsed, setActionBarCollapsed] = useState(() => {
             const saved = getKey('actionBarCollapsed', null);
             if (saved !== null && saved !== undefined) return saved === true;
-            return window.innerWidth < 768;
+            return window.innerWidth < 768 || settings.workflowPersona !== 'trainee';
           });
           const [quickLinksCollapsed, setQuickLinksCollapsed] = useState(() => window.innerWidth < 768);
           const [callingSiteCollapsed, setCallingSiteCollapsed] = useState(false);
@@ -14346,6 +14346,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             telestrokeNote.lkwUnknown
           );
           const diagnosisCategory = telestrokeNote.diagnosisCategory || getPathwayForDiagnosis(telestrokeNote.diagnosis || '');
+          const activePathwaySubTab = ['ischemic', 'ich', 'sah', 'tia', 'cvt'].includes(diagnosisCategory) ? diagnosisCategory : null;
+          const pathwayLabelMap = {
+            ischemic: 'Ischemic Pathway',
+            ich: 'ICH Pathway',
+            sah: 'SAH Pathway',
+            tia: 'TIA/Prevention Pathway',
+            cvt: 'CVT Pathway'
+          };
+          const activePathwayLabel = activePathwaySubTab ? pathwayLabelMap[activePathwaySubTab] : '';
           const nonIschemicPathway = ['ich', 'sah', 'tia', 'cvt'].includes(diagnosisCategory);
           const hasWeightForDose = telestrokeNote.weight !== undefined && String(telestrokeNote.weight).trim() !== '';
           const tnkDoseComplete = nonIschemicPathway || !telestrokeNote.tnkRecommended || hasWeightForDose;
@@ -15121,6 +15130,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <p className="text-xs text-slate-500 mt-1">
                           Readiness: {encounterReadiness.completedCount}/{encounterReadiness.trackedFields.length} ({encounterReadiness.readinessPercent}%)
                         </p>
+                        <div className="mt-1 h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
+                          <div className="h-full bg-blue-500 transition-all" style={{ width: `${encounterReadiness.readinessPercent}%` }}></div>
+                        </div>
                         {encounterReadiness.required.length > 0 && (
                           <div className="mt-2 flex flex-wrap items-center gap-1.5">
                             <span className="text-[11px] text-slate-500 font-semibold uppercase tracking-wide">Required:</span>
@@ -15169,6 +15181,18 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               >
                                 Copy Consult Note
                               </button>
+                              {activePathwaySubTab && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    navigateTo('library', { subTab: 'management' });
+                                    setManagementSubTab(activePathwaySubTab);
+                                  }}
+                                  className="px-2.5 py-1.5 rounded border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-100"
+                                >
+                                  Open {activePathwayLabel}
+                                </button>
+                              )}
                             </>
                           ) : (
                             <button
@@ -15375,6 +15399,52 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     </div>
 
+                    {userPersona === 'senior' && dashboardHasActiveCase && (
+                      <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Rapid Actions</span>
+                          {encounterReadiness.nextField && (
+                            <button
+                              type="button"
+                              onClick={workflowRailPrimary.action}
+                              className="px-2.5 py-1 rounded-full border border-amber-300 bg-amber-50 text-amber-800 text-xs font-semibold hover:bg-amber-100"
+                            >
+                              {workflowRailPrimary.label}
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => scrollToSection('treatment-decision')}
+                            className="px-2.5 py-1 rounded-full border border-orange-300 bg-orange-50 text-orange-800 text-xs font-semibold hover:bg-orange-100"
+                          >
+                            Decision
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const note = generateTelestrokeNote();
+                              copyToClipboard(note, 'Consult Note');
+                            }}
+                            className="px-2.5 py-1 rounded-full border border-emerald-300 bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700"
+                          >
+                            Copy Note
+                          </button>
+                          {activePathwaySubTab && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                navigateTo('library', { subTab: 'management' });
+                                setManagementSubTab(activePathwaySubTab);
+                              }}
+                              className="px-2.5 py-1 rounded-full border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-100"
+                            >
+                              {activePathwayLabel}
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
                     {/* ===== MISSING FIELDS WARNING ===== */}
                     {(() => {
                       const {
@@ -15388,9 +15458,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       } = encounterReadiness;
                       const canCollapseReadiness = requiredFields.length === 0;
                       const showReadinessDetails = !(canCollapseReadiness && readinessCardCollapsed);
+                      const recommendedPreviewCount = userPersona === 'senior'
+                        ? (isNarrowViewport ? 1 : 2)
+                        : (isNarrowViewport ? 2 : 3);
                       const visibleRecommendedFields = showAllRecommendedReadiness
                         ? recommendedFields
-                        : recommendedFields.slice(0, isNarrowViewport ? 2 : 3);
+                        : recommendedFields.slice(0, recommendedPreviewCount);
                       const hiddenRecommendedCount = Math.max(0, recommendedFields.length - visibleRecommendedFields.length);
                       if (missing.length === 0) {
                         return (
@@ -15571,7 +15644,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         Show {hiddenRecommendedCount} more
                                       </button>
                                     )}
-                                    {showAllRecommendedReadiness && recommendedFields.length > 3 && (
+                                    {showAllRecommendedReadiness && recommendedFields.length > recommendedPreviewCount && (
                                       <button
                                         type="button"
                                         onClick={() => setShowAllRecommendedReadiness(false)}
