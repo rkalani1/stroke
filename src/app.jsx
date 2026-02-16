@@ -14331,6 +14331,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             ? String(telestrokeNote.nihss)
             : (nihssScore > 0 ? String(nihssScore) : '');
           const dashboardNihssLabel = dashboardNihssValue ? `NIHSS ${dashboardNihssValue}` : 'NIHSS pending';
+          const dashboardHasActiveCase = Boolean(
+            telestrokeNote.age ||
+            dashboardNihssValue ||
+            telestrokeNote.diagnosis ||
+            lkwTime ||
+            telestrokeNote.lkwUnknown
+          );
           const diagnosisCategory = telestrokeNote.diagnosisCategory || getPathwayForDiagnosis(telestrokeNote.diagnosis || '');
           const nonIschemicPathway = ['ich', 'sah', 'tia', 'cvt'].includes(diagnosisCategory);
           const hasWeightForDose = telestrokeNote.weight !== undefined && String(telestrokeNote.weight).trim() !== '';
@@ -15135,8 +15142,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           )}
                         </div>
                         <div className="mt-3 flex flex-wrap gap-2">
-                          <button type="button" onClick={() => { navigateTo('encounter'); scrollToSection('phase-decision'); }} className="px-2.5 py-1.5 rounded border border-orange-200 bg-orange-50 text-orange-800 text-xs font-semibold hover:bg-orange-100">Go to Decision</button>
-                          <button type="button" onClick={() => { navigateTo('encounter'); scrollToSection('recommendations-section'); }} className="px-2.5 py-1.5 rounded border border-blue-200 bg-blue-50 text-blue-800 text-xs font-semibold hover:bg-blue-100">Go to Documentation</button>
+                          {dashboardHasActiveCase ? (
+                            <>
+                              <button type="button" onClick={() => { navigateTo('encounter'); scrollToSection('phase-decision'); }} className="px-2.5 py-1.5 rounded border border-orange-200 bg-orange-50 text-orange-800 text-xs font-semibold hover:bg-orange-100">Go to Decision</button>
+                              <button type="button" onClick={() => { navigateTo('encounter'); scrollToSection('recommendations-section'); }} className="px-2.5 py-1.5 rounded border border-blue-200 bg-blue-50 text-blue-800 text-xs font-semibold hover:bg-blue-100">Go to Documentation</button>
+                            </>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => navigateTo('encounter')}
+                              className="px-2.5 py-1.5 rounded border border-slate-300 bg-slate-50 text-slate-700 text-xs font-semibold hover:bg-slate-100"
+                            >
+                              Start in Encounter
+                            </button>
+                          )}
                         </div>
                       </div>
                       <div className="bg-white border border-slate-200 rounded-xl p-4">
