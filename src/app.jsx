@@ -12014,7 +12014,7 @@ Clinician Name`;
           const jumpToEncounterField = (fieldName) => {
             const fieldTargets = {
               Age: { phase: 'phase-triage', section: 'patient-info-section', focusIds: ['input-age', 'phone-input-age'] },
-              LKW: { phase: 'phase-triage', section: 'lkw-section', focusIds: ['lkw-time', 'lkw-date'] },
+              LKW: { phase: 'phase-triage', section: 'lkw-section', focusIds: ['lkw-time', 'lkw-date', 'discovery-date', 'discovery-time', 'phone-lkw-date', 'phone-lkw-time', 'phone-discovery-date', 'phone-discovery-time'] },
               Diagnosis: { phase: 'phase-decision', section: 'treatment-decision', focusIds: ['input-diagnosis'] },
               NIHSS: { phase: 'phase-triage', section: 'nihss-section', focusIds: ['input-nihss', 'phone-input-nihss'] },
               'CT Head': { phase: 'phase-triage', section: 'imaging-section', focusIds: ['input-ct-results', 'phone-input-ct-results'] },
@@ -12243,9 +12243,10 @@ Clinician Name`;
           }, [filteredGuidelineLibrary]);
 
           const encounterReadiness = useMemo(() => {
+            const lkwReference = getReferenceTime();
             const trackedFields = [
               { name: 'Age', value: telestrokeNote.age },
-              { name: 'LKW', value: lkwTime },
+              { name: 'LKW', value: lkwReference?.time || telestrokeNote.lkwUnknown || null },
               { name: 'NIHSS', value: telestrokeNote.nihss || nihssScore },
               { name: 'CT Head', value: telestrokeNote.ctResults },
               { name: 'Diagnosis', value: telestrokeNote.diagnosis },
@@ -12272,6 +12273,9 @@ Clinician Name`;
             telestrokeNote.ctResults,
             telestrokeNote.diagnosis,
             telestrokeNote.disposition,
+            telestrokeNote.lkwUnknown,
+            telestrokeNote.discoveryDate,
+            telestrokeNote.discoveryTime,
             lkwTime,
             nihssScore
           ]);
@@ -14957,8 +14961,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* ===== STROKE TIMELINE STRIP — connected visual timeline ===== */}
                     {(() => {
+                      const onsetReference = getReferenceTime();
                       const timelineEvents = [
-                        { label: 'LKW', target: 'lkw-section', time: lkwTime ? lkwTime.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-blue-500', line: 'bg-blue-200' },
+                        { label: onsetReference?.label || 'LKW', target: 'lkw-section', time: onsetReference ? onsetReference.time.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null, dot: 'bg-blue-500', line: 'bg-blue-200' },
                         { label: 'Door', target: 'lkw-section', time: safeFormatTime(telestrokeNote.dtnEdArrival), dot: 'bg-purple-500', line: 'bg-purple-200' },
                         { label: 'Alert', target: 'phase-triage', time: safeFormatTime(telestrokeNote.dtnStrokeAlert), dot: 'bg-amber-500', line: 'bg-amber-200' },
                         { label: 'CT', target: 'phase-triage', time: safeFormatTime(telestrokeNote.dtnCtStarted), dot: 'bg-slate-500', line: 'bg-slate-200' },
@@ -15141,11 +15146,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     })()}
 
                     {(() => {
-                      const lkwDisplay = lkwTime
-                        ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-                        : '--';
+                      const snapshotReference = getReferenceTime();
+                      const lkwSnapshotLabel = snapshotReference?.label || 'LKW';
+                      const lkwDisplay = snapshotReference
+                        ? snapshotReference.time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                        : (telestrokeNote.lkwUnknown ? 'Unknown' : '--');
                       const snapshotItems = [
-                        { label: 'LKW', value: lkwDisplay, field: 'LKW' },
+                        { label: lkwSnapshotLabel, value: lkwDisplay, field: 'LKW' },
                         { label: 'Age', value: telestrokeNote.age || '--', field: 'Age' },
                         { label: 'NIHSS', value: telestrokeNote.nihss || (nihssScore > 0 ? String(nihssScore) : '--'), field: 'NIHSS' },
                         { label: 'CT Head', value: telestrokeNote.ctResults ? 'Documented' : '--', field: 'CT Head' },
@@ -15271,6 +15278,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     }
                                     return updated;
                                   });
+                                  if (tmpl.defaults.lkwUnknown) {
+                                    const now = new Date();
+                                    if (!updated.discoveryDate) updated.discoveryDate = now.toISOString().split('T')[0];
+                                    if (!updated.discoveryTime) updated.discoveryTime = now.toTimeString().slice(0, 5);
+                                  }
                                   if (tmpl.defaults.diagnosisCategory === 'ich') {
                                     setManagementSubTab('ich');
                                   }
@@ -15536,6 +15548,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             <input
+                              id="discovery-date"
                               type="date"
                               aria-label="Discovery date"
                               value={telestrokeNote.discoveryDate}
@@ -15543,6 +15556,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500"
                             />
                             <input
+                              id="discovery-time"
                               type="time"
                               aria-label="Discovery time"
                               value={telestrokeNote.discoveryTime}
@@ -15875,6 +15889,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div className="grid grid-cols-2 gap-2">
                             <input
+                              id="phone-lkw-date"
                               aria-label="Last known well date"
                               type="date"
                               value={lkwTime ? `${lkwTime.getFullYear()}-${String(lkwTime.getMonth() + 1).padStart(2, '0')}-${String(lkwTime.getDate()).padStart(2, '0')}` : ''}
@@ -15893,6 +15908,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="w-full px-2 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500"
                             />
                             <input
+                              id="phone-lkw-time"
                               aria-label="Last known well time"
                               type="time"
                               value={lkwTime ? lkwTime.toTimeString().slice(0, 5) : ''}
@@ -15963,10 +15979,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </button>
                               </div>
                               <div className="grid grid-cols-2 gap-2">
-                                <input type="date" value={telestrokeNote.discoveryDate}
+                                <input id="phone-discovery-date" type="date" value={telestrokeNote.discoveryDate}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, discoveryDate: v})); }}
                                   className="w-full px-2 py-1.5 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm" />
-                                <input type="time" value={telestrokeNote.discoveryTime}
+                                <input id="phone-discovery-time" type="time" value={telestrokeNote.discoveryTime}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, discoveryTime: v})); }}
                                   className="w-full px-2 py-1.5 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm" />
                               </div>
