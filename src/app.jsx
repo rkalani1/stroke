@@ -12199,7 +12199,6 @@ Clinician Name`;
           const encounterReadiness = useMemo(() => {
             const trackedFields = [
               { name: 'Age', value: telestrokeNote.age },
-              { name: 'Sex', value: telestrokeNote.sex },
               { name: 'LKW', value: lkwTime },
               { name: 'NIHSS', value: telestrokeNote.nihss || nihssScore },
               { name: 'CT Head', value: telestrokeNote.ctResults },
@@ -12223,7 +12222,6 @@ Clinician Name`;
             };
           }, [
             telestrokeNote.age,
-            telestrokeNote.sex,
             telestrokeNote.nihss,
             telestrokeNote.ctResults,
             telestrokeNote.diagnosis,
