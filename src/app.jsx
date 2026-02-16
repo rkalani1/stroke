@@ -15424,6 +15424,31 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </button>
                                   </>
                                 )}
+                                {nextSnapshotItem?.field === 'Diagnosis' && !telestrokeNote.diagnosis && (
+                                  <>
+                                    <button
+                                      type="button"
+                                      onClick={() => applyDiagnosisSelection('Acute Ischemic Stroke')}
+                                      className="px-2 py-0.5 rounded-full border border-blue-300 bg-white hover:bg-blue-100 text-blue-700 text-xs font-semibold"
+                                    >
+                                      Dx: Ischemic
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => applyDiagnosisSelection('Intracerebral Hemorrhage (ICH)')}
+                                      className="px-2 py-0.5 rounded-full border border-red-300 bg-white hover:bg-red-100 text-red-700 text-xs font-semibold"
+                                    >
+                                      Dx: ICH
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => applyDiagnosisSelection('Subarachnoid Hemorrhage (SAH)')}
+                                      className="px-2 py-0.5 rounded-full border border-orange-300 bg-white hover:bg-orange-100 text-orange-700 text-xs font-semibold"
+                                    >
+                                      Dx: SAH
+                                    </button>
+                                  </>
+                                )}
                                 {nextSnapshotItem && (
                                   <button
                                     type="button"
