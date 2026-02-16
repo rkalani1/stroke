@@ -1684,6 +1684,7 @@ Clinician Name`;
           const [quickLinksCollapsed, setQuickLinksCollapsed] = useState(false);
           const [callingSiteCollapsed, setCallingSiteCollapsed] = useState(false);
           const [lkwCardCollapsed, setLkwCardCollapsed] = useState(false);
+          const [readinessCardCollapsed, setReadinessCardCollapsed] = useState(false);
 
           // ============================================
           // CONSULTATION TYPE: Telephone, Video Telestroke
@@ -1720,6 +1721,7 @@ Clinician Name`;
           const quickLinksAutoCollapsedRef = useRef(false);
           const callingSiteAutoCollapsedRef = useRef(false);
           const lkwAutoCollapsedRef = useRef(false);
+          const readinessAutoCollapsedRef = useRef(false);
           const showConfirm = React.useCallback((config) => {
             return new Promise((resolve) => {
               confirmResolveRef.current = resolve;
@@ -12273,6 +12275,33 @@ Clinician Name`;
             nihssScore
           ]);
 
+          useEffect(() => {
+            const hasReadinessContext = Boolean(
+              telestrokeNote.age ||
+              telestrokeNote.diagnosis ||
+              telestrokeNote.ctResults ||
+              telestrokeNote.disposition ||
+              lkwTime ||
+              nihssScore > 0
+            );
+            const requiredComplete = encounterReadiness.required.length === 0;
+            if (hasReadinessContext && requiredComplete && !readinessAutoCollapsedRef.current) {
+              setReadinessCardCollapsed(true);
+              readinessAutoCollapsedRef.current = true;
+            } else if (!hasReadinessContext || !requiredComplete) {
+              setReadinessCardCollapsed(false);
+              readinessAutoCollapsedRef.current = false;
+            }
+          }, [
+            encounterReadiness.required.length,
+            telestrokeNote.age,
+            telestrokeNote.diagnosis,
+            telestrokeNote.ctResults,
+            telestrokeNote.disposition,
+            lkwTime,
+            nihssScore
+          ]);
+
           const QUICK_SEARCH_COMMANDS = [
             { value: 'next required', label: 'next required', hint: 'Jump to highest-priority missing field' },
             { value: 'dx ischemic', label: 'dx ischemic', hint: 'Set diagnosis and pathway to ischemic stroke' },
@@ -15004,6 +15033,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         readinessPercent,
                         nextField
                       } = encounterReadiness;
+                      const canCollapseReadiness = requiredFields.length === 0;
+                      const showReadinessDetails = !(canCollapseReadiness && readinessCardCollapsed);
                       return missing.length > 0 ? (
                         <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-sm space-y-2">
                           <div className="flex flex-wrap items-center justify-between gap-2">
@@ -15012,6 +15043,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </span>
                             <div className="flex items-center gap-2">
                               <span className="text-xs text-amber-700">{readinessPercent}% complete</span>
+                              {canCollapseReadiness && (
+                                <button
+                                  type="button"
+                                  onClick={() => setReadinessCardCollapsed((prev) => !prev)}
+                                  className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-800 text-xs font-semibold"
+                                >
+                                  {readinessCardCollapsed ? 'Show details' : 'Hide details'}
+                                </button>
+                              )}
                               {nextField && (
                                 <button
                                   type="button"
@@ -15023,44 +15063,48 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               )}
                             </div>
                           </div>
-                          <div className="h-1.5 w-full rounded-full bg-amber-100 overflow-hidden">
-                            <div className="h-full bg-amber-500 transition-all" style={{ width: `${readinessPercent}%` }}></div>
-                          </div>
-                          {requiredFields.length > 0 && (
-                            <div className="flex items-start sm:items-center gap-2">
-                              <i aria-hidden="true" data-lucide="alert-circle" className="hidden sm:block w-3.5 h-3.5 text-red-500 shrink-0 mt-0.5 sm:mt-0"></i>
-                              <div className="text-red-700 flex flex-wrap items-center gap-1.5 min-w-0">
-                                <span className="font-semibold">Required:</span>
-                                {requiredFields.map((field) => (
-                                  <button
-                                    key={`required-${field.name}`}
-                                    type="button"
-                                    onClick={() => jumpToEncounterField(field.name)}
-                                    className="px-2 py-0.5 rounded-full border border-red-300 bg-white hover:bg-red-100 text-red-700 text-xs font-semibold"
-                                  >
-                                    {field.name}
-                                  </button>
-                                ))}
+                          {showReadinessDetails && (
+                            <>
+                              <div className="h-1.5 w-full rounded-full bg-amber-100 overflow-hidden">
+                                <div className="h-full bg-amber-500 transition-all" style={{ width: `${readinessPercent}%` }}></div>
                               </div>
-                            </div>
-                          )}
-                          {recommendedFields.length > 0 && (
-                            <div className="flex items-start sm:items-center gap-2">
-                              <i aria-hidden="true" data-lucide="alert-triangle" className="hidden sm:block w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5 sm:mt-0"></i>
-                              <div className="text-amber-700 flex flex-wrap items-center gap-1.5 min-w-0">
-                                <span className="font-medium">Recommended:</span>
-                                {recommendedFields.map((field) => (
-                                  <button
-                                    key={`recommended-${field.name}`}
-                                    type="button"
-                                    onClick={() => jumpToEncounterField(field.name)}
-                                    className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-700 text-xs font-semibold"
-                                  >
-                                    {field.name}
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
+                              {requiredFields.length > 0 && (
+                                <div className="flex items-start sm:items-center gap-2">
+                                  <i aria-hidden="true" data-lucide="alert-circle" className="hidden sm:block w-3.5 h-3.5 text-red-500 shrink-0 mt-0.5 sm:mt-0"></i>
+                                  <div className="text-red-700 flex flex-wrap items-center gap-1.5 min-w-0">
+                                    <span className="font-semibold">Required:</span>
+                                    {requiredFields.map((field) => (
+                                      <button
+                                        key={`required-${field.name}`}
+                                        type="button"
+                                        onClick={() => jumpToEncounterField(field.name)}
+                                        className="px-2 py-0.5 rounded-full border border-red-300 bg-white hover:bg-red-100 text-red-700 text-xs font-semibold"
+                                      >
+                                        {field.name}
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              {recommendedFields.length > 0 && (
+                                <div className="flex items-start sm:items-center gap-2">
+                                  <i aria-hidden="true" data-lucide="alert-triangle" className="hidden sm:block w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5 sm:mt-0"></i>
+                                  <div className="text-amber-700 flex flex-wrap items-center gap-1.5 min-w-0">
+                                    <span className="font-medium">Recommended:</span>
+                                    {recommendedFields.map((field) => (
+                                      <button
+                                        key={`recommended-${field.name}`}
+                                        type="button"
+                                        onClick={() => jumpToEncounterField(field.name)}
+                                        className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-700 text-xs font-semibold"
+                                      >
+                                        {field.name}
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </>
                           )}
                         </div>
                       ) : null;
