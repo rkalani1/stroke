@@ -15101,6 +15101,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <p className="text-xs text-slate-500 mt-1">
                           Readiness: {encounterReadiness.completedCount}/{encounterReadiness.trackedFields.length} ({encounterReadiness.readinessPercent}%)
                         </p>
+                        {encounterReadiness.required.length > 0 && (
+                          <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                            <span className="text-[11px] text-slate-500 font-semibold uppercase tracking-wide">Required:</span>
+                            {encounterReadiness.required.slice(0, 4).map((field) => (
+                              <button
+                                key={`dash-required-${field.name}`}
+                                type="button"
+                                onClick={() => openEncounterAtField(field.name)}
+                                className="px-2 py-0.5 rounded-full border border-red-300 bg-red-50 text-red-700 text-[11px] font-semibold hover:bg-red-100"
+                              >
+                                {field.name}
+                              </button>
+                            ))}
+                            {encounterReadiness.required.length > 4 && (
+                              <span className="text-[11px] text-slate-500">+{encounterReadiness.required.length - 4} more</span>
+                            )}
+                          </div>
+                        )}
                         <div className="mt-2">
                           {encounterReadiness.nextField ? (
                             <button
