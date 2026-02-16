@@ -24952,7 +24952,35 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <h2 className="text-lg font-semibold text-slate-900">Library</h2>
                         <p className="text-xs text-slate-600">Unified protocols, calculators, references, and trial index.</p>
                       </div>
-                      <div className="flex items-center gap-2" role="tablist" aria-label="Library sections">
+                      <div
+                        className="flex items-center gap-2"
+                        role="tablist"
+                        aria-label="Library sections"
+                        onKeyDown={(e) => {
+                          const sections = ['management', 'trials'];
+                          const currentIndex = sections.indexOf(librarySection);
+                          let nextIndex;
+                          if (e.key === 'ArrowRight') {
+                            e.preventDefault();
+                            nextIndex = (currentIndex + 1) % sections.length;
+                          } else if (e.key === 'ArrowLeft') {
+                            e.preventDefault();
+                            nextIndex = (currentIndex - 1 + sections.length) % sections.length;
+                          } else if (e.key === 'Home') {
+                            e.preventDefault();
+                            nextIndex = 0;
+                          } else if (e.key === 'End') {
+                            e.preventDefault();
+                            nextIndex = sections.length - 1;
+                          }
+                          if (nextIndex !== undefined) {
+                            const nextSection = sections[nextIndex];
+                            setLibrarySection(nextSection);
+                            const el = document.getElementById(`library-section-${nextSection}`);
+                            if (el) el.focus();
+                          }
+                        }}
+                      >
                         <button
                           id="library-section-management"
                           type="button"
