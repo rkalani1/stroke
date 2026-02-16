@@ -14201,6 +14201,12 @@ Clinician Name`;
             }
           }, [activeTab, isMounted, managementSubTab, encounterPhase, showKeyboardHelp, showChangelog, settingsMenuOpen, searchOpen, calcDrawerOpen, protocolModal, confirmConfig, actionBarCollapsed]);
 
+          useEffect(() => {
+            const activeTabEl = document.getElementById(`tab-${activeTab}`);
+            if (!activeTabEl || typeof activeTabEl.scrollIntoView !== 'function') return;
+            activeTabEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }, [activeTab]);
+
           // Documentation generation functions
           const generateHPI = () => {
             const timeFromLKW = calculateTimeFromLKW();
