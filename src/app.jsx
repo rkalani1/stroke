@@ -14324,6 +14324,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const lkwSummaryLabel = lkwTime
             ? `${lkwTime.toLocaleDateString('en-US')} ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
             : (telestrokeNote.lkwUnknown ? 'Wake-up stroke / Unknown LKW' : 'Not entered');
+          const dashboardDemographicsLabel = telestrokeNote.age
+            ? `${telestrokeNote.age}${telestrokeNote.sex || ''}`
+            : 'Age/sex pending';
+          const dashboardNihssValue = (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '')
+            ? String(telestrokeNote.nihss)
+            : (nihssScore > 0 ? String(nihssScore) : '');
+          const dashboardNihssLabel = dashboardNihssValue ? `NIHSS ${dashboardNihssValue}` : 'NIHSS pending';
           const diagnosisCategory = telestrokeNote.diagnosisCategory || getPathwayForDiagnosis(telestrokeNote.diagnosis || '');
           const nonIschemicPathway = ['ich', 'sah', 'tia', 'cvt'].includes(diagnosisCategory);
           const hasWeightForDose = telestrokeNote.weight !== undefined && String(telestrokeNote.weight).trim() !== '';
@@ -15089,7 +15096,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                       <div className="bg-white border border-slate-200 rounded-xl p-4">
                         <p className="text-xs uppercase tracking-wide text-slate-500">Current Case</p>
-                        <p className="text-sm font-semibold text-slate-900 mt-1">{(telestrokeNote.age || '--')}{telestrokeNote.sex || ''} • NIHSS {telestrokeNote.nihss || nihssScore || '--'}</p>
+                        <p className="text-sm font-semibold text-slate-900 mt-1">{dashboardDemographicsLabel} • {dashboardNihssLabel}</p>
                         <p className="text-xs text-slate-600 mt-1">{telestrokeNote.diagnosis || 'Diagnosis pending'}</p>
                         <p className="text-xs text-slate-500 mt-1">
                           Readiness: {encounterReadiness.completedCount}/{encounterReadiness.trackedFields.length} ({encounterReadiness.readinessPercent}%)
