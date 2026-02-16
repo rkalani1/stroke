@@ -31335,7 +31335,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </button>
                       </div>
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">{workflowRailHint}</p>
+                    <p className={`text-xs text-slate-500 mt-1 ${actionBarCollapsed ? 'hidden sm:block' : ''}`}>{workflowRailHint}</p>
                     {!actionBarCollapsed && (
                       <div className="flex flex-wrap items-center gap-2 mt-2">
                         <button
