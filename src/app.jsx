@@ -12174,6 +12174,7 @@ Clinician Name`;
             { value: 'nihss 12', label: 'nihss 12', hint: 'Set NIHSS and jump to triage exam' },
             { value: 'wt 80', label: 'wt 80', hint: 'Set patient weight for thrombolysis dosing' },
             { value: 'lkw now', label: 'lkw now', hint: 'Set LKW to current time' },
+            { value: 'tab trials', label: 'tab trials', hint: 'Jump directly to active clinical trials' },
             { value: 'nct05948566', label: 'nct05948566', hint: 'Open trial card directly by NCT' }
           ];
 
@@ -12347,6 +12348,75 @@ Clinician Name`;
                   }
                 });
               }
+            }
+            const tabCommand = lowerQuery.match(/^(?:tab|go|open)\s+(dashboard|encounter|library|settings|trials|management)$/i);
+            if (tabCommand) {
+              const tabKey = tabCommand[1].toLowerCase();
+              const tabLabelMap = {
+                dashboard: 'Dashboard',
+                encounter: 'Encounter',
+                library: 'Library',
+                settings: 'Settings',
+                trials: 'Trials',
+                management: 'Protocols & Tools'
+              };
+              results.push({
+                type: 'Command',
+                title: `Go to ${tabLabelMap[tabKey] || tabKey}`,
+                description: 'Switches workspace context',
+                score: 970,
+                action: () => {
+                  if (tabKey === 'trials') {
+                    navigateTo('library', { clearSearch: true, subTab: 'trials' });
+                  } else if (tabKey === 'management') {
+                    navigateTo('library', { clearSearch: true, subTab: 'management' });
+                  } else {
+                    navigateTo(tabKey, { clearSearch: true });
+                  }
+                }
+              });
+            }
+            const phaseCommand = lowerQuery.match(/^(?:phase|encounter phase|go phase)\s+(triage|decision|management|documentation)$/i);
+            if (phaseCommand) {
+              const phaseKey = phaseCommand[1].toLowerCase();
+              const phaseMap = {
+                triage: 'phase-triage',
+                decision: 'phase-decision',
+                management: 'phase-management',
+                documentation: 'phase-documentation'
+              };
+              const phaseLabel = phaseKey.charAt(0).toUpperCase() + phaseKey.slice(1);
+              if (phaseMap[phaseKey]) {
+                results.push({
+                  type: 'Command',
+                  title: `Go to encounter ${phaseLabel}`,
+                  description: 'Jumps to encounter phase navigation',
+                  score: 965,
+                  action: () => {
+                    navigateTo('encounter', { clearSearch: true });
+                    setEncounterPhase(phaseMap[phaseKey]);
+                    requestAnimationFrame(() => {
+                      setTimeout(() => scrollToSection(phaseMap[phaseKey]), 240);
+                    });
+                  }
+                });
+              }
+            }
+            const modeCommand = lowerQuery.match(/^(?:mode|set mode)\s+(video|telestroke|phone|telephone)$/i);
+            if (modeCommand) {
+              const modeKey = modeCommand[1].toLowerCase();
+              const toVideo = modeKey === 'video' || modeKey === 'telestroke';
+              results.push({
+                type: 'Command',
+                title: toVideo ? 'Switch to Video Telestroke mode' : 'Switch to Phone Consult mode',
+                description: 'Sets consult mode and keeps you on Encounter',
+                score: 955,
+                action: () => {
+                  setConsultationType(toVideo ? 'videoTelestroke' : 'telephone');
+                  setClinicalContext(toVideo ? 'acute' : 'phone');
+                  navigateTo('encounter', { clearSearch: true });
+                }
+              });
             }
             if (lowerQuery === 'reversal' || lowerQuery === 'ich reversal') {
               results.push({
