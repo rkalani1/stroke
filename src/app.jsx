@@ -14699,7 +14699,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
               {/* Primary Navigation */}
               <div className="mb-4 sm:mb-6 sticky top-0 z-30 app-nav" role="navigation" aria-label="Main navigation">
-                <nav className="flex justify-around gap-0 bg-white border border-slate-200 rounded-xl p-1" role="tablist" aria-label="Main sections" onKeyDown={(e) => {
+                <nav className="flex flex-nowrap items-stretch gap-0 bg-white border border-slate-200 rounded-xl p-1 overflow-x-auto no-scrollbar" role="tablist" aria-label="Main sections" onKeyDown={(e) => {
                   const tabs = ['dashboard', 'encounter', 'library', 'settings'];
                   const currentIndex = tabs.indexOf(activeTab);
                   let nextIndex;
@@ -14723,14 +14723,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         onClick={() => {
                           navigateTo(tab.id);
                         }}
-                        className={`tab-pill py-3 sm:py-2 px-4 text-sm flex items-center space-x-2 transition-all min-h-[44px] sm:min-h-0 ${isActive ? 'active' : 'inactive'}`}
+                        className={`tab-pill flex-1 min-w-0 py-2 sm:py-2 px-1.5 sm:px-4 text-[12px] sm:text-sm flex items-center justify-center gap-1 sm:gap-2 transition-all min-h-[44px] sm:min-h-0 ${isActive ? 'active' : 'inactive'}`}
                         role="tab"
                         aria-selected={isActive}
                         aria-controls={`tabpanel-${tab.id}`}
                         tabIndex={isActive ? 0 : -1}
                       >
-                        <i aria-hidden="true" data-lucide={tab.icon} className="w-4 h-4"></i>
-                        <span>{tab.name}</span>
+                        <i aria-hidden="true" data-lucide={tab.icon} className="hidden sm:block w-4 h-4 shrink-0"></i>
+                        <span className="whitespace-nowrap leading-none">{tab.name}</span>
                       </button>
                     );
                   })}
@@ -14935,9 +14935,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="h-full bg-amber-500 transition-all" style={{ width: `${readinessPercent}%` }}></div>
                           </div>
                           {requiredFields.length > 0 && (
-                            <div className="flex items-center gap-2">
-                              <i aria-hidden="true" data-lucide="alert-circle" className="w-3.5 h-3.5 text-red-500 shrink-0"></i>
-                              <div className="text-red-700 flex flex-wrap items-center gap-1.5">
+                            <div className="flex items-start sm:items-center gap-2">
+                              <i aria-hidden="true" data-lucide="alert-circle" className="hidden sm:block w-3.5 h-3.5 text-red-500 shrink-0 mt-0.5 sm:mt-0"></i>
+                              <div className="text-red-700 flex flex-wrap items-center gap-1.5 min-w-0">
                                 <span className="font-semibold">Required:</span>
                                 {requiredFields.map((field) => (
                                   <button
@@ -14953,9 +14953,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           )}
                           {recommendedFields.length > 0 && (
-                            <div className="flex items-center gap-2">
-                              <i aria-hidden="true" data-lucide="alert-triangle" className="w-3.5 h-3.5 text-amber-500 shrink-0"></i>
-                              <div className="text-amber-700 flex flex-wrap items-center gap-1.5">
+                            <div className="flex items-start sm:items-center gap-2">
+                              <i aria-hidden="true" data-lucide="alert-triangle" className="hidden sm:block w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5 sm:mt-0"></i>
+                              <div className="text-amber-700 flex flex-wrap items-center gap-1.5 min-w-0">
                                 <span className="font-medium">Recommended:</span>
                                 {recommendedFields.map((field) => (
                                   <button
@@ -14975,19 +14975,25 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     })()}
 
                     {(() => {
+                      const lkwDisplay = lkwTime
+                        ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                        : '--';
                       const snapshotItems = [
+                        { label: 'LKW', value: lkwDisplay, field: 'LKW' },
                         { label: 'Age', value: telestrokeNote.age || '--', field: 'Age' },
                         { label: 'NIHSS', value: telestrokeNote.nihss || (nihssScore > 0 ? String(nihssScore) : '--'), field: 'NIHSS' },
                         { label: 'CT Head', value: telestrokeNote.ctResults ? 'Documented' : '--', field: 'CT Head' },
                         { label: 'Diagnosis', value: telestrokeNote.diagnosis || '--', field: 'Diagnosis' },
                         { label: 'Disposition', value: telestrokeNote.disposition || '--', field: 'Disposition' }
                       ];
-                      const hasAnyValue = snapshotItems.some((item) => item.value !== '--');
-                      if (!hasAnyValue) return null;
+                      const missingCount = snapshotItems.filter((item) => item.value === '--').length;
                       return (
                         <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
                           <div className="flex flex-wrap items-center gap-1.5">
-                            <span className="text-[11px] uppercase tracking-wide font-semibold text-slate-500 mr-1">Case Snapshot</span>
+                            <span className="text-[11px] uppercase tracking-wide font-semibold text-slate-500 mr-1">
+                              Case Snapshot
+                              <span className="ml-1 text-slate-400 normal-case">{missingCount} missing</span>
+                            </span>
                             {snapshotItems.map((item) => {
                               const isMissing = item.value === '--';
                               return (
