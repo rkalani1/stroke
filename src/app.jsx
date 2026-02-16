@@ -12072,6 +12072,41 @@ Clinician Name`;
             });
           };
 
+          const inferDiagnosisCategory = (diagnosis = '') => {
+            const dxLower = String(diagnosis || '').toLowerCase();
+            if (dxLower.includes('ich') || dxLower.includes('intracerebral')) return 'ich';
+            if (dxLower.includes('sah') || dxLower.includes('subarachnoid')) return 'sah';
+            if (dxLower === 'tia') return 'tia';
+            if (dxLower.includes('ischemic') || dxLower.includes('lvo')) return 'ischemic';
+            if (dxLower.includes('cvt') || dxLower.includes('venous thrombosis')) return 'cvt';
+            return '';
+          };
+
+          const applyDiagnosisSelection = (diagnosisValue) => {
+            const category = inferDiagnosisCategory(diagnosisValue);
+            setTelestrokeNote((prev) => {
+              const diagUpdate = { diagnosis: diagnosisValue, diagnosisCategory: category };
+              // Hemorrhagic pathways must clear thrombolysis recommendations.
+              if ((category === 'ich' || category === 'sah') && prev.tnkRecommended) {
+                diagUpdate.tnkRecommended = false;
+                diagUpdate.tnkAutoBlocked = true;
+                diagUpdate.tnkAutoBlockReason = `TNK auto-cleared: ${category.toUpperCase()} diagnosis (thrombolysis contraindicated)`;
+                addToast(`TNK recommendation cleared — ${category.toUpperCase()} diagnosis is a contraindication to thrombolysis`, 'error');
+              }
+              if (category !== 'ischemic' && (prev.bpPhase === 'post-evt' || prev.bpPhase === 'post-tnk')) {
+                diagUpdate.bpPhase = 'pre-tnk';
+              }
+              return { ...prev, ...diagUpdate };
+            });
+
+            if (category === 'ich') setManagementSubTab('ich');
+            else if (category === 'sah') setManagementSubTab('sah');
+            else if (category === 'tia') setManagementSubTab('tia');
+            else if (category === 'ischemic') setManagementSubTab('ischemic');
+            else if (category === 'cvt') setManagementSubTab('cvt');
+            else setManagementSubTab('ischemic');
+          };
+
           const jumpToNextRequiredEncounterField = () => {
             if (!encounterReadiness.nextField) return;
             jumpToEncounterField(encounterReadiness.nextField);
@@ -15200,6 +15235,31 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   Set LKW Now
                                 </button>
                               )}
+                              {nextField === 'Diagnosis' && !telestrokeNote.diagnosis && (
+                                <>
+                                  <button
+                                    type="button"
+                                    onClick={() => applyDiagnosisSelection('Acute Ischemic Stroke')}
+                                    className="px-2 py-0.5 rounded-full border border-blue-300 bg-white hover:bg-blue-100 text-blue-700 text-xs font-semibold"
+                                  >
+                                    Dx: Ischemic
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => applyDiagnosisSelection('Intracerebral Hemorrhage (ICH)')}
+                                    className="px-2 py-0.5 rounded-full border border-red-300 bg-white hover:bg-red-100 text-red-700 text-xs font-semibold"
+                                  >
+                                    Dx: ICH
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => applyDiagnosisSelection('Subarachnoid Hemorrhage (SAH)')}
+                                    className="px-2 py-0.5 rounded-full border border-orange-300 bg-white hover:bg-orange-100 text-orange-700 text-xs font-semibold"
+                                  >
+                                    Dx: SAH
+                                  </button>
+                                </>
+                              )}
                             </div>
                           </div>
                           {showReadinessDetails && (
@@ -17004,36 +17064,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <select
                                 id="input-diagnosis"
                                 value={telestrokeNote.diagnosis}
-                                onChange={(e) => {
-                                  const newDx = e.target.value;
-                                  const dxLower = newDx.toLowerCase();
-                                  const category = dxLower.includes('ich') || dxLower.includes('intracerebral') ? 'ich'
-                                    : dxLower.includes('sah') || dxLower.includes('subarachnoid') ? 'sah'
-                                    : dxLower === 'tia' ? 'tia'
-                                    : dxLower.includes('ischemic') || dxLower.includes('lvo') ? 'ischemic'
-                                    : dxLower.includes('cvt') || dxLower.includes('venous thrombosis') ? 'cvt'
-                                    : '';
-                                  const diagUpdate = { diagnosis: newDx, diagnosisCategory: category };
-                                  // Auto-clear TNK recommendation for hemorrhagic diagnoses (safety-critical)
-                                  if ((category === 'ich' || category === 'sah') && telestrokeNote.tnkRecommended) {
-                                    diagUpdate.tnkRecommended = false;
-                                    diagUpdate.tnkAutoBlocked = true;
-                                    diagUpdate.tnkAutoBlockReason = `TNK auto-cleared: ${category.toUpperCase()} diagnosis (thrombolysis contraindicated)`;
-                                    addToast(`TNK recommendation cleared — ${category.toUpperCase()} diagnosis is a contraindication to thrombolysis`, 'error');
-                                  }
-                                  // Reset BP phase if switching away from ischemic/EVT
-                                  if (category !== 'ischemic' && (telestrokeNote.bpPhase === 'post-evt' || telestrokeNote.bpPhase === 'post-tnk')) {
-                                    diagUpdate.bpPhase = 'pre-tnk';
-                                  }
-                                  setTelestrokeNote(prev => ({...prev, ...diagUpdate}));
-                                  // Auto-route management sub-tab
-                                  if (category === 'ich') setManagementSubTab('ich');
-                                  else if (category === 'sah') setManagementSubTab('sah');
-                                  else if (category === 'tia') setManagementSubTab('tia');
-                                  else if (category === 'ischemic') setManagementSubTab('ischemic');
-                                  else if (category === 'cvt') setManagementSubTab('cvt');
-                                  else setManagementSubTab('ischemic'); // default for mimic/other
-                                }}
+                                onChange={(e) => applyDiagnosisSelection(e.target.value)}
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500"
                               >
                                 <option value="">-- Select Diagnosis --</option>
