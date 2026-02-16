@@ -12169,6 +12169,57 @@ Clinician Name`;
             return filteredGuidelineLibrary.reduce((sum, guideline) => sum + guideline.recommendations.length, 0);
           }, [filteredGuidelineLibrary]);
 
+          const QUICK_SEARCH_COMMANDS = [
+            { value: 'dx ischemic', label: 'dx ischemic', hint: 'Set diagnosis and pathway to ischemic stroke' },
+            { value: 'nihss 12', label: 'nihss 12', hint: 'Set NIHSS and jump to triage exam' },
+            { value: 'wt 80', label: 'wt 80', hint: 'Set patient weight for thrombolysis dosing' },
+            { value: 'lkw now', label: 'lkw now', hint: 'Set LKW to current time' },
+            { value: 'nct05948566', label: 'nct05948566', hint: 'Open trial card directly by NCT' }
+          ];
+
+          const parseLkwTimeCommand = (rawToken, baseDate = new Date()) => {
+            const token = String(rawToken || '').trim().toLowerCase();
+            if (!token || token === 'now') {
+              return token === 'now' ? new Date() : null;
+            }
+
+            let hours = null;
+            let minutes = null;
+
+            const ampmMatch = token.match(/^(\d{1,2}):(\d{2})\s*([ap]m)$/i);
+            if (ampmMatch) {
+              hours = parseInt(ampmMatch[1], 10);
+              minutes = parseInt(ampmMatch[2], 10);
+              const meridiem = ampmMatch[3].toLowerCase();
+              if (hours < 1 || hours > 12 || minutes < 0 || minutes > 59) return null;
+              if (hours === 12) hours = 0;
+              if (meridiem === 'pm') hours += 12;
+            } else {
+              const colonMatch = token.match(/^(\d{1,2}):(\d{2})$/);
+              const compactMatch = token.match(/^(\d{3,4})$/);
+              if (colonMatch) {
+                hours = parseInt(colonMatch[1], 10);
+                minutes = parseInt(colonMatch[2], 10);
+              } else if (compactMatch) {
+                const digits = compactMatch[1];
+                if (digits.length === 3) {
+                  hours = parseInt(digits[0], 10);
+                  minutes = parseInt(digits.slice(1), 10);
+                } else {
+                  hours = parseInt(digits.slice(0, 2), 10);
+                  minutes = parseInt(digits.slice(2), 10);
+                }
+              }
+              if (hours === null || minutes === null || hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+                return null;
+              }
+            }
+
+            const nextTime = new Date(baseDate);
+            nextTime.setHours(hours, minutes, 0, 0);
+            return nextTime;
+          };
+
           const performSearch = (query) => {
             if (!query || query.length < 2) {
               setSearchResults([]);
@@ -12211,6 +12262,88 @@ Clinician Name`;
                     setTelestrokeNote((prev) => ({ ...prev, age: String(parsed) }));
                     navigateTo('encounter', { clearSearch: true });
                     setTimeout(() => scrollToSection('patient-info-section'), 100);
+                  }
+                });
+              }
+            }
+            const weightCommand = lowerQuery.match(/^(?:weight|wt|set weight)\s+(\d{2,3})(?:\s*kg)?$/i);
+            if (weightCommand) {
+              const parsed = Math.max(20, Math.min(350, parseInt(weightCommand[1], 10)));
+              if (Number.isFinite(parsed)) {
+                results.push({
+                  type: 'Command',
+                  title: `Set weight to ${parsed} kg`,
+                  description: 'Updates weight and TNK dose context',
+                  score: 940,
+                  action: () => {
+                    setTelestrokeNote((prev) => ({ ...prev, weight: String(parsed) }));
+                    navigateTo('encounter', { clearSearch: true });
+                    setTimeout(() => scrollToSection('patient-info-section'), 100);
+                  }
+                });
+              }
+            }
+            const lkwCommand = lowerQuery.match(/^(?:lkw|set lkw)\s+(.+)$/i);
+            if (lkwCommand) {
+              const literal = lkwCommand[1].trim();
+              const isNowLiteral = literal.toLowerCase() === 'now';
+              const parsedTime = parseLkwTimeCommand(literal, lkwTime || new Date());
+              if (parsedTime) {
+                results.push({
+                  type: 'Command',
+                  title: isNowLiteral
+                    ? 'Set LKW to now'
+                    : `Set LKW time to ${parsedTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
+                  description: 'Updates last known well and jumps to timeline',
+                  score: 960,
+                  action: () => {
+                    setLkwTime(isNowLiteral ? new Date() : parsedTime);
+                    navigateTo('encounter', { clearSearch: true });
+                    setTimeout(() => scrollToSection('lkw-section'), 100);
+                  }
+                });
+              }
+            }
+            const diagnosisCommand = lowerQuery.match(/^(?:dx|diagnosis|set diagnosis|set dx)\s+(.+)$/i);
+            if (diagnosisCommand) {
+              const token = diagnosisCommand[1].trim();
+              const diagnosisMappings = [
+                { test: /\blvo\b/, diagnosis: 'Acute Ischemic Stroke - LVO', category: 'ischemic' },
+                { test: /\bminor\b/, diagnosis: 'Minor Ischemic Stroke', category: 'ischemic' },
+                { test: /\bischemic\b|\bais\b/, diagnosis: 'Acute Ischemic Stroke', category: 'ischemic' },
+                { test: /\bich\b|\bintracerebral\b/, diagnosis: 'Intracerebral Hemorrhage (ICH)', category: 'ich' },
+                { test: /\bsah\b|\bsubarachnoid\b/, diagnosis: 'Subarachnoid Hemorrhage (SAH)', category: 'sah' },
+                { test: /\btia\b/, diagnosis: 'TIA', category: 'tia' },
+                { test: /\bcvt\b|\bvenous thrombosis\b/, diagnosis: 'Cerebral Venous Thrombosis (CVT)', category: 'cvt' },
+                { test: /\bmimic\b/, diagnosis: 'Stroke Mimic', category: '' }
+              ];
+              const mapping = diagnosisMappings.find((item) => item.test.test(token));
+              if (mapping) {
+                results.push({
+                  type: 'Command',
+                  title: `Set diagnosis: ${mapping.diagnosis}`,
+                  description: 'Updates diagnosis and pathway routing',
+                  score: 980,
+                  action: () => {
+                    setTelestrokeNote((prev) => {
+                      const next = { ...prev, diagnosis: mapping.diagnosis, diagnosisCategory: mapping.category };
+                      if ((mapping.category === 'ich' || mapping.category === 'sah') && prev.tnkRecommended) {
+                        next.tnkRecommended = false;
+                        next.tnkAutoBlocked = true;
+                        next.tnkAutoBlockReason = `TNK auto-cleared: ${mapping.category.toUpperCase()} diagnosis (thrombolysis contraindicated)`;
+                      }
+                      if (mapping.category !== 'ischemic' && (prev.bpPhase === 'post-evt' || prev.bpPhase === 'post-tnk')) {
+                        next.bpPhase = 'pre-tnk';
+                      }
+                      return next;
+                    });
+                    if (mapping.category === 'ich') setManagementSubTab('ich');
+                    else if (mapping.category === 'sah') setManagementSubTab('sah');
+                    else if (mapping.category === 'tia') setManagementSubTab('tia');
+                    else if (mapping.category === 'ischemic') setManagementSubTab('ischemic');
+                    else if (mapping.category === 'cvt') setManagementSubTab('cvt');
+                    navigateTo('encounter', { clearSearch: true });
+                    setTimeout(() => scrollToSection('treatment-decision'), 100);
                   }
                 });
               }
@@ -12262,6 +12395,35 @@ Clinician Name`;
                       });
                     }
                   });
+                });
+              }
+            });
+
+            // Search trial criteria and eligibility text (inclusion/exclusion intent)
+            Object.entries(TRIAL_ELIGIBILITY_CONFIG).forEach(([trialId, config]) => {
+              const criterionPool = [
+                ...(config?.lookingFor || []).map((text) => ({ label: 'Looking for', text })),
+                ...(config?.keyCriteria || []).map((criterion) => ({ label: 'Eligibility', text: criterion.label })),
+                ...(config?.exclusionFlags || []).map((criterion) => ({ label: 'Exclusion', text: criterion.label })),
+                ...(config?.keyTakeaways || []).map((text) => ({ label: 'Key takeaway', text }))
+              ];
+
+              let bestMatch = null;
+              criterionPool.forEach((criterion) => {
+                const score = scoreFor([config.name, config.nct, criterion.label, criterion.text], 6);
+                if (score > 0 && (!bestMatch || score > bestMatch.score)) {
+                  bestMatch = { ...criterion, score };
+                }
+              });
+
+              if (bestMatch) {
+                results.push({
+                  type: 'Trial Criteria',
+                  category: config.category,
+                  title: `${config.name} - ${bestMatch.label}`,
+                  description: bestMatch.text,
+                  score: bestMatch.score,
+                  action: () => navigateToTrial(trialId)
                 });
               }
             });
@@ -13953,6 +14115,28 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             ));
                           })()}
+                        </div>
+                      )}
+
+                      {searchOpen && searchContext === 'header' && searchQuery.trim().length < 2 && (
+                        <div className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white shadow-lg rounded-lg border z-50 p-3">
+                          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">Quick Commands</p>
+                          <div className="space-y-1.5">
+                            {QUICK_SEARCH_COMMANDS.map((command) => (
+                              <button
+                                key={command.value}
+                                onClick={() => {
+                                  setSearchQuery(command.value);
+                                  setSearchOpen(true);
+                                  setSearchContext('header');
+                                }}
+                                className="w-full text-left px-2.5 py-2 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-colors"
+                              >
+                                <p className="text-xs font-mono text-blue-700">{command.label}</p>
+                                <p className="text-xs text-slate-600 mt-0.5">{command.hint}</p>
+                              </button>
+                            ))}
+                          </div>
                         </div>
                       )}
                     </div>
@@ -30916,6 +31100,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <kbd className="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-xs font-mono text-slate-600">{keys}</kbd>
                       </div>
                     ))}
+                    <div className="pt-2 mt-2 border-t border-slate-100">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">Search Command Examples</p>
+                      <div className="grid grid-cols-1 gap-1.5">
+                        {QUICK_SEARCH_COMMANDS.map((command) => (
+                          <div key={command.value} className="flex items-center justify-between gap-2">
+                            <kbd className="px-2 py-1 bg-blue-50 border border-blue-200 rounded text-xs font-mono text-blue-700">{command.label}</kbd>
+                            <span className="text-xs text-slate-600 text-right">{command.hint}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </>
