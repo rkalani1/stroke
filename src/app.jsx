@@ -1679,7 +1679,7 @@ Clinician Name`;
           const [actionBarCollapsed, setActionBarCollapsed] = useState(() => {
             const saved = getKey('actionBarCollapsed', null);
             if (saved !== null && saved !== undefined) return saved === true;
-            return false;
+            return window.innerWidth < 768;
           });
 
           // ============================================
@@ -7529,7 +7529,7 @@ Clinician Name`;
             setAlertFlashing(false);
             setElapsedSeconds(0);
             setTimerSidebarCollapsed(window.innerWidth < 1024);
-            setActionBarCollapsed(false);
+            setActionBarCollapsed(window.innerWidth < 768);
             setTelestrokeNote(getDefaultTelestrokeNote());
             setEditableTemplate(defaultTelestrokeTemplate);
             setSearchQuery('');
@@ -12971,7 +12971,7 @@ Clinician Name`;
             setShiftPatients([]);
             setCurrentPatientId(null);
             setAutoSyncCalculators(true);
-            setActionBarCollapsed(false);
+            setActionBarCollapsed(window.innerWidth < 768);
             decisionStateRef.current = { tnkRecommended: false, evtRecommended: false, transferAccepted: false, tnkContraindicationReviewed: false, tnkConsentDiscussed: false, tnkAdminTime: null };
 
             const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',

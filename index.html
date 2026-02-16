@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="tailwind.css?v=5.14.2">
+    <link rel="stylesheet" href="tailwind.css?v=5.14.3">
     <style>
         :root {
             --app-bg: #f8fafc;
@@ -455,7 +455,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = 'v5.14.2'; // Increment this with each deployment
+            const APP_VERSION = 'v5.14.3'; // Increment this with each deployment
             const STORAGE_PREFIX = 'strokeApp:';
             const APP_DATA_KEY = 'stroke.appData.v2';
             const LEGACY_KEYS = [
@@ -629,6 +629,6 @@
             return false;
         };
     </script>
-    <script src="app.js?v=5.14.2" defer></script>
+    <script src="app.js?v=5.14.3" defer></script>
 </body>
 </html>
