@@ -898,8 +898,8 @@ Clinician Name`;
             callingSiteOther: '',
             alias: '',
             chiefComplaint: '',
-            lkwDate: new Date().toISOString().split('T')[0],
-            lkwTime: new Date().toTimeString().slice(0, 5),
+            lkwDate: '',
+            lkwTime: '',
             lkwUnknown: false,
             discoveryDate: '',
             discoveryTime: '',
@@ -1629,7 +1629,7 @@ Clinician Name`;
               const parsed = new Date(storedLkwTime);
               if (!Number.isNaN(parsed.getTime())) return parsed;
             }
-            return new Date();
+            return null;
           });
 
           // Thrombolysis window alert state
@@ -7490,7 +7490,7 @@ Clinician Name`;
             setPatientData({});
             setNihssScore(0);
             setAspectsScore(10);
-            setLkwTime(new Date());
+            setLkwTime(null);
             setStrokeCodeForm(getDefaultStrokeCodeForm());
             setAspectsRegionState(getDefaultAspectsRegionState());
             setPcAspectsRegions(getDefaultPcAspectsRegions());
@@ -12919,7 +12919,7 @@ Clinician Name`;
             setPatientData({});
             setNihssScore(0);
             setAspectsScore(10);
-            setLkwTime(new Date());
+            setLkwTime(null);
             setStrokeCodeForm(getDefaultStrokeCodeForm());
             setAspectsRegionState(getDefaultAspectsRegionState());
             setPcAspectsRegions(getDefaultPcAspectsRegions());
@@ -14912,7 +14912,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         readinessPercent,
                         nextField
                       } = encounterReadiness;
-                      return missing.length > 0 && missing.length < trackedFields.length ? (
+                      return missing.length > 0 ? (
                         <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-sm space-y-2">
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <span className="text-xs font-semibold uppercase tracking-wide text-amber-800">
