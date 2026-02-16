@@ -1682,6 +1682,7 @@ Clinician Name`;
             return window.innerWidth < 768;
           });
           const [quickLinksCollapsed, setQuickLinksCollapsed] = useState(false);
+          const [callingSiteCollapsed, setCallingSiteCollapsed] = useState(false);
 
           // ============================================
           // CONSULTATION TYPE: Telephone, Video Telestroke
@@ -1716,6 +1717,7 @@ Clinician Name`;
           const lastAlertPlayedRef = useRef(null);
           const confirmResolveRef = useRef(null);
           const quickLinksAutoCollapsedRef = useRef(false);
+          const callingSiteAutoCollapsedRef = useRef(false);
           const showConfirm = React.useCallback((config) => {
             return new Promise((resolve) => {
               confirmResolveRef.current = resolve;
@@ -1959,6 +1961,17 @@ Clinician Name`;
               quickLinksAutoCollapsedRef.current = false;
             }
           }, [telestrokeNote.age, telestrokeNote.diagnosis, nihssScore, lkwTime]);
+
+          useEffect(() => {
+            const hasCallingSite = Boolean(telestrokeNote.callingSite);
+            if (hasCallingSite && !callingSiteAutoCollapsedRef.current) {
+              setCallingSiteCollapsed(true);
+              callingSiteAutoCollapsedRef.current = true;
+            } else if (!hasCallingSite) {
+              setCallingSiteCollapsed(false);
+              callingSiteAutoCollapsedRef.current = false;
+            }
+          }, [telestrokeNote.callingSite]);
 
           const patientContextValue = useMemo(() => ({
             age: telestrokeNote.age,
@@ -15239,33 +15252,54 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Calling Site Dropdown - Shared for all consult types */}
                     {(
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <label htmlFor="input-calling-site" className="block text-sm font-medium text-blue-900 mb-1">
-                        <i aria-hidden="true" data-lucide="map-pin" className="w-4 h-4 inline mr-1"></i>
-                        Calling Site
-                      </label>
-                      <select
-                        id="input-calling-site"
-                        value={telestrokeNote.callingSite}
-                        onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, callingSite: v, callingSiteOther: v === 'Other' ? prev.callingSiteOther : ''})); }}
-                        className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="">-- Select Site --</option>
-                        {CALLING_SITES.map(g => (
-                          <optgroup key={g.group} label={g.group}>
-                            {g.sites.map(s => <option key={s} value={s}>{s}</option>)}
-                          </optgroup>
-                        ))}
-                        <option value="Other">Other (specify below)</option>
-                      </select>
-                      {telestrokeNote.callingSite === 'Other' && (
-                        <input
-                          type="text"
-                          aria-label="Other calling site name"
-                          value={telestrokeNote.callingSiteOther}
-                          onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, callingSiteOther: v})); }}
-                          className="w-full mt-2 px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                          placeholder="Enter site name..."
-                        />
+                      <div className="flex items-center justify-between mb-1">
+                        <label htmlFor="input-calling-site" className="block text-sm font-medium text-blue-900">
+                          <i aria-hidden="true" data-lucide="map-pin" className="w-4 h-4 inline mr-1"></i>
+                          Calling Site
+                        </label>
+                        {telestrokeNote.callingSite && (
+                          <button
+                            type="button"
+                            onClick={() => setCallingSiteCollapsed((prev) => !prev)}
+                            className="px-2.5 py-1 rounded-full border border-blue-300 bg-white hover:bg-blue-100 text-[11px] font-semibold text-blue-700"
+                          >
+                            {callingSiteCollapsed ? 'Edit' : 'Hide'}
+                          </button>
+                        )}
+                      </div>
+                      {callingSiteCollapsed && telestrokeNote.callingSite ? (
+                        <p className="text-sm text-blue-800">
+                          {telestrokeNote.callingSite === 'Other'
+                            ? (telestrokeNote.callingSiteOther || 'Other')
+                            : telestrokeNote.callingSite}
+                        </p>
+                      ) : (
+                        <>
+                          <select
+                            id="input-calling-site"
+                            value={telestrokeNote.callingSite}
+                            onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, callingSite: v, callingSiteOther: v === 'Other' ? prev.callingSiteOther : ''})); }}
+                            className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          >
+                            <option value="">-- Select Site --</option>
+                            {CALLING_SITES.map(g => (
+                              <optgroup key={g.group} label={g.group}>
+                                {g.sites.map(s => <option key={s} value={s}>{s}</option>)}
+                              </optgroup>
+                            ))}
+                            <option value="Other">Other (specify below)</option>
+                          </select>
+                          {telestrokeNote.callingSite === 'Other' && (
+                            <input
+                              type="text"
+                              aria-label="Other calling site name"
+                              value={telestrokeNote.callingSiteOther}
+                              onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, callingSiteOther: v})); }}
+                              className="w-full mt-2 px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                              placeholder="Enter site name..."
+                            />
+                          )}
+                        </>
                       )}
                     </div>
                     )}
