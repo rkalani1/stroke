@@ -12271,15 +12271,22 @@ Clinician Name`;
 
           const encounterReadiness = useMemo(() => {
             const lkwReference = getReferenceTime();
+            const hasDocumentedNihss = (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '') ||
+              nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '');
             const trackedFields = [
               { name: 'Age', value: telestrokeNote.age },
               { name: 'LKW', value: lkwReference?.time || telestrokeNote.lkwUnknown || null },
-              { name: 'NIHSS', value: telestrokeNote.nihss || nihssScore },
+              { name: 'NIHSS', value: hasDocumentedNihss ? (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '' ? telestrokeNote.nihss : nihssScore) : null },
               { name: 'CT Head', value: telestrokeNote.ctResults },
               { name: 'Diagnosis', value: telestrokeNote.diagnosis },
               { name: 'Disposition', value: telestrokeNote.disposition }
             ];
-            const missing = trackedFields.filter((field) => !field.value);
+            const isFieldPresent = (value) => {
+              if (value === null || value === undefined) return false;
+              if (typeof value === 'string') return value.trim() !== '';
+              return true;
+            };
+            const missing = trackedFields.filter((field) => !isFieldPresent(field.value));
             const required = missing.filter((field) => ['Age', 'LKW', 'Diagnosis'].includes(field.name));
             const recommended = missing.filter((field) => ['NIHSS', 'CT Head', 'Disposition'].includes(field.name));
             const completedCount = trackedFields.length - missing.length;
@@ -12304,7 +12311,8 @@ Clinician Name`;
             telestrokeNote.discoveryDate,
             telestrokeNote.discoveryTime,
             lkwTime,
-            nihssScore
+            nihssScore,
+            patientData
           ]);
 
           useEffect(() => {
@@ -15226,10 +15234,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       const lkwDisplay = snapshotReference
                         ? snapshotReference.time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
                         : (telestrokeNote.lkwUnknown ? 'Unknown' : '--');
+                      const snapshotHasNihssValue = (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '') ||
+                        nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '');
+                      const snapshotNihssValue = snapshotHasNihssValue
+                        ? (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '' ? String(telestrokeNote.nihss) : String(nihssScore))
+                        : '--';
                       const snapshotItems = [
                         { label: lkwSnapshotLabel, value: lkwDisplay, field: 'LKW' },
                         { label: 'Age', value: telestrokeNote.age || '--', field: 'Age' },
-                        { label: 'NIHSS', value: telestrokeNote.nihss || (nihssScore > 0 ? String(nihssScore) : '--'), field: 'NIHSS' },
+                        { label: 'NIHSS', value: snapshotNihssValue, field: 'NIHSS' },
                         { label: 'CT Head', value: telestrokeNote.ctResults ? 'Documented' : '--', field: 'CT Head' },
                         { label: 'Diagnosis', value: telestrokeNote.diagnosis || '--', field: 'Diagnosis' },
                         { label: 'Disposition', value: telestrokeNote.disposition || '--', field: 'Disposition' }
