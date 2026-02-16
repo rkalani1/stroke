@@ -7377,6 +7377,13 @@ Clinician Name`;
                 return;
               }
 
+              // Ctrl/Cmd+Shift+N — jump to next required/recommended encounter field
+              if (primary && e.shiftKey && !e.altKey && lowerKey === 'n') {
+                e.preventDefault();
+                jumpToNextRequiredEncounterField();
+                return;
+              }
+
               // Ctrl/Cmd+Shift+K — toggle calculators
               if (primary && e.shiftKey && !e.altKey && lowerKey === 'k') {
                 e.preventDefault();
@@ -7440,7 +7447,7 @@ Clinician Name`;
             };
             document.addEventListener('keydown', handleKeyDown);
             return () => document.removeEventListener('keydown', handleKeyDown);
-          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode, settingsMenuOpen, searchOpen, showKeyboardHelp, showChangelog]);
+          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode, settingsMenuOpen, searchOpen, showKeyboardHelp, showChangelog, encounterReadiness.nextField]);
 
 
           // Persist shift patients to localStorage
@@ -11977,6 +11984,11 @@ Clinician Name`;
             });
           };
 
+          const jumpToNextRequiredEncounterField = () => {
+            if (!encounterReadiness.nextField) return;
+            jumpToEncounterField(encounterReadiness.nextField);
+          };
+
           // Get guideline recommendations matching current patient data
           const getContextualRecommendations = () => {
             const timeFrom = calculateTimeFromLKW();
@@ -14273,11 +14285,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           } else if (e.key === 'ArrowUp') {
                             e.preventDefault();
                             setSearchActiveIndex(prev => (prev <= 0 ? total - 1 : prev - 1));
-                          } else if (e.key === 'Enter' && searchActiveIndex >= 0 && searchActiveIndex < total) {
+                          } else if (e.key === 'Enter') {
                             e.preventDefault();
-                            searchResults[searchActiveIndex].action();
-                            setSearchOpen(false);
-                            setSearchQuery('');
+                            const targetIndex = searchActiveIndex >= 0 && searchActiveIndex < total ? searchActiveIndex : 0;
+                            const selected = searchResults[targetIndex];
+                            if (selected && typeof selected.action === 'function') {
+                              selected.action();
+                              setSearchOpen(false);
+                              setSearchQuery('');
+                              setSearchActiveIndex(-1);
+                            }
                           }
                         }}
                         role="combobox"
@@ -31346,6 +31363,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       { keys: 'Ctrl/Cmd + 4', action: 'Settings tab' },
                       { keys: '1 / 2 / 3 / 4', action: 'Encounter phase: Triage / Decision / Management / Documentation' },
                       { keys: 'Ctrl/Cmd + Shift + C', action: 'Copy consult note' },
+                      { keys: 'Ctrl/Cmd + Shift + N', action: 'Jump to next required field' },
                       { keys: 'Ctrl/Cmd + K', action: 'Open search' },
                       { keys: 'Ctrl/Cmd + Shift + K', action: 'Toggle calculators' },
                       { keys: '/', action: 'Focus search' },
