@@ -15294,6 +15294,31 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   NIHSS 0
                                 </button>
                               )}
+                              {nextField === 'Disposition' && !telestrokeNote.disposition && (
+                                <>
+                                  <button
+                                    type="button"
+                                    onClick={() => setTelestrokeNote((prev) => ({ ...prev, disposition: 'Admit to Stroke Unit' }))}
+                                    className="px-2 py-0.5 rounded-full border border-emerald-300 bg-white hover:bg-emerald-100 text-emerald-700 text-xs font-semibold"
+                                  >
+                                    Dispo: Stroke Unit
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setTelestrokeNote((prev) => ({ ...prev, disposition: 'Admit to Neuro ICU' }))}
+                                    className="px-2 py-0.5 rounded-full border border-blue-300 bg-white hover:bg-blue-100 text-blue-700 text-xs font-semibold"
+                                  >
+                                    Dispo: Neuro ICU
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setTelestrokeNote((prev) => ({ ...prev, disposition: 'Transfer to CSC' }))}
+                                    className="px-2 py-0.5 rounded-full border border-purple-300 bg-white hover:bg-purple-100 text-purple-700 text-xs font-semibold"
+                                  >
+                                    Dispo: Transfer
+                                  </button>
+                                </>
+                              )}
                             </div>
                           </div>
                           {showReadinessDetails && (
