@@ -1686,6 +1686,7 @@ Clinician Name`;
           const [lkwCardCollapsed, setLkwCardCollapsed] = useState(false);
           const [readinessCardCollapsed, setReadinessCardCollapsed] = useState(false);
           const [snapshotShowAll, setSnapshotShowAll] = useState(false);
+          const [inputEntryFocused, setInputEntryFocused] = useState(false);
 
           // ============================================
           // CONSULTATION TYPE: Telephone, Video Telestroke
@@ -1728,6 +1729,29 @@ Clinician Name`;
               confirmResolveRef.current = resolve;
               setConfirmConfig(config);
             });
+          }, []);
+
+          useEffect(() => {
+            const isEditableTarget = (target) => {
+              if (!target || !(target instanceof HTMLElement)) return false;
+              if (target.isContentEditable) return true;
+              const tagName = target.tagName.toLowerCase();
+              if (tagName === 'textarea' || tagName === 'select') return true;
+              if (tagName !== 'input') return false;
+              const inputType = (target.getAttribute('type') || 'text').toLowerCase();
+              return !['button', 'checkbox', 'radio', 'submit', 'reset', 'file'].includes(inputType);
+            };
+            const syncFocusState = () => setInputEntryFocused(isEditableTarget(document.activeElement));
+            const onFocusIn = () => syncFocusState();
+            const onFocusOut = () => window.setTimeout(syncFocusState, 0);
+
+            document.addEventListener('focusin', onFocusIn);
+            document.addEventListener('focusout', onFocusOut);
+            syncFocusState();
+            return () => {
+              document.removeEventListener('focusin', onFocusIn);
+              document.removeEventListener('focusout', onFocusOut);
+            };
           }, []);
           const handleConfirmClose = React.useCallback((result) => {
             if (confirmResolveRef.current) {
@@ -14232,7 +14256,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           }, { items: [], seen: new Set() }).items;
           const ttlDisplayHours = appConfig.ttlHoursOverride || DEFAULT_TTL_HOURS;
           const showDocumentActions = true;
-          const showEncounterActionBar = activeTab === 'encounter' && !calcDrawerOpen && (telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis);
+          const isNarrowViewport = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
+          const hideActionBarForMobileInput = isNarrowViewport && inputEntryFocused;
+          const showEncounterActionBar = activeTab === 'encounter' && !calcDrawerOpen && !hideActionBarForMobileInput && (telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis);
           const hasLkwSummaryValue = Boolean(lkwTime || telestrokeNote.lkwUnknown || (telestrokeNote.lkwDate && telestrokeNote.lkwTime));
           const lkwSummaryLabel = lkwTime
             ? `${lkwTime.toLocaleDateString('en-US')} ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
@@ -31506,7 +31532,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
             {/* Sticky Action Bar - single encounter workflow rail */}
             {showEncounterActionBar && (
-              <div className="fixed inset-x-0 bottom-0 z-40 no-print">
+              <div id="action-bar" className="fixed inset-x-0 bottom-0 z-40 no-print">
                 <div className="mx-auto max-w-7xl px-2 sm:px-4 pb-2 sm:pb-3">
                   <div className="bg-white/95 backdrop-blur border border-slate-200 shadow-lg rounded-xl px-3 py-2 sm:px-4 sm:py-3">
                     <div className="flex items-center justify-between gap-2">
