@@ -12316,13 +12316,15 @@ Clinician Name`;
           ]);
 
           useEffect(() => {
+            const hasDocumentedNihss = (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '') ||
+              nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '');
             const hasReadinessContext = Boolean(
               telestrokeNote.age ||
               telestrokeNote.diagnosis ||
               telestrokeNote.ctResults ||
               telestrokeNote.disposition ||
               lkwTime ||
-              nihssScore > 0
+              hasDocumentedNihss
             );
             const requiredComplete = encounterReadiness.required.length === 0;
             if (hasReadinessContext && requiredComplete && !readinessAutoCollapsedRef.current) {
@@ -12339,7 +12341,9 @@ Clinician Name`;
             telestrokeNote.ctResults,
             telestrokeNote.disposition,
             lkwTime,
-            nihssScore
+            nihssScore,
+            patientData,
+            telestrokeNote.nihss
           ]);
 
           const QUICK_SEARCH_COMMANDS = [
