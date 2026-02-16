@@ -15234,13 +15234,28 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </button>
                               )}
                               {nextField === 'LKW' && !lkwTime && !telestrokeNote.lkwUnknown && (
-                                <button
-                                  type="button"
-                                  onClick={() => setLkwTime(new Date())}
-                                  className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-800 text-xs font-semibold"
-                                >
-                                  Set LKW Now
-                                </button>
+                                <>
+                                  <button
+                                    type="button"
+                                    onClick={() => setLkwTime(new Date())}
+                                    className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-800 text-xs font-semibold"
+                                  >
+                                    Set LKW Now
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setTelestrokeNote((prev) => ({
+                                      ...prev,
+                                      lkwUnknown: true,
+                                      wakeUpStrokeWorkflow: { ...(prev.wakeUpStrokeWorkflow || {}), isWakeUpStroke: true },
+                                      discoveryDate: prev.discoveryDate || new Date().toISOString().split('T')[0],
+                                      discoveryTime: prev.discoveryTime || new Date().toTimeString().slice(0, 5)
+                                    }))}
+                                    className="px-2 py-0.5 rounded-full border border-purple-300 bg-white hover:bg-purple-100 text-purple-700 text-xs font-semibold"
+                                  >
+                                    Unknown LKW
+                                  </button>
+                                </>
                               )}
                               {nextField === 'Diagnosis' && !telestrokeNote.diagnosis && (
                                 <>
@@ -15386,13 +15401,28 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                               <div className="flex items-center gap-2">
                                 {nextSnapshotItem?.field === 'LKW' && !lkwTime && !telestrokeNote.lkwUnknown && (
-                                  <button
-                                    type="button"
-                                    onClick={() => setLkwTime(new Date())}
-                                    className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-800 text-xs font-semibold"
-                                  >
-                                    Set LKW Now
-                                  </button>
+                                  <>
+                                    <button
+                                      type="button"
+                                      onClick={() => setLkwTime(new Date())}
+                                      className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-800 text-xs font-semibold"
+                                    >
+                                      Set LKW Now
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => setTelestrokeNote((prev) => ({
+                                        ...prev,
+                                        lkwUnknown: true,
+                                        wakeUpStrokeWorkflow: { ...(prev.wakeUpStrokeWorkflow || {}), isWakeUpStroke: true },
+                                        discoveryDate: prev.discoveryDate || new Date().toISOString().split('T')[0],
+                                        discoveryTime: prev.discoveryTime || new Date().toTimeString().slice(0, 5)
+                                      }))}
+                                      className="px-2 py-0.5 rounded-full border border-purple-300 bg-white hover:bg-purple-100 text-purple-700 text-xs font-semibold"
+                                    >
+                                      Unknown LKW
+                                    </button>
+                                  </>
                                 )}
                                 {nextSnapshotItem && (
                                   <button
