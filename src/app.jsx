@@ -15159,6 +15159,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <>
                               <button type="button" onClick={() => { navigateTo('encounter'); scrollToSection('phase-decision'); }} className="px-2.5 py-1.5 rounded border border-orange-200 bg-orange-50 text-orange-800 text-xs font-semibold hover:bg-orange-100">Go to Decision</button>
                               <button type="button" onClick={() => { navigateTo('encounter'); scrollToSection('recommendations-section'); }} className="px-2.5 py-1.5 rounded border border-blue-200 bg-blue-50 text-blue-800 text-xs font-semibold hover:bg-blue-100">Go to Documentation</button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const note = generateTelestrokeNote();
+                                  copyToClipboard(note, 'Consult Note');
+                                }}
+                                className="px-2.5 py-1.5 rounded border border-emerald-300 bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700"
+                              >
+                                Copy Consult Note
+                              </button>
                             </>
                           ) : (
                             <button
