@@ -1681,7 +1681,7 @@ Clinician Name`;
             if (saved !== null && saved !== undefined) return saved === true;
             return window.innerWidth < 768;
           });
-          const [quickLinksCollapsed, setQuickLinksCollapsed] = useState(false);
+          const [quickLinksCollapsed, setQuickLinksCollapsed] = useState(() => window.innerWidth < 768);
           const [callingSiteCollapsed, setCallingSiteCollapsed] = useState(false);
           const [lkwCardCollapsed, setLkwCardCollapsed] = useState(false);
           const [readinessCardCollapsed, setReadinessCardCollapsed] = useState(false);
@@ -15122,7 +15122,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
                         {quickLinksCollapsed ? (
                           <p className="text-xs text-blue-700">
-                            Links hidden to reduce visual clutter while documenting. Use Show to expand.
+                            Links hidden to keep the dashboard compact. Use Show to expand.
                           </p>
                         ) : (
                           <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
