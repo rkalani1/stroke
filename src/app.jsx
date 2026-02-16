@@ -12278,6 +12278,7 @@ Clinician Name`;
           const performSearch = (query) => {
             if (!query || query.length < 2) {
               setSearchResults([]);
+              setSearchActiveIndex(-1);
               return;
             }
 
@@ -12782,7 +12783,9 @@ Clinician Name`;
                   dedupedResults.push(result);
                 }
               });
-            setSearchResults(dedupedResults.slice(0, 15));
+            const limitedResults = dedupedResults.slice(0, 15);
+            setSearchResults(limitedResults);
+            setSearchActiveIndex(limitedResults.length > 0 ? 0 : -1);
           };
 
           const CLEAR_UNDO_WINDOW_MS = 30000;
@@ -13654,7 +13657,6 @@ Clinician Name`;
           useEffect(() => {
             const timer = setTimeout(() => {
               performSearch(searchQuery);
-              setSearchActiveIndex(-1);
             }, 200);
             return () => clearTimeout(timer);
           }, [searchQuery]);
@@ -14292,6 +14294,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         onFocus={() => {
                           setSearchOpen(true);
                           setSearchContext('header');
+                          if (searchResults.length > 0 && searchActiveIndex < 0) {
+                            setSearchActiveIndex(0);
+                          }
                         }}
                         onKeyDown={(e) => {
                           if (e.key === 'Escape') {
