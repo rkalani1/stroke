@@ -1676,6 +1676,11 @@ Clinician Name`;
             if (saved !== null && saved !== undefined) return saved === true;
             return window.innerWidth < 1024; // collapsed by default on mobile/tablet
           });
+          const [actionBarCollapsed, setActionBarCollapsed] = useState(() => {
+            const saved = getKey('actionBarCollapsed', null);
+            if (saved !== null && saved !== undefined) return saved === true;
+            return false;
+          });
 
           // ============================================
           // CONSULTATION TYPE: Telephone, Video Telestroke
@@ -7400,6 +7405,13 @@ Clinician Name`;
                 return;
               }
 
+              // Ctrl/Cmd+Shift+J — collapse/expand workflow rail
+              if (primary && e.shiftKey && !e.altKey && lowerKey === 'j') {
+                e.preventDefault();
+                setActionBarCollapsed((prev) => !prev);
+                return;
+              }
+
               // Ctrl/Cmd + E — export PDF
               if (primary && !e.shiftKey && !e.altKey && lowerKey === 'e') {
                 e.preventDefault();
@@ -7517,6 +7529,7 @@ Clinician Name`;
             setAlertFlashing(false);
             setElapsedSeconds(0);
             setTimerSidebarCollapsed(window.innerWidth < 1024);
+            setActionBarCollapsed(false);
             setTelestrokeNote(getDefaultTelestrokeNote());
             setEditableTemplate(defaultTelestrokeTemplate);
             setSearchQuery('');
@@ -12958,6 +12971,7 @@ Clinician Name`;
             setShiftPatients([]);
             setCurrentPatientId(null);
             setAutoSyncCalculators(true);
+            setActionBarCollapsed(false);
             decisionStateRef.current = { tnkRecommended: false, evtRecommended: false, transferAccepted: false, tnkContraindicationReviewed: false, tnkConsentDiscussed: false, tnkAdminTime: null };
 
             const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',
@@ -12969,7 +12983,7 @@ Clinician Name`;
                                   'ichVolumeParams', 'weightUnit', 'trialEligibility', 'encounterPhase', 'noteTemplate',
                                   'telestrokeTemplate', 'shiftPatients', 'currentPatientId',
                                   'autoSyncCalculators', 'activeTab',
-                                  'thrombolysisAlertsMuted', 'encounterHistory'];
+                                  'thrombolysisAlertsMuted', 'encounterHistory', 'actionBarCollapsed'];
             keysToRemove.forEach((key) => removeKey(key));
 
             navigateTo('encounter');
@@ -13087,6 +13101,9 @@ Clinician Name`;
           useEffect(() => {
             setKey('timerSidebarCollapsed', timerSidebarCollapsed, { skipLastUpdated: true });
           }, [timerSidebarCollapsed]);
+          useEffect(() => {
+            setKey('actionBarCollapsed', actionBarCollapsed, { skipLastUpdated: true });
+          }, [actionBarCollapsed]);
 
 
 
@@ -14014,7 +14031,7 @@ Clinician Name`;
             if (isMounted) {
               requestAnimationFrame(() => createIcons({ icons }));
             }
-          }, [activeTab, isMounted, managementSubTab, encounterPhase, showKeyboardHelp, showChangelog, settingsMenuOpen, searchOpen, calcDrawerOpen, protocolModal, confirmConfig]);
+          }, [activeTab, isMounted, managementSubTab, encounterPhase, showKeyboardHelp, showChangelog, settingsMenuOpen, searchOpen, calcDrawerOpen, protocolModal, confirmConfig, actionBarCollapsed]);
 
           // Documentation generation functions
           const generateHPI = () => {
@@ -14141,6 +14158,36 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const ttlDisplayHours = appConfig.ttlHoursOverride || DEFAULT_TTL_HOURS;
           const showDocumentActions = true;
           const showEncounterActionBar = activeTab === 'encounter' && !calcDrawerOpen && (telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis);
+          const diagnosisCategory = telestrokeNote.diagnosisCategory || getPathwayForDiagnosis(telestrokeNote.diagnosis || '');
+          const nonIschemicPathway = ['ich', 'sah', 'tia', 'cvt'].includes(diagnosisCategory);
+          const hasWeightForDose = telestrokeNote.weight !== undefined && String(telestrokeNote.weight).trim() !== '';
+          const tnkDoseComplete = nonIschemicPathway || !telestrokeNote.tnkRecommended || hasWeightForDose;
+          const contraindicationsComplete = nonIschemicPathway || !!telestrokeNote.tnkContraindicationReviewed;
+          const noteCopiedRecently = ['Consult Note', 'encounter-note', 'smart-note-encounter', 'telephone-note'].includes(copiedText);
+          const workflowRailSteps = [
+            { id: 'contra', label: 'Check contraindications', done: contraindicationsComplete },
+            { id: 'dose', label: 'Calculate TNK dose', done: tnkDoseComplete },
+            { id: 'note', label: 'Copy consult note', done: noteCopiedRecently }
+          ];
+          const workflowRailCompletedCount = workflowRailSteps.filter((step) => step.done).length;
+          const workflowRailNextStep = workflowRailSteps.find((step) => !step.done) || null;
+          const workflowRailProgressLabel = `${workflowRailCompletedCount}/${workflowRailSteps.length} complete`;
+          const workflowRailPrimary = encounterReadiness.nextField
+            ? {
+                id: 'next-field',
+                label: `Fill ${encounterReadiness.nextField}`,
+                action: () => jumpToEncounterField(encounterReadiness.nextField)
+              }
+            : workflowRailNextStep
+              ? (workflowRailNextStep.id === 'contra'
+                ? { id: 'contra', label: 'Check contraindications', action: () => scrollToSection('treatment-decision') }
+                : workflowRailNextStep.id === 'dose'
+                  ? { id: 'dose', label: 'Calculate TNK dose', action: () => scrollToSection('treatment-decision') }
+                  : { id: 'note', label: 'Copy consult note', action: () => { const note = generateTelestrokeNote(); copyToClipboard(note, 'Consult Note'); } })
+              : { id: 'complete', label: 'Review documentation', action: () => scrollToSection('recommendations-section') };
+          const workflowRailHint = encounterReadiness.nextField
+            ? `Next required field: ${encounterReadiness.nextField}`
+            : (workflowRailNextStep ? `Next step: ${workflowRailNextStep.label}` : 'Workflow rail complete');
           const todayDate = new Date().toISOString().slice(0, 10);
           const hasLegacyKeys = LEGACY_KEYS.some((key) => {
             try {
@@ -31259,25 +31306,51 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               <div className="fixed inset-x-0 bottom-0 z-40 no-print">
                 <div className="mx-auto max-w-7xl px-2 sm:px-4 pb-2 sm:pb-3">
                   <div className="bg-white/95 backdrop-blur border border-slate-200 shadow-lg rounded-xl px-3 py-2 sm:px-4 sm:py-3">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                      <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                        <i aria-hidden="true" data-lucide="list-checks" className="w-3.5 h-3.5"></i>
-                        Next Steps
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="min-w-0 flex items-center gap-2">
+                        <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                          <i aria-hidden="true" data-lucide="list-checks" className="w-3.5 h-3.5"></i>
+                          Workflow Rail
+                        </span>
+                        <span className="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-[11px] font-semibold text-slate-600 whitespace-nowrap">
+                          {workflowRailProgressLabel}
+                        </span>
                       </div>
-                      <div className="flex flex-wrap items-center gap-2">
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={workflowRailPrimary.action}
+                          className="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 whitespace-nowrap"
+                        >
+                          {workflowRailPrimary.label}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setActionBarCollapsed((prev) => !prev)}
+                          className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 min-h-[32px] min-w-[32px] flex items-center justify-center"
+                          aria-label={actionBarCollapsed ? 'Expand workflow rail' : 'Collapse workflow rail'}
+                          title={actionBarCollapsed ? 'Expand workflow rail' : 'Collapse workflow rail'}
+                        >
+                          <i aria-hidden="true" data-lucide={actionBarCollapsed ? 'chevron-up' : 'chevron-down'} className="w-4 h-4"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-1">{workflowRailHint}</p>
+                    {!actionBarCollapsed && (
+                      <div className="flex flex-wrap items-center gap-2 mt-2">
                         <button
                           type="button"
                           onClick={() => scrollToSection('treatment-decision')}
                           className="px-3 py-2 rounded-lg text-xs font-semibold border border-red-200 bg-red-50 text-red-700 hover:bg-red-100"
                         >
-                          1. Check Contraindications
+                          1. {contraindicationsComplete ? 'Contraindications Checked' : 'Check Contraindications'}
                         </button>
                         <button
                           type="button"
                           onClick={() => scrollToSection('treatment-decision')}
                           className="px-3 py-2 rounded-lg text-xs font-semibold border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100"
                         >
-                          2. Calculate TNK Dose
+                          2. {tnkDoseComplete ? 'TNK Dose Ready' : 'Calculate TNK Dose'}
                         </button>
                         <button
                           type="button"
@@ -31287,10 +31360,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           }}
                           className="px-3 py-2 rounded-lg text-xs font-semibold border border-emerald-300 bg-emerald-600 text-white hover:bg-emerald-700"
                         >
-                          3. Copy Consult Note
+                          3. {noteCopiedRecently ? 'Consult Note Copied' : 'Copy Consult Note'}
                         </button>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -31454,6 +31527,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       { keys: 'Ctrl/Cmd + Shift + N', action: 'Jump to next required field' },
                       { keys: 'Ctrl/Cmd + K', action: 'Open search' },
                       { keys: 'Ctrl/Cmd + Shift + K', action: 'Toggle calculators' },
+                      { keys: 'Ctrl/Cmd + Shift + J', action: 'Collapse/expand workflow rail' },
                       { keys: '/', action: 'Focus search' },
                       { keys: 'Ctrl/Cmd + Shift + F', action: 'Toggle focus mode' },
                       { keys: 'Esc', action: 'Close modal / dialog' },
