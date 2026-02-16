@@ -15505,130 +15505,115 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       const visibleSnapshotItems = hasMixedCompletion && !snapshotShowAll
                         ? snapshotItems.filter((item) => item.value === '--')
                         : snapshotItems;
+                      if (allMissing) return null;
                       return (
                         <div id="case-snapshot-card" className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                          {allMissing ? (
-                            <div className="flex flex-wrap items-center justify-between gap-2">
-                              <span className="text-xs text-slate-500">
-                                <span className="font-semibold uppercase tracking-wide text-slate-600">Case Snapshot:</span>{' '}
-                                No core fields entered yet.
+                          <div className="flex flex-wrap items-start justify-between gap-2">
+                            <div className="flex flex-wrap items-center gap-1.5 min-w-0">
+                              <span className="text-[11px] uppercase tracking-wide font-semibold text-slate-500 mr-1">
+                                Case Snapshot:{' '}
+                                <span className="ml-1 text-slate-400 normal-case">{snapshotStatusLabel}</span>
                               </span>
-                              <button
-                                type="button"
-                                onClick={() => jumpToEncounterField('Age')}
-                                className="px-2 py-1 rounded-full border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold"
-                              >
-                                Start with Age
-                              </button>
-                            </div>
-                          ) : (
-                            <div className="flex flex-wrap items-start justify-between gap-2">
-                              <div className="flex flex-wrap items-center gap-1.5 min-w-0">
-                                <span className="text-[11px] uppercase tracking-wide font-semibold text-slate-500 mr-1">
-                                  Case Snapshot:{' '}
-                                  <span className="ml-1 text-slate-400 normal-case">{snapshotStatusLabel}</span>
-                                </span>
-                                {visibleSnapshotItems.map((item) => {
-                                  const isMissing = item.value === '--';
-                                  return (
-                                    <button
-                                      key={`snapshot-${item.label}`}
-                                      type="button"
-                                      onClick={() => jumpToEncounterField(item.field)}
-                                      className={`px-2 py-0.5 rounded-full border text-xs font-medium transition-colors ${
-                                        isMissing
-                                          ? 'border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100'
-                                          : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-100'
-                                      }`}
-                                    >
-                                      <span className="font-semibold">{item.label}:</span> {item.value}
-                                    </button>
-                                  );
-                                })}
-                              </div>
-                              <div className="flex items-center gap-2">
-                                {nextSnapshotItem?.field === 'LKW' && !lkwTime && !telestrokeNote.lkwUnknown && (
-                                  <>
-                                    <button
-                                      type="button"
-                                      onClick={() => setLkwTime(new Date())}
-                                      className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-800 text-xs font-semibold"
-                                    >
-                                      Set LKW Now
-                                    </button>
-                                    <button
-                                      type="button"
-                                      onClick={() => setTelestrokeNote((prev) => ({
-                                        ...prev,
-                                        lkwUnknown: true,
-                                        wakeUpStrokeWorkflow: { ...(prev.wakeUpStrokeWorkflow || {}), isWakeUpStroke: true },
-                                        discoveryDate: prev.discoveryDate || new Date().toISOString().split('T')[0],
-                                        discoveryTime: prev.discoveryTime || new Date().toTimeString().slice(0, 5)
-                                      }))}
-                                      className="px-2 py-0.5 rounded-full border border-purple-300 bg-white hover:bg-purple-100 text-purple-700 text-xs font-semibold"
-                                    >
-                                      Unknown LKW
-                                    </button>
-                                  </>
-                                )}
-                                {nextSnapshotItem?.field === 'Diagnosis' && !telestrokeNote.diagnosis && (
-                                  <>
-                                    <button
-                                      type="button"
-                                      onClick={() => applyDiagnosisSelection('Acute Ischemic Stroke')}
-                                      className="px-2 py-0.5 rounded-full border border-blue-300 bg-white hover:bg-blue-100 text-blue-700 text-xs font-semibold"
-                                    >
-                                      Dx: Ischemic
-                                    </button>
-                                    <button
-                                      type="button"
-                                      onClick={() => applyDiagnosisSelection('Intracerebral Hemorrhage (ICH)')}
-                                      className="px-2 py-0.5 rounded-full border border-red-300 bg-white hover:bg-red-100 text-red-700 text-xs font-semibold"
-                                    >
-                                      Dx: ICH
-                                    </button>
-                                    <button
-                                      type="button"
-                                      onClick={() => applyDiagnosisSelection('Subarachnoid Hemorrhage (SAH)')}
-                                      className="px-2 py-0.5 rounded-full border border-orange-300 bg-white hover:bg-orange-100 text-orange-700 text-xs font-semibold"
-                                    >
-                                      Dx: SAH
-                                    </button>
-                                  </>
-                                )}
-                                {nextSnapshotItem?.field === 'NIHSS' && !(
-                                  (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '') ||
-                                  nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '')
-                                ) && (
+                              {visibleSnapshotItems.map((item) => {
+                                const isMissing = item.value === '--';
+                                return (
                                   <button
+                                    key={`snapshot-${item.label}`}
                                     type="button"
-                                    onClick={applyNihssAllNormal}
-                                    className="px-2 py-0.5 rounded-full border border-blue-300 bg-white hover:bg-blue-100 text-blue-700 text-xs font-semibold"
+                                    onClick={() => jumpToEncounterField(item.field)}
+                                    className={`px-2 py-0.5 rounded-full border text-xs font-medium transition-colors ${
+                                      isMissing
+                                        ? 'border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100'
+                                        : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-100'
+                                    }`}
                                   >
-                                    NIHSS 0
+                                    <span className="font-semibold">{item.label}:</span> {item.value}
                                   </button>
-                                )}
-                                {nextSnapshotItem && (
+                                );
+                              })}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {nextSnapshotItem?.field === 'LKW' && !lkwTime && !telestrokeNote.lkwUnknown && (
+                                <>
                                   <button
                                     type="button"
-                                    onClick={() => jumpToEncounterField(nextSnapshotItem.field)}
+                                    onClick={() => setLkwTime(new Date())}
                                     className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-800 text-xs font-semibold"
                                   >
-                                    Next: {nextSnapshotItem.label}
+                                    Set LKW Now
                                   </button>
-                                )}
-                                {hasMixedCompletion && (
                                   <button
                                     type="button"
-                                    onClick={() => setSnapshotShowAll((prev) => !prev)}
-                                    className="px-2 py-0.5 rounded-full border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold"
+                                    onClick={() => setTelestrokeNote((prev) => ({
+                                      ...prev,
+                                      lkwUnknown: true,
+                                      wakeUpStrokeWorkflow: { ...(prev.wakeUpStrokeWorkflow || {}), isWakeUpStroke: true },
+                                      discoveryDate: prev.discoveryDate || new Date().toISOString().split('T')[0],
+                                      discoveryTime: prev.discoveryTime || new Date().toTimeString().slice(0, 5)
+                                    }))}
+                                    className="px-2 py-0.5 rounded-full border border-purple-300 bg-white hover:bg-purple-100 text-purple-700 text-xs font-semibold"
                                   >
-                                    {snapshotShowAll ? 'Show missing' : 'Show all'}
+                                    Unknown LKW
                                   </button>
-                                )}
-                              </div>
+                                </>
+                              )}
+                              {nextSnapshotItem?.field === 'Diagnosis' && !telestrokeNote.diagnosis && (
+                                <>
+                                  <button
+                                    type="button"
+                                    onClick={() => applyDiagnosisSelection('Acute Ischemic Stroke')}
+                                    className="px-2 py-0.5 rounded-full border border-blue-300 bg-white hover:bg-blue-100 text-blue-700 text-xs font-semibold"
+                                  >
+                                    Dx: Ischemic
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => applyDiagnosisSelection('Intracerebral Hemorrhage (ICH)')}
+                                    className="px-2 py-0.5 rounded-full border border-red-300 bg-white hover:bg-red-100 text-red-700 text-xs font-semibold"
+                                  >
+                                    Dx: ICH
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => applyDiagnosisSelection('Subarachnoid Hemorrhage (SAH)')}
+                                    className="px-2 py-0.5 rounded-full border border-orange-300 bg-white hover:bg-orange-100 text-orange-700 text-xs font-semibold"
+                                  >
+                                    Dx: SAH
+                                  </button>
+                                </>
+                              )}
+                              {nextSnapshotItem?.field === 'NIHSS' && !(
+                                (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '') ||
+                                nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '')
+                              ) && (
+                                <button
+                                  type="button"
+                                  onClick={applyNihssAllNormal}
+                                  className="px-2 py-0.5 rounded-full border border-blue-300 bg-white hover:bg-blue-100 text-blue-700 text-xs font-semibold"
+                                >
+                                  NIHSS 0
+                                </button>
+                              )}
+                              {nextSnapshotItem && (
+                                <button
+                                  type="button"
+                                  onClick={() => jumpToEncounterField(nextSnapshotItem.field)}
+                                  className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-800 text-xs font-semibold"
+                                >
+                                  Next: {nextSnapshotItem.label}
+                                </button>
+                              )}
+                              {hasMixedCompletion && (
+                                <button
+                                  type="button"
+                                  onClick={() => setSnapshotShowAll((prev) => !prev)}
+                                  className="px-2 py-0.5 rounded-full border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold"
+                                >
+                                  {snapshotShowAll ? 'Show missing' : 'Show all'}
+                                </button>
+                              )}
                             </div>
-                          )}
+                          </div>
                         </div>
                       );
                     })()}
