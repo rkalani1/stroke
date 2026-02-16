@@ -12169,12 +12169,50 @@ Clinician Name`;
             return filteredGuidelineLibrary.reduce((sum, guideline) => sum + guideline.recommendations.length, 0);
           }, [filteredGuidelineLibrary]);
 
+          const encounterReadiness = useMemo(() => {
+            const trackedFields = [
+              { name: 'Age', value: telestrokeNote.age },
+              { name: 'Sex', value: telestrokeNote.sex },
+              { name: 'LKW', value: lkwTime },
+              { name: 'NIHSS', value: telestrokeNote.nihss || nihssScore },
+              { name: 'CT Head', value: telestrokeNote.ctResults },
+              { name: 'Diagnosis', value: telestrokeNote.diagnosis },
+              { name: 'Disposition', value: telestrokeNote.disposition }
+            ];
+            const missing = trackedFields.filter((field) => !field.value);
+            const required = missing.filter((field) => ['Age', 'LKW', 'Diagnosis'].includes(field.name));
+            const recommended = missing.filter((field) => ['NIHSS', 'CT Head', 'Disposition'].includes(field.name));
+            const completedCount = trackedFields.length - missing.length;
+            const readinessPercent = Math.round((completedCount / trackedFields.length) * 100);
+            const nextField = (required[0] || recommended[0] || null)?.name || null;
+            return {
+              trackedFields,
+              missing,
+              required,
+              recommended,
+              completedCount,
+              readinessPercent,
+              nextField
+            };
+          }, [
+            telestrokeNote.age,
+            telestrokeNote.sex,
+            telestrokeNote.nihss,
+            telestrokeNote.ctResults,
+            telestrokeNote.diagnosis,
+            telestrokeNote.disposition,
+            lkwTime,
+            nihssScore
+          ]);
+
           const QUICK_SEARCH_COMMANDS = [
+            { value: 'next required', label: 'next required', hint: 'Jump to highest-priority missing field' },
             { value: 'dx ischemic', label: 'dx ischemic', hint: 'Set diagnosis and pathway to ischemic stroke' },
             { value: 'nihss 12', label: 'nihss 12', hint: 'Set NIHSS and jump to triage exam' },
             { value: 'wt 80', label: 'wt 80', hint: 'Set patient weight for thrombolysis dosing' },
             { value: 'lkw now', label: 'lkw now', hint: 'Set LKW to current time' },
             { value: 'tab trials', label: 'tab trials', hint: 'Jump directly to active clinical trials' },
+            { value: 'copy note', label: 'copy note', hint: 'Copy consult note to clipboard' },
             { value: 'nct05948566', label: 'nct05948566', hint: 'Open trial card directly by NCT' }
           ];
 
@@ -12232,6 +12270,17 @@ Clinician Name`;
             const scoreFor = (parts, boost = 0) => rankText(lowerQuery, parts) + boost;
 
             // Command-style shortcuts
+            const nextFieldCommand = lowerQuery.match(/^(?:next(?:\s+(?:required|field|step))?|required)$/i);
+            if (nextFieldCommand && encounterReadiness.nextField) {
+              const targetField = encounterReadiness.nextField;
+              results.push({
+                type: 'Command',
+                title: `Go to next missing field: ${targetField}`,
+                description: 'Jumps to the highest-priority incomplete field',
+                score: 995,
+                action: () => jumpToEncounterField(targetField)
+              });
+            }
             const nihssCommand = lowerQuery.match(/^(?:nihss|set nihss)\s+(\d{1,2})$/i);
             if (nihssCommand) {
               const parsed = Math.max(0, Math.min(42, parseInt(nihssCommand[1], 10)));
@@ -12417,6 +12466,70 @@ Clinician Name`;
                   navigateTo('encounter', { clearSearch: true });
                 }
               });
+            }
+            const copyNoteCommand = lowerQuery.match(/^(?:copy(?:\s+(?:consult|encounter))?\s+note|copy consult|copy consult note)$/i);
+            if (copyNoteCommand) {
+              results.push({
+                type: 'Command',
+                title: 'Copy consult note',
+                description: 'Generates and copies the current consult note',
+                score: 970,
+                action: () => {
+                  const note = generateTelestrokeNote();
+                  copyToClipboard(note, 'Consult Note');
+                  navigateTo('encounter', { clearSearch: true });
+                }
+              });
+            }
+            const recruitingOnlyCommand = lowerQuery.match(/^(?:recruiting only|trials recruiting|show recruiting trials)$/i);
+            if (recruitingOnlyCommand) {
+              results.push({
+                type: 'Command',
+                title: 'Show recruiting trials only',
+                description: 'Switches Trials to recruiting-only filter',
+                score: 968,
+                action: () => {
+                  setTrialsRecruitingOnly(true);
+                  navigateTo('library', { clearSearch: true, subTab: 'trials' });
+                }
+              });
+            }
+            const showAllTrialsCommand = lowerQuery.match(/^(?:show all trials|all trials)$/i);
+            if (showAllTrialsCommand) {
+              results.push({
+                type: 'Command',
+                title: 'Show all trials',
+                description: 'Clears recruiting-only trial filter',
+                score: 967,
+                action: () => {
+                  setTrialsRecruitingOnly(false);
+                  navigateTo('library', { clearSearch: true, subTab: 'trials' });
+                }
+              });
+            }
+            const openPathwayCommand = lowerQuery.match(/^(?:open pathway|pathway)$/i);
+            if (openPathwayCommand) {
+              const pathway = telestrokeNote.diagnosisCategory || getPathwayForDiagnosis(telestrokeNote.diagnosis || '');
+              const pathwaySubTab = ['ischemic', 'ich', 'sah', 'tia', 'cvt'].includes(pathway) ? pathway : null;
+              if (pathwaySubTab) {
+                const pathwayLabelMap = {
+                  ischemic: 'Ischemic pathway',
+                  ich: 'Hemorrhagic ICH pathway',
+                  sah: 'SAH pathway',
+                  tia: 'TIA prevention pathway',
+                  cvt: 'CVT pathway'
+                };
+                results.push({
+                  type: 'Command',
+                  title: `Open ${pathwayLabelMap[pathwaySubTab]}`,
+                  description: 'Jump to pathway-specific protocols in Library',
+                  score: 969,
+                  action: () => {
+                    navigateTo('library', { clearSearch: true, subTab: 'management' });
+                    setManagementSubTab(pathwaySubTab);
+                  }
+                });
+              }
             }
             if (lowerQuery === 'reversal' || lowerQuery === 'ich reversal') {
               results.push({
@@ -12616,8 +12729,18 @@ Clinician Name`;
               }
             });
 
-            results.sort((a, b) => (b.score || 0) - (a.score || 0));
-            setSearchResults(results.slice(0, 15));
+            const dedupedResults = [];
+            const seenResultKeys = new Set();
+            results
+              .sort((a, b) => (b.score || 0) - (a.score || 0))
+              .forEach((result) => {
+                const key = `${String(result.type || '').toLowerCase()}::${String(result.title || '').toLowerCase()}`;
+                if (!seenResultKeys.has(key)) {
+                  seenResultKeys.add(key);
+                  dedupedResults.push(result);
+                }
+              });
+            setSearchResults(dedupedResults.slice(0, 15));
           };
 
           const CLEAR_UNDO_WINDOW_MS = 30000;
@@ -14675,27 +14798,33 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* ===== MISSING FIELDS WARNING ===== */}
                     {(() => {
-                      const trackedFields = [
-                        { name: 'Age', value: telestrokeNote.age },
-                        { name: 'Sex', value: telestrokeNote.sex },
-                        { name: 'LKW', value: lkwTime },
-                        { name: 'NIHSS', value: telestrokeNote.nihss || nihssScore },
-                        { name: 'CT Head', value: telestrokeNote.ctResults },
-                        { name: 'Diagnosis', value: telestrokeNote.diagnosis },
-                        { name: 'Disposition', value: telestrokeNote.disposition }
-                      ];
-                      const missing = trackedFields.filter(f => !f.value);
-                      const completedCount = trackedFields.length - missing.length;
-                      const readinessPercent = Math.round((completedCount / trackedFields.length) * 100);
-                      const requiredFields = missing.filter(f => ['Age', 'LKW', 'Diagnosis'].includes(f.name));
-                      const recommendedFields = missing.filter(f => ['NIHSS', 'CT Head', 'Disposition'].includes(f.name));
+                      const {
+                        trackedFields,
+                        missing,
+                        required: requiredFields,
+                        recommended: recommendedFields,
+                        completedCount,
+                        readinessPercent,
+                        nextField
+                      } = encounterReadiness;
                       return missing.length > 0 && missing.length < trackedFields.length ? (
                         <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-sm space-y-2">
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <span className="text-xs font-semibold uppercase tracking-wide text-amber-800">
                               Case Readiness: {completedCount}/{trackedFields.length}
                             </span>
-                            <span className="text-xs text-amber-700">{readinessPercent}% complete</span>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-amber-700">{readinessPercent}% complete</span>
+                              {nextField && (
+                                <button
+                                  type="button"
+                                  onClick={() => jumpToEncounterField(nextField)}
+                                  className="px-2 py-0.5 rounded-full border border-amber-300 bg-white hover:bg-amber-100 text-amber-800 text-xs font-semibold"
+                                >
+                                  Next: {nextField}
+                                </button>
+                              )}
+                            </div>
                           </div>
                           <div className="h-1.5 w-full rounded-full bg-amber-100 overflow-hidden">
                             <div className="h-full bg-amber-500 transition-all" style={{ width: `${readinessPercent}%` }}></div>
