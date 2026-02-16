@@ -1683,6 +1683,7 @@ Clinician Name`;
           });
           const [quickLinksCollapsed, setQuickLinksCollapsed] = useState(false);
           const [callingSiteCollapsed, setCallingSiteCollapsed] = useState(false);
+          const [lkwCardCollapsed, setLkwCardCollapsed] = useState(false);
 
           // ============================================
           // CONSULTATION TYPE: Telephone, Video Telestroke
@@ -1718,6 +1719,7 @@ Clinician Name`;
           const confirmResolveRef = useRef(null);
           const quickLinksAutoCollapsedRef = useRef(false);
           const callingSiteAutoCollapsedRef = useRef(false);
+          const lkwAutoCollapsedRef = useRef(false);
           const showConfirm = React.useCallback((config) => {
             return new Promise((resolve) => {
               confirmResolveRef.current = resolve;
@@ -1972,6 +1974,19 @@ Clinician Name`;
               callingSiteAutoCollapsedRef.current = false;
             }
           }, [telestrokeNote.callingSite]);
+
+          useEffect(() => {
+            const hasLkwData = Boolean(
+              lkwTime || telestrokeNote.lkwUnknown || (telestrokeNote.lkwDate && telestrokeNote.lkwTime)
+            );
+            if (hasLkwData && !lkwAutoCollapsedRef.current) {
+              setLkwCardCollapsed(true);
+              lkwAutoCollapsedRef.current = true;
+            } else if (!hasLkwData) {
+              setLkwCardCollapsed(false);
+              lkwAutoCollapsedRef.current = false;
+            }
+          }, [lkwTime, telestrokeNote.lkwUnknown, telestrokeNote.lkwDate, telestrokeNote.lkwTime]);
 
           const patientContextValue = useMemo(() => ({
             age: telestrokeNote.age,
@@ -14184,6 +14199,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const ttlDisplayHours = appConfig.ttlHoursOverride || DEFAULT_TTL_HOURS;
           const showDocumentActions = true;
           const showEncounterActionBar = activeTab === 'encounter' && !calcDrawerOpen && (telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis);
+          const hasLkwSummaryValue = Boolean(lkwTime || telestrokeNote.lkwUnknown || (telestrokeNote.lkwDate && telestrokeNote.lkwTime));
+          const lkwSummaryLabel = lkwTime
+            ? `${lkwTime.toLocaleDateString('en-US')} ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
+            : (telestrokeNote.lkwUnknown ? 'Wake-up stroke / Unknown LKW' : 'Not entered');
           const diagnosisCategory = telestrokeNote.diagnosisCategory || getPathwayForDiagnosis(telestrokeNote.diagnosis || '');
           const nonIschemicPathway = ['ich', 'sah', 'tia', 'cvt'].includes(diagnosisCategory);
           const hasWeightForDose = telestrokeNote.weight !== undefined && String(telestrokeNote.weight).trim() !== '';
@@ -15312,18 +15331,35 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <i aria-hidden="true" data-lucide="clock" className="w-4 h-4 inline mr-1"></i>
                           Last Known Well Time *
                         </label>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const now = new Date();
-                            setLkwTime(now);
-                          }}
-                          className="text-xs font-semibold text-blue-700 hover:text-blue-900"
-                        >
-                          Use Now
-                        </button>
+                        <div className="flex items-center gap-2">
+                          {!lkwCardCollapsed && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const now = new Date();
+                                setLkwTime(now);
+                              }}
+                              className="text-xs font-semibold text-blue-700 hover:text-blue-900"
+                            >
+                              Use Now
+                            </button>
+                          )}
+                          {hasLkwSummaryValue && (
+                            <button
+                              type="button"
+                              onClick={() => setLkwCardCollapsed((prev) => !prev)}
+                              className="px-2.5 py-1 rounded-full border border-blue-300 bg-white hover:bg-blue-100 text-[11px] font-semibold text-blue-700"
+                            >
+                              {lkwCardCollapsed ? 'Edit' : 'Hide'}
+                            </button>
+                          )}
+                        </div>
                       </div>
 
+                      {lkwCardCollapsed ? (
+                        <p className="text-sm text-blue-800">{lkwSummaryLabel}</p>
+                      ) : (
+                        <>
                       {/* Separate Date and Time Inputs */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div className="min-w-0">
@@ -15658,6 +15694,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           )}
                         </div>
+                      )}
+                        </>
                       )}
                     </div>
                     )}
