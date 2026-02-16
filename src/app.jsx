@@ -1681,6 +1681,7 @@ Clinician Name`;
             if (saved !== null && saved !== undefined) return saved === true;
             return window.innerWidth < 768;
           });
+          const [quickLinksCollapsed, setQuickLinksCollapsed] = useState(false);
 
           // ============================================
           // CONSULTATION TYPE: Telephone, Video Telestroke
@@ -1714,6 +1715,7 @@ Clinician Name`;
           const alertFlashTimeoutRef = useRef(null);
           const lastAlertPlayedRef = useRef(null);
           const confirmResolveRef = useRef(null);
+          const quickLinksAutoCollapsedRef = useRef(false);
           const showConfirm = React.useCallback((config) => {
             return new Promise((resolve) => {
               confirmResolveRef.current = resolve;
@@ -1944,6 +1946,19 @@ Clinician Name`;
             discoveryTime: telestrokeNote.discoveryTime,
             now: currentTime
           });
+
+          useEffect(() => {
+            const hasCoreEncounterData = Boolean(
+              telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis || lkwTime
+            );
+            if (hasCoreEncounterData && !quickLinksAutoCollapsedRef.current) {
+              setQuickLinksCollapsed(true);
+              quickLinksAutoCollapsedRef.current = true;
+            } else if (!hasCoreEncounterData) {
+              setQuickLinksCollapsed(false);
+              quickLinksAutoCollapsedRef.current = false;
+            }
+          }, [telestrokeNote.age, telestrokeNote.diagnosis, nihssScore, lkwTime]);
 
           const patientContextValue = useMemo(() => ({
             age: telestrokeNote.age,
@@ -15185,26 +15200,39 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
                         <div className="flex items-center justify-between mb-3">
                           <h3 className="text-sm font-semibold text-blue-900 uppercase tracking-wide">Quick Links</h3>
+                          <button
+                            type="button"
+                            onClick={() => setQuickLinksCollapsed((prev) => !prev)}
+                            className="px-2.5 py-1 rounded-full border border-blue-300 bg-white hover:bg-blue-100 text-[11px] font-semibold text-blue-700"
+                          >
+                            {quickLinksCollapsed ? `Show (${quickLinks.length})` : 'Hide'}
+                          </button>
                         </div>
-                        <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
-                          {quickLinks.map((link, index) => (
-                            <a
-                              key={`${link.label}-${index}`}
-                              href={link.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
-                            >
-                              <i aria-hidden="true" data-lucide="external-link" className="w-5 h-5"></i>
-                              <div className="flex flex-col">
-                                <span>{link.label}</span>
-                                {link.note && (
-                                  <span className="text-xs text-blue-700">{link.note}</span>
-                                )}
-                              </div>
-                            </a>
-                          ))}
-                        </div>
+                        {quickLinksCollapsed ? (
+                          <p className="text-xs text-blue-700">
+                            Links hidden to reduce visual clutter while documenting. Use Show to expand.
+                          </p>
+                        ) : (
+                          <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
+                            {quickLinks.map((link, index) => (
+                              <a
+                                key={`${link.label}-${index}`}
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
+                              >
+                                <i aria-hidden="true" data-lucide="external-link" className="w-5 h-5"></i>
+                                <div className="flex flex-col">
+                                  <span>{link.label}</span>
+                                  {link.note && (
+                                    <span className="text-xs text-blue-700">{link.note}</span>
+                                  )}
+                                </div>
+                              </a>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     )}
 
