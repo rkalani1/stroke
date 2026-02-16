@@ -14807,10 +14807,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                       <button
                         type="button"
-                        onClick={() => jumpToEncounterField('LKW')}
+                        onClick={() => setLkwTime(new Date())}
                         className="px-2.5 py-1 rounded-full border border-slate-300 bg-white hover:bg-slate-200 text-xs font-semibold text-slate-700"
                       >
-                        Set LKW
+                        Start now
                       </button>
                     </div>
                   );
