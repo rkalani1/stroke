@@ -12046,6 +12046,9 @@ Clinician Name`;
             };
             const target = fieldTargets[fieldName];
             if (!target) return;
+            if (fieldName === 'LKW') {
+              setLkwCardCollapsed(false);
+            }
 
             navigateTo('encounter');
             if (target.phase) setEncounterPhase(target.phase);
