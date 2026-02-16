@@ -12213,6 +12213,8 @@ Clinician Name`;
             { value: 'lkw now', label: 'lkw now', hint: 'Set LKW to current time' },
             { value: 'tab trials', label: 'tab trials', hint: 'Jump directly to active clinical trials' },
             { value: 'copy note', label: 'copy note', hint: 'Copy consult note to clipboard' },
+            { value: 'new case', label: 'new case', hint: 'Reset encounter and start a fresh case' },
+            { value: 'export pdf', label: 'export pdf', hint: 'Export current case snapshot as PDF' },
             { value: 'nct05948566', label: 'nct05948566', hint: 'Open trial card directly by NCT' }
           ];
 
@@ -12463,6 +12465,32 @@ Clinician Name`;
                 action: () => {
                   setConsultationType(toVideo ? 'videoTelestroke' : 'telephone');
                   setClinicalContext(toVideo ? 'acute' : 'phone');
+                  navigateTo('encounter', { clearSearch: true });
+                }
+              });
+            }
+            const newCaseCommand = lowerQuery.match(/^(?:new case|start new case|reset case)$/i);
+            if (newCaseCommand) {
+              results.push({
+                type: 'Command',
+                title: 'Start new case',
+                description: 'Clears encounter state and resets workspace',
+                score: 972,
+                action: () => {
+                  startNewPatient();
+                  navigateTo('encounter', { clearSearch: true });
+                }
+              });
+            }
+            const exportPdfCommand = lowerQuery.match(/^(?:export pdf|save pdf|download pdf)$/i);
+            if (exportPdfCommand) {
+              results.push({
+                type: 'Command',
+                title: 'Export PDF',
+                description: 'Downloads a PDF snapshot of the current case',
+                score: 966,
+                action: () => {
+                  exportToPDF();
                   navigateTo('encounter', { clearSearch: true });
                 }
               });
@@ -14308,6 +14336,37 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             ));
                           })()}
+                        </div>
+                      )}
+
+                      {searchOpen && searchContext === 'header' && searchQuery.trim().length >= 2 && searchResults.length === 0 && (
+                        <div className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white shadow-lg rounded-lg border z-50 p-3">
+                          <p className="text-sm font-semibold text-slate-700">No exact match found</p>
+                          <p className="text-xs text-slate-500 mt-0.5 mb-2">Try one of these quick commands:</p>
+                          <div className="space-y-1.5">
+                            {(() => {
+                              const normalizedQuery = searchQuery.trim().toLowerCase();
+                              const quickMatches = QUICK_SEARCH_COMMANDS.filter((command) =>
+                                command.value.toLowerCase().includes(normalizedQuery) ||
+                                command.hint.toLowerCase().includes(normalizedQuery)
+                              );
+                              const suggestions = (quickMatches.length > 0 ? quickMatches : QUICK_SEARCH_COMMANDS).slice(0, 4);
+                              return suggestions.map((command) => (
+                                <button
+                                  key={`no-results-${command.value}`}
+                                  onClick={() => {
+                                    setSearchQuery(command.value);
+                                    setSearchOpen(true);
+                                    setSearchContext('header');
+                                  }}
+                                  className="w-full text-left px-2.5 py-2 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-colors"
+                                >
+                                  <p className="text-xs font-mono text-blue-700">{command.label}</p>
+                                  <p className="text-xs text-slate-600 mt-0.5">{command.hint}</p>
+                                </button>
+                              ));
+                            })()}
+                          </div>
                         </div>
                       )}
 
