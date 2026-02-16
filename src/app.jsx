@@ -24952,17 +24952,27 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <h2 className="text-lg font-semibold text-slate-900">Library</h2>
                         <p className="text-xs text-slate-600">Unified protocols, calculators, references, and trial index.</p>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2" role="tablist" aria-label="Library sections">
                         <button
+                          id="library-section-management"
                           type="button"
                           onClick={() => setLibrarySection('management')}
+                          role="tab"
+                          aria-selected={librarySection === 'management'}
+                          aria-controls="tabpanel-management"
+                          tabIndex={librarySection === 'management' ? 0 : -1}
                           className={`px-3 py-1.5 rounded-lg text-sm font-semibold ${librarySection === 'management' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
                         >
                           Protocols & Tools
                         </button>
                         <button
+                          id="library-section-trials"
                           type="button"
                           onClick={() => setLibrarySection('trials')}
+                          role="tab"
+                          aria-selected={librarySection === 'trials'}
+                          aria-controls="tabpanel-trials"
+                          tabIndex={librarySection === 'trials' ? 0 : -1}
                           className={`px-3 py-1.5 rounded-lg text-sm font-semibold ${librarySection === 'trials' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
                         >
                           Trials
@@ -24975,7 +24985,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* Management Combined Tab (Ischemic, ICH, Calculators, References) */}
                 {(activeTab === 'management' || (activeTab === 'library' && librarySection === 'management')) && (
                   <ErrorBoundary>
-                  <div id="tabpanel-management" role="tabpanel" aria-labelledby="tab-library" className="space-y-6">
+                  <div id="tabpanel-management" role="tabpanel" aria-labelledby={activeTab === 'library' ? 'library-section-management' : 'tab-library'} className="space-y-6">
                     {/* ===== QUICK PATIENT SUMMARY CARD ===== */}
                     {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) && (
                       <div className="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-xl px-4 py-3">
@@ -31632,7 +31642,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* Uses trialsData object and TrialCard component */}
                 {/* ============================================ */}
                 {(activeTab === 'trials' || (activeTab === 'library' && librarySection === 'trials')) && (
-                  <div id="tabpanel-trials" role="tabpanel" aria-labelledby="tab-trials" className="space-y-6">
+                  <div id="tabpanel-trials" role="tabpanel" aria-labelledby={activeTab === 'library' ? 'library-section-trials' : 'tab-library'} className="space-y-6">
                     {/* Header Section with Patient Summary */}
                     <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-6 rounded-lg shadow-lg">
                       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
