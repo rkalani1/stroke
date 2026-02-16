@@ -14339,11 +14339,95 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const workflowRailNextStep = workflowRailSteps.find((step) => !step.done) || null;
           const workflowRailProgressLabel = `${workflowRailCompletedCount}/${workflowRailSteps.length} complete`;
           const requiredFieldsRemaining = encounterReadiness.required.length;
+          const hasDocumentedNihss = (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '') ||
+            nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '');
+          const setUnknownLkwFromNow = () => {
+            setTelestrokeNote((prev) => ({
+              ...prev,
+              lkwUnknown: true,
+              wakeUpStrokeWorkflow: { ...(prev.wakeUpStrokeWorkflow || {}), isWakeUpStroke: true },
+              discoveryDate: prev.discoveryDate || new Date().toISOString().split('T')[0],
+              discoveryTime: prev.discoveryTime || new Date().toTimeString().slice(0, 5)
+            }));
+          };
+          const workflowRailContextActions = [];
+          if (encounterReadiness.nextField === 'LKW' && !lkwTime && !telestrokeNote.lkwUnknown) {
+            workflowRailContextActions.push(
+              {
+                id: 'lkw-open',
+                label: 'Open LKW',
+                action: () => jumpToEncounterField('LKW'),
+                className: 'border-slate-300 bg-white text-slate-700 hover:bg-slate-100'
+              },
+              {
+                id: 'lkw-unknown',
+                label: 'Unknown LKW',
+                action: setUnknownLkwFromNow,
+                className: 'border-purple-300 bg-purple-50 text-purple-700 hover:bg-purple-100'
+              }
+            );
+          }
+          if (encounterReadiness.nextField === 'Diagnosis' && !telestrokeNote.diagnosis) {
+            workflowRailContextActions.push(
+              {
+                id: 'dx-ischemic',
+                label: 'Dx: Ischemic',
+                action: () => applyDiagnosisSelection('Acute Ischemic Stroke'),
+                className: 'border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100'
+              },
+              {
+                id: 'dx-ich',
+                label: 'Dx: ICH',
+                action: () => applyDiagnosisSelection('Intracerebral Hemorrhage (ICH)'),
+                className: 'border-red-300 bg-red-50 text-red-700 hover:bg-red-100'
+              },
+              {
+                id: 'dx-sah',
+                label: 'Dx: SAH',
+                action: () => applyDiagnosisSelection('Subarachnoid Hemorrhage (SAH)'),
+                className: 'border-orange-300 bg-orange-50 text-orange-700 hover:bg-orange-100'
+              }
+            );
+          }
+          if (encounterReadiness.nextField === 'NIHSS' && !hasDocumentedNihss) {
+            workflowRailContextActions.push({
+              id: 'nihss-zero',
+              label: 'NIHSS 0',
+              action: applyNihssAllNormal,
+              className: 'border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100'
+            });
+          }
+          if (encounterReadiness.nextField === 'Disposition' && !telestrokeNote.disposition) {
+            workflowRailContextActions.push(
+              {
+                id: 'dispo-stroke-unit',
+                label: 'Dispo: Stroke Unit',
+                action: () => setTelestrokeNote((prev) => ({ ...prev, disposition: 'Admit to Stroke Unit' })),
+                className: 'border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+              },
+              {
+                id: 'dispo-neuro-icu',
+                label: 'Dispo: Neuro ICU',
+                action: () => setTelestrokeNote((prev) => ({ ...prev, disposition: 'Admit to Neuro ICU' })),
+                className: 'border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100'
+              },
+              {
+                id: 'dispo-transfer',
+                label: 'Dispo: Transfer',
+                action: () => setTelestrokeNote((prev) => ({ ...prev, disposition: 'Transfer to CSC' })),
+                className: 'border-purple-300 bg-purple-50 text-purple-700 hover:bg-purple-100'
+              }
+            );
+          }
           const workflowRailPrimary = encounterReadiness.nextField
             ? {
                 id: 'next-field',
-                label: `Fill ${encounterReadiness.nextField}`,
-                action: () => jumpToEncounterField(encounterReadiness.nextField)
+                label: encounterReadiness.nextField === 'LKW' && !lkwTime && !telestrokeNote.lkwUnknown
+                  ? 'Set LKW Now'
+                  : `Fill ${encounterReadiness.nextField}`,
+                action: encounterReadiness.nextField === 'LKW' && !lkwTime && !telestrokeNote.lkwUnknown
+                  ? () => setLkwTime(new Date())
+                  : () => jumpToEncounterField(encounterReadiness.nextField)
               }
             : workflowRailNextStep
               ? (workflowRailNextStep.id === 'contra'
@@ -31799,38 +31883,54 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           title={actionBarCollapsed ? 'Expand workflow rail' : 'Collapse workflow rail'}
                         >
                           <span className="text-[11px] font-semibold sm:hidden">{actionBarCollapsed ? 'Show' : 'Hide'}</span>
-                          <i aria-hidden="true" data-lucide={actionBarCollapsed ? 'chevron-up' : 'chevron-down'} className="w-4 h-4 shrink-0"></i>
+                          <span aria-hidden="true" className="text-sm leading-none">{actionBarCollapsed ? '▴' : '▾'}</span>
                         </button>
                       </div>
                     </div>
                     <p className={`text-xs text-slate-500 mt-1 ${actionBarCollapsed ? 'hidden sm:block' : ''}`}>{workflowRailHint}</p>
                     {!actionBarCollapsed && (
-                      <div className="flex flex-wrap items-center gap-2 mt-2">
-                        <button
-                          type="button"
-                          onClick={() => scrollToSection('treatment-decision')}
-                          className="px-3 py-2 rounded-lg text-xs font-semibold border border-red-200 bg-red-50 text-red-700 hover:bg-red-100"
-                        >
-                          1. {contraindicationsComplete ? 'Contraindications Checked' : 'Check Contraindications'}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => scrollToSection('treatment-decision')}
-                          className="px-3 py-2 rounded-lg text-xs font-semibold border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100"
-                        >
-                          2. {tnkDoseComplete ? 'TNK Dose Ready' : 'Calculate TNK Dose'}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const note = generateTelestrokeNote();
-                            copyToClipboard(note, 'Consult Note');
-                          }}
-                          className="px-3 py-2 rounded-lg text-xs font-semibold border border-emerald-300 bg-emerald-600 text-white hover:bg-emerald-700"
-                        >
-                          3. {noteCopiedRecently ? 'Consult Note Copied' : 'Copy Consult Note'}
-                        </button>
-                      </div>
+                      <>
+                        {workflowRailContextActions.length > 0 && (
+                          <div className="flex flex-wrap items-center gap-2 mt-2">
+                            {workflowRailContextActions.map((action) => (
+                              <button
+                                key={action.id}
+                                type="button"
+                                onClick={action.action}
+                                className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border ${action.className}`}
+                              >
+                                {action.label}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                        <div className="flex flex-wrap items-center gap-2 mt-2">
+                          <button
+                            type="button"
+                            onClick={() => scrollToSection('treatment-decision')}
+                            className="px-3 py-2 rounded-lg text-xs font-semibold border border-red-200 bg-red-50 text-red-700 hover:bg-red-100"
+                          >
+                            1. {contraindicationsComplete ? 'Contraindications Checked' : 'Check Contraindications'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => scrollToSection('treatment-decision')}
+                            className="px-3 py-2 rounded-lg text-xs font-semibold border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100"
+                          >
+                            2. {tnkDoseComplete ? 'TNK Dose Ready' : 'Calculate TNK Dose'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const note = generateTelestrokeNote();
+                              copyToClipboard(note, 'Consult Note');
+                            }}
+                            className="px-3 py-2 rounded-lg text-xs font-semibold border border-emerald-300 bg-emerald-600 text-white hover:bg-emerald-700"
+                          >
+                            3. {noteCopiedRecently ? 'Consult Note Copied' : 'Copy Consult Note'}
+                          </button>
+                        </div>
+                      </>
                     )}
                   </div>
                 </div>
