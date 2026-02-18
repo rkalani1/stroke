@@ -2,51 +2,35 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `132e7f9`
+- Last pushed commit: `d34ba85`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.17`
-- Service worker cache key: `stroke-app-v16`
+- Live APP_VERSION: `v5.14.18`
+- Service worker cache key: `stroke-app-v17`
 
-## Completed in this session (iter-006 through iter-010)
+## Session summary (iter-006 through iter-011)
 
-### iter-006: SAH/CVT/AF cards
-- SAH first-hour rapid actions card
-- CVT treatment timeline strip with ACTION-CVT
-- AF anticoag timing quick reference (CATALYST/ELAN/TIMING)
+### Clinical content additions
+- **iter-006:** SAH first-hour rapid actions, CVT treatment timeline, AF anticoag timing card
+- **iter-007:** TNK-first decision card, wake-up imaging hard-stop, pregnancy emergency panel
+- **iter-008:** Renal-safety contrast alert, PFO closure eligibility, carotid revascularization
+- **iter-009:** Cross-links between reference cards and data-entry sections, mobile audit
+- **iter-010:** Schema mismatch debt resolved (compare_keys.ps1 fixed, 0 true mismatches)
+- **iter-011:** Note template CrCl calculation + TNK-first rationale documentation
 
-### iter-007: TNK/wake-up/pregnancy
-- TNK-first decision card with alteplase fallback
-- Wake-up imaging hard-stop alert
-- Pregnancy/peripartum emergency rapid actions panel
+### Gap matrix: ALL P0/P1 items COMPLETED
+All items from the evidence-driven gap matrix have been implemented and deployed.
 
-### iter-008: Renal/PFO/carotid
-- Renal-safety auto-alert in contrast section
-- PFO closure eligibility decision card
-- Carotid revascularization decision guide
-
-### iter-009: Cross-links and QA
-- PFO/carotid cross-linked to data-entry sections
-- Mobile responsiveness audit passed
-- Deduplication audit: all cards complementary
-
-### iter-010: Schema mismatch resolved
-- Fixed compare_keys.ps1 (false positive from nested fields)
-- Verified: 194 top-level keys, 0 mismatches
-
-## Gap matrix status — ALL items COMPLETED
-All P0 and P1 items from the gap matrix are resolved. See `docs/gap-matrix.md` for full status.
-
-## Known debt
+## Known remaining work
 - No automated unit/integration tests
-- Bundle size 2.2 MB — evaluate code-splitting potential
-- Working tree: modified package-lock.json
+- Bundle size 2.2 MB (no code-splitting)
+- Pediatric stroke pathway guidance not yet added
+- Signout and discharge note templates could also benefit from CrCl enhancement
 
 ## Next highest-impact actions
-1. Begin automated pathway assertion tests (scriptable CI gates)
-2. Performance audit (bundle size, load time)
-3. Add pediatric stroke pathway guidance
-4. Clinical note template quality improvements
-5. Explore code-splitting or lazy loading for bundle optimization
+1. Begin automated pathway assertion tests
+2. Performance/bundle audit
+3. Pediatric stroke pathway
+4. Additional note template enhancements
 
 ## Resume command
 - `cd C:\Users\rkala\stroke && git pull --rebase origin main && npx esbuild ./src/app.jsx --bundle --minify --format=iife --target=es2018 --outfile=./app.js`

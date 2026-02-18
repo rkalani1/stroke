@@ -230,3 +230,29 @@
 - Begin automated pathway assertion tests.
 - Performance audit (bundle size 2.2 MB).
 - Add pediatric stroke pathway guidance.
+
+## Iteration 011 (2026-02-18)
+
+### What was changed
+- Enhanced transfer note labs line with calculated CrCl (Cockcroft-Gault) when age/weight/sex/creatinine are available. Includes renal dose adjustment warning for CrCl <30 and monitoring note for CrCl <60.
+- Enhanced TNK treatment documentation with explicit "TNK 0.25 mg/kg single IV bolus" format and TNK-first rationale reference (AcT/TRACE-2/ESO 2023, alteplase fallback).
+- Bumped APP_VERSION to v5.14.18 and service-worker cache to v17.
+
+### Why
+- CrCl in the clinical note ensures receiving physicians are immediately aware of renal function implications for medication dosing.
+- TNK-first rationale in the note documents the evidence basis for thrombolytic choice, supporting medicolegal documentation.
+
+### Evidence citations used for this iteration
+- AcT (Lancet 2022), TRACE-2 (NEJM 2023), ESO 2023 TNK Recommendation.
+- Cockcroft-Gault CrCl formula (standard clinical use).
+
+### QA and validation
+- Build passed.
+- Note template changes verified in code review.
+- Deployed to GitHub Pages, push successful.
+
+### Next opportunities
+- Begin automated pathway assertion tests.
+- Performance audit (bundle size 2.2 MB).
+- Add pediatric stroke pathway guidance.
+- Consider additional note template enhancements (signout, discharge).
