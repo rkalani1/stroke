@@ -9741,7 +9741,9 @@ Clinician Name`;
                 return note;
               }
               const isCVT = telestrokeNote.diagnosisCategory === 'cvt';
-              let note = `${isCVT ? 'CEREBRAL VENOUS THROMBOSIS' : 'STROKE'} PATIENT EDUCATION\n${'='.repeat(40)}\n\n`;
+              const isSAH = telestrokeNote.diagnosisCategory === 'sah';
+              const edTitle = isCVT ? 'CEREBRAL VENOUS THROMBOSIS' : isSAH ? 'SUBARACHNOID HEMORRHAGE' : 'STROKE';
+              let note = `${edTitle} PATIENT EDUCATION\n${'='.repeat(40)}\n\n`;
               note += `Dear Patient / Family,\n\n`;
               note += `You have been diagnosed with: ${telestrokeNote.diagnosis || '___'}\n\n`;
               // Treatment history
@@ -9751,6 +9753,12 @@ Clinician Name`;
                 if (telestrokeNote.evtRecommended) txItems.push('a catheter-based procedure to remove the blood clot (thrombectomy)');
                 if (telestrokeNote.diagnosisCategory === 'ich') txItems.push('treatment for bleeding in the brain including blood pressure control and monitoring');
                 if (isCVT) txItems.push('blood thinner (anticoagulation) to treat the blood clot in your brain veins');
+                if (isSAH) {
+                  txItems.push('close monitoring in the intensive care unit');
+                  if (telestrokeNote.sahNimodipine) txItems.push('nimodipine to help prevent vasospasm');
+                  if (telestrokeNote.sahAneurysmSecured) txItems.push(`aneurysm treatment (${telestrokeNote.sahSecuringMethod === 'coiling' ? 'endovascular coiling' : telestrokeNote.sahSecuringMethod === 'clipping' ? 'surgical clipping' : 'procedure to secure the aneurysm'})`);
+                  if (telestrokeNote.sahEVDPlaced) txItems.push('a drain to relieve pressure in the brain (EVD)');
+                }
                 if (txItems.length > 0) {
                   note += `YOUR TREATMENT:\n`;
                   note += `During your hospital stay, you received:\n`;
@@ -9761,6 +9769,25 @@ Clinician Name`;
               if (isCVT) {
                 note += `WHAT IS CEREBRAL VENOUS THROMBOSIS (CVT)?\n`;
                 note += `CVT is a blood clot in the veins that drain blood from the brain. Unlike a typical stroke caused by a blocked artery, CVT affects the venous system. Treatment involves blood thinners (anticoagulation) usually for 3-12 months.\n\n`;
+              } else if (isSAH) {
+                note += `WHAT IS SUBARACHNOID HEMORRHAGE (SAH)?\n`;
+                note += `SAH is bleeding on the surface of the brain, usually caused by a ruptured aneurysm (a weakened, bulging blood vessel). This is a serious condition requiring intensive care monitoring.\n\n`;
+                note += `IMPORTANT — REBLEEDING RISK:\n`;
+                note += `- The highest risk of rebleeding is in the first 24 hours\n`;
+                note += `- If your aneurysm has been treated (${telestrokeNote.sahAneurysmSecured ? 'secured' : 'pending'}), the risk of rebleeding is greatly reduced\n`;
+                note += `- Avoid straining, heavy lifting, and the Valsalva maneuver\n`;
+                note += `- Keep blood pressure well controlled\n\n`;
+                note += `VASOSPASM — WHAT TO WATCH FOR:\n`;
+                note += `Vasospasm (narrowing of brain blood vessels) can occur 3-14 days after SAH and may cause a delayed stroke. Call your nurse or 911 IMMEDIATELY if you notice:\n`;
+                note += `- New or worsening headache\n`;
+                note += `- Confusion or difficulty speaking\n`;
+                note += `- New weakness or numbness\n`;
+                note += `- Increasing drowsiness\n\n`;
+                note += `NIMODIPINE:\n`;
+                note += `- You ${telestrokeNote.sahNimodipine ? 'have been started on' : 'may be prescribed'} nimodipine (a calcium channel blocker)\n`;
+                note += `- Take every 4 hours for a total of 21 days — do NOT miss doses\n`;
+                note += `- This medication helps prevent vasospasm and is one of the most important parts of your recovery\n`;
+                note += `- Common side effects: low blood pressure, headache\n\n`;
               } else {
                 note += `WHAT IS A STROKE?\n`;
                 note += `A stroke happens when blood flow to part of the brain is blocked (ischemic stroke) or when a blood vessel in the brain bursts (hemorrhagic stroke). Without blood flow, brain cells begin to die.\n\n`;
@@ -10251,8 +10278,15 @@ Clinician Name`;
               // Key results for discharge
               note += `KEY RESULTS:\n`;
               note += `- Echo (TTE/TEE): ___\n`;
-              note += `- Carotid imaging: ___\n`;
-              note += `- LDL: ___ mg/dL  (target <70)\n`;
+              {
+                const dischCarotid = telestrokeNote.carotidManagement || {};
+                if (dischCarotid.stenosisDegree) {
+                  note += `- Carotid imaging: ${dischCarotid.stenosisSide || ''} ${dischCarotid.stenosisDegree}% stenosis${dischCarotid.symptomatic ? ' (symptomatic)' : ''}${dischCarotid.intervention ? ` → ${dischCarotid.intervention.replace(/-/g, ' ')}` : ''}\n`;
+                } else {
+                  note += `- Carotid imaging: ___\n`;
+                }
+              }
+              note += `- LDL: ${dischSp.ldlCurrent ? dischSp.ldlCurrent + ' mg/dL' : '___'} (target <70)\n`;
               note += `- HbA1c: ___\n\n`;
               // Medication reconciliation
               note += `MEDICATION RECONCILIATION:\n`;
@@ -12322,18 +12356,63 @@ Clinician Name`;
           const applyDiagnosisSelection = (diagnosisValue) => {
             const category = inferDiagnosisCategory(diagnosisValue);
             setTelestrokeNote((prev) => {
-              const diagUpdate = { diagnosis: diagnosisValue, diagnosisCategory: category };
+              const updated = { ...prev, diagnosis: diagnosisValue, diagnosisCategory: category };
               // Hemorrhagic pathways must clear thrombolysis recommendations.
               if ((category === 'ich' || category === 'sah') && prev.tnkRecommended) {
-                diagUpdate.tnkRecommended = false;
-                diagUpdate.tnkAutoBlocked = true;
-                diagUpdate.tnkAutoBlockReason = `TNK auto-cleared: ${category.toUpperCase()} diagnosis (thrombolysis contraindicated)`;
+                updated.tnkAutoBlocked = true;
+                updated.tnkAutoBlockReason = `TNK auto-cleared: ${category.toUpperCase()} diagnosis (thrombolysis contraindicated)`;
                 addToast(`TNK recommendation cleared — ${category.toUpperCase()} diagnosis is a contraindication to thrombolysis`, 'error');
               }
-              if (category !== 'ischemic' && (prev.bpPhase === 'post-evt' || prev.bpPhase === 'post-tnk')) {
-                diagUpdate.bpPhase = 'pre-tnk';
+              if (category !== prev.diagnosisCategory) {
+                if (category !== 'ischemic') {
+                  updated.tnkRecommended = false;
+                  updated.evtRecommended = false;
+                  updated.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', transferConsentDiscussed: false };
+                  updated.evtAccessSite = '';
+                  updated.evtDevice = '';
+                  updated.evtTechnique = '';
+                  updated.evtNumberOfPasses = '';
+                  updated.reperfusionTime = '';
+                  updated.postTNKMonitoring = { neuroChecksQ15min: false, bpChecksQ15min: false, bleedingWatch: false, repeatImagingOrdered: false, cardiacMonitoring: false };
+                  updated.doacTiming = { strokeSeverity: '', hemorrhagicTransformation: false, htClassification: '', doacInitiationDay: '', doacAgent: '' };
+                  updated.hemorrhagicTransformation = { detected: false, classification: '', symptomatic: false, managementActions: '', antithromboticHeld: false, reimagingPlanned: false };
+                  updated.angioedema = { detected: false, severity: '', aceInhibitorUse: false, stepsTaken: {}, intubated: false, resolved: false, onsetTime: '' };
+                }
+                if (category !== 'ischemic' && (prev.bpPhase === 'post-evt' || prev.bpPhase === 'post-tnk')) {
+                  updated.bpPhase = 'pre-tnk';
+                }
+                if (category !== 'ich') {
+                  updated.ichReversalInitiated = false;
+                  updated.ichBPManaged = false;
+                  updated.ichNeurosurgeryConsulted = false;
+                  updated.ichSeizureProphylaxis = false;
+                  updated.ichSurgicalCriteria = { cerebellarGt15mL: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
+                  updated.osmoticTherapy = { agentUsed: '', indication: '', serumSodium: '', serumOsmolality: '', sodiumTarget: '', correctionRate: '', baselineNa: '', baselineNaTime: '', repeatNa: '', repeatNaTime: '', weight: '', mannitolOsmGap: '' };
+                }
+                if (category !== 'sah') {
+                  updated.sahGrade = '';
+                  updated.sahGradeScale = '';
+                  updated.sahBPManaged = false;
+                  updated.sahNimodipine = false;
+                  updated.sahEVDPlaced = false;
+                  updated.sahAneurysmSecured = false;
+                  updated.sahNeurosurgeryConsulted = false;
+                  updated.sahSeizureProphylaxis = false;
+                  updated.fisherGrade = '';
+                  updated.sahAneurysmLocation = '';
+                  updated.sahAneurysmSize = '';
+                  updated.sahSecuringMethod = '';
+                  updated.sahVasospasmMonitoring = { tcdOrdered: false, neuroChecksQ1h: false, sodiumMonitoring: false, dciSuspected: false, inducedHypertension: false, notes: '' };
+                }
+                if (category !== 'cvt') {
+                  updated.cvtAnticoagStarted = false;
+                  updated.cvtAnticoagType = '';
+                  updated.cvtIcpManaged = false;
+                  updated.cvtSeizureManaged = false;
+                  updated.cvtHematologyConsulted = false;
+                }
               }
-              return { ...prev, ...diagUpdate };
+              return updated;
             });
 
             if (category === 'ich') setManagementSubTab('ich');
@@ -16170,6 +16249,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         updated.tnkRecommended = false;
                                         updated.evtRecommended = false;
                                         updated.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', transferConsentDiscussed: false };
+                                        updated.evtAccessSite = '';
+                                        updated.evtDevice = '';
+                                        updated.evtTechnique = '';
+                                        updated.evtNumberOfPasses = '';
+                                        updated.reperfusionTime = '';
+                                        updated.postTNKMonitoring = { neuroChecksQ15min: false, bpChecksQ15min: false, bleedingWatch: false, repeatImagingOrdered: false, cardiacMonitoring: false };
+                                        updated.doacTiming = { strokeSeverity: '', hemorrhagicTransformation: false, htClassification: '', doacInitiationDay: '', doacAgent: '' };
+                                        updated.hemorrhagicTransformation = { detected: false, classification: '', symptomatic: false, managementActions: '', antithromboticHeld: false, reimagingPlanned: false };
+                                        updated.angioedema = { detected: false, severity: '', aceInhibitorUse: false, stepsTaken: {}, intubated: false, resolved: false, onsetTime: '' };
                                       }
                                       if (nc !== 'ich') {
                                         updated.ichReversalInitiated = false;
@@ -16177,6 +16265,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         updated.ichNeurosurgeryConsulted = false;
                                         updated.ichSeizureProphylaxis = false;
                                         updated.ichSurgicalCriteria = { cerebellarGt15mL: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
+                                        updated.osmoticTherapy = { agentUsed: '', indication: '', serumSodium: '', serumOsmolality: '', sodiumTarget: '', correctionRate: '', baselineNa: '', baselineNaTime: '', repeatNa: '', repeatNaTime: '', weight: '', mannitolOsmGap: '' };
                                       }
                                       if (nc !== 'sah') {
                                         updated.sahGrade = '';
@@ -19760,6 +19849,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                               updated.tnkRecommended = false;
                                               updated.evtRecommended = false;
                                               updated.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', transferConsentDiscussed: false };
+                                              updated.evtAccessSite = '';
+                                              updated.evtDevice = '';
+                                              updated.evtTechnique = '';
+                                              updated.evtNumberOfPasses = '';
+                                              updated.reperfusionTime = '';
+                                              updated.postTNKMonitoring = { neuroChecksQ15min: false, bpChecksQ15min: false, bleedingWatch: false, repeatImagingOrdered: false, cardiacMonitoring: false };
+                                              updated.doacTiming = { strokeSeverity: '', hemorrhagicTransformation: false, htClassification: '', doacInitiationDay: '', doacAgent: '' };
+                                              updated.hemorrhagicTransformation = { detected: false, classification: '', symptomatic: false, managementActions: '', antithromboticHeld: false, reimagingPlanned: false };
+                                              updated.angioedema = { detected: false, severity: '', aceInhibitorUse: false, stepsTaken: {}, intubated: false, resolved: false, onsetTime: '' };
                                             }
                                             if (newCategory !== 'ich') {
                                               updated.ichReversalInitiated = false;
@@ -19767,6 +19865,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                               updated.ichNeurosurgeryConsulted = false;
                                               updated.ichSeizureProphylaxis = false;
                                               updated.ichSurgicalCriteria = { cerebellarGt15mL: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
+                                              updated.osmoticTherapy = { agentUsed: '', indication: '', serumSodium: '', serumOsmolality: '', sodiumTarget: '', correctionRate: '', baselineNa: '', baselineNaTime: '', repeatNa: '', repeatNaTime: '', weight: '', mannitolOsmGap: '' };
                                             }
                                             if (newCategory !== 'sah') {
                                               updated.sahGrade = '';
