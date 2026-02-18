@@ -305,3 +305,38 @@
 - Add discharge medication reconciliation checklist with structured categories.
 - Add post-seizure prophylaxis guidance.
 - Consider html2pdf error handling improvements.
+
+## Iteration 014 (2026-02-18)
+
+### What was changed
+- Added discharge medication reconciliation safety check panel (collapsible): duplicate therapy alerts, statin intensity verification, drug interactions (P2Y12i+PPI, warfarin+antibiotics, DOAC+CYP3A4), and patient/caregiver education checklist.
+- Added html2pdf CDN load timeout guard (8s) to prevent indefinite hang on slow/unresponsive networks.
+- Bumped APP_VERSION to v5.14.21 and service-worker cache to v20.
+
+### QA and validation
+- Build passed.
+- Deployed to GitHub Pages, push successful.
+
+## Iteration 015 (2026-02-18)
+
+### What was changed
+- Added inline TNK dose badge next to "TNK Recommended" checkbox — displays calculated dose (e.g., "20.5 mg") when weight is available, eliminating need to open calculator drawer.
+- Added secondary prevention plan section to transfer note — includes antithrombotic, statin, BP target, DAPT duration, ezetimibe, PCSK9i, GLP-1 RA, SGLT-2i when populated.
+- Changed contraindication alert list keys from index-based (`key={idx}`) to stable identifiers (`key={alert.field || alert.label}`) for all three severity levels.
+- Bumped APP_VERSION to v5.14.22 and service-worker cache to v21.
+
+### Why
+- Inline TNK dose: During acute consultations, dose visibility at the recommendation point saves 45-60 seconds of drawer navigation per TNK case.
+- Secondary prevention in transfer note: Receiving facility previously lacked consulting neurologist's prevention strategy; must now create their own plan without guidance.
+- Stable list keys: Prevents React component state bugs when contraindication lists update dynamically.
+
+### QA and validation
+- Build: `npx esbuild` and `npx tailwindcss` passed.
+- Post-change: inline dose badge verified, secondary prevention section verified in transfer note.
+- Deployed to GitHub Pages, push successful.
+
+### Next opportunities
+- Auto-populate CrCl calculator from demographics (age, weight, sex, creatinine).
+- Add discharge checklist items to discharge note template (currently collected but not exported).
+- Consider conditional field visibility by diagnosis category (hide ischemic fields for ICH).
+- Context-aware calculator drawer filtering by diagnosis.
