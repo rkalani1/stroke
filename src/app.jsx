@@ -10805,6 +10805,23 @@ Clinician Name`;
 
             // Add discharge checklist summary
             const dc = telestrokeNote.dischargeChecklist || {};
+
+            // AHA/ASA Get With The Guidelines quality metrics
+            {
+              const qmItems = [];
+              if (dc.antiplateletOrAnticoag) qmItems.push('Antithrombotic prescribed');
+              if (dc.statinPrescribed) qmItems.push('High-intensity statin prescribed');
+              if (dc.bpMedOptimized) qmItems.push('BP medications optimized');
+              if (dc.diabetesManaged) qmItems.push('Diabetes management addressed');
+              if (dc.smokingCessation) qmItems.push('Smoking cessation counseled');
+              if (dc.dietCounseling) qmItems.push('Diet counseling (Mediterranean/DASH)');
+              if (dc.exerciseCounseling) qmItems.push('Exercise counseling (150 min/wk)');
+              if (qmItems.length > 0) {
+                note += `\nDischarge Quality Metrics:\n${qmItems.map(i => `- ${i}`).join('\n')}\n`;
+              }
+            }
+
+            // Follow-up and planning items
             const dcItems = [];
             if (dc.followUpNeurology) dcItems.push(`Neurology follow-up${dc.followUpNeurologyTimeframe ? ` (${dc.followUpNeurologyTimeframe})` : ''}`);
             if (dc.followUpPCP) dcItems.push(`PCP follow-up${dc.followUpPCPTimeframe ? ` (${dc.followUpPCPTimeframe})` : ''}`);
@@ -18965,7 +18982,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
 
-                            {/* Quick ASPECTS Entry */}
+                            {/* Quick ASPECTS Entry — ischemic only */}
+                            {(telestrokeNote.diagnosisCategory === 'ischemic' || telestrokeNote.diagnosisCategory === 'tia' || !telestrokeNote.diagnosisCategory) && (<>
                             <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
                               <div className="flex items-center justify-between mb-2">
                                 <label className="text-sm font-medium text-blue-800">ASPECTS Score</label>
@@ -19079,6 +19097,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                               </div>
                             </details>
+                            </>)}
 
                             {/* CTA Head & Neck */}
                             <div className="bg-slate-50 p-3 rounded border">
@@ -19502,13 +19521,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Free text for Other or additional details */}
                               {telestrokeNote.diagnosisCategory === 'other' && (
-                                <input
-                                  type="text"
-                                  value={telestrokeNote.diagnosis}
-                                  onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, diagnosis: v})); }}
-                                  placeholder="Specify diagnosis..."
-                                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                />
+                                <div>
+                                  <label htmlFor="input-other-diagnosis" className="block text-xs font-medium text-slate-600 mb-1">Specify diagnosis</label>
+                                  <input
+                                    id="input-other-diagnosis"
+                                    type="text"
+                                    value={telestrokeNote.diagnosis}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, diagnosis: v})); }}
+                                    placeholder="e.g., RCVS, CNS vasculitis, metabolic encephalopathy..."
+                                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                  />
+                                </div>
                               )}
 
                               {/* Show selected diagnosis */}
@@ -19694,8 +19717,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </details>
                             )}
 
-                            {/* ========== TNK CONTRAINDICATIONS (hidden in clinic) ========== */}
-                            {(() => {
+                            {/* ========== TNK CONTRAINDICATIONS — ischemic only ========== */}
+                            {(telestrokeNote.diagnosisCategory === 'ischemic' || !telestrokeNote.diagnosisCategory) && (() => {
                               const checklist = telestrokeNote.tnkContraindicationChecklist || {};
 
                                 const absoluteContraindications = [
@@ -19984,6 +20007,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               );
                             })()}
 
+                            {(telestrokeNote.diagnosisCategory === 'ischemic' || !telestrokeNote.diagnosisCategory) && (
                             <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                               <input
                                 type="checkbox"
@@ -19993,6 +20017,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                               TNK Recommended
                             </label>
+                            )}
 
                             {telestrokeNote.tnkRecommended && (
                               <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 space-y-3">
@@ -22310,13 +22335,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                               onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, hemorrhagicTransformation: {...(prev.hemorrhagicTransformation || {}), reimagingPlanned: c}})); }} />
                                             <span className="text-xs">Repeat imaging planned</span>
                                           </label>
-                                          <label className="block text-xs font-medium mt-2">Management Actions:</label>
+                                          <label htmlFor="input-ht-management" className="block text-xs font-medium mt-2">Management Actions:</label>
                                           <textarea
+                                            id="input-ht-management"
                                             value={(telestrokeNote.hemorrhagicTransformation || {}).managementActions || ''}
                                             onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, hemorrhagicTransformation: {...(prev.hemorrhagicTransformation || {}), managementActions: v}})); }}
                                             placeholder="e.g., Cryoprecipitate 10U, TXA 1g IV, neurosurgery consulted..."
                                             className="w-full px-2 py-1 border border-slate-300 rounded text-xs h-16"
-                                            aria-label="Hemorrhagic transformation management actions"
                                           />
                                         </div>
                                       )}
@@ -29920,19 +29945,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="grid grid-cols-3 gap-3 mb-3">
                           <div>
                             <label className="text-xs text-slate-600">A: Largest diameter (cm)</label>
-                            <input type="number" step="0.1" min="0" max="30" value={(telestrokeNote.ichVolumeCalc || {}).lengthCm || ''}
+                            <input type="number" step="0.1" min="0" max="50" value={(telestrokeNote.ichVolumeCalc || {}).lengthCm || ''}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ichVolumeCalc: {...(prev.ichVolumeCalc || {}), lengthCm: v}})); }}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="cm" />
                           </div>
                           <div>
                             <label className="text-xs text-slate-600">B: Perpendicular diameter (cm)</label>
-                            <input type="number" step="0.1" min="0" max="30" value={(telestrokeNote.ichVolumeCalc || {}).widthCm || ''}
+                            <input type="number" step="0.1" min="0" max="50" value={(telestrokeNote.ichVolumeCalc || {}).widthCm || ''}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ichVolumeCalc: {...(prev.ichVolumeCalc || {}), widthCm: v}})); }}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="cm" />
                           </div>
                           <div>
                             <label className="text-xs text-slate-600">C: Slices x thickness (cm)</label>
-                            <input type="number" step="0.1" min="0" max="30" value={(telestrokeNote.ichVolumeCalc || {}).slicesCm || ''}
+                            <input type="number" step="0.1" min="0" max="50" value={(telestrokeNote.ichVolumeCalc || {}).slicesCm || ''}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ichVolumeCalc: {...(prev.ichVolumeCalc || {}), slicesCm: v}})); }}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="cm" />
                           </div>
