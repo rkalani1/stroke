@@ -1,5 +1,16 @@
 # Iteration Log
 
+## Iteration 031 (2026-02-18)
+
+### What was changed
+- **Lab-not-checked warnings (3 new)**: When TNK recommended, warn if INR, platelet count, or aPTT not yet documented. Prevents silent assumption that labs are "safe" when unmeasured.
+- **EVT imaging warnings (2 new)**: When EVT recommended, warn if CTA results not documented (vessel occlusion confirmation required) and if ASPECTS not scored (eligibility criterion per HERMES/MR CLEAN).
+- **TNK auto-block toast sync**: Handlers 1 (template) and 2 (dropdown) now fire `tnkAutoBlocked` toast + state when switching to ICH/SAH with active TNK recommendation, matching Handler 3.
+- **Audit findings rejected**: useEffect optional chaining in deps (safe in practice), `consentDocCopied` dead field (trivial), large-core trial eligibility prompts (enhancement), late-window CTP prompts (enhancement).
+
+### Commit
+- Code: `b37b95b` (v5.14.38 / cache v37)
+
 ## Iteration 030 (2026-02-18)
 
 ### What was changed
