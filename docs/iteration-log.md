@@ -188,3 +188,26 @@
 - Consolidate/deduplicate guidance that now appears in multiple sections.
 - Begin automated pathway assertion tests.
 - Add pediatric stroke pathway guidance.
+
+## Iteration 009 (2026-02-18)
+
+### What was changed
+- Added cross-reference links between PFO closure card → cardiac workup PFO evaluation.
+- Added cross-reference links between carotid revascularization card → acute care carotid management.
+- Mobile responsiveness audit: all cards from iter-006 through 008 confirmed safe at 390x844.
+- Deduplication audit: all new cards are complementary (reference vs data entry).
+- Bumped APP_VERSION to v5.14.17 and service-worker cache to v16.
+
+### Why
+- Improve workflow navigation between evidence-reference cards and their data-entry counterparts.
+- Verify no mobile regressions from newly added content.
+
+### QA and validation
+- Build: `npx esbuild` and `npx tailwindcss` passed.
+- Mobile audit: all grids degrade correctly to single-column at 390px.
+- Deployed to GitHub Pages, push successful.
+
+### Next opportunities
+- Address storage schema mismatch debt.
+- Begin automated pathway assertion tests.
+- Add pediatric stroke pathway guidance or other clinical content improvements.
