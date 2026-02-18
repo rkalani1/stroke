@@ -1,0 +1,93 @@
+# Stroke Evidence Review (2021-02-18 to 2026-02-18)
+
+## Scope and method
+- Window: February 18, 2021 through February 18, 2026.
+- Priority sources: society guidelines/scientific statements, major RCTs, high-quality multicenter cohorts, and trial registries.
+- Evidence tag definitions used in this document:
+  - Guideline-grade: official guideline/scientific statement recommendations.
+  - RCT-supported: randomized controlled trial evidence.
+  - Observational/Consensus: non-randomized cohort, registry, or consensus guidance.
+
+## Conflict handling rule
+- If guidelines disagree, prioritize: newer publication date, direct relevance to stroke phenotype, and consistency with multiple RCTs.
+- If RCTs conflict, prioritize larger multicenter pragmatic RCTs and endpoint quality (functional outcome over surrogate outcomes).
+
+## 1) Acute ischemic stroke thrombolysis (TNK vs alteplase, windows, wake-up/unknown onset)
+- Practical recommendation:
+  - Tenecteplase 0.25 mg/kg is a strong first-line thrombolytic option in eligible AIS, especially LVO/EVT-intended pathways.
+  - Alteplase remains acceptable where local protocols or contraindication profiles favor it.
+  - For wake-up/unknown onset presentations, continue imaging-guided selection; avoid broad unselected expansion.
+- Evidence strength: Guideline-grade + RCT-supported.
+
+## 2) EVT eligibility and extended-window selection (including large-core evolution)
+- Practical recommendation:
+  - Large-core infarct should no longer be an automatic exclusion if patient remains within contemporary trial-like imaging and workflow criteria.
+  - Use rapid multimodal imaging and do not delay transfer for potentially treatable LVO with large core.
+- Evidence strength: RCT-supported.
+
+## 3) ICH management (BP, reversal, surgery/escalation, ICU priorities)
+- Practical recommendation:
+  - Use protocolized hyperacute care: BP strategy, glucose/temperature control, reversal pathway, and neurologic critical care bundle.
+  - Anticoagulation-associated ICH reversal should be immediate and protocol-driven.
+  - For selected lobar moderate-large ICH, early minimally invasive evacuation pathways should be considered at capable centers.
+- Evidence strength: Guideline-grade + RCT-supported + Observational/Consensus.
+
+## 4) SAH management essentials and aneurysm workflows
+- Practical recommendation:
+  - Early aneurysm securement, nimodipine, BP control before securement, ICU-level monitoring for delayed cerebral ischemia, and complication prevention bundles.
+- Evidence strength: Guideline-grade.
+
+## 5) CVT diagnosis and management
+- Practical recommendation:
+  - Fast venous imaging (CTV/MRV), immediate anticoagulation when not contraindicated, and escalation for malignant intracranial hypertension.
+  - DOAC transition after initial parenteral anticoagulation is reasonable in selected patients.
+- Evidence strength: Guideline-grade + Observational/Consensus.
+
+## 6) Secondary prevention
+- Practical recommendation:
+  - DAPT should be phenotype- and timing-specific (short duration in minor stroke/high-risk TIA pathways; avoid overextension unless trial-like criteria support it).
+  - AF-related stroke: early DOAC strategies are increasingly supported in selected patients without large hemorrhagic risk.
+  - Maintain intensive risk-factor control: BP, lipids, diabetes, smoking, exercise, and diet.
+  - Keep structured pathways for PFO and carotid disease selection.
+- Evidence strength: Guideline-grade + RCT-supported.
+
+## 7) Special populations (pediatrics, pregnancy/peripartum, anticoagulated, renal dysfunction)
+- Practical recommendation:
+  - Pregnancy/peripartum: treat stroke as a time-critical emergency with maternal-fetal coordination, avoiding delays in reperfusion/reversal pathways.
+  - Anticoagulated patients: immediate agent-specific reversal and procedure timing protocols.
+  - Renal dysfunction: strict dose/pathway safeguards for anticoagulants and contrast workflows.
+  - Pediatrics: high-grade new RCT evidence remains limited in this window; maintain dedicated pediatric stroke escalation pathways and subspecialty consultation.
+- Evidence strength: Guideline-grade + Observational/Consensus.
+- Note: pediatric statement above is an inference from evidence scarcity in this date window and should be rechecked as new pediatric trials publish.
+
+## 8) Implementation science and practical workflow
+- Practical recommendation:
+  - Bundle-based stroke care (protocolized multi-domain treatment) improves outcomes and should be operationalized in UI as checklist-driven rapid workflows.
+  - Senior-first UX should prioritize one-screen critical data, low-friction order bundles, and keyboard-first navigation.
+- Evidence strength: RCT-supported + Observational/Consensus.
+
+## Key citations (metadata + evidence tag)
+| Domain | Evidence tag | Title | Year | Journal/Source | URL | PMID / DOI / NCT |
+|---|---|---|---|---|---|---|
+| AIS thrombolysis | RCT-supported | Intravenous Tenecteplase Compared with Alteplase for Acute Ischaemic Stroke in Canada (AcT) | 2022 | Lancet | https://pubmed.ncbi.nlm.nih.gov/35779579/ | PMID: 35779579; DOI: 10.1016/S0140-6736(22)01054-X |
+| AIS thrombolysis | RCT-supported | Trial of Tenecteplase in Chinese Patients with Acute Ischemic Stroke (TRACE-2) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/37043691/ | PMID: 37043691; DOI: 10.1056/NEJMoa2216603 |
+| AIS thrombolysis | RCT-supported | Tenecteplase vs Alteplase in AIS (ORIGINAL) | 2024 | JAMA | https://pubmed.ncbi.nlm.nih.gov/38710025/ | PMID: 38710025; DOI: 10.1001/jama.2024.8038 |
+| Wake-up/unknown onset | RCT-supported | Intravenous thrombolysis with tenecteplase in patients with wake-up stroke (TWIST) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/36774963/ | PMID: 36774963; DOI: 10.1016/S0140-6736(22)02447-7 |
+| AIS thrombolysis | Guideline-grade | European Stroke Organisation expedited recommendation on tenecteplase | 2023 | Eur Stroke J | https://journals.sagepub.com/doi/full/10.1177/23969873231177508 | DOI: 10.1177/23969873231177508 |
+| EVT large core | RCT-supported | Trial of Endovascular Thrombectomy for Large Ischemic Strokes (SELECT2) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/36762865/ | PMID: 36762865; DOI: 10.1056/NEJMoa2214403 |
+| EVT large core | RCT-supported | Endovascular Therapy for Acute Stroke with Large Ischemic Region (RESCUE-Japan LIMIT) | 2022 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/35138767/ | PMID: 35138767; DOI: 10.1056/NEJMoa2205486 |
+| EVT large core | RCT-supported | Endovascular Therapy for Acute Ischemic Stroke with Large Infarct (ANGEL-ASPECT) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/36762852/ | PMID: 36762852; DOI: 10.1056/NEJMoa2302596 |
+| EVT large core | RCT-supported | Endovascular Thrombectomy for Acute Ischemic Stroke with Established Large Infarct (TENSION) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/37856323/ | PMID: 37856323; DOI: 10.1056/NEJMoa2310242 |
+| ICH | Guideline-grade | 2022 Guideline for the Management of Patients with Spontaneous Intracerebral Hemorrhage | 2022 | Stroke | https://pubmed.ncbi.nlm.nih.gov/35579034/ | PMID: 35579034; DOI: 10.1161/STR.0000000000000407 |
+| ICH implementation | RCT-supported | Care bundle approach for acute intracerebral haemorrhage (INTERACT3) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/37980922/ | PMID: 37980922; DOI: 10.1016/S0140-6736(23)01508-4 |
+| ICH reversal | RCT-supported | Andexanet for Factor Xa Inhibitor-Associated Acute Intracerebral Hemorrhage (ANNEXA-I) | 2024 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/38749032/ | PMID: 38749032; DOI: 10.1056/NEJMoa2313040 |
+| ICH surgery | RCT-supported | Trial of Early Minimally Invasive Removal of Intracerebral Hemorrhage (ENRICH) | 2024 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/38598795/ | PMID: 38598795; DOI: 10.1056/NEJMoa2400314 |
+| SAH | Guideline-grade | 2023 Guideline for Management of Patients With Aneurysmal Subarachnoid Hemorrhage | 2023 | Stroke | https://pubmed.ncbi.nlm.nih.gov/37212182/ | PMID: 37212182; DOI: 10.1161/STR.0000000000000436 |
+| CVT | Guideline-grade | Diagnosis and Management of Cerebral Venous Thrombosis: A Scientific Statement from the AHA | 2024 | Stroke / AHA | https://www.ahajournals.org/doi/10.1161/STR.0000000000000486 | DOI: 10.1161/STR.0000000000000486 |
+| CVT | Observational/Consensus | Direct Oral Anticoagulants vs Warfarin for CVT (ACTION-CVT) | 2022 | Stroke | https://pubmed.ncbi.nlm.nih.gov/35143325/ | PMID: 35143325; DOI: 10.1161/STROKEAHA.121.037541 |
+| Secondary prevention | Guideline-grade | 2021 Guideline for the Prevention of Stroke in Patients With Stroke and TIA | 2021 | Stroke | https://pubmed.ncbi.nlm.nih.gov/34024117/ | PMID: 34024117; DOI: 10.1161/STR.0000000000000375 |
+| DAPT pharmacogenomics | RCT-supported | Ticagrelor or Clopidogrel with Aspirin in High-Risk TIA or Minor Stroke (CHANCE-2) | 2021 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/34708996/ | PMID: 34708996; DOI: 10.1056/NEJMoa2111749 |
+| DAPT timing/phenotype | RCT-supported | Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke (INSPIRES) | 2024 | N Engl J Med | https://www.ahajournals.org/doi/10.1161/STROKEAHA.124.046680 | PMID: 38157499; DOI: 10.1056/NEJMoa2313035 |
+| Cardioembolic timing | RCT-supported | Early versus Later Anticoagulation for Stroke with Atrial Fibrillation (ELAN) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/37222476/ | PMID: 37222476; DOI: 10.1056/NEJMoa2303048 |
+| Cardioembolic timing | RCT-supported | Timing of Oral Anticoagulant Therapy in AIS with AF (TIMING) | 2022 | Circulation | https://pubmed.ncbi.nlm.nih.gov/36065821/ | PMID: 36065821; DOI: 10.1161/CIRCULATIONAHA.122.060786 |
+| Special populations | Guideline-grade | Maternal Stroke: A Focused Update | 2026 | Stroke / PubMed | https://pubmed.ncbi.nlm.nih.gov/41678811/ | PMID: 41678811 |

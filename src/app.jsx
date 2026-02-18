@@ -2201,10 +2201,11 @@ Clinician Name`;
           // Auto-route management sub-tab when diagnosis changes
           useEffect(() => {
             const cat = telestrokeNote.diagnosisCategory;
+            if (managementSubTab === 'calculators' || managementSubTab === 'references') return;
             if (cat && MANAGEMENT_SUBTABS.includes(cat)) {
               setManagementSubTab(cat);
             }
-          }, [telestrokeNote.diagnosisCategory]);
+          }, [telestrokeNote.diagnosisCategory, managementSubTab]);
 
           // Trials data
           const trialsData = {
