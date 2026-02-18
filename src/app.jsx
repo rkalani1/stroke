@@ -11511,7 +11511,7 @@ Clinician Name`;
 
             // ACE inhibitor + TNK angioedema risk
             if (n.tnkRecommended && /lisinopril|enalapril|ramipril|captopril|benazepril|fosinopril|quinapril|perindopril|trandolapril|moexipril/.test(meds)) {
-              warnings.push({ id: 'acei-tnk', severity: 'warn', msg: 'ACE inhibitor + TNK — 5x increased orolingual angioedema risk. Prepare: suction, nebulized epinephrine, IV dexamethasone, intubation equipment at bedside. Monitor tongue/lips q15min x 2h post-TNK.' });
+              warnings.push({ id: 'acei-tnk', severity: 'error', msg: 'ACE inhibitor + TNK — 5x increased orolingual angioedema risk. Prepare airway: suction, nebulized epinephrine, IV dexamethasone, intubation equipment at bedside. Monitor tongue/lips q15min x 2h post-TNK.' });
             }
 
             // Edoxaban + CrCl >95 warning
@@ -11709,6 +11709,16 @@ Clinician Name`;
                 warnings.push({ id: 'evt-no-mrs', severity: 'warn', msg: 'EVT recommended but pre-stroke mRS not documented — most EVT trials required mRS ≤2.' });
               } else if (mrs > 2) {
                 warnings.push({ id: 'evt-high-mrs', severity: 'error', msg: `EVT recommended but pre-stroke mRS is ${mrs} (>2) — most EVT trials excluded mRS >2. Consider TESTED trial if mRS 3-4.` });
+              }
+            }
+
+            // Age ≥80 in late-window EVT requires NIHSS ≥10 (DAWN trial)
+            if (n.evtRecommended) {
+              const evtAge = parseInt(n.age, 10);
+              const evtNihss = parseInt(n.nihss, 10) || nihssScore || 0;
+              const evtTf = calculateTimeFromLKW();
+              if (!isNaN(evtAge) && evtAge >= 80 && evtTf && evtTf.total > 6 && evtTf.total <= 24 && evtNihss < 10) {
+                warnings.push({ id: 'evt-age80-nihss', severity: 'error', msg: `EVT recommended for age ${evtAge} in late window (${evtTf.total.toFixed(1)}h) but NIHSS ${evtNihss} (<10) — DAWN trial required NIHSS ≥10 for patients ≥80 years in 6-24h window.` });
               }
             }
 
@@ -17078,7 +17088,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 value={telestrokeNote.symptoms}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, symptoms: v})); }}
                                 rows="2"
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
+                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                               />
                             </div>
                             <div>
@@ -17090,7 +17100,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 value={telestrokeNote.pmh}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, pmh: v})); }}
                                 rows="2"
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500"
+                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                               />
                             </div>
                           </div>
@@ -17514,7 +17524,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctResults: v})); }}
                                 rows="2"
                                 placeholder="No acute hemorrhage, early ischemic changes..."
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                               />
                             </div>
                             <div>
@@ -17525,7 +17535,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctaResults: v})); }}
                                 rows="2"
                                 placeholder="LVO location, vessel patency..."
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                               />
                             </div>
                           </div>
@@ -18228,14 +18238,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <option value="anticoag-other">Anticoagulation (other)</option>
                                     </select>
                                     {(telestrokeNote.secondaryPrevention || {}).antiplateletRegimen === 'dapt-21' && (
-                                      <select aria-label="DAPT duration" value={(telestrokeNote.secondaryPrevention || {}).daptDuration || ''}
+                                      <><label htmlFor="input-dapt-duration" className="block text-xs text-slate-600 mt-1 mb-0.5">DAPT Duration</label>
+                                      <select id="input-dapt-duration" aria-label="DAPT duration" value={(telestrokeNote.secondaryPrevention || {}).daptDuration || ''}
                                         onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), daptDuration: v}})); }}
                                         className="w-full mt-1 px-2 py-1 border border-slate-300 rounded text-xs">
                                         <option value="">-- DAPT duration --</option>
                                         <option value="21 days">21 days (POINT/CHANCE)</option>
                                         <option value="30 days">30 days</option>
                                         <option value="90 days">90 days (CHANCE-2/THALES)</option>
-                                      </select>
+                                      </select></>
                                     )}
                                     {(() => {
                                       const sp = telestrokeNote.secondaryPrevention || {};
