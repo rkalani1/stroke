@@ -4297,8 +4297,8 @@ Clinician Name`;
               reference: 'STROKE-CLOSE: Nielsen TH et al. Lancet. 2024.',
               conditions: (data) => {
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
-                const afib = (data.telestrokeNote?.ekgFindings || '').toLowerCase().includes('fib') ||
-                             (data.telestrokeNote?.ekgFindings || '').toLowerCase().includes('af');
+                const afib = (data.telestrokeNote?.ekgResults || '').toLowerCase().includes('fib') ||
+                             (data.telestrokeNote?.ekgResults || '').toLowerCase().includes('af');
                 return isICH && afib;
               }
             },
@@ -4317,7 +4317,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Stroke in Pregnancy Scientific Statement 2024',
               reference: 'AHA/ASA Scientific Statement. Stroke. 2024.',
               conditions: (data) => {
-                const isPreg = (data.telestrokeNote?.specialPopulations || '').toLowerCase().includes('pregn') ||
+                const isPreg = data.telestrokeNote?.pregnancyStroke ||
                                (data.telestrokeNote?.pmh || '').toLowerCase().includes('pregn');
                 return isPreg && !!data.telestrokeNote?.evtRecommended;
               }
@@ -17682,8 +17682,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {/* ASPECTS + Vessel Occlusion Row */}
                           <div className="grid grid-cols-2 gap-3 mt-3">
                             <div>
-                              <label className="block text-xs text-slate-600 mb-1">ASPECTS (0-10)</label>
+                              <label htmlFor="input-aspects" className="block text-xs text-slate-600 mb-1">ASPECTS (0-10)</label>
                               <input
+                                id="input-aspects"
                                 type="number"
                                 value={aspectsScore}
                                 onChange={(e) => { const v = parseInt(e.target.value, 10); setAspectsScore(Number.isFinite(v) ? Math.max(0, Math.min(10, v)) : 0); }}
@@ -17850,8 +17851,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           )}
                           <div className="mt-3">
-                            <label className="block text-xs text-slate-600 mb-1">Telemetry / EKG</label>
+                            <label htmlFor="input-ekg" className="block text-xs text-slate-600 mb-1">Telemetry / EKG</label>
                             <input
+                              id="input-ekg"
                               type="text"
                               value={telestrokeNote.ekgResults}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ekgResults: v})); }}
@@ -18208,8 +18210,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                             {telestrokeNote.tnkRecommended && (
                               <div>
-                                <label className="block text-xs text-slate-600 mb-1">TNK Admin Time</label>
+                                <label htmlFor="input-tnk-admin-time" className="block text-xs text-slate-600 mb-1">TNK Admin Time</label>
                                 <input
+                                  id="input-tnk-admin-time"
                                   type="time"
                                   value={telestrokeNote.tnkAdminTime || ''}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, tnkAdminTime: v})); }}
