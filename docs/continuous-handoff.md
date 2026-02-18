@@ -2,37 +2,41 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `0f5cf7c`
+- Last pushed commit: `1654d91`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION observed: `v5.14.12`
-- Service worker cache key: `stroke-app-v11`
+- Live APP_VERSION observed: `v5.14.13`
+- Service worker cache key: `stroke-app-v12`
 
-## Completed in this cycle
-- Rebased local work onto latest `origin/main` without regressing top-level IA (`Dashboard`, `Encounter`, `Library`, `Settings`).
-- Added management auto-routing guard so diagnosis changes do not forcibly pull users out of `Calculators` or `References`.
-- Added/updated core governance docs:
+## Completed in this cycle (iter-004)
+- Added one-screen `ICH First-Hour Critical Bundle` card in ICH management.
+- Added `Large Core EVT` evidence highlight with explicit conservative decision rule (do not exclude solely for large core).
+- Added DAPT phenotype quick matrix in secondary prevention guidance (rendered when pathway context is populated).
+- Updated cycle docs:
   - `docs/evidence-review-2021-2026.md`
   - `docs/gap-matrix.md`
   - `docs/iteration-log.md`
   - `docs/regression-checklist.md`
-- Bumped app version to `v5.14.12` and cache key to `stroke-app-v11`.
-- Deployed to `main` and confirmed production rollout.
 
 ## QA summary
 - Build: pass (`npm run build`).
-- Post-deploy smoke tests:
-  - Local: desktop/tablet/mobile and routes `#/dashboard`, `#/encounter`, `#/library`, `#/settings` all passed, no console errors.
-  - Live: desktop/tablet/mobile and same routes all passed, no console errors.
+- Schema check: `compare_keys.ps1` still reports default-vs-sanitizer mismatch (`Missing count: 319`).
+- Pre-change baseline: local + live desktop/tablet/mobile route matrix passed (no console errors).
+- Post-change pre-push: local + live desktop/tablet/mobile route matrix passed (no console errors).
+- Post-deploy validation: live APP_VERSION advanced to `v5.14.13`; local + live route matrix passed (no console errors).
 
 ## Known debt and risks
-- `compare_keys.ps1` indicates large default-vs-sanitizer mismatch set (Missing count: 319); schema hardening needed.
-- No automated unit/integration tests; current safety net is build + smoke + manual pathway checks.
+- Storage schema mismatch remains high and should be handled in a dedicated hardening iteration.
+- No automated unit/integration tests yet; confidence remains build + scripted smoke + targeted workflow checks.
+- Working tree contains unrelated local artifacts not committed by cycle automation:
+  - modified `package-lock.json`
+  - untracked `app.debug.js`
+  - untracked `compare_keys.ps1`
 
 ## Next highest-impact actions
-1. Build a one-screen ICH first-hour bundle card (BP, reversal, ICU escalation, surgery trigger) with conservative defaults.
-2. Add explicit large-core EVT evidence card and imaging criteria quick reference in ischemic pathway.
-3. Add DAPT phenotype matrix and AF anticoag timing quick card in secondary prevention workflow.
-4. Add automated regression script for key pathway assertions (ischemic/ICH/SAH/TIA/CVT + calculators).
+1. Add SAH first-hour rapid checklist card at top of SAH pathway (securement, nimodipine, DCI watch, BP context).
+2. Add CVT treatment timeline strip (initial anticoagulation, ICP red flags, transition strategy).
+3. Add AF anticoag timing quick card in prevention workflow (early vs delayed DOAC framing).
+4. Start automated pathway assertions (ischemic/ICH/SAH/TIA/CVT + calculator smoke checks) as scriptable CI gates.
 
 ## Resume command
 - `cd C:\Users\rkala\stroke && git pull --rebase origin main && "C:\Program Files\nodejs\npm.cmd" run build`
