@@ -22057,6 +22057,91 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   Recommended schedule: 1-2 wk post-discharge, then 3 mo, 6 mo, 12 mo. Adjust based on severity and risk factors.
                                 </div>
                               </div>
+
+                              {/* PFO Closure Decision Card */}
+                              <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
+                                <h4 className="font-semibold text-indigo-800 mb-2 text-sm flex items-center gap-2">
+                                  <i aria-hidden="true" data-lucide="heart" className="w-4 h-4"></i>
+                                  PFO Closure Eligibility (Cryptogenic Stroke)
+                                </h4>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                                  <div className="bg-white border border-indigo-200 rounded p-2">
+                                    <p className="font-bold text-indigo-700 uppercase mb-1">Consider Closure If:</p>
+                                    <ul className="text-slate-700 space-y-0.5">
+                                      <li>&bull; Age 18-60</li>
+                                      <li>&bull; Cryptogenic/ESUS mechanism</li>
+                                      <li>&bull; RoPE &ge;7 (high PFO-attributable fraction)</li>
+                                      <li>&bull; High-risk PFO features (ASA, large shunt)</li>
+                                      <li>&bull; PASCAL: probable or definite</li>
+                                    </ul>
+                                  </div>
+                                  <div className="bg-white border border-indigo-200 rounded p-2">
+                                    <p className="font-bold text-indigo-700 uppercase mb-1">Trial Evidence</p>
+                                    <ul className="text-slate-700 space-y-0.5">
+                                      <li>&bull; CLOSE: NNT ~20 over 5 yrs (Class I)</li>
+                                      <li>&bull; RESPECT: reduced recurrence (HR 0.55)</li>
+                                      <li>&bull; REDUCE: 77% relative risk reduction</li>
+                                      <li>&bull; Benefit strongest with ASA + large shunt</li>
+                                      <li>&bull; DAPT x 1-6 mo post-device, then ASA</li>
+                                    </ul>
+                                  </div>
+                                  <div className="bg-white border border-amber-200 rounded p-2">
+                                    <p className="font-bold text-amber-700 uppercase mb-1">Medical Therapy If:</p>
+                                    <ul className="text-slate-700 space-y-0.5">
+                                      <li>&bull; Age &gt;60 (less attributable fraction)</li>
+                                      <li>&bull; Low-risk PFO (small shunt, no ASA)</li>
+                                      <li>&bull; Clear alternative mechanism found</li>
+                                      <li>&bull; RoPE &lt;7</li>
+                                      <li>&bull; ASA or anticoagulation per etiology</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <p className="text-xs text-slate-500 mt-2 italic">CLOSE (NEJM 2017, PMID: 28902580). RESPECT (NEJM 2017, PMID: 28902590). REDUCE (JACC 2017, PMID: 28917503). AHA/ASA 2021 Secondary Prevention (PMID: 34024117). Class I, LOE A.</p>
+                              </div>
+
+                              {/* Carotid Revascularization Decision Card */}
+                              <div className="bg-teal-50 border border-teal-200 rounded-lg p-3">
+                                <h4 className="font-semibold text-teal-800 mb-2 text-sm flex items-center gap-2">
+                                  <i aria-hidden="true" data-lucide="scissors" className="w-4 h-4"></i>
+                                  Carotid Revascularization Decision Guide
+                                </h4>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                                  <div className="bg-white border border-teal-200 rounded p-2">
+                                    <p className="font-bold text-teal-700 uppercase mb-1">Symptomatic 70-99%</p>
+                                    <ul className="text-slate-700 space-y-0.5">
+                                      <li>&bull; CEA within 2 weeks (Class I, LOE A)</li>
+                                      <li>&bull; Benefit highest when done early</li>
+                                      <li>&bull; CAS if high surgical risk (Class I)</li>
+                                      <li>&bull; TCAR: emerging alternative</li>
+                                      <li>&bull; Optimal medical therapy always</li>
+                                    </ul>
+                                  </div>
+                                  <div className="bg-white border border-teal-200 rounded p-2">
+                                    <p className="font-bold text-teal-700 uppercase mb-1">Symptomatic 50-69%</p>
+                                    <ul className="text-slate-700 space-y-0.5">
+                                      <li>&bull; CEA may be considered (Class IIa)</li>
+                                      <li>&bull; Benefit depends on patient factors</li>
+                                      <li>&bull; Male sex, recent symptoms favor CEA</li>
+                                      <li>&bull; Near-occlusion: uncertain benefit</li>
+                                      <li>&bull; Shared decision-making essential</li>
+                                    </ul>
+                                  </div>
+                                  <div className="bg-white border border-amber-200 rounded p-2">
+                                    <p className="font-bold text-amber-700 uppercase mb-1">Asymptomatic &ge;70%</p>
+                                    <ul className="text-slate-700 space-y-0.5">
+                                      <li>&bull; Medical management is primary (CREST-2)</li>
+                                      <li>&bull; CEA NOT superior to modern medical Rx</li>
+                                      <li>&bull; High-intensity statin + ASA + BP control</li>
+                                      <li>&bull; Revascularization only if progression/specific risk</li>
+                                      <li>&bull; Shared decision with vascular surgery</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div className="mt-2 bg-white border border-teal-200 rounded p-2 text-xs text-slate-700">
+                                  <strong>Timing after stroke:</strong> TIA/minor stroke: 48h-7d. Moderate stroke: 2-4 weeks. Large infarct: 4-6 weeks (hemorrhagic conversion risk). Always stabilize medically first.
+                                </div>
+                                <p className="text-xs text-slate-500 mt-1 italic">NASCET (NEJM 1991). CREST-2 (NEJM 2025). AHA/ASA 2021 Secondary Prevention (PMID: 34024117).</p>
+                              </div>
                             </div>
                           </details>
                         )}
@@ -27146,6 +27231,30 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         <div id="isch-contrast" className="bg-teal-50 border border-teal-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-teal-800 mb-3">Contrast Allergy + Suspected LVO Protocol</h3>
+                          {/* Renal Safety Prompt for Contrast */}
+                          {(() => {
+                            const cr = parseFloat(telestrokeNote.creatinine);
+                            const age = parseInt(telestrokeNote.age, 10);
+                            const wt = parseFloat(telestrokeNote.weight);
+                            const sex = telestrokeNote.sex;
+                            let crcl = null;
+                            if (!isNaN(cr) && cr > 0 && !isNaN(age) && age > 0 && !isNaN(wt) && wt > 0 && sex) {
+                              crcl = Math.round(((140 - age) * wt * (sex === 'Female' ? 0.85 : 1)) / (72 * cr));
+                            }
+                            const severe = (!isNaN(cr) && cr > 3) || (crcl !== null && crcl < 30);
+                            const moderate = crcl !== null && crcl >= 30 && crcl < 60;
+                            if (severe) return (
+                              <div role="alert" className="bg-red-50 border border-red-300 rounded-lg p-2 mb-3 text-xs text-red-800">
+                                <strong>Renal Safety Alert (CrCl {crcl !== null ? crcl + ' mL/min' : 'unknown'}{!isNaN(cr) ? ', Cr ' + cr : ''}):</strong> Contrast nephropathy risk is HIGH. Hydrate with NS, minimize contrast volume, monitor Cr at 24-48h post-contrast. Coordinate with Radiology &amp; Nephrology. Gadolinium MRA is an alternative for non-emergent vascular imaging.
+                              </div>
+                            );
+                            if (moderate) return (
+                              <div className="bg-amber-50 border border-amber-200 rounded-lg p-2 mb-3 text-xs text-amber-800">
+                                <strong>Renal Caution (CrCl {crcl} mL/min):</strong> Moderate renal impairment. Pre-hydrate with NS if possible. Monitor Cr at 24-48h post-contrast.
+                              </div>
+                            );
+                            return null;
+                          })()}
                           <div className="bg-white p-3 rounded border mb-3">
                             <p className="text-sm font-semibold text-teal-700 mb-2">Eligibility:</p>
                             <ul className="text-sm space-y-1">
