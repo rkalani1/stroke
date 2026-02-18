@@ -1,5 +1,20 @@
 # Iteration Log
 
+## Iteration 021 (2026-02-18)
+
+### What was changed
+- **EVT procedural fields (5 new)**: Added `evtAccessSite`, `evtDevice`, `evtNumberOfPasses`, `evtTechnique`, `reperfusionTime` to state, allowedKeys, and localStorage persistence. Collapsible "EVT Procedure Details" section in encounter tab shows when EVT is recommended. Procedure note auto-populates from state instead of blank placeholders. Transfer note includes procedural details.
+- **Dashboard case outcomes card**: New card on dashboard showing at-a-glance metrics — DTN (color-coded: green ≤45m, amber ≤60m, red >60m), DTP, mTICI (green for 2b/2c/3), NIHSS admission→discharge with delta, discharge mRS, sICH flag, and quality measures compliance count (X/6). All metrics pull from existing state fields.
+
+### Why
+- EVT procedural fields: The procedure note (the medicolegal document for thrombectomy) had 5 blank placeholders requiring manual typing. Now auto-populated from structured inputs, reducing documentation time and errors.
+- Dashboard outcomes: Neurologists need an immediate summary of case quality metrics without navigating to individual sections. DTN benchmarking and mTICI success rates are core quality indicators.
+
+### Commit
+- `487ef18` — APP_VERSION v5.14.28, cache key stroke-app-v27
+
+---
+
 ## Iteration 020 (2026-02-18)
 
 ### What was changed
