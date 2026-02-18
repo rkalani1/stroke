@@ -21801,6 +21801,27 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* DAPT Duration Guidance */}
                               <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
                                 <h4 className="font-semibold text-orange-800 mb-2 text-sm">DAPT Duration</h4>
+                                <div className="bg-white border border-orange-200 rounded-lg p-2 mb-2">
+                                  <p className="text-xs font-semibold text-orange-800 mb-1">Phenotype Quick Matrix (conservative)</p>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-slate-700">
+                                    <div className="border border-slate-200 rounded p-2">
+                                      <p className="font-semibold text-slate-800">Minor stroke / high-risk TIA (NIHSS ≤3)</p>
+                                      <p>ASA + clopidogrel for 21 days, then single antiplatelet.</p>
+                                    </div>
+                                    <div className="border border-slate-200 rounded p-2">
+                                      <p className="font-semibold text-slate-800">NIHSS 4-5 or selected delayed presenters</p>
+                                      <p>Consider ASA + ticagrelor for 30 days when bleeding risk is acceptable.</p>
+                                    </div>
+                                    <div className="border border-slate-200 rounded p-2">
+                                      <p className="font-semibold text-slate-800">ICAD phenotype</p>
+                                      <p>ASA + clopidogrel for 90 days, then ASA monotherapy.</p>
+                                    </div>
+                                    <div className="border border-slate-200 rounded p-2">
+                                      <p className="font-semibold text-slate-800">Cardioembolic / AF pathway</p>
+                                      <p>Transition to anticoagulation strategy; avoid prolonged DAPT-only approach.</p>
+                                    </div>
+                                  </div>
+                                </div>
                                 <div className="text-xs text-slate-700 space-y-1">
                                   <p><strong>NIHSS ≤3:</strong> DAPT (ASA + clopidogrel) x 21 days, then monotherapy (CHANCE/POINT, Class I).</p>
                                   <p><strong>NIHSS 4-5:</strong> ASA + ticagrelor x 30 days may be considered (THALES, Class IIb).</p>
@@ -25347,6 +25368,37 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           </div>
 
+                          {/* === ICH FIRST-HOUR CRITICAL BUNDLE === */}
+                          <div className="bg-red-100 border border-red-300 rounded-xl p-4 shadow-sm">
+                            <div className="flex items-center justify-between gap-2 flex-wrap mb-2">
+                              <p className="text-xs font-semibold uppercase tracking-wide text-red-800">ICH First-Hour Critical Bundle</p>
+                              <span className="text-[11px] text-red-700 font-medium">AHA/ASA 2022 + INTERACT3 + ENRICH (rapid workflow card)</span>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                              <div className="bg-white border border-red-200 rounded-lg p-2">
+                                <p className="font-semibold text-red-800">1. Airway and Neuro ICU Escalation</p>
+                                <p className="text-slate-700">Escalate airway and ICU-level monitoring early when exam worsens or airway protection is uncertain.</p>
+                              </div>
+                              <div className="bg-white border border-red-200 rounded-lg p-2">
+                                <p className="font-semibold text-red-800">2. Blood Pressure Strategy</p>
+                                <p className="text-slate-700">Use rapid but controlled BP reduction (often around SBP 140) while avoiding hypotension and neurologic decline.</p>
+                              </div>
+                              <div className="bg-white border border-red-200 rounded-lg p-2">
+                                <p className="font-semibold text-red-800">3. Immediate Anticoag Reversal</p>
+                                <p className="text-slate-700">If anticoagulant exposure is possible, initiate agent-specific reversal without delay using the pathways below.</p>
+                              </div>
+                              <div className="bg-white border border-red-200 rounded-lg p-2">
+                                <p className="font-semibold text-red-800">4. Core Support Bundle</p>
+                                <p className="text-slate-700">Treat fever and hyperglycemia, monitor sodium/osmolality when indicated, and prevent secondary injury.</p>
+                              </div>
+                              <div className="bg-white border border-red-200 rounded-lg p-2 md:col-span-2">
+                                <p className="font-semibold text-red-800">5. Early Surgery Screen</p>
+                                <p className="text-slate-700">Promptly screen for neurosurgical escalation in cerebellar decline, hydrocephalus, mass effect, or selected lobar large ICH.</p>
+                              </div>
+                            </div>
+                            <p className="text-xs text-red-700 mt-2">Conservative default: stabilize, control BP, reverse anticoagulation, and escalate ICU/surgical pathways before lower-priority tasks.</p>
+                          </div>
+
                           {/* === WARFARIN REVERSAL === */}
                           <details className="bg-white border border-red-200 rounded-xl shadow-sm">
                             <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
@@ -26823,6 +26875,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         <div id="isch-largecore" className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-blue-800 mb-3">Large Core EVT Selection</h3>
+                          <div className="bg-white border border-blue-300 rounded-lg p-3 mb-3">
+                            <p className="text-sm font-semibold text-blue-900 mb-1">Evidence Highlight (Conservative Interpretation)</p>
+                            <p className="text-sm text-slate-700">Large core should not be an automatic exclusion. SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, and SVIN 2025 support EVT in many ASPECTS 3-5 patients when clinical and imaging context is favorable.</p>
+                            <p className="text-xs text-blue-700 mt-1">Default rule: do not exclude solely for large core; confirm neurointerventional review and document individualized risk (including higher sICH risk at lower ASPECTS).</p>
+                          </div>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-white p-3 rounded border">
                               <h4 className="font-semibold text-blue-700 mb-2">Early Window (0-6h)</h4>
@@ -32350,3 +32407,4 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
         // Initialize Lucide icons
         createIcons({ icons });
+

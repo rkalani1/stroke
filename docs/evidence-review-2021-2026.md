@@ -66,6 +66,12 @@
   - Senior-first UX should prioritize one-screen critical data, low-friction order bundles, and keyboard-first navigation.
 - Evidence strength: RCT-supported + Observational/Consensus.
 
+### Operational mapping update (2026-02-18, iter-004)
+- Added a one-screen ICH first-hour critical bundle card to prioritize stabilization, BP strategy, anticoagulation reversal, ICU escalation, and early surgery screening.
+- Added a large-core EVT evidence highlight with explicit conservative rule: do not exclude solely for large core; require individualized neurointerventional review and risk documentation.
+- Added a phenotype quick matrix for DAPT pathway selection as a concise companion to existing detailed text.
+- Conservative assumption used: in ambiguous acute scenarios, prioritize stabilization and reversible harm mitigation before lower-priority workflow steps.
+
 ## Key citations (metadata + evidence tag)
 | Domain | Evidence tag | Title | Year | Journal/Source | URL | PMID / DOI / NCT |
 |---|---|---|---|---|---|---|

@@ -13,12 +13,15 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Anticoagulation reversal prompts still trigger correctly for hemorrhagic pathways.
 - [ ] BP-phase auto-assignment remains correct for ischemic/ICH/SAH contexts.
 - [ ] Required-field warnings still display in Encounter when key data are missing.
+- [ ] ICH first-hour bundle card remains visible and aligned with reversal/BP/escalation pathways.
+- [ ] Large-core EVT evidence callout remains present with conservative eligibility language.
 
 ## Workflow and usability
 - [ ] Senior rapid path: key decisions visible within one scroll on desktop.
 - [ ] Keyboard shortcuts work (tab switching, phase switching, search, calculator toggle, note copy).
 - [ ] Command palette/search remains functional and navigates correctly.
 - [ ] New UI changes do not add unnecessary clicks for common acute workflows.
+- [ ] DAPT phenotype quick matrix remains visible in secondary prevention workflow when pathway context is present.
 
 ## Accessibility and responsive behavior
 - [ ] Desktop (1440x900), tablet (768x1024), and mobile (390x844) layouts are usable.

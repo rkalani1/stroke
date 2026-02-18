@@ -40,3 +40,47 @@
 - Add one-screen ICH first-hour checklist card (P0).
 - Add explicit large-core EVT eligibility guidance card with trial-grounded criteria (P0).
 - Add DAPT phenotype matrix and AF anticoag timing quick card in prevention workflow (P0/P1).
+
+## Iteration 004 (2026-02-18)
+
+### What was changed
+- Added `ICH First-Hour Critical Bundle` card in ICH management to surface stabilization priorities (airway/ICU, BP strategy, immediate reversal, core support, early surgery screen).
+- Added `Evidence Highlight (Conservative Interpretation)` in large-core EVT section emphasizing non-exclusion by core alone and documented neurointerventional review.
+- Added `Phenotype Quick Matrix (conservative)` in DAPT guidance as a high-signal phenotype-to-duration map.
+- Bumped deploy tokens:
+  - `index.html` APP version: `v5.14.13`
+  - `service-worker.js` cache: `stroke-app-v12`
+
+### Why
+- Reduce acute cognitive load by pulling critical ICH actions into one screen.
+- Improve large-core EVT decision clarity under time pressure with explicit evidence-backed conservative wording.
+- Reduce DAPT selection friction with a concise matrix that complements existing detailed text.
+
+### Evidence citations used for this iteration
+- 2022 AHA/ASA ICH guideline, Stroke 2022, DOI: 10.1161/STR.0000000000000407, PMID: 35579034.
+- INTERACT3 care-bundle RCT, Lancet 2023, DOI: 10.1016/S0140-6736(23)01508-4, PMID: 37980922.
+- ENRICH minimally invasive surgery RCT, N Engl J Med 2024, DOI: 10.1056/NEJMoa2400314, PMID: 38598795.
+- SELECT2/ANGEL-ASPECT/RESCUE-Japan LIMIT/TENSION large-core EVT RCTs (see evidence review table).
+- SVIN large-core EVT recommendations 2025, DOI: 10.1161/SVIN.124.001581.
+- CHANCE-2 and INSPIRES DAPT evidence (see evidence review table).
+
+### QA and validation
+- Build: `npm run build` passed.
+- Storage schema check: `compare_keys.ps1` run; persistent pre-existing mismatch remains (`Missing count: 319`).
+- Baseline audit (pre-change): local + live desktop/tablet/mobile on `#/dashboard`, `#/encounter`, `#/library`, `#/settings` all passed without console errors.
+- Post-change local regression:
+  - Core routes passed.
+  - New ICH first-hour bundle text present.
+  - New large-core evidence highlight text present.
+  - Keyboard `?` shortcut modal opens.
+  - DAPT matrix verified after clinical template state is set.
+- Post-change audit: local + live desktop/tablet/mobile on `#/dashboard`, `#/encounter`, `#/library`, `#/settings`, `#/management/ich`, `#/management/ischemic` all passed without console errors.
+
+### Remaining risks
+- Default-vs-sanitizer schema mismatch debt remains high and should be addressed in a dedicated hardening cycle.
+- No automated unit/integration tests yet; regression confidence remains script + smoke + targeted manual checks.
+
+### Next opportunities
+- Add SAH rapid first-hour card using existing guideline citations.
+- Add CVT treatment timeline strip (initial anticoag, ICP red flags, transition rules).
+- Add explicit AF anticoag timing quick card in prevention workflow.
