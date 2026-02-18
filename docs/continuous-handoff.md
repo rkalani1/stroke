@@ -2,14 +2,14 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `7b1083f`
+- Last pushed commit: `9f7f1c7`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.31`
-- Service worker cache key: `stroke-app-v30`
+- Live APP_VERSION: `v5.14.32`
+- Service worker cache key: `stroke-app-v31`
 
-## Session summary (iter-006 through iter-024)
+## Session summary (iter-006 through iter-025)
 
-### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-024)
+### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-025)
 - SAH first-hour rapid actions card
 - CVT treatment timeline strip
 - AF anticoag timing quick reference
@@ -25,7 +25,7 @@
 - AHA/ASA GWTG quality metrics exported to discharge note template
 - Caregiver education checklist + screening scores (PHQ-2, MoCA, STOP-BANG) in discharge note
 
-### Usability & workflow (iter-015 through iter-024)
+### Usability & workflow (iter-015 through iter-025)
 - Inline TNK dose badge at recommendation checkbox
 - Secondary prevention plan added to transfer note
 - Stable contraindication list keys (field/label-based)
@@ -42,7 +42,7 @@
 - ASPECTS/PC-ASPECTS mobile responsive grids (2-col on mobile, 3-col tablet, full on desktop)
 - EVT procedure details section auto-opens when populated
 
-### Quality & infrastructure (iter-009 through iter-024)
+### Quality & infrastructure (iter-009 through iter-025)
 - Cross-links between reference cards and data-entry sections
 - Mobile responsiveness audit: all cards safe at 390px
 - Schema mismatch debt resolved (compare_keys.ps1 fixed, 0 true mismatches)
@@ -79,6 +79,11 @@
 - consentKit cleared on diagnosis change (template + dropdown)
 - Follow-up brief: discharge mRS with admission comparison
 - Progress note: VTE prophylaxis from state (was static placeholder)
+- Handler 3 (applyDiagnosisSelection) synced with Handlers 1 & 2 (28+ field clears)
+- EVT procedural fields + nested objects cleared on diagnosis category change (all 3 handlers)
+- Patient education: SAH-specific (rebleeding, vasospasm, nimodipine, aneurysm status)
+- Discharge note: LDL placeholder replaced with secondaryPrevention.ldlCurrent
+- Discharge note: carotid imaging placeholder replaced with carotidManagement data
 
 ### Gap matrix: ALL P0/P1 items COMPLETED
 

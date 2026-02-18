@@ -1,5 +1,27 @@
 # Iteration Log
 
+## Iteration 025 (2026-02-18)
+
+### What was changed
+- **Handler 3 state leak fix (P1 CRITICAL)**: `applyDiagnosisSelection` (called from 9 UI paths including main diagnosis dropdown) was missing 95% of clearing logic. Now clears all ICH (5), SAH (13+vasospasmMonitoring), CVT (5), ischemic treatment (tnk/evt/consent), EVT procedural (5), and nested objects (postTNKMonitoring, doacTiming, hemorrhagicTransformation, angioedema, osmoticTherapy) matching Handlers 1 & 2.
+- **EVT procedural field clearing (P2)**: All 3 diagnosis-change handlers now clear evtAccessSite, evtDevice, evtTechnique, evtNumberOfPasses, reperfusionTime when leaving ischemic.
+- **Nested object clearing (P2)**: All 3 handlers clear postTNKMonitoring, doacTiming, hemorrhagicTransformation, angioedema when leaving ischemic; osmoticTherapy when leaving ICH.
+- **SAH patient education (P1)**: SAH-specific header, disease explanation, rebleeding risk warnings, vasospasm recognition (3-14d), nimodipine compliance (q4h x21d), aneurysm treatment status, EVD mention.
+- **Discharge LDL placeholder (P1)**: Replaced static `___` with `secondaryPrevention.ldlCurrent` value.
+- **Discharge carotid placeholder (P2)**: Replaced static `___` with `carotidManagement` data (side, degree, symptomatic, intervention).
+
+### Verification
+- Audit found Handler 3 missing clearing for 28+ fields — confirmed by code review at line 12322
+- All 3 handlers now have identical clearing logic for each diagnosis category
+- SAH education tested: dynamic content based on sahNimodipine, sahAneurysmSecured, sahSecuringMethod, sahEVDPlaced
+- LDL/carotid placeholders fall back to `___` when no data entered
+
+### Build
+- Version: v5.14.32, cache: stroke-app-v31
+- Commit: `9f7f1c7`
+
+---
+
 ## Iteration 024 (2026-02-18)
 
 ### What was changed
