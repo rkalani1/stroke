@@ -1,5 +1,31 @@
 # Iteration Log
 
+## Iteration 024 (2026-02-18)
+
+### What was changed
+- **Patient education mimic path (P0)**: Mimic diagnoses now get appropriate non-stroke education instead of "STROKE PATIENT EDUCATION" with stroke prevention advice. Patients are told their symptoms were not caused by a stroke and directed to follow-up.
+- **CVT patient education (P1)**: CVT patients now get venous-specific education: "Cerebral Venous Thrombosis Patient Education" header, explanation of CVT vs arterial stroke, anticoagulation duration (3-12 months), venous-specific medication guidance.
+- **Wake-up stroke template ReferenceError fix (P1)**: lkwUnknown auto-population of discoveryDate/discoveryTime referenced `updated` variable outside its setState callback scope — a ReferenceError crash caught by ErrorBoundary. Moved inside functional updater.
+- **consentKit clearing on diagnosis change (P1)**: EVT consent data (evtConsentDiscussed, evtConsentType, evtConsentTime, transferConsentDiscussed) now cleared when diagnosis changes away from ischemic. Applied to both template button handler and comprehensive dropdown handler.
+- **Follow-up brief discharge mRS (P1)**: Added discharge mRS with admission comparison to follow-up clinic handoff brief.
+- **Progress note VTE prophylaxis (P1)**: Replaced static `___` placeholder with actual vteProphylaxis data (IPC/SCDs, pharmacologic agent, post-TNK hold status).
+
+### Why
+- Mimic patients being told they had a stroke is clinically incorrect and could affect treatment compliance, insurance, and patient anxiety.
+- CVT is distinct from arterial stroke and requires specific anticoagulation education that wasn't provided.
+- Wake-up stroke template crash prevented auto-population of discovery time, requiring manual entry.
+- Stale consentKit data could contaminate a new patient's record if diagnosis was switched back to ischemic.
+
+### Audit results
+- **Note template fidelity audit**: 1 P0 (mimic education), 10 P1 (various missing data points), 10 P2 (formatting). Many P1 items require new state fields (discharge labs, I/O, subjective data) — deferred.
+- **UI edge case audit**: 0 P0, 4 P1 (lkwUnknown race condition, consentKit clearing x2, nested object clears), 4 P2 (height/weight validation, creatinine fallback, select normalization).
+- **Clinical audit false positives**: 4/4 P0 claims from iter-023 clinical audit re-confirmed as false positives (auto-block logic handles INR, platelets, basilar NIHSS, and ASPECTS coverage correctly).
+
+### Commit
+- `7b1083f` — APP_VERSION v5.14.31, cache key stroke-app-v30
+
+---
+
 ## Iteration 023 (2026-02-18)
 
 ### What was changed

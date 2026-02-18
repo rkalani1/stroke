@@ -2,14 +2,14 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `c3b7ea6`
+- Last pushed commit: `7b1083f`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.30`
-- Service worker cache key: `stroke-app-v29`
+- Live APP_VERSION: `v5.14.31`
+- Service worker cache key: `stroke-app-v30`
 
-## Session summary (iter-006 through iter-023)
+## Session summary (iter-006 through iter-024)
 
-### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-023)
+### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-024)
 - SAH first-hour rapid actions card
 - CVT treatment timeline strip
 - AF anticoag timing quick reference
@@ -25,7 +25,7 @@
 - AHA/ASA GWTG quality metrics exported to discharge note template
 - Caregiver education checklist + screening scores (PHQ-2, MoCA, STOP-BANG) in discharge note
 
-### Usability & workflow (iter-015 through iter-023)
+### Usability & workflow (iter-015 through iter-024)
 - Inline TNK dose badge at recommendation checkbox
 - Secondary prevention plan added to transfer note
 - Stable contraindication list keys (field/label-based)
@@ -42,7 +42,7 @@
 - ASPECTS/PC-ASPECTS mobile responsive grids (2-col on mobile, 3-col tablet, full on desktop)
 - EVT procedure details section auto-opens when populated
 
-### Quality & infrastructure (iter-009 through iter-023)
+### Quality & infrastructure (iter-009 through iter-024)
 - Cross-links between reference cards and data-entry sections
 - Mobile responsiveness audit: all cards safe at 390px
 - Schema mismatch debt resolved (compare_keys.ps1 fixed, 0 true mismatches)
@@ -73,6 +73,12 @@
 - ACEi + TNK angioedema warning escalated to error severity
 - Textarea focus:outline-none consistency (4 locations)
 - DAPT duration select visible label added
+- Patient education: mimic-aware path (non-stroke content for mimics)
+- Patient education: CVT-specific venous thrombosis education
+- Wake-up stroke template lkwUnknown ReferenceError fixed
+- consentKit cleared on diagnosis change (template + dropdown)
+- Follow-up brief: discharge mRS with admission comparison
+- Progress note: VTE prophylaxis from state (was static placeholder)
 
 ### Gap matrix: ALL P0/P1 items COMPLETED
 
