@@ -1,5 +1,15 @@
 # Iteration Log
 
+## Iteration 030 (2026-02-18)
+
+### What was changed
+- **NaN/falsy guard fixes (8 warning conditions)**: INR (`inr > 1.7` → `!isNaN(inr) && inr > 1.7`), aPTT (`ptt && ptt > 40` → `!isNaN(ptt) && ptt > 40`), platelets (2 locations), creatinine, glucose (3 locations). All now use `!isNaN()` instead of falsy checks that silently skip NaN/0 values.
+- **ErrorBoundary coverage**: Settings tab and Trials tab now wrapped in ErrorBoundary, matching Encounter and Management tabs.
+- **Audit findings rejected**: SW error suppression (P2 not P0 — static PWA), print styling for 968 cards (P2 enhancement), TNK+ICH imaging detection (enhancement — handlers already auto-block), DOAC assumption (intentional defensive design).
+
+### Commit
+- Code: `81f1a85` (v5.14.37 / cache v36)
+
 ## Iteration 029 (2026-02-18)
 
 ### What was changed

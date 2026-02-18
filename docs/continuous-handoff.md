@@ -2,12 +2,12 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `60ba339`
+- Last pushed commit: `81f1a85`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.36`
-- Service worker cache key: `stroke-app-v35`
+- Live APP_VERSION: `v5.14.37`
+- Service worker cache key: `stroke-app-v36`
 
-## Session summary (iter-006 through iter-029)
+## Session summary (iter-006 through iter-030)
 
 ### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-029)
 - SAH first-hour rapid actions card
@@ -42,7 +42,7 @@
 - ASPECTS/PC-ASPECTS mobile responsive grids (2-col on mobile, 3-col tablet, full on desktop)
 - EVT procedure details section auto-opens when populated
 
-### Quality & infrastructure (iter-009 through iter-029)
+### Quality & infrastructure (iter-009 through iter-030)
 - Cross-links between reference cards and data-entry sections
 - Mobile responsiveness audit: all cards safe at 390px
 - Schema mismatch debt resolved (compare_keys.ps1 fixed, 0 true mismatches)
@@ -97,6 +97,8 @@
 - Progress note: osmotic therapy, early mobilization, fever management, nutritional support added
 - Discharge note: early mobilization, fever management, family communication added
 - Signout note: osmotic therapy, early mobilization, fever status, nutrition/feeding added
+- NaN/falsy guard fixes on 8 warning conditions (INR, aPTT, platelets, creatinine, glucose)
+- ErrorBoundary wrapping Settings tab and Trials tab for crash resilience
 
 ### Gap matrix: ALL P0/P1 items COMPLETED
 
