@@ -2,14 +2,14 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `63cb9c3`
+- Last pushed commit: `771feec`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.25`
-- Service worker cache key: `stroke-app-v24`
+- Live APP_VERSION: `v5.14.26`
+- Service worker cache key: `stroke-app-v25`
 
-## Session summary (iter-006 through iter-018)
+## Session summary (iter-006 through iter-019)
 
-### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-018)
+### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-019)
 - SAH first-hour rapid actions card
 - CVT treatment timeline strip
 - AF anticoag timing quick reference
@@ -25,7 +25,7 @@
 - AHA/ASA GWTG quality metrics exported to discharge note template
 - Caregiver education checklist + screening scores (PHQ-2, MoCA, STOP-BANG) in discharge note
 
-### Usability & workflow (iter-015 through iter-018)
+### Usability & workflow (iter-015 through iter-019)
 - Inline TNK dose badge at recommendation checkbox
 - Secondary prevention plan added to transfer note
 - Stable contraindication list keys (field/label-based)
@@ -37,8 +37,10 @@
 - Calculator priority maps enhanced: FUNC Score for ICH, Mod. Fisher for SAH
 - Calculator radio buttons: role="radio" + aria-checked + aria-label on all groups
 - WCAG AA contrast fixes on calculator descriptions and modal hints
+- Vessel occlusion selector hidden for non-ischemic diagnoses
+- Template diagnosis handler synchronized with comprehensive dropdown handler
 
-### Quality & infrastructure (iter-009 through iter-018)
+### Quality & infrastructure (iter-009 through iter-019)
 - Cross-links between reference cards and data-entry sections
 - Mobile responsiveness audit: all cards safe at 390px
 - Schema mismatch debt resolved (compare_keys.ps1 fixed, 0 true mismatches)
@@ -53,6 +55,9 @@
 - ErrorBoundary wrapping Encounter tab for crash resilience
 - Screening results (PHQ-2, MoCA, STOP-BANG) added to signout note template
 - TIA workup completion % and pending items in discharge note
+- mTICI score added to transfer note EVT section
+- Signout SAH/CVT sections enriched with vasospasm and anticoag phase details
+- Rehab screening timeline (aphasia 30d, cognitive discharge/3mo) in discharge note
 
 ### Gap matrix: ALL P0/P1 items COMPLETED
 
@@ -60,10 +65,9 @@
 - No automated unit/integration tests
 - Bundle size 2.2 MB
 - Pediatric stroke pathway guidance not yet added
-- Many note template export gaps remain (86 fields collected in UI but not exported to any note)
-- Rehab referrals to transfer note
-- CVT anticoag details to signout note
-- SAH vasospasm monitoring data to discharge note
+- Note template gaps requiring NEW state fields: EVT procedural details (access site, device, passes), active drip parameters, follow-up appointment specifics, imaging follow-up modality
+- Consult note PT placeholder fix (P2)
+- Structured pertinent negatives in consult note (requires new state fields)
 
 ## Resume command
 - `cd C:\Users\rkala\stroke && git pull --rebase origin main && npx esbuild ./src/app.jsx --bundle --minify --format=iife --target=es2018 --outfile=./app.js`

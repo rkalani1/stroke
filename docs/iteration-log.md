@@ -1,5 +1,30 @@
 # Iteration Log
 
+## Iteration 019 (2026-02-18)
+
+### What was changed
+- **Vessel occlusion guard (P1)**: Vessel occlusion quick-select buttons now hidden for ICH/SAH/CVT diagnoses. Previously visible for all diagnosis categories, allowing clinically nonsensical "SAH with M1 occlusion" to propagate to notes.
+- **Template handler synchronized (P1)**: Quick-start template buttons now clear the same nested objects as the diagnosis dropdown handler — ICH surgical criteria (5 fields), SAH vasospasm monitoring (6 fields), and CVT anticoag flags (5 fields). Previously only cleared 3 basic flags, allowing stale data to persist across template switches.
+- **Transfer note mTICI (P0)**: mTICI score now included in transfer note EVT section. Previously omitted from the primary handoff document despite being collected and displayed in signout/procedure notes.
+- **Signout SAH enrichment**: Added sodium monitoring flag, neuro checks q1h, and DCI clinical notes to signout SAH section for complete ICU handoff.
+- **Signout CVT enrichment**: Added acute phase, transition agent, and APS-warfarin mandatory flag to signout CVT section.
+- **Discharge rehab screening timeline**: Added aphasia screen 30d, cognitive screen at discharge, and cognitive screen 3mo to rehab section.
+- Bumped APP_VERSION to v5.14.26 and service-worker cache to v25.
+
+### Evidence / rationale
+- mTICI (modified Thrombolysis in Cerebral Infarction) is the essential EVT outcome measure; omission from transfer note means receiving facility lacks procedure result
+- Template handler desynchronization was a data integrity risk: quick-start templates (line 15963) only cleared 3 flags while dropdown handler (line 19522) cleared 20+ fields including nested objects
+- SAH sodium monitoring critical for distinguishing SIADH vs cerebral salt wasting (treatment differs)
+
+### Audit results
+- **Note template audit**: 5 gaps found with existing state fields. Fixed: transfer mTICI, signout SAH/CVT, discharge rehab screening. Remaining gaps require new state fields (EVT procedural details, active drip parameters, follow-up appointment specifics).
+- **Clinical workflow audit**: 2 P1 findings (vessel occlusion guard, template handler desync) fixed. Midnight crossing in DTN calculations verified already handled. Nested object access and functional updater patterns verified safe.
+
+### Commit
+- `771feec` — APP_VERSION v5.14.26, cache key stroke-app-v25
+
+---
+
 ## Iteration 018 (2026-02-18)
 
 ### What was changed
