@@ -211,3 +211,22 @@
 - Address storage schema mismatch debt.
 - Begin automated pathway assertion tests.
 - Add pediatric stroke pathway guidance or other clinical content improvements.
+
+## Iteration 010 (2026-02-18)
+
+### What was changed
+- Fixed `compare_keys.ps1` to only match top-level default state keys (12-space indent) instead of all nested sub-fields. The previous 319-count mismatch was entirely false positives.
+- Verified: 194 top-level keys in default state, 194 in allowedKeys — 0 true mismatches.
+- Schema mismatch debt is now resolved.
+
+### Why
+- Eliminate false alarm that has been flagged since iter-001, allowing future schema checks to catch real issues.
+
+### QA and validation
+- Build passed.
+- compare_keys.ps1: 0 missing, 0 extra.
+
+### Next opportunities
+- Begin automated pathway assertion tests.
+- Performance audit (bundle size 2.2 MB).
+- Add pediatric stroke pathway guidance.
