@@ -1,5 +1,27 @@
 # Iteration Log
 
+## Iteration 020 (2026-02-18)
+
+### What was changed
+- **Consult note PT fix**: Added PT (prothrombin time) to consult note labs line. Also added affected side and pre-morbid mRS to the exam section for clinical context. PT was collected in UI and present in all other templates but missing from consult.
+- **Progress note sync with signout**: Added 9 fields present in signout but missing from progress note: TOAST classification, pre-morbid mRS, code status, symptom onset NIHSS, vessel occlusion, ASPECTS, PC-ASPECTS, collaterals grade, EKG results. Progress note now provides the same clinical snapshot as the signout.
+- **Follow-up brief discharge outcomes**: Added sICH detection flag and discharge NIHSS with improvement delta (e.g., "Discharge NIHSS: 3 (improved from 12)") to the follow-up clinic handoff brief.
+- Bumped APP_VERSION to v5.14.27 and service-worker cache to v26.
+
+### Why
+- PT >15s is a TNK contraindication; omitting it from the consult note (the primary medicolegal document) was a documentation gap
+- Progress note missing 9 signout fields meant daily follow-up lacked baseline context the shift team already documented
+- Discharge NIHSS delta gives the follow-up clinic an immediate sense of recovery trajectory
+
+### Audit results
+- **Consult note audit**: PT placeholder confirmed missing; affected side and pre-morbid mRS identified as high-value additions. Other acute labs (Hgb, WBC, etc.) lack dedicated UI inputs — no action needed.
+- **State field coverage audit**: Procedure note needs 5 new EVT state fields (deferred). Progress note synced with signout (9 fields). Follow-up brief enhanced with outcomes. Dashboard outcome cards identified as future work.
+
+### Commit
+- `e8b0be1` — APP_VERSION v5.14.27, cache key stroke-app-v26
+
+---
+
 ## Iteration 019 (2026-02-18)
 
 ### What was changed
