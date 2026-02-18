@@ -9388,6 +9388,26 @@ Clinician Name`;
               if (telestrokeNote.activeCancer) note += `- ACTIVE CANCER: oncology co-management recommended\n`;
               if (telestrokeNote.sickleCellDisease) note += `- SICKLE CELL DISEASE: hematology co-management, exchange transfusion status\n`;
               if (telestrokeNote.infectiveEndocarditis) note += `- INFECTIVE ENDOCARDITIS: TNK contraindicated, infectious disease/cardiology co-management\n`;
+              // Osmotic therapy (ICH/SAH)
+              if (telestrokeNote.diagnosisCategory === 'ich' || telestrokeNote.diagnosisCategory === 'sah') {
+                const soOsm = telestrokeNote.osmoticTherapy || {};
+                if (soOsm.agentUsed) note += `- Osmotic therapy: ${soOsm.agentUsed}${soOsm.sodiumTarget ? ` (Na+ target ${soOsm.sodiumTarget})` : ''}\n`;
+              }
+              // Early mobilization
+              {
+                const soMob = telestrokeNote.earlyMobilization || {};
+                if (soMob.timingDecision) note += `- Mobilization: ${soMob.timingDecision.replace(/-/g, ' ')}${soMob.mobilizationStarted ? ' — initiated' : ''}\n`;
+              }
+              // Fever status
+              {
+                const soFever = telestrokeNote.feverManagement || {};
+                if (soFever.feverDetected) note += `- Fever: ${soFever.maxTemp ? `${soFever.maxTemp}°C` : 'present'}${soFever.infectionWorkupSent ? ' — workup sent' : ''}\n`;
+              }
+              // Nutrition/feeding
+              {
+                const soNutr = telestrokeNote.nutritionalSupport || {};
+                if (soNutr.feedingRoute) note += `- Feeding: ${soNutr.feedingRoute}\n`;
+              }
               // BP target
               const signoutBpPhase = bpPhaseTargets[telestrokeNote.bpPhase];
               if (signoutBpPhase) note += `- BP target: <${signoutBpPhase.systolic}/${signoutBpPhase.diastolic} (${signoutBpPhase.label})\n`;
@@ -9699,6 +9719,38 @@ Clinician Name`;
                 if (prVm.dciSuspected) prSahParts.push('DCI SUSPECTED');
                 if (prVm.inducedHypertension) prSahParts.push('induced HTN');
                 if (prSahParts.length > 0) note += `   - SAH: ${prSahParts.join(', ')}\n`;
+              }
+              // Osmotic therapy (ICH/SAH)
+              if (telestrokeNote.diagnosisCategory === 'ich' || telestrokeNote.diagnosisCategory === 'sah') {
+                const prOsm = telestrokeNote.osmoticTherapy || {};
+                if (prOsm.agentUsed) {
+                  note += `   - Osmotic therapy: ${prOsm.agentUsed}${prOsm.sodiumTarget ? ` (Na+ target ${prOsm.sodiumTarget})` : ''}${prOsm.serumOsmolality ? ` | Osm ${prOsm.serumOsmolality}` : ''}\n`;
+                }
+              }
+              // Early mobilization
+              {
+                const prMob = telestrokeNote.earlyMobilization || {};
+                if (prMob.timingDecision || prMob.mobilizationStarted) {
+                  note += `   - Mobilization: ${prMob.timingDecision ? prMob.timingDecision.replace(/-/g, ' ') : 'documented'}${prMob.mobilizationStarted ? ' — initiated' : ''}\n`;
+                }
+              }
+              // Fever management
+              {
+                const prFever = telestrokeNote.feverManagement || {};
+                if (prFever.feverDetected || prFever.feverProtocolInitiated) {
+                  const feverParts = [];
+                  if (prFever.maxTemp) feverParts.push(`max ${prFever.maxTemp}°C`);
+                  if (prFever.feverProtocolInitiated) feverParts.push('FeSS bundle');
+                  if (prFever.infectionWorkupSent) feverParts.push('workup sent');
+                  if (feverParts.length > 0) note += `   - Fever: ${feverParts.join(', ')}\n`;
+                }
+              }
+              // Nutritional support
+              {
+                const prNutr = telestrokeNote.nutritionalSupport || {};
+                if (prNutr.feedingRoute) {
+                  note += `   - Nutrition: ${prNutr.feedingRoute}${prNutr.ngPlacementDay ? ` (NG day ${prNutr.ngPlacementDay})` : ''}${prNutr.pegConsiderationDay ? ` | PEG day ${prNutr.pegConsiderationDay}` : ''}\n`;
+                }
               }
               note += '\n';
               note += `2. Secondary prevention:\n`;
@@ -10289,6 +10341,33 @@ Clinician Name`;
               const falls = telestrokeNote.fallsRisk || {};
               if (falls.screenPerformed) {
                 note += `- Falls risk: ${falls.highRisk ? 'HIGH RISK' : 'standard risk'}${falls.preventionPlanInitiated ? ' — prevention plan initiated' : ''}${falls.balanceProgramReferral ? ', balance program referral' : ''}\n`;
+              }
+              // Early mobilization
+              {
+                const dxMob = telestrokeNote.earlyMobilization || {};
+                if (dxMob.timingDecision || dxMob.mobilizationStarted) {
+                  note += `- Mobilization: ${dxMob.timingDecision ? dxMob.timingDecision.replace(/-/g, ' ') : 'documented'}${dxMob.mobilizationStarted ? ' — initiated during admission' : ''}\n`;
+                }
+              }
+              // Fever management
+              {
+                const dxFever = telestrokeNote.feverManagement || {};
+                if (dxFever.feverDetected || dxFever.feverProtocolInitiated) {
+                  const dxFeverParts = [];
+                  if (dxFever.feverDetected) dxFeverParts.push(`fever detected${dxFever.maxTemp ? ` (max ${dxFever.maxTemp}°C)` : ''}`);
+                  if (dxFever.feverProtocolInitiated) dxFeverParts.push('FeSS bundle initiated');
+                  if (dxFever.infectionWorkupSent) dxFeverParts.push('infection workup sent');
+                  if (dxFeverParts.length > 0) note += `- ${dxFeverParts.join('; ')}\n`;
+                }
+              }
+              // Family communication
+              {
+                const dxFc = telestrokeNote.familyCommunication || {};
+                if (dxFc.discussed) {
+                  note += `- Family communication: discussed with ${dxFc.withWhom || 'patient/family'}`;
+                  if (dxFc.topicsDiscussed) note += ` — ${dxFc.topicsDiscussed}`;
+                  note += '\n';
+                }
               }
               // Screening tools
               const dischSt = telestrokeNote.screeningTools || {};
