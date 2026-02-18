@@ -20,6 +20,13 @@ const REQUIRED_DIAGNOSIS = [
   /CVT/i,
   /Stroke Mimic\/Other/i
 ];
+const DIAGNOSIS_SWITCH_ASSERTIONS = [
+  { label: 'Ischemic Stroke or TIA', activeClass: 'bg-blue-500', expectTNK: true },
+  { label: 'Intracranial Hemorrhage', activeClass: 'bg-red-500', expectTNK: false },
+  { label: 'SAH', activeClass: 'bg-purple-500', expectTNK: false },
+  { label: 'CVT', activeClass: 'bg-indigo-500', expectTNK: false },
+  { label: 'Stroke Mimic/Other', activeClass: 'bg-amber-500', expectTNK: false }
+];
 
 const args = new Set(process.argv.slice(2));
 const localOnly = args.has('--local-only');
@@ -42,6 +49,15 @@ async function waitForHttp(url, timeoutMs = 20000) {
     await sleep(250);
   }
   throw new Error(`Timed out waiting for ${url}`);
+}
+
+async function canReach(url) {
+  try {
+    const response = await fetch(url, { method: 'GET' });
+    return response.ok;
+  } catch {
+    return false;
+  }
 }
 
 function startLocalServer() {
@@ -163,6 +179,35 @@ async function auditView(browser, target, viewport) {
     if (!activePlaceholder || !/search/i.test(activePlaceholder)) {
       addIssue(issues, 'keyboard-search', { activePlaceholder });
     }
+
+    for (const assertion of DIAGNOSIS_SWITCH_ASSERTIONS) {
+      const diagnosisButton = page.getByRole('button', { name: new RegExp(`^${assertion.label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`) });
+      if ((await diagnosisButton.count()) === 0) {
+        addIssue(issues, 'missing-diagnosis-button', { label: assertion.label });
+        continue;
+      }
+      await diagnosisButton.first().click();
+      await page.waitForTimeout(150);
+
+      const className = (await diagnosisButton.first().getAttribute('class')) || '';
+      const tnkVisible = await page.evaluate(() =>
+        [...document.querySelectorAll('label')].some((label) => /TNK Recommended/i.test((label.textContent || '').trim()))
+      );
+      if (!className.includes(assertion.activeClass)) {
+        addIssue(issues, 'diagnosis-style-mismatch', {
+          label: assertion.label,
+          expectedClass: assertion.activeClass,
+          className
+        });
+      }
+      if (tnkVisible !== assertion.expectTNK) {
+        addIssue(issues, 'diagnosis-tnk-visibility', {
+          label: assertion.label,
+          expected: assertion.expectTNK,
+          actual: tnkVisible
+        });
+      }
+    }
   }
 
   await page.keyboard.press('Control+3');
@@ -200,11 +245,14 @@ async function main() {
   const targets = [{ name: 'local', url: LOCAL_URL }];
   if (!localOnly) targets.push({ name: 'live', url: LIVE_URL });
 
-  const server = startLocalServer();
+  let server = null;
   const startedAt = new Date().toISOString();
 
   try {
-    await waitForHttp(LOCAL_URL);
+    if (!(await canReach(LOCAL_URL))) {
+      server = startLocalServer();
+      await waitForHttp(LOCAL_URL);
+    }
 
     const browser = await chromium.launch({ headless: true });
     const runs = [];
@@ -239,7 +287,7 @@ async function main() {
       process.exit(1);
     }
   } finally {
-    server.stop();
+    if (server) server.stop();
   }
 }
 

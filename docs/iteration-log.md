@@ -755,3 +755,17 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke)
 - `npm run qa`: pass (local + live smoke)
+
+## Iteration 038 (2026-02-18)
+
+### What was changed
+- Enhanced `scripts/qa-smoke.mjs` with diagnosis-switch pathway assertions:
+  - Verifies active diagnosis button state styling for ischemic/ICH/SAH/CVT/mimic pathways.
+  - Verifies TNK recommendation control visibility remains diagnosis-dependent (present for ischemic, hidden for hemorrhagic/mimic selections).
+- Hardened local server startup behavior:
+  - Reuses an already-running local server at `http://127.0.0.1:4173/` if present.
+  - Spawns and tears down local server only when needed.
+
+### QA and validation
+- `npm test`: pass (local smoke with diagnosis-switch assertions)
+- `npm run qa`: pass (local + live smoke with diagnosis-switch assertions)

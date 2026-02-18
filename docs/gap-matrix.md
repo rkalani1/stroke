@@ -18,3 +18,7 @@
 ## Iteration 037 Update (2026-02-18)
 - QA/Regression discipline: upgraded from failing placeholder test to real smoke automation across required desktop/tablet/mobile viewports.
 - Remaining gap: add deterministic scenario assertions for treatment recommendation correctness (ischemic reperfusion, ICH reversal/BP, SAH/CVT/TIA branch logic), not just workflow presence.
+
+## Iteration 038 Update (2026-02-18)
+- QA/Regression discipline: added diagnosis-switch pathway checks to smoke automation, including TNK visibility gating across ischemic vs non-ischemic diagnoses.
+- Remaining gap: add explicit outcome-value assertions (not just control visibility) for recommendation states in trial-like scenarios.

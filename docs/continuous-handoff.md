@@ -135,3 +135,9 @@
 - Stop checks in this iteration: STOP message not received; `.codex-stop` file not found.
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && npm run qa && npm run build`
+
+## Iteration 038 update (2026-02-18)
+- Strengthened smoke automation with diagnosis-switch and TNK-visibility gating checks.
+- Added local server re-use logic to avoid flaky failures when port `4173` is already occupied.
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && npm test && npm run qa && npm run build`

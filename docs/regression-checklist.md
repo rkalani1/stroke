@@ -56,3 +56,8 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run qa` local + live smoke passes
 - [x] Required viewports pass on local and live
 - [x] Core tabs, diagnosis selectors, trial matcher, and keyboard shortcuts smoke-verified
+
+## Last completed run (2026-02-18, iter-038)
+- [x] Diagnosis-switch pathway assertions pass in smoke tests
+- [x] TNK visibility gating smoke-verified across ischemic and non-ischemic diagnosis selections
+- [x] `npm test` and `npm run qa` both pass with new assertions enabled

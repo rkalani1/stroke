@@ -129,3 +129,7 @@
   - TIA ED statement PMID `36655570`, DOI `10.1161/STR.0000000000000418`
   - Secondary prevention guideline PMID `34024117`, DOI `10.1161/STR.0000000000000375`
   - Pregnancy statement PMID `41678811`, DOI `10.1161/STR.0000000000000501`
+
+### Operational mapping update (2026-02-18, iter-038)
+- Added automated diagnosis-switch pathway guard in QA to reduce regression risk for core branch transitions (ischemic, ICH, SAH, CVT, mimic).
+- This does not alter clinical recommendation content; it hardens detection of UI/pathway regressions that could hide or mis-surface thrombolysis controls.
