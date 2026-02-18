@@ -1,5 +1,32 @@
 # Iteration Log
 
+## Iteration 017 (2026-02-18)
+
+### What was changed
+- **Settings menu focus restoration**: Added `useEffect` with ref tracking to return focus to the settings trigger button when the menu closes, completing the keyboard navigation round-trip.
+- **Protocol modal "Esc to close" hint**: Added subtle text hint at bottom of protocol modal for discoverability.
+- **Calculator priority maps enhanced**: Added FUNC Score to ICH priority list and Modified Fisher to SAH priority list in context-aware calculator drawer.
+- **Transfer note statinDose bug fix (P0)**: Fixed field name mismatch — `statinIntensity` (non-existent) replaced with `statinDose` (actual field), restoring statin info to transfer notes.
+- **ErrorBoundary for Encounter tab**: Wrapped the entire Encounter tab (~10,000 lines) in ErrorBoundary to prevent uncaught render errors from crashing the whole app.
+- **Caregiver education in discharge note**: Added structured output for 5 caregiver education items (stroke signs, medication admin, BP monitoring, safe transfers, dysphagia precautions).
+- **Screening assessments in discharge note**: Added PHQ-2, MoCA, and STOP-BANG scores with automatic risk flagging (PHQ-2 positive → PHQ-9 follow-up; STOP-BANG ≥5 → sleep study).
+- Bumped APP_VERSION to v5.14.24 and service-worker cache to v23.
+
+### Why
+- Settings focus: WCAG 2.4.3 (Focus Order) — keyboard users must be able to return to their previous context after closing a dialog.
+- statinDose bug: Silent data loss — statin prescription was missing from the primary handoff document sent to receiving facilities.
+- ErrorBoundary: Defensive resilience — a render crash in the encounter tab (the most complex section) previously required a full page reload.
+- Caregiver education + screening: Joint Commission stroke certification requires documented caregiver education; PHQ-2/MoCA/STOP-BANG are standard inpatient stroke screening measures.
+
+### Audit results
+- **UX/keyboard/form audit**: ErrorBoundary gap (fixed), form constraint false positives verified, calculator drawer working correctly.
+- **Note template completeness audit**: 86 of 147 fields not exported to any note — highest-impact gaps (caregiver education, screening scores, statinDose bug) fixed; remaining are lower-priority demographic and workflow fields.
+
+### Commit
+- `6c6666d` — APP_VERSION v5.14.24, cache key stroke-app-v23
+
+---
+
 ## Iteration 016 (2026-02-18)
 
 ### What was changed
