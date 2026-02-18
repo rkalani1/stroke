@@ -11630,6 +11630,9 @@ Clinician Name`;
             if (n.evtRecommended && !hasLVO && (n.vesselOcclusion || []).length === 0) {
               warnings.push({ id: 'evt-no-lvo', severity: 'warn', msg: 'EVT recommended but no vessel occlusion documented — verify CTA findings' });
             }
+            if (n.evtRecommended && !n.ctaResults) {
+              warnings.push({ id: 'evt-no-cta', severity: 'error', msg: 'EVT recommended but CTA results not documented — vessel occlusion confirmation required before thrombectomy. Obtain CTA before transfer.' });
+            }
             if (hasLVO && !n.evtRecommended && n.diagnosisCategory === 'ischemic') {
               warnings.push({ id: 'lvo-no-evt', severity: 'warn', msg: 'LVO detected but EVT not recommended — document reason (e.g., late window without perfusion imaging, patient/family declined, contraindication).' });
             }
@@ -11666,6 +11669,16 @@ Clinician Name`;
             const ptt = parseFloat(n.ptt);
             if (n.tnkRecommended && !isNaN(ptt) && ptt > 40) {
               warnings.push({ id: 'tnk-ptt', severity: 'error', msg: `TNK recommended with aPTT ${ptt}s — aPTT >40s is a relative contraindication` });
+            }
+            // Lab-not-checked warnings when TNK recommended
+            if (n.tnkRecommended && !n.inr) {
+              warnings.push({ id: 'tnk-inr-unchecked', severity: 'warn', msg: 'TNK recommended but INR not documented — check INR before proceeding (required for warfarin patients, INR must be ≤1.7).' });
+            }
+            if (n.tnkRecommended && !n.plateletCount) {
+              warnings.push({ id: 'tnk-plt-unchecked', severity: 'warn', msg: 'TNK recommended but platelet count not documented — check CBC before administration (platelets must be ≥100K).' });
+            }
+            if (n.tnkRecommended && !n.ptt) {
+              warnings.push({ id: 'tnk-ptt-unchecked', severity: 'warn', msg: 'TNK recommended but aPTT not documented — verify patient not on UFH before administering (aPTT must be ≤40s).' });
             }
             if (!isNaN(glucose) && glucose < 50 && n.tnkRecommended) {
               warnings.push({ id: 'tnk-glucose', severity: 'error', msg: `TNK recommended with glucose ${glucose} mg/dL (<50) — hypoglycemia is a contraindication to thrombolysis. Correct glucose to >100 mg/dL and reassess neurologic deficit before proceeding.` });
@@ -11898,6 +11911,10 @@ Clinician Name`;
               warnings.push({ id: 'tnk-recent-surgery', severity: 'error', msg: `TNK recommended but recent ${surgTypes.join(' & ')} surgery documented — relative contraindication within 14 days–3 months. Verify timing and clinical justification.` });
             }
 
+            // EVT recommended but ASPECTS not documented
+            if (n.evtRecommended && n.diagnosisCategory === 'ischemic' && (aspectsScore == null || isNaN(aspectsScore)) && !n.aspects) {
+              warnings.push({ id: 'evt-no-aspects', severity: 'error', msg: 'EVT recommended but ASPECTS score not documented — ASPECTS is required to determine EVT eligibility per HERMES/MR CLEAN criteria. Document ASPECTS before transfer.' });
+            }
             // EVT recommended but ASPECTS < 6 — outside standard eligibility
             if (n.evtRecommended && aspectsScore != null && aspectsScore < 6) {
               warnings.push({ id: 'evt-low-aspects', severity: 'error', msg: `EVT recommended but ASPECTS ${aspectsScore} (<6) — outside standard eligibility criteria (HERMES, MR CLEAN). Consider SELECT2/ANGEL-ASPECT criteria (ASPECTS 3-5 for mRS 0-1 patients with anterior LVO). Document rationale.` });
@@ -16373,6 +16390,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     // Clear stale treatment flags when diagnosis category changes
                                     if (tmpl.defaults.diagnosisCategory && tmpl.defaults.diagnosisCategory !== prev.diagnosisCategory) {
                                       const nc = tmpl.defaults.diagnosisCategory;
+                                      if ((nc === 'ich' || nc === 'sah') && prev.tnkRecommended) {
+                                        updated.tnkAutoBlocked = true;
+                                        updated.tnkAutoBlockReason = `TNK auto-cleared: ${nc.toUpperCase()} diagnosis`;
+                                        addToast(`TNK recommendation cleared — ${nc.toUpperCase()} diagnosis`, 'error');
+                                      }
                                       if (nc !== 'ischemic') {
                                         updated.tnkRecommended = false;
                                         updated.evtRecommended = false;
@@ -19980,6 +20002,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           };
                                           // Clear stale treatment flags when diagnosis category changes
                                           if (newCategory !== prev.diagnosisCategory) {
+                                            if ((newCategory === 'ich' || newCategory === 'sah') && prev.tnkRecommended) {
+                                              updated.tnkAutoBlocked = true;
+                                              updated.tnkAutoBlockReason = `TNK auto-cleared: ${newCategory.toUpperCase()} diagnosis`;
+                                              addToast(`TNK recommendation cleared — ${newCategory.toUpperCase()} diagnosis`, 'error');
+                                            }
                                             if (newCategory !== 'ischemic') {
                                               updated.tnkRecommended = false;
                                               updated.evtRecommended = false;
