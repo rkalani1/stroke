@@ -1116,6 +1116,11 @@ Clinician Name`;
             aspectsRegions: { C: false, L: false, IC: false, I: false, M1: false, M2: false, M3: false, M4: false, M5: false, M6: false },
             pcAspectsRegions: { pons: false, midbrain: false, cerebL: false, cerebR: false, pcaL: false, pcaR: false, thalL: false, thalR: false },
             ticiScore: '',
+            evtAccessSite: '',
+            evtDevice: '',
+            evtNumberOfPasses: '',
+            evtTechnique: '',
+            reperfusionTime: '',
             // Phase 4: CVT fields
             cvtAnticoagStarted: false,
             cvtAnticoagType: '',
@@ -7899,6 +7904,7 @@ Clinician Name`;
               'ichSurgicalCriteria', 'strokeTerritory', 'strokePhenotype',
               'familyCommunication', 'symptomTrajectory', 'symptomOnsetNIHSS', 'postTNKMonitoring',
               'aspectsRegions', 'pcAspectsRegions', 'ticiScore',
+              'evtAccessSite', 'evtDevice', 'evtNumberOfPasses', 'evtTechnique', 'reperfusionTime',
               'cvtAnticoagStarted', 'cvtAnticoagType', 'cvtIcpManaged', 'cvtSeizureManaged', 'cvtHematologyConsulted',
               'tiaWorkup', 'tiaWorkupReviewed',
               // Clinical pathway nested objects
@@ -8687,6 +8693,11 @@ Clinician Name`;
               }
               if (telestrokeNote.evtRecommended) {
                 note += `- EVT recommended${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
+                if (telestrokeNote.evtAccessSite) note += `  Access: ${telestrokeNote.evtAccessSite}\n`;
+                if (telestrokeNote.evtDevice) note += `  Device: ${telestrokeNote.evtDevice}\n`;
+                if (telestrokeNote.evtTechnique) note += `  Technique: ${telestrokeNote.evtTechnique}\n`;
+                if (telestrokeNote.evtNumberOfPasses) note += `  Passes: ${telestrokeNote.evtNumberOfPasses}\n`;
+                if (telestrokeNote.reperfusionTime) note += `  Reperfusion: ${telestrokeNote.reperfusionTime}\n`;
                 if ((telestrokeNote.consentKit || {}).evtConsentDiscussed) {
                   const evtConType = (telestrokeNote.consentKit || {}).evtConsentType;
                   note += `- EVT consent: ${evtConType || '(type not specified)'}`;
@@ -9456,10 +9467,10 @@ Clinician Name`;
               note += `Operator: ${telestrokeNote.attendingPhysician || '___'}\n`;
               note += `Anesthesia: ___ (general / conscious sedation / local)\n`;
               note += `Procedure: Mechanical thrombectomy\n`;
-              note += `Access: ___ (R/L femoral, R/L radial)\n`;
-              note += `Guide catheter: ___\n`;
-              note += `Technique: ___ (aspiration, stent retriever, combined)\n`;
-              note += `Number of passes: ___\n`;
+              note += `Access: ${telestrokeNote.evtAccessSite || '___ (R/L femoral, R/L radial)'}\n`;
+              note += `Guide catheter: ${telestrokeNote.evtDevice || '___'}\n`;
+              note += `Technique: ${telestrokeNote.evtTechnique || '___ (aspiration, stent retriever, combined)'}\n`;
+              note += `Number of passes: ${telestrokeNote.evtNumberOfPasses || '___'}\n`;
               {
                 const procComps = [];
                 const procHt = telestrokeNote.hemorrhagicTransformation || {};
@@ -9468,7 +9479,7 @@ Clinician Name`;
                 note += `Complications: ${procComps.length > 0 ? procComps.join(', ') : '___ (none, perforation, dissection, distal embolization)'}\n`;
               }
               note += `Groin puncture time: ${telestrokeNote.punctureTime || '___'}\n`;
-              note += `Reperfusion time: ___\n`;
+              note += `Reperfusion time: ${telestrokeNote.reperfusionTime || '___'}\n`;
               note += `mTICI score: ${telestrokeNote.ticiScore || '___'}\n\n`;
               note += `POST-PROCEDURE:\n`;
               if (telestrokeNote.bpPostEVT) note += `- Post-EVT BP: ${telestrokeNote.bpPostEVT}\n`;
@@ -15375,6 +15386,70 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     </div>
 
+                    {/* Case Outcomes & Quality Metrics */}
+                    {dashboardHasActiveCase && telestrokeNote.diagnosis && (
+                      <div className="bg-white border border-indigo-200 rounded-xl p-4 shadow-sm mt-4">
+                        <h3 className="text-sm font-bold text-indigo-900 mb-3 flex items-center gap-2">
+                          <i aria-hidden="true" data-lucide="target" className="w-4 h-4 text-indigo-600"></i>
+                          Case Outcomes
+                        </h3>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                          {(() => { const m = calculateDTNMetrics(); return m.doorToNeedle !== null ? (
+                            <div className="bg-slate-50 rounded-lg p-2 border border-slate-200 text-center">
+                              <p className="text-[10px] uppercase tracking-wider text-slate-500">DTN</p>
+                              <p className={`text-lg font-bold ${m.doorToNeedle <= 45 ? 'text-emerald-600' : m.doorToNeedle <= 60 ? 'text-amber-600' : 'text-red-600'}`}>{m.doorToNeedle}m</p>
+                            </div>
+                          ) : null; })()}
+                          {(() => { const m = calculateDTNMetrics(); return m.doorToPuncture !== null ? (
+                            <div className="bg-slate-50 rounded-lg p-2 border border-slate-200 text-center">
+                              <p className="text-[10px] uppercase tracking-wider text-slate-500">DTP</p>
+                              <p className="text-lg font-bold text-slate-800">{m.doorToPuncture}m</p>
+                            </div>
+                          ) : null; })()}
+                          {telestrokeNote.evtRecommended && telestrokeNote.ticiScore && (
+                            <div className="bg-slate-50 rounded-lg p-2 border border-slate-200 text-center">
+                              <p className="text-[10px] uppercase tracking-wider text-slate-500">mTICI</p>
+                              <p className={`text-lg font-bold ${['2b','2c','3'].includes(telestrokeNote.ticiScore) ? 'text-emerald-600' : 'text-amber-600'}`}>{telestrokeNote.ticiScore}</p>
+                            </div>
+                          )}
+                          {telestrokeNote.dischargeNIHSS && (nihssScore > 0 || telestrokeNote.nihss) && (() => {
+                            const adm = parseInt(telestrokeNote.nihss || nihssScore, 10);
+                            const dsc = parseInt(telestrokeNote.dischargeNIHSS, 10);
+                            if (isNaN(adm) || isNaN(dsc)) return null;
+                            const d = dsc - adm;
+                            return (
+                              <div className="bg-slate-50 rounded-lg p-2 border border-slate-200 text-center">
+                                <p className="text-[10px] uppercase tracking-wider text-slate-500">NIHSS</p>
+                                <p className={`text-lg font-bold ${d < 0 ? 'text-emerald-600' : d > 0 ? 'text-red-600' : 'text-slate-600'}`}>{adm}→{dsc}</p>
+                              </div>
+                            );
+                          })()}
+                          {(telestrokeNote.mrsAssessment || {}).discharge && (
+                            <div className="bg-slate-50 rounded-lg p-2 border border-slate-200 text-center">
+                              <p className="text-[10px] uppercase tracking-wider text-slate-500">D/C mRS</p>
+                              <p className="text-lg font-bold text-purple-600">{(telestrokeNote.mrsAssessment || {}).discharge}</p>
+                            </div>
+                          )}
+                          {telestrokeNote.sichDetected && (
+                            <div className="bg-red-50 rounded-lg p-2 border border-red-200 text-center">
+                              <p className="text-[10px] uppercase tracking-wider text-red-500">sICH</p>
+                              <p className="text-lg font-bold text-red-600">Yes</p>
+                            </div>
+                          )}
+                        </div>
+                        {(() => {
+                          const dc = telestrokeNote.dischargeChecklist || {};
+                          const qm = ['antiplateletOrAnticoag','statinPrescribed','bpMedOptimized','smokingCessation','dietCounseling','exerciseCounseling'].filter(k => dc[k]).length;
+                          return qm > 0 ? (
+                            <div className="mt-2 flex items-center gap-2">
+                              <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${qm >= 5 ? 'bg-emerald-500 text-white' : qm >= 3 ? 'bg-amber-500 text-white' : 'bg-slate-300 text-slate-700'}`}>{qm}/6</span>
+                              <span className="text-xs text-slate-600">quality measures</span>
+                            </div>
+                          ) : null;
+                        })()}
+                      </div>
+                    )}
+
                     {quickLinks.length > 0 && (
                       <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
                         <div className="flex items-center justify-between mb-3">
@@ -20650,6 +20725,61 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                               />
                             </div>
+
+                            {telestrokeNote.evtRecommended && (
+                              <details className="border border-slate-200 rounded-lg">
+                                <summary className="px-3 py-2 text-sm font-semibold text-slate-700 cursor-pointer hover:bg-slate-50">EVT Procedure Details</summary>
+                                <div className="p-3 space-y-3 border-t border-slate-200">
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div>
+                                      <label htmlFor="input-evt-access" className="block text-xs font-medium text-slate-600 mb-1">Access Site</label>
+                                      <select id="input-evt-access" value={telestrokeNote.evtAccessSite || ''}
+                                        onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, evtAccessSite: v})); }}
+                                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
+                                        <option value="">--</option>
+                                        <option value="R femoral">Right femoral</option>
+                                        <option value="L femoral">Left femoral</option>
+                                        <option value="R radial">Right radial</option>
+                                        <option value="L radial">Left radial</option>
+                                      </select>
+                                    </div>
+                                    <div>
+                                      <label htmlFor="input-evt-technique" className="block text-xs font-medium text-slate-600 mb-1">Technique</label>
+                                      <select id="input-evt-technique" value={telestrokeNote.evtTechnique || ''}
+                                        onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, evtTechnique: v})); }}
+                                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
+                                        <option value="">--</option>
+                                        <option value="aspiration">Aspiration</option>
+                                        <option value="stent retriever">Stent retriever</option>
+                                        <option value="combined">Combined</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <div>
+                                      <label htmlFor="input-evt-device" className="block text-xs font-medium text-slate-600 mb-1">Device</label>
+                                      <input id="input-evt-device" type="text" value={telestrokeNote.evtDevice || ''}
+                                        onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, evtDevice: v})); }}
+                                        placeholder="e.g., Solitaire FR"
+                                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" />
+                                    </div>
+                                    <div>
+                                      <label htmlFor="input-evt-passes" className="block text-xs font-medium text-slate-600 mb-1">Passes</label>
+                                      <input id="input-evt-passes" type="number" value={telestrokeNote.evtNumberOfPasses || ''}
+                                        onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, evtNumberOfPasses: v})); }}
+                                        min="1" max="10"
+                                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" />
+                                    </div>
+                                    <div>
+                                      <label htmlFor="input-reperfusion-time" className="block text-xs font-medium text-slate-600 mb-1">Reperfusion Time</label>
+                                      <input id="input-reperfusion-time" type="time" value={telestrokeNote.reperfusionTime || ''}
+                                        onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, reperfusionTime: v})); }}
+                                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </details>
+                            )}
                           </div>
                         </div>
 
