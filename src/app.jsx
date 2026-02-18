@@ -20560,6 +20560,41 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
 
                             <div className="space-y-3">
+                              {/* SAH First-Hour Rapid Actions */}
+                              <div className="bg-red-50 border-2 border-red-400 rounded-lg p-3 shadow-sm">
+                                <div className="text-sm font-bold text-red-800 mb-2 flex items-center gap-2">
+                                  <i aria-hidden="true" data-lucide="alert-circle" className="w-4 h-4"></i>
+                                  First-Hour Rapid Actions (2023 AHA/ASA)
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-xs">
+                                  <div className="bg-white border border-red-200 rounded p-2">
+                                    <p className="font-bold text-red-700 uppercase mb-1">1. Secure Airway / ICU</p>
+                                    <p className="text-slate-700">Intubate if GCS &le;8 or declining. ICU admit all aSAH. HOB 30&deg;.</p>
+                                  </div>
+                                  <div className="bg-white border border-red-200 rounded p-2">
+                                    <p className="font-bold text-red-700 uppercase mb-1">2. BP Control</p>
+                                    <p className="text-slate-700">SBP &lt;160 mmHg until aneurysm secured. IV nicardipine or labetalol. Avoid SBP &lt;110.</p>
+                                  </div>
+                                  <div className="bg-white border border-red-200 rounded p-2">
+                                    <p className="font-bold text-red-700 uppercase mb-1">3. Aneurysm Securing</p>
+                                    <p className="text-slate-700">Neurosurgery + neurointerventional consult STAT. Secure within 24h (Class I, LOE B-NR). CTA if no DSA immediately available.</p>
+                                  </div>
+                                  <div className="bg-white border border-red-200 rounded p-2">
+                                    <p className="font-bold text-red-700 uppercase mb-1">4. Nimodipine</p>
+                                    <p className="text-slate-700">Start 60 mg PO/NG q4h &times; 21 days within 1h of admission (Class I, LOE A). Hold dose for SBP &lt;100, do not stop permanently.</p>
+                                  </div>
+                                  <div className="bg-white border border-red-200 rounded p-2">
+                                    <p className="font-bold text-red-700 uppercase mb-1">5. Hydrocephalus Screen</p>
+                                    <p className="text-slate-700">EVD if acute hydrocephalus or poor-grade (H&H &ge;3). Monitor for IVH extension.</p>
+                                  </div>
+                                  <div className="bg-white border border-red-200 rounded p-2">
+                                    <p className="font-bold text-red-700 uppercase mb-1">6. DCI Surveillance Plan</p>
+                                    <p className="text-slate-700">Neuro checks q1h. TCD baseline + daily days 3-14. Sodium q6-8h (hyponatremia risk). Watch for new deficit or declining consciousness.</p>
+                                  </div>
+                                </div>
+                                <p className="text-xs text-red-600 mt-2 italic">Hemphill JC 3rd et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436</p>
+                              </div>
+
                               {/* SAH Grade */}
                               <div className="grid grid-cols-2 gap-3">
                                 <div>
@@ -21463,6 +21498,37 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </select>
                                 )}
                               </div>
+
+                              {/* AF Anticoag Timing Quick Reference */}
+                              {((telestrokeNote.secondaryPrevention || {}).antiplateletRegimen === 'doac-af' || (telestrokeNote.secondaryPrevention || {}).antiplateletRegimen === 'anticoag-other') && (
+                                <div className="bg-blue-50 border border-blue-300 rounded-lg p-3">
+                                  <h4 className="font-semibold text-blue-800 mb-2 text-sm flex items-center gap-2">
+                                    <i aria-hidden="true" data-lucide="timer" className="w-4 h-4"></i>
+                                    AF Anticoag Timing (ELAN / TIMING / CATALYST)
+                                  </h4>
+                                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                                    <div className="bg-emerald-50 border border-emerald-200 p-2 rounded text-center">
+                                      <p className="font-bold text-emerald-700 uppercase">Minor Stroke</p>
+                                      <p className="text-slate-500">NIHSS &lt;8, small infarct</p>
+                                      <p className="text-sm font-bold text-emerald-800 mt-1">DOAC within 48h</p>
+                                    </div>
+                                    <div className="bg-amber-50 border border-amber-200 p-2 rounded text-center">
+                                      <p className="font-bold text-amber-700 uppercase">Moderate</p>
+                                      <p className="text-slate-500">NIHSS 8-15</p>
+                                      <p className="text-sm font-bold text-amber-800 mt-1">DOAC day 3-5</p>
+                                    </div>
+                                    <div className="bg-red-50 border border-red-200 p-2 rounded text-center">
+                                      <p className="font-bold text-red-700 uppercase">Severe / Large</p>
+                                      <p className="text-slate-500">NIHSS &ge;16 or large infarct</p>
+                                      <p className="text-sm font-bold text-red-800 mt-1">DOAC day 6-14</p>
+                                    </div>
+                                  </div>
+                                  <div className="mt-2 bg-white border border-blue-200 rounded p-2 text-xs text-slate-700">
+                                    <p><strong>Caution flags:</strong> Repeat imaging before starting if any hemorrhagic transformation, large territorial infarct, or uncontrolled hypertension. DOAC preferred over warfarin (Class I, LOE A). See CATALYST calculator in Ischemic Management &gt; AF/DOAC Timing for onset-based date computation.</p>
+                                  </div>
+                                  <p className="text-xs text-slate-500 mt-1 italic">Fischer U et al. Lancet Neurol 2025 (CATALYST). ELAN: Fischer U et al. NEJM 2023;388:2411-2421. PMID: 37222476.</p>
+                                </div>
+                              )}
 
                               {/* Diabetes, Smoking, Exercise, Diet */}
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -27754,6 +27820,55 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             </label>
                           </div>
+                        </div>
+
+                        {/* CVT Treatment Timeline */}
+                        <div className="bg-white border border-indigo-200 rounded-lg p-4">
+                          <h3 className="text-base font-bold text-indigo-800 mb-3 flex items-center gap-2">
+                            <i aria-hidden="true" data-lucide="clock" className="w-5 h-5"></i>
+                            Treatment Timeline &amp; Escalation
+                          </h3>
+                          <div className="relative">
+                            {/* Timeline strip */}
+                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
+                              <div className="bg-indigo-50 border-l-4 border-l-indigo-500 p-2 rounded-r">
+                                <p className="font-bold text-indigo-800 uppercase">Acute (Day 0-14)</p>
+                                <ul className="text-slate-700 mt-1 space-y-0.5">
+                                  <li>&bull; Therapeutic LMWH or UFH</li>
+                                  <li>&bull; Even with hemorrhagic infarction (Class I)</li>
+                                  <li>&bull; ICP management if needed</li>
+                                  <li>&bull; Seizure treatment (not prophylaxis)</li>
+                                </ul>
+                              </div>
+                              <div className="bg-indigo-50 border-l-4 border-l-indigo-400 p-2 rounded-r">
+                                <p className="font-bold text-indigo-700 uppercase">Subacute (Week 2-4)</p>
+                                <ul className="text-slate-700 mt-1 space-y-0.5">
+                                  <li>&bull; Transition to warfarin (INR 2-3) or DOAC</li>
+                                  <li>&bull; DOAC reasonable if no APS (Class IIb, ACTION-CVT)</li>
+                                  <li>&bull; Repeat imaging (MRV) at 3-6 months</li>
+                                </ul>
+                              </div>
+                              <div className="bg-indigo-50 border-l-4 border-l-indigo-300 p-2 rounded-r">
+                                <p className="font-bold text-indigo-700 uppercase">Duration (3-12 mo)</p>
+                                <ul className="text-slate-700 mt-1 space-y-0.5">
+                                  <li>&bull; Provoked + resolved: 3-6 months</li>
+                                  <li>&bull; Unprovoked: 6-12 months</li>
+                                  <li>&bull; Recurrent VTE or severe thrombophilia: indefinite</li>
+                                  <li>&bull; APS confirmed: warfarin (not DOAC)</li>
+                                </ul>
+                              </div>
+                              <div className="bg-red-50 border-l-4 border-l-red-500 p-2 rounded-r">
+                                <p className="font-bold text-red-700 uppercase">Escalation Triggers</p>
+                                <ul className="text-slate-700 mt-1 space-y-0.5">
+                                  <li>&bull; Worsening despite anticoag &rarr; EVT consultation</li>
+                                  <li>&bull; Severe ICP with visual loss &rarr; LP / shunt</li>
+                                  <li>&bull; Herniation risk &rarr; decompressive craniectomy</li>
+                                  <li>&bull; Refractory seizures &rarr; continuous EEG</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <p className="text-xs text-slate-500 mt-2 italic">Saposnik G et al. Stroke 2024. AHA/ASA CVT Scientific Statement. ACTION-CVT: Yaghi S et al. JAMA Neurol 2022;79:1260-1269. PMID: 36315105.</p>
                         </div>
 
                         {/* CVT Risk Factors */}
