@@ -9617,6 +9617,9 @@ Clinician Name`;
               note += `\n`;
               note += `ASSESSMENT & PLAN:\n`;
               note += `1. Acute stroke management:\n`;
+              if (telestrokeNote.tnkRecommended && telestrokeNote.disablingDeficit) {
+                note += `   - DISABLING DEFICIT: TNK administered despite NIHSS ${telestrokeNote.nihss || nihssScore || '___'} based on significant functional impairment\n`;
+              }
               if (telestrokeNote.tnkRecommended) {
                 const prPtm = telestrokeNote.postTNKMonitoring || {};
                 const prPtmItems = [];
@@ -9952,6 +9955,25 @@ Clinician Name`;
                 note += `YOUR REHABILITATION:\n`;
                 edRehabItems.forEach(r => { note += `- ${r}: Attend all sessions as scheduled\n`; });
                 note += '\n';
+              }
+              {
+                const dischMRS = (telestrokeNote.mrsAssessment || {}).discharge;
+                if (dischMRS) {
+                  const mrsDesc = { '0': 'No symptoms', '1': 'No significant disability despite symptoms', '2': 'Slight disability — able to look after your own affairs without assistance', '3': 'Moderate disability — requiring some help but able to walk without assistance', '4': 'Moderately severe disability — unable to walk or attend to bodily needs without assistance', '5': 'Severe disability — bedbound, requiring constant nursing care' };
+                  note += `YOUR CURRENT FUNCTIONAL STATUS:\n`;
+                  note += `- Modified Rankin Scale (mRS): ${dischMRS} — ${mrsDesc[dischMRS] || 'See your neurologist for interpretation'}\n`;
+                  note += `- This will be reassessed at follow-up visits to track your recovery\n\n`;
+                }
+              }
+              {
+                const rtw = telestrokeNote.returnToWork || {};
+                if (rtw.workingAge) {
+                  note += `RETURN TO WORK:\n`;
+                  note += `- Expected timeline: ${rtw.expectedTimeline || 'to be determined by your neurologist'}\n`;
+                  if (rtw.phasedReturnPlan) note += `- A phased return plan has been discussed — start with reduced hours\n`;
+                  if (rtw.vocationalRehabReferral) note += `- Vocational rehabilitation referral has been placed to support your return\n`;
+                  note += '\n';
+                }
               }
               note += `FOLLOW-UP APPOINTMENTS:\n`;
               if (sp.followUpTimeline) note += `Recommended timeline: ${sp.followUpTimeline}\n`;
@@ -10453,6 +10475,16 @@ Clinician Name`;
                 note += `- Driving: restricted${driving.restrictionDuration ? ` x ${driving.restrictionDuration}` : ' per state law'}${driving.commercialDriver ? ' (COMMERCIAL DRIVER — DMV notification required)' : ''}${driving.drivingEvalReferral ? ' — driving eval referral placed' : ''}\n`;
               } else {
                 note += `- Driving restrictions per state law\n`;
+              }
+              {
+                const rtw = telestrokeNote.returnToWork || {};
+                if (rtw.workingAge) {
+                  note += `- Return to work: ${rtw.expectedTimeline || 'timeline to be determined by neurologist'}`;
+                  if (rtw.priorOccupation) note += ` (prior: ${rtw.priorOccupation})`;
+                  if (rtw.vocationalRehabReferral) note += ' — vocational rehab referral placed';
+                  if (rtw.phasedReturnPlan) note += ' — phased return plan discussed';
+                  note += '\n';
+                }
               }
               note += '\n';
               note += `RED FLAGS — RETURN TO ED IMMEDIATELY IF:\n`;
