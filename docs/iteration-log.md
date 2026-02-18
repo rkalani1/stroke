@@ -1,5 +1,16 @@
 # Iteration Log
 
+## Iteration 034 (2026-02-18)
+
+### What was changed
+- **Focus trap deps fix**: Removed `settingsMenuOpen` from modal focus trap useEffect dependency array — settings menu is not a modal and doesn't need focus trapping. Prevents unnecessary effect re-runs and edge-case focus restoration disruption.
+- **XSS import hardening**: Added `data:text/html`, `vbscript:`, and `on\w+=` event handler patterns to import validation regex. Blocks additional injection vectors in backup import.
+- **Encounter history error logging**: Changed `catch {}` to `catch (e) { console.warn(...) }` for encounter history localStorage save.
+- **False positives rejected**: Ctrl+1/2/3/4 in text inputs (intentional — Ctrl+digit is a shortcut, not text input), search opens on 1-char (cosmetic), import confirmation dialog (enhancement), copy without validating empty (intentional for partial notes), PDF export size check (enhancement), import version check (migrateAppData handles this).
+
+### Commit
+- Code: `519b29e` (v5.14.40 / cache v39)
+
 ## Iteration 033 (2026-02-18)
 
 ### What was changed
