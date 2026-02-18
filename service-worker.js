@@ -1,4 +1,4 @@
-const CACHE_NAME = 'stroke-app-v33';
+const CACHE_NAME = 'stroke-app-v34';
 const CORE_ASSETS = [
   './',
   './index.html',

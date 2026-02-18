@@ -8802,7 +8802,7 @@ Clinician Name`;
 
               // ICH-specific data
               if (telestrokeNote.diagnosisCategory === 'ich') {
-                let ichTransfer = '\nICH Management:\n';
+                let ichTransfer = '\nICH MANAGEMENT:\n';
                 {
                   const ichCalc = telestrokeNote.ichVolumeCalc || {};
                   const ichVol = calculateICHVolume(ichCalc);
@@ -8823,7 +8823,7 @@ Clinician Name`;
               // SAH-specific data
               const isDiagSAH = telestrokeNote.diagnosisCategory === 'sah';
               if (isDiagSAH) {
-                note += `\nSAH Management:\n`;
+                note += `\nSAH MANAGEMENT:\n`;
                 if (telestrokeNote.sahGrade) note += `- ${{'huntHess': 'Hunt & Hess Grade', 'wfns': 'WFNS Grade'}[telestrokeNote.sahGradeScale] || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
                 if (telestrokeNote.fisherGrade) note += `- Modified Fisher Grade: ${telestrokeNote.fisherGrade}\n`;
                 if (telestrokeNote.sahBPManaged) note += `- BP managed (SBP <160 pre-securing)\n`;
@@ -9666,7 +9666,41 @@ Clinician Name`;
                 if (prVte.postTpaTimerStarted) prVteItems.push('post-TNK 24h hold');
                 note += `   - DVT prophylaxis: ${prVteItems.length > 0 ? prVteItems.join('; ') : telestrokeNote.tnkRecommended ? 'pharmacologic held (post-TNK 24h) — IPC/SCDs recommended' : '___'}\n`;
               }
-              note += `   - Dysphagia screening: ${telestrokeNote.dysphagiaScreening?.bedsideScreenPerformed ? 'completed' : 'pending'}\n\n`;
+              note += `   - Dysphagia screening: ${telestrokeNote.dysphagiaScreening?.bedsideScreenPerformed ? 'completed' : 'pending'}\n`;
+              // ICH-specific management
+              if (telestrokeNote.diagnosisCategory === 'ich') {
+                const prIchParts = [];
+                {
+                  const ichCalcPr = telestrokeNote.ichVolumeCalc || {};
+                  const ichVolPr = calculateICHVolume(ichCalcPr);
+                  if (ichVolPr && ichVolPr.volume) prIchParts.push(`vol ${ichVolPr.volume} mL${ichVolPr.isLarge ? ' (LARGE)' : ''}`);
+                }
+                if (telestrokeNote.ichBPManaged) prIchParts.push('BP managed (SBP <140)');
+                if (telestrokeNote.ichReversalInitiated) prIchParts.push('reversal initiated');
+                if (telestrokeNote.ichNeurosurgeryConsulted) prIchParts.push('NSG consulted');
+                if (telestrokeNote.ichSeizureProphylaxis) prIchParts.push('seizure ppx');
+                const prIchSurg = telestrokeNote.ichSurgicalCriteria || {};
+                if (prIchSurg.cerebellarGt15mL) prIchParts.push('cerebellar >15mL');
+                if (prIchSurg.hydrocephalus) prIchParts.push('hydrocephalus');
+                if (prIchSurg.midlineShift) prIchParts.push('midline shift');
+                if (prIchSurg.surgeryDecision) prIchParts.push(`surgery: ${prIchSurg.surgeryDecision}`);
+                if (prIchParts.length > 0) note += `   - ICH: ${prIchParts.join(', ')}\n`;
+              }
+              // SAH-specific management
+              if (telestrokeNote.diagnosisCategory === 'sah') {
+                const prSahParts = [];
+                if (telestrokeNote.sahGrade) prSahParts.push(`grade ${telestrokeNote.sahGrade}`);
+                if (telestrokeNote.fisherGrade) prSahParts.push(`Fisher ${telestrokeNote.fisherGrade}`);
+                if (telestrokeNote.sahNimodipine) prSahParts.push('nimodipine');
+                if (telestrokeNote.sahEVDPlaced) prSahParts.push('EVD');
+                if (telestrokeNote.sahAneurysmSecured) prSahParts.push(`aneurysm secured${telestrokeNote.sahSecuringMethod ? ` (${telestrokeNote.sahSecuringMethod})` : ''}`);
+                if (telestrokeNote.sahAneurysmLocation) prSahParts.push(`location: ${telestrokeNote.sahAneurysmLocation}`);
+                const prVm = telestrokeNote.sahVasospasmMonitoring || {};
+                if (prVm.dciSuspected) prSahParts.push('DCI SUSPECTED');
+                if (prVm.inducedHypertension) prSahParts.push('induced HTN');
+                if (prSahParts.length > 0) note += `   - SAH: ${prSahParts.join(', ')}\n`;
+              }
+              note += '\n';
               note += `2. Secondary prevention:\n`;
               const progSp = telestrokeNote.secondaryPrevention || {};
               if (progSp.antiplateletRegimen) note += `   - Antithrombotic: ${AP_LABELS_SHORT[progSp.antiplateletRegimen] || progSp.antiplateletRegimen}\n`;
@@ -10059,8 +10093,22 @@ Clinician Name`;
                 if (telestrokeNote.sahNimodipine) note += `- Nimodipine: initiated\n`;
                 if (telestrokeNote.sahEVDPlaced) note += `- EVD: placed\n`;
                 if (telestrokeNote.sahAneurysmSecured) note += `- Aneurysm: secured\n`;
+                if (telestrokeNote.sahAneurysmLocation) note += `- Aneurysm location: ${telestrokeNote.sahAneurysmLocation}\n`;
+                if (telestrokeNote.sahAneurysmSize) note += `- Aneurysm size: ${telestrokeNote.sahAneurysmSize} mm\n`;
+                if (telestrokeNote.sahSecuringMethod) note += `- Securing method: ${telestrokeNote.sahSecuringMethod}\n`;
                 if (telestrokeNote.sahNeurosurgeryConsulted) note += `- Neurosurgery: consulted\n`;
                 if (telestrokeNote.sahSeizureProphylaxis) note += `- Seizure prophylaxis: initiated\n`;
+                {
+                  const dcVm = telestrokeNote.sahVasospasmMonitoring || {};
+                  const dcVmItems = [];
+                  if (dcVm.tcdOrdered) dcVmItems.push('TCD monitoring');
+                  if (dcVm.neuroChecksQ1h) dcVmItems.push('neuro checks q1h');
+                  if (dcVm.sodiumMonitoring) dcVmItems.push('sodium q6-8h');
+                  if (dcVm.dciSuspected) dcVmItems.push('DCI suspected');
+                  if (dcVm.inducedHypertension) dcVmItems.push('induced hypertension');
+                  if (dcVmItems.length > 0) note += `- Vasospasm/DCI monitoring: ${dcVmItems.join(', ')}\n`;
+                  if (dcVm.notes) note += `- DCI notes: ${dcVm.notes}\n`;
+                }
               }
               // CVT-specific data
               if (telestrokeNote.diagnosisCategory === 'cvt') {
@@ -10740,7 +10788,7 @@ Clinician Name`;
 
             // Add SAH-specific details
             if (telestrokeNote.diagnosisCategory === 'sah') {
-              let sahNote = '\nSAH Management:\n';
+              let sahNote = '\nSAH MANAGEMENT:\n';
               if (telestrokeNote.sahGrade) sahNote += `- ${{'huntHess': 'Hunt & Hess Grade', 'wfns': 'WFNS Grade'}[telestrokeNote.sahGradeScale] || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
               if (telestrokeNote.fisherGrade) sahNote += `- Modified Fisher Grade: ${telestrokeNote.fisherGrade}\n`;
               if (telestrokeNote.sahBPManaged) sahNote += `- BP managed (SBP <160 pre-securing)\n`;
@@ -10753,7 +10801,7 @@ Clinician Name`;
               const vmDc = telestrokeNote.sahVasospasmMonitoring || {};
               if (vmDc.dciSuspected) sahNote += `- DCI suspected during hospitalization\n`;
               if (vmDc.inducedHypertension) sahNote += `- Induced hypertension used for DCI rescue\n`;
-              if (sahNote !== '\nSAH Management:\n') note += sahNote;
+              if (sahNote !== '\nSAH MANAGEMENT:\n') note += sahNote;
             }
 
             // Add post-thrombolysis complications
