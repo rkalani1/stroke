@@ -8140,6 +8140,10 @@ Clinician Name`;
               if (!isNaN(admNIHSS) && !isNaN(dischNIHSS)) nihssDelta = ` (${admNIHSS > dischNIHSS ? 'improved' : admNIHSS < dischNIHSS ? 'worsened' : 'unchanged'} from ${admNIHSS})`;
               brief += `- Discharge NIHSS: ${telestrokeNote.dischargeNIHSS}${nihssDelta}\n`;
             }
+            {
+              const fuMRS = telestrokeNote.mrsAssessment || {};
+              if (fuMRS.discharge != null && fuMRS.discharge !== '') brief += `- Discharge mRS: ${fuMRS.discharge}${fuMRS.admission != null && fuMRS.admission !== '' ? ` (admission: ${fuMRS.admission})` : ''}\n`;
+            }
             brief += `\nIMAGING:\n`;
             brief += `- CT Head: ${telestrokeNote.ctResults || 'N/A'}\n`;
             brief += `- CTA: ${telestrokeNote.ctaResults || 'N/A'}\n`;
@@ -9654,7 +9658,14 @@ Clinician Name`;
               if (telestrokeNote.infectiveEndocarditis) note += `   - INFECTIVE ENDOCARDITIS\n`;
               const progBp = bpPhaseTargets[telestrokeNote.bpPhase];
               note += `   - BP goal: ${progBp ? `<${progBp.systolic}/${progBp.diastolic} (${progBp.label})` : '___'}\n`;
-              note += `   - DVT prophylaxis: ___\n`;
+              {
+                const prVte = telestrokeNote.vteProphylaxis || {};
+                const prVteItems = [];
+                if (prVte.ipcApplied) prVteItems.push('IPC/SCDs');
+                if (prVte.pharmacoProphylaxis) prVteItems.push(`${prVte.pharmacoProphylaxis}${prVte.enoxaparinDose ? ` ${prVte.enoxaparinDose}` : ''}`);
+                if (prVte.postTpaTimerStarted) prVteItems.push('post-TNK 24h hold');
+                note += `   - DVT prophylaxis: ${prVteItems.length > 0 ? prVteItems.join('; ') : telestrokeNote.tnkRecommended ? 'pharmacologic held (post-TNK 24h) — IPC/SCDs recommended' : '___'}\n`;
+              }
               note += `   - Dysphagia screening: ${telestrokeNote.dysphagiaScreening?.bedsideScreenPerformed ? 'completed' : 'pending'}\n\n`;
               note += `2. Secondary prevention:\n`;
               const progSp = telestrokeNote.secondaryPrevention || {};
@@ -9706,7 +9717,31 @@ Clinician Name`;
             }
 
             if (noteTemplate === 'patient-ed') {
-              let note = `STROKE PATIENT EDUCATION\n${'='.repeat(40)}\n\n`;
+              // Mimic diagnoses get non-stroke education
+              if (telestrokeNote.diagnosisCategory === 'mimic') {
+                let note = `PATIENT EDUCATION\n${'='.repeat(40)}\n\n`;
+                note += `Dear Patient / Family,\n\n`;
+                note += `You were evaluated for: ${telestrokeNote.diagnosis || '___'}\n\n`;
+                note += `After thorough evaluation, your symptoms were determined NOT to be caused by a stroke.\n`;
+                note += `Your diagnosis is: ${telestrokeNote.diagnosis || '___'}\n\n`;
+                note += `IMPORTANT:\n`;
+                note += `- Follow up with your primary care doctor within 1 week\n`;
+                note += `- Follow up with neurology as arranged\n`;
+                note += `- Take all prescribed medications as directed\n`;
+                note += `- Return to the emergency department if you develop any new or worsening symptoms\n\n`;
+                note += `KNOW THE SIGNS OF STROKE (BE FAST):\n`;
+                note += `Even though your symptoms were not caused by a stroke, it is important to know the warning signs:\n`;
+                note += `B — Balance: Sudden loss of balance\n`;
+                note += `E — Eyes: Sudden vision changes\n`;
+                note += `F — Face: Face drooping on one side\n`;
+                note += `A — Arms: Arm weakness or numbness\n`;
+                note += `S — Speech: Slurred or difficulty speaking\n`;
+                note += `T — Time: Call 911 immediately!\n\n`;
+                note += `If you have any questions, call your doctor's office.\n`;
+                return note;
+              }
+              const isCVT = telestrokeNote.diagnosisCategory === 'cvt';
+              let note = `${isCVT ? 'CEREBRAL VENOUS THROMBOSIS' : 'STROKE'} PATIENT EDUCATION\n${'='.repeat(40)}\n\n`;
               note += `Dear Patient / Family,\n\n`;
               note += `You have been diagnosed with: ${telestrokeNote.diagnosis || '___'}\n\n`;
               // Treatment history
@@ -9715,6 +9750,7 @@ Clinician Name`;
                 if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) txItems.push('a clot-dissolving medication (tenecteplase/TNK) through your IV');
                 if (telestrokeNote.evtRecommended) txItems.push('a catheter-based procedure to remove the blood clot (thrombectomy)');
                 if (telestrokeNote.diagnosisCategory === 'ich') txItems.push('treatment for bleeding in the brain including blood pressure control and monitoring');
+                if (isCVT) txItems.push('blood thinner (anticoagulation) to treat the blood clot in your brain veins');
                 if (txItems.length > 0) {
                   note += `YOUR TREATMENT:\n`;
                   note += `During your hospital stay, you received:\n`;
@@ -9722,8 +9758,13 @@ Clinician Name`;
                   note += '\n';
                 }
               }
-              note += `WHAT IS A STROKE?\n`;
-              note += `A stroke happens when blood flow to part of the brain is blocked (ischemic stroke) or when a blood vessel in the brain bursts (hemorrhagic stroke). Without blood flow, brain cells begin to die.\n\n`;
+              if (isCVT) {
+                note += `WHAT IS CEREBRAL VENOUS THROMBOSIS (CVT)?\n`;
+                note += `CVT is a blood clot in the veins that drain blood from the brain. Unlike a typical stroke caused by a blocked artery, CVT affects the venous system. Treatment involves blood thinners (anticoagulation) usually for 3-12 months.\n\n`;
+              } else {
+                note += `WHAT IS A STROKE?\n`;
+                note += `A stroke happens when blood flow to part of the brain is blocked (ischemic stroke) or when a blood vessel in the brain bursts (hemorrhagic stroke). Without blood flow, brain cells begin to die.\n\n`;
+              }
               note += `WARNING SIGNS — BE FAST:\n`;
               note += `B — Balance: Sudden loss of balance\n`;
               note += `E — Eyes: Sudden vision changes\n`;
@@ -9740,14 +9781,17 @@ Clinician Name`;
               {
                 const edDoac = telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== 'none' ? (ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType) : null;
                 const edDoacTiming = telestrokeNote.doacTiming || {};
-                if (edDoac || (sp.antiplateletRegimen || '').includes('doac') || (sp.antiplateletRegimen || '').includes('anticoag')) {
+                if (edDoac || isCVT || (sp.antiplateletRegimen || '').includes('doac') || (sp.antiplateletRegimen || '').includes('anticoag')) {
                   note += `\nANTICOAGULATION (BLOOD THINNER):\n`;
                   if (edDoac) note += `- You are prescribed: ${edDoac}\n`;
-                  note += `- This medication helps prevent blood clots and reduces your risk of another stroke\n`;
-                  note += `- Take at the SAME TIME every day. Do NOT skip doses — even one missed dose increases stroke risk\n`;
+                  note += isCVT
+                    ? `- This medication treats the blood clot in your brain veins and prevents new clots from forming\n`
+                    : `- This medication helps prevent blood clots and reduces your risk of another stroke\n`;
+                  note += `- Take at the SAME TIME every day. Do NOT skip doses — even one missed dose increases ${isCVT ? 'clot' : 'stroke'} risk\n`;
                   note += `- Tell ALL your doctors and dentists that you take a blood thinner\n`;
                   note += `- Seek immediate medical attention if you experience unusual bleeding, blood in urine/stool, or severe bruising\n`;
                   if (edDoacTiming.restartDate) note += `- Restart date: ${edDoacTiming.restartDate}\n`;
+                  if (isCVT) note += `- CVT anticoagulation is typically continued for 3-12 months. Your doctor will determine the exact duration.\n`;
                   note += '\n';
                 }
               }
@@ -16125,6 +16169,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       if (nc !== 'ischemic') {
                                         updated.tnkRecommended = false;
                                         updated.evtRecommended = false;
+                                        updated.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', transferConsentDiscussed: false };
                                       }
                                       if (nc !== 'ich') {
                                         updated.ichReversalInitiated = false;
@@ -16156,13 +16201,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         updated.cvtHematologyConsulted = false;
                                       }
                                     }
+                                    // Auto-populate discovery date/time for wake-up stroke templates
+                                    if (tmpl.defaults.lkwUnknown) {
+                                      const now = new Date();
+                                      if (!updated.discoveryDate) updated.discoveryDate = now.toISOString().split('T')[0];
+                                      if (!updated.discoveryTime) updated.discoveryTime = now.toTimeString().slice(0, 5);
+                                    }
                                     return updated;
                                   });
-                                  if (tmpl.defaults.lkwUnknown) {
-                                    const now = new Date();
-                                    if (!updated.discoveryDate) updated.discoveryDate = now.toISOString().split('T')[0];
-                                    if (!updated.discoveryTime) updated.discoveryTime = now.toTimeString().slice(0, 5);
-                                  }
                                   if (tmpl.defaults.diagnosisCategory === 'ich') {
                                     setManagementSubTab('ich');
                                   }
@@ -19713,6 +19759,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             if (newCategory !== 'ischemic') {
                                               updated.tnkRecommended = false;
                                               updated.evtRecommended = false;
+                                              updated.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', transferConsentDiscussed: false };
                                             }
                                             if (newCategory !== 'ich') {
                                               updated.ichReversalInitiated = false;
