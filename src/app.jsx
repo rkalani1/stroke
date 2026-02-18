@@ -2026,15 +2026,17 @@ Clinician Name`;
           }, [telestrokeNote.diagnosisCategory, telestrokeNote.diagnosis]);
 
           const calculatorPriorityMap = {
-            ich: ['ich-score', 'gcs', 'mrs', 'hasbled', 'crcl'],
+            ich: ['ich-score', 'func', 'gcs', 'mrs', 'hasbled', 'crcl'],
             ischemic: ['abcd2', 'mrs', 'chads2vasc', 'hasbled', 'rope', 'crcl'],
-            sah: ['hunt-hess', 'gcs', 'crcl'],
+            sah: ['hunt-hess', 'mod-fisher', 'gcs', 'crcl'],
             tia: ['abcd2', 'chads2vasc', 'hasbled', 'crcl'],
             other: []
           };
           const calculatorLabelMap = {
             'gcs': 'GCS',
             'ich-score': 'ICH Score',
+            'func': 'FUNC Score',
+            'mod-fisher': 'Mod. Fisher',
             'mrs': 'mRS',
             'abcd2': 'ABCD²',
             'chads2vasc': 'CHA₂DS₂-VASc',
@@ -7517,6 +7519,15 @@ Clinician Name`;
           }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode, settingsMenuOpen, searchOpen, showKeyboardHelp, showChangelog, telestrokeNote.age, telestrokeNote.sex, telestrokeNote.nihss, telestrokeNote.ctResults, telestrokeNote.diagnosis, telestrokeNote.disposition, lkwTime, nihssScore]);
 
 
+          // Restore focus to settings trigger when menu closes
+          const settingsMenuWasOpen = React.useRef(false);
+          React.useEffect(() => {
+            if (settingsMenuWasOpen.current && !settingsMenuOpen) {
+              document.getElementById('settings-menu-trigger')?.focus();
+            }
+            settingsMenuWasOpen.current = settingsMenuOpen;
+          }, [settingsMenuOpen]);
+
           // Persist shift patients to localStorage
           React.useEffect(() => {
             saveWithExpiration('shiftPatients', shiftPatients);
@@ -9032,7 +9043,7 @@ Clinician Name`;
                 const txSp = telestrokeNote.secondaryPrevention || {};
                 const spParts = [];
                 if (txSp.antiplateletRegimen) spParts.push(`Antithrombotic: ${AP_LABELS_SHORT[txSp.antiplateletRegimen] || txSp.antiplateletRegimen}${txSp.daptDuration ? ` x ${txSp.daptDuration}` : ''}`);
-                if (txSp.statinIntensity) spParts.push(`Statin: ${txSp.statinIntensity}`);
+                if (txSp.statinDose) spParts.push(`Statin: ${txSp.statinDose.replace(/-/g, ' ')}`);
                 if (txSp.bpTarget) spParts.push(`BP target: ${txSp.bpTarget}${txSp.bpMeds ? ` (${txSp.bpMeds})` : ''}`);
                 if (txSp.ldlTarget && txSp.ldlTarget !== '<70') spParts.push(`LDL target: ${txSp.ldlTarget}`);
                 if (txSp.ezetimibeAdded) spParts.push('ezetimibe added');
@@ -10836,6 +10847,31 @@ Clinician Name`;
             if (dc.drivingRestrictions) dcItems.push('Driving restrictions counseled');
             if (dcItems.length > 0) {
               note += `\nDischarge Planning:\n${dcItems.map(i => `- ${i}`).join('\n')}\n`;
+            }
+
+            // Caregiver education
+            {
+              const rr = telestrokeNote.rehabReferral || {};
+              const cgItems = [];
+              if (rr.caregiver_strokeSigns) cgItems.push('Stroke warning signs (BE-FAST)');
+              if (rr.caregiver_medicationAdmin) cgItems.push('Medication administration');
+              if (rr.caregiver_bpMonitoring) cgItems.push('Blood pressure monitoring');
+              if (rr.caregiver_safeTransfers) cgItems.push('Safe transfers/mobility');
+              if (rr.caregiver_dysphagiaDiet) cgItems.push('Dysphagia precautions/diet');
+              if (cgItems.length > 0) {
+                note += `\nCaregiver Education Completed:\n${cgItems.map(i => `- ${i}`).join('\n')}\n`;
+              }
+            }
+
+            // Screening assessments
+            {
+              const scItems = [];
+              if (telestrokeNote.phq2Score) scItems.push(`PHQ-2: ${telestrokeNote.phq2Score}${telestrokeNote.phq2Positive ? ' (positive — PHQ-9 follow-up needed)' : ''}`);
+              if (telestrokeNote.mocaScore) scItems.push(`MoCA: ${telestrokeNote.mocaScore}/30${telestrokeNote.mocaReferral ? ' — neuropsych referral placed' : ''}`);
+              if (telestrokeNote.stopBangScore) scItems.push(`STOP-BANG: ${telestrokeNote.stopBangScore}${parseInt(telestrokeNote.stopBangScore, 10) >= 5 ? ' (high risk — sleep study recommended)' : ''}`);
+              if (scItems.length > 0) {
+                note += `\nScreening Assessments:\n${scItems.map(i => `- ${i}`).join('\n')}\n`;
+              }
             }
 
             return note;
@@ -14626,6 +14662,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
                       )}
                     </div>
+                    <div className="text-center text-xs text-slate-400 pb-2">Press Esc or click outside to close</div>
                   </div>
                 </div>
               )}
@@ -15326,6 +15363,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                 {/* CONSOLIDATED ENCOUNTER TAB */}
                 {activeTab === 'encounter' && (
+                  <ErrorBoundary>
                   <div key="encounter-tab" id="tabpanel-encounter" role="tabpanel" aria-labelledby="tab-encounter" className="space-y-4">
 
                     {/* ===== PATIENT SUMMARY STRIP ===== */}
@@ -25479,6 +25517,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     )}
 
                   </div>
+                  </ErrorBoundary>
                 )}
 
 
