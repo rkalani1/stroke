@@ -2,38 +2,50 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `f2ffbb8`
+- Last pushed commit: `49070f7`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.14`
-- Service worker cache key: `stroke-app-v13`
+- Live APP_VERSION: `v5.14.15`
+- Service worker cache key: `stroke-app-v14`
 
-## Completed in this cycle (iter-006)
-- Added SAH first-hour rapid actions card at top of SAH management (airway/ICU, BP, securing, nimodipine, hydrocephalus, DCI surveillance).
-- Added CVT treatment timeline strip (acute/subacute/duration/escalation) with ACTION-CVT DOAC transition data.
-- Added AF anticoag timing quick reference in secondary prevention (CATALYST/ELAN/TIMING grid, conditional on AF regimen selection).
-- Bumped APP_VERSION to v5.14.14 and service-worker cache to v13.
+## Completed in this cycle (iter-007)
+- Added TNK-first decision card in ischemic management (dosing, alteplase fallback, exclusions).
+- Added imaging hard-stop alert at top of wake-up stroke evaluation panel.
+- Enhanced pregnancy/peripartum emergency panel with 4-cell rapid actions grid.
+- Bumped APP_VERSION to v5.14.15 and service-worker cache to v14.
 - Updated cycle docs: evidence-review, gap-matrix, iteration-log, regression-checklist.
 
 ## QA summary
 - Build: pass (esbuild + tailwindcss).
-- Schema check: pre-existing mismatch persists (not addressed this cycle).
-- Post-change: local desktop/tablet/mobile route matrix passed (no console errors).
+- Schema check: pre-existing mismatch persists.
+- Post-change: local cards verified present, build clean.
 - Deployed to GitHub Pages successfully.
 
 ## Known debt and risks
-- Storage schema mismatch remains high and should be handled in a dedicated hardening iteration.
-- No automated unit/integration tests yet; confidence remains build + smoke + targeted workflow checks.
-- Working tree contains unrelated local artifacts not committed:
-  - modified `package-lock.json`
-  - untracked `app.debug.js`
-  - untracked `compare_keys.ps1`
+- Storage schema mismatch remains high (pre-existing).
+- No automated unit/integration tests yet.
+- Working tree: modified `package-lock.json`, untracked `app.debug.js`, `compare_keys.ps1`.
+
+## Gap matrix status (P0/P1 items)
+| Gap | Status |
+|-----|--------|
+| TNK-first decision card | Completed (iter-007) |
+| Wake-up imaging hard-stop | Completed (iter-007) |
+| EVT large core | Completed (iter-004) |
+| ICH first-hour bundle | Completed (iter-004) |
+| DAPT phenotype matrix | Completed (iter-004) |
+| SAH first-hour rapid card | Completed (iter-006) |
+| CVT treatment timeline | Completed (iter-006) |
+| AF anticoag timing card | Completed (iter-006) |
+| Pregnancy/peripartum panel | Completed (iter-007) |
+| Renal-safety prompt chips | Open (P1) |
+| PFO/carotid decision cards | Open (P1) |
+| Automated pathway tests | Open (P1) |
 
 ## Next highest-impact actions
-1. Add TNK-first decision card with explicit inclusion/exclusion criteria and alteplase fallback branch in ischemic management (P0 gap).
-2. Add hard-stop imaging reminder in wake-up/unknown onset pathway (P0 gap).
-3. Add special population panel (pregnancy/peripartum emergency notes + maternal-fetal coordination triggers) (P1 gap).
-4. Add renal-safety prompt chips where anticoag/contrast decisions are made (P1 gap).
-5. Start automated pathway assertion tests as scriptable CI gates.
+1. Add renal-safety prompt chips where anticoag/contrast decisions are made (P1 gap).
+2. Add PFO closure and carotid revascularization decision cards in secondary prevention.
+3. Begin automated pathway assertion tests as scriptable CI gates.
+4. Address storage schema mismatch debt.
 
 ## Resume command
 - `cd C:\Users\rkala\stroke && git pull --rebase origin main && npx esbuild ./src/app.jsx --bundle --minify --format=iife --target=es2018 --outfile=./app.js`

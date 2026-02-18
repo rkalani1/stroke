@@ -122,3 +122,36 @@
 - Add TNK-first decision card with explicit inclusion/exclusion and alteplase fallback.
 - Add hard-stop imaging reminder in wake-up/unknown onset pathway.
 - Begin automated pathway assertion tests.
+
+## Iteration 007 (2026-02-18)
+
+### What was changed
+- Added `TNK-First Decision Card` in ischemic management: 3-column layout (TNK first-line dosing 0.25 mg/kg max 25 mg, alteplase fallback conditions, key exclusions) placed before TNK/EVT recommendation checkboxes.
+- Added `Imaging Hard-Stop Alert` at top of wake-up stroke evaluation panel: requires DWI-FLAIR mismatch or CT perfusion mismatch before thrombolysis. TWIST context: no benefit for unselected wake-up treatment.
+- Enhanced `Pregnancy Rapid Actions Panel`: 4-cell grid (acute treatment, OB coordination, differential diagnosis, medication safety) replacing simple bullet list when pregnancyStroke checkbox is active.
+- Bumped APP_VERSION to v5.14.15 and service-worker cache to v14.
+
+### Why
+- TNK-first: harmonize thrombolytic selection with current evidence (AcT, TRACE-2, ORIGINAL) by surfacing TNK as default choice with clear fallback conditions.
+- Wake-up imaging: prevent unselected wake-up thrombolysis by making imaging requirement visible and non-dismissable at the top of the decision tree.
+- Pregnancy: enhance maternal stroke emergency workflow with structured rapid actions to reduce time-to-treatment and ensure OB coordination.
+
+### Evidence citations used for this iteration
+- AcT (Lancet 2022, PMID: 35779579), TRACE-2 (NEJM 2023, PMID: 37043691), ORIGINAL (JAMA 2024, PMID: 38710025), ESO 2023 TNK recommendation.
+- WAKE-UP (NEJM 2018), EXTEND (NEJM 2019), TWIST (Lancet 2023, PMID: 36774963).
+- AHA 2026 Maternal Stroke Focused Update (PMID: 41678811).
+
+### QA and validation
+- Build: `npx esbuild` and `npx tailwindcss` passed.
+- Post-change: all new cards verified present in correct locations.
+- Deployed to GitHub Pages, push successful.
+
+### Remaining risks
+- Default-vs-sanitizer schema mismatch debt remains.
+- No automated unit/integration tests yet.
+
+### Next opportunities
+- Add renal-safety prompt chips where anticoag/contrast decisions are made (P1 gap).
+- Add DAPT phenotype selection with CHANCE-2 CYP2C19 guidance details.
+- Begin automated pathway assertion tests.
+- PFO/carotid secondary prevention decision cards.

@@ -77,6 +77,11 @@
 - Added CVT treatment timeline strip: 4-phase display (acute → subacute → duration → escalation triggers) with ACTION-CVT DOAC transition data. Placed after acute management checklist in CVT tab. Based on 2024 AHA CVT statement + ACTION-CVT (PMID: 36315105).
 - Added AF anticoag timing quick reference card in secondary prevention: conditionally displayed when DOAC-for-AF or anticoag-other is selected. Shows CATALYST/ELAN/TIMING severity-based timing grid with caution flags. Based on ELAN (PMID: 37222476) and CATALYST meta-analysis (Fischer U, Lancet Neurol 2025).
 
+### Operational mapping update (2026-02-18, iter-007)
+- Added TNK-first decision card in ischemic management: 3-column layout (TNK first-line dosing, alteplase fallback conditions, key exclusions) placed before TNK/EVT recommendation checkboxes. Based on AcT (PMID: 35779579), TRACE-2 (PMID: 37043691), ORIGINAL (PMID: 38710025), ESO 2023 recommendation.
+- Added imaging hard-stop alert at top of wake-up stroke evaluation panel: requires DWI-FLAIR mismatch (WAKE-UP trial) or CT perfusion mismatch (EXTEND trial) before thrombolysis. TWIST (Lancet 2023) context: no benefit for unselected wake-up thrombolysis.
+- Enhanced pregnancy/peripartum emergency panel with 4-cell rapid actions grid: acute treatment (do not delay, TNK relative CI, EVT preferred for LVO), OB coordination, differential diagnosis (preeclampsia/eclampsia, RCVS, CVT, PRES, peripartum cardiomyopathy), medication safety. Based on AHA 2026 Maternal Stroke Update (PMID: 41678811).
+
 ## Key citations (metadata + evidence tag)
 | Domain | Evidence tag | Title | Year | Journal/Source | URL | PMID / DOI / NCT |
 |---|---|---|---|---|---|---|
