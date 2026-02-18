@@ -8678,7 +8678,7 @@ Clinician Name`;
                 }
               }
               if (telestrokeNote.evtRecommended) {
-                note += `- EVT recommended\n`;
+                note += `- EVT recommended${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
                 if ((telestrokeNote.consentKit || {}).evtConsentDiscussed) {
                   const evtConType = (telestrokeNote.consentKit || {}).evtConsentType;
                   note += `- EVT consent: ${evtConType || '(type not specified)'}`;
@@ -9267,7 +9267,10 @@ Clinician Name`;
                   if (snVm.dciSuspected) snSahParts.push('DCI SUSPECTED');
                   if (snVm.inducedHypertension) snSahParts.push('induced HTN');
                   if (snVm.tcdOrdered) snSahParts.push('TCD monitoring');
+                  if (snVm.neuroChecksQ1h) snSahParts.push('neuro checks q1h');
+                  if (snVm.sodiumMonitoring) snSahParts.push('Na+ q6-8h');
                   if (snSahParts.length > 0) note += `- SAH: ${snSahParts.join(', ')}\n`;
+                  if (snVm.notes) note += `  DCI notes: ${snVm.notes}\n`;
                 }
               }
               // Safety alerts
@@ -9307,7 +9310,14 @@ Clinician Name`;
               // Pathway-specific (concise)
               if (telestrokeNote.diagnosisCategory === 'cvt') {
                 const snCvtParts = [];
-                if (telestrokeNote.cvtAnticoagStarted) snCvtParts.push(`anticoag (${telestrokeNote.cvtAnticoagType || '?'})`);
+                if (telestrokeNote.cvtAnticoagStarted) {
+                  const snCvtAc = telestrokeNote.cvtAnticoag || {};
+                  let acStr = `anticoag (${telestrokeNote.cvtAnticoagType || '?'})`;
+                  if (snCvtAc.acutePhase) acStr += ` ${snCvtAc.acutePhase}`;
+                  if (snCvtAc.transitionAgent) acStr += ` → ${snCvtAc.transitionAgent}`;
+                  snCvtParts.push(acStr);
+                  if (snCvtAc.apsStatus) snCvtParts.push('APS — warfarin mandatory');
+                }
                 if (telestrokeNote.cvtIcpManaged) snCvtParts.push('ICP managed');
                 if (telestrokeNote.cvtSeizureManaged) snCvtParts.push('seizure managed');
                 if (snCvtParts.length > 0) note += `- CVT: ${snCvtParts.join(', ')}\n`;
@@ -10125,7 +10135,13 @@ Clinician Name`;
                 if (rehab.neuropsych) rehabItems.push('neuropsych');
                 if (rehab.socialWork) rehabItems.push('social work');
                 if (rehab.vocationalRehab) rehabItems.push('vocational rehab');
-                if (rehabItems.length > 0) note += `REHAB REFERRALS: ${rehabItems.join(', ')}\n\n`;
+                if (rehabItems.length > 0) note += `REHAB REFERRALS: ${rehabItems.join(', ')}\n`;
+                const screenTimeline = [];
+                if (rehab.aphasiaReferral30d) screenTimeline.push('aphasia screen 30d');
+                if (rehab.cognitiveScreenDischarge) screenTimeline.push('cognitive screen at discharge');
+                if (rehab.cognitiveScreen3mo) screenTimeline.push('cognitive screen 3mo');
+                if (screenTimeline.length > 0) note += `Screening timeline: ${screenTimeline.join(', ')}\n`;
+                note += '\n';
               }
               note += `DISPOSITION: ${telestrokeNote.disposition || '___'}\n`;
               note += `CODE STATUS: ${telestrokeNote.codeStatus || '___'}\n\n`;
@@ -15961,12 +15977,39 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     const updated = { ...prev, ...tmpl.defaults };
                                     // Clear stale treatment flags when diagnosis category changes
                                     if (tmpl.defaults.diagnosisCategory && tmpl.defaults.diagnosisCategory !== prev.diagnosisCategory) {
-                                      if (tmpl.defaults.diagnosisCategory !== 'ischemic') {
+                                      const nc = tmpl.defaults.diagnosisCategory;
+                                      if (nc !== 'ischemic') {
                                         updated.tnkRecommended = false;
                                         updated.evtRecommended = false;
                                       }
-                                      if (tmpl.defaults.diagnosisCategory !== 'ich') {
+                                      if (nc !== 'ich') {
                                         updated.ichReversalInitiated = false;
+                                        updated.ichBPManaged = false;
+                                        updated.ichNeurosurgeryConsulted = false;
+                                        updated.ichSeizureProphylaxis = false;
+                                        updated.ichSurgicalCriteria = { cerebellarGt15mL: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
+                                      }
+                                      if (nc !== 'sah') {
+                                        updated.sahGrade = '';
+                                        updated.sahGradeScale = '';
+                                        updated.sahBPManaged = false;
+                                        updated.sahNimodipine = false;
+                                        updated.sahEVDPlaced = false;
+                                        updated.sahAneurysmSecured = false;
+                                        updated.sahNeurosurgeryConsulted = false;
+                                        updated.sahSeizureProphylaxis = false;
+                                        updated.fisherGrade = '';
+                                        updated.sahAneurysmLocation = '';
+                                        updated.sahAneurysmSize = '';
+                                        updated.sahSecuringMethod = '';
+                                        updated.sahVasospasmMonitoring = { tcdOrdered: false, neuroChecksQ1h: false, sodiumMonitoring: false, dciSuspected: false, inducedHypertension: false, notes: '' };
+                                      }
+                                      if (nc !== 'cvt') {
+                                        updated.cvtAnticoagStarted = false;
+                                        updated.cvtAnticoagType = '';
+                                        updated.cvtIcpManaged = false;
+                                        updated.cvtSeizureManaged = false;
+                                        updated.cvtHematologyConsulted = false;
                                       }
                                     }
                                     return updated;
@@ -17487,6 +17530,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           )}
                           {/* Vessel Occlusion Quick Select */}
+                          {(telestrokeNote.diagnosisCategory === 'ischemic' || telestrokeNote.diagnosisCategory === 'tia' || !telestrokeNote.diagnosisCategory) && (
                           <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded-lg">
                             <p className="text-xs font-semibold text-blue-800 mb-1">Vessel Occlusion</p>
                             <div className="flex flex-wrap gap-1.5">
@@ -17520,6 +17564,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             )}
                           </div>
+                          )}
                           <div className="mt-3">
                             <label className="block text-xs text-slate-600 mb-1">Telemetry / EKG</label>
                             <input
