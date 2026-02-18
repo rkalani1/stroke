@@ -16121,6 +16121,28 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <span className="text-lg font-bold text-purple-900"><i aria-hidden="true" data-lucide="moon" className="w-5 h-5 inline mr-1"></i> Wake-up Stroke Evaluation</span>
                           </div>
 
+                          {/* Hard-Stop Imaging Requirement */}
+                          <div role="alert" className="bg-red-50 border-2 border-red-400 rounded-lg p-3">
+                            <div className="flex items-start gap-2">
+                              <i aria-hidden="true" data-lucide="alert-triangle" className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5"></i>
+                              <div>
+                                <p className="text-sm font-bold text-red-800">IMAGING REQUIRED BEFORE THROMBOLYSIS</p>
+                                <p className="text-xs text-red-700 mt-1">Wake-up/unknown onset stroke requires advanced imaging selection before IV thrombolysis can be considered. Do NOT administer TNK or alteplase without one of:</p>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 text-xs">
+                                  <div className="bg-white border border-red-200 rounded p-2">
+                                    <p className="font-bold text-purple-700">MRI DWI-FLAIR Mismatch</p>
+                                    <p className="text-slate-600">DWI+ lesion with no corresponding FLAIR hyperintensity suggests &lt;4.5h tissue age (WAKE-UP trial, NEJM 2018)</p>
+                                  </div>
+                                  <div className="bg-white border border-red-200 rounded p-2">
+                                    <p className="font-bold text-orange-700">CT Perfusion Mismatch</p>
+                                    <p className="text-slate-600">Ischemic core &le;70 mL + mismatch ratio &ge;1.2 in 4.5-9h or wake-up window (EXTEND trial, NEJM 2019)</p>
+                                  </div>
+                                </div>
+                                <p className="text-xs text-red-600 mt-2 italic">TWIST (Lancet 2023): No benefit for unselected wake-up thrombolysis without advanced imaging. Imaging-guided selection remains mandatory.</p>
+                              </div>
+                            </div>
+                          </div>
+
                           {/* MRI Availability Decision Point */}
                           <div className="space-y-2">
                             <div className="font-semibold text-purple-800">Is MRI with DWI-FLAIR available?</div>
@@ -17528,6 +17550,49 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {telestrokeNote.symptomTrajectory === 'resolved' && telestrokeNote.diagnosisCategory === 'ischemic' && (
                               <div className="bg-amber-50 border border-amber-300 rounded-lg p-2 text-xs text-amber-800">
                                 <strong>Resolved symptoms with ischemic diagnosis:</strong> Consider TIA vs minor stroke. If DWI positive, this is a completed stroke despite resolution. ABCD2 score may help risk-stratify. Dual antiplatelet (DAPT) x21 days if minor stroke (NIHSS &le;3) or high-risk TIA.
+                              </div>
+                            )}
+
+                            {/* TNK-First Decision Card */}
+                            {telestrokeNote.diagnosisCategory === 'ischemic' && (
+                              <div className="bg-emerald-50 border-2 border-emerald-400 rounded-lg p-3 shadow-sm">
+                                <div className="text-sm font-bold text-emerald-800 mb-2 flex items-center gap-2">
+                                  <i aria-hidden="true" data-lucide="syringe" className="w-4 h-4"></i>
+                                  Thrombolytic Selection: TNK-First Approach
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
+                                  <div className="bg-white border border-emerald-200 rounded p-2">
+                                    <p className="font-bold text-emerald-700 uppercase mb-1">TNK 0.25 mg/kg (First-Line)</p>
+                                    <ul className="text-slate-700 space-y-0.5">
+                                      <li>&bull; Single IV bolus, max 25 mg</li>
+                                      <li>&bull; Within 4.5h of onset (or imaging-guided)</li>
+                                      <li>&bull; Non-inferior to alteplase (AcT, TRACE-2)</li>
+                                      <li>&bull; Simpler logistics, no infusion pump needed</li>
+                                      <li>&bull; ESO: recommended for eligible AIS patients</li>
+                                    </ul>
+                                  </div>
+                                  <div className="bg-white border border-amber-200 rounded p-2">
+                                    <p className="font-bold text-amber-700 uppercase mb-1">Use Alteplase Instead If:</p>
+                                    <ul className="text-slate-700 space-y-0.5">
+                                      <li>&bull; TNK not available at site</li>
+                                      <li>&bull; Local protocol mandates alteplase</li>
+                                      <li>&bull; Weight-based dosing concern (&gt;100 kg)</li>
+                                      <li>&bull; Prior hypersensitivity to TNK</li>
+                                      <li className="italic text-slate-500">Dose: 0.9 mg/kg (max 90 mg), 10% bolus + 60-min infusion</li>
+                                    </ul>
+                                  </div>
+                                  <div className="bg-white border border-red-200 rounded p-2">
+                                    <p className="font-bold text-red-700 uppercase mb-1">Key Exclusions (Both)</p>
+                                    <ul className="text-slate-700 space-y-0.5">
+                                      <li>&bull; Active internal bleeding or known bleeding diathesis</li>
+                                      <li>&bull; Platelets &lt;100K, INR &gt;1.7</li>
+                                      <li>&bull; Recent major surgery/trauma (14d)</li>
+                                      <li>&bull; SBP &gt;185 or DBP &gt;110 (uncontrolled)</li>
+                                      <li>&bull; Review full contraindication checklist below</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <p className="text-xs text-emerald-600 mt-2 italic">AcT (Lancet 2022, PMID: 35779579). TRACE-2 (NEJM 2023, PMID: 37043691). ORIGINAL (JAMA 2024, PMID: 38710025). ESO 2023 TNK Recommendation.</p>
                               </div>
                             )}
 
@@ -23290,12 +23355,55 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <span className="text-sm font-medium">Patient is pregnant or postpartum</span>
                                 </label>
                                 {telestrokeNote.pregnancyStroke && (
-                                  <div className="text-xs text-pink-700 space-y-1 ml-6">
-                                    <p>• TNK is a <strong>relative</strong> contraindication — weigh benefit vs risk, consult OB/GYN</p>
-                                    <p>• EVT is preferred for LVO (no systemic thrombolytic exposure)</p>
-                                    <p>• ASA 81 mg is safe in pregnancy</p>
-                                    <p>• Avoid warfarin in first trimester; LMWH preferred</p>
-                                    <p>• Consider preeclampsia/eclampsia, RCVS, and CVT in differential</p>
+                                  <div className="space-y-2 mt-2">
+                                    <div className="bg-red-50 border-2 border-red-300 rounded-lg p-3">
+                                      <p className="text-xs font-bold text-red-800 mb-2 flex items-center gap-1">
+                                        <i aria-hidden="true" data-lucide="alert-circle" className="w-3.5 h-3.5"></i>
+                                        Maternal Stroke Rapid Actions
+                                      </p>
+                                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                        <div className="bg-white border border-red-200 rounded p-2">
+                                          <p className="font-bold text-red-700 uppercase mb-1">Acute Treatment</p>
+                                          <ul className="text-slate-700 space-y-0.5">
+                                            <li>&bull; <strong>Do NOT delay</strong> stroke care for fetal assessment</li>
+                                            <li>&bull; TNK: relative contraindication — weigh benefit vs bleed risk</li>
+                                            <li>&bull; EVT: preferred for LVO (no systemic thrombolytic)</li>
+                                            <li>&bull; CT/CTA head: radiation to fetus is negligible — proceed</li>
+                                            <li>&bull; MRI without gadolinium is safe at any gestational age</li>
+                                          </ul>
+                                        </div>
+                                        <div className="bg-white border border-red-200 rounded p-2">
+                                          <p className="font-bold text-red-700 uppercase mb-1">Coordination</p>
+                                          <ul className="text-slate-700 space-y-0.5">
+                                            <li>&bull; OB/GYN consult STAT — concurrent with stroke care</li>
+                                            <li>&bull; Continuous fetal monitoring if viable gestational age</li>
+                                            <li>&bull; Anesthesia aware (potential emergent C-section)</li>
+                                            <li>&bull; L&amp;D team on standby for peripartum patients</li>
+                                          </ul>
+                                        </div>
+                                        <div className="bg-white border border-pink-200 rounded p-2">
+                                          <p className="font-bold text-pink-700 uppercase mb-1">Differential Diagnosis</p>
+                                          <ul className="text-slate-700 space-y-0.5">
+                                            <li>&bull; Preeclampsia / eclampsia (check BP, proteinuria, Mg)</li>
+                                            <li>&bull; RCVS (thunderclap headache, vasospasm)</li>
+                                            <li>&bull; CVT (hypercoagulable state of pregnancy)</li>
+                                            <li>&bull; PRES (posterior edema on imaging)</li>
+                                            <li>&bull; Peripartum cardiomyopathy (cardiac source)</li>
+                                          </ul>
+                                        </div>
+                                        <div className="bg-white border border-pink-200 rounded p-2">
+                                          <p className="font-bold text-pink-700 uppercase mb-1">Medication Safety</p>
+                                          <ul className="text-slate-700 space-y-0.5">
+                                            <li>&bull; ASA 81 mg: safe in pregnancy (Class I)</li>
+                                            <li>&bull; LMWH: preferred anticoagulant (does not cross placenta)</li>
+                                            <li>&bull; Warfarin: avoid in 1st trimester (teratogenic)</li>
+                                            <li>&bull; DOACs: contraindicated in pregnancy/breastfeeding</li>
+                                            <li>&bull; Labetalol/nicardipine: preferred for BP control</li>
+                                          </ul>
+                                        </div>
+                                      </div>
+                                      <p className="text-xs text-red-600 mt-2 italic">AHA 2026 Maternal Stroke Focused Update. PMID: 41678811.</p>
+                                    </div>
                                   </div>
                                 )}
                               </div>
