@@ -9027,6 +9027,23 @@ Clinician Name`;
                 note += `- Discussed with ${txFc.withWhom || 'family'}${txFc.time ? ` at ${txFc.time}` : ''}\n`;
                 if (txFc.topicsDiscussed) note += `- Topics: ${txFc.topicsDiscussed}\n`;
               }
+              // Secondary prevention plan
+              {
+                const txSp = telestrokeNote.secondaryPrevention || {};
+                const spParts = [];
+                if (txSp.antiplateletRegimen) spParts.push(`Antithrombotic: ${AP_LABELS_SHORT[txSp.antiplateletRegimen] || txSp.antiplateletRegimen}${txSp.daptDuration ? ` x ${txSp.daptDuration}` : ''}`);
+                if (txSp.statinIntensity) spParts.push(`Statin: ${txSp.statinIntensity}`);
+                if (txSp.bpTarget) spParts.push(`BP target: ${txSp.bpTarget}${txSp.bpMeds ? ` (${txSp.bpMeds})` : ''}`);
+                if (txSp.ldlTarget && txSp.ldlTarget !== '<70') spParts.push(`LDL target: ${txSp.ldlTarget}`);
+                if (txSp.ezetimibeAdded) spParts.push('ezetimibe added');
+                if (txSp.pcsk9Added) spParts.push('PCSK9i added');
+                if (txSp.glp1ra) spParts.push(`GLP-1 RA${txSp.glp1raIndication ? ` (${txSp.glp1raIndication})` : ''}`);
+                if (txSp.sglt2i) spParts.push(`SGLT-2i${txSp.sglt2iIndication ? ` (${txSp.sglt2iIndication})` : ''}`);
+                if (spParts.length > 0) {
+                  note += `\nSECONDARY PREVENTION PLAN:\n`;
+                  spParts.forEach(p => { note += `- ${p}\n`; });
+                }
+              }
               note += `\nPENDING AT TRANSFER:\n`;
               note += `- Follow-up CT: ${telestrokeNote.tnkRecommended ? '24h post-TNK' : 'Per clinical indication'}\n`;
               if (telestrokeNote.evtRecommended) note += `- EVT evaluation at receiving hub\n`;
@@ -17634,6 +17651,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   aria-label={telestrokeNote.tnkAutoBlocked ? 'TNK Recommended — disabled due to contraindication' : 'TNK Recommended'}
                                 />
                                 <span className={`text-sm font-medium ${telestrokeNote.tnkAutoBlocked ? 'text-slate-500 line-through' : 'text-emerald-800'}`}>TNK Recommended</span>
+                                {telestrokeNote.tnkRecommended && telestrokeNote.weight && (() => {
+                                  const dose = calculateTNKDose(telestrokeNote.weight);
+                                  return dose ? <span className="ml-1 text-xs font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">{dose.calculatedDose} mg</span> : null;
+                                })()}
                               </label>
                               <label className="flex items-center gap-2 p-2 bg-blue-50 border border-blue-200 rounded-lg cursor-pointer">
                                 <input
@@ -19305,8 +19326,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <span className="text-red-700 font-bold inline-flex items-center gap-1"><i aria-hidden="true" data-lucide="alert-circle" className="w-4 h-4"></i> CRITICAL CONTRAINDICATION{criticalAlerts.length > 1 ? 'S' : ''}</span>
                                     </div>
                                     <ul className="space-y-1">
-                                      {criticalAlerts.map((alert, idx) => (
-                                        <li key={idx} className="text-sm text-red-800 flex items-start gap-2">
+                                      {criticalAlerts.map((alert) => (
+                                        <li key={alert.field || alert.label} className="text-sm text-red-800 flex items-start gap-2">
                                           <span className="text-red-500">•</span>
                                           <span><strong>{alert.label}:</strong> {alert.message}</span>
                                         </li>
@@ -19321,8 +19342,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <span className="text-amber-700 font-bold inline-flex items-center gap-1"><i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4"></i> CAUTION{warningAlerts.length > 1 ? 'S' : ''}</span>
                                     </div>
                                     <ul className="space-y-1">
-                                      {warningAlerts.map((alert, idx) => (
-                                        <li key={idx} className="text-sm text-amber-800 flex items-start gap-2">
+                                      {warningAlerts.map((alert) => (
+                                        <li key={alert.field || alert.label} className="text-sm text-amber-800 flex items-start gap-2">
                                           <span className="text-amber-500">•</span>
                                           <span><strong>{alert.label}:</strong> {alert.message}</span>
                                         </li>
@@ -19334,8 +19355,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 {infoAlerts.length > 0 && (
                                   <div className="bg-blue-50 border border-blue-300 rounded-lg p-2">
                                     <ul className="space-y-1">
-                                      {infoAlerts.map((alert, idx) => (
-                                        <li key={idx} className="text-sm text-blue-800 flex items-start gap-2">
+                                      {infoAlerts.map((alert) => (
+                                        <li key={alert.field || alert.label} className="text-sm text-blue-800 flex items-start gap-2">
                                           <i aria-hidden="true" data-lucide="info" className="w-4 h-4 text-blue-500"></i>
                                           <span>{alert.message}</span>
                                         </li>
