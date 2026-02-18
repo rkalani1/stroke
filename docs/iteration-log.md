@@ -1,5 +1,33 @@
 # Iteration Log
 
+## Iteration 036 (2026-02-18)
+
+### What was changed
+- **Accessibility (6 fixes)**:
+  - aria-label on DOAC initiation day input (line 23231)
+  - aria-label on TEE findings input (line 23322)
+  - max="200" on CrCl input in enoxaparin calculator (line 30811)
+  - max="500" on CTP core volume, max="1500" on CTP penumbra volume (lines 17897, 17905)
+  - aria-label on discharge checklist detail inputs (line 24642)
+- **Discharge note additions** (previously only in follow-up brief):
+  - Substance screening: AUDIT-C score with positive threshold, counseling status
+  - Hormonal risk: OCP discontinuation (Class III), HRT review, migraine+aura
+  - Rehab screening: spasticity (Ashworth/botox), central pain (type/treatment), fatigue (severity/management)
+
+### What was audited but skipped
+- Agent 1 (note completeness): ~60% false positive rate — claimed ichAnticoagResumption, drugInteractions, returnToWork, palliativeCare, anticoagBridging, fallsRisk were missing from discharge, but all are already present
+- Agent 1: airTravelRestrictions and sexualHealthCounseling — follow-up items more appropriate for outpatient visit than acute discharge
+- Agent 1: TIA workup in progress note, ESUS workup in progress note — P1 enhancements deferred
+- Agent 2: Protocol modal focus return to trigger (P2 enhancement, complex to implement)
+- Agent 2: text-slate-500 contrast (borderline 4.2:1 vs 4.5:1 in search area only)
+
+### Audit agents
+- Agent a5a0375: Note template completeness — 8 P0, 10 P1 (most false positives; 5 confirmed, implemented)
+- Agent a0248c5: Accessibility + input validation — 0 P0, 4 P1, 3 P2 (all P1 confirmed, implemented)
+
+### Build
+- v5.14.42, cache v41, commit `75222e4`
+
 ## Iteration 035 (2026-02-18)
 
 ### What was changed

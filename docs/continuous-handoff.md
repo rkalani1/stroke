@@ -2,12 +2,12 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `e58b8fb`
+- Last pushed commit: `75222e4`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.41`
-- Service worker cache key: `stroke-app-v40`
+- Live APP_VERSION: `v5.14.42`
+- Service worker cache key: `stroke-app-v41`
 
-## Session summary (iter-006 through iter-035)
+## Session summary (iter-006 through iter-036)
 
 ### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-029)
 - SAH first-hour rapid actions card
@@ -42,7 +42,7 @@
 - ASPECTS/PC-ASPECTS mobile responsive grids (2-col on mobile, 3-col tablet, full on desktop)
 - EVT procedure details section auto-opens when populated
 
-### Quality & infrastructure (iter-009 through iter-035)
+### Quality & infrastructure (iter-009 through iter-036)
 - Cross-links between reference cards and data-entry sections
 - Mobile responsiveness audit: all cards safe at 390px
 - Schema mismatch debt resolved (compare_keys.ps1 fixed, 0 true mismatches)
@@ -109,6 +109,9 @@
 - XSS import validation hardened: data:text/html, vbscript:, on*= event handler patterns
 - Encounter history localStorage save: silent catch → error logging
 - De-identification: removed hardcoded UW Medicine + UW neurology intranet links from quick links
+- Accessibility: aria-label on DOAC initiation day, TEE findings, discharge checklist detail inputs
+- Input validation: max bounds on CrCl (200), CTP core (500), CTP penumbra (1500)
+- Discharge note: substance screening (AUDIT-C), hormonal risk (OCP/HRT), rehab screening (spasticity, central pain, fatigue)
 
 ### Gap matrix: ALL P0/P1 items COMPLETED
 
