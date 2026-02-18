@@ -1,5 +1,22 @@
 # Iteration Log
 
+## Iteration 035 (2026-02-18)
+
+### What was changed
+- **CRITICAL de-identification fix**: Removed hardcoded UW Medicine (`access.uwmedicine.org`) and UW neurology intranet (`intranet.neurology.uw.edu`) links from encounterQuickLinks array — violated standing de-identification constraint
+- Quick links now default to OpenEvidence + UpToDate only; users can add institutional links via Settings > Quick Links
+
+### What was audited but skipped
+- Performance P0: ASPECTS score inline computation (10-element boolean count — negligible), TIA workup progress (small object count — negligible), CrCl IIFE in input value (lightweight, only renders when calculator open), CTP mismatch IIFE (trivial arithmetic)
+- Index-as-key P1: 4 locations — all static display lists that never reorder; index keys are correct
+
+### Audit agents
+- Agent a73b972: De-identification compliance — found 2 critical UW/UWMC violations (CONFIRMED, FIXED)
+- Agent a93beab: Performance/rendering — found P0/P1 memoization and key issues (all SKIPPED as false positives)
+
+### Build
+- v5.14.41, cache v40, commit `e58b8fb`
+
 ## Iteration 034 (2026-02-18)
 
 ### What was changed
