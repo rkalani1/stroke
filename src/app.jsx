@@ -8558,6 +8558,12 @@ Clinician Name`;
               if (telestrokeNote.temperature) vitals.push(`Temp ${telestrokeNote.temperature}°F`);
               note += `Vitals: ${vitals.join(', ')}, Glucose ${telestrokeNote.glucose || '___'}\n`;
               note += `Labs: Plt ${telestrokeNote.plateletCount ? telestrokeNote.plateletCount + 'K' : '___'}, Cr ${telestrokeNote.creatinine || '___'}`;
+              if (telestrokeNote.creatinine && telestrokeNote.age && telestrokeNote.weight && telestrokeNote.sex) {
+                const noteCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
+                if (noteCrCl && noteCrCl.value) {
+                  note += ` (CrCl ${noteCrCl.value} mL/min${noteCrCl.value < 30 ? ' — renal dose adjustment required' : noteCrCl.value < 60 ? ' — monitor renal function' : ''})`;
+                }
+              }
               if (telestrokeNote.inr) note += `, INR ${telestrokeNote.inr}`;
               if (telestrokeNote.pt) note += `, PT ${telestrokeNote.pt}s`;
               if (telestrokeNote.ptt) note += `, aPTT ${telestrokeNote.ptt}`;
@@ -8647,7 +8653,8 @@ Clinician Name`;
               note += `\nTreatment:\n`;
               if (telestrokeNote.tnkRecommended) {
                 const transferDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
-                note += `- TNK${transferDose ? ` ${transferDose.calculatedDose} mg` : ''} ${telestrokeNote.tnkAdminTime ? 'administered at ' + (formatTime(telestrokeNote.tnkAdminTime) || '___') : 'recommended (not yet administered)'}\n`;
+                note += `- TNK 0.25 mg/kg${transferDose ? ` (${transferDose.calculatedDose} mg)` : ''} single IV bolus — ${telestrokeNote.tnkAdminTime ? 'administered at ' + (formatTime(telestrokeNote.tnkAdminTime) || '___') : 'recommended (not yet administered)'}\n`;
+                note += `  [TNK-first approach per AcT/TRACE-2/ESO 2023; alteplase if TNK unavailable]\n`;
                 if (telestrokeNote.tnkContraindicationReviewed) {
                   note += `- Contraindication review: completed${telestrokeNote.tnkContraindicationReviewTime ? ` at ${telestrokeNote.tnkContraindicationReviewTime}` : ''}\n`;
                 }
