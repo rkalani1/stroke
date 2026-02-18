@@ -1,5 +1,26 @@
 # Iteration Log
 
+## Iteration 028 (2026-02-18)
+
+### What was changed
+- **Progress note ICH management section (P1)**: Added dedicated ICH block with volume (ABC/2), BP management (SBP <140), reversal status, NSG consultation, seizure prophylaxis, and surgical criteria (cerebellar >15mL, hydrocephalus, midline shift, surgery decision).
+- **Progress note SAH management section (P1)**: Added dedicated SAH block with grade, Fisher grade, nimodipine, EVD, aneurysm status (secured/method/location), and vasospasm/DCI monitoring.
+- **Discharge SAH aneurysm details (P1)**: Added sahAneurysmLocation, sahAneurysmSize, sahSecuringMethod to discharge note SAH section (were in transfer/signout but missing from discharge).
+- **Discharge SAH vasospasm monitoring (P1)**: Added full vasospasm/DCI monitoring block (TCD, neuro checks, sodium monitoring, DCI status, induced HTN, notes) to discharge note.
+- **Section header standardization (P2)**: Normalized "ICH Management:" → "ICH MANAGEMENT:" in transfer note, "SAH Management:" → "SAH MANAGEMENT:" in transfer and consult notes.
+- **Guideline field ref audit**: All 130+ conditions verified clean — no more field name mismatches.
+
+### Verification
+- Progress note had NO ICH/SAH-specific sections; transfer/signout/discharge all had them
+- Discharge SAH section ended at seizure prophylaxis; transfer had 11 more lines
+- Section headers inconsistency confirmed across templates
+
+### Build
+- Version: v5.14.35, cache: stroke-app-v34
+- Commit: `33eb3fd`
+
+---
+
 ## Iteration 027 (2026-02-18)
 
 ### What was changed
