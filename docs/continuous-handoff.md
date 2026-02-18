@@ -2,14 +2,14 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `9f7f1c7`
+- Last pushed commit: `92461d4`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.32`
-- Service worker cache key: `stroke-app-v31`
+- Live APP_VERSION: `v5.14.33`
+- Service worker cache key: `stroke-app-v32`
 
-## Session summary (iter-006 through iter-025)
+## Session summary (iter-006 through iter-026)
 
-### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-025)
+### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-026)
 - SAH first-hour rapid actions card
 - CVT treatment timeline strip
 - AF anticoag timing quick reference
@@ -42,7 +42,7 @@
 - ASPECTS/PC-ASPECTS mobile responsive grids (2-col on mobile, 3-col tablet, full on desktop)
 - EVT procedure details section auto-opens when populated
 
-### Quality & infrastructure (iter-009 through iter-025)
+### Quality & infrastructure (iter-009 through iter-026)
 - Cross-links between reference cards and data-entry sections
 - Mobile responsiveness audit: all cards safe at 390px
 - Schema mismatch debt resolved (compare_keys.ps1 fixed, 0 true mismatches)
@@ -84,6 +84,9 @@
 - Patient education: SAH-specific (rebleeding, vasospasm, nimodipine, aneurysm status)
 - Discharge note: LDL placeholder replaced with secondaryPrevention.ldlCurrent
 - Discharge note: carotid imaging placeholder replaced with carotidManagement data
+- COMPASS dual-pathway guideline fixed (medicalHistory → pmh field reference)
+- bpPhase reset synchronized across all 3 diagnosis-change handlers
+- cvtAnticoag nested object cleared on diagnosis change (all 3 handlers)
 
 ### Gap matrix: ALL P0/P1 items COMPLETED
 

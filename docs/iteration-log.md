@@ -1,5 +1,23 @@
 # Iteration Log
 
+## Iteration 026 (2026-02-18)
+
+### What was changed
+- **COMPASS guideline field reference fix (P1)**: `compass_dual_pathway` condition at line 5559 referenced `medicalHistory` which doesn't exist in the state. Changed to `pmh` (the correct field). COMPASS recommendation for low-dose rivaroxaban + aspirin in polyvascular disease was never triggering.
+- **bpPhase reset synchronization (P1)**: Handler 3 (`applyDiagnosisSelection`) had bpPhase reset when leaving ischemic, but Handlers 1 (template) and 2 (dropdown) did not. Added `bpPhase = 'pre-tnk'` reset when leaving ischemic with post-evt/post-tnk phase to both handlers.
+- **cvtAnticoag nested object clearing (P2)**: `cvtAnticoag` (acutePhase, transitionAgent, duration, apsStatus, etiologyProvoked) was not cleared when switching away from CVT in any of the 3 handlers. Added reset to all 3, matching the pattern used for osmoticTherapy, angioedema, etc.
+
+### Verification
+- Confirmed `medicalHistory` has 0 matches in default state; `pmh` has 50+ references
+- Verified bpPhase reset absent from Handlers 1 & 2 by reading lines 16248-16296 and 19848-19902
+- Verified cvtAnticoag defined at line 1431 with 24+ references, absent from all clearing blocks
+
+### Build
+- Version: v5.14.33, cache: stroke-app-v32
+- Commit: `92461d4`
+
+---
+
 ## Iteration 025 (2026-02-18)
 
 ### What was changed
