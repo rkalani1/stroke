@@ -5556,7 +5556,7 @@ Clinician Name`;
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
-                const hx = (data.telestrokeNote?.medicalHistory || '').toLowerCase();
+                const hx = (data.telestrokeNote?.pmh || '').toLowerCase();
                 const hasPolyvasc = hx.includes('cad') || hx.includes('coronary') || hx.includes('pad') || hx.includes('peripheral arterial') || hx.includes('mi') || hx.includes('cabg') || hx.includes('stent');
                 return isIschemic && hasPolyvasc;
               }
@@ -12410,6 +12410,7 @@ Clinician Name`;
                   updated.cvtIcpManaged = false;
                   updated.cvtSeizureManaged = false;
                   updated.cvtHematologyConsulted = false;
+                  updated.cvtAnticoag = { acutePhase: '', transitionAgent: '', duration: '', apsStatus: '', etiologyProvoked: false };
                 }
               }
               return updated;
@@ -16258,6 +16259,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         updated.doacTiming = { strokeSeverity: '', hemorrhagicTransformation: false, htClassification: '', doacInitiationDay: '', doacAgent: '' };
                                         updated.hemorrhagicTransformation = { detected: false, classification: '', symptomatic: false, managementActions: '', antithromboticHeld: false, reimagingPlanned: false };
                                         updated.angioedema = { detected: false, severity: '', aceInhibitorUse: false, stepsTaken: {}, intubated: false, resolved: false, onsetTime: '' };
+                                        if (prev.bpPhase === 'post-evt' || prev.bpPhase === 'post-tnk') {
+                                          updated.bpPhase = 'pre-tnk';
+                                        }
                                       }
                                       if (nc !== 'ich') {
                                         updated.ichReversalInitiated = false;
@@ -16288,6 +16292,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         updated.cvtIcpManaged = false;
                                         updated.cvtSeizureManaged = false;
                                         updated.cvtHematologyConsulted = false;
+                                        updated.cvtAnticoag = { acutePhase: '', transitionAgent: '', duration: '', apsStatus: '', etiologyProvoked: false };
                                       }
                                     }
                                     // Auto-populate discovery date/time for wake-up stroke templates
@@ -19858,6 +19863,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                               updated.doacTiming = { strokeSeverity: '', hemorrhagicTransformation: false, htClassification: '', doacInitiationDay: '', doacAgent: '' };
                                               updated.hemorrhagicTransformation = { detected: false, classification: '', symptomatic: false, managementActions: '', antithromboticHeld: false, reimagingPlanned: false };
                                               updated.angioedema = { detected: false, severity: '', aceInhibitorUse: false, stepsTaken: {}, intubated: false, resolved: false, onsetTime: '' };
+                                              if (prev.bpPhase === 'post-evt' || prev.bpPhase === 'post-tnk') {
+                                                updated.bpPhase = 'pre-tnk';
+                                              }
                                             }
                                             if (newCategory !== 'ich') {
                                               updated.ichReversalInitiated = false;
@@ -19888,6 +19896,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                               updated.cvtIcpManaged = false;
                                               updated.cvtSeizureManaged = false;
                                               updated.cvtHematologyConsulted = false;
+                                              updated.cvtAnticoag = { acutePhase: '', transitionAgent: '', duration: '', apsStatus: '', etiologyProvoked: false };
                                             }
                                           }
                                           return updated;
