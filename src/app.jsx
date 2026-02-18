@@ -8027,7 +8027,10 @@ Clinician Name`;
                 const script = document.createElement('script');
                 script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
                 document.head.appendChild(script);
-                await new Promise((resolve, reject) => { script.onload = resolve; script.onerror = reject; });
+                await Promise.race([
+                  new Promise((resolve, reject) => { script.onload = resolve; script.onerror = reject; }),
+                  new Promise((_, reject) => setTimeout(() => reject(new Error('PDF library load timeout')), 8000))
+                ]);
               }
               const element = document.getElementById('root');
               const opt = {
@@ -23971,6 +23974,49 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                               ))}
                             </div>
+
+                            {/* Medication Reconciliation Safety Check */}
+                            <details className="mt-3 bg-blue-50 border border-blue-200 rounded-lg">
+                              <summary className="cursor-pointer p-2 text-sm font-semibold text-blue-800 hover:bg-blue-100 rounded-lg">
+                                Medication Reconciliation Safety Check
+                              </summary>
+                              <div className="p-3 space-y-2 text-xs text-slate-700">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                  <div className="bg-white border border-blue-200 rounded p-2">
+                                    <h5 className="font-bold text-blue-800 mb-1">Duplicate Therapy</h5>
+                                    <ul className="space-y-0.5">
+                                      <li>&#x2022; No duplicate antiplatelets (home + new)</li>
+                                      <li>&#x2022; No antiplatelet + anticoagulant overlap unless indicated (stent + AF)</li>
+                                      <li>&#x2022; NSAID discontinued if on antiplatelet/anticoag</li>
+                                    </ul>
+                                  </div>
+                                  <div className="bg-white border border-blue-200 rounded p-2">
+                                    <h5 className="font-bold text-blue-800 mb-1">Statin Intensity</h5>
+                                    <ul className="space-y-0.5">
+                                      <li>&#x2022; High-intensity confirmed (atorvastatin &ge;40 mg or rosuvastatin &ge;20 mg)</li>
+                                      <li>&#x2022; If intolerant: document alternative + LDL target &lt;70</li>
+                                    </ul>
+                                  </div>
+                                  <div className="bg-white border border-blue-200 rounded p-2">
+                                    <h5 className="font-bold text-blue-800 mb-1">Drug Interactions</h5>
+                                    <ul className="space-y-0.5">
+                                      <li>&#x2022; P2Y12i + omeprazole: use pantoprazole instead</li>
+                                      <li>&#x2022; Warfarin + antibiotics/antifungals: INR check scheduled</li>
+                                      <li>&#x2022; DOAC + CYP3A4 inhibitors: dose adjustment needed?</li>
+                                    </ul>
+                                  </div>
+                                  <div className="bg-white border border-blue-200 rounded p-2">
+                                    <h5 className="font-bold text-blue-800 mb-1">Patient/Caregiver</h5>
+                                    <ul className="space-y-0.5">
+                                      <li>&#x2022; Printed med list provided</li>
+                                      <li>&#x2022; Adherence importance explained (antithrombotic, statin)</li>
+                                      <li>&#x2022; BE-FAST warning signs reviewed</li>
+                                      <li>&#x2022; Driving restrictions: min 30 days (longer if deficit)</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </details>
 
                             <div className="mt-2 text-xs text-slate-500 italic">
                               Based on AHA/ASA Secondary Stroke Prevention 2021 &amp; Systemic Complications of Acute Stroke 2024 guidelines
