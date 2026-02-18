@@ -256,3 +256,14 @@
 - Performance audit (bundle size 2.2 MB).
 - Add pediatric stroke pathway guidance.
 - Consider additional note template enhancements (signout, discharge).
+
+## Iteration 012 (2026-02-18)
+
+### What was changed
+- Added calculated CrCl to signout, discharge, and consult note labs output for consistency with transfer note.
+- CrCl <30 flag displays "dose adjust" warning in all note templates.
+- Bumped APP_VERSION to v5.14.19 and service-worker cache to v18.
+
+### QA and validation
+- Build passed.
+- Deployed to GitHub Pages, push successful.
