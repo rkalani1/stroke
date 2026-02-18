@@ -1,5 +1,27 @@
 # Iteration Log
 
+## Iteration 016 (2026-02-18)
+
+### What was changed
+- **Discharge quality metrics in note**: AHA/ASA Get With The Guidelines quality metric items (antithrombotic prescribed, high-intensity statin, BP optimized, diabetes managed, smoking cessation, diet counseling, exercise counseling) now exported to discharge note under "Discharge Quality Metrics" section. Previously collected but not output.
+- **Diagnosis-aware field visibility**: ASPECTS score entry, full ASPECTS calculator, PC-ASPECTS calculator, and TNK contraindication checklist are now hidden when diagnosis is ICH or SAH (shown for ischemic, TIA, or undetermined). Reduces cognitive clutter during non-ischemic encounters.
+- **ICH volume calculator max relaxed**: Input max constraint increased from 30cm to 50cm to accommodate very large hematomas (ABC/2 dimensions).
+- **Accessibility fixes**: Added `htmlFor`/`id` label association for HT management textarea; added visible `<label>` and `id` for "Other" diagnosis free-text input; removed redundant `aria-label` where `htmlFor` now provides programmatic association.
+- **Second TNK checkbox guarded**: The TNK Recommended checkbox after the contraindication checklist now also hidden for ICH/SAH diagnoses, consistent with the primary TNK checkbox.
+
+### Evidence / rationale
+- AHA/ASA Get With The Guidelines—Stroke quality measures mandate documentation of antithrombotic at discharge, statin, BP medications, diabetes management, smoking cessation, and patient education (Schwamm et al., Stroke 2009, PMID: 19182079)
+- WCAG 2.1 Success Criterion 1.3.1 (Info and Relationships): programmatic label association required for form controls
+
+### Audit results
+- **Clinical audit**: 0 P0/P1 findings across medication dosing, guideline compliance, data integrity, and workflow completeness. Application clinically sound.
+- **UX audit**: 16 findings; 1 P0 (ICH max constraint, fixed), 9 P1 (accessibility labels and diagnosis visibility, fixed; remainder are medium-priority polish), 6 P2 (deferred).
+
+### Commit
+- `9a5fcf1` — APP_VERSION v5.14.23, cache key stroke-app-v22
+
+---
+
 ## Iteration 001 (2026-02-18)
 
 ### What was changed
