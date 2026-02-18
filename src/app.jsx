@@ -519,7 +519,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
                   }
                   // Check for unexpected executable content
                   const noteStr = JSON.stringify(note);
-                  if (/<script/i.test(noteStr) || /javascript:/i.test(noteStr)) {
+                  if (/<script/i.test(noteStr) || /javascript:/i.test(noteStr) || /data:text\/html/i.test(noteStr) || /vbscript:/i.test(noteStr) || /\bon\w+\s*=/i.test(noteStr)) {
                     reject(new Error('Import blocked — file contains potentially unsafe content'));
                     return;
                   }
@@ -7376,7 +7376,7 @@ Clinician Name`;
             };
             setEncounterHistory(prev => {
               const next = [snapshot, ...prev].slice(0, 20);
-              try { localStorage.setItem('strokeApp:encounterHistory', JSON.stringify(next)); } catch {}
+              try { localStorage.setItem('strokeApp:encounterHistory', JSON.stringify(next)); } catch (e) { console.warn('Encounter history save failed:', e.name); }
               return next;
             });
           }, [telestrokeNote, nihssScore, consultationType]);
@@ -14691,7 +14691,7 @@ Clinician Name`;
                 if (previouslyFocused && previouslyFocused.isConnected && typeof previouslyFocused.focus === 'function') previouslyFocused.focus();
               };
             }
-          }, [protocolModal, showChangelog, showKeyboardHelp, calcDrawerOpen, confirmConfig, settingsMenuOpen]);
+          }, [protocolModal, showChangelog, showKeyboardHelp, calcDrawerOpen, confirmConfig]);
 
           // Reinitialize icons when tab/layout/modal content changes
           useEffect(() => {
