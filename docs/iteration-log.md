@@ -769,3 +769,13 @@
 ### QA and validation
 - `npm test`: pass (local smoke with diagnosis-switch assertions)
 - `npm run qa`: pass (local + live smoke with diagnosis-switch assertions)
+
+## Iteration 039 (2026-02-18)
+
+### What was changed
+- Updated `docs/continuous-handoff.md` operational metadata to the latest deployed commit and corrected the resume command to the active macOS workspace path.
+- Normalized handoff summary range to include iterations through iter-038 and clarified testing depth (smoke vs deep integration tests).
+
+### QA and validation
+- `npm test`: pass
+- `npm run qa`: pass

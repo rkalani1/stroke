@@ -61,3 +61,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] Diagnosis-switch pathway assertions pass in smoke tests
 - [x] TNK visibility gating smoke-verified across ischemic and non-ischemic diagnosis selections
 - [x] `npm test` and `npm run qa` both pass with new assertions enabled
+
+## Last completed run (2026-02-18, iter-039)
+- [x] `npm test` pass after handoff metadata update
+- [x] `npm run qa` pass after handoff metadata update

@@ -2,12 +2,12 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `75222e4`
+- Last pushed commit: `c535aee`
 - Production URL: `https://rkalani1.github.io/stroke/`
 - Live APP_VERSION: `v5.14.42`
 - Service worker cache key: `stroke-app-v41`
 
-## Session summary (iter-006 through iter-036)
+## Session summary (iter-006 through iter-038)
 
 ### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-029)
 - SAH first-hour rapid actions card
@@ -116,7 +116,7 @@
 ### Gap matrix: ALL P0/P1 items COMPLETED
 
 ## Known remaining work
-- No automated unit/integration tests
+- No deep unit/integration tests yet (smoke automation is now in place)
 - Bundle size 2.2 MB
 - Pediatric stroke pathway guidance not yet added
 - Structured pertinent negatives in consult note (requires new state fields)
@@ -125,7 +125,7 @@
 - Imaging follow-up modality field for discharge note (requires new state field)
 
 ## Resume command
-- `cd C:\Users\rkala\stroke && git pull --rebase origin main && npx esbuild ./src/app.jsx --bundle --minify --format=iife --target=es2018 --outfile=./app.js`
+- `cd /Users/rizwankalani/stroke && git pull --rebase origin main && npm test && npm run qa && npm run build`
 
 ## Iteration 037 update (2026-02-18)
 - Added deterministic smoke automation (`scripts/qa-smoke.mjs`) and wired commands:

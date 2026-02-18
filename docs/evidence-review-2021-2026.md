@@ -133,3 +133,7 @@
 ### Operational mapping update (2026-02-18, iter-038)
 - Added automated diagnosis-switch pathway guard in QA to reduce regression risk for core branch transitions (ischemic, ICH, SAH, CVT, mimic).
 - This does not alter clinical recommendation content; it hardens detection of UI/pathway regressions that could hide or mis-surface thrombolysis controls.
+
+### Operational update (2026-02-18, iter-039)
+- No clinical evidence recommendations changed in this iteration.
+- Documentation-only update to maintain interruption-safe continuous execution metadata.
