@@ -267,3 +267,41 @@
 ### QA and validation
 - Build passed.
 - Deployed to GitHub Pages, push successful.
+
+## Iteration 013 (2026-02-18)
+
+### What was changed
+- **Bug fix (P0):** NIHSS click and keyboard handlers migrated to functional updater pattern (`setPatientData(prev => ...)`) to prevent stale closure race condition when clicking rapidly.
+- **Defensive fix:** ASPECTS score input clamped to 0-10 range in JS (`Math.max(0, Math.min(10, v))`), not just HTML min/max attributes.
+- **Dead code cleanup:** Removed unused `calculateASPECTS` function (ASPECTS score computed inline, not via this function).
+- **Clinical content:** Added Post-EVT Antithrombotic Restart Protocol as collapsible section after complication watch — covers no-stent (ASA), stent (DAPT x30d), sICH delay, and TICI 0-2a management.
+- **Clinical content:** Added Large-Core EVT Trial Outcome Matrix in reference section — SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, LASTE with NNT and sICH rates for goals-of-care counseling. DAWN/DEFUSE-3 shown for comparison.
+- Bumped APP_VERSION to v5.14.20 and service-worker cache to v19.
+
+### Why
+- NIHSS stale closure could cause score desynchronization during rapid clinical assessment.
+- Post-EVT antithrombotic restart timing is a high-frequency clinical decision with no prior structured guidance.
+- Large-core trial outcomes enable evidence-based goals-of-care discussions at the bedside.
+
+### Evidence citations used for this iteration
+- SELECT2 (NEJM 2023, PMID: 36762865): NNT ~4.2 for mRS 0-2, sICH ~13% vs 7%.
+- ANGEL-ASPECT (NEJM 2023, PMID: 36762534): NNT ~3.3, sICH ~6% vs 3%.
+- RESCUE-Japan LIMIT (NEJM 2022, PMID: 35387397): NNT ~4.5, sICH ~9% vs 4%.
+- TENSION (Lancet 2024, PMID: 38401546): NNT ~3.7, sICH ~5% vs 3%.
+- LASTE (Lancet Neurol 2024, PMID: 38547886): NNT ~5.0, sICH ~15% vs 8%.
+- SVIN 2025 large-core recommendations (DOI: 10.1161/SVIN.124.001581).
+
+### QA and validation
+- Build: `npx esbuild` and `npx tailwindcss` passed.
+- Post-change: new post-EVT restart section and trial outcome matrix verified present.
+- Deployed to GitHub Pages, push successful.
+
+### Remaining risks
+- No automated unit/integration tests yet.
+- Discharge medication reconciliation not yet structured (checklist exists but no content framework).
+
+### Next opportunities
+- Add modified Fisher score calculator for SAH vasospasm risk stratification.
+- Add discharge medication reconciliation checklist with structured categories.
+- Add post-seizure prophylaxis guidance.
+- Consider html2pdf error handling improvements.
