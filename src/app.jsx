@@ -6141,11 +6141,6 @@ Clinician Name`;
             return Math.min(total, 42);
           };
 
-          // Calculate ASPECTS score
-          const calculateASPECTS = (regions) => {
-            return regions.filter(region => region.checked).length;
-          };
-
           // Calculate PC-ASPECTS score
           const calculatePCAspects = (regions) => {
             return regions.reduce((total, region) => {
@@ -17276,7 +17271,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <input
                                 type="number"
                                 value={aspectsScore}
-                                onChange={(e) => setAspectsScore(parseInt(e.target.value, 10) || 0)}
+                                onChange={(e) => { const v = parseInt(e.target.value, 10); setAspectsScore(Number.isFinite(v) ? Math.max(0, Math.min(10, v)) : 0); }}
                                 min="0"
                                 max="10"
                                 step="1"
@@ -18627,11 +18622,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     if (!isNaN(key) && key >= 0 && key < item.options.length) {
                                       e.preventDefault();
                                       const option = item.options[key];
-                                      const newData = { ...patientData, [item.id]: option };
-                                      setPatientData(newData);
-                                      const newScore = calculateNIHSS(newData);
-                                      setNihssScore(newScore);
-                                      setTelestrokeNote(prev => ({...prev, nihss: newScore.toString()}));
+                                      setPatientData(prev => {
+                                        const newData = { ...prev, [item.id]: option };
+                                        const newScore = calculateNIHSS(newData);
+                                        setNihssScore(newScore);
+                                        setTelestrokeNote(p => ({...p, nihss: newScore.toString()}));
+                                        return newData;
+                                      });
                                       // Auto-advance to next item
                                       if (itemIndex < nihssItems.length - 1) {
                                         setTimeout(() => {
@@ -18648,11 +18645,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <button key={optionIndex} type="button"
                                         className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${patientData[item.id] === option ? 'bg-blue-600 text-white border-blue-600 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-blue-50'}`}
                                         onClick={() => {
-                                          const newData = { ...patientData, [item.id]: option };
-                                          setPatientData(newData);
-                                          const newScore = calculateNIHSS(newData);
-                                          setNihssScore(newScore);
-                                          setTelestrokeNote(prev => ({...prev, nihss: newScore.toString()}));
+                                          setPatientData(prev => {
+                                            const newData = { ...prev, [item.id]: option };
+                                            const newScore = calculateNIHSS(newData);
+                                            setNihssScore(newScore);
+                                            setTelestrokeNote(p => ({...p, nihss: newScore.toString()}));
+                                            return newData;
+                                          });
                                           if (itemIndex < nihssItems.length - 1) {
                                             setTimeout(() => {
                                               const next = document.getElementById(`nihss-item-${itemIndex + 1}`);
@@ -20358,6 +20357,52 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <p><strong>Contrast nephropathy:</strong> IV hydration, monitor Cr at 24-48h if baseline CKD or diabetic nephropathy.</p>
                                     <p><strong>Reocclusion:</strong> ~5-10% rate. If neuro worsening, consider repeat CTA and possible re-intervention.</p>
                                     <p><strong>DECT interpretation (if ordered):</strong> Contrast staining = hyperdense on conventional CT but absent on virtual non-contrast (VNC) reconstruction → benign BBB disruption, antithrombotics may start earlier. True hemorrhage = hyperdense on BOTH conventional and VNC → hold antithrombotics, manage as hemorrhagic transformation. Mixed pattern → treat as hemorrhage.</p>
+                                  </div>
+                                </details>
+                                {/* Post-EVT Antithrombotic Restart Protocol */}
+                                <details className="bg-white border border-blue-200 rounded-lg">
+                                  <summary className="cursor-pointer p-2 text-sm font-semibold text-blue-800 hover:bg-blue-50 rounded-lg">
+                                    Post-EVT Antithrombotic Restart
+                                  </summary>
+                                  <div className="p-3 space-y-2 text-xs text-slate-700">
+                                    <p className="text-xs text-blue-700 font-medium">Prerequisite: Repeat NCHCT at 24h shows NO hemorrhagic transformation.</p>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                      <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-2">
+                                        <h4 className="font-bold text-emerald-800 text-xs mb-1">No Stent Placed</h4>
+                                        <ul className="space-y-0.5">
+                                          <li>&#x2022; Day 1 (24h): ASA 325 mg</li>
+                                          <li>&#x2022; Ongoing: ASA 81 mg daily</li>
+                                          <li>&#x2022; If AF: restart DOAC day 2-3 per ELAN/CATALYST timing</li>
+                                        </ul>
+                                      </div>
+                                      <div className="bg-amber-50 border border-amber-200 rounded-lg p-2">
+                                        <h4 className="font-bold text-amber-800 text-xs mb-1">Stent Placed</h4>
+                                        <ul className="space-y-0.5">
+                                          <li>&#x2022; Day 1 (24h): ASA 325 mg + P2Y12i load</li>
+                                          <li>&#x2022; Clopidogrel 600 mg or ticagrelor 180 mg</li>
+                                          <li>&#x2022; DAPT minimum 30 days</li>
+                                          <li>&#x2022; High stent thrombosis risk if DAPT delayed</li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                      <div className="bg-red-50 border border-red-200 rounded-lg p-2">
+                                        <h4 className="font-bold text-red-800 text-xs mb-1">If sICH on Repeat CT</h4>
+                                        <ul className="space-y-0.5">
+                                          <li>&#x2022; Hold ALL antithrombotics &ge;24-48h</li>
+                                          <li>&#x2022; PH-1: delay restart 7-14 days</li>
+                                          <li>&#x2022; PH-2: delay &ge;4 weeks, MDT discussion</li>
+                                        </ul>
+                                      </div>
+                                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-2">
+                                        <h4 className="font-bold text-blue-800 text-xs mb-1">TICI 0-2a (Failed/Partial)</h4>
+                                        <ul className="space-y-0.5">
+                                          <li>&#x2022; ASA 325 mg at 24h (standard)</li>
+                                          <li>&#x2022; Consider IV heparin bridge if partial recanalization + re-occlusion risk</li>
+                                          <li>&#x2022; Permissive BP (SBP &lt;220) to maximize penumbral perfusion</li>
+                                        </ul>
+                                      </div>
+                                    </div>
                                   </div>
                                 </details>
                               </div>
@@ -27189,6 +27234,71 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </ul>
                             </div>
                           </div>
+                          {/* Large-core trial outcome matrix for goals-of-care counseling */}
+                          <details className="mt-3">
+                            <summary className="cursor-pointer text-sm font-semibold text-blue-800 hover:text-blue-600">Trial Outcome Data for Goals-of-Care Counseling</summary>
+                            <div className="mt-2 overflow-x-auto">
+                              <table className="w-full text-xs border-collapse">
+                                <thead>
+                                  <tr className="bg-blue-100">
+                                    <th className="border border-blue-200 px-2 py-1 text-left">Trial</th>
+                                    <th className="border border-blue-200 px-2 py-1">Window</th>
+                                    <th className="border border-blue-200 px-2 py-1">ASPECTS</th>
+                                    <th className="border border-blue-200 px-2 py-1">NNT (mRS 0-2)</th>
+                                    <th className="border border-blue-200 px-2 py-1">sICH (EVT vs ctrl)</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr className="bg-white">
+                                    <td className="border border-blue-200 px-2 py-1 font-medium">SELECT2</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">0-24h</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">3-5</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">~4.2</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">~13% vs 7%</td>
+                                  </tr>
+                                  <tr className="bg-blue-50/50">
+                                    <td className="border border-blue-200 px-2 py-1 font-medium">ANGEL-ASPECT</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">0-24h</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">3-5</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">~3.3</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">~6% vs 3%</td>
+                                  </tr>
+                                  <tr className="bg-white">
+                                    <td className="border border-blue-200 px-2 py-1 font-medium">RESCUE-Japan LIMIT</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">0-24h</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">3-5</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">~4.5</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">~9% vs 4%</td>
+                                  </tr>
+                                  <tr className="bg-blue-50/50">
+                                    <td className="border border-blue-200 px-2 py-1 font-medium">TENSION</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">0-12h</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">0-5</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">~3.7</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">~5% vs 3%</td>
+                                  </tr>
+                                  <tr className="bg-white">
+                                    <td className="border border-blue-200 px-2 py-1 font-medium">LASTE</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">0-7h</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">0-5</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">~5.0</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center">~15% vs 8%</td>
+                                  </tr>
+                                  <tr className="bg-slate-100">
+                                    <td className="border border-blue-200 px-2 py-1 font-medium italic">DAWN/DEFUSE-3</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center italic">6-24h</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center italic">&ge;6</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center italic">~2.8</td>
+                                    <td className="border border-blue-200 px-2 py-1 text-center italic">~6% vs 3%</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <p className="text-xs text-slate-500 mt-1 italic">DAWN/DEFUSE-3 shown for comparison (standard-core). Large-core NNT ~3-5 vs standard ~2.8 &mdash; absolute benefit remains significant.</p>
+                              <div className="bg-amber-50 border border-amber-200 rounded p-2 mt-2">
+                                <p className="text-xs text-amber-800"><strong>Goals-of-care discussion should include:</strong> &ldquo;For patients with large infarcts, EVT improves outcomes in ~1 in 4 patients treated (NNT 3-5). Hemorrhage risk is approximately double that of standard EVT but remains the minority of cases. Pre-stroke independence (mRS 0-1) is required by trial protocols.&rdquo;</p>
+                              </div>
+                            </div>
+                          </details>
                         </div>
 
                         <div id="isch-postevt" className="bg-violet-50 border border-violet-200 rounded-lg p-4">
