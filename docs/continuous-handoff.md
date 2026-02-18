@@ -2,14 +2,14 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `92461d4`
+- Last pushed commit: `d1d45db`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.33`
-- Service worker cache key: `stroke-app-v32`
+- Live APP_VERSION: `v5.14.34`
+- Service worker cache key: `stroke-app-v33`
 
-## Session summary (iter-006 through iter-026)
+## Session summary (iter-006 through iter-027)
 
-### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-026)
+### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-027)
 - SAH first-hour rapid actions card
 - CVT treatment timeline strip
 - AF anticoag timing quick reference
@@ -42,7 +42,7 @@
 - ASPECTS/PC-ASPECTS mobile responsive grids (2-col on mobile, 3-col tablet, full on desktop)
 - EVT procedure details section auto-opens when populated
 
-### Quality & infrastructure (iter-009 through iter-026)
+### Quality & infrastructure (iter-009 through iter-027)
 - Cross-links between reference cards and data-entry sections
 - Mobile responsiveness audit: all cards safe at 390px
 - Schema mismatch debt resolved (compare_keys.ps1 fixed, 0 true mismatches)
@@ -87,6 +87,9 @@
 - COMPASS dual-pathway guideline fixed (medicalHistory → pmh field reference)
 - bpPhase reset synchronized across all 3 diagnosis-change handlers
 - cvtAnticoag nested object cleared on diagnosis change (all 3 handlers)
+- LAA closure guideline fixed (ekgFindings → ekgResults field reference)
+- Pregnancy EVT guideline fixed (specialPopulations → pregnancyStroke boolean)
+- Accessibility: ASPECTS, EKG, TNK Admin Time label/id associations added
 
 ### Gap matrix: ALL P0/P1 items COMPLETED
 

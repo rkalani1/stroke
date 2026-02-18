@@ -1,5 +1,25 @@
 # Iteration Log
 
+## Iteration 027 (2026-02-18)
+
+### What was changed
+- **LAA closure guideline field fix (P1)**: `laao_after_ich` condition at line 4300 referenced `ekgFindings` which doesn't exist. Changed to `ekgResults` (the actual field at line 956). LAA closure recommendation for ICH+AF patients was never triggering.
+- **Pregnancy EVT guideline field fix (P1)**: `pregnancy_evt` condition at line 4320 referenced `specialPopulations` (nonexistent). Changed to check `pregnancyStroke` boolean (line 1454) with PMH text fallback. Pregnancy EVT guidance was unreliable.
+- **ASPECTS input label association (P2)**: Added `id="input-aspects"` and `htmlFor` to label (WCAG 1.3.1).
+- **Telemetry/EKG input label association (P2)**: Added `id="input-ekg"` and `htmlFor` to label (WCAG 1.3.1).
+- **TNK Admin Time input label association (P2)**: Added `id="input-tnk-admin-time"` and `htmlFor` to label (WCAG 1.3.1).
+
+### Verification
+- Confirmed `ekgFindings` has 0 hits in default state; `ekgResults` is the correct field at line 956
+- Confirmed `specialPopulations` has 0 hits in default state; `pregnancyStroke` boolean at line 1454
+- Verified 3 inputs now have proper label-input associations via id/htmlFor
+
+### Build
+- Version: v5.14.34, cache: stroke-app-v33
+- Commit: `d1d45db`
+
+---
+
 ## Iteration 026 (2026-02-18)
 
 ### What was changed
