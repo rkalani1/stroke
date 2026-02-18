@@ -825,8 +825,8 @@ Medications: {medications}
 Objective:
 Vitals: BP {presentingBP}, HR {heartRate}, SpO2 {spO2}%, Temp {temperature}°F
 {bpPreTNKLine}
-Labs: Glucose {glucose}, Plt {plateletCount}K, Cr {creatinine}, INR {inr}{ptt}
-Exam: NIHSS {nihss} {gcs}- {nihssDetails}
+Labs: Glucose {glucose}, Plt {plateletCount}K, Cr {creatinine}, INR {inr}{ptt}{pt}
+Exam: NIHSS {nihss} {gcs}{affectedSide}{premorbidMRS}- {nihssDetails}
 
 Imaging: I personally reviewed imaging
 NCCT Head ({ctTime}): {ctResults} {aspects}
@@ -8121,6 +8121,14 @@ Clinician Name`;
             if (telestrokeNote.transferAccepted) brief += `- Transferred to ${telestrokeNote.transferReceivingFacility || 'comprehensive stroke center'}\n`;
             if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) brief += `- Medical management\n`;
             if (telestrokeNote.affectedSide) brief += `- Affected side: ${telestrokeNote.affectedSide}\n`;
+            if (telestrokeNote.sichDetected) brief += `- sICH detected\n`;
+            if (telestrokeNote.dischargeNIHSS) {
+              const admNIHSS = parseInt(telestrokeNote.nihss || nihssScore, 10);
+              const dischNIHSS = parseInt(telestrokeNote.dischargeNIHSS, 10);
+              let nihssDelta = '';
+              if (!isNaN(admNIHSS) && !isNaN(dischNIHSS)) nihssDelta = ` (${admNIHSS > dischNIHSS ? 'improved' : admNIHSS < dischNIHSS ? 'worsened' : 'unchanged'} from ${admNIHSS})`;
+              brief += `- Discharge NIHSS: ${telestrokeNote.dischargeNIHSS}${nihssDelta}\n`;
+            }
             brief += `\nIMAGING:\n`;
             brief += `- CT Head: ${telestrokeNote.ctResults || 'N/A'}\n`;
             brief += `- CTA: ${telestrokeNote.ctaResults || 'N/A'}\n`;
@@ -9480,10 +9488,14 @@ Clinician Name`;
               note += `Date: ${new Date().toLocaleDateString()}\n`;
               note += `Hospital Day #: ___\n`;
               note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}\n`;
-              note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}\n`;
+              note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}`;
+              if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
+              note += '\n';
               if (telestrokeNote.affectedSide) note += `Affected side: ${telestrokeNote.affectedSide}\n`;
+              if (telestrokeNote.premorbidMRS != null && telestrokeNote.premorbidMRS !== '') note += `Pre-morbid mRS: ${telestrokeNote.premorbidMRS}\n`;
               if (telestrokeNote.strokeTerritory) note += `Territory: ${telestrokeNote.strokeTerritory}${telestrokeNote.strokePhenotype ? ` (${telestrokeNote.strokePhenotype})` : ''}\n`;
-              if (telestrokeNote.symptomTrajectory) note += `Trajectory: ${telestrokeNote.symptomTrajectory}\n`;
+              if (telestrokeNote.symptomTrajectory) note += `Trajectory: ${telestrokeNote.symptomTrajectory}${telestrokeNote.symptomOnsetNIHSS ? ` (onset NIHSS ~${telestrokeNote.symptomOnsetNIHSS})` : ''}\n`;
+              if (telestrokeNote.codeStatus) note += `Code status: ${telestrokeNote.codeStatus}\n`;
               if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}${telestrokeNote.contrastAllergy ? ' **CONTRAST ALLERGY**' : ''}\n`;
               note += '\n';
               note += `SUBJECTIVE:\n`;
@@ -9508,7 +9520,19 @@ Clinician Name`;
               if (telestrokeNote.earlyInfarctSigns) note += ' (early infarct signs)';
               if (telestrokeNote.denseArterySign) note += ' (hyperdense artery sign)';
               note += '\n';
-              note += `- CTA: ${telestrokeNote.ctaResults || '___'}\n`;
+              {
+                let ctaLine = `- CTA: ${telestrokeNote.ctaResults || '___'}`;
+                const pnVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
+                if (pnVessels.length > 0) ctaLine += ` (${pnVessels.join(', ')})`;
+                note += ctaLine + '\n';
+              }
+              if (aspectsScore != null) note += `- ASPECTS: ${aspectsScore}/10\n`;
+              {
+                const pnPcA = (() => { const r = telestrokeNote.pcAspectsRegions || {}; return 10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0)); })();
+                if (pnPcA >= 0 && pnPcA < 10) note += `- PC-ASPECTS: ${pnPcA}/10\n`;
+              }
+              if (telestrokeNote.collateralGrade) note += `- Collaterals: ${telestrokeNote.collateralGrade}\n`;
+              if (telestrokeNote.ekgResults) note += `- EKG: ${telestrokeNote.ekgResults}\n`;
               {
                 const pnLabs = [];
                 if (telestrokeNote.creatinine) {
@@ -10295,6 +10319,9 @@ Clinician Name`;
             note = note.replace(/{inr}{ptt}/g, inrPttStr);
             note = note.replace(/{inr}/g, inrVal);
             note = note.replace(/{ptt}/g, pttVal ? `, aPTT ${pttVal}` : '');
+            note = note.replace(/{pt}/g, telestrokeNote.pt ? `, PT ${telestrokeNote.pt}s` : '');
+            note = note.replace(/{affectedSide}/g, telestrokeNote.affectedSide ? ` | Affected: ${telestrokeNote.affectedSide}` : '');
+            note = note.replace(/{premorbidMRS}/g, telestrokeNote.premorbidMRS != null && telestrokeNote.premorbidMRS !== '' ? ` | Pre-mRS: ${telestrokeNote.premorbidMRS}` : '');
             const aspectsStr = aspectsScore != null ? `ASPECTS ${aspectsScore}/10` : '';
             note = note.replace(/{aspects}/g, aspectsStr);
             const vesselStr = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ');
