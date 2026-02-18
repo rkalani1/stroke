@@ -4,3 +4,4 @@ node_modules/
 .pw-audit-report.json
 .DS_Store
 npm-debug.log
+output/

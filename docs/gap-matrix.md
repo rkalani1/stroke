@@ -14,3 +14,7 @@
 | Renal dysfunction and anticoag dosing | Creatinine and CrCl fields exist. | Recent guidance emphasizes dose-pathway safety for anticoagulation and imaging contrast decisions. | Decision-support prompts for renal dosing/contrast precautions are not prominent. | Added renal-safety auto-alert in contrast section (CrCl-based) + existing DOAC dose checker already covers anticoag. | P1 (completed iter-008) |
 | Senior-first cognitive load | Fast tools exist (search, shortcuts, calculators), but pathway auto-routing can interrupt utility workflows. | Implementation data favor protocolized, low-friction workflows. | Diagnosis updates can pull users away from active utility tabs. | Keep diagnosis-aware routing but preserve user intent when in Calculators/References. | P1 (completed iter-001) |
 | QA/Regression discipline | Build pipeline exists, no automated tests, compare-keys script exists. | High-acuity clinical apps need strict non-regression controls. | No standardized regression checklist in repo. | Added regression-checklist.md. Fixed compare_keys.ps1 false positive (0 true mismatches). | P0 (completed iter-001/010) |
+
+## Iteration 037 Update (2026-02-18)
+- QA/Regression discipline: upgraded from failing placeholder test to real smoke automation across required desktop/tablet/mobile viewports.
+- Remaining gap: add deterministic scenario assertions for treatment recommendation correctness (ischemic reperfusion, ICH reversal/BP, SAH/CVT/TIA branch logic), not just workflow presence.

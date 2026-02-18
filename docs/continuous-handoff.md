@@ -126,3 +126,12 @@
 
 ## Resume command
 - `cd C:\Users\rkala\stroke && git pull --rebase origin main && npx esbuild ./src/app.jsx --bundle --minify --format=iife --target=es2018 --outfile=./app.js`
+
+## Iteration 037 update (2026-02-18)
+- Added deterministic smoke automation (`scripts/qa-smoke.mjs`) and wired commands:
+  - `npm test` => local smoke
+  - `npm run qa` => local + live smoke
+- Updated docs for continuous mode tracking and refreshed evidence metadata verification notes.
+- Stop checks in this iteration: STOP message not received; `.codex-stop` file not found.
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && npm run qa && npm run build`

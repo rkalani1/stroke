@@ -49,3 +49,10 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] `main` pushed to origin.
 - [ ] Live URL `https://rkalani1.github.io/stroke/` serves updated build.
 - [ ] Post-deploy smoke checks pass on local + live for all three viewport classes.
+
+## Last completed run (2026-02-18, iter-037)
+- [x] `npm run build` passes
+- [x] `npm test` local smoke passes
+- [x] `npm run qa` local + live smoke passes
+- [x] Required viewports pass on local and live
+- [x] Core tabs, diagnosis selectors, trial matcher, and keyboard shortcuts smoke-verified

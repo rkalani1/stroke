@@ -112,3 +112,20 @@
 | Cardioembolic timing | RCT-supported | Early versus Later Anticoagulation for Stroke with Atrial Fibrillation (ELAN) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/37222476/ | PMID: 37222476; DOI: 10.1056/NEJMoa2303048 |
 | Cardioembolic timing | RCT-supported | Timing of Oral Anticoagulant Therapy in AIS with AF (TIMING) | 2022 | Circulation | https://pubmed.ncbi.nlm.nih.gov/36065821/ | PMID: 36065821; DOI: 10.1161/CIRCULATIONAHA.122.060786 |
 | Special populations | Guideline-grade | Maternal Stroke: A Focused Update | 2026 | Stroke / PubMed | https://pubmed.ncbi.nlm.nih.gov/41678811/ | PMID: 41678811 |
+
+### Metadata verification refresh (2026-02-18, iter-037)
+- Re-verified 2026 AIS guideline indexing metadata: PMID `40993083`, DOI `10.1161/STR.0000000000000513`.
+- Added 2026 extended-window non-LVO tenecteplase RCT metadata: JAMA DOI `10.1001/jama.2025.22824`.
+- Re-verified key large-core EVT metadata:
+  - SELECT2: PMID `36762818`, DOI `10.1056/NEJMoa2214403`
+  - ANGEL-ASPECT: PMID `36762864`, DOI `10.1056/NEJMoa2307987`
+  - RESCUE-Japan LIMIT: PMID `36762865`, DOI `10.1056/NEJMoa2214405`
+- Re-verified ICH bundle/reversal metadata:
+  - INTERACT3: PMID `37245517`, DOI `10.1016/S0140-6736(23)00806-1`, NCT `NCT03209258`
+  - ANNEXA-I: PMID `38587294`, DOI `10.1056/NEJMoa2313040`, NCT `NCT03661528`
+- Re-verified SAH/CVT/TIA/secondary prevention/special-population metadata:
+  - SAH guideline PMID `37212182`, DOI `10.1161/STR.0000000000000436`
+  - CVT statement PMID `38284265`, DOI `10.1161/STR.0000000000000456`
+  - TIA ED statement PMID `36655570`, DOI `10.1161/STR.0000000000000418`
+  - Secondary prevention guideline PMID `34024117`, DOI `10.1161/STR.0000000000000375`
+  - Pregnancy statement PMID `41678811`, DOI `10.1161/STR.0000000000000501`

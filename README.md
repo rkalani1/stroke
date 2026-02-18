@@ -31,3 +31,8 @@ A client-side clinical decision support toolkit for stroke management with encou
 - `#/management/calculators`
 - `#/management/references`
 - `#/trials`
+
+## QA Commands
+- `npm test` runs local smoke checks (desktop/tablet/mobile).
+- `npm run qa` runs local + live smoke checks and writes `output/playwright/qa-smoke-report.json`.
+- `npm run build` builds production assets before deploy.

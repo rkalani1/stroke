@@ -741,3 +741,17 @@
 - Add discharge checklist items to discharge note template (currently collected but not exported).
 - Consider conditional field visibility by diagnosis category (hide ischemic fields for ICH).
 - Context-aware calculator drawer filtering by diagnosis.
+
+## Iteration 037 (2026-02-18)
+
+### What was changed
+- Replaced failing `npm test` stub with a deterministic local smoke run.
+- Added `scripts/qa-smoke.mjs` to audit required viewport classes (`1440x900`, `768x1024`, `390x844`) on local and live targets.
+- Added `npm run qa` to execute local + live smoke checks with JSON artifacts at `output/playwright/qa-smoke-report.json`.
+- Added `output/` to `.gitignore` to keep regression artifacts out of source control.
+- Updated operational docs (`iteration-log`, `gap-matrix`, `evidence-review-2021-2026`, `regression-checklist`, `continuous-handoff`) for continuous mode.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (local smoke)
+- `npm run qa`: pass (local + live smoke)
