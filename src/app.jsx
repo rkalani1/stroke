@@ -8123,7 +8123,12 @@ Clinician Name`;
               const fuDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
               brief += `- TNK${fuDose ? ` ${fuDose.calculatedDose} mg` : ''} administered${telestrokeNote.tnkAdminTime ? ` at ${telestrokeNote.tnkAdminTime}` : ''}\n`;
             }
-            if (telestrokeNote.evtRecommended) brief += `- EVT recommended/performed${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
+            if (telestrokeNote.evtRecommended) {
+              brief += `- EVT recommended/performed${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
+              const fuEvtParts = [telestrokeNote.evtAccessSite, telestrokeNote.evtTechnique, telestrokeNote.evtNumberOfPasses && `${telestrokeNote.evtNumberOfPasses} passes`, telestrokeNote.evtDevice].filter(Boolean);
+              if (fuEvtParts.length > 0) brief += `  (${fuEvtParts.join(', ')})\n`;
+              if (telestrokeNote.reperfusionTime) brief += `  Reperfusion: ${telestrokeNote.reperfusionTime}\n`;
+            }
             if (telestrokeNote.transferAccepted) brief += `- Transferred to ${telestrokeNote.transferReceivingFacility || 'comprehensive stroke center'}\n`;
             if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) brief += `- Medical management\n`;
             if (telestrokeNote.affectedSide) brief += `- Affected side: ${telestrokeNote.affectedSide}\n`;
@@ -9180,7 +9185,14 @@ Clinician Name`;
                 }
               }
               if (telestrokeNote.tnkRecommended && telestrokeNote.disablingDeficit) note += `  DISABLING DEFICIT — TNK despite NIHSS ${telestrokeNote.nihss || nihssScore || '___'}\n`;
-              if (telestrokeNote.evtRecommended) note += `- EVT recommended/performed${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
+              if (telestrokeNote.evtRecommended) {
+                note += `- EVT recommended/performed${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
+                if (telestrokeNote.evtAccessSite) note += `  Access: ${telestrokeNote.evtAccessSite}\n`;
+                if (telestrokeNote.evtDevice) note += `  Device: ${telestrokeNote.evtDevice}\n`;
+                if (telestrokeNote.evtTechnique) note += `  Technique: ${telestrokeNote.evtTechnique}\n`;
+                if (telestrokeNote.evtNumberOfPasses) note += `  Passes: ${telestrokeNote.evtNumberOfPasses}\n`;
+                if (telestrokeNote.reperfusionTime) note += `  Reperfusion: ${telestrokeNote.reperfusionTime}\n`;
+              }
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
               // Anticoagulation status
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
@@ -9592,7 +9604,12 @@ Clinician Name`;
                   ? `   - Post-TNK: ${prPtmItems.join(', ')} — ongoing\n`
                   : `   - Post-TNK: monitoring complete / ongoing\n`;
               }
-              if (telestrokeNote.evtRecommended) note += `   - Post-EVT: mTICI ${telestrokeNote.ticiScore || '___'}\n`;
+              if (telestrokeNote.evtRecommended) {
+                note += `   - Post-EVT: mTICI ${telestrokeNote.ticiScore || '___'}\n`;
+                const evtDetails = [telestrokeNote.evtAccessSite && `access ${telestrokeNote.evtAccessSite}`, telestrokeNote.evtTechnique && telestrokeNote.evtTechnique, telestrokeNote.evtNumberOfPasses && `${telestrokeNote.evtNumberOfPasses} passes`, telestrokeNote.evtDevice && telestrokeNote.evtDevice].filter(Boolean);
+                if (evtDetails.length > 0) note += `     (${evtDetails.join(', ')})\n`;
+                if (telestrokeNote.reperfusionTime) note += `     Reperfusion: ${telestrokeNote.reperfusionTime}\n`;
+              }
               const progComps = [];
               if (telestrokeNote.sichDetected) progComps.push('sICH');
               if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) {
@@ -9901,7 +9918,14 @@ Clinician Name`;
                 if (telestrokeNote.disablingDeficit) note += `- DISABLING DEFICIT noted — TNK despite NIHSS ${telestrokeNote.nihss || nihssScore || '___'}\n`;
                 if (telestrokeNote.dtnTnkAdministered) note += formatDTNForNote();
               }
-              if (telestrokeNote.evtRecommended) note += `- Mechanical thrombectomy${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
+              if (telestrokeNote.evtRecommended) {
+                note += `- Mechanical thrombectomy${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
+                if (telestrokeNote.evtAccessSite) note += `  Access: ${telestrokeNote.evtAccessSite}\n`;
+                if (telestrokeNote.evtDevice) note += `  Device: ${telestrokeNote.evtDevice}\n`;
+                if (telestrokeNote.evtTechnique) note += `  Technique: ${telestrokeNote.evtTechnique}\n`;
+                if (telestrokeNote.evtNumberOfPasses) note += `  Passes: ${telestrokeNote.evtNumberOfPasses}\n`;
+                if (telestrokeNote.reperfusionTime) note += `  Reperfusion: ${telestrokeNote.reperfusionTime}\n`;
+              }
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
               // Post-treatment complications
               const dischComplications = [];
@@ -10365,6 +10389,14 @@ Clinician Name`;
               note = note.replace(/After ensuring that there were no evident contraindications.*?brief time-out\.\n?/s, '');
               note = note.replace(/BP prior to TNK administration:.*?\n/g, '');
             }
+            // Add EVT procedural details if performed
+            if (telestrokeNote.evtRecommended) {
+              let evtBlock = `\nEVT: Mechanical thrombectomy recommended${telestrokeNote.ticiScore ? ` — mTICI ${telestrokeNote.ticiScore}` : ''}`;
+              const evtParts = [telestrokeNote.evtAccessSite && `Access: ${telestrokeNote.evtAccessSite}`, telestrokeNote.evtTechnique && `Technique: ${telestrokeNote.evtTechnique}`, telestrokeNote.evtDevice && `Device: ${telestrokeNote.evtDevice}`, telestrokeNote.evtNumberOfPasses && `Passes: ${telestrokeNote.evtNumberOfPasses}`, telestrokeNote.reperfusionTime && `Reperfusion: ${telestrokeNote.reperfusionTime}`].filter(Boolean);
+              if (evtParts.length > 0) evtBlock += `\n${evtParts.join('; ')}`;
+              note += evtBlock + '\n';
+            }
+
             // Add anticoagulation details into clinical body (before placeholder cleanup)
             if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
               const acInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
@@ -15388,7 +15420,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* Case Outcomes & Quality Metrics */}
                     {dashboardHasActiveCase && telestrokeNote.diagnosis && (
-                      <div className="bg-white border border-indigo-200 rounded-xl p-4 shadow-sm mt-4">
+                      <div className="bg-white border border-indigo-200 rounded-xl p-4 shadow-sm mt-4 print:break-inside-avoid print:border-slate-400 print:shadow-none">
                         <h3 className="text-sm font-bold text-indigo-900 mb-3 flex items-center gap-2">
                           <i aria-hidden="true" data-lucide="target" className="w-4 h-4 text-indigo-600"></i>
                           Case Outcomes
@@ -15437,7 +15469,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           )}
                         </div>
-                        {(() => {
+                        {telestrokeNote.dischargeChecklistReviewed && (() => {
                           const dc = telestrokeNote.dischargeChecklist || {};
                           const qm = ['antiplateletOrAnticoag','statinPrescribed','bpMedOptimized','smokingCessation','dietCounseling','exerciseCounseling'].filter(k => dc[k]).length;
                           return qm > 0 ? (
@@ -20727,7 +20759,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
 
                             {telestrokeNote.evtRecommended && (
-                              <details className="border border-slate-200 rounded-lg">
+                              <details className="border border-slate-200 rounded-lg" open={!!(telestrokeNote.evtAccessSite || telestrokeNote.evtDevice || telestrokeNote.evtTechnique || telestrokeNote.evtNumberOfPasses || telestrokeNote.reperfusionTime)}>
                                 <summary className="px-3 py-2 text-sm font-semibold text-slate-700 cursor-pointer hover:bg-slate-50">EVT Procedure Details</summary>
                                 <div className="p-3 space-y-3 border-t border-slate-200">
                                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -30454,7 +30486,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </summary>
                       <div className="p-4">
                         <p className="text-xs text-slate-600 mb-3">Click regions with <strong>early ischemic changes</strong> on CT. ASPECTS = 10 minus number of affected regions.</p>
-                        <div className="grid grid-cols-5 gap-2 mb-3">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 mb-3">
                           {[
                             { id: 'C', label: 'C', desc: 'Caudate' },
                             { id: 'L', label: 'L', desc: 'Lentiform' },
@@ -30475,13 +30507,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   const rid = region.id, toggled = !isAffected;
                                   setTelestrokeNote(prev => {
                                     const newRegions = {...(prev.aspectsRegions || {}), [rid]: toggled};
+                                    const score = 10 - Object.values(newRegions).filter(Boolean).length;
+                                    if (typeof setAspectsScore === 'function') setAspectsScore(score);
                                     return {...prev, aspectsRegions: newRegions};
                                   });
-                                  const newRegions = {...(telestrokeNote.aspectsRegions || {}), [region.id]: !isAffected};
-                                  const score = 10 - Object.values(newRegions).filter(Boolean).length;
-                                  if (typeof setAspectsScore === 'function') setAspectsScore(score);
                                   // Sync to calculator drawer state (array format: checked=true means normal)
-                                  setAspectsRegionState(prev => prev.map(r => r.id === region.id ? {...r, checked: isAffected} : r));
+                                  setAspectsRegionState(prev => prev.map(r => r.id === rid ? {...r, checked: !toggled} : r));
                                 }}
                                 title={region.desc}
                               >
@@ -30523,7 +30554,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </summary>
                       <div className="p-4">
                         <p className="text-xs text-slate-600 mb-3">Click regions with early ischemic changes. Used for basilar artery EVT eligibility (≥6 favors intervention).</p>
-                        <div className="grid grid-cols-4 gap-2 mb-3">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-3">
                           {[
                             { id: 'pons', label: 'Pons', pts: 2 },
                             { id: 'midbrain', label: 'Midbrain', pts: 2 },
