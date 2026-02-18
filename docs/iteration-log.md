@@ -1,5 +1,16 @@
 # Iteration Log
 
+## Iteration 032 (2026-02-18)
+
+### What was changed
+- **Discharge note: returnToWork section**: When `returnToWork.workingAge` is true, outputs expected timeline, prior occupation, vocational rehab referral, and phased return plan.
+- **Patient education: discharge mRS**: Lay-friendly mRS descriptions (0-5 scale) so patients understand their functional status. Also includes returnToWork guidance.
+- **Progress note: disablingDeficit**: When TNK was given despite low NIHSS based on disabling deficit, the progress note now documents this rationale in the Assessment & Plan section.
+- **Audit findings rejected**: 13 P2 controlled component fallback mismatches (theoretical — all fields initialized in default state, never become undefined). Driving restrictions missing from signout/progress (already in 5/8 templates, not needed for inpatient notes).
+
+### Commit
+- Code: `966bba8` (v5.14.39 / cache v38)
+
 ## Iteration 031 (2026-02-18)
 
 ### What was changed

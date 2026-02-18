@@ -2,12 +2,12 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `b37b95b`
+- Last pushed commit: `966bba8`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.38`
-- Service worker cache key: `stroke-app-v37`
+- Live APP_VERSION: `v5.14.39`
+- Service worker cache key: `stroke-app-v38`
 
-## Session summary (iter-006 through iter-031)
+## Session summary (iter-006 through iter-032)
 
 ### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-029)
 - SAH first-hour rapid actions card
@@ -42,7 +42,7 @@
 - ASPECTS/PC-ASPECTS mobile responsive grids (2-col on mobile, 3-col tablet, full on desktop)
 - EVT procedure details section auto-opens when populated
 
-### Quality & infrastructure (iter-009 through iter-031)
+### Quality & infrastructure (iter-009 through iter-032)
 - Cross-links between reference cards and data-entry sections
 - Mobile responsiveness audit: all cards safe at 390px
 - Schema mismatch debt resolved (compare_keys.ps1 fixed, 0 true mismatches)
@@ -102,6 +102,9 @@
 - Lab-not-checked warnings: INR, platelets, aPTT prompt when TNK recommended but labs undocumented
 - EVT imaging warnings: CTA results and ASPECTS not-documented prompts when EVT recommended
 - TNK auto-block toast synchronized across all 3 diagnosis-change handlers
+- Discharge note: returnToWork section (timeline, vocational rehab, phased return)
+- Patient education: discharge mRS with lay-friendly descriptions + returnToWork guidance
+- Progress note: disablingDeficit rationale for TNK despite low NIHSS
 
 ### Gap matrix: ALL P0/P1 items COMPLETED
 
