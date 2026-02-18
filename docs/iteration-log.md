@@ -1,5 +1,26 @@
 # Iteration Log
 
+## Iteration 023 (2026-02-18)
+
+### What was changed
+- **DAWN age ≥80 EVT warning (P1)**: New error-severity warning fires when EVT is recommended for patients ≥80 years old in the late window (6-24h) with NIHSS <10. DAWN trial explicitly required NIHSS ≥10 for this age cohort.
+- **ACEi + TNK angioedema warning escalation**: Upgraded from 'warn' (yellow) to 'error' (red) severity. ACE inhibitor use confers 5x increased orolingual angioedema risk with thrombolysis, warranting higher-visibility alert with airway preparation instructions.
+- **Textarea focus styling (a11y)**: Added `focus:outline-none` to 4 textareas (symptoms, PMH, CT results, CTA results) for consistent keyboard focus ring behavior matching all other form elements.
+- **DAPT duration visible label**: Added `<label>` element for DAPT duration select (previously had only `aria-label`, no visible label for sighted users).
+
+### Why
+- DAWN trial age ≥80 exclusion at NIHSS <10 is a hard eligibility criterion. Without this warning, a clinician could recommend late-window EVT for an 85-year-old with NIHSS 7 without the system flagging the protocol deviation.
+- ACEi + TNK angioedema risk requires proactive airway preparation (suction, nebulized epinephrine, intubation equipment). Yellow-level warning was insufficient for this actionable clinical preparation step.
+
+### Audit results
+- **Clinical safety audit**: 4 P0 claims — ALL verified as FALSE POSITIVES. TNK auto-block already covers INR >1.7 and platelets <100K (line 13589). evt_standard covers ASPECTS 6-10 in early window. Basilar EVT condition correctly requires nihss ≥10. One valid P1: age ≥80 late-window NIHSS warning (implemented).
+- **UX/code quality audit**: Score 9.2/10. 0 P0 issues. Valid P1 findings: textarea focus styling (4 locations), DAPT label. Multiple P2 claims verified as false positives (search input already has aria-label, route parsing already safe via default case).
+
+### Commit
+- `c3b7ea6` — APP_VERSION v5.14.30, cache key stroke-app-v29
+
+---
+
 ## Iteration 022 (2026-02-18)
 
 ### What was changed
