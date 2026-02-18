@@ -84,3 +84,41 @@
 - Add SAH rapid first-hour card using existing guideline citations.
 - Add CVT treatment timeline strip (initial anticoag, ICP red flags, transition rules).
 - Add explicit AF anticoag timing quick card in prevention workflow.
+
+## Iteration 006 (2026-02-18)
+
+### What was changed
+- Added `SAH First-Hour Rapid Actions` card at top of SAH management section: 6-cell grid covering airway/ICU, BP control, aneurysm securing, nimodipine, hydrocephalus screen, DCI surveillance plan.
+- Added `CVT Treatment Timeline & Escalation` strip in CVT tab after acute management checklist: 4-phase display (acute day 0-14, subacute week 2-4, duration 3-12 mo, escalation triggers) with ACTION-CVT DOAC data.
+- Added `AF Anticoag Timing Quick Reference` card in secondary prevention dashboard: conditionally rendered when DOAC-for-AF or anticoag-other is selected, showing CATALYST/ELAN/TIMING severity grid with caution flags.
+- Bumped APP_VERSION to v5.14.14 and service-worker cache to v13.
+
+### Why
+- SAH: consolidate time-critical first-hour actions into a single scannable card to reduce cognitive load during aSAH triage.
+- CVT: make anticoagulation phasing and escalation triggers explicit so treatment timelines are not missed.
+- AF timing: surface severity-based DOAC start windows directly in the prevention workflow when AF anticoag is selected.
+
+### Evidence citations used for this iteration
+- 2023 AHA/ASA aneurysmal SAH guideline, Stroke 2023, DOI: 10.1161/STR.0000000000000436, PMID: 37212182.
+- 2024 AHA CVT Scientific Statement, Stroke 2024, DOI: 10.1161/STR.0000000000000486.
+- ACTION-CVT: Yaghi S et al. JAMA Neurol 2022;79:1260-1269, PMID: 36315105.
+- ELAN: Fischer U et al. NEJM 2023;388:2411-2421, PMID: 37222476.
+- TIMING: Oldgren J et al. Circulation 2022;146:1056-1066, PMID: 36065821.
+- CATALYST meta-analysis: Fischer U et al. Lancet Neurol 2025.
+
+### QA and validation
+- Build: `npx esbuild` and `npx tailwindcss` passed.
+- Pre-change: local desktop/tablet/mobile route matrix passed.
+- Post-change: new SAH, CVT, and AF cards verified present.
+- Deployed to GitHub Pages, push successful.
+
+### Remaining risks
+- Default-vs-sanitizer schema mismatch debt remains (pre-existing).
+- No automated unit/integration tests yet.
+
+### Next opportunities
+- Add special population panel (pregnancy/peripartum emergency notes, maternal-fetal coordination triggers).
+- Add renal-safety prompt chips where anticoag/contrast decisions are made.
+- Add TNK-first decision card with explicit inclusion/exclusion and alteplase fallback.
+- Add hard-stop imaging reminder in wake-up/unknown onset pathway.
+- Begin automated pathway assertion tests.

@@ -2,41 +2,38 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `1654d91`
+- Last pushed commit: `f2ffbb8`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION observed: `v5.14.13`
-- Service worker cache key: `stroke-app-v12`
+- Live APP_VERSION: `v5.14.14`
+- Service worker cache key: `stroke-app-v13`
 
-## Completed in this cycle (iter-004)
-- Added one-screen `ICH First-Hour Critical Bundle` card in ICH management.
-- Added `Large Core EVT` evidence highlight with explicit conservative decision rule (do not exclude solely for large core).
-- Added DAPT phenotype quick matrix in secondary prevention guidance (rendered when pathway context is populated).
-- Updated cycle docs:
-  - `docs/evidence-review-2021-2026.md`
-  - `docs/gap-matrix.md`
-  - `docs/iteration-log.md`
-  - `docs/regression-checklist.md`
+## Completed in this cycle (iter-006)
+- Added SAH first-hour rapid actions card at top of SAH management (airway/ICU, BP, securing, nimodipine, hydrocephalus, DCI surveillance).
+- Added CVT treatment timeline strip (acute/subacute/duration/escalation) with ACTION-CVT DOAC transition data.
+- Added AF anticoag timing quick reference in secondary prevention (CATALYST/ELAN/TIMING grid, conditional on AF regimen selection).
+- Bumped APP_VERSION to v5.14.14 and service-worker cache to v13.
+- Updated cycle docs: evidence-review, gap-matrix, iteration-log, regression-checklist.
 
 ## QA summary
-- Build: pass (`npm run build`).
-- Schema check: `compare_keys.ps1` still reports default-vs-sanitizer mismatch (`Missing count: 319`).
-- Pre-change baseline: local + live desktop/tablet/mobile route matrix passed (no console errors).
-- Post-change pre-push: local + live desktop/tablet/mobile route matrix passed (no console errors).
-- Post-deploy validation: live APP_VERSION advanced to `v5.14.13`; local + live route matrix passed (no console errors).
+- Build: pass (esbuild + tailwindcss).
+- Schema check: pre-existing mismatch persists (not addressed this cycle).
+- Post-change: local desktop/tablet/mobile route matrix passed (no console errors).
+- Deployed to GitHub Pages successfully.
 
 ## Known debt and risks
 - Storage schema mismatch remains high and should be handled in a dedicated hardening iteration.
-- No automated unit/integration tests yet; confidence remains build + scripted smoke + targeted workflow checks.
-- Working tree contains unrelated local artifacts not committed by cycle automation:
+- No automated unit/integration tests yet; confidence remains build + smoke + targeted workflow checks.
+- Working tree contains unrelated local artifacts not committed:
   - modified `package-lock.json`
   - untracked `app.debug.js`
   - untracked `compare_keys.ps1`
 
 ## Next highest-impact actions
-1. Add SAH first-hour rapid checklist card at top of SAH pathway (securement, nimodipine, DCI watch, BP context).
-2. Add CVT treatment timeline strip (initial anticoagulation, ICP red flags, transition strategy).
-3. Add AF anticoag timing quick card in prevention workflow (early vs delayed DOAC framing).
-4. Start automated pathway assertions (ischemic/ICH/SAH/TIA/CVT + calculator smoke checks) as scriptable CI gates.
+1. Add TNK-first decision card with explicit inclusion/exclusion criteria and alteplase fallback branch in ischemic management (P0 gap).
+2. Add hard-stop imaging reminder in wake-up/unknown onset pathway (P0 gap).
+3. Add special population panel (pregnancy/peripartum emergency notes + maternal-fetal coordination triggers) (P1 gap).
+4. Add renal-safety prompt chips where anticoag/contrast decisions are made (P1 gap).
+5. Start automated pathway assertion tests as scriptable CI gates.
 
 ## Resume command
-- `cd C:\Users\rkala\stroke && git pull --rebase origin main && "C:\Program Files\nodejs\npm.cmd" run build`
+- `cd C:\Users\rkala\stroke && git pull --rebase origin main && npx esbuild ./src/app.jsx --bundle --minify --format=iife --target=es2018 --outfile=./app.js`

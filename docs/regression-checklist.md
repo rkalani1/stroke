@@ -15,6 +15,9 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Required-field warnings still display in Encounter when key data are missing.
 - [ ] ICH first-hour bundle card remains visible and aligned with reversal/BP/escalation pathways.
 - [ ] Large-core EVT evidence callout remains present with conservative eligibility language.
+- [ ] SAH first-hour rapid actions card visible at top of SAH management section.
+- [ ] CVT treatment timeline strip visible after acute management checklist in CVT tab.
+- [ ] AF anticoag timing card appears in secondary prevention when DOAC-for-AF or anticoag-other selected.
 
 ## Workflow and usability
 - [ ] Senior rapid path: key decisions visible within one scroll on desktop.

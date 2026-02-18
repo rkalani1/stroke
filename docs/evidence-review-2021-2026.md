@@ -72,6 +72,11 @@
 - Added a phenotype quick matrix for DAPT pathway selection as a concise companion to existing detailed text.
 - Conservative assumption used: in ambiguous acute scenarios, prioritize stabilization and reversible harm mitigation before lower-priority workflow steps.
 
+### Operational mapping update (2026-02-18, iter-006)
+- Added SAH first-hour rapid actions card: consolidated airway/ICU, BP control, aneurysm securing, nimodipine, hydrocephalus screening, and DCI surveillance plan into a single red-highlighted card at the top of the SAH management section. Based on 2023 AHA/ASA SAH guideline (PMID: 37212182).
+- Added CVT treatment timeline strip: 4-phase display (acute → subacute → duration → escalation triggers) with ACTION-CVT DOAC transition data. Placed after acute management checklist in CVT tab. Based on 2024 AHA CVT statement + ACTION-CVT (PMID: 36315105).
+- Added AF anticoag timing quick reference card in secondary prevention: conditionally displayed when DOAC-for-AF or anticoag-other is selected. Shows CATALYST/ELAN/TIMING severity-based timing grid with caution flags. Based on ELAN (PMID: 37222476) and CATALYST meta-analysis (Fischer U, Lancet Neurol 2025).
+
 ## Key citations (metadata + evidence tag)
 | Domain | Evidence tag | Title | Year | Journal/Source | URL | PMID / DOI / NCT |
 |---|---|---|---|---|---|---|
