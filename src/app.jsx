@@ -9278,6 +9278,14 @@ Clinician Name`;
                 if (telestrokeNote.contrastAllergy) snAlerts.push('CONTRAST ALLERGY');
                 if (snAlerts.length > 0) note += `- ALERTS: ${snAlerts.join('; ')}\n`;
               }
+              // Screening results
+              {
+                const snScreenItems = [];
+                if (telestrokeNote.phq2Score) snScreenItems.push(`PHQ-2: ${telestrokeNote.phq2Score}${telestrokeNote.phq2Positive ? ' (positive)' : ''}`);
+                if (telestrokeNote.mocaScore) snScreenItems.push(`MoCA: ${telestrokeNote.mocaScore}/30`);
+                if (telestrokeNote.stopBangScore) snScreenItems.push(`STOP-BANG: ${telestrokeNote.stopBangScore}${parseInt(telestrokeNote.stopBangScore, 10) >= 5 ? ' (high risk)' : ''}`);
+                if (snScreenItems.length > 0) note += `- Screening: ${snScreenItems.join(', ')}\n`;
+              }
               // Drug interaction alerts
               {
                 const snDi = telestrokeNote.drugInteractions || {};
@@ -9942,9 +9950,14 @@ Clinician Name`;
                 if (tiaWD.labsA1c) tiaItemsD.push('HbA1c');
                 if (tiaWD.labsLipids) tiaItemsD.push('lipid panel');
                 if (tiaWD.labsTsh) tiaItemsD.push('TSH');
-                if (tiaItemsD.length > 0) {
-                  note += `\nTIA WORKUP:\n`;
-                  note += `- Completed: ${tiaItemsD.join(', ')}\n`;
+                const tiaTotal = Object.keys(tiaWD).length;
+                const tiaComplete = Object.values(tiaWD).filter(Boolean).length;
+                if (tiaItemsD.length > 0 || tiaTotal > 0) {
+                  note += `\nTIA WORKUP (${tiaComplete}/${tiaTotal} completed):\n`;
+                  if (tiaItemsD.length > 0) note += `- Completed: ${tiaItemsD.join(', ')}\n`;
+                  const tiaAllKeys = {mriDwi:'MRI DWI',ctaHeadNeck:'CTA Head/Neck',ecg12Lead:'12-lead ECG',telemetry:'Telemetry',echo:'Echo',labsCbc:'CBC',labsBmp:'BMP',labsA1c:'HbA1c',labsLipids:'Lipid panel',labsTsh:'TSH'};
+                  const tiaPending = Object.entries(tiaAllKeys).filter(([k]) => !tiaWD[k]).map(([,v]) => v);
+                  if (tiaPending.length > 0) note += `- Pending: ${tiaPending.join(', ')}\n`;
                 }
               }
               // Dissection pathway
@@ -14662,7 +14675,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
                       )}
                     </div>
-                    <div className="text-center text-xs text-slate-400 pb-2">Press Esc or click outside to close</div>
+                    <div className="text-center text-xs text-slate-600 pb-2">Press Esc or click outside to close</div>
                   </div>
                 </div>
               )}
@@ -28812,7 +28825,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="space-y-1" role="group" aria-label="Eye Opening">
                           <h4 className="font-semibold text-sm mb-1">Eye Opening</h4>
                           {[{v:'4',l:'Spontaneous'},{v:'3',l:'To sound'},{v:'2',l:'To pain'},{v:'1',l:'None'}].map(o => (
-                            <button key={o.v} type="button"
+                            <button key={o.v} type="button" role="radio" aria-checked={gcsItems.eye === o.v} aria-label={`Eye Opening: ${o.l} (${o.v} points)`}
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${gcsItems.eye === o.v ? 'bg-slate-700 text-white border-slate-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
                               onClick={() => setGcsItems(prev => ({...prev, eye: o.v}))}
                             >
@@ -28823,7 +28836,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="space-y-1" role="group" aria-label="Verbal Response">
                           <h4 className="font-semibold text-sm mb-1">Verbal Response</h4>
                           {[{v:'5',l:'Oriented'},{v:'4',l:'Confused'},{v:'3',l:'Inappropriate'},{v:'2',l:'Incomprehensible'},{v:'1',l:'None'}].map(o => (
-                            <button key={o.v} type="button"
+                            <button key={o.v} type="button" role="radio" aria-checked={gcsItems.verbal === o.v} aria-label={`Verbal Response: ${o.l} (${o.v} points)`}
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${gcsItems.verbal === o.v ? 'bg-slate-700 text-white border-slate-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
                               onClick={() => setGcsItems(prev => ({...prev, verbal: o.v}))}
                             >
@@ -28834,7 +28847,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="space-y-1" role="group" aria-label="Motor Response">
                           <h4 className="font-semibold text-sm mb-1">Motor Response</h4>
                           {[{v:'6',l:'Obeying'},{v:'5',l:'Localizing'},{v:'4',l:'Flexing'},{v:'3',l:'Abnormal flexion'},{v:'2',l:'Extending'},{v:'1',l:'None'}].map(o => (
-                            <button key={o.v} type="button"
+                            <button key={o.v} type="button" role="radio" aria-checked={gcsItems.motor === o.v} aria-label={`Motor Response: ${o.l} (${o.v} points)`}
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${gcsItems.motor === o.v ? 'bg-slate-700 text-white border-slate-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
                               onClick={() => setGcsItems(prev => ({...prev, motor: o.v}))}
                             >
@@ -28895,7 +28908,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="space-y-2">
                           <p className="font-semibold text-sm mb-1">Glasgow Coma Scale:</p>
                           {[{v:'gcs34',l:'GCS 3-4',p:'+2 points'},{v:'gcs512',l:'GCS 5-12',p:'+1 point'},{v:'',l:'GCS 13-15',p:'0 points'}].map(o => (
-                            <button key={o.v} type="button"
+                            <button key={o.v} type="button" role="radio" aria-checked={ichScoreItems.gcs === o.v} aria-label={`Glasgow Coma Scale: ${o.l} (${o.p})`}
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${ichScoreItems.gcs === o.v ? 'bg-red-700 text-white border-red-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
                               onClick={() => setIchScoreItems(prev => ({...prev, gcs: o.v}))}
                             >
@@ -29209,12 +29222,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {v:'5',title:'5 - Severe disability',desc:'Bedridden, incontinent, and requires constant nursing care and attention'},
                           {v:'6',title:'6 - Dead',desc:''}
                         ].map(o => (
-                          <button key={o.v} type="button"
+                          <button key={o.v} type="button" role="radio" aria-checked={mrsScore === o.v} aria-label={`Modified Rankin Scale: ${o.title}`}
                             className={`w-full text-left p-3 rounded-lg border transition-colors ${mrsScore === o.v ? 'bg-blue-600 text-white border-blue-600' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
                             onClick={() => setMrsScore(o.v)}
                           >
                             <div className="font-semibold">{o.title}</div>
-                            {o.desc && <div className={`text-sm ${mrsScore === o.v ? 'text-blue-100' : 'text-slate-600'}`}>{o.desc}</div>}
+                            {o.desc && <div className={`text-sm ${mrsScore === o.v ? 'text-blue-100' : 'text-slate-700'}`}>{o.desc}</div>}
                           </button>
                         ))}
                       </div>
@@ -29317,7 +29330,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </label>
                           <p className="font-semibold text-sm mt-3 mb-1">Symptom Duration:</p>
                           {[{v:'duration60',l:'\u226560 minutes',p:'+2 points'},{v:'duration10',l:'10-59 minutes',p:'+1 point'},{v:'',l:'<10 minutes',p:'0 points'}].map(o => (
-                            <button key={o.v || 'none'} type="button"
+                            <button key={o.v || 'none'} type="button" role="radio" aria-checked={abcd2Items.duration === o.v} aria-label={`Symptom Duration: ${o.l} (${o.p})`}
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors mb-1 ${abcd2Items.duration === o.v ? 'bg-orange-600 text-white border-orange-600 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100'}`}
                               onClick={() => setAbcd2Items(prev => ({...prev, duration: o.v}))}
                             >
@@ -29841,12 +29854,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 {v:'4',title:'Grade 4',desc:'Stupor, moderate-severe hemiparesis'},
                                 {v:'5',title:'Grade 5',desc:'Deep coma, decerebrate rigidity, moribund'}
                               ].map(o => (
-                                <button key={o.v} type="button"
+                                <button key={o.v} type="button" role="radio" aria-checked={huntHessGrade === o.v} aria-label={`Hunt-Hess ${o.title}: ${o.desc}`}
                                   className={`w-full text-left p-3 rounded-lg border transition-colors ${huntHessGrade === o.v ? 'bg-amber-600 text-white border-amber-600' : 'bg-white border-amber-200 hover:bg-amber-50 active:bg-amber-100'}`}
                                   onClick={() => setHuntHessGrade(o.v)}
                                 >
                                   <div className="font-semibold">{o.title}</div>
-                                  <div className={`text-sm ${huntHessGrade === o.v ? 'text-amber-100' : 'text-slate-600'}`}>{o.desc}</div>
+                                  <div className={`text-sm ${huntHessGrade === o.v ? 'text-amber-100' : 'text-slate-700'}`}>{o.desc}</div>
                                 </button>
                               ))}
                             </div>
@@ -29863,12 +29876,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 {v:'4',title:'Grade 4',desc:'GCS 7-12, with or without motor deficit'},
                                 {v:'5',title:'Grade 5',desc:'GCS 3-6, with or without motor deficit'}
                               ].map(o => (
-                                <button key={o.v} type="button"
+                                <button key={o.v} type="button" role="radio" aria-checked={wfnsGrade === o.v} aria-label={`WFNS ${o.title}: ${o.desc}`}
                                   className={`w-full text-left p-3 rounded-lg border transition-colors ${wfnsGrade === o.v ? 'bg-amber-600 text-white border-amber-600' : 'bg-white border-amber-200 hover:bg-amber-50 active:bg-amber-100'}`}
                                   onClick={() => setWfnsGrade(o.v)}
                                 >
                                   <div className="font-semibold">{o.title}</div>
-                                  <div className={`text-sm ${wfnsGrade === o.v ? 'text-amber-100' : 'text-slate-600'}`}>{o.desc}</div>
+                                  <div className={`text-sm ${wfnsGrade === o.v ? 'text-amber-100' : 'text-slate-700'}`}>{o.desc}</div>
                                 </button>
                               ))}
                             </div>
