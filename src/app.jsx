@@ -14842,6 +14842,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             { label: 'Regional Hospitals', url: 'https://rkalani1.github.io/telestroke-expansion-map/', note: 'Regional telestroke center coverage map' }
           ];
           const encounterQuickLinks = [
+            { label: 'Telestroke Resources', url: 'https://intranet.neurology.uw.edu/telestroke-provider-resources/' },
+            { label: 'EMR', url: 'https://access.uwmedicine.org/logon/LogonPoint/tmindex.html' },
             { label: 'OpenEvidence', url: 'https://www.openevidence.com' },
             { label: 'UpToDate', url: 'https://www.uptodate.com' }
           ];
