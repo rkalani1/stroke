@@ -25,3 +25,6 @@
 
 ## Iteration 039 Update (2026-02-18)
 - Operational continuity gap reduced: interruption handoff now references the current commit and an immediately executable resume command for this workspace.
+
+## Iteration 040 Update (2026-02-18)
+- Operational gap (stale handoff commit pointer) closed; resume metadata now matches latest deployed commit.

@@ -137,3 +137,6 @@
 ### Operational update (2026-02-18, iter-039)
 - No clinical evidence recommendations changed in this iteration.
 - Documentation-only update to maintain interruption-safe continuous execution metadata.
+
+### Operational update (2026-02-18, iter-040)
+- No evidence-content changes; synchronization-only update for continuous execution metadata integrity.

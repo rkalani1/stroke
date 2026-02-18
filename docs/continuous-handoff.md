@@ -2,7 +2,7 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `c535aee`
+- Last pushed commit: `790f78f`
 - Production URL: `https://rkalani1.github.io/stroke/`
 - Live APP_VERSION: `v5.14.42`
 - Service worker cache key: `stroke-app-v41`
@@ -139,5 +139,10 @@
 ## Iteration 038 update (2026-02-18)
 - Strengthened smoke automation with diagnosis-switch and TNK-visibility gating checks.
 - Added local server re-use logic to avoid flaky failures when port `4173` is already occupied.
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && npm test && npm run qa && npm run build`
+
+## Iteration 040 update (2026-02-18)
+- Handoff metadata commit pointer synced to latest deployed state.
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && npm test && npm run qa && npm run build`
