@@ -1,5 +1,29 @@
 # Iteration Log
 
+## Iteration 022 (2026-02-18)
+
+### What was changed
+- **ASPECTS state sync bug fix (P0)**: Interactive ASPECTS scorer onClick handler computed score from stale closure (`telestrokeNote.aspectsRegions`) instead of the functional updater's `prev` state. On rapid clicks, `setAspectsScore` received wrong values while `setTelestrokeNote` was correct. Moved score computation inside the functional updater.
+- **ASPECTS/PC-ASPECTS mobile responsive grids (P1)**: ASPECTS `grid-cols-5` and PC-ASPECTS `grid-cols-4` overflowed on mobile viewports. Changed to `grid-cols-2 sm:grid-cols-3 md:grid-cols-5` and `grid-cols-2 sm:grid-cols-3 md:grid-cols-4` respectively.
+- **EVT procedural fields in 5 remaining note templates**: Added access site, device, technique, passes, and reperfusion time to signout, progress, follow-up brief, discharge, and consult note templates. Previously only in transfer and procedure notes.
+- **QM count guard**: Dashboard quality measures count now only displays when `dischargeChecklistReviewed` is true, preventing premature quality metric display.
+- **EVT details auto-open**: `<details>` element auto-opens when any EVT procedural field has data, preserving user context.
+- **Dashboard print styling**: Added `print:break-inside-avoid`, `print:border-slate-400`, `print:shadow-none` to case outcomes card.
+
+### Why
+- ASPECTS bug: Stale closure in score computation could lead to incorrect ASPECTS score displayed/stored when regions clicked rapidly — a clinical safety issue for EVT eligibility assessment.
+- Mobile grids: 5-column and 4-column grids were unusable on phones (390px width), with buttons truncated.
+- EVT in all templates: Procedural details like access site, device, and passes were only in transfer/procedure notes. Signout, progress, discharge, consult, and follow-up all need these for continuity of care.
+
+### Audit results
+- **Comprehensive audit**: 7 findings — 1 P0 (ASPECTS sync), 2 P1 (mobile grids), 4 P2 (QM guard, EVT open state, print, keyboard help confirmed OK)
+- **EVT template coverage audit**: Transfer and procedure complete; 5 templates needed EVT fields added
+
+### Commit
+- `ee42b54` — APP_VERSION v5.14.29, cache key stroke-app-v28
+
+---
+
 ## Iteration 021 (2026-02-18)
 
 ### What was changed

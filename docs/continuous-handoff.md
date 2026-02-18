@@ -2,14 +2,14 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `487ef18`
+- Last pushed commit: `ee42b54`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.28`
-- Service worker cache key: `stroke-app-v27`
+- Live APP_VERSION: `v5.14.29`
+- Service worker cache key: `stroke-app-v28`
 
-## Session summary (iter-006 through iter-021)
+## Session summary (iter-006 through iter-022)
 
-### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-021)
+### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-022)
 - SAH first-hour rapid actions card
 - CVT treatment timeline strip
 - AF anticoag timing quick reference
@@ -25,7 +25,7 @@
 - AHA/ASA GWTG quality metrics exported to discharge note template
 - Caregiver education checklist + screening scores (PHQ-2, MoCA, STOP-BANG) in discharge note
 
-### Usability & workflow (iter-015 through iter-021)
+### Usability & workflow (iter-015 through iter-022)
 - Inline TNK dose badge at recommendation checkbox
 - Secondary prevention plan added to transfer note
 - Stable contraindication list keys (field/label-based)
@@ -39,8 +39,10 @@
 - WCAG AA contrast fixes on calculator descriptions and modal hints
 - Vessel occlusion selector hidden for non-ischemic diagnoses
 - Template diagnosis handler synchronized with comprehensive dropdown handler
+- ASPECTS/PC-ASPECTS mobile responsive grids (2-col on mobile, 3-col tablet, full on desktop)
+- EVT procedure details section auto-opens when populated
 
-### Quality & infrastructure (iter-009 through iter-021)
+### Quality & infrastructure (iter-009 through iter-022)
 - Cross-links between reference cards and data-entry sections
 - Mobile responsiveness audit: all cards safe at 390px
 - Schema mismatch debt resolved (compare_keys.ps1 fixed, 0 true mismatches)
@@ -63,6 +65,10 @@
 - Follow-up brief enhanced with sICH + discharge NIHSS delta
 - EVT procedural fields: access site, device, passes, technique, reperfusion time
 - Dashboard case outcomes card (DTN, DTP, mTICI, NIHSS delta, mRS, sICH, quality measures)
+- ASPECTS interactive scorer state sync bug fixed (stale closure → functional updater)
+- EVT procedural fields now in ALL 8 note templates (was only in transfer + procedure)
+- QM count guarded behind dischargeChecklistReviewed
+- Dashboard outcome card print styling
 
 ### Gap matrix: ALL P0/P1 items COMPLETED
 
@@ -70,10 +76,10 @@
 - No automated unit/integration tests
 - Bundle size 2.2 MB
 - Pediatric stroke pathway guidance not yet added
-- Note template gaps requiring NEW state fields: EVT procedural details (access site, device, passes), active drip parameters, follow-up appointment specifics, imaging follow-up modality
 - Structured pertinent negatives in consult note (requires new state fields)
 - Active drip parameters section for signout note (requires new state fields)
 - Specific follow-up appointment fields for discharge note (requires new state fields)
+- Imaging follow-up modality field for discharge note (requires new state field)
 
 ## Resume command
 - `cd C:\Users\rkala\stroke && git pull --rebase origin main && npx esbuild ./src/app.jsx --bundle --minify --format=iife --target=es2018 --outfile=./app.js`
