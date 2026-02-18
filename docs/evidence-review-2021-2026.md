@@ -82,6 +82,11 @@
 - Added imaging hard-stop alert at top of wake-up stroke evaluation panel: requires DWI-FLAIR mismatch (WAKE-UP trial) or CT perfusion mismatch (EXTEND trial) before thrombolysis. TWIST (Lancet 2023) context: no benefit for unselected wake-up thrombolysis.
 - Enhanced pregnancy/peripartum emergency panel with 4-cell rapid actions grid: acute treatment (do not delay, TNK relative CI, EVT preferred for LVO), OB coordination, differential diagnosis (preeclampsia/eclampsia, RCVS, CVT, PRES, peripartum cardiomyopathy), medication safety. Based on AHA 2026 Maternal Stroke Update (PMID: 41678811).
 
+### Operational mapping update (2026-02-18, iter-008)
+- Added renal-safety auto-alert in Contrast Allergy + LVO Protocol section: dynamically computes CrCl from patient data and shows severe (CrCl <30) or moderate (CrCl 30-59) warnings with nephropathy precautions.
+- Added PFO Closure Eligibility decision card in secondary prevention dashboard: criteria for closure (age 18-60, cryptogenic, RoPE ≥7, PASCAL probable/definite), trial evidence (CLOSE NNT ~20, RESPECT HR 0.55, REDUCE 77% RRR), and medical therapy indications. Class I, LOE A.
+- Added Carotid Revascularization Decision Guide in secondary prevention dashboard: symptomatic 70-99% (CEA within 2 weeks), symptomatic 50-69% (CEA may be considered), asymptomatic ≥70% (medical management per CREST-2), plus timing guidance after stroke. NASCET + CREST-2 evidence.
+
 ## Key citations (metadata + evidence tag)
 | Domain | Evidence tag | Title | Year | Journal/Source | URL | PMID / DOI / NCT |
 |---|---|---|---|---|---|---|

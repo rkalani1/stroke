@@ -2,30 +2,23 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `49070f7`
+- Last pushed commit: `9930311`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.15`
-- Service worker cache key: `stroke-app-v14`
+- Live APP_VERSION: `v5.14.16`
+- Service worker cache key: `stroke-app-v15`
 
-## Completed in this cycle (iter-007)
-- Added TNK-first decision card in ischemic management (dosing, alteplase fallback, exclusions).
-- Added imaging hard-stop alert at top of wake-up stroke evaluation panel.
-- Enhanced pregnancy/peripartum emergency panel with 4-cell rapid actions grid.
-- Bumped APP_VERSION to v5.14.15 and service-worker cache to v14.
-- Updated cycle docs: evidence-review, gap-matrix, iteration-log, regression-checklist.
+## Completed in this cycle (iter-008)
+- Added renal-safety auto-alert in Contrast Allergy + LVO Protocol (CrCl-based severe/moderate warnings).
+- Added PFO Closure Eligibility decision card in secondary prevention (CLOSE/RESPECT/REDUCE evidence).
+- Added Carotid Revascularization Decision Guide in secondary prevention (NASCET/CREST-2).
+- Bumped APP_VERSION to v5.14.16 and service-worker cache to v15.
 
 ## QA summary
 - Build: pass (esbuild + tailwindcss).
-- Schema check: pre-existing mismatch persists.
 - Post-change: local cards verified present, build clean.
 - Deployed to GitHub Pages successfully.
 
-## Known debt and risks
-- Storage schema mismatch remains high (pre-existing).
-- No automated unit/integration tests yet.
-- Working tree: modified `package-lock.json`, untracked `app.debug.js`, `compare_keys.ps1`.
-
-## Gap matrix status (P0/P1 items)
+## Gap matrix status — all P0/P1 items
 | Gap | Status |
 |-----|--------|
 | TNK-first decision card | Completed (iter-007) |
@@ -37,15 +30,25 @@
 | CVT treatment timeline | Completed (iter-006) |
 | AF anticoag timing card | Completed (iter-006) |
 | Pregnancy/peripartum panel | Completed (iter-007) |
-| Renal-safety prompt chips | Open (P1) |
-| PFO/carotid decision cards | Open (P1) |
-| Automated pathway tests | Open (P1) |
+| Renal-safety prompt | Completed (iter-008) |
+| PFO closure decision card | Completed (iter-008) |
+| Carotid revascularization card | Completed (iter-008) |
+| Senior-first cognitive load | Completed (iter-001) |
+| QA/Regression discipline | Completed (iter-001) |
+| Automated pathway tests | Open |
+| Schema mismatch debt | Open |
+
+## Known debt and risks
+- Storage schema mismatch remains high (pre-existing).
+- No automated unit/integration tests yet.
+- Working tree: modified `package-lock.json`, untracked `app.debug.js`, `compare_keys.ps1`.
 
 ## Next highest-impact actions
-1. Add renal-safety prompt chips where anticoag/contrast decisions are made (P1 gap).
-2. Add PFO closure and carotid revascularization decision cards in secondary prevention.
-3. Begin automated pathway assertion tests as scriptable CI gates.
+1. UI responsive audit and mobile usability optimization.
+2. Consolidate/deduplicate guidance that appears in multiple sections.
+3. Begin automated pathway assertion tests.
 4. Address storage schema mismatch debt.
+5. Add pediatric stroke pathway guidance.
 
 ## Resume command
 - `cd C:\Users\rkala\stroke && git pull --rebase origin main && npx esbuild ./src/app.jsx --bundle --minify --format=iife --target=es2018 --outfile=./app.js`

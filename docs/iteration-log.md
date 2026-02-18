@@ -155,3 +155,36 @@
 - Add DAPT phenotype selection with CHANCE-2 CYP2C19 guidance details.
 - Begin automated pathway assertion tests.
 - PFO/carotid secondary prevention decision cards.
+
+## Iteration 008 (2026-02-18)
+
+### What was changed
+- Added renal-safety auto-alert in Contrast Allergy + LVO Protocol section: dynamically computes CrCl from patient data and displays severe/moderate renal warnings with hydration and monitoring guidance.
+- Added `PFO Closure Eligibility` decision card in secondary prevention dashboard: criteria for closure, trial evidence (CLOSE/RESPECT/REDUCE), and medical therapy indications.
+- Added `Carotid Revascularization Decision Guide` in secondary prevention dashboard: symptomatic 70-99% (CEA within 2 weeks), symptomatic 50-69% (CEA reasonable), asymptomatic ≥70% (medical per CREST-2), plus timing after stroke.
+- Bumped APP_VERSION to v5.14.16 and service-worker cache to v15.
+
+### Why
+- Renal safety: prevent contrast nephropathy in patients with impaired renal function undergoing emergent CTA.
+- PFO: consolidate closure eligibility criteria and trial evidence for quick decision-making in cryptogenic stroke.
+- Carotid: provide unified decision framework for revascularization timing and approach selection.
+
+### Evidence citations used for this iteration
+- CLOSE (NEJM 2017, PMID: 28902580), RESPECT (NEJM 2017, PMID: 28902590), REDUCE (JACC 2017, PMID: 28917503).
+- NASCET (NEJM 1991), CREST-2 (NEJM 2025).
+- AHA/ASA 2021 Secondary Stroke Prevention (PMID: 34024117).
+
+### QA and validation
+- Build: `npx esbuild` and `npx tailwindcss` passed.
+- Post-change: all new cards verified present in correct locations.
+- Deployed to GitHub Pages, push successful.
+
+### Remaining risks
+- Default-vs-sanitizer schema mismatch debt remains.
+- No automated unit/integration tests yet.
+
+### Next opportunities
+- UI audit: responsive behavior, mobile usability, and layout optimization.
+- Consolidate/deduplicate guidance that now appears in multiple sections.
+- Begin automated pathway assertion tests.
+- Add pediatric stroke pathway guidance.

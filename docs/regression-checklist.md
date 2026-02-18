@@ -21,6 +21,9 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] TNK-first decision card visible for ischemic diagnosis before TNK/EVT checkboxes.
 - [ ] Wake-up imaging hard-stop alert visible when lkwUnknown is true (wake-up panel open).
 - [ ] Pregnancy rapid actions panel displays when pregnancyStroke checkbox is checked.
+- [ ] Renal-safety alert appears in contrast section when Cr >3 or CrCl <30.
+- [ ] PFO closure eligibility card visible in secondary prevention dashboard.
+- [ ] Carotid revascularization decision guide visible in secondary prevention dashboard.
 
 ## Workflow and usability
 - [ ] Senior rapid path: key decisions visible within one scroll on desktop.
