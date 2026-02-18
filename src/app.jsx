@@ -11547,11 +11547,11 @@ Clinician Name`;
               warnings.push({ id: 'inr-range', severity: 'warn', msg: `INR ${inr} is unusual — verify result` });
             }
             const platelets = parseInt(n.plateletCount, 10);
-            if (platelets && platelets < 10) {
+            if (!isNaN(platelets) && platelets < 10) {
               warnings.push({ id: 'plt-low', severity: 'warn', msg: `Platelets ${platelets}K — critically low, verify result` });
             }
             const creatinine = parseFloat(n.creatinine);
-            if (creatinine && creatinine > 15) {
+            if (!isNaN(creatinine) && creatinine > 15) {
               warnings.push({ id: 'cr-range', severity: 'warn', msg: `Creatinine ${creatinine} — unusually high, verify result` });
             }
 
@@ -11653,26 +11653,26 @@ Clinician Name`;
                 warnings.push({ id: 'evt-low-platelets', severity: 'critical', msg: `EVT recommended with platelets ${evtPlt}K (<50K) — procedural bleeding risk. Platelet transfusion required before thrombectomy.` });
               }
             }
-            if (n.tnkRecommended && inr > 1.7) {
+            if (n.tnkRecommended && !isNaN(inr) && inr > 1.7) {
               warnings.push({ id: 'tnk-inr', severity: 'error', msg: `TNK recommended with INR ${inr} — INR >1.7 is a contraindication` });
             }
             const pt = parseFloat(n.pt);
             if (n.tnkRecommended && !isNaN(pt) && pt > 15) {
               warnings.push({ id: 'tnk-pt', severity: 'error', msg: `TNK recommended with PT ${pt}s — PT >15s is a contraindication` });
             }
-            if (n.tnkRecommended && platelets && platelets < 100) {
+            if (n.tnkRecommended && !isNaN(platelets) && platelets < 100) {
               warnings.push({ id: 'tnk-plt', severity: 'error', msg: `TNK recommended with platelets ${platelets}K — platelets <100K is a contraindication` });
             }
             const ptt = parseFloat(n.ptt);
-            if (n.tnkRecommended && ptt && ptt > 40) {
+            if (n.tnkRecommended && !isNaN(ptt) && ptt > 40) {
               warnings.push({ id: 'tnk-ptt', severity: 'error', msg: `TNK recommended with aPTT ${ptt}s — aPTT >40s is a relative contraindication` });
             }
-            if (glucose && glucose < 50 && n.tnkRecommended) {
+            if (!isNaN(glucose) && glucose < 50 && n.tnkRecommended) {
               warnings.push({ id: 'tnk-glucose', severity: 'error', msg: `TNK recommended with glucose ${glucose} mg/dL (<50) — hypoglycemia is a contraindication to thrombolysis. Correct glucose to >100 mg/dL and reassess neurologic deficit before proceeding.` });
-            } else if (glucose && glucose >= 50 && glucose <= 60 && n.tnkRecommended) {
+            } else if (!isNaN(glucose) && glucose >= 50 && glucose <= 60 && n.tnkRecommended) {
               warnings.push({ id: 'tnk-glucose-borderline', severity: 'warn', msg: `TNK recommended with glucose ${glucose} mg/dL (50-60) — borderline hypoglycemia can mimic stroke symptoms. Recommend correcting to >100 mg/dL and reassessing deficit before thrombolysis.` });
             }
-            if (glucose && glucose > 400 && n.tnkRecommended) {
+            if (!isNaN(glucose) && glucose > 400 && n.tnkRecommended) {
               warnings.push({ id: 'tnk-hyperglycemia', severity: 'warn', msg: `TNK recommended with glucose ${glucose} mg/dL — severe hyperglycemia can mimic stroke and is associated with worse outcomes post-thrombolysis. Correct glucose; reassess if deficits improve.` });
             }
 
@@ -26065,6 +26065,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
 
                 {activeTab === 'settings' && (
+                  <ErrorBoundary>
                   <div id="tabpanel-settings" role="tabpanel" aria-labelledby="tab-settings" className="space-y-4">
                     <div className="bg-white border border-slate-200 rounded-xl p-4">
                       <h2 className="text-xl font-semibold text-slate-900">Settings</h2>
@@ -26128,6 +26129,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     </div>
                   </div>
+                  </ErrorBoundary>
                 )}
 
                 {activeTab === 'library' && (
@@ -33028,6 +33030,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* Uses trialsData object and TrialCard component */}
                 {/* ============================================ */}
                 {(activeTab === 'trials' || (activeTab === 'library' && librarySection === 'trials')) && (
+                  <ErrorBoundary>
                   <div id="tabpanel-trials" role="tabpanel" aria-labelledby={activeTab === 'library' ? 'library-section-trials' : 'tab-library'} className="space-y-6">
                     {/* Header Section with Patient Summary */}
                     <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-6 rounded-lg shadow-lg">
@@ -33250,6 +33253,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       })()}
                     </div>
                   </div>
+                  </ErrorBoundary>
                 )}
                 {/* End Clinical Trials Tab */}
 
