@@ -22097,6 +22097,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </div>
                                 </div>
                                 <p className="text-xs text-slate-500 mt-2 italic">CLOSE (NEJM 2017, PMID: 28902580). RESPECT (NEJM 2017, PMID: 28902590). REDUCE (JACC 2017, PMID: 28917503). AHA/ASA 2021 Secondary Prevention (PMID: 34024117). Class I, LOE A.</p>
+                                <p className="text-xs text-indigo-600 mt-1">Record PFO findings &amp; PASCAL grade in Cardiac Workup &gt; PFO Evaluation above.</p>
                               </div>
 
                               {/* Carotid Revascularization Decision Card */}
@@ -22141,6 +22142,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <strong>Timing after stroke:</strong> TIA/minor stroke: 48h-7d. Moderate stroke: 2-4 weeks. Large infarct: 4-6 weeks (hemorrhagic conversion risk). Always stabilize medically first.
                                 </div>
                                 <p className="text-xs text-slate-500 mt-1 italic">NASCET (NEJM 1991). CREST-2 (NEJM 2025). AHA/ASA 2021 Secondary Prevention (PMID: 34024117).</p>
+                                <p className="text-xs text-teal-600 mt-1">Record stenosis details &amp; intervention plan in Acute Care Protocols &gt; Carotid Stenosis Management below.</p>
                               </div>
                             </div>
                           </details>
