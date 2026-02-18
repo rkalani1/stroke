@@ -1,5 +1,28 @@
 # Iteration Log
 
+## Iteration 018 (2026-02-18)
+
+### What was changed
+- **Calculator accessibility (P1)**: Added `role="radio"`, `aria-checked`, and `aria-label` to all calculator radio-button groups: mRS (7 options), ICH GCS (3), standalone GCS eye/verbal/motor (4+5+6), ABCD2 duration (3), Hunt-Hess (5), WFNS (5). Screen readers now announce scale name, option, and selection state.
+- **WCAG AA contrast fixes (P1)**: Changed description text from `text-slate-600` (2.5:1) to `text-slate-700` (3.5:1) on mRS, Hunt-Hess, and WFNS calculator descriptions. Changed modal hint text from `text-slate-400` (1.9:1) to `text-slate-600` for WCAG AA compliance.
+- **Screening results in signout note**: PHQ-2, MoCA, and STOP-BANG scores now included in signout handoff template when available, preventing screening context loss during shift changes.
+- **TIA workup completion tracking**: Discharge note TIA section now shows completion percentage (e.g., "7/10 completed") and lists pending workup items (e.g., "Pending: Echo, HbA1c, TSH").
+- Bumped APP_VERSION to v5.14.25 and service-worker cache to v24.
+
+### Evidence / rationale
+- WCAG 2.1 SC 1.4.3 (Contrast Minimum): 4.5:1 for normal text, 3:1 for large text
+- WCAG 2.1 SC 4.1.2 (Name, Role, Value): custom controls must expose role + state to assistive technology
+- Consistent with GCS calculator drawer pattern (lines 32833-32862) which already correctly implements role="radio" + aria-checked
+
+### Audit results
+- **Accessibility audit**: 4 P1 issues (aria-labels on radio buttons, contrast failures), all fixed. Verified existing patterns (modal focus trap, tab navigation, alerts) are well-implemented.
+- **Note template audit**: 23 gaps identified (11 P0). Most P0 gaps require new state fields (EVT procedural details, drip parameters, osmotic targets, follow-up appointments). Fixed items using existing data: signout screening, TIA workup completion. Remaining P0 gaps logged for future iterations.
+
+### Commit
+- `63cb9c3` — APP_VERSION v5.14.25, cache key stroke-app-v24
+
+---
+
 ## Iteration 017 (2026-02-18)
 
 ### What was changed

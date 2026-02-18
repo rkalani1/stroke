@@ -2,14 +2,14 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `6c6666d`
+- Last pushed commit: `63cb9c3`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.24`
-- Service worker cache key: `stroke-app-v23`
+- Live APP_VERSION: `v5.14.25`
+- Service worker cache key: `stroke-app-v24`
 
-## Session summary (iter-006 through iter-017)
+## Session summary (iter-006 through iter-018)
 
-### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016, iter-017)
+### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-018)
 - SAH first-hour rapid actions card
 - CVT treatment timeline strip
 - AF anticoag timing quick reference
@@ -25,7 +25,7 @@
 - AHA/ASA GWTG quality metrics exported to discharge note template
 - Caregiver education checklist + screening scores (PHQ-2, MoCA, STOP-BANG) in discharge note
 
-### Usability & workflow (iter-015 through iter-017)
+### Usability & workflow (iter-015 through iter-018)
 - Inline TNK dose badge at recommendation checkbox
 - Secondary prevention plan added to transfer note
 - Stable contraindication list keys (field/label-based)
@@ -35,8 +35,10 @@
 - Settings menu focus restoration on close (keyboard a11y)
 - Protocol modal "Esc to close" hint for discoverability
 - Calculator priority maps enhanced: FUNC Score for ICH, Mod. Fisher for SAH
+- Calculator radio buttons: role="radio" + aria-checked + aria-label on all groups
+- WCAG AA contrast fixes on calculator descriptions and modal hints
 
-### Quality & infrastructure (iter-009 through iter-017)
+### Quality & infrastructure (iter-009 through iter-018)
 - Cross-links between reference cards and data-entry sections
 - Mobile responsiveness audit: all cards safe at 390px
 - Schema mismatch debt resolved (compare_keys.ps1 fixed, 0 true mismatches)
@@ -49,6 +51,8 @@
 - Full clinical audit: 0 P0/P1 findings (app clinically sound)
 - Transfer note statinIntensity → statinDose field name bug fixed
 - ErrorBoundary wrapping Encounter tab for crash resilience
+- Screening results (PHQ-2, MoCA, STOP-BANG) added to signout note template
+- TIA workup completion % and pending items in discharge note
 
 ### Gap matrix: ALL P0/P1 items COMPLETED
 
