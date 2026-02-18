@@ -9090,7 +9090,14 @@ Clinician Name`;
               if (telestrokeNote.pt) signoutLabs.push(`PT ${telestrokeNote.pt}s`);
               if (telestrokeNote.ptt) signoutLabs.push(`aPTT ${telestrokeNote.ptt}`);
               if (telestrokeNote.plateletCount) signoutLabs.push(`Plt ${telestrokeNote.plateletCount}K`);
-              if (telestrokeNote.creatinine) signoutLabs.push(`Cr ${telestrokeNote.creatinine}`);
+              if (telestrokeNote.creatinine) {
+                let crStr = `Cr ${telestrokeNote.creatinine}`;
+                if (telestrokeNote.age && telestrokeNote.weight && telestrokeNote.sex) {
+                  const soCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
+                  if (soCrCl && soCrCl.value) crStr += ` (CrCl ${soCrCl.value}${soCrCl.value < 30 ? ' — dose adjust' : ''})`;
+                }
+                signoutLabs.push(crStr);
+              }
               if (signoutLabs.length > 0) note += `Labs: ${signoutLabs.join(', ')}\n`;
               if (telestrokeNote.premorbidMRS != null && telestrokeNote.premorbidMRS !== '') note += `Pre-morbid mRS: ${telestrokeNote.premorbidMRS}\n`;
               if (telestrokeNote.strokeTerritory) note += `Territory: ${telestrokeNote.strokeTerritory}${telestrokeNote.strokePhenotype ? ` (${telestrokeNote.strokePhenotype})` : ''}\n`;
@@ -9460,7 +9467,14 @@ Clinician Name`;
               note += `- CTA: ${telestrokeNote.ctaResults || '___'}\n`;
               {
                 const pnLabs = [];
-                if (telestrokeNote.creatinine) pnLabs.push(`Cr ${telestrokeNote.creatinine}`);
+                if (telestrokeNote.creatinine) {
+                  let pnCrStr = `Cr ${telestrokeNote.creatinine}`;
+                  if (telestrokeNote.age && telestrokeNote.weight && telestrokeNote.sex) {
+                    const pnCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
+                    if (pnCrCl && pnCrCl.value) pnCrStr += ` (CrCl ${pnCrCl.value}${pnCrCl.value < 30 ? ' — dose adjust' : ''})`;
+                  }
+                  pnLabs.push(pnCrStr);
+                }
                 if (telestrokeNote.inr) pnLabs.push(`INR ${telestrokeNote.inr}`);
                 if (telestrokeNote.pt) pnLabs.push(`PT ${telestrokeNote.pt}s`);
                 if (telestrokeNote.ptt) pnLabs.push(`aPTT ${telestrokeNote.ptt}`);
@@ -9731,7 +9745,14 @@ Clinician Name`;
               if (telestrokeNote.glucose) dischVitals.push(`Glucose ${telestrokeNote.glucose}`);
               note += `Presenting Vitals: ${dischVitals.join(', ')}\n`;
               const dischLabs = [];
-              if (telestrokeNote.creatinine) dischLabs.push(`Cr ${telestrokeNote.creatinine}`);
+              if (telestrokeNote.creatinine) {
+                let dcrStr = `Cr ${telestrokeNote.creatinine}`;
+                if (telestrokeNote.age && telestrokeNote.weight && telestrokeNote.sex) {
+                  const dCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
+                  if (dCrCl && dCrCl.value) dcrStr += ` (CrCl ${dCrCl.value}${dCrCl.value < 30 ? ' — dose adjust' : ''})`;
+                }
+                dischLabs.push(dcrStr);
+              }
               if (telestrokeNote.inr) dischLabs.push(`INR ${telestrokeNote.inr}`);
               if (telestrokeNote.pt) dischLabs.push(`PT ${telestrokeNote.pt}s`);
               if (telestrokeNote.ptt) dischLabs.push(`PTT ${telestrokeNote.ptt}`);
