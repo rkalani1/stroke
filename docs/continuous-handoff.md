@@ -2,7 +2,7 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `51480b9`
+- Last pushed commit: `0f5cf7c`
 - Production URL: `https://rkalani1.github.io/stroke/`
 - Live APP_VERSION observed: `v5.14.12`
 - Service worker cache key: `stroke-app-v11`
@@ -25,7 +25,7 @@
   - Live: desktop/tablet/mobile and same routes all passed, no console errors.
 
 ## Known debt and risks
-- `compare_keys.ps1` indicates large default-vs-sanitizer mismatch set; schema hardening needed.
+- `compare_keys.ps1` indicates large default-vs-sanitizer mismatch set (Missing count: 319); schema hardening needed.
 - No automated unit/integration tests; current safety net is build + smoke + manual pathway checks.
 
 ## Next highest-impact actions
