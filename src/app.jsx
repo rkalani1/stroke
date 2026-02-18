@@ -10400,6 +10400,38 @@ Clinician Name`;
                 if (dischSt.stopBangScore) note += `- STOP-BANG: ${dischSt.stopBangScore}/8 (${parseInt(dischSt.stopBangScore, 10) >= 5 ? 'HIGH risk' : parseInt(dischSt.stopBangScore, 10) >= 3 ? 'INTERMEDIATE risk' : 'low risk'} OSA)\n`;
                 if (dischSt.seizureRisk) note += `- Seizure status: ${dischSt.seizureRisk.replace(/-/g, ' ')}\n`;
               }
+              // Substance screening
+              {
+                const ss = telestrokeNote.substanceScreening || {};
+                if (ss.alcoholAuditC || ss.substanceUseScreen) {
+                  note += `- AUDIT-C: ${ss.alcoholAuditC || '___'}/12${parseInt(ss.alcoholAuditC, 10) >= 4 ? ' (POSITIVE — brief intervention provided)' : ''}`;
+                  if (ss.alcoholCounseling) note += ' — counseling provided';
+                  note += '\n';
+                  if (ss.substanceUseScreen) note += `- Substance use screen: performed${ss.substancesIdentified ? ` — ${ss.substancesIdentified}` : ''}\n`;
+                }
+              }
+              // Hormonal risk
+              {
+                const horm = telestrokeNote.hormonalRisk || {};
+                if (horm.combinedOCPUse || horm.hrtUse || horm.migraineWithAura) {
+                  if (horm.combinedOCPUse) note += `- Combined OCP: DISCONTINUE (Class III contraindication post-stroke)\n`;
+                  if (horm.hrtUse) note += `- HRT: review risk/benefit — consider discontinuation\n`;
+                  if (horm.migraineWithAura) note += `- Migraine with aura: avoid estrogen-containing contraceptives\n`;
+                  if (horm.counselingProvided) note += `- Hormonal risk counseling: provided\n`;
+                }
+              }
+              // Rehab screening (spasticity, central pain, fatigue)
+              {
+                const spast = telestrokeNote.spasticity || {};
+                const cpain = telestrokeNote.centralPain || {};
+                const fatg = telestrokeNote.fatigue || {};
+                if (spast.screenPerformed || cpain.screenPerformed || fatg.screenPerformed) {
+                  note += `\nREHAB SCREENING:\n`;
+                  if (spast.screenPerformed) note += `- Spasticity: ${spast.treatment && spast.treatment !== 'none' ? `${spast.treatment.replace(/-/g, ' ')}` : 'no spasticity'}${spast.ashworthScore ? ` (Ashworth ${spast.ashworthScore})` : ''}${spast.botoxReferral ? ' — botox referral placed' : ''}\n`;
+                  if (cpain.screenPerformed) note += `- Central pain: ${cpain.painPresent ? `present${cpain.painType ? ` (${cpain.painType})` : ''}${cpain.treatment ? ` — Rx: ${cpain.treatment.replace(/-/g, ' ')}` : ''}` : 'not present'}\n`;
+                  if (fatg.screenPerformed) note += `- Fatigue: ${fatg.fatiguePresent ? `present${fatg.severity ? `, severity: ${fatg.severity}` : ''}${fatg.management ? ` — ${fatg.management.replace(/-/g, ' ')}` : ''}` : 'not present'}\n`;
+                }
+              }
               note += '\n';
               const dischMRS = (telestrokeNote.mrsAssessment || {}).discharge;
               note += `DISCHARGE NIHSS: ${telestrokeNote.dischargeNIHSS || nihssScore || '___'}${!telestrokeNote.dischargeNIHSS && nihssScore ? ' (admission — update before finalizing)' : ''}\n`;
@@ -17894,7 +17926,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-1.5">
                               <div>
                                 <label htmlFor="input-ctp-core" className="block text-xs text-slate-600">Core (mL)</label>
-                                <input id="input-ctp-core" type="number" min="0" step="1"
+                                <input id="input-ctp-core" type="number" min="0" max="500" step="1"
                                   value={(telestrokeNote.ctpStructured || {}).coreVolume || ''}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctpStructured: {...(prev.ctpStructured || {}), coreVolume: v}})); }}
                                   placeholder="CBF<30%"
@@ -17902,7 +17934,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                               <div>
                                 <label htmlFor="input-ctp-penumbra" className="block text-xs text-slate-600">Penumbra (mL)</label>
-                                <input id="input-ctp-penumbra" type="number" min="0" step="1"
+                                <input id="input-ctp-penumbra" type="number" min="0" max="1500" step="1"
                                   value={(telestrokeNote.ctpStructured || {}).penumbraVolume || ''}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctpStructured: {...(prev.ctpStructured || {}), penumbraVolume: v}})); }}
                                   placeholder="Tmax>6s"
@@ -23228,7 +23260,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           )}
                                         </div>
                                       )}
-                                      <input type="text" value={(telestrokeNote.doacTiming || {}).doacInitiationDay || ''}
+                                      <input type="text" aria-label="Planned DOAC initiation day" value={(telestrokeNote.doacTiming || {}).doacInitiationDay || ''}
                                         onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, doacTiming: {...(prev.doacTiming || {}), doacInitiationDay: v}})); }}
                                         className="w-full px-2 py-1 border border-slate-300 rounded text-xs mt-2" placeholder="Planned initiation day (e.g., Day 3)" />
                                     </div>
@@ -23319,7 +23351,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         <span className="text-sm">TEE performed/ordered</span>
                                       </label>
                                       {(telestrokeNote.esusWorkup || {}).teePerformed && (
-                                        <input type="text" value={(telestrokeNote.esusWorkup || {}).teeFindings || ''}
+                                        <input type="text" aria-label="TEE findings" value={(telestrokeNote.esusWorkup || {}).teeFindings || ''}
                                           onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, esusWorkup: {...(prev.esusWorkup || {}), teeFindings: v}})); }}
                                           className="w-full px-2 py-1 border border-slate-300 rounded text-xs" placeholder="TEE findings (PFO, ASA, valve, LAA thrombus)" />
                                       )}
@@ -24641,6 +24673,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         {item.hasDetail && (telestrokeNote.dischargeChecklist || {})[item.key] && (
                                           <input
                                             type="text"
+                                            aria-label={`${item.label} details`}
                                             value={(telestrokeNote.dischargeChecklist || {})[item.hasDetail] || ''}
                                             onChange={(e) => setTelestrokeNote(prev => ({...prev,
                                               dischargeChecklist: {
@@ -30806,7 +30839,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div>
                             <label className="text-xs text-slate-600">CrCl (mL/min)</label>
-                            <input type="number" value={(telestrokeNote.enoxCalc || {}).crCl || (() => { const c = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height); return c ? c.value : ''; })() || ''}
+                            <input type="number" min="5" max="200" value={(telestrokeNote.enoxCalc || {}).crCl || (() => { const c = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height); return c ? c.value : ''; })() || ''}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, enoxCalc: {...(prev.enoxCalc || {}), crCl: v}})); }}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm" placeholder="mL/min (auto from demographics)" />
                           </div>
