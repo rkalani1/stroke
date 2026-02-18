@@ -1,5 +1,24 @@
 # Iteration Log
 
+## Iteration 029 (2026-02-18)
+
+### What was changed
+- **Progress note data completeness**: Added osmotic therapy (ICH/SAH with Na+ target, osmolality), early mobilization (timing, status), fever management (max temp, FeSS bundle, workup), nutritional support (feeding route, NG/PEG day).
+- **Discharge note data completeness**: Added early mobilization status, fever management outcome, family communication/shared decision-making.
+- **Signout note data completeness**: Added osmotic therapy (ICH/SAH), early mobilization, fever status, nutrition/feeding route.
+- **Audit result**: UI rendering `{( ... )}` patterns verified as valid JSX (false positive). Guideline field ref completeness verified clean (130+ conditions, 0 mismatches).
+
+### Verification
+- Cross-template audit found 7 fields with gaps across 8 templates
+- Focused on 3 highest-impact templates: progress (daily workhorse), discharge (handoff), signout (shift change)
+- All data sourced from existing state fields with proper fallbacks
+
+### Build
+- Version: v5.14.36, cache: stroke-app-v35
+- Commit: `60ba339`
+
+---
+
 ## Iteration 028 (2026-02-18)
 
 ### What was changed

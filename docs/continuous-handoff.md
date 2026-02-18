@@ -2,14 +2,14 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `33eb3fd`
+- Last pushed commit: `60ba339`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.35`
-- Service worker cache key: `stroke-app-v34`
+- Live APP_VERSION: `v5.14.36`
+- Service worker cache key: `stroke-app-v35`
 
-## Session summary (iter-006 through iter-028)
+## Session summary (iter-006 through iter-029)
 
-### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-028)
+### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-029)
 - SAH first-hour rapid actions card
 - CVT treatment timeline strip
 - AF anticoag timing quick reference
@@ -42,7 +42,7 @@
 - ASPECTS/PC-ASPECTS mobile responsive grids (2-col on mobile, 3-col tablet, full on desktop)
 - EVT procedure details section auto-opens when populated
 
-### Quality & infrastructure (iter-009 through iter-028)
+### Quality & infrastructure (iter-009 through iter-029)
 - Cross-links between reference cards and data-entry sections
 - Mobile responsiveness audit: all cards safe at 390px
 - Schema mismatch debt resolved (compare_keys.ps1 fixed, 0 true mismatches)
@@ -94,6 +94,9 @@
 - Progress note: SAH management section (grade, Fisher, aneurysm, vasospasm)
 - Discharge note: SAH aneurysm location/size/method + vasospasm monitoring added
 - Note template section headers standardized to UPPERCASE
+- Progress note: osmotic therapy, early mobilization, fever management, nutritional support added
+- Discharge note: early mobilization, fever management, family communication added
+- Signout note: osmotic therapy, early mobilization, fever status, nutrition/feeding added
 
 ### Gap matrix: ALL P0/P1 items COMPLETED
 
