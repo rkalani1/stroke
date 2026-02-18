@@ -140,3 +140,6 @@
 
 ### Operational update (2026-02-18, iter-040)
 - No evidence-content changes; synchronization-only update for continuous execution metadata integrity.
+
+### Operational update (2026-02-18, iter-041)
+- No evidence-content changes; handoff metadata now uses command-based commit retrieval for robustness.

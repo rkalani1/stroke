@@ -69,3 +69,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 ## Last completed run (2026-02-18, iter-040)
 - [x] `npm test` pass after handoff pointer sync
 - [x] `npm run qa` pass after handoff pointer sync
+
+## Last completed run (2026-02-18, iter-041)
+- [x] `npm test` pass after command-based handoff commit tracking update
+- [x] `npm run qa` pass after command-based handoff commit tracking update

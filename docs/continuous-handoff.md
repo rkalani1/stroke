@@ -2,7 +2,7 @@
 
 ## Current state (2026-02-18)
 - Branch: `main`
-- Last pushed commit: `790f78f`
+- Last pushed commit: run `git rev-parse --short HEAD` in `/Users/rizwankalani/stroke`
 - Production URL: `https://rkalani1.github.io/stroke/`
 - Live APP_VERSION: `v5.14.42`
 - Service worker cache key: `stroke-app-v41`
@@ -144,5 +144,10 @@
 
 ## Iteration 040 update (2026-02-18)
 - Handoff metadata commit pointer synced to latest deployed state.
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && npm test && npm run qa && npm run build`
+
+## Iteration 041 update (2026-02-18)
+- Replaced hardcoded handoff commit hash with command-based retrieval to prevent stale metadata in rapid loops.
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && npm test && npm run qa && npm run build`

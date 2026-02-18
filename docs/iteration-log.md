@@ -788,3 +788,12 @@
 ### QA and validation
 - `npm test`: pass
 - `npm run qa`: pass
+
+## Iteration 041 (2026-02-18)
+
+### What was changed
+- Made handoff commit tracking durable by replacing hardcoded hash with a runtime command (`git rev-parse --short HEAD`) to avoid stale metadata drift across rapid iterations.
+
+### QA and validation
+- `npm test`: pass
+- `npm run qa`: pass

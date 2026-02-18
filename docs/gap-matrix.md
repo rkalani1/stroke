@@ -28,3 +28,6 @@
 
 ## Iteration 040 Update (2026-02-18)
 - Operational gap (stale handoff commit pointer) closed; resume metadata now matches latest deployed commit.
+
+## Iteration 041 Update (2026-02-18)
+- Continuous-ops metadata drift mitigated by moving from static commit hashes to command-based retrieval in handoff.
