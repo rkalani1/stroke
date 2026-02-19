@@ -12214,6 +12214,31 @@ Clinician Name`;
               }
             }
 
+            // CVT-specific safety checks
+            if (n.diagnosisCategory === 'cvt') {
+              const cvtAc = n.cvtAnticoag || {};
+              if (cvtAc.apsStatus && cvtAc.transitionAgent === 'doac') {
+                warnings.push({ id: 'cvt-aps-doac', severity: 'error', msg: 'CONTRAINDICATED: DOAC selected for CVT with confirmed APS — DOACs are inferior to warfarin in APS (TRAPS trial, ASTRO-APS 2020). Switch to warfarin INR 2-3.' });
+              }
+              if (n.cvtAnticoagStarted && n.cvtAnticoagType === 'enoxaparin' && !n.weight) {
+                warnings.push({ id: 'cvt-enox-no-weight', severity: 'error', msg: 'Enoxaparin initiated for CVT but weight NOT documented — enoxaparin requires weight-based dosing (1 mg/kg q12h). Document weight for accurate dosing.' });
+              }
+              if ((n.hemorrhagicTransformation || {}).detected && !n.cvtAnticoagStarted) {
+                warnings.push({ id: 'cvt-ht-no-anticoag', severity: 'warn', msg: 'CVT with hemorrhagic infarction but anticoagulation NOT started — hemorrhagic transformation is NOT a contraindication to anticoagulation in CVT (AHA/ASA Class I, LOE B-NR). Initiate heparin/LMWH.' });
+              }
+              if (n.pregnancyStroke && cvtAc.transitionAgent === 'doac') {
+                warnings.push({ id: 'cvt-pregnancy-doac', severity: 'error', msg: 'CONTRAINDICATED: DOAC selected for CVT in pregnancy — DOACs are teratogenic and contraindicated. Use LMWH throughout pregnancy (AHA/ASA Class I).' });
+              }
+            }
+
+            // TIA ABCD2 score-based DAPT reminder
+            if (n.diagnosisCategory === 'tia') {
+              const abcd2 = calculateABCD2Score(abcd2Items);
+              if (abcd2 >= 4 && (n.secondaryPrevention || {}).antiplateletRegimen !== 'dapt-21') {
+                warnings.push({ id: 'tia-abcd2-dapt', severity: 'warn', msg: `High-risk TIA (ABCD2 ${abcd2} ≥4) — initiate dual antiplatelet therapy (ASA 325 + clopidogrel 300 load, then ASA 81 + clopidogrel 75 x 21 days) per CHANCE/POINT protocol unless contraindicated.` });
+              }
+            }
+
             return warnings;
           };
 
