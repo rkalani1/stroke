@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `277a8d7`
+- Last pushed commit: `378bdf1`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.58`
-- Service worker cache key: `stroke-app-v57`
+- Live APP_VERSION: `v5.14.69`
+- Service worker cache key: `stroke-app-v68`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -278,3 +278,124 @@
   - Pairs with existing importJSON() for cross-device encounter transfer
 - ICH pathway audit: ALL CLEAR — no P0/P1 gaps (comprehensive BP/reversal/surgical/VTE coverage)
 - Print/export audit false positives: print CSS exists, PDF has filename, #app always exists
+
+## Iteration 056 update (2026-02-19, Windows session)
+- SAH pathway fixes:
+  - Modified Fisher added to SAH grading scale dropdown (grades 0-4 with vasospasm risk %)
+  - fisherGrade auto-synced when Modified Fisher selected in grading dropdown
+  - Note template label mappings updated for modifiedFisher scale across all templates
+  - SAH aneurysm securing warning (neurosurgery consulted + unsecured → remind 24h urgency)
+  - DCI + induced hypertension warning (DCI suspected + aneurysm secured + no induced HTN)
+  - DCI + unsecured aneurysm warning (induced HTN contraindicated until secured)
+- Encounter history:
+  - localStorage quota error upgraded from silent console.warn to user-visible toast
+- Audit false positives: batch save race condition (localStorage is synchronous), encounter history restore (feature request, JSON export/import covers it), nested object merge (2-level deep merge already exists)
+
+## Iteration 057 update (2026-02-19, Windows session)
+- CVT warning system (4 new warnings):
+  - CVT + DOAC in APS: CONTRAINDICATED error (TRAPS/ASTRO-APS), was UI-only
+  - CVT + enoxaparin without weight: dosing error (1 mg/kg requires weight)
+  - CVT + hemorrhagic infarction + no anticoag: reminder HT is NOT contraindication (Class I)
+  - CVT + pregnancy + DOAC: teratogenic contraindication error
+- TIA warning system (1 new warning):
+  - ABCD2 ≥4 without DAPT selected: CHANCE/POINT protocol reminder
+- CVT audit false positives: antiplatelet detection (free-text parsing too error-prone), ICP/seizure/thrombophilia gaps (need new state fields)
+- TIA audit: pathway STRONG overall, no P0 gaps; crescendo TIA + observation protocol need new state fields (skipped)
+
+## Iteration 058 update (2026-02-19, Windows session)
+- P0 bug fix: mimic diagnosis auto-detect category was '' instead of 'mimic' (broke all mimic routing)
+- Order bundle colorMap: added indigo, amber, yellow (Acute Labs, Seizure Tx, Glucose Mgmt were rendering gray)
+- CVT anticoagulation order bundle: weight-based enoxaparin, APS warfarin logic, provoked/unprovoked duration
+- CVT added to nursing parameters sheet with CVT-specific BP target
+- Post-TNK→mimic reclassification warning: alerts if TNK was given before diagnosis changed to mimic
+- Mimic audit false positives: DAPT NIHSS threshold (isIschemic already includes TIA)
+- Order bundle audit false positives: DAPT threshold for TIA (isIschemic = ischemic || tia at line 12251)
+
+## Iteration 059 update (2026-02-19, Windows session)
+- Guideline fix: glycemic_management condition no longer false-triggers on empty glucose field
+- Note template enrichment:
+  - Progress note: weight in demographics line, home medications after PMH
+  - Signout note: discharge NIHSS with delta after admission NIHSS
+  - Follow-up brief: SAH summary section (grade, scale, Fisher, aneurysm status, nimodipine, DCI)
+- Guideline audit false positives: seizureRisk null guards already present, ich_mis_evac GCS criterion sufficient
+- Note template audit false positives: procedure note secondary prevention/PMH (operative note design choice)
+
+## Iteration 060 update (2026-02-19, Windows session)
+- Command search expansion: Ischemic Stroke Management, Discharge Checklist, Order Bundles added to searchable items
+- Warning system: EVT recommended for age ≥80 + pre-mRS ≥2 warning (outside DAWN/DEFUSE-3 enrollment criteria)
+- Special populations audit false positives: almost all P1+ require new state fields (skipped per constraint)
+- Command search audit false positives: SAH pathway line 24523 claim was about L&D team standby, not APS
+
+## Iteration 061 update (2026-02-19, Windows session)
+- P0 fixes:
+  - ICH Management section case mismatch in transfer note (sentinel '\nICH Management:\n' vs '\nICH MANAGEMENT:\n' — empty header always appended)
+  - Negative DTN/Door-to-CT/CT-to-Needle time values now rejected (>=0 and <=1440 guard, matching DTP)
+  - parseDT NaN guard: tnkAdminTime HH:MM string no longer produces Invalid Date (was silencing TNK window warnings)
+  - TNK window warning now uses dtnTnkAdministered (full datetime) with tnkAdminTime+lkwDate fallback
+- P1 fixes:
+  - doorToNeedle === 0 no longer treated as falsy (changed to null check)
+  - Recommendations 500-char truncation removed from transfer/signout/progress/discharge notes
+  - Future LKW shows red badge "FUTURE — check LKW time" instead of green "Within TNK window"
+  - Wake-up stroke discovery timing now shows urgency color in header badge (was always gray)
+  - Print CSS: .sticky scoped to .sticky.top-0 and .sticky.z-50 (patient summary strip now visible)
+  - Print CSS: closed details panels forced visible (details > *:not(summary) { display: block })
+  - Print CSS: max-h-96 override removes height constraint for full note preview
+- False positives/downgrades: two-timer race (P0→P2, 15s pre-LKW intentional), PDF #root capture (complex refactor, deferred), a[href]:after (cosmetic), midnight crossover (very rare edge case)
+
+## Iteration 062 update (2026-02-19, Windows session)
+- Discharge workflow fixes:
+  - TIA follow-up urgency: migrated from diagnosis.includes('tia') to diagnosisCategory === 'tia' (2 locations: discharge note + patient education)
+  - HbA1c follow-up lab extended to TIA patients (was ischemic only; AHA/ASA 2021 Class I)
+  - Echo/TEE results populated from esusWorkup.teeFindings in KEY RESULTS section (was hardcoded ___)
+  - Standalone GWTG warnings (STK-5 antithrombotic, STK-6 statin) fire when disposition set without checklist review
+- State management fixes:
+  - Search /dx command handler now performs FULL pathway field cleanup on diagnosis change (was only clearing tnkRecommended for ICH/SAH and bpPhase)
+  - Template quick-start buttons route management subtab for all 5 categories (was ICH only)
+- Skipped: young adult workup in discharge note (needs new section), QM counter mismatch (cosmetic), sexual health/air travel (not standard), consentDocCopied (dead code), export round-trip (known feature gap), mrsAssessment.admission (needs new field)
+
+## Iteration 063 update (2026-02-19, Windows session)
+- Accessibility (P0 fixes):
+  - aria-label on EVT consent time input, CTP perfusion textarea, EKG/telemetry input (phone view)
+  - role="alert" on BP threshold, glucose, platelet, INR contraindication alert divs (tablet view)
+- Note template parity (6 templates improved):
+  - Progress note: LKW time in header, CVT management block (anticoag, ICP, seizure, hematology)
+  - Signout note: formatDTNForNote() for full time metrics including DTP
+  - Follow-up brief: LKW time, clinical rationale
+  - Discharge note: chief complaint, clinical rationale after acute treatment
+  - Procedure note: PMH + home medications, formatDTNForNote() for DTP metric
+- Skipped: phone view 21+ label associations (bulk fix, future iter), color contrast (borderline AA), heading hierarchy (minor), calculator labels (Library tab), procedure note pathway blocks (design choice)
+
+## Iteration 064 update (2026-02-19, Windows session)
+- Guideline logic fixes (8 bugs):
+  - seizure_acute_stroke: dead code fixed — now matches actual dropdown values (acute-seizure/late-seizure/status-epilepticus)
+  - status_epilepticus_protocol: restricted to status-epilepticus only (was firing for any seizure)
+  - Removed basilar from 5 anterior EVT hasLVO regexes (kept in transfer_evt for legitimate basilar transfers)
+  - bp_ischemic_no_lysis: added !inWindow gate preventing contradictory co-fire with bp_pre_tnk
+  - basilar_evt_class1: added NIHSS>=10 + time<=24h gates (was firing on mild basilar stenosis)
+  - Carotid guidelines: gated by symptomatic/asymptomatic status via cm.symptomatic field
+  - dapt_auto_stop: reworded message for clinical clarity
+  - tnk_standard: removed TIA from eligibility (TNK not given for TIA)
+- Mobile audit: ALL 16 P0 findings skipped — phone view is intentionally simplified (design choice)
+
+## Iteration 065 update (2026-02-19, Windows session)
+- GCS partial entry detection:
+  - calculateGCS() now returns null (not falsely low score) when only some components entered
+  - Prevents Eye=4/Verbal=0/Motor=0 from yielding GCS=6 and triggering intubation warning
+  - UI shows "Incomplete" label + amber warning when partial entry detected
+- Nimodipine dose adjustment fix (3 locations):
+  - Changed "reduce to 30 mg q2h" to "reduce to 30 mg q4h" per FDA label
+  - 30 mg q2h was same daily dose at higher frequency, paradoxically worsening hypotension
+- CVT anticoagulation monitoring:
+  - Added specific timing: aPTT q6h until therapeutic then daily (UFH), anti-Xa day 3-5 peak (LMWH+renal), platelets baseline/day 3-5/weekly (HIT screening)
+- Skipped (false positives from prior audit agents): NIHSS step already present, glucose clamping already present, weight aria-pressed already present, dx.includes TIA migration already complete, arcadia/esus diagnosisCategory guards already present, decompressive craniectomy age already <= 60
+
+## Iteration 066 update (2026-02-19, Windows session)
+- Encounter JSON export completeness:
+  - Added 16 missing calculator/scoring states to exportEncounterJSON (was only 4 of 20)
+  - Now exports: ASPECTS, mRS, ABCD2, CHA2DS2-VASc, ROPE, Hunt-Hess, WFNS, HAS-BLED, RCVS², PHASES, EVT decision inputs, DOAC protocol, stroke code form, ICH volume params, ASPECTS regions, PC-ASPECTS regions, consultationType
+- AED-DOAC interaction enhancement:
+  - Recommendation now also fires when pre-admission anticoagulant is a DOAC (lastDOACType field), not just secondary prevention dropdown
+  - Excludes non-DOAC anticoagulants (warfarin, heparin, enoxaparin, fondaparinux)
+- Dead code removal: importBackup function removed (defined but never called, no UI wiring)
+- Secondary prevention audit: ALL PASS — zero bugs across antiplatelets, anticoagulants, statins, medication interactions, DAPT duration, dose accuracy, diagnosis category filtering
+- Data export/import audit: importBackup dead code confirmed. Export completeness gap addressed above.
