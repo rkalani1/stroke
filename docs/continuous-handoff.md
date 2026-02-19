@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `05cae8d`
+- Last pushed commit: `a31a3c1`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.45`
-- Service worker cache key: `stroke-app-v44`
+- Live APP_VERSION: `v5.14.46`
+- Service worker cache key: `stroke-app-v45`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -165,3 +165,16 @@
   - Transfer note: chiefComplaint added before HPI
   - TNK auto-block reason surfaced in transfer, signout, discharge, follow-up brief
 - Infrastructure: qa-smoke.mjs cross-platform python command fix
+
+## Iteration 043 update (2026-02-19, Windows session)
+- dx.includes → diagnosisCategory migration:
+  - 6 TIA guidelines migrated to diagnosisCategory === 'tia'
+  - arcadia_atrial_cardiopathy + esus_monitoring: added ischemic/tia guards
+  - NIHSS-TIA discordance flag migrated
+- Note template enrichment:
+  - preTNKSafetyPause in transfer note
+  - bpPostEVT in transfer, signout, discharge notes
+- Accessibility:
+  - ConfirmModal Enter/Escape keyboard handlers (P0)
+  - ConfirmModal input label association
+  - Weight unit toggle aria-pressed + aria-label
