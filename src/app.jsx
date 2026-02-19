@@ -3544,7 +3544,9 @@ Clinician Name`;
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
-                return isIschemic && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
+                const timeFrom = data.timeFromLKW;
+                const inWindow = timeFrom && timeFrom.total <= 4.5;
+                return isIschemic && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended && !inWindow;
               }
             },
 
@@ -3564,9 +3566,8 @@ Clinician Name`;
               medications: ['TNK 0.25 mg/kg IV bolus (max 25 mg)'],
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
-                const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const timeFrom = data.timeFromLKW;
-                return isIschemic && timeFrom && timeFrom.total <= 4.5;
+                return cat === 'ischemic' && timeFrom && timeFrom.total <= 4.5;
               }
             },
             tnk_extended_imaging: {
@@ -3605,7 +3606,7 @@ Clinician Name`;
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca|basilar/i.test(v)
+                  /ica|m1|mca/i.test(v)
                 );
                 return nihss >= 6 && timeFrom && timeFrom.total <= 6 && hasLVO;
               }
@@ -3627,7 +3628,7 @@ Clinician Name`;
                 const minNIHSS = age >= 80 ? 10 : 6; // DAWN: age ≥80 requires NIHSS ≥10
                 const timeFrom = data.timeFromLKW;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca|basilar/i.test(v)
+                  /ica|m1|mca/i.test(v)
                 );
                 const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
                 return nihss >= minNIHSS && timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && hasLVO && (aspects === null || aspects >= 6);
@@ -3650,7 +3651,7 @@ Clinician Name`;
                 const timeFrom = data.timeFromLKW;
                 const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca|basilar/i.test(v)
+                  /ica|m1|mca/i.test(v)
                 );
                 return nihss >= 6 && !!timeFrom && timeFrom.total <= 6 && aspects !== null && aspects <= 5 && hasLVO;
               }
@@ -3672,7 +3673,7 @@ Clinician Name`;
                 const timeFrom = data.timeFromLKW;
                 const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca|basilar/i.test(v)
+                  /ica|m1|mca/i.test(v)
                 );
                 return nihss >= 6 && !!timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && aspects !== null && aspects >= 3 && aspects <= 5 && hasLVO;
               }
@@ -3693,7 +3694,7 @@ Clinician Name`;
                 const timeFrom = data.timeFromLKW;
                 const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca|basilar/i.test(v)
+                  /ica|m1|mca/i.test(v)
                 );
                 return !!timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && aspects !== null && aspects <= 2 && hasLVO;
               }
@@ -4893,7 +4894,8 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=32',
               conditions: (data) => {
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
-                return cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('occlusion'));
+                const cm = data.telestrokeNote?.carotidManagement || {};
+                return cm.symptomatic && cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('occlusion'));
               }
             },
             carotid_asymptomatic: {
@@ -4908,7 +4910,8 @@ Clinician Name`;
               reference: 'CREST-2: NEJM 2025; ECST-2: Lancet Neurology 2025',
               conditions: (data) => {
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
-                return cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('narrowing'));
+                const cm = data.telestrokeNote?.carotidManagement || {};
+                return cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('narrowing')) && !cm.symptomatic;
               }
             },
 
@@ -5022,8 +5025,8 @@ Clinician Name`;
               guideline: 'AHA/ASA 2022 ICH; 2025 Network Meta-analysis (Neurology)',
               reference: 'ASM Network Meta-analysis: Neurology 2025. DOI: 10.1212/WNL.0000000000210231',
               conditions: (data) => {
-                const screening = data.telestrokeNote?.screeningTools || {};
-                return screening.seizureRisk === 'high' || screening.seizureRisk === 'moderate';
+                const seizure = (data.telestrokeNote?.screeningTools || {}).seizureRisk || '';
+                return seizure === 'acute-seizure' || seizure === 'late-seizure' || seizure === 'status-epilepticus';
               }
             },
 
@@ -5517,7 +5520,10 @@ Clinician Name`;
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
-                return (dx.includes('basilar') || cta.includes('basilar'));
+                const hasBasilar = (data.telestrokeNote?.vesselOcclusion || []).some(v => /basilar/i.test(v)) || dx.includes('basilar') || cta.includes('basilar');
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
+                const timeFrom = data.timeFromLKW;
+                return hasBasilar && nihss >= 10 && timeFrom && timeFrom.total <= 24;
               }
             },
             // STATUS EPILEPTICUS PROTOCOL
@@ -5532,16 +5538,16 @@ Clinician Name`;
               guideline: 'AES 2016 (AAN-endorsed); ESETT',
               reference: 'RAMPART: NEJM 2012. ESETT: NEJM 2019.',
               conditions: (data) => {
-                const seizure = (data.telestrokeNote?.screeningTools?.seizureRisk || '').toLowerCase();
-                return seizure.includes('seizure') || seizure.includes('status');
+                const seizure = (data.telestrokeNote?.screeningTools?.seizureRisk || '');
+                return seizure === 'status-epilepticus';
               }
             },
             // DAPT AUTO-STOP
             dapt_auto_stop: {
               id: 'dapt_auto_stop',
               category: 'Secondary Prevention',
-              title: 'DAPT must not continue beyond 90 days',
-              recommendation: 'Do NOT continue DAPT beyond 90 days — increased bleeding without additional benefit (Class III, LOE A). Convert to monotherapy at day 21-90.',
+              title: 'DAPT duration: plan transition to monotherapy',
+              recommendation: 'DAPT should be limited to 21-90 days, then transition to antiplatelet monotherapy. Continuing DAPT beyond 90 days increases bleeding risk without additional benefit (Class III, LOE A). Document planned transition timeline at discharge.',
               detail: 'CHANCE: 21-day DAPT optimal. POINT: 90-day DAPT had more bleeding. ESO and AHA agree: auto-stop DAPT and transition to monotherapy. Flag patients still on DAPT at 90-day visit.',
               classOfRec: 'III',
               levelOfEvidence: 'A',
