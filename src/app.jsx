@@ -9124,6 +9124,7 @@ Clinician Name`;
               note += ` | LKW: ${telestrokeNote.lkwUnknown ? 'UNKNOWN (discovery-based)' : (formatTime(telestrokeNote.lkwTime) || '___')}\n`;
               if (telestrokeNote.codeStatus) note += `Code status: ${telestrokeNote.codeStatus}\n`;
               if (telestrokeNote.admitLocation) note += `Location: ${telestrokeNote.admitLocation}\n`;
+              if (telestrokeNote.chiefComplaint) note += `CC: ${telestrokeNote.chiefComplaint}\n`;
               note += `\nBrief HPI: ${telestrokeNote.symptoms || '___'}\n\n`;
               let imagingLine = `Key imaging: CT ${telestrokeNote.ctResults || '___'}`;
               if (telestrokeNote.earlyInfarctSigns) imagingLine += ' (early infarct signs)';
@@ -33583,6 +33584,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       ))}
                     </div>
                   </div>
+                  <div className="text-center text-xs text-slate-500 py-2 border-t border-slate-200">Press Esc to close</div>
                 </div>
               </>
             )}
@@ -33614,6 +33616,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     ))}
                   </div>
+                  <div className="text-center text-xs text-slate-500 py-2 border-t border-slate-200">Press Esc to close</div>
                 </div>
               </>
             )}
@@ -33637,6 +33640,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       { keys: 'Ctrl/Cmd + Shift + C', action: 'Copy consult note' },
                       { keys: 'Ctrl/Cmd + Shift + N', action: 'Jump to next required field' },
                       { keys: 'Ctrl/Cmd + K', action: 'Open search' },
+                      { keys: '\u2191 / \u2193 in search', action: 'Navigate search results' },
+                      { keys: 'Enter in search', action: 'Select search result' },
                       { keys: 'Ctrl/Cmd + Shift + K', action: 'Toggle calculators' },
                       { keys: 'Ctrl/Cmd + Shift + J', action: 'Collapse/expand workflow rail' },
                       { keys: '/', action: 'Focus search' },
@@ -33661,6 +33666,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     </div>
                   </div>
+                  <div className="text-center text-xs text-slate-500 py-2 border-t border-slate-200">Press Esc to close</div>
                 </div>
               </>
             )}
