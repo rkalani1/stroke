@@ -8113,9 +8113,11 @@ Clinician Name`;
             if (telestrokeNote.toastClassification) {
               brief += `Etiology (TOAST): ${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}\n`;
             }
+            if (telestrokeNote.pmh) brief += `PMH: ${telestrokeNote.pmh}\n`;
             if (telestrokeNote.allergies) brief += `Allergies: ${telestrokeNote.allergies}${telestrokeNote.contrastAllergy ? ' **CONTRAST ALLERGY**' : ''}\n`;
             else if (telestrokeNote.contrastAllergy) brief += `Allergies: **CONTRAST ALLERGY**\n`;
             if (telestrokeNote.medications) brief += `Medications: ${telestrokeNote.medications}\n`;
+            if (telestrokeNote.presentingBP) brief += `Presenting BP: ${telestrokeNote.presentingBP}\n`;
             {
               const fuLabs = [];
               if (telestrokeNote.plateletCount) fuLabs.push(`Plt ${telestrokeNote.plateletCount}K`);
@@ -9125,6 +9127,8 @@ Clinician Name`;
               if (telestrokeNote.codeStatus) note += `Code status: ${telestrokeNote.codeStatus}\n`;
               if (telestrokeNote.admitLocation) note += `Location: ${telestrokeNote.admitLocation}\n`;
               if (telestrokeNote.chiefComplaint) note += `CC: ${telestrokeNote.chiefComplaint}\n`;
+              if (telestrokeNote.pmh) note += `PMH: ${telestrokeNote.pmh}\n`;
+              if (telestrokeNote.medications) note += `Home Meds: ${telestrokeNote.medications}\n`;
               note += `\nBrief HPI: ${telestrokeNote.symptoms || '___'}\n\n`;
               let imagingLine = `Key imaging: CT ${telestrokeNote.ctResults || '___'}`;
               if (telestrokeNote.earlyInfarctSigns) imagingLine += ' (early infarct signs)';
@@ -9568,6 +9572,7 @@ Clinician Name`;
               if (telestrokeNote.strokeTerritory) note += `Territory: ${telestrokeNote.strokeTerritory}${telestrokeNote.strokePhenotype ? ` (${telestrokeNote.strokePhenotype})` : ''}\n`;
               if (telestrokeNote.symptomTrajectory) note += `Trajectory: ${telestrokeNote.symptomTrajectory}${telestrokeNote.symptomOnsetNIHSS ? ` (onset NIHSS ~${telestrokeNote.symptomOnsetNIHSS})` : ''}\n`;
               if (telestrokeNote.codeStatus) note += `Code status: ${telestrokeNote.codeStatus}\n`;
+              if (telestrokeNote.pmh) note += `PMH: ${telestrokeNote.pmh}\n`;
               if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}${telestrokeNote.contrastAllergy ? ' **CONTRAST ALLERGY**' : ''}\n`;
               note += '\n';
               note += `SUBJECTIVE:\n`;
@@ -10027,7 +10032,9 @@ Clinician Name`;
               if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
               note += `\n`;
               note += `Admission Date: ${formatDate(telestrokeNote.lkwDate) || '___'}${telestrokeNote.lkwUnknown ? ' (LKW unknown — wake-up stroke)' : ' (LKW date)'}\n`;
-              note += `Discharge Date: ___\n\n`;
+              note += `Discharge Date: ___\n`;
+              if (telestrokeNote.pmh) note += `PMH: ${telestrokeNote.pmh}\n`;
+              note += `\n`;
               note += `HOSPITAL COURSE:\n`;
               note += `${telestrokeNote.symptoms || '___'}\n`;
               note += `Presenting NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
@@ -10065,6 +10072,10 @@ Clinician Name`;
               if (telestrokeNote.denseArterySign) note += ' (hyperdense artery sign)';
               note += '\n';
               if (aspectsScore !== null && aspectsScore !== undefined) note += `- ASPECTS: ${aspectsScore}/10\n`;
+              {
+                const dischPcA = (() => { const r = telestrokeNote.pcAspectsRegions || {}; return 10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0)); })();
+                if (dischPcA >= 0 && dischPcA < 10) note += `- PC-ASPECTS: ${dischPcA}/10\n`;
+              }
               note += `- CTA: ${telestrokeNote.ctaResults || '___'}`;
               const dischVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
               if (dischVessels.length > 0) note += ` — Occlusion: ${dischVessels.join(', ')}`;
