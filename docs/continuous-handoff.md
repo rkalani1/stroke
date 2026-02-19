@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `ee37500`
+- Last pushed commit: `05cae8d`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.44`
-- Service worker cache key: `stroke-app-v43`
+- Live APP_VERSION: `v5.14.45`
+- Service worker cache key: `stroke-app-v44`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -154,5 +154,14 @@
 
 ## Iteration 041 update (2026-02-18)
 - Replaced hardcoded handoff commit hash with command-based retrieval to prevent stale metadata in rapid loops.
-- Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && npm test && npm run qa && npm run build`
+
+## Iteration 042 update (2026-02-19, Windows session)
+- Guideline logic fixes (4 P1):
+  - MIE GCS upper bound ≤12 → ≤15 (MISTIE-III enrollment criteria)
+  - Decompressive craniectomy age <60 → ≤60 (DECIMAL/DESTINY criteria)
+  - CVT thrombophilia: removed inappropriate age≤60 restriction
+  - EVT late window: added ASPECTS≥6 check with null passthrough
+- Note template enrichment:
+  - Transfer note: chiefComplaint added before HPI
+  - TNK auto-block reason surfaced in transfer, signout, discharge, follow-up brief
+- Infrastructure: qa-smoke.mjs cross-platform python command fix
