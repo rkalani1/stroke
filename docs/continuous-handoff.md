@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `8b5e80b`
+- Last pushed commit: `6a2dd16`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.54`
-- Service worker cache key: `stroke-app-v53`
+- Live APP_VERSION: `v5.14.55`
+- Service worker cache key: `stroke-app-v54`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -243,3 +243,12 @@
   (diltiazem, verapamil, azole antifungals, macrolides, protease inhibitors)
 - Transfer audit false positives: DAPT Duration UI "missing" — exists at lines 18656/22425
 - Medication audit false positives: triple therapy override field — warnings are sufficient
+
+## Iteration 052 update (2026-02-19, Windows session)
+- Phone view vitals parity:
+  - HR, SpO2, Temp inputs added to phone view (were completely absent)
+  - Clamping logic matches tablet: HR 20-300, SpO2 50-100, Temp 90-110°F
+- Phone glucose fix (residual from iter-046):
+  - Border color threshold 50→60 mg/dL
+  - aria-invalid threshold 50→60 mg/dL (iter-046 only fixed error message + aria-describedby)
+- localStorage persistence audit: ALL CLEAR — all 199 fields matched
