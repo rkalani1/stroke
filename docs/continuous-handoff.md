@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `b85d953`
+- Last pushed commit: `277a8d7`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.57`
-- Service worker cache key: `stroke-app-v56`
+- Live APP_VERSION: `v5.14.58`
+- Service worker cache key: `stroke-app-v57`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -270,3 +270,11 @@
 - Guideline evidence audit: ALL CLEAR — all thresholds verified correct
   (TNK dosing, EVT windows, BP targets, ASPECTS, reversal agents, DAPT durations, statin intensity)
 - Keyboard accessibility audit: overall STRONG, only radio groups needed fix
+
+## Iteration 055 update (2026-02-19, Windows session)
+- New feature: JSON encounter export (exportEncounterJSON)
+  - Settings menu "Export as JSON" button + command search "export json"
+  - Downloads telestrokeNote, nihssScore, gcsItems, ichScoreItems as .json
+  - Pairs with existing importJSON() for cross-device encounter transfer
+- ICH pathway audit: ALL CLEAR — no P0/P1 gaps (comprehensive BP/reversal/surgical/VTE coverage)
+- Print/export audit false positives: print CSS exists, PDF has filename, #app always exists
