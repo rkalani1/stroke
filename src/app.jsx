@@ -12558,6 +12558,7 @@ Clinician Name`;
           const jumpToEncounterField = (fieldName) => {
             const fieldTargets = {
               Age: { phase: 'phase-triage', section: 'patient-info-section', focusIds: ['input-age', 'phone-input-age'] },
+              Weight: { phase: 'phase-triage', section: 'patient-info-section', focusIds: ['input-weight'] },
               LKW: { phase: 'phase-triage', section: 'lkw-section', focusIds: ['lkw-time', 'lkw-date', 'discovery-date', 'discovery-time', 'phone-lkw-date', 'phone-lkw-time', 'phone-discovery-date', 'phone-discovery-time'] },
               Diagnosis: { phase: 'phase-decision', section: 'treatment-decision', focusIds: ['input-diagnosis'] },
               NIHSS: { phase: 'phase-triage', section: 'nihss-section', focusIds: ['input-nihss', 'phone-input-nihss'] },
@@ -12876,6 +12877,7 @@ Clinician Name`;
               nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '');
             const trackedFields = [
               { name: 'Age', value: telestrokeNote.age },
+              { name: 'Weight', value: telestrokeNote.weight },
               { name: 'LKW', value: lkwReference?.time || telestrokeNote.lkwUnknown || null },
               { name: 'NIHSS', value: hasDocumentedNihss ? (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '' ? telestrokeNote.nihss : nihssScore) : null },
               { name: 'CT Head', value: telestrokeNote.ctResults },
@@ -12889,7 +12891,7 @@ Clinician Name`;
             };
             const missing = trackedFields.filter((field) => !isFieldPresent(field.value));
             const required = missing.filter((field) => ['Age', 'LKW', 'Diagnosis'].includes(field.name));
-            const recommended = missing.filter((field) => ['NIHSS', 'CT Head', 'Disposition'].includes(field.name));
+            const recommended = missing.filter((field) => ['Weight', 'NIHSS', 'CT Head', 'Disposition'].includes(field.name));
             const completedCount = trackedFields.length - missing.length;
             const readinessPercent = Math.round((completedCount / trackedFields.length) * 100);
             const nextField = (required[0] || recommended[0] || null)?.name || null;
@@ -12904,6 +12906,7 @@ Clinician Name`;
             };
           }, [
             telestrokeNote.age,
+            telestrokeNote.weight,
             telestrokeNote.nihss,
             telestrokeNote.ctResults,
             telestrokeNote.diagnosis,
