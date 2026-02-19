@@ -9304,7 +9304,7 @@ Clinician Name`;
                   const ichVolSo = calculateICHVolume(ichCalcSo);
                   if (ichVolSo && ichVolSo.volume) snIchParts.push(`vol ${ichVolSo.volume} mL${ichVolSo.isLarge ? ' (LARGE)' : ''}`);
                 }
-                if (telestrokeNote.ichBPManaged) snIchParts.push('BP managed');
+                if (telestrokeNote.ichBPManaged) snIchParts.push('BP managed (SBP <140)');
                 if (telestrokeNote.ichReversalInitiated) snIchParts.push('reversal initiated');
                 if (telestrokeNote.ichNeurosurgeryConsulted) snIchParts.push('NSG consulted');
                 if (telestrokeNote.ichSeizureProphylaxis) snIchParts.push('seizure ppx');
@@ -9442,7 +9442,9 @@ Clinician Name`;
               if (signoutBpPhase) note += `- BP target: <${signoutBpPhase.systolic}/${signoutBpPhase.diastolic} (${signoutBpPhase.label})\n`;
               const sp = telestrokeNote.secondaryPrevention || {};
               if (sp.antiplateletRegimen) {
-                note += `- Antithrombotic: ${AP_LABELS_SHORT[sp.antiplateletRegimen] || sp.antiplateletRegimen}\n`;
+                let soApLine = `- Antithrombotic: ${AP_LABELS_SHORT[sp.antiplateletRegimen] || sp.antiplateletRegimen}`;
+                if (sp.daptDuration) soApLine += ` (DAPT ${sp.daptDuration})`;
+                note += soApLine + '\n';
               }
               if (sp.statinDose) { let soStatLine = `- Statin: ${sp.statinDose.replace(/-/g, ' ')}`; if (sp.ldlCurrent) soStatLine += ` (LDL ${sp.ldlCurrent})`; note += soStatLine + '\n'; }
               if (sp.cyp2c19Tested && sp.cyp2c19Result) note += `- CYP2C19: ${sp.cyp2c19Result.replace(/-/g, ' ')}\n`;
@@ -9457,6 +9459,7 @@ Clinician Name`;
               if (snFc.discussed) {
                 note += `- Family: discussed with ${snFc.withWhom || 'family'}${snFc.time ? ` at ${snFc.time}` : ''}${snFc.topicsDiscussed ? ` — ${snFc.topicsDiscussed}` : ''}\n`;
               }
+              if (telestrokeNote.rationale) note += `\nClinical Rationale: ${telestrokeNote.rationale}\n`;
               if (telestrokeNote.disposition) note += `\nDisposition: ${telestrokeNote.disposition}\n`;
               note += `\nActive issues / To-do:\n`;
               const soRecText = telestrokeNote.recommendationsText || '- (none documented)';
@@ -9788,7 +9791,11 @@ Clinician Name`;
               note += '\n';
               note += `2. Secondary prevention:\n`;
               const progSp = telestrokeNote.secondaryPrevention || {};
-              if (progSp.antiplateletRegimen) note += `   - Antithrombotic: ${AP_LABELS_SHORT[progSp.antiplateletRegimen] || progSp.antiplateletRegimen}\n`;
+              if (progSp.antiplateletRegimen) {
+                let progApLine = `   - Antithrombotic: ${AP_LABELS_SHORT[progSp.antiplateletRegimen] || progSp.antiplateletRegimen}`;
+                if (progSp.daptDuration) progApLine += ` (DAPT ${progSp.daptDuration})`;
+                note += progApLine + '\n';
+              }
               if (progSp.statinDose) { let statLine = `   - Statin: ${progSp.statinDose.replace(/-/g, ' ')}`; if (progSp.ldlCurrent) statLine += ` (LDL ${progSp.ldlCurrent} mg/dL)`; note += statLine + '\n'; } else if (progSp.statinDose !== undefined) { note += `   - Statin: ___\n`; }
               if (progSp.cyp2c19Tested && progSp.cyp2c19Result) note += `   - CYP2C19: ${progSp.cyp2c19Result} — ${progSp.cyp2c19Result === 'poor-metabolizer' || progSp.cyp2c19Result === 'intermediate-metabolizer' ? 'consider ticagrelor over clopidogrel' : 'standard clopidogrel dosing appropriate'}\n`;
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
