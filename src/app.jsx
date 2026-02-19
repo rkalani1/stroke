@@ -19517,13 +19517,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       (() => {
                                         const g = parseFloat(telestrokeNote.glucose);
                                         if (!g) return 'border-slate-300';
-                                        if (g < 50) return 'border-red-400 bg-red-50';
+                                        if (g < 60) return 'border-red-400 bg-red-50';
                                         if (g > 400) return 'border-amber-400 bg-amber-50';
                                         return 'border-emerald-400 bg-emerald-50';
                                       })()
                                     }`}
                                     min="10" max="800"
-                                    aria-invalid={telestrokeNote.glucose && parseFloat(telestrokeNote.glucose) < 50 ? 'true' : undefined}
+                                    aria-invalid={telestrokeNote.glucose && parseInt(telestrokeNote.glucose, 10) < 60 ? 'true' : undefined}
                                     aria-describedby={telestrokeNote.glucose && parseInt(telestrokeNote.glucose, 10) < 60 ? 'glucose-error-phone' : undefined}
                                   />
                                   <span className="ml-1 text-xs text-slate-500">mg/dL</span>
@@ -19620,6 +19620,56 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   if (a && a > 40) return <p id="aptt-error" role="alert" className="text-xs text-red-700 font-medium mt-0.5">Elevated aPTT — TNK relative CI</p>;
                                   return null;
                                 })()}
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-3 gap-3">
+                              <div>
+                                <label htmlFor="phone-input-hr" className="block text-sm font-medium text-slate-700 mb-1">HR</label>
+                                <input id="phone-input-hr" type="number" min="20" max="300"
+                                  value={telestrokeNote.heartRate}
+                                  onChange={(e) => {
+                                    const raw = e.target.value;
+                                    if (raw === '') { setTelestrokeNote(prev => ({...prev, heartRate: ''})); return; }
+                                    const parsed = parseInt(raw, 10);
+                                    if (isNaN(parsed)) return;
+                                    const clamped = Math.max(20, Math.min(300, parsed));
+                                    setTelestrokeNote(prev => ({...prev, heartRate: String(clamped)}));
+                                  }}
+                                  placeholder="bpm"
+                                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500"
+                                />
+                              </div>
+                              <div>
+                                <label htmlFor="phone-input-spo2" className="block text-sm font-medium text-slate-700 mb-1">SpO2</label>
+                                <input id="phone-input-spo2" type="number" min="50" max="100"
+                                  value={telestrokeNote.spO2}
+                                  onChange={(e) => {
+                                    const raw = e.target.value;
+                                    if (raw === '') { setTelestrokeNote(prev => ({...prev, spO2: ''})); return; }
+                                    const parsed = parseInt(raw, 10);
+                                    if (isNaN(parsed)) return;
+                                    const clamped = Math.max(50, Math.min(100, parsed));
+                                    setTelestrokeNote(prev => ({...prev, spO2: String(clamped)}));
+                                  }}
+                                  placeholder="%"
+                                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500"
+                                />
+                              </div>
+                              <div>
+                                <label htmlFor="phone-input-temp" className="block text-sm font-medium text-slate-700 mb-1">Temp</label>
+                                <input id="phone-input-temp" type="number" step="0.1" min="90" max="110"
+                                  value={telestrokeNote.temperature}
+                                  onChange={(e) => {
+                                    const raw = e.target.value;
+                                    if (raw === '') { setTelestrokeNote(prev => ({...prev, temperature: ''})); return; }
+                                    const parsed = parseFloat(raw);
+                                    if (isNaN(parsed)) return;
+                                    const clamped = Math.max(90, Math.min(110, parsed));
+                                    setTelestrokeNote(prev => ({...prev, temperature: String(clamped)}));
+                                  }}
+                                  placeholder="°F"
+                                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500"
+                                />
                               </div>
                             </div>
 
