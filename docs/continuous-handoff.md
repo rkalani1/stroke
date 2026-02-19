@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `800855a`
+- Last pushed commit: `61f23ef`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.47`
-- Service worker cache key: `stroke-app-v46`
+- Live APP_VERSION: `v5.14.48`
+- Service worker cache key: `stroke-app-v47`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -186,3 +186,11 @@
 - Note template enrichment:
   - Signout note: chiefComplaint added before Brief HPI
 - Warning audit (iter-044 agents): localStorage persistence solid (no P0/P1), warning coverage audit mostly false positives (contraindication checklist already covers claimed gaps)
+
+## Iteration 045 update (2026-02-19, Windows session)
+- Note template completeness audit:
+  - Signout note: PMH and home medications added
+  - Discharge note: PMH added; PC-ASPECTS scoring added to imaging section
+  - Progress note: PMH added
+  - Follow-up brief: PMH and presenting BP added
+- UI/UX interaction audit: weight bounds false positive (both views have HTML min/max), CrCl bounds false positive (calculator has min/max), keyboard help Esc hint already added in iter-044
