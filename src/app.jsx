@@ -1240,6 +1240,7 @@ Clinician Name`;
               evtConsentDiscussed: false,
               evtConsentType: '',
               evtConsentTime: '',
+              evtConsentWith: '',
               transferConsentDiscussed: false,
               consentDocCopied: false
             },
@@ -8726,6 +8727,7 @@ Clinician Name`;
                 if ((telestrokeNote.consentKit || {}).evtConsentDiscussed) {
                   const evtConType = (telestrokeNote.consentKit || {}).evtConsentType;
                   note += `- EVT consent: ${evtConType || '(type not specified)'}`;
+                  if ((telestrokeNote.consentKit || {}).evtConsentWith) note += ` with ${telestrokeNote.consentKit.evtConsentWith}`;
                   if ((telestrokeNote.consentKit || {}).evtConsentTime) note += ` at ${telestrokeNote.consentKit.evtConsentTime}`;
                   note += `\n`;
                 }
@@ -10828,7 +10830,8 @@ Clinician Name`;
 
             // Add EVT consent documentation
             if (telestrokeNote.evtRecommended && (telestrokeNote.consentKit || {}).evtConsentDiscussed) {
-              note += `\nEVT Consent: Risks and benefits of mechanical thrombectomy discussed with patient/family.\n`;
+              const evtConWith = (telestrokeNote.consentKit || {}).evtConsentWith;
+              note += `\nEVT Consent: Risks and benefits of mechanical thrombectomy discussed${evtConWith ? ` with ${evtConWith}` : ' with patient/family'}.\n`;
               const evtType = (telestrokeNote.consentKit || {}).evtConsentType;
               if (evtType === 'informed-consent') note += '- Informed consent obtained.\n';
               else if (evtType === 'presumed') note += '- Presumed consent — patient unable, no surrogate available.\n';
@@ -11748,6 +11751,10 @@ Clinician Name`;
             if (hasLVO && !n.evtRecommended && n.diagnosisCategory === 'ischemic') {
               warnings.push({ id: 'lvo-no-evt', severity: 'warn', msg: 'LVO detected but EVT not recommended — document reason (e.g., late window without perfusion imaging, patient/family declined, contraindication).' });
             }
+            if (n.codeStatus && (n.codeStatus === 'DNR/DNI' || n.codeStatus === 'Comfort care') && (n.tnkRecommended || n.evtRecommended)) {
+              const csTx = [n.tnkRecommended && 'TNK', n.evtRecommended && 'EVT'].filter(Boolean).join(' + ');
+              warnings.push({ id: 'code-status-conflict', severity: 'error', msg: `Code status "${n.codeStatus}" conflicts with ${csTx} recommendation — verify goals of care align with acute intervention plan. Update code status or clear ${csTx} recommendation.` });
+            }
             // Future LKW detection + time window violations
             {
               const tf = calculateTimeFromLKW && calculateTimeFromLKW();
@@ -12624,7 +12631,7 @@ Clinician Name`;
                 if (category !== 'ischemic') {
                   updated.tnkRecommended = false;
                   updated.evtRecommended = false;
-                  updated.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', transferConsentDiscussed: false };
+                  updated.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', evtConsentWith: '', transferConsentDiscussed: false };
                   updated.evtAccessSite = '';
                   updated.evtDevice = '';
                   updated.evtTechnique = '';
@@ -16513,7 +16520,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       if (nc !== 'ischemic') {
                                         updated.tnkRecommended = false;
                                         updated.evtRecommended = false;
-                                        updated.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', transferConsentDiscussed: false };
+                                        updated.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', evtConsentWith: '', transferConsentDiscussed: false };
                                         updated.evtAccessSite = '';
                                         updated.evtDevice = '';
                                         updated.evtTechnique = '';
@@ -20138,7 +20145,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             if (newCategory !== 'ischemic') {
                                               updated.tnkRecommended = false;
                                               updated.evtRecommended = false;
-                                              updated.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', transferConsentDiscussed: false };
+                                              updated.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', evtConsentWith: '', transferConsentDiscussed: false };
                                               updated.evtAccessSite = '';
                                               updated.evtDevice = '';
                                               updated.evtTechnique = '';
@@ -20898,6 +20905,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, consentKit: {...(prev.consentKit || {}), evtConsentTime: v}})); }}
                                       className="w-28 px-2 py-2 border border-slate-300 rounded-lg text-sm" />
                                   </div>
+                                  <input type="text" placeholder="Discussed with (name/relation)"
+                                    value={(telestrokeNote.consentKit || {}).evtConsentWith || ''}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, consentKit: {...(prev.consentKit || {}), evtConsentWith: v}})); }}
+                                    aria-label="EVT consent discussed with"
+                                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" />
                                 </div>
                                 <button onClick={() => {
                                   const cdLkw = telestrokeNote.lkwUnknown ? 'Unknown (wake-up/unwitnessed)' + (telestrokeNote.discoveryTime ? ` — discovery ${telestrokeNote.discoveryTime}` : '') : telestrokeNote.lkwTime ? formatTime(telestrokeNote.lkwTime) : '***';
