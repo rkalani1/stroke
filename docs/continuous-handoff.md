@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `52343e3`
+- Last pushed commit: `b85d953`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.56`
-- Service worker cache key: `stroke-app-v55`
+- Live APP_VERSION: `v5.14.57`
+- Service worker cache key: `stroke-app-v56`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -262,3 +262,11 @@
 - Procedure note bug fix: hemorrhagicTransformation.phType → .classification (field name mismatch)
 - Note template audit: consultStartTime "missing" was FALSE POSITIVE (IS in consult note at line 10750)
 - Warning audit false positives: pregnancy+CTA=P2 at best, allergy text parsing=high false positive risk
+
+## Iteration 054 update (2026-02-19, Windows session)
+- Accessibility: arrow key navigation on ALL 11 radio button groups (WCAG 2.1 AA)
+  - GCS eye/verbal/motor (main + calculator drawer), ICH GCS, mRS, ABCD2, Hunt-Hess, WFNS
+  - Shared handleRadioKeyDown helper: ArrowUp/Down/Left/Right → focus + click
+- Guideline evidence audit: ALL CLEAR — all thresholds verified correct
+  (TNK dosing, EVT windows, BP targets, ASPECTS, reversal agents, DAPT durations, statin intensity)
+- Keyboard accessibility audit: overall STRONG, only radio groups needed fix
