@@ -48,10 +48,15 @@
   .app-header,
   .app-nav,
   nav[role="tablist"],
-  .sticky,
   .no-print,
   .fixed,
   [role="alert"].toast-alert {
+    display: none !important;
+  }
+
+  /* Hide sticky nav but keep patient summary strip visible */
+  .sticky.top-0,
+  .sticky.z-50 {
     display: none !important;
   }
 
@@ -68,7 +73,12 @@
     padding: 0 !important;
   }
 
+  /* Force all details panels open for print */
   details {
+    display: block !important;
+  }
+
+  details > *:not(summary) {
     display: block !important;
   }
 
@@ -77,6 +87,12 @@
     border-bottom: 1px solid #ccc;
     margin-bottom: 0.5rem;
     padding-bottom: 0.25rem;
+  }
+
+  /* Remove height constraints on note preview for full print */
+  .max-h-96 {
+    max-height: none !important;
+    overflow: visible !important;
   }
 
   .shadow-sm,

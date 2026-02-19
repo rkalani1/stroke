@@ -6621,21 +6621,21 @@ Clinician Name`;
             if (edArrival && ctStarted) {
               const diffMs = ctStarted - edArrival;
               const diffMins = Math.round(diffMs / (1000 * 60));
-              metrics.doorToCT = diffMins;
+              if (diffMins >= 0 && diffMins <= 1440) metrics.doorToCT = diffMins;
             }
 
             // Door-to-Needle (DTN): ED Arrival → TNK administered
             if (edArrival && tnkAdmin) {
               const diffMs = tnkAdmin - edArrival;
               const diffMins = Math.round(diffMs / (1000 * 60));
-              metrics.doorToNeedle = diffMins;
+              if (diffMins >= 0 && diffMins <= 1440) metrics.doorToNeedle = diffMins;
             }
 
             // CT-to-Needle: CT read → TNK administered
             if (ctRead && tnkAdmin) {
               const diffMs = tnkAdmin - ctRead;
               const diffMins = Math.round(diffMs / (1000 * 60));
-              metrics.ctToNeedle = diffMins;
+              if (diffMins >= 0 && diffMins <= 1440) metrics.ctToNeedle = diffMins;
             }
 
             // Door-to-Puncture (DTP): ED Arrival → Puncture time
@@ -6689,7 +6689,7 @@ Clinician Name`;
           // Format DTN metrics for Epic note
           const formatDTNForNote = () => {
             const metrics = calculateDTNMetrics();
-            if (!metrics.doorToNeedle && !metrics.doorToPuncture && !metrics.doorToCT) return '';
+            if (metrics.doorToNeedle == null && metrics.doorToPuncture == null && metrics.doorToCT == null) return '';
 
             const benchmark = getDTNBenchmark(metrics.doorToNeedle);
             let noteText = '\nTime Metrics:\n';
@@ -8900,7 +8900,7 @@ Clinician Name`;
                 if (ichSurgTx.midlineShift) ichTransfer += '- Midline shift / herniation risk\n';
                 if (ichSurgTx.clinicalDeterioration) ichTransfer += '- Clinical deterioration\n';
                 if (ichSurgTx.surgeryDecision) ichTransfer += `- Surgical decision: ${ichSurgTx.surgeryDecision}\n`;
-                if (ichTransfer !== '\nICH Management:\n') note += ichTransfer;
+                if (ichTransfer !== '\nICH MANAGEMENT:\n') note += ichTransfer;
               }
               // SAH-specific data
               const isDiagSAH = telestrokeNote.diagnosisCategory === 'sah';
@@ -9140,7 +9140,7 @@ Clinician Name`;
                 }
               }
               const txRecText = telestrokeNote.recommendationsText || '___';
-              note += `\nRecommendations:\n${txRecText.length > 500 ? txRecText.substring(0, 500) + '\n[...see full consultation note for details]' : txRecText}\n`;
+              note += `\nRecommendations:\n${txRecText}\n`;
               // Family communication
               const txFc = telestrokeNote.familyCommunication || {};
               if (txFc.discussed) {
@@ -9531,7 +9531,7 @@ Clinician Name`;
               if (telestrokeNote.disposition) note += `\nDisposition: ${telestrokeNote.disposition}\n`;
               note += `\nActive issues / To-do:\n`;
               const soRecText = telestrokeNote.recommendationsText || '- (none documented)';
-              note += `${soRecText.length > 500 ? soRecText.substring(0, 500) + '\n[...see full consultation note]' : soRecText}\n`;
+              note += `${soRecText}\n`;
               return note;
             }
 
@@ -9909,7 +9909,7 @@ Clinician Name`;
               }
               note += '\n';
               const progRecText2 = telestrokeNote.recommendationsText || '___';
-              note += `RECOMMENDATIONS:\n${progRecText2.length > 500 ? progRecText2.substring(0, 500) + '\n[...see full consultation note]' : progRecText2}\n`;
+              note += `RECOMMENDATIONS:\n${progRecText2}\n`;
               return note;
             }
 
@@ -10671,7 +10671,7 @@ Clinician Name`;
                 }
               }
               const dischRecText = telestrokeNote.recommendationsText || '___';
-              note += `RECOMMENDATIONS:\n${dischRecText.length > 500 ? dischRecText.substring(0, 500) + '\n[...see full consultation note]' : dischRecText}\n`;
+              note += `RECOMMENDATIONS:\n${dischRecText}\n`;
               if (telestrokeNote.attendingPhysician) note += `\nAttending Physician: ${telestrokeNote.attendingPhysician}\n`;
               return note;
             }
@@ -11756,13 +11756,13 @@ Clinician Name`;
               const dt = new Date(`${d}T${t}`);
               return isNaN(dt.getTime()) ? null : dt;
             };
-            const parseDT = (val) => val ? new Date(val) : null;
+            const parseDT = (val) => { if (!val) return null; const d = new Date(val); return isNaN(d.getTime()) ? null : d; };
 
             const lkw = parseTs(n.lkwDate, n.lkwTime);
             const ctTime = parseTs(n.ctDate, n.ctTime);
             const ctaTime = parseTs(n.ctaDate, n.ctaTime);
             const arrival = parseDT(n.dtnEdArrival);
-            const tnkTime = parseDT(n.tnkAdminTime);
+            const tnkTime = parseDT(n.dtnTnkAdministered) || (n.tnkAdminTime && n.lkwDate ? parseTs(n.lkwDate, n.tnkAdminTime) : null);
 
             if (lkw && ctTime && ctTime < lkw) {
               warnings.push({ id: 'ct-before-lkw', severity: 'error', msg: 'CT time is before LKW — check timestamps' });
@@ -15308,9 +15308,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             { value: 'transfer', label: 'Transfer' }
           ];
           const timeFromLKW = calculateTimeFromLKW();
-          const windowStatus = telestrokeNote.lkwUnknown
-            ? { color: 'gray', message: timeFromLKW ? 'Discovery-based timing' : 'LKW unknown' }
-            : getWindowStatus(timeFromLKW) || { color: 'gray', message: 'Set LKW time' };
+          const windowStatus = timeFromLKW && timeFromLKW.futureWarning
+            ? { color: 'red', message: 'FUTURE — check LKW time', urgent: true }
+            : telestrokeNote.lkwUnknown
+              ? (timeFromLKW ? { ...(getWindowStatus(timeFromLKW) || { color: 'gray' }), message: `Discovery ${timeFromLKW.hours}h ${timeFromLKW.minutes}m` } : { color: 'gray', message: 'LKW unknown' })
+              : getWindowStatus(timeFromLKW) || { color: 'gray', message: 'Set LKW time' };
           const windowToneClass = {
             green: 'bg-emerald-100 text-emerald-800 border-emerald-200',
             yellow: 'bg-amber-100 text-amber-800 border-amber-200',
