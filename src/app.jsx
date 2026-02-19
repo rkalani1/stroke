@@ -11797,6 +11797,12 @@ Clinician Name`;
             if (n.diagnosisCategory === 'mimic' && n.tnkAdminTime) {
               warnings.push({ id: 'tnk-given-mimic', severity: 'warn', msg: 'TNK was administered before diagnosis changed to stroke mimic — document clinical rationale for diagnosis change and monitor for complications. TNK administration time preserved in record.' });
             }
+            {
+              const evtPremRS = parseInt(n.premorbidMRS, 10);
+              if (n.evtRecommended && !isNaN(evtPremRS) && evtPremRS >= 2 && parseInt(n.age, 10) >= 80) {
+                warnings.push({ id: 'evt-elderly-mrs', severity: 'warn', msg: `EVT recommended for age ≥80 with pre-stroke mRS ${evtPremRS} (≥2) — DAWN and DEFUSE-3 trials excluded patients with mRS >1. Discuss prognosis and goals of care before proceeding. Consider functional baseline and treatment expectations.` });
+              }
+            }
             if (n.evtRecommended && !n.nihss && !nihssScore) {
               warnings.push({ id: 'evt-no-nihss', severity: 'error', msg: 'EVT recommended but NIHSS not documented — EVT eligibility requires NIHSS ≥6 per HERMES/MR CLEAN. Document NIHSS before transfer.' });
             }
@@ -13668,7 +13674,10 @@ Clinician Name`;
               { name: 'Sickle Cell Stroke', keywords: ['sickle cell', 'scd', 'exchange transfusion', 'hbs', 'hemoglobin s'], tab: 'management', subTab: 'ischemic' },
               { name: 'Infective Endocarditis', keywords: ['endocarditis', 'mycotic aneurysm', 'vegetation', 'ie stroke', 'blood cultures'], tab: 'management', subTab: 'ischemic' },
               { name: 'Acute Seizure Treatment', keywords: ['seizure', 'status epilepticus', 'lorazepam', 'levetiracetam', 'fosphenytoin', 'benzodiazepine'], tab: 'management', subTab: 'ischemic' },
-              { name: 'Glucose Management', keywords: ['glucose', 'insulin', 'hyperglycemia', 'hypoglycemia', 'shine trial', 'blood sugar'], tab: 'management', subTab: 'ischemic' }
+              { name: 'Glucose Management', keywords: ['glucose', 'insulin', 'hyperglycemia', 'hypoglycemia', 'shine trial', 'blood sugar'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Ischemic Stroke Management', keywords: ['ischemic', 'ais', 'acute ischemic', 'lvo', 'large vessel', 'secondary prevention'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Discharge Checklist', keywords: ['discharge', 'checklist', 'disposition', 'follow up', 'quality measures'], tab: 'encounter' },
+              { name: 'Order Bundles', keywords: ['order', 'bundle', 'orders', 'copy orders', 'nursing orders', 'medication orders'], tab: 'encounter' }
             ];
 
             searchableItems.forEach(item => {
