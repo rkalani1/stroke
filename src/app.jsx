@@ -8090,6 +8090,32 @@ Clinician Name`;
           };
           exportToPDFRef.current = exportToPDF;
 
+          const exportEncounterJSON = () => {
+            try {
+              const data = {
+                schemaVersion: 1,
+                appVersion: document.querySelector('script[data-version]')?.dataset.version || '',
+                exportDate: new Date().toISOString(),
+                telestrokeNote,
+                nihssScore,
+                gcsItems,
+                ichScoreItems
+              };
+              const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `stroke-encounter-${new Date().toISOString().split('T')[0]}.json`;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+              addToast('Encounter exported as JSON', 'success');
+            } catch (err) {
+              addToast('Export failed — ' + (err.message || 'unknown error'), 'error');
+            }
+          };
+
           const handleShare = async () => {
             const shareData = {
               title: 'Stroke',
@@ -13042,6 +13068,7 @@ Clinician Name`;
             { value: 'copy note', label: 'copy note', hint: 'Copy consult note to clipboard' },
             { value: 'new case', label: 'new case', hint: 'Reset encounter and start a fresh case' },
             { value: 'export pdf', label: 'export pdf', hint: 'Export current case snapshot as PDF' },
+            { value: 'export json', label: 'export json', hint: 'Export encounter data as JSON file' },
             { value: 'nct05948566', label: 'nct05948566', hint: 'Open trial card directly by NCT' }
           ];
 
@@ -13319,6 +13346,19 @@ Clinician Name`;
                 score: 966,
                 action: () => {
                   exportToPDF();
+                  navigateTo('encounter', { clearSearch: true });
+                }
+              });
+            }
+            const exportJsonCommand = lowerQuery.match(/^(?:export json|save json|download json|export encounter)$/i);
+            if (exportJsonCommand) {
+              results.push({
+                type: 'Command',
+                title: 'Export JSON',
+                description: 'Downloads encounter data as a JSON file',
+                score: 965,
+                action: () => {
+                  exportEncounterJSON();
                   navigateTo('encounter', { clearSearch: true });
                 }
               });
@@ -15471,6 +15511,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 >
                                   <i aria-hidden="true" data-lucide="download" className="w-4 h-4 text-slate-500"></i>
                                   Export to PDF
+                                </button>
+                              )}
+                              {showDocumentActions && (
+                                <button
+                                  role="menuitem"
+                                  onClick={() => { exportEncounterJSON(); setSettingsMenuOpen(false); }}
+                                  className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
+                                >
+                                  <i aria-hidden="true" data-lucide="file-json" className="w-4 h-4 text-slate-500"></i>
+                                  Export as JSON
                                 </button>
                               )}
                               {showDocumentActions && (
