@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `a31a3c1`
+- Last pushed commit: `800855a`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.46`
-- Service worker cache key: `stroke-app-v45`
+- Live APP_VERSION: `v5.14.47`
+- Service worker cache key: `stroke-app-v46`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -178,3 +178,11 @@
   - ConfirmModal Enter/Escape keyboard handlers (P0)
   - ConfirmModal input label association
   - Weight unit toggle aria-pressed + aria-label
+
+## Iteration 044 update (2026-02-19, Windows session)
+- Accessibility:
+  - Calculator drawer, changelog modal, keyboard help modal: "Press Esc to close" hints
+  - Keyboard help: search navigation entries (↑/↓ and Enter)
+- Note template enrichment:
+  - Signout note: chiefComplaint added before Brief HPI
+- Warning audit (iter-044 agents): localStorage persistence solid (no P0/P1), warning coverage audit mostly false positives (contraindication checklist already covers claimed gaps)
