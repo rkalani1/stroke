@@ -8163,6 +8163,13 @@ Clinician Name`;
             if (telestrokeNote.medications) brief += `Medications: ${telestrokeNote.medications}\n`;
             if (telestrokeNote.presentingBP) brief += `Presenting BP: ${telestrokeNote.presentingBP}\n`;
             {
+              const fuLkwParts = [];
+              if (telestrokeNote.lkwUnknown) fuLkwParts.push('LKW unknown');
+              if (telestrokeNote.lkwDate && telestrokeNote.lkwTime) fuLkwParts.push(`LKW: ${telestrokeNote.lkwDate} ${formatTime(telestrokeNote.lkwTime)}`);
+              if (telestrokeNote.discoveryDate && telestrokeNote.discoveryTime) fuLkwParts.push(`Discovery: ${telestrokeNote.discoveryDate} ${formatTime(telestrokeNote.discoveryTime)}`);
+              if (fuLkwParts.length > 0) brief += `${fuLkwParts.join(' | ')}\n`;
+            }
+            {
               const fuLabs = [];
               if (telestrokeNote.plateletCount) fuLabs.push(`Plt ${telestrokeNote.plateletCount}K`);
               if (telestrokeNote.creatinine) fuLabs.push(`Cr ${telestrokeNote.creatinine}`);
@@ -8189,6 +8196,7 @@ Clinician Name`;
               if (telestrokeNote.tnkAutoBlocked && telestrokeNote.tnkAutoBlockReason) brief += ` (TNK contraindicated: ${telestrokeNote.tnkAutoBlockReason})`;
               brief += `\n`;
             }
+            if (telestrokeNote.rationale) brief += `- Rationale: ${telestrokeNote.rationale}\n`;
             if (telestrokeNote.affectedSide) brief += `- Affected side: ${telestrokeNote.affectedSide}\n`;
             if (telestrokeNote.sichDetected) brief += `- sICH detected\n`;
             if (telestrokeNote.dischargeNIHSS) {
@@ -9295,6 +9303,10 @@ Clinician Name`;
                 if (telestrokeNote.tnkAutoBlocked && telestrokeNote.tnkAutoBlockReason) note += ` (TNK contraindicated: ${telestrokeNote.tnkAutoBlockReason})`;
                 note += `\n`;
               }
+              {
+                const snDtnNote = formatDTNForNote();
+                if (snDtnNote) note += snDtnNote;
+              }
               // Anticoagulation status
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
                 const acInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
@@ -9547,6 +9559,8 @@ Clinician Name`;
               note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}`;
               if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
               note += '\n';
+              if (telestrokeNote.pmh) note += `PMH: ${telestrokeNote.pmh}\n`;
+              if (telestrokeNote.medications) note += `Home Meds: ${telestrokeNote.medications}\n`;
               if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}${telestrokeNote.contrastAllergy ? ' **CONTRAST ALLERGY**' : ''}\n`;
               else if (telestrokeNote.contrastAllergy) note += `Allergies: **CONTRAST ALLERGY**\n`;
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n`;
@@ -9616,8 +9630,12 @@ Clinician Name`;
               }
               note += `Groin puncture time: ${telestrokeNote.punctureTime || '___'}\n`;
               note += `Reperfusion time: ${telestrokeNote.reperfusionTime || '___'}\n`;
-              note += `mTICI score: ${telestrokeNote.ticiScore || '___'}\n\n`;
-              note += `POST-PROCEDURE:\n`;
+              note += `mTICI score: ${telestrokeNote.ticiScore || '___'}\n`;
+              {
+                const procDtnNote = formatDTNForNote();
+                if (procDtnNote) note += procDtnNote;
+              }
+              note += `\nPOST-PROCEDURE:\n`;
               if (telestrokeNote.bpPostEVT) note += `- Post-EVT BP: ${telestrokeNote.bpPostEVT}\n`;
               const procBp = bpPhaseTargets['post-evt'];
               note += `- BP target: SBP <${procBp.systolic}/${procBp.diastolic} for 24h; avoid SBP <140 (Class III: Harm per BEST-II/ENCHANTED2)\n`;
@@ -9644,6 +9662,14 @@ Clinician Name`;
               if (telestrokeNote.premorbidMRS != null && telestrokeNote.premorbidMRS !== '') note += `Pre-morbid mRS: ${telestrokeNote.premorbidMRS}\n`;
               if (telestrokeNote.strokeTerritory) note += `Territory: ${telestrokeNote.strokeTerritory}${telestrokeNote.strokePhenotype ? ` (${telestrokeNote.strokePhenotype})` : ''}\n`;
               if (telestrokeNote.symptomTrajectory) note += `Trajectory: ${telestrokeNote.symptomTrajectory}${telestrokeNote.symptomOnsetNIHSS ? ` (onset NIHSS ~${telestrokeNote.symptomOnsetNIHSS})` : ''}\n`;
+              {
+                const lkwParts = [];
+                if (telestrokeNote.lkwUnknown) lkwParts.push('LKW unknown');
+                if (telestrokeNote.lkwDate && telestrokeNote.lkwTime) lkwParts.push(`LKW: ${telestrokeNote.lkwDate} ${formatTime(telestrokeNote.lkwTime)}`);
+                else if (telestrokeNote.lkwDate) lkwParts.push(`LKW date: ${telestrokeNote.lkwDate}`);
+                if (telestrokeNote.discoveryDate && telestrokeNote.discoveryTime) lkwParts.push(`Discovery: ${telestrokeNote.discoveryDate} ${formatTime(telestrokeNote.discoveryTime)}`);
+                if (lkwParts.length > 0) note += `${lkwParts.join(' | ')}\n`;
+              }
               if (telestrokeNote.codeStatus) note += `Code status: ${telestrokeNote.codeStatus}\n`;
               if (telestrokeNote.pmh) note += `PMH: ${telestrokeNote.pmh}\n`;
               if (telestrokeNote.medications) note += `Home Meds: ${telestrokeNote.medications}\n`;
@@ -9833,6 +9859,19 @@ Clinician Name`;
                 if (prOsm.agentUsed) {
                   note += `   - Osmotic therapy: ${prOsm.agentUsed}${prOsm.sodiumTarget ? ` (Na+ target ${prOsm.sodiumTarget})` : ''}${prOsm.serumOsmolality ? ` | Osm ${prOsm.serumOsmolality}` : ''}\n`;
                 }
+              }
+              // CVT-specific management
+              if (telestrokeNote.diagnosisCategory === 'cvt') {
+                const prCvtParts = [];
+                const prCvtAc = telestrokeNote.cvtAnticoag || {};
+                if (telestrokeNote.cvtAnticoagStarted) prCvtParts.push(`anticoag: ${telestrokeNote.cvtAnticoagType || 'started'}`);
+                if (prCvtAc.acutePhase) prCvtParts.push(`acute: ${prCvtAc.acutePhase}`);
+                if (prCvtAc.transitionAgent) prCvtParts.push(`transition: ${prCvtAc.transitionAgent}`);
+                if (prCvtAc.apsStatus) prCvtParts.push(`APS: ${prCvtAc.apsStatus}`);
+                if (telestrokeNote.cvtIcpManaged) prCvtParts.push('ICP managed');
+                if (telestrokeNote.cvtSeizureManaged) prCvtParts.push('seizure managed');
+                if (telestrokeNote.cvtHematologyConsulted) prCvtParts.push('hematology consulted');
+                if (prCvtParts.length > 0) note += `   - CVT: ${prCvtParts.join(', ')}\n`;
               }
               // Early mobilization
               {
@@ -10110,6 +10149,7 @@ Clinician Name`;
               note += `\n`;
               note += `Admission Date: ${formatDate(telestrokeNote.lkwDate) || '___'}${telestrokeNote.lkwUnknown ? ' (LKW unknown — wake-up stroke)' : ' (LKW date)'}\n`;
               note += `Discharge Date: ___\n`;
+              if (telestrokeNote.chiefComplaint) note += `Chief Complaint: ${telestrokeNote.chiefComplaint}\n`;
               if (telestrokeNote.pmh) note += `PMH: ${telestrokeNote.pmh}\n`;
               note += `\n`;
               note += `HOSPITAL COURSE:\n`;
@@ -10224,6 +10264,7 @@ Clinician Name`;
                 if (telestrokeNote.tnkAutoBlocked && telestrokeNote.tnkAutoBlockReason) note += ` (TNK contraindicated: ${telestrokeNote.tnkAutoBlockReason})`;
                 note += `\n`;
               }
+              if (telestrokeNote.rationale) note += `Clinical Rationale: ${telestrokeNote.rationale}\n`;
               // Post-treatment complications
               const dischComplications = [];
               if (telestrokeNote.sichDetected) dischComplications.push('symptomatic ICH (sICH)');
@@ -18163,7 +18204,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             const bpStatus = getBPThresholdStatus(telestrokeNote.presentingBP);
                             if (bpStatus.status === 'unknown') return null;
                             return (
-                              <div className={`mt-2 border rounded-lg px-3 py-2 text-sm flex items-center justify-between ${bpStatus.badgeClass}`}>
+                              <div role="alert" className={`mt-2 border rounded-lg px-3 py-2 text-sm flex items-center justify-between ${bpStatus.badgeClass}`}>
                                 <span className="font-medium">{bpStatus.icon} BP {telestrokeNote.presentingBP}: {bpStatus.message}</span>
                                 {bpStatus.needsLowering && (
                                   <span className="text-xs font-semibold">Lower SBP by {bpStatus.sbpToLower > 0 ? `${bpStatus.sbpToLower}` : ''}{bpStatus.sbpToLower > 0 && bpStatus.dbpToLower > 0 ? ' / DBP by ' : ''}{bpStatus.dbpToLower > 0 ? `${bpStatus.dbpToLower}` : ''} mmHg</span>
@@ -18175,24 +18216,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {(() => {
                             const glu = parseInt(telestrokeNote.glucose, 10);
                             if (!glu) return null;
-                            if (glu < 50) return <div className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">Hypoglycemia ({glu} mg/dL) - Correct before attributing symptoms to stroke</div>;
-                            if (glu > 400) return <div className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">Severe hyperglycemia ({glu} mg/dL) - Insulin protocol, r/o DKA/HHS</div>;
-                            if (glu > 180) return <div className="mt-1 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5 text-xs text-amber-800 font-medium">Hyperglycemia ({glu} mg/dL) - Target &lt;180 mg/dL per AHA guidelines</div>;
+                            if (glu < 50) return <div role="alert" className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">Hypoglycemia ({glu} mg/dL) - Correct before attributing symptoms to stroke</div>;
+                            if (glu > 400) return <div role="alert" className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">Severe hyperglycemia ({glu} mg/dL) - Insulin protocol, r/o DKA/HHS</div>;
+                            if (glu > 180) return <div role="alert" className="mt-1 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5 text-xs text-amber-800 font-medium">Hyperglycemia ({glu} mg/dL) - Target &lt;180 mg/dL per AHA guidelines</div>;
                             return null;
                           })()}
                           {/* Platelet Alert */}
                           {(() => {
                             const plt = parseInt(telestrokeNote.plateletCount, 10);
                             if (!plt) return null;
-                            if (plt < 100) return <div className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">Plt {plt}K - TNK contraindicated if &lt;100K</div>;
+                            if (plt < 100) return <div role="alert" className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">Plt {plt}K - TNK contraindicated if &lt;100K</div>;
                             return null;
                           })()}
                           {/* INR Alert */}
                           {(() => {
                             const inr = parseFloat(telestrokeNote.inr);
                             if (!inr) return null;
-                            if (inr > 1.7) return <div className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">INR {inr} - TNK contraindicated if &gt;1.7</div>;
-                            if (inr > 1.5) return <div className="mt-1 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5 text-xs text-amber-800 font-medium">INR {inr} - Elevated, use caution with TNK</div>;
+                            if (inr > 1.7) return <div role="alert" className="mt-1 bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs text-red-800 font-medium">INR {inr} - TNK contraindicated if &gt;1.7</div>;
+                            if (inr > 1.5) return <div role="alert" className="mt-1 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5 text-xs text-amber-800 font-medium">INR {inr} - Elevated, use caution with TNK</div>;
                             return null;
                           })()}
                         </div>
@@ -20167,6 +20208,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="bg-slate-50 p-3 rounded border">
                               <h4 className="font-semibold text-slate-700 mb-2">CT Perfusion</h4>
                               <textarea
+                                aria-label="CT Perfusion results"
                                 value={telestrokeNote.ctpResults}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctpResults: v})); }}
                                 placeholder=""
@@ -20179,6 +20221,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h4 className="font-semibold text-slate-700 mb-2">Telemetry / EKG</h4>
                               <input
                                 type="text"
+                                aria-label="Telemetry / EKG results"
                                 value={telestrokeNote.ekgResults}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ekgResults: v})); }}
                                 placeholder="NSR, AF, STEMI, etc."
@@ -21228,7 +21271,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <option value="surrogate">Surrogate/family consent obtained</option>
                                       <option value="declined">Patient/family declined EVT</option>
                                     </select>
-                                    <input type="time" value={(telestrokeNote.consentKit || {}).evtConsentTime || ''}
+                                    <input type="time" aria-label="EVT consent time" value={(telestrokeNote.consentKit || {}).evtConsentTime || ''}
                                       onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, consentKit: {...(prev.consentKit || {}), evtConsentTime: v}})); }}
                                       className="w-28 px-2 py-2 border border-slate-300 rounded-lg text-sm" />
                                   </div>
