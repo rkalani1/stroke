@@ -10085,9 +10085,8 @@ Clinician Name`;
               }
               note += `FOLLOW-UP APPOINTMENTS:\n`;
               if (sp.followUpTimeline) note += `Recommended timeline: ${sp.followUpTimeline}\n`;
-              const edIsTIA = (telestrokeNote.diagnosis || '').toLowerCase().includes('tia');
               const edIsICH = telestrokeNote.diagnosisCategory === 'ich';
-              if (edIsTIA) {
+              if (telestrokeNote.diagnosisCategory === 'tia') {
                 note += `- Stroke clinic: URGENT — within 24-72 hours\n`;
               } else if (edIsICH) {
                 note += `- Neurology/Neurosurgery: 2-4 weeks\n`;
@@ -10577,7 +10576,7 @@ Clinician Name`;
               note += `CODE STATUS: ${telestrokeNote.codeStatus || '___'}\n\n`;
               // Key results for discharge
               note += `KEY RESULTS:\n`;
-              note += `- Echo (TTE/TEE): ___\n`;
+              note += `- Echo (TTE/TEE): ${(telestrokeNote.esusWorkup || {}).teeFindings || '___'}\n`;
               {
                 const dischCarotid = telestrokeNote.carotidManagement || {};
                 if (dischCarotid.stenosisDegree) {
@@ -10600,8 +10599,7 @@ Clinician Name`;
               }
               note += `  - [Review and reconcile all home medications]\n\n`;
               note += `FOLLOW-UP:\n`;
-              const isTIA = (telestrokeNote.diagnosis || '').toLowerCase().includes('tia');
-              if (isTIA) {
+              if (telestrokeNote.diagnosisCategory === 'tia') {
                 note += `- URGENT Stroke/Neurology clinic: within 24-72 hours (TIA — high early recurrence risk)\n`;
               } else {
                 note += `- Stroke/Neurology clinic: 1-2 weeks (review imaging, labs, secondary prevention)\n`;
@@ -10615,7 +10613,7 @@ Clinician Name`;
               note += `\nFOLLOW-UP LABS:\n`;
               note += `- Fasting lipid panel at 4-6 weeks (target LDL <70 mg/dL per TST trial)\n`;
               if (dischSp.antiplateletRegimen && dischSp.antiplateletRegimen.includes('doac')) note += `- Renal function (Cr/eGFR) at 1-3 months for DOAC monitoring\n`;
-              if (telestrokeNote.diagnosisCategory === 'ischemic') note += `- HbA1c at 3 months if diabetic or new diagnosis\n`;
+              if (telestrokeNote.diagnosisCategory === 'ischemic' || telestrokeNote.diagnosisCategory === 'tia') note += `- HbA1c at 3 months if diabetic or new diagnosis\n`;
               note += '\n';
               note += `PATIENT EDUCATION:\n`;
               note += `- Stroke warning signs (BE-FAST)\n`;
@@ -12141,6 +12139,13 @@ Clinician Name`;
               }
             }
 
+            // Core GWTG measures for ischemic/TIA — warn even without checklist review
+            if ((n.diagnosisCategory === 'ischemic' || n.diagnosisCategory === 'tia') && n.disposition && !n.dischargeChecklistReviewed) {
+              const dc = n.dischargeChecklist || {};
+              if (!dc.antiplateletOrAnticoag) warnings.push({ id: 'discharge-no-antithrombotic', severity: 'warn', msg: 'Ischemic stroke/TIA with disposition set but no antithrombotic prescribed (GWTG STK-5). Review discharge checklist.' });
+              if (!dc.statinPrescribed) warnings.push({ id: 'discharge-no-statin', severity: 'warn', msg: 'Ischemic stroke/TIA with disposition set but no statin prescribed (GWTG STK-6). Review discharge checklist.' });
+            }
+
             // TNK recommended but active internal bleeding documented
             if (n.tnkRecommended && n.tnkContraindicationChecklist?.activeInternalBleeding) {
               warnings.push({ id: 'tnk-active-bleeding', severity: 'error', msg: 'TNK recommended but active internal bleeding documented in contraindication checklist — this is an ABSOLUTE contraindication to thrombolysis.' });
@@ -13339,14 +13344,61 @@ Clinician Name`;
                   score: 980,
                   action: () => {
                     setTelestrokeNote((prev) => {
-                      const next = { ...prev, diagnosis: mapping.diagnosis, diagnosisCategory: mapping.category };
-                      if ((mapping.category === 'ich' || mapping.category === 'sah') && prev.tnkRecommended) {
-                        next.tnkRecommended = false;
+                      const category = mapping.category;
+                      const next = { ...prev, diagnosis: mapping.diagnosis, diagnosisCategory: category };
+                      if ((category === 'ich' || category === 'sah') && prev.tnkRecommended) {
                         next.tnkAutoBlocked = true;
-                        next.tnkAutoBlockReason = `TNK auto-cleared: ${mapping.category.toUpperCase()} diagnosis (thrombolysis contraindicated)`;
+                        next.tnkAutoBlockReason = `TNK auto-cleared: ${category.toUpperCase()} diagnosis (thrombolysis contraindicated)`;
                       }
-                      if (mapping.category !== 'ischemic' && (prev.bpPhase === 'post-evt' || prev.bpPhase === 'post-tnk')) {
-                        next.bpPhase = 'pre-tnk';
+                      if (category !== prev.diagnosisCategory) {
+                        if (category !== 'ischemic') {
+                          next.tnkRecommended = false;
+                          next.evtRecommended = false;
+                          next.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', evtConsentWith: '', transferConsentDiscussed: false };
+                          next.evtAccessSite = '';
+                          next.evtDevice = '';
+                          next.evtTechnique = '';
+                          next.evtNumberOfPasses = '';
+                          next.reperfusionTime = '';
+                          next.postTNKMonitoring = { neuroChecksQ15min: false, bpChecksQ15min: false, bleedingWatch: false, repeatImagingOrdered: false, cardiacMonitoring: false };
+                          next.doacTiming = { strokeSeverity: '', hemorrhagicTransformation: false, htClassification: '', doacInitiationDay: '', doacAgent: '' };
+                          next.hemorrhagicTransformation = { detected: false, classification: '', symptomatic: false, managementActions: '', antithromboticHeld: false, reimagingPlanned: false };
+                          next.angioedema = { detected: false, severity: '', aceInhibitorUse: false, stepsTaken: {}, intubated: false, resolved: false, onsetTime: '' };
+                        }
+                        if (category !== 'ischemic' && (prev.bpPhase === 'post-evt' || prev.bpPhase === 'post-tnk')) {
+                          next.bpPhase = 'pre-tnk';
+                        }
+                        if (category !== 'ich') {
+                          next.ichReversalInitiated = false;
+                          next.ichBPManaged = false;
+                          next.ichNeurosurgeryConsulted = false;
+                          next.ichSeizureProphylaxis = false;
+                          next.ichSurgicalCriteria = { cerebellarGt15mL: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
+                          next.osmoticTherapy = { agentUsed: '', indication: '', serumSodium: '', serumOsmolality: '', sodiumTarget: '', correctionRate: '', baselineNa: '', baselineNaTime: '', repeatNa: '', repeatNaTime: '', weight: '', mannitolOsmGap: '' };
+                        }
+                        if (category !== 'sah') {
+                          next.sahGrade = '';
+                          next.sahGradeScale = '';
+                          next.sahBPManaged = false;
+                          next.sahNimodipine = false;
+                          next.sahEVDPlaced = false;
+                          next.sahAneurysmSecured = false;
+                          next.sahNeurosurgeryConsulted = false;
+                          next.sahSeizureProphylaxis = false;
+                          next.fisherGrade = '';
+                          next.sahAneurysmLocation = '';
+                          next.sahAneurysmSize = '';
+                          next.sahSecuringMethod = '';
+                          next.sahVasospasmMonitoring = { tcdOrdered: false, neuroChecksQ1h: false, sodiumMonitoring: false, dciSuspected: false, inducedHypertension: false, notes: '' };
+                        }
+                        if (category !== 'cvt') {
+                          next.cvtAnticoagStarted = false;
+                          next.cvtAnticoagType = '';
+                          next.cvtIcpManaged = false;
+                          next.cvtSeizureManaged = false;
+                          next.cvtHematologyConsulted = false;
+                          next.cvtAnticoag = { acutePhase: '', transitionAgent: '', duration: '', apsStatus: '', etiologyProvoked: false };
+                        }
                       }
                       return next;
                     });
@@ -16797,9 +16849,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     }
                                     return updated;
                                   });
-                                  if (tmpl.defaults.diagnosisCategory === 'ich') {
-                                    setManagementSubTab('ich');
-                                  }
+                                  if (tmpl.defaults.diagnosisCategory === 'ich') setManagementSubTab('ich');
+                                  else if (tmpl.defaults.diagnosisCategory === 'sah') setManagementSubTab('sah');
+                                  else if (tmpl.defaults.diagnosisCategory === 'tia') setManagementSubTab('tia');
+                                  else if (tmpl.defaults.diagnosisCategory === 'cvt') setManagementSubTab('cvt');
+                                  else if (tmpl.defaults.diagnosisCategory === 'ischemic') setManagementSubTab('ischemic');
                                   addToast(`Template: ${tmpl.label}`, 'info');
                                 }
                               }}
