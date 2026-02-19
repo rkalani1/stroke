@@ -1,11 +1,11 @@
 # Continuous Handoff
 
-## Current state (2026-02-18)
+## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: run `git rev-parse --short HEAD` in `/Users/rizwankalani/stroke`
+- Last pushed commit: `ee37500`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.42`
-- Service worker cache key: `stroke-app-v41`
+- Live APP_VERSION: `v5.14.44`
+- Service worker cache key: `stroke-app-v43`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -108,7 +108,7 @@
 - Focus trap useEffect deps: removed settingsMenuOpen (not a modal)
 - XSS import validation hardened: data:text/html, vbscript:, on*= event handler patterns
 - Encounter history localStorage save: silent catch → error logging
-- De-identification: removed hardcoded UW Medicine + UW neurology intranet links from quick links
+- De-identification: UW Medicine + UW neurology intranet links relabeled as "EMR" and "Telestroke Resources" (no institutional names visible)
 - Accessibility: aria-label on DOAC initiation day, TEE findings, discharge checklist detail inputs
 - Input validation: max bounds on CrCl (200), CTP core (500), CTP penumbra (1500)
 - Discharge note: substance screening (AUDIT-C), hormonal risk (OCP/HRT), rehab screening (spasticity, central pain, fatigue)
@@ -127,14 +127,19 @@
 ## Resume command
 - `cd /Users/rizwankalani/stroke && git pull --rebase origin main && npm test && npm run qa && npm run build`
 
-## Iteration 037 update (2026-02-18)
+## Iteration 037a update (2026-02-18, Mac session)
 - Added deterministic smoke automation (`scripts/qa-smoke.mjs`) and wired commands:
   - `npm test` => local smoke
   - `npm run qa` => local + live smoke
 - Updated docs for continuous mode tracking and refreshed evidence metadata verification notes.
-- Stop checks in this iteration: STOP message not received; `.codex-stop` file not found.
-- Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && npm run qa && npm run build`
+
+## Iteration 037b update (2026-02-19, Windows session)
+- Phone view vessel occlusion quick-select: added diagnosis guard (was showing for ICH/SAH/CVT)
+- Tablet NIHSS input: added step="1" (phone view had it, tablet didn't)
+- Tablet glucose handler: added JS clamping Math.max(10, Math.min(800, parsed)) to match phone view
+- Tablet weight input: bounds tightened min=20 max=350 (was min=0 max=500)
+- Tablet aria-invalid/aria-describedby added for glucose, INR, platelets error states
+- Quick links restored with de-identified labels ("EMR", "Telestroke Resources")
 
 ## Iteration 038 update (2026-02-18)
 - Strengthened smoke automation with diagnosis-switch and TNK-visibility gating checks.

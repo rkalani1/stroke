@@ -61,7 +61,8 @@ async function canReach(url) {
 }
 
 function startLocalServer() {
-  const server = spawn('python3', ['-m', 'http.server', String(PORT)], {
+  const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
+  const server = spawn(pythonCmd, ['-m', 'http.server', String(PORT)], {
     cwd: process.cwd(),
     stdio: 'ignore'
   });

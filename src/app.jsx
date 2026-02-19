@@ -3618,7 +3618,8 @@ Clinician Name`;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
                   /ica|m1|mca|basilar/i.test(v)
                 );
-                return nihss >= minNIHSS && timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && hasLVO;
+                const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
+                return nihss >= minNIHSS && timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && hasLVO && (aspects === null || aspects >= 6);
               }
             },
             evt_large_core_early: {
@@ -4070,7 +4071,7 @@ Clinician Name`;
               conditions: (data) => {
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const gcs = data.gcsScore || null;
-                return isICH && gcs !== null && gcs >= 5 && gcs <= 12;
+                return isICH && gcs !== null && gcs >= 5 && gcs <= 15;
               }
             },
 
@@ -4145,7 +4146,7 @@ Clinician Name`;
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const age = parseInt(data.telestrokeNote?.age, 10) || 0;
                 const isIschemic = data.telestrokeNote?.diagnosisCategory === 'ischemic';
-                return isIschemic && nihss >= 15 && age > 0 && age < 60;
+                return isIschemic && nihss >= 15 && age > 0 && age <= 60;
               }
             },
 
@@ -4608,8 +4609,7 @@ Clinician Name`;
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456#page=2',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const age = parseInt(data.telestrokeNote?.age, 10) || 0;
-                return (dx.includes('cvt') || dx.includes('venous thrombosis') || dx.includes('cerebral venous') || dx.includes('dural sinus')) && age <= 60;
+                return dx.includes('cvt') || dx.includes('venous thrombosis') || dx.includes('cerebral venous') || dx.includes('dural sinus');
               }
             },
 
@@ -8130,7 +8130,11 @@ Clinician Name`;
               if (telestrokeNote.reperfusionTime) brief += `  Reperfusion: ${telestrokeNote.reperfusionTime}\n`;
             }
             if (telestrokeNote.transferAccepted) brief += `- Transferred to ${telestrokeNote.transferReceivingFacility || 'comprehensive stroke center'}\n`;
-            if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) brief += `- Medical management\n`;
+            if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) {
+              brief += `- Medical management`;
+              if (telestrokeNote.tnkAutoBlocked && telestrokeNote.tnkAutoBlockReason) brief += ` (TNK contraindicated: ${telestrokeNote.tnkAutoBlockReason})`;
+              brief += `\n`;
+            }
             if (telestrokeNote.affectedSide) brief += `- Affected side: ${telestrokeNote.affectedSide}\n`;
             if (telestrokeNote.sichDetected) brief += `- sICH detected\n`;
             if (telestrokeNote.dischargeNIHSS) {
@@ -8578,6 +8582,7 @@ Clinician Name`;
               if (telestrokeNote.codeStatus) note += `Code status: ${telestrokeNote.codeStatus}\n`;
               if (telestrokeNote.admitLocation) note += `Disposition: ${telestrokeNote.admitLocation}\n`;
               note += `\n`;
+              if (telestrokeNote.chiefComplaint) note += `CC: ${telestrokeNote.chiefComplaint}\n`;
               note += `HPI: ${telestrokeNote.symptoms || '___'}\n`;
               note += `PMH: ${telestrokeNote.pmh || '___'}\n`;
               note += `Medications: ${telestrokeNote.medications || '___'}\n`;
@@ -8714,7 +8719,11 @@ Clinician Name`;
                   note += `\n`;
                 }
               }
-              if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
+              if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) {
+                note += `- Medical management`;
+                if (telestrokeNote.tnkAutoBlocked && telestrokeNote.tnkAutoBlockReason) note += ` (TNK contraindicated: ${telestrokeNote.tnkAutoBlockReason})`;
+                note += `\n`;
+              }
               if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) note += formatDTNForNote();
               else if (telestrokeNote.doorTime || telestrokeNote.needleTime) {
                 const dtnParts = [];
@@ -9197,7 +9206,11 @@ Clinician Name`;
                 if (telestrokeNote.evtNumberOfPasses) note += `  Passes: ${telestrokeNote.evtNumberOfPasses}\n`;
                 if (telestrokeNote.reperfusionTime) note += `  Reperfusion: ${telestrokeNote.reperfusionTime}\n`;
               }
-              if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
+              if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) {
+                note += `- Medical management`;
+                if (telestrokeNote.tnkAutoBlocked && telestrokeNote.tnkAutoBlockReason) note += ` (TNK contraindicated: ${telestrokeNote.tnkAutoBlockReason})`;
+                note += `\n`;
+              }
               // Anticoagulation status
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
                 const acInfo = ANTICOAGULANT_INFO[telestrokeNote.lastDOACType];
@@ -10105,7 +10118,11 @@ Clinician Name`;
                 if (telestrokeNote.evtNumberOfPasses) note += `  Passes: ${telestrokeNote.evtNumberOfPasses}\n`;
                 if (telestrokeNote.reperfusionTime) note += `  Reperfusion: ${telestrokeNote.reperfusionTime}\n`;
               }
-              if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) note += `- Medical management\n`;
+              if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) {
+                note += `- Medical management`;
+                if (telestrokeNote.tnkAutoBlocked && telestrokeNote.tnkAutoBlockReason) note += ` (TNK contraindicated: ${telestrokeNote.tnkAutoBlockReason})`;
+                note += `\n`;
+              }
               // Post-treatment complications
               const dischComplications = [];
               if (telestrokeNote.sichDetected) dischComplications.push('symptomatic ICH (sICH)');
