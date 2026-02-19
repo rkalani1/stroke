@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `6a2dd16`
+- Last pushed commit: `52343e3`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.55`
-- Service worker cache key: `stroke-app-v54`
+- Live APP_VERSION: `v5.14.56`
+- Service worker cache key: `stroke-app-v55`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -252,3 +252,13 @@
   - Border color threshold 50→60 mg/dL
   - aria-invalid threshold 50→60 mg/dL (iter-046 only fixed error message + aria-describedby)
 - localStorage persistence audit: ALL CLEAR — all 199 fields matched
+
+## Iteration 053 update (2026-02-19, Windows session)
+- Warning system expansion (4 new warnings):
+  - DTN >60 min benchmark warning (AHA/ASA ≤60 min target)
+  - Contrast allergy + EVT → premedication protocol / MRA reminder
+  - Contrast allergy + CTA done → delayed reaction monitoring (4-48h)
+  - CrCl <30 + contrast imaging → nephropathy risk, hydration, metformin hold
+- Procedure note bug fix: hemorrhagicTransformation.phType → .classification (field name mismatch)
+- Note template audit: consultStartTime "missing" was FALSE POSITIVE (IS in consult note at line 10750)
+- Warning audit false positives: pregnancy+CTA=P2 at best, allergy text parsing=high false positive risk
