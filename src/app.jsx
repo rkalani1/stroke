@@ -238,15 +238,23 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         const ConfirmModal = ({ config, onClose }) => {
           const [inputValue, setInputValue] = React.useState(config.defaultValue || '');
           if (!config) return null;
+          const handleModalKeyDown = (e) => {
+            if (e.key === 'Escape') { e.preventDefault(); if (!config.required) onClose(null); }
+            if (e.key === 'Enter' && !config.input) { e.preventDefault(); onClose(true); }
+          };
+          const handleInputKeyDown = (e) => {
+            if (e.key === 'Enter' && config.inputType !== 'textarea') { e.preventDefault(); onClose(inputValue); }
+          };
           return React.createElement('div', { className: 'fixed inset-0 z-[200] flex items-center justify-center p-4' },
             React.createElement('div', { className: 'fixed inset-0 bg-black/40', onClick: () => { if (!config.required) onClose(null); }, role: 'presentation', 'aria-hidden': 'true' }),
-            React.createElement('div', { className: 'relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'confirm-modal-title' },
+            React.createElement('div', { className: 'relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'confirm-modal-title', onKeyDown: handleModalKeyDown },
               React.createElement('h3', { id: 'confirm-modal-title', className: 'text-lg font-bold text-slate-900' }, config.title || 'Confirm'),
               config.message && React.createElement('p', { className: 'text-sm text-slate-600' }, config.message),
               config.input && React.createElement('div', { className: 'space-y-1' },
-                config.inputLabel && React.createElement('label', { className: 'block text-xs font-medium text-slate-700' }, config.inputLabel),
+                config.inputLabel && React.createElement('label', { htmlFor: 'confirm-modal-input', className: 'block text-xs font-medium text-slate-700' }, config.inputLabel),
                 config.inputType === 'textarea'
                   ? React.createElement('textarea', {
+                      id: 'confirm-modal-input',
                       value: inputValue,
                       onChange: (e) => setInputValue(e.target.value),
                       rows: 3,
@@ -255,9 +263,11 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
                       autoFocus: true
                     })
                   : React.createElement('input', {
+                      id: 'confirm-modal-input',
                       type: 'text',
                       value: inputValue,
                       onChange: (e) => setInputValue(e.target.value),
+                      onKeyDown: handleInputKeyDown,
                       className: 'w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none',
                       placeholder: config.placeholder || '',
                       autoFocus: true
@@ -4278,6 +4288,8 @@ Clinician Name`;
               guideline: 'AHA/ASA Secondary Prevention 2024 Update',
               reference: 'Kamel H et al. JAMA. 2024;331(11):981-990. DOI: 10.1001/jama.2024.0840',
               conditions: (data) => {
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                if (cat !== 'ischemic' && cat !== 'tia') return false;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 return dx.includes('cryptogenic') || dx.includes('esus');
               }
@@ -4627,8 +4639,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021 + 2026 Update',
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467; Powers WJ et al. Stroke. 2026.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('tia');
+                return data.telestrokeNote?.diagnosisCategory === 'tia';
               }
             },
             tia_mri_dwi: {
@@ -4642,8 +4653,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('tia');
+                return data.telestrokeNote?.diagnosisCategory === 'tia';
               }
             },
             tia_vascular_imaging: {
@@ -4657,8 +4667,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('tia');
+                return data.telestrokeNote?.diagnosisCategory === 'tia';
               }
             },
             tia_cardiac_monitoring: {
@@ -4672,8 +4681,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021 + 2026 Update',
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467; CRYSTAL-AF, EMBRACE trials.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('tia');
+                return data.telestrokeNote?.diagnosisCategory === 'tia';
               }
             },
             tia_echo: {
@@ -4687,8 +4695,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467.',
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('tia');
+                return data.telestrokeNote?.diagnosisCategory === 'tia';
               }
             },
             tia_dapt: {
@@ -4703,8 +4710,7 @@ Clinician Name`;
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467.',
               medications: ['ASA 325 mg load then 81 mg daily', 'Clopidogrel 300 mg load then 75 mg daily x 21 days'],
               conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                return dx.includes('tia');
+                return data.telestrokeNote?.diagnosisCategory === 'tia';
               }
             },
 
@@ -4918,6 +4924,8 @@ Clinician Name`;
               guideline: 'ACC Expert Consensus Decision Pathway 2024',
               reference: '2024 ACC ECDP; JACC 2024. PER-DIEM: Lancet Neurol 2024.',
               conditions: (data) => {
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                if (cat !== 'ischemic' && cat !== 'tia') return false;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
                 return dx.includes('cryptogenic') || dx.includes('esus') || toast.includes('cryptogenic') || toast.includes('undetermined');
@@ -8701,6 +8709,7 @@ Clinician Name`;
                   if (telestrokeNote.tnkConsentTime) note += ` at ${telestrokeNote.tnkConsentTime}`;
                   note += `\n`;
                 }
+                if (telestrokeNote.preTNKSafetyPause) note += `- Pre-TNK safety pause: completed\n`;
                 if (telestrokeNote.disablingDeficit) {
                   note += `- DISABLING DEFICIT: TNK recommended despite NIHSS ${telestrokeNote.nihss || nihssScore || '___'} based on significant functional impairment\n`;
                 }
@@ -8718,6 +8727,7 @@ Clinician Name`;
                   if ((telestrokeNote.consentKit || {}).evtConsentTime) note += ` at ${telestrokeNote.consentKit.evtConsentTime}`;
                   note += `\n`;
                 }
+                if (telestrokeNote.bpPostEVT) note += `- Post-EVT BP: ${telestrokeNote.bpPostEVT}\n`;
               }
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) {
                 note += `- Medical management`;
@@ -9205,6 +9215,7 @@ Clinician Name`;
                 if (telestrokeNote.evtTechnique) note += `  Technique: ${telestrokeNote.evtTechnique}\n`;
                 if (telestrokeNote.evtNumberOfPasses) note += `  Passes: ${telestrokeNote.evtNumberOfPasses}\n`;
                 if (telestrokeNote.reperfusionTime) note += `  Reperfusion: ${telestrokeNote.reperfusionTime}\n`;
+                if (telestrokeNote.bpPostEVT) note += `  Post-EVT BP: ${telestrokeNote.bpPostEVT}\n`;
               }
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) {
                 note += `- Medical management`;
@@ -10117,6 +10128,7 @@ Clinician Name`;
                 if (telestrokeNote.evtTechnique) note += `  Technique: ${telestrokeNote.evtTechnique}\n`;
                 if (telestrokeNote.evtNumberOfPasses) note += `  Passes: ${telestrokeNote.evtNumberOfPasses}\n`;
                 if (telestrokeNote.reperfusionTime) note += `  Reperfusion: ${telestrokeNote.reperfusionTime}\n`;
+                if (telestrokeNote.bpPostEVT) note += `  Post-EVT BP: ${telestrokeNote.bpPostEVT}\n`;
               }
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) {
                 note += `- Medical management`;
@@ -17339,9 +17351,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="flex items-center justify-between mb-1">
                                 <label htmlFor="input-weight" className="block text-xs font-medium text-slate-600">Weight</label>
                                 <div className="flex bg-slate-100 rounded-md p-0.5">
-                                  <button type="button" onClick={() => setWeightUnit('kg')}
+                                  <button type="button" onClick={() => setWeightUnit('kg')} aria-pressed={weightUnit === 'kg'} aria-label="Weight in kilograms"
                                     className={'px-2.5 py-1 text-sm rounded ' + (weightUnit === 'kg' ? 'bg-white shadow-sm font-semibold text-slate-900' : 'text-slate-500')}>kg</button>
-                                  <button type="button" onClick={() => setWeightUnit('lbs')}
+                                  <button type="button" onClick={() => setWeightUnit('lbs')} aria-pressed={weightUnit === 'lbs'} aria-label="Weight in pounds"
                                     className={'px-2.5 py-1 text-sm rounded ' + (weightUnit === 'lbs' ? 'bg-white shadow-sm font-semibold text-slate-900' : 'text-slate-500')}>lbs</button>
                                 </div>
                               </div>
@@ -20196,8 +20208,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 const hasLVO = (telestrokeNote.vesselOcclusion || []).some(v =>
                                   /ICA|M1|basilar/i.test(v)
                                 );
-                                const dx = (telestrokeNote.diagnosis || '').toLowerCase();
-                                const isTIA = dx.includes('tia') || dx.includes('transient');
+                                const isTIA = telestrokeNote.diagnosisCategory === 'tia';
                                 const timeFrom = calculateTimeFromLKW();
 
                                 if (nihss === 0 && hasLVO) {
