@@ -18943,7 +18943,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, weight: v})); }}
                                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${telestrokeNote.weight && (parseFloat(telestrokeNote.weight) > 300 || parseFloat(telestrokeNote.weight) < 10) ? 'border-red-400 bg-red-50' : 'border-slate-300'}`}
                                   placeholder="kg"
-                                  min="0" max="500"
+                                  min="20" max="350"
                                 />
                                 <span className="ml-1 text-xs text-slate-500">kg</span>
                               </div>
@@ -19208,6 +19208,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   }}
                                   min="0"
                                   max="42"
+                                  step="1"
                                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-2xl font-bold text-center focus:ring-2 focus:ring-blue-500"
                                 />
                               </div>
@@ -19428,7 +19429,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     id="input-glucose"
                                     type="number"
                                     value={telestrokeNote.glucose}
-                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, glucose: v})); }}
+                                    onChange={(e) => { const raw = e.target.value; if (raw === '') { setTelestrokeNote(prev => ({...prev, glucose: ''})); return; } const parsed = parseInt(raw, 10); if (isNaN(parsed)) return; const clamped = Math.max(10, Math.min(800, parsed)); setTelestrokeNote(prev => ({...prev, glucose: String(clamped)})); }}
                                     placeholder=""
                                     className={`w-full px-3 py-2 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 ${
                                       (() => {
@@ -19440,13 +19441,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       })()
                                     }`}
                                     min="10" max="800"
+                                    aria-invalid={telestrokeNote.glucose && parseFloat(telestrokeNote.glucose) < 50 ? 'true' : undefined}
+                                    aria-describedby={telestrokeNote.glucose && parseFloat(telestrokeNote.glucose) < 50 ? 'glucose-error-tablet' : undefined}
                                   />
                                   <span className="ml-1 text-xs text-slate-500">mg/dL</span>
                                 </div>
                                 {(() => {
                                   const g = parseFloat(telestrokeNote.glucose);
                                   if (!g) return null;
-                                  if (g < 50) return <p className="text-xs text-red-700 font-medium mt-0.5">Hypoglycemia — correct before TNK</p>;
+                                  if (g < 50) return <p id="glucose-error-tablet" role="alert" className="text-xs text-red-700 font-medium mt-0.5">Hypoglycemia — correct before TNK</p>;
                                   if (g > 400) return <p className="text-xs text-amber-700 font-medium mt-0.5">Severe hyperglycemia — correct, TNK still eligible</p>;
                                   return null;
                                 })()}
@@ -19469,11 +19472,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   }`}
                                   step="0.1"
                                   min="0.5" max="15"
+                                  aria-invalid={telestrokeNote.inr && parseFloat(telestrokeNote.inr) > 1.7 ? 'true' : undefined}
+                                  aria-describedby={telestrokeNote.inr && parseFloat(telestrokeNote.inr) > 1.7 ? 'inr-error-tablet' : undefined}
                                 />
                                 {(() => {
                                   const i = parseFloat(telestrokeNote.inr);
                                   if (!i) return null;
-                                  if (i > 1.7) return <p className="text-xs text-red-700 font-medium mt-0.5">TNK contraindicated (INR &gt;1.7)</p>;
+                                  if (i > 1.7) return <p id="inr-error-tablet" role="alert" className="text-xs text-red-700 font-medium mt-0.5">TNK contraindicated (INR &gt;1.7)</p>;
                                   if (i > 1.5) return <p className="text-xs text-amber-700 font-medium mt-0.5">Borderline — verify with repeat</p>;
                                   return null;
                                 })()}
@@ -19495,12 +19500,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       })()
                                     }`}
                                     min="1" max="1500"
+                                    aria-invalid={telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount, 10) < 100 ? 'true' : undefined}
+                                    aria-describedby={telestrokeNote.plateletCount && parseInt(telestrokeNote.plateletCount, 10) < 100 ? 'platelets-error-tablet' : undefined}
                                   />
                                   <span className="ml-1 text-xs text-slate-500">K/μL</span>
                                 </div>
                                 {(() => {
                                   const p = parseFloat(telestrokeNote.plateletCount);
-                                  if (p && p < 100) return <p className="text-xs text-red-700 font-medium mt-0.5">TNK contraindicated (&lt;100K)</p>;
+                                  if (p && p < 100) return <p id="platelets-error-tablet" role="alert" className="text-xs text-red-700 font-medium mt-0.5">TNK contraindicated (&lt;100K)</p>;
                                   return null;
                                 })()}
                               </div>
@@ -19727,6 +19734,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
 
                               {/* Vessel Occlusion Quick Select for Trial Eligibility */}
+                              {(telestrokeNote.diagnosisCategory === 'ischemic' || telestrokeNote.diagnosisCategory === 'tia' || !telestrokeNote.diagnosisCategory) && (
                               <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded-lg">
                                 <p className="text-xs font-semibold text-blue-800 mb-2">
                                   <i aria-hidden="true" data-lucide="flask-conical" className="w-3 h-3 inline"></i> Vessel Occlusion <span className="font-normal">(for trial screening)</span>
@@ -19763,6 +19771,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   )}
                                 </div>
                               </div>
+                              )}
                             </div>
 
                             {/* CT Perfusion */}
