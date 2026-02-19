@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `a9662bd`
+- Last pushed commit: `a824963`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.49`
-- Service worker cache key: `stroke-app-v48`
+- Live APP_VERSION: `v5.14.50`
+- Service worker cache key: `stroke-app-v49`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -201,3 +201,11 @@
   - Phone glucose warning: threshold 50 → 60 mg/dL to match tablet (AHA guideline)
   - Phone aria-describedby IDs: renamed -tablet suffix → -phone
 - Guideline audit: all P0 claims false positives (ASPECTS≥6 intentional per DAWN/DEFUSE-3, ICH seizure prophylaxis correctly fires for all ICH, SAH nimodipine de-dup is design choice)
+
+## Iteration 047 update (2026-02-19, Windows session)
+- Encounter readiness:
+  - Weight added to recommended tracked fields (critical for TNK dosing)
+  - Weight jump target added to Ctrl+Shift+N navigation
+  - useMemo dependency array updated
+- Calculator audit: ALL CLEAR — all formulas correct (GCS, ICH Score, CHA2DS2-VASc, HAS-BLED, ABCD2, ROPE, mRS, FUNC, RCVS², PHASES, CrCl, TNK, Alteplase, PCC, Enoxaparin)
+- Search/navigation audit: comprehensive (60+ searchable items, all keyboard shortcuts working)
