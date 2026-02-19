@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `139ba18`
+- Last pushed commit: `00f2fbf`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.51`
-- Service worker cache key: `stroke-app-v50`
+- Live APP_VERSION: `v5.14.52`
+- Service worker cache key: `stroke-app-v51`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -215,3 +215,11 @@
   - ctDate and ctaDate defaults changed from today's date to empty string (prevents pre-filled dates mistaken for actual)
 - Clinical pathway visibility audit: ALL CLEAR — perfect diagnosis gating across all 5 categories
 - Data persistence audit: architecture solid, XSS prevention robust, no P0 issues
+
+## Iteration 049 update (2026-02-19, Windows session)
+- Note template guideline sync:
+  - Signout + progress notes: DAPT duration added to antithrombotic line
+  - Signout note: ICH BP target specified (SBP <140, was just "BP managed")
+  - Signout note: clinical rationale field surfaced before disposition
+- Crash resilience audit: all P0 claims false positives (all split/parse patterns have upstream guards)
+- Guideline-to-note sync audit: transfer note already has secondary prevention (agent missed it)
