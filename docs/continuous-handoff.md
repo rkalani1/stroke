@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `61f23ef`
+- Last pushed commit: `a9662bd`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.48`
-- Service worker cache key: `stroke-app-v47`
+- Live APP_VERSION: `v5.14.49`
+- Service worker cache key: `stroke-app-v48`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -194,3 +194,10 @@
   - Progress note: PMH added
   - Follow-up brief: PMH and presenting BP added
 - UI/UX interaction audit: weight bounds false positive (both views have HTML min/max), CrCl bounds false positive (calculator has min/max), keyboard help Esc hint already added in iter-044
+
+## Iteration 046 update (2026-02-19, Windows session)
+- Phone/tablet parity fixes:
+  - Phone NIHSS: added 0-42 clamping + empty-string guard (P0 — was unclamped)
+  - Phone glucose warning: threshold 50 → 60 mg/dL to match tablet (AHA guideline)
+  - Phone aria-describedby IDs: renamed -tablet suffix → -phone
+- Guideline audit: all P0 claims false positives (ASPECTS≥6 intentional per DAWN/DEFUSE-3, ICH seizure prophylaxis correctly fires for all ICH, SAH nimodipine de-dup is design choice)
