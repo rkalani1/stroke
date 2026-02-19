@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `c2fa213`
+- Last pushed commit: `8b5e80b`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.53`
-- Service worker cache key: `stroke-app-v52`
+- Live APP_VERSION: `v5.14.54`
+- Service worker cache key: `stroke-app-v53`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -232,3 +232,14 @@
 - Warning system:
   - Code status conflict: DNR/DNI or Comfort care + TNK/EVT → P0 goals-of-care conflict error
 - Trial eligibility audit: SISTER EVT exclusion confirmed correct (non-EVT candidates), CTP detail claims impractical (require new fields)
+
+## Iteration 051 update (2026-02-19, Windows session)
+- Transfer pre-flight safety warnings (4 new, all use existing fields):
+  - GCS ≤8 + transferAccepted → airway protection reminder
+  - Post-TNK + transferAccepted + neuro checks not started → monitoring warning
+  - transferAccepted + imaging not shared → imaging warning
+  - transferAccepted + BP not stable → hemodynamic warning
+- Drug interaction: nimodipine + CYP3A4 inhibitor warning for SAH patients
+  (diltiazem, verapamil, azole antifungals, macrolides, protease inhibitors)
+- Transfer audit false positives: DAPT Duration UI "missing" — exists at lines 18656/22425
+- Medication audit false positives: triple therapy override field — warnings are sufficient
