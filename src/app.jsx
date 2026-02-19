@@ -11767,6 +11767,9 @@ Clinician Name`;
             if (n.evtRecommended && n.diagnosisCategory === 'mimic') {
               warnings.push({ id: 'evt-mimic', severity: 'error', msg: 'EVT recommended but diagnosis is stroke mimic — thrombectomy is not indicated. Clear EVT recommendation.' });
             }
+            if (n.diagnosisCategory === 'mimic' && n.tnkAdminTime) {
+              warnings.push({ id: 'tnk-given-mimic', severity: 'warn', msg: 'TNK was administered before diagnosis changed to stroke mimic — document clinical rationale for diagnosis change and monitor for complications. TNK administration time preserved in record.' });
+            }
             if (n.evtRecommended && !n.nihss && !nihssScore) {
               warnings.push({ id: 'evt-no-nihss', severity: 'error', msg: 'EVT recommended but NIHSS not documented — EVT eligibility requires NIHSS ≥6 per HERMES/MR CLEAN. Document NIHSS before transfer.' });
             }
@@ -12636,10 +12639,40 @@ Clinician Name`;
               });
             }
 
+            // CVT Anticoagulation Initiation
+            if (cat === 'cvt') {
+              const cvtOrders = [];
+              const cvtAc = n.cvtAnticoag || {};
+              if (n.cvtAnticoagType === 'enoxaparin' && weight) {
+                cvtOrders.push(`Enoxaparin ${Math.round(weight)} mg (1 mg/kg) SC q12h`);
+              } else if (n.cvtAnticoagType === 'enoxaparin') {
+                cvtOrders.push('Enoxaparin 1 mg/kg SC q12h (DOCUMENT WEIGHT for dosing)');
+              } else {
+                cvtOrders.push('Enoxaparin 1 mg/kg SC q12h (preferred) OR UFH IV weight-based protocol (aPTT 60-80s)');
+              }
+              cvtOrders.push('Hemorrhagic infarction is NOT a contraindication to anticoagulation (AHA/ASA Class I, LOE B-NR)');
+              cvtOrders.push('Monitor: CBC, aPTT (if UFH), anti-Xa levels (if LMWH + renal impairment), platelet count');
+              if (cvtAc.apsStatus) {
+                cvtOrders.push('APS CONFIRMED — transition to warfarin INR 2-3 (DOACs contraindicated per TRAPS/ASTRO-APS)');
+              } else {
+                cvtOrders.push('Transition plan: Warfarin INR 2-3 or DOAC (per ACTION-CVT) when stable');
+              }
+              cvtOrders.push(`Duration: ${cvtAc.etiologyProvoked ? '3-6 months (provoked)' : '6-12 months (unprovoked/idiopathic), consider indefinite if recurrent VTE'}`);
+              cvtOrders.push('Seizure prophylaxis: Levetiracetam 500-1000 mg IV/PO q12h if supratentorial parenchymal lesion');
+              bundles.push({
+                id: 'cvt-anticoag',
+                label: 'CVT Anticoagulation Orders',
+                icon: 'pill',
+                color: 'indigo',
+                orders: cvtOrders
+              });
+            }
+
             // Nursing Communication Parameter Sheet
-            if (isIschemic || isICH || isSAH) {
+            if (isIschemic || isICH || isSAH || cat === 'cvt') {
               const nursingOrders = [];
               const bpTarget = isICH ? 'SBP <140 mmHg (INTERACT2)' : isSAH ? 'SBP <160 until aneurysm secured' :
+                cat === 'cvt' ? 'SBP <220 (permissive; <140 if hemorrhagic infarction)' :
                 n.tnkAdminTime ? 'SBP <180/105 x 24h post-lytic' : n.evtRecommended ? 'SBP <180, avoid <140 post-EVT' : 'SBP <220 (permissive HTN)';
               nursingOrders.push(`BP target: ${bpTarget}`);
               nursingOrders.push(`Neuro checks: ${n.tnkAdminTime ? 'q15min x 2h, q30min x 6h, q1h x 16h' : 'q1h'}`);
@@ -13262,7 +13295,7 @@ Clinician Name`;
                 { test: /\bsah\b|\bsubarachnoid\b/, diagnosis: 'Subarachnoid Hemorrhage (SAH)', category: 'sah' },
                 { test: /\btia\b/, diagnosis: 'TIA', category: 'tia' },
                 { test: /\bcvt\b|\bvenous thrombosis\b/, diagnosis: 'Cerebral Venous Thrombosis (CVT)', category: 'cvt' },
-                { test: /\bmimic\b/, diagnosis: 'Stroke Mimic', category: '' }
+                { test: /\bmimic\b/, diagnosis: 'Stroke Mimic', category: 'mimic' }
               ];
               const mapping = diagnosisMappings.find((item) => item.test.test(token));
               if (mapping) {
@@ -26676,7 +26709,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         teal: 'bg-blue-50 border-blue-200 text-blue-900',
                         blue: 'bg-blue-50 border-blue-200 text-blue-900',
                         purple: 'bg-purple-50 border-purple-200 text-purple-900',
-                        pink: 'bg-pink-50 border-pink-200 text-pink-900'
+                        pink: 'bg-pink-50 border-pink-200 text-pink-900',
+                        indigo: 'bg-indigo-50 border-indigo-200 text-indigo-900',
+                        amber: 'bg-amber-50 border-amber-200 text-amber-900',
+                        yellow: 'bg-yellow-50 border-yellow-200 text-yellow-900'
                       };
                       const btnColorMap = {
                         red: 'bg-red-600 hover:bg-red-700',
@@ -26684,7 +26720,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         teal: 'bg-blue-600 hover:bg-blue-700',
                         blue: 'bg-blue-600 hover:bg-blue-700',
                         purple: 'bg-purple-600 hover:bg-purple-700',
-                        pink: 'bg-pink-600 hover:bg-pink-700'
+                        pink: 'bg-pink-600 hover:bg-pink-700',
+                        indigo: 'bg-indigo-600 hover:bg-indigo-700',
+                        amber: 'bg-amber-600 hover:bg-amber-700',
+                        yellow: 'bg-yellow-600 hover:bg-yellow-700'
                       };
                       return (
                         <div className="bg-white border-2 border-emerald-300 rounded-xl shadow-sm">
