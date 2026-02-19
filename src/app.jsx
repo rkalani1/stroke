@@ -4382,10 +4382,11 @@ Clinician Name`;
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
-                const glucose = parseInt(data.telestrokeNote?.glucose, 10) || 0;
+                const glucoseRaw = data.telestrokeNote?.glucose;
+                const glucose = parseInt(glucoseRaw, 10);
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isStroke = !!cat && cat !== 'mimic';
-                return isStroke && (glucose > 180 || glucose < 60 || glucose === 0);
+                return isStroke && !isNaN(glucose) && glucose > 0 && (glucose > 180 || glucose < 60);
               }
             },
             fever_management: {
@@ -8412,6 +8413,22 @@ Clinician Name`;
                 if (fuCvtAc.apsStatus) brief += `- APS confirmed — warfarin mandatory\n`;
               }
             }
+            if (telestrokeNote.diagnosisCategory === 'sah') {
+              const fuSahParts = [];
+              if (telestrokeNote.sahGrade) {
+                const scaleLabel = {'huntHess': 'Hunt & Hess', 'wfns': 'WFNS', 'modifiedFisher': 'Modified Fisher'}[telestrokeNote.sahGradeScale] || 'Grade';
+                fuSahParts.push(`${scaleLabel} ${telestrokeNote.sahGrade}`);
+              }
+              if (telestrokeNote.fisherGrade) fuSahParts.push(`Fisher ${telestrokeNote.fisherGrade}`);
+              if (telestrokeNote.sahAneurysmSecured) fuSahParts.push(`aneurysm secured${telestrokeNote.sahSecuringMethod ? ` (${telestrokeNote.sahSecuringMethod})` : ''}`);
+              else fuSahParts.push('aneurysm NOT yet secured');
+              if (telestrokeNote.sahNimodipine) fuSahParts.push('nimodipine started');
+              if ((telestrokeNote.sahVasospasmMonitoring || {}).dciSuspected) fuSahParts.push('DCI suspected');
+              if (fuSahParts.length > 0) {
+                brief += `\nSAH SUMMARY:\n`;
+                fuSahParts.forEach(p => { brief += `- ${p}\n`; });
+              }
+            }
             {
               const fuCarotid = telestrokeNote.carotidManagement || {};
               if (fuCarotid.stenosisDegree) {
@@ -9165,6 +9182,13 @@ Clinician Name`;
               if (telestrokeNote.affectedSide) note += `Affected side: ${telestrokeNote.affectedSide}\n`;
               if (telestrokeNote.weight) note += `Weight: ${telestrokeNote.weight} kg\n`;
               note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
+              if (telestrokeNote.dischargeNIHSS) {
+                const snAdmNIHSS = parseInt(telestrokeNote.nihss || nihssScore, 10);
+                const snDischNIHSS = parseInt(telestrokeNote.dischargeNIHSS, 10);
+                let snNihssDelta = '';
+                if (!isNaN(snAdmNIHSS) && !isNaN(snDischNIHSS)) snNihssDelta = snAdmNIHSS > snDischNIHSS ? ' improved' : snAdmNIHSS < snDischNIHSS ? ' worsened' : ' unchanged';
+                note += ` → current ${telestrokeNote.dischargeNIHSS}${snNihssDelta}`;
+              }
               const signoutGCS = calculateGCS(gcsItems);
               if (signoutGCS > 0) note += ` | GCS: ${signoutGCS}`;
               note += ` | LKW: ${telestrokeNote.lkwUnknown ? 'UNKNOWN (discovery-based)' : (formatTime(telestrokeNote.lkwTime) || '___')}\n`;
@@ -9610,7 +9634,9 @@ Clinician Name`;
               let note = `STROKE INPATIENT PROGRESS NOTE\n${'='.repeat(40)}\n\n`;
               note += `Date: ${new Date().toLocaleDateString()}\n`;
               note += `Hospital Day #: ___\n`;
-              note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}\n`;
+              note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}`;
+              if (telestrokeNote.weight) note += ` | ${telestrokeNote.weight} kg`;
+              note += '\n';
               note += `Diagnosis: ${telestrokeNote.diagnosis || '___'}`;
               if (telestrokeNote.toastClassification) note += ` (${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification})`;
               note += '\n';
@@ -9620,6 +9646,7 @@ Clinician Name`;
               if (telestrokeNote.symptomTrajectory) note += `Trajectory: ${telestrokeNote.symptomTrajectory}${telestrokeNote.symptomOnsetNIHSS ? ` (onset NIHSS ~${telestrokeNote.symptomOnsetNIHSS})` : ''}\n`;
               if (telestrokeNote.codeStatus) note += `Code status: ${telestrokeNote.codeStatus}\n`;
               if (telestrokeNote.pmh) note += `PMH: ${telestrokeNote.pmh}\n`;
+              if (telestrokeNote.medications) note += `Home Meds: ${telestrokeNote.medications}\n`;
               if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}${telestrokeNote.contrastAllergy ? ' **CONTRAST ALLERGY**' : ''}\n`;
               note += '\n';
               note += `SUBJECTIVE:\n`;
