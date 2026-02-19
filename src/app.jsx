@@ -5590,7 +5590,9 @@ Clinician Name`;
               reference: 'EHRA 2018; Expert Opinion Drug Safety 2024.',
               conditions: (data) => {
                 const ap = (data.telestrokeNote?.secondaryPrevention?.antiplateletRegimen || '');
-                return ap.includes('doac') || ap.includes('anticoag');
+                const preAdmitDoac = data.telestrokeNote?.lastDOACType;
+                const isDoac = preAdmitDoac && preAdmitDoac !== 'warfarin' && preAdmitDoac !== 'heparin' && preAdmitDoac !== 'enoxaparin' && preAdmitDoac !== 'fondaparinux';
+                return ap.includes('doac') || ap.includes('anticoag') || isDoac;
               }
             },
             // SPASTICITY
@@ -8105,10 +8107,27 @@ Clinician Name`;
                 schemaVersion: 1,
                 appVersion: document.querySelector('script[data-version]')?.dataset.version || '',
                 exportDate: new Date().toISOString(),
+                consultationType,
                 telestrokeNote,
                 nihssScore,
                 gcsItems,
-                ichScoreItems
+                ichScoreItems,
+                ichVolumeParams,
+                aspectsScore,
+                aspectsRegionState,
+                pcAspectsRegions,
+                mrsScore,
+                abcd2Items,
+                chads2vascItems,
+                ropeItems,
+                huntHessGrade,
+                wfnsGrade,
+                hasbledItems,
+                rcvs2Items,
+                phasesItems,
+                evtDecisionInputs,
+                doacProtocol,
+                strokeCodeForm
               };
               const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
               const url = URL.createObjectURL(blob);
@@ -14133,23 +14152,6 @@ Clinician Name`;
               }
             });
             showNotice('Legacy keys removed.', 'success');
-          };
-
-          const importBackup = async (file) => {
-            try {
-              const data = await importJSON(file);
-              const candidate = data.schemaVersion ? data : data.appData ? data.appData : null;
-              if (!candidate) {
-                showNotice('Backup import failed: invalid file.', 'error');
-                return;
-              }
-              const merged = mergeAppData(getDefaultAppData(), candidate);
-              const migrated = migrateAppData(merged);
-              setAppData(migrated);
-              showNotice('Backup imported.', 'success');
-            } catch (e) {
-              showNotice('Backup import failed.', 'error');
-            }
           };
 
           // Workflow steps definition
