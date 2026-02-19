@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `a824963`
+- Last pushed commit: `139ba18`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.50`
-- Service worker cache key: `stroke-app-v49`
+- Live APP_VERSION: `v5.14.51`
+- Service worker cache key: `stroke-app-v50`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -209,3 +209,9 @@
   - useMemo dependency array updated
 - Calculator audit: ALL CLEAR — all formulas correct (GCS, ICH Score, CHA2DS2-VASc, HAS-BLED, ABCD2, ROPE, mRS, FUNC, RCVS², PHASES, CrCl, TNK, Alteplase, PCC, Enoxaparin)
 - Search/navigation audit: comprehensive (60+ searchable items, all keyboard shortcuts working)
+
+## Iteration 048 update (2026-02-19, Windows session)
+- Default state safety:
+  - ctDate and ctaDate defaults changed from today's date to empty string (prevents pre-filled dates mistaken for actual)
+- Clinical pathway visibility audit: ALL CLEAR — perfect diagnosis gating across all 5 categories
+- Data persistence audit: architecture solid, XSS prevention robust, no P0 issues
