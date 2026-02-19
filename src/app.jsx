@@ -2195,7 +2195,7 @@ Clinician Name`;
             NIMODIPINE: {
               title: 'Nimodipine (Nymalize)',
               dosing: '60 mg PO/NG q4h x 21 days. Start within 96h of SAH onset.',
-              note: 'Calcium channel blocker for SAH vasospasm prevention. Only proven agent to improve outcomes. If hypotension: reduce to 30 mg q2h (maintains daily dose while reducing peak levels). Do NOT give IV (risk of severe hypotension/cardiac arrest).'
+              note: 'Calcium channel blocker for SAH vasospasm prevention. Only proven agent to improve outcomes. If hypotension: reduce to 30 mg q4h (maintains daily dose while reducing peak levels). Do NOT give IV (risk of severe hypotension/cardiac arrest).'
             }
           }), []);
 
@@ -4466,7 +4466,7 @@ Clinician Name`;
               category: 'SAH Management',
               title: 'SAH: Nimodipine for vasospasm prevention',
               recommendation: 'Administer nimodipine 60 mg PO/NG q4h for 21 days. Begin as soon as possible after SAH diagnosis.',
-              detail: 'Only calcium channel blocker proven to improve outcomes after SAH. Reduces DCI, not angiographic vasospasm — this distinction matters (CONSCIOUS-1/2/3: clazosentan reduced angiographic vasospasm but NO improvement in functional outcome, stopped for futility; confirms vasospasm ≠ DCI). If hypotension occurs, reduce to 30 mg q2h. Do not give IV. Hepatic impairment (Child-Pugh A/B): reduce to 30 mg q4h; Child-Pugh C: avoid or 30 mg q6h with close monitoring. Caution with CYP3A4 inhibitors (azoles, macrolides, protease inhibitors). Administer ≥1h before or 2h after meals.',
+              detail: 'Only calcium channel blocker proven to improve outcomes after SAH. Reduces DCI, not angiographic vasospasm — this distinction matters (CONSCIOUS-1/2/3: clazosentan reduced angiographic vasospasm but NO improvement in functional outcome, stopped for futility; confirms vasospasm ≠ DCI). If hypotension occurs, reduce to 30 mg q4h. Do not give IV. Hepatic impairment (Child-Pugh A/B): reduce to 30 mg q4h; Child-Pugh C: avoid or 30 mg q6h with close monitoring. Caution with CYP3A4 inhibitors (azoles, macrolides, protease inhibitors). Administer ≥1h before or 2h after meals.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Aneurysmal SAH 2023',
@@ -6177,9 +6177,11 @@ Clinician Name`;
             const rawVerbal = parseInt(items.verbal || 0, 10) || 0;
             const rawMotor = parseInt(items.motor || 0, 10) || 0;
             if (rawEye === 0 && rawVerbal === 0 && rawMotor === 0) return 0; // Not entered
-            const eye = Math.min(4, Math.max(1, rawEye || 1));
-            const verbal = Math.min(5, Math.max(1, rawVerbal || 1));
-            const motor = Math.min(6, Math.max(1, rawMotor || 1));
+            // Partial entry: some components entered, others missing — return null to flag incomplete
+            if ((rawEye === 0 || rawVerbal === 0 || rawMotor === 0) && (rawEye !== 0 || rawVerbal !== 0 || rawMotor !== 0)) return null;
+            const eye = Math.min(4, Math.max(1, rawEye));
+            const verbal = Math.min(5, Math.max(1, rawVerbal));
+            const motor = Math.min(6, Math.max(1, rawMotor));
             return eye + verbal + motor;
           };
 
@@ -12711,7 +12713,7 @@ Clinician Name`;
                 icon: 'brain',
                 color: 'pink',
                 orders: [
-                  'Nimodipine 60 mg PO/NG q4h x 21 days (reduce to 30 mg q2h if hypotension)',
+                  'Nimodipine 60 mg PO/NG q4h x 21 days (reduce to 30 mg q4h if hypotension)',
                   'Target SBP <160 mmHg until aneurysm secured',
                   'Nicardipine 5 mg/hr IV (titrate to 15 mg/hr) for BP control',
                   'IV isotonic saline for euvolemia — avoid hypovolemia',
@@ -12736,7 +12738,7 @@ Clinician Name`;
                 cvtOrders.push('Enoxaparin 1 mg/kg SC q12h (preferred) OR UFH IV weight-based protocol (aPTT 60-80s)');
               }
               cvtOrders.push('Hemorrhagic infarction is NOT a contraindication to anticoagulation (AHA/ASA Class I, LOE B-NR)');
-              cvtOrders.push('Monitor: CBC, aPTT (if UFH), anti-Xa levels (if LMWH + renal impairment), platelet count');
+              cvtOrders.push('Monitor: CBC + platelets baseline, day 3-5, then weekly (screen for HIT). aPTT q6h until therapeutic 60-80s then daily (if UFH). Anti-Xa level day 3-5 peak (if LMWH + CrCl <60 or weight extremes; target 0.5-1.0 IU/mL)');
               if (cvtAc.apsStatus) {
                 cvtOrders.push('APS CONFIRMED — transition to warfarin INR 2-3 (DOACs contraindicated per TRAPS/ASTRO-APS)');
               } else {
@@ -29893,12 +29895,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-gcs" style={{ order: getCalculatorOrder('gcs', 10) }} className="bg-slate-50 border border-slate-200 rounded-lg">
                       <summary className="cursor-pointer p-3 font-semibold text-slate-800 hover:bg-slate-100 rounded-lg flex items-center justify-between">
                         <span>Glasgow Coma Scale (GCS)</span>
-                        <span className="text-sm font-normal text-slate-600">Score: {calculateGCS(gcsItems)}</span>
+                        <span className="text-sm font-normal text-slate-600">Score: {calculateGCS(gcsItems) === null ? 'Incomplete' : calculateGCS(gcsItems)}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
                         <div className="text-right">
-                          <span className="text-xl font-bold text-slate-600" aria-live="polite">Score: {calculateGCS(gcsItems)}</span>
+                          <span className="text-xl font-bold text-slate-600" aria-live="polite">Score: {calculateGCS(gcsItems) === null ? 'Incomplete' : calculateGCS(gcsItems)}</span>
                           <div className="text-xs text-slate-500">Range: 3-15</div>
                         </div>
                         <button
@@ -29948,6 +29950,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                       {(() => {
                         const gcs = calculateGCS(gcsItems);
+                        if (gcs === null) return React.createElement('div', { className: 'mt-3 border rounded-lg p-2 text-xs bg-amber-50 border-amber-200 text-amber-800' }, React.createElement('span', { className: 'font-semibold' }, 'Incomplete: '), 'All three GCS components (Eye, Verbal, Motor) are required for a valid score.');
                         if (!gcs) return null;
                         const label = gcs <= 8 ? 'Severe' : gcs <= 12 ? 'Moderate' : 'Mild';
                         const tone = gcs <= 8 ? 'bg-red-50 border-red-200 text-red-800' : gcs <= 12 ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-emerald-50 border-emerald-200 text-emerald-800';
