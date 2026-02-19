@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-19)
 - Branch: `main`
-- Last pushed commit: `00f2fbf`
+- Last pushed commit: `c2fa213`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.52`
-- Service worker cache key: `stroke-app-v51`
+- Live APP_VERSION: `v5.14.53`
+- Service worker cache key: `stroke-app-v52`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -223,3 +223,12 @@
   - Signout note: clinical rationale field surfaced before disposition
 - Crash resilience audit: all P0 claims false positives (all split/parse patterns have upstream guards)
 - Guideline-to-note sync audit: transfer note already has secondary prevention (agent missed it)
+
+## Iteration 050 update (2026-02-19, Windows session)
+- Consent documentation:
+  - evtConsentWith field added to consentKit (default state, UI text input, all 3 diagnosis-change resets)
+  - Transfer note: EVT consent line includes "with [name/relation]" when specified
+  - Consult note: EVT consent header uses specific person name (falls back to "patient/family")
+- Warning system:
+  - Code status conflict: DNR/DNI or Comfort care + TNK/EVT → P0 goals-of-care conflict error
+- Trial eligibility audit: SISTER EVT exclusion confirmed correct (non-EVT candidates), CTP detail claims impractical (require new fields)
