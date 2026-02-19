@@ -11755,6 +11755,21 @@ Clinician Name`;
               const csTx = [n.tnkRecommended && 'TNK', n.evtRecommended && 'EVT'].filter(Boolean).join(' + ');
               warnings.push({ id: 'code-status-conflict', severity: 'error', msg: `Code status "${n.codeStatus}" conflicts with ${csTx} recommendation — verify goals of care align with acute intervention plan. Update code status or clear ${csTx} recommendation.` });
             }
+            // --- Transfer pre-flight safety ---
+            if (n.transferAccepted) {
+              if (gcsTotal && gcsTotal <= 8) {
+                warnings.push({ id: 'transfer-gcs-airway', severity: 'error', msg: `GCS ${gcsTotal} ≤8 with transfer accepted — confirm airway protection and intubation status before transport. Document airway management plan for EMS.` });
+              }
+              if (n.tnkAdminTime && !n.postTnkNeuroChecksStarted) {
+                warnings.push({ id: 'transfer-post-tnk-monitoring', severity: 'error', msg: 'Post-TNK patient being transferred — neuro checks q15min NOT marked as initiated. Confirm monitoring protocol active before transport.' });
+              }
+              if (!n.transferImagingShared) {
+                warnings.push({ id: 'transfer-no-imaging', severity: 'warn', msg: 'Transfer accepted but imaging NOT marked as shared with receiving facility — verify imaging was sent or accessible before transport.' });
+              }
+              if (!n.transferBPStable) {
+                warnings.push({ id: 'transfer-bp-unstable', severity: 'warn', msg: 'Transfer accepted but BP NOT marked as stable for transport — verify hemodynamic stability and BP parameters for EMS.' });
+              }
+            }
             // Future LKW detection + time window violations
             {
               const tf = calculateTimeFromLKW && calculateTimeFromLKW();
@@ -11904,6 +11919,11 @@ Clinician Name`;
             // Ticagrelor + strong CYP3A4 inhibitor interaction
             if (/ticagrelor|brilinta/.test(meds) && /ketoconazole|itraconazole|clarithromycin|ritonavir|nelfinavir/.test(meds)) {
               warnings.push({ id: 'ticagrelor-cyp3a4', severity: 'error', msg: 'Ticagrelor + strong CYP3A4 inhibitor detected — CONTRAINDICATED per FDA labeling. Strong CYP3A4 inhibitors (ketoconazole, itraconazole, clarithromycin, ritonavir) substantially increase ticagrelor exposure and bleeding risk. Switch antiplatelet or discontinue interacting drug.' });
+            }
+
+            // Nimodipine + CYP3A4 inhibitor interaction (SAH patients)
+            if (n.sahNimodipine && /diltiazem|verapamil|clarithromycin|erythromycin|ketoconazole|itraconazole|fluconazole|ritonavir|nelfinavir/.test(meds)) {
+              warnings.push({ id: 'nimodipine-cyp3a4', severity: 'error', msg: 'Nimodipine + CYP3A4 inhibitor detected — risk of severe hypotension. Nimodipine is extensively metabolized by CYP3A4; co-administration with inhibitors (diltiazem, verapamil, azole antifungals, macrolides, protease inhibitors) can dramatically increase nimodipine levels. Monitor BP closely and consider alternative agents.' });
             }
 
             // Prasugrel safety warnings (FDA Black Box)
