@@ -9544,7 +9544,7 @@ Clinician Name`;
               {
                 const procComps = [];
                 const procHt = telestrokeNote.hemorrhagicTransformation || {};
-                if (procHt.detected) procComps.push(`hemorrhagic transformation (PH type ${procHt.phType || '___'})`);
+                if (procHt.detected) procComps.push(`hemorrhagic transformation (${procHt.classification || 'type ___'})`);
                 if ((telestrokeNote.angioedema || {}).detected) procComps.push('angioedema');
                 note += `Complications: ${procComps.length > 0 ? procComps.join(', ') : '___ (none, perforation, dissection, distal embolization)'}\n`;
               }
@@ -11768,6 +11768,32 @@ Clinician Name`;
               }
               if (!n.transferBPStable) {
                 warnings.push({ id: 'transfer-bp-unstable', severity: 'warn', msg: 'Transfer accepted but BP NOT marked as stable for transport — verify hemodynamic stability and BP parameters for EMS.' });
+              }
+            }
+            // --- DTN timing ---
+            if (n.doorTime && n.needleTime) {
+              const [dtH, dtM] = n.doorTime.split(':').map(Number);
+              const [ntH, ntM] = n.needleTime.split(':').map(Number);
+              if (!isNaN(dtH) && !isNaN(dtM) && !isNaN(ntH) && !isNaN(ntM)) {
+                let dtnMin = (ntH * 60 + ntM) - (dtH * 60 + dtM);
+                if (dtnMin < 0) dtnMin += 1440;
+                if (dtnMin > 60) {
+                  warnings.push({ id: 'dtn-over-60', severity: 'warn', msg: `Door-to-needle ${dtnMin} min (>60 min AHA benchmark) — document delays and consider process improvement. AHA/ASA target is ≤60 min for at least 50% of cases.` });
+                }
+              }
+            }
+            // --- Contrast allergy + EVT/CTA ---
+            if (n.contrastAllergy && n.evtRecommended) {
+              warnings.push({ id: 'contrast-allergy-evt', severity: 'error', msg: 'CONTRAST ALLERGY with EVT recommended — CTA/angiography requires iodinated contrast. Ensure premedication protocol (methylprednisolone 32mg 12h+2h prior, diphenhydramine 50mg 1h prior) OR use MRA if available. Notify interventional team.' });
+            }
+            if (n.contrastAllergy && n.ctaResults) {
+              warnings.push({ id: 'contrast-allergy-cta-done', severity: 'warn', msg: 'Contrast allergy documented — monitor for delayed contrast reaction (4-48h post-exposure). Document any reaction for future reference.' });
+            }
+            // --- Renal impairment + contrast ---
+            {
+              const warnCrCl = calculateCrCl(n.age, n.weight, n.sex, n.creatinine, n.height);
+              if (warnCrCl && warnCrCl.value < 30 && (n.ctaResults || n.evtRecommended)) {
+                warnings.push({ id: 'crcl-contrast', severity: 'warn', msg: `CrCl ${warnCrCl.value} mL/min (<30) with contrast imaging — elevated contrast-induced nephropathy risk. Ensure IV hydration, hold metformin 48h, consider limiting contrast volume. Benefits of acute stroke imaging typically outweigh CIN risk.` });
               }
             }
             // Future LKW detection + time window violations
