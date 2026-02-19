@@ -7401,7 +7401,7 @@ Clinician Name`;
             };
             setEncounterHistory(prev => {
               const next = [snapshot, ...prev].slice(0, 20);
-              try { localStorage.setItem('strokeApp:encounterHistory', JSON.stringify(next)); } catch (e) { console.warn('Encounter history save failed:', e.name); }
+              try { localStorage.setItem('strokeApp:encounterHistory', JSON.stringify(next)); } catch (e) { console.warn('Encounter history save failed:', e.name); if (e.name === 'QuotaExceededError' || e.code === 22) { try { addToast('Storage full — encounter history may not be saved. Export your data or clear old encounters.', 'error'); } catch (_) {} } }
               return next;
             });
           }, [telestrokeNote, nihssScore, consultationType]);
@@ -8889,7 +8889,7 @@ Clinician Name`;
               const isDiagSAH = telestrokeNote.diagnosisCategory === 'sah';
               if (isDiagSAH) {
                 note += `\nSAH MANAGEMENT:\n`;
-                if (telestrokeNote.sahGrade) note += `- ${{'huntHess': 'Hunt & Hess Grade', 'wfns': 'WFNS Grade'}[telestrokeNote.sahGradeScale] || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
+                if (telestrokeNote.sahGrade) note += `- ${{'huntHess': 'Hunt & Hess Grade', 'wfns': 'WFNS Grade', 'modifiedFisher': 'Modified Fisher Grade'}[telestrokeNote.sahGradeScale] || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
                 if (telestrokeNote.fisherGrade) note += `- Modified Fisher Grade: ${telestrokeNote.fisherGrade}\n`;
                 if (telestrokeNote.sahBPManaged) note += `- BP managed (SBP <160 pre-securing)\n`;
                 if (telestrokeNote.sahNimodipine) note += `- Nimodipine: initiated\n`;
@@ -10253,7 +10253,7 @@ Clinician Name`;
               const dischIsSAH = telestrokeNote.diagnosisCategory === 'sah';
               if (dischIsSAH) {
                 note += '\nSAH MANAGEMENT:\n';
-                if (telestrokeNote.sahGrade) note += `- ${{'huntHess': 'Hunt & Hess Grade', 'wfns': 'WFNS Grade'}[telestrokeNote.sahGradeScale] || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
+                if (telestrokeNote.sahGrade) note += `- ${{'huntHess': 'Hunt & Hess Grade', 'wfns': 'WFNS Grade', 'modifiedFisher': 'Modified Fisher Grade'}[telestrokeNote.sahGradeScale] || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
                 if (telestrokeNote.fisherGrade) note += `- Modified Fisher Grade: ${telestrokeNote.fisherGrade}\n`;
                 if (telestrokeNote.sahBPManaged) note += `- BP managed (SBP <160 pre-securing)\n`;
                 if (telestrokeNote.sahNimodipine) note += `- Nimodipine: initiated\n`;
@@ -11025,7 +11025,7 @@ Clinician Name`;
             // Add SAH-specific details
             if (telestrokeNote.diagnosisCategory === 'sah') {
               let sahNote = '\nSAH MANAGEMENT:\n';
-              if (telestrokeNote.sahGrade) sahNote += `- ${{'huntHess': 'Hunt & Hess Grade', 'wfns': 'WFNS Grade'}[telestrokeNote.sahGradeScale] || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
+              if (telestrokeNote.sahGrade) sahNote += `- ${{'huntHess': 'Hunt & Hess Grade', 'wfns': 'WFNS Grade', 'modifiedFisher': 'Modified Fisher Grade'}[telestrokeNote.sahGradeScale] || 'SAH Grade'}: ${telestrokeNote.sahGrade}\n`;
               if (telestrokeNote.fisherGrade) sahNote += `- Modified Fisher Grade: ${telestrokeNote.fisherGrade}\n`;
               if (telestrokeNote.sahBPManaged) sahNote += `- BP managed (SBP <160 pre-securing)\n`;
               if (telestrokeNote.sahNimodipine) sahNote += `- Nimodipine 60 mg q4h started\n`;
@@ -12177,6 +12177,21 @@ Clinician Name`;
             // SAH grading scale completeness
             if (n.diagnosisCategory === 'sah' && n.sahGrade && !n.sahGradeScale) {
               warnings.push({ id: 'sah-grade-no-scale', severity: 'warn', msg: 'SAH Grade documented but grading scale not specified — select Hunt-Hess, WFNS, or Modified Fisher scale for clarity.' });
+            }
+
+            // SAH aneurysm securing urgency
+            if (n.diagnosisCategory === 'sah' && !n.sahAneurysmSecured && n.sahNeurosurgeryConsulted) {
+              warnings.push({ id: 'sah-aneurysm-unsecured', severity: 'warn', msg: 'SAH with aneurysm NOT yet secured — AHA/ASA recommends securing ruptured aneurysm within 24 hours to reduce rebleeding risk (Class I, LOE B-NR). Confirm securing plan and timeline with neurosurgery.' });
+            }
+
+            // DCI suspected without induced hypertension
+            if (n.diagnosisCategory === 'sah' && (n.sahVasospasmMonitoring || {}).dciSuspected) {
+              if (n.sahAneurysmSecured && !(n.sahVasospasmMonitoring || {}).inducedHypertension) {
+                warnings.push({ id: 'dci-no-induced-htn', severity: 'error', msg: 'DCI suspected with aneurysm secured but induced hypertension NOT initiated — consider hemodynamic augmentation (SBP 160-200) with phenylephrine/norepinephrine as first-line treatment for symptomatic DCI (AHA/ASA Class IIa, LOE B-R).' });
+              }
+              if (!n.sahAneurysmSecured) {
+                warnings.push({ id: 'dci-unsecured-aneurysm', severity: 'error', msg: 'DCI suspected but aneurysm NOT yet secured — induced hypertension is CONTRAINDICATED (rebleeding risk). Prioritize urgent aneurysm securing. Consider IV fluids for euvolemia and intra-arterial vasodilators if available.' });
+              }
             }
 
             // BP phase-diagnosis coherence
@@ -21704,6 +21719,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <option value="">-- Select --</option>
                                     <option value="huntHess">Hunt & Hess</option>
                                     <option value="wfns">WFNS</option>
+                                    <option value="modifiedFisher">Modified Fisher</option>
                                   </select>
                                 </div>
                                 <div>
@@ -21711,7 +21727,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <select
                                     id="input-sah-grade"
                                     value={telestrokeNote.sahGrade || ''}
-                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, sahGrade: v})); }}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => { const upd = {...prev, sahGrade: v}; if (prev.sahGradeScale === 'modifiedFisher') upd.fisherGrade = v; return upd; }); }}
                                     className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm"
                                   >
                                     <option value="">-- Select --</option>
@@ -21730,6 +21746,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         <option value="3">Grade III - GCS 13-14, with motor deficit</option>
                                         <option value="4">Grade IV - GCS 7-12</option>
                                         <option value="5">Grade V - GCS 3-6</option>
+                                      </>
+                                    ) : telestrokeNote.sahGradeScale === 'modifiedFisher' ? (
+                                      <>
+                                        <option value="0">Grade 0 - No SAH or IVH (~0% vasospasm)</option>
+                                        <option value="1">Grade 1 - Thin SAH, no IVH (~24%)</option>
+                                        <option value="2">Grade 2 - Thin SAH + IVH (~33%)</option>
+                                        <option value="3">Grade 3 - Thick SAH, no IVH (~33%)</option>
+                                        <option value="4">Grade 4 - Thick SAH + IVH (~40%)</option>
                                       </>
                                     ) : (
                                       <>
@@ -25161,7 +25185,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   if (ichSurg.hydrocephalus) note += `- Obstructive hydrocephalus present.\n`;
                                 } else if (pathwayType === 'sah') {
                                   note += `PLAN:\n`;
-                                  if (telestrokeNote.sahGrade) note += `- SAH Grade: ${telestrokeNote.sahGrade} (${telestrokeNote.sahGradeScale === 'huntHess' ? 'Hunt & Hess' : telestrokeNote.sahGradeScale === 'wfns' ? 'WFNS' : 'scale not specified'})\n`;
+                                  if (telestrokeNote.sahGrade) note += `- SAH Grade: ${telestrokeNote.sahGrade} (${telestrokeNote.sahGradeScale === 'huntHess' ? 'Hunt & Hess' : telestrokeNote.sahGradeScale === 'wfns' ? 'WFNS' : telestrokeNote.sahGradeScale === 'modifiedFisher' ? 'Modified Fisher' : 'scale not specified'})\n`;
                                   if (telestrokeNote.sahBPManaged) note += `- BP management initiated (target SBP <160 pre-securing).\n`;
                                   if (telestrokeNote.sahNimodipine) note += `- Nimodipine 60 mg q4h started for DCI prevention.\n`;
                                   if (telestrokeNote.sahEVDPlaced) note += `- EVD placed for hydrocephalus management.\n`;
