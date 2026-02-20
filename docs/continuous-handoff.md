@@ -544,3 +544,17 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 078 update (2026-02-20, macOS session)
+- Expanded `buildContraindicationTrace(...)` output in `src/app.jsx` with structured supportive negatives:
+  - INR/platelet/aPTT/glucose threshold clearance
+  - BP threshold clearance
+  - CT negative hemorrhage text detection
+  - No anticoagulant exposure / remote DOAC-dose signal where documented
+- Rebuilt client bundle (`app.js`) after source changes.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`

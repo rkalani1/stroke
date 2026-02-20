@@ -6541,18 +6541,40 @@ Clinician Name`;
             if (!note) return '';
             const blockers = [];
             const cautions = [];
+            const negatives = [];
             const inr = parseFloat(note.inr);
             const platelets = parseFloat(note.plateletCount);
             const ptt = parseFloat(note.ptt);
             const glucose = parseFloat(note.glucose);
             const bp = parseBloodPressure(note.presentingBP || '');
             const dx = note.diagnosisCategory || '';
+            const ctText = (note.ctResults || '').toLowerCase();
+            const anticoagType = String(note.lastDOACType || '').toLowerCase();
+
             if (dx === 'ich' || dx === 'sah') blockers.push(`Hemorrhagic diagnosis (${dx.toUpperCase()})`);
             if (!Number.isNaN(inr) && inr > 1.7) blockers.push(`INR ${inr.toFixed(1)} > 1.7`);
             if (!Number.isNaN(platelets) && platelets < 100) blockers.push(`Platelets ${platelets}K < 100K`);
             if (!Number.isNaN(ptt) && ptt > 40) blockers.push(`aPTT ${ptt}s > 40s`);
             if (!Number.isNaN(glucose) && glucose < 50) blockers.push(`Glucose ${glucose} mg/dL < 50`);
             if (bp && (bp.systolic > 185 || bp.diastolic > 110)) cautions.push(`BP ${bp.systolic}/${bp.diastolic} above pre-lysis threshold`);
+
+            if (!Number.isNaN(inr) && inr <= 1.7) negatives.push(`INR ${inr.toFixed(1)} ≤ 1.7`);
+            if (!Number.isNaN(platelets) && platelets >= 100) negatives.push(`Platelets ${Math.round(platelets)}K ≥ 100K`);
+            if (!Number.isNaN(ptt) && ptt <= 40) negatives.push(`aPTT ${ptt.toFixed(1)}s ≤ 40s`);
+            if (!Number.isNaN(glucose) && glucose >= 50) negatives.push(`Glucose ${Math.round(glucose)} mg/dL ≥ 50`);
+            if (bp && bp.systolic <= 185 && bp.diastolic <= 110) negatives.push(`BP ${bp.systolic}/${bp.diastolic} within pre-lysis threshold`);
+            if (/no[^.\n]*(hemorrhage|haemorrhage|bleed|sah)/i.test(ctText)) negatives.push('No intracranial hemorrhage reported on CT');
+
+            if (!anticoagType || anticoagType === 'none' || anticoagType === 'unknown') {
+              negatives.push('No known anticoagulant exposure documented');
+            } else if (['apixaban', 'rivaroxaban', 'dabigatran', 'edoxaban'].includes(anticoagType) && note.lastDOACDose) {
+              const lastDose = new Date(note.lastDOACDose);
+              if (!Number.isNaN(lastDose.getTime())) {
+                const hoursSince = (Date.now() - lastDose.getTime()) / (1000 * 60 * 60);
+                if (hoursSince >= 48) negatives.push(`Last DOAC dose ${hoursSince.toFixed(0)}h ago (≥48h)`);
+              }
+            }
+
             const wake = getWakeUpEligibilityForNote(note);
             if ((note.tnkRecommended || note.tnkAutoBlocked) && wake.extendEligible) {
               cautions.push('Extended-window imaging pathway active (WAKE-UP/EXTEND criteria)');
@@ -6561,6 +6583,7 @@ Clinician Name`;
             const lines = ['CONTRAINDICATION TRACE:'];
             lines.push(`- TNK blockers: ${blockers.length ? blockers.join('; ') : 'none documented'}`);
             if (cautions.length) lines.push(`- Clinical cautions: ${cautions.join('; ')}`);
+            if (negatives.length) lines.push(`- Supportive negatives: ${[...new Set(negatives)].join('; ')}`);
             return lines.join('\n');
           }
 

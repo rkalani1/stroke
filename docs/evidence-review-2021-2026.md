@@ -210,3 +210,8 @@
 - No new medical evidence sources were added in this iteration.
 - Added scheduled live-smoke failure routing to GitHub issues with automatic issue resolution on subsequent pass.
 - This improves operational reliability of evidence-linked pathway monitoring by ensuring failed production audits are surfaced and tracked.
+
+### Operational update (2026-02-20, iter-078)
+- No new medical evidence sources were added in this iteration.
+- Strengthened consult-note safety traceability by adding structured supportive-negative outputs (when documented) to thrombolysis contraindication trace lines.
+- This complements blocker/caution output and improves decision transparency during acute handoffs.

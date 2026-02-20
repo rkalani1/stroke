@@ -117,3 +117,10 @@
   - Added automatic closure of open alert issues when a later scheduled/manual live-smoke run succeeds.
 - Remaining operations gap:
   - Optional external notification fan-out (Slack/email/PagerDuty) if additional channels are desired beyond GitHub issue routing.
+
+## Iteration 078 Update (2026-02-20)
+- Documentation-safety gap reduced:
+  - Expanded contraindication trace output to include structured **supportive negatives** (not only blockers/cautions), improving rapid chart review and handoff clarity.
+  - Supportive-negative output is conditionally evidence-safe (only emitted when specific entered data meet thresholds).
+- Remaining workflow gap:
+  - Add dedicated UI capture fields for infusion/drip parameters to improve ICU handoff granularity in note templates.

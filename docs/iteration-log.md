@@ -997,3 +997,23 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 078 (2026-02-20)
+
+### What was changed
+- Enhanced contraindication-trace documentation in `/Users/rizwankalani/stroke/src/app.jsx` by adding explicit **supportive negatives** when data are entered and within safety thresholds.
+- `buildContraindicationTrace(...)` now captures and exports:
+  - INR ≤1.7
+  - Platelets ≥100K
+  - aPTT ≤40s
+  - Glucose ≥50 mg/dL
+  - BP within pre-lysis threshold (≤185/110)
+  - No intracranial hemorrhage wording when CT text explicitly documents a negative hemorrhage finding
+  - No known anticoagulant exposure (or DOAC last dose ≥48h when documented)
+- Contraindication trace remains conservative: only documented/derivable negatives are included.
+- Rebuilt bundled client artifact (`/Users/rizwankalani/stroke/app.js`) from updated source.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)
