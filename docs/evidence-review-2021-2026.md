@@ -166,3 +166,8 @@
 - Implemented evidence-to-workflow operationalization for CVT special populations (pregnancy/postpartum, APS, active cancer, severe thrombophilia) by converting guidance text into structured decision-support fields and note output.
 - Added citation metadata quality gate (`scripts/validate-citations.mjs`) that enforces citation table completeness (title/year/source/URL/PMID|DOI|NCT) within the 2021-2026 evidence window before smoke QA.
 - Inference disclosure: the CVT special-population duration/agent summary in UI is a synthesis layer over listed guideline/statement evidence, not a new independent recommendation source.
+
+### Operational update (2026-02-20, iter-069)
+- No new guideline/RCT sources were added.
+- Strengthened evidence implementation reliability by adding scenario-level regression assertions that verify behavior under high-risk TIA and APS-CVT conditions.
+- This iteration improves confidence that existing evidence-linked recommendations remain actionable after future UI/logic edits.

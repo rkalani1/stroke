@@ -847,3 +847,19 @@
 ### Next opportunities
 - Add scenario-level QA assertions for CVT special-population warning transitions (APS/pregnancy toggles).
 - Add deterministic smoke checks for wake-up CT perfusion auto-eligibility text output.
+
+## Iteration 069 (2026-02-20)
+
+### What was changed
+- Upgraded regression smoke (`scripts/qa-smoke.mjs`) from static presence checks to scenario-level behavior checks:
+  - TIA scenario assertion: enabling `Persistent deficit` in TIA Disposition Engine must switch recommendation to `Admit / high-acuity observation`.
+  - CVT scenario assertion: enabling `APS confirmed` in CVT special-population panel must surface APS caution text (`DOACs are not recommended in APS`).
+- Preserved existing assertions for:
+  - Ischemic MeVO wording (`No routine EVT (select/trial only)`)
+  - Post-EVT BP Guardrail presence
+  - TIA Disposition Engine presence
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)

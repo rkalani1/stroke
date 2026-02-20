@@ -52,3 +52,10 @@
   - Added evidence citation metadata validator (`validate:citations`) to prevent silent citation-structure drift.
 - Remaining gap:
   - Add scenario-driven decision-state assertions (for example APS+DOAC error transitions and TIA risk-tier disposition changes), not just static component presence.
+
+## Iteration 069 Update (2026-02-20)
+- Scenario-level QA gap reduced:
+  - Added deterministic state-transition assertions for TIA disposition (high-risk trigger) and CVT APS caution output.
+  - Smoke coverage now validates behavior changes, not only component presence.
+- Remaining QA gap:
+  - Add scenario assertions for wake-up/extended-window auto-perfusion eligibility state transitions and contraindication-trace output in note generation.

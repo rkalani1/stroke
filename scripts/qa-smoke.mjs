@@ -262,6 +262,47 @@ async function auditView(browser, target, viewport) {
       if ((await page.getByText(/TIA Disposition Engine/i).count()) === 0) {
         addIssue(issues, 'missing-tia-disposition-engine');
       }
+
+      const persistentDeficitCheckbox = page.getByRole('checkbox', { name: /Persistent deficit/i }).first();
+      if ((await persistentDeficitCheckbox.count()) === 0) {
+        addIssue(issues, 'missing-tia-risk-input', { field: 'Persistent deficit' });
+      } else {
+        await persistentDeficitCheckbox.check();
+        await page.waitForTimeout(150);
+        if ((await page.getByText(/Admit \/ high-acuity observation/i).count()) === 0) {
+          addIssue(issues, 'tia-disposition-scenario-fail');
+        }
+        await persistentDeficitCheckbox.uncheck();
+      }
+    }
+
+    const cvtButton = page.getByRole('tab', { name: /CVT management tab/i }).first();
+    if ((await cvtButton.count()) === 0) {
+      addIssue(issues, 'missing-library-subtab', { subtab: 'CVT' });
+    } else {
+      await cvtButton.click();
+      await page.waitForTimeout(200);
+
+      const cvtSpecialSummary = page.locator('summary:has-text("CVT in Special Populations")').first();
+      if ((await cvtSpecialSummary.count()) === 0) {
+        addIssue(issues, 'missing-cvt-special-populations-section');
+      } else {
+        await cvtSpecialSummary.scrollIntoViewIfNeeded();
+        await cvtSpecialSummary.click();
+        await page.waitForTimeout(150);
+      }
+
+      const apsCheckbox = page.getByRole('checkbox', { name: /APS confirmed/i }).first();
+      if ((await apsCheckbox.count()) === 0) {
+        addIssue(issues, 'missing-cvt-special-pop-input', { field: 'APS confirmed' });
+      } else {
+        await apsCheckbox.check();
+        await page.waitForTimeout(150);
+        if ((await page.getByText(/DOACs are not recommended in APS/i).count()) === 0) {
+          addIssue(issues, 'cvt-aps-scenario-fail');
+        }
+        await apsCheckbox.uncheck();
+      }
     }
   }
 

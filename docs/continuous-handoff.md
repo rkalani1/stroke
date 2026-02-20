@@ -437,3 +437,14 @@
   - `npm run qa` pass (local + live smoke, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run build`
+
+## Iteration 069 update (2026-02-20, macOS session)
+- Expanded smoke QA from static presence checks to scenario-level decision checks:
+  - TIA: `Persistent deficit` toggle must produce `Admit / high-acuity observation` recommendation.
+  - CVT: `APS confirmed` toggle must produce APS caution text in special-population panel.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (local)
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
