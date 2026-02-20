@@ -621,3 +621,21 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations:links && npm run qa`
+
+## Iteration 084 update (2026-02-20, macOS session)
+- Added evidence identifier-endpoint checks in citation validator:
+  - New CLI mode: `node ./scripts/validate-citations.mjs --check-identifiers`
+  - Verifies PMID, DOI, and NCT endpoint health with retry/timeout safeguards.
+  - DOI checks now use DOI handle API semantics to avoid landing-page false negatives.
+- Added npm script:
+  - `npm run validate:citations:ids`
+- Updated scheduled production audit workflow:
+  - `live-smoke.yml` now runs both `validate:citations:links` and `validate:citations:ids` before `npm run qa`.
+- Validation status:
+  - `npm run validate:citations:ids` pass
+  - `npm run validate:citations:links` pass (warnings only)
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations:links && npm run validate:citations:ids && npm run qa`

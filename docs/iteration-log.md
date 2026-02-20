@@ -1112,3 +1112,22 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 084 (2026-02-20)
+
+### What was changed
+- Added citation identifier-endpoint verification mode to `/Users/rizwankalani/stroke/scripts/validate-citations.mjs`:
+  - new flag: `--check-identifiers`
+  - verifies PMID, DOI, and NCT endpoints with retry/timeout safeguards
+  - DOI validation now uses DOI handle API endpoint semantics instead of landing-page fetches to reduce false negatives
+- Added npm script in `/Users/rizwankalani/stroke/package.json`:
+  - `validate:citations:ids`
+- Updated scheduled production audit in `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`:
+  - runs `validate:citations:ids` in addition to URL-health checks before full smoke QA.
+
+### QA and validation
+- `npm run validate:citations:ids`: pass
+- `npm run validate:citations:links`: pass (3 restricted-access warnings, 0 failures)
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)

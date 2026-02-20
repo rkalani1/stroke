@@ -181,3 +181,11 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass
 - [x] `npm run qa` local + live smoke pass with 0 issues
+
+## Last completed run (2026-02-20, iter-084)
+- [x] `npm run validate:citations:ids` pass (PMID/DOI/NCT endpoint verification)
+- [x] `npm run validate:citations:links` pass (warnings only; no hard failures)
+- [x] Scheduled live-smoke workflow now runs both URL-health and identifier checks pre-QA
+- [x] `npm run build` pass
+- [x] `npm test` pass
+- [x] `npm run qa` local + live smoke pass with 0 issues

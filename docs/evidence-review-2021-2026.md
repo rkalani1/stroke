@@ -240,3 +240,8 @@
 - No new medical evidence sources were added in this iteration.
 - Added citation URL-health verification capability in the evidence validator and integrated it into scheduled live-smoke workflow execution.
 - This improves ongoing evidence-source availability monitoring without changing clinical recommendation content.
+
+### Operational update (2026-02-20, iter-084)
+- No new medical evidence sources were added in this iteration.
+- Added PMID/DOI/NCT identifier endpoint verification mode to the citation validator and integrated it into scheduled production audits.
+- This further hardens evidence metadata integrity monitoring while preserving existing clinical recommendation logic.

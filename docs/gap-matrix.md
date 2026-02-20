@@ -160,3 +160,11 @@
   - Scheduled live-smoke workflow now runs citation link-health validation before full QA.
 - Remaining evidence-ops gap:
   - Add scheduled PMID/DOI resolver cross-checking (identifier endpoint validation) for deeper metadata drift detection.
+
+## Iteration 084 Update (2026-02-20)
+- Evidence-ops identifier-integrity gap reduced:
+  - Citation validator now verifies PMID/DOI/NCT endpoint health with dedicated identifier checks.
+  - DOI verification was hardened to DOI handle API semantics to avoid false 404 failures from landing-page checks.
+  - Scheduled live-smoke workflow now runs both URL-health and identifier-endpoint checks before smoke QA.
+- Remaining evidence-ops gap:
+  - Add automated watchlist ingestion for newly published 2021-2026 stroke guidance/trials not yet represented in the table.

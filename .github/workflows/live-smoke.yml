@@ -30,6 +30,9 @@ jobs:
       - name: Validate citation URL health
         run: npm run validate:citations:links
 
+      - name: Validate citation identifier endpoints
+        run: npm run validate:citations:ids
+
       - name: Run full QA (local + live)
         run: npm run qa
 

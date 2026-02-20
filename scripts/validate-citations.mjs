@@ -7,6 +7,7 @@ const yearMin = 2021;
 const yearMax = 2026;
 const args = new Set(process.argv.slice(2));
 const checkLinks = args.has('--check-links');
+const checkIdentifiers = args.has('--check-identifiers');
 const linkTimeoutMs = 10000;
 const linkRetries = 1;
 const linkConcurrency = 4;
@@ -226,6 +227,117 @@ async function validateUrlHealth(parsedRows) {
   return { errors, warnings, checkedCount: entries.length };
 }
 
+function pushRef(map, key, ref) {
+  const existing = map.get(key) || [];
+  existing.push(ref);
+  map.set(key, existing);
+}
+
+function toRowSummary(refs) {
+  return refs.map((ref) => ref.rowNum).join(', ');
+}
+
+function toDoiHandleApiUrl(doi) {
+  return `https://doi.org/api/handles/${encodeURIComponent(doi).replace(/%2F/g, '/')}`;
+}
+
+async function checkDoiIdentifier(doi) {
+  const url = toDoiHandleApiUrl(doi);
+  let lastFailure = null;
+
+  for (let attempt = 0; attempt <= linkRetries; attempt += 1) {
+    try {
+      const response = await fetchWithTimeout(url, { method: 'GET', headers: { 'user-agent': 'stroke-citation-validator/1.0' } });
+      const status = response.status;
+      const bodyText = await response.text();
+      if (/HANDLE NOT FOUND/i.test(bodyText)) {
+        return { ok: false, status, method: 'GET', message: 'DOI handle not found' };
+      }
+      if (/"responseCode"\s*:\s*100/i.test(bodyText)) {
+        return { ok: true, status, method: 'GET', warning: status === 401 || status === 403 ? `HTTP ${status}` : null };
+      }
+      if (isHealthyUrlStatus(status)) {
+        return { ok: true, status, method: 'GET', warning: status === 401 || status === 403 ? `HTTP ${status}` : null };
+      }
+      lastFailure = { status, method: 'GET', message: `HTTP ${status}` };
+    } catch (error) {
+      lastFailure = { status: null, method: 'GET', message: error?.message || String(error) };
+      if (attempt < linkRetries) {
+        await sleep(250 * (attempt + 1));
+        continue;
+      }
+    }
+  }
+
+  return {
+    ok: false,
+    status: lastFailure?.status ?? null,
+    method: 'GET',
+    message: lastFailure?.message || 'DOI endpoint unreachable'
+  };
+}
+
+async function validateIdentifierHealth(parsedRows) {
+  const errors = [];
+  const warnings = [];
+  const pmidRefs = new Map();
+  const doiRefs = new Map();
+  const nctRefs = new Map();
+
+  parsedRows.forEach((row, idx) => {
+    const rowNum = idx + 1;
+    const ids = extractIdentifiers(row.id);
+    ids.pmids.forEach((pmid) => pushRef(pmidRefs, pmid, { rowNum, title: row.title }));
+    ids.dois.forEach((doi) => pushRef(doiRefs, doi.toLowerCase(), { rowNum, title: row.title, raw: doi }));
+    ids.ncts.forEach((nct) => pushRef(nctRefs, nct.toUpperCase(), { rowNum, title: row.title }));
+  });
+
+  const checks = [];
+  for (const [pmid, refs] of pmidRefs.entries()) {
+    checks.push({ kind: 'PMID', key: pmid, url: `https://pubmed.ncbi.nlm.nih.gov/${pmid}/`, refs });
+  }
+  for (const [doiKey, refs] of doiRefs.entries()) {
+    checks.push({ kind: 'DOI', key: doiKey, url: toDoiHandleApiUrl(refs[0].raw || doiKey), refs });
+  }
+  for (const [nct, refs] of nctRefs.entries()) {
+    checks.push({ kind: 'NCT', key: nct, url: `https://clinicaltrials.gov/study/${nct}`, refs });
+  }
+
+  let cursor = 0;
+  const workers = Array.from({ length: Math.min(linkConcurrency, checks.length || 1) }, async () => {
+    while (cursor < checks.length) {
+      const current = cursor;
+      cursor += 1;
+      const check = checks[current];
+      const health = check.kind === 'DOI'
+        ? await checkDoiIdentifier(check.key)
+        : await checkUrlHealth(check.url);
+      const rowSummary = toRowSummary(check.refs);
+
+      if (!health.ok) {
+        errors.push(`${check.kind} endpoint failed for row(s) ${rowSummary}: ${check.key} (${health.message})`);
+        continue;
+      }
+
+      if (health.warning) {
+        warnings.push(`${check.kind} row(s) ${rowSummary} returned ${health.warning} (${check.key})`);
+      }
+    }
+  });
+
+  await Promise.all(workers);
+  return {
+    errors,
+    warnings,
+    checkedCount: checks.length,
+    counts: {
+      pmids: pmidRefs.size,
+      dois: doiRefs.size,
+      ncts: nctRefs.size
+    }
+  };
+}
+
 async function main() {
   const markdown = await fs.readFile(filePath, 'utf8');
   const rows = parseTableRows(markdown);
@@ -238,12 +350,22 @@ async function main() {
   const errors = validateRows(parsedRows);
   const warnings = [];
   let checkedUrls = 0;
+  let checkedIds = 0;
+  let idCounts = { pmids: 0, dois: 0, ncts: 0 };
 
   if (checkLinks) {
     const linkResults = await validateUrlHealth(parsedRows);
     errors.push(...linkResults.errors);
     warnings.push(...linkResults.warnings);
     checkedUrls = linkResults.checkedCount;
+  }
+
+  if (checkIdentifiers) {
+    const idResults = await validateIdentifierHealth(parsedRows);
+    errors.push(...idResults.errors);
+    warnings.push(...idResults.warnings);
+    checkedIds = idResults.checkedCount;
+    idCounts = idResults.counts;
   }
 
   if (warnings.length > 0) {
@@ -257,8 +379,13 @@ async function main() {
     process.exit(1);
   }
 
-  const linkSuffix = checkLinks ? `; URL health checked (${checkedUrls} unique)` : '';
-  console.log(`Citation validation passed: ${rows.length} rows, years ${yearMin}-${yearMax}${linkSuffix}.`);
+  const suffixes = [];
+  if (checkLinks) suffixes.push(`URL health checked (${checkedUrls} unique)`);
+  if (checkIdentifiers) {
+    suffixes.push(`identifier endpoints checked (${checkedIds} total: PMID ${idCounts.pmids}, DOI ${idCounts.dois}, NCT ${idCounts.ncts})`);
+  }
+  const suffixText = suffixes.length > 0 ? `; ${suffixes.join('; ')}` : '';
+  console.log(`Citation validation passed: ${rows.length} rows, years ${yearMin}-${yearMax}${suffixText}.`);
 }
 
 main().catch((error) => {
