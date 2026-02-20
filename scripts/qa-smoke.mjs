@@ -95,6 +95,7 @@ async function auditView(browser, target, viewport) {
   const page = await context.newPage();
   const issues = [];
   const notes = {};
+  let postEvtPlanConfigured = false;
 
   page.on('pageerror', (err) => addIssue(issues, 'pageerror', { message: err.message }));
   page.on('console', (msg) => {
@@ -201,6 +202,12 @@ async function auditView(browser, target, viewport) {
     if ((await videoModeButton.count()) > 0) {
       await videoModeButton.click();
       await page.waitForTimeout(150);
+    }
+
+    const evtRecommendedCheckbox = page.getByRole('checkbox', { name: /EVT Recommended/i }).first();
+    if ((await evtRecommendedCheckbox.count()) > 0) {
+      await evtRecommendedCheckbox.check();
+      await page.waitForTimeout(100);
     }
 
     await page.keyboard.press('Control+K');
@@ -419,6 +426,23 @@ async function auditView(browser, target, viewport) {
       if ((await page.getByText(/No routine EVT \(select\/trial only\)/i).count()) === 0) {
         addIssue(issues, 'missing-mevo-updated-wording');
       }
+
+      const guardrailHeading = page.getByRole('heading', { name: /Post-EVT BP Guardrail/i }).first();
+      if ((await guardrailHeading.count()) > 0) {
+        const guardrailCard = guardrailHeading.locator('xpath=ancestor::div[contains(@class,"rounded-xl")][1]');
+        const guardrailSelects = guardrailCard.locator('select');
+        const guardrailBpInput = guardrailCard.locator('input[type="text"]').first();
+        if ((await guardrailSelects.count()) >= 3 && (await guardrailBpInput.count()) > 0) {
+          await guardrailSelects.nth(0).selectOption('successful');
+          await guardrailBpInput.fill('158/88');
+          await guardrailSelects.nth(1).selectOption('nicardipine');
+          await guardrailSelects.nth(2).selectOption('guardrail');
+          await page.waitForTimeout(150);
+          postEvtPlanConfigured = true;
+        } else {
+          addIssue(issues, 'missing-post-evt-bp-inputs');
+        }
+      }
     }
 
     const tiaButton = page.getByRole('tab', { name: /TIA management tab/i }).first();
@@ -500,6 +524,60 @@ async function auditView(browser, target, viewport) {
       const phonePresent = await page.locator(`input[value=\"${contact.phone}\"]`).count();
       if (phonePresent === 0) {
         addIssue(issues, 'missing-required-contact-phone', { contact: contact.label, phone: contact.phone });
+      }
+    }
+  }
+
+  if (postEvtPlanConfigured) {
+    await page.keyboard.press('Control+2');
+    await page.waitForTimeout(150);
+    const activeAfterEvtPlanCheck = await getActiveTabLabel(page);
+    if (!activeAfterEvtPlanCheck || !/Encounter/i.test(activeAfterEvtPlanCheck)) {
+      addIssue(issues, 'keyboard-tab-nav', { combo: 'Ctrl+2', activeAfter: activeAfterEvtPlanCheck });
+    } else {
+      const ischemicButton = page.getByRole('button', { name: /^Ischemic Stroke or TIA$/ }).first();
+      if ((await ischemicButton.count()) > 0) {
+        await ischemicButton.click();
+        await page.waitForTimeout(100);
+      }
+
+      const evtRecommendedCheckbox = page.getByRole('checkbox', { name: /EVT Recommended/i }).first();
+      if ((await evtRecommendedCheckbox.count()) > 0) {
+        await evtRecommendedCheckbox.check();
+        await page.waitForTimeout(100);
+      }
+
+      const templateSelect = page.locator('select:has(option[value="signout"])').first();
+      if ((await templateSelect.count()) > 0) {
+        await templateSelect.selectOption('signout');
+        await page.waitForTimeout(100);
+      } else {
+        addIssue(issues, 'missing-note-template-select-post-evt');
+      }
+
+      const copyFullNoteButton = page.getByRole('button', { name: /Copy Full Note/i }).first();
+      if ((await copyFullNoteButton.count()) === 0) {
+        addIssue(issues, 'missing-copy-full-note-button-post-evt');
+      } else {
+        await copyFullNoteButton.scrollIntoViewIfNeeded();
+        await copyFullNoteButton.click();
+        await page.waitForTimeout(200);
+        let clipboardText = '';
+        try {
+          clipboardText = await page.evaluate(async () => {
+            try {
+              return await navigator.clipboard.readText();
+            } catch {
+              return '';
+            }
+          });
+        } catch (error) {
+          addIssue(issues, 'clipboard-read-failed-post-evt', { message: error?.message || String(error) });
+        }
+
+        if (!/BP plan: .*Agent: Nicardipine drip|Plan: .*Agent: Nicardipine drip/i.test(clipboardText || '')) {
+          addIssue(issues, 'post-evt-bp-note-plan-missing');
+        }
       }
     }
   }

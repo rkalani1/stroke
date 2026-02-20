@@ -1076,3 +1076,20 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 082 (2026-02-20)
+
+### What was changed
+- Completed post-EVT note-plan regression coverage in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`.
+- Added deterministic smoke setup before post-EVT note assertion:
+  - return to Encounter (`Ctrl+2`)
+  - re-select `Ischemic Stroke or TIA`
+  - re-check `EVT Recommended`
+  - switch note template to `Signout`
+- Kept existing library-side Post-EVT BP Guardrail configuration in smoke flow (reperfusion status, current BP, infusion agent, target strategy).
+- Added clipboard assertion that generated note text contains structured post-EVT BP plan output with Nicardipine agent line.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)

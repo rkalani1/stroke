@@ -167,3 +167,10 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass
 - [x] `npm run qa` local + live smoke pass with 0 issues
+
+## Last completed run (2026-02-20, iter-082)
+- [x] Post-EVT smoke path restores ischemic + EVT state before note-copy assertion
+- [x] Smoke note assertion confirms post-EVT BP plan output includes Nicardipine agent detail
+- [x] `npm run build` pass
+- [x] `npm test` pass
+- [x] `npm run qa` local + live smoke pass with 0 issues

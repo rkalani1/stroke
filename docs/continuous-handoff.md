@@ -592,3 +592,15 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 082 update (2026-02-20, macOS session)
+- Completed post-EVT BP-plan note regression flow in smoke automation:
+  - Restores Encounter ischemic state and re-checks `EVT Recommended` after diagnosis-switch assertions.
+  - Forces `Signout` note template before copying full note.
+  - Asserts copied note text includes structured post-EVT BP plan with Nicardipine agent detail.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`

@@ -145,3 +145,10 @@
   - Scenario now seeds representative lab/imaging vitals context before clipboard note validation.
 - Remaining evidence-ops gap:
   - Optional citation URL link-health checks remain pending.
+
+## Iteration 082 Update (2026-02-20)
+- Post-EVT handoff regression gap reduced:
+  - Smoke automation now restores ischemic + EVT decision state before note-copy validation, preventing false negatives from diagnosis-switch cleanup steps.
+  - Smoke flow now forces a handoff template (`Signout`) and verifies that structured post-EVT BP plan content with infusion-agent detail is present in exported note text.
+- Remaining evidence-ops gap:
+  - Optional citation URL link-health checks remain pending.
