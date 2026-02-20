@@ -1151,3 +1151,23 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 086 (2026-02-20)
+
+### What was changed
+- Added automated evidence watchlist generator:
+  - new script: `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`
+  - new npm command: `npm run evidence:watch`
+  - output file: `/Users/rizwankalani/stroke/docs/evidence-watchlist.md`
+- Watchlist generation behavior:
+  - uses PubMed E-utilities to scan high-priority stroke domains for recent uncited literature
+  - excludes already cited PMIDs
+  - applies high-signal source filtering and low-value publication exclusion heuristics
+  - groups candidates by clinical topic for manual curation into the evidence table
+- Regenerated watchlist with current baseline citation set.
+
+### QA and validation
+- `npm run evidence:watch`: pass (watchlist regenerated)
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)

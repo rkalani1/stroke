@@ -197,3 +197,10 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass
 - [x] `npm run qa` local + live smoke pass with 0 issues
+
+## Last completed run (2026-02-20, iter-086)
+- [x] `npm run evidence:watch` pass (watchlist regenerated with current citation baseline)
+- [x] Watchlist filtering added (high-signal sources + low-value title exclusion)
+- [x] `npm run build` pass
+- [x] `npm test` pass
+- [x] `npm run qa` local + live smoke pass with 0 issues

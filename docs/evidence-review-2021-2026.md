@@ -250,3 +250,8 @@
 - Corrected citation metadata drift in key table entries after PMID title-resolution checks identified mismatches.
 - Updated multiple PMIDs/DOIs/source labels/URLs to align with PubMed primary metadata for major thrombolysis, EVT, and ICH/secondary-prevention studies.
 - Validator now batches PMID metadata checks to avoid NCBI rate-limit instability while continuing to surface title drift as warning-level findings.
+
+### Operational update (2026-02-20, iter-086)
+- Added automated evidence watchlist generation (`scripts/evidence-watch.mjs`) to identify uncited PubMed candidates in high-priority stroke domains.
+- Watchlist output now lives in `docs/evidence-watchlist.md` and is filtered for higher-signal sources and lower editorial noise.
+- This improves cadence for ongoing 2021-2026 evidence refresh without auto-promoting uncited studies into recommendations.

@@ -176,3 +176,11 @@
   - URL-health warnings dropped after replacing unstable non-PubMed links where appropriate.
 - Remaining evidence-ops gap:
   - Add automated watchlist ingestion for newly published 2021-2026 stroke guidance/trials not yet represented in the table.
+
+## Iteration 086 Update (2026-02-20)
+- Evidence watchlist ingestion gap reduced:
+  - Added automated PubMed watchlist generation for uncited, topic-grouped stroke evidence candidates.
+  - Added filtering to prioritize high-signal journals and suppress low-value publication formats.
+  - Watchlist now persists to `docs/evidence-watchlist.md` for repeatable review and planned citation updates.
+- Remaining evidence-ops gap:
+  - Add clinician-priority scoring/ranking for watchlist candidates (for example guideline/RCT-first weighting).

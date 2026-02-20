@@ -655,3 +655,20 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations:links && npm run validate:citations:ids && npm run qa`
+
+## Iteration 086 update (2026-02-20, macOS session)
+- Added automated evidence watchlist generation:
+  - Script: `scripts/evidence-watch.mjs`
+  - Command: `npm run evidence:watch`
+  - Output: `docs/evidence-watchlist.md`
+- Watchlist logic:
+  - scans uncited PubMed candidates across thrombolysis, EVT, ICH, SAH/CVT, secondary prevention, and special populations
+  - filters to high-signal sources
+  - excludes low-value title types (for example corrigendum/response/case report)
+- Validation status:
+  - `npm run evidence:watch` pass
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run validate:citations:links && npm run validate:citations:ids && npm run qa`
