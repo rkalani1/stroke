@@ -60,7 +60,9 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         const LAST_UPDATED_KEY = 'lastUpdated';
         const LEGACY_MIGRATION_KEY = 'legacyMigrated';
         const APP_DATA_SCHEMA_VERSION = 1;
-        // UW stroke call defaults (editable in Settings > Contact Directory)
+        // UW stroke call defaults (editable in Settings > Contact Directory).
+        // MAINTAINER POLICY: Do NOT remove this phone directory or its default contacts
+        // unless the project owner explicitly requests removal on their own (unsolicited removal is disallowed).
         const DEFAULT_CONTACTS = [
           { id: 'stroke-phone', label: 'Stroke Phone', phone: '206-744-6789', note: 'HMC primary hub' },
           { id: 'stat-pharmacy', label: 'STAT Pharmacy', phone: '206-744-2241', note: 'HMC' },
@@ -1135,12 +1137,24 @@ Clinician Name`;
             evtNumberOfPasses: '',
             evtTechnique: '',
             reperfusionTime: '',
+            postEvtBP: {
+              reperfusionStatus: '',
+              infusionAgent: '',
+              targetStrategy: '',
+              notes: ''
+            },
             // Phase 4: CVT fields
             cvtAnticoagStarted: false,
             cvtAnticoagType: '',
             cvtIcpManaged: false,
             cvtSeizureManaged: false,
             cvtHematologyConsulted: false,
+            cvtSpecialPopulation: {
+              pregnancyPostpartum: false,
+              apsConfirmed: false,
+              activeCancer: false,
+              severeThrombophilia: false
+            },
             // Phase 5: TIA Pathway fields
             tiaWorkup: {
               mriDwi: false,
@@ -1155,6 +1169,15 @@ Clinician Name`;
               labsTsh: false
             },
             tiaWorkupReviewed: false,
+            tiaDisposition: {
+              crescendoOrRecurrent: false,
+              dwiPositive: false,
+              symptomaticCarotidSevere: false,
+              suspectedCardioembolism: false,
+              persistentDeficit: false,
+              sameDayWorkupComplete: false,
+              reliableFollowUp48h: false
+            },
             // Phase 5: Etiologic Classification (TOAST)
             toastClassification: '',
             // Phase 5: Cardiac Workup
@@ -1971,15 +1994,23 @@ Clinician Name`;
           });
 
           const [autoSyncCalculators, setAutoSyncCalculators] = useState(loadFromStorage('autoSyncCalculators', true));
-          const [evtDecisionInputs, setEvtDecisionInputs] = useState(loadFromStorage('evtDecisionInputs', {
-            population: 'adult',
-            occlusion: 'lvo',
-            timeWindow: 'auto',
-            aspects: '6-10',
-            mrs: '0-1',
-            nihss: '',
-            pcAspects: '>=6'
-          }));
+          const [evtDecisionInputs, setEvtDecisionInputs] = useState(() => {
+            const defaults = {
+              population: 'adult',
+              occlusion: 'lvo',
+              timeWindow: 'auto',
+              aspects: '6-10',
+              mrs: '0-1',
+              nihss: '',
+              pcAspects: '>=6',
+              coreVolume: '',
+              mismatchRatio: '',
+              mismatchVolume: '',
+              disablingDeficit: false
+            };
+            const saved = loadFromStorage('evtDecisionInputs', {});
+            return { ...defaults, ...(saved || {}) };
+          });
           const [doacProtocol, setDoacProtocol] = useState(loadFromStorage('doacProtocol', 'catalyst'));
           const [nursingFlowsheetChecks, setNursingFlowsheetChecks] = useState({});
           const [protocolModal, setProtocolModal] = useState(null);
@@ -2093,6 +2124,11 @@ Clinician Name`;
           const bpWithinTarget = currentBpReading
             ? currentBpReading.systolic <= currentBpTarget.systolic && currentBpReading.diastolic <= currentBpTarget.diastolic
             : null;
+          const wakeUpDecision = getWakeUpEligibilityForNote(telestrokeNote);
+          const tiaDispositionDecision = getTiaDispositionRecommendation(telestrokeNote, calculateABCD2Score(abcd2Items));
+          const cvtSpecialPopulationPlan = getCvtSpecialPopulationPlan(telestrokeNote);
+          const doacTimingPlan = getDoacTimingPlan(telestrokeNote);
+          const postEvtBpGuidance = getPostEvtBpGuidance(telestrokeNote);
 
           const protocolDetailMap = useMemo(() => ({
             PCC: {
@@ -6210,7 +6246,7 @@ Clinician Name`;
           };
 
           // Calculate ABCD2 score
-          const calculateABCD2Score = (items) => {
+          function calculateABCD2Score(items) {
             let score = 0;
             if (items.age60) score += 1;
             if (items.bp) score += 1;
@@ -6220,7 +6256,268 @@ Clinician Name`;
             else if (items.duration === 'duration60') score += 2;
             if (items.diabetes) score += 1;
             return score;
-          };
+          }
+
+          function parseDateTimeLocal(dateStr, timeStr) {
+            if (!dateStr || !timeStr) return null;
+            const dt = new Date(`${dateStr}T${timeStr}`);
+            return Number.isNaN(dt.getTime()) ? null : dt;
+          }
+
+          function getReferenceDateTimeForNote(note) {
+            if (!note) return null;
+            if (note.lkwUnknown) {
+              return parseDateTimeLocal(note.discoveryDate, note.discoveryTime);
+            }
+            return parseDateTimeLocal(note.lkwDate, note.lkwTime);
+          }
+
+          function getPerfusionMetrics(source) {
+            const coreRaw = source?.coreVolume ?? source?.ctpStructured?.coreVolume;
+            const penumbraRaw = source?.penumbraVolume ?? source?.ctpStructured?.penumbraVolume;
+            const ratioRaw = source?.mismatchRatio ?? source?.ctpStructured?.mismatchRatio;
+            const core = parseFloat(coreRaw);
+            const penumbra = parseFloat(penumbraRaw);
+            const ratioDirect = parseFloat(ratioRaw);
+            const mismatchVolume = !Number.isNaN(core) && !Number.isNaN(penumbra) ? penumbra - core : null;
+            const ratioDerived = !Number.isNaN(core) && core > 0 && !Number.isNaN(penumbra) ? penumbra / core : null;
+            const mismatchRatio = Number.isNaN(ratioDirect) ? ratioDerived : ratioDirect;
+            return {
+              coreVolume: Number.isNaN(core) ? null : core,
+              penumbraVolume: Number.isNaN(penumbra) ? null : penumbra,
+              mismatchVolume: mismatchVolume === null || Number.isNaN(mismatchVolume) ? null : mismatchVolume,
+              mismatchRatio: mismatchRatio === null || Number.isNaN(mismatchRatio) ? null : mismatchRatio
+            };
+          }
+
+          function getWakeUpEligibilityForNote(note) {
+            const wus = note?.wakeUpStrokeWorkflow || {};
+            const ext = wus.extendCriteria || {};
+            const perf = getPerfusionMetrics(note || {});
+            const age = parseInt(note?.age, 10);
+            const nihss = parseInt(note?.nihss || nihssScore, 10);
+            const premorbid = parseInt(note?.premorbidMRS, 10);
+            const now = new Date();
+            const refTime = getReferenceDateTimeForNote(note);
+            const hoursFromRef = refTime ? (now - refTime) / (1000 * 60 * 60) : null;
+            const withinExtendTime = note?.lkwUnknown === true ||
+              (hoursFromRef !== null && hoursFromRef >= 4.5 && hoursFromRef <= 9);
+            const withinWakeNihss = !Number.isNaN(nihss) && nihss <= 25;
+            const withinExtendNihss = !Number.isNaN(nihss) && nihss >= 4 && nihss <= 26;
+            const withinAge = !Number.isNaN(age) && age >= 18 && age <= 80;
+            const premorbidOk = !Number.isNaN(premorbid) && premorbid < 2;
+            const perfusionCoreOk = perf.coreVolume !== null && perf.coreVolume <= 70;
+            const perfusionRatioOk = perf.mismatchRatio !== null && perf.mismatchRatio >= 1.2;
+            const perfusionMismatchVolOk = perf.mismatchVolume !== null && perf.mismatchVolume >= 10;
+            const autoExtendFromPerfusion = perfusionCoreOk && perfusionRatioOk && perfusionMismatchVolOk;
+            const manualWakeUp = Boolean(
+              wus.dwi?.positiveForLesion &&
+              wus.flair?.noMarkedHyperintensity &&
+              wus.ageEligible &&
+              wus.nihssEligible
+            );
+            const manualExtend = Boolean(
+              ext.nihss4to26 &&
+              ext.premorbidMRSLt2 &&
+              ext.ischemicCoreLte70 &&
+              ext.mismatchRatioGte1_2 &&
+              ext.timeWindow4_5to9h
+            );
+            const autoWakeUp = Boolean(
+              wus.dwi?.positiveForLesion &&
+              wus.flair?.noMarkedHyperintensity &&
+              withinAge &&
+              withinWakeNihss
+            );
+            const autoExtend = Boolean(
+              withinExtendNihss &&
+              premorbidOk &&
+              withinExtendTime &&
+              autoExtendFromPerfusion
+            );
+            return {
+              wakeUpEligible: manualWakeUp || autoWakeUp,
+              extendEligible: manualExtend || autoExtend,
+              manualWakeUp,
+              manualExtend,
+              autoWakeUp,
+              autoExtend,
+              withinExtendTime,
+              perfusion: perf,
+              perfusionCoreOk,
+              perfusionRatioOk,
+              perfusionMismatchVolOk
+            };
+          }
+
+          function getTiaDispositionRecommendation(note, abcd2Score) {
+            const tia = note?.tiaDisposition || {};
+            const score = typeof abcd2Score === 'number' ? abcd2Score : 0;
+            const highRisk = tia.persistentDeficit || tia.symptomaticCarotidSevere || tia.suspectedCardioembolism ||
+              tia.crescendoOrRecurrent || tia.dwiPositive || score >= 6;
+            const moderateRisk = !highRisk && (score >= 4 || tia.crescendoOrRecurrent || tia.dwiPositive);
+            const rapidPathwayReady = Boolean(tia.sameDayWorkupComplete && tia.reliableFollowUp48h);
+            if (highRisk) {
+              return {
+                tier: 'high',
+                label: 'Admit / high-acuity observation',
+                detail: 'High-risk TIA features present. Complete urgent vascular/cardiac workup and start immediate prevention plan.'
+              };
+            }
+            if (moderateRisk) {
+              return {
+                tier: 'moderate',
+                label: rapidPathwayReady ? 'Observation or rapid pathway' : '24-hour observation/admission',
+                detail: rapidPathwayReady
+                  ? 'Moderate-risk profile; rapid pathway is acceptable only if same-day workup is complete and follow-up in 24-48h is guaranteed.'
+                  : 'Moderate-risk profile without robust follow-up/workup reliability. Observe or admit for expedited completion.'
+              };
+            }
+            return {
+              tier: 'low',
+              label: rapidPathwayReady ? 'Rapid outpatient TIA pathway' : 'Observation until pathway reliability confirmed',
+              detail: rapidPathwayReady
+                ? 'Low-risk profile with complete workup and reliable rapid follow-up.'
+                : 'Low-risk clinical profile, but outpatient pathway is unsafe until same-day workup and 24-48h follow-up are guaranteed.'
+            };
+          }
+
+          function getCvtSpecialPopulationPlan(note) {
+            const sp = note?.cvtSpecialPopulation || {};
+            const flags = [];
+            const recommendations = [];
+            const cautions = [];
+            let acuteAgent = 'LMWH or UFH (weight-based).';
+            let longTerm = 'Transition agent based on provoked vs unprovoked profile and bleeding risk.';
+            let duration = '3-6 months (provoked), 6-12 months (unprovoked), longer if recurrent risk.';
+
+            if (sp.pregnancyPostpartum) {
+              flags.push('Pregnancy/postpartum');
+              recommendations.push('Use LMWH (or UFH) as first-line anticoagulation in pregnancy; coordinate maternal-fetal care.');
+              cautions.push('Avoid DOACs during pregnancy and breastfeeding.');
+              longTerm = 'LMWH through pregnancy, then postpartum transition to warfarin when appropriate.';
+            }
+            if (sp.apsConfirmed) {
+              flags.push('APS confirmed');
+              recommendations.push('Confirmed APS: use warfarin (INR 2-3) for long-term therapy.');
+              cautions.push('DOACs are not recommended in APS due to recurrent thrombosis risk.');
+              longTerm = 'Warfarin INR 2-3 (APS-compatible strategy).';
+              duration = 'Typically extended/indefinite depending on APS phenotype and recurrence history.';
+            }
+            if (sp.activeCancer) {
+              flags.push('Active cancer');
+              recommendations.push('Coordinate with hematology/oncology for anticoagulant interactions and procedure planning.');
+              if (!sp.apsConfirmed && !sp.pregnancyPostpartum) {
+                longTerm = 'Long-term agent should be individualized (LMWH/DOAC/VKA) with oncology input.';
+              }
+            }
+            if (sp.severeThrombophilia) {
+              flags.push('Severe thrombophilia');
+              recommendations.push('High recurrent VTE risk supports extended or indefinite anticoagulation planning.');
+              duration = 'Extended/indefinite anticoagulation usually required.';
+            }
+
+            return {
+              flags,
+              recommendations,
+              cautions,
+              acuteAgent,
+              longTerm,
+              duration,
+              riskTier: flags.length === 0 ? 'standard' : (sp.apsConfirmed || sp.pregnancyPostpartum || sp.severeThrombophilia) ? 'high' : 'moderate'
+            };
+          }
+
+          function getCvtSpecialPopulationNoteLines(note) {
+            const plan = getCvtSpecialPopulationPlan(note);
+            if (!plan.flags.length) return [];
+            const lines = [];
+            lines.push(`- Special-population flags: ${plan.flags.join(', ')}`);
+            lines.push(`- CVT acute anticoag preference: ${plan.acuteAgent}`);
+            lines.push(`- CVT long-term anticoagulation: ${plan.longTerm}`);
+            lines.push(`- CVT duration target: ${plan.duration}`);
+            plan.cautions.forEach((item) => lines.push(`- Caution: ${item}`));
+            return lines;
+          }
+
+          function getDoacTimingPlan(note) {
+            const doac = note?.doacTiming || {};
+            const severity = doac.strokeSeverity;
+            if (!severity) return null;
+            const anchor = getReferenceDateTimeForNote(note) || new Date();
+            const dayMs = 24 * 60 * 60 * 1000;
+            const windows = {
+              minor: { start: 2, end: 2, label: 'Start within 48 hours' },
+              moderate: { start: 3, end: 5, label: 'Start on day 3-5' },
+              severe: { start: 6, end: 14, label: 'Start on day 6-14' }
+            };
+            const base = windows[severity];
+            if (!base) return null;
+            let startDay = base.start;
+            let endDay = base.end;
+            let caution = '';
+            if (doac.hemorrhagicTransformation) {
+              startDay = Math.max(startDay, 7);
+              endDay = Math.max(endDay, 14);
+              caution = 'Hemorrhagic transformation present — repeat imaging and stability confirmation required before initiation.';
+            }
+            const startDate = new Date(anchor.getTime() + startDay * dayMs);
+            const endDate = new Date(anchor.getTime() + endDay * dayMs);
+            return {
+              label: base.label,
+              startDay,
+              endDay,
+              startDate,
+              endDate,
+              caution
+            };
+          }
+
+          function getPostEvtBpGuidance(note) {
+            const postEvt = note?.postEvtBP || {};
+            const tici = (note?.ticiScore || '').toLowerCase();
+            const autoReperfused = tici.includes('2b') || tici.includes('2c') || tici.includes('3');
+            const reperfused = postEvt.reperfusionStatus
+              ? postEvt.reperfusionStatus === 'successful'
+              : autoReperfused;
+            const bp = parseBloodPressure(note?.bpPostEVT || note?.presentingBP);
+            const target = reperfused ? { low: 130, high: 180, label: 'SBP 130-180 (avoid <130)' } : { low: 140, high: 180, label: 'SBP 140-180' };
+            const status = !bp
+              ? 'unknown'
+              : bp.systolic < target.low
+                ? 'too-low'
+              : bp.systolic > target.high || bp.diastolic > 105
+                  ? 'too-high'
+                  : 'in-range';
+            return { reperfused, target, bp, status };
+          }
+
+          function buildContraindicationTrace(note) {
+            if (!note) return '';
+            const blockers = [];
+            const cautions = [];
+            const inr = parseFloat(note.inr);
+            const platelets = parseFloat(note.plateletCount);
+            const ptt = parseFloat(note.ptt);
+            const glucose = parseFloat(note.glucose);
+            const bp = parseBloodPressure(note.presentingBP || '');
+            const dx = note.diagnosisCategory || '';
+            if (dx === 'ich' || dx === 'sah') blockers.push(`Hemorrhagic diagnosis (${dx.toUpperCase()})`);
+            if (!Number.isNaN(inr) && inr > 1.7) blockers.push(`INR ${inr.toFixed(1)} > 1.7`);
+            if (!Number.isNaN(platelets) && platelets < 100) blockers.push(`Platelets ${platelets}K < 100K`);
+            if (!Number.isNaN(ptt) && ptt > 40) blockers.push(`aPTT ${ptt}s > 40s`);
+            if (!Number.isNaN(glucose) && glucose < 50) blockers.push(`Glucose ${glucose} mg/dL < 50`);
+            if (bp && (bp.systolic > 185 || bp.diastolic > 110)) cautions.push(`BP ${bp.systolic}/${bp.diastolic} above pre-lysis threshold`);
+            const wake = getWakeUpEligibilityForNote(note);
+            if ((note.tnkRecommended || note.tnkAutoBlocked) && wake.extendEligible) {
+              cautions.push('Extended-window imaging pathway active (WAKE-UP/EXTEND criteria)');
+            }
+            if (note.evtRecommended && !(note.vesselOcclusion || []).length) cautions.push('EVT selected without explicit vessel occlusion documentation');
+            const lines = ['CONTRAINDICATION TRACE:'];
+            lines.push(`- TNK blockers: ${blockers.length ? blockers.join('; ') : 'none documented'}`);
+            if (cautions.length) lines.push(`- Clinical cautions: ${cautions.join('; ')}`);
+            return lines.join('\n');
+          }
 
           // Calculate CHADS2-VASc score
           const calculateCHADS2VascScore = (items) => {
@@ -6848,7 +7145,7 @@ Clinician Name`;
               if (!Number.isNaN(lkw.getTime())) {
               const now = new Date();
               const hoursFromLKW = (now - lkw) / (1000 * 60 * 60);
-              const wakeUpExtended = data.telestrokeNote?.wakeUpStrokeWorkflow?.extendEligible;
+              const wakeUpExtended = getWakeUpEligibilityForNote(data.telestrokeNote || {}).extendEligible;
               if (hoursFromLKW > 4.5 && data.telestrokeNote?.tnkRecommended && !wakeUpExtended) {
                 alerts.push({ severity: 'warning', label: 'Late Window', message: `${hoursFromLKW.toFixed(1)}h from LKW - Verify imaging criteria`, field: 'lkwTime' });
               } else if (hoursFromLKW > 4.5 && data.telestrokeNote?.tnkRecommended && wakeUpExtended) {
@@ -7951,9 +8248,10 @@ Clinician Name`;
               'ichSurgicalCriteria', 'strokeTerritory', 'strokePhenotype',
               'familyCommunication', 'symptomTrajectory', 'symptomOnsetNIHSS', 'postTNKMonitoring',
               'aspectsRegions', 'pcAspectsRegions', 'ticiScore',
-              'evtAccessSite', 'evtDevice', 'evtNumberOfPasses', 'evtTechnique', 'reperfusionTime',
+              'evtAccessSite', 'evtDevice', 'evtNumberOfPasses', 'evtTechnique', 'reperfusionTime', 'postEvtBP',
               'cvtAnticoagStarted', 'cvtAnticoagType', 'cvtIcpManaged', 'cvtSeizureManaged', 'cvtHematologyConsulted',
-              'tiaWorkup', 'tiaWorkupReviewed',
+              'cvtSpecialPopulation',
+              'tiaWorkup', 'tiaWorkupReviewed', 'tiaDisposition',
               // Clinical pathway nested objects
               'cardiacWorkup', 'dissectionPathway', 'screeningTools', 'etiologyWorkup',
               'esusWorkup', 'doacTiming', 'hemorrhagicTransformation', 'angioedema',
@@ -8980,6 +9278,10 @@ Clinician Name`;
                 if (telestrokeNote.cvtIcpManaged) cvtTransfer += `- ICP management addressed\n`;
                 if (telestrokeNote.cvtSeizureManaged) cvtTransfer += `- Seizure management addressed\n`;
                 if (telestrokeNote.cvtHematologyConsulted) cvtTransfer += `- Hematology consulted for thrombophilia workup\n`;
+                const cvtSpecialLines = getCvtSpecialPopulationNoteLines(telestrokeNote);
+                if (cvtSpecialLines.length > 0) {
+                  cvtTransfer += `${cvtSpecialLines.join('\n')}\n`;
+                }
                 const cvtAc = telestrokeNote.cvtAnticoag || {};
                 if (cvtAc.acutePhase) cvtTransfer += `- Acute phase: ${cvtAc.acutePhase.replace(/-/g, ' ')}\n`;
                 if (cvtAc.transitionAgent) cvtTransfer += `- Transition agent: ${cvtAc.transitionAgent}\n`;
@@ -9502,6 +9804,8 @@ Clinician Name`;
                 }
                 if (telestrokeNote.cvtIcpManaged) snCvtParts.push('ICP managed');
                 if (telestrokeNote.cvtSeizureManaged) snCvtParts.push('seizure managed');
+                const snCvtPlan = getCvtSpecialPopulationPlan(telestrokeNote);
+                if (snCvtPlan.flags.length > 0) snCvtParts.push(`special: ${snCvtPlan.flags.join(', ')}`);
                 if (snCvtParts.length > 0) note += `- CVT: ${snCvtParts.join(', ')}\n`;
               }
               {
@@ -9909,6 +10213,8 @@ Clinician Name`;
                 if (telestrokeNote.cvtIcpManaged) prCvtParts.push('ICP managed');
                 if (telestrokeNote.cvtSeizureManaged) prCvtParts.push('seizure managed');
                 if (telestrokeNote.cvtHematologyConsulted) prCvtParts.push('hematology consulted');
+                const prCvtPlan = getCvtSpecialPopulationPlan(telestrokeNote);
+                if (prCvtPlan.flags.length > 0) prCvtParts.push(`special: ${prCvtPlan.flags.join(', ')}`);
                 if (prCvtParts.length > 0) note += `   - CVT: ${prCvtParts.join(', ')}\n`;
               }
               // Early mobilization
@@ -10388,6 +10694,10 @@ Clinician Name`;
                 if (telestrokeNote.cvtIcpManaged) cvtDisch += `- ICP management addressed\n`;
                 if (telestrokeNote.cvtSeizureManaged) cvtDisch += `- Seizure management addressed\n`;
                 if (telestrokeNote.cvtHematologyConsulted) cvtDisch += `- Hematology consulted for thrombophilia workup\n`;
+                const cvtSpecialLinesDisch = getCvtSpecialPopulationNoteLines(telestrokeNote);
+                if (cvtSpecialLinesDisch.length > 0) {
+                  cvtDisch += `${cvtSpecialLinesDisch.join('\n')}\n`;
+                }
                 const dcCvtAc = telestrokeNote.cvtAnticoag || {};
                 if (dcCvtAc.acutePhase) cvtDisch += `- Acute phase: ${dcCvtAc.acutePhase.replace(/-/g, ' ')}\n`;
                 if (dcCvtAc.transitionAgent) cvtDisch += `- Transition agent: ${dcCvtAc.transitionAgent}\n`;
@@ -11021,6 +11331,7 @@ Clinician Name`;
             // Wake-up stroke workflow documentation
             const wus = telestrokeNote.wakeUpStrokeWorkflow || {};
             if (wus.isWakeUpStroke) {
+              const wake = getWakeUpEligibilityForNote(telestrokeNote);
               note += `\nWAKE-UP STROKE EVALUATION:\n`;
               note += `- MRI available: ${wus.mriAvailable ? 'Yes' : wus.mriAvailable === false ? 'No (CTP pathway)' : 'Not assessed'}\n`;
               if (wus.mriAvailable) {
@@ -11030,7 +11341,7 @@ Clinician Name`;
                 if (cwFlair.noMarkedHyperintensity) note += `- FLAIR: No marked hyperintensity (DWI-FLAIR mismatch — favorable)\n`;
                 if (wus.ageEligible) note += `- Age: Eligible (18-80)\n`;
                 if (wus.nihssEligible) note += `- NIHSS: ≤25\n`;
-                if (cwDwi.positiveForLesion && cwFlair.noMarkedHyperintensity && wus.ageEligible && wus.nihssEligible) {
+                if (wake.wakeUpEligible) {
                   note += `- *** MEETS WAKE-UP TRIAL CRITERIA — Consider IV thrombolysis ***\n`;
                 }
               }
@@ -11043,7 +11354,10 @@ Clinician Name`;
                 if (ext.mismatchRatioGte1_2) extMet.push('mismatch ≥1.2');
                 if (ext.timeWindow4_5to9h) extMet.push('4.5-9h window');
                 if (extMet.length > 0) note += `- EXTEND criteria: ${extMet.join(', ')}\n`;
-                if (extMet.length === 5) note += `- *** MEETS EXTEND CRITERIA — Consider IV thrombolysis ***\n`;
+                if (wake.perfusion.coreVolume !== null || wake.perfusion.mismatchRatio !== null) {
+                  note += `- CTP perfusion: core ${wake.perfusion.coreVolume ?? 'N/A'} mL, mismatch ratio ${wake.perfusion.mismatchRatio !== null ? wake.perfusion.mismatchRatio.toFixed(1) : 'N/A'}, mismatch volume ${wake.perfusion.mismatchVolume !== null ? `${Math.round(wake.perfusion.mismatchVolume)} mL` : 'N/A'}\n`;
+                }
+                if (wake.extendEligible) note += `- *** MEETS EXTEND CRITERIA — Consider IV thrombolysis ***\n`;
               }
             }
 
@@ -11104,6 +11418,8 @@ Clinician Name`;
               note += `- BP pre-treatment: ${telestrokeNote.bpPreTNK || telestrokeNote.presentingBP || 'N/A'} (threshold <185/110)\n`;
               note += `- Anticoagulant: ${telestrokeNote.lastDOACType ? ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType : 'None reported'}\n`;
             }
+
+            note += `\n${buildContraindicationTrace(telestrokeNote)}\n`;
 
             // Add vessel occlusion details
             const consultVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
@@ -11215,6 +11531,10 @@ Clinician Name`;
               if (telestrokeNote.cvtIcpManaged) cnCvt += `- ICP management addressed\n`;
               if (telestrokeNote.cvtSeizureManaged) cnCvt += `- Seizure management addressed\n`;
               if (telestrokeNote.cvtHematologyConsulted) cnCvt += `- Hematology consulted for thrombophilia workup\n`;
+              const cvtSpecialLinesConsult = getCvtSpecialPopulationNoteLines(telestrokeNote);
+              if (cvtSpecialLinesConsult.length > 0) {
+                cnCvt += `${cvtSpecialLinesConsult.join('\n')}\n`;
+              }
               const cnCvtAc = telestrokeNote.cvtAnticoag || {};
               if (cnCvtAc.acutePhase) cnCvt += `- Acute phase: ${cnCvtAc.acutePhase.replace(/-/g, ' ')}\n`;
               if (cnCvtAc.transitionAgent) cnCvt += `- Transition agent: ${cnCvtAc.transitionAgent}\n`;
@@ -11588,6 +11908,19 @@ Clinician Name`;
             const mrs = inputs.mrs;
             const nihss = parseInt(inputs.nihss, 10);
             const pcAspects = inputs.pcAspects;
+            const fallbackPerfusion = getPerfusionMetrics(telestrokeNote);
+            const coreInput = parseFloat(inputs.coreVolume);
+            const ratioInput = parseFloat(inputs.mismatchRatio);
+            const mismatchVolInput = parseFloat(inputs.mismatchVolume);
+            const coreVolume = Number.isNaN(coreInput) ? fallbackPerfusion.coreVolume : coreInput;
+            const mismatchRatio = Number.isNaN(ratioInput) ? fallbackPerfusion.mismatchRatio : ratioInput;
+            const mismatchVolume = Number.isNaN(mismatchVolInput) ? fallbackPerfusion.mismatchVolume : mismatchVolInput;
+            const hasPerfusion = coreVolume !== null || mismatchRatio !== null || mismatchVolume !== null;
+            const perfusionSupport = coreVolume !== null && coreVolume <= 100 && mismatchRatio !== null && mismatchRatio >= 1.2 &&
+              (mismatchVolume === null || mismatchVolume >= 10);
+            const perfusionStrongSupport = coreVolume !== null && coreVolume <= 70 && mismatchRatio !== null && mismatchRatio >= 1.8 &&
+              mismatchVolume !== null && mismatchVolume >= 15;
+            const disablingDeficit = Boolean(inputs.disablingDeficit);
 
             const resolveWindow = () => {
               if (inputs.timeWindow && inputs.timeWindow !== 'auto') return inputs.timeWindow;
@@ -11606,14 +11939,30 @@ Clinician Name`;
 
             if (occlusion === 'mvo-nondominant') {
               if (window === '0-6' || window === '6-24') {
-                return { classOfRec: 'III (No benefit)', label: 'No EVT recommended', color: 'rose', rationale: ['Isolated non-dominant M2 or DVO'] };
+                if (disablingDeficit || (!Number.isNaN(nihss) && nihss >= 8) || perfusionSupport) {
+                  return {
+                    classOfRec: 'IIb',
+                    label: 'No routine EVT; selective cases only',
+                    color: 'amber',
+                    rationale: ['Isolated non-dominant MeVO/DVO has no routine EVT benefit in 2025 RCTs; consider only for disabling deficits or trial-context selection']
+                  };
+                }
+                return {
+                  classOfRec: 'III (No routine benefit)',
+                  label: 'No routine EVT',
+                  color: 'rose',
+                  rationale: ['Isolated non-dominant MeVO/DVO: optimize medical therapy and reserve EVT for exceptional selective cases']
+                };
               }
               return result;
             }
 
               if (occlusion === 'mvo-dominant') {
                 if ((window === '0-6' || window === '6-24') && mrs === '0-1') {
-                  return { classOfRec: 'IIb', label: 'EVT may be considered (select cases)', color: 'amber', rationale: ['Proximal/dominant M2 ≤1cm of bifurcation, salvageable tissue present, LKW ≤24h (local protocol)'] };
+                  if (disablingDeficit || (!Number.isNaN(nihss) && nihss >= 8) || perfusionSupport) {
+                    return { classOfRec: 'IIb', label: 'EVT may be considered (select cases)', color: 'amber', rationale: ['Dominant/proximal M2 with disabling deficit or favorable perfusion profile'] };
+                  }
+                  return { classOfRec: 'IIb', label: 'Selective only; no routine EVT', color: 'amber', rationale: ['Dominant M2 without disabling deficit has uncertain net benefit — prioritize individualized review'] };
                 }
                 return result;
               }
@@ -11646,13 +11995,24 @@ Clinician Name`;
                   return result;
                 }
                 if (aspects === '3-5') {
-                  if (mrs === '0-1' && !isNaN(nihss) && nihss >= 6) return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1, NIHSS ≥6'] };
+                  if (mrs === '0-1' && !isNaN(nihss) && nihss >= 6 && perfusionSupport) {
+                    return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: [`ASPECTS 3-5 with favorable perfusion (core ${coreVolume} mL, mismatch ratio ${mismatchRatio?.toFixed?.(1) || mismatchRatio})`] };
+                  }
+                  if (mrs === '0-1' && !isNaN(nihss) && nihss >= 6 && !hasPerfusion) {
+                    return { classOfRec: 'IIa', label: 'EVT reasonable; add perfusion confirmation', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1, NIHSS ≥6; obtain CTP core/mismatch when available to refine risk'] };
+                  }
                   if (mrs === '0-1' && (isNaN(nihss) || nihss === 0)) return { classOfRec: 'IDD', label: 'Enter NIHSS to evaluate', color: 'amber', rationale: ['ASPECTS 3-5, mRS 0-1 — NIHSS ≥6 required for Class I recommendation'] };
                   if (mrs === '0-1' && nihss < 6) return { classOfRec: 'IIb', label: 'EVT may be considered', color: 'amber', rationale: ['ASPECTS 3-5, mRS 0-1, but NIHSS <6 — weaker evidence for large-core EVT with low NIHSS'] };
                   return result;
                 }
                 if (aspects === '0-2') {
-                  if (mrs === '0-1') return { classOfRec: 'IIb', label: 'EVT may be considered (very select cases)', color: 'amber', rationale: ['ASPECTS 0-2, mRS 0-1 — consider CTP to evaluate if core ≤70-100cc (local protocol)'] };
+                  if (mrs === '0-1' && perfusionStrongSupport) {
+                    return { classOfRec: 'IIb', label: 'EVT may be considered (very select cases)', color: 'amber', rationale: ['ASPECTS 0-2 with strong perfusion selection (core ≤70 mL + mismatch support)'] };
+                  }
+                  if (mrs === '0-1' && hasPerfusion && !perfusionStrongSupport) {
+                    return { classOfRec: 'IDD', label: 'Benefit uncertain; individualized review', color: 'slate', rationale: ['Very large core profile without favorable mismatch support'] };
+                  }
+                  if (mrs === '0-1') return { classOfRec: 'IDD', label: 'Obtain perfusion before decision', color: 'amber', rationale: ['ASPECTS 0-2 requires strict perfusion-based selection and shared decision-making'] };
                   return result;
                 }
               }
@@ -11666,10 +12026,13 @@ Clinician Name`;
                   return { classOfRec: 'IDD', label: 'Enter NIHSS', color: 'amber', rationale: ['ASPECTS 6-10, mRS 0-1 — NIHSS ≥6 required for late-window Class I (DAWN/DEFUSE-3)'] };
                 }
                 if (aspects === '3-5' && mrs === '0-1') {
-                  return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1 — consider CTP: core ≤100cc + mismatch present (local protocol)'] };
+                  if (perfusionSupport) return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1, perfusion-selected large-core criteria met'] };
+                  if (hasPerfusion) return { classOfRec: 'IIb', label: 'EVT may be considered', color: 'amber', rationale: ['ASPECTS 3-5 late window with suboptimal perfusion profile — benefit less certain'] };
+                  return { classOfRec: 'IIb', label: 'Obtain CTP before final decision', color: 'amber', rationale: ['Late-window large-core decisions should be perfusion-guided'] };
                 }
                 if (aspects === '0-2') {
-                  return { classOfRec: 'IDD', label: 'EVT benefit unclear', color: 'slate', rationale: ['ASPECTS 0-2 in late window — EVT benefit is unclear (local protocol)'] };
+                  if (perfusionStrongSupport) return { classOfRec: 'IIb', label: 'EVT may be considered (very select)', color: 'amber', rationale: ['ASPECTS 0-2 late window only with strong mismatch profile and expert review'] };
+                  return { classOfRec: 'IDD', label: 'EVT benefit unclear', color: 'slate', rationale: ['ASPECTS 0-2 in late window has uncertain benefit without highly favorable perfusion'] };
                 }
                 return result;
               }
@@ -11852,7 +12215,8 @@ Clinician Name`;
             }
             if (tnkTime && lkw) {
               const tnkHrs = (tnkTime - lkw) / (1000 * 60 * 60);
-              if (tnkHrs > 4.5 && !(n.wakeUpStrokeWorkflow && n.wakeUpStrokeWorkflow.extendEligible)) {
+              const wakeupEval = getWakeUpEligibilityForNote(n);
+              if (tnkHrs > 4.5 && !wakeupEval.extendEligible) {
                 warnings.push({ id: 'tnk-outside-window', severity: 'error', msg: `TNK administered ${tnkHrs.toFixed(1)}h after LKW — outside standard 4.5h window (verify extended window eligibility)` });
               }
               if (tnkHrs < 0) {
@@ -11960,7 +12324,8 @@ Clinician Name`;
               if (tf && !tf.futureWarning && tf.total > 24 && n.evtRecommended) {
                 warnings.push({ id: 'evt-window-violation', severity: 'critical', msg: `EVT recommended ${tf.total.toFixed(1)}h from ${tf.label} — outside 24-hour guideline window. No anterior circulation EVT data beyond 24h. Verify basilar-specific eligibility (ATTENTION/BAOCHE) if applicable.` });
               }
-              if (tf && !tf.futureWarning && tf.total > 4.5 && n.tnkRecommended && !n.wakeUpStrokeWorkflow?.isWakeUpStroke && !n.wakeUpStrokeWorkflow?.extendEligible) {
+              const wakeupEval = getWakeUpEligibilityForNote(n);
+              if (tf && !tf.futureWarning && tf.total > 4.5 && n.tnkRecommended && !n.wakeUpStrokeWorkflow?.isWakeUpStroke && !wakeupEval.extendEligible) {
                 warnings.push({ id: 'tnk-window-caution', severity: 'warn', msg: `TNK recommended ${tf.total.toFixed(1)}h from ${tf.label} — beyond standard 4.5h window. Verify extended-window eligibility (EXTEND, wake-up stroke protocol).` });
               }
             }
@@ -12337,7 +12702,10 @@ Clinician Name`;
             // CVT-specific safety checks
             if (n.diagnosisCategory === 'cvt') {
               const cvtAc = n.cvtAnticoag || {};
-              if (cvtAc.apsStatus && cvtAc.transitionAgent === 'doac') {
+              const cvtSp = n.cvtSpecialPopulation || {};
+              const apsConfirmed = Boolean(cvtSp.apsConfirmed || cvtAc.apsStatus);
+              const pregnancyRelated = Boolean(cvtSp.pregnancyPostpartum || n.pregnancyStroke);
+              if (apsConfirmed && cvtAc.transitionAgent === 'doac') {
                 warnings.push({ id: 'cvt-aps-doac', severity: 'error', msg: 'CONTRAINDICATED: DOAC selected for CVT with confirmed APS — DOACs are inferior to warfarin in APS (TRAPS trial, ASTRO-APS 2020). Switch to warfarin INR 2-3.' });
               }
               if (n.cvtAnticoagStarted && n.cvtAnticoagType === 'enoxaparin' && !n.weight) {
@@ -12346,8 +12714,11 @@ Clinician Name`;
               if ((n.hemorrhagicTransformation || {}).detected && !n.cvtAnticoagStarted) {
                 warnings.push({ id: 'cvt-ht-no-anticoag', severity: 'warn', msg: 'CVT with hemorrhagic infarction but anticoagulation NOT started — hemorrhagic transformation is NOT a contraindication to anticoagulation in CVT (AHA/ASA Class I, LOE B-NR). Initiate heparin/LMWH.' });
               }
-              if (n.pregnancyStroke && cvtAc.transitionAgent === 'doac') {
+              if (pregnancyRelated && cvtAc.transitionAgent === 'doac') {
                 warnings.push({ id: 'cvt-pregnancy-doac', severity: 'error', msg: 'CONTRAINDICATED: DOAC selected for CVT in pregnancy — DOACs are teratogenic and contraindicated. Use LMWH throughout pregnancy (AHA/ASA Class I).' });
+              }
+              if (pregnancyRelated && n.cvtAnticoagStarted && n.cvtAnticoagType && !['enoxaparin', 'enoxaparin-daily', 'ufh'].includes(n.cvtAnticoagType)) {
+                warnings.push({ id: 'cvt-pregnancy-agent', severity: 'warn', msg: 'Pregnancy/postpartum CVT selected with non-heparin acute agent — confirm LMWH/UFH pathway unless contraindicated.' });
               }
             }
 
@@ -12952,6 +13323,12 @@ Clinician Name`;
                   updated.cvtIcpManaged = false;
                   updated.cvtSeizureManaged = false;
                   updated.cvtHematologyConsulted = false;
+                  updated.cvtSpecialPopulation = {
+                    pregnancyPostpartum: false,
+                    apsConfirmed: false,
+                    activeCancer: false,
+                    severeThrombophilia: false
+                  };
                   updated.cvtAnticoag = { acutePhase: '', transitionAgent: '', duration: '', apsStatus: '', etiologyProvoked: false };
                 }
               }
@@ -13476,6 +13853,12 @@ Clinician Name`;
                           next.cvtIcpManaged = false;
                           next.cvtSeizureManaged = false;
                           next.cvtHematologyConsulted = false;
+                          next.cvtSpecialPopulation = {
+                            pregnancyPostpartum: false,
+                            apsConfirmed: false,
+                            activeCancer: false,
+                            severeThrombophilia: false
+                          };
                           next.cvtAnticoag = { acutePhase: '', transitionAgent: '', duration: '', apsStatus: '', etiologyProvoked: false };
                         }
                       }
@@ -16920,6 +17303,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         updated.cvtIcpManaged = false;
                                         updated.cvtSeizureManaged = false;
                                         updated.cvtHematologyConsulted = false;
+                                        updated.cvtSpecialPopulation = {
+                                          pregnancyPostpartum: false,
+                                          apsConfirmed: false,
+                                          activeCancer: false,
+                                          severeThrombophilia: false
+                                        };
                                         updated.cvtAnticoag = { acutePhase: '', transitionAgent: '', duration: '', apsStatus: '', etiologyProvoked: false };
                                       }
                                     }
@@ -17304,10 +17693,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </label>
                               </div>
                               {/* Eligibility Summary */}
-                              {telestrokeNote.wakeUpStrokeWorkflow?.dwi?.positiveForLesion &&
-                               telestrokeNote.wakeUpStrokeWorkflow?.flair?.noMarkedHyperintensity &&
-                               telestrokeNote.wakeUpStrokeWorkflow?.ageEligible &&
-                               telestrokeNote.wakeUpStrokeWorkflow?.nihssEligible && (
+                              {wakeUpDecision.wakeUpEligible && (
                                 <div role="alert" className="bg-emerald-100 border border-emerald-300 rounded-lg p-2 text-emerald-800 font-semibold text-sm flex items-center gap-2">
                                   <i aria-hidden="true" data-lucide="check-circle" className="w-4 h-4"></i>
                                   <span>Meets WAKE-UP criteria - Consider IV thrombolysis</span>
@@ -17402,12 +17788,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <span>Time 4.5-9 hours OR wake-up stroke</span>
                                 </label>
                               </div>
+                              <div className="bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs text-slate-700">
+                                <p className="font-semibold text-slate-800 mb-1">Auto-perfusion check (from Encounter CTP)</p>
+                                <p>
+                                  Core: {wakeUpDecision.perfusion.coreVolume ?? '--'} mL, mismatch ratio: {wakeUpDecision.perfusion.mismatchRatio !== null ? wakeUpDecision.perfusion.mismatchRatio.toFixed(1) : '--'},
+                                  mismatch volume: {wakeUpDecision.perfusion.mismatchVolume !== null ? `${Math.round(wakeUpDecision.perfusion.mismatchVolume)} mL` : '--'}.
+                                </p>
+                                <p className="mt-1">
+                                  {wakeUpDecision.autoExtend
+                                    ? 'Auto criteria met for EXTEND-style perfusion selection.'
+                                    : 'Auto criteria not fully met yet; verify core/mismatch and time window.'}
+                                </p>
+                              </div>
                               {/* Eligibility Summary */}
-                              {telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.nihss4to26 &&
-                               telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.premorbidMRSLt2 &&
-                               telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.ischemicCoreLte70 &&
-                               telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.mismatchRatioGte1_2 &&
-                               telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.timeWindow4_5to9h && (
+                              {wakeUpDecision.extendEligible && (
                                 <div className="bg-emerald-100 border border-emerald-300 rounded-lg p-2 text-emerald-800 font-semibold text-sm flex items-center gap-2">
                                   <i aria-hidden="true" data-lucide="check-circle" className="w-4 h-4"></i>
                                   <span>Meets EXTEND criteria - Consider IV thrombolysis</span>
@@ -17660,7 +18054,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <span>{item.label}</span>
                                     </label>
                                   ))}
-                                  {telestrokeNote.wakeUpStrokeWorkflow?.dwi?.positiveForLesion && telestrokeNote.wakeUpStrokeWorkflow?.flair?.noMarkedHyperintensity && telestrokeNote.wakeUpStrokeWorkflow?.ageEligible && telestrokeNote.wakeUpStrokeWorkflow?.nihssEligible && (
+                                  {wakeUpDecision.wakeUpEligible && (
                                     <div className="bg-emerald-100 border border-emerald-300 rounded p-1.5 text-emerald-800 font-semibold text-xs">Meets WAKE-UP criteria - Consider IV thrombolysis</div>
                                   )}
                                 </div>
@@ -17685,7 +18079,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <span>{item.label}</span>
                                     </label>
                                   ))}
-                                  {telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.nihss4to26 && telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.premorbidMRSLt2 && telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.ischemicCoreLte70 && telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.mismatchRatioGte1_2 && telestrokeNote.wakeUpStrokeWorkflow?.extendCriteria?.timeWindow4_5to9h && (
+                                  <div className="bg-slate-50 border border-slate-200 rounded p-1.5 text-[11px] text-slate-700">
+                                    Auto CTP check: core {wakeUpDecision.perfusion.coreVolume ?? '--'} mL; ratio {wakeUpDecision.perfusion.mismatchRatio !== null ? wakeUpDecision.perfusion.mismatchRatio.toFixed(1) : '--'}; mismatch vol {wakeUpDecision.perfusion.mismatchVolume !== null ? `${Math.round(wakeUpDecision.perfusion.mismatchVolume)} mL` : '--'}.
+                                  </div>
+                                  {wakeUpDecision.extendEligible && (
                                     <div className="bg-emerald-100 border border-emerald-300 rounded p-1.5 text-emerald-800 font-semibold text-xs">Meets EXTEND criteria - Consider IV thrombolysis</div>
                                   )}
                                 </div>
@@ -20599,6 +20996,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                               updated.cvtIcpManaged = false;
                                               updated.cvtSeizureManaged = false;
                                               updated.cvtHematologyConsulted = false;
+                                              updated.cvtSpecialPopulation = {
+                                                pregnancyPostpartum: false,
+                                                apsConfirmed: false,
+                                                activeCancer: false,
+                                                severeThrombophilia: false
+                                              };
                                               updated.cvtAnticoag = { acutePhase: '', transitionAgent: '', duration: '', apsStatus: '', etiologyProvoked: false };
                                             }
                                           }
@@ -22222,6 +22625,39 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 text-xs text-blue-800">
                                 <strong>Long-term plan:</strong> Transition to VKA (INR 2-3) for 3-12 months. DOAC may be considered for mild provoked CVT per ACTION-CVT data. Indefinite anticoagulation if recurrent VTE or severe thrombophilia.
                               </div>
+
+                              <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
+                                <div className="text-sm font-semibold text-indigo-800 mb-2">CVT Special-Population Flags</div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                  {[
+                                    { key: 'pregnancyPostpartum', label: 'Pregnancy / postpartum' },
+                                    { key: 'apsConfirmed', label: 'APS confirmed' },
+                                    { key: 'activeCancer', label: 'Active cancer' },
+                                    { key: 'severeThrombophilia', label: 'Severe thrombophilia' }
+                                  ].map(item => (
+                                    <label key={item.key} className="flex items-center gap-2 cursor-pointer text-xs">
+                                      <input
+                                        type="checkbox"
+                                        checked={!!(telestrokeNote.cvtSpecialPopulation || {})[item.key]}
+                                        onChange={(e) => {
+                                          const checked = e.target.checked;
+                                          setTelestrokeNote(prev => ({
+                                            ...prev,
+                                            cvtSpecialPopulation: { ...(prev.cvtSpecialPopulation || {}), [item.key]: checked }
+                                          }));
+                                        }}
+                                        className="rounded border-indigo-300 text-indigo-600"
+                                      />
+                                      <span>{item.label}</span>
+                                    </label>
+                                  ))}
+                                </div>
+                                {cvtSpecialPopulationPlan.flags.length > 0 && (
+                                  <p className="text-xs text-indigo-700 mt-2">
+                                    Active flags: {cvtSpecialPopulationPlan.flags.join(', ')}
+                                  </p>
+                                )}
+                              </div>
                             </div>
                           </div>
                         )}
@@ -23755,6 +24191,27 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           {(telestrokeNote.doacTiming || {}).hemorrhagicTransformation && (
                                             <p className="text-xs text-red-700 mt-1">HT present: Repeat CT before DOAC initiation. If PH-2, delay until stable and consult.</p>
                                           )}
+                                        </div>
+                                      )}
+                                      {doacTimingPlan && (
+                                        <div className="mt-2 p-2 rounded border bg-indigo-50 border-indigo-200 text-xs text-indigo-900">
+                                          <p className="font-semibold">Automated timeline: Day {doacTimingPlan.startDay}{doacTimingPlan.endDay !== doacTimingPlan.startDay ? `-${doacTimingPlan.endDay}` : ''}</p>
+                                          <p>
+                                            Window: {doacTimingPlan.startDate.toLocaleString()} {doacTimingPlan.endDay !== doacTimingPlan.startDay ? `to ${doacTimingPlan.endDate.toLocaleString()}` : ''}
+                                          </p>
+                                          {doacTimingPlan.caution && <p className="mt-1 text-red-700">{doacTimingPlan.caution}</p>}
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              const planText = doacTimingPlan.endDay === doacTimingPlan.startDay
+                                                ? `Day ${doacTimingPlan.startDay} (${doacTimingPlan.startDate.toLocaleDateString()})`
+                                                : `Day ${doacTimingPlan.startDay}-${doacTimingPlan.endDay} (${doacTimingPlan.startDate.toLocaleDateString()} - ${doacTimingPlan.endDate.toLocaleDateString()})`;
+                                              setTelestrokeNote(prev => ({ ...prev, doacTiming: { ...(prev.doacTiming || {}), doacInitiationDay: planText } }));
+                                            }}
+                                            className="mt-1 px-2 py-1 bg-indigo-600 text-white rounded text-xs font-semibold hover:bg-indigo-700"
+                                          >
+                                            Apply suggested window
+                                          </button>
                                         </div>
                                       )}
                                       <input type="text" aria-label="Planned DOAC initiation day" value={(telestrokeNote.doacTiming || {}).doacInitiationDay || ''}
@@ -25442,6 +25899,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   if (telestrokeNote.cvtIcpManaged) note += `- ICP management addressed.\n`;
                                   if (telestrokeNote.cvtSeizureManaged) note += `- Seizure management addressed.\n`;
                                   if (telestrokeNote.cvtHematologyConsulted) note += `- Hematology consulted for thrombophilia workup.\n`;
+                                  const cvtSpecialLinesPathway = getCvtSpecialPopulationNoteLines(telestrokeNote);
+                                  if (cvtSpecialLinesPathway.length > 0) {
+                                    note += `${cvtSpecialLinesPathway.join('.\n')}.\n`;
+                                  }
                                 } else if (pathwayType === 'tia') {
                                   note += `PLAN:\n`;
                                   note += `- TIA disposition risk-stratified: admit/observe if high risk; expedited outpatient pathway only with complete workup and guaranteed follow-up.\n`;
@@ -27878,7 +28339,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-slate-700">M2-M4 MCA, ACA, PCA occlusions</span>
                                     <span className="text-slate-500">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-semibold border border-red-300">Not recommended</span>
+                                    <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold border border-amber-300">No routine EVT (select/trial only)</span>
                                   </div>
                                 </div>
                               </div>
@@ -27942,6 +28403,88 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <li>Manage complications (sICH, angioedema) and ensure nursing flowsheet compliance.</li>
                               <li>Initiate secondary prevention: antithrombotic plan, statin, and risk-factor control.</li>
                             </ul>
+                          </div>
+                          <div className="bg-white border border-blue-200 rounded-xl p-4 space-y-2">
+                            <h4 className="text-sm font-semibold text-blue-800">Post-EVT BP Guardrail</h4>
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-2 text-sm">
+                              <div>
+                                <label className="block text-xs text-slate-500 mb-1">Reperfusion status</label>
+                                <select
+                                  value={(telestrokeNote.postEvtBP || {}).reperfusionStatus || ''}
+                                  onChange={(e) => {
+                                    const v = e.target.value;
+                                    setTelestrokeNote(prev => ({ ...prev, postEvtBP: { ...(prev.postEvtBP || {}), reperfusionStatus: v } }));
+                                  }}
+                                  className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm"
+                                >
+                                  <option value="">Auto from TICI</option>
+                                  <option value="successful">Successful (mTICI 2b-3)</option>
+                                  <option value="partial">Partial/none (&lt;2b)</option>
+                                </select>
+                              </div>
+                              <div>
+                                <label className="block text-xs text-slate-500 mb-1">Current BP</label>
+                                <input
+                                  type="text"
+                                  value={telestrokeNote.bpPostEVT || ''}
+                                  onChange={(e) => {
+                                    const v = e.target.value;
+                                    setTelestrokeNote(prev => ({ ...prev, bpPostEVT: v }));
+                                  }}
+                                  className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm"
+                                  placeholder="e.g. 168/92"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-xs text-slate-500 mb-1">Infusion agent</label>
+                                <select
+                                  value={(telestrokeNote.postEvtBP || {}).infusionAgent || ''}
+                                  onChange={(e) => {
+                                    const v = e.target.value;
+                                    setTelestrokeNote(prev => ({ ...prev, postEvtBP: { ...(prev.postEvtBP || {}), infusionAgent: v } }));
+                                  }}
+                                  className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm"
+                                >
+                                  <option value="">Select</option>
+                                  <option value="nicardipine">Nicardipine drip</option>
+                                  <option value="clevidipine">Clevidipine drip</option>
+                                  <option value="labetalol">Intermittent labetalol</option>
+                                  <option value="none">No IV infusion</option>
+                                </select>
+                              </div>
+                              <div>
+                                <label className="block text-xs text-slate-500 mb-1">Target strategy</label>
+                                <select
+                                  value={(telestrokeNote.postEvtBP || {}).targetStrategy || ''}
+                                  onChange={(e) => {
+                                    const v = e.target.value;
+                                    setTelestrokeNote(prev => ({ ...prev, postEvtBP: { ...(prev.postEvtBP || {}), targetStrategy: v } }));
+                                  }}
+                                  className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm"
+                                >
+                                  <option value="">Guideline default</option>
+                                  <option value="standard">SBP &lt;180/105</option>
+                                  <option value="guardrail">SBP 130-180 guardrail</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className={`rounded-lg border px-3 py-2 text-xs ${
+                              postEvtBpGuidance.status === 'too-low'
+                                ? 'bg-red-50 border-red-300 text-red-800'
+                                : postEvtBpGuidance.status === 'too-high'
+                                  ? 'bg-amber-50 border-amber-300 text-amber-800'
+                                  : postEvtBpGuidance.status === 'in-range'
+                                    ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
+                                    : 'bg-slate-50 border-slate-200 text-slate-700'
+                            }`}>
+                              <p className="font-semibold">Target: {postEvtBpGuidance.target.label}</p>
+                              <p>
+                                {postEvtBpGuidance.status === 'too-low' && 'Current BP is below recommended floor. Avoid intensive lowering (<130) after EVT due to harm signal.'}
+                                {postEvtBpGuidance.status === 'too-high' && 'Current BP is above target. Titrate antihypertensive infusion and recheck frequently.'}
+                                {postEvtBpGuidance.status === 'in-range' && 'Current BP is within target guardrail.'}
+                                {postEvtBpGuidance.status === 'unknown' && 'Enter post-EVT BP to activate automated guardrails.'}
+                              </p>
+                            </div>
                           </div>
 
                         <details className="bg-white border border-blue-200 rounded-lg">
@@ -28030,6 +28573,70 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <option value="<6">&lt;6</option>
                               </select>
                             </div>
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">CTP Core (mL)</label>
+                              <input
+                                type="number"
+                                min="0"
+                                max="500"
+                                value={evtDecisionInputs.coreVolume}
+                                onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, coreVolume: e.target.value }))}
+                                className="w-full px-2 py-2 border border-slate-200 rounded-lg"
+                                placeholder="Auto or manual"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">Mismatch ratio</label>
+                              <input
+                                type="number"
+                                min="0"
+                                step="0.1"
+                                max="20"
+                                value={evtDecisionInputs.mismatchRatio}
+                                onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, mismatchRatio: e.target.value }))}
+                                className="w-full px-2 py-2 border border-slate-200 rounded-lg"
+                                placeholder="e.g. 1.8"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-slate-500 mb-1">Mismatch volume (mL)</label>
+                              <input
+                                type="number"
+                                min="-200"
+                                max="500"
+                                value={evtDecisionInputs.mismatchVolume}
+                                onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, mismatchVolume: e.target.value }))}
+                                className="w-full px-2 py-2 border border-slate-200 rounded-lg"
+                                placeholder="Penumbra - core"
+                              />
+                            </div>
+                            <label className="flex items-center gap-2 text-xs text-slate-700 mt-5">
+                              <input
+                                type="checkbox"
+                                checked={!!evtDecisionInputs.disablingDeficit}
+                                onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, disablingDeficit: e.target.checked }))}
+                                className="rounded border-slate-300 text-blue-600"
+                              />
+                              Disabling deficit present (supports selective MeVO EVT)
+                            </label>
+                          </div>
+                          <div className="mt-3 flex flex-wrap items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const perf = getPerfusionMetrics(telestrokeNote);
+                                setEvtDecisionInputs(prev => ({
+                                  ...prev,
+                                  coreVolume: perf.coreVolume !== null ? String(Math.round(perf.coreVolume)) : prev.coreVolume,
+                                  mismatchRatio: perf.mismatchRatio !== null ? perf.mismatchRatio.toFixed(1) : prev.mismatchRatio,
+                                  mismatchVolume: perf.mismatchVolume !== null ? String(Math.round(perf.mismatchVolume)) : prev.mismatchVolume
+                                }));
+                              }}
+                              className="px-2.5 py-1.5 rounded-lg border border-blue-300 text-blue-700 text-xs font-semibold hover:bg-blue-50"
+                            >
+                              Pull from Encounter CTP
+                            </button>
+                            <span className="text-xs text-slate-500">Perfusion fields are optional but strongly recommended for large-core and MeVO decisions.</span>
                           </div>
                           {(() => {
                             const result = getEvtEligibilityRecommendation(evtDecisionInputs, calculateTimeFromLKW());
@@ -29272,6 +29879,62 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <p className="text-sm text-orange-900 font-semibold">Disposition is risk-stratified: admit/observe high-risk TIAs, and use rapid outpatient pathways only when same-day workup plus reliable 24-48h stroke follow-up are guaranteed. Do not use ABCD2 alone.</p>
                         </div>
 
+                        <div className="bg-white border border-orange-200 rounded-lg p-4 space-y-3">
+                          <h4 className="font-bold text-orange-900">TIA Disposition Engine</h4>
+                          <p className="text-xs text-slate-600">ABCD2 + imaging/etiology reliability overlay (AHA TIA ED 2023 aligned). This card is used to drive disposition decisions, not ABCD2 alone.</p>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
+                            {[
+                              { key: 'dwiPositive', label: 'DWI-positive lesion (tissue-based stroke risk)' },
+                              { key: 'crescendoOrRecurrent', label: 'Crescendo/recurrent TIA in 24h' },
+                              { key: 'symptomaticCarotidSevere', label: 'Symptomatic severe carotid stenosis' },
+                              { key: 'suspectedCardioembolism', label: 'Suspected cardioembolic source / new AF concern' },
+                              { key: 'persistentDeficit', label: 'Persistent deficit (not fully resolved)' },
+                              { key: 'sameDayWorkupComplete', label: 'Same-day ED workup completed' },
+                              { key: 'reliableFollowUp48h', label: 'Reliable stroke follow-up in 24-48h secured' }
+                            ].map(item => (
+                              <label key={item.key} className="flex items-start gap-2 cursor-pointer p-2 rounded border border-slate-200 bg-slate-50">
+                                <input
+                                  type="checkbox"
+                                  checked={!!(telestrokeNote.tiaDisposition || {})[item.key]}
+                                  onChange={(e) => {
+                                    const checked = e.target.checked;
+                                    setTelestrokeNote(prev => ({
+                                      ...prev,
+                                      tiaDisposition: { ...(prev.tiaDisposition || {}), [item.key]: checked }
+                                    }));
+                                  }}
+                                  className="mt-0.5 rounded border-orange-300 text-orange-600"
+                                />
+                                <span className="text-xs text-slate-700">{item.label}</span>
+                              </label>
+                            ))}
+                          </div>
+                          <div className={`rounded-lg border px-3 py-2 text-sm ${
+                            tiaDispositionDecision.tier === 'high'
+                              ? 'bg-red-50 border-red-300 text-red-900'
+                              : tiaDispositionDecision.tier === 'moderate'
+                                ? 'bg-amber-50 border-amber-300 text-amber-900'
+                                : 'bg-emerald-50 border-emerald-300 text-emerald-900'
+                          }`}>
+                            <p className="font-semibold">
+                              ABCD2: {calculateABCD2Score(abcd2Items)} | Recommendation: {tiaDispositionDecision.label}
+                            </p>
+                            <p className="text-xs mt-1">{tiaDispositionDecision.detail}</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setTelestrokeNote(prev => ({
+                                ...prev,
+                                disposition: tiaDispositionDecision.label
+                              }));
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-orange-600 text-white text-xs font-semibold hover:bg-orange-700"
+                          >
+                            Apply disposition to encounter
+                          </button>
+                        </div>
+
                         {/* ABCD2 Risk Stratification */}
                         <div className="bg-white border border-slate-200 rounded-lg p-4">
                           <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
@@ -29690,6 +30353,84 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <i aria-hidden="true" data-lucide="chevron-down" className="w-4 h-4"></i>
                           </summary>
                           <div className="p-4 pt-0 space-y-3 text-sm">
+                            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
+                              <h4 className="font-semibold text-indigo-900 mb-2">Special-Population Flags</h4>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                {[
+                                  {
+                                    key: 'pregnancyPostpartum',
+                                    label: 'Pregnancy / postpartum',
+                                    detail: 'Prefer LMWH/UFH. Avoid DOACs during pregnancy and breastfeeding.'
+                                  },
+                                  {
+                                    key: 'apsConfirmed',
+                                    label: 'APS confirmed',
+                                    detail: 'Use warfarin (INR 2-3) for long-term therapy; avoid DOACs.'
+                                  },
+                                  {
+                                    key: 'activeCancer',
+                                    label: 'Active cancer',
+                                    detail: 'Coordinate with hematology/oncology for agent interactions and procedures.'
+                                  },
+                                  {
+                                    key: 'severeThrombophilia',
+                                    label: 'Severe thrombophilia',
+                                    detail: 'High recurrence profile; extended/indefinite anticoagulation often needed.'
+                                  }
+                                ].map((item) => (
+                                  <label key={item.key} className="flex items-start gap-2 cursor-pointer rounded-lg border border-indigo-100 bg-white p-2">
+                                    <input
+                                      type="checkbox"
+                                      checked={!!(telestrokeNote.cvtSpecialPopulation || {})[item.key]}
+                                      onChange={(e) => {
+                                        const checked = e.target.checked;
+                                        setTelestrokeNote((prev) => ({
+                                          ...prev,
+                                          cvtSpecialPopulation: { ...(prev.cvtSpecialPopulation || {}), [item.key]: checked }
+                                        }));
+                                      }}
+                                      className="mt-0.5 rounded border-indigo-300 text-indigo-600"
+                                    />
+                                    <div>
+                                      <span className="text-xs font-semibold text-slate-800">{item.label}</span>
+                                      <span className="block text-xs text-slate-500">{item.detail}</span>
+                                    </div>
+                                  </label>
+                                ))}
+                              </div>
+                              <div className={`mt-3 rounded-lg border p-2 text-xs ${
+                                cvtSpecialPopulationPlan.riskTier === 'high'
+                                  ? 'bg-red-50 border-red-200 text-red-800'
+                                  : cvtSpecialPopulationPlan.riskTier === 'moderate'
+                                    ? 'bg-amber-50 border-amber-200 text-amber-800'
+                                    : 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                              }`}>
+                                <p className="font-semibold">
+                                  {cvtSpecialPopulationPlan.riskTier === 'high'
+                                    ? 'High-complexity CVT profile'
+                                    : cvtSpecialPopulationPlan.riskTier === 'moderate'
+                                      ? 'Moderate-complexity CVT profile'
+                                      : 'Standard CVT profile'}
+                                </p>
+                                <p className="mt-0.5">Acute agent: {cvtSpecialPopulationPlan.acuteAgent}</p>
+                                <p>Long-term plan: {cvtSpecialPopulationPlan.longTerm}</p>
+                                <p>Duration target: {cvtSpecialPopulationPlan.duration}</p>
+                                {cvtSpecialPopulationPlan.recommendations.length > 0 && (
+                                  <ul className="mt-1 space-y-0.5">
+                                    {cvtSpecialPopulationPlan.recommendations.map((item, index) => (
+                                      <li key={`${item}-${index}`}>&bull; {item}</li>
+                                    ))}
+                                  </ul>
+                                )}
+                                {cvtSpecialPopulationPlan.cautions.length > 0 && (
+                                  <div className="mt-1 font-medium">
+                                    {cvtSpecialPopulationPlan.cautions.map((item, index) => (
+                                      <p key={`${item}-${index}`}>Caution: {item}</p>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
                             <div className="bg-pink-50 border border-pink-200 rounded-lg p-3">
                               <h4 className="font-semibold text-pink-800 mb-1">Pregnancy / Postpartum</h4>
                               <ul className="text-xs text-slate-700 space-y-0.5">
@@ -34026,7 +34767,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               </div>
             )}
 
-            {/* Emergency Contacts FAB */}
+            {/* Emergency Contacts FAB
+                MAINTAINER POLICY: Keep this quick-call workflow in place.
+                Do NOT remove unless the owner explicitly requests removal on their own. */}
             <div
               className="fixed right-4 fab-layer no-print"
               style={{ bottom: showEncounterActionBar ? '6.5rem' : '1.5rem' }}

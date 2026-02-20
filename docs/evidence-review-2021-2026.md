@@ -160,3 +160,9 @@
   - DOI `10.1056/NEJMoa2313040`
 - AHA TIA ED scientific statement reference retained:
   - DOI `10.1161/STR.0000000000000418`
+
+### Operational update (2026-02-20, iter-068)
+- No new primary trial or guideline citations were added in this iteration.
+- Implemented evidence-to-workflow operationalization for CVT special populations (pregnancy/postpartum, APS, active cancer, severe thrombophilia) by converting guidance text into structured decision-support fields and note output.
+- Added citation metadata quality gate (`scripts/validate-citations.mjs`) that enforces citation table completeness (title/year/source/URL/PMID|DOI|NCT) within the 2021-2026 evidence window before smoke QA.
+- Inference disclosure: the CVT special-population duration/agent summary in UI is a synthesis layer over listed guideline/statement evidence, not a new independent recommendation source.

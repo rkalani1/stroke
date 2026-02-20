@@ -41,3 +41,14 @@
   - Premorbid disability EVT warning reframed from hard-stop to shared-decision warning.
   - Spasticity block aligned to 2026 AHA statement and hormonal-risk block expanded for transgender and testosterone counseling context.
 - Remaining gap: add deterministic scenario-level clinical assertions (for example TIA low-risk outpatient pathway vs high-risk admission) in smoke QA, not only static text/control presence.
+
+## Iteration 068 Update (2026-02-20)
+- CVT special-population gap reduced:
+  - Added explicit structured pathway flags for pregnancy/postpartum, APS, active cancer, severe thrombophilia.
+  - Added dynamic management outputs (acute agent, long-term strategy, duration, cautions) and propagated into note exports.
+  - Safety checks now consume these structured fields rather than relying only on legacy anticoag toggles.
+- QA/Regression discipline gap reduced:
+  - Added deterministic smoke assertions for three newly introduced high-impact modules: Post-EVT BP Guardrail, TIA Disposition Engine, and updated MeVO wording.
+  - Added evidence citation metadata validator (`validate:citations`) to prevent silent citation-structure drift.
+- Remaining gap:
+  - Add scenario-driven decision-state assertions (for example APS+DOAC error transitions and TIA risk-tier disposition changes), not just static component presence.

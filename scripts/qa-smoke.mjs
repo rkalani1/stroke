@@ -232,6 +232,37 @@ async function auditView(browser, target, viewport) {
   const activeAfterCtrl3 = await getActiveTabLabel(page);
   if (!activeAfterCtrl3 || !/Library/i.test(activeAfterCtrl3)) {
     addIssue(issues, 'keyboard-tab-nav', { combo: 'Ctrl+3', activeAfter: activeAfterCtrl3 });
+  } else {
+    const protocolsButton = page.getByRole('tab', { name: /Protocols & Tools/i }).first();
+    if ((await protocolsButton.count()) > 0) {
+      await protocolsButton.click();
+      await page.waitForTimeout(200);
+    }
+
+    const ischemicButton = page.getByRole('tab', { name: /Ischemic management tab/i }).first();
+    if ((await ischemicButton.count()) === 0) {
+      addIssue(issues, 'missing-library-subtab', { subtab: 'Ischemic' });
+    } else {
+      await ischemicButton.click();
+      await page.waitForTimeout(200);
+      if ((await page.getByText(/Post-EVT BP Guardrail/i).count()) === 0) {
+        addIssue(issues, 'missing-post-evt-bp-guardrail');
+      }
+      if ((await page.getByText(/No routine EVT \(select\/trial only\)/i).count()) === 0) {
+        addIssue(issues, 'missing-mevo-updated-wording');
+      }
+    }
+
+    const tiaButton = page.getByRole('tab', { name: /TIA management tab/i }).first();
+    if ((await tiaButton.count()) === 0) {
+      addIssue(issues, 'missing-library-subtab', { subtab: 'TIA' });
+    } else {
+      await tiaButton.click();
+      await page.waitForTimeout(200);
+      if ((await page.getByText(/TIA Disposition Engine/i).count()) === 0) {
+        addIssue(issues, 'missing-tia-disposition-engine');
+      }
+    }
   }
 
   await page.keyboard.press('Control+4');

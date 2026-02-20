@@ -417,3 +417,20 @@
   - `npm test` pass (local smoke, all three viewports).
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && npm test && npm run build`
+
+## Iteration 068 update (2026-02-20, macOS session)
+- Fixed runtime initialization regression caused by non-hoisted helper functions introduced in this cycle.
+- Completed CVT special-population workflow integration (pregnancy/postpartum, APS, active cancer, severe thrombophilia):
+  - Structured flags in Encounter and Library CVT modules.
+  - Dynamic plan summary (acute agent, long-term strategy, duration, cautions).
+  - Safety warning linkage and note-template propagation.
+- Added `scripts/validate-citations.mjs` and wired `npm run validate:citations` into `npm test`/`npm run qa`.
+- Expanded smoke assertions for:
+  - Ischemic panel updated MeVO wording.
+  - Ischemic panel Post-EVT BP Guardrail module.
+  - TIA panel TIA Disposition Engine module.
+- Local verification complete:
+  - `npm run build` pass
+  - `npm test` pass (0 smoke issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && npm run qa && git push origin main`

@@ -816,3 +816,32 @@
 ### QA and validation
 - `npm test`: pass
 - `npm run qa`: pass
+
+## Iteration 068 (2026-02-20)
+
+### What was changed
+- Fixed a runtime initialization regression in `src/app.jsx` by converting newly added clinical helper functions to hoisted function declarations (eliminated app boot `ReferenceError` and restored full render).
+- Completed CVT special-population integration end-to-end:
+  - Added structured decision engine for pregnancy/postpartum, APS, active cancer, and severe thrombophilia.
+  - Added interactive CVT special-population flags in both Encounter and Library CVT workflows.
+  - Added dynamic CVT plan summary (acute agent, long-term agent strategy, duration, cautions) in Library CVT panel.
+  - Wired special-population content into transfer/consult/discharge/progress/signout note outputs.
+  - Extended CVT safety warnings to use new special-population fields (APS + DOAC contraindication, pregnancy agent cautions).
+- Added citation integrity tooling:
+  - New `scripts/validate-citations.mjs` verifies evidence table structure, year window (2021-2026), URL format, and PMID/DOI/NCT metadata presence.
+  - Added npm script `validate:citations` and chained it into `npm test` and `npm run qa`.
+- Expanded regression smoke assertions in `scripts/qa-smoke.mjs`:
+  - Verifies ischemic Library panel contains updated MeVO wording (`No routine EVT (select/trial only)`).
+  - Verifies `Post-EVT BP Guardrail` is present in ischemic Library content.
+  - Verifies TIA Library panel contains `TIA Disposition Engine`.
+- Cache/version bump for deploy consistency:
+  - `index.html` APP_VERSION `v5.14.70`
+  - `service-worker.js` cache `stroke-app-v69`
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (`validate:citations` + local smoke across desktop/tablet/mobile, 0 issues)
+
+### Next opportunities
+- Add scenario-level QA assertions for CVT special-population warning transitions (APS/pregnancy toggles).
+- Add deterministic smoke checks for wake-up CT perfusion auto-eligibility text output.

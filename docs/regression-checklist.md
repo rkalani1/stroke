@@ -24,6 +24,9 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Renal-safety alert appears in contrast section when Cr >3 or CrCl <30.
 - [ ] PFO closure eligibility card visible in secondary prevention dashboard.
 - [ ] Carotid revascularization decision guide visible in secondary prevention dashboard.
+- [ ] Ischemic library panel includes Post-EVT BP Guardrail module.
+- [ ] TIA library panel includes TIA Disposition Engine module.
+- [ ] CVT special-population flags and dynamic plan summary remain present in CVT workflow.
 
 ## Workflow and usability
 - [ ] Senior rapid path: key decisions visible within one scroll on desktop.
@@ -34,6 +37,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Bottom-right quick contacts FAB is visible and opens a callable contact panel.
 - [ ] Settings tab shows Contact Directory editor and Reset UW Defaults control.
 - [ ] TIA pathway language remains risk-stratified (no universal-admit hard stop text).
+- [ ] Phone directory/FAB has NOT been removed unless there is an explicit owner-authored request to remove it.
 
 ## Accessibility and responsive behavior
 - [ ] Desktop (1440x900), tablet (768x1024), and mobile (390x844) layouts are usable.
@@ -42,6 +46,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 
 ## Build and runtime
 - [ ] `npm run build` passes.
+- [ ] `npm run validate:citations` passes.
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] Service worker cache version updated when asset behavior changes.
 - [ ] `index.html` app version updated for storage/cache compatibility when needed.
@@ -80,3 +85,8 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 ## Last completed run (2026-02-20, iter-042)
 - [x] `npm run build` pass after contact-directory and evidence text updates
 - [x] `npm test` local smoke pass after adding quick-contacts/settings assertions
+
+## Last completed run (2026-02-20, iter-068)
+- [x] `npm run build` pass after CVT special-population and QA assertion updates
+- [x] `npm run validate:citations` pass (22 citation rows validated)
+- [x] `npm test` local smoke pass with 0 issues across desktop/tablet/mobile
