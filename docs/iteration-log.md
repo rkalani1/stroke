@@ -1131,3 +1131,23 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 085 (2026-02-20)
+
+### What was changed
+- Hardened citation identifier validation in `/Users/rizwankalani/stroke/scripts/validate-citations.mjs`:
+  - PMID checks now use batched PubMed eSummary retrieval to avoid rate-limit failures.
+  - Added PMID title-overlap drift detection (warning-level) to surface metadata mismatches.
+  - Preserved DOI handle endpoint checks and URL-health checks.
+- Corrected evidence table metadata drift in `/Users/rizwankalani/stroke/docs/evidence-review-2021-2026.md`:
+  - Fixed incorrect PMIDs/DOIs/URLs/sources for key trials (AcT, TRACE-2, ORIGINAL, TWIST, TENSION, INTERACT3).
+  - Corrected additional DOI mismatches (RESCUE-Japan LIMIT, ANGEL-ASPECT, ENRICH, INSPIRES, TIMING).
+  - Updated CVT and INSPIRES URLs to PubMed endpoints for more reliable accessibility.
+  - Corrected stale metadata in historical verification notes (including AIS guideline PMID and large-core/ANNEXA references).
+
+### QA and validation
+- `npm run validate:citations:ids`: pass (no identifier drift warnings after corrections)
+- `npm run validate:citations:links`: pass (1 restricted-access warning, 0 failures)
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)

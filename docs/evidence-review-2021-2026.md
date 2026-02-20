@@ -90,39 +90,39 @@
 ## Key citations (metadata + evidence tag)
 | Domain | Evidence tag | Title | Year | Journal/Source | URL | PMID / DOI / NCT |
 |---|---|---|---|---|---|---|
-| AIS thrombolysis | RCT-supported | Intravenous Tenecteplase Compared with Alteplase for Acute Ischaemic Stroke in Canada (AcT) | 2022 | Lancet | https://pubmed.ncbi.nlm.nih.gov/35779579/ | PMID: 35779579; DOI: 10.1016/S0140-6736(22)01054-X |
-| AIS thrombolysis | RCT-supported | Trial of Tenecteplase in Chinese Patients with Acute Ischemic Stroke (TRACE-2) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/37043691/ | PMID: 37043691; DOI: 10.1056/NEJMoa2216603 |
-| AIS thrombolysis | RCT-supported | Tenecteplase vs Alteplase in AIS (ORIGINAL) | 2024 | JAMA | https://pubmed.ncbi.nlm.nih.gov/38710025/ | PMID: 38710025; DOI: 10.1001/jama.2024.8038 |
-| Wake-up/unknown onset | RCT-supported | Intravenous thrombolysis with tenecteplase in patients with wake-up stroke (TWIST) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/36774963/ | PMID: 36774963; DOI: 10.1016/S0140-6736(22)02447-7 |
+| AIS thrombolysis | RCT-supported | Intravenous Tenecteplase Compared with Alteplase for Acute Ischaemic Stroke in Canada (AcT) | 2022 | Lancet | https://pubmed.ncbi.nlm.nih.gov/35779553/ | PMID: 35779553; DOI: 10.1016/S0140-6736(22)01054-6 |
+| AIS thrombolysis | RCT-supported | Trial of Tenecteplase in Chinese Patients with Acute Ischemic Stroke (TRACE-2) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/36774935/ | PMID: 36774935; DOI: 10.1016/S0140-6736(22)02600-9 |
+| AIS thrombolysis | RCT-supported | Tenecteplase vs Alteplase in AIS (ORIGINAL) | 2024 | JAMA | https://pubmed.ncbi.nlm.nih.gov/39264623/ | PMID: 39264623; DOI: 10.1001/jama.2024.14721 |
+| Wake-up/unknown onset | RCT-supported | Intravenous thrombolysis with tenecteplase in patients with wake-up stroke (TWIST) | 2023 | Lancet Neurol | https://pubmed.ncbi.nlm.nih.gov/36549308/ | PMID: 36549308; DOI: 10.1016/S1474-4422(22)00484-7 |
 | AIS thrombolysis | Guideline-grade | European Stroke Organisation expedited recommendation on tenecteplase | 2023 | Eur Stroke J | https://journals.sagepub.com/doi/full/10.1177/23969873231177508 | DOI: 10.1177/23969873231177508 |
 | EVT large core | RCT-supported | Trial of Endovascular Thrombectomy for Large Ischemic Strokes (SELECT2) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/36762865/ | PMID: 36762865; DOI: 10.1056/NEJMoa2214403 |
-| EVT large core | RCT-supported | Endovascular Therapy for Acute Stroke with Large Ischemic Region (RESCUE-Japan LIMIT) | 2022 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/35138767/ | PMID: 35138767; DOI: 10.1056/NEJMoa2205486 |
-| EVT large core | RCT-supported | Endovascular Therapy for Acute Ischemic Stroke with Large Infarct (ANGEL-ASPECT) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/36762852/ | PMID: 36762852; DOI: 10.1056/NEJMoa2302596 |
-| EVT large core | RCT-supported | Endovascular Thrombectomy for Acute Ischemic Stroke with Established Large Infarct (TENSION) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/37856323/ | PMID: 37856323; DOI: 10.1056/NEJMoa2310242 |
+| EVT large core | RCT-supported | Endovascular Therapy for Acute Stroke with Large Ischemic Region (RESCUE-Japan LIMIT) | 2022 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/35138767/ | PMID: 35138767; DOI: 10.1056/NEJMoa2118191 |
+| EVT large core | RCT-supported | Endovascular Therapy for Acute Ischemic Stroke with Large Infarct (ANGEL-ASPECT) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/36762852/ | PMID: 36762852; DOI: 10.1056/NEJMoa2213379 |
+| EVT large core | RCT-supported | Endovascular Thrombectomy for Acute Ischemic Stroke with Established Large Infarct (TENSION) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/37837989/ | PMID: 37837989; DOI: 10.1016/S0140-6736(23)02032-9 |
 | ICH | Guideline-grade | 2022 Guideline for the Management of Patients with Spontaneous Intracerebral Hemorrhage | 2022 | Stroke | https://pubmed.ncbi.nlm.nih.gov/35579034/ | PMID: 35579034; DOI: 10.1161/STR.0000000000000407 |
-| ICH implementation | RCT-supported | Care bundle approach for acute intracerebral haemorrhage (INTERACT3) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/37980922/ | PMID: 37980922; DOI: 10.1016/S0140-6736(23)01508-4 |
+| ICH implementation | RCT-supported | Care bundle approach for acute intracerebral haemorrhage (INTERACT3) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/37245517/ | PMID: 37245517; DOI: 10.1016/S0140-6736(23)00806-1 |
 | ICH reversal | RCT-supported | Andexanet for Factor Xa Inhibitor-Associated Acute Intracerebral Hemorrhage (ANNEXA-I) | 2024 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/38749032/ | PMID: 38749032; DOI: 10.1056/NEJMoa2313040 |
-| ICH surgery | RCT-supported | Trial of Early Minimally Invasive Removal of Intracerebral Hemorrhage (ENRICH) | 2024 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/38598795/ | PMID: 38598795; DOI: 10.1056/NEJMoa2400314 |
+| ICH surgery | RCT-supported | Trial of Early Minimally Invasive Removal of Intracerebral Hemorrhage (ENRICH) | 2024 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/38598795/ | PMID: 38598795; DOI: 10.1056/NEJMoa2308440 |
 | SAH | Guideline-grade | 2023 Guideline for Management of Patients With Aneurysmal Subarachnoid Hemorrhage | 2023 | Stroke | https://pubmed.ncbi.nlm.nih.gov/37212182/ | PMID: 37212182; DOI: 10.1161/STR.0000000000000436 |
-| CVT | Guideline-grade | Diagnosis and Management of Cerebral Venous Thrombosis: A Scientific Statement from the AHA | 2024 | Stroke / AHA | https://www.ahajournals.org/doi/10.1161/STR.0000000000000456 | PMID: 38284265; DOI: 10.1161/STR.0000000000000456 |
+| CVT | Guideline-grade | Diagnosis and Management of Cerebral Venous Thrombosis: A Scientific Statement from the AHA | 2024 | Stroke / AHA | https://pubmed.ncbi.nlm.nih.gov/38284265/ | PMID: 38284265; DOI: 10.1161/STR.0000000000000456 |
 | CVT | Observational/Consensus | Direct Oral Anticoagulants vs Warfarin for CVT (ACTION-CVT) | 2022 | Stroke | https://pubmed.ncbi.nlm.nih.gov/35143325/ | PMID: 35143325; DOI: 10.1161/STROKEAHA.121.037541 |
 | Secondary prevention | Guideline-grade | 2021 Guideline for the Prevention of Stroke in Patients With Stroke and TIA | 2021 | Stroke | https://pubmed.ncbi.nlm.nih.gov/34024117/ | PMID: 34024117; DOI: 10.1161/STR.0000000000000375 |
 | DAPT pharmacogenomics | RCT-supported | Ticagrelor or Clopidogrel with Aspirin in High-Risk TIA or Minor Stroke (CHANCE-2) | 2021 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/34708996/ | PMID: 34708996; DOI: 10.1056/NEJMoa2111749 |
-| DAPT timing/phenotype | RCT-supported | Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke (INSPIRES) | 2024 | N Engl J Med | https://www.ahajournals.org/doi/10.1161/STROKEAHA.124.046680 | PMID: 38157499; DOI: 10.1056/NEJMoa2313035 |
+| DAPT timing/phenotype | RCT-supported | Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke (INSPIRES) | 2024 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/38157499/ | PMID: 38157499; DOI: 10.1056/NEJMoa2309137 |
 | Cardioembolic timing | RCT-supported | Early versus Later Anticoagulation for Stroke with Atrial Fibrillation (ELAN) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/37222476/ | PMID: 37222476; DOI: 10.1056/NEJMoa2303048 |
-| Cardioembolic timing | RCT-supported | Timing of Oral Anticoagulant Therapy in AIS with AF (TIMING) | 2022 | Circulation | https://pubmed.ncbi.nlm.nih.gov/36065821/ | PMID: 36065821; DOI: 10.1161/CIRCULATIONAHA.122.060786 |
+| Cardioembolic timing | RCT-supported | Timing of Oral Anticoagulant Therapy in AIS with AF (TIMING) | 2022 | Circulation | https://pubmed.ncbi.nlm.nih.gov/36065821/ | PMID: 36065821; DOI: 10.1161/CIRCULATIONAHA.122.060666 |
 | Special populations | Guideline-grade | Maternal Stroke: A Focused Update | 2026 | Stroke / PubMed | https://pubmed.ncbi.nlm.nih.gov/41678811/ | PMID: 41678811 |
 
 ### Metadata verification refresh (2026-02-18, iter-037)
-- Re-verified 2026 AIS guideline indexing metadata: PMID `40993083`, DOI `10.1161/STR.0000000000000513`.
+- Re-verified 2026 AIS guideline indexing metadata: PMID `41582814`, DOI `10.1161/STR.0000000000000513`.
 - Added 2026 extended-window non-LVO tenecteplase RCT metadata: JAMA DOI `10.1001/jama.2025.22824`.
 - Re-verified key large-core EVT metadata:
-  - SELECT2: PMID `36762818`, DOI `10.1056/NEJMoa2214403`
-  - ANGEL-ASPECT: PMID `36762864`, DOI `10.1056/NEJMoa2307987`
-  - RESCUE-Japan LIMIT: PMID `36762865`, DOI `10.1056/NEJMoa2214405`
+  - SELECT2: PMID `36762865`, DOI `10.1056/NEJMoa2214403`
+  - ANGEL-ASPECT: PMID `36762852`, DOI `10.1056/NEJMoa2213379`
+  - RESCUE-Japan LIMIT: PMID `35138767`, DOI `10.1056/NEJMoa2118191`
 - Re-verified ICH bundle/reversal metadata:
   - INTERACT3: PMID `37245517`, DOI `10.1016/S0140-6736(23)00806-1`, NCT `NCT03209258`
-  - ANNEXA-I: PMID `38587294`, DOI `10.1056/NEJMoa2313040`, NCT `NCT03661528`
+  - ANNEXA-I: PMID `38749032`, DOI `10.1056/NEJMoa2313040`, NCT `NCT03661528`
 - Re-verified SAH/CVT/TIA/secondary prevention/special-population metadata:
   - SAH guideline PMID `37212182`, DOI `10.1161/STR.0000000000000436`
   - CVT statement PMID `38284265`, DOI `10.1161/STR.0000000000000456`
@@ -245,3 +245,8 @@
 - No new medical evidence sources were added in this iteration.
 - Added PMID/DOI/NCT identifier endpoint verification mode to the citation validator and integrated it into scheduled production audits.
 - This further hardens evidence metadata integrity monitoring while preserving existing clinical recommendation logic.
+
+### Operational update (2026-02-20, iter-085)
+- Corrected citation metadata drift in key table entries after PMID title-resolution checks identified mismatches.
+- Updated multiple PMIDs/DOIs/source labels/URLs to align with PubMed primary metadata for major thrombolysis, EVT, and ICH/secondary-prevention studies.
+- Validator now batches PMID metadata checks to avoid NCBI rate-limit instability while continuing to surface title drift as warning-level findings.

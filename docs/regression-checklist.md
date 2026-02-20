@@ -189,3 +189,11 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass
 - [x] `npm run qa` local + live smoke pass with 0 issues
+
+## Last completed run (2026-02-20, iter-085)
+- [x] `npm run validate:citations:ids` pass with batched PMID checks and no title-drift warnings
+- [x] Corrected high-impact citation metadata mismatches in evidence table (PMID/DOI/source/URL)
+- [x] `npm run validate:citations:links` pass (single restricted-access warning)
+- [x] `npm run build` pass
+- [x] `npm test` pass
+- [x] `npm run qa` local + live smoke pass with 0 issues

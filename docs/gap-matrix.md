@@ -168,3 +168,11 @@
   - Scheduled live-smoke workflow now runs both URL-health and identifier-endpoint checks before smoke QA.
 - Remaining evidence-ops gap:
   - Add automated watchlist ingestion for newly published 2021-2026 stroke guidance/trials not yet represented in the table.
+
+## Iteration 085 Update (2026-02-20)
+- Evidence metadata drift gap reduced:
+  - Validator now performs batched PMID metadata retrieval with title-overlap drift warnings (stable under PubMed rate limits).
+  - Corrected multiple high-impact citation metadata mismatches (PMID/DOI/source/URL) for thrombolysis, large-core EVT, ICH bundle, and secondary prevention entries.
+  - URL-health warnings dropped after replacing unstable non-PubMed links where appropriate.
+- Remaining evidence-ops gap:
+  - Add automated watchlist ingestion for newly published 2021-2026 stroke guidance/trials not yet represented in the table.

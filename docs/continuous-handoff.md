@@ -639,3 +639,19 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations:links && npm run validate:citations:ids && npm run qa`
+
+## Iteration 085 update (2026-02-20, macOS session)
+- Hardened PMID validation strategy:
+  - Switched PMID checks to a batched PubMed eSummary call to avoid 429 rate-limit errors.
+  - Added title-overlap drift warnings to detect PMIDs that resolve but map to unrelated articles.
+- Corrected evidence table metadata drift:
+  - Updated incorrect PMIDs/DOIs/sources/URLs in major rows (AcT, TRACE-2, ORIGINAL, TWIST, TENSION, INTERACT3, plus additional DOI corrections).
+  - Updated stale historical metadata notes to align with current PubMed-verified identifiers.
+- Validation status:
+  - `npm run validate:citations:ids` pass (no remaining PMID-title drift warnings)
+  - `npm run validate:citations:links` pass (1 warning, 0 failures)
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations:links && npm run validate:citations:ids && npm run qa`

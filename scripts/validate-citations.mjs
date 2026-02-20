@@ -277,6 +277,98 @@ async function checkDoiIdentifier(doi) {
   };
 }
 
+function normalizeTitleTokens(title) {
+  const stopwords = new Set([
+    'the', 'and', 'for', 'with', 'from', 'that', 'this', 'into', 'after', 'before',
+    'over', 'under', 'between', 'among', 'acute', 'stroke', 'patients', 'patient',
+    'guideline', 'guidelines', 'statement', 'trial', 'study', 'management'
+  ]);
+  return String(title || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter((token) => token.length > 2 && !stopwords.has(token));
+}
+
+function computeTitleOverlap(aTitle, bTitle) {
+  const a = normalizeTitleTokens(aTitle);
+  const b = normalizeTitleTokens(bTitle);
+  if (a.length === 0 || b.length === 0) return 1;
+  const bSet = new Set(b);
+  let matches = 0;
+  for (const token of a) {
+    if (bSet.has(token)) matches += 1;
+  }
+  return matches / a.length;
+}
+
+function truncate(text, max = 96) {
+  const value = String(text || '').trim();
+  if (value.length <= max) return value;
+  return `${value.slice(0, max - 1)}…`;
+}
+
+async function validatePmidIdentifiers(pmidRefs) {
+  const errors = [];
+  const warnings = [];
+  const pmids = [...pmidRefs.keys()];
+  if (pmids.length === 0) {
+    return { errors, warnings, checkedCount: 0 };
+  }
+
+  const url = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${pmids.join(',')}&retmode=json`;
+  let payload = null;
+  let lastFailure = null;
+  const maxAttempts = linkRetries + 2;
+
+  for (let attempt = 0; attempt <= maxAttempts; attempt += 1) {
+    try {
+      const response = await fetchWithTimeout(url, { method: 'GET', headers: { 'user-agent': 'stroke-citation-validator/1.0' } }, 15000);
+      if (response.status === 429) {
+        lastFailure = { status: response.status, message: 'HTTP 429' };
+        await sleep(500 * (attempt + 1));
+        continue;
+      }
+      if (!isHealthyUrlStatus(response.status)) {
+        lastFailure = { status: response.status, message: `HTTP ${response.status}` };
+        break;
+      }
+      payload = await response.json();
+      break;
+    } catch (error) {
+      lastFailure = { status: null, message: error?.message || String(error) };
+      if (attempt < maxAttempts) {
+        await sleep(500 * (attempt + 1));
+        continue;
+      }
+    }
+  }
+
+  if (!payload) {
+    errors.push(`PMID endpoint batch fetch failed (${lastFailure?.message || 'unknown error'})`);
+    return { errors, warnings, checkedCount: pmids.length };
+  }
+
+  for (const pmid of pmids) {
+    const refs = pmidRefs.get(pmid) || [];
+    const rowSummary = toRowSummary(refs);
+    const expectedTitle = refs[0]?.title || '';
+    const item = payload?.result?.[pmid];
+    if (!item || !item.title) {
+      errors.push(`PMID endpoint failed for row(s) ${rowSummary}: ${pmid} (missing eSummary record)`);
+      continue;
+    }
+    const overlap = computeTitleOverlap(expectedTitle, item.title);
+    if (overlap < 0.2) {
+      warnings.push(
+        `PMID row(s) ${rowSummary} returned title mismatch warning (overlap ${overlap.toFixed(2)}): citation='${truncate(expectedTitle)}' pubmed='${truncate(item.title)}' (${pmid})`
+      );
+    }
+  }
+
+  return { errors, warnings, checkedCount: pmids.length };
+}
+
 async function validateIdentifierHealth(parsedRows) {
   const errors = [];
   const warnings = [];
@@ -293,15 +385,16 @@ async function validateIdentifierHealth(parsedRows) {
   });
 
   const checks = [];
-  for (const [pmid, refs] of pmidRefs.entries()) {
-    checks.push({ kind: 'PMID', key: pmid, url: `https://pubmed.ncbi.nlm.nih.gov/${pmid}/`, refs });
-  }
   for (const [doiKey, refs] of doiRefs.entries()) {
     checks.push({ kind: 'DOI', key: doiKey, url: toDoiHandleApiUrl(refs[0].raw || doiKey), refs });
   }
   for (const [nct, refs] of nctRefs.entries()) {
     checks.push({ kind: 'NCT', key: nct, url: `https://clinicaltrials.gov/study/${nct}`, refs });
   }
+
+  const pmidResults = await validatePmidIdentifiers(pmidRefs);
+  errors.push(...pmidResults.errors);
+  warnings.push(...pmidResults.warnings);
 
   let cursor = 0;
   const workers = Array.from({ length: Math.min(linkConcurrency, checks.length || 1) }, async () => {
@@ -329,7 +422,7 @@ async function validateIdentifierHealth(parsedRows) {
   return {
     errors,
     warnings,
-    checkedCount: checks.length,
+    checkedCount: pmidResults.checkedCount + checks.length,
     counts: {
       pmids: pmidRefs.size,
       dois: doiRefs.size,
