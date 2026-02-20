@@ -6350,6 +6350,51 @@ Clinician Name`;
             };
           }
 
+          function formatMissingCriteria(criteria, maxItems = 3) {
+            const unique = [...new Set((criteria || []).filter(Boolean))];
+            if (unique.length === 0) return 'required criteria not fully documented';
+            if (unique.length <= maxItems) return unique.join(', ');
+            return `${unique.slice(0, maxItems).join(', ')}, +${unique.length - maxItems} more`;
+          }
+
+          function getWakeUpCriteriaTrace(note) {
+            const wus = note?.wakeUpStrokeWorkflow || {};
+            const wake = getWakeUpEligibilityForNote(note);
+            const trace = {
+              wake,
+              path: wus.mriAvailable === true ? 'mri' : wus.mriAvailable === false ? 'ctp' : 'undetermined',
+              wakeMissing: [],
+              extendMissing: []
+            };
+            if (!wus.isWakeUpStroke) return trace;
+
+            if (wus.mriAvailable === true) {
+              if (!wus.dwi?.positiveForLesion) trace.wakeMissing.push('DWI positive lesion');
+              if (!wus.flair?.noMarkedHyperintensity) trace.wakeMissing.push('FLAIR mismatch (no marked hyperintensity)');
+              if (!wus.ageEligible) trace.wakeMissing.push('Age 18-80 years');
+              if (!wus.nihssEligible) trace.wakeMissing.push('NIHSS ≤25');
+            }
+
+            if (wus.mriAvailable === false) {
+              const ext = wus.extendCriteria || {};
+              if (!ext.nihss4to26) trace.extendMissing.push('NIHSS 4-26');
+              if (!ext.premorbidMRSLt2) trace.extendMissing.push('Pre-morbid mRS <2');
+              if (!ext.ischemicCoreLte70) trace.extendMissing.push('Ischemic core ≤70 mL');
+              if (!ext.mismatchRatioGte1_2) trace.extendMissing.push('Mismatch ratio ≥1.2');
+              if (!ext.timeWindow4_5to9h) trace.extendMissing.push('4.5-9h or wake-up time window');
+
+              if (wake.perfusion.coreVolume === null) trace.extendMissing.push('CTP core volume');
+              else if (!wake.perfusionCoreOk) trace.extendMissing.push('Core threshold not met (≤70 mL)');
+              if (wake.perfusion.mismatchRatio === null) trace.extendMissing.push('CTP mismatch ratio');
+              else if (!wake.perfusionRatioOk) trace.extendMissing.push('Mismatch ratio threshold not met (≥1.2)');
+              if (wake.perfusion.mismatchVolume === null) trace.extendMissing.push('CTP mismatch volume');
+              else if (!wake.perfusionMismatchVolOk) trace.extendMissing.push('Mismatch volume threshold not met (≥10 mL)');
+              if (!wake.withinExtendTime) trace.extendMissing.push('Outside EXTEND time window');
+            }
+
+            return trace;
+          }
+
           function getTiaDispositionRecommendation(note, abcd2Score) {
             const tia = note?.tiaDisposition || {};
             const score = typeof abcd2Score === 'number' ? abcd2Score : 0;
@@ -9075,6 +9120,7 @@ Clinician Name`;
               }
               // Wake-up stroke evaluation
               const transferWus = telestrokeNote.wakeUpStrokeWorkflow || {};
+              const transferWakeTrace = getWakeUpCriteriaTrace(telestrokeNote);
               if (transferWus.isWakeUpStroke) {
                 note += `\nWAKE-UP / EXTENDED WINDOW ASSESSMENT:\n`;
                 note += `- MRI available: ${transferWus.mriAvailable ? 'Yes' : transferWus.mriAvailable === false ? 'No (CTP pathway)' : 'Not assessed'}\n`;
@@ -9087,6 +9133,8 @@ Clinician Name`;
                   if (transferWus.nihssEligible) note += `- NIHSS: ≤25\n`;
                   if (twDwi.positiveForLesion && twFlair.noMarkedHyperintensity && transferWus.ageEligible && transferWus.nihssEligible) {
                     note += `- *** MEETS WAKE-UP TRIAL CRITERIA — Consider IV thrombolysis ***\n`;
+                  } else {
+                    note += `- WAKE-UP criteria not met yet: ${formatMissingCriteria(transferWakeTrace.wakeMissing)}\n`;
                   }
                 }
                 if (transferWus.mriAvailable === false) {
@@ -9098,7 +9146,8 @@ Clinician Name`;
                   if (ext.mismatchRatioGte1_2) extMet.push('mismatch ≥1.2');
                   if (ext.timeWindow4_5to9h) extMet.push('4.5-9h window');
                   if (extMet.length > 0) note += `- EXTEND criteria: ${extMet.join(', ')}\n`;
-                  if (extMet.length === 5) note += `- *** MEETS EXTEND CRITERIA — Consider IV thrombolysis ***\n`;
+                  if (transferWakeTrace.wake.extendEligible) note += `- *** MEETS EXTEND CRITERIA — Consider IV thrombolysis ***\n`;
+                  else note += `- EXTEND criteria not met yet: ${formatMissingCriteria(transferWakeTrace.extendMissing)}\n`;
                 }
               }
               note += `\nTreatment:\n`;
@@ -9600,16 +9649,17 @@ Clinician Name`;
               // Wake-up stroke evaluation (concise)
               {
                 const snWus = telestrokeNote.wakeUpStrokeWorkflow || {};
+                const signoutWakeTrace = getWakeUpCriteriaTrace(telestrokeNote);
                 if (snWus.isWakeUpStroke) {
                   const snDwi = snWus.dwi || {};
                   const snFlair = snWus.flair || {};
                   if (snWus.mriAvailable) {
                     const wakeUpMet = snDwi.positiveForLesion && snFlair.noMarkedHyperintensity && snWus.ageEligible && snWus.nihssEligible;
-                    note += `Wake-up stroke: MRI — DWI ${snDwi.positiveForLesion ? '+' : '-'}/FLAIR ${snFlair.noMarkedHyperintensity ? '-' : '+'}${wakeUpMet ? ' → WAKE-UP eligible' : ''}\n`;
+                    note += `Wake-up stroke: MRI — DWI ${snDwi.positiveForLesion ? '+' : '-'}/FLAIR ${snFlair.noMarkedHyperintensity ? '-' : '+'}${wakeUpMet ? ' → WAKE-UP eligible' : ` → not yet eligible (${formatMissingCriteria(signoutWakeTrace.wakeMissing, 2)})`}\n`;
                   } else if (snWus.mriAvailable === false) {
                     const snExt = snWus.extendCriteria || {};
                     const extCount = [snExt.nihss4to26, snExt.premorbidMRSLt2, snExt.ischemicCoreLte70, snExt.mismatchRatioGte1_2, snExt.timeWindow4_5to9h].filter(Boolean).length;
-                    note += `Wake-up stroke: CTP pathway — EXTEND criteria ${extCount}/5 met${extCount === 5 ? ' → ELIGIBLE' : ''}\n`;
+                    note += `Wake-up stroke: CTP pathway — EXTEND criteria ${extCount}/5 met${signoutWakeTrace.wake.extendEligible ? ' → ELIGIBLE' : ` → not yet eligible (${formatMissingCriteria(signoutWakeTrace.extendMissing, 2)})`}\n`;
                   }
                 }
               }
@@ -10072,17 +10122,19 @@ Clinician Name`;
               // Wake-up stroke evaluation
               {
                 const prWus = telestrokeNote.wakeUpStrokeWorkflow || {};
+                const progressWakeTrace = getWakeUpCriteriaTrace(telestrokeNote);
                 if (prWus.isWakeUpStroke) {
                   const prDwi = prWus.dwi || {};
                   const prFlair = prWus.flair || {};
                   if (prWus.mriAvailable) {
                     note += `- Wake-up stroke: DWI ${prDwi.positiveForLesion ? '+' : '-'} / FLAIR ${prFlair.noMarkedHyperintensity ? 'no hyperintensity' : 'hyperintense'}`;
                     if (prDwi.positiveForLesion && prFlair.noMarkedHyperintensity && prWus.ageEligible && prWus.nihssEligible) note += ` → WAKE-UP eligible`;
+                    else note += ` → not yet eligible (${formatMissingCriteria(progressWakeTrace.wakeMissing, 2)})`;
                     note += `\n`;
                   } else if (prWus.mriAvailable === false) {
                     const prExt = prWus.extendCriteria || {};
                     const prExtCount = [prExt.nihss4to26, prExt.premorbidMRSLt2, prExt.ischemicCoreLte70, prExt.mismatchRatioGte1_2, prExt.timeWindow4_5to9h].filter(Boolean).length;
-                    note += `- Wake-up stroke: CTP — EXTEND ${prExtCount}/5 criteria met${prExtCount === 5 ? ' → ELIGIBLE' : ''}\n`;
+                    note += `- Wake-up stroke: CTP — EXTEND ${prExtCount}/5 criteria met${progressWakeTrace.wake.extendEligible ? ' → ELIGIBLE' : ` → not yet eligible (${formatMissingCriteria(progressWakeTrace.extendMissing, 2)})`}\n`;
                   }
                 }
               }
@@ -10561,6 +10613,7 @@ Clinician Name`;
               // Wake-up stroke evaluation
               {
                 const dcWus = telestrokeNote.wakeUpStrokeWorkflow || {};
+                const dischargeWakeTrace = getWakeUpCriteriaTrace(telestrokeNote);
                 if (dcWus.isWakeUpStroke) {
                   note += `\nWAKE-UP STROKE ASSESSMENT:\n`;
                   note += `- MRI available: ${dcWus.mriAvailable ? 'Yes' : dcWus.mriAvailable === false ? 'No (CTP pathway)' : 'Not assessed'}\n`;
@@ -10571,6 +10624,8 @@ Clinician Name`;
                     if (dcFlair.noMarkedHyperintensity) note += `- FLAIR: No hyperintensity (DWI-FLAIR mismatch)\n`;
                     if (dcDwi.positiveForLesion && dcFlair.noMarkedHyperintensity && dcWus.ageEligible && dcWus.nihssEligible) {
                       note += `- Met WAKE-UP trial criteria → IV thrombolysis administered per protocol\n`;
+                    } else {
+                      note += `- WAKE-UP criteria not fully met during evaluation: ${formatMissingCriteria(dischargeWakeTrace.wakeMissing)}\n`;
                     }
                   } else if (dcWus.mriAvailable === false) {
                     const dcExt = dcWus.extendCriteria || {};
@@ -10581,7 +10636,8 @@ Clinician Name`;
                     if (dcExt.mismatchRatioGte1_2) dcExtMet.push('mismatch ≥1.2');
                     if (dcExt.timeWindow4_5to9h) dcExtMet.push('4.5-9h');
                     if (dcExtMet.length > 0) note += `- EXTEND criteria: ${dcExtMet.join(', ')}\n`;
-                    if (dcExtMet.length === 5) note += `- Met EXTEND criteria → IV thrombolysis administered per protocol\n`;
+                    if (dischargeWakeTrace.wake.extendEligible) note += `- Met EXTEND criteria → IV thrombolysis administered per protocol\n`;
+                    else note += `- EXTEND criteria not fully met during evaluation: ${formatMissingCriteria(dischargeWakeTrace.extendMissing)}\n`;
                   }
                 }
               }
@@ -11332,6 +11388,7 @@ Clinician Name`;
             const wus = telestrokeNote.wakeUpStrokeWorkflow || {};
             if (wus.isWakeUpStroke) {
               const wake = getWakeUpEligibilityForNote(telestrokeNote);
+              const wakeTrace = getWakeUpCriteriaTrace(telestrokeNote);
               note += `\nWAKE-UP STROKE EVALUATION:\n`;
               note += `- MRI available: ${wus.mriAvailable ? 'Yes' : wus.mriAvailable === false ? 'No (CTP pathway)' : 'Not assessed'}\n`;
               if (wus.mriAvailable) {
@@ -11343,6 +11400,8 @@ Clinician Name`;
                 if (wus.nihssEligible) note += `- NIHSS: ≤25\n`;
                 if (wake.wakeUpEligible) {
                   note += `- *** MEETS WAKE-UP TRIAL CRITERIA — Consider IV thrombolysis ***\n`;
+                } else {
+                  note += `- WAKE-UP criteria not met yet: ${formatMissingCriteria(wakeTrace.wakeMissing)}\n`;
                 }
               }
               if (wus.mriAvailable === false) {
@@ -11358,6 +11417,7 @@ Clinician Name`;
                   note += `- CTP perfusion: core ${wake.perfusion.coreVolume ?? 'N/A'} mL, mismatch ratio ${wake.perfusion.mismatchRatio !== null ? wake.perfusion.mismatchRatio.toFixed(1) : 'N/A'}, mismatch volume ${wake.perfusion.mismatchVolume !== null ? `${Math.round(wake.perfusion.mismatchVolume)} mL` : 'N/A'}\n`;
                 }
                 if (wake.extendEligible) note += `- *** MEETS EXTEND CRITERIA — Consider IV thrombolysis ***\n`;
+                else note += `- EXTEND criteria not met yet: ${formatMissingCriteria(wakeTrace.extendMissing)}\n`;
               }
             }
 

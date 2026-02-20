@@ -195,3 +195,8 @@
 - No new medical evidence sources were added in this iteration.
 - Hardened wake-up/EXTEND regression automation to account for encounter-layout variability and LKW auto-collapse state transitions.
 - Added manual EXTEND-criteria fallback verification path so evidence-linked extended-window eligibility guidance remains test-covered even when direct CTP fields are conditionally hidden.
+
+### Operational update (2026-02-20, iter-075)
+- No new medical evidence sources were added in this iteration.
+- Improved evidence traceability by writing explicit WAKE-UP/EXTEND non-eligibility reason lines into generated clinical note outputs (transfer, consult, signout, progress, discharge).
+- This reduces ambiguity in downstream handoffs by documenting which evidence-linked criteria were not met at decision time.

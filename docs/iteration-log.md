@@ -941,3 +941,24 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 075 (2026-02-20)
+
+### What was changed
+- Added shared wake-up decision trace helpers in `/Users/rizwankalani/stroke/src/app.jsx`:
+  - `getWakeUpCriteriaTrace(...)`
+  - `formatMissingCriteria(...)`
+- Extended note-generation outputs to explicitly document non-eligibility reasons (not only positive eligibility) for wake-up/extended-window pathways:
+  - Transfer note
+  - Consult note
+  - Signout note
+  - Progress note
+  - Discharge note
+- For CTP-pathway wake-up cases, notes now include explicit unmet EXTEND criteria/perfusion thresholds when patient is not yet eligible.
+- For MRI-pathway wake-up cases, notes now include explicit missing WAKE-UP criteria when not yet eligible.
+- Rebuilt bundled client artifact (`/Users/rizwankalani/stroke/app.js`) from updated source.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)

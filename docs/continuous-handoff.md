@@ -507,3 +507,17 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 075 update (2026-02-20, macOS session)
+- Added explicit WAKE-UP/EXTEND non-eligibility trace output to generated notes:
+  - transfer, consult, signout, progress, and discharge templates now record missing criteria when wake-up eligibility is not met.
+- Introduced shared helpers in `src/app.jsx`:
+  - `getWakeUpCriteriaTrace(...)`
+  - `formatMissingCriteria(...)`
+- Rebuilt deploy artifact (`app.js`) after source updates.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`

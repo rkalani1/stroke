@@ -94,3 +94,10 @@
   - Added manual EXTEND-criteria fallback assertions when direct CTP perfusion input controls are not rendered in compact mode.
 - Remaining QA gap:
   - Add deterministic assertions for wake-up contraindication-trace propagation into generated notes (not only on-screen recommendation state).
+
+## Iteration 075 Update (2026-02-20)
+- Wake-up contraindication-trace documentation gap reduced:
+  - Added explicit non-eligibility reason output for WAKE-UP/EXTEND in transfer, consult, signout, progress, and discharge note templates.
+  - Notes now show missing MRI-path criteria (for WAKE-UP) and missing CTP/manual-perfusion criteria (for EXTEND) when eligibility is not met.
+- Remaining QA gap:
+  - Add deterministic smoke assertions that directly validate generated note text for wake-up non-eligibility trace lines.
