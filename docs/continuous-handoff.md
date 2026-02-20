@@ -672,3 +672,18 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run validate:citations:links && npm run validate:citations:ids && npm run qa`
+
+## Iteration 088 update (2026-02-20, macOS session)
+- Added clinician-priority watchlist scoring/ranking in `scripts/evidence-watch.mjs` and regenerated `docs/evidence-watchlist.md`.
+  - Output now includes `Priority`, `Score`, and `Rationale` columns sorted by urgency.
+  - Scoring weights guideline/scientific-statement signal, trial-design signal, recency, source strength, and direct domain relevance.
+- Added optional external failure fan-out in `.github/workflows/live-smoke.yml`:
+  - uses `secrets.LIVE_SMOKE_ALERT_WEBHOOK` when configured;
+  - preserves existing GitHub issue alert flow and auto-close behavior.
+- Validation status:
+  - `npm run evidence:watch` pass
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run validate:citations:links && npm run validate:citations:ids && npm test && npm run qa`

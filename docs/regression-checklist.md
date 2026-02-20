@@ -48,6 +48,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 ## Build and runtime
 - [ ] `npm run build` passes.
 - [ ] `npm run validate:citations` passes.
+- [ ] `npm run evidence:watch` regenerates watchlist with `Priority / Score / Rationale` columns.
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] Service worker cache version updated when asset behavior changes.
 - [ ] `index.html` app version updated for storage/cache compatibility when needed.
@@ -58,6 +59,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] `main` pushed to origin.
 - [ ] Live URL `https://rkalani1.github.io/stroke/` serves updated build.
 - [ ] Post-deploy smoke checks pass on local + live for all three viewport classes.
+- [ ] Scheduled `live-smoke.yml` retains baseline GitHub issue alerting and optional webhook fan-out behavior.
 
 ## Last completed run (2026-02-18, iter-037)
 - [x] `npm run build` passes
@@ -204,3 +206,9 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass
 - [x] `npm run qa` local + live smoke pass with 0 issues
+
+## Last completed run (2026-02-20, iter-088)
+- [x] `npm run evidence:watch` pass with clinician-priority scoring/ranking output
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

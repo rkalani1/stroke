@@ -255,3 +255,9 @@
 - Added automated evidence watchlist generation (`scripts/evidence-watch.mjs`) to identify uncited PubMed candidates in high-priority stroke domains.
 - Watchlist output now lives in `docs/evidence-watchlist.md` and is filtered for higher-signal sources and lower editorial noise.
 - This improves cadence for ongoing 2021-2026 evidence refresh without auto-promoting uncited studies into recommendations.
+
+### Operational update (2026-02-20, iter-088)
+- No new primary guideline or RCT citations were promoted into the key evidence table in this iteration.
+- Added clinician-priority triage scoring to uncited evidence watchlist output (guideline/trial signal + recency + source strength + workflow relevance).
+- Added optional external live-smoke failure webhook fan-out to accelerate visibility of evidence-ops regressions outside GitHub issues.
+- Inference disclosure: watchlist priority labels are operational triage aids and do not modify recommendation strength without clinician review.

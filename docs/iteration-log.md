@@ -1,5 +1,21 @@
 # Iteration Log
 
+## Iteration 088 (2026-02-20)
+
+### What was changed
+- Added clinician-priority scoring/ranking to automated evidence watchlist generation:
+  - New rubric scores each uncited PubMed candidate using guideline/scientific-statement signal, trial-design signal, recency, source strength, and topic-specific workflow relevance.
+  - Watchlist output now includes `Priority`, `Score`, and `Rationale` columns and is sorted by score within each clinical domain.
+- Added optional external alert fan-out in scheduled live smoke CI:
+  - `.github/workflows/live-smoke.yml` now posts a failure payload to `secrets.LIVE_SMOKE_ALERT_WEBHOOK` when configured.
+  - Existing GitHub issue alerting remains the default and continues to auto-close on subsequent successful runs.
+
+### Verification
+- `npm run evidence:watch` passed after retry (first run had transient PubMed timeout/abort).
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 042 (2026-02-20)
 
 ### What was changed

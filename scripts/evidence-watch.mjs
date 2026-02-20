@@ -74,6 +74,48 @@ const LOW_VALUE_TITLE_PATTERNS = [
   /case report/i
 ];
 
+const GUIDELINE_SIGNAL_PATTERNS = [
+  /scientific statement/i,
+  /guidelines?\s+(for|from|update|recommendation|management|on)\b/i,
+  /guideline\s+expands/i,
+  /guideline\s+update/i,
+  /consensus/i,
+  /recommendation/i,
+  /position paper/i
+];
+
+const TRIAL_SIGNAL_PATTERNS = [
+  /randomized/i,
+  /randomised/i,
+  /\btrial\b/i,
+  /phase\s*[23]/i,
+  /noninferiority/i,
+  /pragmatic/i
+];
+
+const SYNTHESIS_SIGNAL_PATTERNS = [
+  /meta-analysis/i,
+  /systematic review/i
+];
+
+const HIGH_IMPACT_SOURCE_PATTERNS = [
+  /n engl j med/i,
+  /lancet/i,
+  /jama/i,
+  /stroke/i,
+  /circulation/i
+];
+
+const SPECIALTY_SOURCE_PATTERNS = [
+  /neurology/i,
+  /eur stroke j/i,
+  /j neurointerv surg/i,
+  /j am heart assoc/i,
+  /ann neurol/i,
+  /int j stroke/i,
+  /transl stroke res/i
+];
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -130,6 +172,92 @@ function matchesTopicTitle(title, terms = []) {
   return terms.some((term) => normalized.includes(String(term).toLowerCase()));
 }
 
+function hasPattern(text, patterns) {
+  return patterns.some((pattern) => pattern.test(String(text || '')));
+}
+
+function toPriorityLabel(score) {
+  if (score >= 10) return 'P0 urgent review';
+  if (score >= 7) return 'P1 high review';
+  if (score >= 4) return 'P2 medium review';
+  return 'P3 lower review';
+}
+
+function scoreCandidate(article, topic) {
+  let score = 0;
+  const reasons = [];
+  const title = String(article.title || '');
+  const source = String(article.source || '');
+  const pubtypes = (article.pubtypes || []).join(' | ');
+
+  if (article.year === YEAR_MAX) {
+    score += 2;
+    reasons.push('current-year publication');
+  } else if (article.year === YEAR_MAX - 1) {
+    score += 1;
+    reasons.push('recent publication');
+  }
+
+  if (
+    hasPattern(title, GUIDELINE_SIGNAL_PATTERNS) ||
+    hasPattern(pubtypes, [/practice guideline/i, /guideline/i, /consensus/i])
+  ) {
+    score += 6;
+    reasons.push('guideline/scientific-statement signal');
+  }
+
+  if (
+    hasPattern(title, TRIAL_SIGNAL_PATTERNS) ||
+    hasPattern(pubtypes, [/randomized controlled trial/i, /clinical trial/i, /multicenter study/i])
+  ) {
+    score += 4;
+    reasons.push('trial-design signal');
+  }
+
+  if (hasPattern(title, SYNTHESIS_SIGNAL_PATTERNS)) {
+    score += 2;
+    reasons.push('evidence-synthesis signal');
+  }
+
+  if (hasPattern(source, HIGH_IMPACT_SOURCE_PATTERNS)) {
+    score += 2;
+    reasons.push('high-impact source');
+  } else if (hasPattern(source, SPECIALTY_SOURCE_PATTERNS)) {
+    score += 1;
+    reasons.push('specialty high-signal source');
+  }
+
+  if (
+    topic.id === 'evt' &&
+    hasPattern(title, [/large core/i, /large infarct/i, /\bmevo\b/i, /\bm2\b/i, /distal occlusion/i])
+  ) {
+    score += 1;
+    reasons.push('direct EVT eligibility relevance');
+  }
+
+  if (
+    topic.id === 'ich' &&
+    hasPattern(title, [/blood pressure/i, /reversal/i, /hematoma expansion/i, /surgery/i, /craniectomy/i])
+  ) {
+    score += 1;
+    reasons.push('direct ICH-management relevance');
+  }
+
+  if (
+    topic.id === 'special-populations' &&
+    hasPattern(title, [/pregnancy/i, /postpartum/i, /maternal/i, /cancer/i, /pediatric/i, /paediatric/i])
+  ) {
+    score += 1;
+    reasons.push('special-population operational relevance');
+  }
+
+  return {
+    priorityScore: score,
+    priorityLabel: toPriorityLabel(score),
+    priorityRationale: reasons.join('; ') || 'high-signal source in monitored topic'
+  };
+}
+
 async function fetchJson(url, timeoutMs = 15000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -169,7 +297,8 @@ async function summarizePubMed(ids) {
       source: item.source || '',
       pubdate: item.pubdate || '',
       year: extractYear(item.pubdate),
-      doi
+      doi,
+      pubtypes: Array.isArray(item.pubtype) ? item.pubtype : []
     });
   }
   return ordered;
@@ -203,10 +332,19 @@ async function main() {
       if (!isHighSignalSource(article.source)) continue;
       if (isLowValueTitle(article.title)) continue;
       if (!matchesTopicTitle(article.title, topic.titleTerms)) continue;
-      candidates.push(article);
+      const scored = scoreCandidate(article, topic);
+      candidates.push({
+        ...article,
+        ...scored
+      });
       seenCandidatePmids.add(article.pmid);
       if (candidates.length >= MAX_PER_TOPIC) break;
     }
+
+    candidates.sort((a, b) => {
+      if (b.priorityScore !== a.priorityScore) return b.priorityScore - a.priorityScore;
+      return (b.year || 0) - (a.year || 0);
+    });
 
     resultsByTopic.push({
       ...topic,
@@ -233,11 +371,11 @@ async function main() {
       continue;
     }
 
-    lines.push('| PMID | Year | Source | Title | DOI | URL |');
-    lines.push('|---|---|---|---|---|---|');
+    lines.push('| Priority | Score | Rationale | PMID | Year | Source | Title | DOI | URL |');
+    lines.push('|---|---|---|---|---|---|---|---|---|');
     for (const candidate of topic.candidates) {
       lines.push(
-        `| ${candidate.pmid} | ${candidate.year || ''} | ${escapePipes(candidate.source)} | ${escapePipes(candidate.title)} | ${escapePipes(candidate.doi)} | https://pubmed.ncbi.nlm.nih.gov/${candidate.pmid}/ |`
+        `| ${escapePipes(candidate.priorityLabel)} | ${candidate.priorityScore} | ${escapePipes(candidate.priorityRationale)} | ${candidate.pmid} | ${candidate.year || ''} | ${escapePipes(candidate.source)} | ${escapePipes(candidate.title)} | ${escapePipes(candidate.doi)} | https://pubmed.ncbi.nlm.nih.gov/${candidate.pmid}/ |`
       );
     }
     lines.push('');
@@ -245,6 +383,7 @@ async function main() {
 
   lines.push('## Notes');
   lines.push('- This watchlist is a screening aid, not an automatic recommendation update.');
+  lines.push('- Priority scores are triage-only and weight guideline/trial signal, recency, source strength, and direct workflow relevance.');
   lines.push('- Additions to evidence tables should still be clinician-reviewed for methodological quality and workflow relevance.');
   lines.push('');
 

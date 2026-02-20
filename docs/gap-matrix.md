@@ -184,3 +184,25 @@
   - Watchlist now persists to `docs/evidence-watchlist.md` for repeatable review and planned citation updates.
 - Remaining evidence-ops gap:
   - Add clinician-priority scoring/ranking for watchlist candidates (for example guideline/RCT-first weighting).
+
+## Iteration 088 Update (2026-02-20)
+- Evidence watchlist triage gap reduced:
+  - Added clinician-priority scoring and ranking to uncited evidence candidates in `scripts/evidence-watch.mjs`.
+  - Watchlist now emits explicit `Priority`, `Score`, and `Rationale` fields to support guideline/RCT-first review flow.
+- Scheduled-live-smoke external alert fan-out gap reduced:
+  - Added optional webhook-based failure notifications in `.github/workflows/live-smoke.yml` using `LIVE_SMOKE_ALERT_WEBHOOK` secret.
+  - GitHub issue alerting remains active as baseline channel; webhook fan-out is additive.
+- Remaining evidence-ops gap:
+  - Add a clinician-approved promotion checklist that maps watchlist `P0/P1` candidates into evidence-table update PR templates (to reduce manual translation friction).
+
+## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
+
+| Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |
+|---|---|---|---|
+| P0 | Add a dedicated **2026 AIS guideline delta** card (adult + pediatric) in ischemic management and note templates. | Ensures new 2026 AHA/ASA recommendations are one-click visible in acute workflow (TNK/alteplase parity, pediatric recognition/escalation, extended-window framing, BP cautions after reperfusion). | 2026 AHA/ASA AIS guideline (PMID: 41582814; DOI: 10.1161/STR.0000000000000513) |
+| P0 | Add structured **cancer-related stroke classification** workflow block (probable/possible/conventional mechanism + workup bundle + prevention branch). | Converts cancer-stroke statement into explicit triage and secondary-prevention actions, reducing ambiguity in high-recurrence subgroup. | AHA scientific statement (PMID: 41623113; DOI: 10.1161/STR.0000000000000517) |
+| P0 | Expand maternal module with **postpartum severe-HTN and delivery/stabilization decision prompts**. | Pregnancy-associated stroke admissions cluster around hypertensive disorders; explicit prompts improve time-critical stabilization and OB-neuro coordination. | Maternal stroke statement (PMID: 41678811; DOI: 10.1161/STR.0000000000000501) |
+| P1 | Add SAH follow-up block for **standardized outcome selection** (discharge + 90-day measure set). | Improves trial-aligned comparability and handoff continuity in aneurysmal SAH recovery tracking. | SAH outcome position paper (PMID: 41498145; DOI: 10.1161/STROKEAHA.125.053470) |
+| P1 | Add explicit **MeVO trial-state caution** badge in EVT section (routine EVT benefit not yet established; selective use only). | Prevents overgeneralization of EVT to medium/distal occlusions while evidence remains mixed/neutral in RCT era. | ESCAPE-MeVO post-hoc outcome report (PMID: 41651659; DOI: 10.1136/jnis-2025-024733) |
+| P1 | Add anticoag-ICH **door-to-reversal/transfer timer** KPI outputs in dashboard + notes. | Timeliness is a modifiable process metric strongly tied to hemorrhage pathway safety. | Anticoag-ICH timeliness cohort (PMID: 41703701; DOI: 10.1161/JAHA.125.043223) |
+| P2 | Add secondary-prevention implementation tracker for **DAPT protocol adherence** in eligible minor stroke/TIA phenotypes. | Converts recommendation text into measurable local quality behavior and catches underuse/overuse drift. | Regional implementation analysis (PMID: 41679778; DOI: 10.1136/svn-2025-004815) |
