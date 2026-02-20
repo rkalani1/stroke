@@ -1057,3 +1057,22 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 081 (2026-02-20)
+
+### What was changed
+- Expanded `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs` wake-up scenario with explicit contraindication-trace regression coverage.
+- Smoke scenario now seeds key thrombolysis safety fields before copying note text:
+  - BP
+  - INR
+  - Platelets
+  - Glucose
+  - CT result text (`No acute hemorrhage.`)
+- Added deterministic clipboard assertion for generated note content:
+  - Must contain `Supportive negatives:` trace line in contraindication section.
+- Existing wake-up eligibility/non-eligibility trace checks remain intact.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)

@@ -138,3 +138,10 @@
   - This lowers risk of silent metadata drift when evidence rows are edited over time.
 - Remaining evidence-ops gap:
   - Add optional automated link-health checks for citation URLs to detect dead links early.
+
+## Iteration 081 Update (2026-02-20)
+- Note-trace regression gap reduced:
+  - Added deterministic smoke assertion for contraindication `Supportive negatives:` output in generated Encounter note text.
+  - Scenario now seeds representative lab/imaging vitals context before clipboard note validation.
+- Remaining evidence-ops gap:
+  - Optional citation URL link-health checks remain pending.

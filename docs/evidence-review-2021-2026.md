@@ -225,3 +225,8 @@
 - No new medical evidence sources were added in this iteration.
 - Strengthened evidence metadata governance by adding PMID/DOI/NCT format validation and duplicate-identifier detection in the citation validator.
 - This improves durability of evidence traceability across continuous content updates.
+
+### Operational update (2026-02-20, iter-081)
+- No new medical evidence sources were added in this iteration.
+- Added regression automation coverage to ensure supportive-negative contraindication trace lines persist in generated clinical note output.
+- This improves reliability of evidence-informed documentation safety language during future UI/logic changes.

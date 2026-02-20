@@ -161,3 +161,9 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass
 - [x] `npm run qa` local + live smoke pass with 0 issues
+
+## Last completed run (2026-02-20, iter-081)
+- [x] Wake-up smoke includes clipboard assertion for contraindication `Supportive negatives:` note trace output
+- [x] `npm run build` pass
+- [x] `npm test` pass
+- [x] `npm run qa` local + live smoke pass with 0 issues

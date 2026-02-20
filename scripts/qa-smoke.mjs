@@ -269,6 +269,12 @@ async function auditView(browser, target, viewport) {
           const ctpCoreSet = await setScenarioField(['#input-ctp-core'], '30');
           const ctpPenumbraSet = await setScenarioField(['#input-ctp-penumbra'], '90');
           const hasDirectPerfusionInputs = ctpCoreSet && ctpPenumbraSet;
+          // Populate key thrombolysis safety fields so note trace includes explicit supportive negatives.
+          await setScenarioField(['#input-bp'], '170/90');
+          await setScenarioField(['#input-inr'], '1.1');
+          await setScenarioField(['#input-platelets'], '180');
+          await setScenarioField(['#input-glucose'], '120');
+          await setScenarioField(['#input-ct-results', '#phone-input-ct-results'], 'No acute hemorrhage.');
 
           if (!nihssSet) addIssue(issues, 'missing-wakeup-scenario-input', { field: 'nihss' });
           if (!premorbidSet) addIssue(issues, 'missing-wakeup-scenario-input', { field: 'premorbid-mrs' });
@@ -300,6 +306,9 @@ async function auditView(browser, target, viewport) {
               }
             } else if (!/WAKE-UP criteria not|EXTEND criteria not|not yet eligible/i.test(clipboardText || '')) {
               addIssue(issues, 'wakeup-note-trace-missing', { expected: 'not-eligible-trace' });
+            }
+            if (!/Supportive negatives:/i.test(clipboardText || '')) {
+              addIssue(issues, 'contraindication-supportive-negatives-missing');
             }
           }
 

@@ -581,3 +581,14 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 081 update (2026-02-20, macOS session)
+- Expanded wake-up note smoke scenario to validate contraindication supportive-negative trace persistence:
+  - Seeds BP/INR/platelets/glucose/CT inputs.
+  - Copies generated full note and asserts `Supportive negatives:` appears.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
