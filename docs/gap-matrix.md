@@ -101,3 +101,12 @@
   - Notes now show missing MRI-path criteria (for WAKE-UP) and missing CTP/manual-perfusion criteria (for EXTEND) when eligibility is not met.
 - Remaining QA gap:
   - Add deterministic smoke assertions that directly validate generated note text for wake-up non-eligibility trace lines.
+
+## Iteration 076 Update (2026-02-20)
+- Wake-up note-trace QA gap reduced:
+  - Added deterministic smoke assertions that copy generated Encounter note text and validate wake-up eligibility/non-eligibility rationale lines.
+  - Added conditional expectation handling for both paths:
+    - auto-eligible EXTEND trace when direct CTP perfusion inputs are present
+    - non-eligible rationale trace when compact layout hides direct perfusion inputs
+- Remaining reliability gap:
+  - Add alert routing for scheduled live-smoke CI failures (integration/repo settings layer).

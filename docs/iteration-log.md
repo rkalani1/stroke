@@ -962,3 +962,20 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 076 (2026-02-20)
+
+### What was changed
+- Extended `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs` with deterministic wake-up note-trace assertions.
+- Added clipboard-enabled smoke context (`clipboard-read`/`clipboard-write`) and a generated-note validation step:
+  - Clicks `Copy Full Note` in Encounter.
+  - Reads clipboard text.
+  - Verifies expected wake-up trace text is present:
+    - Non-eligible rationale (`WAKE-UP criteria not...`, `EXTEND criteria not...`, `not yet eligible`) when direct perfusion inputs are unavailable.
+    - Eligibility trace (`MEETS EXTEND CRITERIA`/equivalent) when direct perfusion auto-eligibility is active.
+- Reordered wake-up smoke scenario sequencing so note-trace checks occur before manual EXTEND checkbox forcing, preventing false negatives.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)

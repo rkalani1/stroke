@@ -200,3 +200,8 @@
 - No new medical evidence sources were added in this iteration.
 - Improved evidence traceability by writing explicit WAKE-UP/EXTEND non-eligibility reason lines into generated clinical note outputs (transfer, consult, signout, progress, discharge).
 - This reduces ambiguity in downstream handoffs by documenting which evidence-linked criteria were not met at decision time.
+
+### Operational update (2026-02-20, iter-076)
+- No new medical evidence sources were added in this iteration.
+- Added deterministic QA verification that generated note text preserves wake-up evidence traceability (eligible vs not-yet-eligible rationale), using clipboard-based smoke assertions.
+- This closes the implementation loop between evidence-linked decision logic and exported documentation quality.

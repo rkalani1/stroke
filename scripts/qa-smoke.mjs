@@ -89,7 +89,8 @@ async function getActiveTabLabel(page) {
 
 async function auditView(browser, target, viewport) {
   const context = await browser.newContext({
-    viewport: { width: viewport.width, height: viewport.height }
+    viewport: { width: viewport.width, height: viewport.height },
+    permissions: ['clipboard-read', 'clipboard-write']
   });
   const page = await context.newPage();
   const issues = [];
@@ -245,7 +246,7 @@ async function auditView(browser, target, viewport) {
           await useCtpButton.click();
           await page.waitForTimeout(150);
 
-          const setScenarioField = async (id, selectors, value, valueType = 'fill') => {
+          const setScenarioField = async (selectors, value, valueType = 'fill') => {
             for (const selector of selectors) {
               const locator = page.locator(selector).first();
               if ((await locator.count()) === 0) continue;
@@ -259,18 +260,48 @@ async function auditView(browser, target, viewport) {
             return false;
           };
 
-          const nihssSet = await setScenarioField('nihss', ['#input-nihss', '#phone-input-nihss'], '8');
+          const nihssSet = await setScenarioField(['#input-nihss', '#phone-input-nihss'], '8');
           const premorbidSet = await setScenarioField(
-            'premorbid-mrs',
             ['#input-premorbid-mrs', '#phone-input-premorbid-mrs'],
             '1',
             'select'
           );
-          const ctpCoreSet = await setScenarioField('ctp-core', ['#input-ctp-core'], '30');
-          const ctpPenumbraSet = await setScenarioField('ctp-penumbra', ['#input-ctp-penumbra'], '90');
+          const ctpCoreSet = await setScenarioField(['#input-ctp-core'], '30');
+          const ctpPenumbraSet = await setScenarioField(['#input-ctp-penumbra'], '90');
+          const hasDirectPerfusionInputs = ctpCoreSet && ctpPenumbraSet;
 
           if (!nihssSet) addIssue(issues, 'missing-wakeup-scenario-input', { field: 'nihss' });
           if (!premorbidSet) addIssue(issues, 'missing-wakeup-scenario-input', { field: 'premorbid-mrs' });
+
+          // Validate note-output traceability before manual EXTEND criteria toggles.
+          const copyFullNoteButton = page.getByRole('button', { name: /Copy Full Note/i }).first();
+          if ((await copyFullNoteButton.count()) === 0) {
+            addIssue(issues, 'missing-copy-full-note-button');
+          } else {
+            await copyFullNoteButton.scrollIntoViewIfNeeded();
+            await copyFullNoteButton.click();
+            await page.waitForTimeout(200);
+            let clipboardText = '';
+            try {
+              clipboardText = await page.evaluate(async () => {
+                try {
+                  return await navigator.clipboard.readText();
+                } catch {
+                  return '';
+                }
+              });
+            } catch (error) {
+              addIssue(issues, 'clipboard-read-failed', { message: error?.message || String(error) });
+            }
+
+            if (hasDirectPerfusionInputs) {
+              if (!/MEETS EXTEND CRITERIA|Met EXTEND criteria|EXTEND criteria 5\/5.*ELIGIBLE/i.test(clipboardText || '')) {
+                addIssue(issues, 'wakeup-note-trace-missing', { expected: 'eligible-trace' });
+              }
+            } else if (!/WAKE-UP criteria not|EXTEND criteria not|not yet eligible/i.test(clipboardText || '')) {
+              addIssue(issues, 'wakeup-note-trace-missing', { expected: 'not-eligible-trace' });
+            }
+          }
 
           // Ensure manual EXTEND path remains testable even when compact layout hides direct CTP inputs.
           const extendCriteriaLabels = [
@@ -312,7 +343,7 @@ async function auditView(browser, target, viewport) {
           }
 
           // If direct CTP inputs are available, require auto-perfusion to reach the "met" state.
-          if (ctpCoreSet && ctpPenumbraSet) {
+          if (hasDirectPerfusionInputs) {
             if ((await page.getByText(/Auto criteria met for EXTEND-style perfusion selection/i).count()) === 0) {
               addIssue(issues, 'wakeup-auto-extend-state-missing');
             }

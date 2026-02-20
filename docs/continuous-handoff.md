@@ -521,3 +521,15 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 076 update (2026-02-20, macOS session)
+- Added deterministic wake-up note-trace validation to smoke automation:
+  - Enables clipboard read/write in Playwright smoke context.
+  - Copies Encounter full note and asserts expected wake-up trace text is present.
+  - Uses conditional expectations for eligible vs non-eligible trace outputs based on available perfusion inputs.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
