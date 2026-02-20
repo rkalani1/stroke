@@ -5,6 +5,10 @@ on:
     - cron: '0 13 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   qa-live:
     runs-on: ubuntu-latest
@@ -25,6 +29,97 @@ jobs:
 
       - name: Run full QA (local + live)
         run: npm run qa
+
+      - name: Open or update failure alert issue
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const label = 'live-smoke-alert';
+            const issueTitle = 'Live Smoke Audit failure';
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const failureBody = [
+              'Automated live smoke audit failed.',
+              '',
+              `- Run: ${runUrl}`,
+              `- SHA: ${context.sha}`,
+              `- Workflow: ${context.workflow}`,
+              `- Event: ${context.eventName}`,
+              '',
+              'Please review workflow logs and uploaded smoke artifacts.'
+            ].join('\\n');
+
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: label });
+            } catch {
+              await github.rest.issues.createLabel({
+                owner,
+                repo,
+                name: label,
+                color: 'B60205',
+                description: 'Live smoke workflow failure requires review'
+              });
+            }
+
+            const openAlerts = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'open',
+              labels: label,
+              per_page: 100
+            });
+
+            if (openAlerts.length > 0) {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: openAlerts[0].number,
+                body: `Another live smoke failure detected.\\n\\n${failureBody}`
+              });
+            } else {
+              await github.rest.issues.create({
+                owner,
+                repo,
+                title: issueTitle,
+                body: failureBody,
+                labels: [label]
+              });
+            }
+
+      - name: Resolve open failure alert issue on success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const label = 'live-smoke-alert';
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+
+            const openAlerts = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'open',
+              labels: label,
+              per_page: 100
+            });
+
+            for (const issue of openAlerts) {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: issue.number,
+                body: `Live smoke audit passed on ${new Date().toISOString()} in [run ${context.runId}](${runUrl}). Closing this alert.`
+              });
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: issue.number,
+                state: 'closed'
+              });
+            }
 
       - name: Upload smoke artifacts
         if: always()

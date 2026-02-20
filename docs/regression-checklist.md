@@ -137,3 +137,9 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass
 - [x] `npm run qa` local + live smoke pass with 0 issues
+
+## Last completed run (2026-02-20, iter-077)
+- [x] Scheduled live-smoke workflow now opens/updates GitHub issue alerts on failure and auto-closes alerts on success
+- [x] `npm run build` pass
+- [x] `npm test` pass
+- [x] `npm run qa` local + live smoke pass with 0 issues

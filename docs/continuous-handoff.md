@@ -533,3 +533,14 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 077 update (2026-02-20, macOS session)
+- Enhanced scheduled live-smoke operational alerting in `.github/workflows/live-smoke.yml`:
+  - On failure: opens/updates a labeled GitHub issue (`live-smoke-alert`) with run metadata.
+  - On success: comments and auto-closes open `live-smoke-alert` issues.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`

@@ -979,3 +979,21 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 077 (2026-02-20)
+
+### What was changed
+- Upgraded scheduled live-smoke operational alerting in `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`.
+- Added workflow permissions for issue automation:
+  - `contents: read`
+  - `issues: write`
+- Added failure-path issue routing:
+  - On live-smoke failure, open or update a labeled GitHub issue (`live-smoke-alert`) with run URL, SHA, workflow, and event metadata.
+- Added success-path auto-resolution:
+  - On live-smoke success, comment on and close any open `live-smoke-alert` issues.
+- This removes silent scheduled-failure risk and creates an auditable alert trail directly in-repo.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)

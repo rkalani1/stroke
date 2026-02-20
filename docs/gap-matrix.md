@@ -110,3 +110,10 @@
     - non-eligible rationale trace when compact layout hides direct perfusion inputs
 - Remaining reliability gap:
   - Add alert routing for scheduled live-smoke CI failures (integration/repo settings layer).
+
+## Iteration 077 Update (2026-02-20)
+- Scheduled live-smoke alert-routing gap reduced:
+  - Added built-in GitHub issue alerting on `live-smoke.yml` failure (label: `live-smoke-alert`).
+  - Added automatic closure of open alert issues when a later scheduled/manual live-smoke run succeeds.
+- Remaining operations gap:
+  - Optional external notification fan-out (Slack/email/PagerDuty) if additional channels are desired beyond GitHub issue routing.

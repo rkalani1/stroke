@@ -205,3 +205,8 @@
 - No new medical evidence sources were added in this iteration.
 - Added deterministic QA verification that generated note text preserves wake-up evidence traceability (eligible vs not-yet-eligible rationale), using clipboard-based smoke assertions.
 - This closes the implementation loop between evidence-linked decision logic and exported documentation quality.
+
+### Operational update (2026-02-20, iter-077)
+- No new medical evidence sources were added in this iteration.
+- Added scheduled live-smoke failure routing to GitHub issues with automatic issue resolution on subsequent pass.
+- This improves operational reliability of evidence-linked pathway monitoring by ensuring failed production audits are surfaced and tracked.
