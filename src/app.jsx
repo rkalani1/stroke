@@ -60,18 +60,22 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         const LAST_UPDATED_KEY = 'lastUpdated';
         const LEGACY_MIGRATION_KEY = 'legacyMigrated';
         const APP_DATA_SCHEMA_VERSION = 1;
-        // Default contacts are empty — users configure their own via Settings > Contact Directory
+        // UW stroke call defaults (editable in Settings > Contact Directory)
         const DEFAULT_CONTACTS = [
-          { id: 'stroke-phone', label: 'Stroke Phone', phone: '', note: 'Primary hub' },
-          { id: 'stat-pharmacy', label: 'STAT Pharmacy', phone: '', note: '' },
-          { id: 'rad-hotline', label: 'Stroke RAD Hotline', phone: '', note: '' },
-          { id: 'rad-reading-room', label: 'RAD Reading Room', phone: '', note: '' },
-          { id: 'angio-suite', label: 'Angio Suite', phone: '', note: '' },
-          { id: 'stat-ct', label: 'STAT CT', phone: '', note: '' },
-          { id: 'transfusion', label: 'Transfusion Services', phone: '', note: '' },
-          { id: 'transfer-center', label: 'Transfer Center', phone: '', note: '' },
-          { id: 'neurosurgery', label: 'Neurosurgery On-Call', phone: '', note: '' },
-          { id: 'it-helpdesk', label: 'IT Help Desk', phone: '', note: '' }
+          { id: 'stroke-phone', label: 'Stroke Phone', phone: '206-744-6789', note: 'HMC primary hub' },
+          { id: 'stat-pharmacy', label: 'STAT Pharmacy', phone: '206-744-2241', note: 'HMC' },
+          { id: 'rad-hotline', label: 'HMC Stroke RAD Hotline', phone: '206-744-8484', note: 'Weekdays 0800-1700' },
+          { id: 'rad-reading-room', label: 'HMC RAD Reading Room', phone: '206-744-6741', note: 'All modalities' },
+          { id: 'rad-records', label: 'HMC Radiology Records/File Room', phone: '206-744-3109', note: '24/7 imaging pull/push' },
+          { id: 'angio-suite', label: 'Angio Suite', phone: '206-744-3381', note: 'HMC primary' },
+          { id: 'angio-suite-alt', label: 'Angio Suite (Alternate)', phone: '206-744-6506', note: 'HMC backup line' },
+          { id: 'stat-ct', label: 'STAT CT', phone: '206-744-7290', note: 'HMC' },
+          { id: 'stat-mri', label: 'STAT MRI', phone: '206-744-2460', note: 'HMC' },
+          { id: 'uw-rad-coord', label: 'UW Reading Room Coordinator', phone: '206-597-4249', note: 'UW Montlake days' },
+          { id: 'uw-neurorad-fellow', label: 'UW Neuro Rad Fellow', phone: '206-598-7959', note: 'UW Montlake 0700-1900' },
+          { id: 'uw-neurorad-resident', label: 'UW Neuro Rad Resident', phone: '206-598-2068', note: 'UW Montlake 1700-0700' },
+          { id: 'it-helpdesk', label: 'IT Services Help Desk', phone: '206-520-2200', note: 'Stroke phone issues' },
+          { id: 'paging-operator', label: 'Paging Operator', phone: '206-744-0147', note: 'UW/HMC operator' }
         ];
 
         const parseStoredValue = (raw) => {
@@ -1621,6 +1625,7 @@ Clinician Name`;
           const [noteTemplate, setNoteTemplate] = useState(loadFromStorage('noteTemplate', 'consult'));
           const [calcDrawerOpen, setCalcDrawerOpen] = useState(false);
           const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
+          const [fabExpanded, setFabExpanded] = useState(false);
           // Phase 2: Guided Clinical Pathway UI state
           const [pathwayCollapsed, setPathwayCollapsed] = useState(true);
           const [guidelineRecsExpanded, setGuidelineRecsExpanded] = useState(false);
@@ -2879,7 +2884,7 @@ Clinician Name`;
               ichReversal: {
                 primary: '4-Factor PCC (Kcentra) 2000 units IVPB (local protocol) or 50 IU/kg (max 5000 IU)',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Suggested protocol: 4F-PCC 2000 units IV first-line. Andexanet alfa may not be available at all centers — check local formulary. AHA/ASA 2022 lists andexanet as Class IIa but PCC shows similar efficacy (Panos et al. Crit Care Med 2025). Discuss with Hematology if PCC ineffective.'
+                note: 'Use agent-specific reversal: andexanet alfa when available/appropriate or 4F-PCC per local protocol when andexanet is unavailable/contraindicated. AHA/ASA 2022 lists andexanet as Class IIa; ANNEXA-I 2024 supports improved hemostatic efficacy with thrombotic-risk monitoring. Discuss with Hematology if bleeding remains uncontrolled.'
               },
               monitoring: 'Anti-Xa level (calibrated for apixaban)'
             },
@@ -2893,7 +2898,7 @@ Clinician Name`;
               ichReversal: {
                 primary: '4-Factor PCC (Kcentra) 2000 units IVPB (local protocol) or 50 IU/kg (max 5000 IU)',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Suggested protocol: 4F-PCC 2000 units IV first-line. Andexanet alfa may not be available at all centers — check local formulary. AHA/ASA 2022 lists andexanet as Class IIa but PCC shows similar efficacy (Panos et al. Crit Care Med 2025). Discuss with Hematology if PCC ineffective.'
+                note: 'Use agent-specific reversal: andexanet alfa when available/appropriate or 4F-PCC per local protocol when andexanet is unavailable/contraindicated. AHA/ASA 2022 lists andexanet as Class IIa; ANNEXA-I 2024 supports improved hemostatic efficacy with thrombotic-risk monitoring. Discuss with Hematology if bleeding remains uncontrolled.'
               },
               monitoring: 'Anti-Xa level (calibrated for rivaroxaban)'
             },
@@ -3039,7 +3044,7 @@ Clinician Name`;
               quickDescription: 'Adaptive platform for mild LVO or medium/distal vessel occlusions',
               keyTakeaways: [
                 'NIH StrokeNet adaptive platform with two domains: mild stroke with LVO (NIHSS 0-5) and medium/distal vessel occlusions (M2-M4, A1-A3, P1-P3)',
-                'ESCAPE-MeVO (2025) showed NO benefit of EVT for M2/proximal M3 (higher mortality in EVT arm) — STEP aims to identify subgroups that may benefit using adaptive design',
+                'ESCAPE-MeVO (2025) showed no routine functional benefit of EVT for isolated MeVO; STEP aims to identify specific subgroups that may still benefit',
                 'Adaptive design allows rapid testing of multiple EVT devices and techniques'
               ],
               lookingFor: [
@@ -3392,12 +3397,14 @@ Clinician Name`;
             'Intracranial Atherosclerosis': 'https://www.aan.com/Guidelines/home/GuidelineDetail/1103',
             'CATALYST': 'https://doi.org/10.1016/S1474-4422(25)00057-5',
             'TIMELESS': 'https://doi.org/10.1056/NEJMoa2412179',
+            'OPTION': 'https://doi.org/10.1001/jama.2025.22824',
+            'ANNEXA-I': 'https://doi.org/10.1056/NEJMoa2313040',
             'CREST-2': 'https://doi.org/10.1056/NEJMoa2408498',
             'ECST-2': 'https://doi.org/10.1016/S1474-4422(25)00049-6',
             'SELECT': 'https://doi.org/10.1056/NEJMoa2305049',
             'CHANCE-2': 'https://doi.org/10.1056/NEJMoa2104816',
             'CONVINCE': 'https://doi.org/10.1016/S0140-6736(24)00663-8',
-            'ESCAPE-MeVO': 'https://doi.org/10.1056/NEJMoa2411227',
+            'ESCAPE-MeVO': 'https://doi.org/10.1056/NEJMoa2411668',
             'SVIN Large-Core EVT 2025': 'https://www.ahajournals.org/doi/10.1161/SVIN.124.001581',
             'ACC Expert Consensus': 'https://doi.org/10.1016/j.jacc.2024.03.389'
           };
@@ -3575,7 +3582,7 @@ Clinician Name`;
               category: 'Thrombolysis',
               title: 'Extended window IVT (4.5-9h or wake-up)',
               recommendation: 'IV thrombolysis (TNK or alteplase) is reasonable in the 4.5-9 hour or wake-up window when mismatch imaging shows salvageable tissue.',
-              detail: 'Use CT perfusion, MR perfusion, or DWI/FLAIR mismatch to select patients. EXTEND supports perfusion mismatch (4.5-9h), WAKE-UP supports DWI/FLAIR mismatch for unknown onset. IST-3 (Lancet 2012, n=3035): IVT up to 6h, included many >80 yr — primary ordinal analysis neutral, but supported that age alone should not exclude IVT. ECASS-III (NEJM 2008): established 3-4.5h window. 4.5-24h IVT remains investigational (TIMELESS/SISTER).',
+              detail: 'Use CT perfusion, MR perfusion, or DWI/FLAIR mismatch to select patients. EXTEND supports perfusion mismatch (4.5-9h), and WAKE-UP supports DWI/FLAIR mismatch for unknown onset. Beyond 9h, data are evolving and should be protocol-driven rather than routine for all late presenters: TIMELESS (NEJM 2024) was neutral for primary efficacy in EVT-planned LVO but did not show major safety harm, and OPTION (JAMA 2026) reported improved excellent functional outcome with tenecteplase in selected non-LVO 4.5-24h patients without a significant symptomatic ICH increase. Use multidisciplinary review and strict imaging criteria in this range.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -3867,14 +3874,14 @@ Clinician Name`;
               id: 'reversal_xa_inhibitor',
               category: 'Reversal',
               title: 'Factor Xa inhibitor reversal in ICH',
-              recommendation: 'Administer 4F-PCC (Kcentra) 2000 units IVPB for ICH on apixaban/rivaroxaban/edoxaban (local protocol).',
-              detail: 'AHA/ASA 2022 lists andexanet alfa as Class IIa (LOE B-NR) for Xa inhibitor-associated ICH. 4F-PCC 2000 units IV is a common first-line approach when andexanet is unavailable. PCC shows similar efficacy to andexanet (Panos et al. Crit Care Med 2025). Consult Hematology attending for complex cases or if PCC ineffective.',
+              recommendation: 'Use an agent-specific Xa reversal pathway for ICH: andexanet alfa when available/appropriate, or 4F-PCC when andexanet is unavailable or contraindicated per local protocol.',
+              detail: 'AHA/ASA 2022 lists andexanet alfa as reasonable (Class IIa, LOE B-NR) for Xa inhibitor-associated ICH. ANNEXA-I (NEJM 2024) showed improved hemostatic efficacy with andexanet versus usual care, with thrombotic risk that requires monitoring. 4F-PCC remains commonly used when andexanet is not available, contraindicated, or impractical; use local hematology/neurocritical care protocol and document rationale.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
-              guideline: 'AHA/ASA Spontaneous ICH 2022 (modified per suggested protocol)',
-              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              guideline: 'AHA/ASA Spontaneous ICH 2022 + ANNEXA-I 2024',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407. ANNEXA-I: NEJM 2024. DOI: 10.1056/NEJMoa2313040',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
-              medications: ['4F-PCC (Kcentra) 2000 units IV immediately (first-line)', 'Andexanet alfa (Class IIa per AHA/ASA 2022) — check local formulary availability'],
+              medications: ['Andexanet alfa (dose by agent/last-dose timing) when formulary-available and clinically appropriate', '4F-PCC (Kcentra) 2000 units fixed-dose local pathway or weight-based protocol when andexanet unavailable/contraindicated'],
               conditions: (data) => {
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
@@ -4635,12 +4642,12 @@ Clinician Name`;
               id: 'tia_admit',
               category: 'TIA',
               title: 'TIA: Hospital admission',
-              recommendation: 'Admit ALL TIA patients for urgent workup regardless of ABCD2 score.',
-              detail: 'Inpatient evaluation allows rapid completion of workup (MRI DWI, CTA, cardiac monitoring, labs) and early initiation of secondary prevention. Reduces 90-day stroke risk by 80% compared to outpatient evaluation.',
-              classOfRec: 'I',
-              levelOfEvidence: 'B-NR',
-              guideline: 'AHA/ASA Secondary Stroke Prevention 2021 + 2026 Update',
-              reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467; Powers WJ et al. Stroke. 2026.',
+              recommendation: 'TIA disposition should be risk-stratified. Admit or observe high-risk patients; selected low-risk patients may use rapid ED TIA protocol/outpatient follow-up only when complete workup and timely follow-up are guaranteed.',
+              detail: 'ABCD2 alone should not determine disposition. Incorporate vessel imaging, short-term stroke risk, local protocol capability, and patient reliability for return/follow-up. The AHA TIA ED 2023 statement supports multiple safe pathways: admission, 24-hour observation, or expedited clinic pathway when infrastructure is reliable.',
+              classOfRec: 'Statement',
+              levelOfEvidence: 'Expert Consensus',
+              guideline: 'AHA TIA in the ED Scientific Statement 2023',
+              reference: 'Amin HP et al. Stroke. 2023. DOI: 10.1161/STR.0000000000000418',
               conditions: (data) => {
                 return data.telestrokeNote?.diagnosisCategory === 'tia';
               }
@@ -5257,11 +5264,11 @@ Clinician Name`;
               category: 'EVT',
               title: 'MeVO/distal occlusion EVT: NOT recommended routinely (exceptions below)',
               recommendation: 'EVT for M2-M4 MCA, ACA, and PCA occlusions is NOT recommended routinely (2025 trial data). EXCEPTION: Consider EVT in select cases of proximal/dominant M2 segment MCA occlusion ≤1cm of bifurcation when salvageable tissue present and LKW ≤24h.',
-              detail: 'Suggested protocol: MeVO — consider in select proximal or dominant M2 segment MCA occlusion ≤1cm of bifurcation in horizontal segment when there is evidence of salvageable tissue + LKW ≤24h. NOT recommended for M2-M4 MCA, ACA, and PCA occlusions. Trial data: ESCAPE-MeVO (NEJM 2025, n=530): No benefit of EVT for MeVO. Higher mortality in EVT group (13.3% vs 8.4%, HR 1.82). sICH higher (5.4% vs 2.2%). DISTAL (n=543): No benefit. DISCOUNT: Consistent negative results. Flag M2/M3 patients for clinical trial enrollment (e.g., STEP trial).',
+              detail: 'Suggested protocol: MeVO — consider EVT only in highly selected proximal/dominant M2 anatomy with salvageable tissue and multidisciplinary agreement. For most isolated M2-M4/ACA/PCA occlusions, medical management is preferred outside trials. ESCAPE-MeVO, DISTAL, and DISCOUNT (2025) did not show routine functional benefit for endovascular treatment of isolated MeVO/distal occlusion; some safety signals favored conservative selection. Flag eligible patients for clinical trial enrollment (for example STEP-EVT).',
               classOfRec: 'III',
               levelOfEvidence: 'B-R',
               guideline: 'ESCAPE-MeVO (NEJM 2025); DISTAL (2025); DISCOUNT (2025)',
-              reference: 'ESCAPE-MeVO: NEJM 2025. DISTAL: 2025. DISCOUNT: 2025.',
+              reference: 'ESCAPE-MeVO: N Engl J Med. 2025. DOI: 10.1056/NEJMoa2411668. DISTAL and DISCOUNT: 2025 randomized MeVO/distal EVT trials.',
               caveats: 'Local protocol may permit consideration of proximal M2 EVT in highly select cases. Discuss with neurointerventionalist.',
               conditions: (data) => {
                 const vessels = data.telestrokeNote?.vesselOcclusion || [];
@@ -5600,12 +5607,12 @@ Clinician Name`;
               id: 'spasticity_screening',
               category: 'Follow-up',
               title: 'Spasticity screening and botulinum toxin referral',
-              recommendation: 'Screen for spasticity (Modified Ashworth Scale) at follow-up visits. Botulinum toxin A is first-line for focal spasticity (Class I, LOE A). Refer early (<3 months) for optimal outcomes.',
-              detail: 'Botox superior to oral tizanidine with fewer side effects. Intrathecal baclofen for refractory generalized spasticity. Also screen for hemiplegic shoulder pain — consider NMES and sling.',
-              classOfRec: 'I',
-              levelOfEvidence: 'A',
-              guideline: 'AHA/ASA Rehab 2016; AAN BoNT Guideline 2016',
-              reference: 'AAN BoNT Guideline: Neurology 2016.',
+              recommendation: 'Screen early and repeatedly for post-stroke spasticity (starting in the first month and through the first year). Refer early for focal treatment when tone limits function, hygiene, or pain control.',
+              detail: 'AHA post-stroke spasticity statement (2026) supports early recognition and multimodal intervention. BoNT-A has consistent evidence for focal tone reduction; intrathecal baclofen is effective for generalized refractory spasticity. Pair pharmacologic treatment with task-specific rehabilitation and positioning/mobility programs rather than passive stretching alone.',
+              classOfRec: 'Statement',
+              levelOfEvidence: 'Expert Consensus/A*',
+              guideline: 'AHA Early Recognition and Intervention for Poststroke Spasticity 2026',
+              reference: 'Stein J et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000515.',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 return !!cat && cat !== 'mimic';
@@ -5664,17 +5671,20 @@ Clinician Name`;
             hormonal_stroke_risk: {
               id: 'hormonal_stroke_risk',
               category: 'Secondary Prevention',
-              title: 'Hormonal contraception and HRT stroke risk',
-              recommendation: 'Combined hormonal contraception is contraindicated in migraine with aura (Class I). Oral estrogen-containing HRT increases stroke risk in women >=60 or >10 years post-menopause (Class III Harm).',
-              detail: 'Switch combined OCP to progestin-only or nonhormonal alternative if migraine with aura. Transdermal estrogen may have lower stroke risk than oral. Discuss risk-benefit of HRT individually.',
-              classOfRec: 'I/III',
-              levelOfEvidence: 'B-NR/A',
+              title: 'Hormonal therapy and stroke-risk counseling',
+              recommendation: 'Use individualized counseling for contraception, menopause therapy, and gender-affirming hormone therapy. Avoid estrogen-containing contraception in migraine with aura or major vascular risk factors; avoid routine oral menopausal estrogen in older/high-risk patients; optimize vascular risk factors for transgender women or gender-diverse individuals on estrogen.',
+              detail: 'AHA/ASA 2024 primary prevention: prefer progestin-only or nonhormonal contraception when stroke risk is elevated (for example migraine with aura, hypertension, smoking, age >35). Oral estrogen menopausal therapy increases stroke risk in women >=60 years or >10 years after menopause. For transgender women/gender-diverse individuals on estrogen, perform aggressive risk-factor optimization and shared decision-making. Testosterone replacement in hypogonadal men 45-80 was not associated with excess stroke in recent trial data.',
+              classOfRec: 'I/IIa/III',
+              levelOfEvidence: 'C-EO/C-LD/B-R/A',
               guideline: 'AHA/ASA 2024 Primary Prevention',
-              reference: 'AHA/ASA Primary Prevention 2024.',
+              reference: 'AHA/ASA Primary Prevention 2024; TRAVERSE trial 2023.',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000475#page=49',
               conditions: (data) => {
-                const sex = data.telestrokeNote?.sex;
-                return sex === 'F';
+                const sex = String(data.telestrokeNote?.sex || '').toUpperCase();
+                const pmh = String(data.telestrokeNote?.pmh || '').toLowerCase();
+                const meds = String(data.telestrokeNote?.medications || '').toLowerCase();
+                const hormonePattern = /(estrogen|estradiol|hormone|hrt|contracept|ocp|testosterone|gender affirm|transgender)/i;
+                return sex === 'F' || hormonePattern.test(pmh) || hormonePattern.test(meds);
               }
             },
             // CVT ANTICOAG PHASES
@@ -7439,6 +7449,7 @@ Clinician Name`;
                 if (confirmConfig) { handleConfirmClose(null); return; }
                 if (protocolModal) { setProtocolModal(null); return; }
                 if (calcDrawerOpen) { setCalcDrawerOpen(false); return; }
+                if (fabExpanded) { setFabExpanded(false); return; }
                 if (focusMode) { setFocusMode(false); return; }
                 return;
               }
@@ -7557,7 +7568,7 @@ Clinician Name`;
             };
             document.addEventListener('keydown', handleKeyDown);
             return () => document.removeEventListener('keydown', handleKeyDown);
-          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode, settingsMenuOpen, searchOpen, showKeyboardHelp, showChangelog, telestrokeNote.age, telestrokeNote.sex, telestrokeNote.nihss, telestrokeNote.ctResults, telestrokeNote.diagnosis, telestrokeNote.disposition, lkwTime, nihssScore]);
+          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode, settingsMenuOpen, searchOpen, showKeyboardHelp, showChangelog, fabExpanded, telestrokeNote.age, telestrokeNote.sex, telestrokeNote.nihss, telestrokeNote.ctResults, telestrokeNote.diagnosis, telestrokeNote.disposition, lkwTime, nihssScore]);
 
 
           // Restore focus to settings trigger when menu closes
@@ -12246,7 +12257,7 @@ Clinician Name`;
               if (isNaN(mrs)) {
                 warnings.push({ id: 'evt-no-mrs', severity: 'warn', msg: 'EVT recommended but pre-stroke mRS not documented — most EVT trials required mRS ≤2.' });
               } else if (mrs > 2) {
-                warnings.push({ id: 'evt-high-mrs', severity: 'error', msg: `EVT recommended but pre-stroke mRS is ${mrs} (>2) — most EVT trials excluded mRS >2. Consider TESTED trial if mRS 3-4.` });
+                warnings.push({ id: 'evt-high-mrs', severity: 'warn', msg: `EVT with pre-stroke mRS ${mrs}: pivotal RCTs largely enrolled mRS ≤2. Do not auto-exclude solely on disability; document baseline function, goals of care, and neurointerventional shared decision-making. Consider trial enrollment (for example TESTED when eligible).` });
               }
             }
 
@@ -12520,10 +12531,10 @@ Clinician Name`;
                 reversalOrders.push(
                   'Assessment: STAT Direct Xa Inhibitor Screen — normal excludes significant anticoagulant effect',
                   'If ingestion <2h: activated charcoal (oral)',
-                  '4F-PCC (Kcentra) 2000 units IV immediately (local protocol)',
+                  'If available/appropriate: andexanet alfa per dosing protocol; otherwise 4F-PCC (Kcentra) 2000 units IV immediately per local protocol',
                   'Recheck Direct Xa Inhibitor screen after PCC',
-                  'Andexanet alfa may not be available at all centers — check local formulary. PCC is first-line.',
-                  'If renal failure: consider emergent dialysis (rivaroxaban 33%, edoxaban 50% renal clearance; apixaban not dialyzable)',
+                  'Document reversal selection rationale (andexanet vs PCC) and involve Hematology/Neurocritical Care for complex cases',
+                  'Dialysis is generally not an effective reversal strategy for Xa inhibitors',
                   'If PCC contraindicated: consult Hematology attending'
                 );
               } else if (onHeparin) {
@@ -15232,6 +15243,26 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             });
             return acc;
           }, { items: [], seen: new Set() }).items;
+          const sanitizePhoneForTel = (value) => {
+            const raw = String(value || '').trim();
+            if (!raw) return '';
+            const plusPrefixed = raw.startsWith('+');
+            const digitsOnly = raw.replace(/\D/g, '');
+            if (!digitsOnly) return '';
+            if (plusPrefixed) return `+${digitsOnly}`;
+            if (digitsOnly.length === 10) return `+1${digitsOnly}`;
+            if (digitsOnly.length === 11 && digitsOnly.startsWith('1')) return `+${digitsOnly}`;
+            return `+${digitsOnly}`;
+          };
+          const configuredContacts = Array.isArray(settings.contacts) ? settings.contacts : [];
+          const hasConfiguredPhones = configuredContacts.some((contact) => String(contact?.phone || '').trim());
+          const contactsForEdit = (hasConfiguredPhones ? configuredContacts : DEFAULT_CONTACTS).map((contact, index) => ({
+            id: contact?.id || `contact-${index}`,
+            label: String(contact?.label || '').trim(),
+            phone: String(contact?.phone || '').trim(),
+            note: String(contact?.note || '').trim()
+          }));
+          const quickContacts = contactsForEdit.filter((contact) => contact.phone && contact.label);
           const ttlDisplayHours = appConfig.ttlHoursOverride || DEFAULT_TTL_HOURS;
           const showDocumentActions = true;
           const isNarrowViewport = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
@@ -22217,7 +22248,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             </div>
                             <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 mb-3 text-sm text-orange-800">
-                              <strong>Admit ALL TIAs</strong> for urgent inpatient workup (Class I, LOE B-NR). Do not use ABCD2 score for disposition decisions.
+                              <strong>TIA disposition is risk-stratified.</strong> Admit/observe high-risk patients. Selected low-risk patients may use rapid ED/clinic pathways only when complete workup and follow-up within 24-48h are guaranteed.
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1">
                               {[
@@ -25413,7 +25444,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   if (telestrokeNote.cvtHematologyConsulted) note += `- Hematology consulted for thrombophilia workup.\n`;
                                 } else if (pathwayType === 'tia') {
                                   note += `PLAN:\n`;
-                                  note += `- Admit for urgent inpatient TIA workup (Class I, LOE B-NR).\n`;
+                                  note += `- TIA disposition risk-stratified: admit/observe if high risk; expedited outpatient pathway only with complete workup and guaranteed follow-up.\n`;
                                   const tiaW = telestrokeNote.tiaWorkup || {};
                                   const tiaComplete = Object.values(tiaW).filter(Boolean).length;
                                   const tiaTotal = Object.keys(tiaW).length;
@@ -26681,6 +26712,87 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="flex items-end gap-2">
                           <button type="button" onClick={exportToPDF} className="px-3 py-2 rounded-lg border border-slate-300 text-slate-700 text-sm font-semibold hover:bg-slate-50">Export PDF</button>
                           <button type="button" onClick={handleClearLocalData} className="px-3 py-2 rounded-lg border border-red-300 text-red-700 text-sm font-semibold hover:bg-red-50">Clear Local Data</button>
+                        </div>
+                      </div>
+
+                      <div className="border border-slate-200 rounded-xl p-3 space-y-3">
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <p className="text-sm font-semibold text-slate-900">Contact Directory</p>
+                            <p className="text-xs text-slate-500">Bottom-right phone button uses this list. Tap-to-call is enabled on mobile.</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => updateContacts([...contactsForEdit, { id: generateId('contact'), label: 'New Contact', phone: '', note: '' }])}
+                              className="px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                            >
+                              Add
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => updateContacts(DEFAULT_CONTACTS.map((contact) => ({ ...contact })))}
+                              className="px-2.5 py-1.5 rounded-lg border border-orange-300 text-xs font-semibold text-orange-700 hover:bg-orange-50"
+                            >
+                              Reset UW Defaults
+                            </button>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          {contactsForEdit.map((contact, index) => (
+                            <div key={contact.id || `contact-row-${index}`} className="grid grid-cols-1 md:grid-cols-12 gap-2 items-end bg-slate-50 border border-slate-200 rounded-lg p-2">
+                              <div className="md:col-span-4">
+                                <label className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Label</label>
+                                <input
+                                  type="text"
+                                  value={contact.label}
+                                  onChange={(event) => {
+                                    const next = contactsForEdit.map((item, itemIndex) => itemIndex === index ? { ...item, label: event.target.value } : item);
+                                    updateContacts(next);
+                                  }}
+                                  className="mt-1 w-full px-2 py-1.5 border border-slate-300 rounded text-sm"
+                                />
+                              </div>
+                              <div className="md:col-span-3">
+                                <label className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Phone</label>
+                                <input
+                                  type="tel"
+                                  value={contact.phone}
+                                  onChange={(event) => {
+                                    const next = contactsForEdit.map((item, itemIndex) => itemIndex === index ? { ...item, phone: event.target.value } : item);
+                                    updateContacts(next);
+                                  }}
+                                  className="mt-1 w-full px-2 py-1.5 border border-slate-300 rounded text-sm"
+                                  placeholder="206-000-0000"
+                                />
+                              </div>
+                              <div className="md:col-span-4">
+                                <label className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Note</label>
+                                <input
+                                  type="text"
+                                  value={contact.note}
+                                  onChange={(event) => {
+                                    const next = contactsForEdit.map((item, itemIndex) => itemIndex === index ? { ...item, note: event.target.value } : item);
+                                    updateContacts(next);
+                                  }}
+                                  className="mt-1 w-full px-2 py-1.5 border border-slate-300 rounded text-sm"
+                                />
+                              </div>
+                              <div className="md:col-span-1 flex justify-end">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const next = contactsForEdit.filter((_, itemIndex) => itemIndex !== index);
+                                    updateContacts(next);
+                                  }}
+                                  className="px-2 py-1.5 rounded-lg border border-red-200 text-red-700 text-xs font-semibold hover:bg-red-50"
+                                  aria-label={`Remove ${contact.label || 'contact'}`}
+                                >
+                                  Remove
+                                </button>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -28595,13 +28707,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div id="isch-mevo" className="bg-slate-50 border border-slate-300 rounded-lg p-4">
                           <h3 className="text-lg font-semibold text-slate-800 mb-3">Medium Vessel Occlusion (MeVO) EVT</h3>
                           <div className="bg-white p-3 rounded border">
-                            <p className="text-sm text-red-700 font-semibold mb-2">EVT for isolated MeVO (M2/M3) is NOT recommended based on current evidence</p>
+                            <p className="text-sm text-red-700 font-semibold mb-2">Routine EVT for isolated MeVO (M2/M3/distal) is not supported by current RCT evidence</p>
                             <ul className="text-sm space-y-1">
-                              <li>• <strong>ESCAPE-MeVO:</strong> EVT did not improve outcomes vs medical therapy for M2/M3 occlusions</li>
+                              <li>• <strong>ESCAPE-MeVO:</strong> EVT did not improve outcomes vs medical therapy for isolated MeVO</li>
                               <li>• <strong>DISTAL:</strong> No benefit of EVT for distal occlusions</li>
                               <li>• <strong>DISCOUNT:</strong> Negative for M2 thrombectomy</li>
-                              <li>• All three trials showed similar functional outcomes with medical management alone</li>
-                              <li>• Consider EVT only in trial setting (e.g., STEP-EVT adaptive platform)</li>
+                              <li>• Current default is medical management, with EVT reserved for highly selected anatomy and multidisciplinary agreement</li>
+                              <li>• Favor trial enrollment when possible (e.g., STEP-EVT adaptive platform)</li>
                             </ul>
                             <p className="text-xs text-slate-500 mt-2 italic">Note: LVO (ICA-T, M1, basilar) EVT remains recommended. This applies only to isolated medium/distal vessel occlusions.</p>
                           </div>
@@ -29155,9 +29267,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <p className="text-sm text-slate-600">Urgent evaluation and risk reduction for transient ischemic attack</p>
                         </div>
 
-                        {/* Admit All TIAs */}
+                        {/* TIA disposition framing */}
                         <div className="bg-orange-50 border border-orange-300 rounded-lg p-3">
-                          <p className="text-sm text-orange-900 font-semibold">Admit ALL TIAs for urgent inpatient workup (Class I, LOE B-NR). Do not use ABCD2 score alone for disposition decisions.</p>
+                          <p className="text-sm text-orange-900 font-semibold">Disposition is risk-stratified: admit/observe high-risk TIAs, and use rapid outpatient pathways only when same-day workup plus reliable 24-48h stroke follow-up are guaranteed. Do not use ABCD2 alone.</p>
                         </div>
 
                         {/* ABCD2 Risk Stratification */}
@@ -29185,7 +29297,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <td className="border border-slate-200 px-3 py-1.5">1.0%</td>
                                   <td className="border border-slate-200 px-3 py-1.5">1.2%</td>
                                   <td className="border border-slate-200 px-3 py-1.5">3.1%</td>
-                                  <td className="border border-slate-200 px-3 py-1.5 text-xs">Admit, urgent workup within 24h</td>
+                                  <td className="border border-slate-200 px-3 py-1.5 text-xs">Rapid TIA pathway or observation only if complete ED workup + guaranteed follow-up; otherwise admit</td>
                                 </tr>
                                 <tr className="bg-amber-50">
                                   <td className="border border-slate-200 px-3 py-1.5 font-mono font-bold">4-5</td>
@@ -29193,7 +29305,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <td className="border border-slate-200 px-3 py-1.5">4.1%</td>
                                   <td className="border border-slate-200 px-3 py-1.5">5.9%</td>
                                   <td className="border border-slate-200 px-3 py-1.5">9.8%</td>
-                                  <td className="border border-slate-200 px-3 py-1.5 text-xs">Admit, expedited workup + DAPT</td>
+                                  <td className="border border-slate-200 px-3 py-1.5 text-xs">24h observation or admission for expedited workup + DAPT when indicated</td>
                                 </tr>
                                 <tr className="bg-red-50">
                                   <td className="border border-slate-200 px-3 py-1.5 font-mono font-bold">6-7</td>
@@ -29201,12 +29313,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <td className="border border-slate-200 px-3 py-1.5">8.1%</td>
                                   <td className="border border-slate-200 px-3 py-1.5">11.7%</td>
                                   <td className="border border-slate-200 px-3 py-1.5">17.8%</td>
-                                  <td className="border border-slate-200 px-3 py-1.5 text-xs">Admit, STAT workup + DAPT + vascular imaging</td>
+                                  <td className="border border-slate-200 px-3 py-1.5 text-xs">Admit for STAT workup + vascular imaging + immediate prevention plan</td>
                                 </tr>
                               </tbody>
                             </table>
                           </div>
-                          <p className="text-xs text-slate-500 mt-2">ABCD2 is informational only — all TIA patients should be admitted regardless of score.</p>
+                          <p className="text-xs text-slate-500 mt-2">ABCD2 is adjunctive only. Use vessel imaging, clinical trajectory, and local follow-up reliability to finalize disposition.</p>
                         </div>
 
                         {/* Urgent Imaging Protocol */}
@@ -31191,7 +31303,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           );
                         })()}
                         <div className="mt-2 p-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">
-                          <strong>Practice note:</strong> First-line Xa inhibitor reversal is 4F-PCC (Kcentra) 2000 units IVPB. AHA/ASA 2022 ICH Guidelines list andexanet alfa as Class IIa ("reasonable") for Xa inhibitor-associated ICH. Consider andexanet if PCC unavailable, ineffective, or contraindicated. Monitor for thrombotic events (11% in ANNEXA-4).
+                          <strong>Practice note:</strong> Use local protocol for Xa-associated ICH reversal: andexanet alfa when formulary-available and clinically appropriate, or 4F-PCC when andexanet is unavailable/contraindicated. AHA/ASA 2022 lists andexanet as Class IIa (reasonable). Monitor closely for thrombotic complications after any reversal strategy.
                         </div>
                         <p className="text-xs text-slate-500 mt-1">ANNEXA-4 trial. Low-dose if last DOAC &ge;8h ago (or apixaban &le;5mg). High-dose if last dose &lt;8h ago (or rivaroxaban &gt;10mg, apixaban &gt;5mg). Monitor for thrombotic events post-reversal.</p>
                       </div>
@@ -32523,9 +32635,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
                               <div className="space-y-1">
                                 <p className="font-bold text-teal-700 mb-1">Risk Stratification</p>
-                                <p>Admit ALL TIAs for urgent inpatient workup (Class I, LOE B-NR)</p>
-                                <p>Do NOT use ABCD2 alone for disposition (poor sensitivity)</p>
-                                <p>Rapid outpatient workup only if 24-48h evaluation can be guaranteed AND low-risk features</p>
+                                <p>Disposition is risk-stratified: admit/observe high-risk patients</p>
+                                <p>Do NOT use ABCD2 alone for disposition</p>
+                                <p>Rapid outpatient workup only if complete ED workup + guaranteed 24-48h follow-up</p>
                                 <p>Crescendo TIA → admit, treat as high-risk</p>
                               </div>
                               <div className="space-y-1">
@@ -33914,6 +34026,75 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               </div>
             )}
 
+            {/* Emergency Contacts FAB */}
+            <div
+              className="fixed right-4 fab-layer no-print"
+              style={{ bottom: showEncounterActionBar ? '6.5rem' : '1.5rem' }}
+            >
+              {fabExpanded && (
+                <div className="absolute bottom-16 right-0 w-80 max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-2xl border-2 border-red-300 overflow-hidden animate-fadeIn">
+                  <div className="bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-2 font-bold flex items-center justify-between">
+                    <span className="flex items-center gap-2">
+                      <i aria-hidden="true" data-lucide="phone-call" className="w-4 h-4"></i>
+                      Quick Contacts
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setFabExpanded(false)}
+                      className="hover:bg-red-700 rounded p-1 transition-colors"
+                      aria-label="Close quick contacts"
+                    >
+                      <i aria-hidden="true" data-lucide="x" className="w-4 h-4"></i>
+                    </button>
+                  </div>
+                  <div className="divide-y divide-slate-100 max-h-[55vh] overflow-y-auto">
+                    {quickContacts.map((contact) => {
+                      const telNumber = sanitizePhoneForTel(contact.phone);
+                      return (
+                        <a
+                          key={contact.id || contact.label}
+                          href={telNumber ? `tel:${telNumber}` : '#'}
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-colors"
+                          onClick={() => setFabExpanded(false)}
+                        >
+                          <div className="bg-red-100 rounded-full p-2">
+                            <i aria-hidden="true" data-lucide="phone" className="w-5 h-5 text-red-600"></i>
+                          </div>
+                          <div className="min-w-0">
+                            <div className="font-semibold text-slate-900 text-sm truncate">{contact.label || 'Contact'}</div>
+                            <div className="text-xs text-slate-500 truncate">
+                              {contact.phone}
+                              {contact.note ? ` (${contact.note})` : ''}
+                            </div>
+                          </div>
+                          <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4 text-slate-400 ml-auto"></i>
+                        </a>
+                      );
+                    })}
+                    {quickContacts.length === 0 && (
+                      <div className="px-4 py-3 text-sm text-slate-600">
+                        No contact numbers configured. Add them in Settings.
+                      </div>
+                    )}
+                  </div>
+                  <div className="bg-slate-50 px-4 py-2 text-xs text-slate-500 text-center">
+                    Tap number to call directly
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setFabExpanded((prev) => !prev)}
+                className="w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700"
+                aria-label="Toggle quick contacts"
+                aria-expanded={fabExpanded}
+                title="Quick Contacts"
+              >
+                <i aria-hidden="true" data-lucide="phone" className="w-6 h-6 text-white"></i>
+              </button>
+            </div>
+
             {/* ===== CALCULATOR DRAWER — with inline GCS + quick nav ===== */}
             {calcDrawerOpen && (
               <>
@@ -34124,4 +34305,3 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
         // Initialize Lucide icons
         createIcons({ icons });
-

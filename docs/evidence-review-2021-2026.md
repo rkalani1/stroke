@@ -143,3 +143,20 @@
 
 ### Operational update (2026-02-18, iter-041)
 - No evidence-content changes; handoff metadata now uses command-based commit retrieval for robustness.
+
+### Operational update (2026-02-20, iter-042)
+- Updated TIA disposition language in app pathways from universal admission to risk-stratified disposition (admission/observation vs rapid outpatient pathway when infrastructure is reliable), aligned with AHA TIA ED 2023 scientific statement framing.
+- Updated extended-window IVT narrative to include modern imaging-selected 4.5-24h context with TIMELESS (NEJM 2024) and OPTION (JAMA 2026) evidence.
+- Updated Xa inhibitor-associated ICH reversal framing to agent-specific selection (andexanet when available/appropriate vs 4F-PCC by local protocol), with ANNEXA-I efficacy/safety context.
+- Updated poststroke spasticity recommendation text to align with AHA 2026 poststroke spasticity scientific statement.
+- Expanded hormonal risk counseling text to include transgender estrogen and testosterone therapy context from AHA/ASA 2024 primary prevention guidance.
+
+### Metadata verification refresh (2026-02-20, iter-042)
+- ESCAPE-MeVO DOI corrected to `10.1056/NEJMoa2411668`.
+- OPTION late-window thrombolysis RCT metadata confirmed:
+  - PMID `40063269`
+  - DOI `10.1001/jama.2025.22824`
+- ANNEXA-I ICH reversal RCT retained/confirmed:
+  - DOI `10.1056/NEJMoa2313040`
+- AHA TIA ED scientific statement reference retained:
+  - DOI `10.1161/STR.0000000000000418`

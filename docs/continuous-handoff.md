@@ -1,6 +1,6 @@
 # Continuous Handoff
 
-## Current state (2026-02-19)
+## Current state (2026-02-20)
 - Branch: `main`
 - Last pushed commit: `378bdf1`
 - Production URL: `https://rkalani1.github.io/stroke/`
@@ -399,3 +399,21 @@
 - Dead code removal: importBackup function removed (defined but never called, no UI wiring)
 - Secondary prevention audit: ALL PASS — zero bugs across antiplatelets, anticoagulants, statins, medication interactions, DAPT duration, dose accuracy, diagnosis category filtering
 - Data export/import audit: importBackup dead code confirmed. Export completeness gap addressed above.
+
+## Iteration 067 update (2026-02-20, macOS session)
+- Restored on-call quick-call workflow for UW stroke operations:
+  - Reintroduced bottom-right Quick Contacts FAB with tap-to-call `tel:` links.
+  - Restored UW/HMC default contact numbers (stroke phone, radiology lines, angio, imaging, IT/paging) and added Settings contact-directory editor (add/remove/reset defaults).
+- Evidence/content refresh:
+  - TIA disposition wording changed from universal-admission language to risk-stratified pathways aligned with AHA TIA ED statement framing.
+  - Extended-window IVT recommendation text updated with TIMELESS + OPTION context for imaging-selected late presenters.
+  - Xa inhibitor ICH reversal wording updated to agent-specific andexanet/PCC selection (formulary/protocol based) with ANNEXA-I context.
+  - Premorbid disability EVT warning downgraded from hard-error to shared-decision warning.
+  - Spasticity recommendation updated to AHA 2026 statement wording; hormonal risk recommendation expanded for transgender estrogen/testosterone counseling context.
+  - ESCAPE-MeVO DOI corrected to `10.1056/NEJMoa2411668`.
+- QA updates:
+  - Smoke script now checks for Quick Contacts FAB and Settings contact-directory controls.
+  - `npm run build` pass.
+  - `npm test` pass (local smoke, all three viewports).
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && npm test && npm run build`

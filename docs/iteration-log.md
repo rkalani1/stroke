@@ -1,5 +1,24 @@
 # Iteration Log
 
+## Iteration 042 (2026-02-20)
+
+### What was changed
+- Restored UW stroke on-call contact directory defaults in app settings and runtime state, including clickable numbers for Stroke Phone, STAT Pharmacy, HMC/UW neuroradiology lines, imaging lines, IT help desk, and paging operator.
+- Reintroduced bottom-right floating **Quick Contacts** phone button with expandable panel and `tel:` links for one-tap calling.
+- Added full **Settings > Contact Directory** editor (add/edit/remove contacts + reset UW defaults) so phone numbers are visible and easily maintainable.
+- Updated TIA disposition language across pathway cards, management content, and note templates from “admit all TIAs” to risk-stratified pathways aligned with the 2023 AHA TIA ED statement.
+- Updated extended-window IVT recommendation text to reflect modern imaging-selected practice and 2024-2026 evidence context (TIMELESS + OPTION).
+- Updated Xa inhibitor ICH reversal language to agent-specific selection (andexanet vs 4F-PCC by formulary/protocol), removed unsupported “PCC first-line everywhere/similar efficacy” wording, and corrected dialysis phrasing.
+- Downgraded premorbid disability EVT alert from hard error to warning with shared decision-making guidance.
+- Updated poststroke spasticity recommendation block from 2016-centric wording to the 2026 AHA spasticity statement.
+- Expanded hormonal risk recommendation block to include contraception/menopause plus transgender estrogen and testosterone-risk counseling context.
+- Corrected ESCAPE-MeVO DOI metadata to `10.1056/NEJMoa2411668`.
+- Extended smoke QA checks to assert quick-contacts FAB and Settings contact-directory controls are present.
+
+### Verification
+- `npm run build` passed.
+- `npm test` passed after re-run (first run had transient desktop-only smoke flake that did not reproduce on immediate rerun).
+
 ## Iteration 036 (2026-02-18)
 
 ### What was changed

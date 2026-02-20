@@ -31,3 +31,13 @@
 
 ## Iteration 041 Update (2026-02-18)
 - Continuous-ops metadata drift mitigated by moving from static commit hashes to command-based retrieval in handoff.
+
+## Iteration 042 Update (2026-02-20)
+- Workflow reliability gap closed for on-call operations: restored bottom-right quick-call contact FAB plus editable UW contact directory defaults in Settings.
+- Evidence/content gap updates:
+  - TIA disposition language converted from universal admission to risk-stratified pathways per AHA TIA ED statement.
+  - Extended-window IVT narrative refreshed with TIMELESS + OPTION context.
+  - Xa reversal language updated to agent-specific andexanet/PCC selection with local protocol framing.
+  - Premorbid disability EVT warning reframed from hard-stop to shared-decision warning.
+  - Spasticity block aligned to 2026 AHA statement and hormonal-risk block expanded for transgender and testosterone counseling context.
+- Remaining gap: add deterministic scenario-level clinical assertions (for example TIA low-risk outpatient pathway vs high-risk admission) in smoke QA, not only static text/control presence.

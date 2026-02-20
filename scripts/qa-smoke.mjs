@@ -142,6 +142,22 @@ async function auditView(browser, target, viewport) {
     }
   }
 
+  const quickContactsButton = page.getByRole('button', { name: /toggle quick contacts/i }).first();
+  if ((await quickContactsButton.count()) === 0) {
+    addIssue(issues, 'missing-quick-contacts-fab');
+  } else {
+    await quickContactsButton.click();
+    await page.waitForTimeout(150);
+    if ((await page.getByText(/Quick Contacts/i).count()) === 0) {
+      addIssue(issues, 'quick-contacts-panel-missing');
+    }
+    if ((await page.getByText(/Stroke Phone/i).count()) === 0) {
+      addIssue(issues, 'quick-contacts-default-missing', { contact: 'Stroke Phone' });
+    }
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(100);
+  }
+
   await page.keyboard.press('Control+2');
   await page.waitForTimeout(150);
   const activeAfterCtrl2 = await getActiveTabLabel(page);
@@ -223,6 +239,13 @@ async function auditView(browser, target, viewport) {
   const activeAfterCtrl4 = await getActiveTabLabel(page);
   if (!activeAfterCtrl4 || !/Settings/i.test(activeAfterCtrl4)) {
     addIssue(issues, 'keyboard-tab-nav', { combo: 'Ctrl+4', activeAfter: activeAfterCtrl4 });
+  } else {
+    if ((await page.getByText(/Contact Directory/i).count()) === 0) {
+      addIssue(issues, 'missing-contact-directory-settings');
+    }
+    if ((await page.getByRole('button', { name: /Reset UW Defaults/i }).count()) === 0) {
+      addIssue(issues, 'missing-contact-directory-reset');
+    }
   }
 
   const screenshotPath = path.join(outDir, `qa-${target.name}-${viewport.name}.png`);

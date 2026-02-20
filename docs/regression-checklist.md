@@ -31,6 +31,9 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Command palette/search remains functional and navigates correctly.
 - [ ] New UI changes do not add unnecessary clicks for common acute workflows.
 - [ ] DAPT phenotype quick matrix remains visible in secondary prevention workflow when pathway context is present.
+- [ ] Bottom-right quick contacts FAB is visible and opens a callable contact panel.
+- [ ] Settings tab shows Contact Directory editor and Reset UW Defaults control.
+- [ ] TIA pathway language remains risk-stratified (no universal-admit hard stop text).
 
 ## Accessibility and responsive behavior
 - [ ] Desktop (1440x900), tablet (768x1024), and mobile (390x844) layouts are usable.
@@ -73,3 +76,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 ## Last completed run (2026-02-18, iter-041)
 - [x] `npm test` pass after command-based handoff commit tracking update
 - [x] `npm run qa` pass after command-based handoff commit tracking update
+
+## Last completed run (2026-02-20, iter-042)
+- [x] `npm run build` pass after contact-directory and evidence text updates
+- [x] `npm test` local smoke pass after adding quick-contacts/settings assertions
