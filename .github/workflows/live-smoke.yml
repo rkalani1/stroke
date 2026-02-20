@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate citation URL health
+        run: npm run validate:citations:links
+
       - name: Run full QA (local + live)
         run: npm run qa
 

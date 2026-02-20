@@ -235,3 +235,8 @@
 - No new medical evidence sources were added in this iteration.
 - Strengthened regression verification for post-EVT BP evidence operationalization by asserting that exported handoff note text retains structured BP-plan details (including infusion-agent strategy) after scenario state transitions.
 - This improves reliability of guideline-concordant post-EVT documentation in generated notes.
+
+### Operational update (2026-02-20, iter-083)
+- No new medical evidence sources were added in this iteration.
+- Added citation URL-health verification capability in the evidence validator and integrated it into scheduled live-smoke workflow execution.
+- This improves ongoing evidence-source availability monitoring without changing clinical recommendation content.

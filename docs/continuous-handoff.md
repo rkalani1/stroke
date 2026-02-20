@@ -604,3 +604,20 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 083 update (2026-02-20, macOS session)
+- Added evidence URL-health checks in citation validator:
+  - New CLI mode: `node ./scripts/validate-citations.mjs --check-links`
+  - URL checks include timeout, retry, and HEAD→GET fallback.
+  - `401/403` responses are reported as warnings (reachable but restricted), not hard failures.
+- Added npm script:
+  - `npm run validate:citations:links`
+- Updated scheduled production audit workflow:
+  - `live-smoke.yml` now runs `npm run validate:citations:links` before `npm run qa`.
+- Validation status:
+  - `npm run validate:citations:links` pass (warnings only)
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations:links && npm run qa`

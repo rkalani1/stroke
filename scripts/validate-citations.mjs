@@ -5,6 +5,11 @@ import process from 'node:process';
 const filePath = path.join(process.cwd(), 'docs', 'evidence-review-2021-2026.md');
 const yearMin = 2021;
 const yearMax = 2026;
+const args = new Set(process.argv.slice(2));
+const checkLinks = args.has('--check-links');
+const linkTimeoutMs = 10000;
+const linkRetries = 1;
+const linkConcurrency = 4;
 
 function parseTableRows(markdown) {
   const lines = markdown.split('\n');
@@ -43,15 +48,14 @@ function extractIdentifiers(idField) {
   return { pmids, dois, ncts };
 }
 
-function validateRows(rows) {
+function validateRows(parsedRows) {
   const errors = [];
   const seenTitles = new Set();
   const seenPmids = new Map();
   const seenDois = new Map();
   const seenNcts = new Map();
 
-  rows.forEach((row, index) => {
-    const item = splitRow(row);
+  parsedRows.forEach((item, index) => {
     const rowNum = index + 1;
 
     if (item.cols.length < 7) {
@@ -127,6 +131,101 @@ function validateRows(rows) {
   return errors;
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isHealthyUrlStatus(status) {
+  return (status >= 200 && status < 400) || status === 401 || status === 403;
+}
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = linkTimeoutMs) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { redirect: 'follow', ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function checkUrlHealth(url) {
+  const methods = ['HEAD', 'GET'];
+  let lastFailure = null;
+
+  for (const method of methods) {
+    for (let attempt = 0; attempt <= linkRetries; attempt += 1) {
+      try {
+        const response = await fetchWithTimeout(url, { method, headers: { 'user-agent': 'stroke-citation-validator/1.0' } });
+        const status = response.status;
+        if (isHealthyUrlStatus(status)) {
+          return { ok: true, status, method, warning: status === 401 || status === 403 ? `HTTP ${status}` : null };
+        }
+
+        if (method === 'HEAD' && (status === 405 || status === 501)) {
+          break;
+        }
+        if (method === 'HEAD' && status >= 400) {
+          break;
+        }
+        lastFailure = { status, method, message: `HTTP ${status}` };
+      } catch (error) {
+        lastFailure = { status: null, method, message: error?.message || String(error) };
+        if (attempt < linkRetries) {
+          await sleep(250 * (attempt + 1));
+          continue;
+        }
+      }
+    }
+  }
+
+  return {
+    ok: false,
+    status: lastFailure?.status ?? null,
+    method: lastFailure?.method || 'GET',
+    message: lastFailure?.message || 'unreachable URL'
+  };
+}
+
+async function validateUrlHealth(parsedRows) {
+  const errors = [];
+  const warnings = [];
+  const uniqueUrls = new Map();
+
+  parsedRows.forEach((row, idx) => {
+    if (!row.url) return;
+    const rowNum = idx + 1;
+    const existing = uniqueUrls.get(row.url) || [];
+    existing.push({ rowNum, title: row.title });
+    uniqueUrls.set(row.url, existing);
+  });
+
+  const entries = [...uniqueUrls.entries()];
+  let cursor = 0;
+
+  const workers = Array.from({ length: Math.min(linkConcurrency, entries.length || 1) }, async () => {
+    while (cursor < entries.length) {
+      const current = cursor;
+      cursor += 1;
+      const [url, refs] = entries[current];
+      const health = await checkUrlHealth(url);
+      const rowSummary = refs.map((ref) => ref.rowNum).join(', ');
+
+      if (!health.ok) {
+        errors.push(`URL health check failed for row(s) ${rowSummary}: ${url} (${health.message})`);
+        continue;
+      }
+
+      if (health.warning) {
+        warnings.push(`URL row(s) ${rowSummary} returned ${health.warning} (${url})`);
+      }
+    }
+  });
+
+  await Promise.all(workers);
+  return { errors, warnings, checkedCount: entries.length };
+}
+
 async function main() {
   const markdown = await fs.readFile(filePath, 'utf8');
   const rows = parseTableRows(markdown);
@@ -135,14 +234,31 @@ async function main() {
     process.exit(1);
   }
 
-  const errors = validateRows(rows);
+  const parsedRows = rows.map(splitRow);
+  const errors = validateRows(parsedRows);
+  const warnings = [];
+  let checkedUrls = 0;
+
+  if (checkLinks) {
+    const linkResults = await validateUrlHealth(parsedRows);
+    errors.push(...linkResults.errors);
+    warnings.push(...linkResults.warnings);
+    checkedUrls = linkResults.checkedCount;
+  }
+
+  if (warnings.length > 0) {
+    console.warn(`Citation URL health warnings (${warnings.length}):`);
+    warnings.forEach((warning) => console.warn(`- ${warning}`));
+  }
+
   if (errors.length > 0) {
     console.error(`Citation validation failed with ${errors.length} issue(s):`);
     errors.forEach((error) => console.error(`- ${error}`));
     process.exit(1);
   }
 
-  console.log(`Citation validation passed: ${rows.length} rows, years ${yearMin}-${yearMax}.`);
+  const linkSuffix = checkLinks ? `; URL health checked (${checkedUrls} unique)` : '';
+  console.log(`Citation validation passed: ${rows.length} rows, years ${yearMin}-${yearMax}${linkSuffix}.`);
 }
 
 main().catch((error) => {

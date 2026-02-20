@@ -1093,3 +1093,22 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 083 (2026-02-20)
+
+### What was changed
+- Added citation URL-health validation mode to `/Users/rizwankalani/stroke/scripts/validate-citations.mjs`:
+  - new flag: `--check-links`
+  - checks each unique citation URL with bounded timeout/retry and HEAD→GET fallback
+  - treats HTTP `401`/`403` as reachable-but-restricted (warning, not failure)
+  - reports row-indexed failures for unreachable links
+- Added npm script in `/Users/rizwankalani/stroke/package.json`:
+  - `validate:citations:links`
+- Updated scheduled production audit in `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`:
+  - runs citation URL-health validation before full local+live smoke QA.
+
+### QA and validation
+- `npm run validate:citations:links`: pass (3 restricted-access warnings, 0 failures)
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)

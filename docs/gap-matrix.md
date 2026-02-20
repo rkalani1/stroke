@@ -152,3 +152,11 @@
   - Smoke flow now forces a handoff template (`Signout`) and verifies that structured post-EVT BP plan content with infusion-agent detail is present in exported note text.
 - Remaining evidence-ops gap:
   - Optional citation URL link-health checks remain pending.
+
+## Iteration 083 Update (2026-02-20)
+- Evidence-ops link-health gap reduced:
+  - Citation validator now supports deterministic URL-health checks with timeout/retry and HEAD→GET fallback.
+  - Restricted-access responses (`401`/`403`) are surfaced as warnings instead of hard failures to reduce false-positive CI breaks.
+  - Scheduled live-smoke workflow now runs citation link-health validation before full QA.
+- Remaining evidence-ops gap:
+  - Add scheduled PMID/DOI resolver cross-checking (identifier endpoint validation) for deeper metadata drift detection.
