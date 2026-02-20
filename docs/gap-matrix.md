@@ -59,3 +59,10 @@
   - Smoke coverage now validates behavior changes, not only component presence.
 - Remaining QA gap:
   - Add scenario assertions for wake-up/extended-window auto-perfusion eligibility state transitions and contraindication-trace output in note generation.
+
+## Iteration 070 Update (2026-02-20)
+- On-call contact safety gap reduced:
+  - Added deterministic regression invariants for protected UW quick-call contacts (labels and phone numbers) in both FAB and Settings directory views.
+  - This directly enforces the explicit non-removal policy for critical on-call communication pathways.
+- Remaining operations gap:
+  - Add CI-level fail-fast gate that runs the smoke suite on every push to prevent manual-only execution drift.

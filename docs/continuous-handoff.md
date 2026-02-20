@@ -448,3 +448,14 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 070 update (2026-02-20, macOS session)
+- Added explicit protected-contact regression invariants to smoke automation:
+  - Quick Contacts must contain Stroke Phone, STAT Pharmacy, and HMC Stroke RAD Hotline.
+  - Settings Contact Directory must retain protected label/phone pairs for those three defaults.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (local)
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`

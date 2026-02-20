@@ -38,6 +38,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Settings tab shows Contact Directory editor and Reset UW Defaults control.
 - [ ] TIA pathway language remains risk-stratified (no universal-admit hard stop text).
 - [ ] Phone directory/FAB has NOT been removed unless there is an explicit owner-authored request to remove it.
+- [ ] Protected UW defaults remain present with exact numbers: Stroke Phone `206-744-6789`, STAT Pharmacy `206-744-2241`, HMC Stroke RAD Hotline `206-744-8484`.
 
 ## Accessibility and responsive behavior
 - [ ] Desktop (1440x900), tablet (768x1024), and mobile (390x844) layouts are usable.
@@ -95,4 +96,9 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 ## Last completed run (2026-02-20, iter-069)
 - [x] `npm run build` pass after scenario-level QA assertion updates
 - [x] `npm test` local smoke pass with TIA/CVT scenario-state assertions enabled
+- [x] `npm run qa` local + live smoke pass with 0 issues
+
+## Last completed run (2026-02-20, iter-070)
+- [x] `npm run build` pass after protected-contact QA invariant updates
+- [x] `npm test` local smoke pass with protected-contact assertions
 - [x] `npm run qa` local + live smoke pass with 0 issues

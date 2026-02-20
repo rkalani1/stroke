@@ -863,3 +863,21 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 070 (2026-02-20)
+
+### What was changed
+- Hardened phone-directory non-removal safeguards in `scripts/qa-smoke.mjs` with explicit contact invariants.
+- Quick Contacts FAB smoke now requires these UW defaults to be present:
+  - `Stroke Phone`
+  - `STAT Pharmacy`
+  - `HMC Stroke RAD Hotline`
+- Settings smoke now requires matching label + phone-value pairs for protected defaults:
+  - `Stroke Phone` / `206-744-6789`
+  - `STAT Pharmacy` / `206-744-2241`
+  - `HMC Stroke RAD Hotline` / `206-744-8484`
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)

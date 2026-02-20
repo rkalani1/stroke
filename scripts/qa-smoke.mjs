@@ -154,6 +154,12 @@ async function auditView(browser, target, viewport) {
     if ((await page.getByText(/Stroke Phone/i).count()) === 0) {
       addIssue(issues, 'quick-contacts-default-missing', { contact: 'Stroke Phone' });
     }
+    if ((await page.getByText(/STAT Pharmacy/i).count()) === 0) {
+      addIssue(issues, 'quick-contacts-default-missing', { contact: 'STAT Pharmacy' });
+    }
+    if ((await page.getByText(/HMC Stroke RAD Hotline/i).count()) === 0) {
+      addIssue(issues, 'quick-contacts-default-missing', { contact: 'HMC Stroke RAD Hotline' });
+    }
     await page.keyboard.press('Escape');
     await page.waitForTimeout(100);
   }
@@ -317,6 +323,22 @@ async function auditView(browser, target, viewport) {
     }
     if ((await page.getByRole('button', { name: /Reset UW Defaults/i }).count()) === 0) {
       addIssue(issues, 'missing-contact-directory-reset');
+    }
+
+    const requiredContacts = [
+      { label: 'Stroke Phone', phone: '206-744-6789' },
+      { label: 'STAT Pharmacy', phone: '206-744-2241' },
+      { label: 'HMC Stroke RAD Hotline', phone: '206-744-8484' }
+    ];
+    for (const contact of requiredContacts) {
+      const labelPresent = await page.locator(`input[value=\"${contact.label}\"]`).count();
+      if (labelPresent === 0) {
+        addIssue(issues, 'missing-required-contact-label', { contact: contact.label });
+      }
+      const phonePresent = await page.locator(`input[value=\"${contact.phone}\"]`).count();
+      if (phonePresent === 0) {
+        addIssue(issues, 'missing-required-contact-phone', { contact: contact.label, phone: contact.phone });
+      }
     }
   }
 
