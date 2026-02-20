@@ -212,3 +212,10 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-20, iter-089)
+- [x] Maternal-stroke citation mapping corrected to Stroke record (`PMID 41603019`, DOI `10.1161/STR.0000000000000514`)
+- [x] `npm run evidence:watch` pass with refreshed uncited baseline (`22` candidates)
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

@@ -80,7 +80,7 @@
 ### Operational mapping update (2026-02-18, iter-007)
 - Added TNK-first decision card in ischemic management: 3-column layout (TNK first-line dosing, alteplase fallback conditions, key exclusions) placed before TNK/EVT recommendation checkboxes. Based on AcT (PMID: 35779579), TRACE-2 (PMID: 37043691), ORIGINAL (PMID: 38710025), ESO 2023 recommendation.
 - Added imaging hard-stop alert at top of wake-up stroke evaluation panel: requires DWI-FLAIR mismatch (WAKE-UP trial) or CT perfusion mismatch (EXTEND trial) before thrombolysis. TWIST (Lancet 2023) context: no benefit for unselected wake-up thrombolysis.
-- Enhanced pregnancy/peripartum emergency panel with 4-cell rapid actions grid: acute treatment (do not delay, TNK relative CI, EVT preferred for LVO), OB coordination, differential diagnosis (preeclampsia/eclampsia, RCVS, CVT, PRES, peripartum cardiomyopathy), medication safety. Based on AHA 2026 Maternal Stroke Update (PMID: 41678811).
+- Enhanced pregnancy/peripartum emergency panel with 4-cell rapid actions grid: acute treatment (do not delay, TNK relative CI, EVT preferred for LVO), OB coordination, differential diagnosis (preeclampsia/eclampsia, RCVS, CVT, PRES, peripartum cardiomyopathy), medication safety. Based on AHA 2026 Maternal Stroke Update (PMID: 41603019).
 
 ### Operational mapping update (2026-02-18, iter-008)
 - Added renal-safety auto-alert in Contrast Allergy + LVO Protocol section: dynamically computes CrCl from patient data and shows severe (CrCl <30) or moderate (CrCl 30-59) warnings with nephropathy precautions.
@@ -111,7 +111,7 @@
 | DAPT timing/phenotype | RCT-supported | Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke (INSPIRES) | 2024 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/38157499/ | PMID: 38157499; DOI: 10.1056/NEJMoa2309137 |
 | Cardioembolic timing | RCT-supported | Early versus Later Anticoagulation for Stroke with Atrial Fibrillation (ELAN) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/37222476/ | PMID: 37222476; DOI: 10.1056/NEJMoa2303048 |
 | Cardioembolic timing | RCT-supported | Timing of Oral Anticoagulant Therapy in AIS with AF (TIMING) | 2022 | Circulation | https://pubmed.ncbi.nlm.nih.gov/36065821/ | PMID: 36065821; DOI: 10.1161/CIRCULATIONAHA.122.060666 |
-| Special populations | Guideline-grade | Maternal Stroke: A Focused Update | 2026 | Stroke / PubMed | https://pubmed.ncbi.nlm.nih.gov/41678811/ | PMID: 41678811 |
+| Special populations | Guideline-grade | Maternal Stroke: A Focused Update | 2026 | Stroke / PubMed | https://pubmed.ncbi.nlm.nih.gov/41603019/ | PMID: 41603019; DOI: 10.1161/STR.0000000000000514 |
 
 ### Metadata verification refresh (2026-02-18, iter-037)
 - Re-verified 2026 AIS guideline indexing metadata: PMID `41582814`, DOI `10.1161/STR.0000000000000513`.
@@ -128,7 +128,7 @@
   - CVT statement PMID `38284265`, DOI `10.1161/STR.0000000000000456`
   - TIA ED statement PMID `36655570`, DOI `10.1161/STR.0000000000000418`
   - Secondary prevention guideline PMID `34024117`, DOI `10.1161/STR.0000000000000375`
-  - Pregnancy statement PMID `41678811`, DOI `10.1161/STR.0000000000000501`
+  - Pregnancy statement PMID `41603019`, DOI `10.1161/STR.0000000000000514`
 
 ### Operational mapping update (2026-02-18, iter-038)
 - Added automated diagnosis-switch pathway guard in QA to reduce regression risk for core branch transitions (ischemic, ICH, SAH, CVT, mimic).
@@ -261,3 +261,9 @@
 - Added clinician-priority triage scoring to uncited evidence watchlist output (guideline/trial signal + recency + source strength + workflow relevance).
 - Added optional external live-smoke failure webhook fan-out to accelerate visibility of evidence-ops regressions outside GitHub issues.
 - Inference disclosure: watchlist priority labels are operational triage aids and do not modify recommendation strength without clinician review.
+
+### Operational update (2026-02-20, iter-089)
+- Corrected maternal-stroke citation metadata alignment to the Stroke publication record:
+  - `PMID 41603019` with DOI `10.1161/STR.0000000000000514`.
+- Removed mixed-reference pairing that previously combined an alternate publication PMID with the Stroke DOI.
+- Regenerated evidence watchlist baseline after correction; uncited candidate count decreased by one.

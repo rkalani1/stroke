@@ -4,8 +4,8 @@
 - Branch: `main`
 - Last pushed commit: run `git rev-parse --short origin/main`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.70`
-- Service worker cache key: `stroke-app-v69`
+- Live APP_VERSION: `v5.14.71`
+- Service worker cache key: `stroke-app-v70`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -680,6 +680,21 @@
 - Added optional external failure fan-out in `.github/workflows/live-smoke.yml`:
   - uses `secrets.LIVE_SMOKE_ALERT_WEBHOOK` when configured;
   - preserves existing GitHub issue alert flow and auto-close behavior.
+- Validation status:
+  - `npm run evidence:watch` pass
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run validate:citations:links && npm run validate:citations:ids && npm test && npm run qa`
+
+## Iteration 089 update (2026-02-20, macOS session)
+- Corrected maternal-stroke evidence metadata alignment to Stroke statement record:
+  - updated references to `PMID: 41603019`, DOI `10.1161/STR.0000000000000514`.
+  - removed mixed PMID/DOI pairing from evidence docs.
+- Updated in-app maternal rapid-actions citation text to `PMID: 41603019`.
+- Regenerated watchlist baseline:
+  - `npm run evidence:watch` now reports `22` uncited candidates (previously `23`).
 - Validation status:
   - `npm run evidence:watch` pass
   - `npm run build` pass

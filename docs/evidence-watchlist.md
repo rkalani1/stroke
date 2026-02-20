@@ -1,6 +1,6 @@
 # Evidence Watchlist (Auto-generated)
 
-Generated: 2026-02-20T13:29:19.904Z
+Generated: 2026-02-20T13:41:33.070Z
 
 Purpose: highlight potentially relevant **uncited** PubMed evidence for 2021-2026 stroke workflows.
 Baseline cited PMIDs: 21
@@ -49,7 +49,6 @@ Search window start: 2025/01/01
 |---|---|---|---|---|---|---|---|---|
 | P0 urgent review | 11 | current-year publication; guideline/scientific-statement signal; high-impact source; special-population operational relevance | 41686463 | 2026 | JAMA | Stroke Guideline Expands Adult Treatment, Provides Pediatric Recommendations. | 10.1001/jama.2025.26391 | https://pubmed.ncbi.nlm.nih.gov/41686463/ |
 | P0 urgent review | 11 | current-year publication; guideline/scientific-statement signal; high-impact source; special-population operational relevance | 41623113 | 2026 | Stroke | Classification and Management of Ischemic Stroke in Patients With Active Cancer: A Scientific Statement From the American Heart Association. | 10.1161/STR.0000000000000517 | https://pubmed.ncbi.nlm.nih.gov/41623113/ |
-| P0 urgent review | 11 | current-year publication; guideline/scientific-statement signal; high-impact source; special-population operational relevance | 41603019 | 2026 | Stroke | Prevention and Treatment of Maternal Stroke in Pregnancy and Postpartum: A Scientific Statement From the American Heart Association. | 10.1161/STR.0000000000000514 | https://pubmed.ncbi.nlm.nih.gov/41603019/ |
 | P1 high review | 9 | current-year publication; trial-design signal; high-impact source; special-population operational relevance | 41490362 | 2026 | JAMA Neurol | Brain Volumes After Hypertensive Pregnancy and Postpartum Blood Pressure Management: A POP-HT Randomized Clinical Trial Imaging Substudy. | 10.1001/jamaneurol.2025.5145 | https://pubmed.ncbi.nlm.nih.gov/41490362/ |
 
 ## Notes

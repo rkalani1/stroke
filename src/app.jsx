@@ -25364,7 +25364,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           </ul>
                                         </div>
                                       </div>
-                                      <p className="text-xs text-red-600 mt-2 italic">AHA 2026 Maternal Stroke Focused Update. PMID: 41678811.</p>
+                                      <p className="text-xs text-red-600 mt-2 italic">AHA 2026 Maternal Stroke Focused Update. PMID: 41603019.</p>
                                     </div>
                                   </div>
                                 )}

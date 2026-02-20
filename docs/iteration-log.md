@@ -1,5 +1,20 @@
 # Iteration Log
 
+## Iteration 089 (2026-02-20)
+
+### What was changed
+- Corrected maternal-stroke citation metadata alignment to the Stroke statement record:
+  - Updated references from `PMID: 41678811` to `PMID: 41603019` where Stroke-statement metadata was intended.
+  - Aligned DOI usage to `10.1161/STR.0000000000000514` for the Stroke publication record.
+- Updated in-app maternal rapid-actions citation text to use `PMID: 41603019`.
+- Regenerated `docs/evidence-watchlist.md` after citation baseline correction (uncited candidate count reduced from 23 to 22).
+
+### Verification
+- `npm run evidence:watch` passed.
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 088 (2026-02-20)
 
 ### What was changed
@@ -575,7 +590,7 @@
 ### Evidence citations used for this iteration
 - AcT (Lancet 2022, PMID: 35779579), TRACE-2 (NEJM 2023, PMID: 37043691), ORIGINAL (JAMA 2024, PMID: 38710025), ESO 2023 TNK recommendation.
 - WAKE-UP (NEJM 2018), EXTEND (NEJM 2019), TWIST (Lancet 2023, PMID: 36774963).
-- AHA 2026 Maternal Stroke Focused Update (PMID: 41678811).
+- AHA 2026 Maternal Stroke Focused Update (PMID: 41603019).
 
 ### QA and validation
 - Build: `npx esbuild` and `npx tailwindcss` passed.
