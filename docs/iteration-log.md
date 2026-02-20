@@ -520,7 +520,7 @@
 
 ### Evidence citations used for this iteration
 - 2023 AHA/ASA aneurysmal SAH guideline, Stroke 2023, DOI: 10.1161/STR.0000000000000436, PMID: 37212182.
-- 2024 AHA CVT Scientific Statement, Stroke 2024, DOI: 10.1161/STR.0000000000000486.
+- 2024 AHA CVT Scientific Statement, Stroke 2024, PMID: 38284265, DOI: 10.1161/STR.0000000000000456.
 - ACTION-CVT: Yaghi S et al. JAMA Neurol 2022;79:1260-1269, PMID: 36315105.
 - ELAN: Fischer U et al. NEJM 2023;388:2411-2421, PMID: 37222476.
 - TIMING: Oldgren J et al. Circulation 2022;146:1056-1066, PMID: 36065821.
@@ -880,4 +880,17 @@
 ### QA and validation
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 071 (2026-02-20)
+
+### What was changed
+- Completed primary-source citation audit for CVT 2024 AHA scientific statement.
+- Corrected residual CVT citation mismatch in evidence docs:
+  - Updated DOI from `10.1161/STR.0000000000000486` to `10.1161/STR.0000000000000456`.
+  - Added PMID `38284265` directly in key citation table row.
+- Cross-checked against PubMed primary page for PMID `38284265` and aligned iteration log wording accordingly.
+
+### QA and validation
+- `npm test`: pass (includes citation validator + local smoke)
 - `npm run qa`: pass (local + live smoke, 0 issues)

@@ -459,3 +459,14 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 071 update (2026-02-20, macOS session)
+- Performed source-level evidence metadata audit for CVT statement and corrected a stale DOI in documentation.
+- PubMed-verified CVT metadata now standardized across docs:
+  - PMID `38284265`
+  - DOI `10.1161/STR.0000000000000456`
+- Validation status:
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`

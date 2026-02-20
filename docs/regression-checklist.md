@@ -102,3 +102,8 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass after protected-contact QA invariant updates
 - [x] `npm test` local smoke pass with protected-contact assertions
 - [x] `npm run qa` local + live smoke pass with 0 issues
+
+## Last completed run (2026-02-20, iter-071)
+- [x] CVT key citation row matches PubMed primary metadata (PMID `38284265`, DOI `10.1161/STR.0000000000000456`)
+- [x] `npm test` pass after citation metadata correction
+- [x] `npm run qa` local + live smoke pass with 0 issues

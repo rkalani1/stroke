@@ -66,3 +66,9 @@
   - This directly enforces the explicit non-removal policy for critical on-call communication pathways.
 - Remaining operations gap:
   - Add CI-level fail-fast gate that runs the smoke suite on every push to prevent manual-only execution drift.
+
+## Iteration 071 Update (2026-02-20)
+- Evidence metadata fidelity gap reduced:
+  - Resolved CVT DOI inconsistency by aligning docs to PubMed-confirmed citation (PMID `38284265`, DOI `10.1161/STR.0000000000000456`).
+- Remaining evidence ops gap:
+  - Periodically re-verify all PMID/DOI pairs in table against source endpoints to catch drift introduced by manual edits.
