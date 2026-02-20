@@ -841,6 +841,8 @@
 ### QA and validation
 - `npm run build`: pass
 - `npm test`: pass (`validate:citations` + local smoke across desktop/tablet/mobile, 0 issues)
+- `npm run qa`: pass (local + live smoke across desktop/tablet/mobile, 0 issues)
+- `git push origin main`: pass
 
 ### Next opportunities
 - Add scenario-level QA assertions for CVT special-population warning transitions (APS/pregnancy toggles).

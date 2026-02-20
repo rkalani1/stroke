@@ -90,3 +90,4 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass after CVT special-population and QA assertion updates
 - [x] `npm run validate:citations` pass (22 citation rows validated)
 - [x] `npm test` local smoke pass with 0 issues across desktop/tablet/mobile
+- [x] `npm run qa` local + live smoke pass with 0 issues across desktop/tablet/mobile
