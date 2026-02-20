@@ -2,10 +2,10 @@
 
 ## Current state (2026-02-20)
 - Branch: `main`
-- Last pushed commit: `378bdf1`
+- Last pushed commit: `f693e7e`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.69`
-- Service worker cache key: `stroke-app-v68`
+- Live APP_VERSION: `v5.14.70`
+- Service worker cache key: `stroke-app-v69`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -432,5 +432,8 @@
 - Local verification complete:
   - `npm run build` pass
   - `npm test` pass (0 smoke issues)
+- Deployment verification complete:
+  - `git push origin main` pass
+  - `npm run qa` pass (local + live smoke, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && npm run qa && git push origin main`
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run build`
