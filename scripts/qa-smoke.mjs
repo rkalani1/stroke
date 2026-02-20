@@ -196,11 +196,133 @@ async function auditView(browser, target, viewport) {
       addIssue(issues, 'missing-evt-section');
     }
 
+    const videoModeButton = page.getByRole('button', { name: /Video Telestroke/i }).first();
+    if ((await videoModeButton.count()) > 0) {
+      await videoModeButton.click();
+      await page.waitForTimeout(150);
+    }
+
     await page.keyboard.press('Control+K');
     await page.waitForTimeout(200);
     const activePlaceholder = await page.evaluate(() => document.activeElement?.getAttribute('placeholder') || null);
     if (!activePlaceholder || !/search/i.test(activePlaceholder)) {
       addIssue(issues, 'keyboard-search', { activePlaceholder });
+    }
+
+    // Wake-up/extended-window perfusion scenario:
+    // support both standard and compact encounter layouts while preserving EXTEND safety checks.
+    const ischemicPrimaryButton = page.getByRole('button', { name: /^Ischemic Stroke or TIA$/ }).first();
+    if ((await ischemicPrimaryButton.count()) === 0) {
+      addIssue(issues, 'missing-diagnosis-button', { label: 'Ischemic Stroke or TIA' });
+    } else {
+      await ischemicPrimaryButton.click();
+      await page.waitForTimeout(150);
+
+      const wakeUpCheckbox = page.getByRole('checkbox', { name: /Wake-up Stroke \/ Unknown LKW/i }).first();
+      if ((await wakeUpCheckbox.count()) === 0) {
+        addIssue(issues, 'missing-wakeup-workflow');
+      } else {
+        await wakeUpCheckbox.click();
+        await page.waitForTimeout(150);
+
+        // In senior-rapid mode, wake-up selection auto-collapses LKW. Re-open if needed.
+        let useCtpButton = page.getByRole('button', { name: /No - Use CTP/i }).first();
+        if ((await useCtpButton.count()) === 0) {
+          const lkwSection = page.locator('#lkw-section').first();
+          if ((await lkwSection.count()) > 0) {
+            const lkwEditButton = lkwSection.getByRole('button', { name: /^Edit$/ }).first();
+            if ((await lkwEditButton.count()) > 0) {
+              await lkwEditButton.click();
+              await page.waitForTimeout(150);
+            }
+          }
+          useCtpButton = page.getByRole('button', { name: /No - Use CTP/i }).first();
+        }
+
+        if ((await useCtpButton.count()) === 0) {
+          addIssue(issues, 'missing-wakeup-ctp-path');
+        } else {
+          await useCtpButton.click();
+          await page.waitForTimeout(150);
+
+          const setScenarioField = async (id, selectors, value, valueType = 'fill') => {
+            for (const selector of selectors) {
+              const locator = page.locator(selector).first();
+              if ((await locator.count()) === 0) continue;
+              if (valueType === 'select') {
+                await locator.selectOption(value);
+              } else {
+                await locator.fill(value);
+              }
+              return true;
+            }
+            return false;
+          };
+
+          const nihssSet = await setScenarioField('nihss', ['#input-nihss', '#phone-input-nihss'], '8');
+          const premorbidSet = await setScenarioField(
+            'premorbid-mrs',
+            ['#input-premorbid-mrs', '#phone-input-premorbid-mrs'],
+            '1',
+            'select'
+          );
+          const ctpCoreSet = await setScenarioField('ctp-core', ['#input-ctp-core'], '30');
+          const ctpPenumbraSet = await setScenarioField('ctp-penumbra', ['#input-ctp-penumbra'], '90');
+
+          if (!nihssSet) addIssue(issues, 'missing-wakeup-scenario-input', { field: 'nihss' });
+          if (!premorbidSet) addIssue(issues, 'missing-wakeup-scenario-input', { field: 'premorbid-mrs' });
+
+          // Ensure manual EXTEND path remains testable even when compact layout hides direct CTP inputs.
+          const extendCriteriaLabels = [
+            /NIHSS 4-26/i,
+            /Pre-morbid mRS <2/i,
+            /Ischemic core ≤70mL/i,
+            /Mismatch ratio ≥1.2/i,
+            /Time 4.5-9 hours OR wake-up stroke/i
+          ];
+          let manualCriteriaFound = 0;
+          for (const label of extendCriteriaLabels) {
+            const criterion = page.getByRole('checkbox', { name: label }).first();
+            if ((await criterion.count()) === 0) continue;
+            manualCriteriaFound += 1;
+            try {
+              await criterion.scrollIntoViewIfNeeded();
+              const alreadyChecked = await criterion.evaluate((el) => Boolean(el.checked));
+              if (!alreadyChecked) {
+                await criterion.click({ timeout: 5000 });
+              }
+            } catch (error) {
+              addIssue(issues, 'wakeup-manual-extend-toggle-failed', {
+                criterion: String(label),
+                message: error?.message || String(error)
+              });
+            }
+          }
+          if (manualCriteriaFound < extendCriteriaLabels.length) {
+            addIssue(issues, 'missing-wakeup-manual-extend-inputs', {
+              expected: extendCriteriaLabels.length,
+              found: manualCriteriaFound
+            });
+          }
+
+          await page.waitForTimeout(250);
+          const autoCriteriaAny = (await page.getByText(/Auto criteria (met|not fully met)/i).count()) > 0;
+          if (!autoCriteriaAny) {
+            addIssue(issues, 'wakeup-auto-extend-state-missing');
+          }
+
+          // If direct CTP inputs are available, require auto-perfusion to reach the "met" state.
+          if (ctpCoreSet && ctpPenumbraSet) {
+            if ((await page.getByText(/Auto criteria met for EXTEND-style perfusion selection/i).count()) === 0) {
+              addIssue(issues, 'wakeup-auto-extend-state-missing');
+            }
+          }
+
+          if ((await page.getByText(/Meets EXTEND criteria - Consider IV thrombolysis/i).count()) === 0) {
+            addIssue(issues, 'wakeup-extend-eligibility-missing');
+          }
+        }
+      }
     }
 
     for (const assertion of DIAGNOSIS_SWITCH_ASSERTIONS) {

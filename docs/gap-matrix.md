@@ -86,3 +86,11 @@
   - Added artifact retention path for screenshot/report triage.
 - Remaining operations gap:
   - Add notification routing (for example Slack/email) for failed scheduled smoke runs via repo settings/integrations.
+
+## Iteration 074 Update (2026-02-20)
+- Scenario-level wake-up QA gap reduced:
+  - Added layout-aware wake-up/EXTEND smoke flow handling for both standard and compact encounter forms.
+  - Added deterministic recovery for LKW auto-collapse so wake-up pathway controls are always reachable in smoke audits.
+  - Added manual EXTEND-criteria fallback assertions when direct CTP perfusion input controls are not rendered in compact mode.
+- Remaining QA gap:
+  - Add deterministic assertions for wake-up contraindication-trace propagation into generated notes (not only on-screen recommendation state).

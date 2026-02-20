@@ -190,3 +190,8 @@
 ### Operational update (2026-02-20, iter-073)
 - No new medical evidence sources added.
 - Added scheduled live-smoke automation to continuously verify that evidence-linked pathways remain operational on production between code changes.
+
+### Operational update (2026-02-20, iter-074)
+- No new medical evidence sources were added in this iteration.
+- Hardened wake-up/EXTEND regression automation to account for encounter-layout variability and LKW auto-collapse state transitions.
+- Added manual EXTEND-criteria fallback verification path so evidence-linked extended-window eligibility guidance remains test-covered even when direct CTP fields are conditionally hidden.

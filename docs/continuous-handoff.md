@@ -494,3 +494,16 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 074 update (2026-02-20, macOS session)
+- Stabilized wake-up/extended-window QA scenario in `scripts/qa-smoke.mjs`:
+  - Re-opens LKW card after wake-up toggle when senior-rapid auto-collapse hides controls.
+  - Supports both standard (`input-*`) and compact (`phone-input-*`) encounter field IDs.
+  - Adds manual EXTEND checkbox fallback assertions when direct CTP perfusion fields are not rendered.
+  - Prevents smoke hard-fail from unstable checkbox state checks by capturing toggle failures as explicit issues.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`

@@ -922,3 +922,22 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 074 (2026-02-20)
+
+### What was changed
+- Stabilized wake-up/extended-window QA scenario in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs` to eliminate false failures from layout/state drift.
+- Added explicit LKW-card re-open step (`Edit`) after wake-up toggle, because senior-rapid auto-collapse hid downstream controls.
+- Made scenario input selectors dual-path:
+  - Standard desktop IDs (`#input-nihss`, `#input-premorbid-mrs`, `#input-ctp-core`, `#input-ctp-penumbra`)
+  - Compact/senior IDs (`#phone-input-nihss`, `#phone-input-premorbid-mrs`)
+- Added manual EXTEND fallback checks by toggling all five EXTEND criteria checkboxes when direct CTP inputs are unavailable.
+- Hardened checkbox interaction logic to avoid smoke-script crashes (guarded scroll + click with captured issue output instead of uncaught exception).
+- Updated auto-criteria matcher to handle both text variants:
+  - `Auto criteria met ...`
+  - `Auto criteria not fully met yet ...`
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)
