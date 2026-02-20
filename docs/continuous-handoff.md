@@ -483,3 +483,14 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 073 update (2026-02-20, macOS session)
+- Added scheduled production audit workflow (`.github/workflows/live-smoke.yml`):
+  - Daily cron + manual trigger.
+  - Runs `npm run qa` (local + live smoke) and uploads artifacts.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`

@@ -79,3 +79,10 @@
   - Added smoke artifact upload for failed-run diagnostics.
 - Remaining reliability gap:
   - Add branch protection policy requiring CI success before merge (repo settings-level step, outside codebase).
+
+## Iteration 073 Update (2026-02-20)
+- Live-monitoring gap reduced:
+  - Added scheduled daily live-smoke GitHub Actions workflow (`live-smoke.yml`) running full local+live audit.
+  - Added artifact retention path for screenshot/report triage.
+- Remaining operations gap:
+  - Add notification routing (for example Slack/email) for failed scheduled smoke runs via repo settings/integrations.

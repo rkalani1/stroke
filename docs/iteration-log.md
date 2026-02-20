@@ -909,3 +909,16 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 073 (2026-02-20)
+
+### What was changed
+- Added scheduled production audit workflow at `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`.
+- Workflow runs daily (`cron: 0 13 * * *`) and on manual dispatch.
+- Workflow executes full QA (`npm run qa`) and uploads smoke artifacts (`output/playwright`) for diagnostics.
+- This complements push/PR CI by continuously verifying live-site behavior over time.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)

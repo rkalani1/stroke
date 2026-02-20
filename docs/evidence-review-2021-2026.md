@@ -186,3 +186,7 @@
 ### Operational update (2026-02-20, iter-072)
 - No new clinical evidence sources were added in this iteration.
 - Added CI enforcement for evidence/citation and smoke checks so evidence-linked pathway updates cannot bypass automated validation on push/PR.
+
+### Operational update (2026-02-20, iter-073)
+- No new medical evidence sources added.
+- Added scheduled live-smoke automation to continuously verify that evidence-linked pathways remain operational on production between code changes.
