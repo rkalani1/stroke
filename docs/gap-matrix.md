@@ -124,3 +124,10 @@
   - Supportive-negative output is conditionally evidence-safe (only emitted when specific entered data meet thresholds).
 - Remaining workflow gap:
   - Add dedicated UI capture fields for infusion/drip parameters to improve ICU handoff granularity in note templates.
+
+## Iteration 079 Update (2026-02-20)
+- ICU handoff granularity gap reduced:
+  - Wired existing post-EVT BP guardrail fields (reperfusion status, infusion agent, target strategy) into transfer/signout/progress/discharge note outputs.
+  - This improves shift-to-shift continuity without adding new data-entry burden.
+- Remaining workflow gap:
+  - Add generalized non-EVT infusion/drip capture (for example vasopressors/sedation) if broader neurocritical workflows require it.

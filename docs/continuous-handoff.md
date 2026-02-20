@@ -558,3 +558,15 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 079 update (2026-02-20, macOS session)
+- Added structured post-EVT BP plan export helper and note integration:
+  - `getPostEvtBpPlanSummary(...)` now formats reperfusion status, infusion agent, and target strategy.
+  - Included in transfer, signout, progress, and discharge outputs to improve neurocritical handoff clarity.
+- Rebuilt client bundle (`app.js`) after source updates.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`

@@ -149,3 +149,9 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass
 - [x] `npm run qa` local + live smoke pass with 0 issues
+
+## Last completed run (2026-02-20, iter-079)
+- [x] Post-EVT BP infusion/target strategy details now propagate to transfer/signout/progress/discharge note outputs
+- [x] `npm run build` pass
+- [x] `npm test` pass
+- [x] `npm run qa` local + live smoke pass with 0 issues

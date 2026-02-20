@@ -215,3 +215,8 @@
 - No new medical evidence sources were added in this iteration.
 - Strengthened consult-note safety traceability by adding structured supportive-negative outputs (when documented) to thrombolysis contraindication trace lines.
 - This complements blocker/caution output and improves decision transparency during acute handoffs.
+
+### Operational update (2026-02-20, iter-079)
+- No new medical evidence sources were added in this iteration.
+- Extended operationalization of post-EVT BP evidence by embedding structured infusion/target strategy details into core handoff note templates.
+- This improves continuity of guideline-concordant BP management documentation across transitions of care.

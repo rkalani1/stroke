@@ -6537,6 +6537,35 @@ Clinician Name`;
             return { reperfused, target, bp, status };
           }
 
+          function getPostEvtBpPlanSummary(note) {
+            const postEvt = note?.postEvtBP || {};
+            const infusionLabels = {
+              nicardipine: 'Nicardipine drip',
+              clevidipine: 'Clevidipine drip',
+              labetalol: 'Intermittent labetalol',
+              none: 'No IV infusion'
+            };
+            const targetLabels = {
+              standard: 'SBP <180/105',
+              guardrail: 'SBP 130-180 guardrail'
+            };
+            const reperfusionLabels = {
+              successful: 'Successful reperfusion (mTICI 2b-3)',
+              partial: 'Partial/none reperfusion (<2b)'
+            };
+            const parts = [];
+            if (postEvt.reperfusionStatus && reperfusionLabels[postEvt.reperfusionStatus]) {
+              parts.push(reperfusionLabels[postEvt.reperfusionStatus]);
+            }
+            if (postEvt.infusionAgent && infusionLabels[postEvt.infusionAgent]) {
+              parts.push(`Agent: ${infusionLabels[postEvt.infusionAgent]}`);
+            }
+            if (postEvt.targetStrategy && targetLabels[postEvt.targetStrategy]) {
+              parts.push(`Target: ${targetLabels[postEvt.targetStrategy]}`);
+            }
+            return parts.join('; ');
+          }
+
           function buildContraindicationTrace(note) {
             if (!note) return '';
             const blockers = [];
@@ -9206,7 +9235,11 @@ Clinician Name`;
                   if ((telestrokeNote.consentKit || {}).evtConsentTime) note += ` at ${telestrokeNote.consentKit.evtConsentTime}`;
                   note += `\n`;
                 }
-                if (telestrokeNote.bpPostEVT) note += `- Post-EVT BP: ${telestrokeNote.bpPostEVT}\n`;
+                const transferBpPlan = getPostEvtBpPlanSummary(telestrokeNote);
+                if (telestrokeNote.bpPostEVT || transferBpPlan) {
+                  note += `- Post-EVT BP: ${telestrokeNote.bpPostEVT || '___'}\n`;
+                  if (transferBpPlan) note += `  Plan: ${transferBpPlan}\n`;
+                }
               }
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) {
                 note += `- Medical management`;
@@ -9709,7 +9742,11 @@ Clinician Name`;
                 if (telestrokeNote.evtTechnique) note += `  Technique: ${telestrokeNote.evtTechnique}\n`;
                 if (telestrokeNote.evtNumberOfPasses) note += `  Passes: ${telestrokeNote.evtNumberOfPasses}\n`;
                 if (telestrokeNote.reperfusionTime) note += `  Reperfusion: ${telestrokeNote.reperfusionTime}\n`;
-                if (telestrokeNote.bpPostEVT) note += `  Post-EVT BP: ${telestrokeNote.bpPostEVT}\n`;
+                const signoutBpPlan = getPostEvtBpPlanSummary(telestrokeNote);
+                if (telestrokeNote.bpPostEVT || signoutBpPlan) {
+                  note += `  Post-EVT BP: ${telestrokeNote.bpPostEVT || '___'}\n`;
+                  if (signoutBpPlan) note += `  BP plan: ${signoutBpPlan}\n`;
+                }
               }
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) {
                 note += `- Medical management`;
@@ -10051,7 +10088,11 @@ Clinician Name`;
                 if (procDtnNote) note += procDtnNote;
               }
               note += `\nPOST-PROCEDURE:\n`;
-              if (telestrokeNote.bpPostEVT) note += `- Post-EVT BP: ${telestrokeNote.bpPostEVT}\n`;
+              const progressBpPlan = getPostEvtBpPlanSummary(telestrokeNote);
+              if (telestrokeNote.bpPostEVT || progressBpPlan) {
+                note += `- Post-EVT BP: ${telestrokeNote.bpPostEVT || '___'}\n`;
+                if (progressBpPlan) note += `- Post-EVT BP plan: ${progressBpPlan}\n`;
+              }
               const procBp = bpPhaseTargets['post-evt'];
               note += `- BP target: SBP <${procBp.systolic}/${procBp.diastolic} for 24h; avoid SBP <140 (Class III: Harm per BEST-II/ENCHANTED2)\n`;
               note += `- Neurovascular checks q15min x 2h, then q30min x 4h\n`;
@@ -10680,7 +10721,11 @@ Clinician Name`;
                 if (telestrokeNote.evtTechnique) note += `  Technique: ${telestrokeNote.evtTechnique}\n`;
                 if (telestrokeNote.evtNumberOfPasses) note += `  Passes: ${telestrokeNote.evtNumberOfPasses}\n`;
                 if (telestrokeNote.reperfusionTime) note += `  Reperfusion: ${telestrokeNote.reperfusionTime}\n`;
-                if (telestrokeNote.bpPostEVT) note += `  Post-EVT BP: ${telestrokeNote.bpPostEVT}\n`;
+                const dischargeBpPlan = getPostEvtBpPlanSummary(telestrokeNote);
+                if (telestrokeNote.bpPostEVT || dischargeBpPlan) {
+                  note += `  Post-EVT BP: ${telestrokeNote.bpPostEVT || '___'}\n`;
+                  if (dischargeBpPlan) note += `  BP plan: ${dischargeBpPlan}\n`;
+                }
               }
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) {
                 note += `- Medical management`;

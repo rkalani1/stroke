@@ -1017,3 +1017,24 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 079 (2026-02-20)
+
+### What was changed
+- Added shared post-EVT BP plan formatter in `/Users/rizwankalani/stroke/src/app.jsx`:
+  - `getPostEvtBpPlanSummary(...)`
+- Integrated structured post-EVT BP guardrail details into note outputs using existing stored fields (`postEvtBP`):
+  - Reperfusion status
+  - Infusion agent (nicardipine/clevidipine/labetalol/none)
+  - Target strategy (standard vs 130-180 guardrail)
+- Updated output sections in:
+  - Transfer note
+  - Signout note
+  - Progress note
+  - Discharge note
+- Rebuilt bundled client artifact (`/Users/rizwankalani/stroke/app.js`) from updated source.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)
