@@ -2,7 +2,7 @@
 
 ## Current state (2026-02-20)
 - Branch: `main`
-- Last pushed commit: `55ec93c`
+- Last pushed commit: run `git rev-parse --short origin/main`
 - Production URL: `https://rkalani1.github.io/stroke/`
 - Live APP_VERSION: `v5.14.70`
 - Service worker cache key: `stroke-app-v69`
