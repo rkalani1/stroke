@@ -15739,7 +15739,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             { label: 'Telestroke Resources', url: 'https://intranet.neurology.uw.edu/telestroke-provider-resources/' },
             { label: 'EMR', url: 'https://access.uwmedicine.org/logon/LogonPoint/tmindex.html' },
             { label: 'OpenEvidence', url: 'https://www.openevidence.com' },
-            { label: 'UpToDate', url: 'https://www.uptodate.com' }
+            { label: 'UpToDate', url: 'https://www.uptodate.com' },
+            { label: 'Asta (Ai2)', url: 'https://asta.allen.ai/chat' }
           ];
           const userQuickLinks = Array.isArray(settings.quickLinks) ? settings.quickLinks : [];
           const quickLinks = [...encounterQuickLinks, ...userQuickLinks, ...appConfig.institutionLinks].reduce((acc, link) => {
