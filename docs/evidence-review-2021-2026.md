@@ -182,3 +182,7 @@
   - PMID `38284265`
   - DOI `10.1161/STR.0000000000000456`
 - Corrected key-citation table row to remove prior DOI mismatch.
+
+### Operational update (2026-02-20, iter-072)
+- No new clinical evidence sources were added in this iteration.
+- Added CI enforcement for evidence/citation and smoke checks so evidence-linked pathway updates cannot bypass automated validation on push/PR.

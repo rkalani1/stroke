@@ -470,3 +470,16 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 072 update (2026-02-20, macOS session)
+- Added GitHub Actions CI workflow (`.github/workflows/ci.yml`) to run:
+  - `npm ci`
+  - `npm run build`
+  - `npm test` (citation validator + local smoke)
+- CI now uploads smoke artifacts (`output/playwright`) on every run for easier failure triage.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`

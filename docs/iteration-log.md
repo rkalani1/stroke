@@ -894,3 +894,18 @@
 ### QA and validation
 - `npm test`: pass (includes citation validator + local smoke)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 072 (2026-02-20)
+
+### What was changed
+- Added repository CI workflow at `/Users/rizwankalani/stroke/.github/workflows/ci.yml`.
+- CI now enforces on every push/PR to `main`:
+  - `npm ci`
+  - `npm run build`
+  - `npm test` (citation validation + local smoke)
+- Added artifact upload for smoke outputs (`output/playwright`) to improve regression triage in CI.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)

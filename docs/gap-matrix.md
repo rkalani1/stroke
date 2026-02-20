@@ -72,3 +72,10 @@
   - Resolved CVT DOI inconsistency by aligning docs to PubMed-confirmed citation (PMID `38284265`, DOI `10.1161/STR.0000000000000456`).
 - Remaining evidence ops gap:
   - Periodically re-verify all PMID/DOI pairs in table against source endpoints to catch drift introduced by manual edits.
+
+## Iteration 072 Update (2026-02-20)
+- CI enforcement gap reduced:
+  - Added GitHub Actions CI workflow to run build and smoke/citation checks for all pushes and PRs to `main`.
+  - Added smoke artifact upload for failed-run diagnostics.
+- Remaining reliability gap:
+  - Add branch protection policy requiring CI success before merge (repo settings-level step, outside codebase).
