@@ -36,9 +36,19 @@ function splitRow(row) {
   };
 }
 
+function extractIdentifiers(idField) {
+  const pmids = [...idField.matchAll(/PMID\s*:\s*(\d+)/gi)].map((match) => match[1]);
+  const dois = [...idField.matchAll(/DOI\s*:\s*([^;\s]+)/gi)].map((match) => match[1]);
+  const ncts = [...idField.matchAll(/NCT\s*:?\s*(NCT\d{8})/gi)].map((match) => match[1].toUpperCase());
+  return { pmids, dois, ncts };
+}
+
 function validateRows(rows) {
   const errors = [];
   const seenTitles = new Set();
+  const seenPmids = new Map();
+  const seenDois = new Map();
+  const seenNcts = new Map();
 
   rows.forEach((row, index) => {
     const item = splitRow(row);
@@ -65,6 +75,46 @@ function validateRows(rows) {
 
     if (!/(PMID\s*:\s*\d+|DOI\s*:\s*[^;\s]+|NCT\s*:?\s*NCT\d{8})/i.test(item.id)) {
       errors.push(`row ${rowNum}: missing PMID/DOI/NCT metadata in '${item.id}'`);
+    }
+
+    const { pmids, dois, ncts } = extractIdentifiers(item.id);
+
+    for (const pmid of pmids) {
+      if (!/^\d{6,9}$/.test(pmid)) {
+        errors.push(`row ${rowNum}: invalid PMID format '${pmid}'`);
+      }
+      const prior = seenPmids.get(pmid);
+      if (prior && prior !== item.title) {
+        errors.push(`row ${rowNum}: PMID '${pmid}' duplicated across titles ('${prior}' and '${item.title}')`);
+      } else {
+        seenPmids.set(pmid, item.title);
+      }
+    }
+
+    for (const doi of dois) {
+      if (!/^10\.\d{4,9}\/\S+$/i.test(doi)) {
+        errors.push(`row ${rowNum}: invalid DOI format '${doi}'`);
+      }
+      const normalized = doi.toLowerCase();
+      const prior = seenDois.get(normalized);
+      if (prior && prior !== item.title) {
+        errors.push(`row ${rowNum}: DOI '${doi}' duplicated across titles ('${prior}' and '${item.title}')`);
+      } else {
+        seenDois.set(normalized, item.title);
+      }
+    }
+
+    for (const nct of ncts) {
+      if (!/^NCT\d{8}$/i.test(nct)) {
+        errors.push(`row ${rowNum}: invalid NCT format '${nct}'`);
+      }
+      const normalized = nct.toUpperCase();
+      const prior = seenNcts.get(normalized);
+      if (prior && prior !== item.title) {
+        errors.push(`row ${rowNum}: NCT '${nct}' duplicated across titles ('${prior}' and '${item.title}')`);
+      } else {
+        seenNcts.set(normalized, item.title);
+      }
     }
 
     const dedupeKey = `${item.title.toLowerCase()}::${item.year}`;

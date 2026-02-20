@@ -570,3 +570,14 @@
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 080 update (2026-02-20, macOS session)
+- Hardened citation QA script (`scripts/validate-citations.mjs`) with:
+  - PMID/DOI/NCT format checks
+  - duplicate identifier detection across rows/titles
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass
+  - `npm run qa` pass (local + live, 0 issues)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`

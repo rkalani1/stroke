@@ -131,3 +131,10 @@
   - This improves shift-to-shift continuity without adding new data-entry burden.
 - Remaining workflow gap:
   - Add generalized non-EVT infusion/drip capture (for example vasopressors/sedation) if broader neurocritical workflows require it.
+
+## Iteration 080 Update (2026-02-20)
+- Evidence-metadata integrity gap reduced:
+  - Citation validator now enforces PMID/DOI/NCT format quality and cross-row duplicate identifier checks.
+  - This lowers risk of silent metadata drift when evidence rows are edited over time.
+- Remaining evidence-ops gap:
+  - Add optional automated link-health checks for citation URLs to detect dead links early.

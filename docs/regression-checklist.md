@@ -155,3 +155,9 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass
 - [x] `npm run qa` local + live smoke pass with 0 issues
+
+## Last completed run (2026-02-20, iter-080)
+- [x] Citation validator enforces identifier format quality (PMID/DOI/NCT) and duplicate identifier detection
+- [x] `npm run build` pass
+- [x] `npm test` pass
+- [x] `npm run qa` local + live smoke pass with 0 issues

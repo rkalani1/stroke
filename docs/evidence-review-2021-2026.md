@@ -220,3 +220,8 @@
 - No new medical evidence sources were added in this iteration.
 - Extended operationalization of post-EVT BP evidence by embedding structured infusion/target strategy details into core handoff note templates.
 - This improves continuity of guideline-concordant BP management documentation across transitions of care.
+
+### Operational update (2026-02-20, iter-080)
+- No new medical evidence sources were added in this iteration.
+- Strengthened evidence metadata governance by adding PMID/DOI/NCT format validation and duplicate-identifier detection in the citation validator.
+- This improves durability of evidence traceability across continuous content updates.

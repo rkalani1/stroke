@@ -1038,3 +1038,22 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 080 (2026-02-20)
+
+### What was changed
+- Hardened citation integrity checks in `/Users/rizwankalani/stroke/scripts/validate-citations.mjs`.
+- Added identifier extraction and validation for citation metadata table rows:
+  - PMID format validation
+  - DOI format validation (`10.xxxx/...` pattern)
+  - NCT format validation (`NCT########`)
+- Added cross-row duplicate identifier detection:
+  - Duplicate PMID across different titles
+  - Duplicate DOI across different titles
+  - Duplicate NCT across different titles
+- Existing table-shape, year-range, URL, and title/year duplicate checks remain in place.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (local smoke, 0 issues)
+- `npm run qa`: pass (local + live smoke, 0 issues)
