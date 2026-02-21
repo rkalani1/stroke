@@ -1,15 +1,15 @@
 # Evidence Ops Index (Auto-generated)
 
-Generated: 2026-02-21T22:47:00.910Z
+Generated: 2026-02-21T22:56:51.963Z
 
 ## Current Artifacts
 | Artifact | Path | Generated | Key count |
 |---|---|---|---|
-| Watchlist | docs/evidence-watchlist.md | 2026-02-21T22:47:00.265Z | P0/P1 rows: 11 |
-| Promotion checklist | docs/evidence-promotion-checklist.md | 2026-02-21T22:47:00.449Z | Total queued: 11 |
-| Promotion template (all) | docs/evidence-promotion-template.md | 2026-02-21T22:47:00.600Z | Pending templates: 11 |
-| Promotion template (P0) | docs/evidence-promotion-template-p0.md | 2026-02-21T22:47:00.757Z | Pending templates: 1 |
-| Watchlist history | docs/evidence-watch-history.json | n/a (JSON snapshot) | Entries: 3 |
+| Watchlist | docs/evidence-watchlist.md | 2026-02-21T22:56:51.340Z | P0/P1 rows: 11 |
+| Promotion checklist | docs/evidence-promotion-checklist.md | 2026-02-21T22:56:51.513Z | Total queued: 11 |
+| Promotion template (all) | docs/evidence-promotion-template.md | 2026-02-21T22:56:51.663Z | Pending templates: 11 |
+| Promotion template (P0) | docs/evidence-promotion-template-p0.md | 2026-02-21T22:56:51.814Z | Pending templates: 1 |
+| Watchlist history | docs/evidence-watch-history.json | n/a (JSON snapshot) | Entries: 5 |
 
 ## Maintenance Commands
 - `npm run evidence:watch`
@@ -17,6 +17,7 @@ Generated: 2026-02-21T22:47:00.910Z
 - `npm run evidence:watch:dominance`
 - `npm run evidence:watch:topic-thresholds`
 - `npm run evidence:watch:churn`
+- `npm run evidence:watch:churn-critical`
 - `npm run evidence:promote`
 - `npm run evidence:template`
 - `npm run evidence:template:p0`

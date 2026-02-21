@@ -18,7 +18,17 @@ const DEFAULT_FILTERED_TOPIC_DOMINANCE_THRESHOLD = 0.6;
 const DEFAULT_TOPIC_STATUS_FLIP_ALERT_THRESHOLD = 1;
 const DEFAULT_TOPIC_CHURN_ALERT_THRESHOLD = 3;
 const DEFAULT_TOPIC_CHURN_LOOKBACK = 6;
+const DEFAULT_TOPIC_CHURN_ADJUSTED_ALERT_THRESHOLD = 4;
 const HISTORY_MAX_ENTRIES = 30;
+
+const TOPIC_CRITICALITY_WEIGHTS = {
+  thrombolysis: 1.5,
+  ich: 1.5,
+  evt: 1.3,
+  'sah-cvt': 1.2,
+  'secondary-prevention': 1.0,
+  'special-populations': 1.0
+};
 
 const TOPIC_QUERIES = [
   {
@@ -134,7 +144,9 @@ function parseCliOptions(argv = []) {
   let topicStatusFlipAlertThreshold = DEFAULT_TOPIC_STATUS_FLIP_ALERT_THRESHOLD;
   let topicChurnAlertThreshold = DEFAULT_TOPIC_CHURN_ALERT_THRESHOLD;
   let topicChurnLookback = DEFAULT_TOPIC_CHURN_LOOKBACK;
+  let topicChurnAdjustedAlertThreshold = DEFAULT_TOPIC_CHURN_ADJUSTED_ALERT_THRESHOLD;
   const filteredTopicThresholds = new Map();
+  const topicChurnWeights = new Map();
 
   function parseDominanceThreshold(rawValue) {
     const parsed = Number.parseFloat(rawValue);
@@ -163,6 +175,23 @@ function parseCliOptions(argv = []) {
     const raw = String(rawValue || '').trim();
     if (!raw) return;
     raw.split(',').forEach((item) => parseTopicThresholdToken(item));
+  }
+
+  function parseTopicWeightToken(token) {
+    const raw = String(token || '').trim();
+    if (!raw) return;
+    const eq = raw.indexOf('=');
+    if (eq <= 0) return;
+    const topicKey = normalizeTopicKey(raw.slice(0, eq));
+    const weight = Number.parseFloat(raw.slice(eq + 1));
+    if (!topicKey || Number.isNaN(weight) || weight <= 0) return;
+    topicChurnWeights.set(topicKey, weight);
+  }
+
+  function parseTopicWeightList(rawValue) {
+    const raw = String(rawValue || '').trim();
+    if (!raw) return;
+    raw.split(',').forEach((item) => parseTopicWeightToken(item));
   }
 
   for (let i = 0; i < argv.length; i += 1) {
@@ -233,6 +262,26 @@ function parseCliOptions(argv = []) {
     if (arg.startsWith('--topic-churn-lookback=')) {
       const value = Number.parseInt(arg.split('=')[1], 10);
       if (!Number.isNaN(value) && value >= 2) topicChurnLookback = value;
+      continue;
+    }
+    if (arg === '--topic-churn-adjusted-threshold' && i + 1 < argv.length) {
+      const value = Number.parseFloat(argv[i + 1]);
+      if (!Number.isNaN(value) && value >= 0) topicChurnAdjustedAlertThreshold = value;
+      i += 1;
+      continue;
+    }
+    if (arg.startsWith('--topic-churn-adjusted-threshold=')) {
+      const value = Number.parseFloat(arg.split('=')[1]);
+      if (!Number.isNaN(value) && value >= 0) topicChurnAdjustedAlertThreshold = value;
+      continue;
+    }
+    if (arg === '--topic-churn-weight' && i + 1 < argv.length) {
+      parseTopicWeightList(argv[i + 1]);
+      i += 1;
+      continue;
+    }
+    if (arg.startsWith('--topic-churn-weight=')) {
+      parseTopicWeightList(arg.split('=')[1]);
     }
   }
 
@@ -243,7 +292,9 @@ function parseCliOptions(argv = []) {
     filteredTopicThresholds,
     topicStatusFlipAlertThreshold,
     topicChurnAlertThreshold,
-    topicChurnLookback
+    topicChurnLookback,
+    topicChurnAdjustedAlertThreshold,
+    topicChurnWeights
   };
 }
 
@@ -802,9 +853,18 @@ async function main() {
         lines.push('');
       }
       lines.push(`### Topic Weighted Churn Score (Last ${churnWindow.length} Runs)`);
-      lines.push('| Topic | Status sequence | Flips | Oscillations | Weighted score | Alert |');
-      lines.push('|---|---|---|---|---|---|');
+      lines.push('| Topic | Status sequence | Flips | Oscillations | Weighted score | Criticality weight | Adjusted score | Alert |');
+      lines.push('|---|---|---|---|---|---|---|---|');
       const churnAlertThreshold = Math.max(0, options.topicChurnAlertThreshold ?? DEFAULT_TOPIC_CHURN_ALERT_THRESHOLD);
+      const churnAdjustedAlertThreshold = Math.max(0, options.topicChurnAdjustedAlertThreshold ?? DEFAULT_TOPIC_CHURN_ADJUSTED_ALERT_THRESHOLD);
+      const churnWeightOverrides = options.topicChurnWeights || new Map();
+      const resolveChurnWeight = (topicLabel) => {
+        const normalizedLabel = normalizeTopicKey(topicLabel);
+        const topicId = topicIdByLabel.get(normalizedLabel);
+        if (topicId && churnWeightOverrides.has(topicId)) return churnWeightOverrides.get(topicId);
+        if (churnWeightOverrides.has(normalizedLabel)) return churnWeightOverrides.get(normalizedLabel);
+        return TOPIC_CRITICALITY_WEIGHTS[topicId] || 1;
+      };
       let churnAlertCount = 0;
       for (const row of topicRows) {
         const statusSeries = churnWindow.map((entry) => {
@@ -812,16 +872,21 @@ async function main() {
           return topicEntry?.status || 'n/a';
         });
         const churn = computeTopicChurn(statusSeries);
-        const isAlert = churn.weightedScore >= churnAlertThreshold;
+        const criticalityWeight = resolveChurnWeight(row.topic);
+        const adjustedScore = Number((churn.weightedScore * criticalityWeight).toFixed(2));
+        const isAlert = churn.weightedScore >= churnAlertThreshold || adjustedScore >= churnAdjustedAlertThreshold;
         if (isAlert) churnAlertCount += 1;
         lines.push(
-          `| ${escapePipes(row.topic)} | ${escapePipes(churn.sequence)} | ${churn.flips} | ${churn.oscillations} | ${churn.weightedScore} | ${isAlert ? 'ALERT' : 'OK'} |`
+          `| ${escapePipes(row.topic)} | ${escapePipes(churn.sequence)} | ${churn.flips} | ${churn.oscillations} | ${churn.weightedScore} | ${criticalityWeight.toFixed(2)} | ${adjustedScore.toFixed(2)} | ${isAlert ? 'ALERT' : 'OK'} |`
         );
       }
       lines.push('');
       lines.push(
-        `- ${churnAlertCount > 0 ? 'ALERT' : 'No weighted churn alerts'}: ${churnAlertCount} topic(s) at or above weighted-churn threshold ${churnAlertThreshold}.`
+        `- ${churnAlertCount > 0 ? 'ALERT' : 'No weighted churn alerts'}: ${churnAlertCount} topic(s) at or above base threshold ${churnAlertThreshold} or adjusted threshold ${churnAdjustedAlertThreshold}.`
       );
+      if (churnWeightOverrides.size > 0) {
+        lines.push(`- Custom topic-churn weights active for ${churnWeightOverrides.size} topic key(s).`);
+      }
       lines.push('');
       lines.push('### Topic Status Flip Alert');
       if (statusFlips.length === 0) {

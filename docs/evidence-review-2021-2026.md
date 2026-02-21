@@ -426,3 +426,9 @@
 - Added weighted churn scoring to watchlist governance output (adjacent status flips + oscillation penalty for repeated ALERT/OK alternation patterns).
 - Added configurable churn monitoring controls (`--topic-churn-alert-threshold`, `--topic-churn-lookback`) and helper command coverage.
 - Inference disclosure: weighted churn metrics are operational governance indicators only and do not alter recommendation class, evidence priority, or clinical guidance.
+
+### Operational update (2026-02-21, iter-114)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added criticality-aware churn weighting to governance output so domains can carry differentiated churn sensitivity.
+- Added configurable adjusted-threshold and topic-weight overrides for churn alerting (`--topic-churn-adjusted-threshold`, `--topic-churn-weight`).
+- Inference disclosure: criticality-adjusted churn scoring is an operational governance signal only and does not modify recommendation strength or evidence ranking logic.

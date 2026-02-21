@@ -69,6 +69,8 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Watchlist filtered appendix includes `Topic Status History (Last 3 Runs)` table.
 - [ ] Watchlist filtered appendix includes weighted churn table with flips/oscillation penalties.
 - [ ] `npm run evidence:watch:churn` executes successfully.
+- [ ] Watchlist weighted churn output includes criticality-weight and adjusted-score columns.
+- [ ] `npm run evidence:watch:churn-critical` executes successfully.
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] QA smoke report includes local/live app-version parity metadata (`localAppVersion`, `liveAppVersion`, `liveParityChecksEnabled`).
 - [ ] Service worker cache version updated when asset behavior changes.
@@ -409,6 +411,14 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 ## Last completed run (2026-02-21, iter-113)
 - [x] Watchlist includes `Topic Weighted Churn Score` table
 - [x] `npm run evidence:watch:churn` pass
+- [x] `npm run evidence:refresh` pass
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-114)
+- [x] Weighted churn table now includes criticality-adjusted scoring columns
+- [x] `npm run evidence:watch:churn-critical` pass
 - [x] `npm run evidence:refresh` pass
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)

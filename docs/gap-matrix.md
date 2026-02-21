@@ -386,6 +386,14 @@
 - Remaining workflow gap:
   - Optional risk-stratified weighting by topic criticality (for example higher weight for thrombolysis/ICH domains).
 
+## Iteration 114 Update (2026-02-21)
+- Risk-stratified churn weighting gap reduced:
+  - Added criticality-aware churn scoring with configurable topic weight overrides.
+  - Added adjusted-threshold alerting path (`--topic-churn-adjusted-threshold`) alongside base churn threshold.
+  - Added helper command `evidence:watch:churn-critical` for high-criticality surveillance mode.
+- Remaining workflow gap:
+  - Optional institution-specific policy profiles (for example ICU-heavy vs telestroke-heavy weighting presets).
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

@@ -1,5 +1,32 @@
 # Iteration Log
 
+## Iteration 114 (2026-02-21)
+
+### What was changed
+- Added risk-stratified churn weighting by clinical-domain criticality in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+  - new CLI options:
+    - `--topic-churn-adjusted-threshold`
+    - `--topic-churn-weight topic=value`
+  - churn alerting now evaluates both base weighted score and criticality-adjusted score.
+  - new weighted churn table columns: `Criticality weight` and `Adjusted score`.
+- Added npm helper command:
+  - `npm run evidence:watch:churn-critical`.
+- Updated evidence-ops maintenance command index to include the churn-critical helper.
+- Regenerated evidence-ops artifacts:
+  - `docs/evidence-watchlist.md`,
+  - `docs/evidence-watch-history.json`,
+  - `docs/evidence-promotion-checklist.md`,
+  - `docs/evidence-promotion-template.md`,
+  - `docs/evidence-promotion-template-p0.md`,
+  - `docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run evidence:watch:churn-critical` passed.
+- `npm run evidence:refresh` passed.
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 113 (2026-02-21)
 
 ### What was changed

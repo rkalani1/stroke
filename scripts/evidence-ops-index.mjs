@@ -99,6 +99,7 @@ async function main() {
   out.push('- `npm run evidence:watch:dominance`');
   out.push('- `npm run evidence:watch:topic-thresholds`');
   out.push('- `npm run evidence:watch:churn`');
+  out.push('- `npm run evidence:watch:churn-critical`');
   out.push('- `npm run evidence:promote`');
   out.push('- `npm run evidence:template`');
   out.push('- `npm run evidence:template:p0`');
