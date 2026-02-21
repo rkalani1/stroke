@@ -21,6 +21,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] TNK-first decision card visible for ischemic diagnosis before TNK/EVT checkboxes.
 - [ ] Wake-up imaging hard-stop alert visible when lkwUnknown is true (wake-up panel open).
 - [ ] Pregnancy rapid actions panel displays when pregnancyStroke checkbox is checked.
+- [ ] Pediatric stroke rapid-pathway panel displays and persists checklist fields when age <18 or pediatric pathway is enabled.
 - [ ] Maternal postpartum severe-HTN escalation panel fields (postpartum day, OB consult, magnesium decision, delivery coordination) persist and render when pregnancyStroke is selected.
 - [ ] Renal-safety alert appears in contrast section when Cr >3 or CrCl <30.
 - [ ] PFO closure eligibility card visible in secondary prevention dashboard.
@@ -51,6 +52,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] `npm run build` passes.
 - [ ] `npm run validate:citations` passes.
 - [ ] `npm run evidence:watch` regenerates watchlist with `Priority / Score / Rationale` columns.
+- [ ] `npm run evidence:index` regenerates `docs/evidence-ops-index.md` with current artifact counts/stamps.
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] Service worker cache version updated when asset behavior changes.
 - [ ] `index.html` app version updated for storage/cache compatibility when needed.
@@ -294,6 +296,14 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `evidence-promotion-template.mjs` now supports `--priority`, `--pmid`, `--limit`, and `--output`
 - [x] `npm run evidence:template:p0` and `npm run evidence:template:top5` added
 - [x] `docs/evidence-promotion-template-p0.md` generated for urgent-review subset
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-099)
+- [x] Pediatric rapid-pathway checklist added with warning safeguards and note-trace propagation
+- [x] `scripts/evidence-ops-index.mjs` + `npm run evidence:index` added and wired into `evidence:refresh` and scheduled live-smoke
+- [x] `npm run evidence:refresh` pass (`15` queued high-priority PMIDs; `3` P0 template candidates)
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

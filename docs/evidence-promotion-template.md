@@ -1,9 +1,9 @@
 # Evidence Promotion Draft Template (Auto-generated)
 
-Generated: 2026-02-21T14:44:56.237Z
+Generated: 2026-02-21T15:02:49.240Z
 Source checklist: docs/evidence-promotion-checklist.md
 Filter: priority=all
-Pending candidates: 13
+Pending candidates: 15
 
 ## How to use
 - Copy one candidate block into a PR description or issue.
@@ -339,6 +339,58 @@ Pending candidates: 13
 | Journal/Source | JAMA Neurol |
 | URL | https://pubmed.ncbi.nlm.nih.gov/41490362/ |
 | PMID / DOI / NCT | PMID: 41490362; DOI: 10.1001/jamaneurol.2025.5145 |
+
+### Workflow impact checklist
+- [ ] Add/update row in `docs/evidence-review-2021-2026.md`
+- [ ] Update relevant pathway text/logic in `src/app.jsx` if practice-changing
+- [ ] Update generated-note trace output where applicable
+- [ ] Re-run `npm run validate:citations`
+- [ ] Re-run `npm test` and `npm run qa`
+
+## Candidate 14: PMID 41581534 (P1 high review)
+
+- Topic: Thrombolysis and Extended-Window Reperfusion
+- Title: Fibrinogen replacement to prevent intracranial hemorrhage in ischemic stroke patients after thrombolysis - a prospective randomized open blinded endpoint trial (FibER): rationale and methods.
+- Source: J Stroke Cerebrovasc Dis (2026)
+- DOI: 10.1016/j.jstrokecerebrovasdis.2026.108572
+- URL: https://pubmed.ncbi.nlm.nih.gov/41581534/
+- Promotion focus: Assess methodological quality and workflow relevance; promote only if directly practice-changing.
+
+### Metadata patch block
+| Field | Value |
+|---|---|
+| Domain | Thrombolysis and Extended-Window Reperfusion |
+| Title | Fibrinogen replacement to prevent intracranial hemorrhage in ischemic stroke patients after thrombolysis - a prospective randomized open blinded endpoint trial (FibER): rationale and methods. |
+| Year | 2026 |
+| Journal/Source | J Stroke Cerebrovasc Dis |
+| URL | https://pubmed.ncbi.nlm.nih.gov/41581534/ |
+| PMID / DOI / NCT | PMID: 41581534; DOI: 10.1016/j.jstrokecerebrovasdis.2026.108572 |
+
+### Workflow impact checklist
+- [ ] Add/update row in `docs/evidence-review-2021-2026.md`
+- [ ] Update relevant pathway text/logic in `src/app.jsx` if practice-changing
+- [ ] Update generated-note trace output where applicable
+- [ ] Re-run `npm run validate:citations`
+- [ ] Re-run `npm test` and `npm run qa`
+
+## Candidate 15: PMID 41717940 (P1 high review)
+
+- Topic: Thrombolysis and Extended-Window Reperfusion
+- Title: Safety and Efficacy of Early Aspirin Administration After Intravenous Thrombolysis for Acute Ischemic Stroke (TREND-IVT): Rationale and Design of a Multicenter, Randomized, Placebo-Controlled Clinical Trial.
+- Source: J Am Heart Assoc (2026)
+- DOI: 10.1161/JAHA.125.045180
+- URL: https://pubmed.ncbi.nlm.nih.gov/41717940/
+- Promotion focus: Assess methodological quality and workflow relevance; promote only if directly practice-changing.
+
+### Metadata patch block
+| Field | Value |
+|---|---|
+| Domain | Thrombolysis and Extended-Window Reperfusion |
+| Title | Safety and Efficacy of Early Aspirin Administration After Intravenous Thrombolysis for Acute Ischemic Stroke (TREND-IVT): Rationale and Design of a Multicenter, Randomized, Placebo-Controlled Clinical Trial. |
+| Year | 2026 |
+| Journal/Source | J Am Heart Assoc |
+| URL | https://pubmed.ncbi.nlm.nih.gov/41717940/ |
+| PMID / DOI / NCT | PMID: 41717940; DOI: 10.1161/JAHA.125.045180 |
 
 ### Workflow impact checklist
 - [ ] Add/update row in `docs/evidence-review-2021-2026.md`

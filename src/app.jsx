@@ -1509,6 +1509,17 @@ Clinician Name`;
             },
             // Phase 5: Special Populations
             pregnancyStroke: false,
+            pediatricStrokePathway: {
+              activated: false,
+              pediatricNeurologyConsulted: false,
+              pediatricCenterContacted: false,
+              pediatricNihssDocumented: false,
+              vesselImagingCompleted: false,
+              firstSeizureAtOnset: false,
+              arteriopathyConcern: false,
+              cardioembolicConcern: false,
+              sickleExchangeActivated: false
+            },
             maternalStrokePathway: {
               postpartumDays: '',
               severeHypertension: false,
@@ -8454,6 +8465,24 @@ Clinician Name`;
             return parts.join('; ');
           };
 
+          const getPediatricStrokeSummary = (data) => {
+            const age = parseFloat(data?.age);
+            const ped = data?.pediatricStrokePathway || {};
+            const isPediatric = !isNaN(age) && age < 18;
+            if (!isPediatric && !ped.activated) return '';
+            const parts = [];
+            if (isPediatric) parts.push(`age ${age}`);
+            if (ped.pediatricNeurologyConsulted) parts.push('pediatric neurology consulted');
+            if (ped.pediatricCenterContacted) parts.push('pediatric transfer center contacted');
+            if (ped.pediatricNihssDocumented) parts.push('pediatric-focused NIHSS documented');
+            if (ped.vesselImagingCompleted) parts.push('arterial + venous imaging completed');
+            if (ped.firstSeizureAtOnset) parts.push('first-time seizure at onset');
+            if (ped.arteriopathyConcern) parts.push('arteriopathy concern');
+            if (ped.cardioembolicConcern) parts.push('cardioembolic concern');
+            if (ped.sickleExchangeActivated) parts.push('exchange transfusion pathway activated');
+            return parts.join('; ');
+          };
+
           const getSahOutcomeSummary = (data) => {
             const so = data?.sahOutcomeSet || {};
             const parts = [];
@@ -8585,7 +8614,7 @@ Clinician Name`;
               'youngAdultWorkup', 'drivingRestrictions', 'returnToWork',
               'sexualHealthCounseling', 'airTravelRestrictions',
               'spasticity', 'centralPain', 'fatigue', 'substanceScreening', 'hormonalRisk',
-              'palliativeCare', 'fallsRisk', 'pregnancyStroke', 'maternalStrokePathway', 'activeCancer', 'cancerStrokePathway', 'sickleCellDisease', 'infectiveEndocarditis', 'decompressiveCraniectomy', 'rehabReferral',
+              'palliativeCare', 'fallsRisk', 'pregnancyStroke', 'pediatricStrokePathway', 'maternalStrokePathway', 'activeCancer', 'cancerStrokePathway', 'sickleCellDisease', 'infectiveEndocarditis', 'decompressiveCraniectomy', 'rehabReferral',
               // Discharge
               'dischargeChecklist', 'dischargeChecklistReviewed', 'dischargeNIHSS', 'mrsAssessment',
               // Imaging and exam results
@@ -9784,6 +9813,8 @@ Clinician Name`;
                 const cancerSummary = getCancerStrokeSummary(telestrokeNote);
                 transferAlerts.push(`ACTIVE CANCER — consider D-dimer/NBTE eval${cancerSummary ? `; ${cancerSummary}` : '; oncology consult'}`);
               }
+              const pediatricSummary = getPediatricStrokeSummary(telestrokeNote);
+              if (pediatricSummary) transferAlerts.push(`PEDIATRIC STROKE PATHWAY — ${pediatricSummary}`);
               if (telestrokeNote.sickleCellDisease) transferAlerts.push('SICKLE CELL DISEASE — urgent exchange transfusion, hematology consult');
               if (telestrokeNote.infectiveEndocarditis) transferAlerts.push('INFECTIVE ENDOCARDITIS — avoid anticoagulation, ID consult, blood cultures, TEE');
               const transferMeds = (telestrokeNote.medications || '').toLowerCase();
@@ -10200,6 +10231,8 @@ Clinician Name`;
                 const cancerSummary = getCancerStrokeSummary(telestrokeNote);
                 note += `- ACTIVE CANCER: oncology co-management recommended${cancerSummary ? ` (${cancerSummary})` : ''}\n`;
               }
+              const snPediatricSummary = getPediatricStrokeSummary(telestrokeNote);
+              if (snPediatricSummary) note += `- PEDIATRIC STROKE: pediatric protocol escalation${snPediatricSummary ? ` (${snPediatricSummary})` : ''}\n`;
               if (telestrokeNote.sickleCellDisease) note += `- SICKLE CELL DISEASE: hematology co-management, exchange transfusion status\n`;
               if (telestrokeNote.infectiveEndocarditis) note += `- INFECTIVE ENDOCARDITIS: TNK contraindicated, infectious disease/cardiology co-management\n`;
               // Osmotic therapy (ICH/SAH)
@@ -10529,6 +10562,8 @@ Clinician Name`;
                 const cancerSummary = getCancerStrokeSummary(telestrokeNote);
                 note += `   - ACTIVE CANCER${cancerSummary ? ` (${cancerSummary})` : ''}\n`;
               }
+              const prPediatricSummary = getPediatricStrokeSummary(telestrokeNote);
+              if (prPediatricSummary) note += `   - PEDIATRIC STROKE${prPediatricSummary ? ` (${prPediatricSummary})` : ''}\n`;
               if (telestrokeNote.sickleCellDisease) note += `   - SICKLE CELL DISEASE\n`;
               if (telestrokeNote.infectiveEndocarditis) note += `   - INFECTIVE ENDOCARDITIS\n`;
               const progBp = bpPhaseTargets[telestrokeNote.bpPhase];
@@ -11034,6 +11069,8 @@ Clinician Name`;
                 const cancerSummary = getCancerStrokeSummary(telestrokeNote);
                 note += `- Active cancer: oncology co-management${cancerSummary ? ` (${cancerSummary})` : ''}\n`;
               }
+              const dcPediatricSummary = getPediatricStrokeSummary(telestrokeNote);
+              if (dcPediatricSummary) note += `- Pediatric stroke: pediatric protocol escalation${dcPediatricSummary ? ` (${dcPediatricSummary})` : ''}\n`;
               if (telestrokeNote.sickleCellDisease) note += `- Sickle cell disease: hematology co-management\n`;
               if (telestrokeNote.infectiveEndocarditis) note += `- Infective endocarditis: ID/cardiology co-management\n`;
               // Decompressive craniectomy
@@ -12085,6 +12122,8 @@ Clinician Name`;
               const cancerSummary = getCancerStrokeSummary(telestrokeNote);
               consultSpecialPops.push(`ACTIVE CANCER — oncology co-management${cancerSummary ? ` (${cancerSummary})` : ''}`);
             }
+            const consultPediatricSummary = getPediatricStrokeSummary(telestrokeNote);
+            if (consultPediatricSummary) consultSpecialPops.push(`PEDIATRIC STROKE — pediatric pathway escalation${consultPediatricSummary ? ` (${consultPediatricSummary})` : ''}`);
             if (telestrokeNote.sickleCellDisease) consultSpecialPops.push('SICKLE CELL DISEASE — hematology co-management');
             if (telestrokeNote.infectiveEndocarditis) consultSpecialPops.push('INFECTIVE ENDOCARDITIS — TNK contraindicated, ID/cardiology co-management');
             if (consultSpecialPops.length > 0) {
@@ -12992,9 +13031,26 @@ Clinician Name`;
 
             // (duplicate tnk-nihss-zero removed — already checked above at line 10816)
 
-            // Pediatric patient warning (age <18)
-            if (!isNaN(age) && age < 18) {
-              warnings.push({ id: 'pediatric-age', severity: 'critical', msg: `Age ${age} — PEDIATRIC patient. Standard adult stroke protocols may not apply. Consult pediatric neurology. TNK dosing, BP targets, and EVT criteria differ in children. Consider: moyamoya, sickle cell, cardiac, and metabolic etiologies.` });
+            // Pediatric patient warning and pathway completeness checks (age <18)
+            const pediatricAge = parseFloat(n.age);
+            const isPediatric = !isNaN(pediatricAge) && pediatricAge < 18;
+            const pedPath = n.pediatricStrokePathway || {};
+            if (isPediatric) {
+              warnings.push({ id: 'pediatric-age', severity: 'critical', msg: `Age ${pediatricAge} — PEDIATRIC patient. Standard adult stroke protocols may not apply. Consult pediatric neurology. TNK dosing, BP targets, and EVT criteria differ in children. Consider: arteriopathy/moyamoya, sickle cell disease, congenital/acquired cardiac sources, and metabolic causes.` });
+            }
+            if (isPediatric || pedPath.activated) {
+              if (!pedPath.pediatricNeurologyConsulted) {
+                warnings.push({ id: 'pediatric-neuro-missing', severity: 'error', msg: 'Pediatric stroke pathway active (or age <18) without documented pediatric neurology consultation. Activate pediatric stroke expertise immediately.' });
+              }
+              if (!pedPath.pediatricCenterContacted) {
+                warnings.push({ id: 'pediatric-transfer-missing', severity: 'warn', msg: 'Pediatric stroke pathway active (or age <18) without documented pediatric-capable center contact/transfer plan. Confirm destination and escalation pathway early.' });
+              }
+              if (!pedPath.vesselImagingCompleted) {
+                warnings.push({ id: 'pediatric-imaging-missing', severity: 'warn', msg: 'Pediatric pathway active without documented arterial/venous imaging completion. Ensure urgent vascular imaging to define stroke mechanism.' });
+              }
+              if (n.sickleCellDisease && !pedPath.sickleExchangeActivated) {
+                warnings.push({ id: 'pediatric-scd-exchange-missing', severity: 'error', msg: 'Pediatric sickle-cell stroke pathway active but exchange transfusion status is not documented. Capture exchange activation/bridge plan immediately.' });
+              }
             }
 
             // NIHSS ≥25 with late-window EVT consideration
@@ -14692,6 +14748,7 @@ Clinician Name`;
               { name: 'PCC Dose Calculator', keywords: ['pcc', 'kcentra', '4f-pcc', 'prothrombin complex', 'warfarin reversal'], tab: 'management', subTab: 'calculators' },
               { name: 'Post-EVT Groin Care', keywords: ['groin', 'access site', 'post thrombectomy groin', 'hematoma', 'pulse check'], tab: 'management', subTab: 'ischemic' },
               { name: 'Pregnancy + EVT', keywords: ['pregnancy evt', 'pregnant thrombectomy', 'obstetric stroke'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Pediatric Stroke Pathway', keywords: ['pediatric stroke', 'child stroke', 'adolescent stroke', 'pediatric nihss', 'moyamoya'], tab: 'management', subTab: 'ischemic' },
               { name: 'Stroke Chameleons', keywords: ['chameleon', 'missed stroke', 'vertigo stroke', 'confusional state', 'psychiatric stroke'], tab: 'management', subTab: 'references' },
               { name: 'Spinal Cord Stroke', keywords: ['spinal cord', 'anterior spinal artery', 'myelopathy', 'aortic dissection', 'paraplegia'], tab: 'management', subTab: 'references' },
               { name: 'CTP Interpretation Guide', keywords: ['ctp', 'perfusion', 'tmax', 'cbv', 'cbf', 'rapid', 'penumbra', 'core'], tab: 'management', subTab: 'references' },
@@ -26010,6 +26067,79 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <span className="text-xs text-amber-500 font-normal">Pregnancy, Craniectomy, Rehab Referral</span>
                             </summary>
                             <div className="p-4 pt-0 space-y-4">
+                              {/* Pediatric Stroke Pathway */}
+                              {(() => {
+                                const pedAge = parseFloat(telestrokeNote.age);
+                                const pedAuto = !isNaN(pedAge) && pedAge < 18;
+                                const ped = telestrokeNote.pediatricStrokePathway || {};
+                                const pedEnabled = pedAuto || ped.activated;
+                                const pedSummary = getPediatricStrokeSummary(telestrokeNote);
+                                return (
+                                  <div className="bg-sky-50 border border-sky-200 rounded-lg p-3">
+                                    <h4 className="font-semibold text-sky-900 mb-2">Pediatric Stroke Rapid Pathway (AIS 2026)</h4>
+                                    <label className="flex items-center gap-2 mb-1">
+                                      <input
+                                        type="checkbox"
+                                        checked={!!ped.activated}
+                                        onChange={(e) => {
+                                          const c = e.target.checked;
+                                          setTelestrokeNote(prev => ({
+                                            ...prev,
+                                            pediatricStrokePathway: { ...(prev.pediatricStrokePathway || {}), activated: c }
+                                          }));
+                                        }}
+                                        className="text-sky-600"
+                                      />
+                                      <span className="text-sm font-medium">Enable pediatric stroke checklist</span>
+                                    </label>
+                                    <p className="text-xs text-sky-700 mb-2">
+                                      {pedAuto
+                                        ? `Age ${pedAge}: pediatric safety checks auto-enabled.`
+                                        : 'Use this when pediatric stroke workflow support is needed.'}
+                                    </p>
+                                    {pedEnabled && (
+                                      <div className="space-y-2 ml-1">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
+                                          {[
+                                            ['pediatricNeurologyConsulted', 'Pediatric neurology consulted'],
+                                            ['pediatricCenterContacted', 'Pediatric-capable center contacted'],
+                                            ['pediatricNihssDocumented', 'Pediatric-focused NIHSS documented'],
+                                            ['vesselImagingCompleted', 'Arterial + venous imaging completed'],
+                                            ['firstSeizureAtOnset', 'First-time seizure at onset'],
+                                            ['arteriopathyConcern', 'Arteriopathy / moyamoya concern'],
+                                            ['cardioembolicConcern', 'Cardioembolic source concern'],
+                                            ['sickleExchangeActivated', 'SCD exchange transfusion pathway activated']
+                                          ].map(([key, label]) => (
+                                            <label key={key} className="flex items-center gap-1">
+                                              <input
+                                                type="checkbox"
+                                                checked={!!ped[key]}
+                                                onChange={(e) => {
+                                                  const c = e.target.checked;
+                                                  setTelestrokeNote(prev => ({
+                                                    ...prev,
+                                                    pediatricStrokePathway: { ...(prev.pediatricStrokePathway || {}), [key]: c }
+                                                  }));
+                                                }}
+                                              />
+                                              {label}
+                                            </label>
+                                          ))}
+                                        </div>
+                                        {pedSummary && (
+                                          <div className="p-2 bg-white border border-sky-300 rounded text-xs text-sky-900">
+                                            <strong>Pediatric pathway summary:</strong> {pedSummary}.
+                                          </div>
+                                        )}
+                                        <p className="text-xs text-sky-700 italic">
+                                          Evidence anchor: AHA/ASA AIS 2026 guideline (DOI: 10.1161/STR.0000000000000513) with 2026 pediatric recommendation emphasis (PMID: 41686463).
+                                        </p>
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })()}
+
                               {/* Stroke in Pregnancy */}
                               <div className="bg-pink-50 border border-pink-200 rounded-lg p-3">
                                 <h4 className="font-semibold text-pink-800 mb-2">Stroke in Pregnancy (AHA 2026)</h4>
@@ -27300,6 +27430,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   const cancerSummary = getCancerStrokeSummary(telestrokeNote);
                                   note += `SPECIAL: Active cancer — extended workup ordered and secondary prevention tailored to mechanism${cancerSummary ? ` (${cancerSummary})` : ''}.\n`;
                                 }
+                                const planPediatricSummary = getPediatricStrokeSummary(telestrokeNote);
+                                if (planPediatricSummary) note += `SPECIAL: Pediatric stroke pathway — pediatric protocol escalation active${planPediatricSummary ? ` (${planPediatricSummary})` : ''}.\n`;
                                 if (telestrokeNote.sickleCellDisease) note += `SPECIAL: Sickle cell disease — exchange transfusion initiated (target HbS <30%, Hgb ~10). Hematology consulted.\n`;
                                 if (telestrokeNote.infectiveEndocarditis) note += `SPECIAL: Infective endocarditis — TNK contraindicated, anticoagulation avoided. Blood cultures, TEE, mycotic aneurysm screen ordered. ID consulted.\n`;
                                 if ((telestrokeNote.decompressiveCraniectomy || {}).considered) note += `DECOMPRESSIVE CRANIECTOMY: ${(telestrokeNote.decompressiveCraniectomy || {}).timing || 'being considered'}.\n`;

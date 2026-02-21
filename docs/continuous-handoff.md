@@ -858,3 +858,28 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run evidence:template:p0 && npm run validate:citations && npm test && npm run qa`
+
+## Iteration 099 update (2026-02-21, macOS session)
+- Implemented pediatric pathway operationalization in `src/app.jsx`:
+  - Added `pediatricStrokePathway` structured state and persistence allow-list coverage.
+  - Added new **Pediatric Stroke Rapid Pathway (AIS 2026)** card under Special Populations with checklist controls and live summary.
+  - Added pediatric workflow warning checks (missing pediatric neurology consult, missing pediatric-capable transfer plan, missing vessel-imaging confirmation, missing SCD exchange activation status when relevant).
+  - Added pediatric summary propagation to transfer/signout/progress/discharge/consult/pathway-note outputs.
+  - Added command-palette search alias: `Pediatric Stroke Pathway`.
+- Finalized evidence-ops indexing:
+  - Added `scripts/evidence-ops-index.mjs` and output `docs/evidence-ops-index.md`.
+  - Added npm command `npm run evidence:index`.
+  - Expanded `evidence:refresh` to run watchlist + promotion checklist + templates (all + P0) + index + sync validation.
+  - Updated `.github/workflows/live-smoke.yml` to generate promotion templates and evidence index before QA.
+- Fixed template-output routing regression:
+  - `evidence:template:p0` now writes to `docs/evidence-promotion-template-p0.md` instead of overwriting `docs/evidence-promotion-template.md`.
+- Deployment coherency update:
+  - `APP_VERSION` bumped to `v5.14.77`.
+  - service-worker cache key bumped to `stroke-app-v76`.
+- Validation status:
+  - `npm run evidence:refresh` pass (`15` high-priority PMIDs; `3` P0 templates)
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run validate:citations && npm test && npm run qa`

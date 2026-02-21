@@ -275,6 +275,17 @@
 - Remaining workflow gap:
   - Optional lightweight UI index for navigating generated evidence-promotion draft files.
 
+## Iteration 099 Update (2026-02-21)
+- Special-population pediatric workflow gap reduced:
+  - Added structured pediatric pathway fields and UI checklist (consult, transfer-capable center, imaging confirmation, etiology flags, SCD exchange-pathway capture).
+  - Added warning-level safeguards for pediatric workflow incompleteness under acute conditions.
+  - Added pediatric summary propagation into transfer/signout/progress/discharge/consult/pathway-note outputs.
+- Evidence-ops navigation gap reduced:
+  - Added auto-generated evidence operations index (`docs/evidence-ops-index.md`) and command (`npm run evidence:index`) for faster maintenance visibility.
+  - Integrated index generation and dual template generation (`all` + `p0`) into `evidence:refresh` and scheduled live-smoke workflow.
+- Remaining workflow gap:
+  - Add scenario-level smoke assertions that specifically verify pediatric-pathway warning transitions and note-trace output in age `<18` cases.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

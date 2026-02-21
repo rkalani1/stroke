@@ -1,0 +1,102 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import process from 'node:process';
+
+const DOCS_DIR = path.join(process.cwd(), 'docs');
+const WATCHLIST_PATH = path.join(DOCS_DIR, 'evidence-watchlist.md');
+const CHECKLIST_PATH = path.join(DOCS_DIR, 'evidence-promotion-checklist.md');
+const TEMPLATE_PATH = path.join(DOCS_DIR, 'evidence-promotion-template.md');
+const TEMPLATE_P0_PATH = path.join(DOCS_DIR, 'evidence-promotion-template-p0.md');
+const OUTPUT_PATH = path.join(DOCS_DIR, 'evidence-ops-index.md');
+
+async function readText(file) {
+  try {
+    return await fs.readFile(file, 'utf8');
+  } catch {
+    return '';
+  }
+}
+
+function readGeneratedStamp(markdown) {
+  const m = String(markdown || '').match(/^Generated:\s*(.+)$/m);
+  return m ? m[1].trim() : 'unknown';
+}
+
+function countLinesMatching(markdown, regex) {
+  return String(markdown || '')
+    .split('\n')
+    .filter((line) => regex.test(line)).length;
+}
+
+function extractPendingCandidates(markdown) {
+  const m = String(markdown || '').match(/Pending candidates:\s*(\d+)/i);
+  return m ? Number.parseInt(m[1], 10) : null;
+}
+
+function extractTotalChecklist(markdown) {
+  const m = String(markdown || '').match(/Total candidates:\s*(\d+)/i);
+  return m ? Number.parseInt(m[1], 10) : null;
+}
+
+function extractWatchlistP0P1(markdown) {
+  const lines = String(markdown || '').split('\n');
+  let count = 0;
+  for (const line of lines) {
+    if (!line.trim().startsWith('|')) continue;
+    if (/^\|\s*P[01]\b/i.test(line.trim())) count += 1;
+  }
+  return count;
+}
+
+async function main() {
+  const [watchlistMd, checklistMd, templateMd, templateP0Md] = await Promise.all([
+    readText(WATCHLIST_PATH),
+    readText(CHECKLIST_PATH),
+    readText(TEMPLATE_PATH),
+    readText(TEMPLATE_P0_PATH)
+  ]);
+
+  const now = new Date().toISOString();
+  const watchlistGenerated = readGeneratedStamp(watchlistMd);
+  const checklistGenerated = readGeneratedStamp(checklistMd);
+  const templateGenerated = readGeneratedStamp(templateMd);
+  const templateP0Generated = readGeneratedStamp(templateP0Md);
+
+  const watchlistP0P1 = extractWatchlistP0P1(watchlistMd);
+  const checklistTotal = extractTotalChecklist(checklistMd);
+  const templatePending = extractPendingCandidates(templateMd);
+  const templateP0Pending = extractPendingCandidates(templateP0Md);
+
+  const out = [];
+  out.push('# Evidence Ops Index (Auto-generated)');
+  out.push('');
+  out.push(`Generated: ${now}`);
+  out.push('');
+  out.push('## Current Artifacts');
+  out.push('| Artifact | Path | Generated | Key count |');
+  out.push('|---|---|---|---|');
+  out.push(`| Watchlist | docs/evidence-watchlist.md | ${watchlistGenerated} | P0/P1 rows: ${watchlistP0P1} |`);
+  out.push(`| Promotion checklist | docs/evidence-promotion-checklist.md | ${checklistGenerated} | Total queued: ${checklistTotal ?? 'unknown'} |`);
+  out.push(`| Promotion template (all) | docs/evidence-promotion-template.md | ${templateGenerated} | Pending templates: ${templatePending ?? 'unknown'} |`);
+  out.push(`| Promotion template (P0) | docs/evidence-promotion-template-p0.md | ${templateP0Generated} | Pending templates: ${templateP0Pending ?? 'unknown'} |`);
+  out.push('');
+  out.push('## Maintenance Commands');
+  out.push('- `npm run evidence:watch`');
+  out.push('- `npm run evidence:promote`');
+  out.push('- `npm run evidence:template`');
+  out.push('- `npm run evidence:template:p0`');
+  out.push('- `npm run validate:evidence-promotion`');
+  out.push('- `npm run evidence:refresh`');
+  out.push('');
+  out.push('## Validation Notes');
+  out.push('- Promotion checklist must stay in sync with watchlist high-priority entries (P0/P1).');
+  out.push('- `npm test` and `npm run qa` include sync validation and will fail on drift.');
+
+  await fs.writeFile(OUTPUT_PATH, `${out.join('\n')}\n`, 'utf8');
+  console.log(`Generated ${path.relative(process.cwd(), OUTPUT_PATH)}.`);
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

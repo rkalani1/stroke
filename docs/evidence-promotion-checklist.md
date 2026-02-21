@@ -1,15 +1,16 @@
 # Evidence Promotion Checklist (Auto-generated)
 
-Generated: 2026-02-21T14:44:56.094Z
+Generated: 2026-02-21T15:02:49.100Z
 Source watchlist: docs/evidence-watchlist.md
 Inclusion: P0 urgent review + P1 high review
 
 ## Queue Summary
-- Total candidates: 13
+- Total candidates: 15
 - SAH and CVT: 1
 - Special Populations (Pregnancy / Cancer / Pediatric): 3
 - EVT Eligibility (Large Core / Distal Occlusion): 4
 - Intracerebral Hemorrhage (BP, Reversal, Escalation): 5
+- Thrombolysis and Extended-Window Reperfusion: 2
 
 ## Promotion Queue
 | Done | Topic | Priority | PMID | Year | Title | Source | DOI | URL | Promotion Action |
@@ -27,6 +28,8 @@ Inclusion: P0 urgent review + P1 high review
 | [ ] | Intracerebral Hemorrhage (BP, Reversal, Escalation) | P1 high review | 41703701 | 2026 | Timeliness of Care for Transferred and Directly Admitted Patients With Anticoagulation-Associated Intracerebral Hemorrhage. | J Am Heart Assoc | 10.1161/JAHA.125.043223 | https://pubmed.ncbi.nlm.nih.gov/41703701/ | Assess impact on BP/reversal/escalation timing pathways and update KPI logic if warranted. |
 | [ ] | Intracerebral Hemorrhage (BP, Reversal, Escalation) | P1 high review | 40762287 | 2026 | Decompressive craniectomy versus best medical treatment alone for spontaneous intracerebral hemorrhage: A systematic review and meta-analysis. | Int J Stroke | 10.1177/17474930251367367 | https://pubmed.ncbi.nlm.nih.gov/40762287/ | Assess impact on BP/reversal/escalation timing pathways and update KPI logic if warranted. |
 | [ ] | Special Populations (Pregnancy / Cancer / Pediatric) | P1 high review | 41490362 | 2026 | Brain Volumes After Hypertensive Pregnancy and Postpartum Blood Pressure Management: A POP-HT Randomized Clinical Trial Imaging Substudy. | JAMA Neurol | 10.1001/jamaneurol.2025.5145 | https://pubmed.ncbi.nlm.nih.gov/41490362/ | Assess pregnancy/cancer/pediatric pathway impact and update dedicated modules. |
+| [ ] | Thrombolysis and Extended-Window Reperfusion | P1 high review | 41581534 | 2026 | Fibrinogen replacement to prevent intracranial hemorrhage in ischemic stroke patients after thrombolysis - a prospective randomized open blinded endpoint trial (FibER): rationale and methods. | J Stroke Cerebrovasc Dis | 10.1016/j.jstrokecerebrovasdis.2026.108572 | https://pubmed.ncbi.nlm.nih.gov/41581534/ | Assess methodological quality and workflow relevance; promote only if directly practice-changing. |
+| [ ] | Thrombolysis and Extended-Window Reperfusion | P1 high review | 41717940 | 2026 | Safety and Efficacy of Early Aspirin Administration After Intravenous Thrombolysis for Acute Ischemic Stroke (TREND-IVT): Rationale and Design of a Multicenter, Randomized, Placebo-Controlled Clinical Trial. | J Am Heart Assoc | 10.1161/JAHA.125.045180 | https://pubmed.ncbi.nlm.nih.gov/41717940/ | Assess methodological quality and workflow relevance; promote only if directly practice-changing. |
 
 ## Review Notes
 - Promotion requires methodological quality check before updating recommendation logic.

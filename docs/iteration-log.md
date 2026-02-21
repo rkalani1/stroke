@@ -1,5 +1,34 @@
 # Iteration Log
 
+## Iteration 099 (2026-02-21)
+
+### What was changed
+- Added structured pediatric acute-stroke operationalization in `/Users/rizwankalani/stroke/src/app.jsx`:
+  - New `pediatricStrokePathway` state block with explicit checklist fields (pediatric neurology consult, pediatric-capable center contact, pediatric-focused NIHSS, vessel imaging completion, seizure-at-onset flag, arteriopathy/cardioembolic concern, SCD exchange-pathway activation).
+  - New Special Populations UI card: **Pediatric Stroke Rapid Pathway (AIS 2026)** with live summary output.
+  - Added pediatric pathway search alias in command palette (`Pediatric Stroke Pathway`) for faster keyboard navigation.
+- Added pediatric safety warnings:
+  - age-triggered critical pediatric warning remains active,
+  - new warning checks for missing pediatric neurology consult, missing pediatric transfer plan, missing vessel-imaging confirmation, and missing exchange-transfusion status when pediatric SCD pathway is active.
+- Propagated pediatric pathway summary into generated outputs:
+  - transfer alerts, signout, progress, discharge, consult, and pathway-plan notes.
+- Finalized evidence-ops index automation:
+  - added `scripts/evidence-ops-index.mjs`,
+  - added npm command `npm run evidence:index`,
+  - expanded `evidence:refresh` to regenerate watchlist/checklist/templates (`all` + `p0`) + index + sync validation,
+  - added `docs/evidence-ops-index.md` generation and wired index/template generation into scheduled `live-smoke.yml`.
+- Fixed evidence-template routing regression:
+  - `evidence:template:p0` now writes to `docs/evidence-promotion-template-p0.md` (no longer overwrites `docs/evidence-promotion-template.md`).
+- Deployment coherency update:
+  - `APP_VERSION` bumped to `v5.14.77`.
+  - service-worker cache key bumped to `stroke-app-v76`.
+
+### Verification
+- `npm run evidence:refresh` passed (`15` high-priority promotion candidates; `3` P0 template candidates).
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 090 (2026-02-20)
 
 ### What was changed

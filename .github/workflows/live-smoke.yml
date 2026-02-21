@@ -36,6 +36,12 @@ jobs:
       - name: Generate evidence promotion checklist
         run: npm run evidence:promote
 
+      - name: Generate evidence promotion templates
+        run: npm run evidence:template && npm run evidence:template:p0
+
+      - name: Generate evidence ops index
+        run: npm run evidence:index
+
       - name: Run full QA (local + live)
         run: npm run qa
 

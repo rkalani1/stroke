@@ -112,6 +112,8 @@
 | Cardioembolic timing | RCT-supported | Early versus Later Anticoagulation for Stroke with Atrial Fibrillation (ELAN) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/37222476/ | PMID: 37222476; DOI: 10.1056/NEJMoa2303048 |
 | Cardioembolic timing | RCT-supported | Timing of Oral Anticoagulant Therapy in AIS with AF (TIMING) | 2022 | Circulation | https://pubmed.ncbi.nlm.nih.gov/36065821/ | PMID: 36065821; DOI: 10.1161/CIRCULATIONAHA.122.060666 |
 | Special populations | Guideline-grade | Maternal Stroke: A Focused Update | 2026 | Stroke / PubMed | https://pubmed.ncbi.nlm.nih.gov/41603019/ | PMID: 41603019; DOI: 10.1161/STR.0000000000000514 |
+| Special populations | Guideline-grade | Classification and Management of Ischemic Stroke in Patients With Active Cancer: A Scientific Statement From the American Heart Association | 2026 | Stroke / PubMed | https://pubmed.ncbi.nlm.nih.gov/41623113/ | PMID: 41623113; DOI: 10.1161/STR.0000000000000517 |
+| Special populations | Observational/Consensus | Stroke Guideline Expands Adult Treatment, Provides Pediatric Recommendations | 2026 | JAMA / PubMed | https://pubmed.ncbi.nlm.nih.gov/41686463/ | PMID: 41686463; DOI: 10.1001/jama.2025.26391 |
 
 ### Metadata verification refresh (2026-02-18, iter-037)
 - Re-verified 2026 AIS guideline indexing metadata: PMID `41582814`, DOI `10.1161/STR.0000000000000513`.
@@ -339,3 +341,11 @@
 - Added selective evidence-template generation controls (priority, PMID targeting, result limit, custom output).
 - Generated dedicated urgent (`P0`) evidence-promotion draft to accelerate high-priority review execution.
 - Inference disclosure: selective template filters are workflow controls only and do not change evidence priority logic itself.
+
+### Operational update (2026-02-21, iter-099)
+- Added pediatric pathway operationalization in the acute workflow with structured checklist capture, warning-layer safeguards, and note-trace propagation.
+- Added evidence operations index automation (`docs/evidence-ops-index.md`) and integrated index generation into `evidence:refresh` and scheduled live-smoke pre-QA steps.
+- Promoted two special-population evidence anchors into key citation metadata table:
+  - cancer-associated stroke AHA scientific statement (`PMID 41623113`, DOI `10.1161/STR.0000000000000517`),
+  - pediatric-recommendation 2026 update signal (`PMID 41686463`, DOI `10.1001/jama.2025.26391`).
+- Inference disclosure: pediatric checklist controls operationalize guideline-emphasis and safety workflow structure; they do not independently alter recommendation class/strength.
