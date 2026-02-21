@@ -357,6 +357,13 @@
 - Remaining workflow gap:
   - Optional per-feature parity policy registry (to tune which new assertions require live version match before enforcement).
 
+## Iteration 110 Update (2026-02-21)
+- Topic-threshold governance-trend gap reduced:
+  - Added previous-vs-current trend table for filtered topic thresholds in watchlist output.
+  - Trend table now surfaces topic-level share deltas and status transitions (`ALERT`/`OK`) between consecutive runs.
+- Remaining workflow gap:
+  - Optional alert-on-churn policy when topic status flips repeatedly across consecutive runs.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

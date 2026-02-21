@@ -251,8 +251,48 @@ function formatPercent(value) {
   return `${(numeric * 100).toFixed(1)}%`;
 }
 
+function parsePercentCell(value) {
+  const raw = String(value || '').replace('%', '').trim();
+  const numeric = Number.parseFloat(raw);
+  if (Number.isNaN(numeric)) return null;
+  return numeric / 100;
+}
+
 function normalizeTopicKey(raw) {
   return String(raw || '').trim().toLowerCase();
+}
+
+function parsePreviousThresholdMatrix(markdown) {
+  const lines = String(markdown || '').split('\n');
+  const headingIndex = lines.findIndex((line) => line.trim() === '### Filtered Topic Threshold Matrix');
+  if (headingIndex === -1) return new Map();
+
+  let tableStart = -1;
+  for (let i = headingIndex + 1; i < lines.length; i += 1) {
+    if (lines[i].trim().startsWith('| Topic | Count | Share | Threshold | Status |')) {
+      tableStart = i;
+      break;
+    }
+  }
+  if (tableStart === -1) return new Map();
+
+  const rows = new Map();
+  for (let i = tableStart + 2; i < lines.length; i += 1) {
+    const line = lines[i].trim();
+    if (!line.startsWith('|')) break;
+    const cols = line.split('|').slice(1, -1).map((cell) => cell.trim());
+    if (cols.length < 5) continue;
+    const topic = cols[0];
+    if (!topic) continue;
+    rows.set(topic, {
+      topic,
+      count: Number.parseInt(cols[1], 10),
+      share: parsePercentCell(cols[2]),
+      threshold: parsePercentCell(cols[3]),
+      status: cols[4]
+    });
+  }
+  return rows;
 }
 
 function isHighSignalSource(source) {
@@ -412,6 +452,13 @@ async function summarizePubMed(ids) {
 async function main() {
   const options = parseCliOptions(process.argv.slice(2));
   const evidenceMarkdown = await fs.readFile(EVIDENCE_FILE, 'utf8');
+  let previousWatchlistMarkdown = '';
+  try {
+    previousWatchlistMarkdown = await fs.readFile(WATCHLIST_FILE, 'utf8');
+  } catch {
+    previousWatchlistMarkdown = '';
+  }
+  const previousThresholdMatrix = parsePreviousThresholdMatrix(previousWatchlistMarkdown);
   const citationRows = parseTableRows(evidenceMarkdown);
   if (citationRows.length === 0) {
     throw new Error('Citation table not found in evidence review file.');
@@ -605,6 +652,29 @@ async function main() {
       );
     }
     lines.push('');
+    lines.push('### Filtered Topic Threshold Trend (vs Previous Run)');
+    if (previousThresholdMatrix.size === 0) {
+      lines.push('- No previous threshold-matrix snapshot available for comparison.');
+      lines.push('');
+    } else {
+      lines.push('| Topic | Previous share | Current share | Delta (pp) | Previous status | Current status |');
+      lines.push('|---|---|---|---|---|---|');
+      for (const row of topicRows) {
+        const currentShare = totalFiltered > 0 ? row.count / totalFiltered : 0;
+        const currentThreshold = resolveThreshold(row.topic);
+        const currentStatus = currentShare >= currentThreshold ? 'ALERT' : 'OK';
+        const previous = previousThresholdMatrix.get(row.topic) || null;
+        const prevShare = previous?.share;
+        const prevStatus = previous?.status || 'n/a';
+        const deltaPp = prevShare === null || typeof prevShare !== 'number'
+          ? 'n/a'
+          : `${((currentShare - prevShare) * 100).toFixed(1)}pp`;
+        lines.push(
+          `| ${escapePipes(row.topic)} | ${prevShare === null || typeof prevShare !== 'number' ? 'n/a' : formatPercent(prevShare)} | ${formatPercent(currentShare)} | ${deltaPp} | ${escapePipes(prevStatus)} | ${currentStatus} |`
+        );
+      }
+      lines.push('');
+    }
     if (dominanceAlert) {
       lines.push(
         `- Alert: ${escapePipes(topTopic.topic)} contributes ${formatPercent(topShare)} of filtered entries (threshold ${formatPercent(topThreshold)}). Review filter strictness for this topic.`

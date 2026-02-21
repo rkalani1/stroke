@@ -1,5 +1,24 @@
 # Iteration Log
 
+## Iteration 110 (2026-02-21)
+
+### What was changed
+- Added cross-run trend tracking for filtered-topic thresholds in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+  - reads prior watchlist threshold matrix snapshot when available,
+  - emits `Filtered Topic Threshold Trend (vs Previous Run)` table with previous share, current share, delta, and status change by topic.
+- Regenerated evidence-ops artifacts:
+  - `docs/evidence-watchlist.md`,
+  - `docs/evidence-promotion-checklist.md`,
+  - `docs/evidence-promotion-template.md`,
+  - `docs/evidence-promotion-template-p0.md`,
+  - `docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run evidence:refresh` passed.
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 109 (2026-02-21)
 
 ### What was changed

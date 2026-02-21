@@ -402,3 +402,9 @@
 - Added smoke-QA version-parity gating so live feature-specific assertions are enforced when local/live `APP_VERSION` values match, while avoiding false pre-deploy failures during staged rollout.
 - Added parity metadata output in smoke reports (`localAppVersion`, `liveAppVersion`, `liveParityChecksEnabled`) for operational traceability.
 - Inference disclosure: parity gating changes regression enforcement timing only and does not alter clinical recommendation logic or evidence interpretation.
+
+### Operational update (2026-02-21, iter-110)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added watchlist threshold-trend reporting that compares current filtered-topic shares/status against the previous run snapshot.
+- This improves continuity of evidence-triage governance by surfacing topic-level drift instead of only point-in-time status.
+- Inference disclosure: trend reporting is operational monitoring only and does not alter evidence-priority scoring or recommendation strength.

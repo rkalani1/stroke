@@ -1051,3 +1051,21 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+
+## Iteration 110 update (2026-02-21, macOS session)
+- Enhanced watchlist governance trend visibility in `scripts/evidence-watch.mjs`:
+  - added parser for previous run topic-threshold matrix snapshot,
+  - added new appendix output `Filtered Topic Threshold Trend (vs Previous Run)` with previous share, current share, delta (pp), and status transitions.
+- Regenerated evidence ops artifacts:
+  - `docs/evidence-watchlist.md`
+  - `docs/evidence-promotion-checklist.md`
+  - `docs/evidence-promotion-template.md`
+  - `docs/evidence-promotion-template-p0.md`
+  - `docs/evidence-ops-index.md`
+- Validation status:
+  - `npm run evidence:refresh` pass
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
