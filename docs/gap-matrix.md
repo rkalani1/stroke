@@ -236,11 +236,18 @@
 - Remaining workflow gap:
   - Continue incremental protocol polish and trial-index refinements (no unresolved P0/P1 additions currently open in this queue snapshot).
 
+## Iteration 094 Update (2026-02-21)
+- AIS 2026 rapid-delta visibility gap reduced:
+  - Added dedicated AIS-2026 delta rapid-review UI card in ischemic management workflow.
+  - Added structured case-specific AIS-delta trace output into note-generation paths to preserve recommendation-context continuity.
+- Remaining workflow gap:
+  - Continue iterative protocol/tooling polish and evidence-watchlist triage operations.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |
 |---|---|---|---|
-| P0 | Add a dedicated **2026 AIS guideline delta** card (adult + pediatric) in ischemic management and note templates. | Ensures new 2026 AHA/ASA recommendations are one-click visible in acute workflow (TNK/alteplase parity, pediatric recognition/escalation, extended-window framing, BP cautions after reperfusion). | 2026 AHA/ASA AIS guideline (PMID: 41582814; DOI: 10.1161/STR.0000000000000513) |
+| P0 | Add a dedicated **2026 AIS guideline delta** card (adult + pediatric) in ischemic management and note templates. | Ensures new 2026 AHA/ASA recommendations are one-click visible in acute workflow (TNK/alteplase parity, pediatric recognition/escalation, extended-window framing, BP cautions after reperfusion). | 2026 AHA/ASA AIS guideline (PMID: 41582814; DOI: 10.1161/STR.0000000000000513) — completed iter-094 |
 | P0 | Add structured **cancer-related stroke classification** workflow block (probable/possible/conventional mechanism + workup bundle + prevention branch). | Converts cancer-stroke statement into explicit triage and secondary-prevention actions, reducing ambiguity in high-recurrence subgroup. | AHA scientific statement (PMID: 41623113; DOI: 10.1161/STR.0000000000000517) — completed iter-090 |
 | P0 | Expand maternal module with **postpartum severe-HTN and delivery/stabilization decision prompts**. | Pregnancy-associated stroke admissions cluster around hypertensive disorders; explicit prompts improve time-critical stabilization and OB-neuro coordination. | Maternal stroke statement (PMID: 41603019; DOI: 10.1161/STR.0000000000000514) — completed iter-090 |
 | P1 | Add SAH follow-up block for **standardized outcome selection** (discharge + 90-day measure set). | Improves trial-aligned comparability and handoff continuity in aneurysmal SAH recovery tracking. | SAH outcome position paper (PMID: 41498145; DOI: 10.1161/STROKEAHA.125.053470) — completed iter-092 |

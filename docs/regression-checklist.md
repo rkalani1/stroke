@@ -256,3 +256,11 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-094)
+- [x] Dedicated AIS-2026 rapid-delta card added to ischemic management UI
+- [x] Case-specific AIS-2026 delta summary helper added and wired to note generation
+- [x] AIS delta traces propagate across brief/transfer/signout/progress/discharge/consult/voice/pathway notes
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

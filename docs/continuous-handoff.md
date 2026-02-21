@@ -773,3 +773,18 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
+
+## Iteration 094 update (2026-02-21, macOS session)
+- Implemented AIS-2026 guideline-delta visibility upgrades in `src/app.jsx`:
+  - Added dedicated ischemic-management rapid-review card for key 2026 AIS deltas.
+  - Added `getAis2026DeltaSummary(...)` to synthesize case-specific guideline-delta traces.
+  - Propagated AIS-delta trace output into brief/transfer/signout/progress/discharge/consult/voice/pathway notes.
+- Deployment coherency update:
+  - `APP_VERSION` bumped to `v5.14.76`.
+  - service-worker cache key bumped to `stroke-app-v75`.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`

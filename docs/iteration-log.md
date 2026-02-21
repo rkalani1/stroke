@@ -1246,6 +1246,27 @@
 - `npm test`: pass (`Runs: 3 | Issues: 0`)
 - `npm run qa`: pass (`Runs: 6 | Issues: 0`)
 
+## Iteration 094 (2026-02-21)
+
+### What was changed
+- Added a dedicated **2026 AIS Guideline Delta** rapid-review card in ischemic management UI (`/Users/rizwankalani/stroke/src/app.jsx`):
+  - thrombolysis pathway emphasis (TNK-based workflow),
+  - imaging-selected extended-window framing,
+  - post-EVT BP floor harm reminder (avoid SBP <140 after successful reperfusion),
+  - short-course DAPT framing for eligible minor stroke/high-risk TIA.
+- Added case-specific AIS-2026 delta summarization helper:
+  - `getAis2026DeltaSummary(...)`
+- Propagated AIS delta trace into core generated documentation outputs:
+  - brief summary, transfer, signout, progress, discharge, consult, voice-style summary, and pathway-plan notes.
+- Deployment coherency update:
+  - `APP_VERSION` bumped to `v5.14.76`.
+  - service-worker cache key bumped to `stroke-app-v75`.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (`Runs: 3 | Issues: 0`)
+- `npm run qa`: pass (`Runs: 6 | Issues: 0`)
+
 ## Iteration 093 (2026-02-21)
 
 ### What was changed

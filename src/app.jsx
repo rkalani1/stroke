@@ -8511,6 +8511,25 @@ Clinician Name`;
             return parts.join('; ');
           };
 
+          const getAis2026DeltaSummary = (data) => {
+            const dx = data?.diagnosisCategory;
+            if (dx !== 'ischemic' && dx !== 'tia') return '';
+            const parts = [];
+            const sp = data?.secondaryPrevention || {};
+            const wake = data?.wakeUpStrokeWorkflow || {};
+
+            if (data?.tnkRecommended) parts.push('TNK 0.25 mg/kg pathway applied');
+            if (data?.evtRecommended) parts.push('post-reperfusion BP floor avoidance (<140) reinforced');
+            if (wake.isWakeUpStroke) parts.push('imaging-selected wake-up/extended-window workflow used');
+
+            const ap = sp.antiplateletRegimen || '';
+            if (ap === 'dapt-ticagrelor-30') parts.push('NIHSS <=5 ticagrelor-based DAPT pathway considered');
+            else if (ap === 'dapt-21' || ap === 'dapt-cyp2c19') parts.push('short-course DAPT pathway documented');
+
+            if (data?.glucose) parts.push('inpatient glucose target 140-180 mg/dL emphasized');
+            return parts.join('; ');
+          };
+
 
           const sanitizeTelestrokeNoteForStorage = (note) => {
             if (shouldPersistFreeText) return note;
@@ -8917,6 +8936,8 @@ Clinician Name`;
             }
             const briefDaptSummary = getDaptAdherenceSummary(telestrokeNote);
             if (briefDaptSummary) brief += `- DAPT adherence: ${briefDaptSummary}\n`;
+            const briefAisDelta = getAis2026DeltaSummary(telestrokeNote);
+            if (briefAisDelta) brief += `- AIS 2026 delta: ${briefAisDelta}\n`;
             if (sp.statinDose) brief += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}\n`;
             if (sp.bpTarget) brief += `- BP target: ${sp.bpTarget}${sp.bpMeds ? ` (on ${sp.bpMeds})` : ''}\n`;
             if (sp.diabetesManagement && sp.diabetesManagement !== 'no-diabetes') brief += `- Diabetes: ${sp.diabetesManagement.replace(/-/g, ' ')}\n`;
@@ -9833,6 +9854,8 @@ Clinician Name`;
                 if (txSp.sglt2i) spParts.push(`SGLT-2i${txSp.sglt2iIndication ? ` (${txSp.sglt2iIndication})` : ''}`);
                 const txDaptSummary = getDaptAdherenceSummary(telestrokeNote);
                 if (txDaptSummary) spParts.push(`DAPT adherence: ${txDaptSummary}`);
+                const txAisDelta = getAis2026DeltaSummary(telestrokeNote);
+                if (txAisDelta) spParts.push(`AIS 2026 delta: ${txAisDelta}`);
                 if (spParts.length > 0) {
                   note += `\nSECONDARY PREVENTION PLAN:\n`;
                   spParts.forEach(p => { note += `- ${p}\n`; });
@@ -10210,6 +10233,8 @@ Clinician Name`;
               }
               const snDaptSummary = getDaptAdherenceSummary(telestrokeNote);
               if (snDaptSummary) note += `- DAPT adherence: ${snDaptSummary}\n`;
+              const snAisDelta = getAis2026DeltaSummary(telestrokeNote);
+              if (snAisDelta) note += `- AIS 2026 delta: ${snAisDelta}\n`;
               if (sp.statinDose) { let soStatLine = `- Statin: ${sp.statinDose.replace(/-/g, ' ')}`; if (sp.ldlCurrent) soStatLine += ` (LDL ${sp.ldlCurrent})`; note += soStatLine + '\n'; }
               if (sp.cyp2c19Tested && sp.cyp2c19Result) note += `- CYP2C19: ${sp.cyp2c19Result.replace(/-/g, ' ')}\n`;
               // Consent
@@ -10611,6 +10636,8 @@ Clinician Name`;
               }
               const progDaptSummary = getDaptAdherenceSummary(telestrokeNote);
               if (progDaptSummary) note += `   - DAPT adherence: ${progDaptSummary}\n`;
+              const progAisDelta = getAis2026DeltaSummary(telestrokeNote);
+              if (progAisDelta) note += `   - AIS 2026 delta: ${progAisDelta}\n`;
               if (progSp.statinDose) { let statLine = `   - Statin: ${progSp.statinDose.replace(/-/g, ' ')}`; if (progSp.ldlCurrent) statLine += ` (LDL ${progSp.ldlCurrent} mg/dL)`; note += statLine + '\n'; } else if (progSp.statinDose !== undefined) { note += `   - Statin: ___\n`; }
               if (progSp.cyp2c19Tested && progSp.cyp2c19Result) note += `   - CYP2C19: ${progSp.cyp2c19Result} — ${progSp.cyp2c19Result === 'poor-metabolizer' || progSp.cyp2c19Result === 'intermediate-metabolizer' ? 'consider ticagrelor over clopidogrel' : 'standard clopidogrel dosing appropriate'}\n`;
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
@@ -11167,6 +11194,8 @@ Clinician Name`;
               }
               const dischDaptSummary = getDaptAdherenceSummary(telestrokeNote);
               if (dischDaptSummary) note += `- DAPT adherence: ${dischDaptSummary}\n`;
+              const dischAisDelta = getAis2026DeltaSummary(telestrokeNote);
+              if (dischAisDelta) note += `- AIS 2026 delta: ${dischAisDelta}\n`;
               if (dischSp.statinDose) {
                 let statLine = `- Statin: ${dischSp.statinDose.replace(/-/g, ' ')}`;
                 if (dischSp.ezetimibeAdded) statLine += ' + ezetimibe';
@@ -12010,6 +12039,8 @@ Clinician Name`;
             }
             const consultDaptSummary = getDaptAdherenceSummary(telestrokeNote);
             if (consultDaptSummary) spItems.push(`DAPT adherence: ${consultDaptSummary}`);
+            const consultAisDelta = getAis2026DeltaSummary(telestrokeNote);
+            if (consultAisDelta) spItems.push(`AIS 2026 delta: ${consultAisDelta}`);
             if (sp.statinDose) spItems.push(`Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}`);
             if (sp.bpTarget) spItems.push(`BP target: ${sp.bpTarget}${sp.bpMeds ? ` (${sp.bpMeds})` : ''}`);
             if (sp.diabetesManagement) spItems.push(`Diabetes: ${sp.diabetesManagement}`);
@@ -12247,6 +12278,8 @@ Clinician Name`;
             }
             const briefSpeechDaptSummary = getDaptAdherenceSummary(telestrokeNote);
             if (briefSpeechDaptSummary) spParts.push(`DAPT adherence ${briefSpeechDaptSummary}`);
+            const briefSpeechAisDelta = getAis2026DeltaSummary(telestrokeNote);
+            if (briefSpeechAisDelta) spParts.push(`AIS 2026 delta ${briefSpeechAisDelta}`);
             if (sp.statinDose) spParts.push(`${sp.statinDose.replace(/-/g, ' ')} statin`);
             if (sp.bpTarget) spParts.push(`BP target ${sp.bpTarget}`);
             if (spParts.length > 0) {
@@ -22512,6 +22545,36 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* ===== MANAGEMENT SECTION ===== */}
                             <div id="phase-management"></div>
 
+                            {(telestrokeNote.diagnosisCategory === 'ischemic' || telestrokeNote.diagnosisCategory === 'tia') && (
+                              <div className="bg-blue-50 border border-blue-300 rounded-lg p-3">
+                                <h4 className="font-semibold text-blue-800 mb-2 text-sm">2026 AIS Guideline Delta - Rapid Review</h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-slate-700">
+                                  <div className="bg-white border border-blue-200 rounded p-2">
+                                    <p><strong>Thrombolysis:</strong> TNK 0.25 mg/kg remains preferred thrombolytic strategy when eligible.</p>
+                                  </div>
+                                  <div className="bg-white border border-blue-200 rounded p-2">
+                                    <p><strong>Extended window:</strong> Use imaging-selected pathways (WAKE-UP/EXTEND style selection) rather than clock-only decisions.</p>
+                                  </div>
+                                  <div className="bg-white border border-blue-200 rounded p-2">
+                                    <p><strong>Post-EVT BP:</strong> Avoid overly aggressive lowering; SBP &lt;140 after successful reperfusion can be harmful.</p>
+                                  </div>
+                                  <div className="bg-white border border-blue-200 rounded p-2">
+                                    <p><strong>Secondary prevention:</strong> Early short-course DAPT remains central for eligible minor stroke/high-risk TIA pathways.</p>
+                                  </div>
+                                </div>
+                                {(() => {
+                                  const deltaSummary = getAis2026DeltaSummary(telestrokeNote);
+                                  if (!deltaSummary) return null;
+                                  return (
+                                    <p className="mt-2 text-xs text-blue-900 bg-white border border-blue-300 rounded p-2">
+                                      <strong>Applied in this case:</strong> {deltaSummary}
+                                    </p>
+                                  );
+                                })()}
+                                <p className="text-xs text-blue-700 mt-2 italic">Powers WJ et al. AHA/ASA Early Management of Acute Ischemic Stroke. Stroke. 2026. DOI: 10.1161/STR.0000000000000513</p>
+                              </div>
+                            )}
+
                             {/* EVT Eligibility (Collapsible — hidden in clinic) */}
                             {<details className="bg-blue-50 border border-blue-200 rounded-lg">
                               <summary className="cursor-pointer p-3 font-semibold text-blue-800 hover:bg-blue-100 rounded-lg">
@@ -27045,9 +27108,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 const sp = telestrokeNote.secondaryPrevention || {};
                                 if (sp.statinDose || sp.antiplateletRegimen || sp.bpTarget) {
                                   note += `\nSECONDARY PREVENTION:\n`;
-                                if (sp.antiplateletRegimen) note += `- Antithrombotic: ${sp.antiplateletRegimen.replace(/-/g, ' ')}.\n`;
+                                  if (sp.antiplateletRegimen) note += `- Antithrombotic: ${sp.antiplateletRegimen.replace(/-/g, ' ')}.\n`;
                                   const planDaptSummary = getDaptAdherenceSummary(telestrokeNote);
                                   if (planDaptSummary) note += `- DAPT adherence: ${planDaptSummary}.\n`;
+                                  const planAisDelta = getAis2026DeltaSummary(telestrokeNote);
+                                  if (planAisDelta) note += `- AIS 2026 delta: ${planAisDelta}.\n`;
                                   if (sp.statinDose) note += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}${sp.inclisiranConsidered ? ' + inclisiran' : ''}${sp.ldlCurrent ? ` (LDL ${sp.ldlCurrent} mg/dL)` : ''}.\n`;
                                   if (sp.bpTarget) note += `- BP target: ${sp.bpTarget}${sp.bpIntensiveCandidate ? ' (intensive candidate)' : ''}.\n`;
                                   if (sp.diabetesManagement) note += `- Diabetes: ${sp.diabetesManagement.replace(/-/g, ' ')}.\n`;

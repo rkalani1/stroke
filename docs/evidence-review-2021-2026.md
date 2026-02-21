@@ -305,3 +305,10 @@
 - Added DAPT adherence warning checks and propagated adherence trace output into key handoff/progress/discharge/consult note templates.
 - Evidence anchor retained: regional DAPT implementation analysis (`PMID 41679778`, DOI `10.1136/svn-2025-004815`).
 - Inference disclosure: adherence-status categories are workflow-quality cues and do not independently change recommendation strength.
+
+### Operational update (2026-02-21, iter-094)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added dedicated AIS-2026 rapid-delta operationalization in ischemic workflow UI and generated-note outputs to increase recommendation visibility at decision time and handoff.
+- Added case-specific AIS-delta trace synthesis (TNK pathway, extended-window imaging selection, post-EVT BP floor caution, DAPT pathway cues) across note templates.
+- Evidence anchor retained: 2026 AHA/ASA AIS guideline (`PMID 41582814`, DOI `10.1161/STR.0000000000000513`).
+- Inference disclosure: case-delta summary text is an implementation trace layer over existing guideline logic and does not create new recommendations.
