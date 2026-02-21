@@ -1,5 +1,32 @@
 # Iteration Log
 
+## Iteration 117 (2026-02-21)
+
+### What was changed
+- Added churn-profile schema validator:
+  - new script `/Users/rizwankalani/stroke/scripts/validate-evidence-churn-profiles.mjs`.
+- Added npm command:
+  - `npm run validate:evidence-churn-profiles`.
+- Integrated churn-profile validation into automation gates:
+  - `evidence:refresh`,
+  - `test`,
+  - `qa`.
+- Updated evidence-ops maintenance index to include churn-profile validation command.
+- Regenerated evidence-ops artifacts:
+  - `docs/evidence-watchlist.md`,
+  - `docs/evidence-watch-history.json`,
+  - `docs/evidence-promotion-checklist.md`,
+  - `docs/evidence-promotion-template.md`,
+  - `docs/evidence-promotion-template-p0.md`,
+  - `docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run validate:evidence-churn-profiles` passed.
+- `npm run evidence:refresh` passed.
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 116 (2026-02-21)
 
 ### What was changed

@@ -118,6 +118,7 @@ async function main() {
   out.push('- `npm run evidence:watch:profiles-file`');
   out.push('- `npm run evidence:watch:profile:reperfusion`');
   out.push('- `npm run evidence:watch:profile:hemorrhage`');
+  out.push('- `npm run validate:evidence-churn-profiles`');
   out.push('- `npm run evidence:promote`');
   out.push('- `npm run evidence:template`');
   out.push('- `npm run evidence:template:p0`');

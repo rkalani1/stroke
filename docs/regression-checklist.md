@@ -75,6 +75,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] `npm run evidence:watch:profile:reperfusion` and `npm run evidence:watch:profile:hemorrhage` execute successfully.
 - [ ] External profile config file (`docs/evidence-churn-profiles.json`) is present and loadable by watchlist command.
 - [ ] `npm run evidence:watch:profiles-file` executes successfully.
+- [ ] `npm run validate:evidence-churn-profiles` executes successfully.
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] QA smoke report includes local/live app-version parity metadata (`localAppVersion`, `liveAppVersion`, `liveParityChecksEnabled`).
 - [ ] Service worker cache version updated when asset behavior changes.
@@ -440,6 +441,13 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] External profile config file created at `docs/evidence-churn-profiles.json`
 - [x] `npm run evidence:watch:profiles-file` pass
 - [x] `npm run evidence:refresh` pass (profile source trace retained)
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-117)
+- [x] `npm run validate:evidence-churn-profiles` pass (3 profiles)
+- [x] `npm run evidence:refresh` pass with schema validation gate enabled
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

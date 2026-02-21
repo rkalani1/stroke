@@ -444,3 +444,9 @@
 - Externalized churn profile configuration into a JSON artifact and added file-based profile loading support.
 - Added active profile-source trace output to improve governance reproducibility and local policy auditability.
 - Inference disclosure: externalized churn profiles are operational governance configuration only and do not alter recommendation class or evidence strength.
+
+### Operational update (2026-02-21, iter-117)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added schema validation for churn profile configuration and wired it into core QA/evidence-refresh gates.
+- This ensures malformed governance profile data cannot silently propagate into watchlist triage output.
+- Inference disclosure: churn-profile schema validation is operational safety tooling only and does not alter evidence ranking or clinical recommendations.

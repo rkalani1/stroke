@@ -409,6 +409,13 @@
 - Remaining workflow gap:
   - Optional schema validation gate for profile config file to fail fast on malformed profile definitions.
 
+## Iteration 117 Update (2026-02-21)
+- Profile-config schema-validation gap reduced:
+  - Added dedicated churn-profile validator script and integrated it into `evidence:refresh`, `test`, and `qa`.
+  - malformed profile definitions now fail fast before watchlist generation and smoke execution.
+- Remaining workflow gap:
+  - Optional CI artifact export of churn-profile validation diagnostics for failed scheduled runs.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |
