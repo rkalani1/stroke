@@ -295,3 +295,13 @@
 - Added warning-layer safeguards and propagated structured SAH outcome summaries into handoff/consult/discharge/pathway notes.
 - Evidence anchor retained: SAH standardized outcomes position paper (`PMID 41498145`, DOI `10.1161/STROKEAHA.125.053470`).
 - Inference disclosure: selected field set is an implementation-focused minimum dataset aligned to the cited standardization framework and does not alter recommendation class/strength.
+
+### Operational update (2026-02-21, iter-093)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Implemented structured DAPT adherence operationalization for minor stroke/TIA secondary prevention:
+  - explicit start/stop date capture,
+  - missed-dose burden and adherence status tracking,
+  - post-DAPT transition-plan capture.
+- Added DAPT adherence warning checks and propagated adherence trace output into key handoff/progress/discharge/consult note templates.
+- Evidence anchor retained: regional DAPT implementation analysis (`PMID 41679778`, DOI `10.1136/svn-2025-004815`).
+- Inference disclosure: adherence-status categories are workflow-quality cues and do not independently change recommendation strength.

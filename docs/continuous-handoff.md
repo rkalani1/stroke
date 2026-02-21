@@ -755,3 +755,21 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
+
+## Iteration 093 update (2026-02-21, macOS session)
+- Implemented DAPT adherence tracking workflow upgrades in `src/app.jsx`:
+  - Added structured secondary-prevention fields:
+    - `daptStartDate`, `daptPlannedStopDate`, `daptMissedDoses7d`,
+    - `daptAdherenceStatus`, `daptTransitionPlanned`, `daptTransitionAgent`, `daptAdherenceNotes`.
+  - Added `getDaptAdherenceSummary(...)` helper and propagated output into brief/transfer/signout/progress/discharge/consult/voice/pathway notes.
+  - Added warning-layer safeguards for missing DAPT duration/start/stop, high missed-dose burden, and missing post-DAPT transition details.
+  - Added compact DAPT adherence tracker UI inside antithrombotic selection with live adherence trace rendering.
+- Deployment coherency update:
+  - `APP_VERSION` bumped to `v5.14.75`.
+  - service-worker cache key bumped to `stroke-app-v74`.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`

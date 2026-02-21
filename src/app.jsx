@@ -1247,6 +1247,13 @@ Clinician Name`;
               dietAdherence: '',
               antiplateletRegimen: '',
               daptDuration: '',
+              daptStartDate: '',
+              daptPlannedStopDate: '',
+              daptMissedDoses7d: '',
+              daptAdherenceStatus: '',
+              daptTransitionPlanned: false,
+              daptTransitionAgent: '',
+              daptAdherenceNotes: '',
               followUpTimeline: ''
             },
             // ICH Anticoagulation Resumption
@@ -8478,6 +8485,32 @@ Clinician Name`;
             return parts.join('; ');
           };
 
+          const getDaptAdherenceSummary = (data) => {
+            const sp = data?.secondaryPrevention || {};
+            const regimen = sp.antiplateletRegimen || '';
+            if (!regimen.startsWith('dapt')) return '';
+            const parts = [];
+            const statusLabel = {
+              'on-track': 'on track',
+              'at-risk': 'at risk',
+              nonadherent: 'nonadherent',
+              completed: 'completed'
+            };
+            const agentLabel = {
+              'asa-mono': 'ASA monotherapy',
+              'clopidogrel-mono': 'clopidogrel monotherapy',
+              ticagrelor: 'ticagrelor monotherapy',
+              'doac-af': 'DOAC strategy (if AF identified)'
+            };
+            if (sp.daptAdherenceStatus) parts.push(`status ${statusLabel[sp.daptAdherenceStatus] || sp.daptAdherenceStatus}`);
+            if (sp.daptStartDate) parts.push(`start ${sp.daptStartDate}`);
+            if (sp.daptPlannedStopDate) parts.push(`planned stop ${sp.daptPlannedStopDate}`);
+            if (sp.daptMissedDoses7d !== '' && sp.daptMissedDoses7d !== null && sp.daptMissedDoses7d !== undefined) parts.push(`missed doses (7d): ${sp.daptMissedDoses7d}`);
+            if (sp.daptTransitionPlanned) parts.push(`transition planned${sp.daptTransitionAgent ? ` → ${agentLabel[sp.daptTransitionAgent] || sp.daptTransitionAgent}` : ''}`);
+            if (sp.daptAdherenceNotes) parts.push(`notes: ${sp.daptAdherenceNotes}`);
+            return parts.join('; ');
+          };
+
 
           const sanitizeTelestrokeNoteForStorage = (note) => {
             if (shouldPersistFreeText) return note;
@@ -8882,6 +8915,8 @@ Clinician Name`;
               }
               brief += apLine + '\n';
             }
+            const briefDaptSummary = getDaptAdherenceSummary(telestrokeNote);
+            if (briefDaptSummary) brief += `- DAPT adherence: ${briefDaptSummary}\n`;
             if (sp.statinDose) brief += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}\n`;
             if (sp.bpTarget) brief += `- BP target: ${sp.bpTarget}${sp.bpMeds ? ` (on ${sp.bpMeds})` : ''}\n`;
             if (sp.diabetesManagement && sp.diabetesManagement !== 'no-diabetes') brief += `- Diabetes: ${sp.diabetesManagement.replace(/-/g, ' ')}\n`;
@@ -9796,6 +9831,8 @@ Clinician Name`;
                 if (txSp.pcsk9Added) spParts.push('PCSK9i added');
                 if (txSp.glp1ra) spParts.push(`GLP-1 RA${txSp.glp1raIndication ? ` (${txSp.glp1raIndication})` : ''}`);
                 if (txSp.sglt2i) spParts.push(`SGLT-2i${txSp.sglt2iIndication ? ` (${txSp.sglt2iIndication})` : ''}`);
+                const txDaptSummary = getDaptAdherenceSummary(telestrokeNote);
+                if (txDaptSummary) spParts.push(`DAPT adherence: ${txDaptSummary}`);
                 if (spParts.length > 0) {
                   note += `\nSECONDARY PREVENTION PLAN:\n`;
                   spParts.forEach(p => { note += `- ${p}\n`; });
@@ -10171,6 +10208,8 @@ Clinician Name`;
                 if (sp.daptDuration) soApLine += ` (DAPT ${sp.daptDuration})`;
                 note += soApLine + '\n';
               }
+              const snDaptSummary = getDaptAdherenceSummary(telestrokeNote);
+              if (snDaptSummary) note += `- DAPT adherence: ${snDaptSummary}\n`;
               if (sp.statinDose) { let soStatLine = `- Statin: ${sp.statinDose.replace(/-/g, ' ')}`; if (sp.ldlCurrent) soStatLine += ` (LDL ${sp.ldlCurrent})`; note += soStatLine + '\n'; }
               if (sp.cyp2c19Tested && sp.cyp2c19Result) note += `- CYP2C19: ${sp.cyp2c19Result.replace(/-/g, ' ')}\n`;
               // Consent
@@ -10570,6 +10609,8 @@ Clinician Name`;
                 if (progSp.daptDuration) progApLine += ` (DAPT ${progSp.daptDuration})`;
                 note += progApLine + '\n';
               }
+              const progDaptSummary = getDaptAdherenceSummary(telestrokeNote);
+              if (progDaptSummary) note += `   - DAPT adherence: ${progDaptSummary}\n`;
               if (progSp.statinDose) { let statLine = `   - Statin: ${progSp.statinDose.replace(/-/g, ' ')}`; if (progSp.ldlCurrent) statLine += ` (LDL ${progSp.ldlCurrent} mg/dL)`; note += statLine + '\n'; } else if (progSp.statinDose !== undefined) { note += `   - Statin: ___\n`; }
               if (progSp.cyp2c19Tested && progSp.cyp2c19Result) note += `   - CYP2C19: ${progSp.cyp2c19Result} — ${progSp.cyp2c19Result === 'poor-metabolizer' || progSp.cyp2c19Result === 'intermediate-metabolizer' ? 'consider ticagrelor over clopidogrel' : 'standard clopidogrel dosing appropriate'}\n`;
               if (telestrokeNote.lastDOACType && ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]) {
@@ -11124,6 +11165,8 @@ Clinician Name`;
                 }
                 note += apLine + '\n';
               }
+              const dischDaptSummary = getDaptAdherenceSummary(telestrokeNote);
+              if (dischDaptSummary) note += `- DAPT adherence: ${dischDaptSummary}\n`;
               if (dischSp.statinDose) {
                 let statLine = `- Statin: ${dischSp.statinDose.replace(/-/g, ' ')}`;
                 if (dischSp.ezetimibeAdded) statLine += ' + ezetimibe';
@@ -11965,6 +12008,8 @@ Clinician Name`;
               }
               spItems.push(apLine);
             }
+            const consultDaptSummary = getDaptAdherenceSummary(telestrokeNote);
+            if (consultDaptSummary) spItems.push(`DAPT adherence: ${consultDaptSummary}`);
             if (sp.statinDose) spItems.push(`Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}`);
             if (sp.bpTarget) spItems.push(`BP target: ${sp.bpTarget}${sp.bpMeds ? ` (${sp.bpMeds})` : ''}`);
             if (sp.diabetesManagement) spItems.push(`Diabetes: ${sp.diabetesManagement}`);
@@ -12200,6 +12245,8 @@ Clinician Name`;
               if (sp.cyp2c19Result === 'poor-metabolizer') apText += ' (CYP2C19 LOF — consider ticagrelor)';
               spParts.push(apText);
             }
+            const briefSpeechDaptSummary = getDaptAdherenceSummary(telestrokeNote);
+            if (briefSpeechDaptSummary) spParts.push(`DAPT adherence ${briefSpeechDaptSummary}`);
             if (sp.statinDose) spParts.push(`${sp.statinDose.replace(/-/g, ' ')} statin`);
             if (sp.bpTarget) spParts.push(`BP target ${sp.bpTarget}`);
             if (spParts.length > 0) {
@@ -13129,6 +13176,33 @@ Clinician Name`;
               const abcd2 = calculateABCD2Score(abcd2Items);
               if (abcd2 >= 4 && (n.secondaryPrevention || {}).antiplateletRegimen !== 'dapt-21') {
                 warnings.push({ id: 'tia-abcd2-dapt', severity: 'warn', msg: `High-risk TIA (ABCD2 ${abcd2} ≥4) — initiate dual antiplatelet therapy (ASA 325 + clopidogrel 300 load, then ASA 81 + clopidogrel 75 x 21 days) per CHANCE/POINT protocol unless contraindicated.` });
+              }
+            }
+
+            // DAPT adherence and transition safety checks
+            {
+              const sp = n.secondaryPrevention || {};
+              const daptSelected = (sp.antiplateletRegimen || '').startsWith('dapt');
+              const missed7d = parseInt(sp.daptMissedDoses7d, 10);
+              if (daptSelected) {
+                if (!sp.daptDuration) {
+                  warnings.push({ id: 'dapt-duration-missing', severity: 'warn', msg: 'DAPT selected but planned duration is missing. Specify 21, 30, or 90-day protocol window.' });
+                }
+                if (!sp.daptStartDate) {
+                  warnings.push({ id: 'dapt-start-missing', severity: 'warn', msg: 'DAPT selected but start date is missing. Document start date for adherence tracking.' });
+                }
+                if (!sp.daptPlannedStopDate) {
+                  warnings.push({ id: 'dapt-stop-missing', severity: 'warn', msg: 'DAPT selected but planned stop date is missing. Set stop date to reduce prolonged-therapy bleed risk.' });
+                }
+                if (!isNaN(missed7d) && missed7d >= 3) {
+                  warnings.push({ id: 'dapt-missed-doses', severity: 'warn', msg: `DAPT adherence risk: ${missed7d} missed doses in last 7 days. Reinforce adherence and verify medication access.` });
+                }
+                if (sp.daptAdherenceStatus === 'completed' && !sp.daptTransitionPlanned) {
+                  warnings.push({ id: 'dapt-transition-plan-missing', severity: 'warn', msg: 'DAPT marked completed without a transition plan to monotherapy/anticoagulation. Document post-DAPT strategy.' });
+                }
+                if (sp.daptTransitionPlanned && !sp.daptTransitionAgent) {
+                  warnings.push({ id: 'dapt-transition-agent-missing', severity: 'warn', msg: 'DAPT transition is planned but no transition agent is selected. Specify monotherapy or anticoagulation strategy.' });
+                }
               }
             }
 
@@ -23885,14 +23959,102 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <option value="anticoag-other">Anticoagulation (other indication)</option>
                                 </select>
                                 {((telestrokeNote.secondaryPrevention || {}).antiplateletRegimen || '').startsWith('dapt') && (
-                                  <select value={(telestrokeNote.secondaryPrevention || {}).daptDuration || ''}
-                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), daptDuration: v}})); }}
-                                    className="w-full mt-2 px-2 py-1 border border-slate-300 rounded text-sm">
-                                    <option value="">-- DAPT duration --</option>
-                                    <option value="21 days">21 days (POINT/CHANCE)</option>
-                                    <option value="30 days">30 days (THALES)</option>
-                                    <option value="90 days">90 days (CHANCE-2)</option>
-                                  </select>
+                                  <div className="mt-2 space-y-2">
+                                    <select value={(telestrokeNote.secondaryPrevention || {}).daptDuration || ''}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), daptDuration: v}})); }}
+                                      className="w-full px-2 py-1 border border-slate-300 rounded text-sm">
+                                      <option value="">-- DAPT duration --</option>
+                                      <option value="21 days">21 days (POINT/CHANCE)</option>
+                                      <option value="30 days">30 days (THALES)</option>
+                                      <option value="90 days">90 days (CHANCE-2)</option>
+                                    </select>
+                                    <div className="bg-white border border-emerald-200 rounded-lg p-2">
+                                      <p className="text-xs font-semibold text-emerald-800 mb-1">DAPT Adherence Tracker</p>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                        <div>
+                                          <label className="block text-xs text-slate-600 mb-1">DAPT start date</label>
+                                          <input
+                                            type="date"
+                                            value={(telestrokeNote.secondaryPrevention || {}).daptStartDate || ''}
+                                            onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), daptStartDate: v}})); }}
+                                            className="w-full px-2 py-1 border border-slate-300 rounded text-sm"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-xs text-slate-600 mb-1">Planned DAPT stop date</label>
+                                          <input
+                                            type="date"
+                                            value={(telestrokeNote.secondaryPrevention || {}).daptPlannedStopDate || ''}
+                                            onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), daptPlannedStopDate: v}})); }}
+                                            className="w-full px-2 py-1 border border-slate-300 rounded text-sm"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-xs text-slate-600 mb-1">Missed doses (last 7 days)</label>
+                                          <input
+                                            type="number"
+                                            min="0"
+                                            max="14"
+                                            value={(telestrokeNote.secondaryPrevention || {}).daptMissedDoses7d || ''}
+                                            onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), daptMissedDoses7d: v}})); }}
+                                            className="w-full px-2 py-1 border border-slate-300 rounded text-sm"
+                                            placeholder="0"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-xs text-slate-600 mb-1">Adherence status</label>
+                                          <select
+                                            value={(telestrokeNote.secondaryPrevention || {}).daptAdherenceStatus || ''}
+                                            onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), daptAdherenceStatus: v}})); }}
+                                            className="w-full px-2 py-1 border border-slate-300 rounded text-sm"
+                                          >
+                                            <option value="">-- Select status --</option>
+                                            <option value="on-track">On track</option>
+                                            <option value="at-risk">At risk</option>
+                                            <option value="nonadherent">Nonadherent</option>
+                                            <option value="completed">Completed</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+                                        <label className="flex items-center gap-2 text-xs text-slate-700">
+                                          <input
+                                            type="checkbox"
+                                            checked={!!(telestrokeNote.secondaryPrevention || {}).daptTransitionPlanned}
+                                            onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), daptTransitionPlanned: c}})); }}
+                                          />
+                                          Transition plan documented
+                                        </label>
+                                        <select
+                                          value={(telestrokeNote.secondaryPrevention || {}).daptTransitionAgent || ''}
+                                          onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), daptTransitionAgent: v}})); }}
+                                          className="w-full px-2 py-1 border border-slate-300 rounded text-sm"
+                                        >
+                                          <option value="">-- Transition agent --</option>
+                                          <option value="asa-mono">ASA monotherapy</option>
+                                          <option value="clopidogrel-mono">Clopidogrel monotherapy</option>
+                                          <option value="ticagrelor">Ticagrelor monotherapy</option>
+                                          <option value="doac-af">DOAC strategy (AF)</option>
+                                        </select>
+                                      </div>
+                                      <textarea
+                                        value={(telestrokeNote.secondaryPrevention || {}).daptAdherenceNotes || ''}
+                                        onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), daptAdherenceNotes: v}})); }}
+                                        placeholder="Barrier notes (cost, access, side effects, education reinforcement)"
+                                        className="w-full mt-2 px-2 py-1 border border-slate-300 rounded text-xs"
+                                        rows={2}
+                                      />
+                                      {(() => {
+                                        const summary = getDaptAdherenceSummary(telestrokeNote);
+                                        if (!summary) return null;
+                                        return (
+                                          <p className="text-xs text-emerald-900 bg-emerald-100 border border-emerald-300 rounded p-1 mt-2">
+                                            <strong>DAPT adherence trace:</strong> {summary}
+                                          </p>
+                                        );
+                                      })()}
+                                    </div>
+                                  </div>
                                 )}
                               </div>
 
@@ -26883,7 +27045,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 const sp = telestrokeNote.secondaryPrevention || {};
                                 if (sp.statinDose || sp.antiplateletRegimen || sp.bpTarget) {
                                   note += `\nSECONDARY PREVENTION:\n`;
-                                  if (sp.antiplateletRegimen) note += `- Antithrombotic: ${sp.antiplateletRegimen.replace(/-/g, ' ')}.\n`;
+                                if (sp.antiplateletRegimen) note += `- Antithrombotic: ${sp.antiplateletRegimen.replace(/-/g, ' ')}.\n`;
+                                  const planDaptSummary = getDaptAdherenceSummary(telestrokeNote);
+                                  if (planDaptSummary) note += `- DAPT adherence: ${planDaptSummary}.\n`;
                                   if (sp.statinDose) note += `- Statin: ${sp.statinDose.replace(/-/g, ' ')}${sp.ezetimibeAdded ? ' + ezetimibe' : ''}${sp.pcsk9Added ? ' + PCSK9i' : ''}${sp.inclisiranConsidered ? ' + inclisiran' : ''}${sp.ldlCurrent ? ` (LDL ${sp.ldlCurrent} mg/dL)` : ''}.\n`;
                                   if (sp.bpTarget) note += `- BP target: ${sp.bpTarget}${sp.bpIntensiveCandidate ? ' (intensive candidate)' : ''}.\n`;
                                   if (sp.diabetesManagement) note += `- Diabetes: ${sp.diabetesManagement.replace(/-/g, ' ')}.\n`;

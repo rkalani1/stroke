@@ -228,6 +228,14 @@
 - Remaining workflow gap:
   - Add secondary-prevention DAPT protocol adherence tracker for eligible minor stroke/TIA pathways.
 
+## Iteration 093 Update (2026-02-21)
+- Secondary-prevention DAPT adherence gap reduced:
+  - Added structured DAPT adherence tracker fields (start/stop date, missed doses, adherence status, transition planning, barriers).
+  - Added warning-layer checks for incomplete DAPT protocol documentation and high-risk nonadherence patterns.
+  - Added DAPT adherence trace propagation across key handoff and progress/discharge documentation outputs.
+- Remaining workflow gap:
+  - Continue incremental protocol polish and trial-index refinements (no unresolved P0/P1 additions currently open in this queue snapshot).
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |
@@ -238,4 +246,4 @@
 | P1 | Add SAH follow-up block for **standardized outcome selection** (discharge + 90-day measure set). | Improves trial-aligned comparability and handoff continuity in aneurysmal SAH recovery tracking. | SAH outcome position paper (PMID: 41498145; DOI: 10.1161/STROKEAHA.125.053470) — completed iter-092 |
 | P1 | Add explicit **MeVO trial-state caution** badge in EVT section (routine EVT benefit not yet established; selective use only). | Prevents overgeneralization of EVT to medium/distal occlusions while evidence remains mixed/neutral in RCT era. | ESCAPE-MeVO post-hoc outcome report (PMID: 41651659; DOI: 10.1136/jnis-2025-024733) |
 | P1 | Add anticoag-ICH **door-to-reversal/transfer timer** KPI outputs in dashboard + notes. | Timeliness is a modifiable process metric strongly tied to hemorrhage pathway safety. | Anticoag-ICH timeliness cohort (PMID: 41703701; DOI: 10.1161/JAHA.125.043223) — completed iter-091 |
-| P2 | Add secondary-prevention implementation tracker for **DAPT protocol adherence** in eligible minor stroke/TIA phenotypes. | Converts recommendation text into measurable local quality behavior and catches underuse/overuse drift. | Regional implementation analysis (PMID: 41679778; DOI: 10.1136/svn-2025-004815) |
+| P2 | Add secondary-prevention implementation tracker for **DAPT protocol adherence** in eligible minor stroke/TIA phenotypes. | Converts recommendation text into measurable local quality behavior and catches underuse/overuse drift. | Regional implementation analysis (PMID: 41679778; DOI: 10.1136/svn-2025-004815) — completed iter-093 |

@@ -247,3 +247,12 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-093)
+- [x] DAPT adherence tracker added to secondary prevention workflow (start/stop date, missed doses, status, transition plan)
+- [x] DAPT warning checks added for incomplete protocol documentation and adherence risk
+- [x] DAPT adherence summaries propagate across brief/transfer/signout/progress/discharge/consult/pathway notes
+- [x] Secondary prevention antithrombotic UI now includes live DAPT adherence trace preview
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

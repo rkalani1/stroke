@@ -1246,6 +1246,31 @@
 - `npm test`: pass (`Runs: 3 | Issues: 0`)
 - `npm run qa`: pass (`Runs: 6 | Issues: 0`)
 
+## Iteration 093 (2026-02-21)
+
+### What was changed
+- Added structured DAPT adherence tracking in `/Users/rizwankalani/stroke/src/app.jsx` under secondary prevention:
+  - start date, planned stop date, missed doses (7d),
+  - adherence status (`on track`, `at risk`, `nonadherent`, `completed`),
+  - explicit post-DAPT transition plan and transition agent,
+  - adherence barrier notes.
+- Added DAPT safety/completeness warnings:
+  - missing duration/start/stop date for selected DAPT pathways,
+  - high missed-dose burden warning (>=3 missed doses/7 days),
+  - completed DAPT without transition plan,
+  - transition plan without selected transition agent.
+- Added DAPT adherence summary propagation into generated notes:
+  - brief summary, transfer, signout, progress, discharge, consult, voice-style summary, and pathway-plan outputs.
+- Added compact UI “DAPT Adherence Tracker” with live trace preview directly in antithrombotic selection workflow.
+- Deployment coherency update:
+  - `APP_VERSION` bumped to `v5.14.75`.
+  - service-worker cache key bumped to `stroke-app-v74`.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (`Runs: 3 | Issues: 0`)
+- `npm run qa`: pass (`Runs: 6 | Issues: 0`)
+
 ## Iteration 092 (2026-02-21)
 
 ### What was changed
