@@ -272,3 +272,12 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-096)
+- [x] `validate-evidence-promotion.mjs` added and passes against current watchlist/checklist (`13` PMIDs)
+- [x] `npm test` now enforces evidence-promotion sync validation
+- [x] `npm run qa` now enforces evidence-promotion sync validation
+- [x] `evidence:refresh` command added for watchlist + promotion regeneration
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

@@ -803,3 +803,19 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run evidence:promote && npm run validate:citations && npm test && npm run qa`
+
+## Iteration 096 update (2026-02-21, macOS session)
+- Implemented evidence-promotion sync validation:
+  - Added script `scripts/validate-evidence-promotion.mjs` to enforce watchlist `P0/P1` PMID parity with promotion checklist.
+  - Added npm scripts:
+    - `validate:evidence-promotion`
+    - `evidence:refresh` (`watch` + `promote`)
+  - Wired `validate:evidence-promotion` into both `npm test` and `npm run qa`.
+- Validation status:
+  - `npm run evidence:promote` pass (`13` high-priority candidates)
+  - `npm run validate:evidence-promotion` pass (`13` PMIDs synced)
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run validate:citations && npm test && npm run qa`

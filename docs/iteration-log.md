@@ -1266,6 +1266,26 @@
 - `npm test`: pass (`Runs: 3 | Issues: 0`)
 - `npm run qa`: pass (`Runs: 6 | Issues: 0`)
 
+## Iteration 096 (2026-02-21)
+
+### What was changed
+- Added evidence-promotion sync validator:
+  - new script: `/Users/rizwankalani/stroke/scripts/validate-evidence-promotion.mjs`
+  - validates that all `P0/P1` PMIDs in `docs/evidence-watchlist.md` are present in `docs/evidence-promotion-checklist.md` (and no stale extras remain).
+- Extended npm evidence-ops commands in `/Users/rizwankalani/stroke/package.json`:
+  - `validate:evidence-promotion`
+  - `evidence:refresh` (`watch` + `promote`)
+- Hardened QA/test gates:
+  - `npm test` now includes `validate:evidence-promotion`.
+  - `npm run qa` now includes `validate:evidence-promotion`.
+
+### QA and validation
+- `npm run evidence:promote`: pass (`13` high-priority candidates queued)
+- `npm run validate:evidence-promotion`: pass (`13` PMIDs synced)
+- `npm run build`: pass
+- `npm test`: pass (`Runs: 3 | Issues: 0`)
+- `npm run qa`: pass (`Runs: 6 | Issues: 0`)
+
 ## Iteration 094 (2026-02-21)
 
 ### What was changed

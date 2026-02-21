@@ -251,6 +251,14 @@
 - Remaining workflow gap:
   - Add optional PR-template scaffolding that pre-populates evidence-row edits from checklist selections.
 
+## Iteration 096 Update (2026-02-21)
+- Evidence-governance drift gap reduced:
+  - Added automatic watchlist-to-promotion-checklist sync validation for `P0/P1` PMIDs.
+  - Wired sync validation into both `test` and `qa` gates, preventing silent promotion-queue drift.
+  - Added composite `evidence:refresh` command to streamline watchlist + checklist regeneration.
+- Remaining workflow gap:
+  - Optional PR-template scaffolding for one-click promotion of selected checklist items.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

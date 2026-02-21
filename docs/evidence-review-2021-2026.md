@@ -321,3 +321,9 @@
   - attaches topic-specific promotion action prompts for clinician review.
 - Added scheduled-audit execution of the checklist generator in `live-smoke.yml` before full smoke QA.
 - Inference disclosure: checklist inclusion and priority remain triage aids and do not modify recommendation strength without clinician review.
+
+### Operational update (2026-02-21, iter-096)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added automated consistency validation between high-priority watchlist (`P0/P1`) entries and promotion checklist PMIDs.
+- Integrated evidence-promotion sync validation into local test and full QA commands to block silent evidence-triage drift.
+- Inference disclosure: sync validation enforces operational consistency only and does not change recommendation content.
