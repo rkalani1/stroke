@@ -1246,6 +1246,26 @@
 - `npm test`: pass (`Runs: 3 | Issues: 0`)
 - `npm run qa`: pass (`Runs: 6 | Issues: 0`)
 
+## Iteration 095 (2026-02-21)
+
+### What was changed
+- Added evidence-promotion automation tooling:
+  - new script: `/Users/rizwankalani/stroke/scripts/evidence-promotion-checklist.mjs`
+  - new npm command: `npm run evidence:promote`
+  - generated output: `/Users/rizwankalani/stroke/docs/evidence-promotion-checklist.md`
+- New promotion checklist behavior:
+  - parses watchlist candidates from `docs/evidence-watchlist.md`,
+  - filters to high-priority (`P0`/`P1`) uncited candidates,
+  - emits a clinician-review queue with topic-specific promotion actions and PMID/DOI/URL traceability.
+- Updated scheduled production audit workflow:
+  - `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml` now runs `npm run evidence:promote` before full QA.
+
+### QA and validation
+- `npm run evidence:promote`: pass (`13` high-priority candidates queued)
+- `npm run build`: pass
+- `npm test`: pass (`Runs: 3 | Issues: 0`)
+- `npm run qa`: pass (`Runs: 6 | Issues: 0`)
+
 ## Iteration 094 (2026-02-21)
 
 ### What was changed

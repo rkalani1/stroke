@@ -243,6 +243,14 @@
 - Remaining workflow gap:
   - Continue iterative protocol/tooling polish and evidence-watchlist triage operations.
 
+## Iteration 095 Update (2026-02-21)
+- Evidence promotion-ops gap reduced:
+  - Added automated high-priority (`P0/P1`) evidence promotion checklist generation from watchlist output.
+  - Added topic-specific promotion-action mapping and structured PMID/DOI/URL queue export.
+  - Wired checklist generation into scheduled live-smoke audit workflow for ongoing operational readiness.
+- Remaining workflow gap:
+  - Add optional PR-template scaffolding that pre-populates evidence-row edits from checklist selections.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

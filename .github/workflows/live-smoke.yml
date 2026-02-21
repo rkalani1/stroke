@@ -33,6 +33,9 @@ jobs:
       - name: Validate citation identifier endpoints
         run: npm run validate:citations:ids
 
+      - name: Generate evidence promotion checklist
+        run: npm run evidence:promote
+
       - name: Run full QA (local + live)
         run: npm run qa
 

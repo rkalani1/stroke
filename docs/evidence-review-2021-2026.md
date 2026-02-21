@@ -312,3 +312,12 @@
 - Added case-specific AIS-delta trace synthesis (TNK pathway, extended-window imaging selection, post-EVT BP floor caution, DAPT pathway cues) across note templates.
 - Evidence anchor retained: 2026 AHA/ASA AIS guideline (`PMID 41582814`, DOI `10.1161/STR.0000000000000513`).
 - Inference disclosure: case-delta summary text is an implementation trace layer over existing guideline logic and does not create new recommendations.
+
+### Operational update (2026-02-21, iter-095)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added automated evidence-promotion checklist generation from the uncited watchlist:
+  - prioritizes `P0/P1` candidates,
+  - preserves PMID/DOI/URL traceability,
+  - attaches topic-specific promotion action prompts for clinician review.
+- Added scheduled-audit execution of the checklist generator in `live-smoke.yml` before full smoke QA.
+- Inference disclosure: checklist inclusion and priority remain triage aids and do not modify recommendation strength without clinician review.

@@ -264,3 +264,11 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-095)
+- [x] `npm run evidence:promote` generates high-priority promotion queue from watchlist
+- [x] New script `scripts/evidence-promotion-checklist.mjs` writes `docs/evidence-promotion-checklist.md`
+- [x] Scheduled live-smoke workflow executes `npm run evidence:promote` pre-QA
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

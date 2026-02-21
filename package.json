@@ -8,6 +8,7 @@
     "validate:citations:links": "node ./scripts/validate-citations.mjs --check-links",
     "validate:citations:ids": "node ./scripts/validate-citations.mjs --check-identifiers",
     "evidence:watch": "node ./scripts/evidence-watch.mjs",
+    "evidence:promote": "node ./scripts/evidence-promotion-checklist.mjs",
     "test": "npm run validate:citations && node ./scripts/qa-smoke.mjs --local-only",
     "qa": "npm run validate:citations && node ./scripts/qa-smoke.mjs",
     "build:css": "tailwindcss -i ./src/styles.css -o ./tailwind.css --minify",

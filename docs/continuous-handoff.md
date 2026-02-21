@@ -788,3 +788,18 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
+
+## Iteration 095 update (2026-02-21, macOS session)
+- Implemented evidence-promotion checklist automation:
+  - Added script `scripts/evidence-promotion-checklist.mjs`.
+  - Added npm command `npm run evidence:promote`.
+  - Generated `docs/evidence-promotion-checklist.md` from watchlist with P0/P1 triage queue.
+- Updated scheduled production audit:
+  - `.github/workflows/live-smoke.yml` now runs `npm run evidence:promote` before full QA.
+- Validation status:
+  - `npm run evidence:promote` pass (`13` queued high-priority candidates)
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run evidence:promote && npm run validate:citations && npm test && npm run qa`
