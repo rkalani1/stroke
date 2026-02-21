@@ -318,6 +318,13 @@
 - Remaining workflow gap:
   - Add optional structured diff summary between default and full filtered appendix output for rapid reviewer triage.
 
+## Iteration 104 Update (2026-02-21)
+- Filtered-output interpretability gap reduced:
+  - Added filtered-candidate summary counts by exclusion reason to the watchlist audit appendix.
+  - This enables rapid evaluation of whether filters are over-suppressing any specific publication class.
+- Remaining workflow gap:
+  - Add optional per-topic filtered-reason matrix (topic x reason counts) for even faster domain-level triage.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

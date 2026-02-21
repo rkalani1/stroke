@@ -950,3 +950,19 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
+## Iteration 104 update (2026-02-21, macOS session)
+- Enhanced filtered-candidate transparency in `scripts/evidence-watch.mjs`:
+  - Added `Filtered Candidate Summary by Reason` table in watchlist audit appendix.
+- Regenerated evidence operations artifacts:
+  - `docs/evidence-watchlist.md`
+  - `docs/evidence-promotion-checklist.md`
+  - `docs/evidence-promotion-template.md`
+  - `docs/evidence-promotion-template-p0.md`
+  - `docs/evidence-ops-index.md`
+- Validation status:
+  - `npm run evidence:refresh` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`

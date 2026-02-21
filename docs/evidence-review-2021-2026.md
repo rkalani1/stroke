@@ -374,3 +374,8 @@
 - No new primary RCT/guideline citations were added to the key table in this iteration.
 - Added CLI controls for filtered-candidate appendix depth (`--filtered-limit`, `--filtered-all`) and exposed a helper command for full-review mode.
 - Inference disclosure: appendix depth controls change watchlist reporting granularity only and do not alter recommendation class/strength.
+
+### Operational update (2026-02-21, iter-104)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added filtered-candidate aggregate reason counts to the watchlist audit appendix to improve reviewer transparency of exclusion behavior.
+- Inference disclosure: filtered-reason summary output is operational reporting only and does not alter recommendation class/strength.

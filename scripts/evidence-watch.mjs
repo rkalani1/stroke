@@ -459,6 +459,20 @@ async function main() {
       lines.push(`| ... | ... | ... | ... | ... | ... | ... |`);
     }
     lines.push('');
+
+    const reasonCounts = new Map();
+    for (const item of filteredLowValue) {
+      const key = item.reason || 'unknown';
+      reasonCounts.set(key, (reasonCounts.get(key) || 0) + 1);
+    }
+    const reasonRows = [...reasonCounts.entries()].sort((a, b) => b[1] - a[1]);
+    lines.push('### Filtered Candidate Summary by Reason');
+    lines.push('| Filter reason | Count |');
+    lines.push('|---|---|');
+    for (const [reason, count] of reasonRows) {
+      lines.push(`| ${escapePipes(reason)} | ${count} |`);
+    }
+    lines.push('');
   }
 
   await fs.writeFile(WATCHLIST_FILE, `${lines.join('\n')}\n`, 'utf8');

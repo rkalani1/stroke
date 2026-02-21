@@ -1,6 +1,6 @@
 # Evidence Watchlist (Auto-generated)
 
-Generated: 2026-02-21T16:02:41.562Z
+Generated: 2026-02-21T16:15:08.820Z
 
 Purpose: highlight potentially relevant **uncited** PubMed evidence for 2021-2026 stroke workflows.
 Baseline cited PMIDs: 23
@@ -65,4 +65,10 @@ Search window start: 2025/01/01
 |---|---|---|---|---|---|---|
 | Thrombolysis and Extended-Window Reperfusion | 41581534 | 2026 | J Stroke Cerebrovasc Dis | Fibrinogen replacement to prevent intracranial hemorrhage in ischemic stroke patients after thrombolysis - a prospective randomized open blinded endpoint trial (FibER): rationale and methods. | rationale and methods | https://pubmed.ncbi.nlm.nih.gov/41581534/ |
 | Thrombolysis and Extended-Window Reperfusion | 41717940 | 2026 | J Am Heart Assoc | Safety and Efficacy of Early Aspirin Administration After Intravenous Thrombolysis for Acute Ischemic Stroke (TREND-IVT): Rationale and Design of a Multicenter, Randomized, Placebo-Controlled Clinical Trial. | rationale and design | https://pubmed.ncbi.nlm.nih.gov/41717940/ |
+
+### Filtered Candidate Summary by Reason
+| Filter reason | Count |
+|---|---|
+| rationale and methods | 1 |
+| rationale and design | 1 |
 

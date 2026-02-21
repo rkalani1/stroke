@@ -1,5 +1,23 @@
 # Iteration Log
 
+## Iteration 104 (2026-02-21)
+
+### What was changed
+- Added filtered-candidate aggregate visibility in watchlist output:
+  - `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs` now emits a **Filtered Candidate Summary by Reason** table in the audit appendix.
+  - Maintains actionable queue suppression while exposing exclusion-volume distribution for review governance.
+- Regenerated evidence-ops artifacts after script update:
+  - `docs/evidence-watchlist.md`,
+  - `docs/evidence-promotion-checklist.md`,
+  - `docs/evidence-promotion-template.md`,
+  - `docs/evidence-promotion-template-p0.md`,
+  - `docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run evidence:refresh` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 103 (2026-02-21)
 
 ### What was changed
