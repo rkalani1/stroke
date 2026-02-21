@@ -4,8 +4,8 @@
 - Branch: `main`
 - Last pushed commit: run `git rev-parse --short origin/main`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.71`
-- Service worker cache key: `stroke-app-v70`
+- Live APP_VERSION: `v5.14.72`
+- Service worker cache key: `stroke-app-v71`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -702,3 +702,21 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run validate:citations:links && npm run validate:citations:ids && npm test && npm run qa`
+
+## Iteration 090 update (2026-02-20, macOS session)
+- Implemented structured special-population workflows in `src/app.jsx`:
+  - `maternalStrokePathway` (postpartum day, severe HTN, OB consult, magnesium decision, delivery coordination, fetal monitoring).
+  - `cancerStrokePathway` (mechanism class, D-dimer multiple, multiterritory/NBTE flags, workup bundle, prevention branch, oncology consult).
+- Added warning-layer safeguards:
+  - maternal severe-HTN escalation omissions,
+  - cancer pathway incompleteness and mechanism/prevention mismatch.
+- Added structured maternal/cancer summaries to generated handoff note outputs.
+- Deployment coherency update:
+  - `APP_VERSION` bumped to `v5.14.72`
+  - cache key bumped to `stroke-app-v71`
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`

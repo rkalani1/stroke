@@ -267,3 +267,11 @@
   - `PMID 41603019` with DOI `10.1161/STR.0000000000000514`.
 - Removed mixed-reference pairing that previously combined an alternate publication PMID with the Stroke DOI.
 - Regenerated evidence watchlist baseline after correction; uncited candidate count decreased by one.
+
+### Operational update (2026-02-20, iter-090)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Implemented structured evidence-to-workflow operationalization for two high-priority special-population domains:
+  - maternal stroke escalation (postpartum severe-HTN / OB coordination / magnesium decision capture),
+  - cancer-associated stroke mechanism classification and prevention-branch selection.
+- Added warning-layer safeguards for pathway incompleteness and mechanism-plan mismatch, and propagated structured summaries into generated handoff notes.
+- Inference disclosure: these structured pathway outputs operationalize existing cited statements and do not independently change recommendation class/strength.

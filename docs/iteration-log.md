@@ -1,5 +1,24 @@
 # Iteration Log
 
+## Iteration 090 (2026-02-20)
+
+### What was changed
+- Implemented structured high-priority special-population workflows in `/Users/rizwankalani/stroke/src/app.jsx`:
+  - Added `maternalStrokePathway` state and UI controls for postpartum day, severe-HTN/preeclampsia concern, OB consult, magnesium protocol, delivery-team coordination, and fetal monitoring.
+  - Added `cancerStrokePathway` state and UI controls for mechanism classification (probable/possible/conventional), D-dimer multiple, multiterritory and NBTE flags, structured workup bundle, prevention branch, and oncology consult.
+- Added evidence-aligned safety warnings:
+  - Maternal severe-HTN escalation checks (OB consult and magnesium-decision documentation).
+  - Cancer-stroke pathway completeness checks (workup bundle presence, mechanism/prevention mismatch, oncology consult documentation).
+- Expanded note/handoff output to include structured maternal and cancer summaries in transfer/signout/progress/discharge/consult/full-note paths.
+- Updated cache/version for deployment coherence:
+  - `APP_VERSION` → `v5.14.72`
+  - service worker cache key → `stroke-app-v71`
+
+### Verification
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 089 (2026-02-20)
 
 ### What was changed

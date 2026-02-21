@@ -21,12 +21,14 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] TNK-first decision card visible for ischemic diagnosis before TNK/EVT checkboxes.
 - [ ] Wake-up imaging hard-stop alert visible when lkwUnknown is true (wake-up panel open).
 - [ ] Pregnancy rapid actions panel displays when pregnancyStroke checkbox is checked.
+- [ ] Maternal postpartum severe-HTN escalation panel fields (postpartum day, OB consult, magnesium decision, delivery coordination) persist and render when pregnancyStroke is selected.
 - [ ] Renal-safety alert appears in contrast section when Cr >3 or CrCl <30.
 - [ ] PFO closure eligibility card visible in secondary prevention dashboard.
 - [ ] Carotid revascularization decision guide visible in secondary prevention dashboard.
 - [ ] Ischemic library panel includes Post-EVT BP Guardrail module.
 - [ ] TIA library panel includes TIA Disposition Engine module.
 - [ ] CVT special-population flags and dynamic plan summary remain present in CVT workflow.
+- [ ] Cancer-associated stroke structured pathway fields (mechanism/workup/prevention/oncology consult) render and persist when active cancer is selected.
 
 ## Workflow and usability
 - [ ] Senior rapid path: key decisions visible within one scroll on desktop.
@@ -216,6 +218,14 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 ## Last completed run (2026-02-20, iter-089)
 - [x] Maternal-stroke citation mapping corrected to Stroke record (`PMID 41603019`, DOI `10.1161/STR.0000000000000514`)
 - [x] `npm run evidence:watch` pass with refreshed uncited baseline (`22` candidates)
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-20, iter-090)
+- [x] Structured maternal-stroke escalation workflow added (postpartum severe-HTN + OB/magnesium/delivery coordination fields)
+- [x] Structured cancer-stroke mechanism/workup/prevention workflow added
+- [x] Safety warnings added for maternal escalation omissions and cancer pathway mismatch/incompleteness
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

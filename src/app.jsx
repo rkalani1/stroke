@@ -1490,7 +1490,31 @@ Clinician Name`;
             },
             // Phase 5: Special Populations
             pregnancyStroke: false,
+            maternalStrokePathway: {
+              postpartumDays: '',
+              severeHypertension: false,
+              obstetricsConsulted: false,
+              magnesiumStarted: false,
+              deliveryCoordination: false,
+              fetalMonitoring: false
+            },
             activeCancer: false,
+            cancerStrokePathway: {
+              mechanism: '',
+              dDimerMultipleUln: '',
+              multiTerritoryInfarcts: false,
+              nbteSuspected: false,
+              workupBundle: {
+                dDimer: false,
+                fibrinogen: false,
+                bloodSmear: false,
+                bloodCultures: false,
+                tee: false,
+                ctBody: false
+              },
+              preventionPlan: '',
+              oncologyConsulted: false
+            },
             sickleCellDisease: false,
             infectiveEndocarditis: false,
             decompressiveCraniectomy: {
@@ -8307,6 +8331,62 @@ Clinician Name`;
             ];
           };
 
+          const getCancerMechanismLabel = (value) => {
+            const map = {
+              probable: 'probable cancer-related stroke',
+              possible: 'possible cancer-related stroke',
+              conventional: 'conventional (non-cancer) mechanism'
+            };
+            return map[value] || '';
+          };
+
+          const getCancerPreventionLabel = (value) => {
+            const map = {
+              lmwh: 'LMWH-preferred pathway',
+              antiplatelet: 'antiplatelet pathway',
+              doac: 'DOAC pathway (selected cases)',
+              individualized: 'individualized pathway'
+            };
+            return map[value] || '';
+          };
+
+          const getCancerStrokeSummary = (data) => {
+            if (!data?.activeCancer) return '';
+            const cp = data.cancerStrokePathway || {};
+            const parts = [];
+            const mechanism = getCancerMechanismLabel(cp.mechanism);
+            if (mechanism) parts.push(`mechanism: ${mechanism}`);
+            if (cp.dDimerMultipleUln) parts.push(`D-dimer ${cp.dDimerMultipleUln}x ULN`);
+            if (cp.multiTerritoryInfarcts) parts.push('multiterritory infarcts');
+            if (cp.nbteSuspected) parts.push('NBTE concern');
+            const bundle = cp.workupBundle || {};
+            const ordered = [];
+            if (bundle.dDimer) ordered.push('D-dimer');
+            if (bundle.fibrinogen) ordered.push('fibrinogen');
+            if (bundle.bloodSmear) ordered.push('blood smear');
+            if (bundle.bloodCultures) ordered.push('blood cultures');
+            if (bundle.tee) ordered.push('TEE');
+            if (bundle.ctBody) ordered.push('body CT');
+            if (ordered.length > 0) parts.push(`workup: ${ordered.join(', ')}`);
+            const prevention = getCancerPreventionLabel(cp.preventionPlan);
+            if (prevention) parts.push(`prevention: ${prevention}`);
+            if (cp.oncologyConsulted) parts.push('oncology consulted');
+            return parts.join('; ');
+          };
+
+          const getMaternalStrokeSummary = (data) => {
+            if (!data?.pregnancyStroke) return '';
+            const mp = data.maternalStrokePathway || {};
+            const parts = [];
+            if (mp.postpartumDays) parts.push(`postpartum day ${mp.postpartumDays}`);
+            if (mp.severeHypertension) parts.push('severe HTN / preeclampsia concern');
+            if (mp.obstetricsConsulted) parts.push('OB consulted');
+            if (mp.magnesiumStarted) parts.push('magnesium protocol started');
+            if (mp.deliveryCoordination) parts.push('L&D/anesthesia coordination active');
+            if (mp.fetalMonitoring) parts.push('fetal monitoring planned');
+            return parts.join('; ');
+          };
+
 
           const sanitizeTelestrokeNoteForStorage = (note) => {
             if (shouldPersistFreeText) return note;
@@ -8362,7 +8442,7 @@ Clinician Name`;
               'youngAdultWorkup', 'drivingRestrictions', 'returnToWork',
               'sexualHealthCounseling', 'airTravelRestrictions',
               'spasticity', 'centralPain', 'fatigue', 'substanceScreening', 'hormonalRisk',
-              'palliativeCare', 'fallsRisk', 'pregnancyStroke', 'activeCancer', 'sickleCellDisease', 'infectiveEndocarditis', 'decompressiveCraniectomy', 'rehabReferral',
+              'palliativeCare', 'fallsRisk', 'pregnancyStroke', 'maternalStrokePathway', 'activeCancer', 'cancerStrokePathway', 'sickleCellDisease', 'infectiveEndocarditis', 'decompressiveCraniectomy', 'rehabReferral',
               // Discharge
               'dischargeChecklist', 'dischargeChecklistReviewed', 'dischargeNIHSS', 'mrsAssessment',
               // Imaging and exam results
@@ -9543,8 +9623,14 @@ Clinician Name`;
               const transferDysphagia = telestrokeNote.dysphagiaScreening || {};
               if (transferDysphagia.bedsideScreenResult === 'fail') transferAlerts.push('NPO — failed dysphagia screen');
               if (telestrokeNote.contrastAllergy) transferAlerts.push('Contrast allergy');
-              if (telestrokeNote.pregnancyStroke) transferAlerts.push('PREGNANCY — consult OB');
-              if (telestrokeNote.activeCancer) transferAlerts.push('ACTIVE CANCER — consider D-dimer, NBTE eval, oncology consult');
+              if (telestrokeNote.pregnancyStroke) {
+                const maternalSummary = getMaternalStrokeSummary(telestrokeNote);
+                transferAlerts.push(`PREGNANCY — consult OB${maternalSummary ? `; ${maternalSummary}` : ''}`);
+              }
+              if (telestrokeNote.activeCancer) {
+                const cancerSummary = getCancerStrokeSummary(telestrokeNote);
+                transferAlerts.push(`ACTIVE CANCER — consider D-dimer/NBTE eval${cancerSummary ? `; ${cancerSummary}` : '; oncology consult'}`);
+              }
               if (telestrokeNote.sickleCellDisease) transferAlerts.push('SICKLE CELL DISEASE — urgent exchange transfusion, hematology consult');
               if (telestrokeNote.infectiveEndocarditis) transferAlerts.push('INFECTIVE ENDOCARDITIS — avoid anticoagulation, ID consult, blood cultures, TEE');
               const transferMeds = (telestrokeNote.medications || '').toLowerCase();
@@ -9945,8 +10031,14 @@ Clinician Name`;
                 if (snIchAc.decision) note += `- ICH anticoag: ${snIchAc.decision.replace(/-/g, ' ')}${snIchAc.chadsVascScore ? ` (CHA2DS2-VASc ${snIchAc.chadsVascScore})` : ''}\n`;
               }
               // Special populations
-              if (telestrokeNote.pregnancyStroke) note += `- PREGNANCY: OB/GYN co-management recommended\n`;
-              if (telestrokeNote.activeCancer) note += `- ACTIVE CANCER: oncology co-management recommended\n`;
+              if (telestrokeNote.pregnancyStroke) {
+                const maternalSummary = getMaternalStrokeSummary(telestrokeNote);
+                note += `- PREGNANCY: OB/GYN co-management recommended${maternalSummary ? ` (${maternalSummary})` : ''}\n`;
+              }
+              if (telestrokeNote.activeCancer) {
+                const cancerSummary = getCancerStrokeSummary(telestrokeNote);
+                note += `- ACTIVE CANCER: oncology co-management recommended${cancerSummary ? ` (${cancerSummary})` : ''}\n`;
+              }
               if (telestrokeNote.sickleCellDisease) note += `- SICKLE CELL DISEASE: hematology co-management, exchange transfusion status\n`;
               if (telestrokeNote.infectiveEndocarditis) note += `- INFECTIVE ENDOCARDITIS: TNK contraindicated, infectious disease/cardiology co-management\n`;
               // Osmotic therapy (ICH/SAH)
@@ -10264,7 +10356,14 @@ Clinician Name`;
                   note += `\n`;
                 }
               }
-              if (telestrokeNote.activeCancer) note += `   - ACTIVE CANCER\n`;
+              if (telestrokeNote.pregnancyStroke) {
+                const maternalSummary = getMaternalStrokeSummary(telestrokeNote);
+                note += `   - PREGNANCY${maternalSummary ? ` (${maternalSummary})` : ''}\n`;
+              }
+              if (telestrokeNote.activeCancer) {
+                const cancerSummary = getCancerStrokeSummary(telestrokeNote);
+                note += `   - ACTIVE CANCER${cancerSummary ? ` (${cancerSummary})` : ''}\n`;
+              }
               if (telestrokeNote.sickleCellDisease) note += `   - SICKLE CELL DISEASE\n`;
               if (telestrokeNote.infectiveEndocarditis) note += `   - INFECTIVE ENDOCARDITIS\n`;
               const progBp = bpPhaseTargets[telestrokeNote.bpPhase];
@@ -10754,8 +10853,14 @@ Clinician Name`;
                 if (htDisch.antithromboticHeld) note += `- Antithrombotics held due to HT\n`;
               }
               if (telestrokeNote.complicationNotes) note += `- Complication details: ${telestrokeNote.complicationNotes}\n`;
-              if (telestrokeNote.pregnancyStroke) note += `- Pregnancy-associated stroke: OB/GYN co-management\n`;
-              if (telestrokeNote.activeCancer) note += `- Active cancer: oncology co-management\n`;
+              if (telestrokeNote.pregnancyStroke) {
+                const maternalSummary = getMaternalStrokeSummary(telestrokeNote);
+                note += `- Pregnancy-associated stroke: OB/GYN co-management${maternalSummary ? ` (${maternalSummary})` : ''}\n`;
+              }
+              if (telestrokeNote.activeCancer) {
+                const cancerSummary = getCancerStrokeSummary(telestrokeNote);
+                note += `- Active cancer: oncology co-management${cancerSummary ? ` (${cancerSummary})` : ''}\n`;
+              }
               if (telestrokeNote.sickleCellDisease) note += `- Sickle cell disease: hematology co-management\n`;
               if (telestrokeNote.infectiveEndocarditis) note += `- Infective endocarditis: ID/cardiology co-management\n`;
               // Decompressive craniectomy
@@ -11783,8 +11888,14 @@ Clinician Name`;
 
             // Special populations
             const consultSpecialPops = [];
-            if (telestrokeNote.pregnancyStroke) consultSpecialPops.push('PREGNANCY — OB/GYN consultation recommended');
-            if (telestrokeNote.activeCancer) consultSpecialPops.push('ACTIVE CANCER — oncology co-management');
+            if (telestrokeNote.pregnancyStroke) {
+              const maternalSummary = getMaternalStrokeSummary(telestrokeNote);
+              consultSpecialPops.push(`PREGNANCY — OB/GYN consultation recommended${maternalSummary ? ` (${maternalSummary})` : ''}`);
+            }
+            if (telestrokeNote.activeCancer) {
+              const cancerSummary = getCancerStrokeSummary(telestrokeNote);
+              consultSpecialPops.push(`ACTIVE CANCER — oncology co-management${cancerSummary ? ` (${cancerSummary})` : ''}`);
+            }
             if (telestrokeNote.sickleCellDisease) consultSpecialPops.push('SICKLE CELL DISEASE — hematology co-management');
             if (telestrokeNote.infectiveEndocarditis) consultSpecialPops.push('INFECTIVE ENDOCARDITIS — TNK contraindicated, ID/cardiology co-management');
             if (consultSpecialPops.length > 0) {
@@ -12631,6 +12742,21 @@ Clinician Name`;
               warnings.push({ id: 'evt-pregnancy', severity: 'warn', msg: 'EVT in pregnancy — use pelvic lead shielding during angiography. Minimize fluoroscopy time. Coordinate with OB before and after procedure. Post-procedure fetal monitoring required. Iodinated contrast acceptable when benefit outweighs risk.' });
             }
 
+            // Maternal stroke escalation checks
+            if (n.pregnancyStroke) {
+              const mp = n.maternalStrokePathway || {};
+              const postpartumDays = parseInt(mp.postpartumDays, 10);
+              if (mp.severeHypertension && !mp.obstetricsConsulted) {
+                warnings.push({ id: 'maternal-severe-htn-ob', severity: 'error', msg: 'Pregnancy/postpartum stroke with severe HTN selected, but OB/GYN consult not documented. Activate maternal-fetal co-management immediately.' });
+              }
+              if (mp.severeHypertension && !mp.magnesiumStarted) {
+                warnings.push({ id: 'maternal-severe-htn-mag', severity: 'warn', msg: 'Severe maternal HTN/preeclampsia concern selected — ensure magnesium protocol decision is explicitly documented (initiate unless contraindicated).' });
+              }
+              if (!isNaN(postpartumDays) && postpartumDays <= 14 && n.tnkRecommended) {
+                warnings.push({ id: 'maternal-early-postpartum-tnk', severity: 'warn', msg: `Postpartum day ${postpartumDays} with thrombolysis selected — review hemorrhage risk (recent delivery/neuraxial anesthesia) and document multidisciplinary risk-benefit decision.` });
+              }
+            }
+
             // Cardiac complication warning (troponin/EKG)
             const ekgLower = (n.ekgResults || '').toLowerCase();
             if (/stemi|st.?elevation|acute.?mi|st.?changes/.test(ekgLower)) {
@@ -12642,6 +12768,18 @@ Clinician Name`;
             // Cancer-associated stroke warnings
             if (n.activeCancer) {
               warnings.push({ id: 'cancer-stroke', severity: 'warn', msg: 'Active cancer — consider: D-dimer, blood cultures, TTE/TEE for marantic endocarditis (NBTE), chest CT. Multiterritory infarcts suggest cancer-related hypercoagulability. Secondary prevention: equipoise between anticoagulation (LMWH preferred) vs antiplatelet — discuss with oncology (AHA 2026 Cancer-Stroke Scientific Statement).' });
+              const cp = n.cancerStrokePathway || {};
+              const bundle = cp.workupBundle || {};
+              const anyBundleOrdered = Object.values(bundle).some(Boolean);
+              if (!anyBundleOrdered) {
+                warnings.push({ id: 'cancer-workup-missing', severity: 'warn', msg: 'Active cancer selected without structured cancer-stroke workup bundle entries (D-dimer/fibrinogen/smear/cultures/TEE/body CT). Document mechanism-focused workup plan.' });
+              }
+              if (cp.mechanism === 'probable' && cp.preventionPlan === 'antiplatelet') {
+                warnings.push({ id: 'cancer-probable-antiplatelet', severity: 'warn', msg: 'Probable cancer-related mechanism selected with antiplatelet-only plan — reassess LMWH-preferred pathway unless contraindicated.' });
+              }
+              if (!cp.oncologyConsulted) {
+                warnings.push({ id: 'cancer-oncology-consult', severity: 'warn', msg: 'Active cancer stroke pathway selected without documented oncology consult — add shared decision support for mechanism and antithrombotic strategy.' });
+              }
               if (n.tnkRecommended) {
                 warnings.push({ id: 'cancer-tnk', severity: 'warn', msg: 'TNK in active cancer — check CBC/coagulation. Generally avoid IVT if known brain metastases. Thrombocytopenia (<100K) is a contraindication.' });
               }
@@ -25366,6 +25504,116 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       </div>
                                       <p className="text-xs text-red-600 mt-2 italic">AHA 2026 Maternal Stroke Focused Update. PMID: 41603019.</p>
                                     </div>
+
+                                    <div className="bg-pink-100 border border-pink-300 rounded-lg p-3">
+                                      <p className="text-xs font-bold text-pink-900 mb-2">Postpartum Severe-HTN / Delivery Coordination</p>
+                                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                        <div>
+                                          <label className="block text-slate-600 mb-1">Postpartum day (if applicable)</label>
+                                          <input
+                                            type="number"
+                                            min="0"
+                                            max="90"
+                                            value={(telestrokeNote.maternalStrokePathway || {}).postpartumDays || ''}
+                                            onChange={(e) => {
+                                              const v = e.target.value;
+                                              setTelestrokeNote(prev => ({
+                                                ...prev,
+                                                maternalStrokePathway: { ...(prev.maternalStrokePathway || {}), postpartumDays: v }
+                                              }));
+                                            }}
+                                            className="w-full px-2 py-1 border border-pink-300 rounded text-sm"
+                                            placeholder="e.g., 2"
+                                          />
+                                        </div>
+                                        <label className="flex items-center gap-1">
+                                          <input
+                                            type="checkbox"
+                                            checked={!!(telestrokeNote.maternalStrokePathway || {}).severeHypertension}
+                                            onChange={(e) => {
+                                              const c = e.target.checked;
+                                              setTelestrokeNote(prev => ({
+                                                ...prev,
+                                                maternalStrokePathway: { ...(prev.maternalStrokePathway || {}), severeHypertension: c }
+                                              }));
+                                            }}
+                                          />
+                                          Severe HTN / preeclampsia concern (SBP &ge;160 or DBP &ge;110)
+                                        </label>
+                                        <label className="flex items-center gap-1">
+                                          <input
+                                            type="checkbox"
+                                            checked={!!(telestrokeNote.maternalStrokePathway || {}).obstetricsConsulted}
+                                            onChange={(e) => {
+                                              const c = e.target.checked;
+                                              setTelestrokeNote(prev => ({
+                                                ...prev,
+                                                maternalStrokePathway: { ...(prev.maternalStrokePathway || {}), obstetricsConsulted: c }
+                                              }));
+                                            }}
+                                          />
+                                          OB/GYN consulted
+                                        </label>
+                                        <label className="flex items-center gap-1">
+                                          <input
+                                            type="checkbox"
+                                            checked={!!(telestrokeNote.maternalStrokePathway || {}).magnesiumStarted}
+                                            onChange={(e) => {
+                                              const c = e.target.checked;
+                                              setTelestrokeNote(prev => ({
+                                                ...prev,
+                                                maternalStrokePathway: { ...(prev.maternalStrokePathway || {}), magnesiumStarted: c }
+                                              }));
+                                            }}
+                                          />
+                                          Magnesium protocol started / documented
+                                        </label>
+                                        <label className="flex items-center gap-1">
+                                          <input
+                                            type="checkbox"
+                                            checked={!!(telestrokeNote.maternalStrokePathway || {}).deliveryCoordination}
+                                            onChange={(e) => {
+                                              const c = e.target.checked;
+                                              setTelestrokeNote(prev => ({
+                                                ...prev,
+                                                maternalStrokePathway: { ...(prev.maternalStrokePathway || {}), deliveryCoordination: c }
+                                              }));
+                                            }}
+                                          />
+                                          L&amp;D / anesthesia coordination active
+                                        </label>
+                                        <label className="flex items-center gap-1">
+                                          <input
+                                            type="checkbox"
+                                            checked={!!(telestrokeNote.maternalStrokePathway || {}).fetalMonitoring}
+                                            onChange={(e) => {
+                                              const c = e.target.checked;
+                                              setTelestrokeNote(prev => ({
+                                                ...prev,
+                                                maternalStrokePathway: { ...(prev.maternalStrokePathway || {}), fetalMonitoring: c }
+                                              }));
+                                            }}
+                                          />
+                                          Fetal monitoring documented (viable gestation)
+                                        </label>
+                                      </div>
+                                      {(() => {
+                                        const mp = telestrokeNote.maternalStrokePathway || {};
+                                        const items = [];
+                                        if (mp.postpartumDays) items.push(`postpartum day ${mp.postpartumDays}`);
+                                        if (mp.severeHypertension) items.push('severe HTN/preeclampsia concern');
+                                        if (mp.obstetricsConsulted) items.push('OB consulted');
+                                        if (mp.magnesiumStarted) items.push('magnesium decision documented');
+                                        if (mp.deliveryCoordination) items.push('delivery team coordinated');
+                                        if (mp.fetalMonitoring) items.push('fetal monitoring planned');
+                                        if (items.length === 0) return null;
+                                        return (
+                                          <div className="mt-2 p-2 bg-white border border-pink-300 rounded text-xs text-pink-900">
+                                            <strong>Maternal escalation summary:</strong> {items.join('; ')}.
+                                          </div>
+                                        );
+                                      })()}
+                                    </div>
                                   </div>
                                 )}
                               </div>
@@ -25380,12 +25628,164 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <span className="text-sm font-medium">Patient has active malignancy</span>
                                 </label>
                                 {telestrokeNote.activeCancer && (
-                                  <div className="text-xs text-amber-700 space-y-1 ml-6">
-                                    <p>• <strong>Extended workup:</strong> D-dimer, fibrinogen, blood smear, blood cultures if febrile, TTE→TEE (NBTE), body CT</p>
-                                    <p>• <strong>TNK:</strong> Use standard criteria. Avoid if brain metastases or platelets &lt;100K</p>
-                                    <p>• <strong>Mechanism:</strong> Multiterritory infarcts + elevated D-dimer → suspect Trousseau syndrome (cancer hypercoagulability)</p>
-                                    <p>• <strong>Secondary prevention:</strong> Cancer-related mechanism → LMWH preferred (enoxaparin 1 mg/kg BID). Conventional mechanism → standard antiplatelet</p>
-                                    <p>• <strong>Consults:</strong> Oncology for shared decision-making. Goals of care central.</p>
+                                  <div className="text-xs text-amber-700 space-y-2 ml-6">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                      <div>
+                                        <label className="block text-slate-600 mb-1">Mechanism classification</label>
+                                        <select
+                                          value={(telestrokeNote.cancerStrokePathway || {}).mechanism || ''}
+                                          onChange={(e) => {
+                                            const v = e.target.value;
+                                            setTelestrokeNote(prev => ({
+                                              ...prev,
+                                              cancerStrokePathway: { ...(prev.cancerStrokePathway || {}), mechanism: v }
+                                            }));
+                                          }}
+                                          className="w-full px-2 py-1 border border-amber-300 rounded text-sm"
+                                        >
+                                          <option value="">Select</option>
+                                          <option value="probable">Probable cancer-related</option>
+                                          <option value="possible">Possible cancer-related</option>
+                                          <option value="conventional">Conventional (non-cancer) mechanism</option>
+                                        </select>
+                                      </div>
+                                      <div>
+                                        <label className="block text-slate-600 mb-1">D-dimer (x ULN)</label>
+                                        <input
+                                          type="number"
+                                          min="0"
+                                          max="200"
+                                          step="0.1"
+                                          value={(telestrokeNote.cancerStrokePathway || {}).dDimerMultipleUln || ''}
+                                          onChange={(e) => {
+                                            const v = e.target.value;
+                                            setTelestrokeNote(prev => ({
+                                              ...prev,
+                                              cancerStrokePathway: { ...(prev.cancerStrokePathway || {}), dDimerMultipleUln: v }
+                                            }));
+                                          }}
+                                          className="w-full px-2 py-1 border border-amber-300 rounded text-sm"
+                                          placeholder="e.g., 7.5"
+                                        />
+                                      </div>
+                                      <label className="flex items-center gap-1">
+                                        <input
+                                          type="checkbox"
+                                          checked={!!(telestrokeNote.cancerStrokePathway || {}).multiTerritoryInfarcts}
+                                          onChange={(e) => {
+                                            const c = e.target.checked;
+                                            setTelestrokeNote(prev => ({
+                                              ...prev,
+                                              cancerStrokePathway: { ...(prev.cancerStrokePathway || {}), multiTerritoryInfarcts: c }
+                                            }));
+                                          }}
+                                        />
+                                        Multiterritory infarcts present
+                                      </label>
+                                      <label className="flex items-center gap-1">
+                                        <input
+                                          type="checkbox"
+                                          checked={!!(telestrokeNote.cancerStrokePathway || {}).nbteSuspected}
+                                          onChange={(e) => {
+                                            const c = e.target.checked;
+                                            setTelestrokeNote(prev => ({
+                                              ...prev,
+                                              cancerStrokePathway: { ...(prev.cancerStrokePathway || {}), nbteSuspected: c }
+                                            }));
+                                          }}
+                                        />
+                                        NBTE / marantic endocarditis concern
+                                      </label>
+                                    </div>
+
+                                    <div className="bg-amber-100 border border-amber-300 rounded p-2">
+                                      <p className="font-semibold text-amber-900 mb-1">Extended workup bundle</p>
+                                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+                                        {[
+                                          ['dDimer', 'D-dimer'],
+                                          ['fibrinogen', 'Fibrinogen'],
+                                          ['bloodSmear', 'Peripheral smear (schistocytes)'],
+                                          ['bloodCultures', 'Blood cultures (if febrile)'],
+                                          ['tee', 'TTE/TEE for NBTE'],
+                                          ['ctBody', 'Body CT for occult progression']
+                                        ].map(([key, label]) => (
+                                          <label key={key} className="flex items-center gap-1">
+                                            <input
+                                              type="checkbox"
+                                              checked={!!((telestrokeNote.cancerStrokePathway || {}).workupBundle || {})[key]}
+                                              onChange={(e) => {
+                                                const c = e.target.checked;
+                                                setTelestrokeNote(prev => ({
+                                                  ...prev,
+                                                  cancerStrokePathway: {
+                                                    ...(prev.cancerStrokePathway || {}),
+                                                    workupBundle: { ...((prev.cancerStrokePathway || {}).workupBundle || {}), [key]: c }
+                                                  }
+                                                }));
+                                              }}
+                                            />
+                                            {label}
+                                          </label>
+                                        ))}
+                                      </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                      <div>
+                                        <label className="block text-slate-600 mb-1">Secondary prevention branch</label>
+                                        <select
+                                          value={(telestrokeNote.cancerStrokePathway || {}).preventionPlan || ''}
+                                          onChange={(e) => {
+                                            const v = e.target.value;
+                                            setTelestrokeNote(prev => ({
+                                              ...prev,
+                                              cancerStrokePathway: { ...(prev.cancerStrokePathway || {}), preventionPlan: v }
+                                            }));
+                                          }}
+                                          className="w-full px-2 py-1 border border-amber-300 rounded text-sm"
+                                        >
+                                          <option value="">Select</option>
+                                          <option value="lmwh">LMWH-preferred (probable cancer-related)</option>
+                                          <option value="antiplatelet">Antiplatelet (conventional mechanism)</option>
+                                          <option value="doac">DOAC (selected cases, individualized)</option>
+                                          <option value="individualized">Individualized by goals/risk</option>
+                                        </select>
+                                      </div>
+                                      <label className="flex items-center gap-1 mt-5">
+                                        <input
+                                          type="checkbox"
+                                          checked={!!(telestrokeNote.cancerStrokePathway || {}).oncologyConsulted}
+                                          onChange={(e) => {
+                                            const c = e.target.checked;
+                                            setTelestrokeNote(prev => ({
+                                              ...prev,
+                                              cancerStrokePathway: { ...(prev.cancerStrokePathway || {}), oncologyConsulted: c }
+                                            }));
+                                          }}
+                                        />
+                                        Oncology consulted
+                                      </label>
+                                    </div>
+
+                                    {(() => {
+                                      const cp = telestrokeNote.cancerStrokePathway || {};
+                                      const mech = cp.mechanism || (
+                                        cp.multiTerritoryInfarcts && parseFloat(cp.dDimerMultipleUln) >= 5 ? 'probable' : ''
+                                      );
+                                      const rec = mech === 'probable'
+                                        ? 'Probable cancer-related mechanism: prioritize LMWH pathway and NBTE-focused workup.'
+                                        : mech === 'conventional'
+                                          ? 'Conventional mechanism: follow standard antiplatelet/vascular secondary prevention unless another indication for anticoagulation exists.'
+                                          : 'Mechanism not finalized: complete workup bundle and classify before committing long-term antithrombotic strategy.';
+                                      return (
+                                        <div className="p-2 bg-white border border-amber-300 rounded text-xs text-amber-900">
+                                          <strong>Cancer-stroke decision summary:</strong> {rec}
+                                        </div>
+                                      );
+                                    })()}
+
+                                    <p>• <strong>TNK:</strong> Use standard criteria. Avoid if brain metastases or platelets &lt;100K.</p>
+                                    <p>• <strong>Guidance source:</strong> AHA 2026 Cancer-Associated Stroke Scientific Statement (PMID: 41623113).</p>
                                   </div>
                                 )}
                               </div>
@@ -26319,8 +26719,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 }
 
                                 // Special Populations
-                                if (telestrokeNote.pregnancyStroke) note += `\nSPECIAL: Pregnant/postpartum patient — see pregnancy-specific management above.\n`;
-                                if (telestrokeNote.activeCancer) note += `SPECIAL: Active cancer — extended workup ordered (D-dimer, TEE, body CT). Secondary prevention tailored to mechanism.\n`;
+                                if (telestrokeNote.pregnancyStroke) {
+                                  const maternalSummary = getMaternalStrokeSummary(telestrokeNote);
+                                  note += `\nSPECIAL: Pregnant/postpartum patient — see pregnancy-specific management above${maternalSummary ? ` (${maternalSummary})` : ''}.\n`;
+                                }
+                                if (telestrokeNote.activeCancer) {
+                                  const cancerSummary = getCancerStrokeSummary(telestrokeNote);
+                                  note += `SPECIAL: Active cancer — extended workup ordered and secondary prevention tailored to mechanism${cancerSummary ? ` (${cancerSummary})` : ''}.\n`;
+                                }
                                 if (telestrokeNote.sickleCellDisease) note += `SPECIAL: Sickle cell disease — exchange transfusion initiated (target HbS <30%, Hgb ~10). Hematology consulted.\n`;
                                 if (telestrokeNote.infectiveEndocarditis) note += `SPECIAL: Infective endocarditis — TNK contraindicated, anticoagulation avoided. Blood cultures, TEE, mycotic aneurysm screen ordered. ID consulted.\n`;
                                 if ((telestrokeNote.decompressiveCraniectomy || {}).considered) note += `DECOMPRESSIVE CRANIECTOMY: ${(telestrokeNote.decompressiveCraniectomy || {}).timing || 'being considered'}.\n`;
