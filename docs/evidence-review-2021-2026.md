@@ -379,3 +379,8 @@
 - No new primary RCT/guideline citations were added to the key table in this iteration.
 - Added filtered-candidate aggregate reason counts to the watchlist audit appendix to improve reviewer transparency of exclusion behavior.
 - Inference disclosure: filtered-reason summary output is operational reporting only and does not alter recommendation class/strength.
+
+### Operational update (2026-02-21, iter-105)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added per-topic filtered-reason summary output to the watchlist appendix for domain-level exclusion transparency.
+- Inference disclosure: topic-level filtered summary is operational reporting only and does not alter recommendation class/strength.

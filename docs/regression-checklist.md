@@ -57,6 +57,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Watchlist includes filtered-candidate audit appendix for reviewer override visibility.
 - [ ] `npm run evidence:watch:filtered-all` executes and emits full filtered appendix without breaking downstream refresh pipeline.
 - [ ] Watchlist filtered appendix includes reason-count summary table for exclusion-audit visibility.
+- [ ] Watchlist filtered appendix includes topic+reason summary table for domain-level exclusion review.
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] Service worker cache version updated when asset behavior changes.
 - [ ] `index.html` app version updated for storage/cache compatibility when needed.
@@ -340,5 +341,11 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 ## Last completed run (2026-02-21, iter-104)
 - [x] Watchlist filtered appendix now includes `Filtered Candidate Summary by Reason`
 - [x] `npm run evidence:refresh` pass (high-priority queue remains `11`; filtered total `2`)
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-105)
+- [x] Watchlist filtered appendix now includes `Filtered Candidate Summary by Topic and Reason`
+- [x] `npm run evidence:refresh` pass (queue stable: `11` high-priority; `2` filtered)
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

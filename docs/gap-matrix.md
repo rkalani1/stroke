@@ -325,6 +325,13 @@
 - Remaining workflow gap:
   - Add optional per-topic filtered-reason matrix (topic x reason counts) for even faster domain-level triage.
 
+## Iteration 105 Update (2026-02-21)
+- Domain-level filtered-triage visibility gap reduced:
+  - Added per-topic + reason count summary in watchlist filtered appendix.
+  - Reviewers can now quickly see which clinical domains are most affected by protocol/design exclusions.
+- Remaining workflow gap:
+  - Add optional threshold alert when one topic dominates filtered exclusions (potential over-filtering signal).
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

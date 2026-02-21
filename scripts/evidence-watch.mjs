@@ -473,6 +473,26 @@ async function main() {
       lines.push(`| ${escapePipes(reason)} | ${count} |`);
     }
     lines.push('');
+
+    const topicReasonCounts = new Map();
+    for (const item of filteredLowValue) {
+      const key = `${item.topic}|||${item.reason || 'unknown'}`;
+      topicReasonCounts.set(key, (topicReasonCounts.get(key) || 0) + 1);
+    }
+    const topicReasonRows = [...topicReasonCounts.entries()]
+      .map(([key, count]) => {
+        const [topic, reason] = key.split('|||');
+        return { topic, reason, count };
+      })
+      .sort((a, b) => b.count - a.count || a.topic.localeCompare(b.topic));
+
+    lines.push('### Filtered Candidate Summary by Topic and Reason');
+    lines.push('| Topic | Filter reason | Count |');
+    lines.push('|---|---|---|');
+    for (const row of topicReasonRows) {
+      lines.push(`| ${escapePipes(row.topic)} | ${escapePipes(row.reason)} | ${row.count} |`);
+    }
+    lines.push('');
   }
 
   await fs.writeFile(WATCHLIST_FILE, `${lines.join('\n')}\n`, 'utf8');
