@@ -8,7 +8,7 @@
 | ICH hyperacute bundle | ICH pathway and reversal fields present. | 2022 AHA ICH guideline + INTERACT3 bundle evidence + ANNEXA-I + ENRICH surgical data. | Bundle execution steps are spread across sections and can be missed under pressure. | Added one-screen ICH first-hour critical bundle card (BP, reversal, ICU escalation, early surgery screen). | P0 (completed iter-004) |
 | SAH pathway | SAH sections and grading tools present. | 2023 AHA SAH guideline reinforces early securement + DCI prevention workflows. | High-value SAH first-hour actions not consolidated in single rapid card. | Added SAH first-hour rapid actions card (airway/ICU, BP, securing, nimodipine, hydrocephalus, DCI surveillance). | P1 (completed iter-006) |
 | CVT pathway | CVT section exists. | 2024 AHA CVT statement + ACTION-CVT observational evidence for DOAC transition in selected patients. | CVT anticoag and escalation sequence could be more explicit. | Added CVT treatment timeline strip (acute/subacute/duration/escalation) with ACTION-CVT DOAC data. | P1 (completed iter-006) |
-| Secondary prevention DAPT | Prevention content present. | CHANCE-2, INSPIRES refine phenotype-specific DAPT selection and duration. | DAPT duration guidance may be diffuse across notes/checklists. | Add compact DAPT matrix by phenotype/timing (minor stroke/high-risk TIA/LAA context). | P0 |
+| Secondary prevention DAPT | Prevention content present. | CHANCE-2, INSPIRES refine phenotype-specific DAPT selection and duration. | DAPT duration guidance may be diffuse across notes/checklists. | Added compact phenotype-based DAPT matrix (CHANCE/POINT, CHANCE-2, THALES/AIS-2026 IIb, INSPIRES, SAMMPRIS-pattern severe ICAD) in TIA workflow. | P0 (completed iter-106) |
 | AF-related anticoag timing | AF, CHA2DS2-VASc and HAS-BLED support present. | ELAN and TIMING support earlier DOAC in selected patients. | App lacks explicit early-vs-delayed anticoag timing card tied to infarct size/hemorrhage risk. | Added AF anticoag timing quick card in prevention section (CATALYST/ELAN/TIMING grid + caution flags). | P1 (completed iter-006) |
 | Pregnancy/peripartum stroke | Limited explicit pregnancy-focused operational guidance. | Maternal stroke focused update emphasizes urgent, coordinated stroke care. | Special-population workflow not surfaced enough in acute view. | Enhanced pregnancy panel with 4-cell rapid actions grid (treatment, coordination, differential, medication safety). | P1 (completed iter-007) |
 | Renal dysfunction and anticoag dosing | Creatinine and CrCl fields exist. | Recent guidance emphasizes dose-pathway safety for anticoagulation and imaging contrast decisions. | Decision-support prompts for renal dosing/contrast precautions are not prominent. | Added renal-safety auto-alert in contrast section (CrCl-based) + existing DOAC dose checker already covers anticoag. | P1 (completed iter-008) |
@@ -332,6 +332,15 @@
 - Remaining workflow gap:
   - Add optional threshold alert when one topic dominates filtered exclusions (potential over-filtering signal).
 
+## Iteration 106 Update (2026-02-21)
+- Filter-overreach detection gap reduced:
+  - Added watchlist filtered-topic dominance alerting with configurable threshold support (`--filtered-dominance-threshold`).
+  - Watchlist now reports top filtered topic share and alert status directly in the audit appendix.
+- Secondary-prevention implementation gap reduced:
+  - Added compact phenotype-based DAPT matrix in TIA workflow for one-glance regimen selection by clinical phenotype and intended treatment window.
+- Remaining workflow gap:
+  - Optional per-topic custom dominance thresholds (domain-specific guardrails) if filtering policy needs non-uniform sensitivity.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |
@@ -340,6 +349,6 @@
 | P0 | Add structured **cancer-related stroke classification** workflow block (probable/possible/conventional mechanism + workup bundle + prevention branch). | Converts cancer-stroke statement into explicit triage and secondary-prevention actions, reducing ambiguity in high-recurrence subgroup. | AHA scientific statement (PMID: 41623113; DOI: 10.1161/STR.0000000000000517) — completed iter-090 |
 | P0 | Expand maternal module with **postpartum severe-HTN and delivery/stabilization decision prompts**. | Pregnancy-associated stroke admissions cluster around hypertensive disorders; explicit prompts improve time-critical stabilization and OB-neuro coordination. | Maternal stroke statement (PMID: 41603019; DOI: 10.1161/STR.0000000000000514) — completed iter-090 |
 | P1 | Add SAH follow-up block for **standardized outcome selection** (discharge + 90-day measure set). | Improves trial-aligned comparability and handoff continuity in aneurysmal SAH recovery tracking. | SAH outcome position paper (PMID: 41498145; DOI: 10.1161/STROKEAHA.125.053470) — completed iter-092 |
-| P1 | Add explicit **MeVO trial-state caution** badge in EVT section (routine EVT benefit not yet established; selective use only). | Prevents overgeneralization of EVT to medium/distal occlusions while evidence remains mixed/neutral in RCT era. | ESCAPE-MeVO post-hoc outcome report (PMID: 41651659; DOI: 10.1136/jnis-2025-024733) |
+| P1 | Add explicit **MeVO trial-state caution** badge in EVT section (routine EVT benefit not yet established; selective use only). | Prevents overgeneralization of EVT to medium/distal occlusions while evidence remains mixed/neutral in RCT era. | ESCAPE-MeVO post-hoc outcome report (PMID: 41651659; DOI: 10.1136/jnis-2025-024733) — completed iter-106 validation |
 | P1 | Add anticoag-ICH **door-to-reversal/transfer timer** KPI outputs in dashboard + notes. | Timeliness is a modifiable process metric strongly tied to hemorrhage pathway safety. | Anticoag-ICH timeliness cohort (PMID: 41703701; DOI: 10.1161/JAHA.125.043223) — completed iter-091 |
 | P2 | Add secondary-prevention implementation tracker for **DAPT protocol adherence** in eligible minor stroke/TIA phenotypes. | Converts recommendation text into measurable local quality behavior and catches underuse/overuse drift. | Regional implementation analysis (PMID: 41679778; DOI: 10.1136/svn-2025-004815) — completed iter-093 |

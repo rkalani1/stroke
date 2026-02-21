@@ -982,3 +982,25 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
+## Iteration 106 update (2026-02-21, macOS session)
+- Added filtered-topic dominance alerting in `scripts/evidence-watch.mjs`:
+  - new CLI option: `--filtered-dominance-threshold` (ratio or percent),
+  - new watchlist appendix table: `Filtered Topic Dominance Alert` (top topic share, threshold, status).
+- Added npm helper command in `package.json`:
+  - `evidence:watch:dominance`
+- Added compact phenotype-based DAPT matrix in TIA management workflow (`src/app.jsx`) with one-glance regimen windows for CHANCE/POINT, CHANCE-2, THALES/AIS-2026 IIb framing, INSPIRES, and severe symptomatic ICAD (SAMMPRIS pattern).
+- Regenerated evidence ops artifacts:
+  - `docs/evidence-watchlist.md`
+  - `docs/evidence-promotion-checklist.md`
+  - `docs/evidence-promotion-template.md`
+  - `docs/evidence-promotion-template-p0.md`
+  - `docs/evidence-ops-index.md`
+- Validation status:
+  - `npm run evidence:refresh` pass
+  - `npm run evidence:watch:dominance` pass
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`

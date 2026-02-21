@@ -10,6 +10,7 @@
     "validate:evidence-promotion": "node ./scripts/validate-evidence-promotion.mjs",
     "evidence:watch": "node ./scripts/evidence-watch.mjs",
     "evidence:watch:filtered-all": "node ./scripts/evidence-watch.mjs --filtered-all",
+    "evidence:watch:dominance": "node ./scripts/evidence-watch.mjs --filtered-dominance-threshold 0.6",
     "evidence:promote": "node ./scripts/evidence-promotion-checklist.mjs",
     "evidence:template": "node ./scripts/evidence-promotion-template.mjs",
     "evidence:template:p0": "node ./scripts/evidence-promotion-template.mjs --priority p0 --output docs/evidence-promotion-template-p0.md",

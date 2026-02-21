@@ -13,6 +13,7 @@ const MAX_SEARCH_IDS = 30;
 const MAX_PER_TOPIC = 8;
 const REQUEST_DELAY_MS = 350;
 const DEFAULT_FILTERED_APPENDIX_LIMIT = 20;
+const DEFAULT_FILTERED_TOPIC_DOMINANCE_THRESHOLD = 0.6;
 
 const TOPIC_QUERIES = [
   {
@@ -124,6 +125,15 @@ const SPECIALTY_SOURCE_PATTERNS = [
 function parseCliOptions(argv = []) {
   let filteredAppendixLimit = DEFAULT_FILTERED_APPENDIX_LIMIT;
   let filteredAll = false;
+  let filteredTopicDominanceThreshold = DEFAULT_FILTERED_TOPIC_DOMINANCE_THRESHOLD;
+
+  function parseDominanceThreshold(rawValue) {
+    const parsed = Number.parseFloat(rawValue);
+    if (Number.isNaN(parsed) || parsed <= 0) return null;
+    if (parsed <= 1) return parsed;
+    if (parsed <= 100) return parsed / 100;
+    return null;
+  }
 
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
@@ -140,10 +150,25 @@ function parseCliOptions(argv = []) {
     if (arg.startsWith('--filtered-limit=')) {
       const value = Number.parseInt(arg.split('=')[1], 10);
       if (!Number.isNaN(value) && value > 0) filteredAppendixLimit = value;
+      continue;
+    }
+    if (arg === '--filtered-dominance-threshold' && i + 1 < argv.length) {
+      const threshold = parseDominanceThreshold(argv[i + 1]);
+      if (threshold !== null) filteredTopicDominanceThreshold = threshold;
+      i += 1;
+      continue;
+    }
+    if (arg.startsWith('--filtered-dominance-threshold=')) {
+      const threshold = parseDominanceThreshold(arg.split('=')[1]);
+      if (threshold !== null) filteredTopicDominanceThreshold = threshold;
     }
   }
 
-  return { filteredAppendixLimit, filteredAll };
+  return {
+    filteredAppendixLimit,
+    filteredAll,
+    filteredTopicDominanceThreshold
+  };
 }
 
 function sleep(ms) {
@@ -186,6 +211,12 @@ function extractYear(pubdate) {
 
 function escapePipes(text) {
   return String(text || '').replace(/\|/g, '\\|').replace(/\s+/g, ' ').trim();
+}
+
+function formatPercent(value) {
+  const numeric = Number(value);
+  if (Number.isNaN(numeric)) return '';
+  return `${(numeric * 100).toFixed(1)}%`;
 }
 
 function isHighSignalSource(source) {
@@ -493,12 +524,56 @@ async function main() {
       lines.push(`| ${escapePipes(row.topic)} | ${escapePipes(row.reason)} | ${row.count} |`);
     }
     lines.push('');
+
+    const topicCounts = new Map();
+    for (const item of filteredLowValue) {
+      const key = item.topic || 'Unknown topic';
+      topicCounts.set(key, (topicCounts.get(key) || 0) + 1);
+    }
+    const topicRows = [...topicCounts.entries()]
+      .map(([topic, count]) => ({ topic, count }))
+      .sort((a, b) => b.count - a.count || a.topic.localeCompare(b.topic));
+    const totalFiltered = filteredLowValue.length;
+    const topTopic = topicRows[0] || { topic: 'None', count: 0 };
+    const topShare = totalFiltered > 0 ? topTopic.count / totalFiltered : 0;
+    const dominanceThreshold = options.filteredTopicDominanceThreshold || DEFAULT_FILTERED_TOPIC_DOMINANCE_THRESHOLD;
+    const dominanceAlert = topShare >= dominanceThreshold;
+
+    lines.push('### Filtered Topic Dominance Alert');
+    lines.push('| Topic | Count | Share | Alert threshold | Status |');
+    lines.push('|---|---|---|---|---|');
+    lines.push(
+      `| ${escapePipes(topTopic.topic)} | ${topTopic.count} | ${formatPercent(topShare)} | ${formatPercent(dominanceThreshold)} | ${dominanceAlert ? 'ALERT' : 'OK'} |`
+    );
+    lines.push('');
+    if (dominanceAlert) {
+      lines.push(
+        `- Alert: ${escapePipes(topTopic.topic)} contributes ${formatPercent(topShare)} of filtered entries (threshold ${formatPercent(dominanceThreshold)}). Review filter strictness for this topic.`
+      );
+    } else {
+      lines.push(
+        `- No dominance alert. Top topic share is ${formatPercent(topShare)} (threshold ${formatPercent(dominanceThreshold)}).`
+      );
+    }
+    lines.push('');
   }
 
   await fs.writeFile(WATCHLIST_FILE, `${lines.join('\n')}\n`, 'utf8');
   console.log(`Evidence watchlist updated: ${path.relative(process.cwd(), WATCHLIST_FILE)}`);
   console.log(`Topics scanned: ${TOPIC_QUERIES.length}; uncited candidates: ${seenCandidatePmids.size}.`);
   console.log(`Filtered low-actionability candidates logged: ${filteredLowValue.length}${options.filteredAll ? ' (full appendix)' : ` (appendix limit ${options.filteredAppendixLimit})`}.`);
+  if (filteredLowValue.length > 0) {
+    const topicCounts = new Map();
+    for (const item of filteredLowValue) {
+      topicCounts.set(item.topic, (topicCounts.get(item.topic) || 0) + 1);
+    }
+    const topTopic = [...topicCounts.entries()].sort((a, b) => b[1] - a[1])[0];
+    const share = topTopic ? topTopic[1] / filteredLowValue.length : 0;
+    const threshold = options.filteredTopicDominanceThreshold || DEFAULT_FILTERED_TOPIC_DOMINANCE_THRESHOLD;
+    console.log(
+      `Filtered dominance: ${topTopic ? `${topTopic[0]} (${formatPercent(share)})` : 'none'}; threshold ${formatPercent(threshold)}; status ${share >= threshold ? 'ALERT' : 'OK'}.`
+    );
+  }
 }
 
 main().catch((error) => {

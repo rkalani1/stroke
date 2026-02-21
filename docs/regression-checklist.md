@@ -37,6 +37,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Command palette/search remains functional and navigates correctly.
 - [ ] New UI changes do not add unnecessary clicks for common acute workflows.
 - [ ] DAPT phenotype quick matrix remains visible in secondary prevention workflow when pathway context is present.
+- [ ] TIA pathway includes compact phenotype-based DAPT matrix rows (CHANCE/POINT, CHANCE-2, THALES/AIS-2026 IIb, INSPIRES, severe ICAD pattern).
 - [ ] Bottom-right quick contacts FAB is visible and opens a callable contact panel.
 - [ ] Settings tab shows Contact Directory editor and Reset UW Defaults control.
 - [ ] TIA pathway language remains risk-stratified (no universal-admit hard stop text).
@@ -58,6 +59,8 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] `npm run evidence:watch:filtered-all` executes and emits full filtered appendix without breaking downstream refresh pipeline.
 - [ ] Watchlist filtered appendix includes reason-count summary table for exclusion-audit visibility.
 - [ ] Watchlist filtered appendix includes topic+reason summary table for domain-level exclusion review.
+- [ ] Watchlist filtered appendix includes top-topic dominance alert (share vs threshold).
+- [ ] `npm run evidence:watch:dominance` executes successfully.
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] Service worker cache version updated when asset behavior changes.
 - [ ] `index.html` app version updated for storage/cache compatibility when needed.
@@ -347,5 +350,13 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 ## Last completed run (2026-02-21, iter-105)
 - [x] Watchlist filtered appendix now includes `Filtered Candidate Summary by Topic and Reason`
 - [x] `npm run evidence:refresh` pass (queue stable: `11` high-priority; `2` filtered)
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-106)
+- [x] Watchlist filtered appendix now includes `Filtered Topic Dominance Alert` with threshold status
+- [x] `npm run evidence:watch:dominance` pass (dominance threshold command path verified)
+- [x] `npm run evidence:refresh` pass (queue stable: `11` high-priority; filtered dominance alert emitted)
+- [x] `npm run build` pass after TIA phenotype DAPT matrix addition
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

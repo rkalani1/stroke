@@ -1,5 +1,27 @@
 # Iteration Log
 
+## Iteration 106 (2026-02-21)
+
+### What was changed
+- Added filtered-exclusion dominance monitoring to evidence-watch automation in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+  - new CLI option `--filtered-dominance-threshold` (accepts ratio or percent),
+  - new watchlist appendix block **Filtered Topic Dominance Alert** with top-topic share vs threshold status.
+- Added npm helper command:
+  - `npm run evidence:watch:dominance`.
+- Added compact phenotype-based DAPT matrix in TIA workflow (`/Users/rizwankalani/stroke/src/app.jsx`) covering CHANCE/POINT, CHANCE-2, THALES/AIS-2026 framing, INSPIRES, and SAMMPRIS-pattern severe ICAD.
+- Regenerated evidence-ops artifacts:
+  - `docs/evidence-watchlist.md`,
+  - `docs/evidence-promotion-checklist.md`,
+  - `docs/evidence-promotion-template.md`,
+  - `docs/evidence-promotion-template-p0.md`,
+  - `docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run evidence:refresh` passed.
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 105 (2026-02-21)
 
 ### What was changed

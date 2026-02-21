@@ -31280,6 +31280,54 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm text-slate-700">
                               <strong>If AF identified:</strong> Switch from DAPT to anticoagulation (DOAC preferred). Do NOT combine long-term DAPT + anticoagulation.
                             </div>
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                              <h5 className="font-semibold text-blue-800 text-sm mb-2">Phenotype-Based DAPT Quick Matrix</h5>
+                              <div className="overflow-x-auto">
+                                <table className="w-full text-xs border-collapse">
+                                  <thead>
+                                    <tr className="bg-white">
+                                      <th scope="col" className="border border-blue-200 px-2 py-1.5 text-left">Phenotype</th>
+                                      <th scope="col" className="border border-blue-200 px-2 py-1.5 text-left">Preferred regimen</th>
+                                      <th scope="col" className="border border-blue-200 px-2 py-1.5 text-left">Duration</th>
+                                      <th scope="col" className="border border-blue-200 px-2 py-1.5 text-left">Evidence anchor</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr className="bg-white/80">
+                                      <td className="border border-blue-200 px-2 py-1.5">Minor stroke (NIHSS &le;3) or high-risk TIA (ABCD2 &ge;4)</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">ASA + clopidogrel</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">21 days, then single antiplatelet</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">CHANCE, POINT</td>
+                                    </tr>
+                                    <tr className="bg-white/60">
+                                      <td className="border border-blue-200 px-2 py-1.5">CYP2C19 loss-of-function carrier</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">ASA + ticagrelor (then ticagrelor monotherapy)</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">21 days DAPT</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">CHANCE-2</td>
+                                    </tr>
+                                    <tr className="bg-white/80">
+                                      <td className="border border-blue-200 px-2 py-1.5">Mild-to-moderate non-cardioembolic stroke (NIHSS 4-5) without high bleed risk</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">ASA + ticagrelor</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">30 days</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">THALES; AIS 2026 Class IIb framing</td>
+                                    </tr>
+                                    <tr className="bg-white/60">
+                                      <td className="border border-blue-200 px-2 py-1.5">Atherosclerotic minor stroke/TIA enrolled within 72h</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">ASA + clopidogrel</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">21 days DAPT then clopidogrel through day 90</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">INSPIRES</td>
+                                    </tr>
+                                    <tr className="bg-white/80">
+                                      <td className="border border-blue-200 px-2 py-1.5">Severe symptomatic intracranial stenosis (70-99%)</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">ASA + clopidogrel with intensive risk-factor control</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">Up to 90 days</td>
+                                      <td className="border border-blue-200 px-2 py-1.5">SAMMPRIS paradigm</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <p className="text-xs text-blue-800 mt-2">Avoid prolonged DAPT beyond intended windows unless a specific vascular phenotype justifies it; de-escalate to monotherapy promptly.</p>
+                            </div>
                           </div>
                         </div>
 

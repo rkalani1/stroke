@@ -384,3 +384,9 @@
 - No new primary RCT/guideline citations were added to the key table in this iteration.
 - Added per-topic filtered-reason summary output to the watchlist appendix for domain-level exclusion transparency.
 - Inference disclosure: topic-level filtered summary is operational reporting only and does not alter recommendation class/strength.
+
+### Operational update (2026-02-21, iter-106)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added filtered-topic dominance alerting in watchlist audit output with configurable threshold support (`--filtered-dominance-threshold`) to detect potential over-filtering concentration by domain.
+- Added compact phenotype-based DAPT matrix in TIA workflow to operationalize CHANCE/POINT, CHANCE-2, THALES/AIS-2026 IIb framing, INSPIRES, and severe symptomatic ICAD (SAMMPRIS-pattern) selection windows in one-glance format.
+- Inference disclosure: dominance alerts are triage-governance signals only, and the DAPT matrix operationalizes existing cited trial/guideline evidence without creating new recommendation classes.

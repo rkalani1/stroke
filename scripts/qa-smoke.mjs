@@ -455,6 +455,18 @@ async function auditView(browser, target, viewport) {
       if ((await page.getByText(/TIA Disposition Engine/i).count()) === 0) {
         addIssue(issues, 'missing-tia-disposition-engine');
       }
+      if (target.name === 'local') {
+        if ((await page.getByText(/Phenotype-Based DAPT Quick Matrix/i).count()) === 0) {
+          addIssue(issues, 'missing-tia-dapt-phenotype-matrix');
+        } else {
+          if ((await page.getByText(/CHANCE, POINT/i).count()) === 0) {
+            addIssue(issues, 'missing-tia-dapt-matrix-evidence-row', { row: 'CHANCE/POINT' });
+          }
+          if ((await page.getByText(/INSPIRES/i).count()) === 0) {
+            addIssue(issues, 'missing-tia-dapt-matrix-evidence-row', { row: 'INSPIRES' });
+          }
+        }
+      }
 
       const persistentDeficitCheckbox = page.getByRole('checkbox', { name: /Persistent deficit/i }).first();
       if ((await persistentDeficitCheckbox.count()) === 0) {
