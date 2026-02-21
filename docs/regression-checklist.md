@@ -76,6 +76,8 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] External profile config file (`docs/evidence-churn-profiles.json`) is present and loadable by watchlist command.
 - [ ] `npm run evidence:watch:profiles-file` executes successfully.
 - [ ] `npm run validate:evidence-churn-profiles` executes successfully.
+- [ ] CI and scheduled live-smoke workflows capture `output/diagnostics/churn-profile-validation.log` in uploaded artifacts.
+- [ ] Smoke QA runtime exceptions are reported as `audit-runtime-error` findings (no full-process crash on single-viewport failure).
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] QA smoke report includes local/live app-version parity metadata (`localAppVersion`, `liveAppVersion`, `liveParityChecksEnabled`).
 - [ ] Service worker cache version updated when asset behavior changes.
@@ -89,6 +91,12 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Live URL `https://rkalani1.github.io/stroke/` serves updated build.
 - [ ] Post-deploy smoke checks pass on local + live for all three viewport classes.
 - [ ] Scheduled `live-smoke.yml` retains baseline GitHub issue alerting and optional webhook fan-out behavior.
+
+## Last completed run (2026-02-21, iter-118)
+- [x] CI and live-smoke workflows now log and artifact-export churn-profile schema validation diagnostics.
+- [x] `npm run build` passed.
+- [x] `npm test` passed (`Runs: 3 | Issues: 0`).
+- [x] `npm run qa` local + live smoke passed (`Runs: 6 | Issues: 0`).
 
 ## Last completed run (2026-02-18, iter-037)
 - [x] `npm run build` passes

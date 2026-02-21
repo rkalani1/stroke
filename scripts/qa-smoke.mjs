@@ -105,6 +105,8 @@ async function auditView(browser, target, viewport) {
     permissions: ['clipboard-read', 'clipboard-write']
   });
   const page = await context.newPage();
+  page.setDefaultTimeout(10000);
+  page.setDefaultNavigationTimeout(60000);
   const issues = [];
   const notes = {};
   let postEvtPlanConfigured = false;
@@ -743,14 +745,26 @@ async function main() {
       };
     });
 
-    const browser = await chromium.launch({ headless: true });
-    const runs = [];
+  const browser = await chromium.launch({ headless: true });
+  const runs = [];
 
-    for (const target of effectiveTargets) {
-      for (const viewport of VIEWPORTS) {
+  for (const target of effectiveTargets) {
+    for (const viewport of VIEWPORTS) {
+      try {
         runs.push(await auditView(browser, target, viewport));
+      } catch (error) {
+        runs.push({
+          target: target.name,
+          url: target.url,
+          viewport: viewport.name,
+          issues: [{ type: 'audit-runtime-error', message: error?.message || String(error) }],
+          issueCount: 1,
+          notes: { fatalStack: error?.stack || String(error) },
+          screenshot: null
+        });
       }
     }
+  }
 
     await browser.close();
 

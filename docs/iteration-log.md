@@ -1,5 +1,24 @@
 # Iteration Log
 
+## Iteration 118 (2026-02-21)
+
+### What was changed
+- Added churn-profile validation diagnostics capture to CI workflows:
+  - `/Users/rizwankalani/stroke/.github/workflows/ci.yml`
+  - `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`
+- Both workflows now:
+  - run `npm run validate:evidence-churn-profiles`,
+  - tee validator output to `output/diagnostics/churn-profile-validation.log`,
+  - upload diagnostic and governance artifacts for failed-run triage.
+- Hardened smoke automation runtime resilience in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+  - set deterministic Playwright action timeout defaults,
+  - convert per-target/viewport runtime exceptions into structured `audit-runtime-error` issues instead of aborting the entire run.
+
+### Verification
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 117 (2026-02-21)
 
 ### What was changed

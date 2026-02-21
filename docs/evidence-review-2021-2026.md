@@ -12,6 +12,12 @@
 - If guidelines disagree, prioritize: newer publication date, direct relevance to stroke phenotype, and consistency with multiple RCTs.
 - If RCTs conflict, prioritize larger multicenter pragmatic RCTs and endpoint quality (functional outcome over surrogate outcomes).
 
+### Operational update (2026-02-21, iter-118)
+- No new primary guideline/RCT citations were added in this iteration.
+- Added CI/scheduled-smoke diagnostics capture for churn-profile schema validation to improve operational traceability when governance checks fail.
+- Hardened smoke automation fault handling so per-viewport runtime exceptions are emitted as structured QA issues rather than aborting the entire run.
+- Inference disclosure: these changes affect reliability/monitoring only and do not modify clinical recommendation content, evidence ranking, or guideline interpretation.
+
 ## 1) Acute ischemic stroke thrombolysis (TNK vs alteplase, windows, wake-up/unknown onset)
 - Practical recommendation:
   - Tenecteplase 0.25 mg/kg is a strong first-line thrombolytic option in eligible AIS, especially LVO/EVT-intended pathways.

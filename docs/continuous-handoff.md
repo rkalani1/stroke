@@ -7,6 +7,22 @@
 - Live APP_VERSION: `v5.14.78`
 - Service worker cache key: `stroke-app-v77`
 
+## Iteration 118 update (2026-02-21, macOS session)
+- Completed:
+  - Added churn-profile schema validation diagnostics capture and artifact export in:
+    - `/Users/rizwankalani/stroke/.github/workflows/ci.yml`
+    - `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`
+  - Hardened smoke-run reliability in:
+    - `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`
+    - deterministic Playwright action timeout defaults,
+    - per-viewport runtime errors now captured as `audit-runtime-error` findings instead of aborting the full run.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
 ## Session summary (iter-006 through iter-038)
 
 ### Clinical content (iter-006 through iter-008, iter-013, iter-014, iter-016 through iter-029)

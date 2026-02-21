@@ -27,6 +27,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate churn profile schema
+        run: |
+          mkdir -p output/diagnostics
+          set -o pipefail
+          npm run validate:evidence-churn-profiles 2>&1 | tee output/diagnostics/churn-profile-validation.log
+
       - name: Validate citation URL health
         run: npm run validate:citations:links
 
@@ -162,5 +168,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: live-smoke-artifacts
-          path: output/playwright
+          path: |
+            output/playwright
+            output/diagnostics/churn-profile-validation.log
+            docs/evidence-churn-profiles.json
+            docs/evidence-watchlist.md
+            docs/evidence-watch-history.json
+            docs/evidence-ops-index.md
           if-no-files-found: ignore
