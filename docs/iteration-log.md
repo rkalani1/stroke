@@ -1,5 +1,22 @@
 # Iteration Log
 
+## Iteration 119 (2026-02-21)
+
+### What was changed
+- Added smoke-runtime timing telemetry in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+  - per-run section timing capture (`bootstrap-render`, `quick-contacts-fab`, `encounter-workflow`, `library-workflow`, `settings-workflow`, `post-evt-note-trace`, `pediatric-workflow`, `screenshot`),
+  - per-run total duration (`notes.runDurationMs`) in JSON report output.
+- Added summary-level timing diagnostics in smoke report output:
+  - `averageRunDurationMs`,
+  - `slowestRun` (`target`, `viewport`, `durationMs`),
+  - console trace of slowest run for rapid CI triage.
+- Hardened run-loop fault tolerance already added in iter-118 remains active alongside timing telemetry.
+
+### Verification
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`; slowest run emitted).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`; slowest run emitted).
+
 ## Iteration 118 (2026-02-21)
 
 ### What was changed

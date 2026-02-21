@@ -109,6 +109,16 @@ async function auditView(browser, target, viewport) {
   page.setDefaultNavigationTimeout(60000);
   const issues = [];
   const notes = {};
+  const sectionTimings = [];
+  const markSectionStart = (name) => ({ name, startedAtMs: Date.now() });
+  const markSectionEnd = (section) => {
+    sectionTimings.push({
+      section: section.name,
+      durationMs: Date.now() - section.startedAtMs
+    });
+  };
+  const runStartedAtMs = Date.now();
+  notes.sectionTimings = sectionTimings;
   let postEvtPlanConfigured = false;
 
   page.on('pageerror', (err) => addIssue(issues, 'pageerror', { message: err.message }));
@@ -122,6 +132,7 @@ async function auditView(browser, target, viewport) {
     });
   });
 
+  let section = markSectionStart('bootstrap-render');
   const response = await page.goto(target.url, { waitUntil: 'domcontentloaded', timeout: 60000 });
   if (!response || response.status() >= 400) {
     addIssue(issues, 'http', { status: response?.status() ?? null });
@@ -157,7 +168,9 @@ async function auditView(browser, target, viewport) {
       addIssue(issues, 'missing-tab', { tab: requiredTab });
     }
   }
+  markSectionEnd(section);
 
+  section = markSectionStart('quick-contacts-fab');
   const quickContactsButton = page.getByRole('button', { name: /toggle quick contacts/i }).first();
   if ((await quickContactsButton.count()) === 0) {
     addIssue(issues, 'missing-quick-contacts-fab');
@@ -179,7 +192,9 @@ async function auditView(browser, target, viewport) {
     await page.keyboard.press('Escape');
     await page.waitForTimeout(100);
   }
+  markSectionEnd(section);
 
+  section = markSectionStart('encounter-workflow');
   await page.keyboard.press('Control+2');
   await page.waitForTimeout(150);
   const activeAfterCtrl2 = await getActiveTabLabel(page);
@@ -416,7 +431,9 @@ async function auditView(browser, target, viewport) {
     }
 
   }
+  markSectionEnd(section);
 
+  section = markSectionStart('library-workflow');
   await page.keyboard.press('Control+3');
   await page.waitForTimeout(150);
   const activeAfterCtrl3 = await getActiveTabLabel(page);
@@ -525,7 +542,9 @@ async function auditView(browser, target, viewport) {
       }
     }
   }
+  markSectionEnd(section);
 
+  section = markSectionStart('settings-workflow');
   await page.keyboard.press('Control+4');
   await page.waitForTimeout(150);
   const activeAfterCtrl4 = await getActiveTabLabel(page);
@@ -555,7 +574,9 @@ async function auditView(browser, target, viewport) {
       }
     }
   }
+  markSectionEnd(section);
 
+  section = markSectionStart('post-evt-note-trace');
   if (postEvtPlanConfigured) {
     await page.keyboard.press('Control+2');
     await page.waitForTimeout(150);
@@ -609,7 +630,9 @@ async function auditView(browser, target, viewport) {
       }
     }
   }
+  markSectionEnd(section);
 
+  section = markSectionStart('pediatric-workflow');
   // Pediatric pathway scenario (age <18): ensure safety workflow is visible and note-traceable.
   await page.keyboard.press('Control+2');
   await page.waitForTimeout(200);
@@ -695,9 +718,13 @@ async function auditView(browser, target, viewport) {
       }
     }
   }
+  markSectionEnd(section);
 
+  section = markSectionStart('screenshot');
   const screenshotPath = path.join(outDir, `qa-${target.name}-${viewport.name}.png`);
   await page.screenshot({ path: screenshotPath, fullPage: true });
+  markSectionEnd(section);
+  notes.runDurationMs = Date.now() - runStartedAtMs;
 
   await context.close();
   return {
@@ -769,6 +796,26 @@ async function main() {
     await browser.close();
 
     const totalIssues = runs.reduce((sum, run) => sum + run.issueCount, 0);
+    const timedRuns = runs.filter((run) => Number.isFinite(run?.notes?.runDurationMs));
+    const totalRunDurationMs = timedRuns.reduce((sum, run) => sum + run.notes.runDurationMs, 0);
+    const averageRunDurationMs = timedRuns.length > 0 ? Math.round(totalRunDurationMs / timedRuns.length) : null;
+    const slowestRun = timedRuns.reduce((slowest, run) => {
+      if (!slowest) {
+        return {
+          target: run.target,
+          viewport: run.viewport,
+          durationMs: run.notes.runDurationMs
+        };
+      }
+      if (run.notes.runDurationMs > slowest.durationMs) {
+        return {
+          target: run.target,
+          viewport: run.viewport,
+          durationMs: run.notes.runDurationMs
+        };
+      }
+      return slowest;
+    }, null);
     const summary = {
       startedAt,
       finishedAt: new Date().toISOString(),
@@ -779,7 +826,9 @@ async function main() {
       totalIssues,
       localAppVersion: localVersion,
       liveAppVersion: liveVersion,
-      liveParityChecksEnabled: liveVersionMatchesLocal
+      liveParityChecksEnabled: liveVersionMatchesLocal,
+      averageRunDurationMs,
+      slowestRun
     };
 
     const report = { summary, runs };
@@ -787,6 +836,11 @@ async function main() {
 
     console.log(`QA smoke report: ${path.relative(process.cwd(), reportFile)}`);
     console.log(`Runs: ${summary.runCount} | Issues: ${summary.totalIssues}`);
+    if (summary.slowestRun) {
+      console.log(
+        `Slowest run: ${summary.slowestRun.target}/${summary.slowestRun.viewport} (${summary.slowestRun.durationMs} ms)`
+      );
+    }
 
     if (totalIssues > 0) {
       console.error('Smoke audit detected issues. See report for details.');

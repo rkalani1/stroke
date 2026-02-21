@@ -15,6 +15,14 @@
 | Senior-first cognitive load | Fast tools exist (search, shortcuts, calculators), but pathway auto-routing can interrupt utility workflows. | Implementation data favor protocolized, low-friction workflows. | Diagnosis updates can pull users away from active utility tabs. | Keep diagnosis-aware routing but preserve user intent when in Calculators/References. | P1 (completed iter-001) |
 | QA/Regression discipline | Build pipeline exists, no automated tests, compare-keys script exists. | High-acuity clinical apps need strict non-regression controls. | No standardized regression checklist in repo. | Added regression-checklist.md. Fixed compare_keys.ps1 false positive (0 true mismatches). | P0 (completed iter-001/010) |
 
+## Iteration 119 Update (2026-02-21)
+- Smoke timing-observability gap reduced:
+  - Added per-section runtime telemetry for each target/viewport audit run.
+  - Added summary-level `averageRunDurationMs` and `slowestRun` metadata to smoke report output.
+  - Added console emission of slowest run for rapid CI diagnostics.
+- Remaining workflow gap:
+  - Optional latency-threshold alerting in smoke report when run/section durations exceed configured bounds.
+
 ## Iteration 118 Update (2026-02-21)
 - CI diagnostics-export gap reduced:
   - Added churn-profile schema validation logging to both GitHub workflows.

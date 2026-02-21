@@ -12,6 +12,12 @@
 - If guidelines disagree, prioritize: newer publication date, direct relevance to stroke phenotype, and consistency with multiple RCTs.
 - If RCTs conflict, prioritize larger multicenter pragmatic RCTs and endpoint quality (functional outcome over surrogate outcomes).
 
+### Operational update (2026-02-21, iter-119)
+- No new primary guideline/RCT citations were added in this iteration.
+- Added smoke telemetry capture for per-section and per-run execution timing across local/live viewport audits.
+- Added summary-level slowest-run and average-run duration reporting for faster operational diagnosis of QA latency drift.
+- Inference disclosure: this is reliability instrumentation only and does not alter clinical recommendation content, evidence ranking, or guideline interpretation.
+
 ### Operational update (2026-02-21, iter-118)
 - No new primary guideline/RCT citations were added in this iteration.
 - Added CI/scheduled-smoke diagnostics capture for churn-profile schema validation to improve operational traceability when governance checks fail.

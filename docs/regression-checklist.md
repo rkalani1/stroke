@@ -80,6 +80,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Smoke QA runtime exceptions are reported as `audit-runtime-error` findings (no full-process crash on single-viewport failure).
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] QA smoke report includes local/live app-version parity metadata (`localAppVersion`, `liveAppVersion`, `liveParityChecksEnabled`).
+- [ ] QA smoke report includes timing telemetry (`averageRunDurationMs`, `slowestRun`, per-run `notes.sectionTimings` and `notes.runDurationMs`).
 - [ ] Service worker cache version updated when asset behavior changes.
 - [ ] `index.html` app version updated for storage/cache compatibility when needed.
 - [ ] Smoke QA pediatric scenario (age `<18`) asserts pathway-card visibility, warning output, and generated-note trace.
@@ -91,6 +92,12 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Live URL `https://rkalani1.github.io/stroke/` serves updated build.
 - [ ] Post-deploy smoke checks pass on local + live for all three viewport classes.
 - [ ] Scheduled `live-smoke.yml` retains baseline GitHub issue alerting and optional webhook fan-out behavior.
+
+## Last completed run (2026-02-21, iter-119)
+- [x] Smoke report now emits per-run timing telemetry and summary-level slowest-run diagnostics.
+- [x] `npm run build` passed.
+- [x] `npm test` passed (`Runs: 3 | Issues: 0`).
+- [x] `npm run qa` local + live smoke passed (`Runs: 6 | Issues: 0`).
 
 ## Last completed run (2026-02-21, iter-118)
 - [x] CI and live-smoke workflows now log and artifact-export churn-profile schema validation diagnostics.
