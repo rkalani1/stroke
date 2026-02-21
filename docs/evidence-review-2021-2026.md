@@ -285,3 +285,13 @@
 - Added warning prompts for missing ICH time anchors and propagated KPI summaries into handoff/consult/discharge note outputs.
 - Evidence anchor retained: anticoagulation-associated ICH timeliness cohort (`PMID 41703701`, DOI `10.1161/JAHA.125.043223`).
 - Inference disclosure: KPI threshold color bands are operational quality cues and do not independently modify recommendation class/strength.
+
+### Operational update (2026-02-21, iter-092)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Implemented SAH standardized outcome-capture operationalization:
+  - discharge mRS and discharge destination tracking,
+  - 90-day mRS and vital-status tracking,
+  - follow-up scheduling plus cognitive/HRQoL plan flags.
+- Added warning-layer safeguards and propagated structured SAH outcome summaries into handoff/consult/discharge/pathway notes.
+- Evidence anchor retained: SAH standardized outcomes position paper (`PMID 41498145`, DOI `10.1161/STROKEAHA.125.053470`).
+- Inference disclosure: selected field set is an implementation-focused minimum dataset aligned to the cited standardization framework and does not alter recommendation class/strength.

@@ -238,3 +238,12 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-092)
+- [x] SAH outcomes module added (discharge + 90-day standardized tracking fields)
+- [x] SAH warning checks added for missing discharge mRS / missing 90-day follow-up / mortality-mRS mismatch
+- [x] SAH outcome summaries propagate through transfer/signout/progress/discharge/consult/pathway note outputs
+- [x] SAH management UI includes structured outcomes panel with follow-up planning fields
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

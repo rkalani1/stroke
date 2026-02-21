@@ -738,3 +738,20 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
+
+## Iteration 092 update (2026-02-21, macOS session)
+- Implemented SAH standardized outcomes workflow in `src/app.jsx`:
+  - Added `sahOutcomeSet` structured state (discharge mRS/disposition, 90-day mRS/status, follow-up scheduling/date, cognitive + HRQoL planning flags).
+  - Added SAH outcomes panel in management UI with live summary trace.
+  - Added warning-layer checks for missing discharge mRS, missing 90-day follow-up plan, and deceased-status vs mRS inconsistency.
+  - Added outcome-summary propagation to full-note brief, transfer, signout, progress, discharge, consult, and pathway-plan outputs.
+  - Added diagnosis-switch reset handling for `sahOutcomeSet` when leaving SAH category.
+- Deployment coherency update:
+  - `APP_VERSION` bumped to `v5.14.74`.
+  - service-worker cache key bumped to `stroke-app-v73`.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`

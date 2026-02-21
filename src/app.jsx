@@ -1100,6 +1100,16 @@ Clinician Name`;
               inducedHypertension: false,
               notes: ''
             },
+            sahOutcomeSet: {
+              dischargeMRS: '',
+              dischargeDisposition: '',
+              followUpScheduled: false,
+              followUpDate: '',
+              ninetyDayMRS: '',
+              ninetyDayMortality: '',
+              cognitiveScreenPlanned: false,
+              hrqolPlanned: false
+            },
             // ICH surgical assessment
             ichSurgicalCriteria: {
               cerebellarGt15mL: false,
@@ -8437,6 +8447,37 @@ Clinician Name`;
             return parts.join('; ');
           };
 
+          const getSahOutcomeSummary = (data) => {
+            const so = data?.sahOutcomeSet || {};
+            const parts = [];
+            const dispositionLabel = {
+              home: 'home',
+              'home-health': 'home with health services',
+              'acute-rehab': 'acute rehab',
+              snf: 'skilled nursing facility',
+              ltach: 'LTACH',
+              hospice: 'hospice',
+              deceased: 'deceased'
+            };
+            const statusLabel = {
+              alive: 'alive',
+              deceased: 'deceased',
+              unknown: 'unknown'
+            };
+
+            if (so.dischargeMRS !== '' && so.dischargeMRS !== null && so.dischargeMRS !== undefined) parts.push(`discharge mRS ${so.dischargeMRS}`);
+            if (so.dischargeDisposition) parts.push(`disposition ${dispositionLabel[so.dischargeDisposition] || so.dischargeDisposition.replace(/-/g, ' ')}`);
+            if (so.followUpScheduled) parts.push(`90-day follow-up scheduled${so.followUpDate ? ` (${so.followUpDate})` : ''}`);
+            else if (so.followUpDate) parts.push(`90-day follow-up target ${so.followUpDate}`);
+            if (so.ninetyDayMRS !== '' && so.ninetyDayMRS !== null && so.ninetyDayMRS !== undefined) parts.push(`90-day mRS ${so.ninetyDayMRS}`);
+            if (so.ninetyDayMortality) parts.push(`90-day status ${statusLabel[so.ninetyDayMortality] || so.ninetyDayMortality}`);
+            const planned = [];
+            if (so.cognitiveScreenPlanned) planned.push('cognitive screen');
+            if (so.hrqolPlanned) planned.push('HRQoL measure');
+            if (planned.length > 0) parts.push(`planned: ${planned.join(' + ')}`);
+            return parts.join('; ');
+          };
+
 
           const sanitizeTelestrokeNoteForStorage = (note) => {
             if (shouldPersistFreeText) return note;
@@ -8471,7 +8512,7 @@ Clinician Name`;
               'wakeUpStrokeWorkflow', 'recommendationsText', 'consentKit',
               // SAH/CVT/TIA pathway fields
               'sahGrade', 'sahGradeScale', 'sahBPManaged', 'sahNimodipine', 'sahEVDPlaced', 'sahAneurysmSecured', 'sahNeurosurgeryConsulted', 'sahSeizureProphylaxis', 'fisherGrade',
-              'sahAneurysmLocation', 'sahAneurysmSize', 'sahSecuringMethod', 'sahVasospasmMonitoring',
+              'sahAneurysmLocation', 'sahAneurysmSize', 'sahSecuringMethod', 'sahVasospasmMonitoring', 'sahOutcomeSet',
               'ichSurgicalCriteria', 'strokeTerritory', 'strokePhenotype',
               'familyCommunication', 'symptomTrajectory', 'symptomOnsetNIHSS', 'postTNKMonitoring',
               'aspectsRegions', 'pcAspectsRegions', 'ticiScore',
@@ -8995,6 +9036,8 @@ Clinician Name`;
               else fuSahParts.push('aneurysm NOT yet secured');
               if (telestrokeNote.sahNimodipine) fuSahParts.push('nimodipine started');
               if ((telestrokeNote.sahVasospasmMonitoring || {}).dciSuspected) fuSahParts.push('DCI suspected');
+              const fuSahOutcome = getSahOutcomeSummary(telestrokeNote);
+              if (fuSahOutcome) fuSahParts.push(`outcomes: ${fuSahOutcome}`);
               if (fuSahParts.length > 0) {
                 brief += `\nSAH SUMMARY:\n`;
                 fuSahParts.forEach(p => { brief += `- ${p}\n`; });
@@ -9507,6 +9550,8 @@ Clinician Name`;
                 if (vmTx.inducedHypertension) vmTxItems.push('induced hypertension initiated');
                 if (vmTxItems.length) note += `- Vasospasm/DCI monitoring: ${vmTxItems.join(', ')}\n`;
                 if (vmTx.notes) note += `- DCI notes: ${vmTx.notes}\n`;
+                const txSahOutcome = getSahOutcomeSummary(telestrokeNote);
+                if (txSahOutcome) note += `- SAH outcomes tracking: ${txSahOutcome}\n`;
               }
               // CVT-specific data
               if (telestrokeNote.diagnosisCategory === 'cvt') {
@@ -10005,6 +10050,8 @@ Clinician Name`;
                   if (snVm.sodiumMonitoring) snSahParts.push('Na+ q6-8h');
                   if (snSahParts.length > 0) note += `- SAH: ${snSahParts.join(', ')}\n`;
                   if (snVm.notes) note += `  DCI notes: ${snVm.notes}\n`;
+                  const snSahOutcome = getSahOutcomeSummary(telestrokeNote);
+                  if (snSahOutcome) note += `  SAH outcomes: ${snSahOutcome}\n`;
                 }
               }
               // Safety alerts
@@ -10465,6 +10512,8 @@ Clinician Name`;
                 if (prVm.dciSuspected) prSahParts.push('DCI SUSPECTED');
                 if (prVm.inducedHypertension) prSahParts.push('induced HTN');
                 if (prSahParts.length > 0) note += `   - SAH: ${prSahParts.join(', ')}\n`;
+                const prSahOutcome = getSahOutcomeSummary(telestrokeNote);
+                if (prSahOutcome) note += `   - SAH outcomes: ${prSahOutcome}\n`;
               }
               // Osmotic therapy (ICH/SAH)
               if (telestrokeNote.diagnosisCategory === 'ich' || telestrokeNote.diagnosisCategory === 'sah') {
@@ -10973,6 +11022,8 @@ Clinician Name`;
                   if (dcVmItems.length > 0) note += `- Vasospasm/DCI monitoring: ${dcVmItems.join(', ')}\n`;
                   if (dcVm.notes) note += `- DCI notes: ${dcVm.notes}\n`;
                 }
+                const dcSahOutcome = getSahOutcomeSummary(telestrokeNote);
+                if (dcSahOutcome) note += `- SAH outcomes tracking: ${dcSahOutcome}\n`;
               }
               // CVT-specific data
               if (telestrokeNote.diagnosisCategory === 'cvt') {
@@ -11750,6 +11801,8 @@ Clinician Name`;
               const vmDc = telestrokeNote.sahVasospasmMonitoring || {};
               if (vmDc.dciSuspected) sahNote += `- DCI suspected during hospitalization\n`;
               if (vmDc.inducedHypertension) sahNote += `- Induced hypertension used for DCI rescue\n`;
+              const consultSahOutcome = getSahOutcomeSummary(telestrokeNote);
+              if (consultSahOutcome) sahNote += `- SAH outcomes tracking: ${consultSahOutcome}\n`;
               if (sahNote !== '\nSAH MANAGEMENT:\n') note += sahNote;
             }
 
@@ -13014,6 +13067,20 @@ Clinician Name`;
               }
             }
 
+            // SAH outcome-capture completeness
+            if (n.diagnosisCategory === 'sah') {
+              const sahOutcome = n.sahOutcomeSet || {};
+              if (n.disposition && (sahOutcome.dischargeMRS === '' || sahOutcome.dischargeMRS === null || sahOutcome.dischargeMRS === undefined)) {
+                warnings.push({ id: 'sah-discharge-mrs-missing', severity: 'warn', msg: 'SAH disposition documented but discharge mRS is missing. Capture discharge functional status for standardized SAH outcome tracking.' });
+              }
+              if (n.disposition && !sahOutcome.followUpScheduled && (sahOutcome.ninetyDayMRS === '' || sahOutcome.ninetyDayMRS === null || sahOutcome.ninetyDayMRS === undefined)) {
+                warnings.push({ id: 'sah-90d-followup-missing', severity: 'warn', msg: 'SAH pathway lacks a documented 90-day follow-up plan. Schedule 90-day outcome capture (functional/cognitive/quality-of-life endpoints).' });
+              }
+              if (sahOutcome.ninetyDayMortality === 'deceased' && String(sahOutcome.ninetyDayMRS || '') !== '6') {
+                warnings.push({ id: 'sah-90d-status-mismatch', severity: 'warn', msg: 'SAH 90-day status is marked deceased but 90-day mRS is not 6. Reconcile outcome fields for consistency.' });
+              }
+            }
+
             // BP phase-diagnosis coherence
             if (n.diagnosisCategory === 'ich' && n.bpPhase && !['ich'].includes(n.bpPhase)) {
               warnings.push({ id: 'bp-phase-ich-mismatch', severity: 'warn', msg: `ICH diagnosis but BP phase set to '${n.bpPhase}' — ICH guideline recommends SBP <140 (INTERACT3/AHA 2022). Set BP phase to ICH.` });
@@ -13653,6 +13720,7 @@ Clinician Name`;
                   updated.sahAneurysmSize = '';
                   updated.sahSecuringMethod = '';
                   updated.sahVasospasmMonitoring = { tcdOrdered: false, neuroChecksQ1h: false, sodiumMonitoring: false, dciSuspected: false, inducedHypertension: false, notes: '' };
+                  updated.sahOutcomeSet = { dischargeMRS: '', dischargeDisposition: '', followUpScheduled: false, followUpDate: '', ninetyDayMRS: '', ninetyDayMortality: '', cognitiveScreenPlanned: false, hrqolPlanned: false };
                 }
                 if (category !== 'cvt') {
                   updated.cvtAnticoagStarted = false;
@@ -14185,6 +14253,7 @@ Clinician Name`;
                           next.sahAneurysmSize = '';
                           next.sahSecuringMethod = '';
                           next.sahVasospasmMonitoring = { tcdOrdered: false, neuroChecksQ1h: false, sodiumMonitoring: false, dciSuspected: false, inducedHypertension: false, notes: '' };
+                          next.sahOutcomeSet = { dischargeMRS: '', dischargeDisposition: '', followUpScheduled: false, followUpDate: '', ninetyDayMRS: '', ninetyDayMortality: '', cognitiveScreenPlanned: false, hrqolPlanned: false };
                         }
                         if (category !== 'cvt') {
                           next.cvtAnticoagStarted = false;
@@ -17660,6 +17729,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         updated.sahAneurysmSize = '';
                                         updated.sahSecuringMethod = '';
                                         updated.sahVasospasmMonitoring = { tcdOrdered: false, neuroChecksQ1h: false, sodiumMonitoring: false, dciSuspected: false, inducedHypertension: false, notes: '' };
+                                        updated.sahOutcomeSet = { dischargeMRS: '', dischargeDisposition: '', followUpScheduled: false, followUpDate: '', ninetyDayMRS: '', ninetyDayMortality: '', cognitiveScreenPlanned: false, hrqolPlanned: false };
                                       }
                                       if (nc !== 'cvt') {
                                         updated.cvtAnticoagStarted = false;
@@ -21390,6 +21460,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                               updated.sahAneurysmSize = '';
                                               updated.sahSecuringMethod = '';
                                               updated.sahVasospasmMonitoring = { tcdOrdered: false, neuroChecksQ1h: false, sodiumMonitoring: false, dciSuspected: false, inducedHypertension: false, notes: '' };
+                                              updated.sahOutcomeSet = { dischargeMRS: '', dischargeDisposition: '', followUpScheduled: false, followUpDate: '', ninetyDayMRS: '', ninetyDayMortality: '', cognitiveScreenPlanned: false, hrqolPlanned: false };
                                             }
                                             if (newCategory !== 'cvt') {
                                               updated.cvtAnticoagStarted = false;
@@ -22932,6 +23003,141 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     Caution: Induced hypertension for DCI is contraindicated until aneurysm is secured (rebleeding risk).
                                   </div>
                                 )}
+                              </div>
+
+                              {/* SAH Outcomes Standardization */}
+                              <div className="bg-emerald-50 rounded-lg p-3">
+                                <div className="text-sm font-semibold text-emerald-800 mb-2">SAH Outcomes (Discharge + 90-Day)</div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                  <div>
+                                    <label htmlFor="input-sah-outcome-disch-mrs" className="block text-xs text-slate-600 mb-1">Discharge mRS</label>
+                                    <select
+                                      id="input-sah-outcome-disch-mrs"
+                                      value={(telestrokeNote.sahOutcomeSet || {}).dischargeMRS || ''}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({ ...prev, sahOutcomeSet: { ...(prev.sahOutcomeSet || {}), dischargeMRS: v } })); }}
+                                      className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm"
+                                    >
+                                      <option value="">-- mRS --</option>
+                                      <option value="0">0 - No symptoms</option>
+                                      <option value="1">1 - No significant disability</option>
+                                      <option value="2">2 - Slight disability</option>
+                                      <option value="3">3 - Moderate disability</option>
+                                      <option value="4">4 - Moderately severe disability</option>
+                                      <option value="5">5 - Severe disability</option>
+                                      <option value="6">6 - Death</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label htmlFor="input-sah-outcome-disch-dest" className="block text-xs text-slate-600 mb-1">Discharge destination</label>
+                                    <select
+                                      id="input-sah-outcome-disch-dest"
+                                      value={(telestrokeNote.sahOutcomeSet || {}).dischargeDisposition || ''}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({ ...prev, sahOutcomeSet: { ...(prev.sahOutcomeSet || {}), dischargeDisposition: v } })); }}
+                                      className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm"
+                                    >
+                                      <option value="">-- Destination --</option>
+                                      <option value="home">Home</option>
+                                      <option value="home-health">Home with health services</option>
+                                      <option value="acute-rehab">Acute inpatient rehab</option>
+                                      <option value="snf">Skilled nursing facility</option>
+                                      <option value="ltach">LTACH</option>
+                                      <option value="hospice">Hospice</option>
+                                      <option value="deceased">Deceased</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label htmlFor="input-sah-outcome-90d-mrs" className="block text-xs text-slate-600 mb-1">90-day mRS</label>
+                                    <select
+                                      id="input-sah-outcome-90d-mrs"
+                                      value={(telestrokeNote.sahOutcomeSet || {}).ninetyDayMRS || ''}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({ ...prev, sahOutcomeSet: { ...(prev.sahOutcomeSet || {}), ninetyDayMRS: v } })); }}
+                                      className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm"
+                                    >
+                                      <option value="">-- Pending/Not captured --</option>
+                                      <option value="0">0 - No symptoms</option>
+                                      <option value="1">1 - No significant disability</option>
+                                      <option value="2">2 - Slight disability</option>
+                                      <option value="3">3 - Moderate disability</option>
+                                      <option value="4">4 - Moderately severe disability</option>
+                                      <option value="5">5 - Severe disability</option>
+                                      <option value="6">6 - Death</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label htmlFor="input-sah-outcome-90d-status" className="block text-xs text-slate-600 mb-1">90-day status</label>
+                                    <select
+                                      id="input-sah-outcome-90d-status"
+                                      value={(telestrokeNote.sahOutcomeSet || {}).ninetyDayMortality || ''}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({ ...prev, sahOutcomeSet: { ...(prev.sahOutcomeSet || {}), ninetyDayMortality: v } })); }}
+                                      className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm"
+                                    >
+                                      <option value="">-- Select status --</option>
+                                      <option value="alive">Alive</option>
+                                      <option value="deceased">Deceased</option>
+                                      <option value="unknown">Unknown</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+                                  <label className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
+                                    <input
+                                      type="checkbox"
+                                      checked={!!(telestrokeNote.sahOutcomeSet || {}).followUpScheduled}
+                                      onChange={(e) => {
+                                        const c = e.target.checked;
+                                        setTelestrokeNote(prev => ({ ...prev, sahOutcomeSet: { ...(prev.sahOutcomeSet || {}), followUpScheduled: c } }));
+                                      }}
+                                      className="rounded border-emerald-300 text-emerald-600"
+                                    />
+                                    <span>90-day follow-up scheduled</span>
+                                  </label>
+                                  <div>
+                                    <label htmlFor="input-sah-followup-date" className="block text-xs text-slate-600 mb-1">Follow-up date</label>
+                                    <input
+                                      id="input-sah-followup-date"
+                                      type="date"
+                                      value={(telestrokeNote.sahOutcomeSet || {}).followUpDate || ''}
+                                      onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({ ...prev, sahOutcomeSet: { ...(prev.sahOutcomeSet || {}), followUpDate: v } })); }}
+                                      className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+                                  <label className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
+                                    <input
+                                      type="checkbox"
+                                      checked={!!(telestrokeNote.sahOutcomeSet || {}).cognitiveScreenPlanned}
+                                      onChange={(e) => {
+                                        const c = e.target.checked;
+                                        setTelestrokeNote(prev => ({ ...prev, sahOutcomeSet: { ...(prev.sahOutcomeSet || {}), cognitiveScreenPlanned: c } }));
+                                      }}
+                                      className="rounded border-emerald-300 text-emerald-600"
+                                    />
+                                    <span>90-day cognitive screening planned</span>
+                                  </label>
+                                  <label className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
+                                    <input
+                                      type="checkbox"
+                                      checked={!!(telestrokeNote.sahOutcomeSet || {}).hrqolPlanned}
+                                      onChange={(e) => {
+                                        const c = e.target.checked;
+                                        setTelestrokeNote(prev => ({ ...prev, sahOutcomeSet: { ...(prev.sahOutcomeSet || {}), hrqolPlanned: c } }));
+                                      }}
+                                      className="rounded border-emerald-300 text-emerald-600"
+                                    />
+                                    <span>90-day quality-of-life measure planned</span>
+                                  </label>
+                                </div>
+                                {(() => {
+                                  const summary = getSahOutcomeSummary(telestrokeNote);
+                                  if (!summary) return null;
+                                  return (
+                                    <div className="mt-2 text-xs text-emerald-900 bg-white border border-emerald-300 rounded p-2">
+                                      <strong>Outcome trace:</strong> {summary}
+                                    </div>
+                                  );
+                                })()}
+                                <p className="text-xs text-emerald-700 mt-2 italic">Bendok BR et al. Standardized outcome measures for aneurysmal SAH. Stroke. 2025. DOI: 10.1161/STROKEAHA.125.053470</p>
                               </div>
                             </div>
                           </div>
@@ -26558,6 +26764,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   if (vmC.inducedHypertension) vmCItems.push('induced hypertension');
                                   if (vmCItems.length) note += `- DCI monitoring: ${vmCItems.join(', ')}.\n`;
                                   if (vmC.notes) note += `- DCI notes: ${vmC.notes}\n`;
+                                  const planSahOutcome = getSahOutcomeSummary(telestrokeNote);
+                                  if (planSahOutcome) note += `- SAH outcomes tracking: ${planSahOutcome}.\n`;
                                 } else if (pathwayType === 'cvt') {
                                   note += `PLAN:\n`;
                                   if (telestrokeNote.cvtAnticoagStarted) note += `- Anticoagulation initiated (${telestrokeNote.cvtAnticoagType || 'agent selected'}).\n`;

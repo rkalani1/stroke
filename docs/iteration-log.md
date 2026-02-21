@@ -1245,3 +1245,32 @@
 - `npm run build`: pass
 - `npm test`: pass (`Runs: 3 | Issues: 0`)
 - `npm run qa`: pass (`Runs: 6 | Issues: 0`)
+
+## Iteration 092 (2026-02-21)
+
+### What was changed
+- Added standardized SAH outcome-capture workflow in `/Users/rizwankalani/stroke/src/app.jsx`:
+  - new `sahOutcomeSet` structured fields for discharge and 90-day endpoints:
+    - discharge mRS,
+    - discharge destination,
+    - 90-day mRS,
+    - 90-day vital status,
+    - follow-up scheduling/date,
+    - cognitive and HRQoL follow-up planning flags.
+- Added SAH outcome-capture warning safeguards:
+  - warns when SAH disposition is documented without discharge mRS.
+  - warns when SAH pathway lacks 90-day follow-up scheduling and no 90-day mRS is documented.
+  - warns on internal inconsistency (`90-day deceased` with mRS not equal to `6`).
+- Added SAH outcome-summary propagation into generated notes:
+  - full-note brief summary, transfer, signout, progress, discharge, consult, and pathway-plan outputs now include SAH outcome trace when present.
+- Added SAH Management UI card:
+  - compact “SAH Outcomes (Discharge + 90-Day)” panel with structured inputs and live summary.
+  - embedded evidence citation footer for standardized SAH outcomes paper.
+- Deployment coherency update:
+  - `APP_VERSION` bumped to `v5.14.74`.
+  - service-worker cache key bumped to `stroke-app-v73`.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (`Runs: 3 | Issues: 0`)
+- `npm run qa`: pass (`Runs: 6 | Issues: 0`)
