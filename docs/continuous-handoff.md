@@ -1,11 +1,11 @@
 # Continuous Handoff
 
-## Current state (2026-02-20)
+## Current state (2026-02-21)
 - Branch: `main`
 - Last pushed commit: run `git rev-parse --short origin/main`
 - Production URL: `https://rkalani1.github.io/stroke/`
-- Live APP_VERSION: `v5.14.72`
-- Service worker cache key: `stroke-app-v71`
+- Live APP_VERSION: `v5.14.78`
+- Service worker cache key: `stroke-app-v77`
 
 ## Session summary (iter-006 through iter-038)
 
