@@ -935,3 +935,18 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
+## Iteration 103 update (2026-02-21, macOS session)
+- Added filtered-appendix CLI controls in `scripts/evidence-watch.mjs`:
+  - `--filtered-all`
+  - `--filtered-limit` (value or `--filtered-limit=<n>`)
+- Added npm helper command in `package.json`:
+  - `evidence:watch:filtered-all`
+- Updated `scripts/evidence-ops-index.mjs` maintenance command list to include the new helper.
+- Validation status:
+  - `npm run evidence:watch:filtered-all` pass (`2` filtered candidates logged)
+  - `npm run evidence:refresh` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`

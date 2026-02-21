@@ -1,17 +1,18 @@
 # Evidence Ops Index (Auto-generated)
 
-Generated: 2026-02-21T15:49:23.470Z
+Generated: 2026-02-21T16:02:42.153Z
 
 ## Current Artifacts
 | Artifact | Path | Generated | Key count |
 |---|---|---|---|
-| Watchlist | docs/evidence-watchlist.md | 2026-02-21T15:49:22.888Z | P0/P1 rows: 11 |
-| Promotion checklist | docs/evidence-promotion-checklist.md | 2026-02-21T15:49:23.064Z | Total queued: 11 |
-| Promotion template (all) | docs/evidence-promotion-template.md | 2026-02-21T15:49:23.203Z | Pending templates: 11 |
-| Promotion template (P0) | docs/evidence-promotion-template-p0.md | 2026-02-21T15:49:23.336Z | Pending templates: 1 |
+| Watchlist | docs/evidence-watchlist.md | 2026-02-21T16:02:41.562Z | P0/P1 rows: 11 |
+| Promotion checklist | docs/evidence-promotion-checklist.md | 2026-02-21T16:02:41.733Z | Total queued: 11 |
+| Promotion template (all) | docs/evidence-promotion-template.md | 2026-02-21T16:02:41.873Z | Pending templates: 11 |
+| Promotion template (P0) | docs/evidence-promotion-template-p0.md | 2026-02-21T16:02:42.018Z | Pending templates: 1 |
 
 ## Maintenance Commands
 - `npm run evidence:watch`
+- `npm run evidence:watch:filtered-all`
 - `npm run evidence:promote`
 - `npm run evidence:template`
 - `npm run evidence:template:p0`

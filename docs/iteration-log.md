@@ -1,5 +1,27 @@
 # Iteration Log
 
+## Iteration 103 (2026-02-21)
+
+### What was changed
+- Added CLI controls to evidence watchlist generation (`/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`):
+  - `--filtered-all` to output the full filtered-candidate appendix,
+  - `--filtered-limit` to customize appendix truncation length.
+- Added npm helper command:
+  - `npm run evidence:watch:filtered-all`.
+- Updated evidence ops index generator (`/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs`) to include the new maintenance command.
+- Verified and restored default artifact state after exercising full-appendix mode:
+  - `docs/evidence-watchlist.md`,
+  - `docs/evidence-promotion-checklist.md`,
+  - `docs/evidence-promotion-template.md`,
+  - `docs/evidence-promotion-template-p0.md`,
+  - `docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run evidence:watch:filtered-all` passed (full filtered appendix emitted).
+- `npm run evidence:refresh` passed (default appendix limit restored).
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 102 (2026-02-21)
 
 ### What was changed

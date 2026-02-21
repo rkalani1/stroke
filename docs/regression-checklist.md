@@ -55,6 +55,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] `npm run evidence:index` regenerates `docs/evidence-ops-index.md` with current artifact counts/stamps.
 - [ ] Design/protocol-only title patterns remain filtered from high-priority evidence-promotion queue generation.
 - [ ] Watchlist includes filtered-candidate audit appendix for reviewer override visibility.
+- [ ] `npm run evidence:watch:filtered-all` executes and emits full filtered appendix without breaking downstream refresh pipeline.
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] Service worker cache version updated when asset behavior changes.
 - [ ] `index.html` app version updated for storage/cache compatibility when needed.
@@ -326,5 +327,11 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 ## Last completed run (2026-02-21, iter-102)
 - [x] Watchlist now outputs filtered low-actionability candidate appendix (topic/PMID/reason)
 - [x] `npm run evidence:refresh` pass (queue remains `11` high-priority, with transparent filtered appendix)
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-103)
+- [x] `npm run evidence:watch:filtered-all` pass (full filtered appendix emitted)
+- [x] `npm run evidence:refresh` pass (default appendix limit restored)
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

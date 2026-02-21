@@ -369,3 +369,8 @@
 - No new primary RCT/guideline citations were added to the key table in this iteration.
 - Added watchlist audit appendix output listing low-actionability filtered candidates (topic, PMID, reason) to preserve reviewer transparency while keeping promotion queues focused.
 - Inference disclosure: audit appendix output is metadata transparency only and does not alter recommendation class/strength.
+
+### Operational update (2026-02-21, iter-103)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added CLI controls for filtered-candidate appendix depth (`--filtered-limit`, `--filtered-all`) and exposed a helper command for full-review mode.
+- Inference disclosure: appendix depth controls change watchlist reporting granularity only and do not alter recommendation class/strength.

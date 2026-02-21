@@ -311,6 +311,13 @@
 - Remaining workflow gap:
   - Add optional CLI flag to emit full (untruncated) filtered appendix when deep manual review is needed.
 
+## Iteration 103 Update (2026-02-21)
+- Filtered-appendix control gap reduced:
+  - Added explicit watchlist CLI controls for filtered appendix output size/full export (`--filtered-limit`, `--filtered-all`).
+  - Added npm helper command `evidence:watch:filtered-all` and surfaced it in evidence-ops maintenance index.
+- Remaining workflow gap:
+  - Add optional structured diff summary between default and full filtered appendix output for rapid reviewer triage.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

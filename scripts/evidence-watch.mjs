@@ -12,6 +12,7 @@ const YEAR_MAX = 2026;
 const MAX_SEARCH_IDS = 30;
 const MAX_PER_TOPIC = 8;
 const REQUEST_DELAY_MS = 350;
+const DEFAULT_FILTERED_APPENDIX_LIMIT = 20;
 
 const TOPIC_QUERIES = [
   {
@@ -119,6 +120,31 @@ const SPECIALTY_SOURCE_PATTERNS = [
   /int j stroke/i,
   /transl stroke res/i
 ];
+
+function parseCliOptions(argv = []) {
+  let filteredAppendixLimit = DEFAULT_FILTERED_APPENDIX_LIMIT;
+  let filteredAll = false;
+
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
+    if (arg === '--filtered-all') {
+      filteredAll = true;
+      continue;
+    }
+    if (arg === '--filtered-limit' && i + 1 < argv.length) {
+      const value = Number.parseInt(argv[i + 1], 10);
+      if (!Number.isNaN(value) && value > 0) filteredAppendixLimit = value;
+      i += 1;
+      continue;
+    }
+    if (arg.startsWith('--filtered-limit=')) {
+      const value = Number.parseInt(arg.split('=')[1], 10);
+      if (!Number.isNaN(value) && value > 0) filteredAppendixLimit = value;
+    }
+  }
+
+  return { filteredAppendixLimit, filteredAll };
+}
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -317,6 +343,7 @@ async function summarizePubMed(ids) {
 }
 
 async function main() {
+  const options = parseCliOptions(process.argv.slice(2));
   const evidenceMarkdown = await fs.readFile(EVIDENCE_FILE, 'utf8');
   const citationRows = parseTableRows(evidenceMarkdown);
   if (citationRows.length === 0) {
@@ -417,14 +444,18 @@ async function main() {
     lines.push('- None.');
     lines.push('');
   } else {
+    const appendixLimit = options.filteredAll
+      ? filteredLowValue.length
+      : Math.max(1, options.filteredAppendixLimit || DEFAULT_FILTERED_APPENDIX_LIMIT);
+    const appendixRows = filteredLowValue.slice(0, appendixLimit);
     lines.push('| Topic | PMID | Year | Source | Title | Filter reason | URL |');
     lines.push('|---|---|---|---|---|---|---|');
-    for (const item of filteredLowValue.slice(0, 20)) {
+    for (const item of appendixRows) {
       lines.push(
         `| ${escapePipes(item.topic)} | ${item.pmid} | ${item.year || ''} | ${escapePipes(item.source)} | ${escapePipes(item.title)} | ${escapePipes(item.reason)} | https://pubmed.ncbi.nlm.nih.gov/${item.pmid}/ |`
       );
     }
-    if (filteredLowValue.length > 20) {
+    if (!options.filteredAll && filteredLowValue.length > appendixRows.length) {
       lines.push(`| ... | ... | ... | ... | ... | ... | ... |`);
     }
     lines.push('');
@@ -433,6 +464,7 @@ async function main() {
   await fs.writeFile(WATCHLIST_FILE, `${lines.join('\n')}\n`, 'utf8');
   console.log(`Evidence watchlist updated: ${path.relative(process.cwd(), WATCHLIST_FILE)}`);
   console.log(`Topics scanned: ${TOPIC_QUERIES.length}; uncited candidates: ${seenCandidatePmids.size}.`);
+  console.log(`Filtered low-actionability candidates logged: ${filteredLowValue.length}${options.filteredAll ? ' (full appendix)' : ` (appendix limit ${options.filteredAppendixLimit})`}.`);
 }
 
 main().catch((error) => {
