@@ -71,6 +71,8 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] `npm run evidence:watch:churn` executes successfully.
 - [ ] Watchlist weighted churn output includes criticality-weight and adjusted-score columns.
 - [ ] `npm run evidence:watch:churn-critical` executes successfully.
+- [ ] Churn profile mode (`balanced`, `reperfusion`, `hemorrhage`) is selectable and reflected in watchlist output.
+- [ ] `npm run evidence:watch:profile:reperfusion` and `npm run evidence:watch:profile:hemorrhage` execute successfully.
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] QA smoke report includes local/live app-version parity metadata (`localAppVersion`, `liveAppVersion`, `liveParityChecksEnabled`).
 - [ ] Service worker cache version updated when asset behavior changes.
@@ -420,6 +422,14 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] Weighted churn table now includes criticality-adjusted scoring columns
 - [x] `npm run evidence:watch:churn-critical` pass
 - [x] `npm run evidence:refresh` pass
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-115)
+- [x] Watchlist output now reports active churn profile metadata
+- [x] `npm run evidence:watch:profile:reperfusion` pass
+- [x] `npm run evidence:refresh` pass (balanced baseline restored)
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

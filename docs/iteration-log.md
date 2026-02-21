@@ -1,5 +1,35 @@
 # Iteration Log
 
+## Iteration 115 (2026-02-21)
+
+### What was changed
+- Added policy-profile presets for churn governance in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+  - new CLI option:
+    - `--topic-churn-profile <balanced|reperfusion|hemorrhage>`
+  - profile defaults now seed:
+    - topic weights,
+    - churn lookback,
+    - base and adjusted churn alert thresholds.
+  - explicit CLI overrides still take precedence over profile defaults.
+- Added npm helper commands:
+  - `npm run evidence:watch:profile:reperfusion`
+  - `npm run evidence:watch:profile:hemorrhage`
+- Updated evidence-ops maintenance command index to include profile helpers.
+- Regenerated evidence-ops artifacts:
+  - `docs/evidence-watchlist.md`,
+  - `docs/evidence-watch-history.json`,
+  - `docs/evidence-promotion-checklist.md`,
+  - `docs/evidence-promotion-template.md`,
+  - `docs/evidence-promotion-template-p0.md`,
+  - `docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run evidence:watch:profile:reperfusion` passed.
+- `npm run evidence:refresh` passed (balanced profile baseline restored).
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 114 (2026-02-21)
 
 ### What was changed

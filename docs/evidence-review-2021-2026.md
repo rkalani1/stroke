@@ -432,3 +432,9 @@
 - Added criticality-aware churn weighting to governance output so domains can carry differentiated churn sensitivity.
 - Added configurable adjusted-threshold and topic-weight overrides for churn alerting (`--topic-churn-adjusted-threshold`, `--topic-churn-weight`).
 - Inference disclosure: criticality-adjusted churn scoring is an operational governance signal only and does not modify recommendation strength or evidence ranking logic.
+
+### Operational update (2026-02-21, iter-115)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added configurable churn policy profiles (`balanced`, `reperfusion`, `hemorrhage`) to apply context-specific governance defaults.
+- Added profile-level helper command coverage for rapid operational mode switching.
+- Inference disclosure: churn profiles are operational monitoring presets only and do not alter evidence strength or recommendation content.

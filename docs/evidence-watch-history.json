@@ -44,6 +44,26 @@
     "topics": [
       {
         "topic": "Thrombolysis and Extended-Window Reperfusion",
+        "status": "ALERT",
+        "share": 1
+      }
+    ]
+  },
+  {
+    "generatedAt": "2026-02-21T23:06:34.472Z",
+    "topics": [
+      {
+        "topic": "Thrombolysis and Extended-Window Reperfusion",
+        "status": "ALERT",
+        "share": 1
+      }
+    ]
+  },
+  {
+    "generatedAt": "2026-02-21T23:06:49.945Z",
+    "topics": [
+      {
+        "topic": "Thrombolysis and Extended-Window Reperfusion",
         "count": 2,
         "share": 1,
         "threshold": 0.6,

@@ -1159,3 +1159,28 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
+## Iteration 115 update (2026-02-21, macOS session)
+- Added churn policy profiles in `scripts/evidence-watch.mjs`:
+  - new CLI option `--topic-churn-profile`,
+  - supported profiles: `balanced`, `reperfusion`, `hemorrhage`,
+  - profile defaults cover topic weights, lookback window, and churn thresholds while preserving explicit override precedence.
+- Added npm helper commands:
+  - `evidence:watch:profile:reperfusion`
+  - `evidence:watch:profile:hemorrhage`
+- Updated evidence-ops maintenance command index to include profile helpers.
+- Regenerated evidence ops artifacts:
+  - `docs/evidence-watchlist.md`
+  - `docs/evidence-watch-history.json`
+  - `docs/evidence-promotion-checklist.md`
+  - `docs/evidence-promotion-template.md`
+  - `docs/evidence-promotion-template-p0.md`
+  - `docs/evidence-ops-index.md`
+- Validation status:
+  - `npm run evidence:watch:profile:reperfusion` pass
+  - `npm run evidence:refresh` pass
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`

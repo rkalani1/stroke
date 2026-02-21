@@ -14,6 +14,8 @@
     "evidence:watch:topic-thresholds": "node ./scripts/evidence-watch.mjs --filtered-topic-threshold thrombolysis=0.8 --filtered-topic-threshold evt=0.6",
     "evidence:watch:churn": "node ./scripts/evidence-watch.mjs --topic-churn-alert-threshold 3 --topic-churn-lookback 6",
     "evidence:watch:churn-critical": "node ./scripts/evidence-watch.mjs --topic-churn-alert-threshold 3 --topic-churn-adjusted-threshold 4 --topic-churn-weight thrombolysis=1.8 --topic-churn-weight ich=1.8 --topic-churn-weight evt=1.4",
+    "evidence:watch:profile:reperfusion": "node ./scripts/evidence-watch.mjs --topic-churn-profile reperfusion",
+    "evidence:watch:profile:hemorrhage": "node ./scripts/evidence-watch.mjs --topic-churn-profile hemorrhage",
     "evidence:promote": "node ./scripts/evidence-promotion-checklist.mjs",
     "evidence:template": "node ./scripts/evidence-promotion-template.mjs",
     "evidence:template:p0": "node ./scripts/evidence-promotion-template.mjs --priority p0 --output docs/evidence-promotion-template-p0.md",

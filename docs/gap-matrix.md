@@ -394,6 +394,13 @@
 - Remaining workflow gap:
   - Optional institution-specific policy profiles (for example ICU-heavy vs telestroke-heavy weighting presets).
 
+## Iteration 115 Update (2026-02-21)
+- Institution-specific governance profile gap reduced:
+  - Added churn policy profiles (`balanced`, `reperfusion`, `hemorrhage`) with domain-specific default weights and thresholds.
+  - Added profile selection CLI control (`--topic-churn-profile`) and npm helper commands for profile execution.
+- Remaining workflow gap:
+  - Optional externalized profile config file for site-specific governance customization without script edits.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |
