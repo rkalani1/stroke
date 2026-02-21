@@ -720,3 +720,21 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
+
+## Iteration 091 update (2026-02-21, macOS session)
+- Implemented ICH escalation timeliness workflow upgrades in `src/app.jsx`:
+  - Added `ichReversalStartTime` and `ichTransferDecisionTime` capture fields in ICH management UI.
+  - Added computed KPI summaries: door-to-reversal, door-to-transfer decision, and reversal-to-transfer.
+  - Added warning-layer prompts when reversal/transfer actions are selected without timing documentation.
+  - Added KPI propagation into transfer/signout/progress/discharge/consult/voice/pathway note outputs.
+  - Added outcomes-dashboard KPI tiles: `D2-Reversal` and `D2-Transfer`.
+  - Added diagnosis-switch reset handling so ICH timing fields clear when leaving ICH category.
+- Deployment coherency update:
+  - `APP_VERSION` bumped to `v5.14.73`.
+  - service-worker cache key bumped to `stroke-app-v72`.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`

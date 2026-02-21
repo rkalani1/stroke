@@ -229,3 +229,12 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-091)
+- [x] ICH reversal/transfer decision time fields added to management workflow
+- [x] ICH warning checks added for missing reversal/transfer timing timestamps
+- [x] ICH KPI summaries propagate across transfer/signout/progress/discharge/consult/voice/pathway note outputs
+- [x] Case Outcomes dashboard renders ICH `D2-Reversal` and `D2-Transfer` tiles when data are available
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

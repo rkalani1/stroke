@@ -1075,6 +1075,8 @@ Clinician Name`;
             // Phase 2: Guided Clinical Pathway fields
             ichBPManaged: false,
             ichReversalInitiated: false,
+            ichReversalStartTime: '',
+            ichTransferDecisionTime: '',
             ichSeizureProphylaxis: false,
             ichNeurosurgeryConsulted: false,
             // Phase 4: SAH fields
@@ -7094,6 +7096,54 @@ Clinician Name`;
             return metrics;
           };
 
+          const calculateIchEscalationMetrics = () => {
+            const metrics = {
+              doorToReversal: null,
+              doorToTransferDecision: null,
+              reversalToTransferDecision: null
+            };
+
+            const door = safeParseDt(telestrokeNote.dtnEdArrival);
+            if (!door) return metrics;
+
+            const parseClockOnDoorDate = (clockValue) => {
+              if (!clockValue || typeof clockValue !== 'string' || !clockValue.includes(':')) return null;
+              const [h, m] = clockValue.split(':').map(Number);
+              if (isNaN(h) || isNaN(m)) return null;
+              const dt = new Date(door);
+              dt.setHours(h, m, 0, 0);
+              if (dt < door) dt.setDate(dt.getDate() + 1);
+              return dt;
+            };
+
+            const reversal = parseClockOnDoorDate(telestrokeNote.ichReversalStartTime);
+            const transfer = parseClockOnDoorDate(telestrokeNote.ichTransferDecisionTime);
+
+            if (reversal) {
+              const mins = Math.round((reversal - door) / (1000 * 60));
+              if (mins >= 0 && mins <= 1440) metrics.doorToReversal = mins;
+            }
+            if (transfer) {
+              const mins = Math.round((transfer - door) / (1000 * 60));
+              if (mins >= 0 && mins <= 1440) metrics.doorToTransferDecision = mins;
+            }
+            if (reversal && transfer) {
+              const mins = Math.round((transfer - reversal) / (1000 * 60));
+              if (mins >= 0 && mins <= 1440) metrics.reversalToTransferDecision = mins;
+            }
+
+            return metrics;
+          };
+
+          const getIchEscalationSummary = () => {
+            const m = calculateIchEscalationMetrics();
+            const parts = [];
+            if (m.doorToReversal !== null) parts.push(`door-to-reversal ${m.doorToReversal} min`);
+            if (m.doorToTransferDecision !== null) parts.push(`door-to-transfer decision ${m.doorToTransferDecision} min`);
+            if (m.reversalToTransferDecision !== null) parts.push(`reversal-to-transfer ${m.reversalToTransferDecision} min`);
+            return parts.join(', ');
+          };
+
           // Get DTN benchmark status and color
           const getDTNBenchmark = (dtnMinutes) => {
             if (dtnMinutes === null) return null;
@@ -8404,7 +8454,7 @@ Clinician Name`;
               'patientFamilyConsent', 'presumedConsent', 'preTNKSafetyPause', 'tnkAutoBlocked', 'tnkAutoBlockReason',
               'postTnkNeuroChecksStarted', 'postTnkBpMonitoring', 'postTnkRepeatCTOrdered', 'postTnkAntiplateletHeld',
               'sichDetected', 'angioedemaDetected', 'reperfusionHemorrhage', 'clinicalDeterioration', 'complicationNotes',
-              'ichBPManaged', 'ichReversalInitiated', 'ichNeurosurgeryConsulted', 'ichSeizureProphylaxis',
+              'ichBPManaged', 'ichReversalInitiated', 'ichReversalStartTime', 'ichTransferDecisionTime', 'ichNeurosurgeryConsulted', 'ichSeizureProphylaxis',
               'transferAccepted', 'transferReceivingFacility', 'transferImagingShared', 'transferLabsSent', 'transferIVAccess', 'transferBPStable', 'transferFamilyNotified',
               'transferRationale', 'disposition', 'codeStatus',
               'transferImagingShareMethod', 'transferImagingShareLink', 'transportMode', 'transportEta', 'transportNotes',
@@ -9421,6 +9471,8 @@ Clinician Name`;
                 }
                 if (telestrokeNote.ichBPManaged) ichTransfer += '- BP managed (target SBP <140 per INTERACT3/AHA 2022)\n';
                 if (telestrokeNote.ichReversalInitiated) ichTransfer += '- Anticoagulation reversal initiated\n';
+                const ichTransferTiming = getIchEscalationSummary();
+                if (ichTransferTiming) ichTransfer += `- ICH timing KPIs: ${ichTransferTiming}\n`;
                 if (telestrokeNote.ichNeurosurgeryConsulted) ichTransfer += '- Neurosurgery consulted\n';
                 if (telestrokeNote.ichSeizureProphylaxis) ichTransfer += '- Seizure prophylaxis ordered\n';
                 const ichSurgTx = telestrokeNote.ichSurgicalCriteria || {};
@@ -9922,6 +9974,8 @@ Clinician Name`;
                 }
                 if (telestrokeNote.ichBPManaged) snIchParts.push('BP managed (SBP <140)');
                 if (telestrokeNote.ichReversalInitiated) snIchParts.push('reversal initiated');
+                const snIchTiming = getIchEscalationSummary();
+                if (snIchTiming) snIchParts.push(`timing ${snIchTiming}`);
                 if (telestrokeNote.ichNeurosurgeryConsulted) snIchParts.push('NSG consulted');
                 if (telestrokeNote.ichSeizureProphylaxis) snIchParts.push('seizure ppx');
                 const snIchSurg = telestrokeNote.ichSurgicalCriteria || {};
@@ -10387,6 +10441,8 @@ Clinician Name`;
                 }
                 if (telestrokeNote.ichBPManaged) prIchParts.push('BP managed (SBP <140)');
                 if (telestrokeNote.ichReversalInitiated) prIchParts.push('reversal initiated');
+                const prIchTiming = getIchEscalationSummary();
+                if (prIchTiming) prIchParts.push(`timing ${prIchTiming}`);
                 if (telestrokeNote.ichNeurosurgeryConsulted) prIchParts.push('NSG consulted');
                 if (telestrokeNote.ichSeizureProphylaxis) prIchParts.push('seizure ppx');
                 const prIchSurg = telestrokeNote.ichSurgicalCriteria || {};
@@ -10885,6 +10941,8 @@ Clinician Name`;
                 }
                 if (telestrokeNote.ichBPManaged) ichDisch += '- BP managed (target SBP <140 per INTERACT3/AHA 2022)\n';
                 if (telestrokeNote.ichReversalInitiated) ichDisch += '- Anticoagulation reversal initiated\n';
+                const ichDischTiming = getIchEscalationSummary();
+                if (ichDischTiming) ichDisch += `- ICH timing KPIs: ${ichDischTiming}\n`;
                 if (telestrokeNote.ichNeurosurgeryConsulted) ichDisch += '- Neurosurgery consulted\n';
                 if (telestrokeNote.ichSeizureProphylaxis) ichDisch += '- Seizure prophylaxis ordered\n';
                 if (ichDisch !== '\nICH MANAGEMENT:\n') note += ichDisch;
@@ -11670,6 +11728,8 @@ Clinician Name`;
               }
               if (telestrokeNote.ichBPManaged) ichNote += '- BP managed (target SBP <140 (Class IIa; avoid <130))\n';
               if (telestrokeNote.ichReversalInitiated) ichNote += '- Anticoagulation reversal initiated\n';
+              const ichConsultTiming = getIchEscalationSummary();
+              if (ichConsultTiming) ichNote += `- ICH timing KPIs: ${ichConsultTiming}\n`;
               if (telestrokeNote.ichNeurosurgeryConsulted) ichNote += '- Neurosurgery consulted\n';
               if (telestrokeNote.ichSeizureProphylaxis) ichNote += '- Seizure prophylaxis ordered\n';
               if (ichNote !== '\nICH Management:\n') note += ichNote;
@@ -12044,6 +12104,8 @@ Clinician Name`;
               const ichActions = [];
               if (telestrokeNote.ichBPManaged) ichActions.push('BP management initiated (target SBP <140 (Class IIa; avoid <130))');
               if (telestrokeNote.ichReversalInitiated) ichActions.push('anticoagulation reversal initiated');
+              const ichVoiceTiming = getIchEscalationSummary();
+              if (ichVoiceTiming) ichActions.push(`timing KPIs: ${ichVoiceTiming}`);
               if (telestrokeNote.ichNeurosurgeryConsulted) ichActions.push('neurosurgery consulted');
               if (telestrokeNote.ichSeizureProphylaxis) ichActions.push('seizure prophylaxis ordered');
               if (ichActions.length > 0) {
@@ -12912,6 +12974,13 @@ Clinician Name`;
               warnings.push({ id: 'hemorrhage-no-reversal', severity: 'error', msg: `${n.diagnosisCategory === 'sah' ? 'SAH' : 'ICH'} with pre-admission ${n.lastDOACType} but anticoagulation reversal not initiated — urgent reversal required.` });
             }
 
+            if (n.diagnosisCategory === 'ich' && n.ichReversalInitiated && !n.ichReversalStartTime) {
+              warnings.push({ id: 'ich-reversal-time-missing', severity: 'warn', msg: 'ICH reversal marked as initiated, but reversal start time is missing. Document time to enable door-to-reversal KPI tracking.' });
+            }
+            if (n.diagnosisCategory === 'ich' && n.transferAccepted && !n.ichTransferDecisionTime) {
+              warnings.push({ id: 'ich-transfer-time-missing', severity: 'warn', msg: 'ICH transfer accepted, but transfer decision time is missing. Document to track escalation timeliness.' });
+            }
+
             // CTP mismatch ratio < 1.0 — possible core/penumbra volume swap
             const ctpCore = parseFloat(n.ctpStructured?.coreVolume);
             const ctpPenumbra = parseFloat(n.ctpStructured?.penumbraVolume);
@@ -13562,6 +13631,8 @@ Clinician Name`;
                 }
                 if (category !== 'ich') {
                   updated.ichReversalInitiated = false;
+                  updated.ichReversalStartTime = '';
+                  updated.ichTransferDecisionTime = '';
                   updated.ichBPManaged = false;
                   updated.ichNeurosurgeryConsulted = false;
                   updated.ichSeizureProphylaxis = false;
@@ -14092,6 +14163,8 @@ Clinician Name`;
                         }
                         if (category !== 'ich') {
                           next.ichReversalInitiated = false;
+                          next.ichReversalStartTime = '';
+                          next.ichTransferDecisionTime = '';
                           next.ichBPManaged = false;
                           next.ichNeurosurgeryConsulted = false;
                           next.ichSeizureProphylaxis = false;
@@ -16845,6 +16918,28 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <p className="text-lg font-bold text-slate-800">{m.doorToPuncture}m</p>
                             </div>
                           ) : null; })()}
+                          {(() => {
+                            if (telestrokeNote.diagnosisCategory !== 'ich') return null;
+                            const m = calculateIchEscalationMetrics();
+                            if (m.doorToReversal === null) return null;
+                            return (
+                              <div className="bg-red-50 rounded-lg p-2 border border-red-200 text-center">
+                                <p className="text-[10px] uppercase tracking-wider text-red-500">D2-Reversal</p>
+                                <p className={`text-lg font-bold ${m.doorToReversal <= 60 ? 'text-emerald-600' : m.doorToReversal <= 90 ? 'text-amber-600' : 'text-red-600'}`}>{m.doorToReversal}m</p>
+                              </div>
+                            );
+                          })()}
+                          {(() => {
+                            if (telestrokeNote.diagnosisCategory !== 'ich') return null;
+                            const m = calculateIchEscalationMetrics();
+                            if (m.doorToTransferDecision === null) return null;
+                            return (
+                              <div className="bg-red-50 rounded-lg p-2 border border-red-200 text-center">
+                                <p className="text-[10px] uppercase tracking-wider text-red-500">D2-Transfer</p>
+                                <p className={`text-lg font-bold ${m.doorToTransferDecision <= 120 ? 'text-emerald-600' : m.doorToTransferDecision <= 180 ? 'text-amber-600' : 'text-red-600'}`}>{m.doorToTransferDecision}m</p>
+                              </div>
+                            );
+                          })()}
                           {telestrokeNote.evtRecommended && telestrokeNote.ticiScore && (
                             <div className="bg-slate-50 rounded-lg p-2 border border-slate-200 text-center">
                               <p className="text-[10px] uppercase tracking-wider text-slate-500">mTICI</p>
@@ -17543,6 +17638,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       }
                                       if (nc !== 'ich') {
                                         updated.ichReversalInitiated = false;
+                                        updated.ichReversalStartTime = '';
+                                        updated.ichTransferDecisionTime = '';
                                         updated.ichBPManaged = false;
                                         updated.ichNeurosurgeryConsulted = false;
                                         updated.ichSeizureProphylaxis = false;
@@ -19432,6 +19529,41 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <span>Seizure prophylaxis</span>
                                   </label>
                                 </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                  <div>
+                                    <label className="block text-xs text-red-700 mb-1">Reversal start time</label>
+                                    <input
+                                      type="time"
+                                      value={telestrokeNote.ichReversalStartTime || ''}
+                                      onChange={(e) => {
+                                        const v = e.target.value;
+                                        setTelestrokeNote(prev => ({ ...prev, ichReversalStartTime: v }));
+                                      }}
+                                      className="w-full px-2 py-1 border border-red-300 rounded text-sm"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="block text-xs text-red-700 mb-1">Transfer decision time</label>
+                                    <input
+                                      type="time"
+                                      value={telestrokeNote.ichTransferDecisionTime || ''}
+                                      onChange={(e) => {
+                                        const v = e.target.value;
+                                        setTelestrokeNote(prev => ({ ...prev, ichTransferDecisionTime: v }));
+                                      }}
+                                      className="w-full px-2 py-1 border border-red-300 rounded text-sm"
+                                    />
+                                  </div>
+                                </div>
+                                {(() => {
+                                  const summary = getIchEscalationSummary();
+                                  if (!summary) return null;
+                                  return (
+                                    <div className="text-xs text-red-900 bg-white border border-red-300 rounded p-1.5">
+                                      <strong>ICH timing KPIs:</strong> {summary}
+                                    </div>
+                                  );
+                                })()}
                                 <div className="text-xs text-red-700 bg-red-100 rounded p-1.5">
                                   TNK is contraindicated. Targets: SBP &lt;140 (Class IIa, INTERACT2; avoid &lt;130), reverse anticoagulation if applicable, repeat CT in 6h, ICU admission.
                                 </div>
@@ -21236,6 +21368,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             }
                                             if (newCategory !== 'ich') {
                                               updated.ichReversalInitiated = false;
+                                              updated.ichReversalStartTime = '';
+                                              updated.ichTransferDecisionTime = '';
                                               updated.ichBPManaged = false;
                                               updated.ichNeurosurgeryConsulted = false;
                                               updated.ichSeizureProphylaxis = false;
@@ -26398,6 +26532,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   note += `PLAN:\n`;
                                   if (telestrokeNote.ichBPManaged) note += `- BP management initiated (target SBP <140 (Class IIa; avoid <130)).\n`;
                                   if (telestrokeNote.ichReversalInitiated) note += `- Anticoagulation reversal ordered.\n`;
+                                  const ichPlanTiming = getIchEscalationSummary();
+                                  if (ichPlanTiming) note += `- ICH timing KPIs: ${ichPlanTiming}.\n`;
                                   if (telestrokeNote.ichNeurosurgeryConsulted) note += `- Neurosurgery consulted.\n`;
                                   const ichSurg = telestrokeNote.ichSurgicalCriteria || {};
                                   if (ichSurg.surgeryDecision) note += `- Surgical decision: ${ichSurg.surgeryDecision}.\n`;

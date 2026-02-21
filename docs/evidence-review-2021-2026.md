@@ -275,3 +275,13 @@
   - cancer-associated stroke mechanism classification and prevention-branch selection.
 - Added warning-layer safeguards for pathway incompleteness and mechanism-plan mismatch, and propagated structured summaries into generated handoff notes.
 - Inference disclosure: these structured pathway outputs operationalize existing cited statements and do not independently change recommendation class/strength.
+
+### Operational update (2026-02-21, iter-091)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Implemented structured ICH escalation timeliness operationalization in the clinical workflow:
+  - `door-to-reversal`,
+  - `door-to-transfer decision`,
+  - `reversal-to-transfer` interval summaries.
+- Added warning prompts for missing ICH time anchors and propagated KPI summaries into handoff/consult/discharge note outputs.
+- Evidence anchor retained: anticoagulation-associated ICH timeliness cohort (`PMID 41703701`, DOI `10.1161/JAHA.125.043223`).
+- Inference disclosure: KPI threshold color bands are operational quality cues and do not independently modify recommendation class/strength.

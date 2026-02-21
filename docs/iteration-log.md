@@ -1221,3 +1221,27 @@
 - `npm run build`: pass
 - `npm test`: pass (local smoke, 0 issues)
 - `npm run qa`: pass (local + live smoke, 0 issues)
+
+## Iteration 091 (2026-02-21)
+
+### What was changed
+- Added structured ICH timeliness capture in `/Users/rizwankalani/stroke/src/app.jsx`:
+  - `ichReversalStartTime` and `ichTransferDecisionTime` fields with explicit time inputs in the ICH management workflow.
+  - New KPI helpers for `door-to-reversal`, `door-to-transfer decision`, and `reversal-to-transfer` intervals.
+- Added ICH warning-layer safeguards:
+  - warns when reversal is marked initiated but reversal start time is missing.
+  - warns when transfer is accepted but transfer decision time is missing.
+- Added ICH KPI propagation into generated note outputs:
+  - transfer, signout, progress, discharge, consult, voice-style, and pathway-plan outputs now include timing summary when available.
+- Added ICH dashboard KPI tiles in outcomes view:
+  - `D2-Reversal` (color-coded timeliness bands),
+  - `D2-Transfer` (color-coded timeliness bands).
+- Added diagnosis-switch cleanup for ICH-specific timing fields to prevent stale carryover outside ICH pathways.
+- Deployment coherency update:
+  - `APP_VERSION` bumped to `v5.14.73`.
+  - service-worker cache key bumped to `stroke-app-v72`.
+
+### QA and validation
+- `npm run build`: pass
+- `npm test`: pass (`Runs: 3 | Issues: 0`)
+- `npm run qa`: pass (`Runs: 6 | Issues: 0`)

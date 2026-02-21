@@ -210,6 +210,15 @@
   - Added deterministic warning logic for maternal severe-HTN escalation omissions and cancer pathway incompleteness/mechanism-treatment mismatch.
   - Added structured maternal/cancer summary propagation into transfer/signout/progress/discharge/consult/full-note outputs.
 
+## Iteration 091 Update (2026-02-21)
+- ICH escalation timeliness gap reduced:
+  - Added structured capture for reversal start and transfer decision times in the ICH management workflow.
+  - Added computed `door-to-reversal`, `door-to-transfer`, and `reversal-to-transfer` KPIs with inline visibility and dashboard tiles.
+  - Added warning prompts for missing ICH timing timestamps when reversal/transfer actions are selected.
+  - Added KPI summary propagation into key handoff/documentation outputs for continuity and quality auditability.
+- Remaining workflow gap:
+  - Add SAH standardized outcome-capture block (discharge + 90-day outcome set) for consistent follow-up measurement.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |
@@ -219,5 +228,5 @@
 | P0 | Expand maternal module with **postpartum severe-HTN and delivery/stabilization decision prompts**. | Pregnancy-associated stroke admissions cluster around hypertensive disorders; explicit prompts improve time-critical stabilization and OB-neuro coordination. | Maternal stroke statement (PMID: 41603019; DOI: 10.1161/STR.0000000000000514) — completed iter-090 |
 | P1 | Add SAH follow-up block for **standardized outcome selection** (discharge + 90-day measure set). | Improves trial-aligned comparability and handoff continuity in aneurysmal SAH recovery tracking. | SAH outcome position paper (PMID: 41498145; DOI: 10.1161/STROKEAHA.125.053470) |
 | P1 | Add explicit **MeVO trial-state caution** badge in EVT section (routine EVT benefit not yet established; selective use only). | Prevents overgeneralization of EVT to medium/distal occlusions while evidence remains mixed/neutral in RCT era. | ESCAPE-MeVO post-hoc outcome report (PMID: 41651659; DOI: 10.1136/jnis-2025-024733) |
-| P1 | Add anticoag-ICH **door-to-reversal/transfer timer** KPI outputs in dashboard + notes. | Timeliness is a modifiable process metric strongly tied to hemorrhage pathway safety. | Anticoag-ICH timeliness cohort (PMID: 41703701; DOI: 10.1161/JAHA.125.043223) |
+| P1 | Add anticoag-ICH **door-to-reversal/transfer timer** KPI outputs in dashboard + notes. | Timeliness is a modifiable process metric strongly tied to hemorrhage pathway safety. | Anticoag-ICH timeliness cohort (PMID: 41703701; DOI: 10.1161/JAHA.125.043223) — completed iter-091 |
 | P2 | Add secondary-prevention implementation tracker for **DAPT protocol adherence** in eligible minor stroke/TIA phenotypes. | Converts recommendation text into measurable local quality behavior and catches underuse/overuse drift. | Regional implementation analysis (PMID: 41679778; DOI: 10.1136/svn-2025-004815) |
