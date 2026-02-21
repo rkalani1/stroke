@@ -267,6 +267,14 @@
 - Remaining workflow gap:
   - Optional selective-template generation (for chosen PMIDs only) to reduce draft volume when queue is large.
 
+## Iteration 098 Update (2026-02-21)
+- Selective evidence-template generation gap reduced:
+  - Added priority-filtered (`P0`) and capped (`top5`) template generation workflows.
+  - Added CLI targeting by PMID and custom output path for focused promotion prep.
+  - Generated dedicated urgent promotion draft (`evidence-promotion-template-p0.md`).
+- Remaining workflow gap:
+  - Optional lightweight UI index for navigating generated evidence-promotion draft files.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

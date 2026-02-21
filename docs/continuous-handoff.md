@@ -836,3 +836,25 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run validate:citations && npm test && npm run qa`
+
+## Iteration 098 update (2026-02-21, macOS session)
+- Implemented selective evidence-template generation controls in `scripts/evidence-promotion-template.mjs`:
+  - `--priority` (`p0`/`p1`/`all`)
+  - `--pmid` targeting
+  - `--limit`
+  - `--output`
+- Added npm helper commands:
+  - `evidence:template:p0`
+  - `evidence:template:top5`
+- Generated focused urgent draft:
+  - `docs/evidence-promotion-template-p0.md` (`3` P0 candidates).
+- Validation status:
+  - `npm run evidence:promote` pass (`13` candidates)
+  - `npm run evidence:template` pass (`13` templates)
+  - P0 template generation command pass (`3` templates)
+  - `npm run validate:evidence-promotion` pass (`13` PMIDs synced)
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run evidence:template:p0 && npm run validate:citations && npm test && npm run qa`

@@ -3,7 +3,7 @@ import path from 'node:path';
 import process from 'node:process';
 
 const CHECKLIST_PATH = path.join(process.cwd(), 'docs', 'evidence-promotion-checklist.md');
-const OUTPUT_PATH = path.join(process.cwd(), 'docs', 'evidence-promotion-template.md');
+const DEFAULT_OUTPUT_PATH = path.join(process.cwd(), 'docs', 'evidence-promotion-template.md');
 
 function parseMarkdownRow(line) {
   const trimmed = line.trim();
@@ -46,10 +46,77 @@ function isUnchecked(doneCell) {
   return /\[\s\]/.test(String(doneCell || ''));
 }
 
+function parseArgs(argv) {
+  const args = { pmids: new Set(), priority: 'all', limit: null, outputPath: DEFAULT_OUTPUT_PATH };
+  for (let i = 0; i < argv.length; i += 1) {
+    const token = argv[i];
+    if (token === '--pmid' && argv[i + 1]) {
+      args.pmids.add(String(argv[i + 1]).trim());
+      i += 1;
+      continue;
+    }
+    if (token.startsWith('--pmid=')) {
+      const id = token.split('=')[1];
+      if (id) args.pmids.add(String(id).trim());
+      continue;
+    }
+    if (token === '--priority' && argv[i + 1]) {
+      args.priority = String(argv[i + 1]).trim().toLowerCase();
+      i += 1;
+      continue;
+    }
+    if (token.startsWith('--priority=')) {
+      args.priority = String(token.split('=')[1] || '').trim().toLowerCase();
+      continue;
+    }
+    if (token === '--limit' && argv[i + 1]) {
+      const n = Number.parseInt(argv[i + 1], 10);
+      args.limit = Number.isNaN(n) ? null : n;
+      i += 1;
+      continue;
+    }
+    if (token.startsWith('--limit=')) {
+      const n = Number.parseInt(token.split('=')[1], 10);
+      args.limit = Number.isNaN(n) ? null : n;
+      continue;
+    }
+    if (token === '--output' && argv[i + 1]) {
+      args.outputPath = path.resolve(process.cwd(), argv[i + 1]);
+      i += 1;
+      continue;
+    }
+    if (token.startsWith('--output=')) {
+      args.outputPath = path.resolve(process.cwd(), token.split('=')[1]);
+      continue;
+    }
+  }
+  return args;
+}
+
+function priorityMatches(rowPriority, filterPriority) {
+  if (!filterPriority || filterPriority === 'all') return true;
+  const p = String(rowPriority || '').toLowerCase();
+  if (filterPriority === 'p0') return p.startsWith('p0');
+  if (filterPriority === 'p1') return p.startsWith('p1');
+  if (filterPriority === 'p0,p1' || filterPriority === 'p1,p0') return p.startsWith('p0') || p.startsWith('p1');
+  return true;
+}
+
 async function main() {
+  const args = parseArgs(process.argv.slice(2));
   const checklistMd = await fs.readFile(CHECKLIST_PATH, 'utf8');
   const queue = parseQueue(checklistMd);
-  const pending = queue.filter((row) => isUnchecked(row.done));
+  let pending = queue.filter((row) => isUnchecked(row.done));
+
+  if (args.pmids.size > 0) {
+    pending = pending.filter((row) => args.pmids.has(String(row.pmid)));
+  }
+
+  pending = pending.filter((row) => priorityMatches(row.priority, args.priority));
+
+  if (typeof args.limit === 'number' && args.limit >= 0) {
+    pending = pending.slice(0, args.limit);
+  }
 
   const now = new Date().toISOString();
   const lines = [];
@@ -57,6 +124,7 @@ async function main() {
   lines.push('');
   lines.push(`Generated: ${now}`);
   lines.push(`Source checklist: ${path.relative(process.cwd(), CHECKLIST_PATH)}`);
+  lines.push(`Filter: priority=${args.priority || 'all'}${args.pmids.size > 0 ? `; pmids=${[...args.pmids].join(',')}` : ''}${typeof args.limit === 'number' && args.limit >= 0 ? `; limit=${args.limit}` : ''}`);
   lines.push(`Pending candidates: ${pending.length}`);
   lines.push('');
 
@@ -98,8 +166,8 @@ async function main() {
     });
   }
 
-  await fs.writeFile(OUTPUT_PATH, `${lines.join('\n')}\n`, 'utf8');
-  console.log(`Generated ${path.relative(process.cwd(), OUTPUT_PATH)} with ${pending.length} pending candidates.`);
+  await fs.writeFile(args.outputPath, `${lines.join('\n')}\n`, 'utf8');
+  console.log(`Generated ${path.relative(process.cwd(), args.outputPath)} with ${pending.length} pending candidates.`);
 }
 
 main().catch((err) => {

@@ -1,7 +1,8 @@
 # Evidence Promotion Draft Template (Auto-generated)
 
-Generated: 2026-02-21T14:40:00.297Z
+Generated: 2026-02-21T14:44:56.237Z
 Source checklist: docs/evidence-promotion-checklist.md
+Filter: priority=all
 Pending candidates: 13
 
 ## How to use

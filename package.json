@@ -11,6 +11,8 @@
     "evidence:watch": "node ./scripts/evidence-watch.mjs",
     "evidence:promote": "node ./scripts/evidence-promotion-checklist.mjs",
     "evidence:template": "node ./scripts/evidence-promotion-template.mjs",
+    "evidence:template:p0": "node ./scripts/evidence-promotion-template.mjs --priority p0",
+    "evidence:template:top5": "node ./scripts/evidence-promotion-template.mjs --limit 5",
     "evidence:refresh": "npm run evidence:watch && npm run evidence:promote && npm run evidence:template && npm run validate:evidence-promotion",
     "test": "npm run validate:citations && npm run validate:evidence-promotion && node ./scripts/qa-smoke.mjs --local-only",
     "qa": "npm run validate:citations && npm run validate:evidence-promotion && node ./scripts/qa-smoke.mjs",

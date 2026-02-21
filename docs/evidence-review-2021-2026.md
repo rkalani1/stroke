@@ -333,3 +333,9 @@
 - Added auto-generated evidence promotion draft template output from pending checklist candidates.
 - Template now standardizes metadata patch blocks and workflow-impact checklists to reduce manual translation errors during evidence promotion.
 - Inference disclosure: template content is scaffolding only and does not alter recommendations without clinician-reviewed promotion.
+
+### Operational update (2026-02-21, iter-098)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added selective evidence-template generation controls (priority, PMID targeting, result limit, custom output).
+- Generated dedicated urgent (`P0`) evidence-promotion draft to accelerate high-priority review execution.
+- Inference disclosure: selective template filters are workflow controls only and do not change evidence priority logic itself.

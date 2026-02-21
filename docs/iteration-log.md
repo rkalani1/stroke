@@ -1308,6 +1308,29 @@
 - `npm test`: pass (`Runs: 3 | Issues: 0`)
 - `npm run qa`: pass (`Runs: 6 | Issues: 0`)
 
+## Iteration 098 (2026-02-21)
+
+### What was changed
+- Added selective evidence-template generation controls in `/Users/rizwankalani/stroke/scripts/evidence-promotion-template.mjs`:
+  - `--priority` filter (`p0`, `p1`, or `all`)
+  - `--pmid` targeting (repeatable)
+  - `--limit` result cap
+  - `--output` custom file path
+- Extended npm scripts in `/Users/rizwankalani/stroke/package.json`:
+  - `evidence:template:p0`
+  - `evidence:template:top5`
+- Generated focused urgent queue draft:
+  - `/Users/rizwankalani/stroke/docs/evidence-promotion-template-p0.md`
+
+### QA and validation
+- `npm run evidence:promote`: pass (`13` high-priority candidates queued)
+- `npm run evidence:template`: pass (`13` templates generated)
+- `node ./scripts/evidence-promotion-template.mjs --priority p0 --output docs/evidence-promotion-template-p0.md`: pass (`3` templates generated)
+- `npm run validate:evidence-promotion`: pass (`13` PMIDs synced)
+- `npm run build`: pass
+- `npm test`: pass (`Runs: 3 | Issues: 0`)
+- `npm run qa`: pass (`Runs: 6 | Issues: 0`)
+
 ## Iteration 094 (2026-02-21)
 
 ### What was changed
