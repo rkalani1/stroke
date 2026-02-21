@@ -1,10 +1,12 @@
 import fs from 'node:fs/promises';
+import fsSync from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 
 const EVIDENCE_FILE = path.join(process.cwd(), 'docs', 'evidence-review-2021-2026.md');
 const WATCHLIST_FILE = path.join(process.cwd(), 'docs', 'evidence-watchlist.md');
 const WATCHLIST_HISTORY_FILE = path.join(process.cwd(), 'docs', 'evidence-watch-history.json');
+const DEFAULT_TOPIC_CHURN_PROFILES_FILE = path.join(process.cwd(), 'docs', 'evidence-churn-profiles.json');
 const PUBMED_BASE = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
 const WINDOW_START = '2025/01/01';
 const WINDOW_END = '3000';
@@ -67,6 +69,48 @@ const TOPIC_CHURN_PROFILES = {
     }
   }
 };
+
+function mergeChurnProfiles(baseProfiles = {}, overrideProfiles = {}) {
+  const merged = { ...baseProfiles };
+  for (const [key, profile] of Object.entries(overrideProfiles || {})) {
+    if (!profile || typeof profile !== 'object') continue;
+    const normalizedKey = String(key || '').trim().toLowerCase();
+    if (!normalizedKey) continue;
+    const base = merged[normalizedKey] || {};
+    merged[normalizedKey] = {
+      description: String(profile.description || base.description || ''),
+      churnAlertThreshold: Number.isFinite(profile.churnAlertThreshold)
+        ? profile.churnAlertThreshold
+        : (Number.isFinite(base.churnAlertThreshold) ? base.churnAlertThreshold : DEFAULT_TOPIC_CHURN_ALERT_THRESHOLD),
+      churnAdjustedAlertThreshold: Number.isFinite(profile.churnAdjustedAlertThreshold)
+        ? profile.churnAdjustedAlertThreshold
+        : (Number.isFinite(base.churnAdjustedAlertThreshold) ? base.churnAdjustedAlertThreshold : DEFAULT_TOPIC_CHURN_ADJUSTED_ALERT_THRESHOLD),
+      churnLookback: Number.isFinite(profile.churnLookback)
+        ? profile.churnLookback
+        : (Number.isFinite(base.churnLookback) ? base.churnLookback : DEFAULT_TOPIC_CHURN_LOOKBACK),
+      weights: {
+        ...(base.weights || {}),
+        ...(profile.weights && typeof profile.weights === 'object' ? profile.weights : {})
+      }
+    };
+  }
+  return merged;
+}
+
+function loadChurnProfilesSync(filePath) {
+  try {
+    if (!filePath || !fsSync.existsSync(filePath)) return {};
+    const raw = fsSync.readFileSync(filePath, 'utf8');
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return {};
+    if (parsed.profiles && typeof parsed.profiles === 'object' && !Array.isArray(parsed.profiles)) {
+      return parsed.profiles;
+    }
+    return parsed;
+  } catch {
+    return {};
+  }
+}
 
 const TOPIC_QUERIES = [
   {
@@ -184,6 +228,7 @@ function parseCliOptions(argv = []) {
   let topicChurnLookback = DEFAULT_TOPIC_CHURN_LOOKBACK;
   let topicChurnAdjustedAlertThreshold = DEFAULT_TOPIC_CHURN_ADJUSTED_ALERT_THRESHOLD;
   let topicChurnProfile = 'balanced';
+  let topicChurnProfilesFile = DEFAULT_TOPIC_CHURN_PROFILES_FILE;
   const filteredTopicThresholds = new Map();
   const topicChurnWeights = new Map();
 
@@ -338,13 +383,24 @@ function parseCliOptions(argv = []) {
     }
     if (arg === '--topic-churn-profile' && i + 1 < argv.length) {
       const profile = normalizeTopicKey(argv[i + 1]);
-      if (TOPIC_CHURN_PROFILES[profile]) topicChurnProfile = profile;
+      if (profile) topicChurnProfile = profile;
       i += 1;
       continue;
     }
     if (arg.startsWith('--topic-churn-profile=')) {
       const profile = normalizeTopicKey(arg.split('=')[1]);
-      if (TOPIC_CHURN_PROFILES[profile]) topicChurnProfile = profile;
+      if (profile) topicChurnProfile = profile;
+      continue;
+    }
+    if (arg === '--topic-churn-profiles-file' && i + 1 < argv.length) {
+      const filePath = String(argv[i + 1] || '').trim();
+      if (filePath) topicChurnProfilesFile = path.isAbsolute(filePath) ? filePath : path.resolve(process.cwd(), filePath);
+      i += 1;
+      continue;
+    }
+    if (arg.startsWith('--topic-churn-profiles-file=')) {
+      const filePath = String(arg.split('=')[1] || '').trim();
+      if (filePath) topicChurnProfilesFile = path.isAbsolute(filePath) ? filePath : path.resolve(process.cwd(), filePath);
       continue;
     }
     if (arg === '--topic-churn-weight' && i + 1 < argv.length) {
@@ -357,7 +413,8 @@ function parseCliOptions(argv = []) {
     }
   }
 
-  const selectedProfile = TOPIC_CHURN_PROFILES[topicChurnProfile] || TOPIC_CHURN_PROFILES.balanced;
+  const availableProfiles = mergeChurnProfiles(TOPIC_CHURN_PROFILES, loadChurnProfilesSync(topicChurnProfilesFile));
+  const selectedProfile = availableProfiles[topicChurnProfile] || availableProfiles.balanced || TOPIC_CHURN_PROFILES.balanced;
   if (!churnAlertThresholdOverride) {
     topicChurnAlertThreshold = selectedProfile.churnAlertThreshold;
   }
@@ -383,7 +440,10 @@ function parseCliOptions(argv = []) {
     topicChurnLookback,
     topicChurnAdjustedAlertThreshold,
     topicChurnWeights,
-    topicChurnProfile
+    topicChurnProfile,
+    topicChurnProfilesFile,
+    topicChurnProfileDescription: String(selectedProfile.description || ''),
+    topicChurnProfileSource: fsSync.existsSync(topicChurnProfilesFile) ? path.relative(process.cwd(), topicChurnProfilesFile) : 'built-in defaults'
   };
 }
 
@@ -947,8 +1007,8 @@ async function main() {
       const churnAlertThreshold = Math.max(0, options.topicChurnAlertThreshold ?? DEFAULT_TOPIC_CHURN_ALERT_THRESHOLD);
       const churnAdjustedAlertThreshold = Math.max(0, options.topicChurnAdjustedAlertThreshold ?? DEFAULT_TOPIC_CHURN_ADJUSTED_ALERT_THRESHOLD);
       const churnWeightOverrides = options.topicChurnWeights || new Map();
-      const churnProfile = TOPIC_CHURN_PROFILES[options.topicChurnProfile] ? options.topicChurnProfile : 'balanced';
-      const churnProfileDescription = TOPIC_CHURN_PROFILES[churnProfile]?.description || 'Custom profile';
+      const churnProfile = options.topicChurnProfile || 'balanced';
+      const churnProfileDescription = options.topicChurnProfileDescription || 'Profile description unavailable';
       const resolveChurnWeight = (topicLabel) => {
         const normalizedLabel = normalizeTopicKey(topicLabel);
         const topicId = topicIdByLabel.get(normalizedLabel);
@@ -976,6 +1036,7 @@ async function main() {
         `- ${churnAlertCount > 0 ? 'ALERT' : 'No weighted churn alerts'}: ${churnAlertCount} topic(s) at or above base threshold ${churnAlertThreshold} or adjusted threshold ${churnAdjustedAlertThreshold}.`
       );
       lines.push(`- Active churn profile: ${churnProfile} (${churnProfileDescription}).`);
+      lines.push(`- Churn profile source: ${options.topicChurnProfileSource || 'built-in defaults'}.`);
       if (churnWeightOverrides.size > 0) {
         lines.push(`- Custom topic-churn weights active for ${churnWeightOverrides.size} topic key(s).`);
       }
@@ -1037,7 +1098,7 @@ async function main() {
     }
   }
   if (options.topicChurnProfile) {
-    console.log(`Active topic churn profile: ${options.topicChurnProfile}.`);
+    console.log(`Active topic churn profile: ${options.topicChurnProfile} (${options.topicChurnProfileSource || 'built-in defaults'}).`);
   }
 }
 

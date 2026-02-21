@@ -1,5 +1,31 @@
 # Iteration Log
 
+## Iteration 116 (2026-02-21)
+
+### What was changed
+- Externalized churn-profile configuration into `/Users/rizwankalani/stroke/docs/evidence-churn-profiles.json`.
+- Added file-based profile loading in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+  - new CLI option:
+    - `--topic-churn-profiles-file <path>`
+  - watchlist now reports active profile source for traceability.
+- Added npm helper command:
+  - `npm run evidence:watch:profiles-file`.
+- Updated evidence-ops index generator to include churn profile config artifact and command coverage.
+- Regenerated evidence-ops artifacts:
+  - `docs/evidence-watchlist.md`,
+  - `docs/evidence-watch-history.json`,
+  - `docs/evidence-promotion-checklist.md`,
+  - `docs/evidence-promotion-template.md`,
+  - `docs/evidence-promotion-template-p0.md`,
+  - `docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run evidence:watch:profiles-file` passed.
+- `npm run evidence:refresh` passed.
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 115 (2026-02-21)
 
 ### What was changed

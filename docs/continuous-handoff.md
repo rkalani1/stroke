@@ -1184,3 +1184,26 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
+## Iteration 116 update (2026-02-21, macOS session)
+- Externalized churn profile configuration:
+  - added `docs/evidence-churn-profiles.json` as editable policy source,
+  - added file-based profile loading in `scripts/evidence-watch.mjs` via `--topic-churn-profiles-file`.
+- Added npm helper command:
+  - `evidence:watch:profiles-file`
+- Updated evidence-ops index generator to include churn profile config artifact and helper command.
+- Regenerated evidence ops artifacts:
+  - `docs/evidence-watchlist.md`
+  - `docs/evidence-watch-history.json`
+  - `docs/evidence-promotion-checklist.md`
+  - `docs/evidence-promotion-template.md`
+  - `docs/evidence-promotion-template-p0.md`
+  - `docs/evidence-ops-index.md`
+- Validation status:
+  - `npm run evidence:watch:profiles-file` pass
+  - `npm run evidence:refresh` pass
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`

@@ -1,6 +1,6 @@
 # Evidence Watchlist (Auto-generated)
 
-Generated: 2026-02-21T23:06:49.945Z
+Generated: 2026-02-21T23:17:28.580Z
 
 Purpose: highlight potentially relevant **uncited** PubMed evidence for 2021-2026 stroke workflows.
 Baseline cited PMIDs: 23
@@ -105,6 +105,7 @@ Search window start: 2025/01/01
 
 - No weighted churn alerts: 0 topic(s) at or above base threshold 3 or adjusted threshold 4.
 - Active churn profile: balanced (Default balanced surveillance profile).
+- Churn profile source: docs/evidence-churn-profiles.json.
 - Custom topic-churn weights active for 6 topic key(s).
 
 ### Topic Status Flip Alert

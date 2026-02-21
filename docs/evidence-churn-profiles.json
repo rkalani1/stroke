@@ -1,0 +1,46 @@
+{
+  "profiles": {
+    "balanced": {
+      "description": "Default balanced surveillance profile",
+      "churnAlertThreshold": 3,
+      "churnAdjustedAlertThreshold": 4,
+      "churnLookback": 6,
+      "weights": {
+        "thrombolysis": 1.5,
+        "ich": 1.5,
+        "evt": 1.3,
+        "sah-cvt": 1.2,
+        "secondary-prevention": 1.0,
+        "special-populations": 1.0
+      }
+    },
+    "reperfusion": {
+      "description": "Prioritize thrombolysis/EVT churn sensitivity",
+      "churnAlertThreshold": 3,
+      "churnAdjustedAlertThreshold": 4,
+      "churnLookback": 6,
+      "weights": {
+        "thrombolysis": 2.0,
+        "evt": 1.8,
+        "ich": 1.3,
+        "sah-cvt": 1.1,
+        "secondary-prevention": 1.0,
+        "special-populations": 1.0
+      }
+    },
+    "hemorrhage": {
+      "description": "Prioritize ICH/SAH-CVT churn sensitivity",
+      "churnAlertThreshold": 3,
+      "churnAdjustedAlertThreshold": 4,
+      "churnLookback": 6,
+      "weights": {
+        "thrombolysis": 1.2,
+        "evt": 1.1,
+        "ich": 2.0,
+        "sah-cvt": 1.7,
+        "secondary-prevention": 1.0,
+        "special-populations": 1.0
+      }
+    }
+  }
+}

@@ -401,6 +401,14 @@
 - Remaining workflow gap:
   - Optional externalized profile config file for site-specific governance customization without script edits.
 
+## Iteration 116 Update (2026-02-21)
+- Externalized profile-config gap reduced:
+  - Added editable profile configuration artifact (`docs/evidence-churn-profiles.json`).
+  - Added file-based profile loading (`--topic-churn-profiles-file`) so governance policy can be customized without modifying script logic.
+  - Added profile-source trace output in watchlist appendix for auditability.
+- Remaining workflow gap:
+  - Optional schema validation gate for profile config file to fail fast on malformed profile definitions.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |
