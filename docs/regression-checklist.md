@@ -56,6 +56,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] Service worker cache version updated when asset behavior changes.
 - [ ] `index.html` app version updated for storage/cache compatibility when needed.
+- [ ] Smoke QA pediatric scenario (age `<18`) asserts pathway-card visibility, warning output, and generated-note trace.
 
 ## Deployment verification
 - [ ] Feature branch committed with clear message.
@@ -305,5 +306,11 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `scripts/evidence-ops-index.mjs` + `npm run evidence:index` added and wired into `evidence:refresh` and scheduled live-smoke
 - [x] `npm run evidence:refresh` pass (`15` queued high-priority PMIDs; `3` P0 template candidates)
 - [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-100)
+- [x] Smoke regression now validates pediatric pathway UI/warnings/note-trace in age `<18` scenario
+- [x] Existing TIA/CVT library assertions remain passing with pediatric scenario sequenced post-baseline checks
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

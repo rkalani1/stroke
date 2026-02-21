@@ -400,6 +400,7 @@ async function auditView(browser, target, viewport) {
         });
       }
     }
+
   }
 
   await page.keyboard.press('Control+3');
@@ -578,6 +579,92 @@ async function auditView(browser, target, viewport) {
         if (!/BP plan: .*Agent: Nicardipine drip|Plan: .*Agent: Nicardipine drip/i.test(clipboardText || '')) {
           addIssue(issues, 'post-evt-bp-note-plan-missing');
         }
+      }
+    }
+  }
+
+  // Pediatric pathway scenario (age <18): ensure safety workflow is visible and note-traceable.
+  await page.keyboard.press('Control+2');
+  await page.waitForTimeout(200);
+  const pediatricDxButton = page.getByRole('button', { name: /^Ischemic Stroke or TIA$/ }).first();
+  if ((await pediatricDxButton.count()) === 0) {
+    addIssue(issues, 'missing-diagnosis-button', { label: 'Ischemic Stroke or TIA (pediatric scenario)' });
+  } else {
+    await pediatricDxButton.click();
+    await page.waitForTimeout(150);
+
+    let ageFieldSet = false;
+    for (const selector of ['#input-age', '#phone-input-age']) {
+      const ageInput = page.locator(selector).first();
+      if ((await ageInput.count()) === 0) continue;
+      await ageInput.fill('12');
+      ageFieldSet = true;
+      break;
+    }
+    if (!ageFieldSet) {
+      addIssue(issues, 'missing-pediatric-age-input');
+    }
+    await page.waitForTimeout(200);
+
+    const specialPopSummary = page.locator('summary:has-text("Special Populations & Rehab")').first();
+    if ((await specialPopSummary.count()) === 0) {
+      addIssue(issues, 'missing-special-populations-section');
+    } else {
+      await specialPopSummary.scrollIntoViewIfNeeded();
+      await specialPopSummary.click();
+      await page.waitForTimeout(200);
+    }
+
+    if ((await page.getByText(/Pediatric Stroke Rapid Pathway/i).count()) === 0) {
+      addIssue(issues, 'missing-pediatric-pathway-card');
+    }
+    if ((await page.getByText(/PEDIATRIC patient/i).count()) === 0) {
+      addIssue(issues, 'missing-pediatric-age-warning');
+    }
+    if ((await page.getByText(/without documented pediatric neurology consultation/i).count()) === 0) {
+      addIssue(issues, 'missing-pediatric-neuro-warning');
+    }
+
+    const pediatricChecklistSelectors = [
+      /Pediatric neurology consulted/i,
+      /Pediatric-capable center contacted/i,
+      /Arterial \+ venous imaging completed/i
+    ];
+    for (const label of pediatricChecklistSelectors) {
+      const checkbox = page.getByRole('checkbox', { name: label }).first();
+      if ((await checkbox.count()) === 0) {
+        addIssue(issues, 'missing-pediatric-checklist-input', { label: String(label) });
+        continue;
+      }
+      await checkbox.check();
+    }
+    await page.waitForTimeout(150);
+
+    if ((await page.getByText(/Pediatric pathway summary:/i).count()) === 0) {
+      addIssue(issues, 'missing-pediatric-pathway-summary');
+    }
+
+    const copyFullNoteButton = page.getByRole('button', { name: /Copy Full Note/i }).first();
+    if ((await copyFullNoteButton.count()) === 0) {
+      addIssue(issues, 'missing-copy-full-note-button-pediatric');
+    } else {
+      await copyFullNoteButton.scrollIntoViewIfNeeded();
+      await copyFullNoteButton.click();
+      await page.waitForTimeout(200);
+      let clipboardText = '';
+      try {
+        clipboardText = await page.evaluate(async () => {
+          try {
+            return await navigator.clipboard.readText();
+          } catch {
+            return '';
+          }
+        });
+      } catch (error) {
+        addIssue(issues, 'clipboard-read-failed-pediatric', { message: error?.message || String(error) });
+      }
+      if (!/PEDIATRIC STROKE|Pediatric stroke/i.test(clipboardText || '')) {
+        addIssue(issues, 'pediatric-note-trace-missing');
       }
     }
   }

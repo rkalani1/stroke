@@ -286,6 +286,13 @@
 - Remaining workflow gap:
   - Add scenario-level smoke assertions that specifically verify pediatric-pathway warning transitions and note-trace output in age `<18` cases.
 
+## Iteration 100 Update (2026-02-21)
+- Pediatric pathway regression-coverage gap reduced:
+  - Added explicit smoke scenario assertions for age `<18` pathway activation, pediatric-warning visibility, checklist control presence, and note-trace propagation.
+  - Positioned pediatric scenario after baseline library/settings checks to preserve prior cross-domain regression signal stability.
+- Remaining workflow gap:
+  - Add optional live-URL artifact extraction for pediatric scenario screenshots to speed remote triage when scheduled smoke failures occur.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

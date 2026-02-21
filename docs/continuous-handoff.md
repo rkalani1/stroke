@@ -883,3 +883,17 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run validate:citations && npm test && npm run qa`
+
+## Iteration 100 update (2026-02-21, macOS session)
+- Added pediatric regression hardening in `scripts/qa-smoke.mjs`:
+  - age `<18` encounter scenario assertion flow,
+  - pediatric pathway card visibility assertion,
+  - pediatric warning-layer assertion checks,
+  - pediatric checklist-control assertion checks,
+  - clipboard note-trace assertion for pediatric summary propagation.
+- Stabilized smoke sequence by running pediatric scenario after baseline library/settings checks to avoid cross-domain false positives.
+- Validation status:
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`

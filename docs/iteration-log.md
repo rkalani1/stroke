@@ -1,5 +1,20 @@
 # Iteration Log
 
+## Iteration 100 (2026-02-21)
+
+### What was changed
+- Added deterministic pediatric-regression assertions in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+  - age `<18` scenario setup on Encounter,
+  - pediatric pathway card visibility check,
+  - pediatric warning-layer checks (critical age warning + neurology-consult completeness warning),
+  - pediatric checklist control presence and interaction checks,
+  - generated-note trace assertion verifying pediatric summary propagation.
+- Kept legacy TIA/CVT regression checks stable by running pediatric scenario after existing library/settings assertions in smoke flow.
+
+### Verification
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 099 (2026-02-21)
 
 ### What was changed

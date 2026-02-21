@@ -349,3 +349,12 @@
   - cancer-associated stroke AHA scientific statement (`PMID 41623113`, DOI `10.1161/STR.0000000000000517`),
   - pediatric-recommendation 2026 update signal (`PMID 41686463`, DOI `10.1001/jama.2025.26391`).
 - Inference disclosure: pediatric checklist controls operationalize guideline-emphasis and safety workflow structure; they do not independently alter recommendation class/strength.
+
+### Operational update (2026-02-21, iter-100)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added deterministic pediatric safety regression assertions in smoke QA:
+  - pediatric pathway card presence,
+  - age-triggered critical warning signal,
+  - checklist-control availability,
+  - note-trace output for pediatric pathway documentation.
+- Inference disclosure: this iteration hardens operational reliability of existing evidence-linked pediatric workflow content and does not alter recommendation class/strength.
