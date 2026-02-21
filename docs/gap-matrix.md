@@ -293,6 +293,17 @@
 - Remaining workflow gap:
   - Add optional live-URL artifact extraction for pediatric scenario screenshots to speed remote triage when scheduled smoke failures occur.
 
+## Iteration 101 Update (2026-02-21)
+- Evidence-promotion queue noise gap reduced:
+  - Filtered design/protocol-only papers (`rationale/design`, `rationale/methods`, protocol-study variants) out of high-priority watchlist candidates.
+  - Regenerated watchlist/checklist/template outputs with reduced non-actionable items.
+- Queue hygiene impact:
+  - uncited watchlist candidates reduced (`28` → `24`),
+  - high-priority promotion queue reduced (`15` → `11`),
+  - urgent P0 template list narrowed (`3` → `1`).
+- Remaining workflow gap:
+  - Add optional explicit “filtered as design/protocol-only” audit appendix so reviewers can inspect excluded PMIDs when desired.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

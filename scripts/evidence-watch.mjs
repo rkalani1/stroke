@@ -71,7 +71,11 @@ const LOW_VALUE_TITLE_PATTERNS = [
   /^corrigendum/i,
   /^comment/i,
   /^editorial/i,
-  /case report/i
+  /case report/i,
+  /rationale and design/i,
+  /rationale and methods/i,
+  /\bstudy protocol\b/i,
+  /\bprotocol study\b/i
 ];
 
 const GUIDELINE_SIGNAL_PATTERNS = [

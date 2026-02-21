@@ -897,3 +897,25 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
+## Iteration 101 update (2026-02-21, macOS session)
+- Refined evidence-watch triage filters in `scripts/evidence-watch.mjs` to exclude design/protocol-only publications from high-priority queues:
+  - `rationale and design`
+  - `rationale and methods`
+  - `study protocol` / `protocol study`
+- Regenerated evidence operations artifacts:
+  - `docs/evidence-watchlist.md`
+  - `docs/evidence-promotion-checklist.md`
+  - `docs/evidence-promotion-template.md`
+  - `docs/evidence-promotion-template-p0.md`
+  - `docs/evidence-ops-index.md`
+- Queue impact after regeneration:
+  - uncited candidate count: `24`
+  - high-priority promotion queue: `11`
+  - urgent P0 promotion queue: `1`
+- Validation status:
+  - `npm run evidence:refresh` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`

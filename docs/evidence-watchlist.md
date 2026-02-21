@@ -1,16 +1,14 @@
 # Evidence Watchlist (Auto-generated)
 
-Generated: 2026-02-21T15:02:48.922Z
+Generated: 2026-02-21T15:36:36.783Z
 
 Purpose: highlight potentially relevant **uncited** PubMed evidence for 2021-2026 stroke workflows.
-Baseline cited PMIDs: 21
+Baseline cited PMIDs: 23
 Search window start: 2025/01/01
 
 ## Thrombolysis and Extended-Window Reperfusion
 | Priority | Score | Rationale | PMID | Year | Source | Title | DOI | URL |
 |---|---|---|---|---|---|---|---|---|
-| P1 high review | 8 | current-year publication; trial-design signal; high-impact source | 41581534 | 2026 | J Stroke Cerebrovasc Dis | Fibrinogen replacement to prevent intracranial hemorrhage in ischemic stroke patients after thrombolysis - a prospective randomized open blinded endpoint trial (FibER): rationale and methods. | 10.1016/j.jstrokecerebrovasdis.2026.108572 | https://pubmed.ncbi.nlm.nih.gov/41581534/ |
-| P1 high review | 7 | current-year publication; trial-design signal; specialty high-signal source | 41717940 | 2026 | J Am Heart Assoc | Safety and Efficacy of Early Aspirin Administration After Intravenous Thrombolysis for Acute Ischemic Stroke (TREND-IVT): Rationale and Design of a Multicenter, Randomized, Placebo-Controlled Clinical Trial. | 10.1161/JAHA.125.045180 | https://pubmed.ncbi.nlm.nih.gov/41717940/ |
 | P2 medium review | 4 | current-year publication; high-impact source | 41494566 | 2026 | J Stroke Cerebrovasc Dis | Outcomes of low-dose versus standard-dose alteplase in acute ischemic stroke patients aged over 80 years: A real-world propensity score-matched study from China. | 10.1016/j.jstrokecerebrovasdis.2026.108548 | https://pubmed.ncbi.nlm.nih.gov/41494566/ |
 
 ## EVT Eligibility (Large Core / Distal Occlusion)
@@ -54,8 +52,6 @@ Search window start: 2025/01/01
 ## Special Populations (Pregnancy / Cancer / Pediatric)
 | Priority | Score | Rationale | PMID | Year | Source | Title | DOI | URL |
 |---|---|---|---|---|---|---|---|---|
-| P0 urgent review | 11 | current-year publication; guideline/scientific-statement signal; high-impact source; special-population operational relevance | 41686463 | 2026 | JAMA | Stroke Guideline Expands Adult Treatment, Provides Pediatric Recommendations. | 10.1001/jama.2025.26391 | https://pubmed.ncbi.nlm.nih.gov/41686463/ |
-| P0 urgent review | 11 | current-year publication; guideline/scientific-statement signal; high-impact source; special-population operational relevance | 41623113 | 2026 | Stroke | Classification and Management of Ischemic Stroke in Patients With Active Cancer: A Scientific Statement From the American Heart Association. | 10.1161/STR.0000000000000517 | https://pubmed.ncbi.nlm.nih.gov/41623113/ |
 | P1 high review | 9 | current-year publication; trial-design signal; high-impact source; special-population operational relevance | 41490362 | 2026 | JAMA Neurol | Brain Volumes After Hypertensive Pregnancy and Postpartum Blood Pressure Management: A POP-HT Randomized Clinical Trial Imaging Substudy. | 10.1001/jamaneurol.2025.5145 | https://pubmed.ncbi.nlm.nih.gov/41490362/ |
 
 ## Notes

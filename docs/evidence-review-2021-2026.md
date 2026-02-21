@@ -358,3 +358,9 @@
   - checklist-control availability,
   - note-trace output for pediatric pathway documentation.
 - Inference disclosure: this iteration hardens operational reliability of existing evidence-linked pediatric workflow content and does not alter recommendation class/strength.
+
+### Operational update (2026-02-21, iter-101)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Refined evidence-watch triage by filtering non-actionable design/protocol publication patterns from priority queue generation.
+- Regenerated evidence-promotion artifacts with lower queue noise and tighter actionable focus.
+- Inference disclosure: filtering adjustments are workflow triage controls only and do not alter recommendation class/strength.

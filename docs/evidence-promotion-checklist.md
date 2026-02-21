@@ -1,23 +1,20 @@
 # Evidence Promotion Checklist (Auto-generated)
 
-Generated: 2026-02-21T15:02:49.100Z
+Generated: 2026-02-21T15:36:36.964Z
 Source watchlist: docs/evidence-watchlist.md
 Inclusion: P0 urgent review + P1 high review
 
 ## Queue Summary
-- Total candidates: 15
+- Total candidates: 11
 - SAH and CVT: 1
-- Special Populations (Pregnancy / Cancer / Pediatric): 3
 - EVT Eligibility (Large Core / Distal Occlusion): 4
 - Intracerebral Hemorrhage (BP, Reversal, Escalation): 5
-- Thrombolysis and Extended-Window Reperfusion: 2
+- Special Populations (Pregnancy / Cancer / Pediatric): 1
 
 ## Promotion Queue
 | Done | Topic | Priority | PMID | Year | Title | Source | DOI | URL | Promotion Action |
 |---|---|---|---|---|---|---|---|---|---|
 | [ ] | SAH and CVT | P0 urgent review | 41498145 | 2026 | International Position Paper on Outcome Selection After Aneurysmal Subarachnoid Hemorrhage. | Stroke | 10.1161/STROKEAHA.125.053470 | https://pubmed.ncbi.nlm.nih.gov/41498145/ | Assess effect on SAH/CVT protocols and standardized follow-up outcome capture. |
-| [ ] | Special Populations (Pregnancy / Cancer / Pediatric) | P0 urgent review | 41686463 | 2026 | Stroke Guideline Expands Adult Treatment, Provides Pediatric Recommendations. | JAMA | 10.1001/jama.2025.26391 | https://pubmed.ncbi.nlm.nih.gov/41686463/ | Assess pregnancy/cancer/pediatric pathway impact and update dedicated modules. |
-| [ ] | Special Populations (Pregnancy / Cancer / Pediatric) | P0 urgent review | 41623113 | 2026 | Classification and Management of Ischemic Stroke in Patients With Active Cancer: A Scientific Statement From the American Heart Association. | Stroke | 10.1161/STR.0000000000000517 | https://pubmed.ncbi.nlm.nih.gov/41623113/ | Assess pregnancy/cancer/pediatric pathway impact and update dedicated modules. |
 | [ ] | EVT Eligibility (Large Core / Distal Occlusion) | P1 high review | 41671526 | 2026 | Previous Antiplatelet Therapy and Outcomes of Acute Ischemic Stroke With Large Vessel Occlusion Treated With Direct Endovascular Therapy. | Neurology | 10.1212/WNL.0000000000214672 | https://pubmed.ncbi.nlm.nih.gov/41671526/ | Confirm impact on EVT eligibility/MeVO caution; update criteria and note traces if practice-changing. |
 | [ ] | EVT Eligibility (Large Core / Distal Occlusion) | P1 high review | 41568548 | 2026 | Clinical Benefit of Thrombectomy in Large-Core Infarction Patients Is Mediated by Malignant Cerebral Edema Reduction. | J Am Heart Assoc | 10.1161/JAHA.125.044521 | https://pubmed.ncbi.nlm.nih.gov/41568548/ | Confirm impact on EVT eligibility/MeVO caution; update criteria and note traces if practice-changing. |
 | [ ] | EVT Eligibility (Large Core / Distal Occlusion) | P1 high review | 39332900 | 2025 | Spontaneous recanalization in acute large core ischemic stroke due to large vessel occlusion: a post-hoc analysis of the ANGEL-ASPECT trial. | J Neurointerv Surg | 10.1136/jnis-2024-022357 | https://pubmed.ncbi.nlm.nih.gov/39332900/ | Confirm impact on EVT eligibility/MeVO caution; update criteria and note traces if practice-changing. |
@@ -28,8 +25,6 @@ Inclusion: P0 urgent review + P1 high review
 | [ ] | Intracerebral Hemorrhage (BP, Reversal, Escalation) | P1 high review | 41703701 | 2026 | Timeliness of Care for Transferred and Directly Admitted Patients With Anticoagulation-Associated Intracerebral Hemorrhage. | J Am Heart Assoc | 10.1161/JAHA.125.043223 | https://pubmed.ncbi.nlm.nih.gov/41703701/ | Assess impact on BP/reversal/escalation timing pathways and update KPI logic if warranted. |
 | [ ] | Intracerebral Hemorrhage (BP, Reversal, Escalation) | P1 high review | 40762287 | 2026 | Decompressive craniectomy versus best medical treatment alone for spontaneous intracerebral hemorrhage: A systematic review and meta-analysis. | Int J Stroke | 10.1177/17474930251367367 | https://pubmed.ncbi.nlm.nih.gov/40762287/ | Assess impact on BP/reversal/escalation timing pathways and update KPI logic if warranted. |
 | [ ] | Special Populations (Pregnancy / Cancer / Pediatric) | P1 high review | 41490362 | 2026 | Brain Volumes After Hypertensive Pregnancy and Postpartum Blood Pressure Management: A POP-HT Randomized Clinical Trial Imaging Substudy. | JAMA Neurol | 10.1001/jamaneurol.2025.5145 | https://pubmed.ncbi.nlm.nih.gov/41490362/ | Assess pregnancy/cancer/pediatric pathway impact and update dedicated modules. |
-| [ ] | Thrombolysis and Extended-Window Reperfusion | P1 high review | 41581534 | 2026 | Fibrinogen replacement to prevent intracranial hemorrhage in ischemic stroke patients after thrombolysis - a prospective randomized open blinded endpoint trial (FibER): rationale and methods. | J Stroke Cerebrovasc Dis | 10.1016/j.jstrokecerebrovasdis.2026.108572 | https://pubmed.ncbi.nlm.nih.gov/41581534/ | Assess methodological quality and workflow relevance; promote only if directly practice-changing. |
-| [ ] | Thrombolysis and Extended-Window Reperfusion | P1 high review | 41717940 | 2026 | Safety and Efficacy of Early Aspirin Administration After Intravenous Thrombolysis for Acute Ischemic Stroke (TREND-IVT): Rationale and Design of a Multicenter, Randomized, Placebo-Controlled Clinical Trial. | J Am Heart Assoc | 10.1161/JAHA.125.045180 | https://pubmed.ncbi.nlm.nih.gov/41717940/ | Assess methodological quality and workflow relevance; promote only if directly practice-changing. |
 
 ## Review Notes
 - Promotion requires methodological quality check before updating recommendation logic.

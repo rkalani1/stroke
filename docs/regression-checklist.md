@@ -53,6 +53,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] `npm run validate:citations` passes.
 - [ ] `npm run evidence:watch` regenerates watchlist with `Priority / Score / Rationale` columns.
 - [ ] `npm run evidence:index` regenerates `docs/evidence-ops-index.md` with current artifact counts/stamps.
+- [ ] Design/protocol-only title patterns remain filtered from high-priority evidence-promotion queue generation.
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] Service worker cache version updated when asset behavior changes.
 - [ ] `index.html` app version updated for storage/cache compatibility when needed.
@@ -312,5 +313,11 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 ## Last completed run (2026-02-21, iter-100)
 - [x] Smoke regression now validates pediatric pathway UI/warnings/note-trace in age `<18` scenario
 - [x] Existing TIA/CVT library assertions remain passing with pediatric scenario sequenced post-baseline checks
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-101)
+- [x] `evidence-watch.mjs` filters design/protocol-only titles from high-priority queue generation
+- [x] `npm run evidence:refresh` pass (`24` uncited; `11` P0/P1 queue; `1` P0 candidate)
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

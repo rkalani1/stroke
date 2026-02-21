@@ -1,5 +1,26 @@
 # Iteration Log
 
+## Iteration 101 (2026-02-21)
+
+### What was changed
+- Refined evidence-watch triage filtering in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs` to suppress non-actionable design/protocol papers from promotion queues:
+  - added low-value title filters for `rationale and design`, `rationale and methods`, and protocol-study variants.
+- Regenerated evidence operations artifacts with stricter triage:
+  - `docs/evidence-watchlist.md`,
+  - `docs/evidence-promotion-checklist.md`,
+  - `docs/evidence-promotion-template.md`,
+  - `docs/evidence-promotion-template-p0.md`,
+  - `docs/evidence-ops-index.md`.
+- Queue impact after filter refinement:
+  - uncited candidates: `28` → `24`,
+  - high-priority (`P0/P1`) promotion queue: `15` → `11`,
+  - P0 template candidates: `3` → `1`.
+
+### Verification
+- `npm run evidence:refresh` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 100 (2026-02-21)
 
 ### What was changed

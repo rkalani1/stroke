@@ -1,9 +1,9 @@
 # Evidence Promotion Draft Template (Auto-generated)
 
-Generated: 2026-02-21T15:02:49.240Z
+Generated: 2026-02-21T15:36:37.112Z
 Source checklist: docs/evidence-promotion-checklist.md
 Filter: priority=all
-Pending candidates: 15
+Pending candidates: 11
 
 ## How to use
 - Copy one candidate block into a PR description or issue.
@@ -35,59 +35,7 @@ Pending candidates: 15
 - [ ] Re-run `npm run validate:citations`
 - [ ] Re-run `npm test` and `npm run qa`
 
-## Candidate 2: PMID 41686463 (P0 urgent review)
-
-- Topic: Special Populations (Pregnancy / Cancer / Pediatric)
-- Title: Stroke Guideline Expands Adult Treatment, Provides Pediatric Recommendations.
-- Source: JAMA (2026)
-- DOI: 10.1001/jama.2025.26391
-- URL: https://pubmed.ncbi.nlm.nih.gov/41686463/
-- Promotion focus: Assess pregnancy/cancer/pediatric pathway impact and update dedicated modules.
-
-### Metadata patch block
-| Field | Value |
-|---|---|
-| Domain | Special Populations (Pregnancy / Cancer / Pediatric) |
-| Title | Stroke Guideline Expands Adult Treatment, Provides Pediatric Recommendations. |
-| Year | 2026 |
-| Journal/Source | JAMA |
-| URL | https://pubmed.ncbi.nlm.nih.gov/41686463/ |
-| PMID / DOI / NCT | PMID: 41686463; DOI: 10.1001/jama.2025.26391 |
-
-### Workflow impact checklist
-- [ ] Add/update row in `docs/evidence-review-2021-2026.md`
-- [ ] Update relevant pathway text/logic in `src/app.jsx` if practice-changing
-- [ ] Update generated-note trace output where applicable
-- [ ] Re-run `npm run validate:citations`
-- [ ] Re-run `npm test` and `npm run qa`
-
-## Candidate 3: PMID 41623113 (P0 urgent review)
-
-- Topic: Special Populations (Pregnancy / Cancer / Pediatric)
-- Title: Classification and Management of Ischemic Stroke in Patients With Active Cancer: A Scientific Statement From the American Heart Association.
-- Source: Stroke (2026)
-- DOI: 10.1161/STR.0000000000000517
-- URL: https://pubmed.ncbi.nlm.nih.gov/41623113/
-- Promotion focus: Assess pregnancy/cancer/pediatric pathway impact and update dedicated modules.
-
-### Metadata patch block
-| Field | Value |
-|---|---|
-| Domain | Special Populations (Pregnancy / Cancer / Pediatric) |
-| Title | Classification and Management of Ischemic Stroke in Patients With Active Cancer: A Scientific Statement From the American Heart Association. |
-| Year | 2026 |
-| Journal/Source | Stroke |
-| URL | https://pubmed.ncbi.nlm.nih.gov/41623113/ |
-| PMID / DOI / NCT | PMID: 41623113; DOI: 10.1161/STR.0000000000000517 |
-
-### Workflow impact checklist
-- [ ] Add/update row in `docs/evidence-review-2021-2026.md`
-- [ ] Update relevant pathway text/logic in `src/app.jsx` if practice-changing
-- [ ] Update generated-note trace output where applicable
-- [ ] Re-run `npm run validate:citations`
-- [ ] Re-run `npm test` and `npm run qa`
-
-## Candidate 4: PMID 41671526 (P1 high review)
+## Candidate 2: PMID 41671526 (P1 high review)
 
 - Topic: EVT Eligibility (Large Core / Distal Occlusion)
 - Title: Previous Antiplatelet Therapy and Outcomes of Acute Ischemic Stroke With Large Vessel Occlusion Treated With Direct Endovascular Therapy.
@@ -113,7 +61,7 @@ Pending candidates: 15
 - [ ] Re-run `npm run validate:citations`
 - [ ] Re-run `npm test` and `npm run qa`
 
-## Candidate 5: PMID 41568548 (P1 high review)
+## Candidate 3: PMID 41568548 (P1 high review)
 
 - Topic: EVT Eligibility (Large Core / Distal Occlusion)
 - Title: Clinical Benefit of Thrombectomy in Large-Core Infarction Patients Is Mediated by Malignant Cerebral Edema Reduction.
@@ -139,7 +87,7 @@ Pending candidates: 15
 - [ ] Re-run `npm run validate:citations`
 - [ ] Re-run `npm test` and `npm run qa`
 
-## Candidate 6: PMID 39332900 (P1 high review)
+## Candidate 4: PMID 39332900 (P1 high review)
 
 - Topic: EVT Eligibility (Large Core / Distal Occlusion)
 - Title: Spontaneous recanalization in acute large core ischemic stroke due to large vessel occlusion: a post-hoc analysis of the ANGEL-ASPECT trial.
@@ -165,7 +113,7 @@ Pending candidates: 15
 - [ ] Re-run `npm run validate:citations`
 - [ ] Re-run `npm test` and `npm run qa`
 
-## Candidate 7: PMID 40900221 (P1 high review)
+## Candidate 5: PMID 40900221 (P1 high review)
 
 - Topic: EVT Eligibility (Large Core / Distal Occlusion)
 - Title: How Do Patient Outcomes in Mechanical Thrombectomy for Large-Core Stroke Vary Based on Neuroimaging Modalities Used for Patient Selection? A Multicenter Multinational Study.
@@ -191,7 +139,7 @@ Pending candidates: 15
 - [ ] Re-run `npm run validate:citations`
 - [ ] Re-run `npm test` and `npm run qa`
 
-## Candidate 8: PMID 41701755 (P1 high review)
+## Candidate 6: PMID 41701755 (P1 high review)
 
 - Topic: Intracerebral Hemorrhage (BP, Reversal, Escalation)
 - Title: Factors associated with hematoma expansion in deep versus lobar intracerebral haemorrhage: a multicentre observational study.
@@ -217,7 +165,7 @@ Pending candidates: 15
 - [ ] Re-run `npm run validate:citations`
 - [ ] Re-run `npm test` and `npm run qa`
 
-## Candidate 9: PMID 41641790 (P1 high review)
+## Candidate 7: PMID 41641790 (P1 high review)
 
 - Topic: Intracerebral Hemorrhage (BP, Reversal, Escalation)
 - Title: Sex differences in the clinical and surgical management after intracerebral haemorrhage: a post hoc analysis of the INTERACT3 clinical trial.
@@ -243,7 +191,7 @@ Pending candidates: 15
 - [ ] Re-run `npm run validate:citations`
 - [ ] Re-run `npm test` and `npm run qa`
 
-## Candidate 10: PMID 41662621 (P1 high review)
+## Candidate 8: PMID 41662621 (P1 high review)
 
 - Topic: Intracerebral Hemorrhage (BP, Reversal, Escalation)
 - Title: Relationship Between Hematoma Location and Underlying Small Vessel Disease in Cerebellar Intracerebral Hemorrhage.
@@ -269,7 +217,7 @@ Pending candidates: 15
 - [ ] Re-run `npm run validate:citations`
 - [ ] Re-run `npm test` and `npm run qa`
 
-## Candidate 11: PMID 41703701 (P1 high review)
+## Candidate 9: PMID 41703701 (P1 high review)
 
 - Topic: Intracerebral Hemorrhage (BP, Reversal, Escalation)
 - Title: Timeliness of Care for Transferred and Directly Admitted Patients With Anticoagulation-Associated Intracerebral Hemorrhage.
@@ -295,7 +243,7 @@ Pending candidates: 15
 - [ ] Re-run `npm run validate:citations`
 - [ ] Re-run `npm test` and `npm run qa`
 
-## Candidate 12: PMID 40762287 (P1 high review)
+## Candidate 10: PMID 40762287 (P1 high review)
 
 - Topic: Intracerebral Hemorrhage (BP, Reversal, Escalation)
 - Title: Decompressive craniectomy versus best medical treatment alone for spontaneous intracerebral hemorrhage: A systematic review and meta-analysis.
@@ -321,7 +269,7 @@ Pending candidates: 15
 - [ ] Re-run `npm run validate:citations`
 - [ ] Re-run `npm test` and `npm run qa`
 
-## Candidate 13: PMID 41490362 (P1 high review)
+## Candidate 11: PMID 41490362 (P1 high review)
 
 - Topic: Special Populations (Pregnancy / Cancer / Pediatric)
 - Title: Brain Volumes After Hypertensive Pregnancy and Postpartum Blood Pressure Management: A POP-HT Randomized Clinical Trial Imaging Substudy.
@@ -339,58 +287,6 @@ Pending candidates: 15
 | Journal/Source | JAMA Neurol |
 | URL | https://pubmed.ncbi.nlm.nih.gov/41490362/ |
 | PMID / DOI / NCT | PMID: 41490362; DOI: 10.1001/jamaneurol.2025.5145 |
-
-### Workflow impact checklist
-- [ ] Add/update row in `docs/evidence-review-2021-2026.md`
-- [ ] Update relevant pathway text/logic in `src/app.jsx` if practice-changing
-- [ ] Update generated-note trace output where applicable
-- [ ] Re-run `npm run validate:citations`
-- [ ] Re-run `npm test` and `npm run qa`
-
-## Candidate 14: PMID 41581534 (P1 high review)
-
-- Topic: Thrombolysis and Extended-Window Reperfusion
-- Title: Fibrinogen replacement to prevent intracranial hemorrhage in ischemic stroke patients after thrombolysis - a prospective randomized open blinded endpoint trial (FibER): rationale and methods.
-- Source: J Stroke Cerebrovasc Dis (2026)
-- DOI: 10.1016/j.jstrokecerebrovasdis.2026.108572
-- URL: https://pubmed.ncbi.nlm.nih.gov/41581534/
-- Promotion focus: Assess methodological quality and workflow relevance; promote only if directly practice-changing.
-
-### Metadata patch block
-| Field | Value |
-|---|---|
-| Domain | Thrombolysis and Extended-Window Reperfusion |
-| Title | Fibrinogen replacement to prevent intracranial hemorrhage in ischemic stroke patients after thrombolysis - a prospective randomized open blinded endpoint trial (FibER): rationale and methods. |
-| Year | 2026 |
-| Journal/Source | J Stroke Cerebrovasc Dis |
-| URL | https://pubmed.ncbi.nlm.nih.gov/41581534/ |
-| PMID / DOI / NCT | PMID: 41581534; DOI: 10.1016/j.jstrokecerebrovasdis.2026.108572 |
-
-### Workflow impact checklist
-- [ ] Add/update row in `docs/evidence-review-2021-2026.md`
-- [ ] Update relevant pathway text/logic in `src/app.jsx` if practice-changing
-- [ ] Update generated-note trace output where applicable
-- [ ] Re-run `npm run validate:citations`
-- [ ] Re-run `npm test` and `npm run qa`
-
-## Candidate 15: PMID 41717940 (P1 high review)
-
-- Topic: Thrombolysis and Extended-Window Reperfusion
-- Title: Safety and Efficacy of Early Aspirin Administration After Intravenous Thrombolysis for Acute Ischemic Stroke (TREND-IVT): Rationale and Design of a Multicenter, Randomized, Placebo-Controlled Clinical Trial.
-- Source: J Am Heart Assoc (2026)
-- DOI: 10.1161/JAHA.125.045180
-- URL: https://pubmed.ncbi.nlm.nih.gov/41717940/
-- Promotion focus: Assess methodological quality and workflow relevance; promote only if directly practice-changing.
-
-### Metadata patch block
-| Field | Value |
-|---|---|
-| Domain | Thrombolysis and Extended-Window Reperfusion |
-| Title | Safety and Efficacy of Early Aspirin Administration After Intravenous Thrombolysis for Acute Ischemic Stroke (TREND-IVT): Rationale and Design of a Multicenter, Randomized, Placebo-Controlled Clinical Trial. |
-| Year | 2026 |
-| Journal/Source | J Am Heart Assoc |
-| URL | https://pubmed.ncbi.nlm.nih.gov/41717940/ |
-| PMID / DOI / NCT | PMID: 41717940; DOI: 10.1161/JAHA.125.045180 |
 
 ### Workflow impact checklist
 - [ ] Add/update row in `docs/evidence-review-2021-2026.md`
