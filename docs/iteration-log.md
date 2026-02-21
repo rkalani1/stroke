@@ -1286,6 +1286,28 @@
 - `npm test`: pass (`Runs: 3 | Issues: 0`)
 - `npm run qa`: pass (`Runs: 6 | Issues: 0`)
 
+## Iteration 097 (2026-02-21)
+
+### What was changed
+- Added evidence promotion PR-template scaffolding:
+  - new script: `/Users/rizwankalani/stroke/scripts/evidence-promotion-template.mjs`
+  - new npm command: `npm run evidence:template`
+  - generated output: `/Users/rizwankalani/stroke/docs/evidence-promotion-template.md`
+- Extended evidence refresh flow:
+  - `evidence:refresh` now runs watchlist generation, promotion checklist generation, template generation, and sync validation in one command.
+- Template output now includes per-candidate:
+  - metadata patch block (domain/title/year/source/URL/PMID/DOI),
+  - standardized workflow-impact checklist,
+  - topic + promotion-focus trace context.
+
+### QA and validation
+- `npm run evidence:promote`: pass (`13` high-priority candidates queued)
+- `npm run evidence:template`: pass (`13` candidate templates generated)
+- `npm run validate:evidence-promotion`: pass (`13` PMIDs synced)
+- `npm run build`: pass
+- `npm test`: pass (`Runs: 3 | Issues: 0`)
+- `npm run qa`: pass (`Runs: 6 | Issues: 0`)
+
 ## Iteration 094 (2026-02-21)
 
 ### What was changed

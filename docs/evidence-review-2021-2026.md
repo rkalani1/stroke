@@ -327,3 +327,9 @@
 - Added automated consistency validation between high-priority watchlist (`P0/P1`) entries and promotion checklist PMIDs.
 - Integrated evidence-promotion sync validation into local test and full QA commands to block silent evidence-triage drift.
 - Inference disclosure: sync validation enforces operational consistency only and does not change recommendation content.
+
+### Operational update (2026-02-21, iter-097)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added auto-generated evidence promotion draft template output from pending checklist candidates.
+- Template now standardizes metadata patch blocks and workflow-impact checklists to reduce manual translation errors during evidence promotion.
+- Inference disclosure: template content is scaffolding only and does not alter recommendations without clinician-reviewed promotion.

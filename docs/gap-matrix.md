@@ -259,6 +259,14 @@
 - Remaining workflow gap:
   - Optional PR-template scaffolding for one-click promotion of selected checklist items.
 
+## Iteration 097 Update (2026-02-21)
+- Evidence promotion templating gap reduced:
+  - Added auto-generated PR/issue scaffolding from unchecked promotion-checklist candidates.
+  - Added per-candidate metadata patch blocks and standardized workflow-impact checklist sections.
+  - Expanded `evidence:refresh` to include template generation and sync validation.
+- Remaining workflow gap:
+  - Optional selective-template generation (for chosen PMIDs only) to reduce draft volume when queue is large.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

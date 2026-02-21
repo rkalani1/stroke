@@ -281,3 +281,11 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-097)
+- [x] `evidence-promotion-template.mjs` added and generates promotion draft scaffolds
+- [x] `npm run evidence:template` generates `docs/evidence-promotion-template.md`
+- [x] `evidence:refresh` flow now includes template generation and sync validation
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

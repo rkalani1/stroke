@@ -819,3 +819,20 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run validate:citations && npm test && npm run qa`
+
+## Iteration 097 update (2026-02-21, macOS session)
+- Implemented evidence promotion template scaffolding:
+  - Added script `scripts/evidence-promotion-template.mjs`.
+  - Added npm command `npm run evidence:template`.
+  - Generated `docs/evidence-promotion-template.md` from pending promotion-checklist candidates.
+- Updated composite refresh pipeline:
+  - `evidence:refresh` now runs watchlist + checklist + template generation plus sync validation.
+- Validation status:
+  - `npm run evidence:promote` pass (`13` candidates)
+  - `npm run evidence:template` pass (`13` templates)
+  - `npm run validate:evidence-promotion` pass (`13` PMIDs synced)
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run validate:citations && npm test && npm run qa`
