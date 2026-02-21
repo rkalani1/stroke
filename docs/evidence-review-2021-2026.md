@@ -390,3 +390,9 @@
 - Added filtered-topic dominance alerting in watchlist audit output with configurable threshold support (`--filtered-dominance-threshold`) to detect potential over-filtering concentration by domain.
 - Added compact phenotype-based DAPT matrix in TIA workflow to operationalize CHANCE/POINT, CHANCE-2, THALES/AIS-2026 IIb framing, INSPIRES, and severe symptomatic ICAD (SAMMPRIS-pattern) selection windows in one-glance format.
 - Inference disclosure: dominance alerts are triage-governance signals only, and the DAPT matrix operationalizes existing cited trial/guideline evidence without creating new recommendation classes.
+
+### Operational update (2026-02-21, iter-108)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added per-topic threshold overrides for filtered-dominance governance in watchlist generation (`--filtered-topic-threshold`), enabling topic-specific sensitivity tuning.
+- Added `Filtered Topic Threshold Matrix` output for explicit topic-level share vs threshold status visibility.
+- Inference disclosure: topic-threshold overrides are operational governance controls only and do not change evidence priority scoring or recommendation strength.

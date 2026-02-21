@@ -1,5 +1,29 @@
 # Iteration Log
 
+## Iteration 108 (2026-02-21)
+
+### What was changed
+- Added per-topic filtered-dominance threshold controls in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+  - new `--filtered-topic-threshold` option (repeatable and comma-list compatible; accepts ratio or percent),
+  - new appendix output `Filtered Topic Threshold Matrix` with topic share, threshold, and alert status.
+- Added npm helper command:
+  - `npm run evidence:watch:topic-thresholds`.
+- Updated evidence-ops maintenance index command list:
+  - `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs` now includes the topic-threshold helper.
+- Regenerated evidence-ops artifacts:
+  - `docs/evidence-watchlist.md`,
+  - `docs/evidence-promotion-checklist.md`,
+  - `docs/evidence-promotion-template.md`,
+  - `docs/evidence-promotion-template-p0.md`,
+  - `docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run evidence:watch:topic-thresholds` passed.
+- `npm run evidence:refresh` passed.
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 106 (2026-02-21)
 
 ### What was changed

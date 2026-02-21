@@ -61,6 +61,8 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Watchlist filtered appendix includes topic+reason summary table for domain-level exclusion review.
 - [ ] Watchlist filtered appendix includes top-topic dominance alert (share vs threshold).
 - [ ] `npm run evidence:watch:dominance` executes successfully.
+- [ ] Watchlist filtered appendix includes topic-threshold matrix (per-topic share/threshold/status).
+- [ ] `npm run evidence:watch:topic-thresholds` executes successfully.
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] Service worker cache version updated when asset behavior changes.
 - [ ] `index.html` app version updated for storage/cache compatibility when needed.
@@ -358,5 +360,13 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run evidence:watch:dominance` pass (dominance threshold command path verified)
 - [x] `npm run evidence:refresh` pass (queue stable: `11` high-priority; filtered dominance alert emitted)
 - [x] `npm run build` pass after TIA phenotype DAPT matrix addition
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-108)
+- [x] Watchlist filtered appendix now includes `Filtered Topic Threshold Matrix`
+- [x] `npm run evidence:watch:topic-thresholds` pass (custom per-topic thresholds applied)
+- [x] `npm run evidence:refresh` pass (default threshold state regenerated)
+- [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

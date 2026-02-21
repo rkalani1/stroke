@@ -1004,3 +1004,34 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
+## Iteration 107 update (2026-02-21, macOS session)
+- Synced handoff metadata to deployed state:
+  - `Live APP_VERSION` updated to `v5.14.78`,
+  - `Service worker cache key` updated to `stroke-app-v77`.
+- Validation status:
+  - live endpoint checks confirm version/cache markers match deployed assets.
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
+## Iteration 108 update (2026-02-21, macOS session)
+- Added per-topic filtered-dominance controls in `scripts/evidence-watch.mjs`:
+  - new CLI override option `--filtered-topic-threshold topic=value` (repeatable, comma-list compatible),
+  - new watchlist appendix table `Filtered Topic Threshold Matrix` with topic share vs threshold status.
+- Added npm helper command:
+  - `evidence:watch:topic-thresholds`
+- Updated maintenance index in `scripts/evidence-ops-index.mjs` to list the new helper command.
+- Regenerated evidence ops artifacts:
+  - `docs/evidence-watchlist.md`
+  - `docs/evidence-promotion-checklist.md`
+  - `docs/evidence-promotion-template.md`
+  - `docs/evidence-promotion-template-p0.md`
+  - `docs/evidence-ops-index.md`
+- Validation status:
+  - `npm run evidence:watch:topic-thresholds` pass
+  - `npm run evidence:refresh` pass
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`

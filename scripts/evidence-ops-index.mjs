@@ -84,6 +84,7 @@ async function main() {
   out.push('- `npm run evidence:watch`');
   out.push('- `npm run evidence:watch:filtered-all`');
   out.push('- `npm run evidence:watch:dominance`');
+  out.push('- `npm run evidence:watch:topic-thresholds`');
   out.push('- `npm run evidence:promote`');
   out.push('- `npm run evidence:template`');
   out.push('- `npm run evidence:template:p0`');

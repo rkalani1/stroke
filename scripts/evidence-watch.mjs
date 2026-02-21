@@ -126,6 +126,7 @@ function parseCliOptions(argv = []) {
   let filteredAppendixLimit = DEFAULT_FILTERED_APPENDIX_LIMIT;
   let filteredAll = false;
   let filteredTopicDominanceThreshold = DEFAULT_FILTERED_TOPIC_DOMINANCE_THRESHOLD;
+  const filteredTopicThresholds = new Map();
 
   function parseDominanceThreshold(rawValue) {
     const parsed = Number.parseFloat(rawValue);
@@ -133,6 +134,27 @@ function parseCliOptions(argv = []) {
     if (parsed <= 1) return parsed;
     if (parsed <= 100) return parsed / 100;
     return null;
+  }
+
+  function normalizeTopicKey(raw) {
+    return String(raw || '').trim().toLowerCase();
+  }
+
+  function parseTopicThresholdToken(token) {
+    const raw = String(token || '').trim();
+    if (!raw) return;
+    const eq = raw.indexOf('=');
+    if (eq <= 0) return;
+    const topicKey = normalizeTopicKey(raw.slice(0, eq));
+    const threshold = parseDominanceThreshold(raw.slice(eq + 1));
+    if (!topicKey || threshold === null) return;
+    filteredTopicThresholds.set(topicKey, threshold);
+  }
+
+  function parseTopicThresholdList(rawValue) {
+    const raw = String(rawValue || '').trim();
+    if (!raw) return;
+    raw.split(',').forEach((item) => parseTopicThresholdToken(item));
   }
 
   for (let i = 0; i < argv.length; i += 1) {
@@ -161,13 +183,23 @@ function parseCliOptions(argv = []) {
     if (arg.startsWith('--filtered-dominance-threshold=')) {
       const threshold = parseDominanceThreshold(arg.split('=')[1]);
       if (threshold !== null) filteredTopicDominanceThreshold = threshold;
+      continue;
+    }
+    if (arg === '--filtered-topic-threshold' && i + 1 < argv.length) {
+      parseTopicThresholdList(argv[i + 1]);
+      i += 1;
+      continue;
+    }
+    if (arg.startsWith('--filtered-topic-threshold=')) {
+      parseTopicThresholdList(arg.split('=')[1]);
     }
   }
 
   return {
     filteredAppendixLimit,
     filteredAll,
-    filteredTopicDominanceThreshold
+    filteredTopicDominanceThreshold,
+    filteredTopicThresholds
   };
 }
 
@@ -217,6 +249,10 @@ function formatPercent(value) {
   const numeric = Number(value);
   if (Number.isNaN(numeric)) return '';
   return `${(numeric * 100).toFixed(1)}%`;
+}
+
+function normalizeTopicKey(raw) {
+  return String(raw || '').trim().toLowerCase();
 }
 
 function isHighSignalSource(source) {
@@ -537,23 +573,49 @@ async function main() {
     const topTopic = topicRows[0] || { topic: 'None', count: 0 };
     const topShare = totalFiltered > 0 ? topTopic.count / totalFiltered : 0;
     const dominanceThreshold = options.filteredTopicDominanceThreshold || DEFAULT_FILTERED_TOPIC_DOMINANCE_THRESHOLD;
-    const dominanceAlert = topShare >= dominanceThreshold;
+    const topicIdByLabel = new Map(
+      TOPIC_QUERIES.map((topic) => [normalizeTopicKey(topic.label), normalizeTopicKey(topic.id)])
+    );
+    const customThresholds = options.filteredTopicThresholds || new Map();
+    const resolveThreshold = (topicLabel) => {
+      const normalizedLabel = normalizeTopicKey(topicLabel);
+      const topicId = topicIdByLabel.get(normalizedLabel);
+      if (topicId && customThresholds.has(topicId)) return customThresholds.get(topicId);
+      if (customThresholds.has(normalizedLabel)) return customThresholds.get(normalizedLabel);
+      return dominanceThreshold;
+    };
+    const topThreshold = resolveThreshold(topTopic.topic);
+    const dominanceAlert = topShare >= topThreshold;
 
     lines.push('### Filtered Topic Dominance Alert');
     lines.push('| Topic | Count | Share | Alert threshold | Status |');
     lines.push('|---|---|---|---|---|');
     lines.push(
-      `| ${escapePipes(topTopic.topic)} | ${topTopic.count} | ${formatPercent(topShare)} | ${formatPercent(dominanceThreshold)} | ${dominanceAlert ? 'ALERT' : 'OK'} |`
+      `| ${escapePipes(topTopic.topic)} | ${topTopic.count} | ${formatPercent(topShare)} | ${formatPercent(topThreshold)} | ${dominanceAlert ? 'ALERT' : 'OK'} |`
     );
+    lines.push('');
+    lines.push('### Filtered Topic Threshold Matrix');
+    lines.push('| Topic | Count | Share | Threshold | Status |');
+    lines.push('|---|---|---|---|---|');
+    for (const row of topicRows) {
+      const share = totalFiltered > 0 ? row.count / totalFiltered : 0;
+      const threshold = resolveThreshold(row.topic);
+      lines.push(
+        `| ${escapePipes(row.topic)} | ${row.count} | ${formatPercent(share)} | ${formatPercent(threshold)} | ${share >= threshold ? 'ALERT' : 'OK'} |`
+      );
+    }
     lines.push('');
     if (dominanceAlert) {
       lines.push(
-        `- Alert: ${escapePipes(topTopic.topic)} contributes ${formatPercent(topShare)} of filtered entries (threshold ${formatPercent(dominanceThreshold)}). Review filter strictness for this topic.`
+        `- Alert: ${escapePipes(topTopic.topic)} contributes ${formatPercent(topShare)} of filtered entries (threshold ${formatPercent(topThreshold)}). Review filter strictness for this topic.`
       );
     } else {
       lines.push(
-        `- No dominance alert. Top topic share is ${formatPercent(topShare)} (threshold ${formatPercent(dominanceThreshold)}).`
+        `- No dominance alert. Top topic share is ${formatPercent(topShare)} (threshold ${formatPercent(topThreshold)}).`
       );
+    }
+    if (customThresholds.size > 0) {
+      lines.push(`- Custom per-topic threshold overrides active for ${customThresholds.size} topic key(s).`);
     }
     lines.push('');
   }
@@ -573,6 +635,9 @@ async function main() {
     console.log(
       `Filtered dominance: ${topTopic ? `${topTopic[0]} (${formatPercent(share)})` : 'none'}; threshold ${formatPercent(threshold)}; status ${share >= threshold ? 'ALERT' : 'OK'}.`
     );
+    if ((options.filteredTopicThresholds || new Map()).size > 0) {
+      console.log(`Custom topic thresholds active: ${(options.filteredTopicThresholds || new Map()).size}.`);
+    }
   }
 }
 

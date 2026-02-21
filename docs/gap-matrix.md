@@ -341,6 +341,14 @@
 - Remaining workflow gap:
   - Optional per-topic custom dominance thresholds (domain-specific guardrails) if filtering policy needs non-uniform sensitivity.
 
+## Iteration 108 Update (2026-02-21)
+- Per-topic filtering-sensitivity gap reduced:
+  - Added per-topic threshold overrides for filtered-dominance alerts (`--filtered-topic-threshold topic=value`).
+  - Added `Filtered Topic Threshold Matrix` appendix output so reviewers can audit topic-level share against topic-specific thresholds.
+  - Added npm helper command `evidence:watch:topic-thresholds` for repeatable policy checks.
+- Remaining workflow gap:
+  - Optional trend tracking of topic-level alert status across iterations (time-series governance view).
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |
