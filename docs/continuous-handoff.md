@@ -1035,3 +1035,19 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
+## Iteration 109 update (2026-02-21, macOS session)
+- Hardened smoke-QA feature-parity gating in `scripts/qa-smoke.mjs`:
+  - added local/live `APP_VERSION` extraction from target HTML,
+  - enabled live feature-specific assertion enforcement only when local/live versions match,
+  - preserved strict local assertions for newly added workflow features.
+- Added smoke report parity metadata:
+  - `localAppVersion`
+  - `liveAppVersion`
+  - `liveParityChecksEnabled`
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`

@@ -64,6 +64,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Watchlist filtered appendix includes topic-threshold matrix (per-topic share/threshold/status).
 - [ ] `npm run evidence:watch:topic-thresholds` executes successfully.
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
+- [ ] QA smoke report includes local/live app-version parity metadata (`localAppVersion`, `liveAppVersion`, `liveParityChecksEnabled`).
 - [ ] Service worker cache version updated when asset behavior changes.
 - [ ] `index.html` app version updated for storage/cache compatibility when needed.
 - [ ] Smoke QA pediatric scenario (age `<18`) asserts pathway-card visibility, warning output, and generated-note trace.
@@ -367,6 +368,12 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] Watchlist filtered appendix now includes `Filtered Topic Threshold Matrix`
 - [x] `npm run evidence:watch:topic-thresholds` pass (custom per-topic thresholds applied)
 - [x] `npm run evidence:refresh` pass (default threshold state regenerated)
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-109)
+- [x] `qa-smoke-report.json` now includes local/live app-version parity metadata fields
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

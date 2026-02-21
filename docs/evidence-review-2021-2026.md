@@ -396,3 +396,9 @@
 - Added per-topic threshold overrides for filtered-dominance governance in watchlist generation (`--filtered-topic-threshold`), enabling topic-specific sensitivity tuning.
 - Added `Filtered Topic Threshold Matrix` output for explicit topic-level share vs threshold status visibility.
 - Inference disclosure: topic-threshold overrides are operational governance controls only and do not change evidence priority scoring or recommendation strength.
+
+### Operational update (2026-02-21, iter-109)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added smoke-QA version-parity gating so live feature-specific assertions are enforced when local/live `APP_VERSION` values match, while avoiding false pre-deploy failures during staged rollout.
+- Added parity metadata output in smoke reports (`localAppVersion`, `liveAppVersion`, `liveParityChecksEnabled`) for operational traceability.
+- Inference disclosure: parity gating changes regression enforcement timing only and does not alter clinical recommendation logic or evidence interpretation.

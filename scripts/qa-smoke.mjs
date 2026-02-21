@@ -60,6 +60,18 @@ async function canReach(url) {
   }
 }
 
+async function fetchAppVersion(url) {
+  try {
+    const response = await fetch(url, { method: 'GET' });
+    if (!response.ok) return null;
+    const html = await response.text();
+    const match = html.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/i);
+    return match ? match[1] : null;
+  } catch {
+    return null;
+  }
+}
+
 function startLocalServer() {
   const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
   const server = spawn(pythonCmd, ['-m', 'http.server', String(PORT)], {
@@ -455,7 +467,8 @@ async function auditView(browser, target, viewport) {
       if ((await page.getByText(/TIA Disposition Engine/i).count()) === 0) {
         addIssue(issues, 'missing-tia-disposition-engine');
       }
-      if (target.name === 'local') {
+      const enforceTiaDaptMatrix = target.name === 'local' || Boolean(target.enforceLiveParityChecks);
+      if (enforceTiaDaptMatrix) {
         if ((await page.getByText(/Phenotype-Based DAPT Quick Matrix/i).count()) === 0) {
           addIssue(issues, 'missing-tia-dapt-phenotype-matrix');
         } else {
@@ -711,10 +724,29 @@ async function main() {
       await waitForHttp(LOCAL_URL);
     }
 
+    const localVersion = await fetchAppVersion(LOCAL_URL);
+    const liveVersion = localOnly ? null : await fetchAppVersion(LIVE_URL);
+    const liveVersionMatchesLocal = !localOnly && Boolean(localVersion) && Boolean(liveVersion) && localVersion === liveVersion;
+
+    const effectiveTargets = targets.map((target) => {
+      if (target.name === 'live') {
+        return {
+          ...target,
+          appVersion: liveVersion,
+          enforceLiveParityChecks: liveVersionMatchesLocal
+        };
+      }
+      return {
+        ...target,
+        appVersion: localVersion,
+        enforceLiveParityChecks: true
+      };
+    });
+
     const browser = await chromium.launch({ headless: true });
     const runs = [];
 
-    for (const target of targets) {
+    for (const target of effectiveTargets) {
       for (const viewport of VIEWPORTS) {
         runs.push(await auditView(browser, target, viewport));
       }
@@ -730,7 +762,10 @@ async function main() {
       targetCount: targets.length,
       viewportCount: VIEWPORTS.length,
       runCount: runs.length,
-      totalIssues
+      totalIssues,
+      localAppVersion: localVersion,
+      liveAppVersion: liveVersion,
+      liveParityChecksEnabled: liveVersionMatchesLocal
     };
 
     const report = { summary, runs };

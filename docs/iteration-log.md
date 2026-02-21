@@ -1,5 +1,22 @@
 # Iteration Log
 
+## Iteration 109 (2026-02-21)
+
+### What was changed
+- Hardened live/local feature-parity gating in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+  - added app-version detection from local/live HTML (`APP_VERSION` parsing),
+  - enabled live feature-specific assertions only when local and live app versions match,
+  - preserved strict local assertion behavior for newly introduced workflow cards.
+- Added parity metadata to smoke reports:
+  - `localAppVersion`,
+  - `liveAppVersion`,
+  - `liveParityChecksEnabled`.
+
+### Verification
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 108 (2026-02-21)
 
 ### What was changed

@@ -349,6 +349,14 @@
 - Remaining workflow gap:
   - Optional trend tracking of topic-level alert status across iterations (time-series governance view).
 
+## Iteration 109 Update (2026-02-21)
+- QA parity-regression gap reduced:
+  - Added local/live app-version detection in smoke automation and enabled live feature-specific assertions only when versions are in sync.
+  - Prevents false pre-deploy live failures while preserving strict post-deploy parity enforcement.
+  - Smoke report now emits explicit parity metadata (`localAppVersion`, `liveAppVersion`, `liveParityChecksEnabled`).
+- Remaining workflow gap:
+  - Optional per-feature parity policy registry (to tune which new assertions require live version match before enforcement).
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |
