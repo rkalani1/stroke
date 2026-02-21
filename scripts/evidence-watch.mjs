@@ -14,6 +14,7 @@ const MAX_PER_TOPIC = 8;
 const REQUEST_DELAY_MS = 350;
 const DEFAULT_FILTERED_APPENDIX_LIMIT = 20;
 const DEFAULT_FILTERED_TOPIC_DOMINANCE_THRESHOLD = 0.6;
+const DEFAULT_TOPIC_STATUS_FLIP_ALERT_THRESHOLD = 1;
 
 const TOPIC_QUERIES = [
   {
@@ -126,6 +127,7 @@ function parseCliOptions(argv = []) {
   let filteredAppendixLimit = DEFAULT_FILTERED_APPENDIX_LIMIT;
   let filteredAll = false;
   let filteredTopicDominanceThreshold = DEFAULT_FILTERED_TOPIC_DOMINANCE_THRESHOLD;
+  let topicStatusFlipAlertThreshold = DEFAULT_TOPIC_STATUS_FLIP_ALERT_THRESHOLD;
   const filteredTopicThresholds = new Map();
 
   function parseDominanceThreshold(rawValue) {
@@ -192,6 +194,17 @@ function parseCliOptions(argv = []) {
     }
     if (arg.startsWith('--filtered-topic-threshold=')) {
       parseTopicThresholdList(arg.split('=')[1]);
+      continue;
+    }
+    if (arg === '--topic-status-flip-threshold' && i + 1 < argv.length) {
+      const value = Number.parseInt(argv[i + 1], 10);
+      if (!Number.isNaN(value) && value >= 0) topicStatusFlipAlertThreshold = value;
+      i += 1;
+      continue;
+    }
+    if (arg.startsWith('--topic-status-flip-threshold=')) {
+      const value = Number.parseInt(arg.split('=')[1], 10);
+      if (!Number.isNaN(value) && value >= 0) topicStatusFlipAlertThreshold = value;
     }
   }
 
@@ -199,7 +212,8 @@ function parseCliOptions(argv = []) {
     filteredAppendixLimit,
     filteredAll,
     filteredTopicDominanceThreshold,
-    filteredTopicThresholds
+    filteredTopicThresholds,
+    topicStatusFlipAlertThreshold
   };
 }
 
@@ -659,6 +673,7 @@ async function main() {
     } else {
       lines.push('| Topic | Previous share | Current share | Delta (pp) | Previous status | Current status |');
       lines.push('|---|---|---|---|---|---|');
+      const statusFlips = [];
       for (const row of topicRows) {
         const currentShare = totalFiltered > 0 ? row.count / totalFiltered : 0;
         const currentThreshold = resolveThreshold(row.topic);
@@ -671,6 +686,25 @@ async function main() {
           : `${((currentShare - prevShare) * 100).toFixed(1)}pp`;
         lines.push(
           `| ${escapePipes(row.topic)} | ${prevShare === null || typeof prevShare !== 'number' ? 'n/a' : formatPercent(prevShare)} | ${formatPercent(currentShare)} | ${deltaPp} | ${escapePipes(prevStatus)} | ${currentStatus} |`
+        );
+        if ((prevStatus === 'ALERT' || prevStatus === 'OK') && prevStatus !== currentStatus) {
+          statusFlips.push({ topic: row.topic, previousStatus: prevStatus, currentStatus });
+        }
+      }
+      lines.push('');
+      lines.push('### Topic Status Flip Alert');
+      if (statusFlips.length === 0) {
+        lines.push('- No topic status flips detected compared with previous run.');
+      } else {
+        lines.push('| Topic | Previous status | Current status |');
+        lines.push('|---|---|---|');
+        for (const flip of statusFlips) {
+          lines.push(`| ${escapePipes(flip.topic)} | ${flip.previousStatus} | ${flip.currentStatus} |`);
+        }
+        const flipThreshold = Math.max(0, options.topicStatusFlipAlertThreshold ?? DEFAULT_TOPIC_STATUS_FLIP_ALERT_THRESHOLD);
+        lines.push('');
+        lines.push(
+          `- ${statusFlips.length >= flipThreshold ? 'ALERT' : 'Info'}: ${statusFlips.length} topic status flip(s) detected (threshold ${flipThreshold}).`
         );
       }
       lines.push('');

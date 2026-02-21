@@ -408,3 +408,9 @@
 - Added watchlist threshold-trend reporting that compares current filtered-topic shares/status against the previous run snapshot.
 - This improves continuity of evidence-triage governance by surfacing topic-level drift instead of only point-in-time status.
 - Inference disclosure: trend reporting is operational monitoring only and does not alter evidence-priority scoring or recommendation strength.
+
+### Operational update (2026-02-21, iter-111)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added topic status-flip alerting in watchlist governance output with configurable flip-threshold sensitivity.
+- This makes status churn explicit when topic alert states transition between consecutive runs.
+- Inference disclosure: status-flip alerting is governance monitoring only and does not alter recommendation content or evidence strength.

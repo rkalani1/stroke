@@ -364,6 +364,13 @@
 - Remaining workflow gap:
   - Optional alert-on-churn policy when topic status flips repeatedly across consecutive runs.
 
+## Iteration 111 Update (2026-02-21)
+- Topic-status churn governance gap reduced:
+  - Added explicit topic status-flip alert block (`Topic Status Flip Alert`) in watchlist output.
+  - Added configurable status-flip alert threshold (`--topic-status-flip-threshold`) for churn sensitivity control.
+- Remaining workflow gap:
+  - Optional multi-run persistence tracking (for example 3-run rolling flip count) if longer-horizon churn surveillance is needed.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

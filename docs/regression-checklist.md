@@ -64,6 +64,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Watchlist filtered appendix includes topic-threshold matrix (per-topic share/threshold/status).
 - [ ] `npm run evidence:watch:topic-thresholds` executes successfully.
 - [ ] Watchlist filtered appendix includes trend table vs previous run for topic-threshold status/share deltas.
+- [ ] Watchlist filtered appendix includes topic status-flip alert block with thresholded alert summary.
 - [ ] No blocking runtime errors in browser console on local or live smoke routes.
 - [ ] QA smoke report includes local/live app-version parity metadata (`localAppVersion`, `liveAppVersion`, `liveParityChecksEnabled`).
 - [ ] Service worker cache version updated when asset behavior changes.
@@ -382,6 +383,13 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 ## Last completed run (2026-02-21, iter-110)
 - [x] Watchlist now includes `Filtered Topic Threshold Trend (vs Previous Run)` table
 - [x] `npm run evidence:refresh` pass (trend snapshot regenerated)
+- [x] `npm run build` pass
+- [x] `npm test` pass (`Runs: 3 | Issues: 0`)
+- [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)
+
+## Last completed run (2026-02-21, iter-111)
+- [x] Watchlist now includes `Topic Status Flip Alert` with thresholded summary
+- [x] `npm run evidence:refresh` pass (status-flip block regenerated)
 - [x] `npm run build` pass
 - [x] `npm test` pass (`Runs: 3 | Issues: 0`)
 - [x] `npm run qa` local + live smoke pass (`Runs: 6 | Issues: 0`)

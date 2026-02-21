@@ -1,5 +1,24 @@
 # Iteration Log
 
+## Iteration 111 (2026-02-21)
+
+### What was changed
+- Added topic-status flip alerting to watchlist trend output in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+  - new CLI option `--topic-status-flip-threshold` to set alert sensitivity,
+  - new appendix block `Topic Status Flip Alert` listing topic status transitions (`ALERT`/`OK`) vs prior run.
+- Regenerated evidence-ops artifacts:
+  - `docs/evidence-watchlist.md`,
+  - `docs/evidence-promotion-checklist.md`,
+  - `docs/evidence-promotion-template.md`,
+  - `docs/evidence-promotion-template-p0.md`,
+  - `docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run evidence:refresh` passed.
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 110 (2026-02-21)
 
 ### What was changed
