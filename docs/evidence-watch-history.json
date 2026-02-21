@@ -1,0 +1,14 @@
+[
+  {
+    "generatedAt": "2026-02-21T17:45:38.183Z",
+    "topics": [
+      {
+        "topic": "Thrombolysis and Extended-Window Reperfusion",
+        "count": 2,
+        "share": 1,
+        "threshold": 0.6,
+        "status": "ALERT"
+      }
+    ]
+  }
+]

@@ -4,6 +4,7 @@ import process from 'node:process';
 
 const EVIDENCE_FILE = path.join(process.cwd(), 'docs', 'evidence-review-2021-2026.md');
 const WATCHLIST_FILE = path.join(process.cwd(), 'docs', 'evidence-watchlist.md');
+const WATCHLIST_HISTORY_FILE = path.join(process.cwd(), 'docs', 'evidence-watch-history.json');
 const PUBMED_BASE = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
 const WINDOW_START = '2025/01/01';
 const WINDOW_END = '3000';
@@ -15,6 +16,7 @@ const REQUEST_DELAY_MS = 350;
 const DEFAULT_FILTERED_APPENDIX_LIMIT = 20;
 const DEFAULT_FILTERED_TOPIC_DOMINANCE_THRESHOLD = 0.6;
 const DEFAULT_TOPIC_STATUS_FLIP_ALERT_THRESHOLD = 1;
+const HISTORY_MAX_ENTRIES = 30;
 
 const TOPIC_QUERIES = [
   {
@@ -309,6 +311,28 @@ function parsePreviousThresholdMatrix(markdown) {
   return rows;
 }
 
+async function readWatchlistHistory() {
+  try {
+    const raw = await fs.readFile(WATCHLIST_HISTORY_FILE, 'utf8');
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map((entry) => ({
+        generatedAt: String(entry.generatedAt || ''),
+        topics: Array.isArray(entry.topics)
+          ? entry.topics.map((topic) => ({
+            topic: String(topic.topic || ''),
+            status: String(topic.status || ''),
+            share: typeof topic.share === 'number' ? topic.share : null
+          }))
+          : []
+      }))
+      .filter((entry) => entry.generatedAt && entry.topics.length > 0);
+  } catch {
+    return [];
+  }
+}
+
 function isHighSignalSource(source) {
   return HIGH_SIGNAL_SOURCE_PATTERNS.some((pattern) => pattern.test(String(source || '')));
 }
@@ -466,6 +490,7 @@ async function summarizePubMed(ids) {
 async function main() {
   const options = parseCliOptions(process.argv.slice(2));
   const evidenceMarkdown = await fs.readFile(EVIDENCE_FILE, 'utf8');
+  const watchlistHistory = await readWatchlistHistory();
   let previousWatchlistMarkdown = '';
   try {
     previousWatchlistMarkdown = await fs.readFile(WATCHLIST_FILE, 'utf8');
@@ -486,6 +511,7 @@ async function main() {
   const seenCandidatePmids = new Set();
   const filteredLowValue = [];
   const resultsByTopic = [];
+  let currentTopicSnapshot = [];
 
   for (const topic of TOPIC_QUERIES) {
     const ids = await searchPubMed(topic.query);
@@ -658,12 +684,21 @@ async function main() {
     lines.push('### Filtered Topic Threshold Matrix');
     lines.push('| Topic | Count | Share | Threshold | Status |');
     lines.push('|---|---|---|---|---|');
+    currentTopicSnapshot = [];
     for (const row of topicRows) {
       const share = totalFiltered > 0 ? row.count / totalFiltered : 0;
       const threshold = resolveThreshold(row.topic);
+      const status = share >= threshold ? 'ALERT' : 'OK';
       lines.push(
-        `| ${escapePipes(row.topic)} | ${row.count} | ${formatPercent(share)} | ${formatPercent(threshold)} | ${share >= threshold ? 'ALERT' : 'OK'} |`
+        `| ${escapePipes(row.topic)} | ${row.count} | ${formatPercent(share)} | ${formatPercent(threshold)} | ${status} |`
       );
+      currentTopicSnapshot.push({
+        topic: row.topic,
+        count: row.count,
+        share,
+        threshold,
+        status
+      });
     }
     lines.push('');
     lines.push('### Filtered Topic Threshold Trend (vs Previous Run)');
@@ -692,6 +727,21 @@ async function main() {
         }
       }
       lines.push('');
+      const historyWindow = [...watchlistHistory.slice(-2), { generatedAt, topics: currentTopicSnapshot }];
+      if (historyWindow.length > 1) {
+        lines.push('### Topic Status History (Last 3 Runs)');
+        lines.push('| Topic | Run -2 | Run -1 | Current |');
+        lines.push('|---|---|---|---|');
+        for (const row of topicRows) {
+          const statuses = historyWindow.map((entry) => {
+            const topicEntry = (entry.topics || []).find((topic) => topic.topic === row.topic);
+            return topicEntry?.status || 'n/a';
+          });
+          const padded = [...Array(Math.max(0, 3 - statuses.length)).fill('n/a'), ...statuses].slice(-3);
+          lines.push(`| ${escapePipes(row.topic)} | ${padded[0]} | ${padded[1]} | ${padded[2]} |`);
+        }
+        lines.push('');
+      }
       lines.push('### Topic Status Flip Alert');
       if (statusFlips.length === 0) {
         lines.push('- No topic status flips detected compared with previous run.');
@@ -725,6 +775,11 @@ async function main() {
   }
 
   await fs.writeFile(WATCHLIST_FILE, `${lines.join('\n')}\n`, 'utf8');
+  if (currentTopicSnapshot.length > 0) {
+    const updatedHistory = [...watchlistHistory, { generatedAt, topics: currentTopicSnapshot }]
+      .slice(-HISTORY_MAX_ENTRIES);
+    await fs.writeFile(WATCHLIST_HISTORY_FILE, `${JSON.stringify(updatedHistory, null, 2)}\n`, 'utf8');
+  }
   console.log(`Evidence watchlist updated: ${path.relative(process.cwd(), WATCHLIST_FILE)}`);
   console.log(`Topics scanned: ${TOPIC_QUERIES.length}; uncited candidates: ${seenCandidatePmids.size}.`);
   console.log(`Filtered low-actionability candidates logged: ${filteredLowValue.length}${options.filteredAll ? ' (full appendix)' : ` (appendix limit ${options.filteredAppendixLimit})`}.`);

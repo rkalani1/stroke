@@ -1,5 +1,25 @@
 # Iteration Log
 
+## Iteration 112 (2026-02-21)
+
+### What was changed
+- Added persistent multi-run watchlist governance history in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+  - new generated artifact `docs/evidence-watch-history.json` (rolling snapshot history, max 30 entries),
+  - new watchlist appendix block `Topic Status History (Last 3 Runs)` for longitudinal status visibility.
+- Regenerated evidence-ops artifacts:
+  - `docs/evidence-watchlist.md`,
+  - `docs/evidence-watch-history.json`,
+  - `docs/evidence-promotion-checklist.md`,
+  - `docs/evidence-promotion-template.md`,
+  - `docs/evidence-promotion-template-p0.md`,
+  - `docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run evidence:refresh` passed.
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 111 (2026-02-21)
 
 ### What was changed

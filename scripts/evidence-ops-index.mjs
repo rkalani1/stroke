@@ -7,6 +7,7 @@ const WATCHLIST_PATH = path.join(DOCS_DIR, 'evidence-watchlist.md');
 const CHECKLIST_PATH = path.join(DOCS_DIR, 'evidence-promotion-checklist.md');
 const TEMPLATE_PATH = path.join(DOCS_DIR, 'evidence-promotion-template.md');
 const TEMPLATE_P0_PATH = path.join(DOCS_DIR, 'evidence-promotion-template-p0.md');
+const HISTORY_PATH = path.join(DOCS_DIR, 'evidence-watch-history.json');
 const OUTPUT_PATH = path.join(DOCS_DIR, 'evidence-ops-index.md');
 
 async function readText(file) {
@@ -48,12 +49,22 @@ function extractWatchlistP0P1(markdown) {
   return count;
 }
 
+function extractHistoryEntryCount(rawHistory) {
+  try {
+    const parsed = JSON.parse(String(rawHistory || '[]'));
+    return Array.isArray(parsed) ? parsed.length : null;
+  } catch {
+    return null;
+  }
+}
+
 async function main() {
-  const [watchlistMd, checklistMd, templateMd, templateP0Md] = await Promise.all([
+  const [watchlistMd, checklistMd, templateMd, templateP0Md, historyRaw] = await Promise.all([
     readText(WATCHLIST_PATH),
     readText(CHECKLIST_PATH),
     readText(TEMPLATE_PATH),
-    readText(TEMPLATE_P0_PATH)
+    readText(TEMPLATE_P0_PATH),
+    readText(HISTORY_PATH)
   ]);
 
   const now = new Date().toISOString();
@@ -66,6 +77,7 @@ async function main() {
   const checklistTotal = extractTotalChecklist(checklistMd);
   const templatePending = extractPendingCandidates(templateMd);
   const templateP0Pending = extractPendingCandidates(templateP0Md);
+  const historyCount = extractHistoryEntryCount(historyRaw);
 
   const out = [];
   out.push('# Evidence Ops Index (Auto-generated)');
@@ -79,6 +91,7 @@ async function main() {
   out.push(`| Promotion checklist | docs/evidence-promotion-checklist.md | ${checklistGenerated} | Total queued: ${checklistTotal ?? 'unknown'} |`);
   out.push(`| Promotion template (all) | docs/evidence-promotion-template.md | ${templateGenerated} | Pending templates: ${templatePending ?? 'unknown'} |`);
   out.push(`| Promotion template (P0) | docs/evidence-promotion-template-p0.md | ${templateP0Generated} | Pending templates: ${templateP0Pending ?? 'unknown'} |`);
+  out.push(`| Watchlist history | docs/evidence-watch-history.json | n/a (JSON snapshot) | Entries: ${historyCount ?? 'unknown'} |`);
   out.push('');
   out.push('## Maintenance Commands');
   out.push('- `npm run evidence:watch`');
