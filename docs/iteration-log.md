@@ -1,5 +1,22 @@
 # Iteration Log
 
+## Iteration 102 (2026-02-21)
+
+### What was changed
+- Added filtered-item transparency to evidence watchlist generation in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+  - retained strict high-priority queue filtering for low-actionability protocol/design papers,
+  - added an explicit **Filtered Low-Actionability Candidates (Audit Appendix)** section to `docs/evidence-watchlist.md` (topic, PMID, reason, URL) so reviewers can still inspect excluded items.
+- Regenerated downstream evidence-ops artifacts:
+  - `docs/evidence-promotion-checklist.md`,
+  - `docs/evidence-promotion-template.md`,
+  - `docs/evidence-promotion-template-p0.md`,
+  - `docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run evidence:refresh` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 101 (2026-02-21)
 
 ### What was changed

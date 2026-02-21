@@ -364,3 +364,8 @@
 - Refined evidence-watch triage by filtering non-actionable design/protocol publication patterns from priority queue generation.
 - Regenerated evidence-promotion artifacts with lower queue noise and tighter actionable focus.
 - Inference disclosure: filtering adjustments are workflow triage controls only and do not alter recommendation class/strength.
+
+### Operational update (2026-02-21, iter-102)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added watchlist audit appendix output listing low-actionability filtered candidates (topic, PMID, reason) to preserve reviewer transparency while keeping promotion queues focused.
+- Inference disclosure: audit appendix output is metadata transparency only and does not alter recommendation class/strength.

@@ -304,6 +304,13 @@
 - Remaining workflow gap:
   - Add optional explicit “filtered as design/protocol-only” audit appendix so reviewers can inspect excluded PMIDs when desired.
 
+## Iteration 102 Update (2026-02-21)
+- Evidence triage transparency gap reduced:
+  - Added filtered-candidate audit appendix output to watchlist generation so excluded protocol/design papers remain reviewable without polluting actionable queue tiers.
+  - Maintained reduced high-priority queue size while exposing exclusion rationale and PMIDs.
+- Remaining workflow gap:
+  - Add optional CLI flag to emit full (untruncated) filtered appendix when deep manual review is needed.
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

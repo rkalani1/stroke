@@ -170,6 +170,14 @@ function isLowValueTitle(title) {
   return LOW_VALUE_TITLE_PATTERNS.some((pattern) => pattern.test(String(title || '')));
 }
 
+function getLowValueReason(title) {
+  const text = String(title || '');
+  for (const pattern of LOW_VALUE_TITLE_PATTERNS) {
+    if (pattern.test(text)) return pattern.source;
+  }
+  return null;
+}
+
 function matchesTopicTitle(title, terms = []) {
   const normalized = String(title || '').toLowerCase();
   if (!normalized || terms.length === 0) return true;
@@ -321,6 +329,7 @@ async function main() {
   });
 
   const seenCandidatePmids = new Set();
+  const filteredLowValue = [];
   const resultsByTopic = [];
 
   for (const topic of TOPIC_QUERIES) {
@@ -334,7 +343,18 @@ async function main() {
       if (seenCandidatePmids.has(article.pmid)) continue;
       if (!article.year || article.year < YEAR_MIN || article.year > YEAR_MAX) continue;
       if (!isHighSignalSource(article.source)) continue;
-      if (isLowValueTitle(article.title)) continue;
+      const lowValueReason = getLowValueReason(article.title);
+      if (lowValueReason) {
+        filteredLowValue.push({
+          topic: topic.label,
+          pmid: article.pmid,
+          year: article.year,
+          source: article.source,
+          title: article.title,
+          reason: lowValueReason
+        });
+        continue;
+      }
       if (!matchesTopicTitle(article.title, topic.titleTerms)) continue;
       const scored = scoreCandidate(article, topic);
       candidates.push({
@@ -389,7 +409,26 @@ async function main() {
   lines.push('- This watchlist is a screening aid, not an automatic recommendation update.');
   lines.push('- Priority scores are triage-only and weight guideline/trial signal, recency, source strength, and direct workflow relevance.');
   lines.push('- Additions to evidence tables should still be clinician-reviewed for methodological quality and workflow relevance.');
+  lines.push('- Filtered low-actionability entries are listed below for optional reviewer override.');
   lines.push('');
+
+  lines.push('## Filtered Low-Actionability Candidates (Audit Appendix)');
+  if (filteredLowValue.length === 0) {
+    lines.push('- None.');
+    lines.push('');
+  } else {
+    lines.push('| Topic | PMID | Year | Source | Title | Filter reason | URL |');
+    lines.push('|---|---|---|---|---|---|---|');
+    for (const item of filteredLowValue.slice(0, 20)) {
+      lines.push(
+        `| ${escapePipes(item.topic)} | ${item.pmid} | ${item.year || ''} | ${escapePipes(item.source)} | ${escapePipes(item.title)} | ${escapePipes(item.reason)} | https://pubmed.ncbi.nlm.nih.gov/${item.pmid}/ |`
+      );
+    }
+    if (filteredLowValue.length > 20) {
+      lines.push(`| ... | ... | ... | ... | ... | ... | ... |`);
+    }
+    lines.push('');
+  }
 
   await fs.writeFile(WATCHLIST_FILE, `${lines.join('\n')}\n`, 'utf8');
   console.log(`Evidence watchlist updated: ${path.relative(process.cwd(), WATCHLIST_FILE)}`);
