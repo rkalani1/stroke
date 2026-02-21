@@ -378,6 +378,14 @@
 - Remaining workflow gap:
   - Optional weighted churn scoring (for example larger penalties for repeated ALERT->OK->ALERT oscillation).
 
+## Iteration 113 Update (2026-02-21)
+- Weighted churn-governance gap reduced:
+  - Added `Topic Weighted Churn Score` output using flips + oscillation penalties over rolling history.
+  - Added configurable churn controls: `--topic-churn-alert-threshold` and `--topic-churn-lookback`.
+  - Added helper command `evidence:watch:churn` for repeatable churn surveillance runs.
+- Remaining workflow gap:
+  - Optional risk-stratified weighting by topic criticality (for example higher weight for thrombolysis/ICH domains).
+
 ## Evidence-backed addition queue (2026-02-20, iter-088 refresh)
 
 | Priority | Proposed addition | Why this matters operationally | Primary evidence anchor |

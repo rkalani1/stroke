@@ -1,6 +1,6 @@
 # Evidence Watchlist (Auto-generated)
 
-Generated: 2026-02-21T17:45:38.183Z
+Generated: 2026-02-21T22:47:00.265Z
 
 Purpose: highlight potentially relevant **uncited** PubMed evidence for 2021-2026 stroke workflows.
 Baseline cited PMIDs: 23
@@ -92,6 +92,18 @@ Search window start: 2025/01/01
 | Topic | Previous share | Current share | Delta (pp) | Previous status | Current status |
 |---|---|---|---|---|---|
 | Thrombolysis and Extended-Window Reperfusion | 100.0% | 100.0% | 0.0pp | ALERT | ALERT |
+
+### Topic Status History (Last 3 Runs)
+| Topic | Run -2 | Run -1 | Current |
+|---|---|---|---|
+| Thrombolysis and Extended-Window Reperfusion | ALERT | ALERT | ALERT |
+
+### Topic Weighted Churn Score (Last 3 Runs)
+| Topic | Status sequence | Flips | Oscillations | Weighted score | Alert |
+|---|---|---|---|---|---|
+| Thrombolysis and Extended-Window Reperfusion | ALERT -> ALERT -> ALERT | 0 | 0 | 0 | OK |
+
+- No weighted churn alerts: 0 topic(s) at or above weighted-churn threshold 3.
 
 ### Topic Status Flip Alert
 - No topic status flips detected compared with previous run.

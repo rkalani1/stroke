@@ -1,5 +1,33 @@
 # Iteration Log
 
+## Iteration 113 (2026-02-21)
+
+### What was changed
+- Added weighted churn scoring to watchlist governance in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+  - new CLI options:
+    - `--topic-churn-alert-threshold`
+    - `--topic-churn-lookback`
+  - new appendix output:
+    - `Topic Weighted Churn Score (Last N Runs)` with flips, oscillations, and weighted score.
+- Added npm helper command:
+  - `npm run evidence:watch:churn`.
+- Updated evidence-ops command index:
+  - `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs` now includes churn helper.
+- Regenerated evidence-ops artifacts:
+  - `docs/evidence-watchlist.md`,
+  - `docs/evidence-watch-history.json`,
+  - `docs/evidence-promotion-checklist.md`,
+  - `docs/evidence-promotion-template.md`,
+  - `docs/evidence-promotion-template-p0.md`,
+  - `docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run evidence:watch:churn` passed.
+- `npm run evidence:refresh` passed.
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 112 (2026-02-21)
 
 ### What was changed

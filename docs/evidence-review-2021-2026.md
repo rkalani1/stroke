@@ -420,3 +420,9 @@
 - Added persistent rolling history snapshots for watchlist topic-status governance (`docs/evidence-watch-history.json`).
 - Added 3-run topic-status history output in watchlist appendix to support longitudinal churn surveillance.
 - Inference disclosure: history snapshots are operational governance records only and do not alter evidence scoring or recommendation content.
+
+### Operational update (2026-02-21, iter-113)
+- No new primary RCT/guideline citations were added to the key table in this iteration.
+- Added weighted churn scoring to watchlist governance output (adjacent status flips + oscillation penalty for repeated ALERT/OK alternation patterns).
+- Added configurable churn monitoring controls (`--topic-churn-alert-threshold`, `--topic-churn-lookback`) and helper command coverage.
+- Inference disclosure: weighted churn metrics are operational governance indicators only and do not alter recommendation class, evidence priority, or clinical guidance.

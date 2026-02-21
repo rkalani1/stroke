@@ -1107,3 +1107,29 @@
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
   - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
+## Iteration 113 update (2026-02-21, macOS session)
+- Added weighted churn scoring in `scripts/evidence-watch.mjs`:
+  - new CLI options:
+    - `--topic-churn-alert-threshold`
+    - `--topic-churn-lookback`
+  - new watchlist appendix block:
+    - `Topic Weighted Churn Score (Last N Runs)` with flips, oscillations, and weighted score.
+- Added npm helper command:
+  - `evidence:watch:churn`
+- Updated evidence-ops maintenance command index to include churn helper.
+- Regenerated evidence ops artifacts:
+  - `docs/evidence-watchlist.md`
+  - `docs/evidence-watch-history.json`
+  - `docs/evidence-promotion-checklist.md`
+  - `docs/evidence-promotion-template.md`
+  - `docs/evidence-promotion-template-p0.md`
+  - `docs/evidence-ops-index.md`
+- Validation status:
+  - `npm run evidence:watch:churn` pass
+  - `npm run evidence:refresh` pass
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`

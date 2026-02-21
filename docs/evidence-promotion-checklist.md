@@ -1,6 +1,6 @@
 # Evidence Promotion Checklist (Auto-generated)
 
-Generated: 2026-02-21T17:45:38.339Z
+Generated: 2026-02-21T22:47:00.449Z
 Source watchlist: docs/evidence-watchlist.md
 Inclusion: P0 urgent review + P1 high review
 

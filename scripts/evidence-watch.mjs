@@ -16,6 +16,8 @@ const REQUEST_DELAY_MS = 350;
 const DEFAULT_FILTERED_APPENDIX_LIMIT = 20;
 const DEFAULT_FILTERED_TOPIC_DOMINANCE_THRESHOLD = 0.6;
 const DEFAULT_TOPIC_STATUS_FLIP_ALERT_THRESHOLD = 1;
+const DEFAULT_TOPIC_CHURN_ALERT_THRESHOLD = 3;
+const DEFAULT_TOPIC_CHURN_LOOKBACK = 6;
 const HISTORY_MAX_ENTRIES = 30;
 
 const TOPIC_QUERIES = [
@@ -130,6 +132,8 @@ function parseCliOptions(argv = []) {
   let filteredAll = false;
   let filteredTopicDominanceThreshold = DEFAULT_FILTERED_TOPIC_DOMINANCE_THRESHOLD;
   let topicStatusFlipAlertThreshold = DEFAULT_TOPIC_STATUS_FLIP_ALERT_THRESHOLD;
+  let topicChurnAlertThreshold = DEFAULT_TOPIC_CHURN_ALERT_THRESHOLD;
+  let topicChurnLookback = DEFAULT_TOPIC_CHURN_LOOKBACK;
   const filteredTopicThresholds = new Map();
 
   function parseDominanceThreshold(rawValue) {
@@ -207,6 +211,28 @@ function parseCliOptions(argv = []) {
     if (arg.startsWith('--topic-status-flip-threshold=')) {
       const value = Number.parseInt(arg.split('=')[1], 10);
       if (!Number.isNaN(value) && value >= 0) topicStatusFlipAlertThreshold = value;
+      continue;
+    }
+    if (arg === '--topic-churn-alert-threshold' && i + 1 < argv.length) {
+      const value = Number.parseInt(argv[i + 1], 10);
+      if (!Number.isNaN(value) && value >= 0) topicChurnAlertThreshold = value;
+      i += 1;
+      continue;
+    }
+    if (arg.startsWith('--topic-churn-alert-threshold=')) {
+      const value = Number.parseInt(arg.split('=')[1], 10);
+      if (!Number.isNaN(value) && value >= 0) topicChurnAlertThreshold = value;
+      continue;
+    }
+    if (arg === '--topic-churn-lookback' && i + 1 < argv.length) {
+      const value = Number.parseInt(argv[i + 1], 10);
+      if (!Number.isNaN(value) && value >= 2) topicChurnLookback = value;
+      i += 1;
+      continue;
+    }
+    if (arg.startsWith('--topic-churn-lookback=')) {
+      const value = Number.parseInt(arg.split('=')[1], 10);
+      if (!Number.isNaN(value) && value >= 2) topicChurnLookback = value;
     }
   }
 
@@ -215,7 +241,9 @@ function parseCliOptions(argv = []) {
     filteredAll,
     filteredTopicDominanceThreshold,
     filteredTopicThresholds,
-    topicStatusFlipAlertThreshold
+    topicStatusFlipAlertThreshold,
+    topicChurnAlertThreshold,
+    topicChurnLookback
   };
 }
 
@@ -276,6 +304,34 @@ function parsePercentCell(value) {
 
 function normalizeTopicKey(raw) {
   return String(raw || '').trim().toLowerCase();
+}
+
+function computeTopicChurn(statuses = []) {
+  const compact = statuses.filter((status) => status === 'ALERT' || status === 'OK');
+  if (compact.length < 2) {
+    return {
+      flips: 0,
+      oscillations: 0,
+      weightedScore: 0,
+      sequence: compact.join(' -> ') || 'n/a'
+    };
+  }
+
+  let flips = 0;
+  let oscillations = 0;
+  for (let i = 1; i < compact.length; i += 1) {
+    if (compact[i] !== compact[i - 1]) flips += 1;
+  }
+  for (let i = 2; i < compact.length; i += 1) {
+    if (compact[i] === compact[i - 2] && compact[i] !== compact[i - 1]) oscillations += 1;
+  }
+
+  return {
+    flips,
+    oscillations,
+    weightedScore: flips + (oscillations * 2),
+    sequence: compact.join(' -> ')
+  };
 }
 
 function parsePreviousThresholdMatrix(markdown) {
@@ -728,6 +784,9 @@ async function main() {
       }
       lines.push('');
       const historyWindow = [...watchlistHistory.slice(-2), { generatedAt, topics: currentTopicSnapshot }];
+      const rollingHistory = [...watchlistHistory, { generatedAt, topics: currentTopicSnapshot }];
+      const churnLookback = Math.max(2, options.topicChurnLookback ?? DEFAULT_TOPIC_CHURN_LOOKBACK);
+      const churnWindow = rollingHistory.slice(-churnLookback);
       if (historyWindow.length > 1) {
         lines.push('### Topic Status History (Last 3 Runs)');
         lines.push('| Topic | Run -2 | Run -1 | Current |');
@@ -742,6 +801,28 @@ async function main() {
         }
         lines.push('');
       }
+      lines.push(`### Topic Weighted Churn Score (Last ${churnWindow.length} Runs)`);
+      lines.push('| Topic | Status sequence | Flips | Oscillations | Weighted score | Alert |');
+      lines.push('|---|---|---|---|---|---|');
+      const churnAlertThreshold = Math.max(0, options.topicChurnAlertThreshold ?? DEFAULT_TOPIC_CHURN_ALERT_THRESHOLD);
+      let churnAlertCount = 0;
+      for (const row of topicRows) {
+        const statusSeries = churnWindow.map((entry) => {
+          const topicEntry = (entry.topics || []).find((topic) => topic.topic === row.topic);
+          return topicEntry?.status || 'n/a';
+        });
+        const churn = computeTopicChurn(statusSeries);
+        const isAlert = churn.weightedScore >= churnAlertThreshold;
+        if (isAlert) churnAlertCount += 1;
+        lines.push(
+          `| ${escapePipes(row.topic)} | ${escapePipes(churn.sequence)} | ${churn.flips} | ${churn.oscillations} | ${churn.weightedScore} | ${isAlert ? 'ALERT' : 'OK'} |`
+        );
+      }
+      lines.push('');
+      lines.push(
+        `- ${churnAlertCount > 0 ? 'ALERT' : 'No weighted churn alerts'}: ${churnAlertCount} topic(s) at or above weighted-churn threshold ${churnAlertThreshold}.`
+      );
+      lines.push('');
       lines.push('### Topic Status Flip Alert');
       if (statusFlips.length === 0) {
         lines.push('- No topic status flips detected compared with previous run.');
