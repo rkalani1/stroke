@@ -45,6 +45,12 @@ jobs:
       - name: Validate citations and run local smoke
         run: npm test
 
+      - name: Run adaptive strict local latency smoke
+        run: |
+          mkdir -p output/diagnostics
+          set -o pipefail
+          npm run qa:latency-adaptive-local 2>&1 | tee output/diagnostics/qa-latency-adaptive-local.log
+
       - name: Upload smoke artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -54,6 +60,7 @@ jobs:
             output/playwright
             output/diagnostics/churn-profile-validation.log
             output/diagnostics/qa-latency-profile-validation.log
+            output/diagnostics/qa-latency-adaptive-local.log
             docs/evidence-churn-profiles.json
             docs/qa-latency-profiles.json
           if-no-files-found: ignore

@@ -15,6 +15,13 @@
 | Senior-first cognitive load | Fast tools exist (search, shortcuts, calculators), but pathway auto-routing can interrupt utility workflows. | Implementation data favor protocolized, low-friction workflows. | Diagnosis updates can pull users away from active utility tabs. | Keep diagnosis-aware routing but preserve user intent when in Calculators/References. | P1 (completed iter-001) |
 | QA/Regression discipline | Build pipeline exists, no automated tests, compare-keys script exists. | High-acuity clinical apps need strict non-regression controls. | No standardized regression checklist in repo. | Added regression-checklist.md. Fixed compare_keys.ps1 false positive (0 true mismatches). | P0 (completed iter-001/010) |
 
+## Iteration 128 Update (2026-02-21)
+- PR-safe adaptive telemetry gap reduced:
+  - Added adaptive strict local-only smoke command and wired it into the main CI job.
+  - Pull requests now receive adaptive latency-profile coverage without live-site dependency.
+- Remaining workflow gap:
+  - Optional periodic recalibration policy for adaptive local thresholds as CI runner/browser baselines drift over time.
+
 ## Iteration 127 Update (2026-02-21)
 - Pre-deploy adaptive-latency CI coverage gap reduced:
   - Added dedicated non-PR adaptive strict smoke job in CI (`adaptive-latency-smoke`).

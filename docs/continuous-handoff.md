@@ -7,6 +7,21 @@
 - Live APP_VERSION: `v5.14.78`
 - Service worker cache key: `stroke-app-v77`
 
+## Iteration 128 update (2026-02-21, macOS session)
+- Completed:
+  - Added local-only adaptive strict smoke command:
+    - `npm run qa:latency-adaptive-local`
+  - Added PR-safe adaptive local lane in:
+    - `/Users/rizwankalani/stroke/.github/workflows/ci.yml`
+  - Added diagnostics artifact path:
+    - `output/diagnostics/qa-latency-adaptive-local.log`
+- Validation status:
+  - `npm run qa:latency-adaptive-local` pass (`Runs: 3 | Issues: 0`)
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
 ## Iteration 127 update (2026-02-21, macOS session)
 - Completed:
   - Added adaptive strict CI lane in:

@@ -86,12 +86,14 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] QA smoke report includes `latencyProfile` and reflects selected profile behavior.
 - [ ] QA smoke report includes latency profile source metadata (`latencyProfilesSource`, `availableLatencyProfiles`).
 - [ ] External latency profile file (`docs/qa-latency-profiles.json`) is present and loadable by smoke command.
+- [ ] `npm run qa:latency-adaptive-local` passes (local-only adaptive strict mode).
 - [ ] `npm run validate:qa-latency-profiles` passes.
 - [ ] `npm run qa:latency-strict` passes (strict latency enforcement mode).
 - [ ] `npm run qa:latency-adaptive-strict` passes (adaptive profile strict mode).
 - [ ] CI and scheduled live-smoke workflows capture `output/diagnostics/qa-latency-profile-validation.log` in uploaded artifacts.
 - [ ] Scheduled `live-smoke.yml` runs `npm run qa:latency-adaptive-strict` (not baseline `npm run qa`).
 - [ ] CI workflow includes non-PR adaptive strict lane (`adaptive-latency-smoke`) with artifact upload.
+- [ ] CI `build-and-smoke` job runs adaptive local strict smoke and uploads `output/diagnostics/qa-latency-adaptive-local.log`.
 - [ ] Service worker cache version updated when asset behavior changes.
 - [ ] `index.html` app version updated for storage/cache compatibility when needed.
 - [ ] Smoke QA pediatric scenario (age `<18`) asserts pathway-card visibility, warning output, and generated-note trace.
@@ -103,6 +105,12 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Live URL `https://rkalani1.github.io/stroke/` serves updated build.
 - [ ] Post-deploy smoke checks pass on local + live for all three viewport classes.
 - [ ] Scheduled `live-smoke.yml` retains baseline GitHub issue alerting and optional webhook fan-out behavior.
+
+## Last completed run (2026-02-21, iter-128)
+- [x] PR-safe adaptive local strict smoke lane added to CI build-and-smoke job.
+- [x] `npm run qa:latency-adaptive-local` passed (`Runs: 3 | Issues: 0`).
+- [x] `npm test` passed (`Runs: 3 | Issues: 0`).
+- [x] `npm run qa` passed (`Runs: 6 | Issues: 0`).
 
 ## Last completed run (2026-02-21, iter-127)
 - [x] CI now includes adaptive strict latency smoke lane for non-PR events.

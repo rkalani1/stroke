@@ -1,5 +1,24 @@
 # Iteration Log
 
+## Iteration 128 (2026-02-21)
+
+### What was changed
+- Added PR-safe adaptive strict local smoke command:
+  - `/Users/rizwankalani/stroke/package.json`
+  - new command: `npm run qa:latency-adaptive-local`
+  - executes local-only adaptive profile smoke with strict threshold enforcement.
+- Integrated adaptive local lane into core CI job:
+  - `/Users/rizwankalani/stroke/.github/workflows/ci.yml`
+  - new step in `build-and-smoke` job:
+    - `Run adaptive strict local latency smoke`
+  - added diagnostics artifact:
+    - `output/diagnostics/qa-latency-adaptive-local.log`.
+
+### Verification
+- `npm run qa:latency-adaptive-local` passed (`Runs: 3 | Issues: 0`).
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 127 (2026-02-21)
 
 ### What was changed
