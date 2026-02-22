@@ -7,6 +7,26 @@
 - Live APP_VERSION: `v5.14.78`
 - Service worker cache key: `stroke-app-v77`
 
+## Iteration 124 update (2026-02-21, macOS session)
+- Completed:
+  - Added latency profile validator:
+    - `/Users/rizwankalani/stroke/scripts/validate-qa-latency-profiles.mjs`
+    - `npm run validate:qa-latency-profiles`
+  - Integrated validator into:
+    - `npm test`
+    - `npm run qa`
+    - `npm run qa:latency-strict`
+    - `npm run qa:latency-adaptive-strict`
+  - Added CI/live-smoke diagnostics and artifact export for:
+    - `output/diagnostics/qa-latency-profile-validation.log`
+    - `docs/qa-latency-profiles.json`
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
 ## Iteration 123 update (2026-02-21, macOS session)
 - Completed:
   - Added external latency profile file loading in smoke QA:

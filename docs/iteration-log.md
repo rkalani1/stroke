@@ -1,5 +1,27 @@
 # Iteration Log
 
+## Iteration 124 (2026-02-21)
+
+### What was changed
+- Added standalone latency profile validator:
+  - new script: `/Users/rizwankalani/stroke/scripts/validate-qa-latency-profiles.mjs`,
+  - new command: `npm run validate:qa-latency-profiles`.
+- Integrated latency profile validation into runtime gates:
+  - `npm test`,
+  - `npm run qa`,
+  - `npm run qa:latency-strict`,
+  - `npm run qa:latency-adaptive-strict`.
+- Added CI and scheduled live-smoke diagnostics for latency profile validation:
+  - `/Users/rizwankalani/stroke/.github/workflows/ci.yml`,
+  - `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`,
+  - new log artifact: `output/diagnostics/qa-latency-profile-validation.log`,
+  - profile artifact export: `docs/qa-latency-profiles.json`.
+
+### Verification
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`; latency profile validator passed).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`; latency profile validator passed).
+
 ## Iteration 123 (2026-02-21)
 
 ### What was changed

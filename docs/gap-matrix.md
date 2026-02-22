@@ -15,6 +15,14 @@
 | Senior-first cognitive load | Fast tools exist (search, shortcuts, calculators), but pathway auto-routing can interrupt utility workflows. | Implementation data favor protocolized, low-friction workflows. | Diagnosis updates can pull users away from active utility tabs. | Keep diagnosis-aware routing but preserve user intent when in Calculators/References. | P1 (completed iter-001) |
 | QA/Regression discipline | Build pipeline exists, no automated tests, compare-keys script exists. | High-acuity clinical apps need strict non-regression controls. | No standardized regression checklist in repo. | Added regression-checklist.md. Fixed compare_keys.ps1 false positive (0 true mismatches). | P0 (completed iter-001/010) |
 
+## Iteration 124 Update (2026-02-21)
+- Latency-profile preflight-validation gap reduced:
+  - Added standalone validator command for `docs/qa-latency-profiles.json`.
+  - Wired validator into test/qa and strict-latency command chains.
+  - Added CI/live-smoke diagnostics capture and artifact export for latency-profile validation logs.
+- Remaining workflow gap:
+  - Optional centralized ops index entry for latency-profile maintenance commands/artifacts (non-clinical documentation hygiene).
+
 ## Iteration 123 Update (2026-02-21)
 - External latency-profile configurability gap reduced:
   - Added JSON-backed latency profile loading (`--latency-profiles-file`) with schema/value validation.
