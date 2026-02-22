@@ -1,5 +1,25 @@
 # Iteration Log
 
+## Iteration 129 (2026-02-21)
+
+### What was changed
+- Added rolling QA latency history persistence in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+  - writes/updates `/Users/rizwankalani/stroke/docs/qa-latency-history.json`,
+  - stores per-run summary snapshots (profile, averages, slow-run/slow-section counts),
+  - keeps rolling window of most recent 60 entries.
+- Extended smoke summary metadata:
+  - `latencyHistoryPath`,
+  - `latencyHistoryCount`.
+- Updated ops index generator to include QA latency history artifact:
+  - `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs`,
+  - regenerated `/Users/rizwankalani/stroke/docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+- `npm run evidence:index` passed.
+
 ## Iteration 128 (2026-02-21)
 
 ### What was changed

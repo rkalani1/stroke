@@ -7,6 +7,24 @@
 - Live APP_VERSION: `v5.14.78`
 - Service worker cache key: `stroke-app-v77`
 
+## Iteration 129 update (2026-02-21, macOS session)
+- Completed:
+  - Added rolling latency history persistence in smoke QA:
+    - `/Users/rizwankalani/stroke/docs/qa-latency-history.json`
+  - Added latency history summary metadata fields:
+    - `latencyHistoryPath`
+    - `latencyHistoryCount`
+  - Updated ops index generator and artifact to include QA latency history:
+    - `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs`
+    - `/Users/rizwankalani/stroke/docs/evidence-ops-index.md`
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+  - `npm run evidence:index` pass
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
 ## Iteration 128 update (2026-02-21, macOS session)
 - Completed:
   - Added local-only adaptive strict smoke command:

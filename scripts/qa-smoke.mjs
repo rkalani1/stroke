@@ -55,6 +55,7 @@ const localOnly = args.has('--local-only');
 const enforceLatencyThresholds = args.has('--enforce-latency-thresholds');
 const outDir = path.join(process.cwd(), 'output', 'playwright');
 const reportFile = path.join(outDir, 'qa-smoke-report.json');
+const latencyHistoryFile = path.join(process.cwd(), 'docs', 'qa-latency-history.json');
 
 function parsePositiveIntArg(flag, fallback) {
   const index = rawArgs.indexOf(flag);
@@ -221,6 +222,34 @@ async function canReach(url) {
   } catch {
     return false;
   }
+}
+
+async function updateLatencyHistory(summary) {
+  let history = [];
+  try {
+    const raw = await fs.readFile(latencyHistoryFile, 'utf8');
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) history = parsed;
+  } catch {
+    history = [];
+  }
+
+  history.push({
+    finishedAt: summary.finishedAt,
+    localOnly: summary.localOnly,
+    latencyProfile: summary.latencyProfile,
+    averageRunDurationMs: summary.averageRunDurationMs,
+    slowestRun: summary.slowestRun,
+    slowRunCount: summary.slowRunCount,
+    slowSectionCount: summary.slowSectionCount
+  });
+  const trimmedHistory = history.slice(-60);
+  await fs.mkdir(path.dirname(latencyHistoryFile), { recursive: true });
+  await fs.writeFile(latencyHistoryFile, `${JSON.stringify(trimmedHistory, null, 2)}\n`, 'utf8');
+  return {
+    path: path.relative(process.cwd(), latencyHistoryFile),
+    count: trimmedHistory.length
+  };
 }
 
 async function fetchAppVersion(url) {
@@ -1035,6 +1064,14 @@ async function main() {
       slowRuns,
       slowSections
     };
+    try {
+      const historyInfo = await updateLatencyHistory(summary);
+      summary.latencyHistoryPath = historyInfo.path;
+      summary.latencyHistoryCount = historyInfo.count;
+    } catch (error) {
+      summary.latencyHistoryPath = path.relative(process.cwd(), latencyHistoryFile);
+      summary.latencyHistoryError = error?.message || String(error);
+    }
 
     const report = { summary, runs };
     await fs.writeFile(reportFile, `${JSON.stringify(report, null, 2)}\n`, 'utf8');

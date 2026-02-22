@@ -1,6 +1,6 @@
 # Evidence Ops Index (Auto-generated)
 
-Generated: 2026-02-22T00:44:25.721Z
+Generated: 2026-02-22T01:22:53.285Z
 
 ## Current Artifacts
 | Artifact | Path | Generated | Key count |
@@ -12,6 +12,7 @@ Generated: 2026-02-22T00:44:25.721Z
 | Watchlist history | docs/evidence-watch-history.json | n/a (JSON snapshot) | Entries: 10 |
 | Churn profiles | docs/evidence-churn-profiles.json | n/a (JSON config) | Profiles: 3 |
 | QA latency profiles | docs/qa-latency-profiles.json | n/a (JSON config) | Profiles: 2 |
+| QA latency history | docs/qa-latency-history.json | n/a (JSON snapshot) | Entries: 2 |
 
 ## Maintenance Commands
 - `npm run evidence:watch`

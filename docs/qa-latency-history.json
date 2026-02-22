@@ -1,0 +1,28 @@
+[
+  {
+    "finishedAt": "2026-02-22T01:19:58.021Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 25027,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 32035
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0
+  },
+  {
+    "finishedAt": "2026-02-22T01:22:38.081Z",
+    "localOnly": false,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 25229,
+    "slowestRun": {
+      "target": "live",
+      "viewport": "mobile",
+      "durationMs": 35486
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 2
+  }
+]
