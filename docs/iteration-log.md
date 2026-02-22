@@ -1,5 +1,25 @@
 # Iteration Log
 
+## Iteration 123 (2026-02-21)
+
+### What was changed
+- Added external latency profile config loading to `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+  - new CLI option: `--latency-profiles-file <path>`,
+  - supports profile definitions from JSON file (`profiles` object or top-level profile map),
+  - validates threshold maps and profile schema at startup (fail-fast on malformed values).
+- Added profile source and availability trace fields to smoke summary:
+  - `latencyProfilesSource`,
+  - `availableLatencyProfiles`.
+- Added externalized latency profile artifact:
+  - `/Users/rizwankalani/stroke/docs/qa-latency-profiles.json`.
+- Updated adaptive strict QA command to use the external profile file:
+  - `npm run qa:latency-adaptive-strict`.
+
+### Verification
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa:latency-adaptive-strict` passed (`Runs: 6 | Issues: 0`; profile source reported from file).
+
 ## Iteration 122 (2026-02-21)
 
 ### What was changed

@@ -83,6 +83,8 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] QA smoke report includes timing telemetry (`averageRunDurationMs`, `slowestRun`, per-run `notes.sectionTimings` and `notes.runDurationMs`).
 - [ ] QA smoke report includes latency-threshold telemetry (`runDurationThresholdMs`, `sectionDurationThresholdMs`, `slowRunCount`, `slowSectionCount`, `slowRuns`, `slowSections`).
 - [ ] QA smoke report includes `latencyProfile` and reflects selected profile behavior.
+- [ ] QA smoke report includes latency profile source metadata (`latencyProfilesSource`, `availableLatencyProfiles`).
+- [ ] External latency profile file (`docs/qa-latency-profiles.json`) is present and loadable by smoke command.
 - [ ] `npm run qa:latency-strict` passes (strict latency enforcement mode).
 - [ ] `npm run qa:latency-adaptive-strict` passes (adaptive profile strict mode).
 - [ ] Service worker cache version updated when asset behavior changes.
@@ -96,6 +98,12 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Live URL `https://rkalani1.github.io/stroke/` serves updated build.
 - [ ] Post-deploy smoke checks pass on local + live for all three viewport classes.
 - [ ] Scheduled `live-smoke.yml` retains baseline GitHub issue alerting and optional webhook fan-out behavior.
+
+## Last completed run (2026-02-21, iter-123)
+- [x] External latency profile file loading added and validated via `npm run qa:latency-adaptive-strict`.
+- [x] `npm run build` passed.
+- [x] `npm test` passed (`Runs: 3 | Issues: 0`).
+- [x] `npm run qa:latency-adaptive-strict` passed (`Runs: 6 | Issues: 0`).
 
 ## Last completed run (2026-02-21, iter-122)
 - [x] Adaptive latency profile mode added and validated via `npm run qa:latency-adaptive-strict`.

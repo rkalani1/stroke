@@ -7,6 +7,23 @@
 - Live APP_VERSION: `v5.14.78`
 - Service worker cache key: `stroke-app-v77`
 
+## Iteration 123 update (2026-02-21, macOS session)
+- Completed:
+  - Added external latency profile file loading in smoke QA:
+    - `--latency-profiles-file <path>`
+  - Added new profile source trace fields:
+    - `latencyProfilesSource`
+    - `availableLatencyProfiles`
+  - Added latency profile artifact:
+    - `/Users/rizwankalani/stroke/docs/qa-latency-profiles.json`
+  - Updated adaptive strict QA command to load external profile file.
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa:latency-adaptive-strict` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
 ## Iteration 122 update (2026-02-21, macOS session)
 - Completed:
   - Added adaptive latency profile support in smoke QA:

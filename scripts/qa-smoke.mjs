@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import fsSync from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import process from 'node:process';
@@ -30,19 +31,23 @@ const DIAGNOSIS_SWITCH_ASSERTIONS = [
 
 const DEFAULT_RUN_DURATION_THRESHOLD_MS = 45000;
 const DEFAULT_SECTION_DURATION_THRESHOLD_MS = 15000;
-const SUPPORTED_LATENCY_PROFILES = new Set(['flat', 'adaptive']);
-const ADAPTIVE_RUN_THRESHOLD_BY_TARGET_VIEWPORT = {
-  'local/desktop': 40000,
-  'local/tablet': 43000,
-  'local/mobile': 46000,
-  'live/desktop': 42000,
-  'live/tablet': 45000,
-  'live/mobile': 50000
-};
-const ADAPTIVE_SECTION_THRESHOLD_BY_SECTION = {
-  'encounter-workflow': 22000,
-  'library-workflow': 18000,
-  'pediatric-workflow': 20000
+const DEFAULT_LATENCY_PROFILES = {
+  flat: {},
+  adaptive: {
+    runThresholdByTargetViewport: {
+      'local/desktop': 40000,
+      'local/tablet': 43000,
+      'local/mobile': 46000,
+      'live/desktop': 42000,
+      'live/tablet': 45000,
+      'live/mobile': 50000
+    },
+    sectionThresholdBySection: {
+      'encounter-workflow': 22000,
+      'library-workflow': 18000,
+      'pediatric-workflow': 20000
+    }
+  }
 };
 const rawArgs = process.argv.slice(2);
 const args = new Set(rawArgs);
@@ -69,35 +74,124 @@ function parseStringArg(flag, fallback) {
   return value;
 }
 
+function parseOptionalStringArg(flag) {
+  const index = rawArgs.indexOf(flag);
+  if (index === -1) return null;
+  const value = String(rawArgs[index + 1] || '').trim();
+  if (!value) throw new Error(`Invalid value for ${flag}. Provide a non-empty string value.`);
+  return value;
+}
+
+function normalizeThresholdMap(rawMap, fieldLabel) {
+  if (rawMap == null) return {};
+  if (typeof rawMap !== 'object' || Array.isArray(rawMap)) {
+    throw new Error(`${fieldLabel} must be an object mapping keys to positive millisecond values.`);
+  }
+  const normalized = {};
+  for (const [key, value] of Object.entries(rawMap)) {
+    const trimmedKey = String(key || '').trim();
+    if (!trimmedKey) {
+      throw new Error(`${fieldLabel} contains an empty key.`);
+    }
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric) || numeric <= 0) {
+      throw new Error(`${fieldLabel}.${trimmedKey} must be a positive numeric millisecond value.`);
+    }
+    normalized[trimmedKey] = Math.round(numeric);
+  }
+  return normalized;
+}
+
+function normalizeLatencyProfile(profileName, rawProfile) {
+  if (rawProfile == null) rawProfile = {};
+  if (typeof rawProfile !== 'object' || Array.isArray(rawProfile)) {
+    throw new Error(`Latency profile "${profileName}" must be an object.`);
+  }
+  return {
+    runThresholdByTargetViewport: normalizeThresholdMap(
+      rawProfile.runThresholdByTargetViewport,
+      `profiles.${profileName}.runThresholdByTargetViewport`
+    ),
+    sectionThresholdBySection: normalizeThresholdMap(
+      rawProfile.sectionThresholdBySection,
+      `profiles.${profileName}.sectionThresholdBySection`
+    ),
+    sectionThresholdByTargetViewportSection: normalizeThresholdMap(
+      rawProfile.sectionThresholdByTargetViewportSection,
+      `profiles.${profileName}.sectionThresholdByTargetViewportSection`
+    )
+  };
+}
+
+function loadLatencyProfiles(fileArg) {
+  const defaults = Object.fromEntries(
+    Object.entries(DEFAULT_LATENCY_PROFILES).map(([name, profile]) => [name, normalizeLatencyProfile(name, profile)])
+  );
+  if (!fileArg) {
+    return { profiles: defaults, sourcePath: null };
+  }
+
+  const resolvedPath = path.isAbsolute(fileArg) ? fileArg : path.join(process.cwd(), fileArg);
+  let parsed;
+  try {
+    const raw = fsSync.readFileSync(resolvedPath, 'utf8');
+    parsed = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Failed to read latency profile file "${resolvedPath}": ${error?.message || String(error)}`);
+  }
+
+  const profileObject =
+    parsed && typeof parsed === 'object' && !Array.isArray(parsed) && parsed.profiles && typeof parsed.profiles === 'object'
+      ? parsed.profiles
+      : parsed;
+  if (!profileObject || typeof profileObject !== 'object' || Array.isArray(profileObject)) {
+    throw new Error(`Latency profile file "${resolvedPath}" must contain an object or { "profiles": { ... } }.`);
+  }
+
+  const merged = { ...defaults };
+  for (const [name, rawProfile] of Object.entries(profileObject)) {
+    const profileName = String(name || '').trim();
+    if (!profileName) throw new Error(`Latency profile file "${resolvedPath}" contains an empty profile name.`);
+    merged[profileName] = normalizeLatencyProfile(profileName, rawProfile);
+  }
+  return { profiles: merged, sourcePath: resolvedPath };
+}
+
 const runDurationThresholdMs = parsePositiveIntArg('--run-duration-threshold-ms', DEFAULT_RUN_DURATION_THRESHOLD_MS);
 const sectionDurationThresholdMs = parsePositiveIntArg(
   '--section-duration-threshold-ms',
   DEFAULT_SECTION_DURATION_THRESHOLD_MS
 );
+const latencyProfilesFileArg = parseOptionalStringArg('--latency-profiles-file');
+const latencyProfileBundle = loadLatencyProfiles(latencyProfilesFileArg);
+const latencyProfiles = latencyProfileBundle.profiles;
+const latencyProfilesSourcePath = latencyProfileBundle.sourcePath;
 const latencyProfile = parseStringArg('--latency-profile', 'flat');
-if (!SUPPORTED_LATENCY_PROFILES.has(latencyProfile)) {
-  throw new Error(`Invalid --latency-profile value "${latencyProfile}". Supported: flat, adaptive.`);
+if (!Object.prototype.hasOwnProperty.call(latencyProfiles, latencyProfile)) {
+  throw new Error(
+    `Invalid --latency-profile value "${latencyProfile}". Supported: ${Object.keys(latencyProfiles).join(', ')}.`
+  );
 }
+const activeLatencyProfile = latencyProfiles[latencyProfile];
 
 function resolveRunThresholdMs(targetName, viewportName) {
-  if (latencyProfile === 'adaptive') {
-    const key = `${targetName}/${viewportName}`;
-    if (Number.isFinite(ADAPTIVE_RUN_THRESHOLD_BY_TARGET_VIEWPORT[key])) {
-      return ADAPTIVE_RUN_THRESHOLD_BY_TARGET_VIEWPORT[key];
-    }
+  const key = `${targetName}/${viewportName}`;
+  const profileThreshold = activeLatencyProfile?.runThresholdByTargetViewport?.[key];
+  if (Number.isFinite(profileThreshold)) {
+    return profileThreshold;
   }
   return runDurationThresholdMs;
 }
 
 function resolveSectionThresholdMs(targetName, viewportName, sectionName) {
-  if (latencyProfile === 'adaptive') {
-    const scopedKey = `${targetName}/${viewportName}:${sectionName}`;
-    if (Number.isFinite(ADAPTIVE_SECTION_THRESHOLD_BY_SECTION[scopedKey])) {
-      return ADAPTIVE_SECTION_THRESHOLD_BY_SECTION[scopedKey];
-    }
-    if (Number.isFinite(ADAPTIVE_SECTION_THRESHOLD_BY_SECTION[sectionName])) {
-      return ADAPTIVE_SECTION_THRESHOLD_BY_SECTION[sectionName];
-    }
+  const scopedKey = `${targetName}/${viewportName}:${sectionName}`;
+  const scopedThreshold = activeLatencyProfile?.sectionThresholdByTargetViewportSection?.[scopedKey];
+  if (Number.isFinite(scopedThreshold)) {
+    return scopedThreshold;
+  }
+  const sectionThreshold = activeLatencyProfile?.sectionThresholdBySection?.[sectionName];
+  if (Number.isFinite(sectionThreshold)) {
+    return sectionThreshold;
   }
   return sectionDurationThresholdMs;
 }
@@ -915,6 +1009,8 @@ async function main() {
           .filter((timing) => timing.durationMs > timing.thresholdMs);
       })
       .sort((left, right) => right.durationMs - left.durationMs);
+    const latencyProfilesSource = latencyProfilesSourcePath ? path.relative(process.cwd(), latencyProfilesSourcePath) : 'built-in';
+    const availableLatencyProfiles = Object.keys(latencyProfiles);
     const summary = {
       startedAt,
       finishedAt: new Date().toISOString(),
@@ -929,6 +1025,8 @@ async function main() {
       averageRunDurationMs,
       slowestRun,
       latencyProfile,
+      latencyProfilesSource,
+      availableLatencyProfiles,
       runDurationThresholdMs,
       sectionDurationThresholdMs,
       enforceLatencyThresholds,
@@ -943,6 +1041,7 @@ async function main() {
 
     console.log(`QA smoke report: ${path.relative(process.cwd(), reportFile)}`);
     console.log(`Runs: ${summary.runCount} | Issues: ${summary.totalIssues}`);
+    console.log(`Latency profile: ${summary.latencyProfile} (${summary.latencyProfilesSource})`);
     if (summary.slowestRun) {
       console.log(
         `Slowest run: ${summary.slowestRun.target}/${summary.slowestRun.viewport} (${summary.slowestRun.durationMs} ms)`

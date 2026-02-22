@@ -1,0 +1,25 @@
+{
+  "profiles": {
+    "flat": {
+      "runThresholdByTargetViewport": {},
+      "sectionThresholdBySection": {},
+      "sectionThresholdByTargetViewportSection": {}
+    },
+    "adaptive": {
+      "runThresholdByTargetViewport": {
+        "local/desktop": 40000,
+        "local/tablet": 43000,
+        "local/mobile": 46000,
+        "live/desktop": 42000,
+        "live/tablet": 45000,
+        "live/mobile": 50000
+      },
+      "sectionThresholdBySection": {
+        "encounter-workflow": 22000,
+        "library-workflow": 18000,
+        "pediatric-workflow": 20000
+      },
+      "sectionThresholdByTargetViewportSection": {}
+    }
+  }
+}

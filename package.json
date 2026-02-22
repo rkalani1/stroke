@@ -27,7 +27,7 @@
     "test": "npm run validate:citations && npm run validate:evidence-churn-profiles && npm run validate:evidence-promotion && node ./scripts/qa-smoke.mjs --local-only",
     "qa": "npm run validate:citations && npm run validate:evidence-churn-profiles && npm run validate:evidence-promotion && node ./scripts/qa-smoke.mjs",
     "qa:latency-strict": "npm run validate:citations && npm run validate:evidence-churn-profiles && npm run validate:evidence-promotion && node ./scripts/qa-smoke.mjs --enforce-latency-thresholds --run-duration-threshold-ms 60000 --section-duration-threshold-ms 30000",
-    "qa:latency-adaptive-strict": "npm run validate:citations && npm run validate:evidence-churn-profiles && npm run validate:evidence-promotion && node ./scripts/qa-smoke.mjs --latency-profile adaptive --enforce-latency-thresholds",
+    "qa:latency-adaptive-strict": "npm run validate:citations && npm run validate:evidence-churn-profiles && npm run validate:evidence-promotion && node ./scripts/qa-smoke.mjs --latency-profile adaptive --latency-profiles-file docs/qa-latency-profiles.json --enforce-latency-thresholds",
     "build:css": "tailwindcss -i ./src/styles.css -o ./tailwind.css --minify",
     "build:js": "esbuild ./src/app.jsx --bundle --minify --format=iife --target=es2018 --outfile=./app.js",
     "build": "npm run build:css && npm run build:js"
