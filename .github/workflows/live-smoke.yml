@@ -54,8 +54,8 @@ jobs:
       - name: Generate evidence ops index
         run: npm run evidence:index
 
-      - name: Run full QA (local + live)
-        run: npm run qa
+      - name: Run adaptive strict QA (local + live)
+        run: npm run qa:latency-adaptive-strict
 
       - name: Open or update failure alert issue
         if: failure()

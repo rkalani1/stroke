@@ -7,6 +7,17 @@
 - Live APP_VERSION: `v5.14.78`
 - Service worker cache key: `stroke-app-v77`
 
+## Iteration 126 update (2026-02-21, macOS session)
+- Completed:
+  - Updated scheduled live audit command path in:
+    - `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`
+  - Live-smoke QA step now runs:
+    - `npm run qa:latency-adaptive-strict`
+- Validation status:
+  - `npm run qa:latency-adaptive-strict` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
 ## Iteration 125 update (2026-02-21, macOS session)
 - Completed:
   - Added QA latency profile artifacts and command references to generated ops index:

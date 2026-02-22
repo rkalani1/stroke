@@ -1,5 +1,16 @@
 # Iteration Log
 
+## Iteration 126 (2026-02-21)
+
+### What was changed
+- Updated scheduled production audit workflow to use adaptive strict latency enforcement:
+  - `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`
+  - QA step now runs `npm run qa:latency-adaptive-strict` instead of baseline `npm run qa`.
+- This aligns nightly live smoke with profile-aware latency governance and hard-fail enforcement for threshold breaches.
+
+### Verification
+- `npm run qa:latency-adaptive-strict` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 125 (2026-02-21)
 
 ### What was changed
