@@ -9,6 +9,7 @@ const TEMPLATE_PATH = path.join(DOCS_DIR, 'evidence-promotion-template.md');
 const TEMPLATE_P0_PATH = path.join(DOCS_DIR, 'evidence-promotion-template-p0.md');
 const HISTORY_PATH = path.join(DOCS_DIR, 'evidence-watch-history.json');
 const CHURN_PROFILE_PATH = path.join(DOCS_DIR, 'evidence-churn-profiles.json');
+const QA_LATENCY_PROFILE_PATH = path.join(DOCS_DIR, 'qa-latency-profiles.json');
 const OUTPUT_PATH = path.join(DOCS_DIR, 'evidence-ops-index.md');
 
 async function readText(file) {
@@ -71,13 +72,14 @@ function extractProfileCount(rawProfiles) {
 }
 
 async function main() {
-  const [watchlistMd, checklistMd, templateMd, templateP0Md, historyRaw, churnProfileRaw] = await Promise.all([
+  const [watchlistMd, checklistMd, templateMd, templateP0Md, historyRaw, churnProfileRaw, qaLatencyProfileRaw] = await Promise.all([
     readText(WATCHLIST_PATH),
     readText(CHECKLIST_PATH),
     readText(TEMPLATE_PATH),
     readText(TEMPLATE_P0_PATH),
     readText(HISTORY_PATH),
-    readText(CHURN_PROFILE_PATH)
+    readText(CHURN_PROFILE_PATH),
+    readText(QA_LATENCY_PROFILE_PATH)
   ]);
 
   const now = new Date().toISOString();
@@ -92,6 +94,7 @@ async function main() {
   const templateP0Pending = extractPendingCandidates(templateP0Md);
   const historyCount = extractHistoryEntryCount(historyRaw);
   const profileCount = extractProfileCount(churnProfileRaw);
+  const qaLatencyProfileCount = extractProfileCount(qaLatencyProfileRaw);
 
   const out = [];
   out.push('# Evidence Ops Index (Auto-generated)');
@@ -107,6 +110,7 @@ async function main() {
   out.push(`| Promotion template (P0) | docs/evidence-promotion-template-p0.md | ${templateP0Generated} | Pending templates: ${templateP0Pending ?? 'unknown'} |`);
   out.push(`| Watchlist history | docs/evidence-watch-history.json | n/a (JSON snapshot) | Entries: ${historyCount ?? 'unknown'} |`);
   out.push(`| Churn profiles | docs/evidence-churn-profiles.json | n/a (JSON config) | Profiles: ${profileCount ?? 'unknown'} |`);
+  out.push(`| QA latency profiles | docs/qa-latency-profiles.json | n/a (JSON config) | Profiles: ${qaLatencyProfileCount ?? 'unknown'} |`);
   out.push('');
   out.push('## Maintenance Commands');
   out.push('- `npm run evidence:watch`');
@@ -119,6 +123,9 @@ async function main() {
   out.push('- `npm run evidence:watch:profile:reperfusion`');
   out.push('- `npm run evidence:watch:profile:hemorrhage`');
   out.push('- `npm run validate:evidence-churn-profiles`');
+  out.push('- `npm run validate:qa-latency-profiles`');
+  out.push('- `npm run qa:latency-strict`');
+  out.push('- `npm run qa:latency-adaptive-strict`');
   out.push('- `npm run evidence:promote`');
   out.push('- `npm run evidence:template`');
   out.push('- `npm run evidence:template:p0`');

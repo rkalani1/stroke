@@ -1,5 +1,24 @@
 # Iteration Log
 
+## Iteration 125 (2026-02-21)
+
+### What was changed
+- Extended evidence ops index generation to include QA latency governance assets/commands:
+  - updated `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs` with:
+    - artifact row for `docs/qa-latency-profiles.json`,
+    - maintenance commands:
+      - `npm run validate:qa-latency-profiles`
+      - `npm run qa:latency-strict`
+      - `npm run qa:latency-adaptive-strict`.
+- Regenerated ops index artifact:
+  - `/Users/rizwankalani/stroke/docs/evidence-ops-index.md`.
+
+### Verification
+- `npm run evidence:index` passed.
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 124 (2026-02-21)
 
 ### What was changed

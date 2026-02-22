@@ -54,6 +54,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] `npm run validate:citations` passes.
 - [ ] `npm run evidence:watch` regenerates watchlist with `Priority / Score / Rationale` columns.
 - [ ] `npm run evidence:index` regenerates `docs/evidence-ops-index.md` with current artifact counts/stamps.
+- [ ] `docs/evidence-ops-index.md` includes QA latency artifact/command entries (`docs/qa-latency-profiles.json`, latency validation/strict commands).
 - [ ] Design/protocol-only title patterns remain filtered from high-priority evidence-promotion queue generation.
 - [ ] Watchlist includes filtered-candidate audit appendix for reviewer override visibility.
 - [ ] `npm run evidence:watch:filtered-all` executes and emits full filtered appendix without breaking downstream refresh pipeline.
@@ -100,6 +101,13 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Live URL `https://rkalani1.github.io/stroke/` serves updated build.
 - [ ] Post-deploy smoke checks pass on local + live for all three viewport classes.
 - [ ] Scheduled `live-smoke.yml` retains baseline GitHub issue alerting and optional webhook fan-out behavior.
+
+## Last completed run (2026-02-21, iter-125)
+- [x] Evidence ops index now includes QA latency profile artifact and strict-latency maintenance commands.
+- [x] `npm run evidence:index` passed.
+- [x] `npm run build` passed.
+- [x] `npm test` passed (`Runs: 3 | Issues: 0`).
+- [x] `npm run qa` passed (`Runs: 6 | Issues: 0`).
 
 ## Last completed run (2026-02-21, iter-124)
 - [x] Standalone latency profile validator added and integrated into test/qa command gates.

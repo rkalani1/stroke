@@ -7,6 +7,19 @@
 - Live APP_VERSION: `v5.14.78`
 - Service worker cache key: `stroke-app-v77`
 
+## Iteration 125 update (2026-02-21, macOS session)
+- Completed:
+  - Added QA latency profile artifacts and command references to generated ops index:
+    - updated `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs`
+    - regenerated `/Users/rizwankalani/stroke/docs/evidence-ops-index.md`
+- Validation status:
+  - `npm run evidence:index` pass
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
 ## Iteration 124 update (2026-02-21, macOS session)
 - Completed:
   - Added latency profile validator:

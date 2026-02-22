@@ -12,6 +12,11 @@
 - If guidelines disagree, prioritize: newer publication date, direct relevance to stroke phenotype, and consistency with multiple RCTs.
 - If RCTs conflict, prioritize larger multicenter pragmatic RCTs and endpoint quality (functional outcome over surrogate outcomes).
 
+### Operational update (2026-02-21, iter-125)
+- No new primary guideline/RCT citations were added in this iteration.
+- Added generated index coverage for QA latency profile artifacts and strict-latency command paths, improving operational discoverability of reliability controls.
+- Inference disclosure: this is operational documentation tooling only and does not alter clinical recommendation content, evidence ranking, or guideline interpretation.
+
 ### Operational update (2026-02-21, iter-124)
 - No new primary guideline/RCT citations were added in this iteration.
 - Added standalone latency-profile validation tooling and integrated it into test/QA command gates.
