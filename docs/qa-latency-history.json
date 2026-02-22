@@ -112,5 +112,125 @@
         "durationMs": 34644
       }
     ]
+  },
+  {
+    "finishedAt": "2026-02-22T01:40:20.223Z",
+    "localOnly": false,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 24990,
+    "slowestRun": {
+      "target": "live",
+      "viewport": "mobile",
+      "durationMs": 35312
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 1,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 22235
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 20598
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 32463
+      },
+      {
+        "target": "live",
+        "viewport": "desktop",
+        "durationMs": 20435
+      },
+      {
+        "target": "live",
+        "viewport": "tablet",
+        "durationMs": 18898
+      },
+      {
+        "target": "live",
+        "viewport": "mobile",
+        "durationMs": 35312
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-02-22T01:42:55.467Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 24858,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 31850
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 22461
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 20262
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 31850
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-02-22T01:45:26.511Z",
+    "localOnly": false,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 23458,
+    "slowestRun": {
+      "target": "live",
+      "viewport": "mobile",
+      "durationMs": 30887
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 20232
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 21403
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 30790
+      },
+      {
+        "target": "live",
+        "viewport": "desktop",
+        "durationMs": 18360
+      },
+      {
+        "target": "live",
+        "viewport": "tablet",
+        "durationMs": 19077
+      },
+      {
+        "target": "live",
+        "viewport": "mobile",
+        "durationMs": 30887
+      }
+    ]
   }
 ]

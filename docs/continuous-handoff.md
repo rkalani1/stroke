@@ -7,6 +7,23 @@
 - Live APP_VERSION: `v5.14.78`
 - Service worker cache key: `stroke-app-v77`
 
+## Iteration 131 update (2026-02-21, macOS session)
+- Completed:
+  - Added threshold-suggestion generator:
+    - `/Users/rizwankalani/stroke/scripts/qa-latency-threshold-suggest.mjs`
+    - `npm run qa:latency:suggest`
+  - Added output artifact:
+    - `/Users/rizwankalani/stroke/docs/qa-latency-threshold-suggestions.md`
+  - Extended ops index coverage for suggestion artifact and command references.
+- Validation status:
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+  - `npm run qa:latency:recalibrate` pass
+  - `npm run qa:latency:suggest` pass
+  - `npm run evidence:index` pass
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
 ## Iteration 130 update (2026-02-21, macOS session)
 - Completed:
   - Added latency recalibration generator:

@@ -1,5 +1,24 @@
 # Iteration Log
 
+## Iteration 131 (2026-02-21)
+
+### What was changed
+- Added automated latency-threshold suggestion generator:
+  - new script: `/Users/rizwankalani/stroke/scripts/qa-latency-threshold-suggest.mjs`,
+  - new command: `npm run qa:latency:suggest`,
+  - new output artifact: `/Users/rizwankalani/stroke/docs/qa-latency-threshold-suggestions.md`.
+- Extended ops index generator for latency-governance outputs:
+  - updated `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs` with recalibration and threshold-suggestions artifact/command coverage.
+- Updated npm scripts:
+  - `/Users/rizwankalani/stroke/package.json` now includes `qa:latency:suggest`.
+
+### Verification
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+- `npm run qa:latency:recalibrate` passed.
+- `npm run qa:latency:suggest` passed.
+- `npm run evidence:index` passed.
+
 ## Iteration 130 (2026-02-21)
 
 ### What was changed

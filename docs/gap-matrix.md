@@ -15,6 +15,13 @@
 | Senior-first cognitive load | Fast tools exist (search, shortcuts, calculators), but pathway auto-routing can interrupt utility workflows. | Implementation data favor protocolized, low-friction workflows. | Diagnosis updates can pull users away from active utility tabs. | Keep diagnosis-aware routing but preserve user intent when in Calculators/References. | P1 (completed iter-001) |
 | QA/Regression discipline | Build pipeline exists, no automated tests, compare-keys script exists. | High-acuity clinical apps need strict non-regression controls. | No standardized regression checklist in repo. | Added regression-checklist.md. Fixed compare_keys.ps1 false positive (0 true mismatches). | P0 (completed iter-001/010) |
 
+## Iteration 131 Update (2026-02-21)
+- Threshold-suggestion governance gap reduced:
+  - Added automated current-vs-recommended threshold suggestion report (`docs/qa-latency-threshold-suggestions.md`) from rolling history.
+  - Added ops-index command/artifact coverage for suggestion generation.
+- Remaining workflow gap:
+  - Optional guarded auto-PR flow to apply approved `update`/`add` threshold suggestions into `docs/qa-latency-profiles.json`.
+
 ## Iteration 130 Update (2026-02-21)
 - Latency recalibration guidance gap reduced:
   - Added automated recalibration report generation from rolling latency history (`docs/qa-latency-recalibration.md`).
