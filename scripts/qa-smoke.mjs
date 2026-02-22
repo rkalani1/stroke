@@ -28,10 +28,29 @@ const DIAGNOSIS_SWITCH_ASSERTIONS = [
   { label: 'Stroke Mimic/Other', activeClass: 'bg-amber-500', expectTNK: false }
 ];
 
-const args = new Set(process.argv.slice(2));
+const DEFAULT_RUN_DURATION_THRESHOLD_MS = 45000;
+const DEFAULT_SECTION_DURATION_THRESHOLD_MS = 15000;
+const rawArgs = process.argv.slice(2);
+const args = new Set(rawArgs);
 const localOnly = args.has('--local-only');
 const outDir = path.join(process.cwd(), 'output', 'playwright');
 const reportFile = path.join(outDir, 'qa-smoke-report.json');
+
+function parsePositiveIntArg(flag, fallback) {
+  const index = rawArgs.indexOf(flag);
+  if (index === -1) return fallback;
+  const value = Number.parseInt(rawArgs[index + 1] || '', 10);
+  if (!Number.isFinite(value) || value <= 0) {
+    throw new Error(`Invalid value for ${flag}. Provide a positive integer in milliseconds.`);
+  }
+  return value;
+}
+
+const runDurationThresholdMs = parsePositiveIntArg('--run-duration-threshold-ms', DEFAULT_RUN_DURATION_THRESHOLD_MS);
+const sectionDurationThresholdMs = parsePositiveIntArg(
+  '--section-duration-threshold-ms',
+  DEFAULT_SECTION_DURATION_THRESHOLD_MS
+);
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -816,6 +835,27 @@ async function main() {
       }
       return slowest;
     }, null);
+    const slowRuns = timedRuns
+      .filter((run) => run.notes.runDurationMs > runDurationThresholdMs)
+      .map((run) => ({
+        target: run.target,
+        viewport: run.viewport,
+        durationMs: run.notes.runDurationMs
+      }))
+      .sort((left, right) => right.durationMs - left.durationMs);
+    const slowSections = timedRuns
+      .flatMap((run) => {
+        const timings = Array.isArray(run?.notes?.sectionTimings) ? run.notes.sectionTimings : [];
+        return timings
+          .filter((timing) => Number.isFinite(timing.durationMs) && timing.durationMs > sectionDurationThresholdMs)
+          .map((timing) => ({
+            target: run.target,
+            viewport: run.viewport,
+            section: timing.section,
+            durationMs: timing.durationMs
+          }));
+      })
+      .sort((left, right) => right.durationMs - left.durationMs);
     const summary = {
       startedAt,
       finishedAt: new Date().toISOString(),
@@ -828,7 +868,13 @@ async function main() {
       liveAppVersion: liveVersion,
       liveParityChecksEnabled: liveVersionMatchesLocal,
       averageRunDurationMs,
-      slowestRun
+      slowestRun,
+      runDurationThresholdMs,
+      sectionDurationThresholdMs,
+      slowRunCount: slowRuns.length,
+      slowSectionCount: slowSections.length,
+      slowRuns,
+      slowSections
     };
 
     const report = { summary, runs };
@@ -839,6 +885,16 @@ async function main() {
     if (summary.slowestRun) {
       console.log(
         `Slowest run: ${summary.slowestRun.target}/${summary.slowestRun.viewport} (${summary.slowestRun.durationMs} ms)`
+      );
+    }
+    if (summary.slowRunCount > 0) {
+      console.warn(
+        `Slow-run alert: ${summary.slowRunCount} run(s) exceeded ${summary.runDurationThresholdMs} ms threshold.`
+      );
+    }
+    if (summary.slowSectionCount > 0) {
+      console.warn(
+        `Slow-section alert: ${summary.slowSectionCount} section(s) exceeded ${summary.sectionDurationThresholdMs} ms threshold.`
       );
     }
 

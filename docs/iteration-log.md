@@ -1,5 +1,23 @@
 # Iteration Log
 
+## Iteration 120 (2026-02-21)
+
+### What was changed
+- Added configurable latency-threshold alerting to `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+  - `--run-duration-threshold-ms` (default `45000`),
+  - `--section-duration-threshold-ms` (default `15000`).
+- Smoke summary now reports:
+  - `runDurationThresholdMs`,
+  - `sectionDurationThresholdMs`,
+  - `slowRunCount` / `slowSectionCount`,
+  - detailed `slowRuns` / `slowSections` arrays.
+- Console output now emits threshold-breach alerts without failing the run, improving scheduled-audit observability while preserving non-regression gating on functional issues.
+
+### Verification
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`; threshold alert emitted as expected).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`; threshold alert emitted as expected).
+
 ## Iteration 119 (2026-02-21)
 
 ### What was changed

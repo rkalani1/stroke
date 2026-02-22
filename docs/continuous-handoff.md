@@ -7,6 +7,22 @@
 - Live APP_VERSION: `v5.14.78`
 - Service worker cache key: `stroke-app-v77`
 
+## Iteration 120 update (2026-02-21, macOS session)
+- Completed:
+  - Added configurable smoke latency-threshold alerting in:
+    - `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`
+  - Added summary telemetry for threshold governance:
+    - `runDurationThresholdMs`
+    - `sectionDurationThresholdMs`
+    - `slowRunCount` / `slowSectionCount`
+    - `slowRuns` / `slowSections`
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
 ## Iteration 119 update (2026-02-21, macOS session)
 - Completed:
   - Added section-level smoke timing telemetry and per-run duration capture in:
