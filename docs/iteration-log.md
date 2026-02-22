@@ -1,5 +1,23 @@
 # Iteration Log
 
+## Iteration 121 (2026-02-21)
+
+### What was changed
+- Added optional strict latency enforcement in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+  - new flag: `--enforce-latency-thresholds`,
+  - smoke run now exits non-zero when enabled and any configured run/section threshold is exceeded.
+- Added strict QA command in `/Users/rizwankalani/stroke/package.json`:
+  - `npm run qa:latency-strict`
+  - uses conservative enforcement thresholds:
+    - `--run-duration-threshold-ms 60000`
+    - `--section-duration-threshold-ms 30000`
+- Smoke summary now includes `enforceLatencyThresholds` for report traceability.
+
+### Verification
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa:latency-strict` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 120 (2026-02-21)
 
 ### What was changed

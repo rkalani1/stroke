@@ -15,6 +15,13 @@
 | Senior-first cognitive load | Fast tools exist (search, shortcuts, calculators), but pathway auto-routing can interrupt utility workflows. | Implementation data favor protocolized, low-friction workflows. | Diagnosis updates can pull users away from active utility tabs. | Keep diagnosis-aware routing but preserve user intent when in Calculators/References. | P1 (completed iter-001) |
 | QA/Regression discipline | Build pipeline exists, no automated tests, compare-keys script exists. | High-acuity clinical apps need strict non-regression controls. | No standardized regression checklist in repo. | Added regression-checklist.md. Fixed compare_keys.ps1 false positive (0 true mismatches). | P0 (completed iter-001/010) |
 
+## Iteration 121 Update (2026-02-21)
+- Strict-latency-governance gap reduced:
+  - Added optional hard-fail enforcement mode for smoke latency thresholds.
+  - Added `qa:latency-strict` command with production-safe conservative thresholds for scheduled strict audits.
+- Remaining workflow gap:
+  - Optional per-viewport/section baseline profiles (custom thresholds by target+viewport) for more granular performance governance.
+
 ## Iteration 120 Update (2026-02-21)
 - Smoke latency-alerting gap reduced:
   - Added configurable run/section duration thresholds to smoke automation.

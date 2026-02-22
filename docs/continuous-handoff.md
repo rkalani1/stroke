@@ -7,6 +7,21 @@
 - Live APP_VERSION: `v5.14.78`
 - Service worker cache key: `stroke-app-v77`
 
+## Iteration 121 update (2026-02-21, macOS session)
+- Completed:
+  - Added strict latency enforcement flag in smoke QA:
+    - `--enforce-latency-thresholds`
+  - Added strict latency QA command:
+    - `npm run qa:latency-strict`
+  - Added smoke summary trace field:
+    - `enforceLatencyThresholds`
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa:latency-strict` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
 ## Iteration 120 update (2026-02-21, macOS session)
 - Completed:
   - Added configurable smoke latency-threshold alerting in:

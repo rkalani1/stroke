@@ -33,6 +33,7 @@ const DEFAULT_SECTION_DURATION_THRESHOLD_MS = 15000;
 const rawArgs = process.argv.slice(2);
 const args = new Set(rawArgs);
 const localOnly = args.has('--local-only');
+const enforceLatencyThresholds = args.has('--enforce-latency-thresholds');
 const outDir = path.join(process.cwd(), 'output', 'playwright');
 const reportFile = path.join(outDir, 'qa-smoke-report.json');
 
@@ -871,6 +872,7 @@ async function main() {
       slowestRun,
       runDurationThresholdMs,
       sectionDurationThresholdMs,
+      enforceLatencyThresholds,
       slowRunCount: slowRuns.length,
       slowSectionCount: slowSections.length,
       slowRuns,
@@ -896,6 +898,10 @@ async function main() {
       console.warn(
         `Slow-section alert: ${summary.slowSectionCount} section(s) exceeded ${summary.sectionDurationThresholdMs} ms threshold.`
       );
+    }
+    if (summary.enforceLatencyThresholds && (summary.slowRunCount > 0 || summary.slowSectionCount > 0)) {
+      console.error('Latency threshold enforcement enabled and one or more thresholds were exceeded.');
+      process.exit(1);
     }
 
     if (totalIssues > 0) {

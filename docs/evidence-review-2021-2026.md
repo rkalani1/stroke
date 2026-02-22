@@ -12,6 +12,12 @@
 - If guidelines disagree, prioritize: newer publication date, direct relevance to stroke phenotype, and consistency with multiple RCTs.
 - If RCTs conflict, prioritize larger multicenter pragmatic RCTs and endpoint quality (functional outcome over surrogate outcomes).
 
+### Operational update (2026-02-21, iter-121)
+- No new primary guideline/RCT citations were added in this iteration.
+- Added optional strict enforcement mode for latency thresholds in smoke QA.
+- Added a dedicated strict latency QA command to support hard-fail performance governance in scheduled/CI workflows when desired.
+- Inference disclosure: this is operational reliability instrumentation only and does not alter clinical recommendation content, evidence ranking, or guideline interpretation.
+
 ### Operational update (2026-02-21, iter-120)
 - No new primary guideline/RCT citations were added in this iteration.
 - Added configurable latency-threshold alerting for smoke run durations and per-section timings.
