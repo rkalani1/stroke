@@ -11,6 +11,7 @@ const HISTORY_PATH = path.join(DOCS_DIR, 'evidence-watch-history.json');
 const CHURN_PROFILE_PATH = path.join(DOCS_DIR, 'evidence-churn-profiles.json');
 const QA_LATENCY_PROFILE_PATH = path.join(DOCS_DIR, 'qa-latency-profiles.json');
 const QA_LATENCY_HISTORY_PATH = path.join(DOCS_DIR, 'qa-latency-history.json');
+const QA_LATENCY_RECALIBRATION_PATH = path.join(DOCS_DIR, 'qa-latency-recalibration.md');
 const OUTPUT_PATH = path.join(DOCS_DIR, 'evidence-ops-index.md');
 
 async function readText(file) {
@@ -73,7 +74,7 @@ function extractProfileCount(rawProfiles) {
 }
 
 async function main() {
-  const [watchlistMd, checklistMd, templateMd, templateP0Md, historyRaw, churnProfileRaw, qaLatencyProfileRaw, qaLatencyHistoryRaw] = await Promise.all([
+  const [watchlistMd, checklistMd, templateMd, templateP0Md, historyRaw, churnProfileRaw, qaLatencyProfileRaw, qaLatencyHistoryRaw, qaLatencyRecalibrationMd] = await Promise.all([
     readText(WATCHLIST_PATH),
     readText(CHECKLIST_PATH),
     readText(TEMPLATE_PATH),
@@ -81,7 +82,8 @@ async function main() {
     readText(HISTORY_PATH),
     readText(CHURN_PROFILE_PATH),
     readText(QA_LATENCY_PROFILE_PATH),
-    readText(QA_LATENCY_HISTORY_PATH)
+    readText(QA_LATENCY_HISTORY_PATH),
+    readText(QA_LATENCY_RECALIBRATION_PATH)
   ]);
 
   const now = new Date().toISOString();
@@ -89,6 +91,7 @@ async function main() {
   const checklistGenerated = readGeneratedStamp(checklistMd);
   const templateGenerated = readGeneratedStamp(templateMd);
   const templateP0Generated = readGeneratedStamp(templateP0Md);
+  const qaLatencyRecalibrationGenerated = readGeneratedStamp(qaLatencyRecalibrationMd);
 
   const watchlistP0P1 = extractWatchlistP0P1(watchlistMd);
   const checklistTotal = extractTotalChecklist(checklistMd);
@@ -115,6 +118,7 @@ async function main() {
   out.push(`| Churn profiles | docs/evidence-churn-profiles.json | n/a (JSON config) | Profiles: ${profileCount ?? 'unknown'} |`);
   out.push(`| QA latency profiles | docs/qa-latency-profiles.json | n/a (JSON config) | Profiles: ${qaLatencyProfileCount ?? 'unknown'} |`);
   out.push(`| QA latency history | docs/qa-latency-history.json | n/a (JSON snapshot) | Entries: ${qaLatencyHistoryCount ?? 'unknown'} |`);
+  out.push(`| QA latency recalibration | docs/qa-latency-recalibration.md | ${qaLatencyRecalibrationGenerated} | Windowed recommendations |`);
   out.push('');
   out.push('## Maintenance Commands');
   out.push('- `npm run evidence:watch`');
@@ -128,6 +132,7 @@ async function main() {
   out.push('- `npm run evidence:watch:profile:hemorrhage`');
   out.push('- `npm run validate:evidence-churn-profiles`');
   out.push('- `npm run validate:qa-latency-profiles`');
+  out.push('- `npm run qa:latency:recalibrate`');
   out.push('- `npm run qa:latency-strict`');
   out.push('- `npm run qa:latency-adaptive-strict`');
   out.push('- `npm run evidence:promote`');

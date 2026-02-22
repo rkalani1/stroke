@@ -7,6 +7,23 @@
 - Live APP_VERSION: `v5.14.78`
 - Service worker cache key: `stroke-app-v77`
 
+## Iteration 130 update (2026-02-21, macOS session)
+- Completed:
+  - Added latency recalibration generator:
+    - `/Users/rizwankalani/stroke/scripts/qa-latency-recalibration.mjs`
+    - `npm run qa:latency:recalibrate`
+  - Added recalibration artifact:
+    - `/Users/rizwankalani/stroke/docs/qa-latency-recalibration.md`
+  - Added run-duration detail persistence in latency history snapshots (`runDurations`).
+  - Updated ops index to include recalibration artifact and command references.
+- Validation status:
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa` pass (`Runs: 6 | Issues: 0`)
+  - `npm run qa:latency:recalibrate` pass
+  - `npm run evidence:index` pass
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
 ## Iteration 129 update (2026-02-21, macOS session)
 - Completed:
   - Added rolling latency history persistence in smoke QA:

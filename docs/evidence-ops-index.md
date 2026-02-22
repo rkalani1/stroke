@@ -1,6 +1,6 @@
 # Evidence Ops Index (Auto-generated)
 
-Generated: 2026-02-22T01:22:53.285Z
+Generated: 2026-02-22T01:34:45.965Z
 
 ## Current Artifacts
 | Artifact | Path | Generated | Key count |
@@ -12,7 +12,8 @@ Generated: 2026-02-22T01:22:53.285Z
 | Watchlist history | docs/evidence-watch-history.json | n/a (JSON snapshot) | Entries: 10 |
 | Churn profiles | docs/evidence-churn-profiles.json | n/a (JSON config) | Profiles: 3 |
 | QA latency profiles | docs/qa-latency-profiles.json | n/a (JSON config) | Profiles: 2 |
-| QA latency history | docs/qa-latency-history.json | n/a (JSON snapshot) | Entries: 2 |
+| QA latency history | docs/qa-latency-history.json | n/a (JSON snapshot) | Entries: 5 |
+| QA latency recalibration | docs/qa-latency-recalibration.md | 2026-02-22T01:34:45.813Z | Windowed recommendations |
 
 ## Maintenance Commands
 - `npm run evidence:watch`
@@ -26,6 +27,7 @@ Generated: 2026-02-22T01:22:53.285Z
 - `npm run evidence:watch:profile:hemorrhage`
 - `npm run validate:evidence-churn-profiles`
 - `npm run validate:qa-latency-profiles`
+- `npm run qa:latency:recalibrate`
 - `npm run qa:latency-strict`
 - `npm run qa:latency-adaptive-strict`
 - `npm run evidence:promote`

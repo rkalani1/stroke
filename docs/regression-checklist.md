@@ -56,6 +56,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] `npm run evidence:index` regenerates `docs/evidence-ops-index.md` with current artifact counts/stamps.
 - [ ] `docs/evidence-ops-index.md` includes QA latency artifact/command entries (`docs/qa-latency-profiles.json`, latency validation/strict commands).
 - [ ] `docs/evidence-ops-index.md` includes QA latency history artifact entry (`docs/qa-latency-history.json`).
+- [ ] `docs/evidence-ops-index.md` includes QA latency recalibration artifact/command entries.
 - [ ] Design/protocol-only title patterns remain filtered from high-priority evidence-promotion queue generation.
 - [ ] Watchlist includes filtered-candidate audit appendix for reviewer override visibility.
 - [ ] `npm run evidence:watch:filtered-all` executes and emits full filtered appendix without breaking downstream refresh pipeline.
@@ -89,6 +90,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] External latency profile file (`docs/qa-latency-profiles.json`) is present and loadable by smoke command.
 - [ ] QA smoke report includes latency history metadata (`latencyHistoryPath`, `latencyHistoryCount`).
 - [ ] Rolling latency history snapshot file (`docs/qa-latency-history.json`) is generated and updated.
+- [ ] `npm run qa:latency:recalibrate` passes and regenerates `docs/qa-latency-recalibration.md`.
 - [ ] `npm run qa:latency-adaptive-local` passes (local-only adaptive strict mode).
 - [ ] `npm run validate:qa-latency-profiles` passes.
 - [ ] `npm run qa:latency-strict` passes (strict latency enforcement mode).
@@ -121,6 +123,13 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [x] `npm run build` passed.
 - [x] `npm test` passed (`Runs: 3 | Issues: 0`).
 - [x] `npm run qa` passed (`Runs: 6 | Issues: 0`).
+- [x] `npm run evidence:index` passed.
+
+## Last completed run (2026-02-21, iter-130)
+- [x] Automated latency recalibration report generated at `docs/qa-latency-recalibration.md`.
+- [x] `npm test` passed (`Runs: 3 | Issues: 0`).
+- [x] `npm run qa` passed (`Runs: 6 | Issues: 0`).
+- [x] `npm run qa:latency:recalibrate` passed.
 - [x] `npm run evidence:index` passed.
 
 ## Last completed run (2026-02-21, iter-127)

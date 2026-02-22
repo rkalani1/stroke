@@ -224,7 +224,7 @@ async function canReach(url) {
   }
 }
 
-async function updateLatencyHistory(summary) {
+async function updateLatencyHistory(summary, runs) {
   let history = [];
   try {
     const raw = await fs.readFile(latencyHistoryFile, 'utf8');
@@ -241,7 +241,16 @@ async function updateLatencyHistory(summary) {
     averageRunDurationMs: summary.averageRunDurationMs,
     slowestRun: summary.slowestRun,
     slowRunCount: summary.slowRunCount,
-    slowSectionCount: summary.slowSectionCount
+    slowSectionCount: summary.slowSectionCount,
+    runDurations: Array.isArray(runs)
+      ? runs
+          .map((run) => ({
+            target: run?.target || null,
+            viewport: run?.viewport || null,
+            durationMs: Number.isFinite(run?.notes?.runDurationMs) ? run.notes.runDurationMs : null
+          }))
+          .filter((run) => Number.isFinite(run.durationMs) && run.target && run.viewport)
+      : []
   });
   const trimmedHistory = history.slice(-60);
   await fs.mkdir(path.dirname(latencyHistoryFile), { recursive: true });
@@ -1065,7 +1074,7 @@ async function main() {
       slowSections
     };
     try {
-      const historyInfo = await updateLatencyHistory(summary);
+      const historyInfo = await updateLatencyHistory(summary, runs);
       summary.latencyHistoryPath = historyInfo.path;
       summary.latencyHistoryCount = historyInfo.count;
     } catch (error) {

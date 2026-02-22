@@ -1,5 +1,24 @@
 # Iteration Log
 
+## Iteration 130 (2026-02-21)
+
+### What was changed
+- Added automated latency recalibration generator:
+  - new script: `/Users/rizwankalani/stroke/scripts/qa-latency-recalibration.mjs`,
+  - new command: `npm run qa:latency:recalibrate`,
+  - new output artifact: `/Users/rizwankalani/stroke/docs/qa-latency-recalibration.md`.
+- Enhanced latency history snapshots in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+  - persisted per-run duration arrays (`runDurations`) inside rolling history entries for trend analytics.
+- Extended ops index coverage:
+  - `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs` now includes QA latency recalibration artifact and command entries,
+  - regenerated `/Users/rizwankalani/stroke/docs/evidence-ops-index.md`.
+
+### Verification
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa` passed (`Runs: 6 | Issues: 0`).
+- `npm run qa:latency:recalibrate` passed.
+- `npm run evidence:index` passed.
+
 ## Iteration 129 (2026-02-21)
 
 ### What was changed

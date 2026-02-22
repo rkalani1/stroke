@@ -28,6 +28,7 @@
     "test": "npm run validate:citations && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && node ./scripts/qa-smoke.mjs --local-only",
     "qa": "npm run validate:citations && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && node ./scripts/qa-smoke.mjs",
     "qa:latency-adaptive-local": "node ./scripts/qa-smoke.mjs --local-only --latency-profile adaptive --latency-profiles-file docs/qa-latency-profiles.json --enforce-latency-thresholds",
+    "qa:latency:recalibrate": "node ./scripts/qa-latency-recalibration.mjs",
     "qa:latency-strict": "npm run validate:citations && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && node ./scripts/qa-smoke.mjs --enforce-latency-thresholds --run-duration-threshold-ms 60000 --section-duration-threshold-ms 30000",
     "qa:latency-adaptive-strict": "npm run validate:citations && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && node ./scripts/qa-smoke.mjs --latency-profile adaptive --latency-profiles-file docs/qa-latency-profiles.json --enforce-latency-thresholds",
     "build:css": "tailwindcss -i ./src/styles.css -o ./tailwind.css --minify",
