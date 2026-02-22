@@ -57,3 +57,41 @@ jobs:
             docs/evidence-churn-profiles.json
             docs/qa-latency-profiles.json
           if-no-files-found: ignore
+
+  adaptive-latency-smoke:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run adaptive strict QA (local + live)
+        run: |
+          mkdir -p output/diagnostics
+          set -o pipefail
+          npm run qa:latency-adaptive-strict 2>&1 | tee output/diagnostics/qa-latency-adaptive-strict.log
+
+      - name: Upload adaptive latency smoke artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adaptive-latency-smoke-artifacts
+          path: |
+            output/playwright
+            output/diagnostics/qa-latency-adaptive-strict.log
+            output/diagnostics/churn-profile-validation.log
+            output/diagnostics/qa-latency-profile-validation.log
+            docs/evidence-churn-profiles.json
+            docs/qa-latency-profiles.json
+          if-no-files-found: ignore

@@ -91,6 +91,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] `npm run qa:latency-adaptive-strict` passes (adaptive profile strict mode).
 - [ ] CI and scheduled live-smoke workflows capture `output/diagnostics/qa-latency-profile-validation.log` in uploaded artifacts.
 - [ ] Scheduled `live-smoke.yml` runs `npm run qa:latency-adaptive-strict` (not baseline `npm run qa`).
+- [ ] CI workflow includes non-PR adaptive strict lane (`adaptive-latency-smoke`) with artifact upload.
 - [ ] Service worker cache version updated when asset behavior changes.
 - [ ] `index.html` app version updated for storage/cache compatibility when needed.
 - [ ] Smoke QA pediatric scenario (age `<18`) asserts pathway-card visibility, warning output, and generated-note trace.
@@ -102,6 +103,10 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Live URL `https://rkalani1.github.io/stroke/` serves updated build.
 - [ ] Post-deploy smoke checks pass on local + live for all three viewport classes.
 - [ ] Scheduled `live-smoke.yml` retains baseline GitHub issue alerting and optional webhook fan-out behavior.
+
+## Last completed run (2026-02-21, iter-127)
+- [x] CI now includes adaptive strict latency smoke lane for non-PR events.
+- [x] `npm run qa:latency-adaptive-strict` passed (`Runs: 6 | Issues: 0`).
 
 ## Last completed run (2026-02-21, iter-126)
 - [x] Scheduled live-smoke workflow now runs adaptive strict QA command path.

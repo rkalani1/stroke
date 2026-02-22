@@ -1,5 +1,18 @@
 # Iteration Log
 
+## Iteration 127 (2026-02-21)
+
+### What was changed
+- Added adaptive strict latency QA lane to CI workflow:
+  - updated `/Users/rizwankalani/stroke/.github/workflows/ci.yml`
+  - new job: `adaptive-latency-smoke`
+  - execution policy: runs on non-PR events (`push` to `main` and `workflow_dispatch`),
+  - command: `npm run qa:latency-adaptive-strict`,
+  - artifact bundle includes adaptive strict log and latency/churn profile validation diagnostics.
+
+### Verification
+- `npm run qa:latency-adaptive-strict` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 126 (2026-02-21)
 
 ### What was changed
