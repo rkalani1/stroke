@@ -30,6 +30,20 @@ const DIAGNOSIS_SWITCH_ASSERTIONS = [
 
 const DEFAULT_RUN_DURATION_THRESHOLD_MS = 45000;
 const DEFAULT_SECTION_DURATION_THRESHOLD_MS = 15000;
+const SUPPORTED_LATENCY_PROFILES = new Set(['flat', 'adaptive']);
+const ADAPTIVE_RUN_THRESHOLD_BY_TARGET_VIEWPORT = {
+  'local/desktop': 40000,
+  'local/tablet': 43000,
+  'local/mobile': 46000,
+  'live/desktop': 42000,
+  'live/tablet': 45000,
+  'live/mobile': 50000
+};
+const ADAPTIVE_SECTION_THRESHOLD_BY_SECTION = {
+  'encounter-workflow': 22000,
+  'library-workflow': 18000,
+  'pediatric-workflow': 20000
+};
 const rawArgs = process.argv.slice(2);
 const args = new Set(rawArgs);
 const localOnly = args.has('--local-only');
@@ -47,11 +61,46 @@ function parsePositiveIntArg(flag, fallback) {
   return value;
 }
 
+function parseStringArg(flag, fallback) {
+  const index = rawArgs.indexOf(flag);
+  if (index === -1) return fallback;
+  const value = String(rawArgs[index + 1] || '').trim();
+  if (!value) throw new Error(`Invalid value for ${flag}. Provide a non-empty string value.`);
+  return value;
+}
+
 const runDurationThresholdMs = parsePositiveIntArg('--run-duration-threshold-ms', DEFAULT_RUN_DURATION_THRESHOLD_MS);
 const sectionDurationThresholdMs = parsePositiveIntArg(
   '--section-duration-threshold-ms',
   DEFAULT_SECTION_DURATION_THRESHOLD_MS
 );
+const latencyProfile = parseStringArg('--latency-profile', 'flat');
+if (!SUPPORTED_LATENCY_PROFILES.has(latencyProfile)) {
+  throw new Error(`Invalid --latency-profile value "${latencyProfile}". Supported: flat, adaptive.`);
+}
+
+function resolveRunThresholdMs(targetName, viewportName) {
+  if (latencyProfile === 'adaptive') {
+    const key = `${targetName}/${viewportName}`;
+    if (Number.isFinite(ADAPTIVE_RUN_THRESHOLD_BY_TARGET_VIEWPORT[key])) {
+      return ADAPTIVE_RUN_THRESHOLD_BY_TARGET_VIEWPORT[key];
+    }
+  }
+  return runDurationThresholdMs;
+}
+
+function resolveSectionThresholdMs(targetName, viewportName, sectionName) {
+  if (latencyProfile === 'adaptive') {
+    const scopedKey = `${targetName}/${viewportName}:${sectionName}`;
+    if (Number.isFinite(ADAPTIVE_SECTION_THRESHOLD_BY_SECTION[scopedKey])) {
+      return ADAPTIVE_SECTION_THRESHOLD_BY_SECTION[scopedKey];
+    }
+    if (Number.isFinite(ADAPTIVE_SECTION_THRESHOLD_BY_SECTION[sectionName])) {
+      return ADAPTIVE_SECTION_THRESHOLD_BY_SECTION[sectionName];
+    }
+  }
+  return sectionDurationThresholdMs;
+}
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -837,24 +886,33 @@ async function main() {
       return slowest;
     }, null);
     const slowRuns = timedRuns
-      .filter((run) => run.notes.runDurationMs > runDurationThresholdMs)
-      .map((run) => ({
-        target: run.target,
-        viewport: run.viewport,
-        durationMs: run.notes.runDurationMs
-      }))
+      .map((run) => {
+        const thresholdMs = resolveRunThresholdMs(run.target, run.viewport);
+        return {
+          target: run.target,
+          viewport: run.viewport,
+          durationMs: run.notes.runDurationMs,
+          thresholdMs
+        };
+      })
+      .filter((run) => run.durationMs > run.thresholdMs)
       .sort((left, right) => right.durationMs - left.durationMs);
     const slowSections = timedRuns
       .flatMap((run) => {
         const timings = Array.isArray(run?.notes?.sectionTimings) ? run.notes.sectionTimings : [];
         return timings
-          .filter((timing) => Number.isFinite(timing.durationMs) && timing.durationMs > sectionDurationThresholdMs)
-          .map((timing) => ({
-            target: run.target,
-            viewport: run.viewport,
-            section: timing.section,
-            durationMs: timing.durationMs
-          }));
+          .filter((timing) => Number.isFinite(timing.durationMs))
+          .map((timing) => {
+            const thresholdMs = resolveSectionThresholdMs(run.target, run.viewport, timing.section);
+            return {
+              target: run.target,
+              viewport: run.viewport,
+              section: timing.section,
+              durationMs: timing.durationMs,
+              thresholdMs
+            };
+          })
+          .filter((timing) => timing.durationMs > timing.thresholdMs);
       })
       .sort((left, right) => right.durationMs - left.durationMs);
     const summary = {
@@ -870,6 +928,7 @@ async function main() {
       liveParityChecksEnabled: liveVersionMatchesLocal,
       averageRunDurationMs,
       slowestRun,
+      latencyProfile,
       runDurationThresholdMs,
       sectionDurationThresholdMs,
       enforceLatencyThresholds,
@@ -891,12 +950,12 @@ async function main() {
     }
     if (summary.slowRunCount > 0) {
       console.warn(
-        `Slow-run alert: ${summary.slowRunCount} run(s) exceeded ${summary.runDurationThresholdMs} ms threshold.`
+        `Slow-run alert: ${summary.slowRunCount} run(s) exceeded configured run threshold(s) (profile: ${summary.latencyProfile}).`
       );
     }
     if (summary.slowSectionCount > 0) {
       console.warn(
-        `Slow-section alert: ${summary.slowSectionCount} section(s) exceeded ${summary.sectionDurationThresholdMs} ms threshold.`
+        `Slow-section alert: ${summary.slowSectionCount} section(s) exceeded configured section threshold(s) (profile: ${summary.latencyProfile}).`
       );
     }
     if (summary.enforceLatencyThresholds && (summary.slowRunCount > 0 || summary.slowSectionCount > 0)) {

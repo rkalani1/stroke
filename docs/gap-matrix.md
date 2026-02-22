@@ -15,6 +15,14 @@
 | Senior-first cognitive load | Fast tools exist (search, shortcuts, calculators), but pathway auto-routing can interrupt utility workflows. | Implementation data favor protocolized, low-friction workflows. | Diagnosis updates can pull users away from active utility tabs. | Keep diagnosis-aware routing but preserve user intent when in Calculators/References. | P1 (completed iter-001) |
 | QA/Regression discipline | Build pipeline exists, no automated tests, compare-keys script exists. | High-acuity clinical apps need strict non-regression controls. | No standardized regression checklist in repo. | Added regression-checklist.md. Fixed compare_keys.ps1 false positive (0 true mismatches). | P0 (completed iter-001/010) |
 
+## Iteration 122 Update (2026-02-21)
+- Per-target latency-profile gap reduced:
+  - Added adaptive latency profile mode with target/viewport-specific run thresholds.
+  - Added section-aware threshold overrides for known longer workflows.
+  - Added adaptive strict validation command for operational enforcement.
+- Remaining workflow gap:
+  - Optional external latency-profile config artifact (JSON) for institution/site-specific threshold tuning without script edits.
+
 ## Iteration 121 Update (2026-02-21)
 - Strict-latency-governance gap reduced:
   - Added optional hard-fail enforcement mode for smoke latency thresholds.

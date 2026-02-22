@@ -7,6 +7,21 @@
 - Live APP_VERSION: `v5.14.78`
 - Service worker cache key: `stroke-app-v77`
 
+## Iteration 122 update (2026-02-21, macOS session)
+- Completed:
+  - Added adaptive latency profile support in smoke QA:
+    - `--latency-profile flat|adaptive`
+  - Added adaptive strict QA command:
+    - `npm run qa:latency-adaptive-strict`
+  - Added smoke summary trace field:
+    - `latencyProfile`
+- Validation status:
+  - `npm run build` pass
+  - `npm test` pass (`Runs: 3 | Issues: 0`)
+  - `npm run qa:latency-adaptive-strict` pass (`Runs: 6 | Issues: 0`)
+- Next command to continue loop:
+  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+
 ## Iteration 121 update (2026-02-21, macOS session)
 - Completed:
   - Added strict latency enforcement flag in smoke QA:

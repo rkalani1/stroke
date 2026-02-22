@@ -1,5 +1,22 @@
 # Iteration Log
 
+## Iteration 122 (2026-02-21)
+
+### What was changed
+- Added target/viewport-aware latency profile support in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+  - new CLI option: `--latency-profile <flat|adaptive>`,
+  - adaptive profile applies per-target/per-viewport run thresholds and section-aware threshold overrides for high-cost workflow sections.
+- Extended smoke report telemetry with active profile trace:
+  - `latencyProfile` in summary.
+- Added adaptive strict QA command in `/Users/rizwankalani/stroke/package.json`:
+  - `npm run qa:latency-adaptive-strict`
+  - runs smoke with `--latency-profile adaptive --enforce-latency-thresholds`.
+
+### Verification
+- `npm run build` passed.
+- `npm test` passed (`Runs: 3 | Issues: 0`).
+- `npm run qa:latency-adaptive-strict` passed (`Runs: 6 | Issues: 0`).
+
 ## Iteration 121 (2026-02-21)
 
 ### What was changed
