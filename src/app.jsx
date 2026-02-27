@@ -64,18 +64,6 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         // MAINTAINER POLICY: Do NOT remove this phone directory or its default contacts
         // unless the project owner explicitly requests removal on their own (unsolicited removal is disallowed).
         const DEFAULT_CONTACTS = [
-          { id: 'stroke-phone', label: 'Stroke Phone', phone: '206-744-6789', note: 'HMC primary hub' },
-          { id: 'stat-pharmacy', label: 'STAT Pharmacy', phone: '206-744-2241', note: 'HMC' },
-          { id: 'rad-hotline', label: 'HMC Stroke RAD Hotline', phone: '206-744-8484', note: 'Weekdays 0800-1700' },
-          { id: 'rad-reading-room', label: 'HMC RAD Reading Room', phone: '206-744-6741', note: 'All modalities' },
-          { id: 'rad-records', label: 'HMC Radiology Records/File Room', phone: '206-744-3109', note: '24/7 imaging pull/push' },
-          { id: 'angio-suite', label: 'Angio Suite', phone: '206-744-3381', note: 'HMC primary' },
-          { id: 'angio-suite-alt', label: 'Angio Suite (Alternate)', phone: '206-744-6506', note: 'HMC backup line' },
-          { id: 'stat-ct', label: 'STAT CT', phone: '206-744-7290', note: 'HMC' },
-          { id: 'stat-mri', label: 'STAT MRI', phone: '206-744-2460', note: 'HMC' },
-          { id: 'uw-rad-coord', label: 'UW Reading Room Coordinator', phone: '206-597-4249', note: 'UW Montlake days' },
-          { id: 'uw-neurorad-fellow', label: 'UW Neuro Rad Fellow', phone: '206-598-7959', note: 'UW Montlake 0700-1900' },
-          { id: 'uw-neurorad-resident', label: 'UW Neuro Rad Resident', phone: '206-598-2068', note: 'UW Montlake 1700-0700' },
           { id: 'it-helpdesk', label: 'IT Services Help Desk', phone: '206-520-2200', note: 'Stroke phone issues' },
           { id: 'paging-operator', label: 'Paging Operator', phone: '206-744-0147', note: 'UW/HMC operator' }
         ];
