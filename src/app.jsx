@@ -2933,14 +2933,26 @@ Clinician Name`;
           // =================================================================
           // Calling sites — configure via Settings or enter manually per encounter
           const CALLING_SITES = [
-            { group: 'Hub Sites', sites: ['Hub A', 'Hub B', 'Hub C'] },
-            { group: 'Spoke Sites', sites: [
-              'Spoke Site 1',
-              'Spoke Site 2',
-              'Spoke Site 3',
-              'Spoke Site 4',
-              'Spoke Site 5'
-            ]}
+            { group: 'UW Sites', sites: ['HMC', 'UWMC-ML', 'UWM Northwest'] },
+            { group: 'Video Partner Sites', sites: [
+              'Astria Sunnyside',
+              'Cascade Medical – Leavenworth',
+              'Columbia Basin-Ephrata',
+              'Confluence Health – Wenatchee',
+              'Island Health – Anacortes',
+              'Lourdes Health – Pasco',
+              'Mason General Hospital – Shelton',
+              'Snoqualmie Valley – Snoqualmie',
+              'St. Joseph Regional Medical Center – Lewiston, Idaho'
+            ]},
+            { group: 'PeaceHealth Sites', sites: [
+              'PeaceHealth Island - Friday Harbor',
+              'PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska',
+              'PeaceHealth St. Joseph Medical Center – Bellingham',
+              'PeaceHealth United General Medical Center – Sedro Woolley'
+            ]},
+            { group: 'Alaska Sites', sites: ['Petersburg, AK'] },
+            { group: 'Tri-Cities', sites: ['Trios Health – Kennewick'] }
           ];
 
           // =================================================================
