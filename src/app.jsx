@@ -63,10 +63,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         // UW stroke call defaults (editable in Settings > Contact Directory).
         // MAINTAINER POLICY: Do NOT remove this phone directory or its default contacts
         // unless the project owner explicitly requests removal on their own (unsolicited removal is disallowed).
-        const DEFAULT_CONTACTS = [
-          { id: 'it-helpdesk', label: 'IT Services Help Desk', phone: '206-520-2200', note: 'Stroke phone issues' },
-          { id: 'paging-operator', label: 'Paging Operator', phone: '206-744-0147', note: 'UW/HMC operator' }
-        ];
+        const DEFAULT_CONTACTS = [];
 
         const parseStoredValue = (raw) => {
           if (raw === null || raw === undefined) return null;
