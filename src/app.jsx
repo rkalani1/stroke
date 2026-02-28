@@ -16077,8 +16077,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             { label: 'Regional Hospitals', url: 'https://rkalani1.github.io/telestroke-expansion-map/', note: 'Regional telestroke center coverage map' }
           ];
           const encounterQuickLinks = [
-            { label: 'Telestroke Resources', url: 'https://intranet.neurology.uw.edu/telestroke-provider-resources/' },
-            { label: 'EMR', url: 'https://access.uwmedicine.org/logon/LogonPoint/tmindex.html' },
             { label: 'OpenEvidence', url: 'https://www.openevidence.com' },
             { label: 'UpToDate', url: 'https://www.uptodate.com' },
             { label: 'Asta (Ai2)', url: 'https://asta.allen.ai/chat' }
@@ -16280,16 +16278,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </h1>
                     </div>
                     {topLinks.length > 0 && (
-                      <div className="mt-1 flex flex-wrap items-center gap-1.5 justify-center sm:justify-start">
+                      <div className="mt-2 flex flex-wrap items-center gap-2 justify-center sm:justify-start">
                         {topLinks.map((link) => (
                           <a
                             key={link.url}
                             href={link.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 px-2 py-1 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-md transition-colors"
+                            className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 hover:text-indigo-900 transition-colors"
                           >
-                            <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
+                            <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
                             <span>{link.label}</span>
                           </a>
                         ))}
