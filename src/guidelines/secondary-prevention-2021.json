@@ -11,7 +11,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "1. In patients suspected of having a stroke or TIA, an ECG is recommended to screen for atrial fibrillation (AF) and atrial flutter and to assess for other concomitant cardiac conditions.40,41",
+      "text": "An ECG is recommended for patients with suspected stroke or TIA to screen for atrial fibrillation, atrial flutter, and other cardiac conditions.",
       "page": 10
     },
     {
@@ -19,7 +19,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "2. In patients with ischemic stroke or TIA, a diagnostic evaluation is recommended for gaining insights into the etiology of and planning optimal strategies for preventing recurrent stroke, with testing completed or underway within 48 hours of onset of stroke symptoms.42\u201345",
+      "text": "A diagnostic evaluation is recommended for patients with ischemic stroke or TIA to determine etiology and guide secondary prevention strategy, with testing completed or initiated within 48 hours of symptom onset.",
       "page": 10
     },
     {
@@ -27,7 +27,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "3. In patients with symptomatic anterior circulation cerebral infarction or TIA who are candidates for revascularization, noninvasive cervical carotid imaging with carotid ultrasonography, CT angiography (CTA), or magnetic resonance angiography (MRA) is recommended to screen for stenosis.46\u201350",
+      "text": "Noninvasive cervical carotid imaging (ultrasonography, CTA, or MRA) is recommended for patients with symptomatic anterior circulation infarction or TIA who are revascularization candidates, to screen for carotid stenosis.",
       "page": 10
     },
     {
@@ -35,7 +35,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "4. In patients suspected of having a stroke or TIA, CT or MRI of the brain is recommended to confirm the diagnosis of symptomatic ischemic cerebral vascular disease.51\u201353",
+      "text": "Brain CT or MRI is recommended for patients with suspected stroke or TIA to confirm the diagnosis of symptomatic ischemic cerebrovascular disease.",
       "page": 10
     },
     {
@@ -43,7 +43,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "5. In patients with a confirmed diagnosis of symptomatic ischemic cerebrovascular disease, blood tests, including complete blood count, prothrombin time, partial thromboplastin time, glucose, HbA1c, creatinine, and fasting or nonfasting lipid profile, are recommended to gain insight into risk factors for stroke and to inform therapeutic goals.54,55",
+      "text": "Blood tests including CBC, PT, PTT, glucose, HbA1c, creatinine, and lipid profile are recommended for patients with confirmed ischemic cerebrovascular disease to identify risk factors and inform treatment goals.",
       "page": 10
     },
     {
@@ -51,7 +51,15 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "6. In patients with cryptogenic stroke, echocardiography with or without contrast is reasonable to evaluate for possible cardiac sources of or transcardiac pathways for cerebral embolism.56,57 2a B-R 7 . In patients with cryptogenic stroke who do not have a contraindication to anticoagulation, long-term rhythm monitoring with mobile cardiac outpatient telemetry, implantable loop recorder, or other approach is reasonable to detect intermittent AF.58\u201360",
+      "text": "Echocardiography with or without contrast is reasonable for patients with cryptogenic stroke to evaluate for cardiac embolic sources or transcardiac pathways.",
+      "page": 10
+    },
+    {
+      "section": "Diagnostic Evaluation",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with cryptogenic stroke without contraindication to anticoagulation, prolonged cardiac monitoring (mobile cardiac outpatient telemetry, implantable loop recorder, or similar) is reasonable to detect intermittent AF.",
       "page": 10
     },
     {
@@ -59,7 +67,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "8. In patients suspected of having ischemic stroke, if CT or MRI does not demonstrate symptomatic cerebral infarct, follow-up CT or MRI of the brain is reasonable to confirm diagnosis.61\u201365",
+      "text": "If initial CT or MRI does not demonstrate symptomatic infarction in patients with suspected ischemic stroke, follow-up brain imaging is reasonable to confirm the diagnosis.",
       "page": 10
     },
     {
@@ -67,7 +75,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "9. In patients suspected of having had a TIA, if the initial head imaging (CT or MRI) does not demonstrate a symptomatic cerebral infarct, follow-up MRI is reasonable to predict risk of early stroke and to support the diagnosis.66\u201369",
+      "text": "If initial head imaging in suspected TIA patients does not show a symptomatic infarct, follow-up MRI is reasonable to predict early stroke risk and support the diagnosis.",
       "page": 10
     },
     {
@@ -75,7 +83,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "10. In patients with cryptogenic stroke, tests for inherited or acquired hypercoagulable state, bloodstream or cerebral spinal fluid infections, infections that can cause central nervous system (CNS) vasculitis (eg, HIV and syphilis), drug use (eg, cocaine and amphetamines), and markers of systemic inflammation and genetic tests for inherited diseases associated with stroke are reasonable to perform as clinically indicated to identify contributors to or relevant risk factors for stroke.70\u201372",
+      "text": "In patients with cryptogenic stroke, additional testing for hypercoagulable states, CNS infections (e.g., HIV, syphilis), vasculitis-associated infections, substance use (e.g., cocaine, amphetamines), systemic inflammation markers, and genetic conditions associated with stroke is reasonable as clinically indicated.",
       "page": 10
     },
     {
@@ -83,7 +91,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "11. In patients with ischemic stroke or TIA, noninvasive imaging of the intracranial large arteries and imaging of the extracranial vertebrobasilar arterial system with MRA or CTA can be effective to identify atherosclerotic disease, dissection, moyamoya, or other etiologically relevant vasculopathies.73\u201375",
+      "text": "In patients with ischemic stroke or TIA, noninvasive imaging of intracranial large arteries and extracranial vertebrobasilar arteries (MRA or CTA) can be effective for identifying atherosclerosis, dissection, moyamoya, or other relevant vasculopathies.",
       "page": 10
     },
     {
@@ -91,7 +99,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "12. In patients with ischemic stroke and a treatment plan that includes anticoagulant therapy, CT or MRI of the brain before therapy is started may be considered to assess for hemorrhagic transformation and final size of infarction.76",
+      "text": "In patients with ischemic stroke who will be started on anticoagulant therapy, brain CT or MRI before initiation may be considered to assess for hemorrhagic transformation and infarct size.",
       "page": 10
     },
     {
@@ -99,7 +107,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "13. In patients with ESUS, transesophageal echocardiography (TEE), cardiac CT, or cardiac MRI might be reasonable to identify possible cardioaortic sources of or transcardiac pathways for cerebral embolism.57,77\u201379",
+      "text": "In patients with ESUS, TEE, cardiac CT, or cardiac MRI might be reasonable to identify cardioaortic embolic sources or transcardiac pathways.",
       "page": 10
     },
     {
@@ -107,7 +115,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "14. In patients with ischemic stroke or TIA in whom patent foramen ovale (PFO) closure would be contemplated, TCD (transcranial Doppler) with embolus detection might be reasonable to screen for right-to-left shunt.57, 8 0",
+      "text": "In patients with ischemic stroke or TIA in whom PFO closure would be considered, TCD with embolus detection might be reasonable to screen for right-to-left shunt.",
       "page": 10
     },
     {
@@ -115,7 +123,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "1. In patients with stroke and TIA, it is reasonable to counsel individuals to follow a Mediterranean-type diet, typically with emphasis on monounsaturated fat, plant-based foods, and fish consumption, with either high extra virgin olive oil or nut supplementation, in preference to a low-fat diet, to reduce risk of recurrent stroke.95,96",
+      "text": "It is reasonable to counsel stroke and TIA patients to follow a Mediterranean-type diet emphasizing monounsaturated fats, plant-based foods, fish, and supplementation with extra virgin olive oil or nuts, rather than a low-fat diet, to reduce recurrent stroke risk.",
       "page": 14
     },
     {
@@ -123,7 +131,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "2. In patients with stroke or TIA and hypertension who are not currently restricting their dietary sodium intake, it is reasonable to recommend that individuals reduce their sodium intake by at least 1g/d sodium (2.5 g/d salt) to reduce the risk of cardiovascular disease (CVD) events (including stroke).97, 9 8",
+      "text": "For stroke or TIA patients with hypertension who are not already restricting sodium, it is reasonable to recommend reducing sodium intake by at least 1 g/d (2.5 g/d salt) to lower cardiovascular disease risk.",
       "page": 14
     },
     {
@@ -131,7 +139,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "1. In patients with stroke or TIA who are capable of physical activity, engaging in at least moderateintensity aerobic activity for a minimum of 10 minutes 4 times a week or vigorous-intensity aerobic activity for a minimum of 20 minutes twice a week is indicated to lower the risk of recurrent stroke and the composite cardiovascular end point of recurrent stroke, MI, or vascular death.110",
+      "text": "For stroke or TIA patients capable of physical activity, at least moderate-intensity aerobic exercise for 10 minutes four times per week, or vigorous-intensity aerobic exercise for 20 minutes twice per week, is recommended to lower recurrent stroke risk and the composite endpoint of stroke, MI, or vascular death.",
       "page": 16
     },
     {
@@ -139,7 +147,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "2. In patients with stroke or TIA who are able and willing to increase physical activity, engaging in an exercise class that includes counseling to change physical activity behavior can be beneficial for reducing cardiometabolic risk factors and increasing leisure time physical activity participation.111\u2013114",
+      "text": "For stroke or TIA patients willing to increase physical activity, participation in exercise classes incorporating behavioral counseling can be beneficial for reducing cardiometabolic risk factors and increasing leisure-time physical activity.",
       "page": 16
     },
     {
@@ -147,7 +155,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "3. In patients with deficits after stroke that impair their ability to exercise, supervision of an exercise program by a health care professional such as a physical therapist or cardiac rehabilitation professional, in addition to routine rehabilitation, can be beneficial for secondary stroke prevention.",
+      "text": "For post-stroke patients with exercise-limiting deficits, supervised exercise programs led by a physical therapist or cardiac rehabilitation professional, in addition to standard rehabilitation, can be beneficial for secondary prevention.",
       "page": 16
     },
     {
@@ -155,7 +163,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "4. In individuals with stroke or TIA who sit for long periods of uninterrupted time during the day, it may be reasonable to recommend breaking up sedentary time with intervals as short as 3 minutes of standing or light exercise every 30 minutes for their cardiovascular health.115",
+      "text": "For stroke or TIA patients with prolonged daily sedentary time, it may be reasonable to recommend breaking up sitting with intervals of at least 3 minutes of standing or light activity every 30 minutes for cardiovascular health.",
       "page": 16
     },
     {
@@ -163,7 +171,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "1. In patients with stroke or TIA who smoke tobacco, counseling with or without drug therapy (nicotine replacement, bupropion, or varenicline) is recommended to assist in quitting smoking.139\u2013142",
+      "text": "Counseling with or without pharmacotherapy (nicotine replacement, bupropion, or varenicline) is recommended for stroke or TIA patients who smoke to assist with smoking cessation.",
       "page": 17
     },
     {
@@ -171,7 +179,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "2. Patients with stroke or TIA who continue to smoke tobacco should be advised to stop smoking (and, if unable, to reduce their daily smoking) to lower the risk of recurrent stroke.143\u2013146",
+      "text": "Stroke or TIA patients who continue smoking are recommended to stop (or at least reduce daily smoking) to lower recurrent stroke risk.",
       "page": 17
     },
     {
@@ -179,7 +187,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "3. In patients with stroke or TIA. avoidance of environmental (passive) tobacco smoke is recommended to reduce risk of recurrent stroke.147\u2013150",
+      "text": "Avoidance of environmental (secondhand) tobacco smoke is recommended for stroke or TIA patients to reduce recurrent stroke risk.",
       "page": 17
     },
     {
@@ -187,7 +195,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "1. Patients with ischemic stroke or TIA who drink >2 alcoholic drinks a day for men or >1 alcoholic drink a day for women should be counseled to eliminate or reduce their consumption of alcohol to reduce stroke risk.141,161\u2013163",
+      "text": "Ischemic stroke or TIA patients who drink more than 2 alcoholic drinks/day (men) or more than 1 drink/day (women) are recommended to be counseled to eliminate or reduce alcohol consumption to lower stroke risk.",
       "page": 18
     },
     {
@@ -195,7 +203,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "2. In patients with stroke or TIA who use stimulants (eg, amphetamines, amphetamine derivatives, cocaine, or khat) and in patients with infective endocarditis (IE) in the context of intravenous drug use, it is recommended that health care providers inform them that this behavior is a health risk and counsel them to stop.",
+      "text": "Stroke or TIA patients who use stimulants (e.g., amphetamines, cocaine, khat) or who have infective endocarditis related to IV drug use are recommended to be informed of the health risks and counseled to discontinue use.",
       "page": 18
     },
     {
@@ -203,7 +211,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "3. In patients with stroke or TIA who have a substance use disorder (drugs or alcohol), specialized services are recommended to help manage this dependency.",
+      "text": "Referral to specialized addiction services is recommended for stroke or TIA patients with a substance use disorder involving drugs or alcohol.",
       "page": 18
     },
     {
@@ -211,7 +219,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "1. In patients with hypertension who experience a stroke or TIA, treatment with a thiazide diuretic, angiotensin-converting enzyme inhibitor, or angiotensin II receptor blockers is useful for lowering BP and reducing recurrent stroke risk.185\u2013189",
+      "text": "Treatment with a thiazide diuretic, ACE inhibitor, or ARB is recommended for hypertensive patients with stroke or TIA to lower blood pressure and reduce recurrent stroke risk.",
       "page": 20
     },
     {
@@ -219,7 +227,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "2. In patients with hypertension who experience a stroke or TIA, an office BP goal of <130/80 mm Hg is recommended for most patients to reduce the risk of recurrent stroke and vascular events.185,190\u2013194",
+      "text": "An office BP goal of less than 130/80 mmHg is recommended for most hypertensive stroke or TIA patients to reduce recurrent stroke and vascular events.",
       "page": 20
     },
     {
@@ -227,7 +235,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "3. In patients with hypertension who experience a stroke or TIA, individualized drug regimens that take into account patient comorbidities, agent pharmacological class, and patient preference are recommended to maximize drug efficacy.188,189,195,196",
+      "text": "Individualized antihypertensive drug regimens accounting for comorbidities, drug class, and patient preference are recommended for hypertensive stroke or TIA patients to maximize treatment efficacy.",
       "page": 20
     },
     {
@@ -235,7 +243,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "4. In patients with no history of hypertension who experience a stroke or TIA and have an average office BP of \u2265130/80 mm Hg, antihypertensive medication treatment can be beneficial to reduce the risk of recurrent stroke, ICH, and other vascular events.190,191,193,197",
+      "text": "In stroke or TIA patients without a history of hypertension but with an average office BP of 130/80 mmHg or above, antihypertensive treatment can be beneficial to reduce the risk of recurrent stroke, ICH, and other vascular events.",
       "page": 20
     },
     {
@@ -243,7 +251,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "1. In patients with ischemic stroke with no known coronary heart disease, no major cardiac sources of embolism, and LDL cholesterol (LDL-C) >100 mg/dL, atorvastatin 80 mg daily is indicated to reduce risk of stroke recurrence.208,209",
+      "text": "Atorvastatin 80 mg daily is recommended for ischemic stroke patients without known coronary heart disease, no major cardiac embolic source, and LDL-C above 100 mg/dL to reduce stroke recurrence.",
       "page": 21
     },
     {
@@ -251,7 +259,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "2. In patients with ischemic stroke or TIA and atherosclerotic disease (intracranial, carotid, aortic, or coronary), lipid-lowering therapy with a statin and also ezetimibe, if needed, to a goal LDL-C of <70 mg/dL is recommended to reduce the risk of major cardiovascular events.210",
+      "text": "For ischemic stroke or TIA patients with atherosclerotic disease (intracranial, carotid, aortic, or coronary), lipid-lowering therapy with a statin (plus ezetimibe if needed) to achieve an LDL-C goal below 70 mg/dL is recommended to reduce major cardiovascular events.",
       "page": 21
     },
     {
@@ -259,7 +267,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "3. In patients with ischemic stroke who are very high risk (defined as stroke plus another major ASCVD or stroke plus multiple high-risk conditions), are taking maximally tolerated statin and ezetimibe therapy and still have an LDL-C >70 mg/dL, it is reasonable to treat with PCSK9 (proprotein convertase subtilisin/kexin type 9) inhibitor therapy to prevent ASCVD events.211\u2013213 Monitoring",
+      "text": "In very high-risk ischemic stroke patients (stroke plus another major ASCVD event or multiple high-risk conditions) on maximally tolerated statin and ezetimibe with LDL-C remaining above 70 mg/dL, PCSK9 inhibitor therapy is reasonable to prevent further ASCVD events.",
       "page": 21
     },
     {
@@ -267,7 +275,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "4. In patients with stroke or TIA and hyperlipidemia, patients\u2019 adherence to changes in lifestyle and the effects of LDL-C\u2013lowering medication should be assessed by measurement of fasting lipids and appropriate safety indicators 4 to 12 weeks after statin initiation or dose adjustment and every 3 to 12 months thereafter, based on need to assess adherence or safety.214,215",
+      "text": "In stroke or TIA patients with hyperlipidemia, adherence to lifestyle modifications and LDL-C-lowering medication is recommended to be assessed by measuring fasting lipids and safety markers 4 to 12 weeks after statin initiation or dose change, then every 3 to 12 months thereafter.",
       "page": 21
     },
     {
@@ -275,7 +283,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "1. In patients with ischemic stroke or TIA, with fasting triglycerides 135 to 499 mg/dL and LDL-C of 41 to 100 mg/dL, on moderateor high-intensity statin therapy, with HbA1c <10%, and with no history of pancreatitis, AF, or severe heart failure, treatment with icosapent ethyl (IPE) 2 g twice a day is reasonable to reduce risk of recurrent stroke.219,220",
+      "text": "In ischemic stroke or TIA patients on moderate- or high-intensity statin therapy with fasting triglycerides 135-499 mg/dL, LDL-C 41-100 mg/dL, HbA1c below 10%, and no history of pancreatitis, AF, or severe heart failure, icosapent ethyl 2 g twice daily is reasonable to reduce recurrent stroke risk.",
       "page": 23
     },
     {
@@ -283,7 +291,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "2. In patients with severe hypertriglyceridemia (ie, fasting triglycerides \u2265500 mg/dL [\u22655.7 mmol/L]), it is reasonable to identify and address causes of hypertriglyceridemia and, if triglycerides are persistently elevated or increasing, to further reduce triglycerides in order to lower the risk of ASCVD events by implementation of a very low-fat diet, avoidance of refined carbohydrates and alcohol, consumption of omega-3 fatty acids, and, if necessary to prevent acute pancreatitis, fibrate therapy.221\u2013223",
+      "text": "In patients with severe hypertriglyceridemia (fasting triglycerides 500 mg/dL or above), it is reasonable to identify and treat underlying causes and, if levels remain elevated, to implement a very low-fat diet, avoid refined carbohydrates and alcohol, consume omega-3 fatty acids, and use fibrate therapy if necessary to prevent pancreatitis and reduce ASCVD risk.",
       "page": 23
     },
     {
@@ -291,7 +299,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "1. In patients with an ischemic stroke or TIA who also have diabetes, the goal for glycemic control should be individualized based on the risk for adverse events, patient characteristics and preferences, and, for most patients, especially those <65 years of age and without life-limiting comorbid illness, achieving a goal of HbA1c \u22647% is recommended to reduce risk for microvascular complications.229,230",
+      "text": "In ischemic stroke or TIA patients with diabetes, glycemic control goals are recommended to be individualized based on adverse event risk, patient characteristics, and preferences. For most patients (especially those under 65 without life-limiting comorbidities), an HbA1c target of 7% or below is recommended to reduce microvascular complications.",
       "page": 24
     },
     {
@@ -299,7 +307,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "2. In patients with an ischemic stroke or TIA who also have diabetes, treatment of diabetes should include glucose-lowering agents with proven cardiovascular benefit to reduce the risk for future major adverse cardiovascular events (ie, stroke, MI, cardiovascular death).231\u2013236",
+      "text": "In ischemic stroke or TIA patients with diabetes, glucose-lowering agents with proven cardiovascular benefit are recommended to reduce future major adverse cardiovascular events (stroke, MI, cardiovascular death).",
       "page": 24
     },
     {
@@ -307,7 +315,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "3. In patients with an ischemic stroke or TIA who also have diabetes, multidimensional care (ie, lifestyle counseling, medical nutritional therapy, diabetes self-management education, support, and medication) is indicated to achieve glycemic goals and to improve stroke risk factors.",
+      "text": "Multidimensional diabetes care (lifestyle counseling, medical nutritional therapy, diabetes self-management education, support, and medication) is recommended for ischemic stroke or TIA patients with diabetes to achieve glycemic goals and improve stroke risk factors.",
       "page": 24
     },
     {
@@ -315,7 +323,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "4. In patients with prediabetes and ischemic stroke or TIA, lifestyle optimization (ie, healthy diet, regular physical activity, and smoking cessation) can be beneficial for the prevention of progression to diabetes.237 ,238",
+      "text": "In ischemic stroke or TIA patients with prediabetes, lifestyle optimization (healthy diet, regular physical activity, smoking cessation) can be beneficial to prevent progression to diabetes.",
       "page": 24
     },
     {
@@ -323,7 +331,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "5. In patients with TIA or ischemic stroke, it is reasonable to screen for prediabetes/diabetes using HbA1c which, among available methods (HbA1c, fasting plasma glucose, oral glucose tolerance), has the advantage of convenience because it does not require fasting and is measured in a single blood sample.",
+      "text": "It is reasonable to screen TIA or ischemic stroke patients for prediabetes/diabetes using HbA1c, which has the convenience of not requiring fasting and can be measured from a single blood sample.",
       "page": 24
     },
     {
@@ -331,7 +339,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "6. In patients with an ischemic stroke or TIA who also have diabetes, the usefulness of achieving intensive glucose control (ie, HbA1c \u22647%) beyond the acute phase of the ischemic event for prevention of recurrent stroke is unknown.239\u2013244 2b B-R 7 . In patients with prediabetes and ischemic stroke or TIA, particularly those with a body mass index (BMI) \u226535 kg/mP2, \u226535 kg/m2 those <60 years of age, or women with a history of gestational diabetes, metformin may be beneficial to control blood sugar and to prevent progression to diabetes.245\u2013247",
+      "text": "The benefit of intensive glucose control (HbA1c 7% or below) beyond the acute phase for preventing recurrent stroke in ischemic stroke or TIA patients with diabetes is uncertain.",
       "page": 24
     },
     {
@@ -339,7 +347,15 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "8. In patients \u22646 months after TIA or ischemic stroke with insulin resistance, HbA1c <7 .0%, and without heart failure or bladder cancer, treatment with pioglitazone may be considered to prevent recurrent stroke.248",
+      "text": "In ischemic stroke or TIA patients with prediabetes, particularly those with BMI 35 kg/m2 or above, those under 60, or women with prior gestational diabetes, metformin may be beneficial for blood sugar control and preventing progression to diabetes.",
+      "page": 24
+    },
+    {
+      "section": "Glucose",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients within 6 months of TIA or ischemic stroke with insulin resistance, HbA1c below 7.0%, and without heart failure or bladder cancer, pioglitazone may be considered to prevent recurrent stroke.",
       "page": 24
     },
     {
@@ -347,7 +363,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "1. In patients with ischemic stroke or TIA and who are overweight or obese, weight loss is recommended to improve the ASCVD risk factor profile.259,276\u2013279",
+      "text": "Weight loss is recommended for overweight or obese patients with ischemic stroke or TIA to improve ASCVD risk factors.",
       "page": 27
     },
     {
@@ -355,7 +371,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "2. In patients with ischemic stroke or TIA who are obese, referral to an intensive, multicomponent, behavioral lifestyle-modification program is recommended to achieve sustained weight loss.238,258,280,281",
+      "text": "Referral to an intensive, multicomponent, behavioral lifestyle-modification program is recommended for obese ischemic stroke or TIA patients to achieve sustained weight loss.",
       "page": 27
     },
     {
@@ -363,7 +379,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "3. In patients with ischemic stroke or ASCVD, calculation of BMI is recommended at the time of their event and annually thereafter, to screen for and to classify obesity.",
+      "text": "BMI calculation is recommended at the time of ischemic stroke or ASCVD event and annually thereafter to screen for and classify obesity.",
       "page": 27
     },
     {
@@ -371,7 +387,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "1. In patients with an ischemic stroke or TIA and OSA, treatment with positive airway pressure (eg, continuous positive airway pressure [CPAP]) can be beneficial for improved sleep apnea, BP, sleepiness, and other apnearelated outcomes.302\u2013314",
+      "text": "In ischemic stroke or TIA patients with OSA, positive airway pressure therapy (e.g., CPAP) can be beneficial for improving sleep apnea, blood pressure, daytime sleepiness, and other apnea-related outcomes.",
       "page": 28
     },
     {
@@ -379,7 +395,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "2. In patients with an ischemic stroke or TIA, an evaluation for OSA may be considered for diagnosing sleep apnea.302,303,315,316",
+      "text": "Evaluation for OSA may be considered in ischemic stroke or TIA patients to diagnose sleep apnea.",
       "page": 28
     },
     {
@@ -387,7 +403,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "1. In patients with a stroke or TIA caused by 50% to 99% stenosis of a major intracranial artery, aspirin 325 mg/d is recommended in preference to warfarin to reduce the risk of recurrent ischemic stroke and vascular death.335,336",
+      "text": "Aspirin 325 mg/d is recommended over warfarin for patients with stroke or TIA caused by 50-99% stenosis of a major intracranial artery, to reduce recurrent ischemic stroke and vascular death.",
       "page": 29
     },
     {
@@ -395,7 +411,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "2. In patients with recent stroke or TIA (within 30 days) attributable to severe stenosis (70%\u201399%) of a major intracranial artery, the addition of clopidogrel 75 mg/d to aspirin for up to 90 days is reasonable to further reduce recurrent stroke risk.336\u2013339",
+      "text": "In patients with recent stroke or TIA (within 30 days) attributable to severe intracranial stenosis (70-99%), adding clopidogrel 75 mg/d to aspirin for up to 90 days is reasonable to further reduce recurrent stroke risk.",
       "page": 29
     },
     {
@@ -403,7 +419,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "3. In patients with recent (within 24 hours) minor stroke or high-risk TIA and concomitant ipsilateral >30% stenosis of a major intracranial artery, the addition of ticagrelor 90 mg twice a day to aspirin for up to 30 days might be considered to further reduce recurrent stroke risk.340",
+      "text": "In patients with recent (within 24 hours) minor stroke or high-risk TIA with concomitant ipsilateral greater than 30% intracranial stenosis, adding ticagrelor 90 mg twice daily to aspirin for up to 30 days might be considered to further reduce recurrent stroke risk.",
       "page": 29
     },
     {
@@ -411,7 +427,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "4. In patients with stroke or TIA attributable to 50% to 99% stenosis of a major intracranial artery, the addition of cilostazol 200 mg/day to aspirin or clopidogrel might be considered to reduce recurrent stroke risk.341\u2013344 Downloaded from http://ahajournals.org by on February 1, 2026 Stroke. 2021;52:e364\u2013e467 . DOI: 10.1161/STR.0000000000000375 July 2021 e393 CLINICAL STATEMENTS AND GUIDELINES Kleindorfer et al 2021 Guideline for the Secondary Prevention of Ischemic Stroke",
+      "text": "In patients with stroke or TIA attributable to 50-99% intracranial stenosis, adding cilostazol 200 mg/day to aspirin or clopidogrel might be considered to reduce recurrent stroke risk.",
       "page": 29
     },
     {
@@ -419,7 +435,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "5. In patients with stroke or TIA attributable to 50% to 99% stenosis of a major intracranial artery, the usefulness of clopidogrel alone, the combination of aspirin and dipyridamole, ticagrelor alone, or cilostazol alone for secondary stroke prevention is not well established. Risk Factor Management",
+      "text": "In patients with stroke or TIA attributable to 50-99% intracranial stenosis, the effectiveness of clopidogrel alone, aspirin plus dipyridamole, ticagrelor alone, or cilostazol alone for secondary stroke prevention is not well established.",
       "page": 30
     },
     {
@@ -427,7 +443,15 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "6. In patients with a stroke or TIA attributable to 50% to 99% stenosis of a major intracranial artery, maintenance of SBP below 140 mm Hg, high-intensity statin therapy, and at least moderate physical activity are recommended to prevent recurrent stroke and vascular events.110,210,337 ,345\u2013349 Angioplasty and Stenting 2b C-LD 7 . In patients with severe stenosis (70%-99%) of a major intracranial artery and actively progressing symptoms or recurrent TIA or stroke after institution of aspirin and clopidogrel therapy, achievement of SBP <140 mm Hg, and highintensity statin therapy (so-called medical failures), the usefulness of angioplasty alone or stent placement to prevent ischemic stroke in the territory of the stenotic artery is unknown.350\u2013352",
+      "text": "For patients with stroke or TIA attributable to 50-99% intracranial stenosis, maintaining SBP below 140 mmHg, high-intensity statin therapy, and at least moderate physical activity are recommended to prevent recurrent stroke and vascular events.",
+      "page": 30
+    },
+    {
+      "section": "Intracranial Large Artery Atherosclerosis",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with severe intracranial stenosis (70-99%) who have actively progressing symptoms or recurrent events despite aspirin, clopidogrel, SBP control below 140 mmHg, and high-intensity statin therapy, the usefulness of intracranial angioplasty alone or stenting is unknown.",
       "page": 30
     },
     {
@@ -435,7 +459,7 @@
       "classOfRec": "III",
       "classNote": "Harm",
       "levelOfEvidence": "A",
-      "text": "8. In patients with stroke or TIA attributable to severe stenosis (70%\u201399%) of a major intracranial artery, angioplasty and stenting should not be performed as an initial treatment, even for patients who were taking an antithrombotic agent at the time of the stroke or TIA.353\u2013359",
+      "text": "Intracranial angioplasty and stenting is not recommended as initial treatment for stroke or TIA attributable to severe intracranial stenosis (70-99%), even in patients who were on antithrombotic therapy at the time of the event.",
       "page": 30
     },
     {
@@ -443,7 +467,7 @@
       "classOfRec": "III",
       "classNote": "Harm",
       "levelOfEvidence": "B-NR",
-      "text": "9. In patients with a stroke or TIA attributable to moderate stenosis (50%\u201369%) of a major intracranial artery, angioplasty or stenting is associated with excess morbidity and mortality compared with medical management alone.336,354,355,360 Other Procedures",
+      "text": "In patients with stroke or TIA attributable to moderate intracranial stenosis (50-69%), angioplasty or stenting is associated with excess morbidity and mortality compared with medical management alone.",
       "page": 30
     },
     {
@@ -451,7 +475,7 @@
       "classOfRec": "III",
       "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
-      "text": "10. In patients with stroke or TIA attributable to 50% to 99% stenosis or occlusion of a major intracranial artery, extracranial-intracranial bypass surgery is not recommended.361",
+      "text": "Extracranial-intracranial bypass surgery is not recommended for patients with stroke or TIA attributable to 50-99% stenosis or occlusion of a major intracranial artery.",
       "page": 30
     },
     {
@@ -459,7 +483,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "1. In patients with a TIA or nondisabling ischemic stroke within the past 6 months and ipsilateral severe (70%\u201399%) carotid artery stenosis, carotid endarterectomy (CEA) is recommended to reduce the risk of future stroke, provided that perioperative morbidity and mortality risk is estimated to be <6%.369",
+      "text": "CEA is recommended for patients with TIA or nondisabling ischemic stroke within the past 6 months and ipsilateral severe (70-99%) carotid stenosis to reduce future stroke risk, provided the estimated perioperative morbidity and mortality is below 6%.",
       "page": 32
     },
     {
@@ -467,7 +491,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "2. In patients with ischemic stroke or TIA and symptomatic extracranial carotid stenosis who are scheduled for carotid artery stenting (CAS) or CEA, procedures should be performed by operators with established periprocedural stroke and mortality rates of <6% to reduce the risk of surgical adverse events.370",
+      "text": "CAS or CEA for symptomatic extracranial carotid stenosis is recommended to be performed by operators with established periprocedural stroke and mortality rates below 6%.",
       "page": 32
     },
     {
@@ -475,7 +499,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "3. In patients with carotid artery stenosis and a TIA or stroke, intensive medical therapy, with antiplatelet therapy, lipid-lowering therapy, and treatment of hypertension, is recommended to reduce stroke risk.210",
+      "text": "Intensive medical therapy (antiplatelet agents, lipid-lowering therapy, and antihypertensive treatment) is recommended for patients with carotid stenosis and stroke or TIA to reduce stroke risk.",
       "page": 32
     },
     {
@@ -483,7 +507,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "4. In patients with recent TIA or ischemic stroke and ipsilateral moderate (50%\u201369%) carotid stenosis as documented by catheter-based imaging or noninvasive imaging, CEA is recommended to reduce the risk of future stroke, depending on patient-specific factors such as age, sex, and comorbidities, if the perioperative morbidity and mortality risk is estimated to be <6%.369",
+      "text": "CEA is recommended for patients with recent TIA or ischemic stroke and ipsilateral moderate (50-69%) carotid stenosis confirmed by catheter-based or noninvasive imaging, depending on patient-specific factors (age, sex, comorbidities), provided perioperative morbidity and mortality is below 6%.",
       "page": 32
     },
     {
@@ -491,7 +515,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "5. In patients \u226570 years of age with stroke or TIA in whom carotid revascularization is being considered, it is reasonable to select CEA over CAS to reduce the periprocedural stroke rate.371",
+      "text": "In stroke or TIA patients aged 70 or older for whom carotid revascularization is being considered, it is reasonable to select CEA over CAS to reduce periprocedural stroke rates.",
       "page": 32
     },
     {
@@ -499,7 +523,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "6. In patients in whom revascularization is planned within 1 week of the index stroke, it is reasonable to choose CEA over CAS to reduce the periprocedural stroke rate.372 Downloaded from http://ahajournals.org by on February 1, 2026 e396 July 2021 Stroke. 2021;52:e364\u2013e467 . DOI: 10.1161/STR.0000000000000375 CLINICAL STATEMENTS AND GUIDELINES Kleindorfer et al 2021 Guideline for the Secondary Prevention of Ischemic Stroke 2a C-LD 7 . In patients with TIA or nondisabling stroke, when revascularization is indicated, it is reasonable to perform the procedure within 2 weeks of the index event rather than delay surgery to increase the likelihood of strokefree outcome.373",
+      "text": "When revascularization is planned within 1 week of the index stroke, it is reasonable to choose CEA over CAS to reduce periprocedural stroke rates.",
       "page": 32
     },
     {
@@ -507,7 +531,15 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "8. In patients with symptomatic severe stenosis (\u226570%) in whom anatomic or medical conditions are present that increase the risk for surgery (such as radiation-induced stenosis or restenosis after CEA) it is reasonable to choose CAS to reduce the periprocedural complication rate.374",
+      "text": "When carotid revascularization is indicated for TIA or nondisabling stroke, it is reasonable to perform the procedure within 2 weeks of the index event rather than delaying surgery, to increase the likelihood of a stroke-free outcome.",
+      "page": 32
+    },
+    {
+      "section": "Extracranial Carotid Stenosis",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with symptomatic severe carotid stenosis (70% or above) and anatomic or medical conditions that increase surgical risk (such as radiation-induced stenosis or post-CEA restenosis), CAS is reasonable to reduce periprocedural complication rates.",
       "page": 33
     },
     {
@@ -515,7 +547,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "9. In symptomatic patients at average or low risk of complications associated with endovascular intervention, when the ICA stenosis is \u2265 70% by noninvasive imaging or >50% by catheter-based imaging and the anticipated rate of periprocedural stroke or death is <6%, CAS may be considered as an alternative to CEA for stroke prevention, particularly in patients with significant cardiovascular comorbidities predisposing to cardiovascular complications with endarterectomy. 375",
+      "text": "In symptomatic patients at average or low endovascular risk with ICA stenosis of 70% or above by noninvasive imaging (or above 50% by catheter-based imaging) and anticipated periprocedural stroke/death rate below 6%, CAS may be considered as an alternative to CEA, particularly in those with significant cardiovascular comorbidities.",
       "page": 33
     },
     {
@@ -523,7 +555,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "10. In patients with a recent stroke or TIA (past 6 months), the usefulness of transcarotid artery revascularization (TCAR) for prevention of recurrent stroke and TIA is uncertain.376",
+      "text": "The usefulness of transcarotid artery revascularization (TCAR) for prevention of recurrent stroke and TIA in patients with recent stroke or TIA (within 6 months) is uncertain.",
       "page": 33
     },
     {
@@ -531,7 +563,7 @@
       "classOfRec": "III",
       "classNote": "No Benefit",
       "levelOfEvidence": "A",
-      "text": "11. In patients with recent TIA or ischemic stroke and when the degree of stenosis is <50%, revascularization with CEA or CAS to reduce the risk of future stroke is not recommended.369",
+      "text": "Carotid revascularization (CEA or CAS) is not recommended for patients with recent TIA or ischemic stroke when the degree of ipsilateral carotid stenosis is below 50%.",
       "page": 33
     },
     {
@@ -539,7 +571,7 @@
       "classOfRec": "III",
       "classNote": "No Benefit",
       "levelOfEvidence": "A",
-      "text": "12. In patients with a recent (within 120 days) TIA or ischemic stroke ipsilateral to atherosclerotic stenosis or occlusion of the middle cerebral or carotid artery, extracranialintracranial bypass surgery is not recommended.377",
+      "text": "Extracranial-intracranial bypass surgery is not recommended for patients with recent (within 120 days) TIA or ischemic stroke ipsilateral to atherosclerotic stenosis or occlusion of the middle cerebral or carotid artery.",
       "page": 33
     },
     {
@@ -547,7 +579,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "1. In patients with recently symptomatic extracranial vertebral artery stenosis, intensive medical therapy (antiplatelet therapy, lipid lowering, BP control) is recommended to reduce stroke risk.378",
+      "text": "Intensive medical therapy (antiplatelet agents, lipid lowering, BP control) is recommended for patients with recently symptomatic extracranial vertebral artery stenosis to reduce stroke risk.",
       "page": 34
     },
     {
@@ -555,7 +587,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "2. In patients with ischemic stroke or TIA and extracranial vertebral artery stenosis who are having symptoms despite optimal medical treatment, the usefulness of stenting is not well established.378",
+      "text": "In patients with ischemic stroke or TIA and extracranial vertebral artery stenosis who remain symptomatic despite optimal medical therapy, the usefulness of vertebral artery stenting is not well established.",
       "page": 34
     },
     {
@@ -563,7 +595,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "3. In patients with ischemic stroke or TIA and extracranial vertebral artery stenosis who are having symptoms despite optimal medical treatment, the usefulness of open surgical procedures, including vertebral endarterectomy and vertebral artery transposition, is not well established.",
+      "text": "In patients with ischemic stroke or TIA and extracranial vertebral artery stenosis who remain symptomatic despite optimal medical therapy, the usefulness of open surgical procedures (vertebral endarterectomy or transposition) is not well established.",
       "page": 34
     },
     {
@@ -571,7 +603,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "1. In patients with a stroke or TIA and evidence of an aortic arch atheroma, intensive lipid management to an LDL cholesterol target <70 mg/dL is recommended to prevent recurrent stroke.210",
+      "text": "Intensive lipid management targeting LDL-C below 70 mg/dL is recommended for stroke or TIA patients with aortic arch atheroma to prevent recurrent stroke.",
       "page": 35
     },
     {
@@ -579,7 +611,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "2. In patients with a stroke or TIA and evidence of an aortic arch atheroma, antiplatelet therapy is recommended to prevent recurrent stroke.380\u2013385",
+      "text": "Antiplatelet therapy is recommended for stroke or TIA patients with aortic arch atheroma to prevent recurrent stroke.",
       "page": 35
     },
     {
@@ -587,7 +619,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "1. In patients with moyamoya disease and a history of ischemic stroke or TIA, surgical revascularization with direct or indirect extracranial-intracranial bypass can be beneficial for the prevention of ischemic stroke or TIA.391\u2013397",
+      "text": "Surgical revascularization with direct or indirect extracranial-intracranial bypass can be beneficial for moyamoya patients with a history of ischemic stroke or TIA to prevent recurrent ischemic events.",
       "page": 36
     },
     {
@@ -595,7 +627,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "2. In patients with moyamoya disease and a history of ischemic stroke or TIA, the use of antiplatelet therapy, typically aspirin monotherapy, for the prevention of ischemic stroke or TIA may be reasonable.393,394,397\u2013401",
+      "text": "In moyamoya patients with a history of ischemic stroke or TIA, antiplatelet therapy (typically aspirin monotherapy) may be reasonable for preventing recurrent ischemic events.",
       "page": 36
     },
     {
@@ -603,7 +635,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "1. In patients with ischemic stroke related to small vessel disease, the usefulness of cilostazol for secondary stroke prevention is uncertain.382,384,408\u2013410",
+      "text": "The usefulness of cilostazol for secondary stroke prevention in patients with ischemic stroke related to small vessel disease is uncertain.",
       "page": 37
     },
     {
@@ -611,7 +643,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "1. In patients with nonvalvular AF and stroke or TIA, oral anticoagulation (eg, apixaban, dabigatran, edoxaban, rivaroxaban, or warfarin) is recommended to reduce the risk of recurrent stroke.419\u2013426",
+      "text": "Oral anticoagulation (apixaban, dabigatran, edoxaban, rivaroxaban, or warfarin) is recommended for patients with nonvalvular AF and stroke or TIA to reduce recurrent stroke risk.",
       "page": 38
     },
     {
@@ -619,7 +651,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "2. In patients with AF and stroke or TIA, oral anticoagulation is indicated to reduce the risk of recurrent stroke regardless of whether the AF pattern is paroxysmal, persistent, or permanent.427",
+      "text": "Oral anticoagulation is recommended for AF patients with stroke or TIA to reduce recurrent stroke risk regardless of the AF pattern (paroxysmal, persistent, or permanent).",
       "page": 38
     },
     {
@@ -627,7 +659,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "3. In patients with stroke or TIA and AF who do not have moderate to severe mitral stenosis or a mechanical heart valve, apixaban, dabigatran, edoxaban, or rivaroxaban is recommended in preference to warfarin to reduce the risk of recurrent stroke.419\u2013426",
+      "text": "In stroke or TIA patients with AF who do not have moderate-to-severe mitral stenosis or a mechanical heart valve, a DOAC (apixaban, dabigatran, edoxaban, or rivaroxaban) is recommended over warfarin to reduce recurrent stroke risk.",
       "page": 38
     },
     {
@@ -635,7 +667,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "4. In patients with atrial flutter and stroke or TIA, anticoagulant therapy similar to that in AF is indicated to reduce the risk of recurrent stroke.427",
+      "text": "Anticoagulant therapy following the same approach used for AF is recommended for patients with atrial flutter and stroke or TIA to reduce recurrent stroke risk.",
       "page": 38
     },
     {
@@ -643,7 +675,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "5. In patients with AF and stroke or TIA, without moderate to severe mitral stenosis or a mechanical heart valve, who are unable to maintain a therapeutic INR level with warfarin, use of dabigatran, rivaroxaban, apixaban, or edoxaban is recommended to reduce the risk of recurrent stroke.",
+      "text": "For AF patients with stroke or TIA (without moderate-to-severe mitral stenosis or mechanical valve) who cannot maintain therapeutic INR on warfarin, a DOAC (dabigatran, rivaroxaban, apixaban, or edoxaban) is recommended to reduce recurrent stroke risk.",
       "page": 38
     },
     {
@@ -651,7 +683,15 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "6. In patients with stroke at high risk of hemorrhagic conversion in the setting of AF, it is reasonable to delay initiation of oral anticoagulation beyond 14 days to reduce the risk of ICH.428\u2013431 2a C-EO 7 . In patients with TIA in the setting of nonvalvular AF, it is reasonable to initiate anticoagulation immediately after the index event to reduce the risk of recurrent stroke.",
+      "text": "In stroke patients at high risk of hemorrhagic conversion with AF, it is reasonable to delay initiation of oral anticoagulation beyond 14 days to reduce ICH risk.",
+      "page": 38
+    },
+    {
+      "section": "AF",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-EO",
+      "text": "In TIA patients with nonvalvular AF, it is reasonable to initiate anticoagulation immediately after the index event to reduce recurrent stroke risk.",
       "page": 38
     },
     {
@@ -659,7 +699,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "8. In patients with stroke or TIA in the setting of nonvalvular AF who have contraindications for lifelong anticoagulation but can tolerate at least 45 days, it may be reasonable to consider percutaneous closure of the left atrial appendage with the Watchman device to reduce the chance of recurrent stroke and bleeding.432\u2013436",
+      "text": "In stroke or TIA patients with nonvalvular AF who have contraindications to lifelong anticoagulation but can tolerate at least 45 days, percutaneous left atrial appendage closure (e.g., Watchman device) may be reasonable to reduce recurrent stroke and bleeding risk.",
       "page": 38
     },
     {
@@ -667,7 +707,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "9. In patients with stroke at low risk for hemorrhagic conversion in the setting of AF, it may be reasonable to initiate anticoagulation 2 to 14 days after the index event to reduce the risk of recurrent stroke.428,429,437",
+      "text": "In stroke patients at low risk for hemorrhagic conversion with AF, initiating anticoagulation 2 to 14 days after the event may be reasonable to reduce recurrent stroke risk.",
       "page": 38
     },
     {
@@ -675,7 +715,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "10. In patients with AF and stroke or TIA who have end-stage renal disease or are on dialysis, it may be reasonable to use warfarin or apixaban (dose adjusted if indicated) for anticoagulation to reduce the chance of recurrent stroke.438",
+      "text": "In AF patients with stroke or TIA who have end-stage renal disease or are on dialysis, warfarin or dose-adjusted apixaban may be reasonable for anticoagulation to reduce recurrent stroke risk.",
       "page": 38
     },
     {
@@ -683,7 +723,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "1. In patients with ischemic stroke or TIA and valvular AF (moderate to severe mitral stenosis or any mechanical heart valve), warfarin is recommended to reduce the risk of recurrent stroke or TIA.452\u2013457",
+      "text": "Warfarin is recommended for patients with ischemic stroke or TIA and valvular AF (moderate-to-severe mitral stenosis or any mechanical heart valve) to reduce recurrent stroke or TIA risk.",
       "page": 41
     },
     {
@@ -691,7 +731,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "2. In patients with a mechanical mitral valve and a history of ischemic stroke or TIA before valve replacement, aspirin (75\u2013100 mg/d) is recommended in addition to warfarin with an INR target of 3.0 (range, 2.5\u20133.5) to reduce the risk of thrombosis and recurrent stroke or TIA.458,459",
+      "text": "In patients with a mechanical mitral valve and prior ischemic stroke or TIA, aspirin 75-100 mg/d is recommended in addition to warfarin (INR target 3.0, range 2.5-3.5) to reduce thrombosis and recurrent stroke risk.",
       "page": 41
     },
     {
@@ -699,7 +739,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "3. In patients with ischemic stroke or TIA and native aortic or nonrheumatic mitral valve disease (eg, mitral annular calcification or mitral valve prolapse) who do not have AF or another indication for anticoagulation, antiplatelet therapy is recommended to reduce the risk of recurrent stroke or TIA.",
+      "text": "Antiplatelet therapy is recommended for patients with ischemic stroke or TIA and native aortic or nonrheumatic mitral valve disease (e.g., mitral annular calcification, mitral valve prolapse) without AF or other anticoagulation indication, to reduce recurrent stroke risk.",
       "page": 41
     },
     {
@@ -707,7 +747,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "4. In patients with a bioprosthetic aortic or mitral valve, a history of ischemic stroke or TIA before valve replacement, and no other indication for anticoagulation therapy beyond 3 to 6 months from the valve placement, long-term therapy with aspirin is recommended in preference to long-term anticoagulation to reduce the risk of recurrent stroke or TIA.",
+      "text": "Long-term aspirin therapy is recommended over long-term anticoagulation for patients with a bioprosthetic aortic or mitral valve and prior ischemic stroke or TIA who have no other anticoagulation indication beyond 3 to 6 months after valve placement.",
       "page": 41
     },
     {
@@ -715,7 +755,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "5. In patients with ischemic stroke or TIA and IE who present with recurrent emboli and persistent vegetations despite appropriate antibiotic therapy, early surgery (during initial hospitalization before completion of a full therapeutic course of antibiotics) is reasonable to reduce the risk of recurrent embolism if there is no evidence of intracranial hemorrhage or extensive neurological damage.460\u2013465",
+      "text": "In ischemic stroke or TIA patients with infective endocarditis who have recurrent emboli and persistent vegetations despite appropriate antibiotics, early surgery (during initial hospitalization before completing a full antibiotic course) is reasonable to reduce recurrent embolism, provided there is no intracranial hemorrhage or extensive neurological damage.",
       "page": 41
     },
     {
@@ -723,7 +763,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "6. In patients with history of ischemic stroke or TIA and a mechanical aortic valve, anticoagulation with higher-intensity warfarin to achieve an INR of 3.0 (range, 2.5\u20133.5) or the addition of aspirin (75\u2013100 mg/d) can be beneficial to reduce the risk of thromboembolic events. 2b B-NR 7 . In patients with ischemic stroke or TIA and native left-sided valve endocarditis who exhibit mobile vegetations >10 mm in length, early surgery (during initial hospitalization before completion of a full therapeutic course of antibiotics) may be considered to reduce the risk of recurrent embolism if there is no evidence of intracranial hemorrhage or extensive neurological damage.460\u2013465",
+      "text": "In ischemic stroke or TIA patients with a mechanical aortic valve, higher-intensity warfarin (INR target 3.0, range 2.5-3.5) or adding aspirin 75-100 mg/d can be beneficial to reduce thromboembolic events.",
       "page": 41
     },
     {
@@ -731,7 +771,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "8. In patients with ischemic stroke or TIA and IE, early valve surgery (during initial hospitalization before completion of a full therapeutic course of antibiotics) may be considered in patients with an indication for surgery who have no evidence of intracranial hemorrhage or extensive neurological damage.466,467",
+      "text": "In ischemic stroke or TIA patients with native left-sided valve endocarditis and mobile vegetations greater than 10 mm, early surgery (before completing a full antibiotic course) may be considered to reduce recurrent embolism if there is no intracranial hemorrhage or extensive neurological damage.",
       "page": 41
     },
     {
@@ -739,7 +779,15 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "9. In patients with IE and major ischemic stroke, delaying valve surgery for at least 4 weeks may be considered for patients with IE and major ischemic stroke or intracranial hemorrhage if the patient is hemodynamically stable.460,468",
+      "text": "In ischemic stroke or TIA patients with infective endocarditis and an indication for surgery, early valve surgery (before completing a full antibiotic course) may be considered if there is no intracranial hemorrhage or extensive neurological damage.",
+      "page": 41
+    },
+    {
+      "section": "Valvular Disease",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with infective endocarditis and major ischemic stroke or intracranial hemorrhage, delaying valve surgery for at least 4 weeks may be considered if the patient is hemodynamically stable.",
       "page": 41
     },
     {
@@ -747,7 +795,7 @@
       "classOfRec": "III",
       "classNote": "Harm",
       "levelOfEvidence": "B-R",
-      "text": "10. In patients with ischemic stroke or TIA and mechanical heart valves, treatment with dabigatran causes harm. *457 *A similar recommendation in another guideline is worded slightly differently; however, the process used to reach consensus was the same in both cases.",
+      "text": "Dabigatran is harmful and not recommended in patients with ischemic stroke or TIA and mechanical heart valves.",
       "page": 41
     },
     {
@@ -755,7 +803,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "1. In patients with stroke or TIA and LV thrombus, anticoagulation with therapeutic warfarin for at least 3 months is recommended to reduce the risk of recurrent stroke.504\u2013508",
+      "text": "Therapeutic warfarin anticoagulation for at least 3 months is recommended for patients with stroke or TIA and LV thrombus to reduce recurrent stroke risk.",
       "page": 44
     },
     {
@@ -763,7 +811,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "2. In patients with stroke or TIA in the setting of acute MI, it is reasonable to perform advanced cardiac imaging (eg, contrasted echocardiogram or cardiac MRI) to assess for the presence of LV thrombus.",
+      "text": "In stroke or TIA patients with acute MI, advanced cardiac imaging (contrast echocardiography or cardiac MRI) is reasonable to assess for LV thrombus.",
       "page": 44
     },
     {
@@ -771,7 +819,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "3. In patients with stroke or TIA and new LV thrombus (<3 months), the safety of anticoagulation with a direct oral anticoagulant to reduce risk of recurrent stroke is uncertain.509",
+      "text": "In patients with stroke or TIA and new LV thrombus (less than 3 months old), the safety of DOAC anticoagulation to reduce recurrent stroke risk is uncertain.",
       "page": 44
     },
     {
@@ -779,7 +827,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "4. In patients with stroke or TIA in the setting of acute anterior MI with reduced ejection fraction (EF; <50%) but no evidence of LV thrombus, empirical anticoagulation for at least 3 months might be considered to reduce the risk of recurrent cardioembolic stroke.",
+      "text": "In stroke or TIA patients with acute anterior MI and reduced EF (below 50%) but no LV thrombus on imaging, empirical anticoagulation for at least 3 months might be considered to reduce recurrent cardioembolic stroke risk.",
       "page": 44
     },
     {
@@ -787,7 +835,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "1. In patients with ischemic stroke or TIA and left atrial or left atrial appendage thrombus in the setting of ischemic, nonischemic, or restrictive cardiomyopathy and LV dysfunction, anticoagulant therapy with warfarin is recommended for at least 3 months to reduce the risk of recurrent stroke or TIA.",
+      "text": "Warfarin anticoagulation for at least 3 months is recommended for ischemic stroke or TIA patients with left atrial or left atrial appendage thrombus in the setting of cardiomyopathy (ischemic, nonischemic, or restrictive) and LV dysfunction.",
       "page": 46
     },
     {
@@ -795,7 +843,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "2. In patients with ischemic stroke or TIA in the setting of a mechanical assist device, treatment with warfarin and aspirin can be beneficial to reduce the risk of recurrent stroke or TIA.516\u2013523",
+      "text": "In ischemic stroke or TIA patients with a mechanical assist device, warfarin plus aspirin can be beneficial to reduce recurrent stroke or TIA risk.",
       "page": 46
     },
     {
@@ -803,7 +851,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "3. In patients with ischemic stroke or TIA in the setting of LV noncompaction, treatment with warfarin can be beneficial to reduce the risk of recurrent stroke or TIA.",
+      "text": "In ischemic stroke or TIA patients with LV noncompaction, warfarin can be beneficial to reduce recurrent stroke or TIA risk.",
       "page": 46
     },
     {
@@ -811,7 +859,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "4. In patients with ischemic stroke or TIA in sinus rhythm with ischemic or nonischemic cardiomyopathy and reduced EF without evidence of left atrial or LV thrombus, the effectiveness of anticoagulation compared with antiplatelet therapy is uncertain, and the choice should be individualized.524\u2013528",
+      "text": "In ischemic stroke or TIA patients in sinus rhythm with cardiomyopathy (ischemic or nonischemic) and reduced EF but no left atrial or LV thrombus, the comparative effectiveness of anticoagulation versus antiplatelet therapy is uncertain and the choice is recommended to be individualized.",
       "page": 46
     },
     {
@@ -819,7 +867,7 @@
       "classOfRec": "III",
       "classNote": "Harm",
       "levelOfEvidence": "B-R",
-      "text": "5. In patients with stroke or TIA and LV assist devices (LVADs), treatment with dabigatran instead of warfarin for the primary or secondary prevention of ischemic stroke or TIA causes harm.529",
+      "text": "In stroke or TIA patients with LVADs, dabigatran instead of warfarin causes harm and is not recommended for primary or secondary prevention of ischemic stroke.",
       "page": 46
     },
     {
@@ -827,7 +875,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "1. In patients with a nonlacunar ischemic stroke of undetermined cause and a PFO, recommendations for PFO closure versus medical management should be made jointly by the patient, a cardiologist, and a neurologist, taking into account the probability of a causal role for the PFO.",
+      "text": "In patients with nonlacunar ischemic stroke of undetermined cause and a PFO, recommendations for closure versus medical management are recommended to be made jointly by the patient, a cardiologist, and a neurologist, considering the probability that the PFO is causally related.",
       "page": 48
     },
     {
@@ -835,7 +883,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "2. In patients 18 to 60 years of age with a nonlacunar ischemic stroke of undetermined cause despite a thorough evaluation and a PFO with high-risk anatomic features, * it is reasonable to choose closure with a transcatheter device and long-term antiplatelet therapy over antiplatelet therapy alone for preventing recurrent stroke.552\u2013557",
+      "text": "In patients aged 18-60 with nonlacunar ischemic stroke of undetermined cause (after thorough evaluation) and a PFO with high-risk anatomic features, transcatheter PFO closure with long-term antiplatelet therapy is reasonable over antiplatelet therapy alone for preventing recurrent stroke.",
       "page": 48
     },
     {
@@ -843,7 +891,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "3. In patients 18 to 60 years of age with a nonlacunar ischemic stroke of undetermined cause despite a thorough evaluation and a PFO without high-risk anatomic features, * the benefit of closure with a transcatheter device and long-term antiplatelet therapy over antiplatelet therapy alone for preventing recurrent stroke is not well established,552\u2013557",
+      "text": "In patients aged 18-60 with nonlacunar ischemic stroke of undetermined cause (after thorough evaluation) and a PFO without high-risk anatomic features, the benefit of transcatheter PFO closure with long-term antiplatelet therapy over antiplatelet therapy alone is not well established.",
       "page": 48
     },
     {
@@ -851,7 +899,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "4. In patients 18 to 60 years of age with a nonlacunar ischemic stroke of undetermined cause despite a thorough evaluation and a PFO, the comparative benefit of closure with a transcatheter device versus warfarin is unknown.554 *In the evidence, each study defines high-risk anatomic features in a different way.",
+      "text": "In patients aged 18-60 with nonlacunar ischemic stroke of undetermined cause (after thorough evaluation) and a PFO, the comparative benefit of transcatheter PFO closure versus warfarin is unknown.",
       "page": 48
     },
     {
@@ -859,7 +907,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "1. In patients with ischemic stroke or TIA and Fontan palliation, anticoagulation with warfarin is recommended to reduce the risk of recurrent stroke or TIA.572,573",
+      "text": "Warfarin anticoagulation is recommended for patients with ischemic stroke or TIA and Fontan palliation to reduce recurrent stroke risk.",
       "page": 50
     },
     {
@@ -867,7 +915,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "2. In patients with cyanotic congenital heart disease and other complex lesions, ischemic stroke or TIA of presumed cardioembolic origin, therapy with warfarin is reasonable to reduce the risk of recurrent stroke or TIA. Downloaded from http://ahajournals.org by on February 1, 2026 e414 July 2021 Stroke. 2021;52:e364\u2013e467 . DOI: 10.1161/STR.0000000000000375 CLINICAL STATEMENTS AND GUIDELINES Kleindorfer et al 2021 Guideline for the Secondary Prevention of Ischemic Stroke",
+      "text": "In patients with cyanotic congenital heart disease or other complex lesions and ischemic stroke or TIA of presumed cardioembolic origin, warfarin therapy is reasonable to reduce recurrent stroke or TIA risk.",
       "page": 50
     },
     {
@@ -875,7 +923,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "1. In patients with stroke or TIA found to have a left-sided cardiac tumor, resection of the tumor can be beneficial to reduce the risk of recurrent stroke.586\u2013588",
+      "text": "Resection of a left-sided cardiac tumor can be beneficial for patients with stroke or TIA found to have such a tumor, to reduce recurrent stroke risk.",
       "page": 52
     },
     {
@@ -883,7 +931,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "1. In patients with ischemic stroke or TIA after an extracranial carotid or vertebral arterial dissection, treatment with antithrombotic therapy for at least 3 months is indicated to prevent recurrent stroke or TIA.",
+      "text": "Antithrombotic therapy for at least 3 months is recommended for patients with ischemic stroke or TIA following extracranial carotid or vertebral arterial dissection to prevent recurrent stroke.",
       "page": 52
     },
     {
@@ -891,7 +939,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "2. In patients with ischemic stroke or TIA who are <3 months after an extracranial carotid or vertebral arterial dissection, it is reasonable to use either aspirin or warfarin to prevent recurrent stroke or TIA.593,594",
+      "text": "In ischemic stroke or TIA patients within 3 months of an extracranial carotid or vertebral arterial dissection, either aspirin or warfarin is reasonable for preventing recurrent stroke.",
       "page": 52
     },
     {
@@ -899,7 +947,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "3. In patients with stroke or TIA and extracranial carotid or vertebral artery dissection who have recurrent events despite antithrombotic therapy, endovascular therapy may be considered to prevent recurrent stroke or TIA.595,596",
+      "text": "In stroke or TIA patients with extracranial carotid or vertebral artery dissection who have recurrent events despite antithrombotic therapy, endovascular therapy may be considered to prevent recurrent stroke.",
       "page": 52
     },
     {
@@ -907,7 +955,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "1. In patients with ischemic stroke or TIA of unknown source despite thorough diagnostic evaluation and no other thrombotic history who are found to have prothrombin 20210A mutation, activated protein C resistance, elevated factor VIII levels, or deficiencies of protein C, protein S, or antithrombin III, antiplatelet therapy is reasonable to reduce the risk of recurrent stroke or TIA.600\u2013606",
+      "text": "In patients with ischemic stroke or TIA of unknown source (despite thorough evaluation) and no other thrombotic history who are found to have prothrombin 20210A mutation, activated protein C resistance, elevated factor VIII, or deficiency of protein C, protein S, or antithrombin III, antiplatelet therapy is reasonable to reduce recurrent stroke risk.",
       "page": 53
     },
     {
@@ -915,7 +963,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "1. In patients with ischemic stroke or TIA who have an isolated antiphospholipid antibody but do not fulfill the criteria for antiphospholipid syndrome, antiplatelet therapy alone is recommended to reduce the risk of recurrent stroke.612",
+      "text": "Antiplatelet therapy alone is recommended for patients with ischemic stroke or TIA who have an isolated antiphospholipid antibody but do not meet full criteria for antiphospholipid syndrome, to reduce recurrent stroke risk.",
       "page": 54
     },
     {
@@ -923,7 +971,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "2. In patients with ischemic stroke or TIA with confirmed antiphospholipid syndrome treated with warfarin, it is reasonable to choose a target INR between 2 and 3 over a target INR >3 to effectively balance the risk of excessive bleeding against the risk of thrombosis.613\u2013615",
+      "text": "In ischemic stroke or TIA patients with confirmed antiphospholipid syndrome on warfarin, an INR target of 2-3 (rather than above 3) is reasonable to balance bleeding risk against thrombosis risk.",
       "page": 54
     },
     {
@@ -931,7 +979,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "3. In patients with ischemic stroke or TIA who meet the criteria for the antiphospholipid syndrome, it is reasonable to anticoagulate with warfarin to reduce the risk of recurrent stroke or TIA.615",
+      "text": "In ischemic stroke or TIA patients who meet criteria for antiphospholipid syndrome, anticoagulation with warfarin is reasonable to reduce recurrent stroke or TIA risk.",
       "page": 54
     },
     {
@@ -939,7 +987,7 @@
       "classOfRec": "III",
       "classNote": "Harm",
       "levelOfEvidence": "B-R",
-      "text": "4. In patients with ischemic stroke or TIA, antiphospholipid syndrome with history of thrombosis and triple-positive antiphospholipid antibodies (ie, lupus anticoagulant, anticardiolipin, and anti\u2013 \u03b22 glycoprotein-I), rivaroxaban is not recommended because it is associated with excess thrombotic events compared with warfarin.616\u2013618",
+      "text": "Rivaroxaban is not recommended for ischemic stroke or TIA patients with antiphospholipid syndrome, thrombosis history, and triple-positive antiphospholipid antibodies (lupus anticoagulant, anticardiolipin, and anti-beta-2 glycoprotein-I), as it is associated with excess thrombotic events compared with warfarin.",
       "page": 54
     },
     {
@@ -947,7 +995,7 @@
       "classOfRec": "III",
       "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
-      "text": "1. In patients with ischemic stroke or TIA with hyperhomocysteinemia, supplementation with folate, vitamin B 6, and vitamin B 12 is not effective for preventing subsequent stroke. 625,626",
+      "text": "Supplementation with folate, vitamin B6, and vitamin B12 is not effective for preventing recurrent stroke in ischemic stroke or TIA patients with hyperhomocysteinemia.",
       "page": 55
     },
     {
@@ -955,7 +1003,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "1. In patients with ischemic stroke or TIA in the setting of AF and cancer, it is reasonable to consider anticoagulation with DOACs in preference to warfarin for stroke prevention.647\u2013650",
+      "text": "In ischemic stroke or TIA patients with AF and active cancer, DOACs are reasonable to consider over warfarin for stroke prevention.",
       "page": 56
     },
     {
@@ -963,7 +1011,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "1. In patients with sickle cell disease (SCD) and prior ischemic stroke or TIA, chronic blood transfusion(s) to reduce hemoglobin S to <30% of total hemoglobin is recommended for the prevention of recurrent ischemic stroke.655\u2013658",
+      "text": "Chronic blood transfusions to reduce hemoglobin S to below 30% of total hemoglobin are recommended for sickle cell disease patients with prior ischemic stroke or TIA to prevent recurrent ischemic stroke.",
       "page": 57
     },
     {
@@ -971,7 +1019,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "2. In patients with SCD with prior ischemic stroke or TIA for whom transfusion therapy is not available or practical, treatment with hydroxyurea is reasonable for the prevention of recurrent ischemic stroke.659\u2013665",
+      "text": "In sickle cell disease patients with prior ischemic stroke or TIA for whom transfusion therapy is unavailable or impractical, hydroxyurea is reasonable for preventing recurrent ischemic stroke.",
       "page": 57
     },
     {
@@ -979,7 +1027,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "1. In patients with ischemic stroke or TIA and symptoms attributed to giant cell arteritis, immediate initiation of oral high-dose glucocorticoids is recommended to reduce recurrent stroke risk.672\u2013681",
+      "text": "Immediate initiation of high-dose oral glucocorticoids is recommended for ischemic stroke or TIA patients with symptoms attributed to giant cell arteritis to reduce recurrent stroke risk.",
       "page": 58
     },
     {
@@ -987,7 +1035,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "2. In patients with ischemic stroke or TIA and diagnosis of giant cell arteritis, methotrexate or tocilizumab therapy adjunctive to steroids is reasonable to lower the risk of recurrent stroke.682\u2013690",
+      "text": "In ischemic stroke or TIA patients with confirmed giant cell arteritis, adjunctive therapy with methotrexate or tocilizumab (added to steroids) is reasonable to lower recurrent stroke risk.",
       "page": 58
     },
     {
@@ -995,7 +1043,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "3. In patients with ischemic stroke or TIA and diagnosis of primary CNS angiitis, induction therapy with glucocorticoids and/or immunosuppressants followed by long-term maintenance therapy with steroid-sparing immunosuppressants is reasonable to lower the risk of stroke recurrence.691\u2013696",
+      "text": "In ischemic stroke or TIA patients with primary CNS angiitis, induction therapy with glucocorticoids and/or immunosuppressants followed by long-term steroid-sparing immunosuppressive maintenance is reasonable to reduce stroke recurrence.",
       "page": 58
     },
     {
@@ -1003,7 +1051,7 @@
       "classOfRec": "III",
       "classNote": "Harm",
       "levelOfEvidence": "B-R",
-      "text": "4. In patients with ischemic stroke or TIA and confirmed diagnosis of giant cell arteritis, infliximab is associated with recurrent ocular symptoms and markers of disease activity and should not be administered.697\u2013704",
+      "text": "Infliximab is not recommended for ischemic stroke or TIA patients with confirmed giant cell arteritis, as it is associated with recurrent ocular symptoms and markers of ongoing disease activity.",
       "page": 58
     },
     {
@@ -1011,7 +1059,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "1. In patients with ischemic stroke or TIA and infectious vasculitis such as varicella zoster virus (VZV) cerebral vasculitis, neurosyphilis, or bacterial meningitis, treating the underlying infectious etiology is indicated to reduce the risk of stroke.710\u2013716",
+      "text": "Treating the underlying infection is recommended for ischemic stroke or TIA patients with infectious vasculitis (e.g., VZV cerebral vasculitis, neurosyphilis, bacterial meningitis) to reduce stroke risk.",
       "page": 59
     },
     {
@@ -1019,7 +1067,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "2. In patients with ischemic stroke or TIA in the context of HIV vasculopathy, daily aspirin plus HIV viral control with combined antiretroviral therapy is reasonable to reduce the risk of recurrent stroke.717\u2013723",
+      "text": "In ischemic stroke or TIA patients with HIV vasculopathy, daily aspirin combined with viral suppression through antiretroviral therapy is reasonable to reduce recurrent stroke risk.",
       "page": 59
     },
     {
@@ -1027,7 +1075,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "1. In patients with ischemic stroke or TIA and cystathionine \u03b2 -synthase deficiency, pyridoxine (in responsive patients) and a low-methionine, cysteine-enhanced diet supplemented with pyridoxine, vitamin B 12, and folate are recommended to reduce plasma homocysteine to population normal levels and thereby reduce the risk of recurrent ischemic stroke.739,740",
+      "text": "In ischemic stroke or TIA patients with cystathionine beta-synthase deficiency, pyridoxine (in responsive patients), a low-methionine and cysteine-enhanced diet, and supplementation with pyridoxine, vitamin B12, and folate are recommended to normalize plasma homocysteine levels and reduce recurrent stroke risk.",
       "page": 60
     },
     {
@@ -1035,7 +1083,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "2. In patients with ischemic stroke or TIA and Anderson-Fabry disease, agalsidase alfa or agalsidase beta is of uncertain value in preventing recurrent stroke or TIA. 741",
+      "text": "In ischemic stroke or TIA patients with Anderson-Fabry disease, the value of enzyme replacement therapy (agalsidase alfa or agalsidase beta) in preventing recurrent stroke is uncertain.",
       "page": 60
     },
     {
@@ -1043,7 +1091,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "1. In patients with carotid web in the distribution of ischemic stroke and TIA, without other attributable causes of stroke, antiplatelet therapy is recommended to prevent recurrent ischemic stroke or TIA.748,749",
+      "text": "Antiplatelet therapy is recommended for patients with a carotid web in the distribution of ischemic stroke or TIA, without other attributable causes, to prevent recurrent ischemic events.",
       "page": 61
     },
     {
@@ -1051,7 +1099,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "2. In patients with carotid web in the distribution of ischemic stroke refractory to medical management, with no other attributable cause of stroke despite comprehensive workup, carotid stenting or CEA may be considered to prevent recurrent ischemic stroke.748\u2013750",
+      "text": "In patients with a carotid web in the distribution of recurrent ischemic stroke refractory to medical management and no other identifiable stroke cause after comprehensive workup, carotid stenting or CEA may be considered to prevent recurrence.",
       "page": 61
     },
     {
@@ -1059,7 +1107,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "1. In patients with fibromuscular dysplasia (FMD) and a history of ischemic stroke or TIA without other attributable causes, antiplatelet therapy, BP control, and lifestyle modification are recommended for the prevention of future ischemic events.752,753",
+      "text": "Antiplatelet therapy, BP control, and lifestyle modification are recommended for FMD patients with ischemic stroke or TIA and no other attributable cause, to prevent future ischemic events.",
       "page": 62
     },
     {
@@ -1067,7 +1115,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "2. In patients with a history of ischemic stroke or TIA attributable to dissection, with FMD, and no evidence of intraluminal thrombus, it is reasonable to administer antiplatelet therapy for the prevention of future ischemic events.",
+      "text": "In patients with ischemic stroke or TIA attributable to dissection with FMD and no intraluminal thrombus, antiplatelet therapy is reasonable for preventing future ischemic events.",
       "page": 62
     },
     {
@@ -1075,7 +1123,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "3. In patients with cervical carotid artery FMD and recurrent ischemic stroke without other attributable causes despite optimal medical management, carotid angioplasty with or without stenting may be reasonable to prevent ischemic stroke.754",
+      "text": "In patients with cervical carotid FMD and recurrent ischemic stroke despite optimal medical management with no other attributable cause, carotid angioplasty with or without stenting may be reasonable.",
       "page": 62
     },
     {
@@ -1083,7 +1131,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "1. In patients with vertebrobasilar dolichoectasia and a history of ischemic stroke or TIA without other attributable causes, the use of antiplatelet or anticoagulant therapy is reasonable for the prevention of recurrent ischemic events.760\u2013764",
+      "text": "In patients with vertebrobasilar dolichoectasia and ischemic stroke or TIA without other attributable causes, antiplatelet or anticoagulant therapy is reasonable for preventing recurrent ischemic events.",
       "page": 62
     },
     {
@@ -1091,7 +1139,7 @@
       "classOfRec": "III",
       "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
-      "text": "1. In patients with ESUS, treatment with direct oral anticoagulants is not recommended to reduce risk of secondary stroke.779,780",
+      "text": "DOACs are not recommended for secondary stroke prevention in patients with ESUS.",
       "page": 63
     },
     {
@@ -1099,7 +1147,7 @@
       "classOfRec": "III",
       "classNote": "No Benefit",
       "levelOfEvidence": "B-NR",
-      "text": "2. In patients with ESUS, treatment with ticagrelor is not recommended to reduce the risk of secondary stroke.781",
+      "text": "Ticagrelor is not recommended for secondary stroke prevention in patients with ESUS.",
       "page": 63
     },
     {
@@ -1107,7 +1155,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "1. In patients with noncardioembolic ischemic stroke or TIA, antiplatelet therapy is indicated in preference to oral anticoagulation to reduce the risk of recurrent ischemic stroke and other cardiovascular events while minimizing the risk of bleeding.789,790",
+      "text": "Antiplatelet therapy is recommended over oral anticoagulation for patients with noncardioembolic ischemic stroke or TIA to reduce recurrent ischemic stroke and other cardiovascular events while minimizing bleeding risk.",
       "page": 64
     },
     {
@@ -1115,7 +1163,23 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "2. For patients with noncardioembolic ischemic stroke or TIA, aspirin 50 to 325 mg daily, clopidogrel 75 mg, or the combination of aspirin 25 mg and extended-release dipyridamole 200 mg twice daily is indicated for secondary prevention of ischemic stroke. *791\u2013794 1 ASR 3. For patients with recent minor (NIHSS score \u22643) noncardioembolic ischemic stroke or high-risk TIA (ABCD2 score \u22654), DAPT (aspirin plus clopidogrel) should be initiated early (ideally within 12\u201324 hours of symptom onset and at least within 7 days of onset) and continued for 21 to 90 days, followed by SAPT, to reduce the risk of recurrent ischemic stroke.382,384,410,795,796 2b B-RSR 4. For patients with recent (< 24 hours) minor to moderate stroke (NIHSS score \u22645), high-risk TIA (ABCD2 score \u22656), or symptomatic intracranial or extracranial \u226530% stenosis of an artery that could account for the event, DAPT with ticagrelor plus aspirin for 30 days may be considered to reduce the risk of 30-day recurrent stroke but may also increase the risk of serious bleeding events, including ICH.797",
+      "text": "For noncardioembolic ischemic stroke or TIA, aspirin 50-325 mg daily, clopidogrel 75 mg daily, or aspirin 25 mg plus extended-release dipyridamole 200 mg twice daily is recommended for secondary prevention.",
+      "page": 64
+    },
+    {
+      "section": "Antithrombotic Medications",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "For recent minor noncardioembolic ischemic stroke (NIHSS 3 or below) or high-risk TIA (ABCD2 4 or above), dual antiplatelet therapy (aspirin plus clopidogrel) is recommended to be initiated early (ideally within 12-24 hours, at least within 7 days of onset) and continued for 21 to 90 days, followed by single antiplatelet therapy, to reduce recurrent ischemic stroke.",
+      "page": 64
+    },
+    {
+      "section": "Antithrombotic Medications",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "For recent (within 24 hours) minor to moderate stroke (NIHSS 5 or below), high-risk TIA (ABCD2 6 or above), or symptomatic 30% or greater stenosis of a relevant artery, dual antiplatelet therapy with ticagrelor plus aspirin for 30 days may be considered to reduce 30-day recurrent stroke but may increase serious bleeding risk including ICH.",
       "page": 64
     },
     {
@@ -1123,31 +1187,39 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "5. For patients already taking aspirin at the time of noncardioembolic ischemic stroke or TIA, the effectiveness of increasing the dose of aspirin or changing to another antiplatelet medication is not well established.410,798\u2013800 3: Harm ASR 6. For patients with noncardioembolic ischemic stroke or TIA, the continuous use of DAPT (aspirin plus clopidogrel) for >90 days or the use of triple antiplatelet therapy is associated with excess risk of hemorrhage.381,382,801 SR indicates systematic review. *The subgroup of patients with noncardioembolic stroke who meet clinical criteria for DAPT have a more specific recommendation for antiplatelet therapy as described in Recommendation 3.",
+      "text": "For patients already on aspirin at the time of noncardioembolic ischemic stroke or TIA, the effectiveness of increasing the aspirin dose or switching to another antiplatelet agent is not well established.",
       "page": 64
     },
     {
-      "section": "Health Systems\u2013Based Interventions",
+      "section": "Antithrombotic Medications",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "A",
+      "text": "Continuous dual antiplatelet therapy (aspirin plus clopidogrel) beyond 90 days or use of triple antiplatelet therapy is associated with excess hemorrhage risk in noncardioembolic ischemic stroke or TIA patients.",
+      "page": 64
+    },
+    {
+      "section": "Health Systems-Based Interventions",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "1. In patients with ischemic stroke or TIA, voluntary hospital-based or outpatient-focused quality monitoring and improvement programs are recommended to improve short-term and long-term adherence to nationally accepted, evidence-based guidelines for secondary stroke prevention.",
+      "text": "Voluntary hospital-based or outpatient quality monitoring and improvement programs are recommended for ischemic stroke or TIA patients to improve adherence to evidence-based secondary prevention guidelines.",
       "page": 67
     },
     {
-      "section": "Health Systems\u2013Based Interventions",
+      "section": "Health Systems-Based Interventions",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "2. In patients with ischemic stroke or TIA, a multidisciplinary outpatient team-based approach (ie, care provision with active medication adjustment from advanced practice providers, nurses, or pharmacists) can be effective to control BP, lipids, and other vascular risk factors.810\u2013817",
+      "text": "A multidisciplinary outpatient team-based approach (with active medication adjustment by advanced practice providers, nurses, or pharmacists) can be effective for controlling BP, lipids, and other vascular risk factors in ischemic stroke or TIA patients.",
       "page": 67
     },
     {
-      "section": "Health Systems\u2013Based Interventions",
+      "section": "Health Systems-Based Interventions",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "3. In patients presenting to their primary care provider as the first contact after TIA or minor stroke, it is reasonable to use a decision support tool that improves diagnostic accuracy, stratifies patients in risk categories to support appropriate triage, and prompts the initiation of medications and counseling for lifestyle modification for secondary stroke prevention to reduce the 90-day risk of recurrent stroke or TIA.818",
+      "text": "For patients presenting to primary care as first contact after TIA or minor stroke, using a clinical decision support tool that improves diagnostic accuracy, stratifies risk, supports appropriate triage, and prompts medication initiation and lifestyle counseling is reasonable to reduce 90-day recurrent stroke risk.",
       "page": 67
     },
     {
@@ -1155,7 +1227,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "1. In patients with ischemic stroke or TIA, behavior change interventions targeting stroke literacy, lifestyle factors, and medication adherence are recommended to reduce cardiovascular events.131,134,840",
+      "text": "Behavior change interventions targeting stroke literacy, lifestyle factors, and medication adherence are recommended for ischemic stroke or TIA patients to reduce cardiovascular events.",
       "page": 69
     },
     {
@@ -1163,7 +1235,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "2. In patients with ischemic stroke or TIA, teaching self-management skills or using behavior change theory (eg, motivational interviewing) can be beneficial in improving medication adherence.840\u2013843",
+      "text": "Teaching self-management skills or using behavior change theory (e.g., motivational interviewing) can be beneficial for improving medication adherence in ischemic stroke or TIA patients.",
       "page": 69
     },
     {
@@ -1171,7 +1243,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "3. In patients with stroke or TIA, combined exercise-based and behavior change interventions are probably indicated in preference to behavior interventions alone, exercise interventions alone, or usual care to reduce physiological stroke risk factors such as SBP.111\u2013113,829",
+      "text": "Combined exercise-based and behavior change interventions are likely preferable to behavior interventions alone, exercise alone, or usual care for reducing physiological stroke risk factors such as SBP in stroke or TIA patients.",
       "page": 69
     },
     {
@@ -1179,7 +1251,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "4. In patients with TIA or nondisabling stroke, engagement in targeted secondary prevention programs (eg, cardiac rehabilitation programs or exercise and lifestyle counseling programs) can be beneficial to reduce risk factors and recurrent ischemic events.133,134",
+      "text": "Participation in targeted secondary prevention programs (e.g., cardiac rehabilitation or exercise and lifestyle counseling) can be beneficial for TIA or nondisabling stroke patients to reduce risk factors and recurrent ischemic events.",
       "page": 69
     },
     {
@@ -1187,7 +1259,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "5. For patients with disabling stroke who are discharged from acute services, engaging in targeted secondary prevention programs (eg, an adapted cardiac rehabilitation program or structured exercise including aerobic activity and healthy lifestyle counseling) can be beneficial to reduce vascular risk factors and mortality.111,844",
+      "text": "For patients with disabling stroke discharged from acute services, engaging in adapted secondary prevention programs (e.g., adapted cardiac rehabilitation or structured aerobic exercise with healthy lifestyle counseling) can be beneficial to reduce vascular risk factors and mortality.",
       "page": 69
     },
     {
@@ -1195,7 +1267,7 @@
       "classOfRec": "III",
       "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
-      "text": "6. In patients with stroke or TIA, provision of health information or advice about stroke prevention is essential; however, information or advice alone, in the absence of a behavioral intervention, is not an effective means to change modifiable, lifestyle-related risk factors in order to reduce future ischemic events.129,829,845",
+      "text": "While providing health information about stroke prevention is essential, information or advice alone without a behavioral intervention is not effective for changing modifiable lifestyle-related risk factors or reducing future ischemic events in stroke or TIA patients.",
       "page": 69
     },
     {
@@ -1203,7 +1275,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "1. In patients with stroke or TIA, evaluating and addressing social determinants of health (eg, literacy level, language proficiency, medication affordability, food insecurity, housing, and transportation barriers) when managing stroke risk factors is recommended to reduce healthcare disparities.",
+      "text": "Evaluating and addressing social determinants of health (e.g., literacy, language proficiency, medication affordability, food insecurity, housing, and transportation barriers) is recommended when managing stroke risk factors in stroke or TIA patients to reduce healthcare disparities.",
       "page": 71
     },
     {
@@ -1211,7 +1283,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "2. In patients with stroke or TIA, monitoring the achievement of nationally accepted, evidencebased performance measures is recommended to allow inequities to be identified and addressed.",
+      "text": "Monitoring the achievement of nationally accepted, evidence-based performance measures is recommended for stroke or TIA patients to identify and address care inequities.",
       "page": 71
     },
     {
@@ -1219,7 +1291,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "3. In patients with stroke or TIA, systematic adoption of the Agency for Healthcare Research and Quality Universal Precautions Toolkit for Health Literacy is recommended to integrate health literacy into the secondary prevention of stroke.",
+      "text": "Systematic adoption of the AHRQ Universal Precautions Toolkit for Health Literacy is recommended to integrate health literacy into secondary stroke prevention for stroke or TIA patients.",
       "page": 71
     },
     {
@@ -1227,7 +1299,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "4. In patients from urban, predominantly minority, or low-socioeconomic-status groups with stroke or TIA, the optimal intervention model for improving stroke risk factor control and reducing disparities is unknown.815,856\u2013859",
+      "text": "The optimal intervention model for improving stroke risk factor control and reducing disparities in urban, predominantly minority, or low-socioeconomic-status stroke or TIA populations is currently unknown.",
       "page": 71
     }
   ]

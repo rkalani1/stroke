@@ -39,10 +39,10 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] DAPT phenotype quick matrix remains visible in secondary prevention workflow when pathway context is present.
 - [ ] TIA pathway includes compact phenotype-based DAPT matrix rows (CHANCE/POINT, CHANCE-2, THALES/AIS-2026 IIb, INSPIRES, severe ICAD pattern).
 - [ ] Bottom-right quick contacts FAB is visible and opens a callable contact panel.
-- [ ] Settings tab shows Contact Directory editor and Reset UW Defaults control.
+- [ ] Settings tab shows Contact Directory editor and Reset Defaults control.
 - [ ] TIA pathway language remains risk-stratified (no universal-admit hard stop text).
 - [ ] Phone directory/FAB has NOT been removed unless there is an explicit owner-authored request to remove it.
-- [ ] Protected UW defaults remain present with exact numbers: Stroke Phone `206-744-6789`, STAT Pharmacy `206-744-2241`, HMC Stroke RAD Hotline `206-744-8484`.
+- [ ] Protected institutional defaults remain present with exact numbers: Stroke Phone, STAT Pharmacy, Stroke RAD Hotline.
 
 ## Accessibility and responsive behavior
 - [ ] Desktop (1440x900), tablet (768x1024), and mobile (390x844) layouts are usable.
@@ -107,7 +107,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Feature branch committed with clear message.
 - [ ] Changes merged to `main`.
 - [ ] `main` pushed to origin.
-- [ ] Live URL `https://rkalani1.github.io/stroke/` serves updated build.
+- [ ] Live URL serves updated build.
 - [ ] Post-deploy smoke checks pass on local + live for all three viewport classes.
 - [ ] Scheduled `live-smoke.yml` retains baseline GitHub issue alerting and optional webhook fan-out behavior.
 

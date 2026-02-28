@@ -4,14 +4,14 @@
 
 ### What was changed
 - Added automated latency recalibration generator:
-  - new script: `/Users/rizwankalani/stroke/scripts/qa-latency-recalibration.mjs`,
+  - new script: `/home/user/stroke/scripts/qa-latency-recalibration.mjs`,
   - new command: `npm run qa:latency:recalibrate`,
-  - new output artifact: `/Users/rizwankalani/stroke/docs/qa-latency-recalibration.md`.
-- Enhanced latency history snapshots in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+  - new output artifact: `/home/user/stroke/docs/qa-latency-recalibration.md`.
+- Enhanced latency history snapshots in `/home/user/stroke/scripts/qa-smoke.mjs`:
   - persisted per-run duration arrays (`runDurations`) inside rolling history entries for trend analytics.
 - Extended ops index coverage:
-  - `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs` now includes QA latency recalibration artifact and command entries,
-  - regenerated `/Users/rizwankalani/stroke/docs/evidence-ops-index.md`.
+  - `/home/user/stroke/scripts/evidence-ops-index.mjs` now includes QA latency recalibration artifact and command entries,
+  - regenerated `/home/user/stroke/docs/evidence-ops-index.md`.
 
 ### Verification
 - `npm test` passed (`Runs: 3 | Issues: 0`).
@@ -22,16 +22,16 @@
 ## Iteration 129 (2026-02-21)
 
 ### What was changed
-- Added rolling QA latency history persistence in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
-  - writes/updates `/Users/rizwankalani/stroke/docs/qa-latency-history.json`,
+- Added rolling QA latency history persistence in `/home/user/stroke/scripts/qa-smoke.mjs`:
+  - writes/updates `/home/user/stroke/docs/qa-latency-history.json`,
   - stores per-run summary snapshots (profile, averages, slow-run/slow-section counts),
   - keeps rolling window of most recent 60 entries.
 - Extended smoke summary metadata:
   - `latencyHistoryPath`,
   - `latencyHistoryCount`.
 - Updated ops index generator to include QA latency history artifact:
-  - `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs`,
-  - regenerated `/Users/rizwankalani/stroke/docs/evidence-ops-index.md`.
+  - `/home/user/stroke/scripts/evidence-ops-index.mjs`,
+  - regenerated `/home/user/stroke/docs/evidence-ops-index.md`.
 
 ### Verification
 - `npm run build` passed.
@@ -43,11 +43,11 @@
 
 ### What was changed
 - Added PR-safe adaptive strict local smoke command:
-  - `/Users/rizwankalani/stroke/package.json`
+  - `/home/user/stroke/package.json`
   - new command: `npm run qa:latency-adaptive-local`
   - executes local-only adaptive profile smoke with strict threshold enforcement.
 - Integrated adaptive local lane into core CI job:
-  - `/Users/rizwankalani/stroke/.github/workflows/ci.yml`
+  - `/home/user/stroke/.github/workflows/ci.yml`
   - new step in `build-and-smoke` job:
     - `Run adaptive strict local latency smoke`
   - added diagnostics artifact:
@@ -62,7 +62,7 @@
 
 ### What was changed
 - Added adaptive strict latency QA lane to CI workflow:
-  - updated `/Users/rizwankalani/stroke/.github/workflows/ci.yml`
+  - updated `/home/user/stroke/.github/workflows/ci.yml`
   - new job: `adaptive-latency-smoke`
   - execution policy: runs on non-PR events (`push` to `main` and `workflow_dispatch`),
   - command: `npm run qa:latency-adaptive-strict`,
@@ -75,7 +75,7 @@
 
 ### What was changed
 - Updated scheduled production audit workflow to use adaptive strict latency enforcement:
-  - `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`
+  - `/home/user/stroke/.github/workflows/live-smoke.yml`
   - QA step now runs `npm run qa:latency-adaptive-strict` instead of baseline `npm run qa`.
 - This aligns nightly live smoke with profile-aware latency governance and hard-fail enforcement for threshold breaches.
 
@@ -86,14 +86,14 @@
 
 ### What was changed
 - Extended evidence ops index generation to include QA latency governance assets/commands:
-  - updated `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs` with:
+  - updated `/home/user/stroke/scripts/evidence-ops-index.mjs` with:
     - artifact row for `docs/qa-latency-profiles.json`,
     - maintenance commands:
       - `npm run validate:qa-latency-profiles`
       - `npm run qa:latency-strict`
       - `npm run qa:latency-adaptive-strict`.
 - Regenerated ops index artifact:
-  - `/Users/rizwankalani/stroke/docs/evidence-ops-index.md`.
+  - `/home/user/stroke/docs/evidence-ops-index.md`.
 
 ### Verification
 - `npm run evidence:index` passed.
@@ -105,7 +105,7 @@
 
 ### What was changed
 - Added standalone latency profile validator:
-  - new script: `/Users/rizwankalani/stroke/scripts/validate-qa-latency-profiles.mjs`,
+  - new script: `/home/user/stroke/scripts/validate-qa-latency-profiles.mjs`,
   - new command: `npm run validate:qa-latency-profiles`.
 - Integrated latency profile validation into runtime gates:
   - `npm test`,
@@ -113,8 +113,8 @@
   - `npm run qa:latency-strict`,
   - `npm run qa:latency-adaptive-strict`.
 - Added CI and scheduled live-smoke diagnostics for latency profile validation:
-  - `/Users/rizwankalani/stroke/.github/workflows/ci.yml`,
-  - `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`,
+  - `/home/user/stroke/.github/workflows/ci.yml`,
+  - `/home/user/stroke/.github/workflows/live-smoke.yml`,
   - new log artifact: `output/diagnostics/qa-latency-profile-validation.log`,
   - profile artifact export: `docs/qa-latency-profiles.json`.
 
@@ -126,7 +126,7 @@
 ## Iteration 123 (2026-02-21)
 
 ### What was changed
-- Added external latency profile config loading to `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+- Added external latency profile config loading to `/home/user/stroke/scripts/qa-smoke.mjs`:
   - new CLI option: `--latency-profiles-file <path>`,
   - supports profile definitions from JSON file (`profiles` object or top-level profile map),
   - validates threshold maps and profile schema at startup (fail-fast on malformed values).
@@ -134,7 +134,7 @@
   - `latencyProfilesSource`,
   - `availableLatencyProfiles`.
 - Added externalized latency profile artifact:
-  - `/Users/rizwankalani/stroke/docs/qa-latency-profiles.json`.
+  - `/home/user/stroke/docs/qa-latency-profiles.json`.
 - Updated adaptive strict QA command to use the external profile file:
   - `npm run qa:latency-adaptive-strict`.
 
@@ -146,12 +146,12 @@
 ## Iteration 122 (2026-02-21)
 
 ### What was changed
-- Added target/viewport-aware latency profile support in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+- Added target/viewport-aware latency profile support in `/home/user/stroke/scripts/qa-smoke.mjs`:
   - new CLI option: `--latency-profile <flat|adaptive>`,
   - adaptive profile applies per-target/per-viewport run thresholds and section-aware threshold overrides for high-cost workflow sections.
 - Extended smoke report telemetry with active profile trace:
   - `latencyProfile` in summary.
-- Added adaptive strict QA command in `/Users/rizwankalani/stroke/package.json`:
+- Added adaptive strict QA command in `/home/user/stroke/package.json`:
   - `npm run qa:latency-adaptive-strict`
   - runs smoke with `--latency-profile adaptive --enforce-latency-thresholds`.
 
@@ -163,10 +163,10 @@
 ## Iteration 121 (2026-02-21)
 
 ### What was changed
-- Added optional strict latency enforcement in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+- Added optional strict latency enforcement in `/home/user/stroke/scripts/qa-smoke.mjs`:
   - new flag: `--enforce-latency-thresholds`,
   - smoke run now exits non-zero when enabled and any configured run/section threshold is exceeded.
-- Added strict QA command in `/Users/rizwankalani/stroke/package.json`:
+- Added strict QA command in `/home/user/stroke/package.json`:
   - `npm run qa:latency-strict`
   - uses conservative enforcement thresholds:
     - `--run-duration-threshold-ms 60000`
@@ -181,7 +181,7 @@
 ## Iteration 120 (2026-02-21)
 
 ### What was changed
-- Added configurable latency-threshold alerting to `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+- Added configurable latency-threshold alerting to `/home/user/stroke/scripts/qa-smoke.mjs`:
   - `--run-duration-threshold-ms` (default `45000`),
   - `--section-duration-threshold-ms` (default `15000`).
 - Smoke summary now reports:
@@ -199,7 +199,7 @@
 ## Iteration 119 (2026-02-21)
 
 ### What was changed
-- Added smoke-runtime timing telemetry in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+- Added smoke-runtime timing telemetry in `/home/user/stroke/scripts/qa-smoke.mjs`:
   - per-run section timing capture (`bootstrap-render`, `quick-contacts-fab`, `encounter-workflow`, `library-workflow`, `settings-workflow`, `post-evt-note-trace`, `pediatric-workflow`, `screenshot`),
   - per-run total duration (`notes.runDurationMs`) in JSON report output.
 - Added summary-level timing diagnostics in smoke report output:
@@ -217,13 +217,13 @@
 
 ### What was changed
 - Added churn-profile validation diagnostics capture to CI workflows:
-  - `/Users/rizwankalani/stroke/.github/workflows/ci.yml`
-  - `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`
+  - `/home/user/stroke/.github/workflows/ci.yml`
+  - `/home/user/stroke/.github/workflows/live-smoke.yml`
 - Both workflows now:
   - run `npm run validate:evidence-churn-profiles`,
   - tee validator output to `output/diagnostics/churn-profile-validation.log`,
   - upload diagnostic and governance artifacts for failed-run triage.
-- Hardened smoke automation runtime resilience in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+- Hardened smoke automation runtime resilience in `/home/user/stroke/scripts/qa-smoke.mjs`:
   - set deterministic Playwright action timeout defaults,
   - convert per-target/viewport runtime exceptions into structured `audit-runtime-error` issues instead of aborting the entire run.
 
@@ -236,7 +236,7 @@
 
 ### What was changed
 - Added churn-profile schema validator:
-  - new script `/Users/rizwankalani/stroke/scripts/validate-evidence-churn-profiles.mjs`.
+  - new script `/home/user/stroke/scripts/validate-evidence-churn-profiles.mjs`.
 - Added npm command:
   - `npm run validate:evidence-churn-profiles`.
 - Integrated churn-profile validation into automation gates:
@@ -262,8 +262,8 @@
 ## Iteration 116 (2026-02-21)
 
 ### What was changed
-- Externalized churn-profile configuration into `/Users/rizwankalani/stroke/docs/evidence-churn-profiles.json`.
-- Added file-based profile loading in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+- Externalized churn-profile configuration into `/home/user/stroke/docs/evidence-churn-profiles.json`.
+- Added file-based profile loading in `/home/user/stroke/scripts/evidence-watch.mjs`:
   - new CLI option:
     - `--topic-churn-profiles-file <path>`
   - watchlist now reports active profile source for traceability.
@@ -288,7 +288,7 @@
 ## Iteration 115 (2026-02-21)
 
 ### What was changed
-- Added policy-profile presets for churn governance in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+- Added policy-profile presets for churn governance in `/home/user/stroke/scripts/evidence-watch.mjs`:
   - new CLI option:
     - `--topic-churn-profile <balanced|reperfusion|hemorrhage>`
   - profile defaults now seed:
@@ -318,7 +318,7 @@
 ## Iteration 114 (2026-02-21)
 
 ### What was changed
-- Added risk-stratified churn weighting by clinical-domain criticality in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+- Added risk-stratified churn weighting by clinical-domain criticality in `/home/user/stroke/scripts/evidence-watch.mjs`:
   - new CLI options:
     - `--topic-churn-adjusted-threshold`
     - `--topic-churn-weight topic=value`
@@ -345,7 +345,7 @@
 ## Iteration 113 (2026-02-21)
 
 ### What was changed
-- Added weighted churn scoring to watchlist governance in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+- Added weighted churn scoring to watchlist governance in `/home/user/stroke/scripts/evidence-watch.mjs`:
   - new CLI options:
     - `--topic-churn-alert-threshold`
     - `--topic-churn-lookback`
@@ -354,7 +354,7 @@
 - Added npm helper command:
   - `npm run evidence:watch:churn`.
 - Updated evidence-ops command index:
-  - `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs` now includes churn helper.
+  - `/home/user/stroke/scripts/evidence-ops-index.mjs` now includes churn helper.
 - Regenerated evidence-ops artifacts:
   - `docs/evidence-watchlist.md`,
   - `docs/evidence-watch-history.json`,
@@ -373,7 +373,7 @@
 ## Iteration 112 (2026-02-21)
 
 ### What was changed
-- Added persistent multi-run watchlist governance history in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+- Added persistent multi-run watchlist governance history in `/home/user/stroke/scripts/evidence-watch.mjs`:
   - new generated artifact `docs/evidence-watch-history.json` (rolling snapshot history, max 30 entries),
   - new watchlist appendix block `Topic Status History (Last 3 Runs)` for longitudinal status visibility.
 - Regenerated evidence-ops artifacts:
@@ -393,7 +393,7 @@
 ## Iteration 111 (2026-02-21)
 
 ### What was changed
-- Added topic-status flip alerting to watchlist trend output in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+- Added topic-status flip alerting to watchlist trend output in `/home/user/stroke/scripts/evidence-watch.mjs`:
   - new CLI option `--topic-status-flip-threshold` to set alert sensitivity,
   - new appendix block `Topic Status Flip Alert` listing topic status transitions (`ALERT`/`OK`) vs prior run.
 - Regenerated evidence-ops artifacts:
@@ -412,7 +412,7 @@
 ## Iteration 110 (2026-02-21)
 
 ### What was changed
-- Added cross-run trend tracking for filtered-topic thresholds in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+- Added cross-run trend tracking for filtered-topic thresholds in `/home/user/stroke/scripts/evidence-watch.mjs`:
   - reads prior watchlist threshold matrix snapshot when available,
   - emits `Filtered Topic Threshold Trend (vs Previous Run)` table with previous share, current share, delta, and status change by topic.
 - Regenerated evidence-ops artifacts:
@@ -431,7 +431,7 @@
 ## Iteration 109 (2026-02-21)
 
 ### What was changed
-- Hardened live/local feature-parity gating in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+- Hardened live/local feature-parity gating in `/home/user/stroke/scripts/qa-smoke.mjs`:
   - added app-version detection from local/live HTML (`APP_VERSION` parsing),
   - enabled live feature-specific assertions only when local and live app versions match,
   - preserved strict local assertion behavior for newly introduced workflow cards.
@@ -448,13 +448,13 @@
 ## Iteration 108 (2026-02-21)
 
 ### What was changed
-- Added per-topic filtered-dominance threshold controls in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+- Added per-topic filtered-dominance threshold controls in `/home/user/stroke/scripts/evidence-watch.mjs`:
   - new `--filtered-topic-threshold` option (repeatable and comma-list compatible; accepts ratio or percent),
   - new appendix output `Filtered Topic Threshold Matrix` with topic share, threshold, and alert status.
 - Added npm helper command:
   - `npm run evidence:watch:topic-thresholds`.
 - Updated evidence-ops maintenance index command list:
-  - `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs` now includes the topic-threshold helper.
+  - `/home/user/stroke/scripts/evidence-ops-index.mjs` now includes the topic-threshold helper.
 - Regenerated evidence-ops artifacts:
   - `docs/evidence-watchlist.md`,
   - `docs/evidence-promotion-checklist.md`,
@@ -472,12 +472,12 @@
 ## Iteration 106 (2026-02-21)
 
 ### What was changed
-- Added filtered-exclusion dominance monitoring to evidence-watch automation in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+- Added filtered-exclusion dominance monitoring to evidence-watch automation in `/home/user/stroke/scripts/evidence-watch.mjs`:
   - new CLI option `--filtered-dominance-threshold` (accepts ratio or percent),
   - new watchlist appendix block **Filtered Topic Dominance Alert** with top-topic share vs threshold status.
 - Added npm helper command:
   - `npm run evidence:watch:dominance`.
-- Added compact phenotype-based DAPT matrix in TIA workflow (`/Users/rizwankalani/stroke/src/app.jsx`) covering CHANCE/POINT, CHANCE-2, THALES/AIS-2026 framing, INSPIRES, and SAMMPRIS-pattern severe ICAD.
+- Added compact phenotype-based DAPT matrix in TIA workflow (`/home/user/stroke/src/app.jsx`) covering CHANCE/POINT, CHANCE-2, THALES/AIS-2026 framing, INSPIRES, and SAMMPRIS-pattern severe ICAD.
 - Regenerated evidence-ops artifacts:
   - `docs/evidence-watchlist.md`,
   - `docs/evidence-promotion-checklist.md`,
@@ -495,7 +495,7 @@
 
 ### What was changed
 - Added domain-level filtered-output visibility in watchlist audit appendix:
-  - `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs` now emits **Filtered Candidate Summary by Topic and Reason**.
+  - `/home/user/stroke/scripts/evidence-watch.mjs` now emits **Filtered Candidate Summary by Topic and Reason**.
   - This complements global reason counts with per-domain exclusion signal.
 - Regenerated evidence-ops outputs:
   - `docs/evidence-watchlist.md`,
@@ -513,7 +513,7 @@
 
 ### What was changed
 - Added filtered-candidate aggregate visibility in watchlist output:
-  - `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs` now emits a **Filtered Candidate Summary by Reason** table in the audit appendix.
+  - `/home/user/stroke/scripts/evidence-watch.mjs` now emits a **Filtered Candidate Summary by Reason** table in the audit appendix.
   - Maintains actionable queue suppression while exposing exclusion-volume distribution for review governance.
 - Regenerated evidence-ops artifacts after script update:
   - `docs/evidence-watchlist.md`,
@@ -530,12 +530,12 @@
 ## Iteration 103 (2026-02-21)
 
 ### What was changed
-- Added CLI controls to evidence watchlist generation (`/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`):
+- Added CLI controls to evidence watchlist generation (`/home/user/stroke/scripts/evidence-watch.mjs`):
   - `--filtered-all` to output the full filtered-candidate appendix,
   - `--filtered-limit` to customize appendix truncation length.
 - Added npm helper command:
   - `npm run evidence:watch:filtered-all`.
-- Updated evidence ops index generator (`/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs`) to include the new maintenance command.
+- Updated evidence ops index generator (`/home/user/stroke/scripts/evidence-ops-index.mjs`) to include the new maintenance command.
 - Verified and restored default artifact state after exercising full-appendix mode:
   - `docs/evidence-watchlist.md`,
   - `docs/evidence-promotion-checklist.md`,
@@ -552,7 +552,7 @@
 ## Iteration 102 (2026-02-21)
 
 ### What was changed
-- Added filtered-item transparency to evidence watchlist generation in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`:
+- Added filtered-item transparency to evidence watchlist generation in `/home/user/stroke/scripts/evidence-watch.mjs`:
   - retained strict high-priority queue filtering for low-actionability protocol/design papers,
   - added an explicit **Filtered Low-Actionability Candidates (Audit Appendix)** section to `docs/evidence-watchlist.md` (topic, PMID, reason, URL) so reviewers can still inspect excluded items.
 - Regenerated downstream evidence-ops artifacts:
@@ -569,7 +569,7 @@
 ## Iteration 101 (2026-02-21)
 
 ### What was changed
-- Refined evidence-watch triage filtering in `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs` to suppress non-actionable design/protocol papers from promotion queues:
+- Refined evidence-watch triage filtering in `/home/user/stroke/scripts/evidence-watch.mjs` to suppress non-actionable design/protocol papers from promotion queues:
   - added low-value title filters for `rationale and design`, `rationale and methods`, and protocol-study variants.
 - Regenerated evidence operations artifacts with stricter triage:
   - `docs/evidence-watchlist.md`,
@@ -590,7 +590,7 @@
 ## Iteration 100 (2026-02-21)
 
 ### What was changed
-- Added deterministic pediatric-regression assertions in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`:
+- Added deterministic pediatric-regression assertions in `/home/user/stroke/scripts/qa-smoke.mjs`:
   - age `<18` scenario setup on Encounter,
   - pediatric pathway card visibility check,
   - pediatric warning-layer checks (critical age warning + neurology-consult completeness warning),
@@ -605,7 +605,7 @@
 ## Iteration 099 (2026-02-21)
 
 ### What was changed
-- Added structured pediatric acute-stroke operationalization in `/Users/rizwankalani/stroke/src/app.jsx`:
+- Added structured pediatric acute-stroke operationalization in `/home/user/stroke/src/app.jsx`:
   - New `pediatricStrokePathway` state block with explicit checklist fields (pediatric neurology consult, pediatric-capable center contact, pediatric-focused NIHSS, vessel imaging completion, seizure-at-onset flag, arteriopathy/cardioembolic concern, SCD exchange-pathway activation).
   - New Special Populations UI card: **Pediatric Stroke Rapid Pathway (AIS 2026)** with live summary output.
   - Added pediatric pathway search alias in command palette (`Pediatric Stroke Pathway`) for faster keyboard navigation.
@@ -634,7 +634,7 @@
 ## Iteration 090 (2026-02-20)
 
 ### What was changed
-- Implemented structured high-priority special-population workflows in `/Users/rizwankalani/stroke/src/app.jsx`:
+- Implemented structured high-priority special-population workflows in `/home/user/stroke/src/app.jsx`:
   - Added `maternalStrokePathway` state and UI controls for postpartum day, severe-HTN/preeclampsia concern, OB consult, magnesium protocol, delivery-team coordination, and fetal monitoring.
   - Added `cancerStrokePathway` state and UI controls for mechanism classification (probable/possible/conventional), D-dimer multiple, multiterritory and NBTE flags, structured workup bundle, prevention branch, and oncology consult.
 - Added evidence-aligned safety warnings:
@@ -684,9 +684,9 @@
 ## Iteration 042 (2026-02-20)
 
 ### What was changed
-- Restored UW stroke on-call contact directory defaults in app settings and runtime state, including clickable numbers for Stroke Phone, STAT Pharmacy, HMC/UW neuroradiology lines, imaging lines, IT help desk, and paging operator.
+- Restored institutional stroke on-call contact directory defaults in app settings and runtime state, including clickable numbers for Stroke Phone, STAT Pharmacy, neuroradiology lines, imaging lines, IT help desk, and paging operator.
 - Reintroduced bottom-right floating **Quick Contacts** phone button with expandable panel and `tel:` links for one-tap calling.
-- Added full **Settings > Contact Directory** editor (add/edit/remove contacts + reset UW defaults) so phone numbers are visible and easily maintainable.
+- Added full **Settings > Contact Directory** editor (add/edit/remove contacts + reset defaults) so phone numbers are visible and easily maintainable.
 - Updated TIA disposition language across pathway cards, management content, and note templates from “admit all TIAs” to risk-stratified pathways aligned with the 2023 AHA TIA ED statement.
 - Updated extended-window IVT recommendation text to reflect modern imaging-selected practice and 2024-2026 evidence context (TIMELESS + OPTION).
 - Updated Xa inhibitor ICH reversal language to agent-specific selection (andexanet vs 4F-PCC by formulary/protocol), removed unsupported “PCC first-line everywhere/similar efficacy” wording, and corrected dialysis phrasing.
@@ -731,7 +731,7 @@
 ## Iteration 035 (2026-02-18)
 
 ### What was changed
-- **CRITICAL de-identification fix**: Removed hardcoded UW Medicine (`access.uwmedicine.org`) and UW neurology intranet (`intranet.neurology.uw.edu`) links from encounterQuickLinks array — violated standing de-identification constraint
+- **CRITICAL de-identification fix**: Removed hardcoded institutional intranet links from encounterQuickLinks array -- violated standing de-identification constraint
 - Quick links now default to OpenEvidence + UpToDate only; users can add institutional links via Settings > Quick Links
 
 ### What was audited but skipped
@@ -739,7 +739,7 @@
 - Index-as-key P1: 4 locations — all static display lists that never reorder; index keys are correct
 
 ### Audit agents
-- Agent a73b972: De-identification compliance — found 2 critical UW/UWMC violations (CONFIRMED, FIXED)
+- Agent a73b972: De-identification compliance -- found 2 critical institutional identifier violations (CONFIRMED, FIXED)
 - Agent a93beab: Performance/rendering — found P0/P1 memoization and key issues (all SKIPPED as false positives)
 
 ### Build
@@ -1549,14 +1549,14 @@
 
 ### What was changed
 - Hardened phone-directory non-removal safeguards in `scripts/qa-smoke.mjs` with explicit contact invariants.
-- Quick Contacts FAB smoke now requires these UW defaults to be present:
+- Quick Contacts FAB smoke now requires these institutional defaults to be present:
   - `Stroke Phone`
   - `STAT Pharmacy`
-  - `HMC Stroke RAD Hotline`
+  - `Stroke RAD Hotline`
 - Settings smoke now requires matching label + phone-value pairs for protected defaults:
-  - `Stroke Phone` / `206-744-6789`
-  - `STAT Pharmacy` / `206-744-2241`
-  - `HMC Stroke RAD Hotline` / `206-744-8484`
+  - `Stroke Phone`
+  - `STAT Pharmacy`
+  - `Stroke RAD Hotline`
 
 ### QA and validation
 - `npm run build`: pass
@@ -1579,7 +1579,7 @@
 ## Iteration 072 (2026-02-20)
 
 ### What was changed
-- Added repository CI workflow at `/Users/rizwankalani/stroke/.github/workflows/ci.yml`.
+- Added repository CI workflow at `/home/user/stroke/.github/workflows/ci.yml`.
 - CI now enforces on every push/PR to `main`:
   - `npm ci`
   - `npm run build`
@@ -1594,7 +1594,7 @@
 ## Iteration 073 (2026-02-20)
 
 ### What was changed
-- Added scheduled production audit workflow at `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`.
+- Added scheduled production audit workflow at `/home/user/stroke/.github/workflows/live-smoke.yml`.
 - Workflow runs daily (`cron: 0 13 * * *`) and on manual dispatch.
 - Workflow executes full QA (`npm run qa`) and uploads smoke artifacts (`output/playwright`) for diagnostics.
 - This complements push/PR CI by continuously verifying live-site behavior over time.
@@ -1607,7 +1607,7 @@
 ## Iteration 074 (2026-02-20)
 
 ### What was changed
-- Stabilized wake-up/extended-window QA scenario in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs` to eliminate false failures from layout/state drift.
+- Stabilized wake-up/extended-window QA scenario in `/home/user/stroke/scripts/qa-smoke.mjs` to eliminate false failures from layout/state drift.
 - Added explicit LKW-card re-open step (`Edit`) after wake-up toggle, because senior-rapid auto-collapse hid downstream controls.
 - Made scenario input selectors dual-path:
   - Standard desktop IDs (`#input-nihss`, `#input-premorbid-mrs`, `#input-ctp-core`, `#input-ctp-penumbra`)
@@ -1626,7 +1626,7 @@
 ## Iteration 075 (2026-02-20)
 
 ### What was changed
-- Added shared wake-up decision trace helpers in `/Users/rizwankalani/stroke/src/app.jsx`:
+- Added shared wake-up decision trace helpers in `/home/user/stroke/src/app.jsx`:
   - `getWakeUpCriteriaTrace(...)`
   - `formatMissingCriteria(...)`
 - Extended note-generation outputs to explicitly document non-eligibility reasons (not only positive eligibility) for wake-up/extended-window pathways:
@@ -1637,7 +1637,7 @@
   - Discharge note
 - For CTP-pathway wake-up cases, notes now include explicit unmet EXTEND criteria/perfusion thresholds when patient is not yet eligible.
 - For MRI-pathway wake-up cases, notes now include explicit missing WAKE-UP criteria when not yet eligible.
-- Rebuilt bundled client artifact (`/Users/rizwankalani/stroke/app.js`) from updated source.
+- Rebuilt bundled client artifact (`/home/user/stroke/app.js`) from updated source.
 
 ### QA and validation
 - `npm run build`: pass
@@ -1647,7 +1647,7 @@
 ## Iteration 076 (2026-02-20)
 
 ### What was changed
-- Extended `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs` with deterministic wake-up note-trace assertions.
+- Extended `/home/user/stroke/scripts/qa-smoke.mjs` with deterministic wake-up note-trace assertions.
 - Added clipboard-enabled smoke context (`clipboard-read`/`clipboard-write`) and a generated-note validation step:
   - Clicks `Copy Full Note` in Encounter.
   - Reads clipboard text.
@@ -1664,7 +1664,7 @@
 ## Iteration 077 (2026-02-20)
 
 ### What was changed
-- Upgraded scheduled live-smoke operational alerting in `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`.
+- Upgraded scheduled live-smoke operational alerting in `/home/user/stroke/.github/workflows/live-smoke.yml`.
 - Added workflow permissions for issue automation:
   - `contents: read`
   - `issues: write`
@@ -1682,7 +1682,7 @@
 ## Iteration 078 (2026-02-20)
 
 ### What was changed
-- Enhanced contraindication-trace documentation in `/Users/rizwankalani/stroke/src/app.jsx` by adding explicit **supportive negatives** when data are entered and within safety thresholds.
+- Enhanced contraindication-trace documentation in `/home/user/stroke/src/app.jsx` by adding explicit **supportive negatives** when data are entered and within safety thresholds.
 - `buildContraindicationTrace(...)` now captures and exports:
   - INR ≤1.7
   - Platelets ≥100K
@@ -1692,7 +1692,7 @@
   - No intracranial hemorrhage wording when CT text explicitly documents a negative hemorrhage finding
   - No known anticoagulant exposure (or DOAC last dose ≥48h when documented)
 - Contraindication trace remains conservative: only documented/derivable negatives are included.
-- Rebuilt bundled client artifact (`/Users/rizwankalani/stroke/app.js`) from updated source.
+- Rebuilt bundled client artifact (`/home/user/stroke/app.js`) from updated source.
 
 ### QA and validation
 - `npm run build`: pass
@@ -1702,7 +1702,7 @@
 ## Iteration 079 (2026-02-20)
 
 ### What was changed
-- Added shared post-EVT BP plan formatter in `/Users/rizwankalani/stroke/src/app.jsx`:
+- Added shared post-EVT BP plan formatter in `/home/user/stroke/src/app.jsx`:
   - `getPostEvtBpPlanSummary(...)`
 - Integrated structured post-EVT BP guardrail details into note outputs using existing stored fields (`postEvtBP`):
   - Reperfusion status
@@ -1713,7 +1713,7 @@
   - Signout note
   - Progress note
   - Discharge note
-- Rebuilt bundled client artifact (`/Users/rizwankalani/stroke/app.js`) from updated source.
+- Rebuilt bundled client artifact (`/home/user/stroke/app.js`) from updated source.
 
 ### QA and validation
 - `npm run build`: pass
@@ -1723,7 +1723,7 @@
 ## Iteration 080 (2026-02-20)
 
 ### What was changed
-- Hardened citation integrity checks in `/Users/rizwankalani/stroke/scripts/validate-citations.mjs`.
+- Hardened citation integrity checks in `/home/user/stroke/scripts/validate-citations.mjs`.
 - Added identifier extraction and validation for citation metadata table rows:
   - PMID format validation
   - DOI format validation (`10.xxxx/...` pattern)
@@ -1742,7 +1742,7 @@
 ## Iteration 081 (2026-02-20)
 
 ### What was changed
-- Expanded `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs` wake-up scenario with explicit contraindication-trace regression coverage.
+- Expanded `/home/user/stroke/scripts/qa-smoke.mjs` wake-up scenario with explicit contraindication-trace regression coverage.
 - Smoke scenario now seeds key thrombolysis safety fields before copying note text:
   - BP
   - INR
@@ -1761,7 +1761,7 @@
 ## Iteration 082 (2026-02-20)
 
 ### What was changed
-- Completed post-EVT note-plan regression coverage in `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`.
+- Completed post-EVT note-plan regression coverage in `/home/user/stroke/scripts/qa-smoke.mjs`.
 - Added deterministic smoke setup before post-EVT note assertion:
   - return to Encounter (`Ctrl+2`)
   - re-select `Ischemic Stroke or TIA`
@@ -1778,14 +1778,14 @@
 ## Iteration 083 (2026-02-20)
 
 ### What was changed
-- Added citation URL-health validation mode to `/Users/rizwankalani/stroke/scripts/validate-citations.mjs`:
+- Added citation URL-health validation mode to `/home/user/stroke/scripts/validate-citations.mjs`:
   - new flag: `--check-links`
   - checks each unique citation URL with bounded timeout/retry and HEAD→GET fallback
   - treats HTTP `401`/`403` as reachable-but-restricted (warning, not failure)
   - reports row-indexed failures for unreachable links
-- Added npm script in `/Users/rizwankalani/stroke/package.json`:
+- Added npm script in `/home/user/stroke/package.json`:
   - `validate:citations:links`
-- Updated scheduled production audit in `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`:
+- Updated scheduled production audit in `/home/user/stroke/.github/workflows/live-smoke.yml`:
   - runs citation URL-health validation before full local+live smoke QA.
 
 ### QA and validation
@@ -1797,13 +1797,13 @@
 ## Iteration 084 (2026-02-20)
 
 ### What was changed
-- Added citation identifier-endpoint verification mode to `/Users/rizwankalani/stroke/scripts/validate-citations.mjs`:
+- Added citation identifier-endpoint verification mode to `/home/user/stroke/scripts/validate-citations.mjs`:
   - new flag: `--check-identifiers`
   - verifies PMID, DOI, and NCT endpoints with retry/timeout safeguards
   - DOI validation now uses DOI handle API endpoint semantics instead of landing-page fetches to reduce false negatives
-- Added npm script in `/Users/rizwankalani/stroke/package.json`:
+- Added npm script in `/home/user/stroke/package.json`:
   - `validate:citations:ids`
-- Updated scheduled production audit in `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`:
+- Updated scheduled production audit in `/home/user/stroke/.github/workflows/live-smoke.yml`:
   - runs `validate:citations:ids` in addition to URL-health checks before full smoke QA.
 
 ### QA and validation
@@ -1816,11 +1816,11 @@
 ## Iteration 085 (2026-02-20)
 
 ### What was changed
-- Hardened citation identifier validation in `/Users/rizwankalani/stroke/scripts/validate-citations.mjs`:
+- Hardened citation identifier validation in `/home/user/stroke/scripts/validate-citations.mjs`:
   - PMID checks now use batched PubMed eSummary retrieval to avoid rate-limit failures.
   - Added PMID title-overlap drift detection (warning-level) to surface metadata mismatches.
   - Preserved DOI handle endpoint checks and URL-health checks.
-- Corrected evidence table metadata drift in `/Users/rizwankalani/stroke/docs/evidence-review-2021-2026.md`:
+- Corrected evidence table metadata drift in `/home/user/stroke/docs/evidence-review-2021-2026.md`:
   - Fixed incorrect PMIDs/DOIs/URLs/sources for key trials (AcT, TRACE-2, ORIGINAL, TWIST, TENSION, INTERACT3).
   - Corrected additional DOI mismatches (RESCUE-Japan LIMIT, ANGEL-ASPECT, ENRICH, INSPIRES, TIMING).
   - Updated CVT and INSPIRES URLs to PubMed endpoints for more reliable accessibility.
@@ -1837,9 +1837,9 @@
 
 ### What was changed
 - Added automated evidence watchlist generator:
-  - new script: `/Users/rizwankalani/stroke/scripts/evidence-watch.mjs`
+  - new script: `/home/user/stroke/scripts/evidence-watch.mjs`
   - new npm command: `npm run evidence:watch`
-  - output file: `/Users/rizwankalani/stroke/docs/evidence-watchlist.md`
+  - output file: `/home/user/stroke/docs/evidence-watchlist.md`
 - Watchlist generation behavior:
   - uses PubMed E-utilities to scan high-priority stroke domains for recent uncited literature
   - excludes already cited PMIDs
@@ -1856,7 +1856,7 @@
 ## Iteration 091 (2026-02-21)
 
 ### What was changed
-- Added structured ICH timeliness capture in `/Users/rizwankalani/stroke/src/app.jsx`:
+- Added structured ICH timeliness capture in `/home/user/stroke/src/app.jsx`:
   - `ichReversalStartTime` and `ichTransferDecisionTime` fields with explicit time inputs in the ICH management workflow.
   - New KPI helpers for `door-to-reversal`, `door-to-transfer decision`, and `reversal-to-transfer` intervals.
 - Added ICH warning-layer safeguards:
@@ -1881,15 +1881,15 @@
 
 ### What was changed
 - Added evidence-promotion automation tooling:
-  - new script: `/Users/rizwankalani/stroke/scripts/evidence-promotion-checklist.mjs`
+  - new script: `/home/user/stroke/scripts/evidence-promotion-checklist.mjs`
   - new npm command: `npm run evidence:promote`
-  - generated output: `/Users/rizwankalani/stroke/docs/evidence-promotion-checklist.md`
+  - generated output: `/home/user/stroke/docs/evidence-promotion-checklist.md`
 - New promotion checklist behavior:
   - parses watchlist candidates from `docs/evidence-watchlist.md`,
   - filters to high-priority (`P0`/`P1`) uncited candidates,
   - emits a clinician-review queue with topic-specific promotion actions and PMID/DOI/URL traceability.
 - Updated scheduled production audit workflow:
-  - `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml` now runs `npm run evidence:promote` before full QA.
+  - `/home/user/stroke/.github/workflows/live-smoke.yml` now runs `npm run evidence:promote` before full QA.
 
 ### QA and validation
 - `npm run evidence:promote`: pass (`13` high-priority candidates queued)
@@ -1901,9 +1901,9 @@
 
 ### What was changed
 - Added evidence-promotion sync validator:
-  - new script: `/Users/rizwankalani/stroke/scripts/validate-evidence-promotion.mjs`
+  - new script: `/home/user/stroke/scripts/validate-evidence-promotion.mjs`
   - validates that all `P0/P1` PMIDs in `docs/evidence-watchlist.md` are present in `docs/evidence-promotion-checklist.md` (and no stale extras remain).
-- Extended npm evidence-ops commands in `/Users/rizwankalani/stroke/package.json`:
+- Extended npm evidence-ops commands in `/home/user/stroke/package.json`:
   - `validate:evidence-promotion`
   - `evidence:refresh` (`watch` + `promote`)
 - Hardened QA/test gates:
@@ -1921,9 +1921,9 @@
 
 ### What was changed
 - Added evidence promotion PR-template scaffolding:
-  - new script: `/Users/rizwankalani/stroke/scripts/evidence-promotion-template.mjs`
+  - new script: `/home/user/stroke/scripts/evidence-promotion-template.mjs`
   - new npm command: `npm run evidence:template`
-  - generated output: `/Users/rizwankalani/stroke/docs/evidence-promotion-template.md`
+  - generated output: `/home/user/stroke/docs/evidence-promotion-template.md`
 - Extended evidence refresh flow:
   - `evidence:refresh` now runs watchlist generation, promotion checklist generation, template generation, and sync validation in one command.
 - Template output now includes per-candidate:
@@ -1942,16 +1942,16 @@
 ## Iteration 098 (2026-02-21)
 
 ### What was changed
-- Added selective evidence-template generation controls in `/Users/rizwankalani/stroke/scripts/evidence-promotion-template.mjs`:
+- Added selective evidence-template generation controls in `/home/user/stroke/scripts/evidence-promotion-template.mjs`:
   - `--priority` filter (`p0`, `p1`, or `all`)
   - `--pmid` targeting (repeatable)
   - `--limit` result cap
   - `--output` custom file path
-- Extended npm scripts in `/Users/rizwankalani/stroke/package.json`:
+- Extended npm scripts in `/home/user/stroke/package.json`:
   - `evidence:template:p0`
   - `evidence:template:top5`
 - Generated focused urgent queue draft:
-  - `/Users/rizwankalani/stroke/docs/evidence-promotion-template-p0.md`
+  - `/home/user/stroke/docs/evidence-promotion-template-p0.md`
 
 ### QA and validation
 - `npm run evidence:promote`: pass (`13` high-priority candidates queued)
@@ -1965,7 +1965,7 @@
 ## Iteration 094 (2026-02-21)
 
 ### What was changed
-- Added a dedicated **2026 AIS Guideline Delta** rapid-review card in ischemic management UI (`/Users/rizwankalani/stroke/src/app.jsx`):
+- Added a dedicated **2026 AIS Guideline Delta** rapid-review card in ischemic management UI (`/home/user/stroke/src/app.jsx`):
   - thrombolysis pathway emphasis (TNK-based workflow),
   - imaging-selected extended-window framing,
   - post-EVT BP floor harm reminder (avoid SBP <140 after successful reperfusion),
@@ -1986,7 +1986,7 @@
 ## Iteration 093 (2026-02-21)
 
 ### What was changed
-- Added structured DAPT adherence tracking in `/Users/rizwankalani/stroke/src/app.jsx` under secondary prevention:
+- Added structured DAPT adherence tracking in `/home/user/stroke/src/app.jsx` under secondary prevention:
   - start date, planned stop date, missed doses (7d),
   - adherence status (`on track`, `at risk`, `nonadherent`, `completed`),
   - explicit post-DAPT transition plan and transition agent,
@@ -2011,7 +2011,7 @@
 ## Iteration 092 (2026-02-21)
 
 ### What was changed
-- Added standardized SAH outcome-capture workflow in `/Users/rizwankalani/stroke/src/app.jsx`:
+- Added standardized SAH outcome-capture workflow in `/home/user/stroke/src/app.jsx`:
   - new `sahOutcomeSet` structured fields for discharge and 90-day endpoints:
     - discharge mRS,
     - discharge destination,

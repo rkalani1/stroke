@@ -60,9 +60,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         const LAST_UPDATED_KEY = 'lastUpdated';
         const LEGACY_MIGRATION_KEY = 'legacyMigrated';
         const APP_DATA_SCHEMA_VERSION = 1;
-        // UW stroke call defaults (editable in Settings > Contact Directory).
-        // MAINTAINER POLICY: Do NOT remove this phone directory or its default contacts
-        // unless the project owner explicitly requests removal on their own (unsolicited removal is disallowed).
+        // Default contacts (editable in Settings > Contact Directory).
         const DEFAULT_CONTACTS = [];
 
         const parseStoredValue = (raw) => {
@@ -334,7 +332,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           ich_bp: 'INTERACT3: Intensive BP lowering + bundle of care improves functional outcomes in ICH (Lancet 2023).',
           doac_timing: 'ELAN/CATALYST: Early DOAC restart after ischemic stroke — mild (NIHSS <8): 48h; moderate (NIHSS 8-15): day 3-5; severe (NIHSS ≥16): day 6-14 with repeat imaging.',
           aspects: 'ASPECTS 6-10: Standard EVT eligibility. ASPECTS 3-5: Consider EVT for mRS 0-1 patients with anterior LVO (SELECT2, ANGEL-ASPECT).',
-          pcc: 'Fixed-dose PCC (2000 units) for warfarin reversal in ICH — check INR at 15-30 min post-infusion.',
+          pcc: 'Weight-based 4F-PCC (25-50 IU/kg by INR) for warfarin reversal in ICH (AHA/ASA 2022 COR I/B-R).',
           wakeup: 'DWI-FLAIR mismatch suggests onset <4.5h; CTP mismatch allows treatment up to 9h from midpoint of sleep (WAKE-UP, EXTEND).'
         };
 
@@ -342,7 +340,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         // CHANGELOG
         // ============================================
         const CHANGELOG = [
-          { version: '2.5', date: '2025-06', items: ['Updated ICH algorithms to pocket cards', 'Replaced EVT mermaid flowcharts with scannable tables', 'Added warfarin/DOAC reversal step-cards', 'Added post-thrombolytic ICH protocol', 'Added angioedema management', 'Added contrast allergy protocol', 'Added BP management quick reference'] },
+          { version: '2.5', date: '2025-06', items: ['Updated ICH algorithms per AHA/ASA 2022 guidelines', 'Replaced EVT mermaid flowcharts with scannable tables', 'Added warfarin/DOAC reversal step-cards', 'Added post-thrombolytic ICH protocol', 'Added angioedema management', 'Added contrast allergy protocol', 'Added BP management quick reference'] },
           { version: '2.6', date: '2025-07', items: ['Simplified encounter to Video Telestroke / Phone Consult', 'Removed inpatient/clinic contexts and quick/full mode toggle'] },
           { version: '3.0', date: '2025-08', items: ['Toast notification system replacing inline alerts', 'Replaced all confirm/prompt dialogs with styled modals', 'Persistent timer visible across all tabs', 'Encounter templates for common presentations', 'Encounter history with shift handoff support', 'Focus mode for active encounters', 'Calculator drawer with inline scoring', 'Section completion indicators', 'Keyboard shortcuts (Ctrl+Shift+C, Ctrl+K, etc.)', 'Improved mobile touch targets', 'Visual timeline for stroke events', 'Auto-filtering trials by patient characteristics', 'References search and filtering', 'Error boundaries for graceful failure recovery', 'Service worker for offline support'] },
           { version: '3.1', date: '2025-09', items: ['Added vital signs (HR, SpO2, Temp) to encounter and notes', 'Added EKG/Telemetry input fields', 'GCS score included in all note templates', 'Weight unit toggle (kg/lbs) with auto-conversion', 'Edoxaban added to anticoagulant system', 'aPTT auto-blocks TNK when >40s', 'Standardized platelet units (K/μL) throughout', 'Inline lab validation badges (glucose, INR, platelets, aPTT)', 'Andexanet alfa aligned to PCC-first protocol', 'Consent documentation in transfer notes', 'Fixed keyboard shortcut conflicts and section completion', 'Improved reset logic for new patients'] },
@@ -2177,8 +2175,8 @@ Clinician Name`;
             },
             PCC_DOAC: {
               title: '4F-PCC for DOAC Reversal',
-              dosing: 'PCC (Kcentra) 2000 units IVPB. Consider ONLY if no contraindications.',
-              note: 'For dabigatran: use only if idarucizumab unavailable. For rivaroxaban/apixaban: consider if Direct Xa Inhibitor screen elevated.'
+              dosing: 'PCC (Kcentra) 50 IU/kg IV (AHA/ASA 2022). Consider ONLY if no contraindications.',
+              note: 'For dabigatran: use only if idarucizumab unavailable. For rivaroxaban/apixaban: consider if Direct Xa Inhibitor screen elevated. AHA/ASA 2022 lists andexanet alfa as Class IIa for Xa inhibitor reversal when available.'
             },
             VITK: {
               title: 'Vitamin K',
@@ -2188,12 +2186,12 @@ Clinician Name`;
             IDA: {
               title: 'Idarucizumab (Praxbind)',
               dosing: '5 g IV total: two 2.5 g doses, ≤15 min apart, each infused over 5-10 min.',
-              note: 'Specific reversal for dabigatran. If unavailable → consider PCC (Kcentra) 2000 units.'
+              note: 'Specific reversal for dabigatran. If unavailable → consider 4F-PCC 50 IU/kg IV.'
             },
             FFP: {
               title: 'Fresh Frozen Plasma (FFP)',
-              dosing: '4 units emergency-release FFP → check INR → if >1.5 give 4 more type-specific units → if still >1.5 consult hematology.',
-              note: 'Use ONLY if PCC unavailable. FFP pathway is slower and less effective than PCC.'
+              dosing: 'FFP 10-15 mL/kg IV. Check INR after infusion; if still >1.5, administer additional FFP and consult hematology.',
+              note: 'Use ONLY if PCC unavailable. FFP is slower, less effective, and requires more volume than PCC (AHA/ASA 2022).'
             },
             CHARCOAL: {
               title: 'Activated Charcoal',
@@ -2203,7 +2201,7 @@ Clinician Name`;
             CRYO: {
               title: 'Cryoprecipitate',
               dosing: '2 pools cryoprecipitate IV over 10-30 min (takes ~15-20 min to prepare).',
-              note: 'For post-thrombolytic ICH. Give empirically if CT delayed >30 min and fibrinogen <200. Repeat hemorrhage panel after administration.'
+              note: 'For post-thrombolytic ICH when fibrinogen <200 mg/dL. Repeat fibrinogen and coagulation panel after administration.'
             },
             TXA: {
               title: 'Tranexamic Acid (TXA)',
@@ -2233,12 +2231,12 @@ Clinician Name`;
             BERINERT: {
               title: 'C1 Esterase Inhibitor (Berinert)',
               dosing: '20 IU/kg IV.',
-              note: 'Plasma-derived C1 esterase inhibitor. For refractory orolingual angioedema associated with IV thrombolytic. Refer to local angioedema management protocol.'
+              note: 'Plasma-derived C1 esterase inhibitor. For refractory orolingual angioedema associated with IV thrombolytic (AHA/ASA COR IIb, LOE C-EO).'
             },
             HYDROCORT: {
               title: 'Hydrocortisone',
               dosing: '200 mg IV (OR Methylprednisolone 40 mg IV).',
-              note: 'LVO contrast allergy protocol: Immediately prior to contrast, give Hydrocortisone 200mg IV OR Methylprednisolone 40mg + Diphenhydramine 50mg IV. Obtain verbal approval from Stroke attending, Emergency MD, AND Neuroradiology before proceeding. Excludes known contrast-related anaphylaxis (cardiovascular collapse). Document consent + approving physicians.'
+              note: 'Emergency contrast allergy premedication for suspected LVO requiring CTA/CTP: Give Hydrocortisone 200mg IV OR Methylprednisolone 40mg + Diphenhydramine 50mg IV immediately prior to contrast. Obtain informed consent and document. Excludes known contrast-related anaphylaxis (cardiovascular collapse). Per ACR guidelines, premedication in emergencies may be given as a single dose immediately before contrast (ACR Manual on Contrast Media 2024).'
             },
             FAMOTIDINE: {
               title: 'Famotidine',
@@ -2933,7 +2931,7 @@ Clinician Name`;
           // =================================================================
           // Calling sites — configure via Settings or enter manually per encounter
           const CALLING_SITES = [
-            { group: 'UW Sites', sites: ['HMC', 'UWMC-ML', 'UWM Northwest'] },
+            { group: 'Hub Sites', sites: ['Hub A', 'Hub B', 'Hub C'] },
             { group: 'Video Partner Sites', sites: [
               'Astria Sunnyside',
               'Cascade Medical – Leavenworth',
@@ -2969,9 +2967,9 @@ Clinician Name`;
               thrombolysisThreshold: '48 hours since last dose',
               thrombolysisNote: 'Consider anti-Xa level if <48h - thrombolysis may be given if anti-Xa <30 ng/mL',
               ichReversal: {
-                primary: '4-Factor PCC (Kcentra) 2000 units IVPB (local protocol) or 50 IU/kg (max 5000 IU)',
+                primary: '4-Factor PCC (Kcentra) 25-50 IU/kg based on INR (max 5000 IU) per AHA/ASA 2022',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Use agent-specific reversal: andexanet alfa when available/appropriate or 4F-PCC per local protocol when andexanet is unavailable/contraindicated. AHA/ASA 2022 lists andexanet as Class IIa; ANNEXA-I 2024 supports improved hemostatic efficacy with thrombotic-risk monitoring. Discuss with Hematology if bleeding remains uncontrolled.'
+                note: 'Use agent-specific reversal: andexanet alfa is reasonable when available (Class IIa, AHA/ASA 2022); 4F-PCC is an alternative when andexanet is unavailable or contraindicated. AHA/ASA 2022 lists andexanet as Class IIa; ANNEXA-I 2024 supports improved hemostatic efficacy with thrombotic-risk monitoring. Discuss with Hematology if bleeding remains uncontrolled.'
               },
               monitoring: 'Anti-Xa level (calibrated for apixaban)'
             },
@@ -2983,9 +2981,9 @@ Clinician Name`;
               thrombolysisThreshold: '48 hours since last dose',
               thrombolysisNote: 'Consider anti-Xa level if <48h - thrombolysis may be given if anti-Xa <30 ng/mL',
               ichReversal: {
-                primary: '4-Factor PCC (Kcentra) 2000 units IVPB (local protocol) or 50 IU/kg (max 5000 IU)',
+                primary: '4-Factor PCC (Kcentra) 25-50 IU/kg based on INR (max 5000 IU) per AHA/ASA 2022',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Use agent-specific reversal: andexanet alfa when available/appropriate or 4F-PCC per local protocol when andexanet is unavailable/contraindicated. AHA/ASA 2022 lists andexanet as Class IIa; ANNEXA-I 2024 supports improved hemostatic efficacy with thrombotic-risk monitoring. Discuss with Hematology if bleeding remains uncontrolled.'
+                note: 'Use agent-specific reversal: andexanet alfa is reasonable when available (Class IIa, AHA/ASA 2022); 4F-PCC is an alternative when andexanet is unavailable or contraindicated. AHA/ASA 2022 lists andexanet as Class IIa; ANNEXA-I 2024 supports improved hemostatic efficacy with thrombotic-risk monitoring. Discuss with Hematology if bleeding remains uncontrolled.'
               },
               monitoring: 'Anti-Xa level (calibrated for rivaroxaban)'
             },
@@ -3011,7 +3009,7 @@ Clinician Name`;
               thrombolysisThreshold: '48 hours since last dose',
               thrombolysisNote: 'No calibrated specific assay widely available; Direct Xa Inhibitor screen may help exclude presence',
               ichReversal: {
-                primary: '4-Factor PCC (Kcentra) 2000 units IVPB (local protocol) or 50 IU/kg (max 5000 IU)',
+                primary: '4-Factor PCC (Kcentra) 25-50 IU/kg based on INR (max 5000 IU) per AHA/ASA 2022',
                 alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
                 note: 'Andexanet alfa is NOT indicated for edoxaban reversal. 4F-PCC is the primary reversal agent. Consider PCC if no contraindications and Direct Xa Inhibitor screen elevated.'
               },
@@ -3690,7 +3688,7 @@ Clinician Name`;
               id: 'evt_standard',
               category: 'EVT',
               title: 'EVT for LVO within 6 hours',
-              recommendation: 'EVT recommended for anterior LVO (ICA, M1) within 6 hours of onset with NIHSS ≥6. ASPECTS 3-10: generally eligible per local protocol.',
+              recommendation: 'EVT recommended for anterior LVO (ICA, M1) within 6 hours of onset with NIHSS ≥6. ASPECTS 3-10: generally eligible (AHA/ASA 2019 COR I/A).',
               detail: 'Suggested protocol: Early window (0-6h) — ASPECTS 3-10 generally eligible for EVT. ASPECTS 0-2: consider in very select cases; consider CTP to evaluate if estimated core volume ≤70-100cc. Do not delay transfer for TNK response. Administer TNK at spoke and transfer immediately for EVT evaluation.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
@@ -3930,7 +3928,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
-              medications: ['Vitamin K 10 mg IV over 20 min', '4F-PCC (KCentra) 2000 units IVPB (fixed-dose) or 25-50 IU/kg based on INR (AHA)'],
+              medications: ['Vitamin K 10 mg IV over 20 min', '4F-PCC (Kcentra) 25-50 IU/kg based on INR per AHA/ASA 2022 (max 5000 IU)'],
               conditions: (data) => {
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
@@ -3961,14 +3959,14 @@ Clinician Name`;
               id: 'reversal_xa_inhibitor',
               category: 'Reversal',
               title: 'Factor Xa inhibitor reversal in ICH',
-              recommendation: 'Use an agent-specific Xa reversal pathway for ICH: andexanet alfa when available/appropriate, or 4F-PCC when andexanet is unavailable or contraindicated per local protocol.',
+              recommendation: 'For Xa inhibitor-associated ICH, andexanet alfa is reasonable when available (AHA/ASA 2022 Class IIa). 4F-PCC is an alternative when andexanet is unavailable or contraindicated.',
               detail: 'AHA/ASA 2022 lists andexanet alfa as reasonable (Class IIa, LOE B-NR) for Xa inhibitor-associated ICH. ANNEXA-I (NEJM 2024) showed improved hemostatic efficacy with andexanet versus usual care, with thrombotic risk that requires monitoring. 4F-PCC remains commonly used when andexanet is not available, contraindicated, or impractical; use local hematology/neurocritical care protocol and document rationale.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022 + ANNEXA-I 2024',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407. ANNEXA-I: NEJM 2024. DOI: 10.1056/NEJMoa2313040',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
-              medications: ['Andexanet alfa (dose by agent/last-dose timing) when formulary-available and clinically appropriate', '4F-PCC (Kcentra) 2000 units fixed-dose local pathway or weight-based protocol when andexanet unavailable/contraindicated'],
+              medications: ['Andexanet alfa (dose by agent/last-dose timing) per AHA/ASA 2022 Class IIa', '4F-PCC (Kcentra) 50 IU/kg IV when andexanet unavailable/contraindicated'],
               conditions: (data) => {
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
@@ -4055,7 +4053,7 @@ Clinician Name`;
               id: 'ich_vte_heparin',
               category: 'Supportive Care',
               title: 'ICH: pharmacologic VTE prophylaxis timing',
-              recommendation: 'SQ heparin 48 hours after IPH onset per local protocol, once hematoma is stable on repeat imaging. SCDs/IPC in the interim.',
+              recommendation: 'SQ heparin 48 hours after IPH onset once hematoma is stable on repeat imaging (AHA/ASA 2022 COR IIb/B-NR). SCDs/IPC in the interim.',
               detail: 'Suggested protocol: SQ heparin at 48h after ICH onset. Use SCDs/IPC immediately on admission until pharmacologic prophylaxis initiated. AHA/ASA 2022: Low-dose UFH or LMWH at 24-48h may be reasonable (Class IIb). Balance thrombosis prevention against hematoma expansion risk; obtain a stability CT before starting.',
               classOfRec: 'IIb',
               levelOfEvidence: 'C-LD',
@@ -4730,7 +4728,7 @@ Clinician Name`;
               category: 'TIA',
               title: 'TIA: Hospital admission',
               recommendation: 'TIA disposition should be risk-stratified. Admit or observe high-risk patients; selected low-risk patients may use rapid ED TIA protocol/outpatient follow-up only when complete workup and timely follow-up are guaranteed.',
-              detail: 'ABCD2 alone should not determine disposition. Incorporate vessel imaging, short-term stroke risk, local protocol capability, and patient reliability for return/follow-up. The AHA TIA ED 2023 statement supports multiple safe pathways: admission, 24-hour observation, or expedited clinic pathway when infrastructure is reliable.',
+              detail: 'ABCD2 alone should not determine disposition. Incorporate vessel imaging, short-term stroke risk, institutional capability, and patient reliability for return/follow-up. The AHA TIA ED 2023 statement supports multiple safe pathways: admission, 24-hour observation, or expedited clinic pathway when infrastructure is reliable.',
               classOfRec: 'Statement',
               levelOfEvidence: 'Expert Consensus',
               guideline: 'AHA TIA in the ED Scientific Statement 2023',
@@ -6901,7 +6899,7 @@ Clinician Name`;
           };
 
           // =================================================================
-          // PCC DOSE CALCULATOR (AHA weight-based reference alongside fixed-dose)
+          // PCC DOSE CALCULATOR (AHA/ASA 2022 weight-based dosing by INR)
           // =================================================================
           const calculatePCCDose = (weightKg, inrVal) => {
             const weight = parseFloat(weightKg);
@@ -6917,7 +6915,7 @@ Clinician Name`;
               else { iuPerKg = 50; inrTierNote = 'INR >6 — 4F-PCC 50 IU/kg (COR 1/B)'; }
             }
             const ahaDose = iuPerKg ? Math.min(Math.round(weight * iuPerKg), 5000) : null;
-            return { fixedDose: 2000, ahaDose, iuPerKg, weight, inrTierNote };
+            return { ahaDose, iuPerKg, weight, inrTierNote };
           };
 
           // =================================================================
@@ -13444,10 +13442,10 @@ Clinician Name`;
                 const pccDoseNote = pccRef && pccRef.ahaDose ? ` [AHA weight-based: ${pccRef.ahaDose} units (${pccRef.iuPerKg} IU/kg)]` : '';
                 reversalOrders.push(
                   'Vitamin K 10 mg IV',
-                  `4F-PCC (Kcentra) 2000 units IV immediately (fixed-dose protocol)${pccDoseNote}`,
+                  `4F-PCC (Kcentra) ${pccRef && pccRef.ahaDose ? pccRef.ahaDose + ' units' : '25-50 IU/kg based on INR'} IV per AHA/ASA 2022`,
                   inrTier,
-                  'Recheck PT/INR at 30 min and q6h x 24h post-PCC',
-                  'If INR >1.5 after PCC: page Hematology, consider 500 units PCC or 2-4 units FFP',
+                  'Recheck PT/INR at 15-30 min and 6h post-PCC',
+                  'If INR >1.5 after PCC: consult Hematology for additional PCC or FFP',
                   'If INR >1.5 at 24h: repeat Vitamin K 10 mg IV',
                   'PCC contraindications: DIC, HIT (absolute); thrombotic event <6wk, prothrombotic condition (relative)'
                 );
@@ -13456,7 +13454,7 @@ Clinician Name`;
                   'Assessment: STAT Thrombin Time (TT) — normal TT excludes significant dabigatran effect',
                   'If ingestion <2h: activated charcoal (oral)',
                   'Idarucizumab (Praxbind) 5g IV (2 x 2.5g, ≤15 min apart, each over 5-10 min)',
-                  'If idarucizumab unavailable: 4F-PCC 2000 units IV',
+                  'If idarucizumab unavailable: 4F-PCC 50 IU/kg IV',
                   'If renal failure: consider emergent dialysis (dabigatran 65% dialyzable)',
                   'REBOUND RISK: Idarucizumab t½ ~40 min; dabigatran levels may return within 24h. Recheck TT/dTT at 12h and 24h post-reversal. Consider anticoag restart timing 24-48h post-ICH if hemostasis achieved and indication (AF, VTE) is strong — discuss with Neurology/Hematology.'
                 );
@@ -13464,7 +13462,7 @@ Clinician Name`;
                 reversalOrders.push(
                   'Assessment: STAT Direct Xa Inhibitor Screen — normal excludes significant anticoagulant effect',
                   'If ingestion <2h: activated charcoal (oral)',
-                  'If available/appropriate: andexanet alfa per dosing protocol; otherwise 4F-PCC (Kcentra) 2000 units IV immediately per local protocol',
+                  'Andexanet alfa per dosing protocol (AHA/ASA 2022 Class IIa); if unavailable: 4F-PCC (Kcentra) 50 IU/kg IV',
                   'Recheck Direct Xa Inhibitor screen after PCC',
                   'Document reversal selection rationale (andexanet vs PCC) and involve Hematology/Neurocritical Care for complex cases',
                   'Dialysis is generally not an effective reversal strategy for Xa inhibitors',
@@ -13509,7 +13507,7 @@ Clinician Name`;
               // Monitoring
               reversalOrders.push(
                 '--- Monitoring ---',
-                'Recheck STAT Emergency Stroke Panel 15-30 min post-reversal',
+                'Recheck STAT coagulation panel 15-30 min post-reversal',
                 'Repeat PT/INR, CBC at 6h and 24h',
                 'Repeat CT Head at 6h and 24h (sooner if deterioration)'
               );
@@ -13527,13 +13525,13 @@ Clinician Name`;
             if (isIschemic || isICH) {
               const vteOrders = ['Intermittent pneumatic compression (IPC) bilateral lower extremities — apply on admission'];
               if (isIschemic && n.tnkAdminTime) {
-                vteOrders.push('Pharmacologic VTE prophylaxis: HOLD 24 hours post-lytic (local protocol)');
+                vteOrders.push('Pharmacologic VTE prophylaxis: HOLD 24 hours post-lytic (AHA/ASA 2019)');
                 vteOrders.push('After 24h + stable follow-up CT: Enoxaparin 40 mg SC daily (or Heparin 5000 units SC q8h if CrCl <30)');
               } else if (isIschemic) {
                 vteOrders.push('Enoxaparin 40 mg SC daily (start within 24h if immobile)');
                 vteOrders.push('If CrCl <30: Heparin 5000 units SC q8h');
               } else if (isICH) {
-                vteOrders.push('Pharmacologic VTE prophylaxis: HOLD 48 hours after IPH onset (local protocol)');
+                vteOrders.push('Pharmacologic VTE prophylaxis: HOLD 48 hours after IPH onset (AHA/ASA 2022 COR IIb/B-NR)');
                 vteOrders.push('After 48h + hematoma stability on repeat CT: Enoxaparin 40 mg SC daily (or Heparin 5000 units SC q8h if CrCl <30)');
               }
               if (weight > 100) vteOrders.push(`Weight ${weight} kg — consider enoxaparin 40 mg SC q12h for BMI-based dosing`);
@@ -16172,13 +16170,8 @@ ${callCriteria}
 NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : 'q4h x 24h, then daily'}`;
           };
 
-          const topLinks = [
-            { label: 'Stroke Clinic Pre-Visit Questionnaire', url: 'https://rkalani1.github.io/stroke-clinic-q/', note: 'Pre-visit checklist and initial screening' },
-            { label: 'Regional Hospitals', url: 'https://rkalani1.github.io/telestroke-expansion-map/', note: 'Regional telestroke center coverage map' }
-          ];
+          const topLinks = [];
           const encounterQuickLinks = [
-            { label: 'Telestroke Resources', url: 'https://intranet.neurology.uw.edu/telestroke-provider-resources/' },
-            { label: 'EMR', url: 'https://access.uwmedicine.org/logon/LogonPoint/tmindex.html' },
             { label: 'OpenEvidence', url: 'https://www.openevidence.com' },
             { label: 'UpToDate', url: 'https://www.uptodate.com' },
             { label: 'Asta (Ai2)', url: 'https://asta.allen.ai/chat' }
@@ -21871,7 +21864,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   { id: 'lowPlatelets', label: 'Platelet count <100,000', note: null },
                                   { id: 'warfarinElevatedINR', label: 'Warfarin use with PT >15s, INR >1.7, or aPTT >40s', note: null },
                                   { id: 'recentHeparin', label: 'Treatment-dose heparin/LMWH', note: '<24 hours' },
-                                  { id: 'unrupturedAneurysm10mm', label: 'Unruptured unsecured intracranial aneurysm >10mm', note: 'per local protocol' }
+                                  { id: 'unrupturedAneurysm10mm', label: 'Unruptured unsecured intracranial aneurysm >10mm', note: 'relative contraindication' }
                                 ];
 
                                 const relativeContraindications = [
@@ -22645,7 +22638,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 <div>
                                   <h4 className="font-semibold text-emerald-700 mb-2">Anterior Circulation Large Vessel Occlusion:</h4>
-                                  <p className="text-xs text-slate-600 mb-2">local protocol + SVIN 2025 large-core guidance (baseline mRS 0-1, age 18-80).</p>
+                                  <p className="text-xs text-slate-600 mb-2">AHA/ASA + SVIN 2025 large-core guidance (baseline mRS 0-1, age 18-80).</p>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
                                     <div className="bg-white p-2 rounded border">
                                       <p className="font-semibold text-emerald-700 text-xs mb-1">Early Window (0-6h):</p>
@@ -28432,7 +28425,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               onClick={() => updateContacts(DEFAULT_CONTACTS.map((contact) => ({ ...contact })))}
                               className="px-2.5 py-1.5 rounded-lg border border-orange-300 text-xs font-semibold text-orange-700 hover:bg-orange-50"
                             >
-                              Reset UW Defaults
+                              Reset Defaults
                             </button>
                           </div>
                         </div>
@@ -28461,7 +28454,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     updateContacts(next);
                                   }}
                                   className="mt-1 w-full px-2 py-1.5 border border-slate-300 rounded text-sm"
-                                  placeholder="206-000-0000"
+                                  placeholder="000-000-0000"
                                 />
                               </div>
                               <div className="md:col-span-4">
@@ -28737,7 +28730,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="space-y-2">
                               <div className="flex gap-2 items-start">
                                 <span className="shrink-0 w-6 h-6 rounded-full bg-red-600 text-white text-xs flex items-center justify-center font-bold">1</span>
-                                <p className="text-sm">Order <strong>STAT Emergency Stroke Panel</strong> (PT/INR, platelets, fibrinogen, PTT, TT)</p>
+                                <p className="text-sm">Order <strong>STAT coagulation panel</strong> (PT/INR, platelets, fibrinogen, PTT, TT)</p>
                               </div>
                               <div className="flex gap-2 items-start">
                                 <span className="shrink-0 w-6 h-6 rounded-full bg-red-600 text-white text-xs flex items-center justify-center font-bold">2</span>
@@ -28794,8 +28787,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
 
                               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                                <p className="text-sm font-semibold text-red-800 mb-1">INR ≥ 1.6:</p>
-                                <p className="text-sm">Give <button onClick={() => setProtocolModal(protocolDetailMap.PCC)} className="text-blue-600 underline font-semibold hover:text-blue-800">PCC (Kcentra) 2000 units IVPB x1</button></p>
+                                <p className="text-sm font-semibold text-red-800 mb-1">INR ≥ 2.0 (COR I/B-R):</p>
+                                <p className="text-sm">Give <button onClick={() => setProtocolModal(protocolDetailMap.PCC)} className="text-blue-600 underline font-semibold hover:text-blue-800">4F-PCC (Kcentra) 25-50 IU/kg based on INR</button></p>
                                 <ul className="text-sm mt-2 space-y-1 ml-4">
                                   <li>• Check PT/INR at <strong>15-30 min</strong>, <strong>6h</strong>, and <strong>24h</strong> after PCC</li>
                                   <li>• If INR &gt;1.5 at 15-30 min → <strong>consult hematology</strong> for additional PCC</li>
@@ -28851,7 +28844,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </li>
                                   <li className="flex gap-2">
                                     <span className="shrink-0 font-bold text-purple-700">3.</span>
-                                    <span>If idarucizumab unavailable → <button onClick={() => setProtocolModal(protocolDetailMap.PCC_DOAC)} className="text-blue-600 underline hover:text-blue-800">PCC (Kcentra) 2000 units</button></span>
+                                    <span>If idarucizumab unavailable → <button onClick={() => setProtocolModal(protocolDetailMap.PCC_DOAC)} className="text-blue-600 underline hover:text-blue-800">4F-PCC 50 IU/kg IV</button></span>
                                   </li>
                                 </ul>
                                 <p className="text-xs text-purple-600 mt-2">Emergent dialysis option — dabigatran ~65% removed by dialysis (t½ = 14h, longer in renal impairment)</p>
@@ -28868,7 +28861,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </li>
                                   <li className="flex gap-2">
                                     <span className="shrink-0 font-bold text-indigo-700">2.</span>
-                                    <span>Consider <button onClick={() => setProtocolModal(protocolDetailMap.PCC_DOAC)} className="text-blue-600 underline font-semibold hover:text-blue-800">PCC (Kcentra) 2000 units</button> — ONLY if no contraindications</span>
+                                    <span>Andexanet alfa is reasonable (AHA/ASA Class IIa); if unavailable, consider <button onClick={() => setProtocolModal(protocolDetailMap.PCC_DOAC)} className="text-blue-600 underline font-semibold hover:text-blue-800">4F-PCC 50 IU/kg IV</button></span>
                                   </li>
                                 </ul>
                                 <p className="text-xs text-indigo-600 mt-2">NOT dialyzable (rivaroxaban t½ = 9h, apixaban t½ = 12h)</p>
@@ -28914,7 +28907,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="text-sm">
                                     <p><strong>STAT non-contrast CT Head</strong> + <strong>STAT blood draw:</strong></p>
                                     <ul className="ml-4 mt-1 text-xs space-y-0.5">
-                                      <li>• Emergency Hemorrhage Panel: PT/INR, platelets, fibrinogen</li>
+                                      <li>• STAT hemorrhage panel: PT/INR, platelets, fibrinogen</li>
                                       <li>• Coag screen: PTT, TT, D-dimers</li>
                                       <li>• CBC, Type & Cross</li>
                                     </ul>
@@ -28922,7 +28915,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 <div className="flex gap-2 items-start">
                                   <span className="shrink-0 w-6 h-6 rounded-full bg-red-700 text-white text-xs flex items-center justify-center font-bold">3</span>
-                                  <p className="text-sm">Call <strong>Transfusion Support</strong>; order <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-blue-600 underline font-semibold hover:text-blue-800">2 pools Cryoprecipitate</button> (~15-20 min to prepare)</p>
+                                  <p className="text-sm">Contact <strong>blood bank/transfusion services</strong>; order <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-blue-600 underline font-semibold hover:text-blue-800">cryoprecipitate</button> (fibrinogen &lt;200 mg/dL)</p>
                                 </div>
                                 <div className="flex gap-2 items-start">
                                   <span className="shrink-0 w-6 h-6 rounded-full bg-red-700 text-white text-xs flex items-center justify-center font-bold">4</span>
@@ -29198,12 +29191,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h4 className="font-semibold text-blue-700 mb-3">Warfarin</h4>
                           <ul className="text-sm space-y-1">
                             <li><strong>Immediate:</strong> Vitamin K 10 mg IV for all warfarin patients.</li>
-                            <li><strong>INR ≥1.6:</strong> PCC (Kcentra) 2000 units IVPB x1.</li>
-                            <li><strong>Check INR:</strong> at 15-30 min, 6h, and 24h after PCC.</li>
-                            <li><strong>INR &gt;1.5 at 15-30 min:</strong> consult hematology for additional PCC.</li>
+                            <li><strong>INR ≥2.0 (COR I/B-R):</strong> 4F-PCC (Kcentra) 25-50 IU/kg based on INR (max 5000 IU).</li>
+                            <li><strong>INR 1.6-1.9 (COR IIb/C):</strong> PCC may be considered on case-by-case basis.</li>
+                            <li><strong>Check INR:</strong> at 15-30 min and 6h after PCC.</li>
+                            <li><strong>INR &gt;1.5 after PCC:</strong> consult hematology for additional PCC.</li>
                             <li><strong>INR &gt;1.5 at 24h:</strong> repeat vitamin K 10 mg IV over 30 min.</li>
-                            <li><strong>INR 1.3-1.5:</strong> low evidence — consider on case-by-case basis.</li>
-                            <li><strong>FFP pathway (if PCC unavailable):</strong> 4 units emergency-release FFP → recheck INR → if &gt;1.5 give 4 more → if still &gt;1.5 consult hematology.</li>
+                            <li><strong>FFP pathway (if PCC unavailable):</strong> FFP 10-15 mL/kg IV → recheck INR → if &gt;1.5 administer additional FFP → if still &gt;1.5 consult hematology.</li>
                           </ul>
                         </div>
 
@@ -29215,7 +29208,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <p className="text-sm font-semibold text-slate-700">Dabigatran (Direct Thrombin Inhibitor):</p>
                             <ul className="text-sm space-y-1">
                               <li><strong>Idarucizumab (Praxbind):</strong> 5 g IV — two 2.5 g doses, ≤15 min apart, each over 5-10 min.</li>
-                              <li><strong>If unavailable:</strong> PCC (Kcentra) 2000 units.</li>
+                              <li><strong>If unavailable:</strong> 4F-PCC 50 IU/kg IV.</li>
                               <li><strong>Activated charcoal:</strong> if ingestion &lt;2 hours.</li>
                               <li><strong>Dialysis:</strong> ~65% removed (t½ = 14h, longer in renal impairment).</li>
                             </ul>
@@ -29224,7 +29217,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div>
                             <p className="text-sm font-semibold text-slate-700">Rivaroxaban / Apixaban (Factor Xa Inhibitors):</p>
                             <ul className="text-sm space-y-1">
-                              <li><strong>PCC (Kcentra):</strong> 2000 units — consider ONLY if Direct Xa Inhibitor screen elevated and no contraindications.</li>
+                              <li><strong>Andexanet alfa:</strong> AHA/ASA 2022 Class IIa — dose by agent/last-dose timing when available.</li>
+                              <li><strong>4F-PCC:</strong> 50 IU/kg IV if andexanet unavailable — consider if Direct Xa Inhibitor screen elevated and no contraindications.</li>
                               <li><strong>Activated charcoal:</strong> if ingestion &lt;2 hours.</li>
                               <li><strong>NOT dialyzable</strong> (rivaroxaban t½ = 9h, apixaban t½ = 12h).</li>
                             </ul>
@@ -30262,7 +30256,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <ol className="text-sm space-y-1 list-decimal list-inside">
                                 <li>Stop thrombolytic if still running</li>
                                 <li>STAT non-contrast CT head + STAT blood draw (PT/INR, platelets, fibrinogen, PTT, TT, D-dimers, CBC, Type &amp; Cross)</li>
-                                <li>Call Transfusion Support; order 2 pools cryoprecipitate</li>
+                                <li>Contact blood bank/transfusion services; order 2 pools cryoprecipitate</li>
                                 <li>Notify patient's family</li>
                               </ol>
                             </div>
@@ -33329,7 +33323,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           );
                         })()}
                         <div className="mt-2 p-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">
-                          <strong>Practice note:</strong> Use local protocol for Xa-associated ICH reversal: andexanet alfa when formulary-available and clinically appropriate, or 4F-PCC when andexanet is unavailable/contraindicated. AHA/ASA 2022 lists andexanet as Class IIa (reasonable). Monitor closely for thrombotic complications after any reversal strategy.
+                          <strong>Practice note:</strong> AHA/ASA 2022 lists andexanet alfa as Class IIa (reasonable) for Xa inhibitor-associated ICH reversal. 4F-PCC is an alternative when andexanet is unavailable or contraindicated. Monitor closely for thrombotic complications after any reversal strategy.
                         </div>
                         <p className="text-xs text-slate-500 mt-1">ANNEXA-4 trial. Low-dose if last DOAC &ge;8h ago (or apixaban &le;5mg). High-dose if last dose &lt;8h ago (or rivaroxaban &gt;10mg, apixaban &gt;5mg). Monitor for thrombotic events post-reversal.</p>
                       </div>

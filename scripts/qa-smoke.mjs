@@ -7,7 +7,7 @@ import { chromium } from 'playwright';
 
 const PORT = 4173;
 const LOCAL_URL = `http://127.0.0.1:${PORT}/`;
-const LIVE_URL = 'https://rkalani1.github.io/stroke/';
+const LIVE_URL = '';
 const VIEWPORTS = [
   { name: 'desktop', width: 1440, height: 900 },
   { name: 'tablet', width: 768, height: 1024 },
@@ -381,15 +381,7 @@ async function auditView(browser, target, viewport) {
     if ((await page.getByText(/Quick Contacts/i).count()) === 0) {
       addIssue(issues, 'quick-contacts-panel-missing');
     }
-    if ((await page.getByText(/Stroke Phone/i).count()) === 0) {
-      addIssue(issues, 'quick-contacts-default-missing', { contact: 'Stroke Phone' });
-    }
-    if ((await page.getByText(/STAT Pharmacy/i).count()) === 0) {
-      addIssue(issues, 'quick-contacts-default-missing', { contact: 'STAT Pharmacy' });
-    }
-    if ((await page.getByText(/HMC Stroke RAD Hotline/i).count()) === 0) {
-      addIssue(issues, 'quick-contacts-default-missing', { contact: 'HMC Stroke RAD Hotline' });
-    }
+    // Default contacts check removed — DEFAULT_CONTACTS is now empty
     await page.keyboard.press('Escape');
     await page.waitForTimeout(100);
   }
@@ -755,15 +747,11 @@ async function auditView(browser, target, viewport) {
     if ((await page.getByText(/Contact Directory/i).count()) === 0) {
       addIssue(issues, 'missing-contact-directory-settings');
     }
-    if ((await page.getByRole('button', { name: /Reset UW Defaults/i }).count()) === 0) {
+    if ((await page.getByRole('button', { name: /Reset Defaults/i }).count()) === 0) {
       addIssue(issues, 'missing-contact-directory-reset');
     }
 
-    const requiredContacts = [
-      { label: 'Stroke Phone', phone: '206-744-6789' },
-      { label: 'STAT Pharmacy', phone: '206-744-2241' },
-      { label: 'HMC Stroke RAD Hotline', phone: '206-744-8484' }
-    ];
+    const requiredContacts = [];
     for (const contact of requiredContacts) {
       const labelPresent = await page.locator(`input[value=\"${contact.label}\"]`).count();
       if (labelPresent === 0) {

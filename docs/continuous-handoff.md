@@ -3,17 +3,17 @@
 ## Current state (2026-02-21)
 - Branch: `main`
 - Last pushed commit: run `git rev-parse --short origin/main`
-- Production URL: `https://rkalani1.github.io/stroke/`
+- Production URL: (GitHub Pages deployment URL)
 - Live APP_VERSION: `v5.14.78`
 - Service worker cache key: `stroke-app-v77`
 
 ## Iteration 130 update (2026-02-21, macOS session)
 - Completed:
   - Added latency recalibration generator:
-    - `/Users/rizwankalani/stroke/scripts/qa-latency-recalibration.mjs`
+    - `/home/user/stroke/scripts/qa-latency-recalibration.mjs`
     - `npm run qa:latency:recalibrate`
   - Added recalibration artifact:
-    - `/Users/rizwankalani/stroke/docs/qa-latency-recalibration.md`
+    - `/home/user/stroke/docs/qa-latency-recalibration.md`
   - Added run-duration detail persistence in latency history snapshots (`runDurations`).
   - Updated ops index to include recalibration artifact and command references.
 - Validation status:
@@ -22,32 +22,32 @@
   - `npm run qa:latency:recalibrate` pass
   - `npm run evidence:index` pass
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 129 update (2026-02-21, macOS session)
 - Completed:
   - Added rolling latency history persistence in smoke QA:
-    - `/Users/rizwankalani/stroke/docs/qa-latency-history.json`
+    - `/home/user/stroke/docs/qa-latency-history.json`
   - Added latency history summary metadata fields:
     - `latencyHistoryPath`
     - `latencyHistoryCount`
   - Updated ops index generator and artifact to include QA latency history:
-    - `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs`
-    - `/Users/rizwankalani/stroke/docs/evidence-ops-index.md`
+    - `/home/user/stroke/scripts/evidence-ops-index.mjs`
+    - `/home/user/stroke/docs/evidence-ops-index.md`
 - Validation status:
   - `npm run build` pass
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
   - `npm run evidence:index` pass
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 128 update (2026-02-21, macOS session)
 - Completed:
   - Added local-only adaptive strict smoke command:
     - `npm run qa:latency-adaptive-local`
   - Added PR-safe adaptive local lane in:
-    - `/Users/rizwankalani/stroke/.github/workflows/ci.yml`
+    - `/home/user/stroke/.github/workflows/ci.yml`
   - Added diagnostics artifact path:
     - `output/diagnostics/qa-latency-adaptive-local.log`
 - Validation status:
@@ -55,12 +55,12 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 127 update (2026-02-21, macOS session)
 - Completed:
   - Added adaptive strict CI lane in:
-    - `/Users/rizwankalani/stroke/.github/workflows/ci.yml`
+    - `/home/user/stroke/.github/workflows/ci.yml`
   - New job:
     - `adaptive-latency-smoke` (non-PR events)
   - Job command:
@@ -69,36 +69,36 @@
 - Validation status:
   - `npm run qa:latency-adaptive-strict` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 126 update (2026-02-21, macOS session)
 - Completed:
   - Updated scheduled live audit command path in:
-    - `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`
+    - `/home/user/stroke/.github/workflows/live-smoke.yml`
   - Live-smoke QA step now runs:
     - `npm run qa:latency-adaptive-strict`
 - Validation status:
   - `npm run qa:latency-adaptive-strict` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 125 update (2026-02-21, macOS session)
 - Completed:
   - Added QA latency profile artifacts and command references to generated ops index:
-    - updated `/Users/rizwankalani/stroke/scripts/evidence-ops-index.mjs`
-    - regenerated `/Users/rizwankalani/stroke/docs/evidence-ops-index.md`
+    - updated `/home/user/stroke/scripts/evidence-ops-index.mjs`
+    - regenerated `/home/user/stroke/docs/evidence-ops-index.md`
 - Validation status:
   - `npm run evidence:index` pass
   - `npm run build` pass
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 124 update (2026-02-21, macOS session)
 - Completed:
   - Added latency profile validator:
-    - `/Users/rizwankalani/stroke/scripts/validate-qa-latency-profiles.mjs`
+    - `/home/user/stroke/scripts/validate-qa-latency-profiles.mjs`
     - `npm run validate:qa-latency-profiles`
   - Integrated validator into:
     - `npm test`
@@ -113,7 +113,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 123 update (2026-02-21, macOS session)
 - Completed:
@@ -123,14 +123,14 @@
     - `latencyProfilesSource`
     - `availableLatencyProfiles`
   - Added latency profile artifact:
-    - `/Users/rizwankalani/stroke/docs/qa-latency-profiles.json`
+    - `/home/user/stroke/docs/qa-latency-profiles.json`
   - Updated adaptive strict QA command to load external profile file.
 - Validation status:
   - `npm run build` pass
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa:latency-adaptive-strict` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 122 update (2026-02-21, macOS session)
 - Completed:
@@ -145,7 +145,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa:latency-adaptive-strict` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 121 update (2026-02-21, macOS session)
 - Completed:
@@ -160,12 +160,12 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa:latency-strict` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 120 update (2026-02-21, macOS session)
 - Completed:
   - Added configurable smoke latency-threshold alerting in:
-    - `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`
+    - `/home/user/stroke/scripts/qa-smoke.mjs`
   - Added summary telemetry for threshold governance:
     - `runDurationThresholdMs`
     - `sectionDurationThresholdMs`
@@ -176,12 +176,12 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 119 update (2026-02-21, macOS session)
 - Completed:
   - Added section-level smoke timing telemetry and per-run duration capture in:
-    - `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`
+    - `/home/user/stroke/scripts/qa-smoke.mjs`
   - Added summary-level timing diagnostics in smoke report output:
     - `averageRunDurationMs`
     - `slowestRun`
@@ -191,15 +191,15 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 118 update (2026-02-21, macOS session)
 - Completed:
   - Added churn-profile schema validation diagnostics capture and artifact export in:
-    - `/Users/rizwankalani/stroke/.github/workflows/ci.yml`
-    - `/Users/rizwankalani/stroke/.github/workflows/live-smoke.yml`
+    - `/home/user/stroke/.github/workflows/ci.yml`
+    - `/home/user/stroke/.github/workflows/live-smoke.yml`
   - Hardened smoke-run reliability in:
-    - `/Users/rizwankalani/stroke/scripts/qa-smoke.mjs`
+    - `/home/user/stroke/scripts/qa-smoke.mjs`
     - deterministic Playwright action timeout defaults,
     - per-viewport runtime errors now captured as `audit-runtime-error` findings instead of aborting the full run.
 - Validation status:
@@ -207,7 +207,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Session summary (iter-006 through iter-038)
 
@@ -310,7 +310,7 @@
 - Focus trap useEffect deps: removed settingsMenuOpen (not a modal)
 - XSS import validation hardened: data:text/html, vbscript:, on*= event handler patterns
 - Encounter history localStorage save: silent catch → error logging
-- De-identification: UW Medicine + UW neurology intranet links relabeled as "EMR" and "Telestroke Resources" (no institutional names visible)
+- De-identification: institutional intranet links relabeled as "EMR" and "Telestroke Resources" (no institutional names visible)
 - Accessibility: aria-label on DOAC initiation day, TEE findings, discharge checklist detail inputs
 - Input validation: max bounds on CrCl (200), CTP core (500), CTP penumbra (1500)
 - Discharge note: substance screening (AUDIT-C), hormonal risk (OCP/HRT), rehab screening (spasticity, central pain, fatigue)
@@ -327,7 +327,7 @@
 - Imaging follow-up modality field for discharge note (requires new state field)
 
 ## Resume command
-- `cd /Users/rizwankalani/stroke && git pull --rebase origin main && npm test && npm run qa && npm run build`
+- `cd /home/user/stroke && git pull --rebase origin main && npm test && npm run qa && npm run build`
 
 ## Iteration 037a update (2026-02-18, Mac session)
 - Added deterministic smoke automation (`scripts/qa-smoke.mjs`) and wired commands:
@@ -347,12 +347,12 @@
 - Strengthened smoke automation with diagnosis-switch and TNK-visibility gating checks.
 - Added local server re-use logic to avoid flaky failures when port `4173` is already occupied.
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && npm test && npm run qa && npm run build`
+  - `cd /home/user/stroke && npm test && npm run qa && npm run build`
 
 ## Iteration 040 update (2026-02-18)
 - Handoff metadata commit pointer synced to latest deployed state.
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && npm test && npm run qa && npm run build`
+  - `cd /home/user/stroke && npm test && npm run qa && npm run build`
 
 ## Iteration 041 update (2026-02-18)
 - Replaced hardcoded handoff commit hash with command-based retrieval to prevent stale metadata in rapid loops.
@@ -603,9 +603,9 @@
 - Data export/import audit: importBackup dead code confirmed. Export completeness gap addressed above.
 
 ## Iteration 067 update (2026-02-20, macOS session)
-- Restored on-call quick-call workflow for UW stroke operations:
+- Restored on-call quick-call workflow for institutional stroke operations:
   - Reintroduced bottom-right Quick Contacts FAB with tap-to-call `tel:` links.
-  - Restored UW/HMC default contact numbers (stroke phone, radiology lines, angio, imaging, IT/paging) and added Settings contact-directory editor (add/remove/reset defaults).
+  - Restored institutional default contact numbers (stroke phone, radiology lines, angio, imaging, IT/paging) and added Settings contact-directory editor (add/remove/reset defaults).
 - Evidence/content refresh:
   - TIA disposition wording changed from universal-admission language to risk-stratified pathways aligned with AHA TIA ED statement framing.
   - Extended-window IVT recommendation text updated with TIMELESS + OPTION context for imaging-selected late presenters.
@@ -618,7 +618,7 @@
   - `npm run build` pass.
   - `npm test` pass (local smoke, all three viewports).
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && npm test && npm run build`
+  - `cd /home/user/stroke && npm test && npm run build`
 
 ## Iteration 068 update (2026-02-20, macOS session)
 - Fixed runtime initialization regression caused by non-hoisted helper functions introduced in this cycle.
@@ -638,7 +638,7 @@
   - `git push origin main` pass
   - `npm run qa` pass (local + live smoke, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run build`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run build`
 
 ## Iteration 069 update (2026-02-20, macOS session)
 - Expanded smoke QA from static presence checks to scenario-level decision checks:
@@ -649,18 +649,18 @@
   - `npm test` pass (local)
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 070 update (2026-02-20, macOS session)
 - Added explicit protected-contact regression invariants to smoke automation:
-  - Quick Contacts must contain Stroke Phone, STAT Pharmacy, and HMC Stroke RAD Hotline.
+  - Quick Contacts must contain Stroke Phone, STAT Pharmacy, and Stroke RAD Hotline.
   - Settings Contact Directory must retain protected label/phone pairs for those three defaults.
 - Validation status:
   - `npm run build` pass
   - `npm test` pass (local)
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 071 update (2026-02-20, macOS session)
 - Performed source-level evidence metadata audit for CVT statement and corrected a stale DOI in documentation.
@@ -671,7 +671,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 072 update (2026-02-20, macOS session)
 - Added GitHub Actions CI workflow (`.github/workflows/ci.yml`) to run:
@@ -684,7 +684,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 073 update (2026-02-20, macOS session)
 - Added scheduled production audit workflow (`.github/workflows/live-smoke.yml`):
@@ -695,7 +695,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 074 update (2026-02-20, macOS session)
 - Stabilized wake-up/extended-window QA scenario in `scripts/qa-smoke.mjs`:
@@ -708,7 +708,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 075 update (2026-02-20, macOS session)
 - Added explicit WAKE-UP/EXTEND non-eligibility trace output to generated notes:
@@ -722,7 +722,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 076 update (2026-02-20, macOS session)
 - Added deterministic wake-up note-trace validation to smoke automation:
@@ -734,7 +734,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 077 update (2026-02-20, macOS session)
 - Enhanced scheduled live-smoke operational alerting in `.github/workflows/live-smoke.yml`:
@@ -745,7 +745,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 078 update (2026-02-20, macOS session)
 - Expanded `buildContraindicationTrace(...)` output in `src/app.jsx` with structured supportive negatives:
@@ -759,7 +759,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 079 update (2026-02-20, macOS session)
 - Added structured post-EVT BP plan export helper and note integration:
@@ -771,7 +771,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 080 update (2026-02-20, macOS session)
 - Hardened citation QA script (`scripts/validate-citations.mjs`) with:
@@ -782,7 +782,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 081 update (2026-02-20, macOS session)
 - Expanded wake-up note smoke scenario to validate contraindication supportive-negative trace persistence:
@@ -793,7 +793,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 082 update (2026-02-20, macOS session)
 - Completed post-EVT BP-plan note regression flow in smoke automation:
@@ -805,7 +805,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 083 update (2026-02-20, macOS session)
 - Added evidence URL-health checks in citation validator:
@@ -822,7 +822,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations:links && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run validate:citations:links && npm run qa`
 
 ## Iteration 084 update (2026-02-20, macOS session)
 - Added evidence identifier-endpoint checks in citation validator:
@@ -840,7 +840,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations:links && npm run validate:citations:ids && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run validate:citations:links && npm run validate:citations:ids && npm run qa`
 
 ## Iteration 085 update (2026-02-20, macOS session)
 - Hardened PMID validation strategy:
@@ -856,7 +856,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations:links && npm run validate:citations:ids && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run validate:citations:links && npm run validate:citations:ids && npm run qa`
 
 ## Iteration 086 update (2026-02-20, macOS session)
 - Added automated evidence watchlist generation:
@@ -873,7 +873,7 @@
   - `npm test` pass
   - `npm run qa` pass (local + live, 0 issues)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run validate:citations:links && npm run validate:citations:ids && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run validate:citations:links && npm run validate:citations:ids && npm run qa`
 
 ## Iteration 088 update (2026-02-20, macOS session)
 - Added clinician-priority watchlist scoring/ranking in `scripts/evidence-watch.mjs` and regenerated `docs/evidence-watchlist.md`.
@@ -888,7 +888,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run validate:citations:links && npm run validate:citations:ids && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run validate:citations:links && npm run validate:citations:ids && npm test && npm run qa`
 
 ## Iteration 089 update (2026-02-20, macOS session)
 - Corrected maternal-stroke evidence metadata alignment to Stroke statement record:
@@ -903,7 +903,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run validate:citations:links && npm run validate:citations:ids && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run validate:citations:links && npm run validate:citations:ids && npm test && npm run qa`
 
 ## Iteration 090 update (2026-02-20, macOS session)
 - Implemented structured special-population workflows in `src/app.jsx`:
@@ -921,7 +921,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
 
 ## Iteration 091 update (2026-02-21, macOS session)
 - Implemented ICH escalation timeliness workflow upgrades in `src/app.jsx`:
@@ -939,7 +939,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
 
 ## Iteration 092 update (2026-02-21, macOS session)
 - Implemented SAH standardized outcomes workflow in `src/app.jsx`:
@@ -956,7 +956,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
 
 ## Iteration 093 update (2026-02-21, macOS session)
 - Implemented DAPT adherence tracking workflow upgrades in `src/app.jsx`:
@@ -974,7 +974,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
 
 ## Iteration 094 update (2026-02-21, macOS session)
 - Implemented AIS-2026 guideline-delta visibility upgrades in `src/app.jsx`:
@@ -989,7 +989,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run validate:citations && npm test && npm run qa`
 
 ## Iteration 095 update (2026-02-21, macOS session)
 - Implemented evidence-promotion checklist automation:
@@ -1004,7 +1004,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run evidence:promote && npm run validate:citations && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:watch && npm run evidence:promote && npm run validate:citations && npm test && npm run qa`
 
 ## Iteration 096 update (2026-02-21, macOS session)
 - Implemented evidence-promotion sync validation:
@@ -1020,7 +1020,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run validate:citations && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run validate:citations && npm test && npm run qa`
 
 ## Iteration 097 update (2026-02-21, macOS session)
 - Implemented evidence promotion template scaffolding:
@@ -1037,7 +1037,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run validate:citations && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run validate:citations && npm test && npm run qa`
 
 ## Iteration 098 update (2026-02-21, macOS session)
 - Implemented selective evidence-template generation controls in `scripts/evidence-promotion-template.mjs`:
@@ -1059,7 +1059,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run evidence:template:p0 && npm run validate:citations && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run evidence:template:p0 && npm run validate:citations && npm test && npm run qa`
 
 ## Iteration 099 update (2026-02-21, macOS session)
 - Implemented pediatric pathway operationalization in `src/app.jsx`:
@@ -1084,7 +1084,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run validate:citations && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm run validate:citations && npm test && npm run qa`
 
 ## Iteration 100 update (2026-02-21, macOS session)
 - Added pediatric regression hardening in `scripts/qa-smoke.mjs`:
@@ -1098,7 +1098,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 101 update (2026-02-21, macOS session)
 - Refined evidence-watch triage filters in `scripts/evidence-watch.mjs` to exclude design/protocol-only publications from high-priority queues:
@@ -1120,7 +1120,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 102 update (2026-02-21, macOS session)
 - Enhanced `scripts/evidence-watch.mjs` transparency while preserving stricter triage:
@@ -1136,7 +1136,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 103 update (2026-02-21, macOS session)
 - Added filtered-appendix CLI controls in `scripts/evidence-watch.mjs`:
@@ -1151,7 +1151,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 104 update (2026-02-21, macOS session)
 - Enhanced filtered-candidate transparency in `scripts/evidence-watch.mjs`:
@@ -1167,7 +1167,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 105 update (2026-02-21, macOS session)
 - Added per-domain filtered-candidate visibility in `scripts/evidence-watch.mjs`:
@@ -1183,7 +1183,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 106 update (2026-02-21, macOS session)
 - Added filtered-topic dominance alerting in `scripts/evidence-watch.mjs`:
@@ -1205,7 +1205,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 107 update (2026-02-21, macOS session)
 - Synced handoff metadata to deployed state:
@@ -1214,7 +1214,7 @@
 - Validation status:
   - live endpoint checks confirm version/cache markers match deployed assets.
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 108 update (2026-02-21, macOS session)
 - Added per-topic filtered-dominance controls in `scripts/evidence-watch.mjs`:
@@ -1236,7 +1236,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 109 update (2026-02-21, macOS session)
 - Hardened smoke-QA feature-parity gating in `scripts/qa-smoke.mjs`:
@@ -1252,7 +1252,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm test && npm run qa`
 
 ## Iteration 110 update (2026-02-21, macOS session)
 - Enhanced watchlist governance trend visibility in `scripts/evidence-watch.mjs`:
@@ -1270,7 +1270,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 111 update (2026-02-21, macOS session)
 - Added topic-status flip governance alerting in `scripts/evidence-watch.mjs`:
@@ -1288,7 +1288,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 112 update (2026-02-21, macOS session)
 - Added persistent watchlist governance history in `scripts/evidence-watch.mjs`:
@@ -1308,7 +1308,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 113 update (2026-02-21, macOS session)
 - Added weighted churn scoring in `scripts/evidence-watch.mjs`:
@@ -1334,7 +1334,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 114 update (2026-02-21, macOS session)
 - Added criticality-adjusted churn monitoring in `scripts/evidence-watch.mjs`:
@@ -1360,7 +1360,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 115 update (2026-02-21, macOS session)
 - Added churn policy profiles in `scripts/evidence-watch.mjs`:
@@ -1385,7 +1385,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 116 update (2026-02-21, macOS session)
 - Externalized churn profile configuration:
@@ -1408,7 +1408,7 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
 
 ## Iteration 117 update (2026-02-21, macOS session)
 - Added churn-profile schema validator:
@@ -1434,4 +1434,4 @@
   - `npm test` pass (`Runs: 3 | Issues: 0`)
   - `npm run qa` pass (`Runs: 6 | Issues: 0`)
 - Next command to continue loop:
-  - `cd /Users/rizwankalani/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`
+  - `cd /home/user/stroke && test ! -f .codex-stop && npm run evidence:refresh && npm test && npm run qa`

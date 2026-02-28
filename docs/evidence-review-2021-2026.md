@@ -248,7 +248,7 @@
 
 ### Operational update (2026-02-20, iter-070)
 - No new citation sources were introduced.
-- Added workflow-safety regression gates for protected UW on-call contact endpoints to preserve rapid communication reliability during acute stroke operations.
+- Added workflow-safety regression gates for protected institutional on-call contact endpoints to preserve rapid communication reliability during acute stroke operations.
 - This is an operational resilience update that supports evidence implementation speed/safety without changing recommendation content.
 
 ### Metadata verification refresh (2026-02-20, iter-071)

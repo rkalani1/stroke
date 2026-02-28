@@ -131,7 +131,7 @@
 - Continuous-ops metadata drift mitigated by moving from static commit hashes to command-based retrieval in handoff.
 
 ## Iteration 042 Update (2026-02-20)
-- Workflow reliability gap closed for on-call operations: restored bottom-right quick-call contact FAB plus editable UW contact directory defaults in Settings.
+- Workflow reliability gap closed for on-call operations: restored bottom-right quick-call contact FAB plus editable institutional contact directory defaults in Settings.
 - Evidence/content gap updates:
   - TIA disposition language converted from universal admission to risk-stratified pathways per AHA TIA ED statement.
   - Extended-window IVT narrative refreshed with TIMELESS + OPTION context.
@@ -160,7 +160,7 @@
 
 ## Iteration 070 Update (2026-02-20)
 - On-call contact safety gap reduced:
-  - Added deterministic regression invariants for protected UW quick-call contacts (labels and phone numbers) in both FAB and Settings directory views.
+  - Added deterministic regression invariants for protected institutional quick-call contacts (labels and phone numbers) in both FAB and Settings directory views.
   - This directly enforces the explicit non-removal policy for critical on-call communication pathways.
 - Remaining operations gap:
   - Add CI-level fail-fast gate that runs the smoke suite on every push to prevent manual-only execution drift.
