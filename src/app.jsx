@@ -741,7 +741,6 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           'encounter',
           'protocols',
           'trials',
-          'settings',
           'management',
           'library'
         ];
@@ -768,7 +767,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
             case 'management':
               return { tab: 'protocols', sub: normalizeManagementSubTab(sub) };
             case 'settings':
-              return { tab: 'settings' };
+              return { tab: 'encounter' };
             case 'ich':
             case 'calculators':
             case 'evidence':
@@ -792,8 +791,6 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
             }
             case 'trials':
               return '#/trials';
-            case 'settings':
-              return '#/settings';
             default:
               return '#/encounter';
           }
@@ -1641,7 +1638,7 @@ Clinician Name`;
 
           const initialActiveTab = (() => {
             const storedTab = appData.uiState.lastActiveTab || 'encounter';
-            if (storedTab === 'dashboard') return 'encounter';
+            if (storedTab === 'dashboard' || storedTab === 'settings') return 'encounter';
             if (LEGACY_MANAGEMENT_TABS[storedTab]) return 'protocols';
             if (storedTab === 'management' || storedTab === 'library') return 'protocols';
             return storedTab;
@@ -1717,7 +1714,6 @@ Clinician Name`;
           const [guidelineLibraryGuideline, setGuidelineLibraryGuideline] = useState('');
           const [guidelineLibrarySection, setGuidelineLibrarySection] = useState('');
           const [guidelineLibraryClass, setGuidelineLibraryClass] = useState('');
-          const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
           const [deidWarnings, setDeidWarnings] = useState({});
 
           // Workflow tracking
@@ -1737,11 +1733,6 @@ Clinician Name`;
             const saved = getKey('timerSidebarCollapsed', null);
             if (saved !== null && saved !== undefined) return saved === true;
             return window.innerWidth < 1024; // collapsed by default on mobile/tablet
-          });
-          const [actionBarCollapsed, setActionBarCollapsed] = useState(() => {
-            const saved = getKey('actionBarCollapsed', null);
-            if (saved !== null && saved !== undefined) return saved === true;
-            return window.innerWidth < 768 || settings.workflowPersona !== 'trainee';
           });
           const [quickLinksCollapsed, setQuickLinksCollapsed] = useState(() => window.innerWidth < 768);
           const [callingSiteCollapsed, setCallingSiteCollapsed] = useState(false);
@@ -1839,7 +1830,6 @@ Clinician Name`;
           });
 
           // Changelog modal
-          const [showChangelog, setShowChangelog] = useState(false);
 
 
           const [selectedPackId, setSelectedPackId] = useState(appData.encounter.clipboardPacks?.[0]?.id || 'telestroke-consult');
@@ -7916,8 +7906,6 @@ Clinician Name`;
               if (key === 'Escape') {
                 if (settingsMenuOpen) { setSettingsMenuOpen(false); return; }
                 if (searchOpen) { setSearchOpen(false); return; }
-                if (showKeyboardHelp) { setShowKeyboardHelp(false); return; }
-                if (showChangelog) { setShowChangelog(false); return; }
                 if (confirmConfig) { handleConfirmClose(null); return; }
                 if (protocolModal) { setProtocolModal(null); return; }
                 if (calcDrawerOpen) { setCalcDrawerOpen(false); return; }
@@ -7944,13 +7932,6 @@ Clinician Name`;
                 requestAnimationFrame(() => {
                   document.querySelector('input[placeholder*="Search"]')?.focus();
                 });
-                return;
-              }
-
-              // "?" — toggle keyboard help (outside inputs)
-              if (!primary && !e.altKey && key === '?' && !targetIsInput) {
-                e.preventDefault();
-                setShowKeyboardHelp(prev => !prev);
                 return;
               }
 
@@ -7983,13 +7964,6 @@ Clinician Name`;
                 return;
               }
 
-              // Ctrl/Cmd+Shift+J — collapse/expand workflow rail
-              if (primary && e.shiftKey && !e.altKey && lowerKey === 'j') {
-                e.preventDefault();
-                setActionBarCollapsed((prev) => !prev);
-                return;
-              }
-
               // Ctrl/Cmd + E — export PDF
               if (primary && !e.shiftKey && !e.altKey && lowerKey === 'e') {
                 e.preventDefault();
@@ -8002,8 +7976,7 @@ Clinician Name`;
                 const tabMap = {
                   '1': { tab: 'encounter' },
                   '2': { tab: 'protocols' },
-                  '3': { tab: 'trials' },
-                  '4': { tab: 'settings' }
+                  '3': { tab: 'trials' }
                 };
                 if (tabMap[key]) {
                   e.preventDefault();
@@ -8039,7 +8012,7 @@ Clinician Name`;
             };
             document.addEventListener('keydown', handleKeyDown);
             return () => document.removeEventListener('keydown', handleKeyDown);
-          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode, settingsMenuOpen, searchOpen, showKeyboardHelp, showChangelog, telestrokeNote.age, telestrokeNote.sex, telestrokeNote.nihss, telestrokeNote.ctResults, telestrokeNote.diagnosis, telestrokeNote.disposition, lkwTime, nihssScore]);
+          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode, settingsMenuOpen, searchOpen, telestrokeNote.age, telestrokeNote.sex, telestrokeNote.nihss, telestrokeNote.ctResults, telestrokeNote.diagnosis, telestrokeNote.disposition, lkwTime, nihssScore]);
 
 
           // Restore focus to settings trigger when menu closes
@@ -14407,14 +14380,13 @@ Clinician Name`;
                 });
               }
             }
-            const tabCommand = lowerQuery.match(/^(?:tab|go|open)\s+(encounter|protocols|trials|settings|library|management)$/i);
+            const tabCommand = lowerQuery.match(/^(?:tab|go|open)\s+(encounter|protocols|trials|library|management)$/i);
             if (tabCommand) {
               const tabKey = tabCommand[1].toLowerCase();
               const tabLabelMap = {
                 encounter: 'Encounter',
                 protocols: 'Protocols',
                 trials: 'Trials',
-                settings: 'Settings',
                 library: 'Protocols',
                 management: 'Protocols'
               };
@@ -15093,9 +15065,6 @@ Clinician Name`;
           useEffect(() => {
             setKey('timerSidebarCollapsed', timerSidebarCollapsed, { skipLastUpdated: true });
           }, [timerSidebarCollapsed]);
-          useEffect(() => {
-            setKey('actionBarCollapsed', actionBarCollapsed, { skipLastUpdated: true });
-          }, [actionBarCollapsed]);
 
 
 
@@ -15947,7 +15916,7 @@ Clinician Name`;
 
           // Lock body scroll + focus trap when full-screen modals are open
           useEffect(() => {
-            const anyModalOpen = !!protocolModal || showChangelog || showKeyboardHelp || calcDrawerOpen || !!confirmConfig;
+            const anyModalOpen = !!protocolModal || calcDrawerOpen || !!confirmConfig;
             if (anyModalOpen) {
               const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
               document.body.style.overflow = 'hidden';
@@ -15989,14 +15958,14 @@ Clinician Name`;
                 if (previouslyFocused && previouslyFocused.isConnected && typeof previouslyFocused.focus === 'function') previouslyFocused.focus();
               };
             }
-          }, [protocolModal, showChangelog, showKeyboardHelp, calcDrawerOpen, confirmConfig]);
+          }, [protocolModal, calcDrawerOpen, confirmConfig]);
 
           // Reinitialize icons when tab/layout/modal content changes
           useEffect(() => {
             if (isMounted) {
               requestAnimationFrame(() => createIcons({ icons }));
             }
-          }, [activeTab, isMounted, managementSubTab, encounterPhase, showKeyboardHelp, showChangelog, settingsMenuOpen, searchOpen, calcDrawerOpen, protocolModal, confirmConfig, actionBarCollapsed]);
+          }, [activeTab, isMounted, managementSubTab, encounterPhase, settingsMenuOpen, searchOpen, calcDrawerOpen, protocolModal, confirmConfig]);
 
           useEffect(() => {
             const activeTabEl = document.getElementById(`tab-${activeTab}`);
@@ -16146,7 +16115,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const showDocumentActions = true;
           const isNarrowViewport = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
           const hideActionBarForMobileInput = isNarrowViewport && inputEntryFocused;
-          const showEncounterActionBar = activeTab === 'encounter' && !calcDrawerOpen && !hideActionBarForMobileInput && (telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis);
           const hasLkwSummaryValue = Boolean(lkwTime || telestrokeNote.lkwUnknown || (telestrokeNote.lkwDate && telestrokeNote.lkwTime));
           const lkwSummaryLabel = lkwTime
             ? `${lkwTime.toLocaleDateString('en-US')} ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
@@ -16174,15 +16142,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const tnkDoseComplete = nonIschemicPathway || !telestrokeNote.tnkRecommended || hasWeightForDose;
           const contraindicationsComplete = nonIschemicPathway || !!telestrokeNote.tnkContraindicationReviewed;
           const noteCopiedRecently = ['Consult Note', 'encounter-note', 'smart-note-encounter', 'telephone-note'].includes(copiedText);
-          const workflowRailSteps = [
-            { id: 'contra', label: 'Check contraindications', done: contraindicationsComplete },
-            { id: 'dose', label: 'Calculate TNK dose', done: tnkDoseComplete },
-            { id: 'note', label: 'Copy consult note', done: noteCopiedRecently }
-          ];
-          const workflowRailCompletedCount = workflowRailSteps.filter((step) => step.done).length;
-          const workflowRailNextStep = workflowRailSteps.find((step) => !step.done) || null;
-          const workflowRailProgressLabel = `${workflowRailCompletedCount}/${workflowRailSteps.length} complete`;
-          const requiredFieldsRemaining = encounterReadiness.required.length;
           const hasDocumentedNihss = (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '') ||
             nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '');
           const setUnknownLkwFromNow = () => {
@@ -16194,95 +16153,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               discoveryTime: prev.discoveryTime || new Date().toTimeString().slice(0, 5)
             }));
           };
-          const workflowRailContextActions = [];
-          if (encounterReadiness.nextField === 'LKW' && !lkwTime && !telestrokeNote.lkwUnknown) {
-            workflowRailContextActions.push(
-              {
-                id: 'lkw-open',
-                label: 'Open LKW',
-                action: () => jumpToEncounterField('LKW'),
-                className: 'border-slate-300 bg-white text-slate-700 hover:bg-slate-100'
-              },
-              {
-                id: 'lkw-unknown',
-                label: 'Unknown LKW',
-                action: setUnknownLkwFromNow,
-                className: 'border-purple-300 bg-purple-50 text-purple-700 hover:bg-purple-100'
-              }
-            );
-          }
-          if (encounterReadiness.nextField === 'Diagnosis' && !telestrokeNote.diagnosis) {
-            workflowRailContextActions.push(
-              {
-                id: 'dx-ischemic',
-                label: 'Dx: Ischemic',
-                action: () => applyDiagnosisSelection('Acute Ischemic Stroke'),
-                className: 'border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100'
-              },
-              {
-                id: 'dx-ich',
-                label: 'Dx: ICH',
-                action: () => applyDiagnosisSelection('Intracerebral Hemorrhage (ICH)'),
-                className: 'border-red-300 bg-red-50 text-red-700 hover:bg-red-100'
-              },
-              {
-                id: 'dx-sah',
-                label: 'Dx: SAH',
-                action: () => applyDiagnosisSelection('Subarachnoid Hemorrhage (SAH)'),
-                className: 'border-orange-300 bg-orange-50 text-orange-700 hover:bg-orange-100'
-              }
-            );
-          }
-          if (encounterReadiness.nextField === 'NIHSS' && !hasDocumentedNihss) {
-            workflowRailContextActions.push({
-              id: 'nihss-zero',
-              label: 'NIHSS 0',
-              action: applyNihssAllNormal,
-              className: 'border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100'
-            });
-          }
-          if (encounterReadiness.nextField === 'Disposition' && !telestrokeNote.disposition) {
-            workflowRailContextActions.push(
-              {
-                id: 'dispo-stroke-unit',
-                label: 'Dispo: Stroke Unit',
-                action: () => setTelestrokeNote((prev) => ({ ...prev, disposition: 'Admit to Stroke Unit' })),
-                className: 'border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
-              },
-              {
-                id: 'dispo-neuro-icu',
-                label: 'Dispo: Neuro ICU',
-                action: () => setTelestrokeNote((prev) => ({ ...prev, disposition: 'Admit to Neuro ICU' })),
-                className: 'border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100'
-              },
-              {
-                id: 'dispo-transfer',
-                label: 'Dispo: Transfer',
-                action: () => setTelestrokeNote((prev) => ({ ...prev, disposition: 'Transfer to CSC' })),
-                className: 'border-purple-300 bg-purple-50 text-purple-700 hover:bg-purple-100'
-              }
-            );
-          }
-          const workflowRailPrimary = encounterReadiness.nextField
-            ? {
-                id: 'next-field',
-                label: encounterReadiness.nextField === 'LKW' && !lkwTime && !telestrokeNote.lkwUnknown
-                  ? 'Set LKW Now'
-                  : `Fill ${encounterReadiness.nextField}`,
-                action: encounterReadiness.nextField === 'LKW' && !lkwTime && !telestrokeNote.lkwUnknown
-                  ? () => setLkwTime(new Date())
-                  : () => jumpToEncounterField(encounterReadiness.nextField)
-              }
-            : workflowRailNextStep
-              ? (workflowRailNextStep.id === 'contra'
-                ? { id: 'contra', label: 'Check contraindications', action: () => scrollToSection('treatment-decision') }
-                : workflowRailNextStep.id === 'dose'
-                  ? { id: 'dose', label: 'Calculate TNK dose', action: () => scrollToSection('treatment-decision') }
-                  : { id: 'note', label: 'Copy consult note', action: () => { const note = generateTelestrokeNote(); copyToClipboard(note, 'Consult Note'); } })
-              : { id: 'complete', label: 'Review documentation', action: () => scrollToSection('recommendations-section') };
-          const workflowRailHint = encounterReadiness.nextField
-            ? `Next required field: ${encounterReadiness.nextField}`
-            : (workflowRailNextStep ? `Next step: ${workflowRailNextStep.label}` : 'Workflow rail complete');
           const openEncounterAtField = (fieldName) => {
             navigateTo('encounter');
             window.setTimeout(() => jumpToEncounterField(fieldName), 120);
@@ -16385,7 +16255,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   </div>
                 </div>
               )}
-              <div className={`app-shell max-w-7xl mx-auto p-4 sm:p-8 overflow-x-hidden ${showEncounterActionBar ? 'pb-24 sm:pb-28' : ''}`} role="main">
+              <div className="app-shell max-w-7xl mx-auto p-4 sm:p-8 overflow-x-hidden" role="main">
 
               {/* Offline Indicator */}
               {!isOnline && (
@@ -16403,14 +16273,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-900 to-indigo-800 bg-clip-text text-transparent">
                         Stroke
                       </h1>
-                      <button
-                        onClick={() => setShowKeyboardHelp(true)}
-                        className="hidden sm:inline-flex text-xs text-slate-500 hover:text-blue-600 transition-colors px-1.5 py-0.5 border border-slate-200 rounded"
-                        title="Keyboard shortcuts (?)"
-                        aria-label="Keyboard shortcuts"
-                      >
-                        <i aria-hidden="true" data-lucide="keyboard" className="w-3 h-3"></i>
-                      </button>
                     </div>
                     {topLinks.length > 0 && (
                       <div className="mt-1 flex flex-wrap items-center gap-1.5 justify-center sm:justify-start">
@@ -16660,14 +16522,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <i aria-hidden="true" data-lucide={focusMode ? 'minimize-2' : 'maximize-2'} className="w-4 h-4 text-slate-500"></i>
                                 {focusMode ? 'Exit Focus Mode' : 'Focus Mode'}
                               </button>
-                              <button
-                                role="menuitem"
-                                onClick={() => { setShowChangelog(true); setSettingsMenuOpen(false); }}
-                                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
-                              >
-                                <i aria-hidden="true" data-lucide="sparkles" className="w-4 h-4 text-slate-500"></i>
-                                What's New
-                              </button>
                               {encounterHistory.length > 0 && (
                                 <button
                                   role="menuitem"
@@ -16876,7 +16730,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               {/* Primary Navigation */}
               <div className="mb-4 sm:mb-6 sticky top-0 z-30 app-nav" role="navigation" aria-label="Main navigation">
                 <nav className="flex flex-nowrap items-stretch gap-0 bg-white border border-slate-200 rounded-xl p-1 overflow-x-auto no-scrollbar" role="tablist" aria-label="Main sections" onKeyDown={(e) => {
-                  const tabs = ['encounter', 'protocols', 'trials', 'settings'];
+                  const tabs = ['encounter', 'protocols', 'trials'];
                   const currentIndex = tabs.indexOf(activeTab);
                   let nextIndex;
                   if (e.key === 'ArrowRight') { e.preventDefault(); nextIndex = (currentIndex + 1) % tabs.length; }
@@ -16888,8 +16742,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   {[
                     { id: 'encounter', name: 'Encounter', icon: 'activity' },
                     { id: 'protocols', name: 'Protocols', icon: 'library' },
-                    { id: 'trials', name: 'Trials', icon: 'flask-conical' },
-                    { id: 'settings', name: 'Settings', icon: 'settings' }
+                    { id: 'trials', name: 'Trials', icon: 'flask-conical' }
                   ].map(tab => {
                     const isActive = activeTab === tab.id;
                     return (
@@ -17093,51 +16946,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     </div>
 
-                    {userPersona === 'senior' && hasActiveCase && (
-                      <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Rapid Actions</span>
-                          {encounterReadiness.nextField && (
-                            <button
-                              type="button"
-                              onClick={workflowRailPrimary.action}
-                              className="px-2.5 py-1 rounded-full border border-amber-300 bg-amber-50 text-amber-800 text-xs font-semibold hover:bg-amber-100"
-                            >
-                              {workflowRailPrimary.label}
-                            </button>
-                          )}
-                          <button
-                            type="button"
-                            onClick={() => scrollToSection('treatment-decision')}
-                            className="px-2.5 py-1 rounded-full border border-orange-300 bg-orange-50 text-orange-800 text-xs font-semibold hover:bg-orange-100"
-                          >
-                            Decision
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const note = generateTelestrokeNote();
-                              copyToClipboard(note, 'Consult Note');
-                            }}
-                            className="px-2.5 py-1 rounded-full border border-emerald-300 bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700"
-                          >
-                            Copy Note
-                          </button>
-                          {activePathwaySubTab && (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                navigateTo('protocols');
-                                setManagementSubTab(activePathwaySubTab);
-                              }}
-                              className="px-2.5 py-1 rounded-full border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-100"
-                            >
-                              {activePathwayLabel}
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    )}
 
                     {/* ===== MISSING FIELDS WARNING ===== */}
                     {(() => {
@@ -28049,154 +27857,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 )}
 
 
-                {activeTab === 'settings' && (
-                  <ErrorBoundary>
-                  <div id="tabpanel-settings" role="tabpanel" aria-labelledby="tab-settings" className="space-y-4">
-                    <div className="bg-white border border-slate-200 rounded-xl p-4">
-                      <h2 className="text-xl font-semibold text-slate-900">Settings</h2>
-                      <p className="text-sm text-slate-600 mt-1">User preferences and workflow controls.</p>
-                    </div>
-
-                    <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-4">
-                      <div>
-                        <p className="text-sm font-semibold text-slate-900 mb-2">User Mode</p>
-                        <div className="flex flex-wrap gap-2">
-                          {[
-                            { id: 'senior', label: 'Senior Rapid', note: 'Minimal prompts, action-first layout' },
-                            { id: 'trainee', label: 'Trainee Guided', note: 'Show coaching tips and teaching prompts' }
-                          ].map((mode) => (
-                            <button
-                              key={mode.id}
-                              type="button"
-                              onClick={() => updateSettings({ workflowPersona: mode.id })}
-                              className={`px-3 py-2 rounded-lg text-sm font-semibold border ${
-                                userPersona === mode.id
-                                  ? 'bg-blue-600 text-white border-blue-600'
-                                  : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-                              }`}
-                            >
-                              {mode.label}
-                            </button>
-                          ))}
-                        </div>
-                        <p className="text-xs text-slate-500 mt-1">
-                          {userPersona === 'trainee' ? 'Trainee mode is active.' : 'Senior rapid mode is active.'}
-                        </p>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <label className="flex items-center justify-between gap-3 border border-slate-200 rounded-lg px-3 py-2">
-                          <span className="text-sm text-slate-700">Focus Mode</span>
-                          <input type="checkbox" checked={focusMode} onChange={(e) => setFocusMode(e.target.checked)} />
-                        </label>
-                        <label className="flex items-center justify-between gap-3 border border-slate-200 rounded-lg px-3 py-2">
-                          <span className="text-sm text-slate-700">De-ID Scanning</span>
-                          <input type="checkbox" checked={settings.deidMode} onChange={(e) => updateSettings({ deidMode: e.target.checked })} />
-                        </label>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div>
-                          <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">Default Consult Type</label>
-                          <select
-                            value={settings.defaultConsultationType || 'videoTelestroke'}
-                            onChange={(e) => updateSettings({ defaultConsultationType: e.target.value })}
-                            className="mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg"
-                          >
-                            <option value="videoTelestroke">Video Telestroke</option>
-                            <option value="telephone">Telephone</option>
-                          </select>
-                        </div>
-                        <div className="flex items-end gap-2">
-                          <button type="button" onClick={exportToPDF} className="px-3 py-2 rounded-lg border border-slate-300 text-slate-700 text-sm font-semibold hover:bg-slate-50">Export PDF</button>
-                          <button type="button" onClick={handleClearLocalData} className="px-3 py-2 rounded-lg border border-red-300 text-red-700 text-sm font-semibold hover:bg-red-50">Clear Local Data</button>
-                        </div>
-                      </div>
-
-                      <div className="border border-slate-200 rounded-xl p-3 space-y-3">
-                        <div className="flex items-start justify-between gap-2">
-                          <div>
-                            <p className="text-sm font-semibold text-slate-900">Contact Directory</p>
-                            <p className="text-xs text-slate-500">Bottom-right phone button uses this list. Tap-to-call is enabled on mobile.</p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <button
-                              type="button"
-                              onClick={() => updateContacts([...contactsForEdit, { id: generateId('contact'), label: 'New Contact', phone: '', note: '' }])}
-                              className="px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50"
-                            >
-                              Add
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => updateContacts(DEFAULT_CONTACTS.map((contact) => ({ ...contact })))}
-                              className="px-2.5 py-1.5 rounded-lg border border-orange-300 text-xs font-semibold text-orange-700 hover:bg-orange-50"
-                            >
-                              Reset Defaults
-                            </button>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          {contactsForEdit.map((contact, index) => (
-                            <div key={contact.id || `contact-row-${index}`} className="grid grid-cols-1 md:grid-cols-12 gap-2 items-end bg-slate-50 border border-slate-200 rounded-lg p-2">
-                              <div className="md:col-span-4">
-                                <label className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Label</label>
-                                <input
-                                  type="text"
-                                  value={contact.label}
-                                  onChange={(event) => {
-                                    const next = contactsForEdit.map((item, itemIndex) => itemIndex === index ? { ...item, label: event.target.value } : item);
-                                    updateContacts(next);
-                                  }}
-                                  className="mt-1 w-full px-2 py-1.5 border border-slate-300 rounded text-sm"
-                                />
-                              </div>
-                              <div className="md:col-span-3">
-                                <label className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Phone</label>
-                                <input
-                                  type="tel"
-                                  value={contact.phone}
-                                  onChange={(event) => {
-                                    const next = contactsForEdit.map((item, itemIndex) => itemIndex === index ? { ...item, phone: event.target.value } : item);
-                                    updateContacts(next);
-                                  }}
-                                  className="mt-1 w-full px-2 py-1.5 border border-slate-300 rounded text-sm"
-                                  placeholder="000-000-0000"
-                                />
-                              </div>
-                              <div className="md:col-span-4">
-                                <label className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Note</label>
-                                <input
-                                  type="text"
-                                  value={contact.note}
-                                  onChange={(event) => {
-                                    const next = contactsForEdit.map((item, itemIndex) => itemIndex === index ? { ...item, note: event.target.value } : item);
-                                    updateContacts(next);
-                                  }}
-                                  className="mt-1 w-full px-2 py-1.5 border border-slate-300 rounded text-sm"
-                                />
-                              </div>
-                              <div className="md:col-span-1 flex justify-end">
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    const next = contactsForEdit.filter((_, itemIndex) => itemIndex !== index);
-                                    updateContacts(next);
-                                  }}
-                                  className="px-2 py-1.5 rounded-lg border border-red-200 text-red-700 text-xs font-semibold hover:bg-red-50"
-                                  aria-label={`Remove ${contact.label || 'contact'}`}
-                                >
-                                  Remove
-                                </button>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  </ErrorBoundary>
-                )}
 
                 {/* Protocols Tab (Ischemic, ICH, Calculators, References) */}
                 {activeTab === 'protocols' && (
@@ -35598,95 +35258,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
             </div>
 
-            {/* Sticky Action Bar - single encounter workflow rail */}
-            {showEncounterActionBar && (
-              <div id="action-bar" className="fixed inset-x-0 bottom-0 z-40 no-print">
-                <div className="mx-auto max-w-7xl px-2 sm:px-4 pb-2 sm:pb-3">
-                  <div className="bg-white/95 backdrop-blur border border-slate-200 shadow-lg rounded-xl px-3 py-2 sm:px-4 sm:py-3">
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="min-w-0 flex items-center gap-2">
-                        <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                          <i aria-hidden="true" data-lucide="list-checks" className="w-3.5 h-3.5"></i>
-                          Workflow Rail
-                        </span>
-                        <span className="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-[11px] font-semibold text-slate-600 whitespace-nowrap">
-                          {workflowRailProgressLabel}
-                        </span>
-                        {requiredFieldsRemaining > 0 && (
-                          <span className="px-2 py-0.5 rounded-full border border-amber-200 bg-amber-50 text-[11px] font-semibold text-amber-700 whitespace-nowrap">
-                            Required left: {requiredFieldsRemaining}
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={workflowRailPrimary.action}
-                          className="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 whitespace-nowrap"
-                        >
-                          {workflowRailPrimary.label}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setActionBarCollapsed((prev) => !prev)}
-                          className="px-2 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 min-h-[32px] min-w-[32px] flex items-center justify-center gap-1"
-                          aria-label={actionBarCollapsed ? 'Expand workflow rail' : 'Collapse workflow rail'}
-                          title={actionBarCollapsed ? 'Expand workflow rail' : 'Collapse workflow rail'}
-                        >
-                          <span className="text-[11px] font-semibold sm:hidden">{actionBarCollapsed ? 'Show' : 'Hide'}</span>
-                          <span aria-hidden="true" className="text-sm leading-none">{actionBarCollapsed ? '▴' : '▾'}</span>
-                        </button>
-                      </div>
-                    </div>
-                    <p className={`text-xs text-slate-500 mt-1 ${actionBarCollapsed ? 'hidden sm:block' : ''}`}>{workflowRailHint}</p>
-                    {!actionBarCollapsed && (
-                      <>
-                        {workflowRailContextActions.length > 0 && (
-                          <div className="flex flex-wrap items-center gap-2 mt-2">
-                            {workflowRailContextActions.map((action) => (
-                              <button
-                                key={action.id}
-                                type="button"
-                                onClick={action.action}
-                                className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border ${action.className}`}
-                              >
-                                {action.label}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                        <div className="flex flex-wrap items-center gap-2 mt-2">
-                          <button
-                            type="button"
-                            onClick={() => scrollToSection('treatment-decision')}
-                            className="px-3 py-2 rounded-lg text-xs font-semibold border border-red-200 bg-red-50 text-red-700 hover:bg-red-100"
-                          >
-                            1. {contraindicationsComplete ? 'Contraindications Checked' : 'Check Contraindications'}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => scrollToSection('treatment-decision')}
-                            className="px-3 py-2 rounded-lg text-xs font-semibold border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100"
-                          >
-                            2. {tnkDoseComplete ? 'TNK Dose Ready' : 'Calculate TNK Dose'}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const note = generateTelestrokeNote();
-                              copyToClipboard(note, 'Consult Note');
-                            }}
-                            className="px-3 py-2 rounded-lg text-xs font-semibold border border-emerald-300 bg-emerald-600 text-white hover:bg-emerald-700"
-                          >
-                            3. {noteCopiedRecently ? 'Consult Note Copied' : 'Copy Consult Note'}
-                          </button>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
 
             {/* ===== CALCULATOR DRAWER — with inline GCS + quick nav ===== */}
             {calcDrawerOpen && (
@@ -35796,87 +35367,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               </>
             )}
 
-            {/* ===== CHANGELOG MODAL ===== */}
-            {showChangelog && (
-              <>
-                <div className="fixed inset-0 z-[150] bg-black/40" onClick={() => setShowChangelog(false)} role="presentation" aria-hidden="true"></div>
-                <div role="dialog" aria-modal="true" aria-labelledby="changelog-title" className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[28rem] max-h-[70vh] bg-white rounded-2xl shadow-2xl overflow-y-auto">
-                  <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between z-10">
-                    <h2 id="changelog-title" className="text-base font-bold text-slate-900">What's New</h2>
-                    <button onClick={() => setShowChangelog(false)} className="p-2 hover:bg-slate-100 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center focus:ring-2 focus:ring-blue-500" aria-label="Close changelog"><i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
-                  </div>
-                  <div className="p-4 space-y-4">
-                    {CHANGELOG.map((release) => (
-                      <div key={release.version}>
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="font-bold text-blue-700">v{release.version}</span>
-                          <span className="text-xs text-slate-500">{release.date}</span>
-                        </div>
-                        <ul className="space-y-1">
-                          {release.items.map((item, i) => (
-                            <li key={i} className="text-sm text-slate-700 flex gap-2">
-                              <span className="text-emerald-500 shrink-0">+</span>
-                              <span>{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="text-center text-xs text-slate-500 py-2 border-t border-slate-200">Press Esc to close</div>
-                </div>
-              </>
-            )}
 
-            {/* ===== KEYBOARD SHORTCUT HELP ===== */}
-            {showKeyboardHelp && (
-              <>
-                <div className="fixed inset-0 z-[150] bg-black/40" onClick={() => setShowKeyboardHelp(false)} role="presentation" aria-hidden="true"></div>
-                <div role="dialog" aria-modal="true" aria-labelledby="keyboard-help-title" className="fixed inset-x-4 top-[10%] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-[150] w-auto sm:w-[24rem] bg-white rounded-2xl shadow-2xl overflow-hidden">
-                  <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between">
-                    <h2 id="keyboard-help-title" className="text-base font-bold text-slate-900">Keyboard Shortcuts</h2>
-                    <button onClick={() => setShowKeyboardHelp(false)} className="p-2 hover:bg-slate-100 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center focus:ring-2 focus:ring-blue-500" aria-label="Close keyboard shortcuts"><i aria-hidden="true" data-lucide="x" className="w-5 h-5 text-slate-500"></i></button>
-                  </div>
-                  <div className="p-4 space-y-3">
-                    {[
-                      { keys: 'Ctrl/Cmd + 1', action: 'Dashboard tab' },
-                      { keys: 'Ctrl/Cmd + 2', action: 'Encounter tab' },
-                      { keys: 'Ctrl/Cmd + 3', action: 'Library tab' },
-                      { keys: 'Ctrl/Cmd + 4', action: 'Settings tab' },
-                      { keys: '1 / 2 / 3 / 4', action: 'Encounter phase: Triage / Decision / Management / Documentation' },
-                      { keys: 'Ctrl/Cmd + Shift + C', action: 'Copy consult note' },
-                      { keys: 'Ctrl/Cmd + Shift + N', action: 'Jump to next required field' },
-                      { keys: 'Ctrl/Cmd + K', action: 'Open search' },
-                      { keys: '\u2191 / \u2193 in search', action: 'Navigate search results' },
-                      { keys: 'Enter in search', action: 'Select search result' },
-                      { keys: 'Ctrl/Cmd + Shift + K', action: 'Toggle calculators' },
-                      { keys: 'Ctrl/Cmd + Shift + J', action: 'Collapse/expand workflow rail' },
-                      { keys: '/', action: 'Focus search' },
-                      { keys: 'Ctrl/Cmd + Shift + F', action: 'Toggle focus mode' },
-                      { keys: 'Esc', action: 'Close modal / dialog' },
-                      { keys: '?', action: 'Toggle this help' }
-                    ].map(({ keys, action }) => (
-                      <div key={keys} className="flex items-center justify-between">
-                        <span className="text-sm text-slate-700">{action}</span>
-                        <kbd className="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-xs font-mono text-slate-600">{keys}</kbd>
-                      </div>
-                    ))}
-                    <div className="pt-2 mt-2 border-t border-slate-100">
-                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">Search Command Examples</p>
-                      <div className="grid grid-cols-1 gap-1.5">
-                        {QUICK_SEARCH_COMMANDS.map((command) => (
-                          <div key={command.value} className="flex items-center justify-between gap-2">
-                            <kbd className="px-2 py-1 bg-blue-50 border border-blue-200 rounded text-xs font-mono text-blue-700">{command.label}</kbd>
-                            <span className="text-xs text-slate-600 text-right">{command.hint}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-center text-xs text-slate-500 py-2 border-t border-slate-200">Press Esc to close</div>
-                </div>
-              </>
-            )}
 
             {/* ===== CONFIRMATION MODAL ===== */}
             {confirmConfig && (
