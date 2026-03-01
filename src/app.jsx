@@ -35414,7 +35414,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             <ToastContainer toasts={toasts} removeToast={removeToast} />
 
             {/* Mobile bottom nav */}
-            <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 sm:hidden pb-safe" role="tablist" aria-label="Mobile navigation">
+            <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-[0_-1px_3px_rgba(0,0,0,0.08)] sm:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} role="tablist" aria-label="Mobile navigation">
               <div className="flex items-stretch justify-around">
                 {[
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },
