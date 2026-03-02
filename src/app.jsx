@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useContext } from 'react';
 import { createRoot } from 'react-dom/client';
+import { ensureArray, toIsoString, safeParseDt, safeFormatTime } from './utils.mjs';
 import { createIcons, icons } from 'lucide';
 import ais2026 from './guidelines/ais-2026.json';
 import cancerStroke2026 from './guidelines/cancer-stroke-2026.json';
@@ -170,23 +171,6 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           }
         };
 
-        const ensureArray = (value, fallback = []) => Array.isArray(value) ? value : fallback;
-        const toIsoString = (value = new Date()) => {
-          try {
-            return new Date(value).toISOString();
-          } catch {
-            return new Date().toISOString();
-          }
-        };
-        const safeParseDt = (val) => {
-          if (!val) return null;
-          const d = new Date(val);
-          return Number.isNaN(d.getTime()) ? null : d;
-        };
-        const safeFormatTime = (val) => {
-          const d = safeParseDt(val);
-          return d ? d.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null;
-        };
 
         const GlobalPatientContext = React.createContext(null);
         const useGlobalPatient = () => useContext(GlobalPatientContext);
