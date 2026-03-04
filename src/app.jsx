@@ -2898,7 +2898,6 @@ Clinician Name`;
           // =================================================================
           // Calling sites — configure via Settings or enter manually per encounter
           const CALLING_SITES = [
-            { group: 'Hub Sites', sites: ['Hub A', 'Hub B', 'Hub C'] },
             { group: 'Video Partner Sites', sites: [
               'Astria Sunnyside',
               'Cascade Medical – Leavenworth',
