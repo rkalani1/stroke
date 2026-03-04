@@ -16366,16 +16366,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         Stroke
                       </h1>
                     </div>
-                    <div className="mt-1 flex flex-wrap items-center gap-1.5 justify-center sm:justify-start">
-                      {encounterQuickLinks.map((link) => (
+                    <div className="mt-2 flex flex-wrap items-center gap-2 justify-center sm:justify-start">
+                      {[...encounterQuickLinks, ...topLinks].map((link) => (
                         <a
                           key={link.url}
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-1.5 px-2 py-1 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-md transition-colors"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 hover:text-indigo-900 transition-colors"
                         >
-                          <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
+                          <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
                           <span>{link.label}</span>
                         </a>
                       ))}
@@ -16709,22 +16709,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               {(() => {
                 const timeFromLKW = calculateTimeFromLKW();
                 if (!timeFromLKW) {
-                  if (activeTab !== 'encounter') return null;
-                  return (
-                    <div className="mb-3 bg-slate-100 border border-slate-200 rounded-xl px-4 py-2 text-slate-700 flex flex-wrap items-center justify-between gap-2">
-                      <div className="flex items-center gap-2 text-sm">
-                        <i aria-hidden="true" data-lucide="clock" className="w-4 h-4 text-slate-500"></i>
-                        <span className="font-medium">Clock paused — set LKW or discovery time to start treatment windows.</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setLkwTime(new Date())}
-                        className="px-2.5 py-1 rounded-full border border-slate-300 bg-white hover:bg-slate-200 text-xs font-semibold text-slate-700"
-                      >
-                        Start now
-                      </button>
-                    </div>
-                  );
+                  return null;
                 }
                 const totalHours = timeFromLKW.total;
                 const tnkRemaining = 4.5 - totalHours;
@@ -16822,7 +16807,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 }}>
                   {[
                     { id: 'encounter', name: 'Encounter', icon: 'activity' },
-                    { id: 'protocols', name: 'Protocols', icon: 'library' },
+                    { id: 'protocols', name: 'Management', icon: 'library' },
                     { id: 'trials', name: 'Trials', icon: 'flask-conical' }
                   ].map(tab => {
                     const isActive = activeTab === tab.id;
@@ -32666,43 +32651,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       )}
                     </div>
 
-                    {/* Quick Links */}
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <div className="flex items-center gap-2">
-                        <a
-                          href="https://www.openevidence.com"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex flex-1 items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
-                        >
-                          <i aria-hidden="true" data-lucide="external-link" className="w-5 h-5"></i>
-                          <span>OpenEvidence</span>
-                        </a>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <a
-                          href="https://www.uptodate.com"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex flex-1 items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
-                        >
-                          <i aria-hidden="true" data-lucide="external-link" className="w-5 h-5"></i>
-                          <span>UpToDate</span>
-                        </a>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <a
-                          href="https://asta.allen.ai/chat"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex flex-1 items-center gap-2 px-4 py-3 bg-white border border-blue-300 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 font-medium"
-                        >
-                          <i aria-hidden="true" data-lucide="external-link" className="w-5 h-5"></i>
-                          <span>Asta (Ai2)</span>
-                        </a>
-                      </div>
-                    </div>
-
                     {/* References TOC */}
                     <div className="flex flex-wrap gap-1.5">
                       {[
@@ -34876,7 +34824,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               <div className="flex items-stretch justify-around">
                 {[
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },
-                  { id: 'protocols', name: 'Protocols', icon: 'library' },
+                  { id: 'protocols', name: 'Management', icon: 'library' },
                   { id: 'trials', name: 'Trials', icon: 'flask-conical' }
                 ].map(tab => {
                   const isActive = activeTab === tab.id;
