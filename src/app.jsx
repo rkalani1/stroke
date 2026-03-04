@@ -592,7 +592,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
             deidMode: true,
             allowFreeTextStorage: false,
             ttlHoursOverride: null,
-            defaultConsultationType: 'videoTelestroke',
+            defaultConsultationType: 'telephone',
             workflowPersona: 'senior',
             contacts: DEFAULT_CONTACTS,
           });
@@ -8094,7 +8094,7 @@ Clinician Name`;
             setShiftPatients([]);
             setCurrentPatientId(null);
 
-            setConsultationType(getDefaultSettings().defaultConsultationType || 'videoTelestroke');
+            setConsultationType(getDefaultSettings().defaultConsultationType || 'telephone');
             setManagementSubTab('ich');
             setAlertsMuted(false);
             setLastAlertPlayed(null);
@@ -16870,60 +16870,38 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {windowStatus.message}
                             </span>
                           )}
-                          <div className="w-px h-4 bg-slate-200 hidden sm:block"></div>
-                          <div className="flex gap-1">
-                            {[
-                              { id: 'acute', label: 'Video', icon: 'zap' },
-                              { id: 'phone', label: 'Phone', icon: 'phone' }
-                            ].map(ctx => (
-                              <button
-                                key={ctx.id}
-                                onClick={() => {
-                                  setClinicalContext(ctx.id);
-                                  if (ctx.id === 'acute') setConsultationType('videoTelestroke');
-                                  else setConsultationType('telephone');
-                                }}
-                                className={`text-xs px-2 py-1 rounded-lg font-medium transition-all flex items-center gap-1 ${
-                                  clinicalContext === ctx.id
-                                    ? 'bg-blue-600 text-white shadow-sm'
-                                    : 'text-slate-500 hover:bg-slate-100'
-                                }`}
-                              >
-                                <i aria-hidden="true" data-lucide={ctx.icon} className="w-3 h-3"></i>
-                                {ctx.label}
-                              </button>
-                            ))}
-                          </div>
                         </div>
                       </div>
-                    ) : (
-                      <div className="flex items-center gap-2 px-1">
-                        <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Mode:</span>
-                        <div className="flex gap-1">
-                          {[
-                            { id: 'acute', label: 'Video Telestroke', icon: 'zap' },
-                            { id: 'phone', label: 'Phone Consult', icon: 'phone' }
-                          ].map(ctx => (
-                            <button
-                              key={ctx.id}
-                              onClick={() => {
-                                setClinicalContext(ctx.id);
-                                if (ctx.id === 'acute') setConsultationType('videoTelestroke');
-                                else setConsultationType('telephone');
-                              }}
-                              className={`text-xs px-2.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1 ${
-                                clinicalContext === ctx.id
-                                  ? 'bg-blue-600 text-white shadow-sm'
-                                  : 'text-slate-500 hover:bg-slate-100'
-                              }`}
-                            >
-                              <i aria-hidden="true" data-lucide={ctx.icon} className="w-3 h-3"></i>
-                              {ctx.label}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    ) : null}
+
+                    {/* Consult type sub-tabs */}
+                    <nav className="flex items-stretch gap-0 bg-white border border-slate-200 rounded-xl p-1" role="tablist" aria-label="Consult type">
+                      {[
+                        { id: 'telephone', label: 'Phone Consult', icon: 'phone' },
+                        { id: 'videoTelestroke', label: 'Video Telestroke', icon: 'zap' }
+                      ].map(ct => {
+                        const isActive = consultationType === ct.id;
+                        return (
+                          <button
+                            key={ct.id}
+                            onClick={() => {
+                              setConsultationType(ct.id);
+                              setClinicalContext(ct.id === 'videoTelestroke' ? 'acute' : 'phone');
+                            }}
+                            className={`flex-1 py-2 px-4 text-sm font-semibold flex items-center justify-center gap-2 rounded-lg transition-all ${
+                              isActive
+                                ? 'bg-blue-600 text-white shadow-sm'
+                                : 'text-slate-500 hover:bg-slate-100'
+                            }`}
+                            role="tab"
+                            aria-selected={isActive}
+                          >
+                            <i aria-hidden="true" data-lucide={ct.icon} className="w-4 h-4"></i>
+                            {ct.label}
+                          </button>
+                        );
+                      })}
+                    </nav>
 
 
 
