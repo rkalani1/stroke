@@ -16358,13 +16358,43 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               )}
 
               {/* Header — Simplified */}
-              <div className={`mb-4 sm:mb-6 app-header ${focusMode ? 'hidden' : ''}`} role="banner">
+              <div className="mb-4 sm:mb-6 app-header" role="banner">
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
                   <div className="flex-1 w-full sm:w-auto">
                     <div className="flex items-center gap-3 justify-center sm:justify-start">
                       <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-900 to-indigo-800 bg-clip-text text-transparent">
                         Stroke
                       </h1>
+                    </div>
+                    <div className="mt-1 flex flex-wrap items-center gap-1.5 justify-center sm:justify-start">
+                      {topLinks.map((link) => (
+                        <a
+                          key={link.url}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 px-2 py-1 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-md transition-colors"
+                        >
+                          <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
+                          <span>{link.label}</span>
+                        </a>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => navigateTo('library', { subTab: 'management' })}
+                        className="flex items-center gap-1.5 px-2 py-1 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-md transition-colors"
+                      >
+                        <i aria-hidden="true" data-lucide="book-open" className="w-3 h-3"></i>
+                        <span>Protocols</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => navigateTo('library', { subTab: 'references' })}
+                        className="flex items-center gap-1.5 px-2 py-1 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-md transition-colors"
+                      >
+                        <i aria-hidden="true" data-lucide="book-marked" className="w-3 h-3"></i>
+                        <span>References</span>
+                      </button>
                     </div>
                   </div>
                   <div className="flex w-full flex-col items-center justify-center gap-2 sm:w-auto sm:items-end sm:justify-end">
@@ -16599,14 +16629,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </button>
                               )}
                               <div className="border-t border-slate-100 my-1"></div>
-                              <button
-                                role="menuitem"
-                                onClick={() => { setFocusMode(prev => !prev); setSettingsMenuOpen(false); }}
-                                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
-                              >
-                                <i aria-hidden="true" data-lucide={focusMode ? 'minimize-2' : 'maximize-2'} className="w-4 h-4 text-slate-500"></i>
-                                {focusMode ? 'Exit Focus Mode' : 'Focus Mode'}
-                              </button>
                               {encounterHistory.length > 0 && (
                                 <button
                                   role="menuitem"
@@ -16753,9 +16775,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <button onClick={toggleAlertMute} aria-pressed={alertsMuted} className="p-2 rounded-full hover:bg-white/20 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center" title={alertsMuted ? 'Unmute' : 'Mute'} aria-label={alertsMuted ? 'Unmute alerts' : 'Mute alerts'}>
                         <i aria-hidden="true" data-lucide={alertsMuted ? 'volume-x' : 'volume-2'} className="w-4 h-4"></i>
                       </button>
-                      <button onClick={() => setFocusMode(prev => !prev)} aria-pressed={focusMode} className={`p-2 rounded-full hover:bg-white/20 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center ${focusMode ? 'bg-white/20' : ''}`} title={focusMode ? 'Exit focus mode' : 'Focus mode'} aria-label={focusMode ? 'Exit focus mode' : 'Enter focus mode'}>
-                        <i aria-hidden="true" data-lucide={focusMode ? 'minimize-2' : 'maximize-2'} className="w-4 h-4"></i>
-                      </button>
                     </div>
                   </div>
                 );
@@ -16851,25 +16870,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {activeTab === 'encounter' && (
                   <ErrorBoundary>
                   <div key="encounter-tab" id="tabpanel-encounter" role="tabpanel" aria-labelledby="tab-encounter" className="space-y-4">
-
-                    {/* Compact top links row */}
-                    {topLinks.length > 0 && (
-                      <div className="flex flex-wrap items-center gap-2">
-                        {topLinks.map((link) => (
-                          <a
-                            key={link.url}
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-full hover:bg-indigo-100 transition-colors"
-                          >
-                            <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
-                            {link.label}
-                          </a>
-                        ))}
-                        <span className="text-[10px] text-slate-400">More resources: Ctrl+K</span>
-                      </div>
-                    )}
 
                     {/* ===== PATIENT SUMMARY STRIP (with inline mode toggle) ===== */}
                     {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) ? (
