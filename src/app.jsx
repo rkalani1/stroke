@@ -16367,7 +16367,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </h1>
                     </div>
                     <div className="mt-1 flex flex-wrap items-center gap-1.5 justify-center sm:justify-start">
-                      {topLinks.map((link) => (
+                      {encounterQuickLinks.map((link) => (
                         <a
                           key={link.url}
                           href={link.url}
@@ -16379,22 +16379,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <span>{link.label}</span>
                         </a>
                       ))}
-                      <button
-                        type="button"
-                        onClick={() => navigateTo('library', { subTab: 'management' })}
-                        className="flex items-center gap-1.5 px-2 py-1 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-md transition-colors"
-                      >
-                        <i aria-hidden="true" data-lucide="book-open" className="w-3 h-3"></i>
-                        <span>Protocols</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => navigateTo('library', { subTab: 'references' })}
-                        className="flex items-center gap-1.5 px-2 py-1 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-md transition-colors"
-                      >
-                        <i aria-hidden="true" data-lucide="book-marked" className="w-3 h-3"></i>
-                        <span>References</span>
-                      </button>
                     </div>
                   </div>
                   <div className="flex w-full flex-col items-center justify-center gap-2 sm:w-auto sm:items-end sm:justify-end">
