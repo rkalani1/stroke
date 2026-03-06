@@ -2678,46 +2678,6 @@ Clinician Name`;
                                 ]
                             },
                             {
-                                name: "cAPPricorn-1 Trial",
-                                nct: "NCT06393712",
-                                phase: "Phase 2",
-                                status: "",
-                                description: "Intrathecal ALN-APP (mivelsiran) for cerebral amyloid angiopathy",
-                                inclusion: [
-                                    "For sporadic CAA:",
-                                    "• Age ≥50 years",
-                                    "• Meets Boston Criteria v2.0 for probable CAA",
-                                    "• Prior symptomatic lobar ICH ≥90 days ago",
-                                    "For Dutch-type hereditary CAA:",
-                                    "• Age ≥30 years",
-                                    "• Confirmed E693Q APP variant",
-                                    "• Prior ICH ≥90 days ago (if applicable)",
-                                    "MRI evidence of CAA (microbleeds, superficial siderosis)",
-                                    "Modified Rankin Scale ≤4",
-                                    "Able to undergo lumbar punctures",
-                                    "Adequate contraception if childbearing potential",
-                                    "Informed consent obtained"
-                                ],
-                                exclusion: [
-                                    "ICH within 90 days of screening",
-                                    "Other cause of ICH identified",
-                                    "ALT or AST >3× upper limit of normal",
-                                    "eGFR <30 mL/min/1.73m²",
-                                    "Platelet count <100,000/μL",
-                                    "INR >1.5 or aPTT >1.5× ULN",
-                                    "Contraindication to lumbar puncture",
-                                    "Active CNS infection or inflammation",
-                                    "Intrathecal pump or shunt",
-                                    "Spinal cord compression or injury",
-                                    "History of chemical or radiation meningitis",
-                                    "Pregnancy or breastfeeding",
-                                    "Life expectancy <2 years",
-                                    "Chronic use of anticoagulation that cannot be stopped for LP",
-                                    "Prior treatment with gene therapy or oligonucleotide therapy",
-                                    "Participation in another interventional trial within 30 days"
-                                ]
-                            },
-                            {
                                 name: "MINUTE Trial",
                                 nct: "NCT07260916",
                                 phase: "Phase 2",
@@ -20682,7 +20642,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <li>• <strong>MINUTE</strong> – Intracerebral hemorrhage trial (NCT07260916)</li>
                                     <li>• <strong>SATURN</strong> – Statin continuation vs stop after lobar ICH</li>
                                     <li>• <strong>ASPIRE</strong> – Apixaban vs aspirin post-ICH with AF</li>
-                                    <li>• <strong>cAPPricorn-1</strong> – Intrathecal mivelsiran for CAA</li>
                                     <li>• <strong>MIRROR Registry</strong> – Minimally invasive ICH evacuation</li>
                                     <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-ICH</li>
                                   </ul>
