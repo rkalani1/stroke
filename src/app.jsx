@@ -34410,22 +34410,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       })}
                     </div>
 
-                    <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-                      <span className="text-xs text-slate-500">
-                        Trial card controls{trialsRecruitingOnly ? ' • showing recruiting/enrolling only' : ''}
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setTrialsRecruitingOnly((prev) => !prev)}
-                          className={`px-3 py-1.5 rounded-lg border text-xs font-semibold transition-colors ${
-                            trialsRecruitingOnly
-                              ? 'border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
-                              : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
-                          }`}
-                        >
-                          {trialsRecruitingOnly ? 'Recruiting Only: On' : 'Recruiting Only'}
-                        </button>
+                    <div className="mb-4 flex items-center justify-end gap-2">
                         <button
                           type="button"
                           onClick={() => setVisibleTrialCardsOpen(true)}
@@ -34440,7 +34425,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         >
                           Collapse Visible
                         </button>
-                      </div>
                     </div>
 
                     {/* Patient-based Trial Relevance Summary */}
@@ -34495,18 +34479,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h2 className="text-2xl font-bold text-slate-800 border-b-2 border-slate-300 pb-2">
                               {categoryData.title}
                             </h2>
-                            {trialsRecruitingOnly && visibleTrialCount === 0 && (
-                              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800 flex flex-wrap items-center justify-between gap-2">
-                                <span>No actively recruiting/enrolling trials in this category. Switch filter off to view all studies.</span>
-                                <button
-                                  type="button"
-                                  onClick={() => setTrialsRecruitingOnly(false)}
-                                  className="px-3 py-1.5 rounded-lg border border-amber-300 bg-white text-amber-800 text-xs font-semibold hover:bg-amber-100"
-                                >
-                                  Show All Trials
-                                </button>
-                              </div>
-                            )}
                             {categoryData.hasSubsections ? (
                               Object.entries(categoryData.subsections).map(([subKey, subsection]) => {
                                 const visibleTrials = filterTrialsForDisplay(subsection.trials);
