@@ -18003,54 +18003,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label htmlFor="input-hr" className="block text-xs text-slate-600 mb-1">HR</label>
-                              <input id="input-hr" type="number" min="20" max="300"
-                                value={telestrokeNote.heartRate}
-                                onChange={(e) => {
-                                  const raw = e.target.value;
-                                  if (raw === '') { setTelestrokeNote(prev => ({...prev, heartRate: ''})); return; }
-                                  const parsed = parseInt(raw, 10);
-                                  if (isNaN(parsed)) return;
-                                  const clamped = Math.max(20, Math.min(300, parsed));
-                                  setTelestrokeNote(prev => ({...prev, heartRate: String(clamped)}));
-                                }}
-                                placeholder="bpm"
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
-                              />
-                            </div>
-                            <div>
-                              <label htmlFor="input-spo2" className="block text-xs text-slate-600 mb-1">SpO2</label>
-                              <input id="input-spo2" type="number" min="50" max="100"
-                                value={telestrokeNote.spO2}
-                                onChange={(e) => {
-                                  const raw = e.target.value;
-                                  if (raw === '') { setTelestrokeNote(prev => ({...prev, spO2: ''})); return; }
-                                  const parsed = parseInt(raw, 10);
-                                  if (isNaN(parsed)) return;
-                                  const clamped = Math.max(50, Math.min(100, parsed));
-                                  setTelestrokeNote(prev => ({...prev, spO2: String(clamped)}));
-                                }}
-                                placeholder="%"
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
-                              />
-                            </div>
-                            <div>
-                              <label htmlFor="input-temp" className="block text-xs text-slate-600 mb-1">Temp</label>
-                              <input id="input-temp" type="number" step="0.1" min="90" max="110"
-                                value={telestrokeNote.temperature}
-                                onChange={(e) => {
-                                  const raw = e.target.value;
-                                  if (raw === '') { setTelestrokeNote(prev => ({...prev, temperature: ''})); return; }
-                                  const parsed = parseFloat(raw);
-                                  if (isNaN(parsed)) return;
-                                  const clamped = Math.max(90, Math.min(110, parsed));
-                                  setTelestrokeNote(prev => ({...prev, temperature: String(clamped)}));
-                                }}
-                                placeholder="°F"
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
-                              />
-                            </div>
-                            <div>
                               <label htmlFor="input-glucose" className="block text-xs text-slate-600 mb-1">Glucose</label>
                               <input
                                 id="input-glucose"
@@ -19864,56 +19816,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   if (a && a > 40) return <p id="aptt-error" role="alert" className="text-xs text-red-700 font-medium mt-0.5">Elevated aPTT — TNK relative CI</p>;
                                   return null;
                                 })()}
-                              </div>
-                            </div>
-                            <div className="grid grid-cols-3 gap-3">
-                              <div>
-                                <label htmlFor="phone-input-hr" className="block text-sm font-medium text-slate-700 mb-1">HR</label>
-                                <input id="phone-input-hr" type="number" min="20" max="300"
-                                  value={telestrokeNote.heartRate}
-                                  onChange={(e) => {
-                                    const raw = e.target.value;
-                                    if (raw === '') { setTelestrokeNote(prev => ({...prev, heartRate: ''})); return; }
-                                    const parsed = parseInt(raw, 10);
-                                    if (isNaN(parsed)) return;
-                                    const clamped = Math.max(20, Math.min(300, parsed));
-                                    setTelestrokeNote(prev => ({...prev, heartRate: String(clamped)}));
-                                  }}
-                                  placeholder="bpm"
-                                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500"
-                                />
-                              </div>
-                              <div>
-                                <label htmlFor="phone-input-spo2" className="block text-sm font-medium text-slate-700 mb-1">SpO2</label>
-                                <input id="phone-input-spo2" type="number" min="50" max="100"
-                                  value={telestrokeNote.spO2}
-                                  onChange={(e) => {
-                                    const raw = e.target.value;
-                                    if (raw === '') { setTelestrokeNote(prev => ({...prev, spO2: ''})); return; }
-                                    const parsed = parseInt(raw, 10);
-                                    if (isNaN(parsed)) return;
-                                    const clamped = Math.max(50, Math.min(100, parsed));
-                                    setTelestrokeNote(prev => ({...prev, spO2: String(clamped)}));
-                                  }}
-                                  placeholder="%"
-                                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500"
-                                />
-                              </div>
-                              <div>
-                                <label htmlFor="phone-input-temp" className="block text-sm font-medium text-slate-700 mb-1">Temp</label>
-                                <input id="phone-input-temp" type="number" step="0.1" min="90" max="110"
-                                  value={telestrokeNote.temperature}
-                                  onChange={(e) => {
-                                    const raw = e.target.value;
-                                    if (raw === '') { setTelestrokeNote(prev => ({...prev, temperature: ''})); return; }
-                                    const parsed = parseFloat(raw);
-                                    if (isNaN(parsed)) return;
-                                    const clamped = Math.max(90, Math.min(110, parsed));
-                                    setTelestrokeNote(prev => ({...prev, temperature: String(clamped)}));
-                                  }}
-                                  placeholder="°F"
-                                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500"
-                                />
                               </div>
                             </div>
 
@@ -27283,7 +27185,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         Current diagnosis is <strong>ICH</strong> — the <button onClick={() => setManagementSubTab('ich')} className="underline font-semibold hover:text-red-900">ICH Management</button> tab may be more relevant.
                       </div>
                     )}
-                    <div className="bg-white border border-slate-200 rounded-xl p-2 flex flex-wrap gap-2" role="tablist" aria-label="Management sub-sections" onKeyDown={(e) => {
+                    <div className="bg-white border border-slate-200 rounded-xl p-2 flex flex-wrap gap-2 sticky top-0 z-30 shadow-sm" role="tablist" aria-label="Management sub-sections" onKeyDown={(e) => {
                       const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators', 'references'];
                       const ci = subTabs.indexOf(managementSubTab);
                       let ni;
@@ -27473,7 +27375,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
 
                           {/* === WARFARIN REVERSAL === */}
-                          <details className="bg-white border border-red-200 rounded-xl shadow-sm">
+                          <details open className="bg-white border border-red-200 rounded-xl shadow-sm">
                             <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
                               <i aria-hidden="true" data-lucide="pill" className="w-4 h-4 text-red-600"></i>
                               Warfarin Reversal Guide
@@ -27521,7 +27423,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </details>
 
                           {/* === DOAC REVERSAL === */}
-                          <details className="bg-white border border-red-200 rounded-xl shadow-sm">
+                          <details open className="bg-white border border-red-200 rounded-xl shadow-sm">
                             <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
                               <i aria-hidden="true" data-lucide="pill" className="w-4 h-4 text-purple-600"></i>
                               DOAC Reversal Guide
@@ -27584,7 +27486,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </details>
 
                           {/* === POST-THROMBOLYTIC ICH SUSPICION === */}
-                          <details className="bg-white border border-red-200 rounded-xl shadow-sm">
+                          <details open className="bg-white border border-red-200 rounded-xl shadow-sm">
                             <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
                               <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-red-600"></i>
                               Post-Thrombolytic ICH Suspicion Algorithm
@@ -27700,7 +27602,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </details>
 
                           {/* === ANGIOEDEMA MANAGEMENT === */}
-                          <details className="bg-white border border-red-200 rounded-xl shadow-sm">
+                          <details open className="bg-white border border-red-200 rounded-xl shadow-sm">
                             <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-t-xl flex items-center gap-2">
                               <i aria-hidden="true" data-lucide="shield-alert" className="w-4 h-4 text-orange-600"></i>
                               Angioedema Management
@@ -27822,7 +27724,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                         </div>
 
-                        <details className="mt-5 bg-white border border-red-200 rounded-lg">
+                        <details open className="mt-5 bg-white border border-red-200 rounded-lg">
                           <summary className="cursor-pointer px-4 py-3 font-semibold text-red-800 hover:bg-red-50 rounded-lg">ICH protocol details</summary>
                           <div className="p-4 space-y-6">
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
@@ -28425,7 +28327,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           </div>
 
-                        <details className="bg-white border border-blue-200 rounded-lg">
+                        <details open className="bg-white border border-blue-200 rounded-lg">
                           <summary className="cursor-pointer px-4 py-3 font-semibold text-blue-800 hover:bg-blue-50 rounded-lg">Ischemic protocol details</summary>
                           <div className="p-4 space-y-6">
                         <div className="bg-white border border-blue-200 rounded-lg p-4">
@@ -28792,7 +28694,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           </div>
 
-                          <details className="bg-white border border-blue-200 rounded-lg mb-4">
+                          <details open className="bg-white border border-blue-200 rounded-lg mb-4">
                             <summary className="p-3 text-sm font-semibold text-blue-800 cursor-pointer flex items-center gap-2">
                               <i aria-hidden="true" data-lucide="chevron-right" className="w-3.5 h-3.5"></i>
                               IV Antihypertensive Titration Protocols
@@ -28979,7 +28881,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         </div>
 
-                        <details id="isch-ht" className="bg-rose-50 border border-rose-200 rounded-lg">
+                        <details open id="isch-ht" className="bg-rose-50 border border-rose-200 rounded-lg">
                           <summary className="cursor-pointer p-4 font-semibold text-rose-800 hover:bg-rose-100 rounded-lg">
                             ECASS Hemorrhagic Transformation Classification
                           </summary>
@@ -29616,7 +29518,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         {/* Modified Fisher Scale */}
-                        <details className="bg-white border border-slate-200 rounded-lg">
+                        <details open className="bg-white border border-slate-200 rounded-lg">
                           <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-2">
                             <span className="w-6 h-6 rounded-full bg-purple-600 text-white text-xs flex items-center justify-center font-bold">+</span>
                             Modified Fisher Scale (Better Vasospasm Prediction)
@@ -29781,7 +29683,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         {/* SAH Supportive Care Bundle */}
-                        <details className="bg-white border border-slate-200 rounded-lg">
+                        <details open className="bg-white border border-slate-200 rounded-lg">
                           <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-lg">
                             SAH ICU Supportive Care Bundle
                           </summary>
@@ -30090,7 +29992,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         {/* Secondary Prevention */}
-                        <details className="bg-white border border-slate-200 rounded-lg">
+                        <details open className="bg-white border border-slate-200 rounded-lg">
                           <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-lg">
                             Secondary Prevention — Complete Checklist
                           </summary>
@@ -30343,7 +30245,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         {/* Special Populations */}
-                        <details className="bg-white border border-indigo-200 rounded-lg">
+                        <details open className="bg-white border border-indigo-200 rounded-lg">
                           <summary className="cursor-pointer p-4 font-semibold text-indigo-800 hover:bg-indigo-50 rounded-lg flex items-center justify-between">
                             <span>CVT in Special Populations</span>
                             <i aria-hidden="true" data-lucide="chevron-down" className="w-4 h-4"></i>
