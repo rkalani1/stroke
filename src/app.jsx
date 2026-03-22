@@ -2262,13 +2262,15 @@ Clinician Name`;
           }, []);
 
           // Auto-route management sub-tab when diagnosis changes
+          const prevDiagnosisRef = useRef(telestrokeNote.diagnosisCategory);
           useEffect(() => {
             const cat = telestrokeNote.diagnosisCategory;
-            if (managementSubTab === 'calculators' || managementSubTab === 'references') return;
+            if (cat === prevDiagnosisRef.current) return;
+            prevDiagnosisRef.current = cat;
             if (cat && MANAGEMENT_SUBTABS.includes(cat)) {
               setManagementSubTab(cat);
             }
-          }, [telestrokeNote.diagnosisCategory, managementSubTab]);
+          }, [telestrokeNote.diagnosisCategory]);
 
           // Trials data
           const trialsData = {
