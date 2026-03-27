@@ -171,6 +171,11 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
         };
 
         const ensureArray = (value, fallback = []) => Array.isArray(value) ? value : fallback;
+        const cryptoRandom = () => {
+          const array = new Uint32Array(1);
+          window.crypto.getRandomValues(array);
+          return array[0] / (0xffffffff + 1);
+        };
         const toIsoString = (value = new Date()) => {
           try {
             return new Date(value).toISOString();
@@ -452,7 +457,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
 
         const generateId = (prefix = 'id') => {
           const stamp = Date.now().toString(36);
-          const rand = Math.random().toString(36).slice(2, 8);
+          const rand = cryptoRandom().toString(36).slice(2, 8);
           return `${prefix}_${stamp}_${rand}`;
         };
 
@@ -7393,7 +7398,7 @@ Clinician Name`;
 
           // Generate unique patient ID
           const generatePatientId = () => {
-            return `pt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            return `pt_${Date.now()}_${cryptoRandom().toString(36).substr(2, 9)}`;
           };
 
           // Get current patient summary for display
@@ -8554,9 +8559,9 @@ Clinician Name`;
           const generateAlias = () => {
             const adjectives = ['Swift', 'Calm', 'Brisk', 'Bright', 'Sable', 'Quiet', 'Sturdy', 'Clear'];
             const nouns = ['Falcon', 'Harbor', 'Quartz', 'Willow', 'Comet', 'Cedar', 'Nimbus', 'Aspen'];
-            const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
-            const noun = nouns[Math.floor(Math.random() * nouns.length)];
-            const code = Math.floor(Math.random() * 90 + 10);
+            const adj = adjectives[Math.floor(cryptoRandom() * adjectives.length)];
+            const noun = nouns[Math.floor(cryptoRandom() * nouns.length)];
+            const code = Math.floor(cryptoRandom() * 90 + 10);
             return `${adj}-${noun}-${code}`;
           };
 
