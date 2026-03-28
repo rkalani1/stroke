@@ -13715,9 +13715,16 @@ Clinician Name`;
             requestAnimationFrame(() => {
               if (target.section) scrollToSection(target.section);
               window.setTimeout(() => {
-                const focusEl = (target.focusIds || [])
-                  .map((id) => document.getElementById(id))
-                  .find((el) => !!el);
+                let focusEl = null;
+                if (target.focusIds) {
+                  for (const id of target.focusIds) {
+                    const el = document.getElementById(id);
+                    if (el) {
+                      focusEl = el;
+                      break;
+                    }
+                  }
+                }
                 if (!focusEl) return;
                 focusEl.focus({ preventScroll: false });
                 if (typeof focusEl.select === 'function') {
