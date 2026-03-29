@@ -7553,12 +7553,6 @@ Clinician Name`;
             }
           };
 
-          const extractTemplateVariables = (text) => {
-            if (!text) return [];
-            const matches = text.match(/{[A-Z0-9_]+}/g) || [];
-            return [...new Set(matches.map((match) => match.replace(/[{}]/g, '')))];
-          };
-
           const fillTemplate = (template, values) => {
             if (!template) return '';
             return template.replace(/{([A-Z0-9_]+)}/g, (match, key) => {
