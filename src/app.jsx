@@ -26478,7 +26478,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <li>• Admit to ICU</li>
                                 <li>• Neuro checks + BP q15min x 2h, then q30min x 6h, then q1h x 16h</li>
                                 <li>• NO antithrombotics/anticoagulants for 24 hours after thrombolysis</li>
-                                <li>• Avoid IV aspirin within 90 minutes of IVT start</li>
                                 <li>• Maintain BP&lt;180/105 for 24 hours after thrombolysis</li>
                                 <li>• NCCT 24 hours post-thrombolysis</li>
                                 <li>• MRI Brain with diffusion weighted imaging</li>
@@ -28974,7 +28973,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <li><strong>Single antiplatelet:</strong></li>
                                 <li>• ASA 325 mg load within 24-48h of onset, then 81 mg daily</li>
                                 <li>• If post-TNK: delay ASA 24 hours</li>
-                                <li>• Avoid IV aspirin within 90 minutes of IVT start</li>
                                 <li>• If AF: transition to DOAC per CATALYST timing</li>
                               </ul>
                             </div>
