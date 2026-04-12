@@ -34060,23 +34060,32 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Document 1 - Thrombolytic Therapy AIS 4.5-24h RCTs */}
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                           <div className="flex items-center gap-3 flex-1">
-                            <i aria-hidden="true" data-lucide="file-spreadsheet" className="w-6 h-6 text-green-600"></i>
+                            <i aria-hidden="true" data-lucide="file-text" className="w-6 h-6 text-red-600"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900">Thrombolytic Therapy AIS 4.5-24h RCTs</h4>
-                              <p className="text-xs text-slate-500">Excel Spreadsheet</p>
+                              <p className="text-xs text-slate-500">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
                             <a
-                              href="documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.xlsx"
-                              download
+                              href="documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf"
+                              target="_blank"
+                              rel="noopener noreferrer"
                               className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors flex items-center gap-1"
+                            >
+                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
+                              View
+                            </a>
+                            <a
+                              href="documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf"
+                              download
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
-                              onClick={() => emailDocument('Thrombolytic Therapy AIS 4.5-24h RCTs', 'documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.xlsx')}
+                              onClick={() => emailDocument('Thrombolytic Therapy AIS 4.5-24h RCTs', 'documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf')}
                               className="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
