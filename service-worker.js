@@ -24,7 +24,16 @@ self.addEventListener('install', (event) => {
       )
     )
   );
-  self.skipWaiting();
+  // NOTE: intentionally not calling self.skipWaiting() here.
+  // The app listens for an updatefound + waiting worker and prompts the
+  // user to reload; the page posts 'SKIP_WAITING' below to activate the
+  // new SW on demand. This avoids silently serving stale app shells.
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('activate', (event) => {

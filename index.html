@@ -15,10 +15,13 @@
     <title>Stroke</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:wght@400;500;600&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preload" as="script" href="app.js?v=5.14.54">
     <link rel="stylesheet" href="tailwind.css?v=5.14.54">
     <style>
         :root {
+            color-scheme: light;
             --app-bg: #f8fafc;
             --app-bg-accent: #eef2f7;
             --shell-bg: rgba(255, 255, 255, 0.96);
@@ -32,6 +35,62 @@
             --text-strong: #0f172a;
             --text-muted: #475569;
         }
+
+        /* Dark theme overrides. Toggled by adding .dark to <html>. */
+        html.dark {
+            color-scheme: dark;
+            --app-bg: #0b1220;
+            --app-bg-accent: #111a2c;
+            --shell-bg: rgba(17, 24, 39, 0.92);
+            --shell-border: rgba(148, 163, 184, 0.12);
+            --shell-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+            --panel-bg: rgba(15, 23, 42, 0.85);
+            --panel-border: rgba(148, 163, 184, 0.12);
+            --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            --accent: #3b82f6;
+            --accent-soft: rgba(59, 130, 246, 0.2);
+            --text-strong: #e2e8f0;
+            --text-muted: #94a3b8;
+        }
+        html.dark body {
+            background: radial-gradient(900px circle at 10% -10%, var(--app-bg-accent), transparent 60%),
+                        linear-gradient(180deg, var(--app-bg) 0%, #0b1220 100%);
+            color: var(--text-strong);
+        }
+        /* Dark-theme tweaks for common Tailwind surface classes used throughout the app.
+           These rely on CSS specificity rather than rewriting every className. */
+        html.dark .bg-white,
+        html.dark .bg-white\/95,
+        html.dark .bg-white\/90,
+        html.dark .bg-white\/80 {
+            background-color: rgba(15, 23, 42, 0.9) !important;
+        }
+        html.dark .bg-slate-50,
+        html.dark .bg-slate-100 {
+            background-color: rgba(30, 41, 59, 0.7) !important;
+        }
+        html.dark .text-slate-900,
+        html.dark .text-slate-800,
+        html.dark .text-slate-700 {
+            color: #e2e8f0 !important;
+        }
+        html.dark .text-slate-600,
+        html.dark .text-slate-500 {
+            color: #94a3b8 !important;
+        }
+        html.dark .border-slate-100,
+        html.dark .border-slate-200,
+        html.dark .border-slate-300 {
+            border-color: rgba(148, 163, 184, 0.2) !important;
+        }
+        html.dark input,
+        html.dark select,
+        html.dark textarea {
+            background-color: rgba(15, 23, 42, 0.9);
+            color: #e2e8f0;
+            border-color: rgba(148, 163, 184, 0.3);
+        }
+        html.dark ::placeholder { color: #64748b; }
 
         body {
             font-family: "Manrope", "Segoe UI", sans-serif;
