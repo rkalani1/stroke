@@ -2982,27 +2982,8 @@ Clinician Name`;
           // CALLING SITES - Unified list for both telephone and video consults
           // =================================================================
           // Calling sites — configure via Settings or enter manually per encounter
-          const CALLING_SITES = [
-            { group: 'Video Partner Sites', sites: [
-              'Astria Sunnyside',
-              'Cascade Medical – Leavenworth',
-              'Columbia Basin-Ephrata',
-              'Confluence Health – Wenatchee',
-              'Island Health – Anacortes',
-              'Lourdes Health – Pasco',
-              'Mason General Hospital – Shelton',
-              'Snoqualmie Valley – Snoqualmie',
-              'St. Joseph Regional Medical Center – Lewiston, Idaho'
-            ]},
-            { group: 'PeaceHealth Sites', sites: [
-              'PeaceHealth Island - Friday Harbor',
-              'PeaceHealth Ketchikan Medical Center – Ketchikan, Alaska',
-              'PeaceHealth St. Joseph Medical Center – Bellingham',
-              'PeaceHealth United General Medical Center – Sedro Woolley'
-            ]},
-            { group: 'Alaska Sites', sites: ['Petersburg, AK'] },
-            { group: 'Tri-Cities', sites: ['Trios Health – Kennewick'] }
-          ];
+          // User-configurable. Enter site names manually per encounter or populate via Settings.
+          const CALLING_SITES = [];
 
           // =================================================================
           // ANTICOAGULANT_INFO - Drug-specific half-lives, monitoring
