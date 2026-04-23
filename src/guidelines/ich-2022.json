@@ -1,0 +1,1002 @@
+{
+  "id": "ich-2022",
+  "title": "AHA/ASA Spontaneous ICH Guideline 2022",
+  "shortTitle": "ICH 2022",
+  "doi": "10.1161/STR.0000000000000407",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407",
+  "recommendations": [
+    {
+      "section": "Organization of Prehospital and Initial Systems",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Public education programs targeting diverse populations are recommended to promote early stroke recognition (including spontaneous ICH) and prompt activation of emergency services, thereby reducing time to diagnosis and treatment.",
+      "page": 8
+    },
+    {
+      "section": "Organization of Prehospital and Initial Systems",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Validated stroke recognition and severity assessment tools are recommended for use by dispatch personnel and first responders to identify potential spontaneous ICH and facilitate rapid transport to an appropriate facility.",
+      "page": 8
+    },
+    {
+      "section": "Organization of Prehospital and Initial Systems",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Immediate activation of the emergency response system (e.g., 9-1-1) is recommended for patients with symptoms suggestive of spontaneous ICH to minimize time to diagnosis and treatment.",
+      "page": 8
+    },
+    {
+      "section": "Organization of Prehospital and Initial Systems",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Early prehospital notification by EMS to the receiving hospital is recommended for patients with suspected spontaneous ICH to improve time to diagnosis and treatment.",
+      "page": 8
+    },
+    {
+      "section": "Organization of Prehospital and Initial Systems",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Regional stroke systems of care are recommended for patients with spontaneous ICH, including facilities capable of initial ICH diagnosis and treatment, as well as centers with neurocritical care and neurosurgical capabilities.",
+      "page": 8
+    },
+    {
+      "section": "Organization of Prehospital and Initial Systems",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In regions where mobile stroke units (MSUs) are available, their use is reasonable for patients with suspected stroke, including spontaneous ICH, to enable faster diagnosis and treatment than standard ambulance transport.",
+      "page": 8
+    },
+    {
+      "section": "Organization of Prehospital and Initial Systems",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Training first responders in stroke evaluation, airway management, and circulatory support is reasonable for patients with suspected spontaneous ICH to detect and manage prehospital neurological deterioration.",
+      "page": 8
+    },
+    {
+      "section": "Physical Examination and Laboratory Assessment",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "A focused history, physical examination, and baseline laboratory workup (including CBC, PT/INR/PTT, creatinine/eGFR, glucose, troponin, ECG, toxicology screen, and inflammatory markers) are recommended on admission to characterize the hemorrhage type, identify active medical issues, and assess prognosis.",
+      "page": 10
+    },
+    {
+      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Rapid neuroimaging with CT or MRI is recommended for patients presenting with stroke-like symptoms to confirm the diagnosis of spontaneous ICH.",
+      "page": 12
+    },
+    {
+      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Serial head CT within the first 24 hours of symptom onset can be useful for patients with spontaneous ICH and/or IVH to evaluate for hemorrhage expansion.",
+      "page": 12
+    },
+    {
+      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Serial head CT can be useful for patients with spontaneous ICH and/or IVH who have a low GCS score or neurological deterioration, to evaluate for hemorrhage expansion, hydrocephalus, brain swelling, or herniation.",
+      "page": 12
+    },
+    {
+      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "CTA within the first few hours of ICH onset may be reasonable to identify patients at risk for subsequent hemorrhage expansion.",
+      "page": 13
+    },
+    {
+      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Using NCCT markers of hemorrhage expansion (e.g., spot sign, blend sign, black hole sign) to identify at-risk patients may be reasonable.",
+      "page": 13
+    },
+    {
+      "section": "Diagnostic Assessment for ICH Pathogenesis",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Acute CTA with consideration of venography is recommended for patients with lobar ICH aged <70 years, deep/posterior fossa ICH aged <45 years, or deep/posterior fossa ICH aged 45-70 years without hypertension history, to exclude macrovascular causes or cerebral venous thrombosis.",
+      "page": 14
+    },
+    {
+      "section": "Diagnostic Assessment for ICH Pathogenesis",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Catheter-based intra-arterial DSA is recommended for patients with spontaneous IVH and no detectable parenchymal hemorrhage to exclude a macrovascular cause.",
+      "page": 14
+    },
+    {
+      "section": "Diagnostic Assessment for ICH Pathogenesis",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "When CTA or MRA suggests a macrovascular cause in patients with spontaneous ICH, catheter-based intra-arterial DSA is recommended as soon as possible to confirm and manage underlying intracranial vascular malformations.",
+      "page": 14
+    },
+    {
+      "section": "Diagnostic Assessment for ICH Pathogenesis",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Catheter-based intra-arterial DSA is reasonable for patients with lobar ICH aged <70 years, deep/posterior fossa ICH aged <45 years, or deep/posterior fossa ICH aged 45-70 years without hypertension when noninvasive imaging (CTA/venography and MRI/MRA) is negative, to exclude a macrovascular cause.",
+      "page": 14
+    },
+    {
+      "section": "Diagnostic Assessment for ICH Pathogenesis",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "When CTA/venography is negative in patients with spontaneous ICH, MRI and MRA are reasonable to identify a nonmacrovascular cause such as CAA, deep perforating vasculopathy, cavernous malformation, or malignancy.",
+      "page": 14
+    },
+    {
+      "section": "Diagnostic Assessment for ICH Pathogenesis",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Acute CTA or MRA with consideration of venography can be useful for patients with spontaneous ICH who undergo initial CT or MRI, to exclude macrovascular causes or cerebral venous thrombosis.",
+      "page": 14
+    },
+    {
+      "section": "Diagnostic Assessment for ICH Pathogenesis",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "When initial catheter-based DSA is negative and no clear microvascular diagnosis or structural lesion is identified, a repeat DSA 3 to 6 months after ICH onset may be reasonable to detect a previously obscured vascular lesion.",
+      "page": 14
+    },
+    {
+      "section": "Acute BP Lowering",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with spontaneous ICH requiring acute BP lowering, careful titration to achieve continuous, smooth, and sustained BP control while avoiding SBP peaks and large variability can be beneficial for functional outcomes.",
+      "page": 16
+    },
+    {
+      "section": "Acute BP Lowering",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Initiating acute BP treatment within 2 hours of ICH onset and reaching the target within 1 hour can be beneficial to reduce hemorrhage expansion risk and improve functional outcome.",
+      "page": 16
+    },
+    {
+      "section": "Acute BP Lowering",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "For patients with mild to moderate spontaneous ICH presenting with SBP 150-220 mm Hg, acutely lowering SBP to a target of 140 mm Hg (maintaining 130-150 mm Hg range) is safe and may be reasonable for improving functional outcomes.",
+      "page": 17
+    },
+    {
+      "section": "Acute BP Lowering",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "The safety and efficacy of intensive BP lowering are not well established for patients with large or severe spontaneous ICH or those requiring surgical decompression.",
+      "page": 17
+    },
+    {
+      "section": "Acute BP Lowering",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-R",
+      "text": "Acute lowering of SBP to <130 mm Hg is potentially harmful in patients with mild to moderate spontaneous ICH presenting with SBP >150 mm Hg.",
+      "page": 17
+    },
+    {
+      "section": "Anticoagulant-Related Hemorrhage",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Immediate discontinuation of anticoagulation and rapid reversal are recommended as soon as possible after diagnosis of anticoagulant-associated spontaneous ICH to improve survival.",
+      "page": 19
+    },
+    {
+      "section": "Anticoagulant-Related Hemorrhage",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "4-factor PCC is recommended over FFP for patients with VKA-associated spontaneous ICH and INR >= 2.0 to achieve rapid INR correction and limit hemorrhage expansion.",
+      "page": 19
+    },
+    {
+      "section": "Anticoagulant-Related Hemorrhage",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Intravenous vitamin K is recommended immediately after coagulation factor replacement (PCC or other) for VKA-associated spontaneous ICH to prevent subsequent INR elevation and hemorrhage expansion.",
+      "page": 19
+    },
+    {
+      "section": "Anticoagulant-Related Hemorrhage",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "PCC may be reasonable for patients with VKA-associated spontaneous ICH and INR 1.3-1.9 to achieve rapid INR correction and limit hemorrhage expansion.",
+      "page": 19
+    },
+    {
+      "section": "Anticoagulant-Related Hemorrhage",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Andexanet alfa is reasonable for patients with direct factor Xa inhibitor-associated spontaneous ICH to reverse the anticoagulant effect.",
+      "page": 19
+    },
+    {
+      "section": "Anticoagulant-Related Hemorrhage",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Idarucizumab is reasonable for patients with dabigatran-associated spontaneous ICH to reverse the anticoagulant effect.",
+      "page": 19
+    },
+    {
+      "section": "Anticoagulant-Related Hemorrhage",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "4-factor PCC or activated PCC (aPCC) may be considered for patients with direct factor Xa inhibitor-associated spontaneous ICH to improve hemostasis.",
+      "page": 19
+    },
+    {
+      "section": "Anticoagulant-Related Hemorrhage",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Activated charcoal may be reasonable for patients with dabigatran- or factor Xa inhibitor-associated spontaneous ICH when the DOAC was ingested within the previous few hours, to prevent further drug absorption.",
+      "page": 19
+    },
+    {
+      "section": "Anticoagulant-Related Hemorrhage",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "When idarucizumab is unavailable, aPCC or PCCs may be considered for patients with dabigatran-associated spontaneous ICH to improve hemostasis.",
+      "page": 19
+    },
+    {
+      "section": "Anticoagulant-Related Hemorrhage",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "When idarucizumab is unavailable, renal replacement therapy may be considered for patients with dabigatran-associated spontaneous ICH to reduce circulating dabigatran concentration.",
+      "page": 19
+    },
+    {
+      "section": "Anticoagulant-Related Hemorrhage",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Intravenous protamine is reasonable for patients with UFH-associated spontaneous ICH to reverse the anticoagulant effect of heparin.",
+      "page": 19
+    },
+    {
+      "section": "Anticoagulant-Related Hemorrhage",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Intravenous protamine may be considered for patients with LMWH-associated spontaneous ICH to partially reverse the anticoagulant effect.",
+      "page": 19
+    },
+    {
+      "section": "Antiplatelet-Related Hemorrhage",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Platelet transfusion might be considered for patients with aspirin-associated spontaneous ICH who require emergency neurosurgery, to reduce postoperative bleeding and mortality.",
+      "page": 23
+    },
+    {
+      "section": "Antiplatelet-Related Hemorrhage",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "The effectiveness of desmopressin, with or without platelet transfusions, to reduce hematoma expansion in patients with antiplatelet-associated spontaneous ICH is uncertain.",
+      "page": 23
+    },
+    {
+      "section": "Antiplatelet-Related Hemorrhage",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-R",
+      "text": "Platelet transfusions are potentially harmful and are not recommended for patients with aspirin-associated spontaneous ICH who are not scheduled for emergency surgery.",
+      "page": 23
+    },
+    {
+      "section": "General Hemostatic Treatments",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "The effectiveness of recombinant factor VIIa for improving functional outcome in patients with spontaneous ICH (with or without the spot sign) is unclear.",
+      "page": 24
+    },
+    {
+      "section": "General Hemostatic Treatments",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "The effectiveness of tranexamic acid (TXA) for improving functional outcome in patients with spontaneous ICH (with or without spot sign, black hole sign, or blend sign) is not well established.",
+      "page": 24
+    },
+    {
+      "section": "Inpatient Care Setting",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Care in a specialized stroke unit with a multidisciplinary team is recommended for patients with spontaneous ICH to improve outcomes and reduce mortality.",
+      "page": 25
+    },
+    {
+      "section": "Inpatient Care Setting",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Provision of care at centers capable of delivering the full range of high-acuity ICH management and expertise is recommended to improve outcomes.",
+      "page": 25
+    },
+    {
+      "section": "Inpatient Care Setting",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Transfer to a center with neurosurgical capabilities is recommended for patients with spontaneous ICH and clinical hydrocephalus requiring definitive management (e.g., EVD placement and monitoring) to reduce mortality.",
+      "page": 25
+    },
+    {
+      "section": "Inpatient Care Setting",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Care delivery by multidisciplinary teams trained in neurological assessment is recommended for patients with spontaneous ICH to improve outcomes.",
+      "page": 25
+    },
+    {
+      "section": "Inpatient Care Setting",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-EO",
+      "text": "Appropriate life-sustaining therapies (airway, ventilation, hemodynamic support) are recommended before inter-hospital transport for patients with spontaneous ICH who lack adequate airway protection, gas exchange, or hemodynamic stability.",
+      "page": 25
+    },
+    {
+      "section": "Inpatient Care Setting",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with spontaneous ICH who do not require ICU admission at presentation, initial care in a stroke unit rather than a general ward is reasonable to reduce mortality and improve outcomes.",
+      "page": 25
+    },
+    {
+      "section": "Inpatient Care Setting",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "A neuro-specific ICU is reasonable over a general ICU for patients with moderate to severe spontaneous ICH, IVH, hydrocephalus, or infratentorial hemorrhage to improve outcomes and reduce mortality.",
+      "page": 25
+    },
+    {
+      "section": "Inpatient Care Setting",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Transfer to centers with neurosurgical capabilities might be reasonable for patients with IVH or infratentorial ICH to improve outcomes.",
+      "page": 25
+    },
+    {
+      "section": "Inpatient Care Setting",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Transfer to centers with neurosurgical capabilities may be reasonable for patients with larger supratentorial ICH to improve outcomes.",
+      "page": 25
+    },
+    {
+      "section": "Prevention and Management of Acute Medical",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Standardized protocols and/or order sets are recommended for the care of patients with spontaneous ICH to reduce disability and mortality.",
+      "page": 27
+    },
+    {
+      "section": "Prevention and Management of Acute Medical",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "A formal dysphagia screening protocol is recommended before initiating oral intake in patients with spontaneous ICH to reduce disability and pneumonia risk.",
+      "page": 27
+    },
+    {
+      "section": "Prevention and Management of Acute Medical",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Continuous cardiac monitoring for the first 24 to 72 hours of admission is reasonable for patients with spontaneous ICH to detect arrhythmias and new cardiac ischemia.",
+      "page": 27
+    },
+    {
+      "section": "Prevention and Management of Acute Medical",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Diagnostic laboratory and radiographic testing for infection on admission and throughout hospitalization is reasonable for patients with spontaneous ICH to improve outcomes.",
+      "page": 27
+    },
+    {
+      "section": "Thromboprophylaxis and Treatment of Thrombosis",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Intermittent pneumatic compression (IPC) starting on the day of diagnosis is recommended for VTE prophylaxis in nonambulatory patients with spontaneous ICH.",
+      "page": 29
+    },
+    {
+      "section": "Thromboprophylaxis and Treatment of Thrombosis",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Low-dose UFH or LMWH can be useful for nonambulatory patients with spontaneous ICH to reduce the risk of pulmonary embolism.",
+      "page": 29
+    },
+    {
+      "section": "Thromboprophylaxis and Treatment of Thrombosis",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Initiating low-dose UFH or LMWH prophylaxis at 24 to 48 hours from ICH onset may be reasonable in nonambulatory patients to optimize the balance between thrombosis prevention and hemorrhage expansion risk.",
+      "page": 29
+    },
+    {
+      "section": "Thromboprophylaxis and Treatment of Thrombosis",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-R",
+      "text": "Graduated compression stockings (knee-high or thigh-high) alone are not beneficial for VTE prophylaxis in nonambulatory patients with spontaneous ICH.",
+      "page": 29
+    },
+    {
+      "section": "Thromboprophylaxis and Treatment of Thrombosis",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Temporary placement of a retrievable IVC filter is reasonable as a bridge to anticoagulation for patients with acute spontaneous ICH and proximal DVT who are not yet candidates for anticoagulation.",
+      "page": 29
+    },
+    {
+      "section": "Thromboprophylaxis and Treatment of Thrombosis",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Delaying therapeutic UFH or LMWH for 1 to 2 weeks after ICH onset might be considered for patients with acute spontaneous ICH and proximal DVT or PE.",
+      "page": 29
+    },
+    {
+      "section": "Nursing Care",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Frequent neurological assessments (including GCS) by ED nurses are recommended during the early hyperacute phase of spontaneous ICH to detect changes in neurological status or level of consciousness.",
+      "page": 31
+    },
+    {
+      "section": "Nursing Care",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Frequent neurological assessments in the ICU and stroke unit for up to 72 hours of admission are reasonable for patients with spontaneous ICH to detect early neurological deterioration.",
+      "page": 31
+    },
+    {
+      "section": "Nursing Care",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Specialized nurse stroke competencies can be effective in improving outcomes and reducing mortality for patients with spontaneous ICH.",
+      "page": 31
+    },
+    {
+      "section": "Glucose Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Serum glucose monitoring is recommended for patients with spontaneous ICH to prevent the harmful effects of both hyperglycemia and hypoglycemia.",
+      "page": 32
+    },
+    {
+      "section": "Glucose Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Treatment of hypoglycemia (<40-60 mg/dL or <2.2-3.3 mmol/L) is recommended for patients with spontaneous ICH to reduce mortality.",
+      "page": 32
+    },
+    {
+      "section": "Glucose Management",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Treatment of moderate to severe hyperglycemia (>180-200 mg/dL or >10.0-11.1 mmol/L) is reasonable for patients with spontaneous ICH to improve outcomes.",
+      "page": 32
+    },
+    {
+      "section": "Temperature Management",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Pharmacological treatment of elevated temperature may be reasonable for patients with spontaneous ICH to improve functional outcomes.",
+      "page": 33
+    },
+    {
+      "section": "Temperature Management",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "The usefulness of therapeutic hypothermia (<35 degrees C / 95 degrees F) for decreasing peri-ICH edema is unclear.",
+      "page": 33
+    },
+    {
+      "section": "Seizures and Antiseizure Drugs",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Antiseizure drugs are recommended for patients with spontaneous ICH who have impaired consciousness and confirmed electrographic seizures to reduce morbidity.",
+      "page": 34
+    },
+    {
+      "section": "Seizures and Antiseizure Drugs",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-EO",
+      "text": "Antiseizure drugs are recommended for patients with spontaneous ICH and clinical seizures to improve functional outcomes and prevent brain injury from prolonged or recurrent seizure activity.",
+      "page": 34
+    },
+    {
+      "section": "Seizures and Antiseizure Drugs",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Continuous EEG monitoring (at least 24 hours) is reasonable for patients with spontaneous ICH and unexplained or fluctuating mental status changes or clinical suspicion for seizures, to diagnose electrographic seizures and epileptiform discharges.",
+      "page": 34
+    },
+    {
+      "section": "Seizures and Antiseizure Drugs",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-NR",
+      "text": "Prophylactic antiseizure medication is not beneficial for patients with spontaneous ICH who have no evidence of seizures with regard to functional outcomes, long-term seizure control, or mortality.",
+      "page": 34
+    },
+    {
+      "section": "Neuroinvasive Monitoring, ICP, and Edema",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Ventricular drainage is recommended for patients with spontaneous ICH or IVH and hydrocephalus contributing to decreased level of consciousness, to reduce mortality.",
+      "page": 35
+    },
+    {
+      "section": "Neuroinvasive Monitoring, ICP, and Edema",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "ICP monitoring and treatment might be considered for patients with moderate to severe spontaneous ICH or IVH with reduced level of consciousness to reduce mortality and improve outcomes.",
+      "page": 35
+    },
+    {
+      "section": "Neuroinvasive Monitoring, ICP, and Edema",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "The efficacy of early prophylactic hyperosmolar therapy for improving outcomes in patients with spontaneous ICH is not well established.",
+      "page": 35
+    },
+    {
+      "section": "Neuroinvasive Monitoring, ICP, and Edema",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Bolus hyperosmolar therapy may be considered for patients with spontaneous ICH as a temporizing measure to reduce ICP.",
+      "page": 35
+    },
+    {
+      "section": "Neuroinvasive Monitoring, ICP, and Edema",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-R",
+      "text": "Corticosteroids are not recommended for the treatment of elevated ICP in patients with spontaneous ICH.",
+      "page": 35
+    },
+    {
+      "section": "MIS Evacuation of ICH",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Minimally invasive hematoma evacuation (endoscopic or stereotactic aspiration, with or without thrombolytic use) can be useful to reduce mortality compared with medical management alone for patients with supratentorial ICH >20-30 mL and GCS 5-12.",
+      "page": 37
+    },
+    {
+      "section": "MIS Evacuation of ICH",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "When hematoma evacuation is being considered for patients with supratentorial ICH >20-30 mL and GCS 5-12, selecting minimally invasive evacuation over conventional craniotomy may be reasonable to improve functional outcomes.",
+      "page": 37
+    },
+    {
+      "section": "MIS Evacuation of ICH",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "The effectiveness of minimally invasive hematoma evacuation (endoscopic or stereotactic aspiration, with or without thrombolytic use) for improving functional outcomes in patients with supratentorial ICH >20-30 mL and GCS 5-12 is uncertain.",
+      "page": 37
+    },
+    {
+      "section": "MIS Evacuation of IVH",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "EVD is recommended over medical management alone for patients with spontaneous ICH, large IVH, and impaired level of consciousness to reduce mortality.",
+      "page": 39
+    },
+    {
+      "section": "MIS Evacuation of IVH",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Minimally invasive IVH evacuation with EVD plus thrombolytic is safe and reasonable compared with EVD alone for patients with GCS >3 and primary IVH or IVH extension from supratentorial ICH <30 mL requiring EVD, to reduce mortality.",
+      "page": 39
+    },
+    {
+      "section": "MIS Evacuation of IVH",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "The effectiveness of minimally invasive IVH evacuation with EVD plus thrombolytic for improving functional outcomes is uncertain for patients with GCS >3 and primary IVH or IVH extension from supratentorial ICH <30 mL requiring EVD.",
+      "page": 39
+    },
+    {
+      "section": "MIS Evacuation of IVH",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "The efficacy of EVD for improving functional outcomes is not well established in patients with severe spontaneous ICH, large IVH, and impaired level of consciousness.",
+      "page": 39
+    },
+    {
+      "section": "MIS Evacuation of IVH",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "The usefulness of minimally invasive IVH evacuation with neuroendoscopy plus EVD, with or without thrombolytic, to improve functional outcomes and reduce permanent shunt dependence is uncertain for patients with supratentorial ICH <30 mL and IVH requiring EVD.",
+      "page": 39
+    },
+    {
+      "section": "Craniotomy for Supratentorial Hemorrhage",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "The usefulness of craniotomy for hemorrhage evacuation to improve functional outcomes or mortality is uncertain for most patients with moderate or greater supratentorial spontaneous ICH.",
+      "page": 41
+    },
+    {
+      "section": "Craniotomy for Supratentorial Hemorrhage",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Craniotomy for hematoma evacuation might be considered as a lifesaving measure in patients with supratentorial ICH who are clinically deteriorating.",
+      "page": 41
+    },
+    {
+      "section": "Craniotomy for Posterior Fossa Hemorrhage",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Immediate surgical evacuation of the hemorrhage, with or without EVD, is recommended over medical management alone for patients with cerebellar ICH who are neurologically deteriorating, have brainstem compression and/or hydrocephalus from ventricular obstruction, or have cerebellar ICH volume >= 15 mL, to reduce mortality.",
+      "page": 42
+    },
+    {
+      "section": "Craniectomy for ICH",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Decompressive craniectomy with or without hematoma evacuation may be considered to reduce mortality in patients with supratentorial ICH who are comatose, have large hematomas with significant midline shift, or have elevated ICP refractory to medical management.",
+      "page": 43
+    },
+    {
+      "section": "Craniectomy for ICH",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "The effectiveness of decompressive craniectomy with or without hematoma evacuation for improving functional outcomes is uncertain in patients with supratentorial ICH who are comatose, have large hematomas with significant midline shift, or have refractory elevated ICP.",
+      "page": 43
+    },
+    {
+      "section": "Outcome Prediction",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "A baseline hemorrhage severity score is recommended as part of the initial evaluation for patients with spontaneous ICH to provide an overall measure of clinical severity.",
+      "page": 44
+    },
+    {
+      "section": "Outcome Prediction",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "A baseline severity score might be reasonable as a general framework for communication with patients and their caregivers about prognosis.",
+      "page": 44
+    },
+    {
+      "section": "Outcome Prediction",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-NR",
+      "text": "A baseline severity score alone is not recommended as the sole basis for forecasting individual prognosis or deciding to limit life-sustaining treatment in patients with spontaneous ICH.",
+      "page": 44
+    },
+    {
+      "section": "Decisions to Limit Life-Sustaining Treatment",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with spontaneous ICH who lack preexisting documented wishes to limit life-sustaining therapy, aggressive care with postponement of new DNAR orders or withdrawal of support until at least the second full day of hospitalization is reasonable to decrease mortality and improve functional outcome.",
+      "page": 45
+    },
+    {
+      "section": "Decisions to Limit Life-Sustaining Treatment",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "A shared decision-making model between surrogates and physicians is reasonable for patients with spontaneous ICH who cannot fully participate in medical decision-making, to align care with patient wishes and improve surrogate satisfaction.",
+      "page": 45
+    },
+    {
+      "section": "Decisions to Limit Life-Sustaining Treatment",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-NR",
+      "text": "Limiting other medical and surgical interventions solely on the basis of DNAR status, without explicit patient or surrogate direction, is associated with increased mortality in patients with spontaneous ICH.",
+      "page": 45
+    },
+    {
+      "section": "Rehabilitation and Recovery",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Multidisciplinary rehabilitation with regular team meetings and discharge planning is recommended for patients with spontaneous ICH to improve functional outcome and reduce morbidity and mortality.",
+      "page": 47
+    },
+    {
+      "section": "Rehabilitation and Recovery",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Early supported discharge is beneficial for patients with mild to moderate spontaneous ICH to increase the likelihood of living at home at 3 months.",
+      "page": 47
+    },
+    {
+      "section": "Rehabilitation and Recovery",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Early rehabilitation beginning 24 to 48 hours after onset (including ADL training, stretching, and functional task training) may be considered for patients with moderately severe spontaneous ICH to improve functional outcome and reduce mortality.",
+      "page": 47
+    },
+    {
+      "section": "Rehabilitation and Recovery",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "A",
+      "text": "Fluoxetine therapy is not effective for enhancing poststroke functional status in patients with spontaneous ICH who do not have depression.",
+      "page": 47
+    },
+    {
+      "section": "Rehabilitation and Recovery",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-R",
+      "text": "Very early and intense mobilization within the first 24 hours after spontaneous ICH is associated with a lower likelihood of good recovery.",
+      "page": 47
+    },
+    {
+      "section": "Neurobehavioral Complications",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Evidence-based treatments including psychotherapy and pharmacotherapy are recommended for patients with spontaneous ICH and moderate to severe depression to reduce depressive symptoms.",
+      "page": 48
+    },
+    {
+      "section": "Neurobehavioral Complications",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Administration of validated depression and anxiety screening tools in the postacute period is recommended for patients with spontaneous ICH to identify poststroke depression and anxiety.",
+      "page": 48
+    },
+    {
+      "section": "Neurobehavioral Complications",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "A cognitive screening tool in the postacute period is recommended for patients with spontaneous ICH to identify cognitive impairment and dementia.",
+      "page": 48
+    },
+    {
+      "section": "Neurobehavioral Complications",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Referral for cognitive therapy is reasonable for patients with spontaneous ICH and cognitive impairment to improve cognitive outcomes.",
+      "page": 48
+    },
+    {
+      "section": "Neurobehavioral Complications",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Continuation or initiation of SSRIs after spontaneous ICH can be beneficial for patients with preexisting or new mood disorders requiring pharmacotherapy.",
+      "page": 48
+    },
+    {
+      "section": "Neurobehavioral Complications",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Cholinesterase inhibitors or memantine might be considered for patients with spontaneous ICH and cognitive impairment to improve cognitive outcomes.",
+      "page": 48
+    },
+    {
+      "section": "Prognostication of Future ICH Risk",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "When assessing recurrent ICH risk for prognostication or management decisions, it is reasonable to incorporate the following risk factors: lobar location of the initial ICH, older age, presence/number/lobar location of MRI microbleeds, cortical superficial siderosis on MRI, poorly controlled hypertension, Asian or Black race, and apolipoprotein E epsilon-2 or epsilon-4 alleles.",
+      "page": 50
+    },
+    {
+      "section": "BP Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Long-term BP control is recommended for patients with spontaneous ICH to prevent hemorrhage recurrence.",
+      "page": 51
+    },
+    {
+      "section": "BP Management",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Targeting a long-term SBP of <130 mm Hg and DBP of <80 mm Hg is reasonable for patients with spontaneous ICH to prevent hemorrhage recurrence.",
+      "page": 51
+    },
+    {
+      "section": "Management of Antithrombotic Agents",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Early resumption of anticoagulation is reasonable for patients with spontaneous ICH who have conditions placing them at high thromboembolic risk (e.g., mechanical heart valve, LVAD) to prevent thromboembolic complications.",
+      "page": 52
+    },
+    {
+      "section": "Management of Antithrombotic Agents",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Resumption of antiplatelet therapy may be reasonable for patients with spontaneous ICH and an indication for antiplatelet treatment, based on weighing thromboembolic prevention benefits against recurrent hemorrhage risk.",
+      "page": 52
+    },
+    {
+      "section": "Management of Antithrombotic Agents",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Resumption of anticoagulation may be considered for patients with nonvalvular AF and spontaneous ICH to prevent thromboembolic events and reduce all-cause mortality, based on individualized benefit-risk assessment.",
+      "page": 52
+    },
+    {
+      "section": "Management of Antithrombotic Agents",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "When anticoagulation is to be restarted in patients with AF and spontaneous ICH, initiation at 7 to 8 weeks after ICH may be considered after weighing patient-specific factors to optimize the benefit-risk balance.",
+      "page": 52
+    },
+    {
+      "section": "Management of Antithrombotic Agents",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Left atrial appendage closure may be considered for patients with AF and spontaneous ICH who are deemed ineligible for anticoagulation, to reduce thromboembolic risk.",
+      "page": 52
+    },
+    {
+      "section": "Management of Other Medications",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "The risks and benefits of statin therapy on ICH outcomes and recurrence relative to overall cardiovascular event prevention are uncertain for patients with spontaneous ICH and an established statin indication.",
+      "page": 54
+    },
+    {
+      "section": "Management of Other Medications",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-NR",
+      "text": "Regular long-term use of NSAIDs is potentially harmful for patients with spontaneous ICH because of the increased risk of recurrent ICH.",
+      "page": 54
+    },
+    {
+      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Lifestyle modification is reasonable for patients with spontaneous ICH to help lower blood pressure.",
+      "page": 55
+    },
+    {
+      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Avoiding heavy alcohol consumption is reasonable for patients with spontaneous ICH to reduce hypertension and ICH recurrence risk.",
+      "page": 55
+    },
+    {
+      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Lifestyle modification including supervised training and counseling may be reasonable for patients with spontaneous ICH to improve functional recovery.",
+      "page": 55
+    },
+    {
+      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Psychosocial education for caregivers can be beneficial to increase activity level, participation, and quality of life for patients with spontaneous ICH.",
+      "page": 55
+    },
+    {
+      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Practical support and training for caregivers is reasonable to improve standing balance in patients with spontaneous ICH.",
+      "page": 55
+    },
+    {
+      "section": "Primary ICH Prevention in Individuals With High-",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "When considering primary ICH prevention, incorporating available MRI findings such as cerebral microbleed burden or cortical superficial siderosis into shared decision-making about stroke prevention treatment plans may be reasonable.",
+      "page": 56
+    }
+  ]
+}

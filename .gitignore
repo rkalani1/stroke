@@ -1,0 +1,11 @@
+config.local.json
+node_modules/
+.pw-audit.mjs
+.pw-audit-report.json
+.DS_Store
+npm-debug.log
+output/
+
+# Pre-compressed build artifacts from scripts/compress-assets.mjs
+*.gz
+*.br

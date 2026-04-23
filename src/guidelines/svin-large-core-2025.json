@@ -1,0 +1,42 @@
+{
+  "id": "svin-large-core-2025",
+  "title": "SVIN 2025 Guideline: EVT for Large Infarct",
+  "shortTitle": "SVIN Large-Core EVT 2025",
+  "doi": "10.1161/SVIN.124.001581",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/SVIN.124.001581",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/SVIN.124.001581",
+  "recommendations": [
+    {
+      "section": "EVT within 0-6 hours",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with anterior circulation stroke presenting within 0-6 h from symptom onset, baseline mRS score 0-1, age 18-80 years, occlusion of the ICA or MCA M1 segment, and ASPECTS of 0-5 on noncontrast CT or MRI, EVT is recommended. (Evidence: LASTE trial; meta-analyses AlMajali et al, Roman et al, Winkelmeier et al)",
+      "page": 10
+    },
+    {
+      "section": "EVT within 6-24 hours",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with anterior circulation LVO presenting within 6-24 h from symptom onset, baseline mRS score 0-1, age 18-80 years, occlusion of the ICA or MCA M1 segment, and ASPECTS of 3-5 on noncontrast CT or MRI, EVT is recommended. (Evidence: ANGEL-ASPECT, RESCUE-Japan LIMIT; meta-analyses Palaiodimou et al, Wei et al, Li et al)",
+      "page": 10
+    },
+    {
+      "section": "EVT within 6-24 hours",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with anterior circulation LVO presenting within 6-24 h from symptom onset, baseline mRS score 0-1, age 18-80 years, occlusion of the ICA or MCA M1 segment with CTP imaging according to the SELECT2 and ANGEL-ASPECT eligibility criteria, EVT is recommended. (Evidence: ANGEL-ASPECT, SELECT2)",
+      "page": 10
+    },
+    {
+      "section": "EVT within 6-24 hours",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with anterior circulation LVO presenting within 6-24 h from symptom onset, baseline mRS score 0-1, age 18-80 years, occlusion of the ICA or MCA M1 segment, and ASPECTS of 0-2 on noncontrast CT or MRI, the benefit of EVT is uncertain.",
+      "page": 10
+    }
+  ]
+}

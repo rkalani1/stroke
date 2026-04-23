@@ -1,0 +1,34 @@
+{
+  "id": "maternal-stroke-2026",
+  "title": "AHA Maternal Stroke in Pregnancy and Postpartum Scientific Statement 2026",
+  "shortTitle": "Maternal Stroke 2026",
+  "doi": "10.1161/STR.0000000000000514",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000514",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000514",
+  "recommendations": [
+    {
+      "section": "Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Do not delay neuroimaging for suspected maternal stroke; CT/CTA or MRI are acceptable, and lead shielding is not recommended because it can increase radiation exposure.",
+      "page": 11
+    },
+    {
+      "section": "Acute Reperfusion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Pregnancy should not delay evidence-based reperfusion; IV thrombolysis may be considered when benefits outweigh risks, and mechanical thrombectomy is appropriate for eligible LVO.",
+      "page": 10
+    },
+    {
+      "section": "Secondary Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Low-dose aspirin is considered safe for most pregnant patients with prior ischemic stroke or TIA; LMWH is typically recommended for high-risk cardioembolic or thrombophilia scenarios.",
+      "page": 9
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "id": "systemic-complications-2024",
+  "title": "AHA Systemic Complications of Acute Stroke Scientific Statement 2024",
+  "shortTitle": "Systemic Complications 2024",
+  "doi": "10.1161/STR.0000000000000477",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000477",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000477",
+  "recommendations": [
+    {
+      "section": "Fever and Infection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Monitor for poststroke fever, evaluate common infectious sources, and treat fever per current AIS/ICH/SAH guideline protocols.",
+      "page": 4
+    },
+    {
+      "section": "Stroke-Associated Pneumonia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Prevent stroke-associated pneumonia with early dysphagia screening, aspiration precautions, and oral hygiene; routine prophylactic antibiotics have not improved outcomes.",
+      "page": 4
+    },
+    {
+      "section": "Cardiac Complications",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Screen for cardiac complications (ECG/telemetry, troponin when indicated) and manage arrhythmia or heart failure promptly during acute stroke care.",
+      "page": 5
+    }
+  ]
+}

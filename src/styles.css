@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    @apply tracking-tight;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+
+  ::selection {
+    background: #dbeafe;
+    color: #0f172a;
+  }
+}
+
+@layer components {
+  .app-shell {
+    @apply bg-white/80 border border-slate-200 rounded-2xl shadow-sm;
+  }
+
+  .app-header {
+    @apply border-b border-slate-200/60 pb-3;
+  }
+
+  details > summary {
+    list-style: none;
+  }
+
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .app-header,
+  .app-nav,
+  nav[role="tablist"],
+  .no-print,
+  .fixed,
+  [role="alert"].toast-alert {
+    display: none !important;
+  }
+
+  /* Hide sticky nav but keep patient summary strip visible */
+  .sticky.top-0,
+  .sticky.z-50 {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    font-size: 11pt;
+  }
+
+  .app-shell {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: white !important;
+    padding: 0 !important;
+  }
+
+  /* Force all details panels open for print */
+  details {
+    display: block !important;
+  }
+
+  details > *:not(summary) {
+    display: block !important;
+  }
+
+  details[open] > summary {
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.25rem;
+  }
+
+  /* Remove height constraints on note preview for full print */
+  .max-h-96 {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .shadow-sm,
+  .shadow-md,
+  .shadow-lg {
+    box-shadow: none !important;
+  }
+
+  @page {
+    margin: 1.5cm;
+  }
+}

@@ -1,0 +1,658 @@
+{
+  "id": "sah-2023",
+  "title": "AHA/ASA Aneurysmal Subarachnoid Hemorrhage 2023",
+  "shortTitle": "aSAH 2023",
+  "doi": "10.1161/STR.0000000000000436",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000436",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436",
+  "recommendations": [
+    {
+      "section": "Natural History and Outcome of aSAH",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Validated clinical grading scales such as the Hunt and Hess (HH) or World Federation of Neurosurgical Societies (WFNS) grade are recommended to assess initial aSAH severity and predict outcome.",
+      "page": 8
+    },
+    {
+      "section": "Natural History and Outcome of aSAH",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with high-grade aSAH, proceeding with aneurysm treatment is reasonable after careful prognostic discussions with family members to optimize outcomes.",
+      "page": 8
+    },
+    {
+      "section": "Natural History and Outcome of aSAH",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In elderly patients with aSAH, aneurysm treatment is reasonable after discussing prognosis with family to improve survival and functional outcome.",
+      "page": 8
+    },
+    {
+      "section": "Natural History and Outcome of aSAH",
+      "classOfRec": "III",
+      "classNote": "No benefit",
+      "levelOfEvidence": "B-NR",
+      "text": "Aneurysm treatment is not beneficial in aSAH patients who fail to improve after correction of modifiable conditions and have evidence of irreversible neurological injury deemed unsalvageable.",
+      "page": 8
+    },
+    {
+      "section": "Clinical Manifestations and Diagnosis of aSAH",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Prompt diagnostic evaluation is recommended in patients presenting with acute-onset severe headache to diagnose or exclude aSAH and minimize morbidity and mortality.",
+      "page": 9
+    },
+    {
+      "section": "Clinical Manifestations and Diagnosis of aSAH",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with acute severe headache presenting more than 6 hours after onset or with a new neurological deficit, a noncontrast head CT followed by lumbar puncture (if CT is negative) is recommended to diagnose or exclude aSAH.",
+      "page": 9
+    },
+    {
+      "section": "Clinical Manifestations and Diagnosis of aSAH",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with acute severe headache presenting within 6 hours of onset and without new neurological deficits, a noncontrast head CT on a high-quality scanner interpreted by a board-certified neuroradiologist is reasonable to diagnose or exclude aSAH.",
+      "page": 9
+    },
+    {
+      "section": "Clinical Manifestations and Diagnosis of aSAH",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with acute severe headache without new neurological deficits, applying the Ottawa SAH Rule may be reasonable to identify individuals at high risk for aSAH.",
+      "page": 9
+    },
+    {
+      "section": "Clinical Manifestations and Diagnosis of aSAH",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Digital subtraction angiography (DSA) is indicated in spontaneous SAH patients with high suspicion for an aneurysmal source when CTA is negative or inconclusive, to definitively diagnose or exclude a cerebral aneurysm.",
+      "page": 9
+    },
+    {
+      "section": "Clinical Manifestations and Diagnosis of aSAH",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with SAH from a confirmed cerebral aneurysm, DSA can be useful to determine the optimal treatment strategy for aneurysm intervention.",
+      "page": 9
+    },
+    {
+      "section": "Hospital Characteristics and Systems of Care",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Timely transfer of aSAH patients from low-volume hospitals to high-volume centers with multidisciplinary neurointensive care, comprehensive stroke center capabilities, and experienced cerebrovascular specialists is recommended to improve outcomes.",
+      "page": 11
+    },
+    {
+      "section": "Hospital Characteristics and Systems of Care",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Care for aSAH patients is recommended in a dedicated neurocritical care unit managed by a multidisciplinary team.",
+      "page": 11
+    },
+    {
+      "section": "Medical Measures to Prevent Rebleeding",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-EO",
+      "text": "Frequent blood pressure monitoring and management with short-acting agents is recommended in aSAH patients with an unsecured aneurysm, targeting avoidance of severe hypotension, hypertension, and BP variability.",
+      "page": 13
+    },
+    {
+      "section": "Medical Measures to Prevent Rebleeding",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-EO",
+      "text": "Emergency reversal of anticoagulation with appropriate agents is recommended in aSAH patients receiving anticoagulants to prevent rebleeding.",
+      "page": 13
+    },
+    {
+      "section": "Medical Measures to Prevent Rebleeding",
+      "classOfRec": "III",
+      "classNote": "No benefit",
+      "levelOfEvidence": "A",
+      "text": "Routine use of antifibrinolytic therapy in aSAH patients is not useful for improving functional outcome.",
+      "page": 13
+    },
+    {
+      "section": "Surgical and Endovascular Methods for Treatment of Ruptured Cerebral Aneurysms",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Surgical or endovascular treatment of the ruptured aneurysm is recommended as early as feasible after presentation, preferably within 24 hours of onset, to improve outcome.",
+      "page": 14
+    },
+    {
+      "section": "Surgical and Endovascular Methods for Treatment of Ruptured Cerebral Aneurysms",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Complete obliteration of the ruptured aneurysm is indicated whenever feasible to reduce the risk of rebleeding and need for retreatment.",
+      "page": 14
+    },
+    {
+      "section": "Surgical and Endovascular Methods for Treatment of Ruptured Cerebral Aneurysms",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-EO",
+      "text": "When complete obliteration by clipping or primary coiling is not feasible acutely, partial obliteration to secure the rupture site with delayed retreatment in patients who achieve functional recovery is a reasonable strategy to prevent rebleeding.",
+      "page": 14
+    },
+    {
+      "section": "Surgical and Endovascular Methods for Treatment of Ruptured Cerebral Aneurysms",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "For ruptured posterior circulation aneurysms amenable to coiling, endovascular coiling is indicated over surgical clipping to improve outcome.",
+      "page": 14
+    },
+    {
+      "section": "Surgical and Endovascular Methods for Treatment of Ruptured Cerebral Aneurysms",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Emergency clot evacuation is recommended in salvageable aSAH patients with depressed consciousness due to a large intraparenchymal hematoma to reduce mortality.",
+      "page": 14
+    },
+    {
+      "section": "Surgical and Endovascular Methods for Treatment of Ruptured Cerebral Aneurysms",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-EO",
+      "text": "The ruptured aneurysm is recommended to be evaluated by specialists with both endovascular and surgical expertise to determine the optimal treatment approach based on patient and aneurysm characteristics.",
+      "page": 14
+    },
+    {
+      "section": "Surgical and Endovascular Methods for Treatment of Ruptured Cerebral Aneurysms",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients older than 70 years with aSAH, the superiority of coiling versus clipping for improving outcome is not well established.",
+      "page": 14
+    },
+    {
+      "section": "Surgical and Endovascular Methods for Treatment of Ruptured Cerebral Aneurysms",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients younger than 40 years with aSAH, surgical clipping might be considered the preferred treatment to improve long-term durability and outcome.",
+      "page": 14
+    },
+    {
+      "section": "Surgical and Endovascular Methods for Treatment of Ruptured Cerebral Aneurysms",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "For good-grade aSAH from anterior circulation aneurysms equally suitable for primary coiling and clipping, primary coiling is recommended over clipping to improve 1-year functional outcome.",
+      "page": 14
+    },
+    {
+      "section": "Surgical and Endovascular Methods for Treatment of Ruptured Cerebral Aneurysms",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "For good-grade aSAH from anterior circulation aneurysms equally suitable for primary coiling and clipping, both treatment modalities are reasonable options for achieving favorable long-term outcome.",
+      "page": 14
+    },
+    {
+      "section": "Surgical and Endovascular Methods for Treatment of Ruptured Cerebral Aneurysms",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "For ruptured wide-neck aneurysms not amenable to clipping or primary coiling, endovascular treatment with stent-assisted coiling or flow diverters is reasonable to reduce rebleeding risk.",
+      "page": 14
+    },
+    {
+      "section": "Surgical and Endovascular Methods for Treatment of Ruptured Cerebral Aneurysms",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In aSAH from ruptured fusiform or blister aneurysms, use of flow diverters is reasonable to reduce mortality.",
+      "page": 14
+    },
+    {
+      "section": "Surgical and Endovascular Methods for Treatment of Ruptured Cerebral Aneurysms",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-NR",
+      "text": "Stents or flow diverters are not recommended for ruptured saccular aneurysms amenable to either primary coiling or clipping, due to a higher risk of complications.",
+      "page": 14
+    },
+    {
+      "section": "Anesthetic Management of Surgical and Endovascular Procedures",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Intraoperative use of mannitol or hypertonic saline can be effective for reducing intracranial pressure and cerebral edema in aSAH patients.",
+      "page": 17
+    },
+    {
+      "section": "Anesthetic Management of Surgical and Endovascular Procedures",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Anesthetic management in aSAH patients is reasonable to target minimization of postprocedural pain, nausea, and vomiting.",
+      "page": 17
+    },
+    {
+      "section": "Anesthetic Management of Surgical and Endovascular Procedures",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Prevention of both intraoperative hyperglycemia and hypoglycemia during aneurysm surgery is reasonable to improve outcomes in aSAH patients.",
+      "page": 17
+    },
+    {
+      "section": "Anesthetic Management of Surgical and Endovascular Procedures",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Frequent intraoperative blood pressure monitoring and control are reasonable in aSAH patients with an unsecured ruptured aneurysm to prevent ischemia and intraoperative rerupture.",
+      "page": 17
+    },
+    {
+      "section": "Anesthetic Management of Surgical and Endovascular Procedures",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Intraoperative neuromonitoring may be reasonable in aSAH patients to guide anesthetic and operative management decisions.",
+      "page": 17
+    },
+    {
+      "section": "Anesthetic Management of Surgical and Endovascular Procedures",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Adenosine-induced transient cardiac standstill may be considered during uncontrolled intraoperative aneurysmal rupture to facilitate clip placement.",
+      "page": 17
+    },
+    {
+      "section": "Anesthetic Management of Surgical and Endovascular Procedures",
+      "classOfRec": "III",
+      "classNote": "No benefit",
+      "levelOfEvidence": "B-R",
+      "text": "Routine use of induced mild hypothermia during aneurysm surgery is not beneficial in patients with good-grade aSAH.",
+      "page": 17
+    },
+    {
+      "section": "Management of Medical Complications",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "A standardized ICU care bundle is recommended for aSAH patients requiring mechanical ventilation for more than 24 hours to reduce ventilator duration and hospital-acquired pneumonia.",
+      "page": 19
+    },
+    {
+      "section": "Management of Medical Complications",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In aSAH patients who develop severe ARDS with life-threatening hypoxemia, rescue measures such as prone positioning and alveolar recruitment maneuvers with ICP monitoring may be reasonable to improve oxygenation.",
+      "page": 20
+    },
+    {
+      "section": "Management of Medical Complications",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Close monitoring with goal-directed fluid management to maintain euvolemia is reasonable in aSAH patients.",
+      "page": 20
+    },
+    {
+      "section": "Management of Medical Complications",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Mineralocorticoid therapy is reasonable for treating natriuresis and hyponatremia in aSAH patients.",
+      "page": 20
+    },
+    {
+      "section": "Management of Medical Complications",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-R",
+      "text": "Induced hypervolemia is potentially harmful in aSAH patients due to its association with excess morbidity.",
+      "page": 20
+    },
+    {
+      "section": "Management of Medical Complications",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Pharmacological or mechanical VTE prophylaxis is recommended in aSAH patients whose ruptured aneurysm has been secured to reduce the risk of venous thromboembolism.",
+      "page": 20
+    },
+    {
+      "section": "Management of Medical Complications",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Effective glycemic control with strict hyperglycemia management and avoidance of hypoglycemia is reasonable to improve outcomes in aSAH patients.",
+      "page": 20
+    },
+    {
+      "section": "Management of Medical Complications",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "The effectiveness of therapeutic temperature management (TTM) during the acute phase is uncertain for aSAH patients with fever refractory to antipyretic medications.",
+      "page": 20
+    },
+    {
+      "section": "Nursing Interventions and Activities",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Evidence-based protocols and standardized order sets are recommended in aSAH care to improve consistency and quality of treatment.",
+      "page": 22
+    },
+    {
+      "section": "Nursing Interventions and Activities",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Frequent neurological assessments using validated tools such as the GCS or NIHSS are recommended in aSAH patients to monitor for DCI and other secondary complications.",
+      "page": 22
+    },
+    {
+      "section": "Nursing Interventions and Activities",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Frequent vital sign and neurological monitoring is recommended in aSAH patients to detect neurological changes and prevent secondary cerebral insults.",
+      "page": 22
+    },
+    {
+      "section": "Nursing Interventions and Activities",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "A validated dysphagia screening protocol is recommended before initiating oral intake in aSAH patients to reduce the incidence of pneumonia.",
+      "page": 23
+    },
+    {
+      "section": "Nursing Interventions and Activities",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Specialized nursing stroke competencies and certification can be effective in improving outcomes, timeliness of care, and adherence to stroke protocols for aSAH patients.",
+      "page": 23
+    },
+    {
+      "section": "Nursing Interventions and Activities",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "An early evidence-based mobility protocol is reasonable in aSAH patients with a secured aneurysm to improve functional status at discharge and 12-month global outcome.",
+      "page": 23
+    },
+    {
+      "section": "Monitoring and Detection of Cerebral Vasospasm and DCI",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "CTA or CT perfusion can be useful in aSAH patients with suspected vasospasm or unreliable neurological examination to detect vasospasm and predict DCI.",
+      "page": 25
+    },
+    {
+      "section": "Monitoring and Detection of Cerebral Vasospasm and DCI",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Transcranial Doppler (TCD) ultrasound monitoring is reasonable in aSAH patients for detecting vasospasm and predicting DCI.",
+      "page": 25
+    },
+    {
+      "section": "Monitoring and Detection of Cerebral Vasospasm and DCI",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Continuous EEG monitoring can be useful in high-grade aSAH patients for predicting DCI.",
+      "page": 25
+    },
+    {
+      "section": "Monitoring and Detection of Cerebral Vasospasm and DCI",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Invasive monitoring of brain tissue oxygenation, lactate/pyruvate ratio, and glutamate may be considered in high-grade aSAH patients to predict DCI.",
+      "page": 25
+    },
+    {
+      "section": "Management of Cerebral Vasospasm and DCI",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Early initiation of enteral nimodipine is recommended in aSAH patients to prevent DCI and improve functional outcomes.",
+      "page": 26
+    },
+    {
+      "section": "Management of Cerebral Vasospasm and DCI",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Maintaining euvolemia can be beneficial in aSAH patients for preventing DCI and improving functional outcomes.",
+      "page": 26
+    },
+    {
+      "section": "Management of Cerebral Vasospasm and DCI",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Elevating systolic blood pressure may be reasonable in aSAH patients with symptomatic vasospasm to reduce the progression and severity of DCI.",
+      "page": 26
+    },
+    {
+      "section": "Management of Cerebral Vasospasm and DCI",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Intra-arterial vasodilator therapy may be reasonable in aSAH patients with severe vasospasm to reverse vasospasm and reduce the progression and severity of DCI.",
+      "page": 26
+    },
+    {
+      "section": "Management of Cerebral Vasospasm and DCI",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Cerebral angioplasty may be reasonable in aSAH patients with severe vasospasm to reverse vasospasm and reduce the progression and severity of DCI.",
+      "page": 26
+    },
+    {
+      "section": "Management of Cerebral Vasospasm and DCI",
+      "classOfRec": "III",
+      "classNote": "No benefit",
+      "levelOfEvidence": "A",
+      "text": "Routine statin therapy is not recommended in aSAH patients for the purpose of improving outcomes.",
+      "page": 26
+    },
+    {
+      "section": "Management of Cerebral Vasospasm and DCI",
+      "classOfRec": "III",
+      "classNote": "No benefit",
+      "levelOfEvidence": "A",
+      "text": "Routine intravenous magnesium therapy is not recommended in aSAH patients for improving neurological outcomes.",
+      "page": 26
+    },
+    {
+      "section": "Management of Cerebral Vasospasm and DCI",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-R",
+      "text": "Prophylactic hemodynamic augmentation is not recommended in aSAH patients at risk of DCI due to potential iatrogenic harm.",
+      "page": 26
+    },
+    {
+      "section": "Management of Hydrocephalus Associated with aSAH",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Urgent CSF diversion via EVD and/or lumbar drainage is recommended in aSAH patients with acute symptomatic hydrocephalus to improve neurological outcome.",
+      "page": 30
+    },
+    {
+      "section": "Management of Hydrocephalus Associated with aSAH",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Implementation of and adherence to a bundled EVD protocol addressing insertion, management, education, and monitoring is recommended in aSAH patients requiring EVD to reduce complications and infection rates.",
+      "page": 30
+    },
+    {
+      "section": "Management of Hydrocephalus Associated with aSAH",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Permanent CSF diversion is recommended in aSAH patients who develop chronic symptomatic hydrocephalus to improve neurological outcome.",
+      "page": 30
+    },
+    {
+      "section": "Management of Hydrocephalus Associated with aSAH",
+      "classOfRec": "III",
+      "classNote": "No benefit",
+      "levelOfEvidence": "C-LD",
+      "text": "Routine fenestration of the lamina terminalis is not indicated in aSAH patients for reducing shunt dependency rates.",
+      "page": 30
+    },
+    {
+      "section": "Management of Seizures Associated with aSAH",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Continuous EEG monitoring is reasonable in aSAH patients with fluctuating neurological exam, depressed mental status, ruptured MCA aneurysm, high-grade SAH, ICH, hydrocephalus, or cortical infarction to detect seizures.",
+      "page": 31
+    },
+    {
+      "section": "Management of Seizures Associated with aSAH",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Prophylactic antiseizure medications may be reasonable in aSAH patients with high-seizure-risk features (ruptured MCA aneurysm, high-grade SAH, ICH, hydrocephalus, or cortical infarction) to prevent seizures.",
+      "page": 31
+    },
+    {
+      "section": "Management of Seizures Associated with aSAH",
+      "classOfRec": "III",
+      "classNote": "No benefit",
+      "levelOfEvidence": "B-R",
+      "text": "Prophylactic antiseizure medication is not beneficial in aSAH patients without high-seizure-risk features (ruptured MCA aneurysm, high-grade SAH, ICH, hydrocephalus, or cortical infarction).",
+      "page": 31
+    },
+    {
+      "section": "aSAH Acute Recovery",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Validated grading scores or patient-reported outcome measures are recommended prior to hospital discharge in aSAH patients to screen for physical, cognitive, behavioral, and quality-of-life deficits.",
+      "page": 33
+    },
+    {
+      "section": "aSAH Acute Recovery",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Validated screening tools are recommended in the post-acute period for aSAH patients to identify depression and anxiety.",
+      "page": 33
+    },
+    {
+      "section": "aSAH Acute Recovery",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Psychotherapy and pharmacotherapy are recommended in aSAH patients with depression to reduce depressive symptoms.",
+      "page": 34
+    },
+    {
+      "section": "aSAH Acute Recovery",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "A validated screening tool is recommended in the post-acute period for aSAH patients to identify cognitive dysfunction.",
+      "page": 34
+    },
+    {
+      "section": "aSAH Acute Recovery",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "An early multidisciplinary team-based approach to treatment and rehabilitation is recommended in aSAH patients to reduce length of stay and identify discharge needs.",
+      "page": 34
+    },
+    {
+      "section": "aSAH Acute Recovery",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Early rehabilitation after aneurysm securement is reasonable in aSAH patients without medical or neurological contraindications to improve functional outcome and reduce length of stay.",
+      "page": 34
+    },
+    {
+      "section": "aSAH Acute Recovery",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Early use of neurostimulants may be reasonable in comatose aSAH patients to promote recovery of consciousness.",
+      "page": 34
+    },
+    {
+      "section": "aSAH Acute Recovery",
+      "classOfRec": "III",
+      "classNote": "No benefit",
+      "levelOfEvidence": "A",
+      "text": "Fluoxetine therapy is not effective for enhancing post-stroke functional status in aSAH patients without depression.",
+      "page": 34
+    },
+    {
+      "section": "aSAH Long-Term Recovery",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Screening and intervention for depression, anxiety, and sexual dysfunction are recommended in adult aSAH patients to improve long-term outcomes.",
+      "page": 36
+    },
+    {
+      "section": "aSAH Long-Term Recovery",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "The MoCA is a reasonable preference over the MMSE for identifying cognitive impairment in aSAH patients.",
+      "page": 36
+    },
+    {
+      "section": "aSAH Long-Term Recovery",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Counseling patients and caregivers about the high long-term risk of cognitive dysfunction after aSAH can be beneficial for identifying ongoing care needs.",
+      "page": 36
+    },
+    {
+      "section": "Risk Factors, Prevention, and Subsequent Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Perioperative cerebrovascular imaging is recommended in aSAH patients who have undergone aneurysm repair to identify remnants or recurrence that may require further treatment.",
+      "page": 37
+    },
+    {
+      "section": "Risk Factors, Prevention, and Subsequent Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Follow-up cerebrovascular imaging is recommended in aSAH patients after aneurysm repair to detect recurrence or regrowth of the treated aneurysm, changes in other known aneurysms, or development of new aneurysms that may require treatment.",
+      "page": 37
+    }
+  ]
+}

@@ -1,0 +1,186 @@
+name: Live Smoke Audit
+
+on:
+  schedule:
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  qa-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate churn profile schema
+        run: |
+          mkdir -p output/diagnostics
+          set -o pipefail
+          npm run validate:evidence-churn-profiles 2>&1 | tee output/diagnostics/churn-profile-validation.log
+
+      - name: Validate QA latency profile schema
+        run: |
+          mkdir -p output/diagnostics
+          set -o pipefail
+          npm run validate:qa-latency-profiles 2>&1 | tee output/diagnostics/qa-latency-profile-validation.log
+
+      - name: Validate citation URL health
+        run: npm run validate:citations:links
+
+      - name: Validate citation identifier endpoints
+        run: npm run validate:citations:ids
+
+      - name: Generate evidence promotion checklist
+        run: npm run evidence:promote
+
+      - name: Generate evidence promotion templates
+        run: npm run evidence:template && npm run evidence:template:p0
+
+      - name: Generate evidence ops index
+        run: npm run evidence:index
+
+      - name: Run adaptive strict QA (local + live)
+        run: npm run qa:latency-adaptive-strict
+
+      - name: Open or update failure alert issue
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const label = 'live-smoke-alert';
+            const issueTitle = 'Live Smoke Audit failure';
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const failureBody = [
+              'Automated live smoke audit failed.',
+              '',
+              `- Run: ${runUrl}`,
+              `- SHA: ${context.sha}`,
+              `- Workflow: ${context.workflow}`,
+              `- Event: ${context.eventName}`,
+              '',
+              'Please review workflow logs and uploaded smoke artifacts.'
+            ].join('\\n');
+
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: label });
+            } catch {
+              await github.rest.issues.createLabel({
+                owner,
+                repo,
+                name: label,
+                color: 'B60205',
+                description: 'Live smoke workflow failure requires review'
+              });
+            }
+
+            const openAlerts = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'open',
+              labels: label,
+              per_page: 100
+            });
+
+            if (openAlerts.length > 0) {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: openAlerts[0].number,
+                body: `Another live smoke failure detected.\\n\\n${failureBody}`
+              });
+            } else {
+              await github.rest.issues.create({
+                owner,
+                repo,
+                title: issueTitle,
+                body: failureBody,
+                labels: [label]
+              });
+            }
+
+      - name: Optional external failure webhook alert
+        if: failure()
+        env:
+          LIVE_SMOKE_ALERT_WEBHOOK: ${{ secrets.LIVE_SMOKE_ALERT_WEBHOOK }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REPO_NAME: ${{ github.repository }}
+          RUN_SHA: ${{ github.sha }}
+          RUN_WORKFLOW: ${{ github.workflow }}
+        run: |
+          if [ -z "${LIVE_SMOKE_ALERT_WEBHOOK}" ]; then
+            echo "LIVE_SMOKE_ALERT_WEBHOOK not configured; skipping external alert fan-out."
+            exit 0
+          fi
+
+          message="Live Smoke Audit failure for ${REPO_NAME} | workflow=${RUN_WORKFLOW} | sha=${RUN_SHA} | run=${RUN_URL}"
+          payload=$(printf '{"text":"%s"}' "$(echo "${message}" | sed 's/"/\\"/g')")
+          curl -fsS -X POST \
+            -H 'Content-Type: application/json' \
+            -d "${payload}" \
+            "${LIVE_SMOKE_ALERT_WEBHOOK}"
+
+      - name: Resolve open failure alert issue on success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const label = 'live-smoke-alert';
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+
+            const openAlerts = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'open',
+              labels: label,
+              per_page: 100
+            });
+
+            for (const issue of openAlerts) {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: issue.number,
+                body: `Live smoke audit passed on ${new Date().toISOString()} in [run ${context.runId}](${runUrl}). Closing this alert.`
+              });
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: issue.number,
+                state: 'closed'
+              });
+            }
+
+      - name: Upload smoke artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-smoke-artifacts
+          path: |
+            output/playwright
+            output/diagnostics/churn-profile-validation.log
+            output/diagnostics/qa-latency-profile-validation.log
+            docs/evidence-churn-profiles.json
+            docs/qa-latency-profiles.json
+            docs/evidence-watchlist.md
+            docs/evidence-watch-history.json
+            docs/evidence-ops-index.md
+          if-no-files-found: ignore

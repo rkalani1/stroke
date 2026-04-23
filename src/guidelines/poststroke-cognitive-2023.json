@@ -1,0 +1,90 @@
+{
+  "id": "poststroke-cognitive-2023",
+  "title": "AHA Scientific Statement 2023: Cognitive Impairment After Ischemic and Hemorrhagic Stroke",
+  "shortTitle": "Poststroke Cognition 2023",
+  "doi": "10.1161/STR.0000000000000430",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000430",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000430",
+  "recommendations": [
+    {
+      "section": "Risk and Predictors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "PSCI risk is higher with lobar ICH (often CAA-related), SAH complications, larger lesion burden, and markers such as WMH or atrophy.",
+      "page": 6
+    },
+    {
+      "section": "Screening",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "MoCA is generally preferred over MMSE for poststroke cognitive screening; tool choice should reflect demographics, culture, language, and stroke deficits.",
+      "page": 7
+    },
+    {
+      "section": "Assessment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Use tailored neuropsychological evaluation when screening is inadequate or when deficits are complex or subtle.",
+      "page": 8
+    },
+    {
+      "section": "Screening",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Screen when there is cognitive complaint or clinician concern and plan longitudinal reassessment; avoid mislabeling from cultural or language bias.",
+      "page": 8
+    },
+    {
+      "section": "Management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Aggressively manage vascular risk factors (hypertension, diabetes, lipids, smoking, sleep apnea) to reduce recurrent stroke and PSCI risk.",
+      "page": 9
+    },
+    {
+      "section": "Management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Simultaneous control of multiple vascular risks may slow cognitive decline compared with single-risk interventions.",
+      "page": 9
+    },
+    {
+      "section": "Therapies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Acute reperfusion therapies may improve cognitive outcomes by reducing infarct size, although evidence is limited and heterogeneous.",
+      "page": 9
+    },
+    {
+      "section": "Therapies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Cholinesterase inhibitors or memantine can yield small cognitive benefits but may cause adverse effects; use selectively.",
+      "page": 10
+    },
+    {
+      "section": "Therapies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Emerging therapies (tDCS, rTMS, remote ischemic conditioning, acupuncture) show preliminary benefit; confirmatory studies are needed.",
+      "page": 10
+    },
+    {
+      "section": "Systems of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Provide interdisciplinary care and address comorbid depression, sleep disorders, and social supports that influence cognitive recovery.",
+      "page": 11
+    }
+  ]
+}

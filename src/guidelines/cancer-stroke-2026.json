@@ -1,0 +1,154 @@
+{
+  "id": "cancer-stroke-2026",
+  "title": "AHA Scientific Statement 2026: Classification and Management of Ischemic Stroke in Patients With Active Cancer",
+  "shortTitle": "Cancer-Associated Stroke 2026",
+  "doi": "10.1161/STR.0000000000000517",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000517",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000517",
+  "recommendations": [
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Coordinate neurology-oncology shared decision-making for AIS in patients with cancer, weighing prognosis and risks/benefits of diagnostics and treatments.",
+      "page": 3
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Anticipate a growing burden of cancer-associated AIS as cancer survivorship increases; plan systems of care accordingly.",
+      "page": 3
+    },
+    {
+      "section": "Epidemiology and Primary Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Active or prior cancer increases AIS risk; risk varies by cancer type, stage, histology, genomics, and treatments.",
+      "page": 3
+    },
+    {
+      "section": "Epidemiology and Primary Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Primary prevention: aspirin or anticoagulation has not shown AIS risk reduction in cancer; observational data suggest statins may reduce risk in some groups.",
+      "page": 3
+    },
+    {
+      "section": "Clinical Presentation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "After AIS, 1.5%-10% are diagnosed with incident cancer within 1 year; risk is higher with elevated D-dimer, cryptogenic mechanisms, or multiterritorial infarcts.",
+      "page": 3
+    },
+    {
+      "section": "Clinical Presentation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Compared with noncancer AIS, patients with cancer tend to be older, have fewer traditional risk factors, higher severity, and more widespread infarcts with thrombosis/inflammation markers.",
+      "page": 3
+    },
+    {
+      "section": "Biological Pathways",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Cancer-associated AIS shows platelet/coagulation/endothelial activation, NET formation, and circulating cancer or platelet-derived vesicles.",
+      "page": 3
+    },
+    {
+      "section": "Biological Pathways",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Multiple pathways contribute to cancer-related AIS; no single prevention target is sufficient.",
+      "page": 3
+    },
+    {
+      "section": "Stroke Mechanisms",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Conventional mechanisms (cardioembolism, atherosclerosis) account for about half of AIS in active cancer; cancer therapies can mediate these mechanisms.",
+      "page": 3
+    },
+    {
+      "section": "Stroke Mechanisms",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Remaining cases are undetermined or cancer-specific; many cryptogenic cases may reflect covert NBTE; stroke from cancer drugs is rare and drug-class specific.",
+      "page": 3
+    },
+    {
+      "section": "Diagnostic Evaluation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Extend the AIS diagnostic evaluation in cancer with D-dimer and consideration of blood cultures, right-to-left shunt testing, TEE, chest CT, and prolonged rhythm monitoring.",
+      "page": 3
+    },
+    {
+      "section": "Classification",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Use the proposed cancer-related stroke classification (probable/possible/unlikely) and categorize as 'other determined cause' when criteria are met.",
+      "page": 3
+    },
+    {
+      "section": "Goals of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Reassess goals of care periodically and integrate palliative care alongside disease-targeting therapies.",
+      "page": 3
+    },
+    {
+      "section": "Acute Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Consider IV thrombolysis using standard criteria with added vigilance; check CBC/coagulation and generally avoid IVT if brain metastases are present.",
+      "page": 3
+    },
+    {
+      "section": "Acute Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Consider thrombectomy for LVO on an individualized basis, incorporating cancer prognosis, goals of care, and procedural risk/benefit.",
+      "page": 3
+    },
+    {
+      "section": "Recurrent Risk",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Cancer-related AIS has high recurrence risk (2-3x; 14%-29% at 1 year) with a U-shaped risk over time after cancer diagnosis.",
+      "page": 3
+    },
+    {
+      "section": "Secondary Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Tailor prevention to mechanism: antiplatelet therapy and risk-factor control for small-vessel disease, DOACs for nonvalvular AF, and statins for most patients.",
+      "page": 3
+    },
+    {
+      "section": "Secondary Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Expert Consensus",
+      "text": "When mechanism is absent (ESUS/possible cancer-related), equipoise exists between anticoagulation and antiplatelet therapy; evidence is insufficient to favor one.",
+      "page": 3
+    }
+  ]
+}
