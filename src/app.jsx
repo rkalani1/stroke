@@ -35,17 +35,7 @@ import {
   PHQ9Screen
 } from './components.jsx';
 import { PocketCards } from './pocket-cards.jsx';
-import {
-  evaluateIVT as __evaluateIVT,
-  evaluateDOAC_IVT as __evaluateDOAC_IVT,
-  evaluateEVT_Anterior as __evaluateEVT_Anterior,
-  evaluateEVT_M2 as __evaluateEVT_M2,
-  evaluateEVT_Basilar as __evaluateEVT_Basilar,
-  EXTENDED_WINDOW_IVT_DISCUSSION as __EXTENDED_WINDOW_IVT_DISCUSSION,
-  SAFE_PAUSE_ATTESTATION as __SAFE_PAUSE_ATTESTATION,
-  getSafePauseText as __getSafePauseText,
-  INSTITUTIONAL_BP_PROTOCOLS as __INSTITUTIONAL_BP_PROTOCOLS
-} from './institutional-protocols.js';
+import { TeachingModule } from './teaching.jsx';
 import {
   evaluateDAWN,
   evaluateDEFUSE3,
@@ -65,13 +55,7 @@ import {
   interpretBarnesJewishDysphagia,
   recommendVTEProphylaxis
 } from './calculators-extended.js';
-import {
-  listPatients as __listPatients,
-  savePatient as __savePatient,
-  getPatient as __getPatient,
-  createAutoSaver as __createAutoSaver,
-  makePatientStub as __makePatientStub
-} from './patient-store.js';
+// Patient-store is consumed by components.jsx, no direct imports needed here.
 import ais2026 from './guidelines/ais-2026.json';
 import cancerStroke2026 from './guidelines/cancer-stroke-2026.json';
 import cardiacBrainHealth2024 from './guidelines/cardiac-brain-health-2024.json';
@@ -826,7 +810,7 @@ import tiaEd2023 from './guidelines/tia-ed-2023.json';
           : DEFAULT_TTL_HOURS;
         const INITIAL_STORAGE_EXPIRED = applyStorageExpiration(initialTtlHours);
 
-        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'clinic', 'wards', 'calculators', 'pocket-cards', 'references'];
+        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'clinic', 'wards', 'calculators', 'pocket-cards', 'teaching', 'references'];
 
         const LEGACY_MANAGEMENT_TABS = {
           ich: 'ich',
@@ -27102,7 +27086,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     )}
                     <div className="bg-white border border-slate-200 rounded-xl p-2 flex flex-wrap gap-2 sticky top-0 z-30 shadow-sm" role="tablist" aria-label="Management sub-sections" onKeyDown={(e) => {
-                      const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'clinic', 'wards', 'calculators', 'pocket-cards', 'references'];
+                      const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'clinic', 'wards', 'calculators', 'pocket-cards', 'teaching', 'references'];
                       const ci = subTabs.indexOf(managementSubTab);
                       let ni;
                       if (e.key === 'ArrowRight') { e.preventDefault(); ni = (ci + 1) % subTabs.length; }
@@ -27121,6 +27105,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'wards', label: 'Wards', icon: 'clipboard-list' },
                         { id: 'calculators', label: 'Calculators', icon: 'calculator' },
                         { id: 'pocket-cards', label: 'Pocket Cards', icon: 'credit-card' },
+                        { id: 'teaching', label: 'Teaching', icon: 'graduation-cap' },
                         { id: 'references', label: 'References', icon: 'book-open' }
                       ].map((tab) => {
                         const isActive = managementSubTab === tab.id;
@@ -32465,6 +32450,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           aspects: telestrokeNote.aspects || '',
                           preMRS: telestrokeNote.premorbidMRS || '0'
                         }} />
+                      </div>
+                    )}
+
+                    {/* Teaching Module — for fellow/resident education */}
+                    {managementSubTab === 'teaching' && (
+                      <div id="mgmt-tabpanel-teaching" role="tabpanel" aria-labelledby="mgmt-tab-teaching">
+                        <TeachingModule />
                       </div>
                     )}
 
