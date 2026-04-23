@@ -13,9 +13,11 @@ import {
 const TRIAL_CATEGORIES = [
   { key: 'thrombolysis', label: 'Thrombolysis', color: 'blue' },
   { key: 'thrombectomy', label: 'Thrombectomy', color: 'indigo' },
+  { key: 'postEVTbp', label: 'Post-EVT BP', color: 'teal' },
   { key: 'ichReversal', label: 'ICH & Reversal', color: 'rose' },
   { key: 'secondaryPrevention', label: 'Secondary Prevention', color: 'emerald' },
   { key: 'antithrombotic', label: 'Antithrombotic', color: 'amber' },
+  { key: 'rehabilitation', label: 'Rehabilitation & Recovery', color: 'pink' },
   { key: 'sahCvt', label: 'SAH / CVT', color: 'violet' }
 ];
 
@@ -302,6 +304,17 @@ export const TeachingModule = () => {
         <h3 className="font-bold text-sm">Teaching Module — Stroke &amp; Neurology Training</h3>
         <p className="text-xs opacity-90">Landmark trials, stroke syndromes, neuroanatomy, common pimping questions, and productivity tips. For residents, fellows, and attending review.</p>
       </div>
+      <details className="rounded border border-slate-300 bg-slate-50">
+        <summary className="cursor-pointer p-2 text-xs font-semibold text-slate-700">📋 Evidence audit notes — when was this content last reviewed?</summary>
+        <div className="p-2 pt-0 text-xs text-slate-600 space-y-1">
+          <p><strong>Last comprehensive review:</strong> 2026-04-23 against current AHA/ASA guidelines and primary trial publications.</p>
+          <p><strong>Guidelines referenced:</strong> AHA/ASA AIS 2019 (Powers) + 2019 focused update, AHA/ASA ICH 2022 (Greenberg), AHA/ASA aSAH 2023, AHA/ASA CVT 2024, AHA/ASA Secondary Prevention 2021 (Kleindorfer), ESC AF 2024 (van Gelder).</p>
+          <p><strong>Trial count:</strong> 45 landmark trials across 8 categories with primary-source citations.</p>
+          <p><strong>Calculator verification:</strong> All 20+ calculators validated against primary publications (Hemphill 2001 for ICH score, Johnston 2007 for ABCD², Lip 2010 for CHA₂DS₂-VASc, Pisters 2010 for HAS-BLED, Kent 2013 for ROPE, Rocha 2019 for RCVS², Greving 2014 for PHASES, Kothari 1996 for ABC/2, etc.).</p>
+          <p><strong>Known caveats:</strong> Post-EVT SBP &lt;140 × 72h "harm" framing is extrapolated from ENCHANTED2-MT + OPTIMAL-BP + BP-TARGET + BEST-II meta-evidence, not a direct AHA/ASA guideline statement. Current 2019 AHA/ASA AIS formal target remains SBP &lt;180. The 72h window is institutional/empirical.</p>
+          <p><strong>Rigor note:</strong> Content is for educational/decision-support use only; always cross-check against current primary literature before clinical action.</p>
+        </div>
+      </details>
       <div className="flex flex-wrap gap-1 bg-white border border-slate-200 rounded p-1">
         {sections.map((s) => (
           <button

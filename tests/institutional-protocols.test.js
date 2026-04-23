@@ -168,8 +168,8 @@ describe('institutional BP protocols present', () => {
     expect(keys).toContain('sbpLT140EVT');
     expect(keys).toContain('noReperfusion');
   });
-  it('post-EVT 72h harm rule captured', () => {
-    expect(INSTITUTIONAL_BP_PROTOCOLS.sbpLT140EVT.status).toMatch(/HARM/i);
-    expect(INSTITUTIONAL_BP_PROTOCOLS.sbpLT140EVT.cor).toMatch(/3.*Harm/i);
+  it('post-EVT 72h harm rule captured (with evidence-based caveats)', () => {
+    expect(INSTITUTIONAL_BP_PROTOCOLS.sbpLT140EVT.status).toMatch(/harm/i);
+    expect(INSTITUTIONAL_BP_PROTOCOLS.sbpLT140EVT.rationale).toMatch(/ENCHANTED2-MT|OPTIMAL-BP|BP-TARGET|BEST-II/);
   });
 });

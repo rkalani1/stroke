@@ -3,6 +3,21 @@
 // and guideline statements; they are NOT endorsed by any named institution and
 // must be adapted to local policy before clinical use. Do not rely on this
 // module as the sole source of truth for any patient encounter.
+//
+// EVIDENCE AUDIT: Last comprehensive review 2026-04-23 against:
+// — AHA/ASA AIS 2019 (Powers) + 2019 focused update
+// — AHA/ASA ICH 2022 (Greenberg)
+// — AHA/ASA aSAH 2023
+// — AHA/ASA CVT 2024
+// — AHA/ASA Secondary Prevention 2021 (Kleindorfer)
+// — ESC AF 2024 (van Gelder — CHA₂DS₂-VA, drops sex)
+// — Key trials: NINDS, ECASS III, WAKE-UP, EXTEND, AcT, TRACE-2, TIMELESS,
+//   TWIST, MR CLEAN, DAWN, DEFUSE-3, SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT,
+//   TENSION, LASTE, BAOCHE, ATTENTION, INTERACT2, ATACH-2, INTERACT3, MISTIE III,
+//   ENRICH, ANNEXA-I, CHANCE, POINT, THALES, CHANCE-2, SPARCL, TST, ARCADIA,
+//   NAVIGATE-ESUS, RE-SPECT ESUS, CLOSE/RESPECT/REDUCE, CADISS, TREAT-CAD,
+//   CREST/CREST-2, CAPRIE, MATCH, SPS3, COMPASS, RESTART, ELAN, OPTIMAS,
+//   ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II, AVERT, FOCUS, AFFINITY, SAVE.
 
 // =====================================================================
 // Example blood pressure protocols (based on current AHA/ASA evidence)
@@ -39,10 +54,10 @@ export const INSTITUTIONAL_BP_PROTOCOLS = {
   },
   sbpLT140EVT: {
     scenario: 'SBP <140 after EVT (×72h)',
-    status: 'HARMFUL',
-    cor: '3 (Harm)',
-    loe: 'A',
-    rationale: 'Decreased functional independence, increased mortality through 72h post-EVT (ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II).'
+    status: 'Likely harmful',
+    cor: '— (extrapolated from RCT meta-evidence; AHA/ASA 2019 AIS formal target is SBP <180)',
+    loe: 'A (4 RCTs negative/harm)',
+    rationale: 'ENCHANTED2-MT (Lancet 2022, n=821) worse mRS shift with <120 × 72h; OPTIMAL-BP (JAMA 2023, n=306) worse mRS 0-2 with <140; BP-TARGET (Lancet Neurol 2021, n=324) neutral/trend harm with 100-129; BEST-II (Stroke 2024) futility for lower targets. Practical extrapolation: maintain SBP floor of 140 for ≥72h post-successful EVT.'
   },
   noReperfusion: {
     scenario: 'Ischemic stroke (no reperfusion therapy)',

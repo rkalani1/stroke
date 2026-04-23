@@ -2219,7 +2219,7 @@ Clinician Name`;
           const bpPhaseTargets = {
             'pre-tnk': { label: 'Pre-lysis', systolic: 185, diastolic: 110 },
             'post-tnk': { label: 'Post-TNK', systolic: 180, diastolic: 105 },
-            'post-evt': { label: 'Post-EVT (range SBP 140-180 ×72h; <140 Class 3:Harm, LOE A)', systolic: 180, diastolic: 105, systolicLow: 140, systolicHigh: 180 },
+            'post-evt': { label: 'Post-EVT (SBP <180 per AHA/ASA 2019; avoid <140 through ≥72h — ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II showed harm/no benefit)', systolic: 180, diastolic: 105, systolicLow: 140, systolicHigh: 180 },
             'no-lytics': { label: 'No lytics/No EVT', systolic: 220, diastolic: 120 },
             'ich': { label: 'ICH (target SBP 140, range 130-150; AHA/ASA 2022 Class 2a; avoid <130 Class 3:Harm)', systolic: 140, diastolic: 90, systolicLow: 130, systolicHigh: 150 },
             'sah': { label: 'SAH (pre-securing, target <160)', systolic: 160, diastolic: 100 },
