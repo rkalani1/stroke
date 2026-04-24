@@ -15938,7 +15938,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           };
 
           const topLinks = [
-            // External links removed for privacy.
+            { label: 'Regional Hospitals', url: 'https://rkalani1.github.io/telestroke-expansion-map/', note: 'Regional telestroke center coverage map' }
           ];
           const encounterQuickLinks = [
             { label: 'OpenEvidence', url: 'https://www.openevidence.com' },
