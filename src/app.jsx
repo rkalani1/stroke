@@ -15943,7 +15943,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const encounterQuickLinks = [
             { label: 'OpenEvidence', url: 'https://www.openevidence.com' },
             { label: 'UpToDate', url: 'https://www.uptodate.com' },
-            { label: 'Asta (Ai2)', url: 'https://asta.allen.ai/chat' }
+            { label: 'Asta (Ai2)', url: 'https://asta.allen.ai/chat' },
+            { label: 'ChatGPT', url: 'https://chatgpt.com/' }
           ];
           const userQuickLinks = Array.isArray(settings.quickLinks) ? settings.quickLinks : [];
           const quickLinks = [...encounterQuickLinks, ...userQuickLinks, ...appConfig.institutionLinks].reduce((acc, link) => {
