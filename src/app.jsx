@@ -15941,10 +15941,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             { label: 'Regional Hospitals', url: 'https://rkalani1.github.io/telestroke-expansion-map/', note: 'Regional telestroke center coverage map' }
           ];
           const encounterQuickLinks = [
+            { label: 'ChatGPT', url: 'https://chatgpt.com/' },
             { label: 'OpenEvidence', url: 'https://www.openevidence.com' },
             { label: 'UpToDate', url: 'https://www.uptodate.com' },
-            { label: 'Asta (Ai2)', url: 'https://asta.allen.ai/chat' },
-            { label: 'ChatGPT', url: 'https://chatgpt.com/' }
+            { label: 'Asta (Ai2)', url: 'https://asta.allen.ai/chat' }
           ];
           const userQuickLinks = Array.isArray(settings.quickLinks) ? settings.quickLinks : [];
           const quickLinks = [...encounterQuickLinks, ...userQuickLinks, ...appConfig.institutionLinks].reduce((acc, link) => {
