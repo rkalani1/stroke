@@ -164,12 +164,15 @@ lines, and the only inputs are the legacy id and the
 | Topics | `src/evidence/topics.js` |
 | Barrel + queries + label maps | `src/evidence/index.js` |
 | Matcher field-binding helpers | `src/evidence/matcher-helpers.js` |
+| Generic matcher engine | `src/evidence/matcher-engine.js` |
 | Validator | `scripts/evidence-validate.mjs` |
 | Exporter | `scripts/evidence-export.mjs` |
 | Trials sub-tab toggle and Atlas view | `src/app.jsx` (search "trialsView") |
 | Context Bridge drawer | `src/app.jsx` (search "Context Bridge") |
 | Inline recommendation drawer + map | `src/app.jsx` (search "MANAGEMENT_REC_TO_ATLAS_REC") |
 | Atlas tests | `src/evidence/__tests__/atlas.test.js` |
-| Matcher tests | `src/evidence/__tests__/matcher.test.js` |
+| Matcher binding tests | `src/evidence/__tests__/matcher.test.js` |
+| Matcher engine tests | `src/evidence/__tests__/matcher-engine.test.js` |
 | Sprint architecture overview | `docs/strokeops-v6-evidence-atlas.md` |
+| Matcher engine guide | `docs/evidence-atlas-matcher-engine.md` |
 | Build artifacts | `output/` (gitignored) |

@@ -97,6 +97,16 @@ import {
   EVIDENCE_TYPE_LABELS,
   ACTIVE_STATUS_LABELS
 } from './evidence/index.js';
+// Generic matcher engine — parallel-verification only in this sprint.
+// When localStorage flag `strokeApp:matcherEngineCheck` === 'true', the
+// matcher useEffect runs both evaluators and console.warns any
+// per-criterion or overall-status disagreements. The legacy
+// TRIAL_ELIGIBILITY_CONFIG remains the canonical source until parity
+// telemetry is reviewed in a follow-up sprint.
+import {
+  evaluateActiveTrial as engineEvaluateActiveTrial,
+  diffEvaluations as engineDiffEvaluations
+} from './evidence/matcher-engine.js';
 
         const STORAGE_PREFIX = (window.strokeAppStorage && window.strokeAppStorage.prefix) || 'strokeApp:';
         const APP_DATA_KEY = (window.strokeAppStorage && window.strokeAppStorage.appDataKey) || 'stroke.appData.v2';
@@ -15621,6 +15631,68 @@ Clinician Name`;
               const nextStr = JSON.stringify(results);
               return prevStr === nextStr ? prev : results;
             });
+
+            // Parallel-verification (matcher engine). Off by default; toggle
+            // with localStorage.setItem('strokeApp:matcherEngineCheck','true').
+            // No clinician-visible change. Logs disagreements to console for
+            // the developer accumulating parity evidence prior to retiring
+            // TRIAL_ELIGIBILITY_CONFIG in a future sprint.
+            try {
+              const checkFlag = (typeof window !== 'undefined' && window.localStorage)
+                ? window.localStorage.getItem(STORAGE_PREFIX + 'matcherEngineCheck')
+                : null;
+              if (checkFlag === 'true' || checkFlag === '"true"') {
+                let totalDiffs = 0;
+                for (const aTrial of evidenceActiveTrials) {
+                  const legacyKey = aTrial.legacyMatcherKey;
+                  if (!legacyKey || !results[legacyKey]) continue;
+                  const engine = engineEvaluateActiveTrial(aTrial, evaluationData);
+                  if (!engine) continue;
+                  // Translate engine criteria ids → legacy criteria ids where
+                  // they differ. The engine keys by `field`; legacy keys are
+                  // mostly identical (age, nihss, premorbidMRS, hoursFromLKW
+                  // → 'timeWindow', etc.).
+                  const FIELD_TO_LEGACY = {
+                    hoursFromLKW: 'timeWindow',
+                    tnkRecommended: 'noTNK',
+                    evtRecommended: 'noEVT',
+                    ctpResults: 'ctpMismatch',
+                    ctaResults: aTrial.id === 'picasso' ? 'tandemLesion' : (aTrial.id === 'captiva' ? 'icas' : 'ctaResults'),
+                    pmh: 'afib',
+                    diagnosisCategory: aTrial.id === 'aspire' ? 'ichConfirmed' : (aTrial.id === 'discovery' ? 'strokeConfirmed' : 'diagnosis'),
+                    ichLocation: 'lobarICH',
+                    onStatin: 'onStatin',
+                    mrsScore: 'mrs',
+                    domainMatch: 'domainMatch',
+                    reperfusion: 'reperfusion',
+                    vesselOcclusion: aTrial.id === 'tested' ? 'lvo' : 'vesselOcclusion',
+                    aspectsScore: 'aspects',
+                    symptoms: 'ueWeakness'
+                  };
+                  const remappedCriteria = engine.criteria.map((c) => ({
+                    id: FIELD_TO_LEGACY[c.id] || c.id,
+                    status: c.status
+                  }));
+                  const diffs = engineDiffEvaluations(
+                    { ...engine, criteria: remappedCriteria },
+                    results[legacyKey]
+                  );
+                  if (diffs.length > 0) {
+                    totalDiffs += diffs.length;
+                    // eslint-disable-next-line no-console
+                    console.warn(`[matcher-engine] ${aTrial.shortName} (${legacyKey}): ${diffs.length} disagreement(s)`, diffs);
+                  }
+                }
+                if (totalDiffs === 0) {
+                  // eslint-disable-next-line no-console
+                  console.info('[matcher-engine] all trials agree with legacy evaluator');
+                }
+              }
+            } catch (err) {
+              // Parallel verification must never break the live matcher.
+              // eslint-disable-next-line no-console
+              console.warn('[matcher-engine] parallel verification failed:', err?.message || err);
+            }
           }, [telestrokeNote, strokeCodeForm, aspectsScore, nihssScore, mrsScore, gcsItems, lkwTime]);
 
           // Monitor scroll position for Part 6 (Treatment Decision) visibility

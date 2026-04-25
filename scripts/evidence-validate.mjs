@@ -45,6 +45,11 @@ function fmtList(label, items) {
   return `\n${label} (${items.length}):\n  - ${items.join('\n  - ')}`;
 }
 
+async function loadEngine() {
+  const url = pathToFileURL(path.join(repoRoot, 'src/evidence/matcher-engine.js')).href;
+  return import(url);
+}
+
 async function main() {
   let atlas;
   try {
@@ -53,6 +58,14 @@ async function main() {
     console.error(`evidence-validate: failed to load src/evidence/index.js: ${err?.message || err}`);
     process.exit(1);
     return;
+  }
+  let engine = null;
+  try {
+    engine = await loadEngine();
+  } catch (err) {
+    // Engine is optional for the validator; it adds a coverage metric but
+    // its absence must not block validation.
+    engine = null;
   }
 
   const {
@@ -172,8 +185,20 @@ async function main() {
     topics: topics.length
   };
 
+  // Engine coverage — surfaces retirement readiness for the legacy
+  // TRIAL_ELIGIBILITY_CONFIG. 100% means every declarative criterion can
+  // be evaluated by the generic engine; gaps list the specific
+  // (trial/field/operator) tuples that still require legacy logic.
+  let coverage = null;
+  if (engine && typeof engine.coverageReport === 'function') {
+    coverage = engine.coverageReport(activeTrials);
+    if (coverage.gaps.length > 0) {
+      warnings.push(`matcher-engine coverage ${coverage.percent}% (${coverage.covered}/${coverage.total}); gaps require legacy evaluator: ${coverage.gaps.join(', ')}`);
+    }
+  }
+
   if (json) {
-    const payload = { ok: errors.length === 0, counts, errors, warnings };
+    const payload = { ok: errors.length === 0, counts, coverage, errors, warnings };
     console.log(JSON.stringify(payload, null, 2));
     process.exit(errors.length === 0 ? 0 : 1);
     return;
@@ -181,6 +206,9 @@ async function main() {
 
   if (errors.length === 0) {
     log(`Evidence Atlas validation passed: ${counts.activeTrials} active, ${counts.completedTrials} completed, ${counts.citations} citations, ${counts.recommendations} recs, ${counts.claims} claims, ${counts.guidelines} guidelines, ${counts.topics} topics.`);
+    if (coverage) {
+      log(`Matcher-engine coverage: ${coverage.covered}/${coverage.total} criteria (${coverage.percent}%)${coverage.gaps.length === 0 ? ' — all criteria executable from declarative form' : ''}.`);
+    }
     if (warnings.length) {
       warn(`(${warnings.length} warning${warnings.length === 1 ? '' : 's'} below — non-fatal)`);
       warn(fmtList('warnings', warnings));
