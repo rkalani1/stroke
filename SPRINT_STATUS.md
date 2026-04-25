@@ -20,7 +20,10 @@
 | 8 — Recommendation evidence drawer | ✅ complete | 9ccdd14 |
 | 9 — QA | ✅ complete | 538f30a |
 | 10 — Documentation | ✅ complete | (this commit) |
-| 11 — Push + PR | pending |  |
+| 11 — Push + PR | ✅ complete | (this commit) |
+
+**Push:** `git push -u origin feature/strokeops-v6-evidence-atlas` — succeeded (fast-forward, new branch on origin).
+**PR:** https://github.com/rkalani1/stroke/pull/10 (draft; user marks ready for review and merges manually — sprint policy explicitly forbids auto-merge).
 
 ## Baseline state (Phase 1)
 

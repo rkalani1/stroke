@@ -5,10 +5,11 @@ branch. Read this first; it's a 2-minute orientation.
 
 ## Where you are
 
-- **Branch:** `feature/strokeops-v6-evidence-atlas`
+- **Branch:** `feature/strokeops-v6-evidence-atlas` (pushed to origin)
 - **Latest sprint commit:** see `git log --oneline feature/strokeops-v6-evidence-atlas ^main`
-- **All ten implementation phases shipped.** The remaining work in the
-  current sprint is Phase 11: push the branch and open a PR (see below).
+- **All eleven phases shipped.** The PR is open at https://github.com/rkalani1/stroke/pull/10
+  as a draft. The user reviews the diff, marks it ready for review, and
+  merges. The existing GitHub Pages deployment runs on merge.
 
 ## Quick verify
 
@@ -72,37 +73,25 @@ npm test                      # → all five validators pass; qa-smoke fails on 
 
 ## What's next (priority order)
 
-1. **Phase 11 — push and open PR.** From this branch:
-   ```bash
-   git push -u origin feature/strokeops-v6-evidence-atlas
-   gh pr create --draft --base main \
-     --title "feat: StrokeOps v6 Evidence Atlas — structured evidence data layer with Active/Atlas split and context bridge" \
-     --body-file <(cat <<'EOF'
-     ... see PR body in SPRINT_STATUS.md ...
-   EOF
-   )
-   ```
-   The user will mark the PR ready for review and merge.
-
-2. **Manual identifier verification** for records currently flagged
+1. **Manual identifier verification** for records currently flagged
    `unverified-source-limited` or `todo-verify`:
    - `cit-theia-2023` — DOI present, partial endpoint precision
    - `cit-tencraos-2025` — referenced in repo content, no PMID/DOI yet
    - any `completedTrials` whose `verificationStatus !== 'verified-pubmed'`
 
-3. **Extend `MANAGEMENT_REC_TO_ATLAS_REC`** to cover more legacy
+2. **Extend `MANAGEMENT_REC_TO_ATLAS_REC`** to cover more legacy
    recommendation ids. Each new entry is a one-line edit; the drawer
    appears automatically. See `docs/evidence-atlas-extension-guide.md`
    §"Apply the recommendation drawer to a new Management section".
 
-4. **Promote the structured matcherCriteria to drive evaluation.** Today
+3. **Promote the structured matcherCriteria to drive evaluation.** Today
    the matcher still evaluates from `TRIAL_ELIGIBILITY_CONFIG` in
    `src/app.jsx`; the `matcherCriteria` array on each active trial is a
    declarative mirror. A future sprint could collapse the two by writing a
    small generic evaluator that consumes `matcherCriteria` directly and
    retiring the inline config.
 
-5. **Apply the inline drawer pattern to additional Management surfaces**
+4. **Apply the inline drawer pattern to additional Management surfaces**
    that don't pass through the shared recommendation card render. The JSX
    block is ~40 lines; copy and adapt.
 
