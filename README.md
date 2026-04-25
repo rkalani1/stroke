@@ -13,6 +13,19 @@ A client-side clinical decision-support toolkit for stroke management. Runs enti
 - Post-tPA neurocheck timer; LKW countdown to 4.5h and 24h windows.
 - Note generators for telestroke consult, transfer, signout, progress, discharge.
 
+## Install
+
+The app is a Progressive Web App and runs in any modern browser. Three install paths are supported, plus an optional native distribution path.
+
+| Platform | How |
+|---|---|
+| Web | Open `https://rkalani1.github.io/stroke/` |
+| iOS Safari | Share → Add to Home Screen (a one-time tip prompts you) |
+| Android Chrome / Desktop Chrome / Edge | Settings ("More") menu → **Install app** |
+| App Store / Play Store | Optional Capacitor wrapper — see [docs/pwa-and-app.md](docs/pwa-and-app.md) |
+
+Updates roll out via a non-intrusive **"A new version of Stroke is ready"** banner — clinicians mid-encounter are never auto-reloaded. See [docs/pwa-and-app.md](docs/pwa-and-app.md) for the full update / offline behavior, manifest shortcut targets, and Lighthouse run instructions.
+
 ## Privacy & safety
 - All data is stored locally in your browser. Nothing is transmitted.
 - Avoid entering identifiable PHI.

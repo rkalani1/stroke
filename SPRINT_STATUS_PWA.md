@@ -78,17 +78,57 @@ None so far.
 ## Phase status
 
 - [x] Phase 1 — Audit
-- [ ] Phase 2 — iOS polish
-- [ ] Phase 3 — SW registration audit (SKIPPED — already correct)
-- [ ] Phase 4 — Update banner UX (banner already exists — minor polish only)
-- [ ] Phase 5 — Install prompt UX
-- [ ] Phase 6 — Manifest enrichment
-- [ ] Phase 7 — Offline fallback
-- [ ] Phase 8 — Lighthouse documentation
-- [ ] Phase 9 — Native wrapper (skipped unless OPTIN file added)
-- [ ] Phase 10 — Documentation
-- [ ] Phase 11 — Push + draft PR
+- [x] Phase 2 — iOS polish
+- [x] Phase 3 — SW registration audit (SKIPPED — already correct in src/app.jsx:14593)
+- [x] Phase 4 — Update banner UX (existing banner at src/app.jsx:15912 retained verbatim — already meets spec functionally)
+- [x] Phase 5 — Install prompt UX
+- [x] Phase 6 — Manifest enrichment
+- [x] Phase 7 — Offline fallback
+- [x] Phase 8 — Lighthouse documentation
+- [x] Phase 9 — Native wrapper (SKIPPED — `OPTIN_NATIVE_WRAPPER` not present)
+- [x] Phase 10 — Documentation
+- [ ] Phase 11 — Push + draft PR (pending after this commit)
 
 ## Commits
 
-- (chore) audit pending after this file is committed
+- `06d524b` chore(pwa): audit existing PWA wiring and document gaps
+- `d1b2cd8` feat(pwa): add iOS Safari meta tags and safe-area handling
+- `3eabd72` feat(pwa): install button + iOS Add-to-Home-Screen tip
+- `547e0fd` feat(pwa): manifest shortcuts for encounter/calculators/trials
+- `3273407` feat(pwa): dedicated offline fallback page
+- `10c50a8` chore(pwa): lighthouse audit script and target documentation
+- `(this commit)` docs(pwa): comprehensive install + update + offline documentation
+- `(final commit)` chore(release): finalize PWA polish sprint and open PR
+
+## Lighthouse
+
+Not run in this autonomous sprint — no Chrome / Lighthouse CLI in
+working environment. Documented run command at
+`scripts/lighthouse-pwa.sh`. User can run with one command after
+deploy. Targets: PWA ≥ 90, Performance ≥ 80, Accessibility ≥ 90,
+Best Practices ≥ 90.
+
+## Notable decisions / deviations from sprint prompt
+
+1. **Update banner stayed at top, not bottom-right toast.** The
+   existing top banner from PR #8 already provides Reload/Later
+   actions, is styled consistently, and avoids overlapping the FAB.
+   Sprint says "do not rearchitect" — kept as-is.
+2. **SW registration kept in app.jsx, not moved to inline script
+   tag in index.html.** Existing useEffect at src/app.jsx:14593
+   handles updatefound + statechange + controllerchange correctly.
+   Adding a second registration in index.html would race with the
+   React-side one. Sprint says "If Phase 1 found that SW registration
+   is present and correct, skip this phase" — skipped.
+3. **CACHE_NAME bumped from v83 → v84 (sprint guidance was v83 → v84
+   "increment by 1"; local source had been v81 but was bumped to v83
+   between audit phase and Phase 6).** Single bump, two phases worth
+   of asset changes (manifest shortcuts + offline.html).
+4. **format-detection telephone=no added** to prevent iOS Safari from
+   auto-converting NIHSS scores / INRs into tel: links — clinical
+   safety issue beyond spec.
+5. **Header className change limited to `pwa-safe-top pwa-safe-x`** —
+   no restructuring, no new wrapper element.
+6. **iOS install tip uses indigo banner**, not modal. Modal would
+   block clinical content. Banner dismisses to localStorage flag.
+
