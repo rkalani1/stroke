@@ -1,0 +1,15 @@
+{
+  "appId": "com.rkalani.stroke",
+  "appName": "Stroke",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "ios": {
+    "scheme": "Stroke",
+    "contentInset": "automatic"
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}
