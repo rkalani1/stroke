@@ -15904,7 +15904,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               )}
 
               {/* Header — Simplified */}
-              <div className="mb-4 sm:mb-6 app-header" role="banner">
+              <div className="mb-4 sm:mb-6 app-header pwa-safe-top pwa-safe-x" role="banner">
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
                   <div className="flex-1 w-full sm:w-auto">
                     <div className="flex items-center gap-3 justify-center sm:justify-start">
