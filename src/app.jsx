@@ -21726,6 +21726,66 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                     );
                                                   })()}
                                                 </p>
+
+                                                {/* Phase 8: Why this recommendation? — claim → citation chain.
+                                                    Inline drawer that maps the legacy management-recommendation id
+                                                    to a structured atlas recommendation id and surfaces supporting
+                                                    claims and primary-source citations. Pattern is reusable: add an
+                                                    entry to MANAGEMENT_REC_TO_ATLAS_REC and the drawer appears with
+                                                    no further code. See docs/evidence-atlas-extension-guide.md. */}
+                                                {(() => {
+                                                  const MANAGEMENT_REC_TO_ATLAS_REC = {
+                                                    'bp_ich_acute': 'rec-ich-bp-target',
+                                                    'bp_ich_avoid_low': 'rec-ich-bp-target',
+                                                    'reversal_warfarin': 'rec-ich-anticoag-reversal-warfarin',
+                                                    'reversal_doac_xa': 'rec-ich-anticoag-reversal-fxa',
+                                                    'tnk_dose': 'rec-tnk-first-line',
+                                                    'evt_window': 'rec-evt-late-window',
+                                                    'evt_large_core': 'rec-evt-large-core',
+                                                    'late_window_ivt': 'rec-late-window-ivt',
+                                                    'dapt_minor_stroke': 'rec-dapt-minor-stroke',
+                                                    'af_anticoag_timing': 'rec-af-early-anticoag'
+                                                  };
+                                                  const atlasRecId = MANAGEMENT_REC_TO_ATLAS_REC[rec.id];
+                                                  if (!atlasRecId) return null;
+                                                  const atlasRec = evidenceRecommendations.find((r) => r.id === atlasRecId);
+                                                  if (!atlasRec) return null;
+                                                  const claimsExpanded = resolveClaimsWithCitations(atlasRec.supportingClaimIds || []);
+                                                  if (claimsExpanded.length === 0) return null;
+                                                  return (
+                                                    <details className="mt-2 border border-indigo-200 bg-white rounded">
+                                                      <summary className="cursor-pointer px-2 py-1 text-xs font-semibold text-indigo-800 hover:bg-indigo-50 rounded flex items-center gap-1.5">
+                                                        <i aria-hidden="true" data-lucide="link" className="w-3 h-3"></i>
+                                                        Why this recommendation? ({claimsExpanded.length} supporting claim{claimsExpanded.length === 1 ? '' : 's'})
+                                                      </summary>
+                                                      <div className="px-2 pb-2 pt-1 space-y-1.5">
+                                                        {claimsExpanded.map((cl) => (
+                                                          <div key={cl.id} className="bg-slate-50 border border-slate-200 rounded p-2">
+                                                            <p className="text-xs text-slate-800 italic">{cl.statement}</p>
+                                                            <p className="text-[11px] text-slate-500 mt-0.5">Certainty: <span className="font-semibold">{cl.certainty}</span>{cl.conflictNotes ? ` · Conflict: ${cl.conflictNotes}` : ''}</p>
+                                                            {cl.citationRecords && cl.citationRecords.length > 0 && (
+                                                              <ul className="mt-1 list-disc list-inside text-[11px] text-slate-700">
+                                                                {cl.citationRecords.map((c) => (
+                                                                  <li key={c.id}>
+                                                                    {c.title} ({c.journal}{c.year ? ` ${c.year}` : ''})
+                                                                    {citationLink(c) && (
+                                                                      <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
+                                                                    )}
+                                                                  </li>
+                                                                ))}
+                                                              </ul>
+                                                            )}
+                                                          </div>
+                                                        ))}
+                                                        {atlasRec.caveats && atlasRec.caveats.length > 0 && (
+                                                          <div className="bg-amber-50 border border-amber-200 rounded p-1.5 text-[11px] text-amber-900">
+                                                            <span className="font-semibold">Caveats:</span> {atlasRec.caveats.join(' · ')}
+                                                          </div>
+                                                        )}
+                                                      </div>
+                                                    </details>
+                                                  );
+                                                })()}
                                               </div>
                                             </div>
                                           </div>
@@ -34655,6 +34715,83 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           </div>
                         </div>
+
+                        {/* Guideline-grade recommendations with auditable claim →
+                            citation chain. Phase 8 pattern: one drawer per
+                            recommendation showing class, level of evidence,
+                            guideline source, supporting claims, citations, and
+                            caveats. The same drawer can be embedded inside any
+                            Management section by mapping its <details> content
+                            to a single recommendation id. See
+                            docs/evidence-atlas-extension-guide.md for how. */}
+                        <details open className="border border-slate-200 bg-white rounded-lg">
+                          <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50 flex items-center gap-2">
+                            <i aria-hidden="true" data-lucide="badge-check" className="w-4 h-4 text-indigo-600"></i>
+                            Guideline-grade recommendations ({evidenceRecommendations.length})
+                            <span className="ml-auto text-[11px] font-normal text-slate-500 italic">Why this recommendation? — claim chain to primary sources</span>
+                          </summary>
+                          <div className="px-4 pb-4 space-y-2">
+                            {evidenceRecommendations.map((r) => {
+                              const claimsExpanded = resolveClaimsWithCitations(r.supportingClaimIds || []);
+                              const corTone = r.classOfRecommendation === 'I' ? 'emerald' : r.classOfRecommendation === 'IIa' ? 'sky' : r.classOfRecommendation === 'IIb' ? 'amber' : 'rose';
+                              return (
+                                <details key={r.id} id={`rec-${r.id}`} className="border border-slate-200 rounded">
+                                  <summary className="cursor-pointer px-3 py-2 text-sm hover:bg-slate-50 flex items-start gap-2">
+                                    <span className="flex-shrink-0 mt-0.5 flex flex-wrap gap-1">
+                                      {atlasPill(`Class ${r.classOfRecommendation}`, corTone)}
+                                      {atlasPill(`LOE ${r.levelOfEvidence}`, 'slate')}
+                                    </span>
+                                    <span className="text-slate-800 flex-1">{r.text}</span>
+                                  </summary>
+                                  <div className="px-3 pb-3 pt-1 border-t border-slate-100 text-sm space-y-2">
+                                    <div className="flex flex-wrap gap-1.5">
+                                      {atlasPill(topicLabel(r.topic) || r.topic, 'slate')}
+                                      {atlasPill(`Setting: ${r.setting}`, 'slate')}
+                                      {r.lastReviewed && atlasPill(`Reviewed ${r.lastReviewed}`, 'slate')}
+                                    </div>
+                                    <div>
+                                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Source</div>
+                                      <p className="text-slate-700">{r.guidelineSource}</p>
+                                    </div>
+                                    {claimsExpanded.length > 0 && (
+                                      <div>
+                                        <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Why this recommendation?</div>
+                                        <ul className="space-y-1.5 mt-1">
+                                          {claimsExpanded.map((cl) => (
+                                            <li key={cl.id} className="bg-slate-50 border border-slate-200 rounded p-2">
+                                              <p className="text-xs text-slate-800 italic">{cl.statement}</p>
+                                              <p className="text-[11px] text-slate-500 mt-0.5">Certainty: <span className="font-semibold">{cl.certainty}</span>{cl.conflictNotes ? ` · Conflict: ${cl.conflictNotes}` : ''}</p>
+                                              {cl.citationRecords && cl.citationRecords.length > 0 && (
+                                                <ul className="mt-1 list-disc list-inside text-[11px] text-slate-700">
+                                                  {cl.citationRecords.map((c) => (
+                                                    <li key={c.id}>
+                                                      {c.title} ({c.journal}{c.year ? ` ${c.year}` : ''})
+                                                      {citationLink(c) && (
+                                                        <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
+                                                      )}
+                                                    </li>
+                                                  ))}
+                                                </ul>
+                                              )}
+                                            </li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    )}
+                                    {r.caveats && r.caveats.length > 0 && (
+                                      <div className="bg-amber-50 border border-amber-200 rounded p-2">
+                                        <div className="text-xs font-semibold text-amber-900 uppercase tracking-wide">Caveats</div>
+                                        <ul className="mt-1 list-disc list-inside text-xs text-amber-900">
+                                          {r.caveats.map((cv, i) => <li key={i}>{cv}</li>)}
+                                        </ul>
+                                      </div>
+                                    )}
+                                  </div>
+                                </details>
+                              );
+                            })}
+                          </div>
+                        </details>
 
                         <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
                           <input
