@@ -3129,7 +3129,30 @@ Clinician Name`;
           // Adding a new trial = Adding an object to this config
           // =================================================================
           // Helper: returns null (unknown) when value can't be parsed, preventing NaN comparisons
-          const tryInt = (v) => { const n = parseInt(v, 10); return isNaN(n) ? null : n; };
+          const tryInt = (v) => {
+            // Accept numbers, numeric strings, ignore '', null, undefined, NaN.
+            if (v === '' || v === null || v === undefined) return null;
+            const n = typeof v === 'number' ? v : parseInt(v, 10);
+            return Number.isFinite(n) ? n : null;
+          };
+          // pickEncounterField: returns the first encounter source that has a
+          // present value, treating empty-string / null / undefined as "not
+          // set". Replaces the legacy `a || b` pattern, which silently swallowed
+          // numeric 0 (a valid mRS, NIHSS, or LKW value). Used by every age,
+          // mRS, NIHSS, ASPECTS, and LKW criterion below.
+          const pickEncounterField = (...values) => {
+            for (const v of values) {
+              if (v === undefined || v === null) continue;
+              if (typeof v === 'string' && v.trim() === '') continue;
+              return v;
+            }
+            return undefined;
+          };
+          // Convenience accessors so criterion evaluators stay terse and the
+          // canonical encounter-field paths are documented in one place.
+          const ageOf = (data) => pickEncounterField(data?.telestrokeNote?.age, data?.strokeCodeForm?.age);
+          const nihssOf = (data) => pickEncounterField(data?.telestrokeNote?.nihss, data?.strokeCodeForm?.nihss, data?.nihssScore);
+          const premorbidOf = (data) => pickEncounterField(data?.telestrokeNote?.premorbidMRS);
           const trialGte = (v, threshold) => { const n = tryInt(v); return n === null ? null : n >= threshold; };
           const trialLte = (v, threshold) => { const n = tryInt(v); return n === null ? null : n <= threshold; };
           const TRIAL_ELIGIBILITY_CONFIG = {
@@ -3151,8 +3174,8 @@ Clinician Name`;
                 'Has salvageable tissue on CTP (mismatch profile)'
               ],
               keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
-                { id: 'nihss', label: 'NIHSS ≥6 (or 4-5 disabling)', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 6), required: true },
+                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(ageOf(data), 18), required: true },
+                { id: 'nihss', label: 'NIHSS ≥6 (or 4-5 disabling)', field: 'nihss', evaluate: (data) => trialGte(nihssOf(data), 6), required: true },
                 { id: 'timeWindow', label: '4.5-24h from LKW', field: 'lkw', evaluate: (data) => {
                     const hrs = data.hoursFromLKW;
                     return hrs !== null && hrs >= 4.5 && hrs <= 24;
@@ -3160,7 +3183,7 @@ Clinician Name`;
                 { id: 'noTNK', label: 'No IV thrombolysis', field: 'tnkRecommended', evaluate: (data) => data.telestrokeNote?.tnkRecommended === false, required: true },
                 { id: 'noEVT', label: 'No EVT planned', field: 'evtRecommended', evaluate: (data) => data.telestrokeNote?.evtRecommended === false, required: true },
                 { id: 'aspects', label: 'ASPECTS ≥6', field: 'aspects', evaluate: (data) => trialGte(data.aspectsScore, 6), required: true },
-                { id: 'premorbidMRS', label: 'Pre-stroke mRS ≤2', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 2), required: true },
+                { id: 'premorbidMRS', label: 'Pre-stroke mRS ≤2', field: 'premorbidMRS', evaluate: (data) => trialLte(premorbidOf(data), 2), required: true },
                 { id: 'ctpMismatch', label: 'CTP mismatch profile', field: 'ctpResults', evaluate: (data) => {
                     const ctp = (data.telestrokeNote?.ctpResults || '').toLowerCase();
                     return ctp.includes('mismatch') || ctp.includes('penumbra') || ctp.includes('salvageable');
@@ -3189,24 +3212,25 @@ Clinician Name`;
                 'M2/M3/M4, A1-A3, P1-P3 occlusion regardless of NIHSS'
               ],
               keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
+                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(ageOf(data), 18), required: true },
                 { id: 'timeWindow', label: 'Within 24h from LKW', field: 'lkw', evaluate: (data) => {
                     const hrs = data.hoursFromLKW;
                     return hrs !== null && hrs <= 24;
                   }, required: true },
-                { id: 'premorbidMRS', label: 'Pre-stroke mRS ≤2', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 2), required: true },
+                { id: 'premorbidMRS', label: 'Pre-stroke mRS ≤2', field: 'premorbidMRS', evaluate: (data) => trialLte(premorbidOf(data), 2), required: true },
                 { id: 'vesselOcclusion', label: 'LVO or MeVO present', field: 'vesselOcclusion', evaluate: (data) => {
                     const occlusion = data.telestrokeNote?.vesselOcclusion || [];
                     return occlusion.length > 0;
                   }, required: true },
                 { id: 'domainMatch', label: 'Matches Low-NIHSS or MeVO domain', field: 'nihss', evaluate: (data) => {
-                    const nihss = parseInt(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 10);
+                    const nihss = tryInt(nihssOf(data));
                     const occlusion = data.telestrokeNote?.vesselOcclusion || [];
-                    // Low NIHSS domain: NIHSS 0-5 with ICA or M1
-                    const lowNIHSSMatch = nihss <= 5 && (occlusion.includes('ICA') || occlusion.includes('M1'));
-                    // MeVO domain: M2, M3, A1-A3, P1-P3
+                    // MeVO domain doesn't depend on NIHSS — evaluate first.
                     const mevoMatch = occlusion.some(v => ['M2', 'M3', 'M4', 'A1', 'A2', 'A3', 'P1', 'P2', 'P3'].includes(v));
-                    return lowNIHSSMatch || mevoMatch;
+                    if (mevoMatch) return true;
+                    // Low NIHSS domain requires both NIHSS and occlusion data.
+                    if (nihss === null || occlusion.length === 0) return null;
+                    return nihss <= 5 && (occlusion.includes('ICA') || occlusion.includes('M1'));
                   }, required: true }
               ],
               exclusionFlags: [
@@ -3232,15 +3256,15 @@ Clinician Name`;
               ],
               keyCriteria: [
                 { id: 'age', label: 'Age 18-79', field: 'age', evaluate: (data) => {
-                    const age = parseInt(data.telestrokeNote?.age || data.strokeCodeForm?.age, 10);
-                    return age >= 18 && age <= 79;
+                    const age = tryInt(ageOf(data));
+                    return age === null ? null : (age >= 18 && age <= 79);
                   }, required: true },
                 { id: 'timeWindow', label: 'Within 16h from LKW', field: 'lkw', evaluate: (data) => {
                     const hrs = data.hoursFromLKW;
                     return hrs !== null && hrs <= 16;
                   }, required: true },
-                { id: 'nihss', label: 'NIHSS ≥4', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 4), required: true },
-                { id: 'premorbidMRS', label: 'Pre-stroke mRS 0-2', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 2), required: true },
+                { id: 'nihss', label: 'NIHSS ≥4', field: 'nihss', evaluate: (data) => trialGte(nihssOf(data), 4), required: true },
+                { id: 'premorbidMRS', label: 'Pre-stroke mRS 0-2', field: 'premorbidMRS', evaluate: (data) => trialLte(premorbidOf(data), 2), required: true },
                 { id: 'aspects', label: 'ASPECTS ≥7', field: 'aspects', evaluate: (data) => trialGte(data.aspectsScore, 7), required: true },
                 { id: 'tandemLesion', label: 'Tandem lesion present', field: 'ctaResults', evaluate: (data) => {
                     const cta = (data.telestrokeNote?.ctaResults || data.strokeCodeForm?.cta || '').toLowerCase();
@@ -3266,12 +3290,12 @@ Clinician Name`;
                 'ASPECTS ≥3'
               ],
               keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
+                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(ageOf(data), 18), required: true },
                 { id: 'premorbidMRS', label: 'Pre-stroke mRS 3-4', field: 'premorbidMRS', evaluate: (data) => {
-                    const mrs = parseInt(data.telestrokeNote?.premorbidMRS, 10);
-                    return mrs >= 3 && mrs <= 4;
+                    const mrs = tryInt(premorbidOf(data));
+                    return mrs === null ? null : (mrs >= 3 && mrs <= 4);
                   }, required: true },
-                { id: 'nihss', label: 'NIHSS ≥6', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 6), required: true },
+                { id: 'nihss', label: 'NIHSS ≥6', field: 'nihss', evaluate: (data) => trialGte(nihssOf(data), 6), required: true },
                 { id: 'timeWindow', label: 'Within 24h from LKW', field: 'lkw', evaluate: (data) => {
                     const hrs = data.hoursFromLKW;
                     return hrs !== null && hrs <= 24;
@@ -3301,7 +3325,7 @@ Clinician Name`;
                 'Age ≥50'
               ],
               keyCriteria: [
-                { id: 'age', label: 'Age ≥50', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 50), required: true },
+                { id: 'age', label: 'Age ≥50', field: 'age', evaluate: (data) => trialGte(ageOf(data), 50), required: true },
                 { id: 'lobarICH', label: 'Lobar ICH location', field: 'ichLocation', evaluate: (data) => {
                     const loc = (data.ichLocation || '').toLowerCase();
                     return loc.includes('lobar') || loc.includes('cortical');
@@ -3331,7 +3355,7 @@ Clinician Name`;
                 'CHA2DS2-VASc ≥2'
               ],
               keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
+                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(ageOf(data), 18), required: true },
                 { id: 'ichConfirmed', label: 'ICH confirmed', field: 'diagnosis', evaluate: (data) => {
                     return data.telestrokeNote?.diagnosisCategory === 'ich';
                   }, required: true },
@@ -3362,12 +3386,12 @@ Clinician Name`;
                 'Inpatient enrollment opportunity'
               ],
               keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
+                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(ageOf(data), 18), required: true },
                 { id: 'ueWeakness', label: 'Upper extremity weakness', field: 'symptoms', evaluate: (data) => {
                     const sx = (data.telestrokeNote?.symptoms || '').toLowerCase();
                     return sx.includes('arm') || sx.includes('upper') || sx.includes('hand') || sx.includes('weakness');
                   }, required: false },
-                { id: 'premorbidMRS', label: 'Pre-stroke mRS ≤2', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 2), required: true }
+                { id: 'premorbidMRS', label: 'Pre-stroke mRS ≤2', field: 'premorbidMRS', evaluate: (data) => trialLte(premorbidOf(data), 2), required: true }
               ],
               exclusionFlags: [
                 { id: 'seizures', label: 'History of seizures', field: 'seizures' },
@@ -3391,7 +3415,7 @@ Clinician Name`;
                 'Able to complete cognitive testing'
               ],
               keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
+                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(ageOf(data), 18), required: true },
                 { id: 'strokeConfirmed', label: 'Stroke confirmed', field: 'diagnosis', evaluate: (data) => {
                     const cat = data.telestrokeNote?.diagnosisCategory;
                     return !!cat && cat !== 'mimic';
@@ -3419,8 +3443,8 @@ Clinician Name`;
                 'Age 18+'
               ],
               keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
-                { id: 'nihss', label: 'NIHSS ≥6', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 6), required: true },
+                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(ageOf(data), 18), required: true },
+                { id: 'nihss', label: 'NIHSS ≥6', field: 'nihss', evaluate: (data) => trialGte(nihssOf(data), 6), required: true },
                 { id: 'timeWindow', label: 'Within 4.5h from LKW', field: 'lkw', evaluate: (data) => {
                     const hrs = data.hoursFromLKW;
                     return hrs !== null && hrs < 4.5;
@@ -3429,7 +3453,7 @@ Clinician Name`;
                     const occlusion = data.telestrokeNote?.vesselOcclusion || [];
                     return occlusion.some(v => ['ICA', 'M1'].includes(v));
                   }, required: true },
-                { id: 'premorbidMRS', label: 'Pre-stroke mRS 0-1', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 1), required: true }
+                { id: 'premorbidMRS', label: 'Pre-stroke mRS 0-1', field: 'premorbidMRS', evaluate: (data) => trialLte(premorbidOf(data), 1), required: true }
               ],
               exclusionFlags: [
                 { id: 'onAnticoag', label: 'On anticoagulation', field: 'onAnticoag' },
@@ -3454,7 +3478,7 @@ Clinician Name`;
                 'Age ≥30'
               ],
               keyCriteria: [
-                { id: 'age', label: 'Age ≥30', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 30), required: true },
+                { id: 'age', label: 'Age ≥30', field: 'age', evaluate: (data) => trialGte(ageOf(data), 30), required: true },
                 { id: 'diagnosis', label: 'Ischemic stroke or TIA', field: 'diagnosis', evaluate: (data) => {
                     const cat = data.telestrokeNote?.diagnosisCategory;
                     return cat === 'ischemic' || cat === 'tia';
@@ -3463,7 +3487,7 @@ Clinician Name`;
                     const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
                     return cta.includes('stenosis') || cta.includes('intracranial') || cta.includes('icas') || cta.includes('atheroscler');
                   }, required: true },
-                { id: 'premorbidMRS', label: 'mRS ≤3', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 3), required: true }
+                { id: 'premorbidMRS', label: 'mRS ≤3', field: 'premorbidMRS', evaluate: (data) => trialLte(premorbidOf(data), 3), required: true }
               ],
               exclusionFlags: [
                 { id: 'cardioembolic', label: 'Cardioembolic source (AF, valve)', field: 'cardioembolic' },
@@ -3488,8 +3512,8 @@ Clinician Name`;
                 'Age 18+'
               ],
               keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
-                { id: 'nihss', label: 'NIHSS ≥5', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 5), required: true },
+                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(ageOf(data), 18), required: true },
+                { id: 'nihss', label: 'NIHSS ≥5', field: 'nihss', evaluate: (data) => trialGte(nihssOf(data), 5), required: true },
                 { id: 'reperfusion', label: 'Received IVT and/or EVT', field: 'tnkRecommended', evaluate: (data) => {
                     return data.telestrokeNote?.tnkRecommended === true || data.telestrokeNote?.evtRecommended === true;
                   }, required: true },
@@ -3497,7 +3521,7 @@ Clinician Name`;
                     const hrs = data.hoursFromLKW;
                     return hrs !== null && hrs <= 15;
                   }, required: true },
-                { id: 'premorbidMRS', label: 'Pre-stroke mRS 0-2', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 2), required: true }
+                { id: 'premorbidMRS', label: 'Pre-stroke mRS 0-2', field: 'premorbidMRS', evaluate: (data) => trialLte(premorbidOf(data), 2), required: true }
               ],
               exclusionFlags: [
                 { id: 'hemorrhage', label: 'Symptomatic ICH', field: 'hemorrhage' }
