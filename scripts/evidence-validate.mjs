@@ -207,7 +207,7 @@ async function main() {
   if (errors.length === 0) {
     log(`Evidence Atlas validation passed: ${counts.activeTrials} active, ${counts.completedTrials} completed, ${counts.citations} citations, ${counts.recommendations} recs, ${counts.claims} claims, ${counts.guidelines} guidelines, ${counts.topics} topics.`);
     if (coverage) {
-      log(`Matcher-engine coverage: ${coverage.covered}/${coverage.total} criteria (${coverage.percent}%)${coverage.gaps.length === 0 ? ' — all criteria executable from declarative form' : ''}.`);
+      log(`Matcher-engine coverage: ${coverage.covered}/${coverage.total} criteria (${coverage.percent}%) + ${coverage.exclusionsCovered}/${coverage.exclusionsTotal} exclusions (${coverage.exclusionsPercent}%)${coverage.gaps.length === 0 ? ' — all criteria and exclusions executable from declarative form' : ''}.`);
     }
     if (warnings.length) {
       warn(`(${warnings.length} warning${warnings.length === 1 ? '' : 's'} below — non-fatal)`);

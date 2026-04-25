@@ -50,6 +50,11 @@ export const activeTrials = [
       { field: 'premorbidMRS', operator: '<=', value: 2, label: 'Pre-stroke mRS ≤2' },
       { field: 'ctpResults', operator: 'present', value: ['mismatch', 'penumbra', 'salvageable'], label: 'CTP mismatch profile' }
     ],
+    matcherExclusions: [
+      { id: 'priorStroke90d', field: 'priorStroke90d', operator: '==', value: true, label: 'Prior stroke <90 days' },
+      { id: 'priorICH', field: 'priorICH', operator: '==', value: true, label: 'Prior intracranial hemorrhage' },
+      { id: 'onAnticoag', field: 'lastDOACType', operator: 'truthy', value: true, label: 'On anticoagulation (active drug effect)' },
+    ],
     relatedCompletedTrialIds: ['extend', 'wake-up', 'timeless', 'trace-iii', 'twist'],
     link: 'https://clinicaltrials.gov/study/NCT05948566',
     lastReviewed: lr,
@@ -85,6 +90,10 @@ export const activeTrials = [
       { field: 'premorbidMRS', operator: '<=', value: 2, label: 'Pre-stroke mRS ≤2' },
       { field: 'vesselOcclusion', operator: 'present', value: ['ICA', 'M1', 'M2', 'M3', 'M4', 'A1', 'A2', 'A3', 'P1', 'P2', 'P3'], label: 'LVO or MeVO present' },
       { field: 'domainMatch', operator: 'in', value: ['low-nihss-lvo', 'mevo'], label: 'Matches Low-NIHSS or MeVO domain' }
+    ],
+    matcherExclusions: [
+      { id: 'pregnancy', field: 'pregnancy', operator: '==', value: true, label: 'Pregnancy' },
+      { id: 'hemorrhage', field: 'hemorrhage', operator: '==', value: true, label: 'Evidence of hemorrhage on imaging' },
     ],
     relatedCompletedTrialIds: ['dawn', 'defuse-3'],
     link: 'https://clinicaltrials.gov/study/NCT06289985',
@@ -123,6 +132,7 @@ export const activeTrials = [
       { field: 'aspectsScore', operator: '>=', value: 7, label: 'ASPECTS ≥7' },
       { field: 'ctaResults', operator: 'present', value: ['tandem'], label: 'Tandem lesion present' }
     ],
+    matcherExclusions: [],
     relatedCompletedTrialIds: [],
     link: 'https://clinicaltrials.gov/study/NCT05611242',
     lastReviewed: lr,
@@ -160,6 +170,7 @@ export const activeTrials = [
       { field: 'aspectsScore', operator: '>=', value: 3, label: 'ASPECTS ≥3' },
       { field: 'vesselOcclusion', operator: 'in', value: ['ICA', 'M1', 'M2'], label: 'LVO present' }
     ],
+    matcherExclusions: [],
     relatedCompletedTrialIds: ['select2', 'angel-aspect', 'rescue-japan-limit', 'tension'],
     link: 'https://clinicaltrials.gov/study/NCT05911568',
     lastReviewed: lr,
@@ -191,6 +202,10 @@ export const activeTrials = [
       { field: 'symptoms', operator: 'present', value: ['arm', 'upper', 'hand', 'weakness'], label: 'Upper-extremity weakness' },
       { field: 'premorbidMRS', operator: '<=', value: 2, label: 'Pre-stroke mRS ≤2' }
     ],
+    matcherExclusions: [
+      { id: 'seizures', field: 'seizures', operator: '==', value: true, label: 'History of seizures' },
+      { id: 'implants', field: 'implants', operator: '==', value: true, label: 'Implanted devices (pacemaker, etc.)' },
+    ],
     relatedCompletedTrialIds: [],
     link: 'https://clinicaltrials.gov/study/NCT05338697',
     lastReviewed: lr,
@@ -219,6 +234,9 @@ export const activeTrials = [
     matcherCriteria: [
       { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
       { field: 'diagnosisCategory', operator: 'in', value: ['ischemic', 'ich', 'sah'], label: 'Stroke confirmed' }
+    ],
+    matcherExclusions: [
+      { id: 'preDementia', field: 'preDementia', operator: '==', value: true, label: 'Pre-existing dementia' },
     ],
     relatedCompletedTrialIds: [],
     link: 'https://clinicaltrials.gov/study/NCT04916210',
@@ -255,6 +273,10 @@ export const activeTrials = [
       { field: 'vesselOcclusion', operator: 'in', value: ['ICA', 'M1'], label: 'LVO confirmed (ICA/M1)' },
       { field: 'premorbidMRS', operator: '<=', value: 1, label: 'Pre-stroke mRS 0-1' }
     ],
+    matcherExclusions: [
+      { id: 'onAnticoag', field: 'onAnticoag', operator: '==', value: true, label: 'On anticoagulation' },
+      { id: 'hemorrhage', field: 'hemorrhage', operator: '==', value: true, label: 'Evidence of hemorrhage on CT' },
+    ],
     relatedCompletedTrialIds: ['act', 'trace-2', 'original'],
     link: 'https://clinicaltrials.gov/study/NCT05326139',
     lastReviewed: lr,
@@ -287,6 +309,10 @@ export const activeTrials = [
       { field: 'diagnosisCategory', operator: 'in', value: ['ischemic', 'tia'], label: 'Ischemic stroke or TIA' },
       { field: 'ctaResults', operator: 'present', value: ['stenosis', 'intracranial', 'icas', 'atheroscler'], label: 'Intracranial stenosis 70-99%' },
       { field: 'premorbidMRS', operator: '<=', value: 3, label: 'mRS ≤3' }
+    ],
+    matcherExclusions: [
+      { id: 'cardioembolic', field: 'cardioembolic', operator: '==', value: true, label: 'Cardioembolic source (AF, valve)' },
+      { id: 'onAnticoag', field: 'onAnticoag', operator: '==', value: true, label: 'On full-dose anticoagulation' },
     ],
     relatedCompletedTrialIds: ['chance', 'point', 'thales'],
     link: 'https://clinicaltrials.gov/study/NCT05047172',
@@ -322,6 +348,9 @@ export const activeTrials = [
       { field: 'hoursFromLKW', operator: '<=', value: 15, label: 'Within 15 h from LKW' },
       { field: 'premorbidMRS', operator: '<=', value: 2, label: 'Pre-stroke mRS 0-2' }
     ],
+    matcherExclusions: [
+      { id: 'hemorrhage', field: 'hemorrhage', operator: '==', value: true, label: 'Symptomatic ICH' },
+    ],
     relatedCompletedTrialIds: [],
     link: 'https://clinicaltrials.gov/study/NCT04953325',
     lastReviewed: lr,
@@ -355,6 +384,10 @@ export const activeTrials = [
       { field: 'onStatin', operator: '==', value: true, label: 'On statin at ICH onset' },
       { field: 'mrsScore', operator: '<=', value: 4, label: 'mRS ≤4' }
     ],
+    matcherExclusions: [
+      { id: 'deepICH', field: 'ichLocation', operator: '==', value: true, label: 'Deep / non-lobar ICH (legacy never-trigger)' },
+      { id: 'recentMI', field: 'recentMI', operator: '==', value: true, label: 'Recent MI <3 months' },
+    ],
     relatedCompletedTrialIds: ['interact3', 'enrich'],
     link: 'https://clinicaltrials.gov/study/NCT03936361',
     lastReviewed: lr,
@@ -387,6 +420,9 @@ export const activeTrials = [
       { field: 'diagnosisCategory', operator: '==', value: 'ich', label: 'ICH confirmed' },
       { field: 'pmh', operator: 'present', value: ['afib', 'atrial fib', 'af ', 'a-fib'], label: 'Atrial fibrillation' },
       { field: 'mrsScore', operator: '<=', value: 4, label: 'mRS ≤4' }
+    ],
+    matcherExclusions: [
+      { id: 'mechValve', field: 'mechValve', operator: '==', value: true, label: 'Mechanical heart valve' },
     ],
     relatedCompletedTrialIds: ['averroes', 'artesia'],
     link: 'https://clinicaltrials.gov/study/NCT03907046',

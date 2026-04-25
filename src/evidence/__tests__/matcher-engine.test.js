@@ -284,6 +284,65 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
   });
 });
 
+describe('matcher engine — exclusions', () => {
+  it('truthy operator: returns true on non-empty string, false on empty/undefined', () => {
+    expect(evaluateCriterion({ field: 'lastDOACType', operator: 'truthy', value: true }, { telestrokeNote: { lastDOACType: 'apixaban' } })).toBe('met');
+    expect(evaluateCriterion({ field: 'lastDOACType', operator: 'truthy', value: true }, { telestrokeNote: { lastDOACType: '' } })).toBe('not_met');
+    expect(evaluateCriterion({ field: 'lastDOACType', operator: 'truthy', value: true }, {})).toBe('not_met');
+  });
+
+  it('SISTER: priorStroke90d=true triggers exclusion → not_eligible', () => {
+    const data = {
+      telestrokeNote: { age: '65', nihss: '12', premorbidMRS: '1', tnkRecommended: false, evtRecommended: false, ctpResults: 'mismatch', vesselOcclusion: ['M1'] },
+      aspectsScore: 8, hoursFromLKW: 8, nihssScore: 12,
+      priorStroke90d: true
+    };
+    const r = evaluateActiveTrial(getActiveTrial('sister'), data);
+    expect(r.status).toBe('not_eligible');
+    expect(r.exclusions.some((x) => x.id === 'priorStroke90d')).toBe(true);
+  });
+
+  it('SISTER: lastDOACType=apixaban triggers onAnticoag exclusion via truthy', () => {
+    const data = {
+      telestrokeNote: { age: '65', nihss: '12', premorbidMRS: '1', tnkRecommended: false, evtRecommended: false, ctpResults: 'mismatch', vesselOcclusion: ['M1'], lastDOACType: 'apixaban' },
+      aspectsScore: 8, hoursFromLKW: 8, nihssScore: 12
+    };
+    const r = evaluateActiveTrial(getActiveTrial('sister'), data);
+    expect(r.status).toBe('not_eligible');
+    expect(r.exclusions.some((x) => x.id === 'onAnticoag')).toBe(true);
+  });
+
+  it('SISTER: undefined exclusion fields → no triggers (eligible patient stays eligible)', () => {
+    const data = {
+      telestrokeNote: { age: '65', nihss: '12', premorbidMRS: '1', tnkRecommended: false, evtRecommended: false, ctpResults: 'mismatch', vesselOcclusion: ['M1'] },
+      aspectsScore: 8, hoursFromLKW: 8, nihssScore: 12
+    };
+    const r = evaluateActiveTrial(getActiveTrial('sister'), data);
+    expect(r.status).toBe('eligible');
+    expect(r.exclusions).toEqual([]);
+  });
+
+  it('STEP-EVT: pregnancy exclusion overrides eligibility', () => {
+    const data = {
+      telestrokeNote: { age: '32', nihss: '8', premorbidMRS: '0', vesselOcclusion: ['M2'] },
+      aspectsScore: 8, hoursFromLKW: 6, nihssScore: 8,
+      pregnancy: true
+    };
+    const r = evaluateActiveTrial(getActiveTrial('step-evt'), data);
+    expect(r.status).toBe('not_eligible');
+    expect(r.exclusions.some((x) => x.id === 'pregnancy')).toBe(true);
+  });
+
+  it('every active trial has matcherExclusions populated (16 across 11 trials)', () => {
+    let total = 0;
+    for (const t of activeTrials) {
+      total += (t.matcherExclusions || []).length;
+    }
+    expect(total).toBeGreaterThan(0);
+    expect(total).toBe(16); // matches legacy inventory
+  });
+});
+
 describe('matcher engine — coverage and disagreement reports', () => {
   it('coverageReport reaches 100% on the seeded matcherCriteria', () => {
     const cov = coverageReport(activeTrials);
@@ -291,6 +350,13 @@ describe('matcher engine — coverage and disagreement reports', () => {
     expect(cov.covered).toBe(cov.total);
     expect(cov.percent).toBe(100);
     expect(cov.gaps).toEqual([]);
+  });
+
+  it('coverageReport also reports exclusions coverage at 100%', () => {
+    const cov = coverageReport(activeTrials);
+    expect(cov.exclusionsTotal).toBeGreaterThan(0);
+    expect(cov.exclusionsCovered).toBe(cov.exclusionsTotal);
+    expect(cov.exclusionsPercent).toBe(100);
   });
 
   it('knownFields and knownOperators expose the engine vocabulary', () => {

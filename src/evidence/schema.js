@@ -139,6 +139,16 @@ export function makeActiveTrial(input = {}) {
       value: c?.value,
       label: strOr(c?.label)
     })),
+    // Declarative exclusion rules. Inverse semantics from inclusion
+    // criteria: an exclusion *triggers* the not_eligible status when its
+    // criterion evaluates to true. Unknown / not_met → not triggered.
+    matcherExclusions: arrOr(input.matcherExclusions).map((c) => ({
+      id: strOr(c?.id),
+      field: strOr(c?.field),
+      operator: strOr(c?.operator, '=='),
+      value: c?.value === undefined ? true : c?.value,
+      label: strOr(c?.label)
+    })),
     relatedCompletedTrialIds: arrOr(input.relatedCompletedTrialIds),
     link: strOr(input.link),
     lastReviewed: strOr(input.lastReviewed),

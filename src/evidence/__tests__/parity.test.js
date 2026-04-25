@@ -229,6 +229,100 @@ const SCENARIOS = [
       mrsScore: 0,
       hoursFromLKW: 3
     }
+  },
+
+  // ===== Exclusion-triggering scenarios — added in the exclusion sprint =====
+  //
+  // Each scenario takes a baseline-eligible patient and flips one exclusion
+  // flag to true. The legacy and engine must both downgrade the trial to
+  // not_eligible. Parity tests no longer need to tolerate exclusion-only
+  // disagreement — the engine now models exclusions natively.
+
+  {
+    name: 'SISTER eligible BUT prior stroke <90 days',
+    data: {
+      telestrokeNote: {
+        age: '65', nihss: '12', premorbidMRS: '1',
+        tnkRecommended: false, evtRecommended: false,
+        ctpResults: 'mismatch on CTP',
+        vesselOcclusion: ['M2']
+      },
+      aspectsScore: 8, nihssScore: 12, mrsScore: 0, hoursFromLKW: 8,
+      priorStroke90d: true // ← exclusion
+    }
+  },
+  {
+    name: 'SISTER eligible BUT prior intracranial hemorrhage',
+    data: {
+      telestrokeNote: {
+        age: '65', nihss: '12', premorbidMRS: '1',
+        tnkRecommended: false, evtRecommended: false,
+        ctpResults: 'mismatch',
+        vesselOcclusion: ['M2']
+      },
+      aspectsScore: 8, nihssScore: 12, mrsScore: 0, hoursFromLKW: 8,
+      priorICH: true // ← exclusion
+    }
+  },
+  {
+    name: 'SISTER eligible BUT on apixaban (lastDOACType truthy)',
+    data: {
+      telestrokeNote: {
+        age: '65', nihss: '12', premorbidMRS: '1',
+        tnkRecommended: false, evtRecommended: false,
+        ctpResults: 'mismatch',
+        vesselOcclusion: ['M2'],
+        lastDOACType: 'apixaban' // ← truthy custom exclusion
+      },
+      aspectsScore: 8, nihssScore: 12, mrsScore: 0, hoursFromLKW: 8
+    }
+  },
+  {
+    name: 'STEP-EVT eligible BUT pregnant',
+    data: {
+      telestrokeNote: {
+        age: '32', nihss: '8', premorbidMRS: '0',
+        vesselOcclusion: ['M2']
+      },
+      aspectsScore: 8, nihssScore: 8, mrsScore: 0, hoursFromLKW: 6,
+      pregnancy: true
+    }
+  },
+  {
+    name: 'STEP-EVT eligible BUT hemorrhage on imaging',
+    data: {
+      telestrokeNote: {
+        age: '50', nihss: '8', premorbidMRS: '1',
+        vesselOcclusion: ['M2']
+      },
+      aspectsScore: 8, nihssScore: 8, mrsScore: 0, hoursFromLKW: 6,
+      hemorrhage: true
+    }
+  },
+  {
+    name: 'ASPIRE eligible BUT mechanical valve',
+    data: {
+      telestrokeNote: {
+        age: '70',
+        diagnosisCategory: 'ich',
+        pmh: 'long history of afib, htn, dm'
+      },
+      mrsScore: 3,
+      hoursFromLKW: null,
+      mechValve: true
+    }
+  },
+  {
+    name: 'CAPTIVA eligible BUT cardioembolic',
+    data: {
+      telestrokeNote: {
+        age: '60',
+        diagnosisCategory: 'tia',
+        ctaResults: 'severe MCA stenosis suggestive of intracranial atherosclerosis',
+        premorbidMRS: '1'
+      },
+      cardioembolic: true
+    }
   }
 ];
 
@@ -279,17 +373,11 @@ function remapEngineForTrial(engineResult, activeTrialId) {
   };
 }
 
-// Compute whether the legacy result's not_eligible status is *only*
-// due to an exclusion flag triggering. In that case, the engine
-// (which doesn't model exclusions) is allowed to disagree on overall
-// status — its declarative criteria might all be met or unknown.
-function legacyIsExclusionOnly(legacyResult) {
-  if (legacyResult.status !== 'not_eligible') return false;
-  if (legacyResult.exclusions.length === 0) return false;
-  // If any criterion is not_met OR requiredMissing > 0, the legacy
-  // would be not_eligible from criteria too — not exclusion-only.
-  return legacyResult.notMetCount === legacyResult.exclusions.length && legacyResult.requiredMissing === 0;
-}
+// (Previous sprint had legacyIsExclusionOnly() to tolerate
+// exclusion-only legacy disagreements. The exclusion sprint promotes
+// matcherExclusions into the engine, so this carve-out is no longer
+// needed — both evaluators now agree on overall status across the
+// full scenario matrix, including exclusion-triggering scenarios.)
 
 // ---------------------------------------------------------------------
 // The actual parity tests.
@@ -316,21 +404,11 @@ describe('parity — legacy evaluator vs generic engine', () => {
           const engineRemapped = remapEngineForTrial(engineResult, aTrial.id);
           const diffs = diffEvaluations(engineRemapped, legacyResult);
 
-          // Filter out diffs that are explainable by exclusion-only
-          // legacy not_eligible status. The 'overall' diff is allowed
-          // only in that case.
-          const exclusionOnly = legacyIsExclusionOnly(legacyResult);
-          const unacceptable = diffs.filter((d) => {
-            if (d.kind === 'overall' && exclusionOnly) return false;
-            return true;
-          });
-
-          if (unacceptable.length > 0) {
-            // Surface a debuggable error message.
+          if (diffs.length > 0) {
             // eslint-disable-next-line no-console
-            console.error(`Parity disagreement on ${aTrial.shortName} / ${scenario.name}:`, JSON.stringify(unacceptable, null, 2));
+            console.error(`Parity disagreement on ${aTrial.shortName} / ${scenario.name}:`, JSON.stringify(diffs, null, 2));
           }
-          expect(unacceptable, `parity disagreement on ${aTrial.shortName} / ${scenario.name}`).toEqual([]);
+          expect(diffs, `parity disagreement on ${aTrial.shortName} / ${scenario.name}`).toEqual([]);
         });
       }
     });

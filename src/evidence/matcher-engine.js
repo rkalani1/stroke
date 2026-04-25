@@ -49,6 +49,23 @@ const fieldResolvers = {
   mrsScore: (d) => d?.mrsScore,
   tnkRecommended: (d) => d?.telestrokeNote?.tnkRecommended,
   evtRecommended: (d) => d?.telestrokeNote?.evtRecommended,
+  // Exclusion-only fields. The legacy default evaluator was
+  // `data[field] === true`, so all of these resolve as top-level
+  // booleans on the data envelope.
+  priorStroke90d: (d) => d?.priorStroke90d,
+  priorICH: (d) => d?.priorICH,
+  pregnancy: (d) => d?.pregnancy,
+  hemorrhage: (d) => d?.hemorrhage,
+  mechValve: (d) => d?.mechValve,
+  seizures: (d) => d?.seizures,
+  implants: (d) => d?.implants,
+  preDementia: (d) => d?.preDementia,
+  cardioembolic: (d) => d?.cardioembolic,
+  onAnticoag: (d) => d?.onAnticoag,
+  recentMI: (d) => d?.recentMI,
+  // SISTER's onAnticoag (custom legacy evaluator) checks
+  // !!data.telestrokeNote?.lastDOACType (truthy on a string).
+  lastDOACType: (d) => d?.telestrokeNote?.lastDOACType,
   // 'reperfusion' is a derived predicate: true if the encounter notes
   // recorded EITHER tnkRecommended OR evtRecommended. Derived fields are
   // legitimate extensions of the field vocabulary and are documented in
@@ -144,6 +161,18 @@ const operators = {
     if (resolved === undefined || resolved === null || resolved === '') return null;
     return value.includes(resolved);
   },
+  // 'truthy' — JS-truthy match. Used for exclusion criteria like
+  // SISTER's onAnticoag which fires on !!data.telestrokeNote?.lastDOACType
+  // (a non-empty string is truthy; undefined / null / '' are falsy).
+  // For exclusion semantics: returns true when resolved is truthy,
+  // false when resolved is undefined / null / '' / 0 / false.
+  // Never returns null — the absence of the field means "not on this
+  // drug", which is a definite false, not an unknown.
+  'truthy': (resolved /* , value */) => {
+    if (resolved === undefined || resolved === null) return false;
+    if (typeof resolved === 'string' && resolved.trim() === '') return false;
+    return Boolean(resolved);
+  },
   'present': (resolved, value) => {
     // 'present' checks whether the resolved value contains any of the
     // listed needles. Used for free-text fields like ctpResults
@@ -206,11 +235,28 @@ export function evaluateActiveTrial(activeTrial, data) {
     status: evaluateCriterion(c, data)
   }));
 
+  // Exclusions — inverse semantics. A criterion that evaluates to met
+  // means the exclusion is *triggered*, which forces overall status to
+  // not_eligible. unknown/not_met means the exclusion is not triggered.
+  const exclusions = [];
+  for (const x of activeTrial.matcherExclusions || []) {
+    const r = evaluateCriterion(x, data);
+    if (r === 'met') {
+      exclusions.push({
+        id: x.id || x.field,
+        label: x.label || x.field,
+        field: x.field,
+        triggered: true
+      });
+    }
+  }
+
   const counts = { met: 0, not_met: 0, unknown: 0 };
   for (const c of criteria) counts[c.status] += 1;
 
   let status = 'pending';
-  if (criteria.length === 0) status = 'pending';
+  if (criteria.length === 0 && exclusions.length === 0) status = 'pending';
+  else if (exclusions.length > 0) status = 'not_eligible';
   else if (counts.not_met > 0) status = 'not_eligible';
   else if (counts.unknown > 0) status = 'needs_info';
   else status = 'eligible';
@@ -220,6 +266,7 @@ export function evaluateActiveTrial(activeTrial, data) {
     legacyMatcherKey: activeTrial.legacyMatcherKey,
     shortName: activeTrial.shortName,
     criteria,
+    exclusions,
     counts,
     status
   };
@@ -298,7 +345,11 @@ export function evaluateAllTrialsViaEngine(activeTrialsList, data) {
         status: c.status,
         required: c.required
       })),
-      exclusions: [],
+      exclusions: (eng.exclusions || []).map((x) => ({
+        id: x.id,
+        label: x.label,
+        triggered: true
+      })),
       status: eng.status,
       metCount: eng.counts.met,
       notMetCount: eng.counts.not_met,
@@ -320,6 +371,8 @@ export function coverageReport(activeTrials) {
   const ops = knownOperators();
   let total = 0;
   let covered = 0;
+  let exclusionsTotal = 0;
+  let exclusionsCovered = 0;
   const gaps = [];
   for (const t of activeTrials) {
     for (const c of t.matcherCriteria || []) {
@@ -327,10 +380,23 @@ export function coverageReport(activeTrials) {
       const fieldKnown = fields.has(c.field);
       const opKnown = ops.has(c.operator);
       if (fieldKnown && opKnown) covered += 1;
-      else gaps.push(`${t.id}/${c.field}/${c.operator}${fieldKnown ? '' : ' (unknown field)'}${opKnown ? '' : ' (unknown operator)'}`);
+      else gaps.push(`${t.id}/criterion/${c.field}/${c.operator}${fieldKnown ? '' : ' (unknown field)'}${opKnown ? '' : ' (unknown operator)'}`);
+    }
+    for (const x of t.matcherExclusions || []) {
+      exclusionsTotal += 1;
+      const fieldKnown = fields.has(x.field);
+      const opKnown = ops.has(x.operator);
+      if (fieldKnown && opKnown) exclusionsCovered += 1;
+      else gaps.push(`${t.id}/exclusion/${x.field}/${x.operator}${fieldKnown ? '' : ' (unknown field)'}${opKnown ? '' : ' (unknown operator)'}`);
     }
   }
-  return { total, covered, gaps, percent: total === 0 ? 0 : Math.round((covered / total) * 100) };
+  return {
+    total, covered,
+    exclusionsTotal, exclusionsCovered,
+    gaps,
+    percent: total === 0 ? 0 : Math.round((covered / total) * 100),
+    exclusionsPercent: exclusionsTotal === 0 ? 0 : Math.round((exclusionsCovered / exclusionsTotal) * 100)
+  };
 }
 
 /**
