@@ -29,6 +29,26 @@
       "type": "image/png"
     }
   ],
+  "shortcuts": [
+    {
+      "name": "New encounter",
+      "short_name": "Encounter",
+      "url": "/stroke/#/encounter",
+      "description": "Start a new acute stroke encounter"
+    },
+    {
+      "name": "Calculators",
+      "short_name": "Calc",
+      "url": "/stroke/#/management/calculators",
+      "description": "Stroke calculators (NIHSS, ASPECTS, ICH, ABCD2, HAS-BLED, ...)"
+    },
+    {
+      "name": "Trials",
+      "short_name": "Trials",
+      "url": "/stroke/#/trials",
+      "description": "Active trials and Evidence Atlas"
+    }
+  ],
   "scope": "/stroke/",
   "lang": "en-US",
   "dir": "ltr"
