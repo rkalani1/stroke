@@ -14896,6 +14896,11 @@ Clinician Name`;
 
           useEffect(() => {
             if (!('serviceWorker' in navigator)) return;
+            // Capture controller state BEFORE register() so we can distinguish
+            // first-install (no prior controller) from a real update (prior controller exists).
+            // Without this, the first SW activation triggers controllerchange → reload,
+            // which the user perceives as a blank flash that requires a manual refresh.
+            const hadControllerAtStartup = !!navigator.serviceWorker.controller;
             let reg;
             const trackWaiting = (worker) => {
               if (!worker) return;
@@ -14923,6 +14928,7 @@ Clinician Name`;
             let refreshing = false;
             const onControllerChange = () => {
               if (refreshing) return;
+              if (!hadControllerAtStartup) return;
               refreshing = true;
               window.location.reload();
             };
