@@ -1,0 +1,112 @@
+name: Lighthouse
+
+# Non-blocking Lighthouse audit. Posts scores as a PR comment but never
+# fails the workflow on score regressions — clinical-app perf is sensitive
+# to network conditions on the GitHub Pages CDN, and a flaky 78 vs 82
+# Performance score is not worth blocking a clinical-content PR.
+#
+# Reads the LIVE deployed site at https://rkalani1.github.io/stroke/, so
+# this only meaningfully runs on push-to-main (after deploy) or on manual
+# dispatch. PR runs measure pre-merge state, not the proposed change —
+# treat them as a baseline reminder, not a gating signal.
+#
+# Security: no untrusted inputs (PR title/body/etc.) are interpolated into
+# run: blocks. comment.md is read by the github-script step via fs only.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'manifest.json'
+      - 'service-worker.js'
+      - 'app.js'
+      - 'tailwind.css'
+      - 'src/**'
+      - '.github/workflows/lighthouse.yml'
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    name: Lighthouse audit (live site)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run Lighthouse
+        id: lh
+        continue-on-error: true
+        run: |
+          npx --yes lighthouse@12 https://rkalani1.github.io/stroke/ \
+            --only-categories=performance,accessibility,best-practices \
+            --chrome-flags="--headless=new --no-sandbox --disable-gpu" \
+            --output=json \
+            --output-path=./lighthouse.report.json \
+            --quiet
+
+      - name: Extract scores
+        id: scores
+        if: always()
+        run: |
+          if [ ! -f lighthouse.report.json ]; then
+            echo "summary=Lighthouse run failed — see logs." >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          PERF=$(node -e "console.log(Math.round(JSON.parse(require('fs').readFileSync('lighthouse.report.json','utf8')).categories.performance.score*100))")
+          A11Y=$(node -e "console.log(Math.round(JSON.parse(require('fs').readFileSync('lighthouse.report.json','utf8')).categories.accessibility.score*100))")
+          BP=$(node -e "console.log(Math.round(JSON.parse(require('fs').readFileSync('lighthouse.report.json','utf8')).categories['best-practices'].score*100))")
+          {
+            echo "## Lighthouse — live site"
+            echo ""
+            echo "| Category | Score | Target |"
+            echo "|---|---|---|"
+            echo "| Performance | $PERF | >= 80 |"
+            echo "| Accessibility | $A11Y | >= 90 |"
+            echo "| Best Practices | $BP | >= 90 |"
+            echo ""
+            echo "_PWA category was removed in Lighthouse 12; manifest + service-worker installability is verified manually per docs/pwa-and-app.md._"
+            echo ""
+            echo "_Non-blocking: this workflow never fails the build on score regressions._"
+          } > comment.md
+          echo "comment_path=comment.md" >> "$GITHUB_OUTPUT"
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request' && steps.scores.outputs.comment_path
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('comment.md', 'utf8');
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+
+            const existing = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number, per_page: 100
+            });
+            const previous = existing.find(c => c.user && c.user.type === 'Bot' && c.body && c.body.startsWith('## Lighthouse — live site'));
+            if (previous) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: previous.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: lighthouse.report.json
+          if-no-files-found: ignore
+          retention-days: 30
