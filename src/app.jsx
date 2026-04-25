@@ -73,6 +73,30 @@ import sah2023 from './guidelines/sah-2023.json';
 import systemicComplications2024 from './guidelines/systemic-complications-2024.json';
 import svinLargeCore2025 from './guidelines/svin-large-core-2025.json';
 import tiaEd2023 from './guidelines/tia-ed-2023.json';
+// StrokeOps v6 Evidence Atlas — structured active/completed-trial data.
+// The Trials tab and Context Bridge read from this module; the legacy
+// inline TRIAL_ELIGIBILITY_CONFIG continues to drive the matcher with
+// per-criterion evaluators that bind to encounter form state.
+import {
+  activeTrials as evidenceActiveTrials,
+  completedTrials as evidenceCompletedTrials,
+  citations as evidenceCitations,
+  recommendations as evidenceRecommendations,
+  claims as evidenceClaims,
+  topics as evidenceTopics,
+  resolveCompletedTrials,
+  resolveClaimsWithCitations,
+  resolveCitations,
+  filterCompletedTrials,
+  filterActiveTrials,
+  citationLink,
+  topicLabel,
+  getActiveTrialByLegacyKey,
+  VERIFICATION_STATUS_LABELS,
+  CERTAINTY_LABELS,
+  EVIDENCE_TYPE_LABELS,
+  ACTIVE_STATUS_LABELS
+} from './evidence/index.js';
 
         const STORAGE_PREFIX = (window.strokeAppStorage && window.strokeAppStorage.prefix) || 'strokeApp:';
         const APP_DATA_KEY = (window.strokeAppStorage && window.strokeAppStorage.appDataKey) || 'stroke.appData.v2';
