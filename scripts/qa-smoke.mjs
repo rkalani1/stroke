@@ -305,8 +305,17 @@ async function navigateToTab(page, tabName) {
     const tab = page.locator(`button.tab-pill:has-text("${tabName}")`).first();
     if ((await tab.count()) === 0) return false;
     try { await tab.scrollIntoViewIfNeeded({ timeout: 2000 }); } catch { /* on-screen */ }
-    try { await tab.click({ timeout: 5000 }); }
-    catch { await tab.click({ timeout: 5000, force: true }); }
+    try {
+      await tab.click({ timeout: 5000 });
+    } catch {
+      try {
+        await tab.click({ timeout: 5000, force: true });
+      } catch {
+        // Last resort for off-screen mobile tabs: bypass actionability
+        // by dispatching the click event directly to the React handler.
+        await tab.dispatchEvent('click');
+      }
+    }
     await page.waitForTimeout(200);
     return true;
   } catch { return false; }
