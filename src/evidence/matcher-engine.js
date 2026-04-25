@@ -226,6 +226,90 @@ export function evaluateActiveTrial(activeTrial, data) {
 }
 
 /**
+ * Drop-in replacement for the legacy evaluateAllTrials. Returns a map
+ * keyed by the legacy matcher key (e.g. 'SISTER', 'STEP') so the UI
+ * code that consumes it doesn't need to change.
+ *
+ * Output shape per trial mirrors evaluateTrialEligibility's: trialId,
+ * trialName, category, quickDescription, lookingFor, keyTakeaways,
+ * nct, criteria[], exclusions[], status, metCount, notMetCount,
+ * unknownCount, requiredMissing.
+ *
+ * The exclusions array is empty in this engine output — the engine
+ * doesn't yet model exclusionFlags. That's a follow-up; for parity the
+ * legacy continues to drive exclusion-only not_eligible cases.
+ *
+ * Inputs:
+ *   activeTrials: the structured atlas active-trial array
+ *   data:         the encounter envelope (telestrokeNote, etc.)
+ *   labelMap:     optional per-trial { [field]: legacyId } to remap
+ *                 criterion ids so existing UI css / behavior matches
+ *                 (e.g., timeWindow vs hoursFromLKW). When omitted the
+ *                 default DEFAULT_FIELD_TO_LEGACY map is used.
+ */
+
+const DEFAULT_FIELD_TO_LEGACY = {
+  hoursFromLKW: 'timeWindow',
+  tnkRecommended: 'noTNK',
+  evtRecommended: 'noEVT',
+  ctpResults: 'ctpMismatch',
+  pmh: 'afib',
+  ichLocation: 'lobarICH',
+  onStatin: 'onStatin',
+  mrsScore: 'mrs',
+  domainMatch: 'domainMatch',
+  reperfusion: 'reperfusion',
+  aspectsScore: 'aspects',
+  symptoms: 'ueWeakness'
+};
+
+const PER_TRIAL_OVERRIDES = {
+  picasso: { ctaResults: 'tandemLesion' },
+  captiva: { ctaResults: 'icas' },
+  aspire: { diagnosisCategory: 'ichConfirmed' },
+  discovery: { diagnosisCategory: 'strokeConfirmed' },
+  tested: { vesselOcclusion: 'lvo' },
+  most: { vesselOcclusion: 'lvo' }
+};
+
+function legacyIdFor(activeTrialId, field) {
+  const overrides = PER_TRIAL_OVERRIDES[activeTrialId] || {};
+  if (overrides[field]) return overrides[field];
+  return DEFAULT_FIELD_TO_LEGACY[field] || field;
+}
+
+export function evaluateAllTrialsViaEngine(activeTrialsList, data) {
+  const out = {};
+  for (const aTrial of activeTrialsList || []) {
+    const eng = evaluateActiveTrial(aTrial, data);
+    if (!eng) continue;
+    const legacyKey = aTrial.legacyMatcherKey || aTrial.id;
+    out[legacyKey] = {
+      trialId: legacyKey,
+      trialName: aTrial.fullName || aTrial.shortName,
+      category: aTrial.topic && aTrial.topic.includes('ich') ? 'ich' : 'ischemic',
+      quickDescription: aTrial.briefDescription || '',
+      lookingFor: aTrial.lookingFor || [],
+      keyTakeaways: aTrial.keyTakeaways || [],
+      nct: aTrial.nctId,
+      criteria: eng.criteria.map((c) => ({
+        id: legacyIdFor(aTrial.id, c.id),
+        label: c.label,
+        status: c.status,
+        required: c.required
+      })),
+      exclusions: [],
+      status: eng.status,
+      metCount: eng.counts.met,
+      notMetCount: eng.counts.not_met,
+      unknownCount: eng.counts.unknown,
+      requiredMissing: eng.criteria.filter((c) => c.required && c.status === 'not_met').length
+    };
+  }
+  return out;
+}
+
+/**
  * Coverage metric for the validator. Returns the count of criteria the
  * engine can fully evaluate (i.e., field is registered + operator is
  * registered). Used by scripts/evidence-validate.mjs to surface
