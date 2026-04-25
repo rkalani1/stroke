@@ -9,3 +9,17 @@ output/
 # Pre-compressed build artifacts from scripts/compress-assets.mjs
 *.gz
 *.br
+
+# Capacitor build artifacts. The scaffold (ios/, android/, capacitor.config.json)
+# is committed; build outputs are not.
+dist/
+ios/App/Pods/
+ios/App/Podfile.lock
+ios/App/build/
+ios/App/App/public/
+android/app/build/
+android/.gradle/
+android/build/
+android/local.properties
+android/app/release/
+android/app/src/main/assets/public/
