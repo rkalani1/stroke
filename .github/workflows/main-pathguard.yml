@@ -1,0 +1,26 @@
+# Guard against accidental commits of mobile-wrapper artifacts to main.
+# The native-wrapper (Capacitor) work lives on a feature branch and
+# should never land on main, which serves the web-app PWA from the
+# repo root.
+name: main path guard
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject mobile-wrapper paths on main
+        run: |
+          if git ls-tree HEAD --name-only -r | grep -E '^(android|ios)/'; then
+            echo ""
+            echo "ERROR: mobile-wrapper artifacts detected on main."
+            echo "Files in android/ or ios/ belong on the native-wrapper feature branch."
+            echo "Move them to that branch and remove from this PR."
+            exit 1
+          fi
