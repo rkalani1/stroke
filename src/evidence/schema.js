@@ -133,6 +133,12 @@ export function makeActiveTrial(input = {}) {
     rationale: strOr(input.rationale),
     inclusionCriteria: arrOr(input.inclusionCriteria),
     exclusionCriteria: arrOr(input.exclusionCriteria),
+    // UI-only display fields; previously in legacy-criteria.js's
+    // TRIAL_ELIGIBILITY_CONFIG. Migrated to the atlas in the
+    // retirement sprint so the legacy module can be deleted.
+    keyTakeaways: arrOr(input.keyTakeaways),
+    lookingFor: arrOr(input.lookingFor),
+    category: strOr(input.category),
     matcherCriteria: arrOr(input.matcherCriteria).map((c) => ({
       field: strOr(c?.field),
       operator: strOr(c?.operator),

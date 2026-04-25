@@ -59,6 +59,18 @@ export const activeTrials = [
     link: 'https://clinicaltrials.gov/study/NCT05948566',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',
+    category: 'ischemic',
+    keyTakeaways: [
+      "Tests whether IV thrombolysis benefits patients 4.5-24h from LKW who are NOT candidates for EVT",
+      "Requires perfusion mismatch on CTP — target is the \"TIMELESS-ineligible\" population",
+      "If positive, could expand treatment to patients who currently receive no acute reperfusion therapy"
+    ],
+    lookingFor: [
+      "Anterior circulation stroke",
+      "Late presenter (4.5-24h from LKW)",
+      "NOT getting TNK or EVT",
+      "Has salvageable tissue on CTP (mismatch profile)"
+    ],
     legacyMatcherKey: 'SISTER'
   }),
 
@@ -99,6 +111,17 @@ export const activeTrials = [
     link: 'https://clinicaltrials.gov/study/NCT06289985',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',
+    category: 'ischemic',
+    keyTakeaways: [
+      "NIH StrokeNet adaptive platform with two domains: mild stroke with LVO (NIHSS 0-5) and medium/distal vessel occlusions (M2-M4, A1-A3, P1-P3)",
+      "ESCAPE-MeVO (2025) showed no routine functional benefit of EVT for isolated MeVO; STEP aims to identify specific subgroups that may still benefit",
+      "Adaptive design allows rapid testing of multiple EVT devices and techniques"
+    ],
+    lookingFor: [
+      "Two domains: Low NIHSS with LVO, OR Medium/Distal Vessel Occlusion",
+      "Low NIHSS (0-5) + ICA/M1 occlusion, or",
+      "M2/M3/M4, A1-A3, P1-P3 occlusion regardless of NIHSS"
+    ],
     legacyMatcherKey: 'STEP'
   }),
 
@@ -137,6 +160,17 @@ export const activeTrials = [
     link: 'https://clinicaltrials.gov/study/NCT05611242',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',
+    category: 'ischemic',
+    keyTakeaways: [
+      "Tandem lesions (extracranial carotid + intracranial LVO) are common but excluded from most EVT trials",
+      "Tests emergent carotid stenting + EVT vs EVT alone for tandem occlusions",
+      "Addresses a gap where no RCT has established optimal management of the extracranial component"
+    ],
+    lookingFor: [
+      "Tandem lesion (carotid + intracranial)",
+      "Extracranial ICA stenosis 70-100%",
+      "Plus intracranial LVO (ICA-T, M1, proximal M2)"
+    ],
     legacyMatcherKey: 'PICASSO'
   }),
 
@@ -175,6 +209,17 @@ export const activeTrials = [
     link: 'https://clinicaltrials.gov/study/NCT05911568',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',
+    category: 'ischemic',
+    keyTakeaways: [
+      "All major EVT trials excluded patients with pre-existing disability (mRS 3-4)",
+      "These patients are routinely denied EVT despite no evidence of futility",
+      "If positive, would extend EVT eligibility to a large underserved population"
+    ],
+    lookingFor: [
+      "Patient with EXISTING disability (mRS 3-4)",
+      "LVO stroke within 24h",
+      "ASPECTS ≥3"
+    ],
     legacyMatcherKey: 'TESTED'
   }),
 
@@ -210,6 +255,17 @@ export const activeTrials = [
     link: 'https://clinicaltrials.gov/study/NCT05338697',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',
+    category: 'ischemic',
+    keyTakeaways: [
+      "Uses TMS + MRI biomarkers to predict upper extremity motor recovery trajectory",
+      "Observational — enrollment is straightforward with minimal patient burden",
+      "Could establish precision rehab: matching therapy intensity to predicted recovery potential"
+    ],
+    lookingFor: [
+      "Acute ischemic stroke within 7 days",
+      "Upper extremity weakness",
+      "Inpatient enrollment opportunity"
+    ],
     legacyMatcherKey: 'VERIFY'
   }),
 
@@ -242,6 +298,17 @@ export const activeTrials = [
     link: 'https://clinicaltrials.gov/study/NCT04916210',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',
+    category: 'ischemic',
+    keyTakeaways: [
+      "Maps cognitive decline trajectories after stroke (AIS, ICH, and SAH) over 2 years",
+      "Aims to identify modifiable risk factors for post-stroke cognitive impairment",
+      "Low barrier — observational with cognitive testing at standard follow-up intervals"
+    ],
+    lookingFor: [
+      "Any stroke type (AIS, ICH, SAH)",
+      "Baseline visit within 6 weeks",
+      "Able to complete cognitive testing"
+    ],
     legacyMatcherKey: 'DISCOVERY'
   }),
 
@@ -281,6 +348,18 @@ export const activeTrials = [
     link: 'https://clinicaltrials.gov/study/NCT05326139',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',
+    category: 'ischemic',
+    keyTakeaways: [
+      "Adaptive platform testing TNK 0.40 mg/kg (higher dose) vs standard 0.25 mg/kg for AIS with LVO",
+      "Also testing nerinetide (NA-1) as neuroprotective adjunct to EVT",
+      "Could establish optimized TNK dosing for LVO patients proceeding to EVT"
+    ],
+    lookingFor: [
+      "Acute ischemic stroke with LVO",
+      "Eligible for IV thrombolysis",
+      "Within 4.5 hours from LKW",
+      "Age 18+"
+    ],
     legacyMatcherKey: 'MOST'
   }),
 
@@ -318,6 +397,18 @@ export const activeTrials = [
     link: 'https://clinicaltrials.gov/study/NCT05047172',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',
+    category: 'ischemic',
+    keyTakeaways: [
+      "Three-arm trial for symptomatic intracranial atherosclerotic stenosis (ICAS) 70-99%",
+      "Tests ticagrelor+ASA and low-dose rivaroxaban+ASA against standard clopidogrel+ASA",
+      "Addresses a major unmet need — recurrent stroke risk is 12-20% at 1 year despite DAPT for ICAS"
+    ],
+    lookingFor: [
+      "Symptomatic intracranial stenosis 70-99%",
+      "Ischemic stroke or TIA attributed to ICAS",
+      "Within 21 days of qualifying event",
+      "Age ≥30"
+    ],
     legacyMatcherKey: 'CAPTIVA'
   }),
 
@@ -355,6 +446,18 @@ export const activeTrials = [
     link: 'https://clinicaltrials.gov/study/NCT04953325',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',
+    category: 'ischemic',
+    keyTakeaways: [
+      "3K3A-APC (activated protein C variant) showed signal for reduced ICH and improved outcomes in phase 2",
+      "First neuroprotective agent with mechanistic basis in stroke (anti-inflammatory, anti-apoptotic, BBB stabilization)",
+      "Given as IV infusion after reperfusion — does not delay standard treatment"
+    ],
+    lookingFor: [
+      "Moderate-severe acute ischemic stroke (NIHSS ≥5)",
+      "Received IVT and/or EVT",
+      "Can start study drug within 15h of LKW",
+      "Age 18+"
+    ],
     legacyMatcherKey: 'RHAPSODY'
   }),
 
@@ -392,6 +495,17 @@ export const activeTrials = [
     link: 'https://clinicaltrials.gov/study/NCT03936361',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',
+    category: 'ich',
+    keyTakeaways: [
+      "Lobar ICH raises concern for CAA — statins may increase recurrent ICH risk in CAA patients",
+      "Many patients are on statins for cardiovascular prevention; stopping may increase MACE risk",
+      "First RCT to directly address the statin dilemma after lobar ICH"
+    ],
+    lookingFor: [
+      "Lobar ICH (NOT deep/basal ganglia)",
+      "Already on statin therapy",
+      "Age ≥50"
+    ],
     legacyMatcherKey: 'SATURN'
   }),
 
@@ -428,6 +542,17 @@ export const activeTrials = [
     link: 'https://clinicaltrials.gov/study/NCT03907046',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',
+    category: 'ich',
+    keyTakeaways: [
+      "ICH patients with AF face a dilemma: anticoagulation prevents ischemic stroke but may cause recurrent ICH",
+      "PRESTIGE-AF showed non-inferiority of DOAC vs no anticoag; ASPIRE directly compares apixaban to aspirin",
+      "Enrollment window is 14-180 days post-ICH — flag for outpatient follow-up"
+    ],
+    lookingFor: [
+      "ICH patient with atrial fibrillation",
+      "Randomize 14-180 days post-ICH",
+      "CHA2DS2-VASc ≥2"
+    ],
     legacyMatcherKey: 'ASPIRE'
   })
 ];

@@ -74,9 +74,9 @@ import systemicComplications2024 from './guidelines/systemic-complications-2024.
 import svinLargeCore2025 from './guidelines/svin-large-core-2025.json';
 import tiaEd2023 from './guidelines/tia-ed-2023.json';
 // StrokeOps v6 Evidence Atlas — structured active/completed-trial data.
-// The Trials tab and Context Bridge read from this module; the legacy
-// inline TRIAL_ELIGIBILITY_CONFIG continues to drive the matcher with
-// per-criterion evaluators that bind to encounter form state.
+// After the retirement sprint, the engine drives the matcher
+// unconditionally from the structured atlas. The legacy
+// TRIAL_ELIGIBILITY_CONFIG and its inline evaluators were deleted.
 import {
   activeTrials as evidenceActiveTrials,
   completedTrials as evidenceCompletedTrials,
@@ -104,13 +104,6 @@ import {
   evaluateAllTrialsViaEngine,
   diffEvaluations as engineDiffEvaluations
 } from './evidence/matcher-engine.js';
-// Legacy criterion config + evaluators — extracted from inline so the
-// parity test suite can run them outside React.
-import {
-  TRIAL_ELIGIBILITY_CONFIG,
-  evaluateTrialEligibility,
-  evaluateAllTrials
-} from './evidence/legacy-criteria.js';
 
         const STORAGE_PREFIX = (window.strokeAppStorage && window.strokeAppStorage.prefix) || 'strokeApp:';
         const APP_DATA_KEY = (window.strokeAppStorage && window.strokeAppStorage.appDataKey) || 'stroke.appData.v2';
@@ -5548,15 +5541,17 @@ Clinician Name`;
           // Trial eligibility state
           const [trialEligibility, setTrialEligibility] = useState({});
 
-          // Navigate to Trials tab with specific trial selected
+          // Navigate to Trials tab with specific trial selected. trialId is
+          // the legacy matcher key (e.g. 'SISTER'); the structured atlas
+          // exposes that as legacyMatcherKey on each active trial.
           const navigateToTrial = (trialId) => {
-            const config = TRIAL_ELIGIBILITY_CONFIG[trialId];
-            if (!config) return;
+            const aTrial = getActiveTrialByLegacyKey(trialId);
+            if (!aTrial) return;
 
             navigateTo('trials');
 
             // Create the same slug used in TrialCard from the trial name
-            const trialSlug = config.name.toLowerCase()
+            const trialSlug = aTrial.fullName.toLowerCase()
               .replace(/\s+trial$/i, '')
               .replace(/[^a-z0-9]/g, '-')
               .replace(/-+/g, '-')
@@ -5733,10 +5728,10 @@ Clinician Name`;
                       Scan top criteria first, then expand full list
                     </span>
                   </div>
-                  {/* Key Takeaways - pulled from TRIAL_ELIGIBILITY_CONFIG by NCT */}
+                  {/* Key Takeaways — read from the structured atlas by NCT */}
                   {(() => {
-                    const matchedConfig = Object.values(TRIAL_ELIGIBILITY_CONFIG).find(c => c.nct === trial.nct);
-                    if (!matchedConfig || !matchedConfig.keyTakeaways || matchedConfig.keyTakeaways.length === 0) return null;
+                    const matchedAtlas = evidenceActiveTrials.find((a) => a.nctId === trial.nct);
+                    if (!matchedAtlas || !matchedAtlas.keyTakeaways || matchedAtlas.keyTakeaways.length === 0) return null;
                     return (
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
                         <h4 className="font-bold text-blue-800 mb-2 text-sm flex items-center gap-1.5">
@@ -5744,7 +5739,7 @@ Clinician Name`;
                           Key Takeaways
                         </h4>
                         <ul className="space-y-1">
-                          {matchedConfig.keyTakeaways.map((t, i) => (
+                          {matchedAtlas.keyTakeaways.map((t, i) => (
                             <li key={i} className="text-sm text-blue-900 flex gap-2">
                               <span className="text-blue-500 mt-0.5 shrink-0">&#8227;</span>
                               <span>{t}</span>
@@ -13976,15 +13971,14 @@ Clinician Name`;
             const nctCommand = lowerQuery.match(/^(?:nct[:\s-]*)?(nct\d{8})$/i);
             if (nctCommand) {
               const targetNct = nctCommand[1].toUpperCase();
-              const trialConfigMatch = Object.entries(TRIAL_ELIGIBILITY_CONFIG).find(([, cfg]) => cfg && cfg.nct === targetNct);
-              if (trialConfigMatch) {
-                const [trialId, cfg] = trialConfigMatch;
+              const matchedAtlas = evidenceActiveTrials.find((a) => a.nctId === targetNct);
+              if (matchedAtlas) {
                 results.push({
                   type: 'Command',
                   title: `Open ${targetNct}`,
-                  description: `${cfg.name} trial`,
+                  description: `${matchedAtlas.fullName} trial`,
                   score: 980,
-                  action: () => navigateToTrial(trialId)
+                  action: () => navigateToTrial(matchedAtlas.legacyMatcherKey)
                 });
               }
             }
@@ -14118,17 +14112,17 @@ Clinician Name`;
             });
 
             // Search trial criteria and eligibility text (inclusion/exclusion intent)
-            Object.entries(TRIAL_ELIGIBILITY_CONFIG).forEach(([trialId, config]) => {
+            evidenceActiveTrials.forEach((aTrial) => {
               const criterionPool = [
-                ...(config?.lookingFor || []).map((text) => ({ label: 'Looking for', text })),
-                ...(config?.keyCriteria || []).map((criterion) => ({ label: 'Eligibility', text: criterion.label })),
-                ...(config?.exclusionFlags || []).map((criterion) => ({ label: 'Exclusion', text: criterion.label })),
-                ...(config?.keyTakeaways || []).map((text) => ({ label: 'Key takeaway', text }))
+                ...(aTrial.lookingFor || []).map((text) => ({ label: 'Looking for', text })),
+                ...(aTrial.matcherCriteria || []).map((criterion) => ({ label: 'Eligibility', text: criterion.label })),
+                ...(aTrial.matcherExclusions || []).map((criterion) => ({ label: 'Exclusion', text: criterion.label })),
+                ...(aTrial.keyTakeaways || []).map((text) => ({ label: 'Key takeaway', text }))
               ];
 
               let bestMatch = null;
               criterionPool.forEach((criterion) => {
-                const score = scoreFor([config.name, config.nct, criterion.label, criterion.text], 6);
+                const score = scoreFor([aTrial.fullName, aTrial.nctId, criterion.label, criterion.text], 6);
                 if (score > 0 && (!bestMatch || score > bestMatch.score)) {
                   bestMatch = { ...criterion, score };
                 }
@@ -14137,11 +14131,11 @@ Clinician Name`;
               if (bestMatch) {
                 results.push({
                   type: 'Trial Criteria',
-                  category: config.category,
-                  title: `${config.name} - ${bestMatch.label}`,
+                  category: aTrial.category,
+                  title: `${aTrial.fullName} - ${bestMatch.label}`,
                   description: bestMatch.text,
                   score: bestMatch.score,
-                  action: () => navigateToTrial(trialId)
+                  action: () => navigateToTrial(aTrial.legacyMatcherKey)
                 });
               }
             });
@@ -15121,91 +15115,18 @@ Clinician Name`;
               lkwTime
             };
 
-            // Canonical-source flag. When
-            // localStorage.setItem('strokeApp:matcherEngineCanonical','true'),
-            // the generic engine drives the matcher (read from the
-            // structured atlas matcherCriteria arrays). Otherwise the
-            // legacy TRIAL_ELIGIBILITY_CONFIG drives. Parity is enforced
-            // by src/evidence/__tests__/parity.test.js — both paths
-            // produce identical UI output across 12 patient scenarios.
-            let canonicalEngine = false;
-            try {
-              const flag = (typeof window !== 'undefined' && window.localStorage)
-                ? window.localStorage.getItem(STORAGE_PREFIX + 'matcherEngineCanonical')
-                : null;
-              canonicalEngine = (flag === 'true' || flag === '"true"');
-            } catch (e) { /* ignore — default to legacy */ }
-
-            const results = canonicalEngine
-              ? evaluateAllTrialsViaEngine(evidenceActiveTrials, evaluationData)
-              : evaluateAllTrials(evaluationData);
+            // Engine drives the matcher unconditionally. The legacy
+            // TRIAL_ELIGIBILITY_CONFIG and its inline evaluators were
+            // retired in the retirement sprint after 211 frozen
+            // snapshot tests confirmed parity across 19 patient
+            // scenarios × 11 trials. Future regression coverage lives
+            // in src/evidence/__tests__/scenario-snapshot.test.js.
+            const results = evaluateAllTrialsViaEngine(evidenceActiveTrials, evaluationData);
             setTrialEligibility(prev => {
               const prevStr = JSON.stringify(prev);
               const nextStr = JSON.stringify(results);
               return prevStr === nextStr ? prev : results;
             });
-
-            // Parallel-verification (matcher engine). Off by default; toggle
-            // with localStorage.setItem('strokeApp:matcherEngineCheck','true').
-            // No clinician-visible change. Logs disagreements to console for
-            // the developer accumulating parity evidence prior to retiring
-            // TRIAL_ELIGIBILITY_CONFIG in a future sprint.
-            try {
-              const checkFlag = (typeof window !== 'undefined' && window.localStorage)
-                ? window.localStorage.getItem(STORAGE_PREFIX + 'matcherEngineCheck')
-                : null;
-              if (checkFlag === 'true' || checkFlag === '"true"') {
-                let totalDiffs = 0;
-                for (const aTrial of evidenceActiveTrials) {
-                  const legacyKey = aTrial.legacyMatcherKey;
-                  if (!legacyKey || !results[legacyKey]) continue;
-                  const engine = engineEvaluateActiveTrial(aTrial, evaluationData);
-                  if (!engine) continue;
-                  // Translate engine criteria ids → legacy criteria ids where
-                  // they differ. The engine keys by `field`; legacy keys are
-                  // mostly identical (age, nihss, premorbidMRS, hoursFromLKW
-                  // → 'timeWindow', etc.).
-                  const FIELD_TO_LEGACY = {
-                    hoursFromLKW: 'timeWindow',
-                    tnkRecommended: 'noTNK',
-                    evtRecommended: 'noEVT',
-                    ctpResults: 'ctpMismatch',
-                    ctaResults: aTrial.id === 'picasso' ? 'tandemLesion' : (aTrial.id === 'captiva' ? 'icas' : 'ctaResults'),
-                    pmh: 'afib',
-                    diagnosisCategory: aTrial.id === 'aspire' ? 'ichConfirmed' : (aTrial.id === 'discovery' ? 'strokeConfirmed' : 'diagnosis'),
-                    ichLocation: 'lobarICH',
-                    onStatin: 'onStatin',
-                    mrsScore: 'mrs',
-                    domainMatch: 'domainMatch',
-                    reperfusion: 'reperfusion',
-                    vesselOcclusion: aTrial.id === 'tested' ? 'lvo' : 'vesselOcclusion',
-                    aspectsScore: 'aspects',
-                    symptoms: 'ueWeakness'
-                  };
-                  const remappedCriteria = engine.criteria.map((c) => ({
-                    id: FIELD_TO_LEGACY[c.id] || c.id,
-                    status: c.status
-                  }));
-                  const diffs = engineDiffEvaluations(
-                    { ...engine, criteria: remappedCriteria },
-                    results[legacyKey]
-                  );
-                  if (diffs.length > 0) {
-                    totalDiffs += diffs.length;
-                    // eslint-disable-next-line no-console
-                    console.warn(`[matcher-engine] ${aTrial.shortName} (${legacyKey}): ${diffs.length} disagreement(s)`, diffs);
-                  }
-                }
-                if (totalDiffs === 0) {
-                  // eslint-disable-next-line no-console
-                  console.info('[matcher-engine] all trials agree with legacy evaluator');
-                }
-              }
-            } catch (err) {
-              // Parallel verification must never break the live matcher.
-              // eslint-disable-next-line no-console
-              console.warn('[matcher-engine] parallel verification failed:', err?.message || err);
-            }
           }, [telestrokeNote, strokeCodeForm, aspectsScore, nihssScore, mrsScore, gcsItems, lkwTime]);
 
           // Monitor scroll position for Part 6 (Treatment Decision) visibility
@@ -21386,8 +21307,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Trial Eligibility Auto-Matcher */}
                         {(() => {
-                          const allTrialIds = Object.keys(TRIAL_ELIGIBILITY_CONFIG);
-                          if (allTrialIds.length === 0) return null;
+                          if (evidenceActiveTrials.length === 0) return null;
                           const activeTrialCategory = getTrialTabCategory(telestrokeNote.diagnosisCategory, telestrokeNote.diagnosis) || trialsCategory;
 
                           // Use the pre-computed trialEligibility state (updated by useEffect)
@@ -21421,8 +21341,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="p-3 space-y-2">
                                 <p className="text-xs text-slate-600 mb-2">Auto-compared against patient data (age, NIHSS, LKW, imaging, diagnosis). Criteria update in real-time as you enter data.</p>
                                 {sorted.map(trial => {
-                                  const config = TRIAL_ELIGIBILITY_CONFIG[trial.trialId];
-                                  if (!config) return null;
+                                  // The engine result already exposes everything the UI consumes
+                                  // (name, nct, quickDescription, lookingFor, keyTakeaways);
+                                  // we keep the local 'config' alias to minimize the diff in the
+                                  // surrounding render block.
+                                  const config = {
+                                    name: trial.trialName,
+                                    nct: trial.nct,
+                                    quickDescription: trial.quickDescription,
+                                    lookingFor: trial.lookingFor,
+                                    keyTakeaways: trial.keyTakeaways
+                                  };
                                   const statusColor = trial.status === 'eligible' ? 'border-emerald-400 bg-emerald-50' : trial.status === 'needs_info' ? 'border-amber-400 bg-amber-50' : 'border-slate-300 bg-slate-50';
                                   const statusBadge = trial.status === 'eligible' ? 'bg-emerald-600 text-white' : trial.status === 'needs_info' ? 'bg-amber-500 text-white' : 'bg-slate-400 text-white';
                                   const statusLabel = trial.status === 'eligible' ? '\u2713 Eligible' : trial.status === 'needs_info' ? '? Needs Info' : '\u2717 Not Eligible';
@@ -26092,14 +26021,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 const needsInfoTrials2 = trialResults2.filter(t => t.status === 'needs_info');
                                 if (eligibleTrials2.length > 0 || needsInfoTrials2.length > 0) {
                                   note += `\nCLINICAL TRIAL ELIGIBILITY:\n`;
+                                  // Engine result already carries nct (copied from activeTrial.nctId).
                                   eligibleTrials2.forEach(t => {
-                                    const cfg = TRIAL_ELIGIBILITY_CONFIG[t.trialId];
-                                    note += `- ELIGIBLE: ${t.trialName} (${cfg?.nct || ''}) — ${t.quickDescription}. Criteria met: ${t.metCount}/${t.criteria.length}.\n`;
+                                    note += `- ELIGIBLE: ${t.trialName} (${t.nct || ''}) — ${t.quickDescription}. Criteria met: ${t.metCount}/${t.criteria.length}.\n`;
                                   });
                                   needsInfoTrials2.forEach(t => {
-                                    const cfg = TRIAL_ELIGIBILITY_CONFIG[t.trialId];
                                     const missing = t.criteria.filter(c => c.status === 'unknown').map(c => c.label).join(', ');
-                                    note += `- NEEDS INFO: ${t.trialName} (${cfg?.nct || ''}) — missing: ${missing}.\n`;
+                                    note += `- NEEDS INFO: ${t.trialName} (${t.nct || ''}) — missing: ${missing}.\n`;
                                   });
                                 }
 
