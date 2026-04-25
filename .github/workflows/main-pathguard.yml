@@ -1,7 +1,14 @@
-# Guard against accidental commits of mobile-wrapper artifacts to main.
-# The native-wrapper (Capacitor) work lives on a feature branch and
-# should never land on main, which serves the web-app PWA from the
-# repo root.
+# Path guard: prevent specific generated/build artifacts from landing on
+# main. Native-wrapper SOURCE files (Java, Gradle config, manifests,
+# launcher icons) are explicitly ALLOWED — they're the Capacitor scaffold
+# that PR #18 introduces. Only the auto-generated outputs that should be
+# gitignored are blocked, in case .gitignore is bypassed (e.g., via
+# git add -f or a stash-pop reintroduction).
+#
+# Add new patterns here when new build outputs are discovered. The list
+# is intentionally narrow: a path-block is appropriate only when the
+# path can be uniquely identified as a build artifact.
+
 name: main path guard
 
 on:
@@ -15,12 +22,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Reject mobile-wrapper paths on main
+      - name: Reject build-output paths that should be gitignored
         run: |
-          if git ls-tree HEAD --name-only -r | grep -E '^(android|ios)/'; then
+          set -e
+          # Patterns we never want on main. Listed one-per-line so future
+          # additions are easy to grep.
+          PATTERNS=(
+            'android/app/build/'
+            'android/app/src/main/assets/public/'
+            'android/app/src/main/assets/capacitor.config.json'
+            'android/app/src/main/assets/capacitor.plugins.json'
+            'android/build/'
+            'android/.gradle/'
+            'ios/App/Pods/'
+            'ios/App/output/'
+            'ios/App/build/'
+            'ios/capacitor-cordova-ios-plugins/CordovaPluginsResources.podspec'
+            'ios/capacitor-cordova-ios-plugins/resources/'
+            'ios/capacitor-cordova-ios-plugins/sources/'
+            'node_modules/'
+            'output/'
+          )
+          FAILED=0
+          for p in "${PATTERNS[@]}"; do
+            if git ls-tree HEAD --name-only -r | grep -F "$p" >/dev/null; then
+              echo "ERROR: build artifact tracked: $p"
+              FAILED=1
+            fi
+          done
+          if [ "$FAILED" -ne 0 ]; then
             echo ""
-            echo "ERROR: mobile-wrapper artifacts detected on main."
-            echo "Files in android/ or ios/ belong on the native-wrapper feature branch."
-            echo "Move them to that branch and remove from this PR."
+            echo "These paths should be gitignored. They were probably introduced"
+            echo "by 'git add -f' or by a stash-pop. Move them off main."
             exit 1
           fi
+          echo "Path guard OK — no build artifacts tracked on main."
