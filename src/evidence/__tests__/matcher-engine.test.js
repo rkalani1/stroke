@@ -112,7 +112,11 @@ describe('matcher engine — operators', () => {
     it('resolves canonical fields including derived', () => {
       expect(resolveField('age', { telestrokeNote: { age: '70' } })).toBe('70');
       expect(resolveField('reperfusion', { telestrokeNote: { tnkRecommended: true } })).toBe(true);
-      expect(resolveField('reperfusion', { telestrokeNote: {} })).toBe(false);
+      // Bug-fix sprint: empty telestrokeNote (no decisions yet) → null (unknown),
+      // not false. Lets RHAPSODY surface as needs_info on a fresh form.
+      expect(resolveField('reperfusion', { telestrokeNote: {} })).toBeNull();
+      // Definitive false-false → false (no reperfusion plan recorded).
+      expect(resolveField('reperfusion', { telestrokeNote: { tnkRecommended: false, evtRecommended: false } })).toBe(false);
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'] } })).toBe('mevo');
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M1'], nihss: '4' }, nihssScore: 4 })).toBe('low-nihss-lvo');
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M1'], nihss: '8' }, nihssScore: 8 })).toBe('none');
