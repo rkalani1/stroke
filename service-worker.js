@@ -6,7 +6,8 @@ const CORE_ASSETS = [
   './icon-192.png',
   './icon-512.png',
   './app.js',
-  './tailwind.css'
+  './tailwind.css',
+  './offline.html'
 ];
 
 const CDN_ASSETS = [
@@ -52,7 +53,8 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(event.request.url);
 
-  // For same-origin: stale-while-revalidate
+  // For same-origin: stale-while-revalidate, with offline.html fallback for
+  // navigation requests (clearer than booting React with no data).
   if (url.origin === self.location.origin) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
@@ -64,7 +66,12 @@ self.addEventListener('fetch', (event) => {
             }
             return response;
           })
-          .catch(() => cached || caches.match('./index.html'));
+          .catch(() => {
+            if (event.request.mode === 'navigate') {
+              return caches.match('./offline.html').then((r) => r || caches.match('./index.html'));
+            }
+            return cached || caches.match('./index.html');
+          });
         return cached || fetchPromise;
       })
     );

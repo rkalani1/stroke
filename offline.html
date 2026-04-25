@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#3B82F6">
+    <title>Offline · Stroke</title>
+    <link rel="icon" href="icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="stylesheet" href="tailwind.css">
+    <style>
+        body {
+            font-family: "Manrope", "Segoe UI", system-ui, sans-serif;
+            background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+            color: #0f172a;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: env(safe-area-inset-top, 1rem) env(safe-area-inset-right, 1rem) env(safe-area-inset-bottom, 1rem) env(safe-area-inset-left, 1rem);
+        }
+        .card {
+            max-width: 480px;
+            width: 100%;
+            background: #fff;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+            padding: 1.75rem;
+        }
+        h1 {
+            font-family: "Newsreader", "Times New Roman", serif;
+            font-size: 1.65rem;
+            margin: 0.5rem 0 1rem;
+            letter-spacing: -0.01em;
+        }
+        p, ul {
+            color: #475569;
+            line-height: 1.55;
+        }
+        ul { padding-left: 1.25rem; }
+        li { margin: 0.25rem 0; }
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        .row img {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+        }
+        .badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #b45309;
+            background: #fef3c7;
+            border: 1px solid #fde68a;
+            border-radius: 999px;
+            padding: 2px 10px;
+            margin-bottom: 0.5rem;
+        }
+        a.btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.6rem 1.1rem;
+            background: #2563eb;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        a.btn:hover { background: #1d4ed8; }
+        .muted {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-top: 1.25rem;
+        }
+        @media (prefers-color-scheme: dark) {
+            body { background: #0b1220; color: #e2e8f0; }
+            .card { background: rgba(15, 23, 42, 0.92); border-color: rgba(148, 163, 184, 0.12); }
+            p, ul { color: #94a3b8; }
+            .muted { color: #64748b; }
+        }
+    </style>
+</head>
+<body>
+    <main class="card" role="main">
+        <div class="row">
+            <img src="icon-192.png" alt="Stroke app icon">
+            <div>
+                <span class="badge">Offline</span>
+                <h1>You're offline</h1>
+            </div>
+        </div>
+        <p>The browser couldn't reach the network, but the Stroke app is mostly cached on this device. Open the app and your most recent view will load.</p>
+        <p><strong>Available offline:</strong></p>
+        <ul>
+            <li>All calculators (NIHSS, ASPECTS, ICH, ABCD<sup>2</sup>, HAS-BLED, RCVS<sup>2</sup>, PHASES, ROPE, CrCl, TNK/alteplase dose, DAWN, DEFUSE-3, CHA<sub>2</sub>DS<sub>2</sub>-VA, …)</li>
+            <li>Note templates (telestroke, transfer, signout, progress, discharge)</li>
+            <li>Protocols and references that loaded on the last online session</li>
+            <li>Ward census stored locally in IndexedDB</li>
+        </ul>
+        <p><strong>Needs internet:</strong></p>
+        <ul>
+            <li>Fresh trial-matching against live data</li>
+            <li>Quick links to ChatGPT, OpenEvidence, UpToDate</li>
+            <li>Pulsara routing</li>
+        </ul>
+        <a class="btn" href="#/encounter">Open the app</a>
+        <p class="muted">Educational and decision-support purposes only. Not medical advice. Not endorsed by any named institution. Clinicians must apply their own judgment and local policy.</p>
+    </main>
+</body>
+</html>
