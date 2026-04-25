@@ -1,6 +1,6 @@
 // AUTO-GENERATED inline snapshot of expected engine output for every
 // (scenario, trial) pair. Frozen at retirement-sprint commit time.
-// Regenerate via /tmp/retire-legacy.mjs.
+// Regenerate via: node /tmp/gen-snapshot.mjs (see SPRINT_STATUS_R.md).
 export const EXPECTED_SNAPSHOT = {
   "empty form": {
     "sister": {
@@ -36,7 +36,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -128,7 +128,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -266,7 +266,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -312,7 +312,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -404,7 +404,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -450,7 +450,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -496,7 +496,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -726,7 +726,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -818,7 +818,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -864,7 +864,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 1
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "saturn": {

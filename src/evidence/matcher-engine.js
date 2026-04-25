@@ -70,9 +70,16 @@ const fieldResolvers = {
   // recorded EITHER tnkRecommended OR evtRecommended. Derived fields are
   // legitimate extensions of the field vocabulary and are documented in
   // docs/evidence-atlas-extension-guide.md.
-  reperfusion: (d) =>
-    d?.telestrokeNote?.tnkRecommended === true ||
-    d?.telestrokeNote?.evtRecommended === true,
+  reperfusion: (d) => {
+    // When both decisions are undefined the encounter form has
+    // recorded neither TNK nor EVT yet; treat as unknown rather than
+    // false so trials with reperfusion == true criteria (e.g. RHAPSODY)
+    // surface as needs_info on a fresh form, not not_eligible.
+    const tnk = d?.telestrokeNote?.tnkRecommended;
+    const evt = d?.telestrokeNote?.evtRecommended;
+    if (tnk === undefined && evt === undefined) return null;
+    return tnk === true || evt === true;
+  },
   // 'domainMatch' is a STEP-EVT-specific derived field combining NIHSS
   // and vessel-occlusion. The engine resolves it to one of the labeled
   // domains so the criterion's `in` operator can match.
