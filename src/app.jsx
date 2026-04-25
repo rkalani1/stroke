@@ -2092,6 +2092,17 @@ Clinician Name`;
           }));
           const [trialsCategory, setTrialsCategory] = useState('ischemic');
           const [trialsRecruitingOnly, setTrialsRecruitingOnly] = useState(false);
+          // StrokeOps v6 Evidence Atlas — sub-view toggle inside the Trials tab.
+          // 'active' shows the existing recruiting-trial matcher (unchanged
+          // behavior); 'atlas' shows completed/landmark trials from
+          // src/evidence/completedTrials.js with topic/certainty/evidence-type
+          // filters and search. Section toggle (not a separate hash route)
+          // preserves the GitHub Pages /stroke/#/trials path.
+          const [trialsView, setTrialsView] = useState(loadFromStorage('trialsView', 'active'));
+          const [atlasFilters, setAtlasFilters] = useState(loadFromStorage('atlasFilters', {
+            topic: '', certainty: '', evidenceType: '', verificationStatus: '', query: ''
+          }));
+          const [atlasExpandAll, setAtlasExpandAll] = useState(false);
 
           const [strokeCodeForm, setStrokeCodeForm] = useState(loadFromStorage('strokeCodeForm', getDefaultStrokeCodeForm()));
           const [aspectsRegionState, setAspectsRegionState] = useState(loadFromStorage('aspectsRegionState', getDefaultAspectsRegionState()));
@@ -6278,6 +6289,137 @@ Clinician Name`;
                         </svg>
                         View Full Details on ClinicalTrials.gov
                       </button>
+                    </div>
+                  )}
+                </div>
+              </details>
+            );
+          };
+
+          // ===== StrokeOps v6 Evidence Atlas helpers =====
+          const atlasToneClass = (tone) => {
+            switch (tone) {
+              case 'emerald': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+              case 'sky': return 'bg-sky-100 text-sky-800 border-sky-200';
+              case 'amber': return 'bg-amber-100 text-amber-900 border-amber-200';
+              case 'rose': return 'bg-rose-100 text-rose-800 border-rose-200';
+              case 'indigo': return 'bg-indigo-100 text-indigo-800 border-indigo-200';
+              case 'slate': return 'bg-slate-100 text-slate-800 border-slate-200';
+              default: return 'bg-slate-100 text-slate-700 border-slate-200';
+            }
+          };
+          const atlasPill = (label, tone) => (
+            <span className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold border ${atlasToneClass(tone)}`}>{label}</span>
+          );
+
+          // Render a compact + expandable Evidence Atlas card for one
+          // completed-trial record. Background-evidence styling is intentionally
+          // distinct from active-trial cards so the Active/Atlas split is
+          // visually unmistakable.
+          const renderAtlasCard = (trial, opts = {}) => {
+            const { keyPrefix = 'atlas', showRelatedActive = true } = opts;
+            const certaintyMeta = (CERTAINTY_LABELS && CERTAINTY_LABELS[trial.certainty]) || { label: trial.certainty, tone: 'slate' };
+            const evTypeMeta = (EVIDENCE_TYPE_LABELS && EVIDENCE_TYPE_LABELS[trial.evidenceType]) || { label: trial.evidenceType, tone: 'slate' };
+            const verifMeta = (VERIFICATION_STATUS_LABELS && VERIFICATION_STATUS_LABELS[trial.verificationStatus]) || { label: trial.verificationStatus, tone: 'slate' };
+            const cits = resolveCitations(trial.citationIds || []);
+            const relatedActive = showRelatedActive ? (trial.relatedActiveTrialIds || []).map((id) => evidenceActiveTrials.find((a) => a.id === id)).filter(Boolean) : [];
+            return (
+              <details
+                key={`${keyPrefix}-${trial.id}`}
+                id={`atlas-${trial.id}`}
+                open={atlasExpandAll}
+                className="border border-slate-200 bg-white rounded-lg overflow-hidden hover:border-indigo-300 transition-colors"
+              >
+                <summary className="cursor-pointer p-4 hover:bg-slate-50 select-none">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                        <span className="text-base font-semibold text-slate-900">{trial.shortName}</span>
+                        <span className="text-xs text-slate-500 truncate">{trial.fullName}</span>
+                      </div>
+                      <div className="mt-1 flex flex-wrap gap-1.5">
+                        {atlasPill(topicLabel(trial.topic) || trial.topic, 'slate')}
+                        {atlasPill(evTypeMeta.label, evTypeMeta.tone)}
+                        {atlasPill(certaintyMeta.label, certaintyMeta.tone)}
+                        {atlasPill(verifMeta.label, verifMeta.tone)}
+                        {trial.lastReviewed && atlasPill(`Reviewed ${trial.lastReviewed}`, 'slate')}
+                      </div>
+                      <p className="mt-2 text-xs text-slate-700">
+                        <span className="font-semibold">Primary endpoint:</span> {trial.primaryEndpoint?.result || '—'}
+                      </p>
+                    </div>
+                  </div>
+                </summary>
+                <div className="px-4 pb-4 pt-1 border-t border-slate-100 text-sm text-slate-700 space-y-3">
+                  <div>
+                    <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Population</div>
+                    <p>n={trial.population.n || '—'} · {trial.population.ageRange || 'age n/a'} · NIHSS {trial.population.nihssRange || 'n/a'} · {trial.population.timeWindow || 'window n/a'}</p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Intervention</div>
+                      <p>{trial.intervention || '—'}</p>
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Comparator</div>
+                      <p>{trial.comparator || '—'}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Primary endpoint</div>
+                    <p>{trial.primaryEndpoint?.definition || '—'} @ {trial.primaryEndpoint?.timepoint || '—'}</p>
+                    <p className="text-slate-900">{trial.primaryEndpoint?.result || '—'}{trial.primaryEndpoint?.effectSize ? ` (${trial.primaryEndpoint.effectSize}${trial.primaryEndpoint.confidenceInterval ? `, ${trial.primaryEndpoint.confidenceInterval}` : ''}${trial.primaryEndpoint.pValue ? `, ${trial.primaryEndpoint.pValue}` : ''})` : ''}</p>
+                  </div>
+                  {(trial.safetyFindings?.sich || trial.safetyFindings?.mortality || trial.safetyFindings?.other) && (
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Safety</div>
+                      <p>sICH: {trial.safetyFindings.sich || 'n/a'} · Mortality: {trial.safetyFindings.mortality || 'n/a'}{trial.safetyFindings.other ? ` · ${trial.safetyFindings.other}` : ''}</p>
+                    </div>
+                  )}
+                  {trial.imagingCriteria && (
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Imaging selection</div>
+                      <p>{trial.imagingCriteria}</p>
+                    </div>
+                  )}
+                  {trial.applicabilityNotes && (
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Applicability</div>
+                      <p>{trial.applicabilityNotes}</p>
+                    </div>
+                  )}
+                  {trial.limitations && (
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Limitations</div>
+                      <p>{trial.limitations}</p>
+                    </div>
+                  )}
+                  {trial.practiceImpact && (
+                    <div className="bg-slate-50 border border-slate-200 rounded p-2">
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Practice impact</div>
+                      <p>{trial.practiceImpact}</p>
+                    </div>
+                  )}
+                  {cits.length > 0 && (
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Citations</div>
+                      <ul className="list-disc list-inside space-y-0.5">
+                        {cits.map((c) => (
+                          <li key={c.id} className="text-xs">
+                            <span className="text-slate-700">{c.title}</span>
+                            <span className="text-slate-500"> — {c.journal}{c.year ? ` ${c.year}` : ''}</span>
+                            {citationLink(c) && (
+                              <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {relatedActive.length > 0 && (
+                    <div className="bg-blue-50 border border-blue-200 rounded p-2">
+                      <div className="text-xs font-semibold text-blue-800 uppercase tracking-wide">Related active trials</div>
+                      <p className="text-xs text-blue-900">{relatedActive.map((a) => a.shortName).join(' · ')}</p>
                     </div>
                   )}
                 </div>
@@ -34383,13 +34525,147 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h2 className="text-3xl font-bold flex items-center gap-3">
                             <i aria-hidden="true" data-lucide="flask-conical" className="w-7 h-7"></i> Clinical Trials
                           </h2>
-                          <p className="text-blue-100 mt-1">Reference for active clinical trials</p>
+                          <p className="text-blue-100 mt-1">{trialsView === 'atlas' ? 'Completed and landmark trials — what does the literature say' : 'Reference for active clinical trials'}</p>
                         </div>
 
                       </div>
 
                     </div>
 
+                    {/* Active Trials / Evidence Atlas sub-view toggle. Section
+                        toggle (not a hash route) preserves /stroke/#/trials. */}
+                    <div role="tablist" aria-label="Trials sub-view" className="flex flex-wrap gap-2 border-b border-slate-200 pb-1 -mt-2">
+                      <button
+                        role="tab"
+                        aria-selected={trialsView === 'active'}
+                        onClick={() => { setTrialsView('active'); try { localStorage.setItem(STORAGE_PREFIX + 'trialsView', JSON.stringify('active')); } catch (e) {} }}
+                        className={`px-4 py-2 rounded-t-lg text-sm font-semibold transition-colors ${
+                          trialsView === 'active'
+                            ? 'bg-blue-600 text-white shadow-sm'
+                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                        }`}
+                      >
+                        Active Trials
+                        <span className="ml-2 text-[11px] opacity-80">({evidenceActiveTrials.length})</span>
+                      </button>
+                      <button
+                        role="tab"
+                        aria-selected={trialsView === 'atlas'}
+                        onClick={() => { setTrialsView('atlas'); try { localStorage.setItem(STORAGE_PREFIX + 'trialsView', JSON.stringify('atlas')); } catch (e) {} }}
+                        className={`px-4 py-2 rounded-t-lg text-sm font-semibold transition-colors ${
+                          trialsView === 'atlas'
+                            ? 'bg-indigo-600 text-white shadow-sm'
+                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                        }`}
+                      >
+                        Evidence Atlas
+                        <span className="ml-2 text-[11px] opacity-80">({evidenceCompletedTrials.length})</span>
+                      </button>
+                      <span className="ml-auto text-xs text-slate-500 self-end pb-2 hidden md:inline">
+                        {trialsView === 'atlas'
+                          ? 'Background literature only · never used as eligibility criteria'
+                          : 'Recruiting trials · matched against encounter form fields'}
+                      </span>
+                    </div>
+
+                    {trialsView === 'atlas' && (
+                      <div className="space-y-4">
+                        <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-sm text-indigo-900">
+                          <div className="flex items-start gap-2">
+                            <i aria-hidden="true" data-lucide="library" className="w-4 h-4 mt-0.5"></i>
+                            <div>
+                              <p><strong>Evidence Atlas:</strong> completed RCTs, landmark trials, and guideline-relevant studies. Search by disease area, certainty, or evidence type. Each card cross-links to related active trials.</p>
+                              <p className="text-xs mt-1 text-indigo-700">Live identifier verification (PubMed / DOI / NCT) is a manual review step. Records flagged <em>Source-limited</em> or <em>Verify</em> need user review before clinical citation.</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
+                          <input
+                            type="text"
+                            placeholder="Search trials, citations, interventions…"
+                            value={atlasFilters.query}
+                            onChange={(e) => setAtlasFilters((f) => ({ ...f, query: e.target.value }))}
+                            className="md:col-span-2 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
+                            aria-label="Search Evidence Atlas"
+                          />
+                          <select
+                            value={atlasFilters.topic}
+                            onChange={(e) => setAtlasFilters((f) => ({ ...f, topic: e.target.value }))}
+                            className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
+                            aria-label="Filter by topic"
+                          >
+                            <option value="">All topics</option>
+                            {evidenceTopics.map((t) => (
+                              <option key={t.id} value={t.id}>{t.label}</option>
+                            ))}
+                          </select>
+                          <select
+                            value={atlasFilters.certainty}
+                            onChange={(e) => setAtlasFilters((f) => ({ ...f, certainty: e.target.value }))}
+                            className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
+                            aria-label="Filter by certainty"
+                          >
+                            <option value="">Any certainty</option>
+                            <option value="high">High</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="low">Low</option>
+                            <option value="very-low">Very low</option>
+                          </select>
+                          <select
+                            value={atlasFilters.evidenceType}
+                            onChange={(e) => setAtlasFilters((f) => ({ ...f, evidenceType: e.target.value }))}
+                            className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
+                            aria-label="Filter by evidence type"
+                          >
+                            <option value="">Any evidence type</option>
+                            <option value="rct">RCT</option>
+                            <option value="meta-analysis">Meta-analysis</option>
+                            <option value="observational">Observational</option>
+                            <option value="guideline">Guideline</option>
+                            <option value="consensus">Consensus</option>
+                          </select>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <button
+                            type="button"
+                            onClick={() => setAtlasFilters({ topic: '', certainty: '', evidenceType: '', verificationStatus: '', query: '' })}
+                            className="text-xs text-slate-600 hover:text-slate-900 underline"
+                          >Clear filters</button>
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              onClick={() => setAtlasExpandAll(true)}
+                              className="px-3 py-1.5 rounded-lg border border-indigo-200 bg-indigo-50 text-indigo-700 text-xs font-semibold hover:bg-indigo-100"
+                            >Expand all</button>
+                            <button
+                              type="button"
+                              onClick={() => setAtlasExpandAll(false)}
+                              className="px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-50"
+                            >Collapse all</button>
+                          </div>
+                        </div>
+
+                        {(() => {
+                          const filtered = filterCompletedTrials(atlasFilters);
+                          if (filtered.length === 0) {
+                            return (
+                              <p className="text-sm text-slate-600 italic px-4 py-3 border border-dashed border-slate-300 rounded-lg">
+                                No trials match these filters. <button type="button" onClick={() => setAtlasFilters({ topic: '', certainty: '', evidenceType: '', verificationStatus: '', query: '' })} className="text-indigo-700 underline">Clear filters</button>.
+                              </p>
+                            );
+                          }
+                          return (
+                            <div className="space-y-2">
+                              <p className="text-xs text-slate-500">{filtered.length} of {evidenceCompletedTrials.length} trials</p>
+                              {filtered.map((tr) => renderAtlasCard(tr))}
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    )}
+
+                    {trialsView === 'active' && (<>
                     {/* Diagnosis-based recommendation banner */}
                     {telestrokeNote.diagnosisCategory && (telestrokeNote.diagnosisCategory === 'ischemic' || telestrokeNote.diagnosisCategory === 'ich') && (
                       <div className={`mb-4 p-4 rounded-lg border-2 flex items-center gap-3 ${
@@ -34568,6 +34844,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         );
                       })()}
                     </div>
+                    </>)}
                   </div>
                   </ErrorBoundary>
                 )}
