@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## v5.22.0 — 2026-04-25 — v6.0-01 Tokens & Tailwind config
+
+### Design system foundation
+
+- **Neutral + semantic token system** wired through `src/styles.css` (`:root` + `html.dark`) and exposed as Tailwind utilities via `tailwind.config.js`:
+  - Neutrals: `--ink`, `--ink-2`, `--mute`, `--line`, `--paper`, `--paper-2`, `--card` (warm cream paper, hairline lines, dark ink). 90% of the work.
+  - Semantic: `--critical` (contraindications, time breaches), `--confirm` (eligible, target met), `--caution` (approaching breach), `--reference` (informational). Used sparingly — never decoratively.
+  - Each token has a `-soft` variant for backgrounds.
+- **Tailwind utilities**: `text-ink`, `bg-paper`, `border-line`, `text-critical`, `bg-critical-soft`, `text-confirm`, `bg-confirm-soft`, `text-caution`, `bg-caution-soft`, `text-reference`, `bg-reference-soft`, plus dark-mode equivalents.
+- **Type scale wired**: `text-display`, `text-section`, `text-eyebrow` (mono uppercase, tracking 0.12em), `text-body`, `text-data` (mono tabular), `text-data-lg`, `text-caption`. Role-based, not size-based.
+- **Font stack**: `font-sans` → Manrope, `font-serif` → Newsreader, `font-mono` → JetBrains Mono (newly added via Google Fonts; the only new dependency in the v6 plan). All three preconnect-loaded.
+- **Tabular numerics by default** on `.font-mono`, `code`, `kbd`, `samp`, `pre` via `font-variant-numeric: tabular-nums` plus JetBrains Mono `cv02`/`cv03` stylistic alternates for legibility on small screens.
+- **Selection color** updated to `--reference-soft` on `--ink` text — pulls into the new system instead of the old hardcoded blue.
+
+### Notes
+
+- This PR is purely additive and visually inert. No existing utilities were removed, no surfaces repainted. The body still uses `bg-slate-50` until v6.0-02 primitives migrate page-level chrome.
+- Bulk replacement of `blue-*` / `indigo-*` / `orange-*` / `purple-*` / `green-500/600/700` is deferred to v6.0-02 → v6.0-06, where each surface is touched semantically (e.g. v6.0-03 demotes gradient banners; v6.0-05 strips tinted-card stacking from the Encounter form). Doing the replacement blindly across 1167+ usages would lose the existing semantic intent of red/amber/green clinical signals.
+
 ## v5.21.0 — 2026-04-25
 
 ### StrokeOps v6 Evidence Atlas
