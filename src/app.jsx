@@ -92,6 +92,37 @@ import sah2023 from './guidelines/sah-2023.json';
 import systemicComplications2024 from './guidelines/systemic-complications-2024.json';
 import svinLargeCore2025 from './guidelines/svin-large-core-2025.json';
 import tiaEd2023 from './guidelines/tia-ed-2023.json';
+// StrokeOps v6 Evidence Atlas — structured active/completed-trial data.
+// After the retirement sprint, the engine drives the matcher
+// unconditionally from the structured atlas. The legacy
+// TRIAL_ELIGIBILITY_CONFIG and its inline evaluators were deleted.
+import {
+  activeTrials as evidenceActiveTrials,
+  completedTrials as evidenceCompletedTrials,
+  citations as evidenceCitations,
+  recommendations as evidenceRecommendations,
+  claims as evidenceClaims,
+  topics as evidenceTopics,
+  resolveCompletedTrials,
+  resolveClaimsWithCitations,
+  resolveCitations,
+  filterCompletedTrials,
+  filterActiveTrials,
+  citationLink,
+  topicLabel,
+  getActiveTrialByLegacyKey,
+  VERIFICATION_STATUS_LABELS,
+  CERTAINTY_LABELS,
+  EVIDENCE_TYPE_LABELS,
+  ACTIVE_STATUS_LABELS
+} from './evidence/index.js';
+// Generic matcher engine — parallel-verification by default; can be
+// promoted to canonical source via localStorage flag.
+import {
+  evaluateActiveTrial as engineEvaluateActiveTrial,
+  evaluateAllTrialsViaEngine,
+  diffEvaluations as engineDiffEvaluations
+} from './evidence/matcher-engine.js';
 
 // P0 evidence-locked calculators exposed for browser-console QA testing and future UI wiring.
 // These are pure functions with PMID/DOI citations in their source; running e.g.
@@ -2113,6 +2144,17 @@ Clinician Name`;
           }));
           const [trialsCategory, setTrialsCategory] = useState('ischemic');
           const [trialsRecruitingOnly, setTrialsRecruitingOnly] = useState(false);
+          // StrokeOps v6 Evidence Atlas — sub-view toggle inside the Trials tab.
+          // 'active' shows the existing recruiting-trial matcher (unchanged
+          // behavior); 'atlas' shows completed/landmark trials from
+          // src/evidence/completedTrials.js with topic/certainty/evidence-type
+          // filters and search. Section toggle (not a separate hash route)
+          // preserves the GitHub Pages /stroke/#/trials path.
+          const [trialsView, setTrialsView] = useState(loadFromStorage('trialsView', 'active'));
+          const [atlasFilters, setAtlasFilters] = useState(loadFromStorage('atlasFilters', {
+            topic: '', certainty: '', evidenceType: '', verificationStatus: '', query: ''
+          }));
+          const [atlasExpandAll, setAtlasExpandAll] = useState(false);
 
           const [strokeCodeForm, setStrokeCodeForm] = useState(loadFromStorage('strokeCodeForm', getDefaultStrokeCodeForm()));
           const [aspectsRegionState, setAspectsRegionState] = useState(loadFromStorage('aspectsRegionState', getDefaultAspectsRegionState()));
@@ -3134,386 +3176,6 @@ Clinician Name`;
             }
           };
 
-          // =================================================================
-          // TRIAL ELIGIBILITY CONFIG - Modular structure for easy modification
-          // Adding a new trial = Adding an object to this config
-          // =================================================================
-          // Helper: returns null (unknown) when value can't be parsed, preventing NaN comparisons
-          const tryInt = (v) => { const n = parseInt(v, 10); return isNaN(n) ? null : n; };
-          const trialGte = (v, threshold) => { const n = tryInt(v); return n === null ? null : n >= threshold; };
-          const trialLte = (v, threshold) => { const n = tryInt(v); return n === null ? null : n <= threshold; };
-          const TRIAL_ELIGIBILITY_CONFIG = {
-            SISTER: {
-              id: 'SISTER',
-              name: 'SISTER Trial',
-              nct: 'NCT05948566',
-              category: 'ischemic',
-              quickDescription: 'Late thrombolysis (4.5-24h) for anterior circulation stroke, no TNK/EVT',
-              keyTakeaways: [
-                'Tests whether IV thrombolysis benefits patients 4.5-24h from LKW who are NOT candidates for EVT',
-                'Requires perfusion mismatch on CTP — target is the "TIMELESS-ineligible" population',
-                'If positive, could expand treatment to patients who currently receive no acute reperfusion therapy'
-              ],
-              lookingFor: [
-                'Anterior circulation stroke',
-                'Late presenter (4.5-24h from LKW)',
-                'NOT getting TNK or EVT',
-                'Has salvageable tissue on CTP (mismatch profile)'
-              ],
-              keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
-                { id: 'nihss', label: 'NIHSS ≥6 (or 4-5 disabling)', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 6), required: true },
-                { id: 'timeWindow', label: '4.5-24h from LKW', field: 'lkw', evaluate: (data) => {
-                    const hrs = data.hoursFromLKW;
-                    return hrs !== null && hrs >= 4.5 && hrs <= 24;
-                  }, required: true },
-                { id: 'noTNK', label: 'No IV thrombolysis', field: 'tnkRecommended', evaluate: (data) => data.telestrokeNote?.tnkRecommended === false, required: true },
-                { id: 'noEVT', label: 'No EVT planned', field: 'evtRecommended', evaluate: (data) => data.telestrokeNote?.evtRecommended === false, required: true },
-                { id: 'aspects', label: 'ASPECTS ≥6', field: 'aspects', evaluate: (data) => trialGte(data.aspectsScore, 6), required: true },
-                { id: 'premorbidMRS', label: 'Pre-stroke mRS ≤2', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 2), required: true },
-                { id: 'ctpMismatch', label: 'CTP mismatch profile', field: 'ctpResults', evaluate: (data) => {
-                    const ctp = (data.telestrokeNote?.ctpResults || '').toLowerCase();
-                    return ctp.includes('mismatch') || ctp.includes('penumbra') || ctp.includes('salvageable');
-                  }, required: true }
-              ],
-              exclusionFlags: [
-                { id: 'priorStroke90d', label: 'Prior stroke <90 days', field: 'priorStroke90d' },
-                { id: 'priorICH', label: 'Prior intracranial hemorrhage', field: 'priorICH' },
-                { id: 'onAnticoag', label: 'On anticoagulation', field: 'lastDOACType', evaluate: (data) => !!data.telestrokeNote?.lastDOACType }
-              ]
-            },
-            STEP: {
-              id: 'STEP',
-              name: 'STEP-EVT Trial',
-              nct: 'NCT06289985',
-              category: 'ischemic',
-              quickDescription: 'Adaptive platform for mild LVO or medium/distal vessel occlusions',
-              keyTakeaways: [
-                'NIH StrokeNet adaptive platform with two domains: mild stroke with LVO (NIHSS 0-5) and medium/distal vessel occlusions (M2-M4, A1-A3, P1-P3)',
-                'ESCAPE-MeVO (2025) showed no routine functional benefit of EVT for isolated MeVO; STEP aims to identify specific subgroups that may still benefit',
-                'Adaptive design allows rapid testing of multiple EVT devices and techniques'
-              ],
-              lookingFor: [
-                'Two domains: Low NIHSS with LVO, OR Medium/Distal Vessel Occlusion',
-                'Low NIHSS (0-5) + ICA/M1 occlusion, or',
-                'M2/M3/M4, A1-A3, P1-P3 occlusion regardless of NIHSS'
-              ],
-              keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
-                { id: 'timeWindow', label: 'Within 24h from LKW', field: 'lkw', evaluate: (data) => {
-                    const hrs = data.hoursFromLKW;
-                    return hrs !== null && hrs <= 24;
-                  }, required: true },
-                { id: 'premorbidMRS', label: 'Pre-stroke mRS ≤2', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 2), required: true },
-                { id: 'vesselOcclusion', label: 'LVO or MeVO present', field: 'vesselOcclusion', evaluate: (data) => {
-                    const occlusion = data.telestrokeNote?.vesselOcclusion || [];
-                    return occlusion.length > 0;
-                  }, required: true },
-                { id: 'domainMatch', label: 'Matches Low-NIHSS or MeVO domain', field: 'nihss', evaluate: (data) => {
-                    const nihss = parseInt(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 10);
-                    const occlusion = data.telestrokeNote?.vesselOcclusion || [];
-                    // Low NIHSS domain: NIHSS 0-5 with ICA or M1
-                    const lowNIHSSMatch = nihss <= 5 && (occlusion.includes('ICA') || occlusion.includes('M1'));
-                    // MeVO domain: M2, M3, A1-A3, P1-P3
-                    const mevoMatch = occlusion.some(v => ['M2', 'M3', 'M4', 'A1', 'A2', 'A3', 'P1', 'P2', 'P3'].includes(v));
-                    return lowNIHSSMatch || mevoMatch;
-                  }, required: true }
-              ],
-              exclusionFlags: [
-                { id: 'pregnancy', label: 'Pregnancy', field: 'pregnancy' },
-                { id: 'hemorrhage', label: 'Evidence of hemorrhage', field: 'hemorrhage' }
-              ]
-            },
-            PICASSO: {
-              id: 'PICASSO',
-              name: 'PICASSO Trial',
-              nct: 'NCT05611242',
-              category: 'ischemic',
-              quickDescription: 'Tandem lesion: carotid stenosis + intracranial LVO',
-              keyTakeaways: [
-                'Tandem lesions (extracranial carotid + intracranial LVO) are common but excluded from most EVT trials',
-                'Tests emergent carotid stenting + EVT vs EVT alone for tandem occlusions',
-                'Addresses a gap where no RCT has established optimal management of the extracranial component'
-              ],
-              lookingFor: [
-                'Tandem lesion (carotid + intracranial)',
-                'Extracranial ICA stenosis 70-100%',
-                'Plus intracranial LVO (ICA-T, M1, proximal M2)'
-              ],
-              keyCriteria: [
-                { id: 'age', label: 'Age 18-79', field: 'age', evaluate: (data) => {
-                    const age = parseInt(data.telestrokeNote?.age || data.strokeCodeForm?.age, 10);
-                    return age >= 18 && age <= 79;
-                  }, required: true },
-                { id: 'timeWindow', label: 'Within 16h from LKW', field: 'lkw', evaluate: (data) => {
-                    const hrs = data.hoursFromLKW;
-                    return hrs !== null && hrs <= 16;
-                  }, required: true },
-                { id: 'nihss', label: 'NIHSS ≥4', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 4), required: true },
-                { id: 'premorbidMRS', label: 'Pre-stroke mRS 0-2', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 2), required: true },
-                { id: 'aspects', label: 'ASPECTS ≥7', field: 'aspects', evaluate: (data) => trialGte(data.aspectsScore, 7), required: true },
-                { id: 'tandemLesion', label: 'Tandem lesion present', field: 'ctaResults', evaluate: (data) => {
-                    const cta = (data.telestrokeNote?.ctaResults || data.strokeCodeForm?.cta || '').toLowerCase();
-                    return (cta.includes('tandem') || (cta.includes('carotid') && (cta.includes('m1') || cta.includes('ica'))));
-                  }, required: true }
-              ],
-              exclusionFlags: []
-            },
-            TESTED: {
-              id: 'TESTED',
-              name: 'TESTED',
-              nct: 'NCT05911568',
-              category: 'ischemic',
-              quickDescription: 'EVT in patients with pre-existing disability (mRS 3-4)',
-              keyTakeaways: [
-                'All major EVT trials excluded patients with pre-existing disability (mRS 3-4)',
-                'These patients are routinely denied EVT despite no evidence of futility',
-                'If positive, would extend EVT eligibility to a large underserved population'
-              ],
-              lookingFor: [
-                'Patient with EXISTING disability (mRS 3-4)',
-                'LVO stroke within 24h',
-                'ASPECTS ≥3'
-              ],
-              keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
-                { id: 'premorbidMRS', label: 'Pre-stroke mRS 3-4', field: 'premorbidMRS', evaluate: (data) => {
-                    const mrs = parseInt(data.telestrokeNote?.premorbidMRS, 10);
-                    return mrs >= 3 && mrs <= 4;
-                  }, required: true },
-                { id: 'nihss', label: 'NIHSS ≥6', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 6), required: true },
-                { id: 'timeWindow', label: 'Within 24h from LKW', field: 'lkw', evaluate: (data) => {
-                    const hrs = data.hoursFromLKW;
-                    return hrs !== null && hrs <= 24;
-                  }, required: true },
-                { id: 'aspects', label: 'ASPECTS ≥3', field: 'aspects', evaluate: (data) => trialGte(data.aspectsScore, 3), required: true },
-                { id: 'lvo', label: 'LVO present', field: 'vesselOcclusion', evaluate: (data) => {
-                    const occlusion = data.telestrokeNote?.vesselOcclusion || [];
-                    return occlusion.some(v => ['ICA', 'M1', 'M2'].includes(v));
-                  }, required: true }
-              ],
-              exclusionFlags: []
-            },
-            SATURN: {
-              id: 'SATURN',
-              name: 'SATURN Trial',
-              nct: 'NCT03936361',
-              category: 'ich',
-              quickDescription: 'Statin continuation vs discontinuation after lobar ICH',
-              keyTakeaways: [
-                'Lobar ICH raises concern for CAA — statins may increase recurrent ICH risk in CAA patients',
-                'Many patients are on statins for cardiovascular prevention; stopping may increase MACE risk',
-                'First RCT to directly address the statin dilemma after lobar ICH'
-              ],
-              lookingFor: [
-                'Lobar ICH (NOT deep/basal ganglia)',
-                'Already on statin therapy',
-                'Age ≥50'
-              ],
-              keyCriteria: [
-                { id: 'age', label: 'Age ≥50', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 50), required: true },
-                { id: 'lobarICH', label: 'Lobar ICH location', field: 'ichLocation', evaluate: (data) => {
-                    const loc = (data.ichLocation || '').toLowerCase();
-                    return loc.includes('lobar') || loc.includes('cortical');
-                  }, required: true },
-                { id: 'onStatin', label: 'On statin at ICH onset', field: 'onStatin', evaluate: (data) => data.onStatin === true, required: true },
-                { id: 'mrs', label: 'mRS ≤4 at randomization', field: 'mrsScore', evaluate: (data) => trialLte(data.mrsScore, 4), required: true }
-              ],
-              exclusionFlags: [
-                { id: 'deepICH', label: 'Deep/non-lobar ICH', field: 'ichLocation' },
-                { id: 'recentMI', label: 'Recent MI <3 months', field: 'recentMI' }
-              ]
-            },
-            ASPIRE: {
-              id: 'ASPIRE',
-              name: 'ASPIRE Trial',
-              nct: 'NCT03907046',
-              category: 'ich',
-              quickDescription: 'Apixaban vs aspirin post-ICH in atrial fibrillation',
-              keyTakeaways: [
-                'ICH patients with AF face a dilemma: anticoagulation prevents ischemic stroke but may cause recurrent ICH',
-                'PRESTIGE-AF showed non-inferiority of DOAC vs no anticoag; ASPIRE directly compares apixaban to aspirin',
-                'Enrollment window is 14-180 days post-ICH — flag for outpatient follow-up'
-              ],
-              lookingFor: [
-                'ICH patient with atrial fibrillation',
-                'Randomize 14-180 days post-ICH',
-                'CHA2DS2-VASc ≥2'
-              ],
-              keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
-                { id: 'ichConfirmed', label: 'ICH confirmed', field: 'diagnosis', evaluate: (data) => {
-                    return data.telestrokeNote?.diagnosisCategory === 'ich';
-                  }, required: true },
-                { id: 'afib', label: 'Atrial fibrillation', field: 'pmh', evaluate: (data) => {
-                    const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
-                    return pmh.includes('afib') || pmh.includes('atrial fib') || pmh.includes('af ') || pmh.includes('a-fib');
-                  }, required: true },
-                { id: 'mrs', label: 'mRS ≤4', field: 'mrsScore', evaluate: (data) => trialLte(data.mrsScore, 4), required: true }
-              ],
-              exclusionFlags: [
-                { id: 'mechValve', label: 'Mechanical heart valve', field: 'mechValve' }
-              ]
-            },
-            VERIFY: {
-              id: 'VERIFY',
-              name: 'VERIFY Study',
-              nct: 'NCT05338697',
-              category: 'ischemic',
-              quickDescription: 'Observational: TMS/MRI to predict motor recovery',
-              keyTakeaways: [
-                'Uses TMS + MRI biomarkers to predict upper extremity motor recovery trajectory',
-                'Observational — enrollment is straightforward with minimal patient burden',
-                'Could establish precision rehab: matching therapy intensity to predicted recovery potential'
-              ],
-              lookingFor: [
-                'Acute ischemic stroke within 7 days',
-                'Upper extremity weakness',
-                'Inpatient enrollment opportunity'
-              ],
-              keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
-                { id: 'ueWeakness', label: 'Upper extremity weakness', field: 'symptoms', evaluate: (data) => {
-                    const sx = (data.telestrokeNote?.symptoms || '').toLowerCase();
-                    return sx.includes('arm') || sx.includes('upper') || sx.includes('hand') || sx.includes('weakness');
-                  }, required: false },
-                { id: 'premorbidMRS', label: 'Pre-stroke mRS ≤2', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 2), required: true }
-              ],
-              exclusionFlags: [
-                { id: 'seizures', label: 'History of seizures', field: 'seizures' },
-                { id: 'implants', label: 'Implanted devices (pacemaker, etc.)', field: 'implants' }
-              ]
-            },
-            DISCOVERY: {
-              id: 'DISCOVERY',
-              name: 'DISCOVERY Study',
-              nct: 'NCT04916210',
-              category: 'ischemic',
-              quickDescription: 'Observational: Cognitive trajectories post-stroke',
-              keyTakeaways: [
-                'Maps cognitive decline trajectories after stroke (AIS, ICH, and SAH) over 2 years',
-                'Aims to identify modifiable risk factors for post-stroke cognitive impairment',
-                'Low barrier — observational with cognitive testing at standard follow-up intervals'
-              ],
-              lookingFor: [
-                'Any stroke type (AIS, ICH, SAH)',
-                'Baseline visit within 6 weeks',
-                'Able to complete cognitive testing'
-              ],
-              keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
-                { id: 'strokeConfirmed', label: 'Stroke confirmed', field: 'diagnosis', evaluate: (data) => {
-                    const cat = data.telestrokeNote?.diagnosisCategory;
-                    return !!cat && cat !== 'mimic';
-                  }, required: true }
-              ],
-              exclusionFlags: [
-                { id: 'preDementia', label: 'Pre-existing dementia', field: 'preDementia' }
-              ]
-            },
-            MOST: {
-              id: 'MOST',
-              name: 'MOST Trial',
-              nct: 'NCT05326139',
-              category: 'ischemic',
-              quickDescription: 'Multi-arm thrombolysis optimization: TNK dose-finding and adjunctive nerinetide',
-              keyTakeaways: [
-                'Adaptive platform testing TNK 0.40 mg/kg (higher dose) vs standard 0.25 mg/kg for AIS with LVO',
-                'Also testing nerinetide (NA-1) as neuroprotective adjunct to EVT',
-                'Could establish optimized TNK dosing for LVO patients proceeding to EVT'
-              ],
-              lookingFor: [
-                'Acute ischemic stroke with LVO',
-                'Eligible for IV thrombolysis',
-                'Within 4.5 hours from LKW',
-                'Age 18+'
-              ],
-              keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
-                { id: 'nihss', label: 'NIHSS ≥6', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 6), required: true },
-                { id: 'timeWindow', label: 'Within 4.5h from LKW', field: 'lkw', evaluate: (data) => {
-                    const hrs = data.hoursFromLKW;
-                    return hrs !== null && hrs < 4.5;
-                  }, required: true },
-                { id: 'lvo', label: 'LVO confirmed (ICA/M1)', field: 'vesselOcclusion', evaluate: (data) => {
-                    const occlusion = data.telestrokeNote?.vesselOcclusion || [];
-                    return occlusion.some(v => ['ICA', 'M1'].includes(v));
-                  }, required: true },
-                { id: 'premorbidMRS', label: 'Pre-stroke mRS 0-1', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 1), required: true }
-              ],
-              exclusionFlags: [
-                { id: 'onAnticoag', label: 'On anticoagulation', field: 'onAnticoag' },
-                { id: 'hemorrhage', label: 'Evidence of hemorrhage on CT', field: 'hemorrhage' }
-              ]
-            },
-            CAPTIVA: {
-              id: 'CAPTIVA',
-              name: 'CAPTIVA Trial',
-              nct: 'NCT05047172',
-              category: 'ischemic',
-              quickDescription: 'Ticagrelor+ASA vs rivaroxaban+ASA vs clopidogrel+ASA for intracranial atherosclerosis',
-              keyTakeaways: [
-                'Three-arm trial for symptomatic intracranial atherosclerotic stenosis (ICAS) 70-99%',
-                'Tests ticagrelor+ASA and low-dose rivaroxaban+ASA against standard clopidogrel+ASA',
-                'Addresses a major unmet need — recurrent stroke risk is 12-20% at 1 year despite DAPT for ICAS'
-              ],
-              lookingFor: [
-                'Symptomatic intracranial stenosis 70-99%',
-                'Ischemic stroke or TIA attributed to ICAS',
-                'Within 21 days of qualifying event',
-                'Age ≥30'
-              ],
-              keyCriteria: [
-                { id: 'age', label: 'Age ≥30', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 30), required: true },
-                { id: 'diagnosis', label: 'Ischemic stroke or TIA', field: 'diagnosis', evaluate: (data) => {
-                    const cat = data.telestrokeNote?.diagnosisCategory;
-                    return cat === 'ischemic' || cat === 'tia';
-                  }, required: true },
-                { id: 'icas', label: 'Intracranial stenosis 70-99% (ICAS)', field: 'ctaResults', evaluate: (data) => {
-                    const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
-                    return cta.includes('stenosis') || cta.includes('intracranial') || cta.includes('icas') || cta.includes('atheroscler');
-                  }, required: true },
-                { id: 'premorbidMRS', label: 'mRS ≤3', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 3), required: true }
-              ],
-              exclusionFlags: [
-                { id: 'cardioembolic', label: 'Cardioembolic source (AF, valve)', field: 'cardioembolic' },
-                { id: 'onAnticoag', label: 'On full-dose anticoagulation', field: 'onAnticoag' }
-              ]
-            },
-            RHAPSODY: {
-              id: 'RHAPSODY',
-              name: 'RHAPSODY Trial',
-              nct: 'NCT04953325',
-              category: 'ischemic',
-              quickDescription: '3K3A-APC neuroprotection after thrombolysis/EVT for moderate-severe AIS',
-              keyTakeaways: [
-                '3K3A-APC (activated protein C variant) showed signal for reduced ICH and improved outcomes in phase 2',
-                'First neuroprotective agent with mechanistic basis in stroke (anti-inflammatory, anti-apoptotic, BBB stabilization)',
-                'Given as IV infusion after reperfusion — does not delay standard treatment'
-              ],
-              lookingFor: [
-                'Moderate-severe acute ischemic stroke (NIHSS ≥5)',
-                'Received IVT and/or EVT',
-                'Can start study drug within 15h of LKW',
-                'Age 18+'
-              ],
-              keyCriteria: [
-                { id: 'age', label: 'Age ≥18', field: 'age', evaluate: (data) => trialGte(data.telestrokeNote?.age || data.strokeCodeForm?.age, 18), required: true },
-                { id: 'nihss', label: 'NIHSS ≥5', field: 'nihss', evaluate: (data) => trialGte(data.telestrokeNote?.nihss || data.strokeCodeForm?.nihss, 5), required: true },
-                { id: 'reperfusion', label: 'Received IVT and/or EVT', field: 'tnkRecommended', evaluate: (data) => {
-                    return data.telestrokeNote?.tnkRecommended === true || data.telestrokeNote?.evtRecommended === true;
-                  }, required: true },
-                { id: 'timeWindow', label: 'Within 15h from LKW', field: 'lkw', evaluate: (data) => {
-                    const hrs = data.hoursFromLKW;
-                    return hrs !== null && hrs <= 15;
-                  }, required: true },
-                { id: 'premorbidMRS', label: 'Pre-stroke mRS 0-2', field: 'premorbidMRS', evaluate: (data) => trialLte(data.telestrokeNote?.premorbidMRS, 2), required: true }
-              ],
-              exclusionFlags: [
-                { id: 'hemorrhage', label: 'Symptomatic ICH', field: 'hemorrhage' }
-              ]
-            }
-          };
 
           // =================================================================
           // GUIDELINE RECOMMENDATIONS KNOWLEDGE BASE
@@ -5921,122 +5583,20 @@ Clinician Name`;
             return null;
           };
 
-          // =================================================================
-          // ELIGIBILITY EVALUATION FUNCTION
-          // =================================================================
-          const evaluateTrialEligibility = (trialId, data) => {
-            const config = TRIAL_ELIGIBILITY_CONFIG[trialId];
-            if (!config) return null;
-
-            const results = {
-              trialId,
-              trialName: config.name,
-              category: config.category,
-              quickDescription: config.quickDescription,
-              lookingFor: config.lookingFor,
-              keyTakeaways: config.keyTakeaways || [],
-              nct: config.nct,
-              criteria: [],
-              exclusions: [],
-              status: 'pending', // 'eligible', 'not_eligible', 'needs_info', 'pending'
-              metCount: 0,
-              notMetCount: 0,
-              unknownCount: 0,
-              requiredMissing: 0
-            };
-
-            // Evaluate key criteria
-            config.keyCriteria.forEach(criterion => {
-              let status = 'unknown';
-              let value = null;
-
-              try {
-                const evalResult = criterion.evaluate(data);
-                if (evalResult === true) {
-                  status = 'met';
-                  results.metCount++;
-                } else if (evalResult === false) {
-                  status = 'not_met';
-                  results.notMetCount++;
-                  if (criterion.required) results.requiredMissing++;
-                } else {
-                  status = 'unknown';
-                  results.unknownCount++;
-                }
-              } catch (e) {
-                status = 'unknown';
-                results.unknownCount++;
-              }
-
-              results.criteria.push({
-                id: criterion.id,
-                label: criterion.label,
-                status,
-                required: criterion.required
-              });
-            });
-
-            // Evaluate exclusion flags
-            config.exclusionFlags.forEach(exclusion => {
-              let triggered = false;
-              try {
-                if (exclusion.evaluate) {
-                  triggered = exclusion.evaluate(data);
-                } else {
-                  triggered = data[exclusion.field] === true;
-                }
-              } catch (e) {
-                triggered = false;
-              }
-
-              if (triggered) {
-                results.exclusions.push({
-                  id: exclusion.id,
-                  label: exclusion.label,
-                  triggered: true
-                });
-                results.notMetCount++;
-                results.status = 'not_eligible';
-              }
-            });
-
-            // Determine overall status
-            if (results.exclusions.some(e => e.triggered)) {
-              results.status = 'not_eligible';
-            } else if (results.requiredMissing > 0) {
-              results.status = 'not_eligible';
-            } else if (results.unknownCount > 0) {
-              results.status = 'needs_info';
-            } else if (results.notMetCount === 0) {
-              results.status = 'eligible';
-            } else {
-              results.status = 'not_eligible';
-            }
-
-            return results;
-          };
-
-          // Evaluate all trials for current patient
-          const evaluateAllTrials = (data) => {
-            const results = {};
-            Object.keys(TRIAL_ELIGIBILITY_CONFIG).forEach(trialId => {
-              results[trialId] = evaluateTrialEligibility(trialId, data);
-            });
-            return results;
-          };
-
           // Trial eligibility state
           const [trialEligibility, setTrialEligibility] = useState({});
 
-          // Navigate to Trials tab with specific trial selected
+          // Navigate to Trials tab with specific trial selected. trialId is
+          // the legacy matcher key (e.g. 'SISTER'); the structured atlas
+          // exposes that as legacyMatcherKey on each active trial.
           const navigateToTrial = (trialId) => {
-            const config = TRIAL_ELIGIBILITY_CONFIG[trialId];
-            if (!config) return;
+            const aTrial = getActiveTrialByLegacyKey(trialId);
+            if (!aTrial) return;
 
             navigateTo('trials');
 
             // Create the same slug used in TrialCard from the trial name
-            const trialSlug = config.name.toLowerCase()
+            const trialSlug = aTrial.fullName.toLowerCase()
               .replace(/\s+trial$/i, '')
               .replace(/[^a-z0-9]/g, '-')
               .replace(/-+/g, '-')
@@ -6213,10 +5773,10 @@ Clinician Name`;
                       Scan top criteria first, then expand full list
                     </span>
                   </div>
-                  {/* Key Takeaways - pulled from TRIAL_ELIGIBILITY_CONFIG by NCT */}
+                  {/* Key Takeaways — read from the structured atlas by NCT */}
                   {(() => {
-                    const matchedConfig = Object.values(TRIAL_ELIGIBILITY_CONFIG).find(c => c.nct === trial.nct);
-                    if (!matchedConfig || !matchedConfig.keyTakeaways || matchedConfig.keyTakeaways.length === 0) return null;
+                    const matchedAtlas = evidenceActiveTrials.find((a) => a.nctId === trial.nct);
+                    if (!matchedAtlas || !matchedAtlas.keyTakeaways || matchedAtlas.keyTakeaways.length === 0) return null;
                     return (
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
                         <h4 className="font-bold text-blue-800 mb-2 text-sm flex items-center gap-1.5">
@@ -6224,7 +5784,7 @@ Clinician Name`;
                           Key Takeaways
                         </h4>
                         <ul className="space-y-1">
-                          {matchedConfig.keyTakeaways.map((t, i) => (
+                          {matchedAtlas.keyTakeaways.map((t, i) => (
                             <li key={i} className="text-sm text-blue-900 flex gap-2">
                               <span className="text-blue-500 mt-0.5 shrink-0">&#8227;</span>
                               <span>{t}</span>
@@ -6299,6 +5859,137 @@ Clinician Name`;
                         </svg>
                         View Full Details on ClinicalTrials.gov
                       </button>
+                    </div>
+                  )}
+                </div>
+              </details>
+            );
+          };
+
+          // ===== StrokeOps v6 Evidence Atlas helpers =====
+          const atlasToneClass = (tone) => {
+            switch (tone) {
+              case 'emerald': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+              case 'sky': return 'bg-sky-100 text-sky-800 border-sky-200';
+              case 'amber': return 'bg-amber-100 text-amber-900 border-amber-200';
+              case 'rose': return 'bg-rose-100 text-rose-800 border-rose-200';
+              case 'indigo': return 'bg-indigo-100 text-indigo-800 border-indigo-200';
+              case 'slate': return 'bg-slate-100 text-slate-800 border-slate-200';
+              default: return 'bg-slate-100 text-slate-700 border-slate-200';
+            }
+          };
+          const atlasPill = (label, tone) => (
+            <span className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold border ${atlasToneClass(tone)}`}>{label}</span>
+          );
+
+          // Render a compact + expandable Evidence Atlas card for one
+          // completed-trial record. Background-evidence styling is intentionally
+          // distinct from active-trial cards so the Active/Atlas split is
+          // visually unmistakable.
+          const renderAtlasCard = (trial, opts = {}) => {
+            const { keyPrefix = 'atlas', showRelatedActive = true } = opts;
+            const certaintyMeta = (CERTAINTY_LABELS && CERTAINTY_LABELS[trial.certainty]) || { label: trial.certainty, tone: 'slate' };
+            const evTypeMeta = (EVIDENCE_TYPE_LABELS && EVIDENCE_TYPE_LABELS[trial.evidenceType]) || { label: trial.evidenceType, tone: 'slate' };
+            const verifMeta = (VERIFICATION_STATUS_LABELS && VERIFICATION_STATUS_LABELS[trial.verificationStatus]) || { label: trial.verificationStatus, tone: 'slate' };
+            const cits = resolveCitations(trial.citationIds || []);
+            const relatedActive = showRelatedActive ? (trial.relatedActiveTrialIds || []).map((id) => evidenceActiveTrials.find((a) => a.id === id)).filter(Boolean) : [];
+            return (
+              <details
+                key={`${keyPrefix}-${trial.id}`}
+                id={`atlas-${trial.id}`}
+                open={atlasExpandAll}
+                className="border border-slate-200 bg-white rounded-lg overflow-hidden hover:border-indigo-300 transition-colors"
+              >
+                <summary className="cursor-pointer p-4 hover:bg-slate-50 select-none">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                        <span className="text-base font-semibold text-slate-900">{trial.shortName}</span>
+                        <span className="text-xs text-slate-500 truncate">{trial.fullName}</span>
+                      </div>
+                      <div className="mt-1 flex flex-wrap gap-1.5">
+                        {atlasPill(topicLabel(trial.topic) || trial.topic, 'slate')}
+                        {atlasPill(evTypeMeta.label, evTypeMeta.tone)}
+                        {atlasPill(certaintyMeta.label, certaintyMeta.tone)}
+                        {atlasPill(verifMeta.label, verifMeta.tone)}
+                        {trial.lastReviewed && atlasPill(`Reviewed ${trial.lastReviewed}`, 'slate')}
+                      </div>
+                      <p className="mt-2 text-xs text-slate-700">
+                        <span className="font-semibold">Primary endpoint:</span> {trial.primaryEndpoint?.result || '—'}
+                      </p>
+                    </div>
+                  </div>
+                </summary>
+                <div className="px-4 pb-4 pt-1 border-t border-slate-100 text-sm text-slate-700 space-y-3">
+                  <div>
+                    <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Population</div>
+                    <p>n={trial.population.n || '—'} · {trial.population.ageRange || 'age n/a'} · NIHSS {trial.population.nihssRange || 'n/a'} · {trial.population.timeWindow || 'window n/a'}</p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Intervention</div>
+                      <p>{trial.intervention || '—'}</p>
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Comparator</div>
+                      <p>{trial.comparator || '—'}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Primary endpoint</div>
+                    <p>{trial.primaryEndpoint?.definition || '—'} @ {trial.primaryEndpoint?.timepoint || '—'}</p>
+                    <p className="text-slate-900">{trial.primaryEndpoint?.result || '—'}{trial.primaryEndpoint?.effectSize ? ` (${trial.primaryEndpoint.effectSize}${trial.primaryEndpoint.confidenceInterval ? `, ${trial.primaryEndpoint.confidenceInterval}` : ''}${trial.primaryEndpoint.pValue ? `, ${trial.primaryEndpoint.pValue}` : ''})` : ''}</p>
+                  </div>
+                  {(trial.safetyFindings?.sich || trial.safetyFindings?.mortality || trial.safetyFindings?.other) && (
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Safety</div>
+                      <p>sICH: {trial.safetyFindings.sich || 'n/a'} · Mortality: {trial.safetyFindings.mortality || 'n/a'}{trial.safetyFindings.other ? ` · ${trial.safetyFindings.other}` : ''}</p>
+                    </div>
+                  )}
+                  {trial.imagingCriteria && (
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Imaging selection</div>
+                      <p>{trial.imagingCriteria}</p>
+                    </div>
+                  )}
+                  {trial.applicabilityNotes && (
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Applicability</div>
+                      <p>{trial.applicabilityNotes}</p>
+                    </div>
+                  )}
+                  {trial.limitations && (
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Limitations</div>
+                      <p>{trial.limitations}</p>
+                    </div>
+                  )}
+                  {trial.practiceImpact && (
+                    <div className="bg-slate-50 border border-slate-200 rounded p-2">
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Practice impact</div>
+                      <p>{trial.practiceImpact}</p>
+                    </div>
+                  )}
+                  {cits.length > 0 && (
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Citations</div>
+                      <ul className="list-disc list-inside space-y-0.5">
+                        {cits.map((c) => (
+                          <li key={c.id} className="text-xs">
+                            <span className="text-slate-700">{c.title}</span>
+                            <span className="text-slate-500"> — {c.journal}{c.year ? ` ${c.year}` : ''}</span>
+                            {citationLink(c) && (
+                              <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {relatedActive.length > 0 && (
+                    <div className="bg-blue-50 border border-blue-200 rounded p-2">
+                      <div className="text-xs font-semibold text-blue-800 uppercase tracking-wide">Related active trials</div>
+                      <p className="text-xs text-blue-900">{relatedActive.map((a) => a.shortName).join(' · ')}</p>
                     </div>
                   )}
                 </div>
@@ -14325,15 +14016,14 @@ Clinician Name`;
             const nctCommand = lowerQuery.match(/^(?:nct[:\s-]*)?(nct\d{8})$/i);
             if (nctCommand) {
               const targetNct = nctCommand[1].toUpperCase();
-              const trialConfigMatch = Object.entries(TRIAL_ELIGIBILITY_CONFIG).find(([, cfg]) => cfg && cfg.nct === targetNct);
-              if (trialConfigMatch) {
-                const [trialId, cfg] = trialConfigMatch;
+              const matchedAtlas = evidenceActiveTrials.find((a) => a.nctId === targetNct);
+              if (matchedAtlas) {
                 results.push({
                   type: 'Command',
                   title: `Open ${targetNct}`,
-                  description: `${cfg.name} trial`,
+                  description: `${matchedAtlas.fullName} trial`,
                   score: 980,
-                  action: () => navigateToTrial(trialId)
+                  action: () => navigateToTrial(matchedAtlas.legacyMatcherKey)
                 });
               }
             }
@@ -14467,17 +14157,17 @@ Clinician Name`;
             });
 
             // Search trial criteria and eligibility text (inclusion/exclusion intent)
-            Object.entries(TRIAL_ELIGIBILITY_CONFIG).forEach(([trialId, config]) => {
+            evidenceActiveTrials.forEach((aTrial) => {
               const criterionPool = [
-                ...(config?.lookingFor || []).map((text) => ({ label: 'Looking for', text })),
-                ...(config?.keyCriteria || []).map((criterion) => ({ label: 'Eligibility', text: criterion.label })),
-                ...(config?.exclusionFlags || []).map((criterion) => ({ label: 'Exclusion', text: criterion.label })),
-                ...(config?.keyTakeaways || []).map((text) => ({ label: 'Key takeaway', text }))
+                ...(aTrial.lookingFor || []).map((text) => ({ label: 'Looking for', text })),
+                ...(aTrial.matcherCriteria || []).map((criterion) => ({ label: 'Eligibility', text: criterion.label })),
+                ...(aTrial.matcherExclusions || []).map((criterion) => ({ label: 'Exclusion', text: criterion.label })),
+                ...(aTrial.keyTakeaways || []).map((text) => ({ label: 'Key takeaway', text }))
               ];
 
               let bestMatch = null;
               criterionPool.forEach((criterion) => {
-                const score = scoreFor([config.name, config.nct, criterion.label, criterion.text], 6);
+                const score = scoreFor([aTrial.fullName, aTrial.nctId, criterion.label, criterion.text], 6);
                 if (score > 0 && (!bestMatch || score > bestMatch.score)) {
                   bestMatch = { ...criterion, score };
                 }
@@ -14486,11 +14176,11 @@ Clinician Name`;
               if (bestMatch) {
                 results.push({
                   type: 'Trial Criteria',
-                  category: config.category,
-                  title: `${config.name} - ${bestMatch.label}`,
+                  category: aTrial.category,
+                  title: `${aTrial.fullName} - ${bestMatch.label}`,
                   description: bestMatch.text,
                   score: bestMatch.score,
-                  action: () => navigateToTrial(trialId)
+                  action: () => navigateToTrial(aTrial.legacyMatcherKey)
                 });
               }
             });
@@ -15476,7 +15166,13 @@ Clinician Name`;
               lkwTime
             };
 
-            const results = evaluateAllTrials(evaluationData);
+            // Engine drives the matcher unconditionally. The legacy
+            // TRIAL_ELIGIBILITY_CONFIG and its inline evaluators were
+            // retired in the retirement sprint after 211 frozen
+            // snapshot tests confirmed parity across 19 patient
+            // scenarios × 11 trials. Future regression coverage lives
+            // in src/evidence/__tests__/scenario-snapshot.test.js.
+            const results = evaluateAllTrialsViaEngine(evidenceActiveTrials, evaluationData);
             setTrialEligibility(prev => {
               const prevStr = JSON.stringify(prev);
               const nextStr = JSON.stringify(results);
@@ -21587,6 +21283,66 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                     );
                                                   })()}
                                                 </p>
+
+                                                {/* Phase 8: Why this recommendation? — claim → citation chain.
+                                                    Inline drawer that maps the legacy management-recommendation id
+                                                    to a structured atlas recommendation id and surfaces supporting
+                                                    claims and primary-source citations. Pattern is reusable: add an
+                                                    entry to MANAGEMENT_REC_TO_ATLAS_REC and the drawer appears with
+                                                    no further code. See docs/evidence-atlas-extension-guide.md. */}
+                                                {(() => {
+                                                  const MANAGEMENT_REC_TO_ATLAS_REC = {
+                                                    'bp_ich_acute': 'rec-ich-bp-target',
+                                                    'bp_ich_avoid_low': 'rec-ich-bp-target',
+                                                    'reversal_warfarin': 'rec-ich-anticoag-reversal-warfarin',
+                                                    'reversal_doac_xa': 'rec-ich-anticoag-reversal-fxa',
+                                                    'tnk_dose': 'rec-tnk-first-line',
+                                                    'evt_window': 'rec-evt-late-window',
+                                                    'evt_large_core': 'rec-evt-large-core',
+                                                    'late_window_ivt': 'rec-late-window-ivt',
+                                                    'dapt_minor_stroke': 'rec-dapt-minor-stroke',
+                                                    'af_anticoag_timing': 'rec-af-early-anticoag'
+                                                  };
+                                                  const atlasRecId = MANAGEMENT_REC_TO_ATLAS_REC[rec.id];
+                                                  if (!atlasRecId) return null;
+                                                  const atlasRec = evidenceRecommendations.find((r) => r.id === atlasRecId);
+                                                  if (!atlasRec) return null;
+                                                  const claimsExpanded = resolveClaimsWithCitations(atlasRec.supportingClaimIds || []);
+                                                  if (claimsExpanded.length === 0) return null;
+                                                  return (
+                                                    <details className="mt-2 border border-indigo-200 bg-white rounded">
+                                                      <summary className="cursor-pointer px-2 py-1 text-xs font-semibold text-indigo-800 hover:bg-indigo-50 rounded flex items-center gap-1.5">
+                                                        <i aria-hidden="true" data-lucide="link" className="w-3 h-3"></i>
+                                                        Why this recommendation? ({claimsExpanded.length} supporting claim{claimsExpanded.length === 1 ? '' : 's'})
+                                                      </summary>
+                                                      <div className="px-2 pb-2 pt-1 space-y-1.5">
+                                                        {claimsExpanded.map((cl) => (
+                                                          <div key={cl.id} className="bg-slate-50 border border-slate-200 rounded p-2">
+                                                            <p className="text-xs text-slate-800 italic">{cl.statement}</p>
+                                                            <p className="text-[11px] text-slate-500 mt-0.5">Certainty: <span className="font-semibold">{cl.certainty}</span>{cl.conflictNotes ? ` · Conflict: ${cl.conflictNotes}` : ''}</p>
+                                                            {cl.citationRecords && cl.citationRecords.length > 0 && (
+                                                              <ul className="mt-1 list-disc list-inside text-[11px] text-slate-700">
+                                                                {cl.citationRecords.map((c) => (
+                                                                  <li key={c.id}>
+                                                                    {c.title} ({c.journal}{c.year ? ` ${c.year}` : ''})
+                                                                    {citationLink(c) && (
+                                                                      <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
+                                                                    )}
+                                                                  </li>
+                                                                ))}
+                                                              </ul>
+                                                            )}
+                                                          </div>
+                                                        ))}
+                                                        {atlasRec.caveats && atlasRec.caveats.length > 0 && (
+                                                          <div className="bg-amber-50 border border-amber-200 rounded p-1.5 text-[11px] text-amber-900">
+                                                            <span className="font-semibold">Caveats:</span> {atlasRec.caveats.join(' · ')}
+                                                          </div>
+                                                        )}
+                                                      </div>
+                                                    </details>
+                                                  );
+                                                })()}
                                               </div>
                                             </div>
                                           </div>
@@ -21602,8 +21358,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Trial Eligibility Auto-Matcher */}
                         {(() => {
-                          const allTrialIds = Object.keys(TRIAL_ELIGIBILITY_CONFIG);
-                          if (allTrialIds.length === 0) return null;
+                          if (evidenceActiveTrials.length === 0) return null;
                           const activeTrialCategory = getTrialTabCategory(telestrokeNote.diagnosisCategory, telestrokeNote.diagnosis) || trialsCategory;
 
                           // Use the pre-computed trialEligibility state (updated by useEffect)
@@ -21637,8 +21392,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="p-3 space-y-2">
                                 <p className="text-xs text-slate-600 mb-2">Auto-compared against patient data (age, NIHSS, LKW, imaging, diagnosis). Criteria update in real-time as you enter data.</p>
                                 {sorted.map(trial => {
-                                  const config = TRIAL_ELIGIBILITY_CONFIG[trial.trialId];
-                                  if (!config) return null;
+                                  // The engine result already exposes everything the UI consumes
+                                  // (name, nct, quickDescription, lookingFor, keyTakeaways);
+                                  // we keep the local 'config' alias to minimize the diff in the
+                                  // surrounding render block.
+                                  const config = {
+                                    name: trial.trialName,
+                                    nct: trial.nct,
+                                    quickDescription: trial.quickDescription,
+                                    lookingFor: trial.lookingFor,
+                                    keyTakeaways: trial.keyTakeaways
+                                  };
                                   const statusColor = trial.status === 'eligible' ? 'border-emerald-400 bg-emerald-50' : trial.status === 'needs_info' ? 'border-amber-400 bg-amber-50' : 'border-slate-300 bg-slate-50';
                                   const statusBadge = trial.status === 'eligible' ? 'bg-emerald-600 text-white' : trial.status === 'needs_info' ? 'bg-amber-500 text-white' : 'bg-slate-400 text-white';
                                   const statusLabel = trial.status === 'eligible' ? '\u2713 Eligible' : trial.status === 'needs_info' ? '? Needs Info' : '\u2717 Not Eligible';
@@ -21713,6 +21477,58 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             View full trial details →
                                           </button>
                                         </div>
+
+                                        {/* Context Bridge: completed → active.
+                                            Background-evidence panel surfaces
+                                            related landmark trials. Visually
+                                            distinct (indigo on slate) so it is
+                                            never confused with eligibility
+                                            criteria. One-way only — completed
+                                            trials never appear inside the
+                                            criterion checklist above. */}
+                                        {(() => {
+                                          const atlasActive = getActiveTrialByLegacyKey(trial.trialId);
+                                          const related = atlasActive ? resolveCompletedTrials(atlasActive.relatedCompletedTrialIds) : [];
+                                          if (related.length === 0) return null;
+                                          return (
+                                            <details className="mt-2 border border-indigo-200 bg-slate-50 rounded">
+                                              <summary className="cursor-pointer px-2.5 py-1.5 text-xs font-semibold text-indigo-900 hover:bg-slate-100 rounded flex items-center gap-2">
+                                                <i aria-hidden="true" data-lucide="library" className="w-3.5 h-3.5"></i>
+                                                Background evidence ({related.length})
+                                                <span className="ml-auto text-[11px] font-normal text-slate-500 italic">Context only · not eligibility criteria</span>
+                                              </summary>
+                                              <div className="px-2.5 pb-2 pt-1 space-y-1.5">
+                                                {related.map((rt) => {
+                                                  const certaintyMeta = (CERTAINTY_LABELS && CERTAINTY_LABELS[rt.certainty]) || { label: rt.certainty, tone: 'slate' };
+                                                  const evTypeMeta = (EVIDENCE_TYPE_LABELS && EVIDENCE_TYPE_LABELS[rt.evidenceType]) || { label: rt.evidenceType, tone: 'slate' };
+                                                  return (
+                                                    <div key={rt.id} className="bg-white border border-slate-200 rounded p-2">
+                                                      <div className="flex flex-wrap items-baseline gap-x-2">
+                                                        <span className="text-xs font-semibold text-slate-900">{rt.shortName}</span>
+                                                        <span className="text-[11px] text-slate-500 truncate">{rt.fullName}</span>
+                                                      </div>
+                                                      <div className="mt-1 flex flex-wrap gap-1">
+                                                        {atlasPill(evTypeMeta.label, evTypeMeta.tone)}
+                                                        {atlasPill(certaintyMeta.label, certaintyMeta.tone)}
+                                                      </div>
+                                                      <p className="mt-1 text-xs text-slate-700"><span className="font-semibold">Primary endpoint:</span> {rt.primaryEndpoint?.result || '—'}</p>
+                                                      {rt.practiceImpact && (
+                                                        <p className="mt-0.5 text-[11px] text-slate-600 italic">{rt.practiceImpact}</p>
+                                                      )}
+                                                      <button
+                                                        type="button"
+                                                        onClick={() => { setTrialsView('atlas'); requestAnimationFrame(() => { const el = document.getElementById('atlas-' + rt.id); if (el) { el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }); }}
+                                                        className="mt-1 text-[11px] font-semibold text-indigo-700 hover:text-indigo-900 underline"
+                                                      >
+                                                        Open in Evidence Atlas →
+                                                      </button>
+                                                    </div>
+                                                  );
+                                                })}
+                                              </div>
+                                            </details>
+                                          );
+                                        })()}
                                       </div>
                                     </details>
                                   );
@@ -26256,14 +26072,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 const needsInfoTrials2 = trialResults2.filter(t => t.status === 'needs_info');
                                 if (eligibleTrials2.length > 0 || needsInfoTrials2.length > 0) {
                                   note += `\nCLINICAL TRIAL ELIGIBILITY:\n`;
+                                  // Engine result already carries nct (copied from activeTrial.nctId).
                                   eligibleTrials2.forEach(t => {
-                                    const cfg = TRIAL_ELIGIBILITY_CONFIG[t.trialId];
-                                    note += `- ELIGIBLE: ${t.trialName} (${cfg?.nct || ''}) — ${t.quickDescription}. Criteria met: ${t.metCount}/${t.criteria.length}.\n`;
+                                    note += `- ELIGIBLE: ${t.trialName} (${t.nct || ''}) — ${t.quickDescription}. Criteria met: ${t.metCount}/${t.criteria.length}.\n`;
                                   });
                                   needsInfoTrials2.forEach(t => {
-                                    const cfg = TRIAL_ELIGIBILITY_CONFIG[t.trialId];
                                     const missing = t.criteria.filter(c => c.status === 'unknown').map(c => c.label).join(', ');
-                                    note += `- NEEDS INFO: ${t.trialName} (${cfg?.nct || ''}) — missing: ${missing}.\n`;
+                                    note += `- NEEDS INFO: ${t.trialName} (${t.nct || ''}) — missing: ${missing}.\n`;
                                   });
                                 }
 
@@ -34410,13 +34225,224 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h2 className="text-3xl font-bold flex items-center gap-3">
                             <i aria-hidden="true" data-lucide="flask-conical" className="w-7 h-7"></i> Clinical Trials
                           </h2>
-                          <p className="text-blue-100 mt-1">Reference for active clinical trials</p>
+                          <p className="text-blue-100 mt-1">{trialsView === 'atlas' ? 'Completed and landmark trials — what does the literature say' : 'Reference for active clinical trials'}</p>
                         </div>
 
                       </div>
 
                     </div>
 
+                    {/* Active Trials / Evidence Atlas sub-view toggle. Section
+                        toggle (not a hash route) preserves /stroke/#/trials. */}
+                    <div role="tablist" aria-label="Trials sub-view" className="flex flex-wrap gap-2 border-b border-slate-200 pb-1 -mt-2">
+                      <button
+                        role="tab"
+                        aria-selected={trialsView === 'active'}
+                        onClick={() => { setTrialsView('active'); try { localStorage.setItem(STORAGE_PREFIX + 'trialsView', JSON.stringify('active')); } catch (e) {} }}
+                        className={`px-4 py-2 rounded-t-lg text-sm font-semibold transition-colors ${
+                          trialsView === 'active'
+                            ? 'bg-blue-600 text-white shadow-sm'
+                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                        }`}
+                      >
+                        Active Trials
+                        <span className="ml-2 text-[11px] opacity-80">({evidenceActiveTrials.length})</span>
+                      </button>
+                      <button
+                        role="tab"
+                        aria-selected={trialsView === 'atlas'}
+                        onClick={() => { setTrialsView('atlas'); try { localStorage.setItem(STORAGE_PREFIX + 'trialsView', JSON.stringify('atlas')); } catch (e) {} }}
+                        className={`px-4 py-2 rounded-t-lg text-sm font-semibold transition-colors ${
+                          trialsView === 'atlas'
+                            ? 'bg-indigo-600 text-white shadow-sm'
+                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                        }`}
+                      >
+                        Evidence Atlas
+                        <span className="ml-2 text-[11px] opacity-80">({evidenceCompletedTrials.length})</span>
+                      </button>
+                      <span className="ml-auto text-xs text-slate-500 self-end pb-2 hidden md:inline">
+                        {trialsView === 'atlas'
+                          ? 'Background literature only · never used as eligibility criteria'
+                          : 'Recruiting trials · matched against encounter form fields'}
+                      </span>
+                    </div>
+
+                    {trialsView === 'atlas' && (
+                      <div className="space-y-4">
+                        <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-sm text-indigo-900">
+                          <div className="flex items-start gap-2">
+                            <i aria-hidden="true" data-lucide="library" className="w-4 h-4 mt-0.5"></i>
+                            <div>
+                              <p><strong>Evidence Atlas:</strong> completed RCTs, landmark trials, and guideline-relevant studies. Search by disease area, certainty, or evidence type. Each card cross-links to related active trials.</p>
+                              <p className="text-xs mt-1 text-indigo-700">Live identifier verification (PubMed / DOI / NCT) is a manual review step. Records flagged <em>Source-limited</em> or <em>Verify</em> need user review before clinical citation.</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Guideline-grade recommendations with auditable claim →
+                            citation chain. Phase 8 pattern: one drawer per
+                            recommendation showing class, level of evidence,
+                            guideline source, supporting claims, citations, and
+                            caveats. The same drawer can be embedded inside any
+                            Management section by mapping its <details> content
+                            to a single recommendation id. See
+                            docs/evidence-atlas-extension-guide.md for how. */}
+                        <details open className="border border-slate-200 bg-white rounded-lg">
+                          <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50 flex items-center gap-2">
+                            <i aria-hidden="true" data-lucide="badge-check" className="w-4 h-4 text-indigo-600"></i>
+                            Guideline-grade recommendations ({evidenceRecommendations.length})
+                            <span className="ml-auto text-[11px] font-normal text-slate-500 italic">Why this recommendation? — claim chain to primary sources</span>
+                          </summary>
+                          <div className="px-4 pb-4 space-y-2">
+                            {evidenceRecommendations.map((r) => {
+                              const claimsExpanded = resolveClaimsWithCitations(r.supportingClaimIds || []);
+                              const corTone = r.classOfRecommendation === 'I' ? 'emerald' : r.classOfRecommendation === 'IIa' ? 'sky' : r.classOfRecommendation === 'IIb' ? 'amber' : 'rose';
+                              return (
+                                <details key={r.id} id={`rec-${r.id}`} className="border border-slate-200 rounded">
+                                  <summary className="cursor-pointer px-3 py-2 text-sm hover:bg-slate-50 flex items-start gap-2">
+                                    <span className="flex-shrink-0 mt-0.5 flex flex-wrap gap-1">
+                                      {atlasPill(`Class ${r.classOfRecommendation}`, corTone)}
+                                      {atlasPill(`LOE ${r.levelOfEvidence}`, 'slate')}
+                                    </span>
+                                    <span className="text-slate-800 flex-1">{r.text}</span>
+                                  </summary>
+                                  <div className="px-3 pb-3 pt-1 border-t border-slate-100 text-sm space-y-2">
+                                    <div className="flex flex-wrap gap-1.5">
+                                      {atlasPill(topicLabel(r.topic) || r.topic, 'slate')}
+                                      {atlasPill(`Setting: ${r.setting}`, 'slate')}
+                                      {r.lastReviewed && atlasPill(`Reviewed ${r.lastReviewed}`, 'slate')}
+                                    </div>
+                                    <div>
+                                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Source</div>
+                                      <p className="text-slate-700">{r.guidelineSource}</p>
+                                    </div>
+                                    {claimsExpanded.length > 0 && (
+                                      <div>
+                                        <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Why this recommendation?</div>
+                                        <ul className="space-y-1.5 mt-1">
+                                          {claimsExpanded.map((cl) => (
+                                            <li key={cl.id} className="bg-slate-50 border border-slate-200 rounded p-2">
+                                              <p className="text-xs text-slate-800 italic">{cl.statement}</p>
+                                              <p className="text-[11px] text-slate-500 mt-0.5">Certainty: <span className="font-semibold">{cl.certainty}</span>{cl.conflictNotes ? ` · Conflict: ${cl.conflictNotes}` : ''}</p>
+                                              {cl.citationRecords && cl.citationRecords.length > 0 && (
+                                                <ul className="mt-1 list-disc list-inside text-[11px] text-slate-700">
+                                                  {cl.citationRecords.map((c) => (
+                                                    <li key={c.id}>
+                                                      {c.title} ({c.journal}{c.year ? ` ${c.year}` : ''})
+                                                      {citationLink(c) && (
+                                                        <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
+                                                      )}
+                                                    </li>
+                                                  ))}
+                                                </ul>
+                                              )}
+                                            </li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    )}
+                                    {r.caveats && r.caveats.length > 0 && (
+                                      <div className="bg-amber-50 border border-amber-200 rounded p-2">
+                                        <div className="text-xs font-semibold text-amber-900 uppercase tracking-wide">Caveats</div>
+                                        <ul className="mt-1 list-disc list-inside text-xs text-amber-900">
+                                          {r.caveats.map((cv, i) => <li key={i}>{cv}</li>)}
+                                        </ul>
+                                      </div>
+                                    )}
+                                  </div>
+                                </details>
+                              );
+                            })}
+                          </div>
+                        </details>
+
+                        <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
+                          <input
+                            type="text"
+                            placeholder="Search trials, citations, interventions…"
+                            value={atlasFilters.query}
+                            onChange={(e) => setAtlasFilters((f) => ({ ...f, query: e.target.value }))}
+                            className="md:col-span-2 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
+                            aria-label="Search Evidence Atlas"
+                          />
+                          <select
+                            value={atlasFilters.topic}
+                            onChange={(e) => setAtlasFilters((f) => ({ ...f, topic: e.target.value }))}
+                            className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
+                            aria-label="Filter by topic"
+                          >
+                            <option value="">All topics</option>
+                            {evidenceTopics.map((t) => (
+                              <option key={t.id} value={t.id}>{t.label}</option>
+                            ))}
+                          </select>
+                          <select
+                            value={atlasFilters.certainty}
+                            onChange={(e) => setAtlasFilters((f) => ({ ...f, certainty: e.target.value }))}
+                            className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
+                            aria-label="Filter by certainty"
+                          >
+                            <option value="">Any certainty</option>
+                            <option value="high">High</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="low">Low</option>
+                            <option value="very-low">Very low</option>
+                          </select>
+                          <select
+                            value={atlasFilters.evidenceType}
+                            onChange={(e) => setAtlasFilters((f) => ({ ...f, evidenceType: e.target.value }))}
+                            className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
+                            aria-label="Filter by evidence type"
+                          >
+                            <option value="">Any evidence type</option>
+                            <option value="rct">RCT</option>
+                            <option value="meta-analysis">Meta-analysis</option>
+                            <option value="observational">Observational</option>
+                            <option value="guideline">Guideline</option>
+                            <option value="consensus">Consensus</option>
+                          </select>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <button
+                            type="button"
+                            onClick={() => setAtlasFilters({ topic: '', certainty: '', evidenceType: '', verificationStatus: '', query: '' })}
+                            className="text-xs text-slate-600 hover:text-slate-900 underline"
+                          >Clear filters</button>
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              onClick={() => setAtlasExpandAll(true)}
+                              className="px-3 py-1.5 rounded-lg border border-indigo-200 bg-indigo-50 text-indigo-700 text-xs font-semibold hover:bg-indigo-100"
+                            >Expand all</button>
+                            <button
+                              type="button"
+                              onClick={() => setAtlasExpandAll(false)}
+                              className="px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-50"
+                            >Collapse all</button>
+                          </div>
+                        </div>
+
+                        {(() => {
+                          const filtered = filterCompletedTrials(atlasFilters);
+                          if (filtered.length === 0) {
+                            return (
+                              <p className="text-sm text-slate-600 italic px-4 py-3 border border-dashed border-slate-300 rounded-lg">
+                                No trials match these filters. <button type="button" onClick={() => setAtlasFilters({ topic: '', certainty: '', evidenceType: '', verificationStatus: '', query: '' })} className="text-indigo-700 underline">Clear filters</button>.
+                              </p>
+                            );
+                          }
+                          return (
+                            <div className="space-y-2">
+                              <p className="text-xs text-slate-500">{filtered.length} of {evidenceCompletedTrials.length} trials</p>
+                              {filtered.map((tr) => renderAtlasCard(tr))}
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    )}
+
+                    {trialsView === 'active' && (<>
                     {/* Diagnosis-based recommendation banner */}
                     {telestrokeNote.diagnosisCategory && (telestrokeNote.diagnosisCategory === 'ischemic' || telestrokeNote.diagnosisCategory === 'ich') && (
                       <div className={`mb-4 p-4 rounded-lg border-2 flex items-center gap-3 ${
@@ -34595,6 +34621,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         );
                       })()}
                     </div>
+                    </>)}
                   </div>
                   </ErrorBoundary>
                 )}
