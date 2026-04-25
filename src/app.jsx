@@ -53,7 +53,26 @@ import {
   calculateHEADS2,
   recommendDriving,
   interpretBarnesJewishDysphagia,
-  recommendVTEProphylaxis
+  recommendVTEProphylaxis,
+  // P0 evidence-locked additions (v5.20.0): late-window EVT, large-core EVT, post-EVT BP,
+  // DMVO advisory, MOST adjunct advisory, ENRICH/SWITCH ICH surgery, INTERACT3 bundle,
+  // PASCAL PFO classification, ICAD medical regimen, BP/lipid targets, ARCADIA/ATTICUS
+  // advisory, AF detection strategy, Boston 2.0 CAA criteria.
+  evaluateLargeCoreEVT,
+  recommendLateWindowLytic,
+  recommendPostEVTBP,
+  dmvoEVTAdvisory,
+  adjunctiveAntithromboticAdvisory,
+  evaluateENRICHEligibility,
+  evaluateSWITCHEligibility,
+  ichCareBundleCheck,
+  evaluatePASCAL,
+  icadMedicalRegimen,
+  bpTargetPostStroke,
+  lipidsTargetPostStroke,
+  arcadiaAdvisory,
+  afDetectionStrategy,
+  evaluateBostonCAA20
 } from './calculators-extended.js';
 // Patient-store is consumed by components.jsx, no direct imports needed here.
 import ais2026 from './guidelines/ais-2026.json';
@@ -73,6 +92,32 @@ import sah2023 from './guidelines/sah-2023.json';
 import systemicComplications2024 from './guidelines/systemic-complications-2024.json';
 import svinLargeCore2025 from './guidelines/svin-large-core-2025.json';
 import tiaEd2023 from './guidelines/tia-ed-2023.json';
+
+// P0 evidence-locked calculators exposed for browser-console QA testing and future UI wiring.
+// These are pure functions with PMID/DOI citations in their source; running e.g.
+//   window.strokeP0.evaluateLargeCoreEVT({ age: 72, nihss: 18, aspects: 4, timeFromLKWh: 8, premorbidMRS: 1 })
+// in the browser console returns the eligibility judgement against SELECT-2/ANGEL-ASPECT/TENSION/
+// TESLA/LASTE. Window attachment also prevents esbuild tree-shaking until UI wiring lands.
+if (typeof window !== 'undefined') {
+  window.strokeP0 = {
+    version: '5.20.0',
+    evaluateLargeCoreEVT,
+    recommendLateWindowLytic,
+    recommendPostEVTBP,
+    dmvoEVTAdvisory,
+    adjunctiveAntithromboticAdvisory,
+    evaluateENRICHEligibility,
+    evaluateSWITCHEligibility,
+    ichCareBundleCheck,
+    evaluatePASCAL,
+    icadMedicalRegimen,
+    bpTargetPostStroke,
+    lipidsTargetPostStroke,
+    arcadiaAdvisory,
+    afDetectionStrategy,
+    evaluateBostonCAA20
+  };
+}
 
         const STORAGE_PREFIX = (window.strokeAppStorage && window.strokeAppStorage.prefix) || 'strokeApp:';
         const APP_DATA_KEY = (window.strokeAppStorage && window.strokeAppStorage.appDataKey) || 'stroke.appData.v2';

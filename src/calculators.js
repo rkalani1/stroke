@@ -2,23 +2,37 @@
 // Keeping these as a separate module makes them unit-testable and
 // lets the bundler tree-shake unused helpers.
 
+// DOAC initiation timing protocols for AF-related ischemic stroke.
+// 'elan-optimas' (default): supported by ELAN (Fischer NEJM 2023;388:2411-21, PMID 37231621) and
+//   OPTIMAS (Werring Lancet 2024, PMID 39426394) and CATALYST meta-analysis (Werring Lancet 2024).
+//   Early start ≤4 d for minor/moderate; days 6-7 for major. Symptomatic ICH 0.2% in both arms.
+// 'catalyst': earlier UW/expert-consensus mapping (NIHSS-stratified) — kept for compatibility.
+// '1-3-6-12': legacy rule — preserved for institutions still using this default.
+// AHA/ASA 2024 focused update endorses early DOAC initiation (≤4 days) for minor/moderate AF strokes.
 export const DOAC_PROTOCOLS = {
+  'elan-optimas': {
+    label: 'ELAN/OPTIMAS — early start (default)',
+    days: { minor: 1, moderate: 3, severe: 6, verySevere: 7 },
+    source: 'Fischer NEJM 2023 (ELAN, PMID 37231621); Werring Lancet 2024 (OPTIMAS, PMID 39426394); CATALYST meta-analysis 2024'
+  },
   catalyst: {
-    label: 'CATALYST early-start (default)',
-    days: { minor: 1, moderate: 3, severe: 6 }
+    label: 'CATALYST consensus',
+    days: { minor: 1, moderate: 3, severe: 6 },
+    source: 'CATALYST consensus protocol (legacy default)'
   },
   '1-3-6-12': {
     label: '1-3-6-12 rule',
-    days: { minor: 1, moderate: 3, severe: 6, verySevere: 12 }
+    days: { minor: 1, moderate: 3, severe: 6, verySevere: 12 },
+    source: 'Heidbuchel 2017 EHRA practical guide'
   }
 };
 
-export const calculateDOACStart = (nihss, onsetDate, protocol = 'catalyst') => {
+export const calculateDOACStart = (nihss, onsetDate, protocol = 'elan-optimas') => {
   const nihssVal = parseFloat(nihss);
   if (!onsetDate) return null;
   const onset = new Date(onsetDate);
   if (Number.isNaN(onset.getTime())) return null;
-  const rule = DOAC_PROTOCOLS[protocol] || DOAC_PROTOCOLS.catalyst;
+  const rule = DOAC_PROTOCOLS[protocol] || DOAC_PROTOCOLS['elan-optimas'] || DOAC_PROTOCOLS.catalyst;
   const severity = Number.isNaN(nihssVal)
     ? 'moderate'
     : nihssVal < 8
@@ -31,7 +45,7 @@ export const calculateDOACStart = (nihss, onsetDate, protocol = 'catalyst') => {
   const days = rule.days[severity] ?? rule.days.severe ?? rule.days.moderate;
   const startDate = new Date(onset);
   startDate.setDate(startDate.getDate() + days);
-  return { severity, days, startDate };
+  return { severity, days, startDate, protocol, source: rule.source };
 };
 
 export const calculateNIHSS = (responses) => {
@@ -202,26 +216,58 @@ export const calculateEnoxaparinDose = (weightKg, crCl) => {
   };
 };
 
-export const calculateAndexanetDose = (doacType, lastDoseHours, doacDoseMg) => {
+// FXa inhibitor ICH reversal — andexanet alfa per FDA label + ANNEXA-I context.
+// ANNEXA-I (Connolly NEJM 2024;390:1745-55, PMID 38749032) showed superior hemostatic efficacy
+// vs usual care (≈80% 4F-PCC) BUT with a thrombotic-event signal: 10.3% vs 5.6% (absolute +4.7%);
+// ischemic stroke specifically 6.5% vs 1.5%. Mortality numerically higher (NS).
+// Many institutions retain 4F-PCC 50 U/kg (fixed) as alternative when andexanet is unavailable,
+// contraindicated, or the patient is at elevated thrombotic risk. Always re-verify your hospital
+// pathway and ensure 4F-PCC is stocked as backup.
+//
+// Inputs:
+//   doacType         — string ('apixaban', 'rivaroxaban', 'edoxaban', 'betrixaban')
+//   lastDoseHours    — hours since last DOAC dose
+//   doacDoseMg       — dose strength of last DOAC tablet (mg)
+//   thrombosisRisk   — 'high' | 'moderate' | 'low' (default 'moderate'); affects warning verbosity.
+export const calculateAndexanetDose = (doacType, lastDoseHours, doacDoseMg, thrombosisRisk = 'moderate') => {
   const hours = Math.max(0, parseFloat(lastDoseHours) || 0);
   const doseMg = Math.max(0, parseFloat(doacDoseMg) || 0);
-  const isApixaban = (doacType || '').toLowerCase().includes('apixaban');
-  const isRivaroxaban = (doacType || '').toLowerCase().includes('rivaroxaban');
-  const lowDose = { regimen: 'low-dose', bolus: '400 mg IV over 15-30 min', infusion: '4 mg/min x 120 min (480 mg)', total: '880 mg', doseWarning: null };
-  const highDose = { regimen: 'high-dose', bolus: '800 mg IV over 15-30 min', infusion: '8 mg/min x 120 min (960 mg)', total: '1760 mg', doseWarning: null };
+  const t = (doacType || '').toLowerCase();
+  const isApixaban = t.includes('apixaban');
+  const isRivaroxaban = t.includes('rivaroxaban');
+  const isEdoxaban = t.includes('edoxaban');
+
+  const ANNEXA_I_NOTE = 'ANNEXA-I (NEJM 2024, PMID 38749032): andexanet improved hemostatic efficacy (67% vs 53%) but signaled excess thrombotic events (10.3% vs 5.6%, ischemic stroke 6.5% vs 1.5%). Confirm institutional pathway.';
+  const PCC_ALT = '4F-PCC alternative when andexanet unavailable / contraindicated / high thrombosis risk: 50 U/kg fixed-dose IV (Class 2b, AHA/ASA 2022 ICH; many centers prefer this since ANNEXA-I).';
+  const buildResult = (base, contextWarn) => {
+    const thrombosisWarn = thrombosisRisk === 'high'
+      ? '⚠️ HIGH thrombotic risk (recent VTE/MI/stroke <14d, mechanical valve, active cancer, severe atherosclerosis): strongly consider 4F-PCC 50 U/kg INSTEAD of andexanet given ANNEXA-I excess ischemic stroke (6.5% vs 1.5%).'
+      : thrombosisRisk === 'low'
+        ? null
+        : '⚠️ ANNEXA-I thrombotic signal: monitor for VTE/MI/ischemic stroke; restart anticoagulation (when safe) per ICH/AF restart pathway.';
+    const merged = [contextWarn, thrombosisWarn].filter(Boolean).join(' | ');
+    return { ...base, doseWarning: merged || null, annexaINote: ANNEXA_I_NOTE, pccAlternative: PCC_ALT };
+  };
+
+  const lowDose = { regimen: 'low-dose', bolus: '400 mg IV over 15-30 min', infusion: '4 mg/min x 120 min (480 mg)', total: '880 mg' };
+  const highDose = { regimen: 'high-dose', bolus: '800 mg IV over 15-30 min', infusion: '8 mg/min x 120 min (960 mg)', total: '1760 mg' };
+
   if (isApixaban) {
-    if (hours >= 8) return lowDose;
-    if (doseMg > 0 && doseMg <= 5) return { ...lowDose, doseWarning: 'Low-dose regimen: apixaban dose ≤5 mg (per FDA label).' };
-    if (doseMg > 5) return { ...highDose, doseWarning: 'High-dose regimen: apixaban >5 mg and last dose <8h ago.' };
-    return { ...lowDose, doseWarning: 'DOAC dose not entered. Standard apixaban (5 mg BID) → low-dose. If patient was on 10 mg BID and last dose <8h, use high-dose. Enter DOAC dose to confirm.' };
+    if (hours >= 8) return buildResult(lowDose, 'Last dose ≥8h ago — low-dose regimen per FDA label.');
+    if (doseMg > 0 && doseMg <= 5) return buildResult(lowDose, 'Apixaban dose ≤5 mg (per FDA label) — low-dose.');
+    if (doseMg > 5) return buildResult(highDose, 'Apixaban >5 mg and last dose <8h — high-dose.');
+    return buildResult(lowDose, 'DOAC dose not entered. Standard apixaban (5 mg BID) → low-dose. If patient was on 10 mg BID and last dose <8h, use high-dose. Enter DOAC dose to confirm.');
   }
   if (isRivaroxaban) {
-    if (hours >= 8) return lowDose;
-    if (doseMg > 0 && doseMg <= 10) return { ...lowDose, doseWarning: 'Low-dose regimen: rivaroxaban dose ≤10 mg (per FDA label).' };
-    if (doseMg > 10) return { ...highDose, doseWarning: 'High-dose regimen: rivaroxaban >10 mg and last dose <8h ago.' };
-    return { ...highDose, doseWarning: 'DOAC dose not entered. Common rivaroxaban dose (20 mg daily) → high-dose. If patient was on ≤10 mg, use low-dose. Enter DOAC dose to confirm.' };
+    if (hours >= 8) return buildResult(lowDose, 'Last dose ≥8h ago — low-dose regimen per FDA label.');
+    if (doseMg > 0 && doseMg <= 10) return buildResult(lowDose, 'Rivaroxaban ≤10 mg (per FDA label) — low-dose.');
+    if (doseMg > 10) return buildResult(highDose, 'Rivaroxaban >10 mg and last dose <8h — high-dose.');
+    return buildResult(highDose, 'DOAC dose not entered. Common rivaroxaban dose (20 mg daily) → high-dose. If patient was on ≤10 mg, use low-dose. Enter DOAC dose to confirm.');
   }
-  return { regimen: 'N/A', bolus: 'Not applicable for this DOAC', infusion: '', total: '', doseWarning: null };
+  if (isEdoxaban) {
+    return buildResult(highDose, 'Edoxaban: andexanet not FDA-approved for edoxaban reversal. 4F-PCC 50 U/kg is the preferred reversal agent (off-label for andexanet).');
+  }
+  return { regimen: 'N/A', bolus: 'Not applicable for this DOAC', infusion: '', total: '', doseWarning: 'andexanet alfa is FDA-approved for apixaban and rivaroxaban only. For dabigatran, use idarucizumab (Praxbind 5 g IV). For edoxaban or other Xa-inhibitors, use 4F-PCC 50 U/kg.', annexaINote: ANNEXA_I_NOTE, pccAlternative: PCC_ALT };
 };
 
 export const calculateCrCl = (age, weight, sex, creatinine, heightCm) => {
@@ -278,10 +324,37 @@ export const calculateTNKDose = (weightKg) => {
   };
 };
 
-export const calculatePCCDose = (weightKg, inrVal) => {
+// 4F-PCC dosing — supports both warfarin reversal (INR-stratified per AHA/ASA 2022 ICH)
+// and FXa-inhibitor ICH reversal (fixed 50 U/kg per ANNEXA-I-era practice).
+// Inputs:
+//   weightKg — patient weight in kg
+//   inrVal   — INR (optional; only used for warfarin pathway)
+//   indication — 'warfarin' (default) | 'fxa-ich' | 'fxa-no-andexanet' — selects pathway
+// Reference doses:
+//   - Warfarin: AHA/ASA 2022 ICH (Greenberg, Stroke 2022) — INR-stratified.
+//   - FXa-ICH: many centers use 50 U/kg fixed when andexanet unavailable / contraindicated;
+//     AHA/ASA 2022 ICH lists PCC as Class 2b for FXa reversal. Post-ANNEXA-I, PCC remains
+//     widely used given thrombosis signal and cost. ESO 2024 acknowledges PCC alternative.
+export const calculatePCCDose = (weightKg, inrVal, indication = 'warfarin') => {
   const weight = parseFloat(weightKg);
   const inr = parseFloat(inrVal);
   if (isNaN(weight) || weight <= 0 || weight > 350) return null;
+
+  // FXa-inhibitor ICH pathway — fixed 50 U/kg
+  if (indication === 'fxa-ich' || indication === 'fxa-no-andexanet') {
+    const fxaDose = Math.min(Math.round(weight * 50), 5000);
+    return {
+      ahaDose: fxaDose,
+      iuPerKg: 50,
+      weight,
+      inrTierNote: indication === 'fxa-no-andexanet'
+        ? '4F-PCC 50 IU/kg fixed (max 5000) — FXa-inhibitor ICH when andexanet unavailable / contraindicated / high thrombosis risk. Class 2b AHA/ASA 2022 ICH; widely used post-ANNEXA-I (NEJM 2024, PMID 38749032).'
+        : '4F-PCC 50 IU/kg fixed (max 5000) for FXa-inhibitor ICH (apixaban/rivaroxaban/edoxaban). Pair with hemostasis monitoring; restart AC per AF/ICH restart pathway.',
+      indication
+    };
+  }
+
+  // Warfarin pathway — INR-stratified
   let iuPerKg = null;
   let inrTierNote = '';
   if (!isNaN(inr)) {
@@ -292,7 +365,7 @@ export const calculatePCCDose = (weightKg, inrVal) => {
     else { iuPerKg = 50; inrTierNote = 'INR >6 — 4F-PCC 50 IU/kg (COR 1/B)'; }
   }
   const ahaDose = iuPerKg ? Math.min(Math.round(weight * iuPerKg), 5000) : null;
-  return { ahaDose, iuPerKg, weight, inrTierNote };
+  return { ahaDose, iuPerKg, weight, inrTierNote, indication: 'warfarin' };
 };
 
 export const calculateAlteplaseDose = (weightKg) => {
