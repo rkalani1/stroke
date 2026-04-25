@@ -394,13 +394,19 @@ async function auditView(browser, target, viewport) {
   if ((await encounterTab.count()) === 0) {
     addIssue(issues, 'missing-tab', { tab: 'Encounter' });
   } else {
-    try {
-      await encounterTab.scrollIntoViewIfNeeded({ timeout: 1000 });
-    } catch { /* fine if already in view */ }
-    try {
-      await encounterTab.click({ timeout: 3000 });
-    } catch {
-      await encounterTab.click({ force: true });
+    // Tab was already activated by navigateToTab() above; clicking again is
+    // redundant and breaks on mobile (off-screen in horizontal scroll strip).
+    // Only click if not already the active tab.
+    const isActive = (await encounterTab.getAttribute('aria-selected')) === 'true';
+    if (!isActive) {
+      try {
+        await encounterTab.scrollIntoViewIfNeeded({ timeout: 1000 });
+      } catch { /* fine */ }
+      try {
+        await encounterTab.click({ timeout: 3000 });
+      } catch {
+        await encounterTab.click({ force: true });
+      }
     }
     await page.waitForTimeout(250);
 
