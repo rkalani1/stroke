@@ -1838,6 +1838,13 @@ Clinician Name`;
           });
           const [updateAvailable, setUpdateAvailable] = useState(false);
           const [pendingWorker, setPendingWorker] = useState(null);
+          // PWA install state. installPrompt holds the captured BeforeInstallPromptEvent
+          // (Chrome / Edge / Android). isInstalled is true when the app is launched
+          // from the home screen / app drawer (display-mode standalone OR iOS Safari's
+          // navigator.standalone). iosInstallTipVisible governs the one-time iOS hint.
+          const [installPrompt, setInstallPrompt] = useState(null);
+          const [isInstalled, setIsInstalled] = useState(false);
+          const [iosInstallTipVisible, setIosInstallTipVisible] = useState(false);
           useEffect(() => {
             try {
               if (darkMode) document.documentElement.classList.add('dark');
@@ -14681,6 +14688,69 @@ Clinician Name`;
             }
           };
 
+          // PWA install: capture beforeinstallprompt for Chrome/Edge/Android.
+          // Detect already-installed via standalone display-mode or iOS navigator.standalone.
+          // For iOS Safari (no programmatic API) show a one-time hint pointing to
+          // Share -> Add to Home Screen, dismissed forever via localStorage.
+          useEffect(() => {
+            const checkInstalled = () => {
+              try {
+                const standalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
+                const iosStandalone = window.navigator && window.navigator.standalone === true;
+                setIsInstalled(Boolean(standalone || iosStandalone));
+              } catch { setIsInstalled(false); }
+            };
+            checkInstalled();
+            const onBeforeInstall = (e) => {
+              e.preventDefault();
+              setInstallPrompt(e);
+            };
+            const onAppInstalled = () => {
+              setInstallPrompt(null);
+              setIsInstalled(true);
+              setIosInstallTipVisible(false);
+            };
+            window.addEventListener('beforeinstallprompt', onBeforeInstall);
+            window.addEventListener('appinstalled', onAppInstalled);
+            // iOS Safari heuristic: no beforeinstallprompt available, not already
+            // standalone, dismissal flag not set.
+            try {
+              const ua = window.navigator.userAgent || '';
+              const isIos = /iphone|ipad|ipod/i.test(ua) && !/CriOS|FxiOS|EdgiOS/i.test(ua);
+              const dismissed = window.strokeAppStorage && window.strokeAppStorage.getStoredValue('iosInstallTipDismissed') === true;
+              const inStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || (window.navigator && window.navigator.standalone === true);
+              if (isIos && !dismissed && !inStandalone) setIosInstallTipVisible(true);
+            } catch { /* ignore */ }
+            return () => {
+              window.removeEventListener('beforeinstallprompt', onBeforeInstall);
+              window.removeEventListener('appinstalled', onAppInstalled);
+            };
+          }, []);
+
+          const triggerInstall = async () => {
+            if (!installPrompt) return;
+            try {
+              installPrompt.prompt();
+              const choice = await installPrompt.userChoice;
+              if (choice && choice.outcome === 'accepted') {
+                setIsInstalled(true);
+              }
+            } catch (e) {
+              console.warn('install prompt failed:', e);
+            } finally {
+              setInstallPrompt(null);
+            }
+          };
+
+          const dismissIosInstallTip = () => {
+            setIosInstallTipVisible(false);
+            try {
+              if (window.strokeAppStorage && window.strokeAppStorage.setStoredValue) {
+                window.strokeAppStorage.setStoredValue('iosInstallTipDismissed', true);
+              }
+            } catch { /* ignore */ }
+          };
+
           // Click-outside handler for search dropdown (replaces fragile setTimeout blur hack)
           useEffect(() => {
             const handleClickOutside = (e) => {
@@ -15903,8 +15973,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 </div>
               )}
 
+              {/* iOS Add-to-Home-Screen tip (Safari only — beforeinstallprompt is unsupported on iOS) */}
+              {iosInstallTipVisible && !isInstalled && (
+                <div className="bg-indigo-600 text-white px-4 py-2 text-sm font-medium flex flex-wrap items-center justify-center gap-3 no-print" role="status" aria-live="polite">
+                  <i aria-hidden="true" data-lucide="smartphone" className="w-4 h-4"></i>
+                  <span>Install Stroke: tap Share, then "Add to Home Screen".</span>
+                  <button
+                    type="button"
+                    onClick={dismissIosInstallTip}
+                    className="text-white/90 hover:text-white underline text-xs"
+                    aria-label="Dismiss install tip"
+                  >
+                    Got it
+                  </button>
+                </div>
+              )}
+
               {/* Header — Simplified */}
-              <div className="mb-4 sm:mb-6 app-header" role="banner">
+              <div className="mb-4 sm:mb-6 app-header pwa-safe-top pwa-safe-x" role="banner">
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
                   <div className="flex-1 w-full sm:w-auto">
                     <div className="flex items-center gap-3 justify-center sm:justify-start">
