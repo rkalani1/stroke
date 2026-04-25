@@ -21828,6 +21828,58 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             View full trial details →
                                           </button>
                                         </div>
+
+                                        {/* Context Bridge: completed → active.
+                                            Background-evidence panel surfaces
+                                            related landmark trials. Visually
+                                            distinct (indigo on slate) so it is
+                                            never confused with eligibility
+                                            criteria. One-way only — completed
+                                            trials never appear inside the
+                                            criterion checklist above. */}
+                                        {(() => {
+                                          const atlasActive = getActiveTrialByLegacyKey(trial.trialId);
+                                          const related = atlasActive ? resolveCompletedTrials(atlasActive.relatedCompletedTrialIds) : [];
+                                          if (related.length === 0) return null;
+                                          return (
+                                            <details className="mt-2 border border-indigo-200 bg-slate-50 rounded">
+                                              <summary className="cursor-pointer px-2.5 py-1.5 text-xs font-semibold text-indigo-900 hover:bg-slate-100 rounded flex items-center gap-2">
+                                                <i aria-hidden="true" data-lucide="library" className="w-3.5 h-3.5"></i>
+                                                Background evidence ({related.length})
+                                                <span className="ml-auto text-[11px] font-normal text-slate-500 italic">Context only · not eligibility criteria</span>
+                                              </summary>
+                                              <div className="px-2.5 pb-2 pt-1 space-y-1.5">
+                                                {related.map((rt) => {
+                                                  const certaintyMeta = (CERTAINTY_LABELS && CERTAINTY_LABELS[rt.certainty]) || { label: rt.certainty, tone: 'slate' };
+                                                  const evTypeMeta = (EVIDENCE_TYPE_LABELS && EVIDENCE_TYPE_LABELS[rt.evidenceType]) || { label: rt.evidenceType, tone: 'slate' };
+                                                  return (
+                                                    <div key={rt.id} className="bg-white border border-slate-200 rounded p-2">
+                                                      <div className="flex flex-wrap items-baseline gap-x-2">
+                                                        <span className="text-xs font-semibold text-slate-900">{rt.shortName}</span>
+                                                        <span className="text-[11px] text-slate-500 truncate">{rt.fullName}</span>
+                                                      </div>
+                                                      <div className="mt-1 flex flex-wrap gap-1">
+                                                        {atlasPill(evTypeMeta.label, evTypeMeta.tone)}
+                                                        {atlasPill(certaintyMeta.label, certaintyMeta.tone)}
+                                                      </div>
+                                                      <p className="mt-1 text-xs text-slate-700"><span className="font-semibold">Primary endpoint:</span> {rt.primaryEndpoint?.result || '—'}</p>
+                                                      {rt.practiceImpact && (
+                                                        <p className="mt-0.5 text-[11px] text-slate-600 italic">{rt.practiceImpact}</p>
+                                                      )}
+                                                      <button
+                                                        type="button"
+                                                        onClick={() => { setTrialsView('atlas'); requestAnimationFrame(() => { const el = document.getElementById('atlas-' + rt.id); if (el) { el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }); }}
+                                                        className="mt-1 text-[11px] font-semibold text-indigo-700 hover:text-indigo-900 underline"
+                                                      >
+                                                        Open in Evidence Atlas →
+                                                      </button>
+                                                    </div>
+                                                  );
+                                                })}
+                                              </div>
+                                            </details>
+                                          );
+                                        })()}
                                       </div>
                                     </details>
                                   );
