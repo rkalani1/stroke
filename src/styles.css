@@ -103,6 +103,73 @@
   details > summary::-webkit-details-marker {
     display: none;
   }
+
+  /* ----------------------------------------------------------
+     v6.0-02 component classes — mirror src/primitives.jsx so
+     inline JSX in app.jsx can migrate piecemeal via className
+     without importing React components.
+     ---------------------------------------------------------- */
+
+  .v6-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-[4px] font-sans font-medium;
+    @apply transition-colors duration-100 h-11 px-4 text-[14px] min-w-[44px];
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper;
+  }
+  .v6-btn-primary   { @apply bg-ink text-white border border-ink hover:bg-ink-2; }
+  .v6-btn-secondary { @apply bg-transparent text-ink border border-line hover:bg-paper-2; }
+  .v6-btn-critical  { @apply bg-critical text-white border border-critical hover:opacity-90; }
+  .v6-btn-confirm   { @apply bg-confirm text-white border border-confirm hover:opacity-90; }
+  .v6-btn-ghost     { @apply bg-transparent text-ink-2 border border-transparent hover:bg-paper-2; }
+  .v6-btn-sm        { @apply h-9 px-3 text-[13px]; }
+  .v6-btn-lg        { @apply h-12 px-5 text-[15px]; }
+
+  .v6-card {
+    @apply bg-card border border-line rounded-md;
+  }
+  .v6-card-header {
+    @apply px-5 pt-5 pb-4 border-b border-line;
+  }
+  .v6-card-body {
+    @apply p-5;
+  }
+
+  .v6-input,
+  .v6-select,
+  .v6-textarea {
+    @apply w-full bg-transparent border border-line rounded-[4px] px-3 h-11 text-[15px] text-ink;
+    @apply placeholder:text-mute focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink;
+    @apply disabled:opacity-60 disabled:cursor-not-allowed;
+  }
+  .v6-textarea {
+    @apply h-auto py-2 leading-snug;
+  }
+
+  .v6-eyebrow {
+    @apply font-mono uppercase text-eyebrow text-mute;
+  }
+
+  .v6-data {
+    @apply font-mono tabular-nums text-ink;
+  }
+
+  .v6-callout {
+    @apply rounded-md border border-line px-4 py-3;
+    border-left-width: 3px;
+  }
+  .v6-callout-critical  { @apply bg-critical-soft text-critical border-critical; }
+  .v6-callout-confirm   { @apply bg-confirm-soft text-confirm border-confirm; }
+  .v6-callout-caution   { @apply bg-caution-soft text-caution border-caution; }
+  .v6-callout-reference { @apply bg-reference-soft text-reference border-reference; }
+
+  .v6-stamp {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded-[4px];
+    @apply font-mono text-caption uppercase tracking-wide;
+    border-left-width: 3px;
+  }
+  .v6-stamp-critical  { @apply bg-critical-soft text-critical border-critical; }
+  .v6-stamp-confirm   { @apply bg-confirm-soft text-confirm border-confirm; }
+  .v6-stamp-caution   { @apply bg-caution-soft text-caution border-caution; }
+  .v6-stamp-reference { @apply bg-reference-soft text-reference border-reference; }
 }
 
 /* Print styles */

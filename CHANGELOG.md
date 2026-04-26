@@ -1,5 +1,36 @@
 # CHANGELOG
 
+## v5.23.0 — 2026-04-25 — v6.0-02 Repaint primitives
+
+### Shared UI primitives
+
+- **`src/primitives.jsx`** — new file. React primitives that bake the v6 visual rules in:
+  - `<Button>` — variants `primary` / `secondary` / `critical` / `confirm` / `ghost`, sizes `sm` / `md` / `lg`. Solid ink primary on white. No blue. No filled secondaries. 4 px radius, 1 px line, 2 px ink focus ring.
+  - `<Card>` — single white surface on paper. 6 px radius, 1 px hairline. Optional eyebrow / title / description / action header.
+  - `<Field>` — labeled input row with hairline-bottom; stacked fields read as a list, not a grid of tiny boxes.
+  - `<Input>`, `<Select>`, `<Textarea>` — no bg tint, 1 px line border, ink focus. Mono variant for clinical numerics. `numeric` prop wires `inputmode="decimal"` + iOS-friendly `pattern`.
+  - `<Tabs>` — quiet pills. Active = solid ink. No active gradient.
+  - `<Banner>` — quiet section header (replaces every gradient banner). Optional 3 px left rule per accent (`critical` / `confirm` / `caution` / `reference`).
+  - `<Callout>` — semantic note. Glyph required so color is never the only signal (✕ critical · ✓ confirm · ⚠ caution · ⓘ reference).
+  - `<Stamp>` — small semantic badge anchored to a field. Used heavily in v6.2-04 surfaced contraindications.
+  - `<Eyebrow>`, `<Data>` — small text helpers (mono uppercase eyebrow, mono tabular data span).
+
+### Component classes for piecemeal migration
+
+- **`src/styles.css` `@layer components`** — mirrors the React primitives so the 34k-line `src/app.jsx` monolith can adopt them via `className` without lifting JSX into separate components:
+  - `.v6-btn-primary` / `.v6-btn-secondary` / `.v6-btn-critical` / `.v6-btn-confirm` / `.v6-btn-ghost` (+ `.v6-btn-sm` / `.v6-btn-lg`)
+  - `.v6-card` / `.v6-card-header` / `.v6-card-body`
+  - `.v6-input` / `.v6-select` / `.v6-textarea`
+  - `.v6-eyebrow` / `.v6-data`
+  - `.v6-callout-{critical,confirm,caution,reference}`
+  - `.v6-stamp-{critical,confirm,caution,reference}`
+- **Tailwind `safelist`** for the `v6-*` pattern so classes ship before the monolith adopts them.
+
+### Notes
+
+- This PR is purely additive. No surface in `src/app.jsx` was repainted yet — adoption begins in **v6.0-03** (gradient banner demotion) and continues through **v6.0-08**.
+- The "every page should already feel calmer" outcome from the v6.0 spec lands when v6.0-03 → v6.0-08 swap inline `bg-gradient-to-r from-... to-...` and `rounded-xl` chrome for these primitives.
+
 ## v5.22.0 — 2026-04-25 — v6.0-01 Tokens & Tailwind config
 
 ### Design system foundation
