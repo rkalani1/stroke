@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v5.28.0 — 2026-04-25 — v6.0-07 Auto-save indicator
+
+- **`<SavedAgo>`** — new lightweight component in `src/components.jsx`. Reads `localStorage[<prefix>:lastUpdated]` (already written by app.jsx on every appData mutation) and ticks every 5 s. Renders as mono tabular caption: "saved just now" → "saved 6s ago" → "saved 4m ago" → "saved 1h ago".
+- Mounted in the encounter shell header next to the "Stroke" wordmark, only when `activeTab === 'encounter'`. No toasts.
+- Existing `AutoSaveIndicator` (which depends on a `createAutoSaver` instance, used by patient store) restyled to mono tabular text-mute + `bg-confirm` dot for visual continuity with the new system.
+
+Cache v91 → v92. Version 5.27.0 → 5.28.0. Tests: 427/427 passing.
+
 ## v5.27.0 — 2026-04-25 — v6.0-06 Type pass
 
 Type-system rules baked into `src/styles.css` `@layer base` so they apply to all current and future surfaces without per-element opt-in.

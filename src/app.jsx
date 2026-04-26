@@ -26,6 +26,7 @@ import {
 import {
   LKWCountdown,
   AutoSaveIndicator,
+  SavedAgo,
   NeurocheckTimer,
   LateWindowEVTCalculator,
   DAPTDurationCalculator,
@@ -15996,6 +15997,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <h1 className="font-serif text-display text-ink">
                         Stroke
                       </h1>
+                      {/* v6.0-07: encounter auto-save indicator. Mono tabular,
+                          ticks every 5 s, reads localStorage lastUpdated. */}
+                      {activeTab === 'encounter' && (
+                        <SavedAgo storageKey={STORAGE_PREFIX + LAST_UPDATED_KEY} />
+                      )}
                     </div>
                     <div className="mt-2 flex flex-wrap items-center gap-2 justify-center sm:justify-start">
                       {[...encounterQuickLinks, ...topLinks].map((link) => (
