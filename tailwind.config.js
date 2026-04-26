@@ -17,8 +17,15 @@ module.exports = {
     './index.html',
     './src/app.jsx',
     './src/components.jsx',
+    './src/primitives.jsx',
     './src/pocket-cards.jsx',
     './src/teaching.jsx'
+  ],
+  // v6.0-02: ship the v6-* component classes regardless of where they're
+  // adopted. Inline JSX migrates piecemeal in v6.0-03 → v6.0-08; without
+  // a safelist Tailwind would tree-shake them on the first builds.
+  safelist: [
+    { pattern: /^v6-/ }
   ],
   theme: {
     extend: {
