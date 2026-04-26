@@ -27012,7 +27012,30 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         Current diagnosis is <strong>ICH</strong> — the <button onClick={() => setManagementSubTab('ich')} className="underline font-semibold hover:text-red-900">ICH Management</button> tab may be more relevant.
                       </div>
                     )}
-                    <div className="bg-white border border-line rounded-md p-2 flex flex-wrap gap-2 sticky top-0 z-30 " role="tablist" aria-label="Management sub-sections" onKeyDown={(e) => {
+                    {/* v6.0-08: sticky breadcrumb on top of the management
+                        sub-tab pill row. Renders Management › <Sub-tab> · the
+                        active label, mono uppercase eyebrow style. The
+                        sub-tab list below is also sticky and stacks
+                        underneath. */}
+                    {(() => {
+                      const subTabLabels = {
+                        ich: 'ICH', ischemic: 'Ischemic', sah: 'SAH', tia: 'TIA', cvt: 'CVT',
+                        clinic: 'Clinic', wards: 'Wards', calculators: 'Calculators',
+                        'pocket-cards': 'Pocket Cards', teaching: 'Teaching', references: 'References'
+                      };
+                      const activeLabel = subTabLabels[managementSubTab] || managementSubTab;
+                      return (
+                        <nav
+                          className="bg-paper-2 border border-line border-b-0 rounded-md rounded-b-none px-3 py-2 sticky top-0 z-40"
+                          aria-label="Management breadcrumb"
+                        >
+                          <p className="font-mono uppercase text-eyebrow text-mute">
+                            Management <span aria-hidden="true">›</span> <span className="text-ink">{activeLabel}</span>
+                          </p>
+                        </nav>
+                      );
+                    })()}
+                    <div className="bg-white border border-line rounded-md rounded-t-none p-2 flex flex-wrap gap-2 sticky top-9 z-30 " role="tablist" aria-label="Management sub-sections" onKeyDown={(e) => {
                       const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'clinic', 'wards', 'calculators', 'pocket-cards', 'teaching', 'references'];
                       const ci = subTabs.indexOf(managementSubTab);
                       let ni;
@@ -27020,7 +27043,18 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       else if (e.key === 'ArrowLeft') { e.preventDefault(); ni = (ci - 1 + subTabs.length) % subTabs.length; }
                       else if (e.key === 'Home') { e.preventDefault(); ni = 0; }
                       else if (e.key === 'End') { e.preventDefault(); ni = subTabs.length - 1; }
-                      if (ni !== undefined) { setManagementSubTab(subTabs[ni]); const el = document.getElementById(`mgmt-tab-${subTabs[ni]}`); if (el) el.focus(); }
+                      if (ni !== undefined) {
+                        setManagementSubTab(subTabs[ni]);
+                        const el = document.getElementById(`mgmt-tab-${subTabs[ni]}`);
+                        if (el) el.focus();
+                        // v6.0-08: snap-scroll the named protocol panel into view.
+                        requestAnimationFrame(() => {
+                          const panel = document.getElementById(`mgmt-tabpanel-${subTabs[ni]}`);
+                          if (panel && typeof panel.scrollIntoView === 'function') {
+                            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        });
+                      }
                     }}>
                       {[
                         // v6.0-04: Management sub-tabs — labels only, no decorative icons.
@@ -27041,7 +27075,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <button
                             key={tab.id}
                             id={`mgmt-tab-${tab.id}`}
-                            onClick={() => setManagementSubTab(tab.id)}
+                            onClick={() => {
+                              setManagementSubTab(tab.id);
+                              // v6.0-08: snap-scroll to named protocol panel.
+                              // requestAnimationFrame waits for React to mount the panel.
+                              requestAnimationFrame(() => {
+                                const panel = document.getElementById(`mgmt-tabpanel-${tab.id}`);
+                                if (panel && typeof panel.scrollIntoView === 'function') {
+                                  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                }
+                              });
+                            }}
                             className={`px-3 py-2.5 sm:py-2 rounded-full text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 ${
                               isActive ? 'bg-ink text-white' : 'bg-transparent text-ink-2 hover:bg-paper-2'
                             }`}
