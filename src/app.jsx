@@ -15994,7 +15994,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
                   <div className="flex-1 w-full sm:w-auto">
                     <div className="flex items-center gap-3 justify-center sm:justify-start">
-                      <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-900 to-indigo-800 bg-clip-text text-transparent">
+                      <h1 className="font-serif text-display text-ink">
                         Stroke
                       </h1>
                     </div>
@@ -16371,9 +16371,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 const elH = Math.floor(elapsedSeconds / 3600);
                 const elM = Math.floor((elapsedSeconds % 3600) / 60);
                 const elS = elapsedSeconds % 60;
-                const timerBg = totalHours < 3 ? 'from-emerald-600 to-emerald-700' : totalHours < 4 ? 'from-amber-500 to-amber-600' : totalHours < 4.5 ? 'from-orange-500 to-orange-600' : 'from-red-600 to-red-700';
+                // v6.0-03: solid semantic bg keyed by treatment-window threshold.
+                // <3h IV window → confirm; 3–4h closing → caution; 4–4.5h critical edge → caution; >4.5h closed → critical.
+                const timerBg = totalHours < 3 ? 'bg-confirm' : totalHours < 4 ? 'bg-caution' : totalHours < 4.5 ? 'bg-caution' : 'bg-critical';
                 return (
-                  <div className={`mb-3 bg-gradient-to-r ${timerBg} rounded-xl px-4 py-2 text-white flex flex-wrap items-center justify-between gap-2 ${alertFlashing ? 'alert-flash' : ''}`} role="timer" aria-live="polite" aria-label="Stroke treatment window timer">
+                  <div className={`mb-3 ${timerBg} rounded-md px-4 py-2 text-white flex flex-wrap items-center justify-between gap-2 ${alertFlashing ? 'alert-flash' : ''}`} role="timer" aria-live="polite" aria-label="Stroke treatment window timer">
                     <div className="flex items-center gap-3">
                       <i aria-hidden="true" data-lucide="clock" className="w-4 h-4"></i>
                       <span className="font-mono font-bold text-lg">{elH}h {String(elM).padStart(2,'0')}m {String(elS).padStart(2,'0')}s</span>
@@ -17041,36 +17043,40 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {consultationType === 'telephone' && (
                       <div className="space-y-4">
 
-                        {/* Header with LKW Timer + Consult Duration */}
-                        <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg p-4 shadow-lg">
+                        {/* Header with LKW Timer + Consult Duration —
+                            v6.0-03: demoted from amber→orange gradient to a quiet
+                            section header with mono eyebrow, serif title, optional
+                            secondary action. The LKW value renders mono tabular. */}
+                        <header className="bg-card border border-line border-l-[3px] border-l-caution rounded-md px-4 py-4">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                            <div>
-                              <h3 className="text-xl font-bold flex items-center gap-2"><i aria-hidden="true" data-lucide="phone" className="w-5 h-5"></i> Telephone Consult</h3>
+                            <div className="min-w-0">
+                              <p className="font-mono uppercase text-eyebrow text-mute mb-1">Step 01 · Capture</p>
+                              <h3 className="font-serif text-section text-ink">Telephone Consult</h3>
                               {telestrokeNote.consultStartTime && (
-                                <span className="text-xs opacity-80">Started {telestrokeNote.consultStartTime}</span>
+                                <p className="font-mono text-caption text-mute mt-1">Started <span className="tabular-nums">{telestrokeNote.consultStartTime}</span></p>
                               )}
                             </div>
                             <div className="flex items-center gap-3">
                               {lkwTime && (
-                                <div className="bg-white/20 rounded-lg px-4 py-2 text-center">
-                                  <span className="text-2xl font-bold">
+                                <div className="border border-line rounded-md px-4 py-2 text-center">
+                                  <p className="font-mono uppercase text-eyebrow text-mute">from LKW</p>
+                                  <span className="font-mono tabular-nums text-data-lg font-semibold text-ink">
                                     {(() => {
                                       const tf = calculateTimeFromLKW();
                                       return tf ? `${tf.hours}h ${tf.minutes}m` : '--:--';
                                     })()}
                                   </span>
-                                  <span className="text-sm ml-2 opacity-90">from LKW</span>
                                 </div>
                               )}
                               {!telestrokeNote.consultStartTime && (
                                 <button type="button" onClick={() => setTelestrokeNote(prev => ({...prev, consultStartTime: new Date().toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'})}))}
-                                  className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-colors">
+                                  className="v6-btn-secondary v6-btn-sm">
                                   Start Timer
                                 </button>
                               )}
                             </div>
                           </div>
-                        </div>
+                        </header>
 
                         {/* Consultation Metadata */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -19883,9 +19889,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             if (!age && !nihss && !hoursFromLKW) return null;
 
                             return (
-                              <div className="bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-xl p-4 mb-4">
+                              <div className="bg-reference-soft border border-line border-l-[3px] border-l-reference rounded-md p-4 mb-4">
                                 <div className="flex items-center gap-2 mb-3">
-                                  <span className="text-lg font-bold text-blue-900">Recommendation</span>
+                                  <span className="font-serif text-section text-ink">Recommendation</span>
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -20565,7 +20571,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </ul>
                                   </div>
                                 )}
-                                <details id="tnk-contraindications" className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-xl">
+                                <details id="tnk-contraindications" className="bg-critical-soft border border-line border-l-[3px] border-l-critical rounded-md">
                                   <summary className="cursor-pointer p-3 font-semibold text-orange-900 hover:bg-orange-100 rounded-lg flex items-center justify-between">
                                     <span>TNK Contraindications <span className="text-[10px] font-normal text-slate-500 ml-1">(AHA/ASA 2026 Table 8)</span></span>
                                     <span className={'px-3 py-1 rounded-full text-xs font-bold ' + badgeColor}>
@@ -20744,7 +20750,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     return (
                                       <div className={`rounded-xl shadow-lg overflow-hidden ${doseCalc.isMaxDose ? 'ring-2 ring-amber-400' : 'ring-2 ring-green-400'}`}>
                                         {/* Header */}
-                                        <div className={`px-4 py-2 ${doseCalc.isMaxDose ? 'bg-gradient-to-r from-amber-500 to-amber-600' : 'bg-gradient-to-r from-green-500 to-emerald-600'}`}>
+                                        <div className={`px-4 py-2 ${doseCalc.isMaxDose ? 'bg-caution' : 'bg-confirm'}`}>
                                           <div className="flex items-center justify-between">
                                             <span className="text-white font-bold text-lg flex items-center gap-2">
                                               <i aria-hidden="true" data-lucide="syringe" className="w-6 h-6 text-white"></i>
@@ -20758,7 +20764,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           </div>
                                         </div>
                                         {/* Dose Display */}
-                                        <div className={`px-4 py-4 ${doseCalc.isMaxDose ? 'bg-gradient-to-br from-amber-50 to-amber-100' : 'bg-gradient-to-br from-green-50 to-emerald-100'}`}>
+                                        <div className={`px-4 py-4 ${doseCalc.isMaxDose ? 'bg-caution-soft' : 'bg-confirm-soft'}`}>
                                           <div className="grid grid-cols-3 gap-3 text-center">
                                             <div className={`p-3 rounded-lg ${doseCalc.isMaxDose ? 'bg-amber-200/50' : 'bg-emerald-200/50'}`}>
                                               <div className="text-3xl font-black text-slate-900">{doseCalc.calculatedDose}</div>
@@ -26551,12 +26557,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           const elapsedMins = Math.floor((elapsedSeconds % 3600) / 60);
                           const elapsedSecs = elapsedSeconds % 60;
 
-                          // Determine color based on elapsed time
+                          // v6.0-03: returns a solid semantic bg utility keyed by treatment-window threshold.
+                          // <3h confirm · 3–4.5h caution · ≥4.5h critical. Token-driven so dark mode works.
                           const getElapsedColor = () => {
-                            if (totalHours < 3) return 'from-green-500 to-green-600';
-                            if (totalHours < 4) return 'from-yellow-500 to-yellow-600';
-                            if (totalHours < 4.5) return 'from-orange-500 to-orange-600';
-                            return 'from-red-600 to-red-700';
+                            if (totalHours < 3) return 'bg-confirm';
+                            if (totalHours < 4.5) return 'bg-caution';
+                            return 'bg-critical';
                           };
 
                           const getTextColor = () => {
@@ -26625,7 +26631,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* ============================================ */}
                               {/* PROMINENT ELAPSED TIMER FROM LKW             */}
                               {/* ============================================ */}
-                              <div className={`bg-gradient-to-r ${getElapsedColor()} rounded-xl p-4 mb-4 text-white shadow-md ${
+                              <div className={`${getElapsedColor()} rounded-md p-4 mb-4 text-white ${
                                 totalHours >= 4 && totalHours < 4.5 ? 'urgent-pulse' : ''
                               }`}>
                                 <div className="text-center">
@@ -26994,7 +27000,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   <div id="tabpanel-protocols" role="tabpanel" aria-labelledby="tab-protocols" className="space-y-6">
                     {/* ===== QUICK PATIENT SUMMARY CARD ===== */}
                     {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) && (
-                      <div className="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-xl px-4 py-3">
+                      <div className="bg-paper-2 border border-line rounded-md px-4 py-3">
                         <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">
                           {telestrokeNote.age && <span className="font-semibold text-slate-800">{telestrokeNote.age}{telestrokeNote.sex || ''}</span>}
                           {(nihssScore > 0 || telestrokeNote.nihss) && <span className="font-bold text-slate-900">NIHSS {telestrokeNote.nihss || nihssScore}</span>}
@@ -30287,7 +30293,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="p-3 pt-0"><PHQ9Screen /></div>
                     </details>
                     {/* Quick Dosing Reference */}
-                    <details className="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-xl p-3">
+                    <details className="bg-caution-soft border border-line border-l-[3px] border-l-caution rounded-md p-3">
                       <summary className="font-bold text-orange-900 text-sm cursor-pointer flex items-center gap-2">
                         <i aria-hidden="true" data-lucide="pill" className="w-4 h-4"></i>
                         Quick Dosing Reference
@@ -30366,7 +30372,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Shows trial relevance after scoring          */}
                     {/* ============================================ */}
                     {(nihssScore || telestrokeNote.age) && (
-                      <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-xl p-4 shadow-md">
+                      <div className="bg-reference-soft border border-line border-l-[3px] border-l-reference rounded-md p-4">
                         <div className="flex items-center justify-between mb-2">
                           <h2 className="text-lg font-bold text-purple-900 flex items-center gap-2">
                             <i aria-hidden="true" data-lucide="flask-conical" className="w-5 h-5"></i> Score → Trial Implications
@@ -30702,7 +30708,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </label>
                         </div>
                         <div className="space-y-4">
-                          <div className="bg-gradient-to-br from-white to-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden group">
+                          <div className="bg-card p-4 rounded-md border border-line relative overflow-hidden group">
                              <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500">
                                   <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-4A2.5 2.5 0 0 1 9.5 2Z" />
@@ -34304,19 +34310,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {activeTab === 'trials' && (
                   <ErrorBoundary>
                   <div id="tabpanel-trials" role="tabpanel" aria-labelledby="tab-trials" className="space-y-6">
-                    {/* Header Section with Patient Summary */}
-                    <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-6 rounded-lg shadow-lg">
+                    {/* Header Section with Patient Summary —
+                        v6.0-03: demoted from blue→indigo→purple gradient to a
+                        quiet section header on paper. */}
+                    <header className="bg-card border border-line rounded-md p-6">
                       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                         <div>
-                          <h2 className="text-3xl font-bold flex items-center gap-3">
-                            <i aria-hidden="true" data-lucide="flask-conical" className="w-7 h-7"></i> Clinical Trials
+                          <p className="font-mono uppercase text-eyebrow text-mute mb-1">Reference</p>
+                          <h2 className="font-serif text-section text-ink flex items-center gap-3">
+                            <i aria-hidden="true" data-lucide="flask-conical" className="w-7 h-7 text-mute"></i> Clinical Trials
                           </h2>
-                          <p className="text-blue-100 mt-1">{trialsView === 'atlas' ? 'Completed and landmark trials — what does the literature say' : 'Reference for active clinical trials'}</p>
+                          <p className="font-sans text-body text-ink-2 mt-1 text-pretty">{trialsView === 'atlas' ? 'Completed and landmark trials — what does the literature say' : 'Reference for active clinical trials'}</p>
                         </div>
 
                       </div>
 
-                    </div>
+                    </header>
 
                     {/* Active Trials / Evidence Atlas sub-view toggle. Section
                         toggle (not a hash route) preserves /stroke/#/trials. */}
@@ -34633,7 +34642,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* Patient-based Trial Relevance Summary */}
                     {(telestrokeNote.age || nihssScore > 0) && (
-                      <div className="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-xl p-4">
+                      <div className="bg-paper-2 border border-line rounded-md p-4">
                         <h3 className="text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
                           <i aria-hidden="true" data-lucide="user-check" className="w-4 h-4 text-blue-600"></i>
                           Patient-Specific Trial Relevance

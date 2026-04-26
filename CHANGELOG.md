@@ -1,5 +1,33 @@
 # CHANGELOG
 
+## v5.24.0 — 2026-04-25 — v6.0-03 Demote gradient banners
+
+All 14 `bg-gradient-to-r/br/...` instances in `src/app.jsx` replaced with quiet section headers, solid semantic backgrounds, or hairline cards. **Zero gradient backgrounds remaining anywhere in the app.**
+
+### Demoted
+
+- **App header** "Stroke" wordmark — blue→indigo gradient text → `font-serif text-display text-ink`
+- **Window timer banner** — emerald/amber/orange/red gradient → solid semantic bg keyed by treatment-window threshold (`bg-confirm` <3h · `bg-caution` 3–4.5h · `bg-critical` ≥4.5h)
+- **Telephone Consult banner** — amber→orange gradient → quiet `<header>` with mono eyebrow ("Step 01 · Capture"), serif title, mono tabular LKW value, secondary action button
+- **Recommendation panel** — blue-50→green-50 gradient → `bg-reference-soft` with reference left rule
+- **TNK contraindications** — orange-50→red-50 gradient → `bg-critical-soft` with critical left rule
+- **TNK dose badge (header + body)** — amber/green gradients → solid `bg-caution`/`bg-confirm` and `bg-caution-soft`/`bg-confirm-soft`
+- **Elapsed-time prominent timer** — getElapsedColor() now returns solid utility class (`bg-confirm` / `bg-caution` / `bg-critical`) instead of gradient class strings
+- **Quick patient summary** card — slate→blue gradient → `bg-paper-2`
+- **Quick dosing reference** details — orange→amber gradient → `bg-caution-soft` with caution left rule
+- **Calculator → trial implications** banner — purple→indigo gradient → `bg-reference-soft` with reference left rule
+- **Calculator-result card** — white→slate-50 gradient → plain `bg-card`
+- **Clinical Trials top header** — blue→indigo→purple gradient → quiet `<header>` with "Reference" eyebrow + serif title
+- **Trial relevance summary** — slate→blue gradient → `bg-paper-2`
+
+### Architectural
+
+- The window-timer color logic is now token-driven, so dark mode flips correctly via `--confirm` / `--caution` / `--critical` token overrides.
+- Telephone Consult and Clinical Trials banners are now `<header>` elements (was `<div>`), aligning the DOM with the spec ("plain header elements").
+- "Start Timer" button on Telephone Consult banner now uses the new `.v6-btn-secondary .v6-btn-sm` classes from v6.0-02 — first concrete adoption of the primitives.
+
+Cache v87 → v88. Version 5.23.0 → 5.24.0. Tests: 427/427 passing. Build clean (2.5 MB bundle, no growth).
+
 ## v5.23.0 — 2026-04-25 — v6.0-02 Repaint primitives
 
 ### Shared UI primitives
