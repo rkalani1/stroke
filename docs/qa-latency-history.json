@@ -232,5 +232,65 @@
         "durationMs": 30887
       }
     ]
+  },
+  {
+    "finishedAt": "2026-04-26T00:53:27.008Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 13406,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 29900
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 5267
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 5052
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 29900
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-04-26T00:54:56.818Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 15763,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 34738
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 5694
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 6857
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 34738
+      }
+    ]
   }
 ]

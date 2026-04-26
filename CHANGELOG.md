@@ -1,5 +1,134 @@
 # CHANGELOG
 
+## v5.29.0 — 2026-04-25 — v6.0-08 Anchored Management chips
+
+Closes the v6.0 milestone.
+
+- **Snap-scroll to named protocol** — every Management sub-tab pill (ICH, Ischemic, SAH, TIA, CVT, Clinic, Wards, Calculators, Pocket Cards, Teaching, References) now triggers `scrollIntoView({ behavior: 'smooth', block: 'start' })` on its corresponding `mgmt-tabpanel-${id}` after the React render commits (`requestAnimationFrame`). Both pointer clicks and keyboard ←/→/Home/End navigation scroll-anchor.
+- **Sticky breadcrumb** — `Management › <active sub-tab>` rendered as mono uppercase eyebrow on `bg-paper-2`, pinned at `top-0 z-40`. Sub-tab pill row stacks underneath at `top-9 z-30`, so the breadcrumb is always visible while protocol content scrolls.
+- **Hash routing** is unchanged (the existing `buildHashRoute(activeTab, managementSubTab)` already updated the URL on sub-tab change), so browser back/forward continues to restore the right protocol; the new auto-scroll fires on the resulting state change too.
+
+Cache v92 → v93. Version 5.28.0 → 5.29.0. Tests: 427/427 passing.
+
+## v5.28.0 — 2026-04-25 — v6.0-07 Auto-save indicator
+
+- **`<SavedAgo>`** — new lightweight component in `src/components.jsx`. Reads `localStorage[<prefix>:lastUpdated]` (already written by app.jsx on every appData mutation) and ticks every 5 s. Renders as mono tabular caption: "saved just now" → "saved 6s ago" → "saved 4m ago" → "saved 1h ago".
+- Mounted in the encounter shell header next to the "Stroke" wordmark, only when `activeTab === 'encounter'`. No toasts.
+- Existing `AutoSaveIndicator` (which depends on a `createAutoSaver` instance, used by patient store) restyled to mono tabular text-mute + `bg-confirm` dot for visual continuity with the new system.
+
+Cache v91 → v92. Version 5.27.0 → 5.28.0. Tests: 427/427 passing.
+
+## v5.27.0 — 2026-04-25 — v6.0-06 Type pass
+
+Type-system rules baked into `src/styles.css` `@layer base` so they apply to all current and future surfaces without per-element opt-in.
+
+- **`text-wrap: balance`** on every heading (`h1`–`h6`). Prevents widow words ("orphan") on the last line, especially noticeable on serif section titles. Graceful fallback in browsers without support.
+- **`text-wrap: pretty`** on every `p`. Improves multi-line paragraph rake.
+- **`.data-context strong, strong.data`** — `<strong>` inside data-flagged elements renders as JetBrains Mono semibold tabular numerals. Clinical numerics in prose ("BP 168/94", "INR 1.0", "NIHSS 14") now line up by digit and read with the rest of the data layer instead of being bolded body sans.
+
+The full mono-numeric sweep (replacing every existing `<strong>{nihss}</strong>`-style emphasis with `<span className="font-mono tabular-nums">`) is deferred to surface-level PRs and v6.1-03 (the right-rail mirror, which is mostly mono).
+
+Cache v90 → v91. Version 5.26.0 → 5.27.0. Tests: 427/427 passing.
+
+## v5.26.0 — 2026-04-25 — v6.0-05 Hairline cards (first cut)
+
+Globalwide cleanup pass on card chrome:
+
+- **Radii**: `rounded-xl` and `rounded-2xl` → `rounded-md` everywhere (per spec: no 12 px+ radii). `src/app.jsx`, **174 lines** touched. 58 `rounded-xl` instances + the few `rounded-2xl` instances all collapsed to 6 px.
+- **Shadows**: `shadow-sm` / `shadow-md` / `shadow-lg` stripped from `src/app.jsx`. Cards are instruments, not marketing surfaces — they read by hairline border + paper background, not by lift.
+- **Borders to tokens**: `border border-slate-200` and `border-2 border-slate-300` → `border border-line` (now resolves to `var(--line)` so dark mode flips automatically).
+
+### Notes
+
+- This is the first cut of v6.0-05. Full per-section refactoring of the Encounter form (one card per section, hairline-`border-b` rows, no nested tinted backgrounds) requires touching the ~8 000-line encounter render and is deferred to a follow-up PR within the v6.0 milestone — the most expensive cosmetic move on the roadmap.
+- The `bg-blue-50`/`bg-amber-50`/`bg-red-50`/etc. tinted backgrounds are intentionally retained in this PR — many encode clinical state (red = contraindication, amber = caution). They migrate to `bg-{semantic}-soft` token utilities as the hairline-row refactor lands per surface.
+- Tests: 427/427 passing. Build clean.
+- Cache v89 → v90. Version 5.25.0 → 5.26.0.
+
+## v5.25.0 — 2026-04-25 — v6.0-04 Strip decorative icons
+
+Reduces lucide-icon count in `src/app.jsx` from **288 → 206 (-82)**, removing decorative icons from the surfaces the v6.0 spec explicitly calls out and from prominent section headers.
+
+### Stripped
+
+- **Top tabs** — Encounter / Management / Trials. The dynamic `<i data-lucide={tab.icon}>` is gone; tab definitions no longer carry an `icon` field. Labels-only rendering.
+- **Management sub-tabs** — ICH / Ischemic / SAH / TIA / CVT / Clinic / Wards / Calculators / Pocket Cards / Teaching / References. Pills are now label-only, full-rounded, ink/paper-2 active/inactive states (replaces `bg-blue-600` active state).
+- **Section-header / category icons** — bulk-stripped 80 instances of decorative `<i data-lucide="X" .../>` for the names: `moon`, `brain`, `activity`, `zap`, `stethoscope`, `file-text`, `library`, `flask-conical`, `pill`, `droplet`, `droplets`, `heart-pulse`, `syringe`, `clipboard-list`, `clipboard-check`, `graduation-cap`, `book-open`, `credit-card`, `calculator`, `git-branch`, `map-pin`, `file-plus`, `lightbulb`, `test-tubes`, `user-plus`, `share-2`, `history`, `file-json`, `user-check`. These were inline with section titles and labels — purely decorative.
+
+### Kept
+
+Per the spec ("Keep icons only for state indicators"), the remaining 206 icons are predominantly:
+- **State**: `alert-triangle`, `alert-circle`, `shield-alert`, `check-circle`, `x` (warnings, confirmations, dismissals)
+- **Expandable**: `chevron-down`, `chevron-right`
+- **Interactive button glyphs**: `copy`, `download`, `eye` (view), `mail`, `scan`, `search`, `external-link`
+- **Toggle states**: `volume-x`/`volume-2` (mute), `sun`/`moon` (theme), `wifi-off` (offline)
+- **Domain glyphs in icon-only contexts**: `clock` near time data (semantic, not decorative)
+
+### Notes
+
+- No clinical content edited. No recommendations, doses, time targets, citations, classes, or trial citations changed.
+- Tests: 427/427 passing. Build clean (2.5 MB JS, no growth).
+- Cache v88 → v89. Version 5.24.0 → 5.25.0.
+
+## v5.24.0 — 2026-04-25 — v6.0-03 Demote gradient banners
+
+All 14 `bg-gradient-to-r/br/...` instances in `src/app.jsx` replaced with quiet section headers, solid semantic backgrounds, or hairline cards. **Zero gradient backgrounds remaining anywhere in the app.**
+
+### Demoted
+
+- **App header** "Stroke" wordmark — blue→indigo gradient text → `font-serif text-display text-ink`
+- **Window timer banner** — emerald/amber/orange/red gradient → solid semantic bg keyed by treatment-window threshold (`bg-confirm` <3h · `bg-caution` 3–4.5h · `bg-critical` ≥4.5h)
+- **Telephone Consult banner** — amber→orange gradient → quiet `<header>` with mono eyebrow ("Step 01 · Capture"), serif title, mono tabular LKW value, secondary action button
+- **Recommendation panel** — blue-50→green-50 gradient → `bg-reference-soft` with reference left rule
+- **TNK contraindications** — orange-50→red-50 gradient → `bg-critical-soft` with critical left rule
+- **TNK dose badge (header + body)** — amber/green gradients → solid `bg-caution`/`bg-confirm` and `bg-caution-soft`/`bg-confirm-soft`
+- **Elapsed-time prominent timer** — getElapsedColor() now returns solid utility class (`bg-confirm` / `bg-caution` / `bg-critical`) instead of gradient class strings
+- **Quick patient summary** card — slate→blue gradient → `bg-paper-2`
+- **Quick dosing reference** details — orange→amber gradient → `bg-caution-soft` with caution left rule
+- **Calculator → trial implications** banner — purple→indigo gradient → `bg-reference-soft` with reference left rule
+- **Calculator-result card** — white→slate-50 gradient → plain `bg-card`
+- **Clinical Trials top header** — blue→indigo→purple gradient → quiet `<header>` with "Reference" eyebrow + serif title
+- **Trial relevance summary** — slate→blue gradient → `bg-paper-2`
+
+### Architectural
+
+- The window-timer color logic is now token-driven, so dark mode flips correctly via `--confirm` / `--caution` / `--critical` token overrides.
+- Telephone Consult and Clinical Trials banners are now `<header>` elements (was `<div>`), aligning the DOM with the spec ("plain header elements").
+- "Start Timer" button on Telephone Consult banner now uses the new `.v6-btn-secondary .v6-btn-sm` classes from v6.0-02 — first concrete adoption of the primitives.
+
+Cache v87 → v88. Version 5.23.0 → 5.24.0. Tests: 427/427 passing. Build clean (2.5 MB bundle, no growth).
+
+## v5.23.0 — 2026-04-25 — v6.0-02 Repaint primitives
+
+### Shared UI primitives
+
+- **`src/primitives.jsx`** — new file. React primitives that bake the v6 visual rules in:
+  - `<Button>` — variants `primary` / `secondary` / `critical` / `confirm` / `ghost`, sizes `sm` / `md` / `lg`. Solid ink primary on white. No blue. No filled secondaries. 4 px radius, 1 px line, 2 px ink focus ring.
+  - `<Card>` — single white surface on paper. 6 px radius, 1 px hairline. Optional eyebrow / title / description / action header.
+  - `<Field>` — labeled input row with hairline-bottom; stacked fields read as a list, not a grid of tiny boxes.
+  - `<Input>`, `<Select>`, `<Textarea>` — no bg tint, 1 px line border, ink focus. Mono variant for clinical numerics. `numeric` prop wires `inputmode="decimal"` + iOS-friendly `pattern`.
+  - `<Tabs>` — quiet pills. Active = solid ink. No active gradient.
+  - `<Banner>` — quiet section header (replaces every gradient banner). Optional 3 px left rule per accent (`critical` / `confirm` / `caution` / `reference`).
+  - `<Callout>` — semantic note. Glyph required so color is never the only signal (✕ critical · ✓ confirm · ⚠ caution · ⓘ reference).
+  - `<Stamp>` — small semantic badge anchored to a field. Used heavily in v6.2-04 surfaced contraindications.
+  - `<Eyebrow>`, `<Data>` — small text helpers (mono uppercase eyebrow, mono tabular data span).
+
+### Component classes for piecemeal migration
+
+- **`src/styles.css` `@layer components`** — mirrors the React primitives so the 34k-line `src/app.jsx` monolith can adopt them via `className` without lifting JSX into separate components:
+  - `.v6-btn-primary` / `.v6-btn-secondary` / `.v6-btn-critical` / `.v6-btn-confirm` / `.v6-btn-ghost` (+ `.v6-btn-sm` / `.v6-btn-lg`)
+  - `.v6-card` / `.v6-card-header` / `.v6-card-body`
+  - `.v6-input` / `.v6-select` / `.v6-textarea`
+  - `.v6-eyebrow` / `.v6-data`
+  - `.v6-callout-{critical,confirm,caution,reference}`
+  - `.v6-stamp-{critical,confirm,caution,reference}`
+- **Tailwind `safelist`** for the `v6-*` pattern so classes ship before the monolith adopts them.
+
+### Notes
+
+- This PR is purely additive. No surface in `src/app.jsx` was repainted yet — adoption begins in **v6.0-03** (gradient banner demotion) and continues through **v6.0-08**.
+- The "every page should already feel calmer" outcome from the v6.0 spec lands when v6.0-03 → v6.0-08 swap inline `bg-gradient-to-r from-... to-...` and `rounded-xl` chrome for these primitives.
+
 ## v5.22.0 — 2026-04-25 — v6.0-01 Tokens & Tailwind config
 
 ### Design system foundation

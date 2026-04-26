@@ -677,7 +677,9 @@ async function auditView(browser, target, viewport) {
 
       const guardrailHeading = page.getByRole('heading', { name: /Post-EVT BP Guardrail/i }).first();
       if ((await guardrailHeading.count()) > 0) {
-        const guardrailCard = guardrailHeading.locator('xpath=ancestor::div[contains(@class,"rounded-xl")][1]');
+        // v6.0-05: card radii changed from rounded-xl to rounded-md across the app.
+        // Match either form so the smoke check works during/after the migration.
+        const guardrailCard = guardrailHeading.locator('xpath=ancestor::div[contains(@class,"rounded-md") or contains(@class,"rounded-xl")][1]');
         const guardrailSelects = guardrailCard.locator('select');
         const guardrailBpInput = guardrailCard.locator('input[type="text"]').first();
         if ((await guardrailSelects.count()) >= 3 && (await guardrailBpInput.count()) > 0) {
