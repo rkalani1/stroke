@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v5.27.0 — 2026-04-25 — v6.0-06 Type pass
+
+Type-system rules baked into `src/styles.css` `@layer base` so they apply to all current and future surfaces without per-element opt-in.
+
+- **`text-wrap: balance`** on every heading (`h1`–`h6`). Prevents widow words ("orphan") on the last line, especially noticeable on serif section titles. Graceful fallback in browsers without support.
+- **`text-wrap: pretty`** on every `p`. Improves multi-line paragraph rake.
+- **`.data-context strong, strong.data`** — `<strong>` inside data-flagged elements renders as JetBrains Mono semibold tabular numerals. Clinical numerics in prose ("BP 168/94", "INR 1.0", "NIHSS 14") now line up by digit and read with the rest of the data layer instead of being bolded body sans.
+
+The full mono-numeric sweep (replacing every existing `<strong>{nihss}</strong>`-style emphasis with `<span className="font-mono tabular-nums">`) is deferred to surface-level PRs and v6.1-03 (the right-rail mirror, which is mostly mono).
+
+Cache v90 → v91. Version 5.26.0 → 5.27.0. Tests: 427/427 passing.
+
 ## v5.26.0 — 2026-04-25 — v6.0-05 Hairline cards (first cut)
 
 Globalwide cleanup pass on card chrome:
