@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## v5.26.0 — 2026-04-25 — v6.0-05 Hairline cards (first cut)
+
+Globalwide cleanup pass on card chrome:
+
+- **Radii**: `rounded-xl` and `rounded-2xl` → `rounded-md` everywhere (per spec: no 12 px+ radii). `src/app.jsx`, **174 lines** touched. 58 `rounded-xl` instances + the few `rounded-2xl` instances all collapsed to 6 px.
+- **Shadows**: `shadow-sm` / `shadow-md` / `shadow-lg` stripped from `src/app.jsx`. Cards are instruments, not marketing surfaces — they read by hairline border + paper background, not by lift.
+- **Borders to tokens**: `border border-slate-200` and `border-2 border-slate-300` → `border border-line` (now resolves to `var(--line)` so dark mode flips automatically).
+
+### Notes
+
+- This is the first cut of v6.0-05. Full per-section refactoring of the Encounter form (one card per section, hairline-`border-b` rows, no nested tinted backgrounds) requires touching the ~8 000-line encounter render and is deferred to a follow-up PR within the v6.0 milestone — the most expensive cosmetic move on the roadmap.
+- The `bg-blue-50`/`bg-amber-50`/`bg-red-50`/etc. tinted backgrounds are intentionally retained in this PR — many encode clinical state (red = contraindication, amber = caution). They migrate to `bg-{semantic}-soft` token utilities as the hairline-row refactor lands per surface.
+- Tests: 427/427 passing. Build clean.
+- Cache v89 → v90. Version 5.25.0 → 5.26.0.
+
 ## v5.25.0 — 2026-04-25 — v6.0-04 Strip decorative icons
 
 Reduces lucide-icon count in `src/app.jsx` from **288 → 206 (-82)**, removing decorative icons from the surfaces the v6.0 spec explicitly calls out and from prominent section headers.
