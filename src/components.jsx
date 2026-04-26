@@ -117,8 +117,50 @@ export const AutoSaveIndicator = ({ autoSaver }) => {
   }, [autoSaver]);
   if (!autoSaver) return null;
   return (
-    <span className="inline-flex items-center gap-1 text-[11px] text-slate-500" aria-live="polite" title="Encounter auto-saves locally to your browser">
-      <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" aria-hidden />
+    <span className="inline-flex items-center gap-1.5 font-mono tabular-nums text-caption text-mute" aria-live="polite" title="Encounter auto-saves locally to your browser">
+      <span className="w-1.5 h-1.5 bg-confirm rounded-full" aria-hidden />
+      {ago}
+    </span>
+  );
+};
+
+// =========================================================================
+// SavedAgo — v6.0-07 lightweight "Saved 6 sec ago" stamp.
+// Reads `lastUpdated` ISO timestamp from localStorage (set by app.jsx on
+// every appData write) and ticks every 5 s. No toasts. Mono tabular.
+// Mount in the encounter shell header, top-right.
+// =========================================================================
+export const SavedAgo = ({ storageKey = 'strokeApp:lastUpdated' }) => {
+  const [ago, setAgo] = useState('');
+  useEffect(() => {
+    const tick = () => {
+      let raw;
+      try { raw = localStorage.getItem(storageKey); } catch { raw = null; }
+      if (!raw) { setAgo('not saved yet'); return; }
+      let t;
+      try {
+        const parsed = raw.startsWith('"') ? JSON.parse(raw) : raw;
+        t = new Date(parsed).getTime();
+      } catch { t = NaN; }
+      if (!Number.isFinite(t)) { setAgo(''); return; }
+      const s = Math.max(0, Math.floor((Date.now() - t) / 1000));
+      if (s < 5) setAgo('saved just now');
+      else if (s < 60) setAgo(`saved ${s}s ago`);
+      else if (s < 3600) setAgo(`saved ${Math.floor(s / 60)}m ago`);
+      else setAgo(`saved ${Math.floor(s / 3600)}h ago`);
+    };
+    tick();
+    const i = setInterval(tick, 5000);
+    return () => clearInterval(i);
+  }, [storageKey]);
+  if (!ago) return null;
+  return (
+    <span
+      className="inline-flex items-center gap-1.5 font-mono tabular-nums text-caption text-mute"
+      aria-live="polite"
+      title="Encounter auto-saves locally to your browser"
+    >
+      <span className="w-1.5 h-1.5 bg-confirm rounded-full" aria-hidden />
       {ago}
     </span>
   );
