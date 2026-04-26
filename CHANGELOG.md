@@ -1,5 +1,30 @@
 # CHANGELOG
 
+## v5.25.0 — 2026-04-25 — v6.0-04 Strip decorative icons
+
+Reduces lucide-icon count in `src/app.jsx` from **288 → 206 (-82)**, removing decorative icons from the surfaces the v6.0 spec explicitly calls out and from prominent section headers.
+
+### Stripped
+
+- **Top tabs** — Encounter / Management / Trials. The dynamic `<i data-lucide={tab.icon}>` is gone; tab definitions no longer carry an `icon` field. Labels-only rendering.
+- **Management sub-tabs** — ICH / Ischemic / SAH / TIA / CVT / Clinic / Wards / Calculators / Pocket Cards / Teaching / References. Pills are now label-only, full-rounded, ink/paper-2 active/inactive states (replaces `bg-blue-600` active state).
+- **Section-header / category icons** — bulk-stripped 80 instances of decorative `<i data-lucide="X" .../>` for the names: `moon`, `brain`, `activity`, `zap`, `stethoscope`, `file-text`, `library`, `flask-conical`, `pill`, `droplet`, `droplets`, `heart-pulse`, `syringe`, `clipboard-list`, `clipboard-check`, `graduation-cap`, `book-open`, `credit-card`, `calculator`, `git-branch`, `map-pin`, `file-plus`, `lightbulb`, `test-tubes`, `user-plus`, `share-2`, `history`, `file-json`, `user-check`. These were inline with section titles and labels — purely decorative.
+
+### Kept
+
+Per the spec ("Keep icons only for state indicators"), the remaining 206 icons are predominantly:
+- **State**: `alert-triangle`, `alert-circle`, `shield-alert`, `check-circle`, `x` (warnings, confirmations, dismissals)
+- **Expandable**: `chevron-down`, `chevron-right`
+- **Interactive button glyphs**: `copy`, `download`, `eye` (view), `mail`, `scan`, `search`, `external-link`
+- **Toggle states**: `volume-x`/`volume-2` (mute), `sun`/`moon` (theme), `wifi-off` (offline)
+- **Domain glyphs in icon-only contexts**: `clock` near time data (semantic, not decorative)
+
+### Notes
+
+- No clinical content edited. No recommendations, doses, time targets, citations, classes, or trial citations changed.
+- Tests: 427/427 passing. Build clean (2.5 MB JS, no growth).
+- Cache v88 → v89. Version 5.24.0 → 5.25.0.
+
 ## v5.24.0 — 2026-04-25 — v6.0-03 Demote gradient banners
 
 All 14 `bg-gradient-to-r/br/...` instances in `src/app.jsx` replaced with quiet section headers, solid semantic backgrounds, or hairline cards. **Zero gradient backgrounds remaining anywhere in the app.**
