@@ -63,12 +63,19 @@
     @apply bg-slate-50 text-slate-900 antialiased;
   }
 
-  h1, h2, h3, h4 {
+  /* v6.0-06 type pass —
+     • text-wrap: balance on headings prevents short orphan words ("widows")
+       at line breaks (Chromium, Safari 17+, Firefox 121+).
+     • text-wrap: pretty on prose improves multi-line paragraph rake.
+     Browsers without support fall back to default wrapping silently. */
+  h1, h2, h3, h4, h5, h6 {
     @apply tracking-tight;
+    text-wrap: balance;
   }
 
   p {
     @apply leading-relaxed;
+    text-wrap: pretty;
   }
 
   ::selection {
@@ -84,6 +91,17 @@
   code, kbd, samp, pre {
     font-variant-numeric: tabular-nums;
     font-feature-settings: 'tnum' 1, 'cv02' 1, 'cv03' 1;
+  }
+
+  /* v6.0-06: data emphasis. <strong> inside elements with .data-context or
+     near .font-mono renders as monospace tabular instead of bold body sans —
+     so clinical numerics in prose ("BP 168/94", "INR 1.0") line up by digit
+     and read with the rest of the data layer.  */
+  .data-context strong,
+  strong.data {
+    font-family: '"JetBrains Mono"', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
   }
 }
 
