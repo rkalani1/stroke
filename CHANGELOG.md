@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v5.29.0 — 2026-04-25 — v6.0-08 Anchored Management chips
+
+Closes the v6.0 milestone.
+
+- **Snap-scroll to named protocol** — every Management sub-tab pill (ICH, Ischemic, SAH, TIA, CVT, Clinic, Wards, Calculators, Pocket Cards, Teaching, References) now triggers `scrollIntoView({ behavior: 'smooth', block: 'start' })` on its corresponding `mgmt-tabpanel-${id}` after the React render commits (`requestAnimationFrame`). Both pointer clicks and keyboard ←/→/Home/End navigation scroll-anchor.
+- **Sticky breadcrumb** — `Management › <active sub-tab>` rendered as mono uppercase eyebrow on `bg-paper-2`, pinned at `top-0 z-40`. Sub-tab pill row stacks underneath at `top-9 z-30`, so the breadcrumb is always visible while protocol content scrolls.
+- **Hash routing** is unchanged (the existing `buildHashRoute(activeTab, managementSubTab)` already updated the URL on sub-tab change), so browser back/forward continues to restore the right protocol; the new auto-scroll fires on the resulting state change too.
+
+Cache v92 → v93. Version 5.28.0 → 5.29.0. Tests: 427/427 passing.
+
 ## v5.28.0 — 2026-04-25 — v6.0-07 Auto-save indicator
 
 - **`<SavedAgo>`** — new lightweight component in `src/components.jsx`. Reads `localStorage[<prefix>:lastUpdated]` (already written by app.jsx on every appData mutation) and ticks every 5 s. Renders as mono tabular caption: "saved just now" → "saved 6s ago" → "saved 4m ago" → "saved 1h ago".
