@@ -2,13 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   v6.0 design tokens — neutral + semantic
+   Wired through tailwind.config.js so utilities like text-ink,
+   bg-paper, border-line, text-critical resolve to these values.
+   The page background, prose color, and section heading family
+   continue to be set by index.html legacy rules until v6.0-02
+   primitives migrate them.
+   ============================================================ */
 @layer base {
   :root {
     color-scheme: light;
+
+    /* Neutrals — do 90% of the work. */
+    --ink:     #0c1116;
+    --ink-2:   #2a3340;
+    --mute:    #5b6473;
+    --line:    #e6e2dc;
+    --paper:   #f6f3ee;
+    --paper-2: #efeae2;
+    --card:    #ffffff;
+
+    /* Semantic — used sparingly, never decoratively.
+       --critical: contraindications, time breaches.
+       --confirm:  eligible, target met.
+       --caution:  approaching breach, soft warnings.
+       --reference: informational notes, citation links. */
+    --critical:       #b3361f;
+    --critical-soft:  #f7e6e2;
+    --confirm:        #2f6b4a;
+    --confirm-soft:   #e6efe8;
+    --caution:        #a6741b;
+    --caution-soft:   #f3ead4;
+    --reference:      #23527a;
+    --reference-soft: #e3ecf3;
   }
 
   html.dark {
     color-scheme: dark;
+
+    --ink:     #f0ece5;
+    --ink-2:   #c8c2b8;
+    --mute:    #8c8579;
+    --line:    #2a2e34;
+    --paper:   #14171b;
+    --paper-2: #1c2026;
+    --card:    #181c22;
+
+    --critical:       #e07a64;
+    --critical-soft:  #3a1c16;
+    --confirm:        #7fb591;
+    --confirm-soft:   #18261d;
+    --caution:        #d2a55a;
+    --caution-soft:   #2a1f10;
+    --reference:      #6ea3c9;
+    --reference-soft: #16242f;
   }
 
   body {
@@ -24,8 +72,18 @@
   }
 
   ::selection {
-    background: #dbeafe;
-    color: #0f172a;
+    background: var(--reference-soft);
+    color: var(--ink);
+  }
+
+  /* Mono numerics use tabular figures by default — clinical numbers
+     align in vertical columns regardless of digit. JetBrains Mono
+     ships with cv02/cv03 stylistic alternates that improve legibility
+     of a/g, useful at 12–14px on small screens. */
+  .font-mono,
+  code, kbd, samp, pre {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1, 'cv02' 1, 'cv03' 1;
   }
 }
 
