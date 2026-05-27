@@ -1,0 +1,188 @@
+/* ─────────────────────────────────────────────────────────────
+   stroke v7.0 — design tokens
+   Drop-in: src/design/tokens.css
+   Imported at root mount only (src/app.jsx).
+   Tailwind reads these via rgb(var(--token) / <alpha-value>) in tailwind.config.js.
+
+   v6 aliases at the bottom keep bg-card, border-line, text-ink,
+   font-serif, font-sans resolving — no rename required.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  color-scheme: light;
+
+  /* Neutral ramp (Slate) — AA-verified on white & slate-950 */
+  --slate-0:    255 255 255;
+  --slate-50:   248 250 252;
+  --slate-100:  241 245 249;
+  --slate-200:  226 232 240;
+  --slate-300:  203 213 225;
+  --slate-400:  148 163 184; /* UI only — fails AA on white */
+  --slate-500:  100 116 139; /* placeholder text, 4.5:1 AA */
+  --slate-600:  71 85 105;
+  --slate-700:  51 65 85;
+  --slate-800:  30 41 59;
+  --slate-900:  15 23 42;
+  --slate-950:  2 6 23;
+
+  /* Cobalt — single accent, replaces indigo/purple/violet in non-link contexts */
+  --cobalt-50:  238 244 255;
+  --cobalt-100: 221 231 255;
+  --cobalt-200: 185 204 255;
+  --cobalt-300: 138 168 255;
+  --cobalt-400: 92 130 247;
+  --cobalt-500: 61 99 229;
+  --cobalt-600: 42 77 204;
+  --cobalt-700: 31 60 168;
+  --cobalt-800: 23 46 128;
+  --cobalt-900: 15 31 88;
+
+  /* Link blue — for <a href> only, never buttons (binding amendment #1) */
+  --link-50:    239 246 255;
+  --link-100:   219 234 254;
+  --link-200:   191 219 254;
+  --link-400:   96 165 250;
+  --link-600:   37 99 235;
+  --link-700:   29 78 216;
+  --link-900:   30 58 138;
+
+  /* Semantic — meaning locked. Spec §3.2 locks 50/200/500/700/900;
+     intermediate steps 100/300/400/600 mirror Tailwind defaults so the
+     v7 codemod can do straight 1:1 swaps of amber-N → warn-N etc. */
+  --crit-50:    254 242 242;
+  --crit-100:   254 226 226;
+  --crit-200:   254 202 202;
+  --crit-300:   252 165 165;
+  --crit-400:   248 113 113;
+  --crit-500:   239 68 68;
+  --crit-600:   220 38 38;
+  --crit-700:   185 28 28;
+  --crit-800:   153 27 27;
+  --crit-900:   127 29 29;
+  --crit-950:   63 29 29;
+
+  --warn-50:    255 251 235;
+  --warn-100:   254 243 199;
+  --warn-200:   253 230 138;
+  --warn-300:   252 211 77;
+  --warn-400:   251 191 36;
+  --warn-500:   245 158 11;
+  --warn-600:   217 119 6;
+  --warn-700:   180 83 9;
+  --warn-800:   146 64 14;
+  --warn-900:   120 53 15;
+  --warn-950:   58 42 11;
+
+  --ok-50:      236 253 245;
+  --ok-100:     209 250 229;
+  --ok-200:     167 243 208;
+  --ok-300:     110 231 183;
+  --ok-400:     52 211 153;
+  --ok-500:     16 185 129;
+  --ok-600:     5 150 105;
+  --ok-700:     4 120 87;
+  --ok-800:     6 95 70;
+  --ok-900:     6 78 59;
+  --ok-950:     12 42 34;
+
+  --info-50:    239 246 255;
+  --info-100:   219 234 254;
+  --info-200:   191 219 254;
+  --info-300:   147 197 253;
+  --info-400:   96 165 250;
+  --info-500:   59 130 246;
+  --info-600:   37 99 235;
+  --info-700:   29 78 216;
+  --info-800:   30 64 175;
+  --info-900:   30 58 138;
+  --info-950:   15 27 61;
+
+  /* Semantic surface aliases */
+  --bg-canvas:        var(--slate-0);
+  --bg-card:          var(--slate-0);
+  --bg-overlay:       var(--slate-0);
+  --bg-subdued:       var(--slate-50);
+  --border-line:      var(--slate-200);
+  --border-strong:    var(--slate-300);
+  --text-ink:         var(--slate-900);
+  --text-muted:       var(--slate-600);
+  --text-faint:       var(--slate-500);
+  --focus-ring:       var(--cobalt-500);
+
+  /* Geometry */
+  --radius-sm:  4px;
+  --radius-md:  8px;   /* buttons, inputs */
+  --radius-lg:  12px;  /* cards, sheets */
+  --radius-xl:  16px;  /* modals */
+  --radius-pill: 999px;
+
+  /* Motion (gated to 0 under prefers-reduced-motion below) */
+  --motion-scale: 1;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Dark theme — strict inversion via data-theme. theme.js owns the attr. */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg-canvas:        var(--slate-950);
+  --bg-card:          var(--slate-900);
+  --bg-overlay:       var(--slate-800);
+  --bg-subdued:       var(--slate-900);
+  --border-line:      var(--slate-800);
+  --border-strong:    var(--slate-700);
+  --text-ink:         var(--slate-50);
+  --text-muted:       var(--slate-300);
+  --text-faint:       var(--slate-400);
+  --focus-ring:       var(--cobalt-300);
+}
+
+/* Class-based dark fallback for projects already using darkMode:'class' */
+html.dark {
+  color-scheme: dark;
+  --bg-canvas:        var(--slate-950);
+  --bg-card:          var(--slate-900);
+  --bg-overlay:       var(--slate-800);
+  --bg-subdued:       var(--slate-900);
+  --border-line:      var(--slate-800);
+  --border-strong:    var(--slate-700);
+  --text-ink:         var(--slate-50);
+  --text-muted:       var(--slate-300);
+  --text-faint:       var(--slate-400);
+  --focus-ring:       var(--cobalt-300);
+}
+
+/* Reduced-motion: zero out --motion-scale; all timing reads from it */
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion-scale: 0; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   v6 → v7 aliases — keep existing utilities resolving.
+   bg-card, border-line, text-ink, etc. continue to work; their
+   values now point at v7 tokens. No breaking rename in v6 monolith.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --ink:              rgb(var(--text-ink));
+  --ink-2:            rgb(var(--text-muted));
+  --mute:             rgb(var(--text-faint));
+  --line:             rgb(var(--border-line));
+  --paper:            rgb(var(--bg-canvas));
+  --paper-2:          rgb(var(--bg-subdued));
+  --card:             rgb(var(--bg-card));
+  --critical:         rgb(var(--crit-700));
+  --critical-soft:    rgb(var(--crit-50));
+  --confirm:          rgb(var(--ok-700));
+  --confirm-soft:     rgb(var(--ok-50));
+  --caution:          rgb(var(--warn-700));
+  --caution-soft:     rgb(var(--warn-50));
+  --reference:        rgb(var(--info-700));
+  --reference-soft:   rgb(var(--info-50));
+  --accent:           rgb(var(--cobalt-600));
+  --accent-2:         rgb(var(--cobalt-500));
+  --accent-soft:      rgb(var(--cobalt-50));
+  --accent-ink:       rgb(var(--cobalt-800));
+  --surface:          rgb(var(--bg-card));
+  --surface-2:        rgb(var(--bg-subdued));
+  --surface-3:        rgb(var(--bg-canvas));
+}

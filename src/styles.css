@@ -1,0 +1,342 @@
+@import "./design/tokens.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   v7 responsive sweep — enforce 44pt touch-target floor at
+   mobile viewports for any interactive element that hasn't
+   already been sized by a primitive. WCAG 2.5.5 (Enhanced).
+   Use data-skip-tap on a genuinely fine-grained control if
+   you need to opt out (e.g. canvas-overlay handles).
+   The v7 primitives (V7Button md/lg, V7NumberStepper, V7Input,
+   V7Select, V7Textarea) already meet this floor — this rule
+   catches the v6 inline JSX that the codemod didn't touch.
+   ============================================================ */
+@layer utilities {
+  @media (max-width: 767px) {
+    button:not([data-skip-tap]),
+    [role="button"]:not([data-skip-tap]),
+    select:not([data-skip-tap]),
+    textarea:not([data-skip-tap]),
+    input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([data-skip-tap]) {
+      min-height: 44px;
+    }
+  }
+}
+
+/* ============================================================
+   v6.0 design tokens — neutral + semantic
+   Wired through tailwind.config.js so utilities like text-ink,
+   bg-paper, border-line, text-critical resolve to these values.
+   The page background, prose color, and section heading family
+   continue to be set by index.html legacy rules until v6.0-02
+   primitives migrate them.
+   ============================================================ */
+@layer base {
+  :root {
+    color-scheme: light;
+
+    /* Neutrals — do 90% of the work. */
+    --ink:     #0c1116;
+    --ink-2:   #2a3340;
+    --mute:    #5b6473;
+    --line:    #e6e2dc;
+    --paper:   #f6f3ee;
+    --paper-2: #efeae2;
+    --card:    #ffffff;
+
+    /* Semantic — used sparingly, never decoratively.
+       --critical: contraindications, time breaches.
+       --confirm:  eligible, target met.
+       --caution:  approaching breach, soft warnings.
+       --reference: informational notes, citation links. */
+    --critical:       #b3361f;
+    --critical-soft:  #f7e6e2;
+    --confirm:        #2f6b4a;
+    --confirm-soft:   #e6efe8;
+    --caution:        #a6741b;
+    --caution-soft:   #f3ead4;
+    --reference:      #23527a;
+    --reference-soft: #e3ecf3;
+
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-pill: 9999px;
+    --shadow-1: 0 1px 2px rgba(15, 23, 42, .06);
+    --shadow-2: 0 8px 20px rgba(15, 23, 42, .08);
+    --surface: #ffffff;
+    --surface-elevated: #ffffff;
+    --neutral-bg: #f8fafc;
+    --text-strong: #0f172a;
+    --text-muted: #475569;
+    --text-subtle: #94a3b8;
+    --border: rgba(15, 23, 42, .08);
+    --focus-ring: 0 0 0 3px rgba(37, 99, 235, .35);
+  }
+
+  html.dark {
+    color-scheme: dark;
+
+    --ink:     #f0ece5;
+    --ink-2:   #c8c2b8;
+    --mute:    #8c8579;
+    --line:    #2a2e34;
+    --paper:   #14171b;
+    --paper-2: #1c2026;
+    --card:    #181c22;
+
+    --critical:       #e07a64;
+    --critical-soft:  #3a1c16;
+    --confirm:        #7fb591;
+    --confirm-soft:   #18261d;
+    --caution:        #d2a55a;
+    --caution-soft:   #2a1f10;
+    --reference:      #6ea3c9;
+    --reference-soft: #16242f;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+
+  button,
+  input,
+  select,
+  textarea,
+  summary {
+    min-width: 0;
+  }
+
+  /* v6.0-06 type pass —
+     • text-wrap: balance on headings prevents short orphan words ("widows")
+       at line breaks (Chromium, Safari 17+, Firefox 121+).
+     • text-wrap: pretty on prose improves multi-line paragraph rake.
+     Browsers without support fall back to default wrapping silently. */
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
+    text-wrap: balance;
+  }
+
+  p {
+    @apply leading-relaxed;
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--reference-soft);
+    color: var(--ink);
+  }
+
+  /* Mono numerics use tabular figures by default — clinical numbers
+     align in vertical columns regardless of digit. JetBrains Mono
+     ships with cv02/cv03 stylistic alternates that improve legibility
+     of a/g, useful at 12–14px on small screens. */
+  .font-mono,
+  code, kbd, samp, pre {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1, 'cv02' 1, 'cv03' 1;
+  }
+
+  /* v6.0-06: data emphasis. <strong> inside elements with .data-context or
+     near .font-mono renders as monospace tabular instead of bold body sans —
+     so clinical numerics in prose ("BP 168/94", "INR 1.0") line up by digit
+     and read with the rest of the data layer.  */
+  .data-context strong,
+  strong.data {
+    font-family: '"JetBrains Mono"', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .app-shell {
+    @apply bg-white/80 border border-slate-200 rounded-2xl shadow-sm;
+  }
+
+  .app-header {
+    @apply border-b border-slate-200/60 pb-3;
+  }
+
+  details > summary {
+    list-style: none;
+  }
+
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* ----------------------------------------------------------
+     v6.0-02 component classes — mirror src/primitives.jsx so
+     inline JSX in app.jsx can migrate piecemeal via className
+     without importing React components.
+     ---------------------------------------------------------- */
+
+  .v6-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-[4px] font-sans font-medium;
+    @apply transition-colors duration-100 h-11 px-4 text-[14px] min-w-[44px];
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper;
+  }
+  .v6-btn-primary   { @apply bg-ink text-white border border-ink hover:bg-ink-2; }
+  .v6-btn-secondary { @apply bg-transparent text-ink border border-line hover:bg-paper-2; }
+  .v6-btn-critical  { @apply bg-critical text-white border border-critical hover:opacity-90; }
+  .v6-btn-confirm   { @apply bg-confirm text-white border border-confirm hover:opacity-90; }
+  .v6-btn-ghost     { @apply bg-transparent text-ink-2 border border-transparent hover:bg-paper-2; }
+  .v6-btn-sm        { @apply h-9 px-3 text-[13px]; }
+  .v6-btn-lg        { @apply h-12 px-5 text-[15px]; }
+
+  .v6-card {
+    @apply bg-card border border-line rounded-md;
+  }
+  .v6-card-header {
+    @apply px-5 pt-5 pb-4 border-b border-line;
+  }
+  .v6-card-body {
+    @apply p-5;
+  }
+
+  .v6-input,
+  .v6-select,
+  .v6-textarea {
+    @apply w-full bg-transparent border border-line rounded-[4px] px-3 h-11 text-[15px] text-ink;
+    @apply placeholder:text-mute focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink;
+    @apply disabled:opacity-60 disabled:cursor-not-allowed;
+  }
+  .v6-textarea {
+    @apply h-auto py-2 leading-snug;
+  }
+
+  .v6-eyebrow {
+    @apply font-mono uppercase text-eyebrow text-mute;
+  }
+
+  .v6-data {
+    @apply font-mono tabular-nums text-ink;
+  }
+
+  .v6-callout {
+    @apply rounded-md border border-line px-4 py-3;
+    border-left-width: 3px;
+  }
+  .v6-callout-critical  { @apply bg-critical-soft text-critical border-critical; }
+  .v6-callout-confirm   { @apply bg-confirm-soft text-confirm border-confirm; }
+  .v6-callout-caution   { @apply bg-caution-soft text-caution border-caution; }
+  .v6-callout-reference { @apply bg-reference-soft text-reference border-reference; }
+
+  .v6-stamp {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded-[4px];
+    @apply font-mono text-caption uppercase tracking-wide;
+    border-left-width: 3px;
+  }
+  .v6-stamp-critical  { @apply bg-critical-soft text-critical border-critical; }
+  .v6-stamp-confirm   { @apply bg-confirm-soft text-confirm border-confirm; }
+  .v6-stamp-caution   { @apply bg-caution-soft text-caution border-caution; }
+  .v6-stamp-reference { @apply bg-reference-soft text-reference border-reference; }
+}
+
+@layer utilities {
+  .overflow-wrap-anywhere {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (forced-colors: active) {
+  h1,
+  .font-serif {
+    background: none !important;
+    color: CanvasText !important;
+    -webkit-text-fill-color: CanvasText !important;
+  }
+
+  :focus-visible {
+    outline: 2px solid Highlight !important;
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .app-shell {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-radius: 0;
+  }
+
+  #main-content {
+    overflow-wrap: anywhere;
+  }
+}
+
+/* Print styles */
+@media print {
+  .app-header,
+  .app-nav,
+  nav[role="tablist"],
+  .no-print,
+  .fixed,
+  [role="alert"].toast-alert {
+    display: none !important;
+  }
+
+  /* Hide sticky nav but keep patient summary strip visible */
+  .sticky.top-0,
+  .sticky.z-50 {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    font-size: 11pt;
+  }
+
+  .app-shell {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: white !important;
+    padding: 0 !important;
+  }
+
+  /* Force all details panels open for print */
+  details {
+    display: block !important;
+  }
+
+  details > *:not(summary) {
+    display: block !important;
+  }
+
+  details[open] > summary {
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.25rem;
+  }
+
+  /* Remove height constraints on note preview for full print */
+  .max-h-96 {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .shadow-sm,
+  .shadow-md,
+  .shadow-lg {
+    box-shadow: none !important;
+  }
+
+  @page {
+    margin: 1.5cm;
+  }
+}

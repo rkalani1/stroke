@@ -1,0 +1,170 @@
+{
+  "id": "poststroke-primary-care-2021",
+  "title": "AHA/ASA Scientific Statement 2021: Primary Care of Adult Patients After Stroke",
+  "shortTitle": "Poststroke Primary Care 2021",
+  "doi": "10.1161/STR.0000000000000382",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000382",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000382",
+  "recommendations": [
+    {
+      "section": "Diagnostic Evaluation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Image the carotid arteries in anterior circulation stroke events.",
+      "page": 6
+    },
+    {
+      "section": "Diagnostic Evaluation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Obtain ECG to screen for atrial fibrillation.",
+      "page": 6
+    },
+    {
+      "section": "Diagnostic Evaluation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Confirm diagnosis with brain imaging (CT or MRI).",
+      "page": 6
+    },
+    {
+      "section": "Diagnostic Evaluation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Perform CBC, PT/INR, PTT, glucose, A1c, creatinine, and lipid profile to identify risk factors and guide therapy.",
+      "page": 6
+    },
+    {
+      "section": "Vascular Risk Factor Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Recommend and facilitate optimal lifestyle practices (physical activity, weight management, smoking cessation, healthy diet).",
+      "page": 6
+    },
+    {
+      "section": "Vascular Risk Factor Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Treat hypertension to a goal of <130/80 mm Hg for most patients.",
+      "page": 6
+    },
+    {
+      "section": "Vascular Risk Factor Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Use high-intensity statin therapy (e.g., atorvastatin 80 mg) when indicated; target LDL-C reductions per guideline.",
+      "page": 6
+    },
+    {
+      "section": "Vascular Risk Factor Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Target A1c <=7% for most patients with diabetes; select glucose-lowering agents with cardiovascular benefit when appropriate.",
+      "page": 6
+    },
+    {
+      "section": "Vascular Risk Factor Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Provide multidimensional diabetes care (lifestyle, nutrition, self-management, medications) and facilitate weight management.",
+      "page": 6
+    },
+    {
+      "section": "Large-Artery Atherosclerosis",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Use aspirin 325 mg daily for stroke related to 50%-99% intracranial stenosis.",
+      "page": 6
+    },
+    {
+      "section": "Large-Artery Atherosclerosis",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Refer 70%-99% ipsilateral extracranial carotid stenosis for endarterectomy within 6 months; consider 50%-69% in selected patients.",
+      "page": 6
+    },
+    {
+      "section": "Large-Artery Atherosclerosis",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Provide intensive medical therapy regardless of carotid surgery decisions.",
+      "page": 6
+    },
+    {
+      "section": "Cardioembolism",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Use oral anticoagulation for atrial fibrillation or flutter unless contraindicated.",
+      "page": 6
+    },
+    {
+      "section": "Cardioembolism",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Prefer DOACs over warfarin for nonvalvular AF, except with moderate-to-severe mitral stenosis or mechanical valves.",
+      "page": 6
+    },
+    {
+      "section": "Cardioembolism",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Use warfarin for AF with moderate-to-severe mitral stenosis or mechanical valves.",
+      "page": 6
+    },
+    {
+      "section": "Patient Behavior",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Support behavior change to improve stroke literacy, lifestyle, and medication adherence.",
+      "page": 6
+    },
+    {
+      "section": "Health Equity",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Address social determinants of health (literacy, language, affordability, food insecurity, housing, transportation) when managing risk factors.",
+      "page": 6
+    },
+    {
+      "section": "Health Equity",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Monitor population-level performance measures to identify and reduce disparities; use health literacy precautions for patient instructions.",
+      "page": 6
+    },
+    {
+      "section": "Antithrombotic Medications",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "For noncardioembolic ischemic stroke or TIA, use aspirin (50-325 mg), clopidogrel 75 mg, or aspirin-dipyridamole.",
+      "page": 6
+    },
+    {
+      "section": "Antithrombotic Medications",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "For minor stroke (NIHSS <=3) or high-risk TIA (ABCD2 >=4), use short-term DAPT (aspirin + clopidogrel) begun within 12-24 hours for 21-90 days, then single therapy.",
+      "page": 6
+    }
+  ]
+}
