@@ -49,10 +49,6 @@ disagreements were resolved by:
     derived numeric scores (NIHSS/ASPECTS/mRS) — they're 0 in React
     state by default, but the form's "untouched" semantics treat
     them as missing.
-  - Tightening the legacy `DISCOVERY` strokeConfirmed check to
-    `['ischemic','ich','sah']` — matching the trial's actual
-    inclusion criteria. The previous check (`c !== 'mimic'`) was
-    overly permissive and incorrectly accepted TIAs.
 
 ### L3 — Canonical-source flag
 `localStorage.setItem('strokeApp:matcherEngineCanonical','true')` flips

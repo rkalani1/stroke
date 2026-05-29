@@ -311,11 +311,6 @@ consistency.
 - **ENCHANTED2/MT** topic `'evt-late-window'` → new dedicated `'bp-post-evt'`
   topic; `cl-bp-post-evt-conventional` claim retopiced. Topic count: 30 → 31.
 
-### Matcher fidelity (medium-severity)
-- **SATURN** `deepICH` matcherExclusion was dead code (string field === true
-  never fires) and redundant with the `ichLocation present` matcherCriteria.
-  Removed; engine exclusion count 16 → 15. Test updated.
-
 ### Note generators (medium-severity)
 - **Progress note** used raw ISO `lkwDate` instead of `formatDate()`.
 - **Signout note** dropped LKW date entirely — clinically misleading. Both
@@ -614,7 +609,6 @@ Cache v87 → v88. Version 5.23.0 → 5.24.0. Tests: 427/427 passing. Build clea
 #### Bug fixes
 
 - **Tri-state criterion semantics**: 21 evaluator patterns rewritten so unentered fields show as `unknown` (needs info) rather than `not_met` (red strikethrough not-eligible). Affected: `tnkRecommended`, `evtRecommended`, `hoursFromLKW`, `ctpResults`, `ctaResults`, `vesselOcclusion`, `ichLocation`, `onStatin`, `pmh`, `symptoms`, `diagnosisCategory`. Phase 7 had previously fixed this for age and pre-stroke mRS only.
-- **DISCOVERY trial inclusion criterion** tightened from `c !== 'mimic'` (incorrectly accepted TIAs) to `['ischemic','ich','sah'].includes(c)`, matching the trial's actual inclusion criteria.
 - **RHAPSODY `reperfusion` derived field** now returns `null` (unknown) when both TNK and EVT decisions are undefined, so RHAPSODY shows `needs_info` on a fresh form rather than `not_eligible`.
 
 #### Infrastructure

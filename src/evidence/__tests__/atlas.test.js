@@ -24,7 +24,7 @@ import {
 
 describe('Evidence Atlas — data layer', () => {
   it('seeds the active trials', () => {
-    expect(activeTrials.length).toBeGreaterThanOrEqual(10);
+    expect(activeTrials.length).toBeGreaterThanOrEqual(9);
     expect(getActiveTrial('sister')).toBeTruthy();
     expect(getActiveTrial('step-evt')).toBeTruthy();
     expect(getActiveTrial('aspire')).toBeTruthy();
@@ -47,7 +47,7 @@ describe('Evidence Atlas — data layer', () => {
   });
 
   it('every legacy matcher key resolves to an active trial', () => {
-    for (const key of ['SISTER', 'STEP', 'PICASSO', 'TESTED', 'VERIFY', 'DISCOVERY', 'MOST', 'CAPTIVA', 'RHAPSODY', 'ASPIRE']) {
+    for (const key of ['SISTER', 'STEP', 'PICASSO', 'TESTED', 'VERIFY', 'MOST', 'CAPTIVA', 'RHAPSODY', 'ASPIRE']) {
       expect(getActiveTrialByLegacyKey(key), `legacy key ${key}`).toBeTruthy();
     }
   });

@@ -33404,48 +33404,6 @@ Attestation: ${SAFE_PAUSE_ATTESTATION}`;
       legacyMatcherKey: "VERIFY"
     }),
     makeActiveTrial({
-      id: "discovery",
-      shortName: "DISCOVERY",
-      fullName: "Cognitive Trajectories After Stroke",
-      nctId: "NCT04916210",
-      phase: "Observational",
-      status: "recruiting",
-      topic: "cognitive-trajectories",
-      briefDescription: "Multi-cohort observational study mapping cognitive trajectories and biomarkers after AIS, ICH, and SAH.",
-      rationale: "Identifies modifiable risk factors for post-stroke cognitive impairment.",
-      inclusionCriteria: [
-        "Age \u226518 y",
-        "AIS, ICH, or SAH within 6 weeks",
-        "Able to complete cognitive testing"
-      ],
-      exclusionCriteria: [
-        "Pre-existing dementia"
-      ],
-      matcherCriteria: [
-        { field: "age", operator: ">=", value: 18, label: "Age \u226518" },
-        { field: "diagnosisCategory", operator: "in", value: ["ischemic", "ich", "sah"], label: "Stroke confirmed" }
-      ],
-      matcherExclusions: [
-        { id: "preDementia", field: "preDementia", operator: "==", value: true, label: "Pre-existing dementia" }
-      ],
-      relatedCompletedTrialIds: [],
-      link: "https://clinicaltrials.gov/study/NCT04916210",
-      lastReviewed: lr,
-      verificationStatus: "verified-clinicaltrials-gov",
-      category: "ischemic",
-      keyTakeaways: [
-        "Maps cognitive decline trajectories after stroke (AIS, ICH, and SAH) over 2 years",
-        "Aims to identify modifiable risk factors for post-stroke cognitive impairment",
-        "Low barrier \u2014 observational with cognitive testing at standard follow-up intervals"
-      ],
-      lookingFor: [
-        "Any stroke type (AIS, ICH, SAH)",
-        "Baseline visit within 6 weeks",
-        "Able to complete cognitive testing"
-      ],
-      legacyMatcherKey: "DISCOVERY"
-    }),
-    makeActiveTrial({
       id: "most",
       shortName: "MOST",
       fullName: "Multi-arm Optimization of Stroke Thrombolysis",
@@ -35615,7 +35573,6 @@ Attestation: ${SAFE_PAUSE_ATTESTATION}`;
     picasso: { ctaResults: "tandemLesion" },
     captiva: { ctaResults: "icas" },
     aspire: { diagnosisCategory: "ichConfirmed" },
-    discovery: { diagnosisCategory: "strokeConfirmed" },
     tested: { vesselOcclusion: "lvo" },
     most: { vesselOcclusion: "lvo" }
   };
@@ -38055,41 +38012,6 @@ Clinician Name`;
                 ]
               },
               {
-                name: "DISCOVERY Study",
-                nct: "NCT04916210",
-                phase: "Observational",
-                status: "",
-                description: "Cognitive trajectories and biomarkers after stroke (includes AIS/ICH/SAH)",
-                inclusion: [
-                  "Age \u226518 years",
-                  "Admitted with one of the following:",
-                  "\u2022 Acute ischemic stroke",
-                  "\u2022 Intracerebral hemorrhage",
-                  "\u2022 Aneurysmal subarachnoid hemorrhage",
-                  "Radiographic confirmation of stroke diagnosis",
-                  "Baseline visit can be completed within 6 weeks of stroke",
-                  "Fluent in English or Spanish",
-                  "Has study partner who knows patient well (contact \u22651x/week)",
-                  "Able to provide informed consent or has LAR",
-                  "Expected to survive at least 1 year"
-                ],
-                exclusion: [
-                  "Pre-stroke dementia diagnosis",
-                  "Pre-stroke cognitive impairment interfering with daily activities",
-                  "Concurrent enrollment in interventional trial affecting cognition",
-                  "Unable to complete study protocol due to:",
-                  "\u2022 Severe aphasia preventing cognitive testing",
-                  "\u2022 Severe motor impairment preventing testing",
-                  "\u2022 Blindness or severe visual impairment",
-                  "\u2022 Deafness or severe hearing impairment",
-                  "Active substance abuse",
-                  "Severe psychiatric illness affecting participation",
-                  "Terminal illness with life expectancy <1 year",
-                  "Previous enrollment in DISCOVERY",
-                  "Planned move out of area within study period"
-                ]
-              },
-              {
                 name: "CLARITY Trial",
                 nct: "NCT07174414",
                 phase: "Phase 3",
@@ -38317,30 +38239,6 @@ Clinician Name`;
                   "Known pregnancy",
                   "Prisoner or ward of state",
                   "Participation in another interventional trial"
-                ]
-              },
-              {
-                name: "DISCOVERY Study (ICH Cohort)",
-                nct: "NCT04916210",
-                phase: "Observational",
-                status: "",
-                description: "Cognitive trajectories and biomarkers after ICH",
-                inclusion: [
-                  "Age \u226518 years",
-                  "Admitted with intracerebral hemorrhage",
-                  "Radiographic confirmation of ICH",
-                  "Baseline visit within 6 weeks of ICH",
-                  "Fluent in English or Spanish",
-                  "Has study partner with regular contact",
-                  "Expected survival \u22651 year"
-                ],
-                exclusion: [
-                  "Pre-existing dementia",
-                  "Unable to complete cognitive testing",
-                  "Concurrent enrollment in cognitive intervention trial",
-                  "Active substance abuse",
-                  "Severe psychiatric illness",
-                  "Terminal illness with life expectancy <1 year"
                 ]
               }
             ]
@@ -54467,7 +54365,7 @@ PLAN:
       const errors = checks.filter((c) => c.severity === "error");
       const warns = checks.filter((c) => c.severity === "warn");
       return /* @__PURE__ */ import_react9.default.createElement("details", { className: `mt-2 border rounded-lg ${errors.length > 0 ? "bg-crit-50 border-crit-300" : "bg-warn-50 border-warn-300"}`, open: errors.length > 0 }, /* @__PURE__ */ import_react9.default.createElement("summary", { className: `cursor-pointer px-3 py-2 text-sm font-semibold flex items-center justify-between ${errors.length > 0 ? "text-crit-800" : "text-warn-800"}` }, /* @__PURE__ */ import_react9.default.createElement("span", { className: "flex items-center gap-2" }, /* @__PURE__ */ import_react9.default.createElement("i", { "aria-hidden": "true", "data-lucide": "shield-alert", className: "w-4 h-4" }), "Data Consistency Check (", errors.length > 0 ? `${errors.length} error${errors.length > 1 ? "s" : ""}` : "", errors.length > 0 && warns.length > 0 ? ", " : "", warns.length > 0 ? `${warns.length} warning${warns.length > 1 ? "s" : ""}` : "", ")")), /* @__PURE__ */ import_react9.default.createElement("div", { className: "px-3 pb-2 space-y-1" }, checks.map((c) => /* @__PURE__ */ import_react9.default.createElement("div", { key: c.id, className: `flex items-start gap-2 text-sm px-2 py-1 rounded ${c.severity === "error" ? "text-crit-800 bg-crit-100/60" : "text-warn-800 bg-warn-100/60"}` }, /* @__PURE__ */ import_react9.default.createElement("i", { "aria-hidden": "true", "data-lucide": c.severity === "error" ? "x-circle" : "alert-triangle", className: "w-3.5 h-3.5 mt-0.5 flex-shrink-0" }), /* @__PURE__ */ import_react9.default.createElement("span", null, c.msg)))));
-    })(), telestrokeNote.diagnosisCategory === "ischemic" && /* @__PURE__ */ import_react9.default.createElement("div", { className: "mt-3 text-sm" }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "font-medium text-slate-700 mb-1" }, "Active Ischemic Stroke Trials:"), /* @__PURE__ */ import_react9.default.createElement("ul", { className: "text-slate-600 space-y-0.5 ml-4" }, /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "SISTER"), " \u2013 Late thrombolysis (4.5-24h), no TNK/EVT"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "STEP-EVT"), " \u2013 Mild LVO or medium/distal vessel occlusions"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "PICASSO"), " \u2013 Tandem lesion (carotid + intracranial LVO)"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "TESTED"), " \u2013 EVT in pre-existing disability (mRS 3-4)"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "VERIFY"), " \u2013 TMS/MRI to predict motor recovery"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "DISCOVERY"), " \u2013 Cognitive trajectories post-stroke"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "ESUS Imaging"), " \u2013 Cardiac/vessel wall MRI for ESUS"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "MOCHA Imaging"), " \u2013 Intracranial vessel-wall analysis for ICAD"))), telestrokeNote.diagnosisCategory === "ich" && /* @__PURE__ */ import_react9.default.createElement("div", { className: "mt-3 text-sm" }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "font-medium text-slate-700 mb-1" }, "Active ICH Trials:"), /* @__PURE__ */ import_react9.default.createElement("ul", { className: "text-slate-600 space-y-0.5 ml-4" }, /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "MINUTE"), " \u2013 Intracerebral hemorrhage trial (NCT07260916)"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "ASPIRE"), " \u2013 Apixaban vs aspirin post-ICH with AF"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "MIRROR Registry"), " \u2013 Minimally invasive ICH evacuation"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "DISCOVERY"), " \u2013 Cognitive trajectories post-ICH")))), telestrokeNote.diagnosisCategory === "ich" && /* @__PURE__ */ import_react9.default.createElement("div", { className: "bg-crit-50 border border-crit-300 rounded-lg p-3" }, /* @__PURE__ */ import_react9.default.createElement("h4", { className: "text-sm font-bold text-crit-800 mb-2 uppercase tracking-wide" }, "ICH Pathway Checklist"), /* @__PURE__ */ import_react9.default.createElement("div", { className: "space-y-2" }, [
+    })(), telestrokeNote.diagnosisCategory === "ischemic" && /* @__PURE__ */ import_react9.default.createElement("div", { className: "mt-3 text-sm" }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "font-medium text-slate-700 mb-1" }, "Active Ischemic Stroke Trials:"), /* @__PURE__ */ import_react9.default.createElement("ul", { className: "text-slate-600 space-y-0.5 ml-4" }, /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "SISTER"), " \u2013 Late thrombolysis (4.5-24h), no TNK/EVT"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "STEP-EVT"), " \u2013 Mild LVO or medium/distal vessel occlusions"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "PICASSO"), " \u2013 Tandem lesion (carotid + intracranial LVO)"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "TESTED"), " \u2013 EVT in pre-existing disability (mRS 3-4)"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "VERIFY"), " \u2013 TMS/MRI to predict motor recovery"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "ESUS Imaging"), " \u2013 Cardiac/vessel wall MRI for ESUS"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "MOCHA Imaging"), " \u2013 Intracranial vessel-wall analysis for ICAD"))), telestrokeNote.diagnosisCategory === "ich" && /* @__PURE__ */ import_react9.default.createElement("div", { className: "mt-3 text-sm" }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "font-medium text-slate-700 mb-1" }, "Active ICH Trials:"), /* @__PURE__ */ import_react9.default.createElement("ul", { className: "text-slate-600 space-y-0.5 ml-4" }, /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "MINUTE"), " \u2013 Intracerebral hemorrhage trial (NCT07260916)"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "ASPIRE"), " \u2013 Apixaban vs aspirin post-ICH with AF"), /* @__PURE__ */ import_react9.default.createElement("li", null, "\u2022 ", /* @__PURE__ */ import_react9.default.createElement("strong", null, "MIRROR Registry"), " \u2013 Minimally invasive ICH evacuation")))), telestrokeNote.diagnosisCategory === "ich" && /* @__PURE__ */ import_react9.default.createElement("div", { className: "bg-crit-50 border border-crit-300 rounded-lg p-3" }, /* @__PURE__ */ import_react9.default.createElement("h4", { className: "text-sm font-bold text-crit-800 mb-2 uppercase tracking-wide" }, "ICH Pathway Checklist"), /* @__PURE__ */ import_react9.default.createElement("div", { className: "space-y-2" }, [
       { field: "ichBPManaged", label: "BP managed (SBP <140 target)", detail: "Class IIa, INTERACT2; avoid <130" },
       { field: "ichReversalInitiated", label: "Anticoag reversal ordered (if applicable)", detail: "Skip if no anticoagulants", skipIf: !telestrokeNote.lastDOACType },
       { field: "ichNeurosurgeryConsulted", label: "Neurosurgery consulted/evaluated", detail: "Surgical candidacy assessed" }

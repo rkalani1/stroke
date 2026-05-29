@@ -23,10 +23,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "needs_info",
       "exclusionsCount": 0
     },
-    "discovery": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "most": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -62,10 +58,6 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "discovery": {
       "status": "needs_info",
       "exclusionsCount": 0
     },
@@ -107,10 +99,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "needs_info",
       "exclusionsCount": 0
     },
-    "discovery": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "most": {
       "status": "not_eligible",
       "exclusionsCount": 0
@@ -146,10 +134,6 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "discovery": {
       "status": "needs_info",
       "exclusionsCount": 0
     },
@@ -191,10 +175,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "not_eligible",
       "exclusionsCount": 0
     },
-    "discovery": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "most": {
       "status": "not_eligible",
       "exclusionsCount": 0
@@ -230,10 +210,6 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "discovery": {
       "status": "needs_info",
       "exclusionsCount": 0
     },
@@ -275,10 +251,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "needs_info",
       "exclusionsCount": 0
     },
-    "discovery": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "most": {
       "status": "eligible",
       "exclusionsCount": 0
@@ -314,10 +286,6 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "discovery": {
       "status": "needs_info",
       "exclusionsCount": 0
     },
@@ -359,10 +327,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "needs_info",
       "exclusionsCount": 0
     },
-    "discovery": {
-      "status": "eligible",
-      "exclusionsCount": 0
-    },
     "most": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -399,10 +363,6 @@ export const EXPECTED_SNAPSHOT = {
     },
     "verify": {
       "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "discovery": {
-      "status": "eligible",
       "exclusionsCount": 0
     },
     "most": {
@@ -443,10 +403,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "needs_info",
       "exclusionsCount": 0
     },
-    "discovery": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
     "most": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -482,10 +438,6 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
-    "discovery": {
       "status": "not_eligible",
       "exclusionsCount": 0
     },
@@ -527,10 +479,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "needs_info",
       "exclusionsCount": 0
     },
-    "discovery": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "most": {
       "status": "not_eligible",
       "exclusionsCount": 0
@@ -566,10 +514,6 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "discovery": {
       "status": "needs_info",
       "exclusionsCount": 0
     },
@@ -611,10 +555,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "needs_info",
       "exclusionsCount": 0
     },
-    "discovery": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "most": {
       "status": "not_eligible",
       "exclusionsCount": 0
@@ -650,10 +590,6 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "discovery": {
       "status": "needs_info",
       "exclusionsCount": 0
     },
@@ -695,10 +631,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "needs_info",
       "exclusionsCount": 0
     },
-    "discovery": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "most": {
       "status": "not_eligible",
       "exclusionsCount": 1
@@ -737,10 +669,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "needs_info",
       "exclusionsCount": 0
     },
-    "discovery": {
-      "status": "eligible",
-      "exclusionsCount": 0
-    },
     "most": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -777,10 +705,6 @@ export const EXPECTED_SNAPSHOT = {
     },
     "verify": {
       "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "discovery": {
-      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "most": {

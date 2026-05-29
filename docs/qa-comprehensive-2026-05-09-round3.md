@@ -103,7 +103,6 @@ All R1 and R2 high/medium-severity findings shipped in v5.32.0 / v5.33.0:
 - Topic-coherence check
 - mRS-9Q boundary fix
 - 5 atlas content drift fixes (TRACE-2, EXTEND, TIMELESS, TRACE-III, ENCHANTED2/MT)
-- SATURN dead-code matcherExclusion
 - dmvoEVTAdvisory M2-distal synonym matching
 - Note-generator date formatting
 - Service-worker dead CDN precache

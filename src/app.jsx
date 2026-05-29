@@ -2787,41 +2787,6 @@ Clinician Name`;
                                 ]
                             },
                             {
-                                name: "DISCOVERY Study",
-                                nct: "NCT04916210",
-                                phase: "Observational",
-                                status: "",
-                                description: "Cognitive trajectories and biomarkers after stroke (includes AIS/ICH/SAH)",
-                                inclusion: [
-                                    "Age ≥18 years",
-                                    "Admitted with one of the following:",
-                                    "• Acute ischemic stroke",
-                                    "• Intracerebral hemorrhage",
-                                    "• Aneurysmal subarachnoid hemorrhage",
-                                    "Radiographic confirmation of stroke diagnosis",
-                                    "Baseline visit can be completed within 6 weeks of stroke",
-                                    "Fluent in English or Spanish",
-                                    "Has study partner who knows patient well (contact ≥1x/week)",
-                                    "Able to provide informed consent or has LAR",
-                                    "Expected to survive at least 1 year"
-                                ],
-                                exclusion: [
-                                    "Pre-stroke dementia diagnosis",
-                                    "Pre-stroke cognitive impairment interfering with daily activities",
-                                    "Concurrent enrollment in interventional trial affecting cognition",
-                                    "Unable to complete study protocol due to:",
-                                    "• Severe aphasia preventing cognitive testing",
-                                    "• Severe motor impairment preventing testing",
-                                    "• Blindness or severe visual impairment",
-                                    "• Deafness or severe hearing impairment",
-                                    "Active substance abuse",
-                                    "Severe psychiatric illness affecting participation",
-                                    "Terminal illness with life expectancy <1 year",
-                                    "Previous enrollment in DISCOVERY",
-                                    "Planned move out of area within study period"
-                                ]
-                            },
-                            {
                                 name: "CLARITY Trial",
                                 nct: "NCT07174414",
                                 phase: "Phase 3",
@@ -3051,30 +3016,6 @@ Clinician Name`;
                                     "Participation in another interventional trial"
                                 ]
                             },
-                            {
-                                name: "DISCOVERY Study (ICH Cohort)",
-                                nct: "NCT04916210",
-                                phase: "Observational",
-                                status: "",
-                                description: "Cognitive trajectories and biomarkers after ICH",
-                                inclusion: [
-                                    "Age ≥18 years",
-                                    "Admitted with intracerebral hemorrhage",
-                                    "Radiographic confirmation of ICH",
-                                    "Baseline visit within 6 weeks of ICH",
-                                    "Fluent in English or Spanish",
-                                    "Has study partner with regular contact",
-                                    "Expected survival ≥1 year"
-                                ],
-                                exclusion: [
-                                    "Pre-existing dementia",
-                                    "Unable to complete cognitive testing",
-                                    "Concurrent enrollment in cognitive intervention trial",
-                                    "Active substance abuse",
-                                    "Severe psychiatric illness",
-                                    "Terminal illness with life expectancy <1 year"
-                                ]
-                            }
                         ]
                     }
                 }
@@ -20388,7 +20329,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <li>• <strong>PICASSO</strong> – Tandem lesion (carotid + intracranial LVO)</li>
                                     <li>• <strong>TESTED</strong> – EVT in pre-existing disability (mRS 3-4)</li>
                                     <li>• <strong>VERIFY</strong> – TMS/MRI to predict motor recovery</li>
-                                    <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-stroke</li>
                                     <li>• <strong>ESUS Imaging</strong> – Cardiac/vessel wall MRI for ESUS</li>
                                     <li>• <strong>MOCHA Imaging</strong> – Intracranial vessel-wall analysis for ICAD</li>
                                   </ul>
@@ -20401,7 +20341,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <li>• <strong>MINUTE</strong> – Intracerebral hemorrhage trial (NCT07260916)</li>
                                     <li>• <strong>ASPIRE</strong> – Apixaban vs aspirin post-ICH with AF</li>
                                     <li>• <strong>MIRROR Registry</strong> – Minimally invasive ICH evacuation</li>
-                                    <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-ICH</li>
                                   </ul>
                                 </div>
                               )}

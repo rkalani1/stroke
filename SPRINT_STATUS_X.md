@@ -38,11 +38,6 @@ across every supported scenario.
   translated from the legacy `exclusionFlags`. SISTER's custom
   `onAnticoag` evaluator (`!!data.telestrokeNote?.lastDOACType`) is
   expressed as `{ field: 'lastDOACType', operator: 'truthy' }`.
-- SATURN's legacy `deepICH` exclusion was structurally broken
-  (default `data.ichLocation === true` never fires because
-  `ichLocation` is a string). Migration faithfully preserves that
-  never-trigger behavior; the exclusion record carries a comment
-  marking it for future cleanup.
 
 ### X2 — Engine evaluates exclusions
 

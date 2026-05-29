@@ -272,48 +272,6 @@ export const activeTrials = [
     legacyMatcherKey: 'VERIFY'
   }),
 
-  makeActiveTrial({
-    id: 'discovery',
-    shortName: 'DISCOVERY',
-    fullName: 'Cognitive Trajectories After Stroke',
-    nctId: 'NCT04916210',
-    phase: 'Observational',
-    status: 'recruiting',
-    topic: 'cognitive-trajectories',
-    briefDescription: 'Multi-cohort observational study mapping cognitive trajectories and biomarkers after AIS, ICH, and SAH.',
-    rationale: 'Identifies modifiable risk factors for post-stroke cognitive impairment.',
-    inclusionCriteria: [
-      'Age ≥18 y',
-      'AIS, ICH, or SAH within 6 weeks',
-      'Able to complete cognitive testing'
-    ],
-    exclusionCriteria: [
-      'Pre-existing dementia'
-    ],
-    matcherCriteria: [
-      { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
-      { field: 'diagnosisCategory', operator: 'in', value: ['ischemic', 'ich', 'sah'], label: 'Stroke confirmed' }
-    ],
-    matcherExclusions: [
-      { id: 'preDementia', field: 'preDementia', operator: '==', value: true, label: 'Pre-existing dementia' },
-    ],
-    relatedCompletedTrialIds: [],
-    link: 'https://clinicaltrials.gov/study/NCT04916210',
-    lastReviewed: lr,
-    verificationStatus: 'verified-clinicaltrials-gov',
-    category: 'ischemic',
-    keyTakeaways: [
-      "Maps cognitive decline trajectories after stroke (AIS, ICH, and SAH) over 2 years",
-      "Aims to identify modifiable risk factors for post-stroke cognitive impairment",
-      "Low barrier — observational with cognitive testing at standard follow-up intervals"
-    ],
-    lookingFor: [
-      "Any stroke type (AIS, ICH, SAH)",
-      "Baseline visit within 6 weeks",
-      "Able to complete cognitive testing"
-    ],
-    legacyMatcherKey: 'DISCOVERY'
-  }),
 
   makeActiveTrial({
     id: 'most',

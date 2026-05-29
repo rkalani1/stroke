@@ -335,7 +335,6 @@ const PER_TRIAL_OVERRIDES = {
   picasso: { ctaResults: 'tandemLesion' },
   captiva: { ctaResults: 'icas' },
   aspire: { diagnosisCategory: 'ichConfirmed' },
-  discovery: { diagnosisCategory: 'strokeConfirmed' },
   tested: { vesselOcclusion: 'lvo' },
   most: { vesselOcclusion: 'lvo' }
 };

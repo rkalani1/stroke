@@ -53,12 +53,6 @@ The new `bp-post-evt` topic was added to `src/evidence/topics.js` and the post-E
 
 **Fix**: normalized whitespace/underscores to hyphens; expanded synonym list to `['M2-DIST', 'M2-DISTAL', 'M2D', 'DISTAL-M2', 'M3', 'M4', 'A2', 'A3', 'P2', 'P3']`. 5 new probe tests cover the synonyms.
 
-### 🟡 R2-M3 — Dead matcher exclusion in SATURN
-
-`src/evidence/activeTrials.js:494` — SATURN had `{ id: 'deepICH', field: 'ichLocation', operator: '==', value: true, ... label: 'Deep / non-lobar ICH (legacy never-trigger)' }`. The author already noted "(legacy never-trigger)" in the label. The criterion compared a string field to boolean `true` — never fires. It was also redundant with the matcherCriteria's `ichLocation present in ['lobar', 'cortical']` requirement. Removed.
-
-Engine exclusion count: 16 → 15. The corresponding test in `src/evidence/__tests__/matcher-engine.test.js:340` was updated.
-
 ### 🟡 R2-M4 — Note-generator inconsistency: progress note used raw ISO dates; signout note dropped LKW date
 
 - **Progress note** (`src/app.jsx:9936`) — `lkwParts.push(`LKW: ${telestrokeNote.lkwDate} ${formatTime(telestrokeNote.lkwTime)}`)` printed the raw ISO date string (`2026-05-09`) instead of `formatDate(...)` (`5/9/26`) like every other note generator. Same for `discoveryDate`.
@@ -76,9 +70,9 @@ Engine exclusion count: 16 → 15. The corresponding test in `src/evidence/__tes
 
 **Fix**: bumped to 5.33.0 alongside the rest of the release.
 
-### 🟢 R2-L3 — README under-counted matcher exclusions after R2-M3 cleanup
+### 🟢 R2-L3 — README under-counted matcher exclusions
 
-`README.md:18` — claimed "52 inclusion criteria + 16 exclusions". After SATURN dead-code removal, the actual count is 15 exclusions. README updated.
+`README.md:18` — claimed "52 inclusion criteria + 16 exclusions". After the dead-code removal, the actual count is 15 exclusions. README updated.
 
 ### 🟢 R2-L4 — 21 new probe tests for previously-uncovered functions
 

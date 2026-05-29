@@ -40,10 +40,7 @@ node /tmp/retire-legacy.mjs    # idempotent; rewrites schema/active/snapshot
 ## Known limitations
 
 - The matcher engine evaluates only `matcherCriteria` and
-  `matcherExclusions`. SATURN's legacy `deepICH` exclusion was
-  structurally broken (boolean check on a string field) and the
-  faithful never-trigger semantics were preserved during exclusion
-  promotion.
+  `matcherExclusions`.
 - The snapshot tests guarantee per-trial **status** parity, not full
   per-criterion id parity. The engine keys criteria by `field`; the
   legacy keyed them by semantic id (`noTNK`, `timeWindow`, etc.). The
