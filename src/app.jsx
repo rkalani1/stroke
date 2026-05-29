@@ -16062,9 +16062,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 <div className="bg-amber-50 border-b border-amber-300 text-amber-950 px-4 py-3 text-sm" role="note">
                   <strong>Educational synthetic demo only - not medical advice and not an official system.</strong>
                   {' '}Do not enter PHI, patient identifiers, MRN fragments, real encounter details, confidential any organization data, ward census, or handoff content. Ward census, imports, exports, persistence, and patient-context URL handoff are disabled on public GitHub Pages.
-                  <span className="block mt-1">
-                    See <a href="https://www.washington.edu/online/terms/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">UW Website Terms</a> and <a href="https://www.washington.edu/online/privacy/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">UW Online Privacy Policy</a>.
-                  </span>
                 </div>
               )}
               {protocolModal && (
