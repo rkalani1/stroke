@@ -464,55 +464,6 @@ export const activeTrials = [
     legacyMatcherKey: 'RHAPSODY'
   }),
 
-  makeActiveTrial({
-    id: 'saturn',
-    shortName: 'SATURN',
-    fullName: 'Statins for Intracerebral Hemorrhage',
-    nctId: 'NCT03936361',
-    phase: 'Phase 3',
-    status: 'recruiting',
-    topic: 'ich-secondary-prevention',
-    briefDescription: 'Continuation vs discontinuation of statins after lobar ICH.',
-    rationale: 'Lobar ICH raises concern for amyloid angiopathy; statin association with recurrent ICH risk versus cardiovascular benefit is unresolved.',
-    inclusionCriteria: [
-      'Age ≥50 y',
-      'Spontaneous lobar ICH',
-      'On statin for ≥1 month at ICH onset',
-      'mRS ≤4 at randomization'
-    ],
-    exclusionCriteria: [
-      'Deep / non-lobar ICH',
-      'Recent MI <3 months'
-    ],
-    matcherCriteria: [
-      { field: 'age', operator: '>=', value: 50, label: 'Age ≥50' },
-      { field: 'ichLocation', operator: 'present', value: ['lobar', 'cortical'], label: 'Lobar ICH location' },
-      { field: 'onStatin', operator: '==', value: true, label: 'On statin at ICH onset' },
-      { field: 'mrsScore', operator: '<=', value: 4, label: 'mRS ≤4' }
-    ],
-    matcherExclusions: [
-      // SATURN's "deep ICH" exclusion is enforced by the matcherCriteria
-      // ichLocation requirement above (lobar/cortical), so a separate
-      // matcherExclusion would be redundant. Recent-MI exclusion preserved.
-      { id: 'recentMI', field: 'recentMI', operator: '==', value: true, label: 'Recent MI <3 months' },
-    ],
-    relatedCompletedTrialIds: ['interact3', 'enrich'],
-    link: 'https://clinicaltrials.gov/study/NCT03936361',
-    lastReviewed: lr,
-    verificationStatus: 'verified-clinicaltrials-gov',
-    category: 'ich',
-    keyTakeaways: [
-      "Lobar ICH raises concern for CAA — statins may increase recurrent ICH risk in CAA patients",
-      "Many patients are on statins for cardiovascular prevention; stopping may increase MACE risk",
-      "First RCT to directly address the statin dilemma after lobar ICH"
-    ],
-    lookingFor: [
-      "Lobar ICH (NOT deep/basal ganglia)",
-      "Already on statin therapy",
-      "Age ≥50"
-    ],
-    legacyMatcherKey: 'SATURN'
-  }),
 
   makeActiveTrial({
     id: 'aspire',

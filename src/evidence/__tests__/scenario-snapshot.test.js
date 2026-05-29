@@ -196,7 +196,7 @@ const SCENARIOS = [
     }
   },
   {
-    "name": "ICH lobar on statin (SATURN candidate)",
+    "name": "ICH lobar on statin",
     "data": {
       "telestrokeNote": {
         "age": "72",

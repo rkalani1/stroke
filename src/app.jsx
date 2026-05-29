@@ -2936,44 +2936,6 @@ Clinician Name`;
                         title: "Trials",
                         trials: [
                             {
-                                name: "SATURN Trial",
-                                nct: "NCT03936361",
-                                phase: "Phase 3",
-                                status: "",
-                                description: "Statins for intracerebral hemorrhage: Continue vs discontinue after lobar ICH",
-                                inclusion: [
-                                    "Age ≥50 years",
-                                    "Spontaneous lobar intracerebral hemorrhage confirmed by CT or MRI",
-                                    "Taking statin therapy at time of ICH onset for ≥1 month",
-                                    "Modified Rankin Scale ≤4 at time of randomization",
-                                    "Randomization within 7 days of ICH",
-                                    "Clinical indication for statin therapy (dyslipidemia, atherosclerotic disease, diabetes)",
-                                    "Able to provide informed consent or has LAR",
-                                    "Expected to survive at least 6 months"
-                                ],
-                                exclusion: [
-                                    "Deep (non-lobar) ICH location",
-                                    "Secondary causes of ICH:",
-                                    "• Trauma",
-                                    "• Known brain tumor",
-                                    "• Known vascular malformation or aneurysm",
-                                    "• Hemorrhagic transformation of ischemic stroke",
-                                    "• Known or suspected CNS vasculitis",
-                                    "• Coagulopathy (INR >1.5, platelet count <100,000)",
-                                    "• Drug-related (cocaine, amphetamines)",
-                                    "Recent MI (<3 months) or unstable angina",
-                                    "Coronary revascularization within past year",
-                                    "Diabetes mellitus with prior MI or coronary revascularization",
-                                    "Clear contraindication to statin discontinuation per treating physician",
-                                    "Statin-related myopathy or rhabdomyolysis",
-                                    "Severe hepatic impairment (ALT/AST >3x ULN)",
-                                    "Life expectancy <6 months from non-ICH condition",
-                                    "Unable to follow study protocol",
-                                    "Pregnancy or breastfeeding",
-                                    "Participation in another interventional trial"
-                                ]
-                            },
-                            {
                                 name: "ASPIRE Trial",
                                 nct: "NCT03907046",
                                 phase: "Phase 3",
@@ -20437,7 +20399,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="font-medium text-slate-700 mb-1">Active ICH Trials:</div>
                                   <ul className="text-slate-600 space-y-0.5 ml-4">
                                     <li>• <strong>MINUTE</strong> – Intracerebral hemorrhage trial (NCT07260916)</li>
-                                    <li>• <strong>SATURN</strong> – Statin continuation vs stop after lobar ICH</li>
                                     <li>• <strong>ASPIRE</strong> – Apixaban vs aspirin post-ICH with AF</li>
                                     <li>• <strong>MIRROR Registry</strong> – Minimally invasive ICH evacuation</li>
                                     <li>• <strong>DISCOVERY</strong> – Cognitive trajectories post-ICH</li>
@@ -29133,7 +29094,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h4 className="font-semibold text-warn-700 mb-2">Special Considerations</h4>
                               <ul className="text-sm space-y-1">
                                 <li>• sICAS (70-99%): high-intensity statin + LDL &lt;70</li>
-                                <li>• Lobar ICH: caution — SATURN trial pending</li>
                                 <li>• Check LFTs at baseline, recheck 4-12 weeks</li>
                                 <li>• Do not discontinue statin for mild transaminase elevation (&lt;3x ULN)</li>
                               </ul>

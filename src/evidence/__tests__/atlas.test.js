@@ -23,11 +23,10 @@ import {
 } from '../index.js';
 
 describe('Evidence Atlas — data layer', () => {
-  it('seeds at least the original 11 active trials', () => {
-    expect(activeTrials.length).toBeGreaterThanOrEqual(11);
+  it('seeds the active trials', () => {
+    expect(activeTrials.length).toBeGreaterThanOrEqual(10);
     expect(getActiveTrial('sister')).toBeTruthy();
     expect(getActiveTrial('step-evt')).toBeTruthy();
-    expect(getActiveTrial('saturn')).toBeTruthy();
     expect(getActiveTrial('aspire')).toBeTruthy();
   });
 
@@ -48,7 +47,7 @@ describe('Evidence Atlas — data layer', () => {
   });
 
   it('every legacy matcher key resolves to an active trial', () => {
-    for (const key of ['SISTER', 'STEP', 'PICASSO', 'TESTED', 'VERIFY', 'DISCOVERY', 'MOST', 'CAPTIVA', 'RHAPSODY', 'SATURN', 'ASPIRE']) {
+    for (const key of ['SISTER', 'STEP', 'PICASSO', 'TESTED', 'VERIFY', 'DISCOVERY', 'MOST', 'CAPTIVA', 'RHAPSODY', 'ASPIRE']) {
       expect(getActiveTrialByLegacyKey(key), `legacy key ${key}`).toBeTruthy();
     }
   });

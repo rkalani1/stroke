@@ -39,10 +39,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "needs_info",
       "exclusionsCount": 0
     },
-    "saturn": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "aspire": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -85,10 +81,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "not_eligible",
       "exclusionsCount": 0
     },
-    "saturn": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "aspire": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -128,10 +120,6 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "saturn": {
       "status": "needs_info",
       "exclusionsCount": 0
     },
@@ -177,10 +165,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "not_eligible",
       "exclusionsCount": 0
     },
-    "saturn": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "aspire": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -223,10 +207,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "not_eligible",
       "exclusionsCount": 0
     },
-    "saturn": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "aspire": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -266,10 +246,6 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "saturn": {
       "status": "needs_info",
       "exclusionsCount": 0
     },
@@ -315,10 +291,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "needs_info",
       "exclusionsCount": 0
     },
-    "saturn": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
     "aspire": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -361,16 +333,12 @@ export const EXPECTED_SNAPSHOT = {
       "status": "not_eligible",
       "exclusionsCount": 0
     },
-    "saturn": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "aspire": {
       "status": "needs_info",
       "exclusionsCount": 0
     }
   },
-  "ICH lobar on statin (SATURN candidate)": {
+  "ICH lobar on statin": {
     "sister": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -405,10 +373,6 @@ export const EXPECTED_SNAPSHOT = {
     },
     "rhapsody": {
       "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "saturn": {
-      "status": "eligible",
       "exclusionsCount": 0
     },
     "aspire": {
@@ -450,10 +414,6 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "saturn": {
       "status": "needs_info",
       "exclusionsCount": 0
     },
@@ -499,10 +459,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "needs_info",
       "exclusionsCount": 0
     },
-    "saturn": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "aspire": {
       "status": "not_eligible",
       "exclusionsCount": 0
@@ -542,10 +498,6 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
-    "saturn": {
       "status": "not_eligible",
       "exclusionsCount": 0
     },
@@ -591,10 +543,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "not_eligible",
       "exclusionsCount": 0
     },
-    "saturn": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "aspire": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -635,10 +583,6 @@ export const EXPECTED_SNAPSHOT = {
     },
     "rhapsody": {
       "status": "not_eligible",
-      "exclusionsCount": 0
-    },
-    "saturn": {
-      "status": "needs_info",
       "exclusionsCount": 0
     },
     "aspire": {
@@ -683,10 +627,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "not_eligible",
       "exclusionsCount": 0
     },
-    "saturn": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "aspire": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -727,10 +667,6 @@ export const EXPECTED_SNAPSHOT = {
     },
     "rhapsody": {
       "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "saturn": {
-      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "aspire": {
@@ -775,10 +711,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "not_eligible",
       "exclusionsCount": 1
     },
-    "saturn": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "aspire": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -821,10 +753,6 @@ export const EXPECTED_SNAPSHOT = {
       "status": "needs_info",
       "exclusionsCount": 0
     },
-    "saturn": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "aspire": {
       "status": "not_eligible",
       "exclusionsCount": 1
@@ -864,10 +792,6 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 1
     },
     "rhapsody": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "saturn": {
       "status": "needs_info",
       "exclusionsCount": 0
     },
