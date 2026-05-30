@@ -48,8 +48,8 @@
          render unblocked on first paint. Fallback inside <noscript> for non-JS environments. -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap"></noscript>
-    <link rel="preload" as="script" href="app.js?v=6.6.0">
-    <link rel="stylesheet" href="tailwind.css?v=6.6.0">
+    <link rel="preload" as="script" href="app.js?v=6.6.1">
+    <link rel="stylesheet" href="tailwind.css?v=6.6.1">
     <style>
         :root {
             color-scheme: light;
@@ -734,7 +734,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = '6.6.0'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
+            const APP_VERSION = '6.6.1'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
             const STORAGE_PREFIX = 'strokeApp:';
             const APP_DATA_KEY = 'stroke.appData.v2';
             const IS_PUBLIC_PAGES = /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -847,18 +847,32 @@
 
             setStoredValue('app_version', APP_VERSION);
 
-            // Dark mode initialization
+            // Theme initialization — pre-paint, MUST mirror src/design/theme.js
+            // (getThemePref/effectiveTheme) so all three theme surfaces agree at first
+            // paint (no FOUC). Public default (unset) = light; an explicit Dark or
+            // System(auto) choice from the 3-way control persists and is honored.
             if (IS_PUBLIC_PAGES) {
-                setStoredValue('darkMode', false);
+                // Legacy v5 'darkMode' key is superseded by stroke.v7.theme — clean it
+                // up, but do NOT wipe the v7 pref (that was the bug that made Dark
+                // unreachable on public).
                 try { localStorage.removeItem('darkMode'); } catch (e) { /* ignore */ }
-                try { localStorage.removeItem('stroke.v7.theme'); } catch (e) { /* ignore */ }
-                document.documentElement.classList.remove('dark');
-                document.documentElement.setAttribute('data-theme', 'light');
-            }
-            const darkMode = !IS_PUBLIC_PAGES && getStoredValue('darkMode') === true;
-            if (darkMode) {
-                document.documentElement.classList.add('dark');
-                document.documentElement.setAttribute('data-theme', 'dark');
+                let v7pref = null;
+                try { v7pref = localStorage.getItem('stroke.v7.theme'); } catch (e) { /* ignore */ }
+                const eff = v7pref === 'dark'
+                    ? 'dark'
+                    : (v7pref === 'auto'
+                        ? ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light')
+                        : 'light'); // unset or 'light' → light (preserves fresh-public-load = light)
+                document.documentElement.classList.toggle('dark', eff === 'dark');
+                document.documentElement.setAttribute('data-theme', eff);
+            } else {
+                // Non-public (local/private build): legacy darkMode path unchanged;
+                // app.js runV7Migration() carries it forward into stroke.v7.theme.
+                const darkMode = getStoredValue('darkMode') === true;
+                if (darkMode) {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                }
             }
         })();
     </script>
@@ -931,7 +945,7 @@
         document.currentScript.parentNode.insertBefore(s, document.currentScript);
       })();
     </script>
-    <script src="app.js?v=6.6.0" defer></script>
+    <script src="app.js?v=6.6.1" defer></script>
     <footer style="margin-top: 40px; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb;">
       <p>This is a synthetic public demo site for educational and reference purposes only. Not for clinical decision-making or real patient care.</p>
     </footer>
