@@ -46,10 +46,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Google-Fonts CSS loaded non-blocking via media-trick + font-display:swap to keep
          render unblocked on first paint. Fallback inside <noscript> for non-JS environments. -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
-    <link rel="preload" as="script" href="app.js?v=6.0.4">
-    <link rel="stylesheet" href="tailwind.css?v=6.0.2">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap"></noscript>
+    <link rel="preload" as="script" href="app.js?v=6.1.0">
+    <link rel="stylesheet" href="tailwind.css?v=6.1.0">
     <style>
         :root {
             color-scheme: light;
@@ -153,7 +153,7 @@
         html.dark ::placeholder { color: #64748b; }
 
         body {
-            font-family: "Manrope", "Segoe UI", sans-serif;
+            font-family: "Public Sans", "Segoe UI", sans-serif;
             background:
                 radial-gradient(900px circle at 12% -10%, var(--app-bg-accent), transparent 60%),
                 linear-gradient(180deg, var(--app-bg) 0%, var(--surface-3) 100%);
@@ -168,7 +168,7 @@
         }
 
         h1, h2, h3, h4, h5 {
-            font-family: "Newsreader", "Times New Roman", serif;
+            font-family: "Bricolage Grotesque", "Times New Roman", serif;
             letter-spacing: -0.01em;
         }
 
@@ -893,7 +893,7 @@
             return false;
         };
     </script>
-    <script src="app.js?v=6.0.4" defer></script>
+    <script src="app.js?v=6.1.0" defer></script>
     <footer style="margin-top: 40px; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb;">
       <p>This is a synthetic public demo site for educational and reference purposes only. Not for clinical decision-making or real patient care.</p>
     </footer>
