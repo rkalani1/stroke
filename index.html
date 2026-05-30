@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     <meta name="description" content="Comprehensive clinical decision support tool for stroke management including NIHSS, ASPECTS, and treatment protocols">
-    <meta name="theme-color" content="#3B82F6">
+    <meta name="theme-color" content="#0A6571">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -54,18 +54,18 @@
         :root {
             color-scheme: light;
 
-            /* Brand — confident blue/teal */
-            --accent:        #0a6cff;
-            --accent-2:      #0aa6c0;
-            --accent-soft:   #e6efff;
-            --accent-ink:    #0a3a8a;
+            /* Brand — v7 deep teal */
+            --accent:        #0C7C8C;
+            --accent-2:      #0A6571;
+            --accent-soft:   #E2F0F1;
+            --accent-ink:    #0A3A4D;
 
-            /* Surfaces */
-            --app-bg:        #f5f7fb;
-            --app-bg-accent: #eaf0fa;
-            --surface:       #ffffff;
-            --surface-2:     #f9fbff;
-            --surface-3:     #eef3fb;
+            /* Surfaces — v7 warm paper */
+            --app-bg:        #FBFAF6;
+            --app-bg-accent: #F2EFE6;
+            --surface:       #FFFFFF;
+            --surface-2:     #FBFAF6;
+            --surface-3:     #F2EFE6;
 
             /* Shell / panels (legacy aliases — re-pointed to token surfaces) */
             --shell-bg:      rgba(255, 255, 255, 0.96);
@@ -76,8 +76,8 @@
             --card-shadow:   0 1px 0 rgba(15, 23, 42, .04), 0 6px 16px -10px rgba(15, 23, 42, .18);
 
             /* Type colors — kept tone names for compatibility */
-            --text-strong:   #0b1220;
-            --text-muted:    #5b6a83;
+            --text-strong:   #14171D;
+            --text-muted:    #5b6577;
 
             /* Geometry / elevation */
             --radius:        14px;
@@ -89,16 +89,16 @@
         html.dark {
             color-scheme: dark;
 
-            --accent:        #4d8dff;
-            --accent-2:      #2cc0d9;
-            --accent-soft:   #0e2547;
-            --accent-ink:    #9ec3ff;
+            --accent:        #3FB6C4;
+            --accent-2:      #2C99A6;
+            --accent-soft:   #11272B;
+            --accent-ink:    #8FD9E2;
 
-            --app-bg:        #07101f;
-            --app-bg-accent: #0e1a30;
-            --surface:       #0c1626;
-            --surface-2:     #0a1322;
-            --surface-3:     #111c30;
+            --app-bg:        #101317;
+            --app-bg-accent: #171B21;
+            --surface:       #171B21;
+            --surface-2:     #14171D;
+            --surface-3:     #1E232B;
 
             --shell-bg:      rgba(12, 22, 38, 0.94);
             --shell-border:  rgba(148, 163, 184, 0.12);
@@ -107,14 +107,14 @@
             --panel-border:  rgba(148, 163, 184, 0.12);
             --card-shadow:   0 1px 0 rgba(255, 255, 255, .02), 0 10px 30px -16px rgba(0, 0, 0, .7);
 
-            --text-strong:   #e7ecf5;
-            --text-muted:    #93a3b8;
+            --text-strong:   #ECEAE2;
+            --text-muted:    #A39E92;
 
             --shadow-pop:    0 24px 60px -20px rgba(0, 0, 0, .8), 0 4px 12px rgba(0, 0, 0, .4);
         }
         html.dark body {
             background: radial-gradient(900px circle at 10% -10%, var(--app-bg-accent), transparent 60%),
-                        linear-gradient(180deg, var(--app-bg) 0%, #0b1220 100%);
+                        linear-gradient(180deg, var(--app-bg) 0%, #0B0D10 100%);
             color: var(--text-strong);
         }
         /* Dark-theme tweaks for common Tailwind surface classes used throughout the app.
@@ -164,7 +164,7 @@
         html.dark body {
             background:
                 radial-gradient(900px circle at 12% -10%, var(--app-bg-accent), transparent 60%),
-                linear-gradient(180deg, var(--app-bg) 0%, #050b16 100%);
+                linear-gradient(180deg, var(--app-bg) 0%, #08090B 100%);
         }
 
         h1, h2, h3, h4, h5 {
@@ -543,7 +543,7 @@
         /* Loading spinner */
         .spinner {
             border: 3px solid #f3f4f6;
-            border-top: 3px solid #3B82F6;
+            border-top: 3px solid #0C7C8C;
             border-radius: 50%;
             width: 20px;
             height: 20px;
@@ -664,7 +664,7 @@
         /* Better mobile touch feedback */
         @media (max-width: 640px) {
             button, a {
-                -webkit-tap-highlight-color: rgba(59, 130, 246, 0.2);
+                -webkit-tap-highlight-color: rgba(10, 101, 113, 0.2);
             }
 
             /* Larger touch targets for mobile */

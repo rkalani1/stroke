@@ -4,8 +4,8 @@
   "description": "Clinical decision support toolkit for stroke management with calculators, protocols, and evidence-based resources",
   "start_url": "/stroke/#/encounter",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#3B82F6",
+  "background_color": "#FBFAF6",
+  "theme_color": "#0A6571",
   "orientation": "portrait-primary",
   "icons": [
     {
