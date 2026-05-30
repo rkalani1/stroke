@@ -539,13 +539,13 @@ export const computeLKWCountdown = (lkwIso, nowMs = Date.now()) => {
 // Large-core EVT eligibility (ASPECTS 0-5 expanded window)
 // =====================================================================
 // Synthesis of:
-//   RESCUE-Japan LIMIT (Yoshimura NEJM 2022;386:1303-13, PMID 35443163) — ASPECTS 3-5, ≤6h.
+//   RESCUE-Japan LIMIT (Yoshimura NEJM 2022;386:1303-13, PMID 35138767) — ASPECTS 3-5, ≤6h.
 //   SELECT-2 (Sarraj NEJM 2023;388:1259-71, PMID 36762865) — ASPECTS 3-5 or core ≥50 mL, ≤24h. cOR 1.51.
 //   ANGEL-ASPECT (Huo NEJM 2023;388:1272-83, PMID 36762852) — ASPECTS 3-5 or core 70-100 mL, ≤24h. mRS 0-3 30% vs 12%.
-//   TENSION (Bendszus Lancet 2023;402:1753-63, PMID 36841235) — ASPECTS 3-5, ≤12h. cOR 2.58.
+//   TENSION (Bendszus Lancet 2023;402:1753-63, PMID 37837989) — ASPECTS 3-5, ≤12h. cOR 2.58.
 //   TESLA (Yoo JAMA 2024;331:1709-19) — ASPECTS 2-5 NCCT-only, ≤24h. Bayesian primary missed; trend favorable.
 //     PMID intentionally omitted pending verification — earlier inline cite was duplicated with ARCADIA.
-//   LASTE (Costalat NEJM 2024;390:2094-105, PMID 38875111) — ASPECTS 0-5 (incl 0-2), ≤6.5h. mRS 0-3 31% vs 12.5%, mortality 36% vs 55%.
+//   LASTE (Costalat NEJM 2024;390:1677-89, PMID 38718358) — ASPECTS 0-5 (incl 0-2), ≤6.5h. mRS 0-3 31% vs 12.5%, mortality 36% vs 55%.
 // AHA/ASA 2024: Class IIa for ASPECTS 3-5 within 24h. SVIN 2025 Large-Core guideline endorses.
 //
 // Inputs:
@@ -635,7 +635,7 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
       : `Not currently meeting large-core EVT trial criteria. ${reasons.length ? reasons.join('; ') : 'Verify ASPECTS/core, NIHSS, timing, premorbid mRS.'}`,
     sichCounseling: 'Large-core EVT trials reported sICH 6-7% (vs ~3% standard EVT) and futility-adjusted mortality benefit (LASTE 36% vs 55%). Discuss with family.',
     guidelineClass: 'AHA/ASA 2024: Class IIa for ASPECTS 3-5 within 24h; SVIN 2025 endorses LASTE for ASPECTS 0-2 ≤6h.',
-    sources: 'NEJM 2022 (LIMIT, PMID 35443163); NEJM 2023 (SELECT-2 36762865; ANGEL-ASPECT 36762852); Lancet 2023 (TENSION 36841235); JAMA 2024 (TESLA 331:1709-19); NEJM 2024 (LASTE 38875111)'
+    sources: 'NEJM 2022 (LIMIT, PMID 35138767); NEJM 2023 (SELECT-2 36762865; ANGEL-ASPECT 36762852); Lancet 2023 (TENSION 37837989); JAMA 2024 (TESLA 331:1709-19); NEJM 2024 (LASTE 38718358)'
   };
 };
 
@@ -704,7 +704,7 @@ export const recommendLateWindowLytic = ({ timeFromLKWh, evtAvailable, lvo, nihs
 // =====================================================================
 // Post-EVT blood pressure target (after successful recanalization)
 // =====================================================================
-// ENCHANTED2/MT (Yang Lancet 2022;400:1585-96, PMID 36341758): RCT n=821 successful EVT
+// ENCHANTED2/MT (Yang Lancet 2022;400:1585-96, PMID 36341753): RCT n=821 successful EVT
 //   (mTICI ≥2b). Intensive SBP <120 vs standard <140-180. STOPPED FOR HARM — intensive arm
 //   worse mRS shift (cOR 1.37). Concluded SBP <140 NOT recommended post-recan.
 // OPTIMAL-BP (Nam JAMA 2023;330:832-42): Stopped early, intensive worse.
@@ -724,7 +724,7 @@ export const recommendPostEVTBP = ({ recanalized, currentSBP, ivLyticGiven, hasH
       lowerBound: null,
       upperBound: 140,
       rationale: 'Post-procedure ICH detected — apply ICH BP targeting (130-140) per AHA/ASA 2022 ICH (INTERACT3 bundle).',
-      source: 'INTERACT3 (Lancet 2023, PMID 37210010); AHA/ASA 2022 ICH',
+      source: 'INTERACT3 (Lancet 2023, PMID 37245517); AHA/ASA 2022 ICH',
       class: 'Class 2a'
     };
   }
@@ -736,7 +736,7 @@ export const recommendPostEVTBP = ({ recanalized, currentSBP, ivLyticGiven, hasH
         lowerBound: 140,
         upperBound: 180,
         rationale: 'Successful recanalization (mTICI ≥2b) WITH IV lytic — maintain SBP 140-180 to preserve perfusion of penumbra. Intensive lowering (<120 or <140) caused harm in ENCHANTED2/MT and OPTIMAL-BP. Sustain target ≥24h.',
-        source: 'Yang Lancet 2022;400:1585-96 (ENCHANTED2/MT, PMID 36341758); Nam JAMA 2023;330:832-42 (OPTIMAL-BP)',
+        source: 'Yang Lancet 2022;400:1585-96 (ENCHANTED2/MT, PMID 36341753); Nam JAMA 2023;330:832-42 (OPTIMAL-BP)',
         class: 'Class 2a (AHA/ASA 2024)',
         currentBP: Number.isFinite(sbp) ? sbp : null,
         actionable: Number.isFinite(sbp) ? (sbp < 140 ? 'SBP <140 — permissive; consider stopping antihypertensive' : sbp > 180 ? 'SBP >180 — initiate gentle BP reduction (labetalol 10 mg IV; avoid >40-60 mmHg drop)' : 'SBP within target — continue current management') : null
@@ -747,7 +747,7 @@ export const recommendPostEVTBP = ({ recanalized, currentSBP, ivLyticGiven, hasH
       lowerBound: 140,
       upperBound: 180,
       rationale: 'Successful EVT recanalization without IV lytic — same 140-180 target. ENCHANTED2/MT showed harm with SBP <120; AHA/ASA 2024 endorses SBP 140-180 sustained ≥24h.',
-      source: 'Yang Lancet 2022 (ENCHANTED2/MT, PMID 36341758)',
+      source: 'Yang Lancet 2022 (ENCHANTED2/MT, PMID 36341753)',
       class: 'Class 2a',
       currentBP: Number.isFinite(sbp) ? sbp : null
     };
@@ -843,8 +843,8 @@ export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyt
     return {
       recommend: 'Tirofiban may be considered',
       drugs: ['tirofiban'],
-      rationale: 'RESCUE BT2 (NEJM 2024) showed improved mRS 0-3 with tirofiban in non-cardioembolic AIS who could not receive IV lytic or EVT. Distinct population from MOST.',
-      source: 'RESCUE BT2 NEJM 2024 (PMID 38924729)',
+      rationale: 'RESCUE BT2 (NEJM 2023) showed improved mRS 0-3 with tirofiban in non-cardioembolic AIS who could not receive IV lytic or EVT. Distinct population from MOST.',
+      source: 'RESCUE BT2 NEJM 2023 (PMID 37256974)',
       class: 'Class 2b (selected non-cardioembolic, lytic/EVT-ineligible)'
     };
   }
@@ -854,7 +854,7 @@ export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyt
 // =====================================================================
 // ENRICH eligibility — minimally invasive surgery for lobar ICH 30-80 mL
 // =====================================================================
-// ENRICH (Pradilla NEJM 2024;390:1277-89, PMID 38598577): Adaptive RCT, n=300.
+// ENRICH (Pradilla NEJM 2024;390:1277-89, PMID 38598795): Adaptive RCT, n=300.
 // Spontaneous lobar/anterior basal ganglia ICH, 30-80 mL, within 24h.
 // Minimally invasive parafascicular surgery (BrainPath/Myriad-Artemis) + medical vs medical alone.
 // Primary: utility-weighted mRS at 180d. RESULT: 0.458 vs 0.374 (posterior prob superiority >0.999).
@@ -895,7 +895,7 @@ export const evaluateENRICHEligibility = ({ icHLocation, volumeMl, timeFromOnset
       : isLobar && blockers.length === 0 ? 'Likely candidate — confirm with neurosurgery.'
         : `Not currently meeting ENRICH criteria: ${blockers.join('; ')}.${!isLobar && !isDeep ? ' Location not specified or not in trial domain.' : ''}`,
     nextSteps: 'If eligible: page neurosurgery; obtain CTA to rule out vascular lesion; coordinate transfer to MIS-capable center if local center lacks BrainPath/Myriad-Artemis. Time-to-OR target <24h.',
-    source: 'Pradilla NEJM 2024;390:1277-89 (ENRICH, PMID 38598577)',
+    source: 'Pradilla NEJM 2024;390:1277-89 (ENRICH, PMID 38598795)',
     class: 'AHA/ASA 2022 was Class 2b for MIS pre-ENRICH; updated guidance expected to elevate to Class 2a for lobar ≥30 mL.'
   };
 };
@@ -903,7 +903,7 @@ export const evaluateENRICHEligibility = ({ icHLocation, volumeMl, timeFromOnset
 // =====================================================================
 // SWITCH eligibility — early decompressive craniectomy for deep ICH
 // =====================================================================
-// SWITCH (Beck Lancet 2024;403:1-11, PMID 38199206): International RCT, n=201.
+// SWITCH (Beck Lancet 2024;403:2395-404, PMID 38761811): International RCT, n=201.
 // Deep supratentorial ICH ≥30 mL with reduced consciousness (GCS 8-13), <66h.
 // Early DC + best medical vs best medical alone. Primary mRS 0-4 at 6mo: 44% vs 30%
 // (adjusted RR 1.50, 95% CI 1.04-2.18, p=0.024). Stopped early for funding/COVID.
@@ -942,7 +942,7 @@ export const evaluateSWITCHEligibility = ({ icHLocation, volumeMl, gcs, timeFrom
       : `Not meeting SWITCH criteria: ${blockers.join('; ')}.`,
     nextSteps: 'If eligible: emergent neurosurgery consult; family discussion re: trade-off (survival vs disability burden); ICU bed/EVD readiness.',
     counseling: 'SWITCH showed improved survival but more severe disability among survivors. Frame discussion around quality-of-life expectations, not mortality alone.',
-    source: 'Beck Lancet 2024;403:1-11 (SWITCH, PMID 38199206)',
+    source: 'Beck Lancet 2024;403:2395-404 (SWITCH, PMID 38761811)',
     class: 'Pending formal guideline upgrade; AHA/ASA 2022 Class 2b for DC in non-malignant ICH.'
   };
 };
@@ -950,7 +950,7 @@ export const evaluateSWITCHEligibility = ({ icHLocation, volumeMl, gcs, timeFrom
 // =====================================================================
 // INTERACT3 ICH care bundle compliance
 // =====================================================================
-// INTERACT3 (Ma Lancet 2023;402:27-40, PMID 37210010): Cluster-RCT n=7036.
+// INTERACT3 (Ma Lancet 2023;402:27-40, PMID 37245517): Cluster-RCT n=7036.
 // Care bundle within first hour: SBP <140 ≤1h, glucose 6.1-7.8 (non-DM)/7.8-10 (DM),
 // Tmax <37.5°C, INR reversal <1.5 within 1h. cOR for mRS shift 0.86 (p=0.015); mortality HR 0.77.
 // Single most cost-effective ICH update.
@@ -1018,7 +1018,7 @@ export const ichCareBundleCheck = ({ sbpAtArrival, sbpAt1h, glucose, isDiabetic,
     rationale: fullyCompliant
       ? 'INTERACT3 bundle fully achieved within 1h — best evidence-based ICH outcome trajectory.'
       : `INTERACT3 bundle incomplete (${completed}/${total} elements met). Bundle as a whole reduces mRS shift (cOR 0.86) and mortality (HR 0.77).`,
-    source: 'Ma Lancet 2023;402:27-40 (INTERACT3, PMID 37210010)',
+    source: 'Ma Lancet 2023;402:27-40 (INTERACT3, PMID 37245517)',
     class: 'Class 2a equivalent (bundle-based recommendation, ESO/WSO 2023 endorse)'
   };
 };
@@ -1026,7 +1026,7 @@ export const ichCareBundleCheck = ({ sbpAtArrival, sbpAt1h, glucose, isDiabetic,
 // =====================================================================
 // PASCAL classification — PFO closure attribution probability
 // =====================================================================
-// Kent JAMA Neurol 2021;78:1054-63 (PMID 33779687).
+// Kent JAMA 2021;326:2277-86 (PMID 34905030).
 // Combines RoPE score with PFO morphology (large shunt or atrial septal aneurysm).
 // Categories: Unlikely / Possible / Probable. Closure benefit concentrated in Probable.
 export const evaluatePASCAL = ({ ropeScore, largeShunt, atrialSeptalAneurysm }) => {
@@ -1057,7 +1057,7 @@ export const evaluatePASCAL = ({ ropeScore, largeShunt, atrialSeptalAneurysm }) 
     recommendation,
     nnt,
     ageEligibility: 'PFO closure trials enrolled age 18-60. For age >60, individualize with shared decision-making; data sparser.',
-    source: 'Kent JAMA Neurol 2021;78:1054-63 (PASCAL, PMID 33779687); CLOSE/REDUCE/RESPECT/DEFENSE-PFO RCTs',
+    source: 'Kent JAMA 2021;326:2277-86 (PASCAL, PMID 34905030); CLOSE/REDUCE/RESPECT/DEFENSE-PFO RCTs',
     class: 'Class 1 for Probable; Class 2a for Possible (AAN PFO advisory 2020, AHA SPS 2024 focused update)'
   };
 };
@@ -1065,10 +1065,10 @@ export const evaluatePASCAL = ({ ropeScore, largeShunt, atrialSeptalAneurysm }) 
 // =====================================================================
 // Intracranial atherosclerotic disease (ICAD) medical regimen
 // =====================================================================
-// SAMMPRIS (NEJM 2011/2014, PMID 21899409), VISSIT (JAMA 2015), CASSISS (JAMA 2022, PMID 35819426)
+// SAMMPRIS (NEJM 2011/2014, PMID 21899409), VISSIT (JAMA 2015), CASSISS (JAMA 2022, PMID 35943472)
 // — stenting INFERIOR to aggressive medical for 70-99% intracranial stenosis.
 // Aggressive medical = DAPT × 90d, LDL <70, SBP <140 (consider <130), intensive lifestyle.
-// Cilostazol: TOSS-2 (Stroke 2011), CSPS.com (Lancet Neurol 2019, PMID 31337548) — adds benefit.
+// Cilostazol: TOSS-2 (Stroke 2011), CSPS.com (Lancet Neurol 2019, PMID 31122494) — adds benefit.
 export const icadMedicalRegimen = ({ stenosisPercent, location, recurrentEvent, onCurrentDAPT }) => {
   const s = parseFloat(stenosisPercent);
   if (!Number.isFinite(s) || s < 50) {
@@ -1085,7 +1085,7 @@ export const icadMedicalRegimen = ({ stenosisPercent, location, recurrentEvent, 
   ];
 
   if (recurrentEvent === true) {
-    regimen.push({ drug: 'Cilostazol 100 mg PO BID (add-on)', duration: 'long-term', evidence: 'CSPS.com (Lancet Neurol 2019, PMID 31337548) — HR 0.49 for recurrence' });
+    regimen.push({ drug: 'Cilostazol 100 mg PO BID (add-on)', duration: 'long-term', evidence: 'CSPS.com (Lancet Neurol 2019, PMID 31122494) — HR 0.49 for recurrence' });
   }
 
   return {
@@ -1094,7 +1094,7 @@ export const icadMedicalRegimen = ({ stenosisPercent, location, recurrentEvent, 
     regimen,
     avoidStenting: 'Stenting NOT recommended outside refractory cases. SAMMPRIS, VISSIT, CASSISS all showed inferiority.',
     submaximalAngioplasty: severe ? 'Submaximal angioplasty without stent — observational data only; consider only at high-volume center for refractory cases or in trial.' : null,
-    source: 'SAMMPRIS NEJM 2011/2014 (PMID 21899409); CASSISS JAMA 2022 (PMID 35819426); CSPS.com Lancet Neurol 2019 (PMID 31337548)',
+    source: 'SAMMPRIS NEJM 2011/2014 (PMID 21899409); CASSISS JAMA 2022 (PMID 35943472); CSPS.com Lancet Neurol 2019 (PMID 31122494)',
     class: 'DAPT 90d Class 1; LDL <70 Class 1; cilostazol Class 2a for refractory'
   };
 };
@@ -1103,7 +1103,7 @@ export const icadMedicalRegimen = ({ stenosisPercent, location, recurrentEvent, 
 // Post-stroke BP target (long-term secondary prevention)
 // =====================================================================
 // SPS3 (Lancet 2013, PMID 23726159), SPRINT-MIND (JAMA 2019, PMID 30688979),
-// ESPRIT (Lancet 2024, PMID 38631323).
+// ESPRIT (Lancet 2024, PMID 38945140).
 // AHA 2024 SPS focused update: <130/80 (Class 1); ESC 2024: <130/80, <120 SBP if tolerated.
 export const bpTargetPostStroke = ({ strokeSubtype, age, orthostatic, ckd, currentSBP, currentDBP }) => {
   const a = parseFloat(age);
@@ -1149,7 +1149,7 @@ export const bpTargetPostStroke = ({ strokeSubtype, age, orthostatic, ckd, curre
           : sbp >= 120 ? 'At target — continue current regimen'
             : 'SBP <120 — verify not hypotensive; consider de-escalation if symptomatic'
       : null,
-    source: 'AHA 2024 SPS focused update; SPS3 Lancet 2013 (PMID 23726159); ESPRIT Lancet 2024 (PMID 38631323)',
+    source: 'AHA 2024 SPS focused update; SPS3 Lancet 2013 (PMID 23726159); ESPRIT Lancet 2024 (PMID 38945140)',
     class: 'Class 1 for <130/80'
   };
 };
@@ -1197,7 +1197,7 @@ export const lipidsTargetPostStroke = ({ strokeSubtype, currentLDL, onStatin, st
 // ARCADIA (Kamel JAMA 2024;331:573-81): n=1015 ESUS + atrial cardiopathy
 // PMID intentionally omitted pending verification — earlier inline cite was duplicated with TESLA.
 // markers. Apixaban vs ASA. Recurrent stroke 4.4 vs 4.4 per 100 PY (HR 1.00) — NEUTRAL.
-// ATTICUS (Lancet Neurol 2024, PMID 39577446): n=352 ESUS + cardiopathy/PFO marker;
+// ATTICUS (NEJM Evid 2023, PMID 38320511): n=352 ESUS + cardiopathy/PFO marker;
 // apixaban not superior to ASA.
 // Implication: don't anticoagulate empirically for "atrial cardiopathy" — pursue prolonged
 // rhythm monitoring (ICM) instead.
@@ -1216,13 +1216,13 @@ export const arcadiaAdvisory = ({ ptfv1, ntProBNP, laVolumeIndex, laDiameterCmM2
     cardiopathyPresent: cardiopathyMarker,
     recommendDOAC: false,
     rationale: cardiopathyMarker
-      ? 'Atrial cardiopathy markers present (PTFV1 >5000 µV·ms, NT-proBNP >250 pg/mL, LAVI ≥34 mL/m², or LA diameter ≥3 cm/m²). HOWEVER ARCADIA (2024) and ATTICUS (2024) both showed NO benefit of empiric apixaban over aspirin. Markers indicate ICM/prolonged monitoring need, NOT direct OAC indication.'
+      ? 'Atrial cardiopathy markers present (PTFV1 >5000 µV·ms, NT-proBNP >250 pg/mL, LAVI ≥34 mL/m², or LA diameter ≥3 cm/m²). HOWEVER ARCADIA (2024) and ATTICUS (2023) both showed NO benefit of empiric apixaban over aspirin. Markers indicate ICM/prolonged monitoring need, NOT direct OAC indication.'
       : 'No atrial cardiopathy markers documented.',
     nextSteps: cardiopathyMarker
       ? '1) Implant ICM (Reveal LINQ or equivalent) — STROKE-AF showed AF in 12.1% even of non-cardioembolic strokes. 2) Continue antiplatelet (aspirin 81 mg). 3) Switch to OAC ONLY if AF detected with burden >24h or daily episodes.'
       : 'Standard secondary prevention (antiplatelet + statin + BP). Consider ICM if other clinical features suggest paroxysmal AF (HEADS² high score, frequent palpitations).',
     afBurdenThreshold: 'ARTESIA showed apixaban benefit in subclinical AF ≥6 min (mostly hours), but with bleeding cost. NOAH-AFNET-6 was neutral. Practical: trigger OAC at sustained AF >24h or daily episodes; shorter-burst subclinical AF = uncertain benefit.',
-    source: 'ARCADIA JAMA 2024;331:573-81 (Kamel et al.); ATTICUS Lancet Neurol 2024 (PMID 39577446); STROKE-AF JAMA 2021 (PMID 34061145)',
+    source: 'ARCADIA JAMA 2024;331:573-81 (Kamel et al.); ATTICUS NEJM Evid 2023 (PMID 38320511); STROKE-AF JAMA 2021 (PMID 34061145)',
     class: 'Class 3 (no benefit) for empiric OAC based on cardiopathy markers alone'
   };
 };
@@ -1258,7 +1258,7 @@ export const afDetectionStrategy = ({ heads2Score, strokeSubtype, age, hasICMAcc
     evidence,
     burdenThreshold: 'AF burden threshold for OAC initiation: sustained ≥24h or daily episodes (per ARTESIA/NOAH-AFNET-6 nuance). Shorter-burst subclinical AF = individualized.',
     nextSteps: 'If AF detected with burden ≥24h: initiate DOAC per ELAN/OPTIMAS timing (≤4d for minor/moderate stroke; 6-7d for major). Do not bridge with heparin.',
-    source: 'CRYSTAL-AF NEJM 2014; STROKE-AF JAMA 2021; PER DIEM JAMA 2021; ARTESIA NEJM 2024 (PMID 38007879); NOAH-AFNET-6 NEJM 2023 (PMID 37622677)',
+    source: 'CRYSTAL-AF NEJM 2014; STROKE-AF JAMA 2021; PER DIEM JAMA 2021; ARTESIA NEJM 2024 (PMID 37952132); NOAH-AFNET-6 NEJM 2023 (PMID 37622677)',
     class: 'Class 2a for ICM in cryptogenic (AHA 2024)'
   };
 };
@@ -1266,7 +1266,7 @@ export const afDetectionStrategy = ({ heads2Score, strokeSubtype, age, hasICMAcc
 // =====================================================================
 // Boston 2.0 CAA criteria — for lobar ICH MRI interpretation
 // =====================================================================
-// Charidimou Lancet Neurol 2022;21:714-25 (PMID 35908548).
+// Charidimou Lancet Neurol 2022;21:714-25 (PMID 35841910).
 // Adds non-hemorrhagic markers (CSO-PVS, multispot WMH) to boost sensitivity for "probable CAA"
 // from 75% to 88% with maintained specificity.
 export const evaluateBostonCAA20 = ({ age, lobarICH, corticalSiderosis, lobarMicrobleeds, csoPVSSevere, multispotWMH, otherCause }) => {
@@ -1320,7 +1320,7 @@ export const evaluateBostonCAA20 = ({ age, lobarICH, corticalSiderosis, lobarMic
     totalMarkers,
     action,
     sensitivity: 'Boston 2.0 sensitivity for Probable CAA: 88% (vs 75% Boston 1.5).',
-    source: 'Charidimou Lancet Neurol 2022;21:714-25 (Boston 2.0, PMID 35908548)',
+    source: 'Charidimou Lancet Neurol 2022;21:714-25 (Boston 2.0, PMID 35841910)',
     class: 'No formal class — diagnostic criteria used for prognostication and AC decision-making'
   };
 };
