@@ -118,6 +118,14 @@ import sah2023 from './guidelines/sah-2023.json';
 import systemicComplications2024 from './guidelines/systemic-complications-2024.json';
 import svinLargeCore2025 from './guidelines/svin-large-core-2025.json';
 import tiaEd2023 from './guidelines/tia-ed-2023.json';
+// AIS Command Center — de-identified, evidence-bound management cards. Pure
+// static data (bundled at build time, no runtime fetch) rendered at the top of
+// the Ischemic protocols sub-tab. See src/management-guidance.js.
+import {
+  AIS_COMMAND_CENTER_CARDS,
+  AIS_SOURCE_LINKS,
+  AIS_COMMAND_CENTER_LAST_REVIEWED
+} from './management-guidance.js';
 // What's New feed — generated at build time (npm run evidence:whats-new) from the
 // verified-PubMed Evidence Atlas. esbuild inlines this JSON, so the Research &
 // Guidelines tab works fully offline.
@@ -28077,6 +28085,246 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Ischemic Stroke Management Content */}
                     {managementSubTab === 'ischemic' && (
                       <div id="mgmt-tabpanel-ischemic" role="tabpanel" aria-labelledby="mgmt-tab-ischemic" className="space-y-6">
+                        {/* ============================================================
+                            AIS Command Center — evidence-bound, de-identified cards.
+                            Static import (src/management-guidance.js), bundled offline.
+                            Renders ABOVE the existing Ischemic content (additive only).
+                            Reuses: GUIDELINE_CLASS_COLORS badges, the
+                            MANAGEMENT_REC_TO_ATLAS_REC → resolveClaimsWithCitations
+                            evidence drawer, and navigateTo(tab,{subTab}) deep-links.
+                           ============================================================ */}
+                        {(() => {
+                          // Map each command-center card's recommendationId to an
+                          // Evidence Atlas recommendation id (mirrors the
+                          // MANAGEMENT_REC_TO_ATLAS_REC pattern at ~app.jsx:21455).
+                          // Only clinically faithful matches are mapped; unmapped
+                          // cards fall back to a PubMed source-search link.
+                          const COMMAND_CENTER_REC_TO_ATLAS_REC = {
+                            'rec-ais-ivt-within-45h': 'rec-tnk-first-line',
+                            'rec-late-window-ivt': 'rec-late-window-ivt',
+                            'rec-evt-large-core': 'rec-evt-large-core'
+                          };
+
+                          // Reuse the existing navigate-then-scroll deep-link idiom
+                          // (cf. navigateTo + scrollToSection at ~app.jsx:35058).
+                          const goToCalculator = (calc) => {
+                            if (!calc) return;
+                            if (calc.tab === 'encounter') {
+                              navigateTo('encounter');
+                              if (calc.anchor === 'treatment-decision') setEncounterPhase('phase-decision');
+                              if (calc.anchor) window.setTimeout(() => scrollToSection(calc.anchor), 140);
+                              return;
+                            }
+                            if (calc.tab === 'trials') {
+                              setTrialsCategory('ischemic');
+                              navigateTo('trials');
+                              return;
+                            }
+                            // Default: a Protocols sub-tab anchor (management/protocols).
+                            navigateTo(calc.tab || 'management', { subTab: calc.subTab || 'ischemic' });
+                            if (calc.anchor) {
+                              window.setTimeout(() => {
+                                const el = document.getElementById(calc.anchor);
+                                if (el) {
+                                  if (el.tagName === 'DETAILS') el.open = true;
+                                  scrollToSection(calc.anchor);
+                                }
+                              }, 160);
+                            }
+                          };
+
+                          return (
+                        <section id="ais-command-center" aria-labelledby="ais-command-center-heading" className="space-y-3">
+                          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
+                            <div>
+                              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-cobalt-600">Acute ischemic stroke</p>
+                              <h3 id="ais-command-center-heading" className="text-lg font-semibold text-slate-900">AIS Command Center</h3>
+                              <p className="text-xs text-slate-600 mt-0.5">Six evidence-bound decisions for the fastest reperfusion workflow. Each card is COR/LOE-graded against the 2026 AHA/ASA AIS guideline.</p>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                            {AIS_COMMAND_CENTER_CARDS.map((card) => {
+                              const corClass = GUIDELINE_CLASS_COLORS[card.classOfRecommendation] || 'bg-slate-500 text-white';
+                              const atlasRecId = COMMAND_CENTER_REC_TO_ATLAS_REC[card.recommendationId];
+                              const atlasRec = atlasRecId ? evidenceRecommendations.find((r) => r.id === atlasRecId) : null;
+                              const claimsExpanded = atlasRec ? resolveClaimsWithCitations(atlasRec.supportingClaimIds || []) : [];
+                              const hasEvidenceDrawer = claimsExpanded.length > 0;
+                              const pubmedUrl = card.evidenceQuery
+                                ? `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(card.evidenceQuery)}`
+                                : null;
+                              return (
+                                <article key={card.id} id={`aiscc-${card.id}`} className="v7-card bg-white border border-line rounded-lg p-4 flex flex-col gap-3">
+                                  {/* Header: eyebrow urgency + title/shortLabel + COR/LOE badges */}
+                                  <div className="flex flex-col gap-1.5">
+                                    <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-cobalt-600">{card.urgency}</p>
+                                    <div className="flex flex-wrap items-start justify-between gap-2">
+                                      <div className="min-w-0">
+                                        <h4 className="text-base font-semibold text-slate-900 leading-tight">{card.title}</h4>
+                                        <p className="text-xs text-slate-500">{card.shortLabel}</p>
+                                      </div>
+                                      <div className="flex items-center gap-1 shrink-0">
+                                        <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${corClass}`} title={`Class of Recommendation ${card.classOfRecommendation}`}>COR {card.classOfRecommendation}</span>
+                                        <span className="inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700 border border-line" title={`Level of Evidence ${card.levelOfEvidence}`}>LOE {card.levelOfEvidence}</span>
+                                      </div>
+                                    </div>
+                                    {card.changedSinceLastGuideline ? (
+                                      <details className="mt-0.5">
+                                        <summary className="inline-flex items-center gap-1 cursor-pointer text-[10px] font-semibold uppercase tracking-wide text-warn-700 bg-warn-50 border border-warn-200 rounded-full px-2 py-0.5 hover:bg-warn-100">
+                                          <i aria-hidden="true" data-lucide="sparkles" className="w-3 h-3"></i>
+                                          What changed
+                                        </summary>
+                                        <p className="text-xs text-slate-700 mt-1.5 pl-1">{card.changedSinceLastGuideline}</p>
+                                      </details>
+                                    ) : null}
+                                  </div>
+
+                                  {/* Summary */}
+                                  <p className="text-sm text-slate-700">{card.summary}</p>
+
+                                  {/* Actions — ordered steps */}
+                                  {card.actions && card.actions.length > 0 ? (
+                                    <div>
+                                      <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 mb-1">Do now</p>
+                                      <ol className="list-decimal list-outside pl-5 space-y-1 text-xs text-slate-700 marker:text-cobalt-500 marker:font-semibold">
+                                        {card.actions.map((step, i) => (
+                                          <li key={i} className="pl-0.5">{step}</li>
+                                        ))}
+                                      </ol>
+                                    </div>
+                                  ) : null}
+
+                                  {/* Pathway — compact decision table */}
+                                  {card.pathway && card.pathway.length > 0 ? (
+                                    <div>
+                                      <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 mb-1">Decision pathway</p>
+                                      <div className="overflow-x-auto -mx-1">
+                                        <table className="w-full text-xs border-collapse">
+                                          <thead>
+                                            <tr className="text-left text-[10px] uppercase tracking-wide text-slate-500">
+                                              <th scope="col" className="font-semibold px-1 py-1">Scenario</th>
+                                              <th scope="col" className="font-semibold px-1 py-1">Decision</th>
+                                              <th scope="col" className="font-semibold px-1 py-1 whitespace-nowrap">COR / LOE</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {card.pathway.map((row, i) => (
+                                              <tr key={i} className="border-t border-line align-top">
+                                                <td className="px-1 py-1.5 text-slate-700 font-medium">{row.label}</td>
+                                                <td className="px-1 py-1.5 text-slate-600">{row.decision}</td>
+                                                <td className="px-1 py-1.5 whitespace-nowrap">
+                                                  <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS[row.cor] || 'bg-slate-500 text-white'}`}>{row.cor}</span>
+                                                  <span className="text-[10px] text-slate-500 ml-1">{row.loe}</span>
+                                                </td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                  ) : null}
+
+                                  {/* Calculator deep-links */}
+                                  {card.calculators && card.calculators.length > 0 ? (
+                                    <div className="flex flex-wrap gap-1.5">
+                                      {card.calculators.map((calc, i) => (
+                                        <button
+                                          key={i}
+                                          type="button"
+                                          onClick={() => goToCalculator(calc)}
+                                          className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium rounded-full bg-cobalt-50 text-cobalt-700 border border-cobalt-200 hover:bg-cobalt-100 hover:border-cobalt-300 transition-colors min-h-[32px]"
+                                        >
+                                          <i aria-hidden="true" data-lucide="calculator" className="w-3 h-3"></i>
+                                          {calc.label}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  ) : null}
+
+                                  {/* Pitfalls — caution styling */}
+                                  {card.pitfalls && card.pitfalls.length > 0 ? (
+                                    <div className="bg-warn-50 border border-warn-200 rounded-md p-2.5">
+                                      <p className="text-[10px] font-semibold uppercase tracking-wide text-warn-800 mb-1 flex items-center gap-1">
+                                        <i aria-hidden="true" data-lucide="alert-triangle" className="w-3 h-3"></i>
+                                        Pitfalls
+                                      </p>
+                                      <ul className="list-disc list-outside pl-4 space-y-0.5 text-xs text-warn-900">
+                                        {card.pitfalls.map((p, i) => (
+                                          <li key={i}>{p}</li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  ) : null}
+
+                                  {/* Teaching pearl — subtle callout */}
+                                  {card.teachingPearl ? (
+                                    <div className="border-l-4 border-cobalt-300 bg-cobalt-50 px-3 py-1.5 rounded-r">
+                                      <p className="text-[10px] font-semibold uppercase tracking-wide text-cobalt-700 mb-0.5">Teaching pearl</p>
+                                      <p className="text-xs text-slate-700 italic">{card.teachingPearl}</p>
+                                    </div>
+                                  ) : null}
+
+                                  {/* Evidence link: atlas drawer if resolvable, else PubMed fallback */}
+                                  {hasEvidenceDrawer ? (
+                                    <details className="border border-cobalt-200 bg-white rounded">
+                                      <summary className="cursor-pointer px-2 py-1 text-xs font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded flex items-center gap-1.5">
+                                        <i aria-hidden="true" data-lucide="link" className="w-3 h-3"></i>
+                                        Why this recommendation? ({claimsExpanded.length} supporting claim{claimsExpanded.length === 1 ? '' : 's'})
+                                      </summary>
+                                      <div className="px-2 pb-2 pt-1 space-y-1.5">
+                                        {claimsExpanded.map((cl) => (
+                                          <div key={cl.id} className="bg-slate-50 border border-line rounded p-2">
+                                            <p className="text-xs text-slate-800 italic">{cl.statement}</p>
+                                            <p className="text-[11px] text-slate-500 mt-0.5">Certainty: <span className="font-semibold">{cl.certainty}</span>{cl.conflictNotes ? ` · Conflict: ${cl.conflictNotes}` : ''}</p>
+                                            {cl.citationRecords && cl.citationRecords.length > 0 ? (
+                                              <ul className="mt-1 list-disc list-inside text-[11px] text-slate-700">
+                                                {cl.citationRecords.map((c) => (
+                                                  <li key={c.id}>
+                                                    {c.title} ({c.journal}{c.year ? ` ${c.year}` : ''})
+                                                    {citationLink(c) ? (
+                                                      <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-cobalt-700 hover:underline">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
+                                                    ) : null}
+                                                  </li>
+                                                ))}
+                                              </ul>
+                                            ) : null}
+                                          </div>
+                                        ))}
+                                        {atlasRec && atlasRec.caveats && atlasRec.caveats.length > 0 ? (
+                                          <div className="bg-warn-50 border border-warn-200 rounded p-1.5 text-[11px] text-warn-900">
+                                            <span className="font-semibold">Caveats:</span> {atlasRec.caveats.join(' · ')}
+                                          </div>
+                                        ) : null}
+                                      </div>
+                                    </details>
+                                  ) : pubmedUrl ? (
+                                    <a href={pubmedUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-medium text-link-600 dark:text-link-400 hover:text-link-700 hover:underline">
+                                      <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
+                                      Search the evidence (PubMed)
+                                    </a>
+                                  ) : null}
+                                </article>
+                              );
+                            })}
+                          </div>
+
+                          {/* Footer — last reviewed + source links */}
+                          <div className="text-xs text-slate-500 border-t border-line pt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1">
+                            <span>Last reviewed {AIS_COMMAND_CENTER_LAST_REVIEWED} · Sources:</span>
+                            {AIS_SOURCE_LINKS.map((src, i) => (
+                              <span key={i} className="inline-flex items-center">
+                                <a href={src.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-link-600 dark:text-link-400 hover:text-link-700 hover:underline">
+                                  <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
+                                  {src.label}
+                                </a>
+                                {i < AIS_SOURCE_LINKS.length - 1 ? <span className="text-slate-300" aria-hidden="true">·</span> : null}
+                              </span>
+                            ))}
+                          </div>
+                        </section>
+                          );
+                        })()}
+
                         {/* Section TOC */}
                         <div className="bg-slate-50 border border-line rounded-lg p-3">
                           <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Jump to Section</p>
