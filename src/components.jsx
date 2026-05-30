@@ -258,7 +258,7 @@ export const LateWindowEVTCalculator = ({ defaults = {} }) => {
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${dawn.eligible ? 'bg-ok-200 text-ok-900 dark:bg-ok-900 dark:text-ok-300' : 'bg-slate-200 text-slate-700 dark:bg-overlay dark:text-ink-2'}`}>{dawn.eligible ? `Eligible (Group ${dawn.tier})` : 'Not eligible'}</span>
             </div>
             <p className="text-xs text-slate-700 mt-1 dark:text-ink-2">{dawn.reason}</p>
-            <p className="text-[10px] text-slate-500 mt-0.5 dark:text-mute">{dawn.source}</p>
+            <p className="text-[10px] text-slate-600 mt-0.5 dark:text-mute">{dawn.source}</p>
           </div>
         )}
         {defuse3 && (
@@ -269,7 +269,7 @@ export const LateWindowEVTCalculator = ({ defaults = {} }) => {
             </div>
             <p className="text-xs text-slate-700 mt-1 dark:text-ink-2">{defuse3.reason}</p>
             {Number.isFinite(defuse3.mismatchRatio) && (
-              <p className="text-[10px] text-slate-500 mt-0.5 dark:text-mute">Mismatch: ratio {defuse3.mismatchRatio.toFixed(1)}, volume {defuse3.mismatchVolumeMl.toFixed(0)} mL. {defuse3.source}</p>
+              <p className="text-[10px] text-slate-600 mt-0.5 dark:text-mute">Mismatch: ratio {defuse3.mismatchRatio.toFixed(1)}, volume {defuse3.mismatchVolumeMl.toFixed(0)} mL. {defuse3.source}</p>
             )}
           </div>
         )}
@@ -349,7 +349,7 @@ export const DAPTDurationCalculator = ({ defaults = {} }) => {
         </div>
         {result.dosing && <div className="text-xs text-slate-700 mt-1 dark:text-ink-2"><strong>Dosing:</strong> {result.dosing}</div>}
         <div className="text-xs text-slate-700 mt-1 dark:text-ink-2">{result.rationale}</div>
-        {result.source && <div className="text-[10px] text-slate-500 mt-0.5 dark:text-mute">{result.source}</div>}
+        {result.source && <div className="text-[10px] text-slate-600 mt-0.5 dark:text-mute">{result.source}</div>}
       </div>
     </div>
   );
@@ -754,7 +754,7 @@ export const PHQ9Screen = () => {
             {suicidality && <span className="px-1.5 py-0.5 bg-crit-200 text-crit-900 rounded text-xs font-bold dark:text-crit-300">⚠ Suicidality endorsed — direct assessment required</span>}
           </div>
           <p className="text-xs mt-1">{interp.action}</p>
-          <p className="text-[10px] text-slate-500 mt-0.5 dark:text-mute">{interp.source}</p>
+          <p className="text-[10px] text-slate-600 mt-0.5 dark:text-mute">{interp.source}</p>
         </div>
       )}
     </div>

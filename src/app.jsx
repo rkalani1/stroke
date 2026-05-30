@@ -28406,7 +28406,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </summary>
                             <div className="p-4 space-y-3">
                               <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 dark:bg-orange-950 dark:border-orange-800">
-                                <p className="text-xs text-orange-600 mb-2 dark:text-orange-300">Post-thrombolytic orolingual angioedema</p>
+                                <p className="text-xs text-orange-700 mb-2 dark:text-orange-300">Post-thrombolytic orolingual angioedema</p>
                                 <div className="space-y-2">
                                   <div className="flex gap-2 items-start">
                                     <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">1</span>
@@ -28690,14 +28690,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <h3 className="text-lg font-semibold text-crit-700 mb-4 dark:text-crit-300">IVH &amp; Hydrocephalus Management</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="bg-white p-4 rounded border dark:bg-card">
-                            <h4 className="font-semibold text-orange-600 mb-2 dark:text-orange-300">EVD Indications</h4>
+                            <h4 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">EVD Indications</h4>
                             <ul className="text-sm space-y-1">
                               <li>ICH or IVH with hydrocephalus causing decreased consciousness: EVD recommended to reduce mortality.</li>
                               <li>Large IVH with impaired consciousness: EVD preferred over medical management alone.</li>
                             </ul>
                           </div>
                           <div className="bg-white p-4 rounded border dark:bg-card">
-                            <h4 className="font-semibold text-orange-600 mb-2 dark:text-orange-300">IVH-Specific Management</h4>
+                            <h4 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">IVH-Specific Management</h4>
                             <ul className="text-sm space-y-1">
                               <li>GCS &gt;3 with primary IVH or IVH extension from supratentorial ICH &lt;30 mL requiring EVD: EVD + thrombolytic is reasonable to reduce mortality.</li>
                               <li>Functional outcome benefit from EVD + thrombolytic is uncertain.</li>
@@ -30564,7 +30564,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <span className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${item.urgent ? 'bg-cobalt-600 text-white' : 'bg-slate-300 text-slate-700 dark:text-ink-2'}`}>{i + 1}</span>
                                 <div>
                                   <span className="text-sm font-semibold text-slate-800 dark:text-ink">{item.step}</span>
-                                  <span className="block text-xs text-slate-500 dark:text-mute">{item.detail}</span>
+                                  <span className="block text-xs text-slate-600 dark:text-mute">{item.detail}</span>
                                 </div>
                               </div>
                             ))}
@@ -30723,7 +30723,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="space-y-1 text-sm">
                                 <div className="flex justify-between"><span>First 6 hours</span><span className="font-bold text-crit-700 dark:text-crit-300">~15% (peak risk)</span></div>
                                 <div className="w-full bg-crit-200 rounded-full h-3"><div className="bg-crit-600 h-3 rounded-full" style={{width: '100%'}}></div></div>
-                                <div className="flex justify-between mt-2"><span>6-24 hours</span><span className="font-bold text-orange-700 dark:text-orange-300">~5-10%</span></div>
+                                <div className="flex justify-between mt-2"><span>6-24 hours</span><span className="font-bold text-orange-800 dark:text-orange-300">~5-10%</span></div>
                                 <div className="w-full bg-orange-200 rounded-full h-3"><div className="bg-orange-500 h-3 rounded-full" style={{width: '60%'}}></div></div>
                                 <div className="flex justify-between mt-2"><span>Day 2-14</span><span className="font-bold text-warn-700 dark:text-warn-300">~1-2%/day</span></div>
                                 <div className="w-full bg-warn-200 rounded-full h-3"><div className="bg-warn-500 h-3 rounded-full" style={{width: '25%'}}></div></div>
@@ -30769,7 +30769,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div key={bp.phase} className={`${bp.bg} border rounded-lg p-3 text-center`}>
                                 <div className="text-xs text-slate-600 mb-1 dark:text-ink-2">{bp.phase}</div>
                                 <div className={`text-xl font-bold ${bp.text}`}>{bp.target}</div>
-                                <div className="text-xs text-slate-500 mt-1 dark:text-mute">{bp.detail}</div>
+                                <div className="text-xs text-slate-600 mt-1 dark:text-mute">{bp.detail}</div>
                               </div>
                             ))}
                           </div>
@@ -30872,7 +30872,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 disposition: tiaDispositionDecision.label
                               }));
                             }}
-                            className="px-3 py-1.5 rounded-lg bg-orange-600 text-white dark:bg-orange-700 text-xs font-semibold hover:bg-orange-700"
+                            className="px-3 py-1.5 rounded-lg bg-orange-700 text-white dark:bg-orange-700 text-xs font-semibold hover:bg-orange-800"
                           >
                             Apply disposition to encounter
                           </button>
@@ -30945,9 +30945,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="bg-warn-50 rounded-lg p-3 dark:bg-warn-950">
                               <h5 className="font-semibold text-warn-800 text-sm mb-2 dark:text-warn-300">Vascular Imaging</h5>
                               <ul className="space-y-1.5 text-sm text-slate-700 dark:text-ink-2">
-                                <li className="flex items-start gap-2"><span className="text-warn-600 font-bold dark:text-warn-300">1.</span> <strong>CTA Head & Neck</strong> (preferred) or MRA — Obtain STAT</li>
-                                <li className="flex items-start gap-2"><span className="text-warn-600 font-bold dark:text-warn-300">2.</span> <strong>Carotid duplex</strong> — if anterior circulation TIA + CTA not done</li>
-                                <li className="flex items-start gap-2"><span className="text-warn-600 font-bold dark:text-warn-300">3.</span> <strong>Intracranial vessel imaging</strong> — CTA or MRA for ICAD evaluation</li>
+                                <li className="flex items-start gap-2"><span className="text-warn-700 font-bold dark:text-warn-300">1.</span> <strong>CTA Head & Neck</strong> (preferred) or MRA — Obtain STAT</li>
+                                <li className="flex items-start gap-2"><span className="text-warn-700 font-bold dark:text-warn-300">2.</span> <strong>Carotid duplex</strong> — if anterior circulation TIA + CTA not done</li>
+                                <li className="flex items-start gap-2"><span className="text-warn-700 font-bold dark:text-warn-300">3.</span> <strong>Intracranial vessel imaging</strong> — CTA or MRA for ICAD evaluation</li>
                               </ul>
                             </div>
                           </div>
@@ -32127,7 +32127,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-func" style={{ order: getCalculatorOrder('func', 22) }} className="bg-rose-50 border border-rose-200 rounded-lg dark:bg-rose-950 dark:border-rose-800">
                       <summary className="cursor-pointer p-3 font-semibold text-rose-800 hover:bg-rose-100 rounded-lg flex items-center justify-between dark:text-rose-300">
                         <span>FUNC Score (ICH Functional Outcome)</span>
-                        <span className="text-sm font-normal text-rose-600 dark:text-rose-300">Prognosis</span>
+                        <span className="text-sm font-normal text-rose-700 dark:text-rose-300">Prognosis</span>
                       </summary>
                       <div className="p-4">
                         <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Predicts functional independence (GOS ≥4) at 90 days after ICH. Range 0-11. Higher = better prognosis. (Rost et al., Stroke 2008)</p>
@@ -32300,7 +32300,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-abcd2" style={{ order: getCalculatorOrder('abcd2', 40) }} className="bg-orange-50 border border-orange-200 rounded-lg dark:bg-orange-950 dark:border-orange-800">
                       <summary className="cursor-pointer p-3 font-semibold text-orange-800 hover:bg-orange-100 rounded-lg flex items-center justify-between dark:text-orange-300">
                         <span>ABCD² Score</span>
-                        <span className="text-sm font-normal text-orange-600 dark:text-orange-300">Score: {calculateABCD2Score(abcd2Items)}</span>
+                        <span className="text-sm font-normal text-orange-700 dark:text-orange-300">Score: {calculateABCD2Score(abcd2Items)}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
@@ -32537,7 +32537,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-hasbled" style={{ order: getCalculatorOrder('hasbled', 60) }} className="bg-pink-50 border border-pink-200 rounded-lg dark:bg-pink-950 dark:border-pink-800">
                       <summary className="cursor-pointer p-3 font-semibold text-pink-800 hover:bg-pink-100 rounded-lg flex items-center justify-between dark:text-pink-300">
                         <span>HAS-BLED Score</span>
-                        <span className="text-sm font-normal text-pink-600 dark:text-pink-300">Score: {calculateHASBLEDScore(hasbledItems)}</span>
+                        <span className="text-sm font-normal text-pink-700 dark:text-pink-300">Score: {calculateHASBLEDScore(hasbledItems)}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
@@ -32878,7 +32878,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-hunt-hess" style={{ order: getCalculatorOrder('hunt-hess', 80) }} className="bg-warn-50 border border-warn-200 rounded-lg dark:bg-warn-950 dark:border-warn-800">
                       <summary className="cursor-pointer p-3 font-semibold text-warn-800 hover:bg-warn-100 rounded-lg flex items-center justify-between dark:text-warn-300 dark:hover:bg-warn-900">
                         <span>Hunt and Hess / WFNS Scale (SAH Grading)</span>
-                        <span className="text-sm font-normal text-warn-600 dark:text-warn-300">H&H: {huntHessGrade || 'Not Selected'} | WFNS: {wfnsGrade || 'Not Selected'}</span>
+                        <span className="text-sm font-normal text-warn-700 dark:text-warn-300">H&H: {huntHessGrade || 'Not Selected'} | WFNS: {wfnsGrade || 'Not Selected'}</span>
                       </summary>
                       <div className="p-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -32952,7 +32952,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-phases" style={{ order: getCalculatorOrder('phases', 75) }} className="bg-teal-50 border border-teal-200 rounded-lg dark:bg-teal-950 dark:border-teal-800">
                       <summary className="cursor-pointer p-3 font-semibold text-teal-800 hover:bg-teal-100 rounded-lg flex items-center justify-between dark:text-teal-300">
                         <span>PHASES Score (Aneurysm Rupture Risk)</span>
-                        <span className="text-sm font-normal text-teal-600 dark:text-teal-300">Score: {calculatePHASESScore(phasesItems)} — {getPHASESRisk(calculatePHASESScore(phasesItems)).risk} 5-yr risk</span>
+                        <span className="text-sm font-normal text-teal-700 dark:text-teal-300">Score: {calculatePHASESScore(phasesItems)} — {getPHASESRisk(calculatePHASESScore(phasesItems)).risk} 5-yr risk</span>
                       </summary>
                       <div className="p-4">
                         <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Predicts 5-year absolute risk of rupture for unruptured intracranial aneurysms. Useful for counseling in stroke prevention clinic.</p>
@@ -33424,7 +33424,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="bg-cobalt-100 p-3 rounded-lg dark:bg-cobalt-900">
                                   <div className="text-2xl font-black text-cobalt-900 dark:text-cobalt-300">{alt.totalDose}</div>
                                   <div className="text-xs text-cobalt-700 dark:text-cobalt-300">mg Total</div>
-                                  {alt.capped && <div className="text-xs text-warn-600 font-bold dark:text-warn-300">MAX DOSE</div>}
+                                  {alt.capped && <div className="text-xs text-warn-700 font-bold dark:text-warn-300">MAX DOSE</div>}
                                 </div>
                               </div>
                               <p className="text-xs text-slate-500 text-center dark:text-mute">{wt} kg × 0.9 mg/kg = {(wt * 0.9).toFixed(1)} mg{alt.capped ? ' → capped at 90 mg' : ''}</p>
@@ -33442,7 +33442,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-risk-scores" style={{ order: getCalculatorOrder('risk-scores', 25) }} className="bg-warn-50 border border-warn-200 rounded-lg dark:bg-warn-950 dark:border-warn-800">
                       <summary className="cursor-pointer p-3 font-semibold text-warn-800 hover:bg-warn-100 rounded-lg flex items-center justify-between dark:text-warn-300 dark:hover:bg-warn-900">
                         <span>Thrombolysis Risk Scores (SPAN-100, DRAGON, SEDAN)</span>
-                        <span className="text-sm font-normal text-warn-600 dark:text-warn-300">sICH Risk Assessment</span>
+                        <span className="text-sm font-normal text-warn-700 dark:text-warn-300">sICH Risk Assessment</span>
                       </summary>
                       <div className="p-4 space-y-4">
                         {/* SPAN-100 */}

@@ -660,7 +660,7 @@ export function EvdIcpSimulator() {
                   <h5 className={cx('text-sm font-bold', active ? 'text-cobalt-800 dark:text-cobalt-300' : 'text-slate-800 dark:text-ink')}>{tier.name}</h5>
                   {active && <span className="text-2xs font-bold uppercase tracking-wide text-cobalt-700 dark:text-cobalt-300">Active</span>}
                 </div>
-                <p className="text-2xs uppercase tracking-wide font-semibold text-slate-500 mb-1.5 dark:text-mute">{tier.trigger}</p>
+                <p className="text-2xs uppercase tracking-wide font-semibold text-slate-600 mb-1.5 dark:text-mute">{tier.trigger}</p>
                 <ul className="space-y-1">
                   {tier.items.map((it, i) => (
                     <li key={i} className="flex items-start gap-2 text-xs text-slate-700 dark:text-ink-2">
