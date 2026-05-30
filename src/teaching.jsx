@@ -171,7 +171,7 @@ const NeuroanatomyCard = () => {
         <button type="button" onClick={() => setTab('vasc')} className={`px-2.5 py-1 text-xs rounded ${tab === 'vasc' ? 'bg-ok-700 text-white' : 'bg-slate-100 dark:bg-paper-2'}`}>Vascular Territories</button>
       </div>
       {tab === 'cn' && (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: cranial nerves testing and lesion effects">
           <table className="w-full text-xs">
             <thead className="bg-ok-50 dark:bg-ok-950"><tr>
               <th className="px-2 py-1 text-left">CN</th>
@@ -193,7 +193,7 @@ const NeuroanatomyCard = () => {
         </div>
       )}
       {tab === 'vasc' && (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: vascular territories and arterial supply">
           <table className="w-full text-xs">
             <thead className="bg-ok-50 dark:bg-ok-950"><tr>
               <th className="px-2 py-1 text-left">Artery</th>
@@ -270,6 +270,7 @@ const TeachingPearlsCard = () => {
 const KeyboardShortcutsCard = () => (
   <div className="p-3 rounded-lg border border-slate-300 bg-white dark:border-strong dark:bg-card">
     <h3 className="font-bold text-slate-900 mb-2 dark:text-ink">⌨️ Keyboard Shortcuts</h3>
+    <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: keyboard shortcuts">
     <table className="w-full text-xs">
       <tbody>
         {KEYBOARD_SHORTCUTS.map((s, i) => (
@@ -280,6 +281,7 @@ const KeyboardShortcutsCard = () => (
         ))}
       </tbody>
     </table>
+    </div>
   </div>
 );
 
