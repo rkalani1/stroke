@@ -134,7 +134,7 @@ import sah2023 from './guidelines/sah-2023.json';
 import systemicComplications2024 from './guidelines/systemic-complications-2024.json';
 import svinLargeCore2025 from './guidelines/svin-large-core-2025.json';
 import tiaEd2023 from './guidelines/tia-ed-2023.json';
-// AIS Command Center — de-identified, evidence-bound management cards. Pure
+// Acute Stroke Pathways — de-identified, evidence-bound management cards. Pure
 // static data (bundled at build time, no runtime fetch) rendered at the top of
 // the Ischemic protocols sub-tab. See src/management-guidance.js.
 import {
@@ -1929,7 +1929,7 @@ Clinician Name`;
           };
 
           const initialActiveTab = (() => {
-            // Home (Command Center) is the default landing. A returning user with a
+            // Home (Acute Stroke Pathways) is the default landing. A returning user with a
             // saved lastActiveTab keeps their last surface; first-load / no-saved-tab
             // lands on Home.
             const storedTab = appData.uiState.lastActiveTab || 'home';
@@ -7648,7 +7648,7 @@ Clinician Name`;
                 return;
               }
 
-              // Ctrl/Cmd + 0..4 — tab navigation (0 = Command Center home)
+              // Ctrl/Cmd + 0..4 — tab navigation (0 = Acute Stroke Pathways home)
               if (primary && !e.shiftKey && !e.altKey) {
                 const tabMap = {
                   '0': { tab: 'home' },
@@ -7874,7 +7874,7 @@ Clinician Name`;
           // open-in-new-tab tools. Order = display order within a group.
           const paletteCommands = React.useMemo(() => [
             // ---- Top-level sections ----
-            { id: 'go-home', group: 'Go to', label: 'Command Center (Home)', hint: 'Cockpit home', icon: 'grid-3x3', keywords: ['home', 'command center', 'cockpit', 'dashboard', 'start'], run: () => navigateTo('home', { clearSearch: true }) },
+            { id: 'go-home', group: 'Go to', label: 'Home', hint: 'Overview', icon: 'grid-3x3', keywords: ['home', 'dashboard', 'start'], run: () => navigateTo('home', { clearSearch: true }) },
             { id: 'go-encounter', group: 'Go to', label: 'Acute Encounter', hint: 'Active stroke workup', icon: 'activity', keywords: ['encounter', 'acute', 'consult', 'telestroke', 'patient', 'workup'], run: () => navigateTo('encounter', { clearSearch: true }) },
             { id: 'go-protocols', group: 'Go to', label: 'Institutional Protocols & Algorithms', hint: 'Pathways & step-cards', icon: 'library', keywords: ['protocols', 'algorithms', 'pathways', 'management', 'library'], run: () => navigateTo('protocols', { clearSearch: true }) },
             { id: 'go-research', group: 'Go to', label: 'Research & Guidelines', hint: 'Guidelines & What’s New', icon: 'book-open', keywords: ['research', 'guidelines', 'whats new', "what's new", 'evidence', 'updates'], run: () => navigateTo('research', { clearSearch: true }) },
@@ -7888,7 +7888,7 @@ Clinician Name`;
             { id: 'sub-cvt', group: 'Protocols', label: 'CVT', hint: 'Cerebral venous thrombosis', icon: 'git-branch', keywords: ['cvt', 'venous', 'sinus thrombosis'], run: () => gotoProtocolsSub('cvt') },
             { id: 'sub-references', group: 'Protocols', label: 'References', hint: 'Reference docs & TOAST', icon: 'clipboard-list', keywords: ['references', 'docs', 'toast', 'classification', 'guidelines'], run: () => gotoProtocolsSub('references') },
             // ---- Education sub-tabs ----
-            { id: 'sub-onboarding', group: 'Education', label: 'Resident Onboarding', hint: 'Resident onboarding packet', icon: 'brain', keywords: ['onboarding', 'resident', 'packet', 'education', 'training'], run: () => { navigateTo('education'); setEducationSubTab('onboarding'); } },
+            { id: 'sub-onboarding', group: 'Education', label: 'Onboarding', hint: 'Onboarding packet', icon: 'brain', keywords: ['onboarding', 'resident', 'packet', 'education', 'training'], run: () => { navigateTo('education'); setEducationSubTab('onboarding'); } },
             { id: 'sub-icu', group: 'Education', label: 'ICU Curriculum', hint: 'Stroke ICU teaching packet', icon: 'brain', keywords: ['icu', 'curriculum', 'intensive care', 'education'], run: () => { navigateTo('education'); setEducationSubTab('icu'); } },
             { id: 'sub-nursing', group: 'Education', label: 'Nurse Education', hint: 'Stroke nurse curriculum', icon: 'brain', keywords: ['nurse', 'nursing', 'education', 'curriculum'], run: () => { navigateTo('education'); setEducationSubTab('nursing'); } },
             { id: 'sub-pocket-cards', group: 'Education', label: 'Pocket Cards', hint: 'Clinical pocket references', icon: 'brain', keywords: ['pocket cards', 'references', 'cheat sheets', 'cards'], run: () => { navigateTo('education'); setEducationSubTab('pocket-cards'); } },
@@ -14548,7 +14548,7 @@ Clinician Name`;
               { name: 'Ischemic Stroke Management', keywords: ['ischemic', 'ais', 'acute ischemic', 'lvo', 'large vessel', 'secondary prevention'], tab: 'management', subTab: 'ischemic' },
               { name: 'Discharge Checklist', keywords: ['discharge', 'checklist', 'disposition', 'follow up', 'quality measures'], tab: 'encounter' },
               { name: 'Order Bundles', keywords: ['order', 'bundle', 'orders', 'copy orders', 'nursing orders', 'medication orders'], tab: 'encounter' },
-              { name: 'Resident Onboarding', keywords: ['education', 'onboarding', 'curriculum', 'trainee', 'resident', 'rotation', 'survival guide'], tab: 'education', subTab: 'onboarding' },
+              { name: 'Onboarding', keywords: ['education', 'onboarding', 'curriculum', 'trainee', 'resident', 'rotation', 'survival guide'], tab: 'education', subTab: 'onboarding' },
               { name: 'ICU Curriculum', keywords: ['education', 'icu', 'curriculum', 'nihss', 'hemodynamics', 'ventilation', 'critical care'], tab: 'education', subTab: 'icu' },
               { name: 'Nurse Education', keywords: ['education', 'nurse', 'nursing', 'competency', 'nihss', 'swallow screen', 'call parameters'], tab: 'education', subTab: 'nursing' },
               { name: 'Pocket Cards', keywords: ['education', 'pocket cards', 'cheat sheets', 'references', 'dosing', 'anatomy', 'visual aids'], tab: 'education', subTab: 'pocket-cards' }
@@ -16351,7 +16351,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   clinician scrolls deep into the Encounter form. Stays static
                   on phone (<768px) where the bottom nav owns persistent access
                   and vertical space is precious. z below modals (z-50+) and the
-                  Command Center palette (z-120). The nav row sticks just below
+                  Acute Stroke Pathways palette (z-120). The nav row sticks just below
                   via --app-header-h (measured by an effect). */}
               <div
                 ref={headerBannerRef}
@@ -16896,7 +16896,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     // flex-1 pills can't hold the canonical name without overprinting
                     // (Cycle2 U2). Full canonical name stays as title/aria-label and
                     // is shown at lg+; the section H1/title is unchanged elsewhere.
-                    { id: 'home', name: 'Command Center', short: 'Command' },
+                    { id: 'home', name: 'Home', short: 'Home' },
                     { id: 'encounter', name: 'Encounter', short: 'Encounter' },
                     { id: 'protocols', name: 'Institutional Protocols & Algorithms', short: 'Protocols' },
                     { id: 'research', name: 'Research & Guidelines', short: 'Research' },
@@ -16954,7 +16954,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                 {/* ============================================================ */}
                 {/* COMMAND CENTER — Home (default landing). Dense attending     */}
-                {/* cockpit: status strip, fast-route tiles, external launcher. */}
+                {/* workspace: status strip, fast-route tiles, external launcher. */}
                 {/* Quiet, exact, v7 tokens, warm paper. NOT a marketing page.  */}
                 {/* ============================================================ */}
                 {activeTab === 'home' && (
@@ -16995,8 +16995,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <i data-lucide="activity" className="w-4 h-4"></i>
                               </span>
                               <div className="min-w-0">
-                                <p className="font-mono uppercase text-eyebrow text-mute leading-none">Command Center</p>
-                                <h2 className="font-serif text-section text-ink leading-tight">Stroke clinical cockpit</h2>
+                                <p className="font-mono uppercase text-eyebrow text-mute leading-none">Overview</p>
+                                <h2 className="font-serif text-section text-ink leading-tight">Acute stroke overview</h2>
                               </div>
                               <div className="ml-auto flex flex-wrap items-center gap-1.5">
                                 {appVer && (
@@ -17110,7 +17110,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* CONSOLIDATED ENCOUNTER TAB */}
                 {activeTab === 'encounter' && (
                   <ErrorBoundary>
-                  {/* U5 — Two-pane cockpit on ≥1280px (xl): form-left + sticky live-summary rail.
+                  {/* U5 — Two-pane workspace on ≥1280px (xl): form-left + sticky live-summary rail.
                       Cycle2 U3: gated to xl (was lg) so the 1024–1279 band — where the
                       global sidebar grid also turns on — renders sidebar + a FULL-WIDTH
                       Encounter form instead of a 3-column squeeze that starved the form to
@@ -27724,7 +27724,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* ===== END CLINICIAN WORKBENCH ===== */}
 
                   </div>
-                  {/* ===== RIGHT RAIL — LIVE COCKPIT READOUT (≥1024px only) =====
+                  {/* ===== RIGHT RAIL — LIVE WORKSPACE READOUT (≥1024px only) =====
                       Mirrors the live derived state the app already computes — NO new clinical
                       logic. Same `windowStatus`, `timeFromLKW`, missing/safetyGaps arrays (same
                       shape as the inline Missing-Fields banner), and `generateTelestrokeNote()` /
@@ -27765,7 +27765,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {/* Eyebrow header */}
                           <div className="px-4 py-3">
                             <p className="font-mono uppercase text-eyebrow text-mute">Live readout</p>
-                            <h3 className="font-serif text-section text-ink leading-tight">Encounter cockpit</h3>
+                            <h3 className="font-serif text-section text-ink leading-tight">Encounter summary</h3>
                           </div>
 
                           {/* Patient one-liner */}
@@ -28871,7 +28871,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {managementSubTab === 'ischemic' && (
                       <div id="mgmt-tabpanel-ischemic" role="tabpanel" aria-labelledby="mgmt-tab-ischemic" className="space-y-6">
                         {/* ============================================================
-                            AIS Command Center — evidence-bound, de-identified cards.
+                            Acute Stroke Pathways — evidence-bound, de-identified cards.
                             Static import (src/management-guidance.js), bundled offline.
                             Renders ABOVE the existing Ischemic content (additive only).
                             Reuses: GUIDELINE_CLASS_COLORS badges, the
@@ -28919,11 +28919,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           };
 
                           return (
-                        <section id="ais-command-center" aria-labelledby="ais-command-center-heading" className="space-y-3">
+                        <section id="acute-stroke-pathways" aria-labelledby="acute-stroke-pathways-heading" className="space-y-3">
                           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
                             <div>
                               <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-cobalt-600 dark:text-cobalt-300">Acute ischemic stroke</p>
-                              <h2 id="ais-command-center-heading" className="text-lg font-semibold text-slate-900 dark:text-ink">AIS Command Center</h2>
+                              <h2 id="acute-stroke-pathways-heading" className="text-lg font-semibold text-slate-900 dark:text-ink">Acute Stroke Pathways</h2>
                               <p className="text-xs text-slate-600 mt-0.5 dark:text-ink-2">Six evidence-bound decisions for the fastest reperfusion workflow. Each card is COR/LOE-graded against the 2026 AHA/ASA AIS guideline.</p>
                             </div>
                           </div>
