@@ -35318,7 +35318,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         trainee predicts/reveals. */}
                                     {!teachHideResult && item.appraisal && (item.appraisal.picoQuestion || item.appraisal.methodology || item.appraisal.results) ? (
                                       <details className="mt-3 group">
-                                        <summary className="font-mono uppercase text-[10px] text-mute tracking-wider cursor-pointer select-none hover:text-ink-2">
+                                        <summary className="inline-flex items-center min-h-[44px] font-mono uppercase text-[10px] text-mute tracking-wider cursor-pointer select-none hover:text-ink-2">
                                           Critical appraisal
                                         </summary>
                                         <div className="mt-2 space-y-2 text-xs text-ink-2 text-pretty">
@@ -35349,7 +35349,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           href={item.sourceUrl}
                                           target="_blank"
                                           rel="noopener noreferrer"
-                                          className="font-mono text-[11px] text-ink-2 hover:text-ink underline decoration-line underline-offset-2 whitespace-nowrap"
+                                          className="inline-flex items-center min-h-[44px] font-mono text-[11px] text-ink-2 hover:text-ink underline decoration-line underline-offset-2 whitespace-nowrap"
                                           aria-label={`Open briefing source for ${item.shortName} (opens in new tab)`}
                                         >
                                           Source ↗

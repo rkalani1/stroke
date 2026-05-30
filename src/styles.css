@@ -479,7 +479,8 @@
   .v7-verify {
     font-family: var(--mono-font); font-size: .64rem; font-weight: 600;
     letter-spacing: .03em; text-transform: uppercase;
-    display: inline-flex; align-items: center; gap: .3rem;
+    display: inline-flex; align-items: center; justify-content: center; gap: .3rem;
+    min-height: 44px;
     color: var(--teal); border: 1px solid var(--line-2); border-radius: 999px;
     padding: .3rem .6rem; white-space: nowrap;
   }
@@ -527,7 +528,7 @@
 }
 .view-mode-toggle [role="radio"] {
   height: auto;
-  min-height: 40px;
+  min-height: 44px;
   padding: 0.45rem 0.85rem;
   font-family: var(--mono-font);
   font-size: 0.66rem;
