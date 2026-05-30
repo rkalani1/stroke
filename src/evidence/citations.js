@@ -332,9 +332,9 @@ export const citations = [
     title: 'Thrombolysis Guided by Perfusion Imaging up to 9 Hours after Onset of Stroke (EXTEND)',
     journal: 'N Engl J Med',
     year: 2019,
-    pmid: '31050774',
+    pmid: '31067369',
     doi: '10.1056/NEJMoa1813046',
-    url: 'https://pubmed.ncbi.nlm.nih.gov/31050774/',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/31067369/',
     verificationStatus: 'verified-pubmed'
   }),
   makeCitation({
@@ -343,9 +343,9 @@ export const citations = [
     title: 'Effects of alteplase beyond 3 h after stroke in the Echoplanar Imaging Thrombolytic Evaluation Trial (EPITHET)',
     journal: 'Lancet Neurol',
     year: 2008,
-    pmid: '18387870',
-    doi: '10.1016/S1474-4422(08)70069-3',
-    url: 'https://pubmed.ncbi.nlm.nih.gov/18387870/',
+    pmid: '18296121',
+    doi: '10.1016/S1474-4422(08)70044-9',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/18296121/',
     verificationStatus: 'verified-pubmed'
   }),
   makeCitation({
@@ -354,9 +354,9 @@ export const citations = [
     title: 'Extending the time window for intravenous thrombolysis in acute ischemic stroke using magnetic resonance imaging-based patient selection (ECASS4-EXTEND)',
     journal: 'Int J Stroke',
     year: 2019,
-    pmid: '30407127',
-    doi: '10.1177/1747493018816101',
-    url: 'https://pubmed.ncbi.nlm.nih.gov/30407127/',
+    pmid: '30947642',
+    doi: '10.1177/1747493019840938',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/30947642/',
     verificationStatus: 'verified-pubmed'
   }),
   makeCitation({
@@ -442,22 +442,22 @@ export const citations = [
     title: 'Effect of Intra-arterial Alteplase vs Placebo Following Successful Thrombectomy on Functional Outcomes (CHOICE)',
     journal: 'JAMA',
     year: 2022,
-    pmid: '35103762',
+    pmid: '35143603',
     doi: '10.1001/jama.2022.1645',
-    url: 'https://pubmed.ncbi.nlm.nih.gov/35103762/',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/35143603/',
     verificationStatus: 'verified-pubmed'
   }),
   makeCitation({
     id: 'cit-theia-2023',
-    authors: 'Mac Grory B et al.',
-    title: 'Thrombolysis for Central Retinal Artery Occlusion (THEIA)',
-    journal: 'JAMA',
-    year: 2023,
-    pmid: '36780239',
-    doi: '10.1001/jama.2023.1505',
-    url: 'https://pubmed.ncbi.nlm.nih.gov/36780239/',
-    verificationStatus: 'unverified-source-limited',
-    verificationNotes: 'Identifier pattern valid; clinical content seeded from existing repo references; user manual verification recommended for primary endpoint precision'
+    authors: 'Préterre C et al.',
+    title: 'Intravenous alteplase versus oral aspirin for acute central retinal artery occlusion within 4.5 h of severe vision loss (THEIA)',
+    journal: 'Lancet Neurol',
+    year: 2025,
+    pmid: '41109232',
+    doi: '10.1016/S1474-4422(25)00308-4',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/41109232/',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Prior record (Mac Grory/JAMA/2023, PMID 36780239) was a wrong-article placeholder; corrected to the published THEIA trial (Préterre et al., Lancet Neurol 2025, PMID 41109232) verified against PubMed'
   }),
   makeCitation({
     id: 'cit-tencraos-2025',
@@ -487,9 +487,9 @@ export const citations = [
     title: 'Apixaban for Stroke Prevention in Subclinical Atrial Fibrillation (ARTESiA)',
     journal: 'N Engl J Med',
     year: 2024,
-    pmid: '38010204',
+    pmid: '37952132',
     doi: '10.1056/NEJMoa2310234',
-    url: 'https://pubmed.ncbi.nlm.nih.gov/38010204/',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/37952132/',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -500,9 +500,9 @@ export const citations = [
     title: 'Safety and efficacy of intensive blood pressure lowering after successful endovascular therapy in acute ischaemic stroke (BP-TARGET)',
     journal: 'Lancet Neurol',
     year: 2021,
-    pmid: '33773636',
-    doi: '10.1016/S1474-4422(21)00009-2',
-    url: 'https://pubmed.ncbi.nlm.nih.gov/33773636/',
+    pmid: '33647246',
+    doi: '10.1016/S1474-4422(20)30483-X',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/33647246/',
     verificationStatus: 'verified-pubmed'
   }),
   makeCitation({
@@ -511,9 +511,9 @@ export const citations = [
     title: 'Intensive blood pressure control after endovascular thrombectomy for acute ischaemic stroke (ENCHANTED2/MT)',
     journal: 'Lancet',
     year: 2022,
-    pmid: '36273485',
+    pmid: '36341753',
     doi: '10.1016/S0140-6736(22)01882-7',
-    url: 'https://pubmed.ncbi.nlm.nih.gov/36273485/',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/36341753/',
     verificationStatus: 'verified-pubmed'
   }),
   makeCitation({
@@ -522,9 +522,9 @@ export const citations = [
     title: 'Intensive vs Conventional Blood Pressure Lowering after Endovascular Thrombectomy (OPTIMAL-BP)',
     journal: 'JAMA',
     year: 2023,
-    pmid: '37183507',
-    doi: '10.1001/jama.2023.7156',
-    url: 'https://pubmed.ncbi.nlm.nih.gov/37183507/',
+    pmid: '37668619',
+    doi: '10.1001/jama.2023.14590',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/37668619/',
     verificationStatus: 'verified-pubmed'
   }),
 
