@@ -5,12 +5,27 @@
 // (data/clinical-intelligence/briefing-latest.md), joined against the
 // PubMed verification cache (data/clinical-intelligence/verified-pmids.json).
 //
-// Clinical-safety contract: a study reaches whats-new.json ONLY when the
-// verification cache marks it status==='verified' (a real PMID whose title
-// matches the briefing study). Quarantined studies are excluded and written to
-// whats-new-quarantine.md with reasons. Verification was performed once, with
-// live PubMed access, and frozen into the cache so every subsequent build is
-// deterministic + offline.
+// Emits ALL 50 briefing studies, tiered by an honest per-item
+// `verificationStatus`:
+//   • 'verified'   — the cache marks it status==='verified' (a real PMID whose
+//                    title matches the briefing study). Carries pmid + pubmedUrl.
+//   • 'unverified' — everything else (no PMID resolved, title mismatch, preprint,
+//                    protocol, conference late-breaker). Carries NO pmid/pubmedUrl;
+//                    instead links to the briefing's own sourceUrl + an
+//                    unverifiedReason for display/debug.
+//
+// Clinical-safety invariant (enforced in code below): an item carries
+// pmid/pubmedUrl ONLY when verificationStatus==='verified'. We NEVER emit the
+// (potentially wrong) PMID a quarantine entry might carry — for unverified
+// items pmid is null and pubmedUrl is absent. The companion validator
+// (validate-whats-new.mjs) re-asserts this as a hard build gate.
+//
+// Unverified studies are also listed in whats-new-source-gaps.md, reframed as
+// actionable guidance for next week's briefing (almost always: include the
+// article DOI in the source link so ingest auto-resolves it).
+//
+// Verification was performed once, with live PubMed access, and frozen into the
+// cache so every subsequent build is deterministic + offline.
 //
 // Deterministic: no network, no Date.now(), no new Date() — output depends only
 // on the two committed input files.
@@ -31,7 +46,7 @@ const repoRoot = process.cwd();
 const briefingFile = path.join(repoRoot, 'data/clinical-intelligence/briefing-latest.md');
 const cacheFile = path.join(repoRoot, 'data/clinical-intelligence/verified-pmids.json');
 const outFile = path.join(repoRoot, 'whats-new.json');
-const quarantineFile = path.join(repoRoot, 'whats-new-quarantine.md');
+const sourceGapsFile = path.join(repoRoot, 'whats-new-source-gaps.md');
 
 // ── briefing parser ─────────────────────────────────────────────────────────
 
@@ -318,6 +333,27 @@ function inferCertainty(study, evidenceType) {
   return 'moderate';
 }
 
+// Short, display-friendly reason for an unverified item. Collapses the long
+// cache `reason` (which carries forensic detail) into a one-liner suitable for
+// a card chip. Conservative keyword routing; falls back to a generic phrase.
+function shortUnverifiedReason(entry, study) {
+  const reason = String((entry && entry.reason) || '').toLowerCase();
+  if (!entry) return 'Not yet PubMed-indexed';
+  if (/conference late-breaker|not indexed in pubmed/.test(reason)) {
+    return 'Conference late-breaker — not yet PubMed-indexed';
+  }
+  if (/preprint|medrxiv|biorxiv/.test(reason)) {
+    return 'Preprint — not yet peer-reviewed/indexed';
+  }
+  if (/protocol/.test(reason)) {
+    return 'Only a study protocol is indexed — results not yet published';
+  }
+  if (/title mismatch|did not resolve|no matching pmid|no verification-cache entry|no pmid resolved|ambiguous|topic mismatch|closest hit/.test(reason)) {
+    return 'No DOI in source — could not auto-match to PubMed';
+  }
+  return 'Not yet PubMed-indexed';
+}
+
 // ── main ────────────────────────────────────────────────────────────────────
 
 function main() {
@@ -333,36 +369,26 @@ function main() {
   const byId = cache.byId || {};
 
   const items = [];
-  const quarantined = [];
+  const sourceGaps = [];
 
   for (const study of studies) {
     const entry = byId[study.id];
-    if (!entry || entry.status !== 'verified') {
-      quarantined.push({
-        id: study.id,
-        acronym: study.acronym || '(none)',
-        title: study.title,
-        journal: study.journalRaw,
-        reason: entry ? entry.reason || 'quarantined' : 'no verification-cache entry (PMID did not resolve or title mismatch)'
-      });
-      continue;
-    }
+    const isVerified = !!(entry && entry.status === 'verified' && entry.pmid);
 
     const evidenceType = inferEvidenceType(study);
     const topic = inferTopic(study);
+
+    // Common, tier-independent fields (rich content renders the same for both).
     const item = {
       id: study.id,
       shortName: study.acronym || study.title.slice(0, 40),
       fullName: study.title,
+      verificationStatus: isVerified ? 'verified' : 'unverified',
       evidenceType,
       topic,
       topicLabel: TOPIC_LABELS[topic] || 'Stroke',
-      journal: entry.journal || study.journalRaw,
+      journal: (entry && entry.journal) || study.journalRaw,
       year: study.year,
-      pmid: entry.pmid,
-      doi: entry.doi || study.doi || '',
-      pubmedUrl: `https://pubmed.ncbi.nlm.nih.gov/${entry.pmid}/`,
-      sourceUrl: study.url,
       practiceImpact: cleanPracticeImpact(study.bottomLine),
       result: {
         effect: extractEffect(study),
@@ -377,6 +403,33 @@ function main() {
       }
     };
 
+    if (isVerified) {
+      // CLINICAL-SAFETY INVARIANT: pmid + pubmedUrl ONLY on verified items.
+      item.pmid = entry.pmid;
+      item.doi = entry.doi || study.doi || '';
+      item.pubmedUrl = `https://pubmed.ncbi.nlm.nih.gov/${entry.pmid}/`;
+      item.sourceUrl = study.url;
+    } else {
+      // Unverified: NEVER carry a pmid (the quarantine cache entry may hold a
+      // wrong/closest-hit PMID — we deliberately drop it). Link to the
+      // briefing's own source URL instead.
+      item.pmid = null;
+      item.sourceUrl = study.url;
+      item.unverifiedReason = shortUnverifiedReason(entry, study);
+
+      sourceGaps.push({
+        id: study.id,
+        acronym: study.acronym || '(none)',
+        title: study.title,
+        journal: study.journalRaw,
+        sourceUrl: study.url,
+        shortReason: item.unverifiedReason,
+        fullReason: entry
+          ? entry.reason || 'quarantined'
+          : 'no verification-cache entry (PMID did not resolve or title mismatch)'
+      });
+    }
+
     if (evidenceType === 'observational') {
       item.observationalCaveat =
         'Observational study — confounding limits causal inference; interpret with caution.';
@@ -385,50 +438,99 @@ function main() {
     items.push(item);
   }
 
-  // Sort: year desc, then acronym/shortName asc.
+  // Sort: verified tier first, then within each tier year desc, then
+  // acronym/shortName asc. Deterministic.
   items.sort((a, b) => {
+    const va = a.verificationStatus === 'verified' ? 0 : 1;
+    const vb = b.verificationStatus === 'verified' ? 0 : 1;
+    if (va !== vb) return va - vb;
     const ya = a.year || 0;
     const yb = b.year || 0;
     if (yb !== ya) return yb - ya;
     return (a.shortName || '').localeCompare(b.shortName || '');
   });
 
+  const verifiedCount = items.filter((i) => i.verificationStatus === 'verified').length;
+  const unverifiedCount = items.length - verifiedCount;
+
   const output = {
     generatedFrom: 'clinical-intelligence-briefing',
     sourceDoc: 'briefing-latest.md',
     count: items.length,
+    verifiedCount,
+    unverifiedCount,
     items
   };
 
   fs.writeFileSync(outFile, JSON.stringify(output, null, 2) + '\n', 'utf8');
 
-  // Quarantine report.
-  quarantined.sort((a, b) => a.acronym.localeCompare(b.acronym));
-  const qLines = [
-    '# What\'s New — Quarantined studies',
+  // ── Source-gaps report (actionable guidance for next week's briefing) ──────
+  // Group the unverified studies by the short reason so each bucket states what
+  // the Gemini briefing agent must add to auto-verify next time.
+  const groups = new Map();
+  for (const g of sourceGaps) {
+    if (!groups.has(g.shortReason)) groups.set(g.shortReason, []);
+    groups.get(g.shortReason).push(g);
+  }
+  // Stable group order, stable item order within a group.
+  const groupKeys = [...groups.keys()].sort((a, b) => a.localeCompare(b));
+  for (const k of groupKeys) {
+    groups.get(k).sort((a, b) => a.acronym.localeCompare(b.acronym) || a.id.localeCompare(b.id));
+  }
+
+  // What each reason bucket needs to auto-verify.
+  const FIX_FOR_REASON = {
+    'Conference late-breaker — not yet PubMed-indexed':
+      'No fix available yet — wait for the peer-reviewed publication, then embed its DOI in the source link.',
+    'Preprint — not yet peer-reviewed/indexed':
+      'Link the published, PubMed-indexed version (with DOI) instead of the preprint when it appears.',
+    'Only a study protocol is indexed — results not yet published':
+      'Link the results paper (with DOI) once published, not the protocol/registry page.',
+    'No DOI in source — could not auto-match to PubMed':
+      'Embed the article DOI in the source link (e.g. https://doi.org/10.xxxx/...) so ingest resolves the PMID automatically.',
+    'Not yet PubMed-indexed':
+      'Embed the article DOI in the source link (e.g. https://doi.org/10.xxxx/...) once the article is indexed.'
+  };
+
+  const gLines = [
+    '# What\'s New — source gaps (auto-verify checklist)',
     '',
-    'Studies parsed from `data/clinical-intelligence/briefing-latest.md` that did',
-    'NOT resolve to a real PubMed PMID with a matching title. Per the',
-    'clinical-safety contract, these are EXCLUDED from `whats-new.json` and never',
-    'displayed. Re-verify against PubMed (DOI or exact title) before promoting.',
+    `These ${sourceGaps.length} of 50 briefing studies are displayed as **unverified**`,
+    '("Not yet PubMed-indexed") because they could not be auto-matched to a real',
+    'PubMed PMID. They are NOT removed — they render with a neutral pending-index',
+    'chip and a link to the briefing\'s own source, never a PubMed/PMID link.',
+    '',
+    '**Action for the Gemini briefing agent:** for each study below, embed the',
+    'article **DOI** in the source link (e.g. `https://doi.org/10.1056/NEJMoa...`)',
+    'rather than a journal/society homepage. The ingest pipeline resolves a DOI to',
+    'a PMID automatically, which promotes the study to the verified tier next week.',
     '',
     `Generated from: briefing-latest.md · verified-pmids.json`,
-    `Quarantined: ${quarantined.length} of 50`,
     '',
-    '| Acronym | id | Journal (briefing) | Reason |',
-    '|---|---|---|---|'
+    '---'
   ];
-  for (const q of quarantined) {
-    qLines.push(
-      `| ${q.acronym} | \`${q.id}\` | ${q.journal || '—'} | ${q.reason} |`
-    );
+  for (const k of groupKeys) {
+    const bucket = groups.get(k);
+    gLines.push('');
+    gLines.push(`## ${k} (${bucket.length})`);
+    gLines.push('');
+    gLines.push(`**To auto-verify:** ${FIX_FOR_REASON[k] || FIX_FOR_REASON['Not yet PubMed-indexed']}`);
+    gLines.push('');
+    gLines.push('| Acronym | id | Journal (briefing) | Source link in briefing |');
+    gLines.push('|---|---|---|---|');
+    for (const g of bucket) {
+      gLines.push(
+        `| ${g.acronym} | \`${g.id}\` | ${g.journal || '—'} | ${g.sourceUrl || '—'} |`
+      );
+    }
   }
-  qLines.push('');
-  fs.writeFileSync(quarantineFile, qLines.join('\n'), 'utf8');
+  gLines.push('');
+  fs.writeFileSync(sourceGapsFile, gLines.join('\n'), 'utf8');
 
   console.log(
-    `generate-whats-new: wrote ${items.length} verified items to whats-new.json ` +
-      `(${quarantined.length} quarantined → whats-new-quarantine.md)`
+    `generate-whats-new: wrote ${items.length} items to whats-new.json ` +
+      `(${verifiedCount} verified + ${unverifiedCount} unverified; ` +
+      `unverified detailed in whats-new-source-gaps.md)`
   );
 }
 

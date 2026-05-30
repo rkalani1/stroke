@@ -5,13 +5,28 @@
 // Validates whats-new.json against the committed verification cache
 // (data/clinical-intelligence/verified-pmids.json). No atlas dependency.
 //
-// For each item the validator asserts:
+// whats-new.json now carries ALL 50 briefing studies, tiered by
+// verificationStatus ('verified' | 'unverified'). The validator enforces the
+// clinical-safety invariant per tier.
+//
+// For EVERY item:
 //   1. Required display fields are present and non-empty:
-//        shortName, fullName, pmid, pubmedUrl, practiceImpact
+//        shortName, fullName, practiceImpact, appraisal.bottomLine
 //   2. result.effect is present and non-empty
-//   3. appraisal.bottomLine is present and non-empty
-//   4. item.pmid matches a verified-pmids.json entry with status==='verified'
+//   3. verificationStatus is exactly 'verified' or 'unverified'
+//
+// For VERIFIED items:
+//   4. item.pmid is present and matches a verified-pmids.json entry with
+//      status==='verified'
 //   5. pubmedUrl is the canonical https://pubmed.ncbi.nlm.nih.gov/<pmid>/ form
+//
+// For UNVERIFIED items (the safety gate against wrong citations):
+//   6. item.sourceUrl is present and non-empty
+//   7. item MUST NOT carry a pmid or a pubmedUrl — FAIL if it does. This is the
+//      hard guarantee that no unverified study ever shows a (possibly wrong)
+//      PubMed link in the UI.
+//
+// Top-level: count === items.length, and verifiedCount/unverifiedCount match.
 //
 // Output style mirrors the other validators:
 //   - Errors:   "whats-new/<id>: <message>"
@@ -41,7 +56,8 @@ function fmtList(label, items) {
   return `\n${label} (${items.length}):\n  - ${items.join('\n  - ')}`;
 }
 
-const REQUIRED_FIELDS = ['shortName', 'fullName', 'pmid', 'pubmedUrl', 'practiceImpact'];
+// Tier-independent required display fields (every item must carry these).
+const REQUIRED_FIELDS = ['shortName', 'fullName', 'practiceImpact'];
 
 async function main() {
   let feed;
@@ -93,12 +109,33 @@ async function main() {
     errors.push(`whats-new.json: count=${feed.count} does not match items.length=${feed.items.length}`);
   }
 
+  // Tier counts must match the actual item tiers.
+  const actualVerified = feed.items.filter((i) => i && i.verificationStatus === 'verified').length;
+  const actualUnverified = feed.items.length - actualVerified;
+  if (typeof feed.verifiedCount !== 'number') {
+    errors.push('whats-new.json: missing numeric "verifiedCount" field');
+  } else if (feed.verifiedCount !== actualVerified) {
+    errors.push(`whats-new.json: verifiedCount=${feed.verifiedCount} does not match actual verified items=${actualVerified}`);
+  }
+  if (typeof feed.unverifiedCount !== 'number') {
+    errors.push('whats-new.json: missing numeric "unverifiedCount" field');
+  } else if (feed.unverifiedCount !== actualUnverified) {
+    errors.push(`whats-new.json: unverifiedCount=${feed.unverifiedCount} does not match actual unverified items=${actualUnverified}`);
+  }
+
   for (const item of feed.items) {
     const prefix = `whats-new/${item.id || '<missing-id>'}`;
 
     if (!item.id) {
       errors.push(`${prefix}: missing id`);
       continue;
+    }
+
+    // verificationStatus must be one of the two known tiers.
+    if (item.verificationStatus !== 'verified' && item.verificationStatus !== 'unverified') {
+      errors.push(
+        `${prefix}: verificationStatus='${item.verificationStatus}' must be 'verified' or 'unverified'`
+      );
     }
 
     for (const field of REQUIRED_FIELDS) {
@@ -122,18 +159,38 @@ async function main() {
       errors.push(`${prefix}: required field 'appraisal.bottomLine' is missing or empty`);
     }
 
-    // pmid must be a verified PMID in the cache (clinical-safety gate).
-    if (item.pmid && !verifiedPmids.has(String(item.pmid))) {
-      errors.push(
-        `${prefix}: pmid='${item.pmid}' is not present as status='verified' in verified-pmids.json`
-      );
-    }
-
-    // pubmedUrl canonical form.
-    if (item.pmid && item.pubmedUrl !== `https://pubmed.ncbi.nlm.nih.gov/${item.pmid}/`) {
-      errors.push(
-        `${prefix}: pubmedUrl='${item.pubmedUrl}' does not match canonical https://pubmed.ncbi.nlm.nih.gov/${item.pmid}/`
-      );
+    if (item.verificationStatus === 'verified') {
+      // Verified: must have a real, cache-verified PMID + canonical pubmedUrl.
+      if (item.pmid == null || item.pmid === '') {
+        errors.push(`${prefix}: verified item is missing required 'pmid'`);
+      } else if (!verifiedPmids.has(String(item.pmid))) {
+        errors.push(
+          `${prefix}: pmid='${item.pmid}' is not present as status='verified' in verified-pmids.json`
+        );
+      }
+      if (item.pubmedUrl == null || item.pubmedUrl === '') {
+        errors.push(`${prefix}: verified item is missing required 'pubmedUrl'`);
+      } else if (item.pmid && item.pubmedUrl !== `https://pubmed.ncbi.nlm.nih.gov/${item.pmid}/`) {
+        errors.push(
+          `${prefix}: pubmedUrl='${item.pubmedUrl}' does not match canonical https://pubmed.ncbi.nlm.nih.gov/${item.pmid}/`
+        );
+      }
+    } else if (item.verificationStatus === 'unverified') {
+      // Unverified: must have a sourceUrl, and MUST NOT carry a pmid/pubmedUrl.
+      // This is the hard safety gate against displaying a wrong citation.
+      if (item.sourceUrl == null || item.sourceUrl === '') {
+        errors.push(`${prefix}: unverified item is missing required 'sourceUrl'`);
+      }
+      if (item.pmid != null && item.pmid !== '') {
+        errors.push(
+          `${prefix}: unverified item MUST NOT carry a pmid (found '${item.pmid}') — clinical-safety violation`
+        );
+      }
+      if ('pubmedUrl' in item && item.pubmedUrl != null && item.pubmedUrl !== '') {
+        errors.push(
+          `${prefix}: unverified item MUST NOT carry a pubmedUrl (found '${item.pubmedUrl}') — clinical-safety violation`
+        );
+      }
     }
   }
 
@@ -144,7 +201,11 @@ async function main() {
     console.error(fmtList('errors', errors));
     process.exit(1);
   } else {
-    log(`✓ validate:whats-new — ${feed.items.length} verified items`);
+    log(
+      `✓ validate:whats-new — ${feed.items.length} items ` +
+        `(${actualVerified} verified + ${actualUnverified} unverified; ` +
+        `no unverified item carries a pmid/pubmedUrl)`
+    );
     process.exit(0);
   }
 }

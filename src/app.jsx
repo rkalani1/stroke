@@ -34641,6 +34641,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* ===== WHAT'S NEW ===== */}
                     {(() => {
                       const items = (whatsNewData && Array.isArray(whatsNewData.items)) ? whatsNewData.items : [];
+                      const verifiedCount = (typeof whatsNewData?.verifiedCount === 'number')
+                        ? whatsNewData.verifiedCount
+                        : items.filter((i) => i.verificationStatus === 'verified').length;
+                      const unverifiedCount = (typeof whatsNewData?.unverifiedCount === 'number')
+                        ? whatsNewData.unverifiedCount
+                        : items.length - verifiedCount;
                       // Map atlas topic → v7 left-stripe family. Default teal.
                       const topicFamily = (topic) => {
                         const t = String(topic || '');
@@ -34663,8 +34669,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               What's New
                             </h2>
                             <p className="font-sans text-body text-ink-2 mt-1 text-pretty">
-                              Recent practice-changing &amp; informing studies · PubMed-verified
+                              Recent practice-changing &amp; informing studies from this month's clinical-intelligence briefing
                             </p>
+                            {items.length > 0 ? (
+                              <p className="font-mono text-[11px] text-mute uppercase tracking-wide mt-1">
+                                {verifiedCount} PubMed-verified · {unverifiedCount} pending index
+                              </p>
+                            ) : null}
                           </header>
 
                           {items.length === 0 ? (
@@ -34676,18 +34687,25 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {items.map((item) => {
                                 const fam = topicFamily(item.topic);
                                 const dir = item.result?.direction;
+                                const isVerified = item.verificationStatus === 'verified';
                                 return (
                                   <article key={item.id} className={`v7-study v7-fresh ${fam}`}>
-                                    {/* header row: acronym + type badge + verified pulse */}
+                                    {/* header row: acronym + type badge + verification marker */}
                                     <div className="flex items-start justify-between gap-3 mb-2">
                                       <div className="flex items-center gap-2 flex-wrap">
                                         <strong className="acro font-mono text-ink text-[15px] font-bold tracking-tight">{item.shortName}</strong>
                                         <span className={`v7-stype ${stypeClass(item.evidenceType)}`}>{stypeLabel(item.evidenceType)}</span>
                                       </div>
-                                      <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-ok-700 whitespace-nowrap" title="PubMed-verified">
-                                        <span className="v7-pulse" aria-hidden="true"></span>
-                                        verified
-                                      </span>
+                                      {isVerified ? (
+                                        <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-ok-700 whitespace-nowrap" title="PubMed-verified">
+                                          <span className="v7-pulse" aria-hidden="true"></span>
+                                          verified
+                                        </span>
+                                      ) : (
+                                        <span className="v7-tag whitespace-nowrap" title={item.unverifiedReason || 'Not yet PubMed-indexed'}>
+                                          {item.unverifiedReason || 'Not yet PubMed-indexed'}
+                                        </span>
+                                      )}
                                     </div>
 
                                     {/* journal · year + topic tag */}
@@ -34750,20 +34768,32 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       </details>
                                     ) : null}
 
-                                    {/* footer: certainty + PubMed verify link */}
+                                    {/* footer: certainty + source/verify link (tier-dependent) */}
                                     <div className="flex items-center justify-between gap-2 mt-4 pt-3 border-t border-line flex-wrap">
                                       <span className={`v7-cert ${item.certainty === 'high' ? 'high' : (item.certainty === 'moderate' ? 'moderate' : '')}`}>
                                         {String(item.certainty || 'low')} certainty
                                       </span>
-                                      <a
-                                        href={item.pubmedUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="v7-verify"
-                                        aria-label={`Open PubMed record for ${item.shortName} (opens in new tab)`}
-                                      >
-                                        PubMed ↗
-                                      </a>
+                                      {isVerified ? (
+                                        <a
+                                          href={item.pubmedUrl}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="v7-verify"
+                                          aria-label={`Open PubMed record for ${item.shortName} (opens in new tab)`}
+                                        >
+                                          PubMed ↗
+                                        </a>
+                                      ) : item.sourceUrl ? (
+                                        <a
+                                          href={item.sourceUrl}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="font-mono text-[11px] text-ink-2 hover:text-ink underline decoration-line underline-offset-2 whitespace-nowrap"
+                                          aria-label={`Open briefing source for ${item.shortName} (opens in new tab)`}
+                                        >
+                                          Source ↗
+                                        </a>
+                                      ) : null}
                                     </div>
                                   </article>
                                 );
