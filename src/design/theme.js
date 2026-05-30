@@ -49,10 +49,21 @@ export function runV7Migration() {
   safeSet(MIGRATED_KEY, '1');
 }
 
-/* Read preference, defaulting to light on public Pages. */
+/* Read preference.
+   - Public Pages: honor an EXPLICIT stored choice ('light'|'dark'|'auto'),
+     else default to 'light' (so existing public users — who have no stored
+     pref because runV7Migration removes it — see no change). This lets a user
+     reach Dark/System on public via an explicit selection, while keeping the
+     unset default light.
+   - Non-public: default to 'auto' so OS preference wins when unset. */
 export function getThemePref() {
-  if (isPublicPages()) return 'light';
-  return safeGet(PREF_KEY) || 'auto';
+  const stored = safeGet(PREF_KEY);
+  if (isPublicPages()) {
+    return (stored === 'light' || stored === 'dark' || stored === 'auto')
+      ? stored
+      : 'light';
+  }
+  return stored || 'auto';
 }
 
 /* Persist preference. 'auto' deletes the key so OS pref wins. */

@@ -107,6 +107,15 @@ import {
   evaluateBostonCAA20
 } from './calculators-extended.js';
 import { getLocalInstitutionalContent } from './institutional-protocols.js';
+// v7 theme controller — the SINGLE source of truth for theme pref + DOM state.
+// Replaces the legacy in-component darkMode boolean. theme.js owns the
+// `data-theme` attribute, the `dark` class, and the stroke.v7.theme storage key.
+import {
+  getThemePref as v7GetThemePref,
+  setThemePref as v7SetThemePref,
+  effectiveTheme as v7EffectiveTheme,
+  bootstrapTheme as v7BootstrapTheme,
+} from './design/theme.js';
 // Patient-store is consumed by components.jsx, no direct imports needed here.
 import ais2026 from './guidelines/ais-2026.json';
 import cancerStroke2026 from './guidelines/cancer-stroke-2026.json';
@@ -1952,13 +1961,26 @@ Clinician Name`;
           const [noteTemplate, setNoteTemplate] = useState(loadFromStorage('noteTemplate', 'consult'));
           const [calcDrawerOpen, setCalcDrawerOpen] = useState(false);
           const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
-          const [darkMode, setDarkMode] = useState(() => {
-            try {
-              if (PUBLIC_DEMO_MODE) return false;
-              return (window.strokeAppStorage && window.strokeAppStorage.getStoredValue('darkMode')) === true
-                || document.documentElement.classList.contains('dark');
-            } catch { return false; }
+          // Theme is owned entirely by src/design/theme.js (the v7 controller).
+          // We mirror its preference ('auto'|'light'|'dark') and derived effective
+          // theme ('dark' boolean) into React state for rendering. theme.js owns the
+          // DOM (data-theme + `dark` class) and the stroke.v7.theme storage key; we
+          // NEVER write the class or storage here.
+          const [themePref, setThemePrefState] = useState(() => {
+            try { return v7GetThemePref(); } catch { return 'light'; }
           });
+          const [isDark, setIsDark] = useState(() => {
+            try { return v7EffectiveTheme() === 'dark'; } catch { return false; }
+          });
+          // Apply a theme choice: delegate to theme.js (updates DOM + storage),
+          // then mirror the resolved pref + effective theme into local state.
+          const applyThemeChoice = (pref) => {
+            try {
+              v7SetThemePref(pref);
+              setThemePrefState(v7GetThemePref());
+              setIsDark(v7EffectiveTheme() === 'dark');
+            } catch { /* ignore storage errors */ }
+          };
           const [updateAvailable, setUpdateAvailable] = useState(false);
           const [pendingWorker, setPendingWorker] = useState(null);
           // PWA install state. installPrompt holds the captured BeforeInstallPromptEvent
@@ -1968,16 +1990,68 @@ Clinician Name`;
           const [installPrompt, setInstallPrompt] = useState(null);
           const [isInstalled, setIsInstalled] = useState(false);
           const [iosInstallTipVisible, setIosInstallTipVisible] = useState(false);
+          // Keep the derived `isDark` in sync when the OS color-scheme changes while
+          // the preference is 'auto'. theme.js's bindThemeListener (bound once in
+          // bootstrap) re-applies the DOM; this only mirrors the result into React.
+          // theme.js owns all DOM/storage writes — we do not touch them here.
           useEffect(() => {
-            try {
-              if (darkMode) document.documentElement.classList.add('dark');
-              else document.documentElement.classList.remove('dark');
-              document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
-              if (window.strokeAppStorage && window.strokeAppStorage.setStoredValue) {
-                window.strokeAppStorage.setStoredValue('darkMode', darkMode);
+            if (typeof window === 'undefined' || !window.matchMedia) return undefined;
+            const mq = window.matchMedia('(prefers-color-scheme: dark)');
+            const sync = () => {
+              try {
+                if (v7GetThemePref() === 'auto') setIsDark(v7EffectiveTheme() === 'dark');
+              } catch { /* ignore */ }
+            };
+            mq.addEventListener?.('change', sync);
+            return () => mq.removeEventListener?.('change', sync);
+          }, []);
+          // U11 — Encounter section navigator (TOC) + scrollspy.
+          // The Encounter form has four stable phase markers (phase-triage,
+          // phase-decision, phase-management, phase-documentation) present in both
+          // consult paths. activeEncSection tracks the section currently in view via
+          // IntersectionObserver so the TOC can render aria-current on the active link.
+          const ENCOUNTER_TOC_SECTIONS = useMemo(() => ([
+            { id: 'phase-triage', label: 'Triage' },
+            { id: 'phase-decision', label: 'Decision' },
+            { id: 'phase-management', label: 'Management' },
+            { id: 'phase-documentation', label: 'Documentation' },
+          ]), []);
+          const [activeEncSection, setActiveEncSection] = useState('phase-triage');
+          useEffect(() => {
+            if (activeTab !== 'encounter') return undefined;
+            if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') return undefined;
+            const els = ENCOUNTER_TOC_SECTIONS
+              .map((s) => document.getElementById(s.id))
+              .filter(Boolean);
+            if (!els.length) return undefined;
+            // Track each marker's last-known intersection ratio; pick the topmost
+            // section that is currently within the upper band of the viewport.
+            const visibility = new Map();
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach((e) => { visibility.set(e.target.id, e.isIntersecting); });
+              // Choose the last (deepest) section whose marker has scrolled above the
+              // band trigger line; default to the first section near the top.
+              let current = ENCOUNTER_TOC_SECTIONS[0].id;
+              for (const s of ENCOUNTER_TOC_SECTIONS) {
+                const el = document.getElementById(s.id);
+                if (!el) continue;
+                const top = el.getBoundingClientRect().top;
+                if (top <= 200) current = s.id;
               }
-            } catch (e) { /* ignore storage errors */ }
-          }, [darkMode]);
+              setActiveEncSection(current);
+            }, { rootMargin: '-160px 0px -55% 0px', threshold: [0, 1] });
+            els.forEach((el) => observer.observe(el));
+            return () => observer.disconnect();
+          }, [activeTab, ENCOUNTER_TOC_SECTIONS]);
+          // Jump to an Encounter section; respect prefers-reduced-motion.
+          const jumpToEncounterSection = (id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const motionOK = !(typeof window !== 'undefined'
+              && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
+            el.scrollIntoView({ behavior: motionOK ? 'smooth' : 'auto', block: 'start' });
+            setActiveEncSection(id);
+          };
           // Phase 2: Guided Clinical Pathway UI state
           const [pathwayCollapsed, setPathwayCollapsed] = useState(true);
           const [guidelineRecsExpanded, setGuidelineRecsExpanded] = useState(false);
@@ -16588,18 +16662,39 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </button>
                               )}
                               <div className="border-t border-line my-1" role="separator"></div>
-                              <button
-                                role="menuitemcheckbox"
-                                aria-checked={darkMode}
-                                onClick={() => { setDarkMode(prev => !prev); }}
-                                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-paper-2 text-sm text-ink transition-colors"
-                              >
-                                <i aria-hidden="true" data-lucide={darkMode ? 'sun' : 'moon'} className="w-4 h-4 text-mute"></i>
-                                <span className="flex-1 text-left">{darkMode ? 'Light mode' : 'Dark mode'}</span>
-                                <span className={`ml-auto inline-flex h-5 w-9 items-center rounded-full transition-colors ${darkMode ? 'bg-cobalt-600' : 'bg-slate-300'}`}>
-                                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${darkMode ? 'translate-x-4' : 'translate-x-0.5'}`}></span>
-                                </span>
-                              </button>
+                              {/* Theme: single 3-way control driven entirely by theme.js
+                                  (System / Light / Dark). Radiogroup semantics; the
+                                  selected segment uses bg-cobalt-600/text-white (6.75:1,
+                                  AA in both modes). theme.js owns DOM + storage. */}
+                              <div className="px-4 py-2.5">
+                                <span id="theme-control-label" className="block text-xs font-medium text-mute mb-1.5">Theme</span>
+                                <div
+                                  role="radiogroup"
+                                  aria-labelledby="theme-control-label"
+                                  className="inline-flex w-full rounded-md border border-line p-0.5 bg-card"
+                                >
+                                  {[
+                                    { id: 'auto', label: 'System', icon: 'monitor' },
+                                    { id: 'light', label: 'Light', icon: 'sun' },
+                                    { id: 'dark', label: 'Dark', icon: 'moon' },
+                                  ].map((opt) => {
+                                    const selected = themePref === opt.id;
+                                    return (
+                                      <button
+                                        key={opt.id}
+                                        type="button"
+                                        role="radio"
+                                        aria-checked={selected}
+                                        onClick={() => { applyThemeChoice(opt.id); }}
+                                        className={`flex-1 inline-flex items-center justify-center gap-1.5 min-h-[44px] px-2 text-sm font-semibold rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${selected ? 'bg-cobalt-600 text-white' : 'text-ink hover:bg-paper-2'}`}
+                                      >
+                                        <i aria-hidden="true" data-lucide={opt.icon} className="w-4 h-4"></i>
+                                        <span>{opt.label}</span>
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
                               <div className="border-t border-line my-1" role="separator"></div>
                               <button
                                 role="menuitem"
@@ -16984,6 +17079,50 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   {/* LEFT PANE — the existing Encounter form, untouched (keeps space-y-4 rhythm). */}
                   <div className="space-y-4 min-w-0">
 
+                    {/* ===== U11 — ENCOUNTER SECTION NAVIGATOR (TOC + scrollspy) =====
+                         Mobile (<1024px): a labeled "Jump to…" <select> (≥44px touch target).
+                         Desktop (≥1024px): a sticky horizontal jump-link bar (radio-free nav
+                         landmark) with aria-current on the active section. Token colors only;
+                         lives at the top of the LEFT pane so the two-pane grid + live rail are
+                         unaffected and there is no horizontal overflow at any breakpoint. */}
+                    <nav
+                      aria-label="Encounter sections"
+                      className="bg-card border border-line rounded-md px-2 py-2"
+                    >
+                      {/* Mobile: Jump-to select */}
+                      <div className="lg:hidden flex items-center gap-2">
+                        <label htmlFor="encounter-toc-select" className="text-xs font-medium text-mute shrink-0">Jump to</label>
+                        <select
+                          id="encounter-toc-select"
+                          value={activeEncSection}
+                          onChange={(e) => jumpToEncounterSection(e.target.value)}
+                          className="flex-1 min-h-[44px] px-3 text-sm bg-card text-ink border border-line rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
+                        >
+                          {ENCOUNTER_TOC_SECTIONS.map((s) => (
+                            <option key={s.id} value={s.id}>{s.label}</option>
+                          ))}
+                        </select>
+                      </div>
+                      {/* Desktop: horizontal jump-link bar with scrollspy highlight */}
+                      <ul className="hidden lg:flex items-center gap-1 list-none m-0 p-0">
+                        {ENCOUNTER_TOC_SECTIONS.map((s) => {
+                          const active = activeEncSection === s.id;
+                          return (
+                            <li key={s.id} className="flex-1">
+                              <button
+                                type="button"
+                                onClick={() => jumpToEncounterSection(s.id)}
+                                aria-current={active ? 'true' : undefined}
+                                className={`w-full min-h-[44px] px-3 text-sm font-semibold rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${active ? 'bg-cobalt-600 text-white' : 'text-ink hover:bg-paper-2'}`}
+                              >
+                                {s.label}
+                              </button>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </nav>
+
                     {/* ===== v7 PATIENT STRIP (mobile) — sticky chip row above v6 strip during transition.
                          Phase 5 IA overhaul will remove the v6 strip below and promote Incomplete /
                          Safety-critical banners into PatientStrip as chip-links. ============== */}
@@ -17112,7 +17251,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
 
                     {/* ===== TRIAGE SECTION ===== */}
-                    <div id="phase-triage"></div>
+                    <div id="phase-triage" className="scroll-mt-40"></div>
 
                     {/* Last Known Well Input - Show for Video Telestroke */}
                     {consultationType === 'videoTelestroke' && (
@@ -18573,7 +18712,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
 
                         {/* ===== DECISION SECTION ===== */}
-                        <div id="phase-decision"></div>
+                        <div id="phase-decision" className="scroll-mt-40"></div>
 
                         {/* Section 6: Treatment Decision — clinician-only (Phase 4).
                             Contains TNK/alteplase dosing, anticoagulation reversal,
@@ -21633,7 +21772,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             )}
 
                             {/* ===== MANAGEMENT SECTION ===== */}
-                            <div id="phase-management"></div>
+                            <div id="phase-management" className="scroll-mt-40"></div>
 
                             {(telestrokeNote.diagnosisCategory === 'ischemic' || telestrokeNote.diagnosisCategory === 'tia') && (
                               <div className="bg-cobalt-50 border border-cobalt-300 rounded-lg p-3">
@@ -25910,7 +26049,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         )}
 
                         {/* ===== DOCUMENTATION SECTION ===== */}
-                        <div id="phase-documentation"></div>
+                        <div id="phase-documentation" className="scroll-mt-40"></div>
 
                         {/* Discharge Checklist - Show when recommendations or disposition is being addressed */}
                         {telestrokeNote.diagnosis && (
@@ -36260,8 +36399,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
         // v7: bootstrap theme (data-theme="dark" attribute + class fallback)
         // before first render so dark surfaces never flash light on cold load.
         // runV7Migration() carries forward the v5 darkMode boolean into the
-        // new stroke.v7.theme localStorage key; safe to re-call.
-        import('./design/theme.js').then(({ bootstrapTheme }) => bootstrapTheme());
+        // new stroke.v7.theme localStorage key; safe to re-call. Bound ONCE here —
+        // theme.js is the sole owner of the DOM theme state + OS-change listener.
+        v7BootstrapTheme();
 
         // Render the component
         const root = createRoot(document.getElementById('root'));
