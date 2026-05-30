@@ -123,3 +123,18 @@ clinical currency (C1 ≤4.5h window, C6 absolute TBI CI).
 - **M2 EvdIcp TRAGUS↔transducer collision** (EvdIcpSimulator.jsx:507): the Cycle-5 edge-clip fix (right-anchor x=312) traded a clip for an OVERLAP — the label sat on the XDCR transducer box at the level (offset-0) state. Moved label to its own row (`y=tragusY-13`) keeping the in-bounds anchor; screenshot-verified no-clip AND no-overlap at offset 0 + both extremes × 320/1280 × light/dark (12 cases). Lesson: SVG label placement is two-sided (fit bounds AND avoid movable elements) — verify the default + extreme render states, don't reason from coords.
 
 ### Cycle 6 close — version 6.8.2 → **6.8.3** (SW cache `v6-8-3`), full gate battery, deploy, live verify. NOT clean (4 items) → two-consecutive-clean counter has not yet started; Cycle 7 is the next clean attempt.
+
+---
+
+## Cycle 7  (v6.8.3 → **6.8.4**)
+
+### Audit — 5 parallel READ-ONLY. **3 of 5 CLEAN** (evidence — 6/6 fresh PubMed spot-checks match, no regression from Cycle-6 tag changes; perf/PWA — Perf 93/95 CLS 0, deterministic byte-identical build; public-safety — 6th consecutive). a11y + visual found 5 stragglers (audits again rejected non-blockers — a search `aria-activedescendant` render-race PHANTOM correctly excluded).
+
+### Fixes — `17e5b34`
+- **F1 mobile-nav landmark** (app.jsx:36423): the mobile bottom `<nav role="tablist">` overrode its own navigation landmark (desktop wraps its tablist in `role=navigation`, mobile didn't) → moved `role=navigation` to the `<nav>`, `role=tablist` to an inner div (axe `region` 0 at 375).
+- **F2 phone-path date/time labels** (app.jsx:17883/17886): `#phone-discovery-date/time` were unlabeled (siblings had aria-label) → added aria-label.
+- **V2 EvdIcp error↔TRAGUS collision at NEGATIVE offsets** (EvdIcpSimulator.jsx:515): the "±X mmHg error" text lived INSIDE the transducer `translate()` group at `tragusY+20`, so raising the bed (offset −10..−15) drove it up into the stationary TRAGUS label (the symmetric counterpart of Cycle-6's M2, which only checked offset 0 + positive) → pulled it OUT of the group to a fixed safe position; screenshot-verified non-overlapping across −15..+15 × both themes × 320/1280.
+- **V1+V3 + WIDE-TABLE CLASS CLOSED** (pocket-cards COR/LOE 437/449, components PHQ-9 730 clipped on phones — same "missing `overflow-x-auto`" class as Cycle-2's app.jsx tables, but in SATELLITE files): inventoried ALL 21 `<table>`s across every source file → 3 wrapped + 6 bare-wrappers upgraded to the standard `overflow-x-auto tabIndex=0 role=region aria-label focus-ring` pattern (unique labels); 12 already standard. Full axe sweep (14 routes × 2 themes × 375/1280 + populated): **0** across region/label/landmark-unique/scrollable-region/contrast/heading-order.
+
+### Cycle 7 close — version 6.8.3 → **6.8.4** (SW cache `v6-8-4`), full gate battery, deploy, live verify. NOT clean (5 items) → counter not started; Cycle 8 next.
+### Lesson (reinforced): closing a class = enumerate across EVERY file (V1/V3 were the Cycle-2 table class in satellite files) + verify the FULL parameter range of any moving element (V2 was the negative-offset mirror of M2). Sampled endpoints + single-file globs leave stragglers.
