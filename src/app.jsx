@@ -63,6 +63,7 @@ import { DeviceFrame as V7DeviceFrame } from './design/device-frame.jsx';
 import { DrugChip as V7DrugChip } from './design/drug-chip.jsx';
 import { PatientStripMobile as V7PatientStripMobile, PatientStripRail as V7PatientStripRail } from './design/patient-strip.jsx';
 import { EvdIcpSimulator } from './simulators/EvdIcpSimulator.jsx';
+import { HintsSimulator } from './simulators/HintsSimulator.jsx';
 import {
   evaluateDAWN,
   evaluateDEFUSE3,
@@ -34982,6 +34983,21 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="p-4 pt-0">
                           <ErrorBoundary>
                             <EvdIcpSimulator />
+                          </ErrorBoundary>
+                        </div>
+                      </details>
+
+                      <details className="bg-white border border-line rounded-lg">
+                        <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
+                          <span className="flex items-center gap-2">
+                            <i aria-hidden="true" data-lucide="eye" className="w-4 h-4 text-teal-600"></i>
+                            HINTS+ Eye-Movement Simulator
+                          </span>
+                          <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
+                        </summary>
+                        <div className="p-4 pt-0">
+                          <ErrorBoundary>
+                            <HintsSimulator />
                           </ErrorBoundary>
                         </div>
                       </details>
