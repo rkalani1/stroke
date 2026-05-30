@@ -59,9 +59,14 @@ import {
   Toast as V7Toast
 } from './design/primitives.jsx';
 import { HeroReadout as V7HeroReadout } from './design/hero-readout.jsx';
-import { DeviceFrame as V7DeviceFrame } from './design/device-frame.jsx';
 import { DrugChip as V7DrugChip } from './design/drug-chip.jsx';
 import { PatientStripMobile as V7PatientStripMobile, PatientStripRail as V7PatientStripRail } from './design/patient-strip.jsx';
+import { TrialScreener } from './components/TrialScreener.jsx';
+import { EligibilityTables } from './components/EligibilityTables.jsx';
+import { EvdIcpSimulator } from './simulators/EvdIcpSimulator.jsx';
+import { HintsSimulator } from './simulators/HintsSimulator.jsx';
+import { PupillometrySimulator } from './simulators/PupillometrySimulator.jsx';
+import { NeuroExamsTool } from './simulators/NeuroExamsTool.jsx';
 import {
   evaluateDAWN,
   evaluateDEFUSE3,
@@ -984,7 +989,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           : DEFAULT_TTL_HOURS;
         const INITIAL_STORAGE_EXPIRED = applyStorageExpiration(initialTtlHours);
 
-        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators', 'references'];
+        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'simulators', 'calculators', 'references'];
 
         const LEGACY_MANAGEMENT_TABS = {
           ich: 'ich',
@@ -4798,7 +4803,7 @@ Clinician Name`;
               category: 'Carotid',
               title: 'Symptomatic carotid stenosis management',
               recommendation: 'For symptomatic carotid stenosis \u226550%, CEA within 2 weeks is recommended. Optimal medical management is the foundation for all patients.',
-              detail: 'Symptomatic = stroke/TIA referable to the carotid territory within 6 months. CEA remains Class I for symptomatic stenosis \u226550%. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
+              detail: 'Symptomatic = stroke/TIA referable to the carotid territory within 6 months. CEA remains Class I for symptomatic stenosis \u226550%. NASCET endarterectomy NNTs: symptomatic 70\u201399% \u2192 NNT \u2248 6 (ARR \u224817% over 2 yr); symptomatic 50\u201369% \u2192 NNT \u2248 15 (ARR \u22486.5% over 5 yr). Benefit is greatest within 2 weeks of the event and diminishes with delay. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
@@ -5031,7 +5036,7 @@ Clinician Name`;
               category: 'Secondary Prevention',
               title: 'Aggressive LDL lowering for stroke prevention',
               recommendation: 'Target LDL <55 mg/dL with \u226550% reduction from baseline for atherosclerotic stroke/TIA. Add ezetimibe, then PCSK9 inhibitor if not at goal on max statin.',
-              detail: 'TST (Lancet Neurol 2020): LDL <70 reduced composite endpoint by 22%. SPARCL: atorvastatin 80 mg reduced stroke 16%, \u226550% LDL reduction yielded 31% stroke reduction. ESC/EAS 2019: LDL <55 for very-high-risk ASCVD. FOURIER 2025 subanalysis: LDL <40 mg/dL optimal for prior stroke patients (no safety concerns, no increase in hemorrhagic stroke). Escalation ladder: high-intensity statin \u2192 add ezetimibe 10 mg \u2192 add PCSK9i (evolocumab/alirocumab) \u2192 recheck 6-8 weeks. Inclisiran (twice-yearly injection) available for adherence challenges. Oral PCSK9 agents (enlicitide) in pipeline.',
+              detail: 'TST (Lancet Neurol 2020): LDL <70 reduced composite endpoint by 22%. SPARCL: high-intensity statin (atorvastatin 80 mg) reduced recurrent stroke 16% (HR \u22480.84); NNT \u2248 46 over \u22485 years. \u226550% LDL reduction yielded 31% stroke reduction. ESC/EAS 2019: LDL <55 for very-high-risk ASCVD. FOURIER 2025 subanalysis: LDL <40 mg/dL optimal for prior stroke patients (no safety concerns, no increase in hemorrhagic stroke). Escalation ladder: high-intensity statin \u2192 add ezetimibe 10 mg \u2192 add PCSK9i (evolocumab/alirocumab) \u2192 recheck 6-8 weeks. Inclisiran (twice-yearly injection) available for adherence challenges. Oral PCSK9 agents (enlicitide) in pipeline.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA 2021; TST (Lancet Neurol 2020); FOURIER (AHA 2025)',
@@ -27291,7 +27296,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {(() => {
                       const subTabLabels = {
                         ich: 'ICH', ischemic: 'Ischemic', sah: 'SAH', tia: 'TIA', cvt: 'CVT',
-                        calculators: 'Calculators', references: 'References'
+                        simulators: 'Simulators', calculators: 'Calculators', references: 'References'
                       };
                       const activeLabel = subTabLabels[managementSubTab] || managementSubTab;
                       return (
@@ -27306,7 +27311,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       );
                     })()}
                     <div className="bg-white border border-line rounded-md rounded-t-none p-2 flex flex-wrap gap-2 sticky top-9 z-30 " role="tablist" aria-label="Protocols & Algorithms sub-sections" onKeyDown={(e) => {
-                      const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators', 'references'];
+                      const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'simulators', 'calculators', 'references'];
                       const ci = subTabs.indexOf(managementSubTab);
                       let ni;
                       if (e.key === 'ArrowRight') { e.preventDefault(); ni = (ci + 1) % subTabs.length; }
@@ -27338,6 +27343,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'sah', label: 'SAH' },
                         { id: 'tia', label: 'TIA' },
                         { id: 'cvt', label: 'CVT' },
+                        { id: 'simulators', label: 'Simulators' },
                         { id: 'calculators', label: 'Calculators' },
                         { id: 'references', label: 'References' }
                       ].map((tab) => {
@@ -31226,7 +31232,56 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         );
                       })()}
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
+                      {/* Standard-vs-cohort mortality comparison — teaches the self-fulfilling-prophecy effect of early care limitation */}
+                      {(() => {
+                        const ichScore = calculateICHScore(ichScoreItems);
+                        const rows = [
+                          { s: 0, std: '0%', cohort: '0.9%' },
+                          { s: 1, std: '13%', cohort: '0.7%' },
+                          { s: 2, std: '26%', cohort: '5.3%' },
+                          { s: 3, std: '72%', cohort: '15.3%' },
+                          { s: 4, std: '97%', cohort: '36.8%' },
+                          { s: 5, std: '100%', cohort: '60.0%' },
+                          { s: 6, std: '100%', cohort: '100% (predicted)' },
+                        ];
+                        return (
+                          <details className="mt-3 bg-card border border-line rounded-lg text-xs">
+                            <summary className="cursor-pointer px-3 py-2 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">
+                              Standard vs comfort-care-excluded cohort — teaching comparison
+                            </summary>
+                            <div className="px-3 pb-3">
+                              <div className="overflow-x-auto">
+                                <table className="w-full border-collapse text-xs">
+                                  <thead>
+                                    <tr className="text-left text-slate-600 border-b border-line">
+                                      <th scope="col" className="py-1 pr-2 font-semibold">ICH Score</th>
+                                      <th scope="col" className="py-1 px-2 font-semibold">Standard (Hemphill)</th>
+                                      <th scope="col" className="py-1 pl-2 font-semibold">Comfort-care-excluded cohort</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {rows.map((r) => (
+                                      <tr key={r.s} className={`border-b border-line/60 ${r.s === Math.min(ichScore, 6) ? 'bg-cobalt-50 font-semibold' : ''}`}>
+                                        <td className="py-1 pr-2 tabular-nums">{r.s}</td>
+                                        <td className="py-1 px-2 tabular-nums text-crit-700">{r.std}</td>
+                                        <td className="py-1 pl-2 tabular-nums text-slate-700">{r.cohort}</td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              </div>
+                              <p className="mt-2 text-slate-600">
+                                <span className="font-semibold text-warn-700">Illustrative comfort-care-excluded cohort (unvalidated)</span> — de-identified, provenance-unverified figures shown only to teach the <span className="italic">self-fulfilling-prophecy effect of early care limitation</span>. NOT validated or institutional data; do not use for individual prognostication. When aggressive care is sustained, observed mortality falls well below the Hemphill estimates that were derived from cohorts with high rates of early DNR/withdrawal.
+                              </p>
+                              <p className="mt-1 text-slate-500">
+                                Standard column: Hemphill et al., Stroke 2001. AHA/ASA 2022 ICH guideline recommends postponing new DNR orders until at least the second full hospital day (Class IIa).
+                              </p>
+                            </div>
+                          </details>
+                        );
+                      })()}
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2 mt-2">
                         <div className="space-y-2">
                           <p className="font-semibold text-sm mb-1">Glasgow Coma Scale:</p>
                           {[{v:'gcs34',l:'GCS 3-4',p:'+2 points'},{v:'gcs512',l:'GCS 5-12',p:'+1 point'},{v:'',l:'GCS 13-15',p:'0 points'}].map(o => (
@@ -34959,6 +35014,79 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 )}
                 {/* End of References/Evidence Content */}
 
+                    {/* Bedside Simulators Content */}
+                    {managementSubTab === 'simulators' && (
+                    <div id="mgmt-tabpanel-simulators" role="tabpanel" aria-labelledby="mgmt-tab-simulators" className="space-y-4">
+                      <div className="bg-white border border-line rounded-lg p-4">
+                        <h2 className="text-xl font-semibold text-slate-900">Bedside Simulators</h2>
+                        <p className="text-sm text-slate-600 mt-1">
+                          Interactive teaching tools that model neurocritical-care bedside skills. Adjust the controls, run scenarios, and read the live trace to build pattern recognition. More simulators (ventilator, hemodynamics, neuro-exam) are planned for this section.
+                        </p>
+                      </div>
+
+                      <details className="bg-white border border-line rounded-lg" open>
+                        <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
+                          <span className="flex items-center gap-2">
+                            <i aria-hidden="true" data-lucide="activity" className="w-4 h-4 text-cobalt-600"></i>
+                            EVD &amp; ICP Simulator
+                          </span>
+                          <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
+                        </summary>
+                        <div className="p-4 pt-0">
+                          <ErrorBoundary>
+                            <EvdIcpSimulator />
+                          </ErrorBoundary>
+                        </div>
+                      </details>
+
+                      <details className="bg-white border border-line rounded-lg">
+                        <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
+                          <span className="flex items-center gap-2">
+                            <i aria-hidden="true" data-lucide="eye" className="w-4 h-4 text-teal-600"></i>
+                            HINTS+ Eye-Movement Simulator
+                          </span>
+                          <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
+                        </summary>
+                        <div className="p-4 pt-0">
+                          <ErrorBoundary>
+                            <HintsSimulator />
+                          </ErrorBoundary>
+                        </div>
+                      </details>
+
+                      <details className="bg-white border border-line rounded-lg">
+                        <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
+                          <span className="flex items-center gap-2">
+                            <i aria-hidden="true" data-lucide="circle-dot" className="w-4 h-4 text-teal-600"></i>
+                            Pupillometry / NPi Simulator
+                          </span>
+                          <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
+                        </summary>
+                        <div className="p-4 pt-0">
+                          <ErrorBoundary>
+                            <PupillometrySimulator />
+                          </ErrorBoundary>
+                        </div>
+                      </details>
+
+                      <details className="bg-white border border-line rounded-lg">
+                        <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
+                          <span className="flex items-center gap-2">
+                            <i aria-hidden="true" data-lucide="brain" className="w-4 h-4 text-teal-600"></i>
+                            Neuro-Exams (Aphasia Classifier + Delirium Matrix + Coma Exam)
+                          </span>
+                          <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
+                        </summary>
+                        <div className="p-4 pt-0">
+                          <ErrorBoundary>
+                            <NeuroExamsTool />
+                          </ErrorBoundary>
+                        </div>
+                      </details>
+                    </div>
+                    )}
+                    {/* End of Bedside Simulators Content */}
+
                   </div>
                 </ErrorBoundary>
                 )}
@@ -35253,44 +35381,39 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </div>
 
                     {/* ============================================ */}
-                    {/* Sub-view: Bedside Screener (iframe)           */}
+                    {/* Sub-view: Bedside Screener (NATIVE)           */}
+                    {/* v7: the standalone stroke-trials-screener was   */}
+                    {/* ported natively into <TrialScreener/> — no more  */}
+                    {/* iframe / DeviceFrame / postMessage handshake.    */}
+                    {/* 15-trial dual-eval engine lives in              */}
+                    {/* src/evidence/screener-eval.js. Synthetic public  */}
+                    {/* demo only — institution-clean, no PHI capture.   */}
                     {/* ============================================ */}
-                    {trialsView === 'screener' && (() => {
-                      // Public demo does not pass patient context through URLs.
-                      const screenerSrc = ' /stroke-trials-screener/';
-                      return (
-                        <div id="trials-screener-panel" className="space-y-3">
-                          <p className="font-mono uppercase text-2xs tracking-[0.06em] text-slate-500 dark:text-slate-400">
-                            Public demo opens without patient context. Enter synthetic screener parameters only.
-                          </p>
-                          <V7DeviceFrame
-                            src={screenerSrc}
-                            title="Stroke Bedside Trial Screener"
-                            breadcrumb="Trials Screener - synthetic demo - no patient context"
-                            poweredBy="stroke-trials-screener"
-                            openHref={screenerSrc}
-                            sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms"
-                          />
-                        </div>
-                      );
-                    })()}
+                    {trialsView === 'screener' && (
+                      <div id="trials-screener-panel">
+                        <TrialScreener copyToClipboard={copyToClipboard} addToast={addToast} />
+                      </div>
+                    )}
 
                     {/* ============================================ */}
-                    {/* Sub-view: Eligibility Tables (iframe)         */}
+                    {/* Sub-view: Eligibility Tables (NATIVE)         */}
+                    {/* v7: the standalone stroke-eligibility-tables-  */}
+                    {/* embed was ported natively into                 */}
+                    {/* <EligibilityTables/> — no more iframe /         */}
+                    {/* DeviceFrame. 6 phase-grouped trial-eligibility */}
+                    {/* tables (ischemic & ICH × acute/inpatient/       */}
+                    {/* outpatient) live in                             */}
+                    {/* src/evidence/eligibilityTables.js, with per-    */}
+                    {/* table Copy-as-HTML (v7 teal/gold hexes) and     */}
+                    {/* Copy-as-Markdown. Synthetic public demo only —  */}
+                    {/* institution-clean, no UW purple/gold.           */}
                     {/* ============================================ */}
                     {trialsView === 'eligibility' && (
                       <div id="trials-eligibility-panel" className="space-y-3">
                         <p className="font-mono uppercase text-2xs tracking-[0.06em] text-slate-500 dark:text-slate-400">
-                          public-reference reference tables · ischemic &amp; ICH pathways · copy-paste-ready HTML for intranet
+                          public-reference reference tables · ischemic &amp; ICH pathways · copy-paste-ready HTML &amp; Markdown for intranet
                         </p>
-                        <V7DeviceFrame
-                          src="/stroke-eligibility-tables-embed/"
-                          title="Stroke Trial Eligibility Tables"
-                          breadcrumb="Trials Screener · Eligibility Tables"
-                          poweredBy="stroke-eligibility-tables-embed"
-                          openHref=" /stroke-eligibility-tables-embed/"
-                          sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms"
-                        />
+                        <EligibilityTables copyToClipboard={copyToClipboard} addToast={addToast} />
                       </div>
                     )}
 
