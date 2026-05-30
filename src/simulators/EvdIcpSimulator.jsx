@@ -197,7 +197,7 @@ export function computeMeasuredICP({ trueMeanICP, transducerOffset, stopcockPosi
 export function computeActiveTier(trueMeanICP) {
   if (trueMeanICP >= 24) return 3;
   if (trueMeanICP >= 22) return 2;
-  if (trueMeanICP >= 16) return 1;
+  if (trueMeanICP >= 20) return 1;
   return 0;
 }
 

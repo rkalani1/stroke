@@ -44,7 +44,9 @@ describe('EVD/ICP simulator — measuredICP', () => {
 describe('EVD/ICP simulator — tiers', () => {
   it('maps true mean ICP to the active escalation tier', () => {
     expect(computeActiveTier(12)).toBe(0);
-    expect(computeActiveTier(16)).toBe(1);
+    expect(computeActiveTier(16)).toBe(0); // 16–19 is surveillance band, not Tier 1
+    expect(computeActiveTier(19)).toBe(0);
+    expect(computeActiveTier(20)).toBe(1); // Tier 1 activates at ≥ 20 mmHg
     expect(computeActiveTier(22)).toBe(2);
     expect(computeActiveTier(24)).toBe(3);
     expect(computeActiveTier(40)).toBe(3);
