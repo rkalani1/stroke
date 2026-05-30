@@ -17,17 +17,27 @@ bottom line, PICO, methodology, and primary results.
    (preprint / protocol / review / different topic / conference late-breaker).
 3. **Generate (offline, deterministic):** `scripts/generate-whats-new.mjs` parses
    the 50 briefing blocks, joins `verified-pmids.json`, and emits `whats-new.json`
-   (repo root) containing ONLY verified studies. Quarantined studies are excluded
-   and listed in `whats-new-quarantine.md`, never displayed.
-4. Build runs `validate:whats-new` (offline gate) and deploys.
+   (repo root) containing **all 50 studies, tiered by verification**:
+   - **verified** → carries a real `pmid` + `pubmedUrl`; rendered with a
+     "PubMed-verified" pulse + PubMed link.
+   - **unverified** → `pmid: null`, no `pubmedUrl`; rendered with a neutral
+     "not yet PubMed-indexed" chip + a `sourceUrl` link to the briefing's own
+     source. The possibly-wrong quarantine PMID is **never** emitted.
+   Clinical-safety invariant: an item may carry a PMID/PubMed link ONLY when
+   `verificationStatus === 'verified'`. The unverified studies (+ what each needs
+   to auto-verify — usually an embedded DOI) are listed in `whats-new-source-gaps.md`.
+4. Build runs `validate:whats-new` (offline gate — fails if any unverified item
+   carries a PMID) and deploys.
 
 ### Files
 - `briefing-latest.md` — source (exactly 50 study blocks).
 - `verified-pmids.json` — committed PubMed verification cache (`byId` map of
   `{ pmid, doi, journal, verifiedTitle, status }`). Makes every build offline +
   deterministic. Re-run verification only when the briefing is refreshed.
-- `../../whats-new.json` — generated feed (verified-only).
-- `../../whats-new-quarantine.md` — generated list of excluded studies + reasons.
+- `../../whats-new.json` — generated feed: all 50 studies, each tagged
+  `verificationStatus: 'verified' | 'unverified'`.
+- `../../whats-new-source-gaps.md` — the unverified studies grouped by reason,
+  with the fix each needs to auto-verify next week (embed the article DOI).
 
 Source of truth for clinical content: this briefing (Dr. Kalani's curated intelligence).
 Verification layer: PubMed PMID/DOI resolution (working source links + clinical safety).
