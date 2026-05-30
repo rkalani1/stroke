@@ -46,12 +46,12 @@ export const PHIBanner = () => {
     try { localStorage.setItem('strokeApp:phiBannerDismissed', '1'); } catch (_) {}
   };
   return (
-    <div role="alert" aria-live="polite" className="bg-warn-50 border-y border-warn-300 px-3 py-2 text-xs sm:text-sm text-warn-900 flex items-start gap-2">
-      <span className="font-bold text-warn-700 flex-shrink-0" aria-hidden>⚠</span>
+    <div role="alert" aria-live="polite" className="bg-warn-50 border-y border-warn-300 px-3 py-2 text-xs sm:text-sm text-warn-900 flex items-start gap-2 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
+      <span className="font-bold text-warn-700 flex-shrink-0 dark:text-warn-300" aria-hidden>⚠</span>
       <div className="flex-1">
         <strong>Educational synthetic demo only - not medical advice and not an official system.</strong> Do not enter real patient identifiers, PHI, confidential any organization data, or operational handoff content. Public GitHub Pages use is for synthetic examples only; real clinical use requires an approved any organization deployment, approved storage, access control, and local governance.
       </div>
-      <button type="button" onClick={handleDismiss} className="px-2 py-0.5 rounded bg-warn-200 hover:bg-warn-300 text-warn-900 text-xs font-semibold flex-shrink-0" aria-label="Dismiss disclaimer">
+      <button type="button" onClick={handleDismiss} className="px-2 py-0.5 rounded bg-warn-200 hover:bg-warn-300 text-warn-900 text-xs font-semibold flex-shrink-0 dark:text-warn-300" aria-label="Dismiss disclaimer">
         Dismiss
       </button>
     </div>
@@ -71,25 +71,25 @@ export const LKWCountdown = ({ lkwIso, className = '' }) => {
   const cd = useMemo(() => computeLKWCountdown(lkwIso, now), [lkwIso, now]);
   if (!cd) return null;
   const lyticColor = cd.toLyticClosed
-    ? 'bg-crit-100 text-crit-900 border-crit-300'
+    ? 'bg-crit-100 text-crit-900 border-crit-300 dark:bg-crit-950 dark:text-crit-300 dark:border-crit-800'
     : (cd.toLyticMs < 30 * 60 * 1000)
-      ? 'bg-warn-100 text-warn-900 border-warn-400'
-      : 'bg-cobalt-100 text-cobalt-900 border-cobalt-300';
+      ? 'bg-warn-100 text-warn-900 border-warn-400 dark:bg-warn-950 dark:text-warn-300'
+      : 'bg-cobalt-100 text-cobalt-900 border-cobalt-300 dark:bg-cobalt-900 dark:text-cobalt-300 dark:border-cobalt-700';
   const evtColor = cd.toLateEvtClosed
-    ? 'bg-crit-100 text-crit-900 border-crit-300'
+    ? 'bg-crit-100 text-crit-900 border-crit-300 dark:bg-crit-950 dark:text-crit-300 dark:border-crit-800'
     : (cd.toLateEvtMs < 2 * 3600 * 1000)
-      ? 'bg-warn-100 text-warn-900 border-warn-400'
-      : 'bg-cobalt-100 text-cobalt-900 border-cobalt-300';
+      ? 'bg-warn-100 text-warn-900 border-warn-400 dark:bg-warn-950 dark:text-warn-300'
+      : 'bg-cobalt-100 text-cobalt-900 border-cobalt-300 dark:bg-cobalt-900 dark:text-cobalt-300 dark:border-cobalt-700';
   return (
     <div className={`flex flex-wrap items-center gap-1.5 ${className}`} role="status" aria-live="polite" aria-label="Last known well countdown">
-      <span className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">LKW</span>
+      <span className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold dark:text-mute">LKW</span>
       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-mono font-semibold border ${lyticColor}`} title="Time remaining in IV thrombolysis window">
         IV {cd.toLyticClosed ? 'CLOSED' : cd.toLytic}
       </span>
       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-mono font-semibold border ${evtColor}`} title="Time remaining in late-window EVT eligibility">
         EVT {cd.toLateEvtClosed ? 'CLOSED' : cd.toLateEvt}
       </span>
-      <span className="text-[10px] text-slate-500">({cd.elapsedMinutes} min elapsed)</span>
+      <span className="text-[10px] text-slate-500 dark:text-mute">({cd.elapsedMinutes} min elapsed)</span>
     </div>
   );
 };
@@ -189,29 +189,29 @@ export const NeurocheckTimer = ({ tpaGivenIso }) => {
     return `${m}m ${String(s).padStart(2, '0')}s`;
   };
   return (
-    <div className="p-3 rounded border border-ok-300 bg-ok-50 text-sm" role="region" aria-label="Post-tPA neurocheck schedule">
+    <div className="p-3 rounded border border-ok-300 bg-ok-50 text-sm dark:border-ok-800 dark:bg-ok-950" role="region" aria-label="Post-tPA neurocheck schedule">
       <div className="flex items-center justify-between mb-2">
-        <h4 className="font-semibold text-ok-900">Post-tPA Neurochecks (q15×2h → q30×6h → q1h×16h)</h4>
-        <span className="text-xs text-ok-700 font-mono">{completedChecks} / {totalChecks} done</span>
+        <h4 className="font-semibold text-ok-900 dark:text-ok-300">Post-tPA Neurochecks (q15×2h → q30×6h → q1h×16h)</h4>
+        <span className="text-xs text-ok-700 font-mono dark:text-ok-300">{completedChecks} / {totalChecks} done</span>
       </div>
       {nextCheck ? (
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <div className="text-xs text-ok-700 uppercase">Next Check</div>
-            <div className="text-lg font-mono font-bold text-ok-900">{format(remainingToNextMs)}</div>
-            <div className="text-xs text-slate-600">{nextCheck.label}</div>
+            <div className="text-xs text-ok-700 uppercase dark:text-ok-300">Next Check</div>
+            <div className="text-lg font-mono font-bold text-ok-900 dark:text-ok-300">{format(remainingToNextMs)}</div>
+            <div className="text-xs text-slate-600 dark:text-ink-2">{nextCheck.label}</div>
           </div>
           <div>
-            <div className="text-xs text-ok-700 uppercase">Schedule End</div>
-            <div className="text-sm font-mono text-ok-900">{schedule.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-            <div className="text-xs text-slate-600">24h monitoring window</div>
+            <div className="text-xs text-ok-700 uppercase dark:text-ok-300">Schedule End</div>
+            <div className="text-sm font-mono text-ok-900 dark:text-ok-300">{schedule.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+            <div className="text-xs text-slate-600 dark:text-ink-2">24h monitoring window</div>
           </div>
         </div>
       ) : (
-        <div className="text-sm text-ok-800 font-semibold">24-hour post-tPA monitoring complete.</div>
+        <div className="text-sm text-ok-800 font-semibold dark:text-ok-300">24-hour post-tPA monitoring complete.</div>
       )}
       {remainingToNextMs > 0 && remainingToNextMs < 60000 && (
-        <div className="mt-2 p-2 bg-warn-100 border border-warn-400 rounded text-xs text-warn-900 font-semibold">
+        <div className="mt-2 p-2 bg-warn-100 border border-warn-400 rounded text-xs text-warn-900 font-semibold dark:bg-warn-900 dark:text-warn-300">
           ⏰ Neurocheck due within 1 minute — prepare NIHSS + BP + neuro exam.
         </div>
       )}
@@ -234,8 +234,8 @@ export const LateWindowEVTCalculator = ({ defaults = {} }) => {
   const dawn = evaluateDAWN(inputs);
   const defuse3 = evaluateDEFUSE3(inputs);
   return (
-    <div className="p-3 rounded border border-slate-200 bg-white">
-      <h4 className="font-semibold text-slate-900 mb-2">Late-Window EVT Eligibility (DAWN · DEFUSE-3)</h4>
+    <div className="p-3 rounded border border-slate-200 bg-white dark:border-line dark:bg-card">
+      <h4 className="font-semibold text-slate-900 mb-2 dark:text-ink">Late-Window EVT Eligibility (DAWN · DEFUSE-3)</h4>
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">
         {[
           { k: 'age', label: 'Age' },
@@ -245,31 +245,31 @@ export const LateWindowEVTCalculator = ({ defaults = {} }) => {
           { k: 'timeFromLKWh', label: 'LKW (h)' }
         ].map(({ k, label }) => (
           <label key={k} className="block">
-            <span className="block text-slate-600 mb-0.5">{label}</span>
-            <input type="number" value={inputs[k]} onChange={set(k)} className="w-full px-2 py-1 border border-slate-300 rounded text-sm" />
+            <span className="block text-slate-600 mb-0.5 dark:text-ink-2">{label}</span>
+            <input type="number" value={inputs[k]} onChange={set(k)} className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" />
           </label>
         ))}
       </div>
       <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2">
         {dawn && (
-          <div className={`p-2 rounded border ${dawn.eligible ? 'border-ok-300 bg-ok-50' : 'border-slate-200 bg-slate-50'}`}>
+          <div className={`p-2 rounded border ${dawn.eligible ? 'border-ok-300 bg-ok-50 dark:border-ok-800 dark:bg-ok-950' : 'border-slate-200 bg-slate-50 dark:border-line dark:bg-paper-2'}`}>
             <div className="flex items-center justify-between">
               <strong className="text-sm">DAWN (6-24h)</strong>
-              <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${dawn.eligible ? 'bg-ok-200 text-ok-900' : 'bg-slate-200 text-slate-700'}`}>{dawn.eligible ? `Eligible (Group ${dawn.tier})` : 'Not eligible'}</span>
+              <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${dawn.eligible ? 'bg-ok-200 text-ok-900 dark:bg-ok-900 dark:text-ok-300' : 'bg-slate-200 text-slate-700 dark:bg-overlay dark:text-ink-2'}`}>{dawn.eligible ? `Eligible (Group ${dawn.tier})` : 'Not eligible'}</span>
             </div>
-            <p className="text-xs text-slate-700 mt-1">{dawn.reason}</p>
-            <p className="text-[10px] text-slate-500 mt-0.5">{dawn.source}</p>
+            <p className="text-xs text-slate-700 mt-1 dark:text-ink-2">{dawn.reason}</p>
+            <p className="text-[10px] text-slate-600 mt-0.5 dark:text-mute">{dawn.source}</p>
           </div>
         )}
         {defuse3 && (
-          <div className={`p-2 rounded border ${defuse3.eligible ? 'border-ok-300 bg-ok-50' : 'border-slate-200 bg-slate-50'}`}>
+          <div className={`p-2 rounded border ${defuse3.eligible ? 'border-ok-300 bg-ok-50 dark:border-ok-800 dark:bg-ok-950' : 'border-slate-200 bg-slate-50 dark:border-line dark:bg-paper-2'}`}>
             <div className="flex items-center justify-between">
               <strong className="text-sm">DEFUSE-3 (6-16h)</strong>
-              <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${defuse3.eligible ? 'bg-ok-200 text-ok-900' : 'bg-slate-200 text-slate-700'}`}>{defuse3.eligible ? 'Eligible' : 'Not eligible'}</span>
+              <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${defuse3.eligible ? 'bg-ok-200 text-ok-900 dark:bg-ok-900 dark:text-ok-300' : 'bg-slate-200 text-slate-700 dark:bg-overlay dark:text-ink-2'}`}>{defuse3.eligible ? 'Eligible' : 'Not eligible'}</span>
             </div>
-            <p className="text-xs text-slate-700 mt-1">{defuse3.reason}</p>
+            <p className="text-xs text-slate-700 mt-1 dark:text-ink-2">{defuse3.reason}</p>
             {Number.isFinite(defuse3.mismatchRatio) && (
-              <p className="text-[10px] text-slate-500 mt-0.5">Mismatch: ratio {defuse3.mismatchRatio.toFixed(1)}, volume {defuse3.mismatchVolumeMl.toFixed(0)} mL. {defuse3.source}</p>
+              <p className="text-[10px] text-slate-600 mt-0.5 dark:text-mute">Mismatch: ratio {defuse3.mismatchRatio.toFixed(1)}, volume {defuse3.mismatchVolumeMl.toFixed(0)} mL. {defuse3.source}</p>
             )}
           </div>
         )}
@@ -299,26 +299,26 @@ export const DAPTDurationCalculator = ({ defaults = {} }) => {
   const set = (k, v) => setInputs((s) => ({ ...s, [k]: v }));
   const result = recommendAcuteDAPT(inputs);
   return (
-    <div className="p-3 rounded border border-slate-200 bg-white">
-      <h4 className="font-semibold text-slate-900 mb-2">Acute DAPT Duration (CHANCE / POINT / THALES)</h4>
+    <div className="p-3 rounded border border-slate-200 bg-white dark:border-line dark:bg-card">
+      <h4 className="font-semibold text-slate-900 mb-2 dark:text-ink">Acute DAPT Duration (CHANCE / POINT / THALES)</h4>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
         <label>
-          <span className="block text-slate-600 mb-0.5">Presentation</span>
+          <span className="block text-slate-600 mb-0.5 dark:text-ink-2">Presentation</span>
           <select value={inputs.strokeType} onChange={(e) => set('strokeType', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
             <option value="tia">TIA</option>
             <option value="ischemic">Ischemic stroke</option>
           </select>
         </label>
         <label>
-          <span className="block text-slate-600 mb-0.5">NIHSS</span>
+          <span className="block text-slate-600 mb-0.5 dark:text-ink-2">NIHSS</span>
           <input type="number" value={inputs.nihss} onChange={(e) => set('nihss', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" />
         </label>
         <label>
-          <span className="block text-slate-600 mb-0.5">ABCD²</span>
+          <span className="block text-slate-600 mb-0.5 dark:text-ink-2">ABCD²</span>
           <input type="number" value={inputs.abcd2} onChange={(e) => set('abcd2', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" />
         </label>
         <label>
-          <span className="block text-slate-600 mb-0.5">Hours from onset</span>
+          <span className="block text-slate-600 mb-0.5 dark:text-ink-2">Hours from onset</span>
           <input type="number" placeholder="default 24" value={inputs.timeFromOnsetH} onChange={(e) => set('timeFromOnsetH', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" />
         </label>
         <label className="flex items-end gap-1">
@@ -334,22 +334,22 @@ export const DAPTDurationCalculator = ({ defaults = {} }) => {
           <span className="text-xs">CYP2C19 LOF carrier (if known)</span>
         </label>
         <label>
-          <span className="block text-slate-600 mb-0.5">ICH risk</span>
+          <span className="block text-slate-600 mb-0.5 dark:text-ink-2">ICH risk</span>
           <select value={inputs.ichRisk} onChange={(e) => set('ichRisk', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
             <option value="normal">Normal</option>
             <option value="high">High (HAS-BLED ≥3 or prior ICH)</option>
           </select>
         </label>
       </div>
-      <div className="mt-3 p-2 border border-cobalt-300 bg-cobalt-50 rounded text-sm">
+      <div className="mt-3 p-2 border border-cobalt-300 bg-cobalt-50 rounded text-sm dark:border-cobalt-700 dark:bg-cobalt-900">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-cobalt-900">{result.regimen}</span>
-          {result.duration && <span className="px-1.5 py-0.5 bg-cobalt-200 text-cobalt-900 rounded text-xs font-semibold">{result.duration}</span>}
-          {result.class && <span className="px-1.5 py-0.5 bg-ok-200 text-ok-900 rounded text-xs">{result.class}</span>}
+          <span className="font-semibold text-cobalt-900 dark:text-cobalt-300">{result.regimen}</span>
+          {result.duration && <span className="px-1.5 py-0.5 bg-cobalt-200 text-cobalt-900 rounded text-xs font-semibold dark:bg-cobalt-800 dark:text-cobalt-300">{result.duration}</span>}
+          {result.class && <span className="px-1.5 py-0.5 bg-ok-200 dark:bg-ok-900 text-ok-900 rounded text-xs dark:text-ok-300">{result.class}</span>}
         </div>
-        {result.dosing && <div className="text-xs text-slate-700 mt-1"><strong>Dosing:</strong> {result.dosing}</div>}
-        <div className="text-xs text-slate-700 mt-1">{result.rationale}</div>
-        {result.source && <div className="text-[10px] text-slate-500 mt-0.5">{result.source}</div>}
+        {result.dosing && <div className="text-xs text-slate-700 mt-1 dark:text-ink-2"><strong>Dosing:</strong> {result.dosing}</div>}
+        <div className="text-xs text-slate-700 mt-1 dark:text-ink-2">{result.rationale}</div>
+        {result.source && <div className="text-[10px] text-slate-600 mt-0.5 dark:text-mute">{result.source}</div>}
       </div>
     </div>
   );
@@ -360,7 +360,7 @@ export const DAPTDurationCalculator = ({ defaults = {} }) => {
 // =========================================================================
 export const PatientCensus = ({ activePatientId, onSelect, onNew, onChange }) => {
   return (
-    <div className="p-3 rounded border border-warn-300 bg-warn-50 text-warn-950" role="region" aria-label="Patient census disabled">
+    <div className="p-3 rounded border border-warn-300 bg-warn-50 text-warn-950 dark:border-warn-800 dark:bg-warn-950" role="region" aria-label="Patient census disabled">
       <h3 className="font-semibold text-sm">Ward Census Disabled in Public Demo</h3>
       <p className="text-xs mt-1">
         Patient lists, MRN fragments, encounter snapshots, imports, and exports are disabled on the public GitHub Pages build.
@@ -416,13 +416,13 @@ export const PatientCensus = ({ activePatientId, onSelect, onNew, onChange }) =>
   };
 
   return (
-    <div className="p-3 rounded border border-slate-300 bg-white" role="region" aria-label="Patient census">
+    <div className="p-3 rounded border border-slate-300 bg-white dark:border-strong dark:bg-card" role="region" aria-label="Patient census">
       <div className="flex items-center justify-between mb-2">
-        <h3 className="font-semibold text-slate-900 text-sm">Ward Census ({patients.length})</h3>
+        <h3 className="font-semibold text-slate-900 text-sm dark:text-ink">Ward Census ({patients.length})</h3>
         <div className="flex gap-1">
           <button type="button" onClick={handleNew} className="px-2 py-1 bg-cobalt-600 hover:bg-cobalt-700 text-white text-xs rounded font-semibold" aria-label="Add new patient">+ New</button>
-          <button type="button" onClick={handleExport} className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs rounded" aria-label="Export patient list">Export</button>
-          <button type="button" onClick={() => setShowImport((s) => !s)} className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs rounded" aria-label="Import patient list">Import</button>
+          <button type="button" onClick={handleExport} className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs rounded dark:bg-paper-2 dark:hover:bg-overlay dark:text-ink" aria-label="Export patient list">Export</button>
+          <button type="button" onClick={() => setShowImport((s) => !s)} className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs rounded dark:bg-paper-2 dark:hover:bg-overlay dark:text-ink" aria-label="Import patient list">Import</button>
         </div>
       </div>
       {showImport && (
@@ -432,21 +432,21 @@ export const PatientCensus = ({ activePatientId, onSelect, onNew, onChange }) =>
         </div>
       )}
       {patients.length === 0 ? (
-        <div className="text-xs text-slate-500 italic">No patients on the census yet. Click &ldquo;+ New&rdquo; to add one.</div>
+        <div className="text-xs text-slate-500 italic dark:text-mute">No patients on the census yet. Click &ldquo;+ New&rdquo; to add one.</div>
       ) : (
         <ul className="space-y-1">
           {patients.map((p) => (
-            <li key={p.id} className={`flex items-center justify-between gap-2 p-1.5 rounded border ${activePatientId === p.id ? 'bg-cobalt-50 border-cobalt-300' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
+            <li key={p.id} className={`flex items-center justify-between gap-2 p-1.5 rounded border ${activePatientId === p.id ? 'bg-cobalt-50 border-cobalt-300 dark:bg-cobalt-900 dark:border-cobalt-700' : 'bg-white border-slate-200 hover:bg-slate-50 dark:bg-card dark:border-line dark:hover:bg-paper-2'}`}>
               <button type="button" onClick={() => onSelect && onSelect(p)} className="flex-1 text-left text-xs focus:outline-none focus:ring-2 focus:ring-cobalt-500 rounded" aria-label={`Select patient ${p.initials}`}>
                 <div className="flex items-center gap-2">
                   <span className="font-semibold">{p.initials || '—'}</span>
-                  {p.mrnLast4 && <span className="text-slate-500">···{p.mrnLast4}</span>}
-                  {p.label && <span className="italic text-slate-600">· {p.label}</span>}
-                  <span className="text-[10px] text-slate-500">day {p.strokeDay || 0}</span>
+                  {p.mrnLast4 && <span className="text-slate-500 dark:text-mute">···{p.mrnLast4}</span>}
+                  {p.label && <span className="italic text-slate-600 dark:text-ink-2">· {p.label}</span>}
+                  <span className="text-[10px] text-slate-500 dark:text-mute">day {p.strokeDay || 0}</span>
                 </div>
-                <div className="text-[10px] text-slate-500">{p.encounter?.diagnosis || 'No diagnosis recorded'} · last saved {p.updatedAt ? new Date(p.updatedAt).toLocaleString([], { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—'}</div>
+                <div className="text-[10px] text-slate-500 dark:text-mute">{p.encounter?.diagnosis || 'No diagnosis recorded'} · last saved {p.updatedAt ? new Date(p.updatedAt).toLocaleString([], { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—'}</div>
               </button>
-              <button type="button" onClick={() => handleDelete(p.id)} className="px-1.5 py-0.5 text-crit-600 hover:bg-crit-50 rounded text-xs" aria-label={`Remove patient ${p.initials}`}>✕</button>
+              <button type="button" onClick={() => handleDelete(p.id)} className="px-1.5 py-0.5 text-crit-600 hover:bg-crit-50 rounded text-xs dark:text-crit-300" aria-label={`Remove patient ${p.initials}`}>✕</button>
             </li>
           ))}
         </ul>
@@ -474,7 +474,7 @@ const ETIOLOGY_CHECKLISTS = {
     label: 'Cardioembolism (TOAST 2)',
     items: [
       'DOAC preferred over warfarin (apixaban, rivaroxaban, edoxaban, dabigatran) — Class 1',
-      'Timing of initiation (NIHSS-stratified expert-consensus heuristic, broadly supported by CATALYST IPDMA — Werring Lancet Neurol 2025): minor stroke (NIHSS <8) day 1-3, moderate (8-15) day 3-6, severe (≥16) day 6-12',
+      'Timing of initiation: early DOAC ≤4 days across stroke severities (OPTIMAS non-inferior across infarct sizes; CATALYST IPDMA superior at 30 d, OR 0.70, 95% CI 0.50-0.98), barring very severe stroke or large hemorrhagic transformation — reserve longer delay for those highest-risk presentations',
       'CHA₂DS₂-VA score (2024 ESC dropped sex) for risk stratification',
       'LAA occlusion (Watchman) for AF + contraindication to long-term AC',
       'Echocardiogram with bubble study to exclude PFO / intracardiac thrombus'
@@ -550,33 +550,33 @@ Sincerely,
   };
 
   return (
-    <div className="p-3 rounded border border-slate-200 bg-white">
-      <h3 className="font-semibold text-slate-900 mb-2">Stroke Clinic — Etiology-Driven Secondary Prevention</h3>
+    <div className="p-3 rounded border border-slate-200 bg-white dark:border-line dark:bg-card">
+      <h3 className="font-semibold text-slate-900 mb-2 dark:text-ink">Stroke Clinic — Etiology-Driven Secondary Prevention</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
         <label className="text-xs">
-          <span className="block text-slate-600 mb-0.5">Patient (initials only)</span>
+          <span className="block text-slate-600 mb-0.5 dark:text-ink-2">Patient (initials only)</span>
           <input type="text" value={patientData.name} onChange={(e) => setPatientData({ ...patientData, name: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" />
         </label>
         <label className="text-xs">
-          <span className="block text-slate-600 mb-0.5">Date of visit</span>
+          <span className="block text-slate-600 mb-0.5 dark:text-ink-2">Date of visit</span>
           <input type="date" value={patientData.dateOfVisit} onChange={(e) => setPatientData({ ...patientData, dateOfVisit: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" />
         </label>
         <label className="text-xs">
-          <span className="block text-slate-600 mb-0.5">Stroke date</span>
+          <span className="block text-slate-600 mb-0.5 dark:text-ink-2">Stroke date</span>
           <input type="date" value={patientData.strokeDate} onChange={(e) => setPatientData({ ...patientData, strokeDate: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" />
         </label>
         <label className="text-xs">
-          <span className="block text-slate-600 mb-0.5">Current mRS</span>
+          <span className="block text-slate-600 mb-0.5 dark:text-ink-2">Current mRS</span>
           <input type="number" min="0" max="6" value={patientData.currentMRS} onChange={(e) => setPatientData({ ...patientData, currentMRS: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" />
         </label>
       </div>
       <label className="text-xs block mb-2">
-        <span className="block text-slate-600 mb-0.5">TOAST etiology</span>
+        <span className="block text-slate-600 mb-0.5 dark:text-ink-2">TOAST etiology</span>
         <select value={etiology} onChange={(e) => setEtiology(e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
           {Object.entries(ETIOLOGY_CHECKLISTS).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
         </select>
       </label>
-      <ul className="list-disc list-inside text-xs space-y-0.5 text-slate-700 mb-3">
+      <ul className="list-disc list-inside text-xs space-y-0.5 text-slate-700 mb-3 dark:text-ink-2">
         {checklist.items.map((i, idx) => <li key={idx}>{i}</li>)}
       </ul>
       <button type="button" onClick={generateLetter} className="px-3 py-1.5 bg-cobalt-600 hover:bg-cobalt-700 text-white text-sm rounded font-semibold">
@@ -585,7 +585,7 @@ Sincerely,
       {pcpLetter && (
         <div className="mt-3">
           <textarea readOnly value={pcpLetter} rows={14} className="w-full px-2 py-1 border rounded text-xs font-mono" />
-          <button type="button" onClick={() => { navigator.clipboard.writeText(pcpLetter); }} className="mt-1 px-2 py-1 bg-slate-100 hover:bg-slate-200 text-xs rounded">Copy</button>
+          <button type="button" onClick={() => { navigator.clipboard.writeText(pcpLetter); }} className="mt-1 px-2 py-1 bg-slate-100 hover:bg-slate-200 text-xs rounded dark:bg-paper-2 dark:hover:bg-overlay">Copy</button>
         </div>
       )}
     </div>
@@ -671,13 +671,13 @@ ${pending.length ? pending.map((x) => `  ☐ ${x}`).join('\n') : '  (all items c
   };
 
   return (
-    <div className="p-3 rounded border border-slate-200 bg-white">
+    <div className="p-3 rounded border border-slate-200 bg-white dark:border-line dark:bg-card">
       <div className="flex items-center justify-between mb-2">
-        <h3 className="font-semibold text-slate-900">Stroke Service — Day {day} Checklist &amp; Progress Note</h3>
+        <h3 className="font-semibold text-slate-900 dark:text-ink">Stroke Service — Day {day} Checklist &amp; Progress Note</h3>
         <div className="flex items-center gap-1">
-          <button type="button" onClick={() => setDay((d) => Math.max(1, d - 1))} className="px-2 py-0.5 bg-slate-100 rounded text-sm">−</button>
+          <button type="button" onClick={() => setDay((d) => Math.max(1, d - 1))} className="px-2 py-0.5 bg-slate-100 rounded text-sm dark:bg-paper-2">−</button>
           <span className="font-mono text-sm w-8 text-center">Day {day}</span>
-          <button type="button" onClick={() => setDay((d) => Math.min(14, d + 1))} className="px-2 py-0.5 bg-slate-100 rounded text-sm">+</button>
+          <button type="button" onClick={() => setDay((d) => Math.min(14, d + 1))} className="px-2 py-0.5 bg-slate-100 rounded text-sm dark:bg-paper-2">+</button>
         </div>
       </div>
       <ul className="text-xs space-y-1 mb-3">
@@ -685,7 +685,7 @@ ${pending.length ? pending.map((x) => `  ☐ ${x}`).join('\n') : '  (all items c
           <li key={i}>
             <label className="flex items-start gap-2 cursor-pointer">
               <input type="checkbox" checked={!!checks[`d${day}-${i}`]} onChange={() => toggleCheck(`d${day}-${i}`)} className="mt-0.5" />
-              <span className={checks[`d${day}-${i}`] ? 'line-through text-slate-500' : 'text-slate-800'}>{item}</span>
+              <span className={checks[`d${day}-${i}`] ? 'line-through text-slate-500' : 'text-slate-800 dark:text-ink'}>{item}</span>
             </label>
           </li>
         ))}
@@ -693,7 +693,7 @@ ${pending.length ? pending.map((x) => `  ☐ ${x}`).join('\n') : '  (all items c
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3 text-xs">
         {['subjective', 'exam', 'assessment', 'plan'].map((f) => (
           <label key={f} className="block">
-            <span className="block text-slate-600 mb-0.5 capitalize">{f}</span>
+            <span className="block text-slate-600 mb-0.5 capitalize dark:text-ink-2">{f}</span>
             <textarea rows={3} value={freeText[f]} onChange={(e) => setFreeText({ ...freeText, [f]: e.target.value })} className="w-full px-2 py-1 border rounded" />
           </label>
         ))}
@@ -724,11 +724,11 @@ export const PHQ9Screen = () => {
   const interp = interpretPHQ9(score);
   const suicidality = parseInt(answers[8], 10) >= 1;
   return (
-    <div className="p-3 rounded border border-slate-200 bg-white">
-      <h4 className="font-semibold text-slate-900 mb-2">PHQ-9 Depression Screen</h4>
-      <p className="text-xs text-slate-600 mb-2">Over the past 2 weeks, how often have you been bothered by:</p>
+    <div className="p-3 rounded border border-slate-200 bg-white dark:border-line dark:bg-card">
+      <h4 className="font-semibold text-slate-900 mb-2 dark:text-ink">PHQ-9 Depression Screen</h4>
+      <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">Over the past 2 weeks, how often have you been bothered by:</p>
       <table className="w-full text-xs">
-        <thead className="bg-slate-100">
+        <thead className="bg-slate-100 dark:bg-paper-2">
           <tr><th className="text-left px-2 py-1">Question</th>{['Not at all (0)', 'Several days (1)', 'More than half (2)', 'Nearly every day (3)'].map((l, i) => (
             <th key={i} className="px-1 py-1 text-center">{l}</th>
           ))}</tr>
@@ -747,14 +747,14 @@ export const PHQ9Screen = () => {
         </tbody>
       </table>
       {interp && (
-        <div className={`mt-2 p-2 rounded border text-sm ${interp.severity === 'severe' || suicidality ? 'border-crit-300 bg-crit-50' : interp.severity === 'moderate' || interp.severity === 'moderately-severe' ? 'border-warn-300 bg-warn-50' : 'border-slate-200 bg-slate-50'}`}>
+        <div className={`mt-2 p-2 rounded border text-sm ${interp.severity === 'severe' || suicidality ? 'border-crit-300 bg-crit-50 dark:border-crit-800 dark:bg-crit-950' : interp.severity === 'moderate' || interp.severity === 'moderately-severe' ? 'border-warn-300 bg-warn-50 dark:border-warn-800 dark:bg-warn-950' : 'border-slate-200 bg-slate-50 dark:border-line dark:bg-paper-2'}`}>
           <div className="flex items-center gap-2">
             <strong>Total: {score}</strong>
-            <span className="px-1.5 py-0.5 bg-slate-200 rounded text-xs">{interp.severity}</span>
-            {suicidality && <span className="px-1.5 py-0.5 bg-crit-200 text-crit-900 rounded text-xs font-bold">⚠ Suicidality endorsed — direct assessment required</span>}
+            <span className="px-1.5 py-0.5 bg-slate-200 rounded text-xs dark:bg-overlay">{interp.severity}</span>
+            {suicidality && <span className="px-1.5 py-0.5 bg-crit-200 text-crit-900 rounded text-xs font-bold dark:text-crit-300">⚠ Suicidality endorsed — direct assessment required</span>}
           </div>
           <p className="text-xs mt-1">{interp.action}</p>
-          <p className="text-[10px] text-slate-500 mt-0.5">{interp.source}</p>
+          <p className="text-[10px] text-slate-600 mt-0.5 dark:text-mute">{interp.source}</p>
         </div>
       )}
     </div>

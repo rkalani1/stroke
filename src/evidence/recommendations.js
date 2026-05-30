@@ -134,14 +134,14 @@ export const recommendations = [
     id: 'rec-af-early-anticoag',
     topic: 'af-anticoag-timing',
     setting: 'inpatient',
-    text: 'In patients with AIS and atrial fibrillation, initiating DOAC anticoagulation within 4 days for minor stroke and 6-7 days for moderate-major stroke (per ELAN) is reasonable; severe stroke or hemorrhagic transformation risk warrants longer delay.',
+    text: 'In patients with AIS and atrial fibrillation, early DOAC initiation within ~4 days is reasonable across stroke severities (OPTIMAS: non-inferior across infarct sizes) and was superior to delayed start at 30 days in pooled individual-patient data (CATALYST IPDMA: OR 0.70, 95% CI 0.50-0.98, no sICH excess), excepting very severe stroke or extensive hemorrhagic transformation.',
     classOfRecommendation: 'IIa',
     levelOfEvidence: 'B-R',
-    guidelineSource: 'AHA/ASA 2021 Secondary Prevention; ELAN (2023); TIMING (2022)',
+    guidelineSource: 'AHA/ASA 2021 Secondary Prevention; OPTIMAS (2024); CATALYST IPDMA (2025); ELAN (2023); TIMING (2022)',
     supportingClaimIds: ['cl-af-early-anticoag'],
     caveats: [
-      'Confirm absence of significant hemorrhagic transformation on follow-up imaging before starting in moderate-large stroke.',
-      'Trial timing is non-inferior, not always superior; individualize.'
+      'Reserve longer delay for very severe stroke or extensive hemorrhagic transformation; confirm absence of significant hemorrhagic transformation on follow-up imaging before starting in moderate-large stroke.',
+      'Early initiation (≤4 d) is non-inferior across severities (OPTIMAS) and superior at 30 d in pooled IPD (CATALYST); individualize for the highest-risk presentations.'
     ],
     lastReviewed: lr,
     verificationStatus: 'verified-guideline'
