@@ -230,7 +230,7 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
 
       {branch === 'anterior' && (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-xs mb-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs mb-3">
             <label><span className="block text-slate-600 dark:text-ink-2">ASPECTS</span><input type="number" value={ant.aspectsScore} onChange={(e) => setAnt({ ...ant, aspectsScore: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={ant.timeFromLKWh} onChange={(e) => setAnt({ ...ant, timeFromLKWh: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">NIHSS</span><input type="number" value={ant.nihss} onChange={(e) => setAnt({ ...ant, nihss: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
@@ -255,7 +255,7 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
 
       {branch === 'm2-distal' && (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-xs mb-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs mb-3">
             <label className="md:col-span-2">
               <span className="block text-slate-600 dark:text-ink-2">Segment</span>
               <select value={m2.segment} onChange={(e) => setM2({ ...m2, segment: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
@@ -288,7 +288,7 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
 
       {branch === 'basilar' && (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-xs mb-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs mb-3">
             <label><span className="block text-slate-600 dark:text-ink-2">NIHSS</span><input type="number" value={bas.nihss} onChange={(e) => setBas({ ...bas, nihss: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={bas.hoursFromLKWh} onChange={(e) => setBas({ ...bas, hoursFromLKWh: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">Pre-mRS</span>
