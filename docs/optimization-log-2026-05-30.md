@@ -109,3 +109,17 @@ clinical currency (C1 ≤4.5h window, C6 absolute TBI CI).
 
 ### Cycle 5 close — version 6.8.1 → **6.8.2** (SW cache `v6-8-2`), full gate battery, deploy, live verify. NOT a clean cycle (a11y/visual found real items) → convergence counter reset; Cycle 6 begins the two-consecutive-clean requirement afresh.
 ### Lesson: a fix applied "everywhere" means "everywhere the sweep's file-glob reached" — 3 of Cycle-5's a11y findings were MISSED INSTANCES of already-applied fixes living in separate `src/simulators/*.jsx` files. Closing a class durably = STATIC enumeration across ALL source files + driving state-gated clinical inputs (low CrCl, out-of-range labs), not just axe-on-default-state.
+
+---
+
+## Cycle 6  (v6.8.2 → **6.8.3**)
+
+### Audit — 5 parallel READ-ONLY (deep a11y/visual; regression-confirm evidence/perf/public-safety). **3 of 5 CLEAN** (evidence — fresh 8-PMID PubMed spot-check 8/8, THEIA correction held, 18 non-rendered scaffold fixes held; **perf/PWA CLEAN** Lighthouse Perf 93/94 CLS 0, CSS +0.33% only; **public-safety CLEAN** 5th consecutive). a11y + visual found 4 stragglers (the audits correctly REJECTED 3 non-blockers: by-design mobile-nav `region`, a slider-race phantom, a hover-only contrast — good discrimination).
+
+### Fixes — `4bbbe30`
+- **A `landmark-unique`** (app.jsx:28986): 6 AIS-Command-Center scrollable-table regions shared one aria-label → `${card.shortLabel||card.title}` (9 unique).
+- **B `heading-order`** (references, app.jsx:33941/34848): h1→h4 / h2→h4 skips → demoted HINTS cluster + guideline card to contiguous h2/h3 (tag-only, appearance identical).
+- **M1 research caveat pill** (app.jsx:35887): `whitespace-nowrap` truncated the unverified-provenance caveat mid-word AND forced the study card wider than its column (clipping the title/summary) at 320/375/1024/1280 → wrap (`whitespace-normal max-w-full break-words`); screenshot-verified full text + intact card at 6 widths both themes.
+- **M2 EvdIcp TRAGUS↔transducer collision** (EvdIcpSimulator.jsx:507): the Cycle-5 edge-clip fix (right-anchor x=312) traded a clip for an OVERLAP — the label sat on the XDCR transducer box at the level (offset-0) state. Moved label to its own row (`y=tragusY-13`) keeping the in-bounds anchor; screenshot-verified no-clip AND no-overlap at offset 0 + both extremes × 320/1280 × light/dark (12 cases). Lesson: SVG label placement is two-sided (fit bounds AND avoid movable elements) — verify the default + extreme render states, don't reason from coords.
+
+### Cycle 6 close — version 6.8.2 → **6.8.3** (SW cache `v6-8-3`), full gate battery, deploy, live verify. NOT clean (4 items) → two-consecutive-clean counter has not yet started; Cycle 7 is the next clean attempt.
