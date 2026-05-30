@@ -86,7 +86,7 @@ export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, timeFromLKWh, nihss, age }
 // POINT (Johnston NEJM 2018;379:215-25): clopidogrel+ASA x 21d for NIHSS <=3 / ABCD2 >=4 within 12h.
 // THALES (Johnston NEJM 2020;383:207-17): ticagrelor+ASA x 30d for NIHSS <=5 + atherosclerotic etiology or ABCD2 >=6, within 24h.
 // CHANCE-2 (Wang NEJM 2021;385:2520-30): in CYP2C19 LOF carriers, ticagrelor+ASA superior to clopidogrel+ASA for NIHSS <=3 / ABCD2 >=4.
-// INSPIRES (Gao NEJM 2023;389:2413-24, PMID 38018460): clopidogrel+ASA x 21d extended eligibility — NIHSS <=5 AND time-from-onset <=72h,
+// INSPIRES (Gao NEJM 2023;389:2413-24, PMID 38157499): clopidogrel+ASA x 21d extended eligibility — NIHSS <=5 AND time-from-onset <=72h,
 //   INCLUDING patients with symptomatic intra-/extracranial atherosclerotic stenosis >=50% (LVD). 7.3% vs 9.2% recurrent stroke (HR 0.79).
 //   Now Class 1 per AHA/ASA 2024 focused update on antiplatelet therapy in secondary stroke prevention.
 //
@@ -154,7 +154,7 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
         ? 'Ticagrelor 180 mg load then 90 mg BID + ASA 75-100 mg daily (off-label INSPIRES extrapolation)'
         : 'Clopidogrel 300-600 mg load then 75 mg daily + ASA 75-100 mg daily',
       rationale: `INSPIRES eligibility: NIHSS ${n} (4-5) within ${tH}h (≤72h). DAPT × 21d reduces 90-d stroke recurrence (HR 0.79). ${lvdSymptomatic ? 'Includes symptomatic LVD ≥50% per INSPIRES.' : ''}`.trim(),
-      source: 'Gao NEJM 2023;389:2413-24 (INSPIRES, PMID 38018460); CYP2C19 branch CHANCE-2 NEJM 2021',
+      source: 'Gao NEJM 2023;389:2413-24 (INSPIRES, PMID 38157499); CYP2C19 branch CHANCE-2 NEJM 2021',
       class: 'Class 1 (AHA/ASA 2024 focused update on antiplatelet therapy)'
     };
   }
@@ -642,7 +642,7 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
 // =====================================================================
 // Late-window IV thrombolysis (TNK 4.5-24h LVO with mismatch, no EVT available)
 // =====================================================================
-// TRACE-III (Xiong NEJM 2024;391:203-12, PMID 38884332): Phase 3 RCT, n=516, China.
+// TRACE-III (Xiong NEJM 2024;391:203-12, PMID 38884324): Phase 3 RCT, n=516, China.
 //   Inclusion: AIS with anterior LVO (ICA/M1), 4.5-24h from LKW, perfusion mismatch
 //   (core <70 mL, mismatch ratio ≥1.8 OR mismatch volume ≥15 mL), NIHSS 6-25, age 18-80,
 //   NO planned EVT (most spokes don't have it). TNK 0.25 mg/kg (max 25 mg) vs standard care.
@@ -696,7 +696,7 @@ export const recommendLateWindowLytic = ({ timeFromLKWh, evtAvailable, lvo, nihs
         ? 'Need perfusion imaging (CTP or MRI DWI/PWI) to confirm mismatch before late-window TNK; defer until imaging.'
         : `Not meeting TRACE-III criteria: ${blockers.join('; ')}.`,
     sichRisk: '3.0% sICH per TRACE-III (vs 0.8% standard care).',
-    source: 'Xiong NEJM 2024;391:203-12 (TRACE-III, PMID 38884332)',
+    source: 'Xiong NEJM 2024;391:203-12 (TRACE-III, PMID 38884324)',
     guidelineClass: 'Pending formal AHA/ASA classification; emerging Class IIa for spoke facilities 4.5-24h LVO mismatch when EVT unavailable.'
   };
 };
