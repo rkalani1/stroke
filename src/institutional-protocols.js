@@ -57,7 +57,7 @@ export const INSTITUTIONAL_BP_PROTOCOLS = {
     status: 'Likely harmful',
     cor: '—',
     loe: 'A (4 RCTs negative/harm)',
-    rationale: 'No formal COR; the AHA/ASA 2019 AIS formal target is SBP <180, and the post-EVT floor below is extrapolated from negative/harm RCTs. ENCHANTED2-MT (Lancet 2022, n=821) worse mRS shift with <120 × 72h; OPTIMAL-BP (JAMA 2023, n=306) worse mRS 0-2 with <140; BP-TARGET (Lancet Neurol 2021, n=324) neutral/trend harm with 100-129; BEST-II (Stroke 2024) futility for lower targets. Practical extrapolation: maintain SBP floor of 140 for ≥72h post-successful EVT.'
+    rationale: 'No formal COR; the AHA/ASA 2019 AIS formal target is SBP <180, and the post-EVT floor below is extrapolated from negative/harm RCTs. ENCHANTED2-MT (Lancet 2022, n=821) worse mRS shift with <120 × 72h; OPTIMAL-BP (JAMA 2023, n=306) worse mRS 0-2 with <140; BP-TARGET (Lancet Neurol 2021, n=324) neutral/trend harm with 100-129; BEST-II (JAMA 2023) futility for lower targets. Practical extrapolation: maintain SBP floor of 140 for ≥72h post-successful EVT.'
   },
   noReperfusion: {
     scenario: 'Ischemic stroke (no reperfusion therapy)',
