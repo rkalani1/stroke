@@ -4802,7 +4802,7 @@ Clinician Name`;
               category: 'Carotid',
               title: 'Symptomatic carotid stenosis management',
               recommendation: 'For symptomatic carotid stenosis \u226550%, CEA within 2 weeks is recommended. Optimal medical management is the foundation for all patients.',
-              detail: 'Symptomatic = stroke/TIA referable to the carotid territory within 6 months. CEA remains Class I for symptomatic stenosis \u226550%. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
+              detail: 'Symptomatic = stroke/TIA referable to the carotid territory within 6 months. CEA remains Class I for symptomatic stenosis \u226550%. NASCET endarterectomy NNTs: symptomatic 70\u201399% \u2192 NNT \u2248 6 (ARR \u224817% over 2 yr); symptomatic 50\u201369% \u2192 NNT \u2248 15 (ARR \u22486.5% over 5 yr). Benefit is greatest within 2 weeks of the event and diminishes with delay. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
@@ -5035,7 +5035,7 @@ Clinician Name`;
               category: 'Secondary Prevention',
               title: 'Aggressive LDL lowering for stroke prevention',
               recommendation: 'Target LDL <55 mg/dL with \u226550% reduction from baseline for atherosclerotic stroke/TIA. Add ezetimibe, then PCSK9 inhibitor if not at goal on max statin.',
-              detail: 'TST (Lancet Neurol 2020): LDL <70 reduced composite endpoint by 22%. SPARCL: atorvastatin 80 mg reduced stroke 16%, \u226550% LDL reduction yielded 31% stroke reduction. ESC/EAS 2019: LDL <55 for very-high-risk ASCVD. FOURIER 2025 subanalysis: LDL <40 mg/dL optimal for prior stroke patients (no safety concerns, no increase in hemorrhagic stroke). Escalation ladder: high-intensity statin \u2192 add ezetimibe 10 mg \u2192 add PCSK9i (evolocumab/alirocumab) \u2192 recheck 6-8 weeks. Inclisiran (twice-yearly injection) available for adherence challenges. Oral PCSK9 agents (enlicitide) in pipeline.',
+              detail: 'TST (Lancet Neurol 2020): LDL <70 reduced composite endpoint by 22%. SPARCL: high-intensity statin (atorvastatin 80 mg) reduced recurrent stroke 16% (HR \u22480.84); NNT \u2248 46 over \u22485 years. \u226550% LDL reduction yielded 31% stroke reduction. ESC/EAS 2019: LDL <55 for very-high-risk ASCVD. FOURIER 2025 subanalysis: LDL <40 mg/dL optimal for prior stroke patients (no safety concerns, no increase in hemorrhagic stroke). Escalation ladder: high-intensity statin \u2192 add ezetimibe 10 mg \u2192 add PCSK9i (evolocumab/alirocumab) \u2192 recheck 6-8 weeks. Inclisiran (twice-yearly injection) available for adherence challenges. Oral PCSK9 agents (enlicitide) in pipeline.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA 2021; TST (Lancet Neurol 2020); FOURIER (AHA 2025)',
@@ -31231,7 +31231,56 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         );
                       })()}
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
+                      {/* Standard-vs-cohort mortality comparison — teaches the self-fulfilling-prophecy effect of early care limitation */}
+                      {(() => {
+                        const ichScore = calculateICHScore(ichScoreItems);
+                        const rows = [
+                          { s: 0, std: '0%', cohort: '0.9%' },
+                          { s: 1, std: '13%', cohort: '0.7%' },
+                          { s: 2, std: '26%', cohort: '5.3%' },
+                          { s: 3, std: '72%', cohort: '15.3%' },
+                          { s: 4, std: '97%', cohort: '36.8%' },
+                          { s: 5, std: '100%', cohort: '60.0%' },
+                          { s: 6, std: '100%', cohort: '100% (predicted)' },
+                        ];
+                        return (
+                          <details className="mt-3 bg-card border border-line rounded-lg text-xs">
+                            <summary className="cursor-pointer px-3 py-2 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">
+                              Standard vs comfort-care-excluded cohort — teaching comparison
+                            </summary>
+                            <div className="px-3 pb-3">
+                              <div className="overflow-x-auto">
+                                <table className="w-full border-collapse text-xs">
+                                  <thead>
+                                    <tr className="text-left text-slate-600 border-b border-line">
+                                      <th scope="col" className="py-1 pr-2 font-semibold">ICH Score</th>
+                                      <th scope="col" className="py-1 px-2 font-semibold">Standard (Hemphill)</th>
+                                      <th scope="col" className="py-1 pl-2 font-semibold">Comfort-care-excluded cohort</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {rows.map((r) => (
+                                      <tr key={r.s} className={`border-b border-line/60 ${r.s === Math.min(ichScore, 6) ? 'bg-cobalt-50 font-semibold' : ''}`}>
+                                        <td className="py-1 pr-2 tabular-nums">{r.s}</td>
+                                        <td className="py-1 px-2 tabular-nums text-crit-700">{r.std}</td>
+                                        <td className="py-1 pl-2 tabular-nums text-slate-700">{r.cohort}</td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              </div>
+                              <p className="mt-2 text-slate-600">
+                                <span className="font-semibold text-warn-700">Illustrative comfort-care-excluded cohort (unvalidated)</span> — de-identified, provenance-unverified figures shown only to teach the <span className="italic">self-fulfilling-prophecy effect of early care limitation</span>. NOT validated or institutional data; do not use for individual prognostication. When aggressive care is sustained, observed mortality falls well below the Hemphill estimates that were derived from cohorts with high rates of early DNR/withdrawal.
+                              </p>
+                              <p className="mt-1 text-slate-500">
+                                Standard column: Hemphill et al., Stroke 2001. AHA/ASA 2022 ICH guideline recommends postponing new DNR orders until at least the second full hospital day (Class IIa).
+                              </p>
+                            </div>
+                          </details>
+                        );
+                      })()}
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2 mt-2">
                         <div className="space-y-2">
                           <p className="font-semibold text-sm mb-1">Glasgow Coma Scale:</p>
                           {[{v:'gcs34',l:'GCS 3-4',p:'+2 points'},{v:'gcs512',l:'GCS 5-12',p:'+1 point'},{v:'',l:'GCS 13-15',p:'0 points'}].map(o => (
