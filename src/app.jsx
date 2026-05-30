@@ -59,10 +59,10 @@ import {
   Toast as V7Toast
 } from './design/primitives.jsx';
 import { HeroReadout as V7HeroReadout } from './design/hero-readout.jsx';
-import { DeviceFrame as V7DeviceFrame } from './design/device-frame.jsx';
 import { DrugChip as V7DrugChip } from './design/drug-chip.jsx';
 import { PatientStripMobile as V7PatientStripMobile, PatientStripRail as V7PatientStripRail } from './design/patient-strip.jsx';
 import { TrialScreener } from './components/TrialScreener.jsx';
+import { EligibilityTables } from './components/EligibilityTables.jsx';
 import { EvdIcpSimulator } from './simulators/EvdIcpSimulator.jsx';
 import { HintsSimulator } from './simulators/HintsSimulator.jsx';
 import { PupillometrySimulator } from './simulators/PupillometrySimulator.jsx';
@@ -35396,21 +35396,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     )}
 
                     {/* ============================================ */}
-                    {/* Sub-view: Eligibility Tables (iframe)         */}
+                    {/* Sub-view: Eligibility Tables (NATIVE)         */}
+                    {/* v7: the standalone stroke-eligibility-tables-  */}
+                    {/* embed was ported natively into                 */}
+                    {/* <EligibilityTables/> — no more iframe /         */}
+                    {/* DeviceFrame. 6 phase-grouped trial-eligibility */}
+                    {/* tables (ischemic & ICH × acute/inpatient/       */}
+                    {/* outpatient) live in                             */}
+                    {/* src/evidence/eligibilityTables.js, with per-    */}
+                    {/* table Copy-as-HTML (v7 teal/gold hexes) and     */}
+                    {/* Copy-as-Markdown. Synthetic public demo only —  */}
+                    {/* institution-clean, no UW purple/gold.           */}
                     {/* ============================================ */}
                     {trialsView === 'eligibility' && (
                       <div id="trials-eligibility-panel" className="space-y-3">
                         <p className="font-mono uppercase text-2xs tracking-[0.06em] text-slate-500 dark:text-slate-400">
-                          public-reference reference tables · ischemic &amp; ICH pathways · copy-paste-ready HTML for intranet
+                          public-reference reference tables · ischemic &amp; ICH pathways · copy-paste-ready HTML &amp; Markdown for intranet
                         </p>
-                        <V7DeviceFrame
-                          src="/stroke-eligibility-tables-embed/"
-                          title="Stroke Trial Eligibility Tables"
-                          breadcrumb="Trials Screener · Eligibility Tables"
-                          poweredBy="stroke-eligibility-tables-embed"
-                          openHref=" /stroke-eligibility-tables-embed/"
-                          sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms"
-                        />
+                        <EligibilityTables copyToClipboard={copyToClipboard} addToast={addToast} />
                       </div>
                     )}
 
