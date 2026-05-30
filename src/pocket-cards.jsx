@@ -29,7 +29,7 @@ const CorChip = ({ cor }) => {
     : norm.includes('harm') ? 'bg-crit-100 text-crit-900 border-crit-400 dark:bg-crit-950 dark:text-crit-300'
     : norm.includes('no benefit') || norm.startsWith('3') ? 'bg-rose-50 text-rose-900 border-rose-300 dark:bg-rose-950 dark:text-rose-300 dark:border-rose-800'
     : 'bg-slate-100 text-slate-700 border-slate-300 dark:bg-paper-2 dark:text-ink-2 dark:border-strong';
-  return <span className={`inline-block text-[10px] font-bold px-1.5 py-0.5 rounded border ${color} whitespace-nowrap`}>COR {cor}</span>;
+  return <span className={`inline-block text-[10px] font-bold px-1.5 py-0.5 rounded border ${color} break-words max-w-full`}>COR {cor}</span>;
 };
 
 const LoeChip = ({ loe }) => {
