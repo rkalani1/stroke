@@ -62,6 +62,7 @@ import { HeroReadout as V7HeroReadout } from './design/hero-readout.jsx';
 import { DeviceFrame as V7DeviceFrame } from './design/device-frame.jsx';
 import { DrugChip as V7DrugChip } from './design/drug-chip.jsx';
 import { PatientStripMobile as V7PatientStripMobile, PatientStripRail as V7PatientStripRail } from './design/patient-strip.jsx';
+import { TrialScreener } from './components/TrialScreener.jsx';
 import { EvdIcpSimulator } from './simulators/EvdIcpSimulator.jsx';
 import { HintsSimulator } from './simulators/HintsSimulator.jsx';
 import { PupillometrySimulator } from './simulators/PupillometrySimulator.jsx';
@@ -35380,27 +35381,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </div>
 
                     {/* ============================================ */}
-                    {/* Sub-view: Bedside Screener (iframe)           */}
+                    {/* Sub-view: Bedside Screener (NATIVE)           */}
+                    {/* v7: the standalone stroke-trials-screener was   */}
+                    {/* ported natively into <TrialScreener/> — no more  */}
+                    {/* iframe / DeviceFrame / postMessage handshake.    */}
+                    {/* 15-trial dual-eval engine lives in              */}
+                    {/* src/evidence/screener-eval.js. Synthetic public  */}
+                    {/* demo only — institution-clean, no PHI capture.   */}
                     {/* ============================================ */}
-                    {trialsView === 'screener' && (() => {
-                      // Public demo does not pass patient context through URLs.
-                      const screenerSrc = ' /stroke-trials-screener/';
-                      return (
-                        <div id="trials-screener-panel" className="space-y-3">
-                          <p className="font-mono uppercase text-2xs tracking-[0.06em] text-slate-500 dark:text-slate-400">
-                            Public demo opens without patient context. Enter synthetic screener parameters only.
-                          </p>
-                          <V7DeviceFrame
-                            src={screenerSrc}
-                            title="Stroke Bedside Trial Screener"
-                            breadcrumb="Trials Screener - synthetic demo - no patient context"
-                            poweredBy="stroke-trials-screener"
-                            openHref={screenerSrc}
-                            sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms"
-                          />
-                        </div>
-                      );
-                    })()}
+                    {trialsView === 'screener' && (
+                      <div id="trials-screener-panel">
+                        <TrialScreener copyToClipboard={copyToClipboard} addToast={addToast} />
+                      </div>
+                    )}
 
                     {/* ============================================ */}
                     {/* Sub-view: Eligibility Tables (iframe)         */}
