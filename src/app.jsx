@@ -2132,56 +2132,6 @@ Clinician Name`;
           // Focus mode
           const [focusMode, setFocusMode] = useState(false);
 
-          // View mode (Phase 4/5): 'clinician' | 'patient' | 'teach'.
-          // 'clinician' (default) → full UI; 'patient' → plain-language + big-type
-          // view, clinician-only surfaces CSS-gated + clinician-only tabs hidden;
-          // 'teach' → clinician-facing trainee mode (Phase 5): shows everything
-          // clinician mode shows PLUS predict-then-reveal affordances on the
-          // Research What's-New cards. Mirrors the data-theme mechanism
-          // (theme.js applyTheme): owns the data-mode attribute on <html>.
-          const VIEW_MODE_KEY = 'stroke.v7.viewMode';
-          const [viewMode, setViewMode] = useState(() => {
-            try {
-              const saved = localStorage.getItem(VIEW_MODE_KEY);
-              return saved === 'patient' || saved === 'teach' ? saved : 'clinician';
-            } catch { return 'clinician'; }
-          });
-          useEffect(() => {
-            try {
-              if (viewMode === 'clinician') {
-                document.documentElement.removeAttribute('data-mode');
-              } else {
-                document.documentElement.setAttribute('data-mode', viewMode);
-              }
-              localStorage.setItem(VIEW_MODE_KEY, viewMode);
-            } catch (e) { /* ignore storage errors */ }
-          }, [viewMode]);
-
-          // Teaching mode (Phase 5) — predict-then-reveal state.
-          // Keyed by What's-New item.id → { revealed: bool, prediction: string|null }.
-          // Default hidden in teach mode (each study starts as a prompt). Reset
-          // whenever we LEAVE teach mode so every teaching session starts fresh.
-          // Additive only: clinician/patient rendering of these cards is unchanged.
-          const [teachReveals, setTeachReveals] = useState({});
-          useEffect(() => {
-            if (viewMode !== 'teach') {
-              setTeachReveals((prev) => (Object.keys(prev).length ? {} : prev));
-            }
-          }, [viewMode]);
-
-          // Patient mode hides clinician-only tabs (Research & Guidelines,
-          // Protocols & Algorithms, Trials). Patient view is encounter-summary-only.
-          // If a saved/active tab is clinician-only when entering patient mode,
-          // redirect to the encounter tab so a patient can't land on dosing /
-          // eligibility content or the Research What's-New feed (which carries
-          // drug names, doses, and clinician jargon). Clinician mode is unaffected.
-          const CLINICIAN_ONLY_TABS = ['research', 'protocols', 'trials'];
-          useEffect(() => {
-            if (viewMode === 'patient' && CLINICIAN_ONLY_TABS.includes(activeTab)) {
-              setActiveTab('encounter');
-            }
-          }, [viewMode, activeTab]);
-
           const [weightUnit, setWeightUnit] = useState(loadFromStorage('weightUnit', 'kg')); // 'kg' or 'lbs' — stored value is always kg
 
           // Online/offline status
@@ -16322,26 +16272,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </div>
 
                     <div className="flex w-full flex-wrap items-center justify-center gap-2 lg:w-auto lg:justify-end">
-                      {/* Phase 4/5: View mode toggle (Clinician / Patient / Teach).
-                          Mono uppercase chips consistent with prototype .modechips.
-                          Flips document <html data-mode>; CSS gates clinician-only
-                          surfaces + scales type for patient readability. Teach is
-                          clinician-facing (trainees on rounds): it shows everything
-                          clinician mode shows, plus predict-then-reveal affordances.
-                          Only PATIENT mode hides clinician-only tabs. */}
-                      <div className="view-mode-toggle inline-flex shrink-0" data-no-print="true">
-                        <V7SegmentedControl
-                          ariaLabel="View mode"
-                          className="w-auto"
-                          items={[
-                            { id: 'clinician', label: 'Clinician' },
-                            { id: 'patient',   label: 'Patient' },
-                            { id: 'teach',     label: 'Teach' }
-                          ]}
-                          value={viewMode === 'patient' || viewMode === 'teach' ? viewMode : 'clinician'}
-                          onChange={(id) => setViewMode(id === 'patient' || id === 'teach' ? id : 'clinician')}
-                        />
-                      </div>
                       <details className="relative">
                         <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700">
                           <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
@@ -16630,11 +16560,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 }}>
                   {[
                     // v6.0-04: top tabs — labels only, no decorative icons. Icons signal state, not category.
-                    // clinicianOnly: hidden in patient mode (dosing / eligibility content).
                     { id: 'encounter', name: 'Encounter' },
-                    { id: 'protocols', name: 'Institutional Protocols & Algorithms', clinicianOnly: true },
-                    { id: 'research', name: 'Research & Guidelines', clinicianOnly: true },
-                    { id: 'trials', name: 'Trials', clinicianOnly: true }
+                    { id: 'protocols', name: 'Institutional Protocols & Algorithms' },
+                    { id: 'research', name: 'Research & Guidelines' },
+                    { id: 'trials', name: 'Trials' }
                   ].map(tab => {
                     const isActive = activeTab === tab.id;
                     return (
@@ -16644,7 +16573,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         onClick={() => {
                           navigateTo(tab.id);
                         }}
-                        className={`tab-pill flex-none sm:flex-1 min-w-[92px] sm:min-w-0 py-2 sm:py-2 px-1.5 sm:px-4 text-[12px] sm:text-sm flex items-center justify-center transition-all min-h-[44px] sm:min-h-0 ${tab.clinicianOnly ? 'clinician-only ' : ''}${isActive ? 'active' : 'inactive'}`}
+                        className={`tab-pill flex-none sm:flex-1 min-w-[92px] sm:min-w-0 py-2 sm:py-2 px-1.5 sm:px-4 text-[12px] sm:text-sm flex items-center justify-center transition-all min-h-[44px] sm:min-h-0 ${isActive ? 'active' : 'inactive'}`}
                         role="tab"
                         aria-selected={isActive}
                         aria-controls={`tabpanel-${tab.id}`}
@@ -16665,117 +16594,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   <ErrorBoundary>
                   <div key="encounter-tab" id="tabpanel-encounter" role="tabpanel" aria-labelledby="tab-encounter" className="space-y-4">
 
-                    {/* ===== PATIENT PLAIN-LANGUAGE SUMMARY (Phase 4) =====
-                         Rendered ONLY in patient mode, at the top of the encounter
-                         panel. Translates existing encounter state into plain,
-                         non-alarming language using ONLY existing fields — no
-                         invented clinical facts, no treatment advice, no drug
-                         names/doses. Includes the educational disclaimer. */}
-                    {viewMode === 'patient' && (() => {
-                      const cat = telestrokeNote.diagnosisCategory || '';
-                      const dxRaw = telestrokeNote.diagnosis || '';
-                      const hasEncounter = !!(telestrokeNote.age || nihssScore > 0 || dxRaw || cat);
-
-                      // Diagnosis category → lay phrasing. Conservative & non-alarming.
-                      const dxPlain = (() => {
-                        if (cat === 'ischemic') return 'a possible stroke caused by a blocked blood vessel in the brain';
-                        if (cat === 'ich' || cat === 'sah') return 'a possible bleed in or around the brain';
-                        if (cat === 'tia') return 'stroke-like symptoms that may have been temporary (a "mini-stroke")';
-                        if (cat === 'cvt') return 'a possible blood clot in a vein in the brain';
-                        if (cat === 'mimic') return 'symptoms that may be caused by something other than a stroke';
-                        if (dxRaw) return 'a possible stroke or stroke-like condition';
-                        return null;
-                      })();
-
-                      // NIHSS band → words (avoid leading with the raw number).
-                      const nihssNum = (() => {
-                        const fromNote = parseInt(telestrokeNote.nihss, 10);
-                        if (Number.isFinite(fromNote)) return fromNote;
-                        if (Number.isFinite(nihssScore) && nihssScore > 0) return nihssScore;
-                        return null;
-                      })();
-                      const severityPlain = (() => {
-                        if (nihssNum === null) return null;
-                        if (nihssNum === 0) return 'no measurable symptoms on the standard exam right now';
-                        if (nihssNum <= 4) return 'mild symptoms on the standard stroke exam';
-                        if (nihssNum <= 15) return 'moderate symptoms on the standard stroke exam';
-                        if (nihssNum <= 20) return 'moderate-to-severe symptoms on the standard stroke exam';
-                        return 'severe symptoms on the standard stroke exam';
-                      })();
-
-                      // Treatment-window status → plain terms (no advice, no drug names).
-                      const windowPlain = (() => {
-                        const c = windowStatus?.color;
-                        if (c === 'green') return 'Based on the timing of your symptoms, your care team may still have time-sensitive treatment options to consider.';
-                        if (c === 'yellow' || c === 'orange' || c === 'amber') return 'The timing of your symptoms is being checked carefully, as some treatments depend on how much time has passed.';
-                        if (c === 'red') return 'Your care team is reviewing the timing of your symptoms closely.';
-                        return null;
-                      })();
-
-                      // Disposition / plan → lay terms.
-                      const dispPlain = (() => {
-                        const d = telestrokeNote.disposition || '';
-                        if (/Neuro ICU/i.test(d)) return 'The current plan is to care for you in an intensive care unit so you can be watched closely.';
-                        if (/Stroke Unit/i.test(d)) return 'The current plan is to admit you to a specialized stroke care unit.';
-                        if (/Floor/i.test(d)) return 'The current plan is to admit you to the hospital for ongoing care.';
-                        if (/Transfer/i.test(d)) return 'The current plan may involve transferring you to another hospital that specializes in this kind of care.';
-                        if (/Observation/i.test(d)) return 'The current plan is to keep you for observation while your care team continues to evaluate you.';
-                        if (/Discharge/i.test(d)) return 'Your care team is discussing next steps, which may include going home with a follow-up plan.';
-                        return null;
-                      })();
-
-                      return (
-                        <section
-                          aria-labelledby="patient-summary-heading"
-                          className="patient-summary bg-cobalt-50 border border-cobalt-200 rounded-lg p-5 sm:p-6 space-y-3"
-                        >
-                          <p className="font-mono uppercase tracking-wide text-cobalt-700 text-xs">For you &amp; your family</p>
-                          <h2 id="patient-summary-heading" className="font-serif text-ink leading-snug">
-                            What's happening right now
-                          </h2>
-
-                          {hasEncounter ? (
-                            <div className="space-y-2.5 text-ink-2 leading-relaxed">
-                              <p>
-                                You're being evaluated{dxPlain ? <> for <strong className="text-ink">{dxPlain}</strong></> : ' by a stroke care team'}.
-                                Your care team is checking your symptoms and tests to decide on the safest next steps.
-                              </p>
-                              {severityPlain && (
-                                <p>
-                                  Right now, the exam shows <strong className="text-ink">{severityPlain}</strong>.
-                                  This can change over time, and your team will keep checking.
-                                </p>
-                              )}
-                              {windowPlain && <p>{windowPlain}</p>}
-                              {dispPlain && <p>{dispPlain}</p>}
-                              <p>
-                                It's normal to have questions. Please ask your nurse or doctor anything you'd like
-                                explained — they're here to help you understand what's going on.
-                              </p>
-                            </div>
-                          ) : (
-                            <div className="text-ink-2 leading-relaxed space-y-2">
-                              <p>
-                                There isn't an active evaluation entered yet. When your care team starts working
-                                through your case, a plain-language summary will appear here.
-                              </p>
-                              <p>You can always ask your nurse or doctor to walk you through what's happening.</p>
-                            </div>
-                          )}
-
-                          <p className="patient-disclaimer text-cobalt-800 text-sm border-t border-cobalt-200 pt-3 mt-1">
-                            <strong>This is an educational summary, not medical advice.</strong>{' '}
-                            It is a simplified view of information your care team is using. Always talk to your
-                            care team about your diagnosis, treatment, and any decisions about your care.
-                          </p>
-                        </section>
-                      );
-                    })()}
-
                     {/* ===== v7 PATIENT STRIP (mobile) — sticky chip row above v6 strip during transition.
                          Phase 5 IA overhaul will remove the v6 strip below and promote Incomplete /
                          Safety-critical banners into PatientStrip as chip-links. ============== */}
-                    {viewMode !== 'patient' && (telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) ? (() => {
+                    {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) ? (() => {
                       const lkwIsoForStrip = (() => {
                         const d = telestrokeNote.lkwDate, t = telestrokeNote.lkwTime;
                         if (!d || !t) return null;
@@ -16810,9 +16632,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       );
                     })() : null}
 
-                    {/* ===== PATIENT SUMMARY STRIP (with inline mode toggle) ===== */}
+                    {/* ===== PATIENT SUMMARY STRIP ===== */}
                     {/* v6 inline strip — kept during transition; Phase 5 removes it. */}
-                    {viewMode !== 'patient' && (telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) ? (
+                    {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) ? (
                       <div className="sticky top-14 z-20 bg-white/95 backdrop-blur-sm border border-line rounded-md  px-4 py-2.5">
                         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
                           {telestrokeNote.age && (
@@ -16862,8 +16684,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     ) : null}
 
-                    {/* ===== CLINICIAN WORKBENCH — hidden in patient mode (exam-entry forms) ===== */}
-                    {viewMode !== 'patient' && (<>
+                    {/* ===== CLINICIAN WORKBENCH ===== */}
 
                     {/* Consult type sub-tabs */}
                     <nav className="flex items-stretch gap-0 bg-white border border-line rounded-md p-1" role="tablist" aria-label="Consult type">
@@ -27326,7 +27147,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </div>
 
                     {/* ===== END CLINICIAN WORKBENCH ===== */}
-                    </>)}
 
                   </div>
                   </ErrorBoundary>
@@ -27335,7 +27155,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
 
                 {/* Protocols Tab (Ischemic, ICH, Calculators, References) */}
-                {activeTab === 'protocols' && viewMode !== 'patient' && (
+                {activeTab === 'protocols' && (
                   <ErrorBoundary>
                   <div id="tabpanel-protocols" role="tabpanel" aria-labelledby="tab-protocols" className="space-y-6">
                     {/* ===== PRIVATE INSTITUTIONAL LAYER (local-only, never public) =====
@@ -28528,20 +28348,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="border-l-4 border-cobalt-300 bg-cobalt-50 px-3 py-1.5 rounded-r">
                                       <p className="text-[10px] font-semibold uppercase tracking-wide text-cobalt-700 mb-0.5">Teaching pearl</p>
                                       <p className="text-xs text-slate-700 italic">{card.teachingPearl}</p>
-                                    </div>
-                                  ) : null}
-
-                                  {/* Teaching mode (Phase 5): "trial behind the decision".
-                                      Only on cards whose evidence resolves to the existing
-                                      Atlas drawer (no duplication). A teach-only nudge asks
-                                      the trainee to predict the supporting trial(s) before
-                                      opening the existing "Why this recommendation?" drawer
-                                      below — the reveal IS that drawer. Cards that only have
-                                      a PubMed fallback get no forced predict (unverifiable). */}
-                                  {viewMode === 'teach' && hasEvidenceDrawer ? (
-                                    <div className="teach-only teach-prompt" data-no-print="true">
-                                      <p className="font-mono uppercase text-[10px] tracking-wider teach-accent mb-1">Trial behind the decision</p>
-                                      <p className="text-xs text-slate-700">Before opening the drawer: which trial(s) underpin this COR {card.classOfRecommendation} / LOE {card.levelOfEvidence} call? Predict, then expand <span className="font-semibold">Why this recommendation?</span> to check yourself.</p>
                                     </div>
                                   ) : null}
 
@@ -35163,7 +34969,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* What's New feed (verified PubMed) + compact   */}
                 {/* guideline list + Evidence Atlas entry.        */}
                 {/* ============================================ */}
-                {activeTab === 'research' && viewMode !== 'patient' && (
+                {activeTab === 'research' && (
                   <ErrorBoundary>
                   <div id="tabpanel-research" role="tabpanel" aria-labelledby="tab-research" className="space-y-8">
 
@@ -35191,13 +34997,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ? 'text-cobalt-700'
                         : (dir === 'harm' || dir === 'no-benefit') ? 'text-crit-700' : 'text-ink';
 
-                      // Research is clinician-only and never renders in patient mode
-                      // (the tab is hidden + the activeTab==='research' guard requires
-                      // viewMode!=='patient'). The What's-New feed carries drug names,
-                      // doses, and clinician jargon (sICH, mRS, LVO, EVT) in
-                      // practiceImpact/result.effect, so there is intentionally NO
-                      // patient-facing rendering path here. Do not reintroduce one
-                      // without an authored, jargon-free patient field in whats-new.json.
                       return (
                         <section aria-labelledby="research-whatsnew-heading" className="space-y-4">
                           <header>
@@ -35225,42 +35024,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 const fam = topicFamily(item.topic);
                                 const dir = item.result?.direction;
                                 const isVerified = item.verificationStatus === 'verified';
-
-                                // ── Teaching mode (Phase 5): predict-then-reveal ──
-                                // Only offer the predict interaction when (a) we're in
-                                // teach mode, (b) the study is PubMed-verified, and (c)
-                                // it carries a known result.direction — i.e. the answer
-                                // is verifiable. UNVERIFIED / direction-less items skip
-                                // the predict UI and render their result honestly (the
-                                // normal clinician card), so we never force a guess on
-                                // unverifiable data.
-                                const teachAnswerable = viewMode === 'teach' && isVerified && !!dir;
-                                const teachState = teachReveals[item.id] || {};
-                                const teachRevealed = !!teachState.revealed;
-                                const teachPrediction = teachState.prediction || null;
-                                // Offer "Non-inferior" only where the study frames itself
-                                // that way (keeps the option set honest per-study).
-                                const teachHasNI = teachAnswerable && /non-?inferior/i.test(
-                                  [item.result?.effect, item.practiceImpact, item.fullName,
-                                   item.appraisal?.results, item.appraisal?.methodology]
-                                    .filter(Boolean).join(' ')
-                                );
-                                // Predict choices → the result.direction they map to.
-                                const TEACH_CHOICES = [
-                                  { id: 'benefit',     label: 'Benefit',               maps: 'benefit' },
-                                  { id: 'no-benefit',  label: 'No benefit / Neutral',  maps: 'no-benefit' },
-                                  ...(teachHasNI ? [{ id: 'non-inferior', label: 'Non-inferior', maps: 'non-inferior' }] : []),
-                                  { id: 'harm',        label: 'Harm',                  maps: 'harm' }
-                                ];
-                                const predictMatches = teachPrediction
-                                  ? (TEACH_CHOICES.find((c) => c.id === teachPrediction)?.maps === dir
-                                     || (teachPrediction === 'no-benefit' && (dir === 'neutral' || dir === 'no-benefit')))
-                                  : null;
-                                const setTeach = (patch) => setTeachReveals((prev) => ({
-                                  ...prev, [item.id]: { ...(prev[item.id] || {}), ...patch }
-                                }));
-                                // Hide the result block until the trainee predicts or reveals.
-                                const teachHideResult = teachAnswerable && !teachRevealed && !teachPrediction;
 
                                 return (
                                   <article key={item.id} className={`v7-study v7-fresh ${fam}`}>
@@ -35291,60 +35054,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     {/* study title */}
                                     <h3 className="font-sans text-body text-ink font-medium leading-snug text-pretty mb-3">{item.fullName}</h3>
 
-                                    {/* ── Teaching mode prompt (Phase 5): predict-then-reveal ──
-                                        Clinician-facing trainee surface. Shows the PICO
-                                        question as the prompt, hides the result behind
-                                        predict buttons + a reveal, then surfaces a
-                                        non-judgmental ✓/✗ match. Only renders for verified,
-                                        direction-bearing studies in teach mode; otherwise
-                                        the normal clinician card shows below unchanged. */}
-                                    {teachAnswerable && item.appraisal?.picoQuestion ? (
-                                      <div className="teach-only teach-prompt mb-3" data-no-print="true">
-                                        <p className="font-mono uppercase text-[10px] tracking-wider teach-accent mb-1">Predict the result</p>
-                                        <p className="font-sans text-sm text-ink text-pretty mb-3">{item.appraisal.picoQuestion}</p>
-                                        <div className="flex flex-wrap gap-2" role="group" aria-label={`Predict the result of ${item.shortName}`}>
-                                          {TEACH_CHOICES.map((c) => {
-                                            const picked = teachPrediction === c.id;
-                                            return (
-                                              <button
-                                                key={c.id}
-                                                type="button"
-                                                aria-pressed={picked}
-                                                disabled={teachRevealed && !picked}
-                                                onClick={() => setTeach({ prediction: c.id, revealed: true })}
-                                                className={`teach-predict-btn font-mono text-[11px] px-2.5 py-1.5 rounded-md border transition-colors ${picked ? 'teach-predict-active' : 'border-line text-ink-2 hover:border-cobalt-300 hover:text-ink'}`}
-                                              >
-                                                {c.label}
-                                              </button>
-                                            );
-                                          })}
-                                          {!teachRevealed ? (
-                                            <button
-                                              type="button"
-                                              onClick={() => setTeach({ revealed: true })}
-                                              className="teach-reveal-btn font-mono text-[11px] px-2.5 py-1.5 rounded-md border border-cobalt-300 text-cobalt-700 hover:bg-cobalt-50 transition-colors"
-                                            >
-                                              Reveal result
-                                            </button>
-                                          ) : null}
-                                        </div>
-                                        {teachRevealed && teachPrediction ? (
-                                          <p className={`font-mono text-[11px] mt-2 ${predictMatches ? 'text-ok-700' : 'text-ink-2'}`}>
-                                            {predictMatches
-                                              ? <span aria-label="prediction matched">✓ Your prediction matched the result.</span>
-                                              : <span aria-label="prediction did not match">✗ Different from your prediction — see the evidence below.</span>}
-                                          </p>
-                                        ) : null}
-                                      </div>
-                                    ) : null}
-
-                                    {/* result definition list — clinician-only.
-                                        Research never renders in patient mode (tab hidden +
-                                        activeTab guard), so this exposes clinical detail
-                                        (drug names, doses, CI/p, jargon) safely. In teach
-                                        mode the result stays hidden until the trainee
-                                        predicts or reveals. */}
-                                    {!teachHideResult ? (
+                                    {/* result definition list — exposes clinical detail
+                                        (drug names, doses, CI/p, jargon). */}
                                     <dl className="space-y-2 text-sm">
                                       {(() => {
                                         const designLine = [
@@ -35380,14 +35091,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         </div>
                                       ) : null}
                                     </dl>
-                                    ) : null}
 
-                                    {/* expandable critical appraisal (PICO · methodology · results)
-                                        — clinician-only jargon; Research is clinician-only.
-                                        Hidden while the teach result is hidden, since the
-                                        appraisal `results` would leak the answer before the
-                                        trainee predicts/reveals. */}
-                                    {!teachHideResult && item.appraisal && (item.appraisal.picoQuestion || item.appraisal.methodology || item.appraisal.results) ? (
+                                    {/* expandable critical appraisal (PICO · methodology · results) */}
+                                    {item.appraisal && (item.appraisal.picoQuestion || item.appraisal.methodology || item.appraisal.results) ? (
                                       <details className="mt-3 group">
                                         <summary className="inline-flex items-center min-h-[44px] font-mono uppercase text-[10px] text-mute tracking-wider cursor-pointer select-none hover:text-ink-2">
                                           Critical appraisal
@@ -35492,7 +35198,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* CLINICAL TRIALS TAB                          */}
                 {/* Uses trialsData object and TrialCard component */}
                 {/* ============================================ */}
-                {activeTab === 'trials' && viewMode !== 'patient' && (
+                {activeTab === 'trials' && (
                   <ErrorBoundary>
                   <div id="tabpanel-trials" role="tabpanel" aria-labelledby="tab-trials" className="space-y-6">
                     {/* Header Section with Patient Summary —
@@ -35738,16 +35444,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               <div className="flex items-stretch justify-around">
                 {[
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },
-                  { id: 'protocols', name: 'Protocols', icon: 'library', clinicianOnly: true },
-                  { id: 'research', name: 'Research', icon: 'book-open', clinicianOnly: true },
-                  { id: 'trials', name: 'Trials', icon: 'flask-conical', clinicianOnly: true }
+                  { id: 'protocols', name: 'Protocols', icon: 'library' },
+                  { id: 'research', name: 'Research', icon: 'book-open' },
+                  { id: 'trials', name: 'Trials', icon: 'flask-conical' }
                 ].map(tab => {
                   const isActive = activeTab === tab.id;
                   return (
                     <button
                       key={tab.id}
                       onClick={() => navigateTo(tab.id)}
-                      className={`${tab.clinicianOnly ? 'clinician-only ' : ''}flex-1 flex flex-col items-center justify-center gap-1 py-2 px-1 min-h-[56px] text-[11px] font-medium transition-colors ${isActive ? 'text-cobalt-600' : 'text-slate-500 active:text-slate-700'}`}
+                      className={`flex-1 flex flex-col items-center justify-center gap-1 py-2 px-1 min-h-[56px] text-[11px] font-medium transition-colors ${isActive ? 'text-cobalt-600' : 'text-slate-500 active:text-slate-700'}`}
                       role="tab"
                       aria-selected={isActive}
                       aria-controls={`tabpanel-${tab.id}`}
