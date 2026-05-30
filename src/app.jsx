@@ -37,6 +37,7 @@ import {
 } from './components.jsx';
 import { PocketCards } from './pocket-cards.jsx';
 import { LandmarkTrialsCard } from './teaching.jsx';
+import Education from './education.jsx';
 /* v7 design primitives — single accent (cobalt), one alarm (crit), one alert (warn).
    Adopted progressively as Encounter (Phase 5), Trials (Phase 6), and Management
    (Phase 7) regions are touched. Existing v6 inline elements continue to work
@@ -1015,7 +1016,8 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           'research',
           'trials',
           'management',
-          'library'
+          'library',
+          'education'
         ];
 
         const parseHashRoute = (hash) => {
@@ -1049,6 +1051,8 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               return { tab: 'research' };
             case 'trials':
               return { tab: 'trials' };
+            case 'education':
+              return { tab: 'education', sub };
             default:
               return null;
           }
@@ -1070,6 +1074,8 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               return '#/research';
             case 'trials':
               return '#/trials';
+            case 'education':
+              return sub ? `#/education/${sub}` : '#/education';
             default:
               return '#/encounter';
           }
@@ -1932,6 +1938,7 @@ Clinician Name`;
           })();
 
           const [activeTab, setActiveTab] = useState(initialActiveTab);
+          const [educationSubTab, setEducationSubTab] = useState(null);
           const [routeReady, setRouteReady] = useState(false);
           const [notice, setNotice] = useState(null);
           const [clearUndo, setClearUndo] = useState(null);
@@ -7729,6 +7736,8 @@ Clinician Name`;
               const resolvedSubTab = normalizeManagementSubTab(subTab) || legacySubTab || managementSubTab || 'ich';
               nextManagementSubTab = resolvedSubTab;
               setManagementSubTab(resolvedSubTab);
+            } else if (nextTab === 'education') {
+              setEducationSubTab(subTab || 'onboarding');
             }
 
             setActiveTab(nextTab);
@@ -7791,6 +7800,7 @@ Clinician Name`;
             { id: 'go-protocols', group: 'Go to', label: 'Institutional Protocols & Algorithms', hint: 'Pathways & step-cards', icon: 'library', keywords: ['protocols', 'algorithms', 'pathways', 'management', 'library'], run: () => navigateTo('protocols', { clearSearch: true }) },
             { id: 'go-research', group: 'Go to', label: 'Research & Guidelines', hint: 'Guidelines & What’s New', icon: 'book-open', keywords: ['research', 'guidelines', 'whats new', "what's new", 'evidence', 'updates'], run: () => navigateTo('research', { clearSearch: true }) },
             { id: 'go-trials', group: 'Go to', label: 'Trials & Evidence', hint: 'Screener, tables, atlas', icon: 'flask-conical', keywords: ['trials', 'evidence', 'atlas', 'eligibility', 'screener'], run: () => navigateTo('trials', { clearSearch: true }) },
+            { id: 'go-education', group: 'Go to', label: 'Education', hint: 'Curricula & pocket cards', icon: 'brain', keywords: ['education', 'curricula', 'onboarding', 'icu', 'resident', 'nurse', 'pocket cards', 'teaching'], run: () => navigateTo('education', { clearSearch: true }) },
             // ---- Protocols sub-tabs ----
             { id: 'sub-ich', group: 'Protocols', label: 'ICH Management', hint: 'Hemorrhage protocols', icon: 'droplets', keywords: ['ich', 'intracerebral', 'hemorrhage', 'reversal'], run: () => gotoProtocolsSub('ich') },
             { id: 'sub-ischemic', group: 'Protocols', label: 'Ischemic Stroke', hint: 'Reperfusion & DAPT', icon: 'zap', keywords: ['ischemic', 'tnk', 'thrombolysis', 'evt', 'thrombectomy', 'dapt'], run: () => gotoProtocolsSub('ischemic') },
@@ -7798,6 +7808,11 @@ Clinician Name`;
             { id: 'sub-tia', group: 'Protocols', label: 'TIA', hint: 'Transient ischemic attack', icon: 'clock', keywords: ['tia', 'transient'], run: () => gotoProtocolsSub('tia') },
             { id: 'sub-cvt', group: 'Protocols', label: 'CVT', hint: 'Cerebral venous thrombosis', icon: 'git-branch', keywords: ['cvt', 'venous', 'sinus thrombosis'], run: () => gotoProtocolsSub('cvt') },
             { id: 'sub-references', group: 'Protocols', label: 'References', hint: 'Reference docs & TOAST', icon: 'clipboard-list', keywords: ['references', 'docs', 'toast', 'classification', 'guidelines'], run: () => gotoProtocolsSub('references') },
+            // ---- Education sub-tabs ----
+            { id: 'sub-onboarding', group: 'Education', label: 'Resident Onboarding', hint: 'Resident onboarding packet', icon: 'brain', keywords: ['onboarding', 'resident', 'packet', 'education', 'training'], run: () => { navigateTo('education'); setEducationSubTab('onboarding'); } },
+            { id: 'sub-icu', group: 'Education', label: 'ICU Curriculum', hint: 'Stroke ICU teaching packet', icon: 'brain', keywords: ['icu', 'curriculum', 'intensive care', 'education'], run: () => { navigateTo('education'); setEducationSubTab('icu'); } },
+            { id: 'sub-nursing', group: 'Education', label: 'Nurse Education', hint: 'Stroke nurse curriculum', icon: 'brain', keywords: ['nurse', 'nursing', 'education', 'curriculum'], run: () => { navigateTo('education'); setEducationSubTab('nursing'); } },
+            { id: 'sub-pocket-cards', group: 'Education', label: 'Pocket Cards', hint: 'Clinical pocket references', icon: 'brain', keywords: ['pocket cards', 'references', 'cheat sheets', 'cards'], run: () => { navigateTo('education'); setEducationSubTab('pocket-cards'); } },
             // ---- Simulators (each card lives in the Simulators sub-tab) ----
             { id: 'sim-all', group: 'Bedside Simulators', label: 'Bedside Simulators', hint: 'All teaching simulators', icon: 'test-tubes', keywords: ['simulators', 'simulation', 'teaching', 'bedside'], run: () => gotoProtocolsSub('simulators') },
             { id: 'sim-evd', group: 'Bedside Simulators', label: 'EVD & ICP Simulator', hint: 'Drain & pressure trace', icon: 'activity', keywords: ['evd', 'icp', 'drain', 'intracranial pressure', 'ventriculostomy'], run: () => gotoProtocolsSub('simulators', 'sim-evd-icp') },
@@ -14421,7 +14436,11 @@ Clinician Name`;
               { name: 'Glucose Management', keywords: ['glucose', 'insulin', 'hyperglycemia', 'hypoglycemia', 'shine trial', 'blood sugar'], tab: 'management', subTab: 'ischemic' },
               { name: 'Ischemic Stroke Management', keywords: ['ischemic', 'ais', 'acute ischemic', 'lvo', 'large vessel', 'secondary prevention'], tab: 'management', subTab: 'ischemic' },
               { name: 'Discharge Checklist', keywords: ['discharge', 'checklist', 'disposition', 'follow up', 'quality measures'], tab: 'encounter' },
-              { name: 'Order Bundles', keywords: ['order', 'bundle', 'orders', 'copy orders', 'nursing orders', 'medication orders'], tab: 'encounter' }
+              { name: 'Order Bundles', keywords: ['order', 'bundle', 'orders', 'copy orders', 'nursing orders', 'medication orders'], tab: 'encounter' },
+              { name: 'Resident Onboarding', keywords: ['education', 'onboarding', 'curriculum', 'trainee', 'resident', 'rotation', 'survival guide'], tab: 'education', subTab: 'onboarding' },
+              { name: 'ICU Curriculum', keywords: ['education', 'icu', 'curriculum', 'nihss', 'hemodynamics', 'ventilation', 'critical care'], tab: 'education', subTab: 'icu' },
+              { name: 'Nurse Education', keywords: ['education', 'nurse', 'nursing', 'competency', 'nihss', 'swallow screen', 'call parameters'], tab: 'education', subTab: 'nursing' },
+              { name: 'Pocket Cards', keywords: ['education', 'pocket cards', 'cheat sheets', 'references', 'dosing', 'anatomy', 'visual aids'], tab: 'education', subTab: 'pocket-cards' }
             ];
 
             searchableItems.forEach(item => {
@@ -15705,6 +15724,8 @@ Clinician Name`;
                     normalizeManagementSubTab(appData.uiState.lastManagementSubTab) ||
                     'ich';
                   setManagementSubTab(resolvedSubTab);
+                } else if (parsed.tab === 'education') {
+                  setEducationSubTab(parsed.sub || null);
                 }
                 return;
               }
@@ -15743,11 +15764,12 @@ Clinician Name`;
           // Keep hash in sync with the active view
           useEffect(() => {
             if (!routeReady) return;
-            const nextHash = buildHashRoute(activeTab, managementSubTab);
+            const sub = activeTab === 'education' ? educationSubTab : managementSubTab;
+            const nextHash = buildHashRoute(activeTab, sub);
             if (window.location.hash !== nextHash) {
               window.location.hash = nextHash;
             }
-          }, [activeTab, routeReady, managementSubTab]);
+          }, [activeTab, routeReady, managementSubTab, educationSubTab]);
 
           // U3 — the header Resources menu is a native <details>; React re-renders
           // don't clear its `open` attribute, so it would otherwise stay pinned
@@ -16720,7 +16742,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   (z-40) so the two stack cleanly instead of overlapping. */}
               <div className="hidden sm:block mb-4 sm:mb-6 sticky top-0 md:top-[var(--app-header-h,0px)] z-30 app-nav" role="navigation" aria-label="Main navigation">
                 <nav className="flex flex-nowrap items-stretch gap-0 bg-white border border-line rounded-md p-1 overflow-x-auto no-scrollbar" role="tablist" aria-label="Main sections" onKeyDown={(e) => {
-                  const tabs = ['home', 'encounter', 'protocols', 'research', 'trials'];
+                  const tabs = ['home', 'encounter', 'protocols', 'research', 'trials', 'education'];
                   const currentIndex = tabs.indexOf(activeTab);
                   let nextIndex;
                   if (e.key === 'ArrowRight') { e.preventDefault(); nextIndex = (currentIndex + 1) % tabs.length; }
@@ -16735,7 +16757,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     { id: 'encounter', name: 'Encounter' },
                     { id: 'protocols', name: 'Institutional Protocols & Algorithms' },
                     { id: 'research', name: 'Research & Guidelines' },
-                    { id: 'trials', name: 'Trials' }
+                    { id: 'trials', name: 'Trials' },
+                    { id: 'education', name: 'Education' }
                   ].map(tab => {
                     const isActive = activeTab === tab.id;
                     return (
@@ -16783,7 +16806,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'trials-evidence', label: 'Trials & Evidence', purpose: 'Bedside screener, eligibility, atlas', icon: 'flask-conical', run: () => navigateTo('trials', { clearSearch: true }) },
                         { id: 'bedside-simulators', label: 'Bedside Simulators', purpose: 'EVD/ICP, HINTS+, pupillometry, exams', icon: 'test-tubes', run: () => gotoProtocolsSub('simulators') },
                         { id: 'research-whats-new', label: 'Research & What’s New', purpose: 'Guidelines + verified evidence feed', icon: 'book-open', run: () => navigateTo('research', { clearSearch: true }) },
-                        { id: 'calculators', label: 'Calculators', purpose: 'NIHSS, ASPECTS, ICH, ABCD2, PHASES…', icon: 'table', run: () => gotoProtocolsSub('calculators') }
+                        { id: 'calculators', label: 'Calculators', purpose: 'NIHSS, ASPECTS, ICH, ABCD2, PHASES…', icon: 'table', run: () => gotoProtocolsSub('calculators') },
+                        { id: 'education-tab', label: 'Education & Curricula', purpose: 'Onboarding, ICU, & nursing curricula', icon: 'brain', run: () => navigateTo('education', { clearSearch: true }) },
+                        { id: 'pocket-cards-tab', label: 'Pocket Cards', purpose: 'Bedside references & pocket cards', icon: 'badge-check', run: () => { navigateTo('education'); setEducationSubTab('pocket-cards'); } }
                       ];
                       const externalTools = [
                         { id: 'home-ext-nepi', label: 'Statistical & Research Methods (n-epi)', reason: 'study design, biostats, meta-analysis, critical appraisal — research/teaching, not bedside', url: 'https://rkalani1.github.io/n-epi/' },
@@ -35867,6 +35892,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 )}
                 {/* End Clinical Trials Tab */}
 
+                {/* ============================================ */}
+                {/* EDUCATION & CURRICULA TAB                     */}
+                {/* ============================================ */}
+                {activeTab === 'education' && (
+                  <ErrorBoundary>
+                    <Education
+                      activeSubTab={educationSubTab}
+                      onSubTabChange={setEducationSubTab}
+                      onBack={() => navigateTo('home')}
+                    />
+                  </ErrorBoundary>
+                )}
+
               </main>
 
             </div>
@@ -36143,7 +36181,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },
                   { id: 'protocols', name: 'Protocols', icon: 'library' },
                   { id: 'research', name: 'Research', icon: 'book-open' },
-                  { id: 'trials', name: 'Trials', icon: 'flask-conical' }
+                  { id: 'trials', name: 'Trials', icon: 'flask-conical' },
+                  { id: 'education', name: 'Education', icon: 'brain' }
                 ].map(tab => {
                   const isActive = activeTab === tab.id;
                   return (
