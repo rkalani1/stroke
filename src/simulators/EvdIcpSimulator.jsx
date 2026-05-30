@@ -504,7 +504,7 @@ export function EvdIcpSimulator() {
             {/* Tragus reference line + dot */}
             <line x1="180" y1={tragusY} x2="312" y2={tragusY} stroke={C.coral} strokeWidth="1" strokeDasharray="3 3" />
             <circle cx="300" cy={tragusY} r="4" fill={C.coral} />
-            <text x="312" y={tragusY - 5} fontSize="9" fill={C.coral} fontWeight="700" textAnchor="end">TRAGUS (foramen of Monro)</text>
+            <text x="312" y={tragusY - 13} fontSize="9" fill={C.coral} fontWeight="700" textAnchor="end">TRAGUS (foramen of Monro)</text>
 
             {/* Transducer / stopcock group — moves with leveling */}
             <g className="evd-transducer-group" transform={`translate(0,${transducerY - tragusY})`}>
