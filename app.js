@@ -32971,6 +32971,334 @@ Attestation: ${SAFE_PAUSE_ATTESTATION}`;
     ]
   };
 
+  // whats-new.json
+  var whats_new_default = {
+    generatedFrom: "evidence-atlas",
+    count: 12,
+    window: {
+      days: 180,
+      referenceDate: "2026-05-30",
+      cutoff: "2025-12-01"
+    },
+    items: [
+      {
+        id: "atlas",
+        shortName: "ATLAS",
+        fullName: "Endovascular Thrombectomy for Large-Core Ischaemic Stroke up to 24 h \u2014 Systematic Review and IPD Meta-analysis with Central Imaging Adjudication",
+        evidenceType: "meta-analysis",
+        topic: "evt-large-core",
+        topicLabel: "EVT for large-core infarct",
+        journal: "Lancet",
+        year: 2026,
+        design: {
+          n: 1886,
+          population: "\u226424 h",
+          comparator: "Medical management"
+        },
+        result: {
+          effect: "Favored EVT (median mRS 4 vs 5)",
+          ci: "95% CI 1.42 to 1.88",
+          p: "p<0.0001",
+          direction: "benefit"
+        },
+        practiceImpact: "Consolidates EVT benefit across large-core strata to 24 h, except very extensive cores (\u2265150 mL) beyond 6 h where evidence remains limited.",
+        certainty: "high",
+        pmid: "42107392",
+        pubmedUrl: "https://pubmed.ncbi.nlm.nih.gov/42107392/",
+        promotedDate: "2026-05-30"
+      },
+      {
+        id: "choice-2",
+        shortName: "CHOICE-2",
+        fullName: "Adjunctive Intra-Arterial Alteplase After Successful Thrombectomy for Acute Ischemic Stroke",
+        evidenceType: "rct",
+        topic: "ia-adjunct-after-evt",
+        topicLabel: "IA adjunctive thrombolysis after EVT",
+        journal: "JAMA",
+        year: 2026,
+        design: {
+          n: 433,
+          population: "Median 76; \u226424 h",
+          comparator: "Thrombectomy alone"
+        },
+        result: {
+          effect: "Higher with IA alteplase: 57.5% vs 42.5%",
+          ci: "95% CI 5.7% to 24.3%",
+          p: "p=0.002",
+          direction: "harm"
+        },
+        practiceImpact: "IA alteplase after successful EVT improved excellent outcomes and reperfusion \u2014 but a higher mortality signal warrants caution before adoption.",
+        certainty: "moderate",
+        pmid: "42096239",
+        pubmedUrl: "https://pubmed.ncbi.nlm.nih.gov/42096239/",
+        promotedDate: "2026-05-30"
+      },
+      {
+        id: "direct-angio",
+        shortName: "DIRECT ANGIO",
+        fullName: "Direct versus Conventional Transfer to Angiography Suite in Patients with Severe Acute Stroke Treated with Thrombectomy (France)",
+        evidenceType: "rct",
+        topic: "acute-ischemic-stroke",
+        topicLabel: "Acute ischemic stroke",
+        journal: "Lancet Neurol",
+        year: 2026,
+        design: {
+          n: 115,
+          population: "\u226485; \u22645 h of onset",
+          comparator: "Conventional imaging-first pathway"
+        },
+        result: {
+          effect: "No benefit: 36% vs 42%",
+          ci: "95% CI 0.32 to 1.69",
+          p: "",
+          direction: "no-benefit"
+        },
+        practiceImpact: "Bypassing pre-EVT imaging increased sICH without benefit and was halted early \u2014 cautions against direct-to-angio in suspected LVO.",
+        certainty: "moderate",
+        pmid: "41864232",
+        pubmedUrl: "https://pubmed.ncbi.nlm.nih.gov/41864232/",
+        promotedDate: "2026-05-30"
+      },
+      {
+        id: "distal",
+        shortName: "DISTAL",
+        fullName: "Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke \u2014 12-Month Outcomes",
+        evidenceType: "rct",
+        topic: "evt-mevo",
+        topicLabel: "EVT for medium / distal vessel occlusion",
+        journal: "Lancet Neurol",
+        year: 2026,
+        design: {
+          n: 543,
+          population: "Median 77; Median 6; \u22646 h, or 6-24 h with salvageable tissue",
+          comparator: "Best medical treatment alone"
+        },
+        result: {
+          effect: "No difference (median mRS 2 vs 2)",
+          ci: "95% CI 0.59 to 1.12",
+          p: "p=0.20",
+          direction: "no-benefit"
+        },
+        practiceImpact: "No long-term benefit of EVT in mild-to-moderate medium/distal vessel occlusion \u2014 routine thrombectomy not supported in this population.",
+        certainty: "high",
+        pmid: "42105785",
+        pubmedUrl: "https://pubmed.ncbi.nlm.nih.gov/42105785/",
+        promotedDate: "2026-05-30"
+      },
+      {
+        id: "hyponatremia-ich",
+        shortName: "Hyponatremia & ICH",
+        fullName: "Severity-Stratified Hyponatremia Is Associated with Increased Mortality and Complications in Nontraumatic Intracerebral Hemorrhage",
+        evidenceType: "observational",
+        topic: "ich",
+        topicLabel: "Intracerebral hemorrhage",
+        journal: "J Clin Med",
+        year: 2026,
+        design: {
+          n: 45114,
+          population: "Serum Na \u22647 d of diagnosis",
+          comparator: "Propensity-matched normonatraemia"
+        },
+        result: {
+          effect: "Moderate 17.5% vs 13.3%; severe 18.7% vs 12.9%",
+          ci: "Moderate 95% CI 1.255-1.398; severe 1.332-1.628",
+          p: "p<0.001",
+          direction: "neutral"
+        },
+        practiceImpact: "Serum sodium is a readily-available risk-stratification marker in acute ICH; supports vigilant Na monitoring (causality not established).",
+        certainty: "low",
+        pmid: "42194925",
+        pubmedUrl: "https://pubmed.ncbi.nlm.nih.gov/42194925/",
+        promotedDate: "2026-05-30",
+        observationalCaveat: "Observational study \u2014 confounding limits causal inference; interpret with caution."
+      },
+      {
+        id: "oceanic-stroke",
+        shortName: "OCEANIC-STROKE",
+        fullName: "Asundexian for Secondary Stroke Prevention",
+        evidenceType: "rct",
+        topic: "secondary-prevention",
+        topicLabel: "Secondary stroke prevention",
+        journal: "N Engl J Med",
+        year: 2026,
+        design: {
+          n: 12327,
+          population: "\u226518; \u226472 h",
+          comparator: "Placebo + antiplatelet therapy"
+        },
+        result: {
+          effect: "Lower with asundexian: 6.2% vs 8.4%",
+          ci: "95% CI 0.65 to 0.84",
+          p: "p<0.001",
+          direction: "benefit"
+        },
+        practiceImpact: "Asundexian on top of antiplatelets cut ischaemic stroke ~26% without more major bleeding \u2014 could reshape noncardioembolic prevention.",
+        certainty: "high",
+        pmid: "41985132",
+        pubmedUrl: "https://pubmed.ncbi.nlm.nih.gov/41985132/",
+        promotedDate: "2026-05-30"
+      },
+      {
+        id: "stabled",
+        shortName: "STABLED",
+        fullName: "Catheter Ablation and Oral Anticoagulation for Secondary Stroke Prevention in Atrial Fibrillation",
+        evidenceType: "rct",
+        topic: "af-anticoag-timing",
+        topicLabel: "AF anticoagulation timing after stroke",
+        journal: "JAMA Neurol",
+        year: 2026,
+        design: {
+          n: 249,
+          population: "20-85 (mean 71.7); Ablation 1-6 mo after index stroke",
+          comparator: "Standard therapy (edoxaban) alone"
+        },
+        result: {
+          effect: "No reduction: 5.6% vs 4.9% per person-year",
+          ci: "95% CI 0.62 to 2.01",
+          p: "",
+          direction: "benefit"
+        },
+        practiceImpact: "Adding ablation to anticoagulation did not reduce recurrent events in post-stroke AF (underpowered) \u2014 does not support routine ablation for secondary prevention.",
+        certainty: "moderate",
+        pmid: "41770549",
+        pubmedUrl: "https://pubmed.ncbi.nlm.nih.gov/41770549/",
+        promotedDate: "2026-05-30"
+      },
+      {
+        id: "suicide-after-stroke",
+        shortName: "Suicide after stroke",
+        fullName: "Increased Risk of Suicide after Stroke: A Population-Based Matched Cohort Study",
+        evidenceType: "observational",
+        topic: "special-populations",
+        topicLabel: "Special populations (pregnancy, cancer, pediatrics)",
+        journal: "Int J Stroke",
+        year: 2025,
+        design: {
+          n: 129438,
+          population: "Mean 71.4; 2008-2017",
+          comparator: "Matched general-population controls"
+        },
+        result: {
+          effect: "Higher in stroke survivors: 11.1 vs 3.2 per 10,000 person-years",
+          ci: "95% CI 2.35 to 3.51",
+          p: "",
+          direction: "benefit"
+        },
+        practiceImpact: "Supports long-term (beyond 1 year) suicidality screening in survivors \u2014 especially younger and lower-income patients.",
+        certainty: "moderate",
+        pmid: "40913243",
+        pubmedUrl: "https://pubmed.ncbi.nlm.nih.gov/40913243/",
+        promotedDate: "2026-05-30",
+        observationalCaveat: "Observational study \u2014 confounding limits causal inference; interpret with caution."
+      },
+      {
+        id: "tapis",
+        shortName: "TAPIS",
+        fullName: "Ticagrelor with Aspirin Dual Antiplatelet Therapy combined with Intravenous Thrombolysis in Patients with Ischaemic Stroke in China",
+        evidenceType: "rct",
+        topic: "dapt-minor-stroke",
+        topicLabel: "DAPT for minor stroke / high-risk TIA",
+        journal: "Lancet",
+        year: 2026,
+        design: {
+          n: 1382,
+          population: "Median 65.6; 4-10; \u22646 h of onset",
+          comparator: "Placebo (open-label aspirin days 2-90)"
+        },
+        result: {
+          effect: "Higher with early DAPT: 68.7% vs 62.0%",
+          ci: "95% CI 1.03 to 1.20",
+          p: "p=0.0089",
+          direction: "benefit"
+        },
+        practiceImpact: "Early oral DAPT within 6 h as an adjunct to thrombolysis improved excellent outcomes in moderate stroke \u2014 a strategy long considered contraindicated; small sICH risk not excluded.",
+        certainty: "moderate",
+        pmid: "42114550",
+        pubmedUrl: "https://pubmed.ncbi.nlm.nih.gov/42114550/",
+        promotedDate: "2026-05-30"
+      },
+      {
+        id: "tnk-vs-alteplase-rwe",
+        shortName: "TNK vs alteplase \xB7 RWE",
+        fullName: "Real-World Efficacy and Safety of Tenecteplase versus Alteplase in Acute Ischemic Stroke: A Propensity Score-Matched Analysis",
+        evidenceType: "observational",
+        topic: "tnk-vs-alteplase",
+        topicLabel: "Tenecteplase vs alteplase",
+        journal: "Front Neurol",
+        year: 2026,
+        design: {
+          n: 371,
+          population: "",
+          comparator: "Alteplase"
+        },
+        result: {
+          effect: "Comparable (p>0.05)",
+          ci: "",
+          p: "p>0.05 (NS)",
+          direction: "neutral"
+        },
+        practiceImpact: "Adds real-world support for tenecteplase as a practical alteplase alternative \u2014 consistent with trial-level non-inferiority.",
+        certainty: "low",
+        pmid: "42206304",
+        pubmedUrl: "https://pubmed.ncbi.nlm.nih.gov/42206304/",
+        promotedDate: "2026-05-30",
+        observationalCaveat: "Observational study \u2014 confounding limits causal inference; interpret with caution."
+      },
+      {
+        id: "trident",
+        shortName: "TRIDENT",
+        fullName: "Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage",
+        evidenceType: "rct",
+        topic: "ich-secondary-prevention",
+        topicLabel: "Secondary prevention after ICH (AF, statin)",
+        journal: "N Engl J Med",
+        year: 2026,
+        design: {
+          n: 1670,
+          population: "Mean 58",
+          comparator: "Placebo + standard care"
+        },
+        result: {
+          effect: "Lower with triple pill: 4.6% vs 7.4%",
+          ci: "95% CI 0.41 to 0.92",
+          p: "p=0.02",
+          direction: "benefit"
+        },
+        practiceImpact: "A simplified low-dose triple pill after ICH lowers recurrent stroke and CV events \u2014 supports intensive, simplified BP-lowering.",
+        certainty: "high",
+        pmid: "42019018",
+        pubmedUrl: "https://pubmed.ncbi.nlm.nih.gov/42019018/",
+        promotedDate: "2026-05-30"
+      },
+      {
+        id: "catalyst",
+        shortName: "CATALYST",
+        fullName: "IPD Meta-analysis of Anticoagulation Timing after Ischaemic Stroke with AF",
+        evidenceType: "meta-analysis",
+        topic: "af-anticoag-timing",
+        topicLabel: "AF anticoagulation timing after stroke",
+        journal: "Lancet",
+        year: 2025,
+        design: {
+          n: 5441,
+          population: "Early \u22644 d vs later \u22655 d",
+          comparator: "Later DOAC (\u22655 d)"
+        },
+        result: {
+          effect: "Favored early: 2.1% vs 3.0%",
+          ci: "95% CI 0.50 to 0.98",
+          p: "p=0.039",
+          direction: "benefit"
+        },
+        practiceImpact: "Pooled IPD shows early DOAC (\u22644 d) reduces 30-d composite \u2014 supports early initiation.",
+        certainty: "high",
+        pmid: "40570866",
+        pubmedUrl: "https://pubmed.ncbi.nlm.nih.gov/40570866/",
+        promotedDate: "2026-05-29"
+      }
+    ]
+  };
+
   // src/evidence/schema.js
   var CERTAINTY_VALUES = ["high", "moderate", "low", "very-low"];
   var EVIDENCE_TYPE_VALUES = ["rct", "meta-analysis", "observational", "guideline", "consensus"];
@@ -37283,6 +37611,7 @@ ${section.body}`).join("\n\n");
   var VALID_TABS = [
     "encounter",
     "protocols",
+    "research",
     "trials",
     "management",
     "library"
@@ -37313,6 +37642,8 @@ ${section.body}`).join("\n\n");
       case "calculators":
       case "evidence":
         return { tab: "protocols", sub: LEGACY_MANAGEMENT_TABS[root2] };
+      case "research":
+        return { tab: "research" };
       case "trials":
         return { tab: "trials" };
       default:
@@ -37329,6 +37660,8 @@ ${section.body}`).join("\n\n");
         const managementSub = normalizeManagementSubTab(sub);
         return managementSub ? `#/protocols/${managementSub}` : "#/protocols";
       }
+      case "research":
+        return "#/research";
       case "trials":
         return "#/trials";
       default:
@@ -43329,7 +43662,8 @@ Clinician Name`;
           const tabMap = {
             "1": { tab: "encounter" },
             "2": { tab: "protocols" },
-            "3": { tab: "trials" }
+            "3": { tab: "research" },
+            "4": { tab: "trials" }
           };
           if (tabMap[key]) {
             e.preventDefault();
@@ -52523,7 +52857,7 @@ NIHSS: ${nihssDisplay2} - reassess ${receivedTNK ? "per neuro check schedule" : 
         /* @__PURE__ */ import_react9.default.createElement("i", { "aria-hidden": "true", "data-lucide": "x", className: "w-5 h-5" })
       )
     ))), /* @__PURE__ */ import_react9.default.createElement("div", { className: "hidden sm:block mb-4 sm:mb-6 sticky top-0 z-30 app-nav", role: "navigation", "aria-label": "Main navigation" }, /* @__PURE__ */ import_react9.default.createElement("nav", { className: "flex flex-nowrap items-stretch gap-0 bg-white border border-line rounded-md p-1 overflow-x-auto no-scrollbar", role: "tablist", "aria-label": "Main sections", onKeyDown: (e) => {
-      const tabs = ["encounter", "protocols", "trials"];
+      const tabs = ["encounter", "protocols", "research", "trials"];
       const currentIndex = tabs.indexOf(activeTab);
       let nextIndex;
       if (e.key === "ArrowRight") {
@@ -52548,6 +52882,7 @@ NIHSS: ${nihssDisplay2} - reassess ${receivedTNK ? "per neuro check schedule" : 
       // v6.0-04: top tabs — labels only, no decorative icons. Icons signal state, not category.
       { id: "encounter", name: "Encounter" },
       { id: "protocols", name: "Management" },
+      { id: "research", name: "Research & Guidelines" },
       { id: "trials", name: "Trials" }
     ].map((tab) => {
       const isActive = activeTab === tab.id;
@@ -63094,7 +63429,59 @@ ${result.prophylaxisNote}`, "Enoxaparin Dose"),
       },
       /* @__PURE__ */ import_react9.default.createElement("i", { "aria-hidden": "true", "data-lucide": "mail", className: "w-4 h-4" }),
       "Email"
-    )))))))), activeTab === "trials" && /* @__PURE__ */ import_react9.default.createElement(ErrorBoundary, null, /* @__PURE__ */ import_react9.default.createElement("div", { id: "tabpanel-trials", role: "tabpanel", "aria-labelledby": "tab-trials", className: "space-y-6" }, /* @__PURE__ */ import_react9.default.createElement("header", { className: "bg-card border border-line rounded-md p-6" }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4" }, /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement("p", { className: "font-mono uppercase text-eyebrow text-mute mb-1" }, "Reference"), /* @__PURE__ */ import_react9.default.createElement("h2", { className: "font-serif text-section text-ink flex items-center gap-3" }, "Clinical Trials"), /* @__PURE__ */ import_react9.default.createElement("p", { className: "font-sans text-body text-ink-2 mt-1 text-pretty" }, trialsView === "eligibility" ? "public-reference eligibility tables \u2014 copy-paste-ready reference for intranet pages" : "Bedside screener \u2014 auto-evaluates trial eligibility from current encounter parameters")))), /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex flex-wrap items-center gap-3 -mt-2" }, /* @__PURE__ */ import_react9.default.createElement(
+    )))))))), activeTab === "research" && /* @__PURE__ */ import_react9.default.createElement(ErrorBoundary, null, /* @__PURE__ */ import_react9.default.createElement("div", { id: "tabpanel-research", role: "tabpanel", "aria-labelledby": "tab-research", className: "space-y-8" }, (() => {
+      const items = whats_new_default && Array.isArray(whats_new_default.items) ? whats_new_default.items : [];
+      const topicFamily = (topic) => {
+        const t2 = String(topic || "");
+        if (t2 === "ich" || t2.startsWith("ich-")) return "t-ich";
+        if (t2 === "secondary-prevention" || t2.startsWith("af-") || t2.startsWith("dapt-")) return "t-prevent";
+        if (t2 === "special-populations") return "t-workflow";
+        return "";
+      };
+      const stypeClass = (et) => et === "rct" ? "rct" : et === "meta-analysis" ? "meta" : "obs";
+      const stypeLabel = (et) => et === "rct" ? "RCT" : et === "meta-analysis" ? "Meta-analysis" : "Observational";
+      const effectClass = (dir) => dir === "benefit" ? "text-cobalt-700" : dir === "harm" || dir === "no-benefit" ? "text-crit-700" : "text-ink";
+      return /* @__PURE__ */ import_react9.default.createElement("section", { "aria-labelledby": "research-whatsnew-heading", className: "space-y-4" }, /* @__PURE__ */ import_react9.default.createElement("header", null, /* @__PURE__ */ import_react9.default.createElement("p", { className: "font-mono uppercase text-eyebrow text-mute mb-1" }, "Evidence"), /* @__PURE__ */ import_react9.default.createElement("h2", { id: "research-whatsnew-heading", className: "font-serif text-section text-ink flex items-center gap-2" }, "What's New"), /* @__PURE__ */ import_react9.default.createElement("p", { className: "font-sans text-body text-ink-2 mt-1 text-pretty" }, "Recent practice-changing & informing studies \xB7 PubMed-verified")), items.length === 0 ? /* @__PURE__ */ import_react9.default.createElement("div", { className: "bg-card border border-line rounded-md p-6 text-center" }, /* @__PURE__ */ import_react9.default.createElement("p", { className: "font-sans text-body text-ink-2" }, "No recent updates.")) : /* @__PURE__ */ import_react9.default.createElement("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-4" }, items.map((item) => {
+        var _a3, _b2, _c2, _d2, _e2, _f2, _g2, _h2, _i2, _j2, _k2;
+        const fam = topicFamily(item.topic);
+        const dir = (_a3 = item.result) == null ? void 0 : _a3.direction;
+        return /* @__PURE__ */ import_react9.default.createElement("article", { key: item.id, className: `v7-study v7-fresh ${fam}` }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex items-start justify-between gap-3 mb-2" }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex items-center gap-2 flex-wrap" }, /* @__PURE__ */ import_react9.default.createElement("strong", { className: "acro font-mono text-ink text-[15px] font-bold tracking-tight" }, item.shortName), /* @__PURE__ */ import_react9.default.createElement("span", { className: `v7-stype ${stypeClass(item.evidenceType)}` }, stypeLabel(item.evidenceType))), /* @__PURE__ */ import_react9.default.createElement("span", { className: "inline-flex items-center gap-1.5 font-mono text-[11px] text-ok-700 whitespace-nowrap", title: "PubMed-verified" }, /* @__PURE__ */ import_react9.default.createElement("span", { className: "v7-pulse", "aria-hidden": "true" }), "verified")), /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex items-center justify-between gap-2 mb-2 flex-wrap" }, /* @__PURE__ */ import_react9.default.createElement("span", { className: "font-mono text-[11px] text-mute uppercase tracking-wide" }, item.journal, " \xB7 ", item.year), item.topicLabel ? /* @__PURE__ */ import_react9.default.createElement("span", { className: "v7-tag topic" }, item.topicLabel) : null), /* @__PURE__ */ import_react9.default.createElement("h3", { className: "font-sans text-body text-ink font-medium leading-snug text-pretty mb-3" }, item.fullName), /* @__PURE__ */ import_react9.default.createElement("dl", { className: "space-y-2 text-sm" }, /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement("dt", { className: "font-mono uppercase text-[10px] text-mute tracking-wider" }, "Design"), /* @__PURE__ */ import_react9.default.createElement("dd", { className: "text-ink-2" }, [
+          ((_b2 = item.design) == null ? void 0 : _b2.n) ? `n=${((_d2 = (_c2 = item.design.n).toLocaleString) == null ? void 0 : _d2.call(_c2)) || item.design.n}` : null,
+          ((_e2 = item.design) == null ? void 0 : _e2.population) || null,
+          ((_f2 = item.design) == null ? void 0 : _f2.comparator) ? `vs ${item.design.comparator}` : null
+        ].filter(Boolean).join(" \xB7 "))), /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement("dt", { className: "font-mono uppercase text-[10px] text-mute tracking-wider" }, "Result"), /* @__PURE__ */ import_react9.default.createElement("dd", null, /* @__PURE__ */ import_react9.default.createElement("span", { className: `font-medium ${effectClass(dir)}` }, (_g2 = item.result) == null ? void 0 : _g2.effect), ((_h2 = item.result) == null ? void 0 : _h2.ci) || ((_i2 = item.result) == null ? void 0 : _i2.p) ? /* @__PURE__ */ import_react9.default.createElement("span", { className: "text-ink-2" }, " ", " ", [(_j2 = item.result) == null ? void 0 : _j2.ci, (_k2 = item.result) == null ? void 0 : _k2.p].filter(Boolean).join("; ")) : null)), /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement("dt", { className: "font-mono uppercase text-[10px] text-mute tracking-wider" }, "What it changes"), /* @__PURE__ */ import_react9.default.createElement("dd", { className: "text-ink-2 text-pretty" }, item.practiceImpact)), item.observationalCaveat ? /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement("dd", { className: "text-mute text-xs italic text-pretty" }, item.observationalCaveat)) : null), /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex items-center justify-between gap-2 mt-4 pt-3 border-t border-line flex-wrap" }, /* @__PURE__ */ import_react9.default.createElement("span", { className: `v7-cert ${item.certainty === "high" ? "high" : item.certainty === "moderate" ? "moderate" : ""}` }, String(item.certainty || "low"), " certainty"), /* @__PURE__ */ import_react9.default.createElement(
+          "a",
+          {
+            href: item.pubmedUrl,
+            target: "_blank",
+            rel: "noopener noreferrer",
+            className: "v7-verify",
+            "aria-label": `Open PubMed record for ${item.shortName} (opens in new tab)`
+          },
+          "PubMed \u2197"
+        )));
+      })));
+    })(), /* @__PURE__ */ import_react9.default.createElement("section", { "aria-labelledby": "research-guidelines-heading", className: "space-y-4" }, /* @__PURE__ */ import_react9.default.createElement("header", null, /* @__PURE__ */ import_react9.default.createElement("p", { className: "font-mono uppercase text-eyebrow text-mute mb-1" }, "Reference"), /* @__PURE__ */ import_react9.default.createElement("h2", { id: "research-guidelines-heading", className: "font-serif text-section text-ink" }, "Guidelines"), /* @__PURE__ */ import_react9.default.createElement("p", { className: "font-sans text-body text-ink-2 mt-1 text-pretty" }, "AHA/ASA & society statements indexed in the Atlas. Open the full searchable library under Management \u2192 References.")), /* @__PURE__ */ import_react9.default.createElement("ul", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3" }, GUIDELINE_LIBRARY_INDEX.map((gl) => /* @__PURE__ */ import_react9.default.createElement("li", { key: gl.id, className: "v7-card t-prevent" }, /* @__PURE__ */ import_react9.default.createElement(
+      "a",
+      {
+        href: gl.publisherUrl || gl.pdfUrl || "#",
+        target: "_blank",
+        rel: "noopener noreferrer",
+        className: "block group",
+        "aria-label": `Open guideline: ${gl.title} (opens in new tab)`
+      },
+      /* @__PURE__ */ import_react9.default.createElement("p", { className: "font-sans text-body text-ink font-medium leading-snug text-pretty group-hover:text-cobalt-700" }, gl.title),
+      gl.shortTitle ? /* @__PURE__ */ import_react9.default.createElement("p", { className: "font-mono text-[11px] text-mute uppercase tracking-wide mt-1" }, gl.shortTitle) : null
+    ))))), /* @__PURE__ */ import_react9.default.createElement("section", { "aria-labelledby": "research-atlas-heading", className: "space-y-4" }, /* @__PURE__ */ import_react9.default.createElement("h2", { id: "research-atlas-heading", className: "sr-only" }, "Evidence Atlas"), /* @__PURE__ */ import_react9.default.createElement(
+      "button",
+      {
+        type: "button",
+        onClick: () => navigateTo("trials"),
+        className: "v7-card t-workflow w-full text-left flex items-center justify-between gap-4 hover:border-cobalt-300"
+      },
+      /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement("h3", { className: "font-serif text-md text-ink" }, "Evidence Atlas"), /* @__PURE__ */ import_react9.default.createElement("p", { className: "font-sans text-body text-ink-2 mt-1 text-pretty" }, "Browse all verified active & completed trials")),
+      /* @__PURE__ */ import_react9.default.createElement("span", { className: "font-mono text-sm text-cobalt-700 whitespace-nowrap", "aria-hidden": "true" }, "Open \u2192")
+    )))), activeTab === "trials" && /* @__PURE__ */ import_react9.default.createElement(ErrorBoundary, null, /* @__PURE__ */ import_react9.default.createElement("div", { id: "tabpanel-trials", role: "tabpanel", "aria-labelledby": "tab-trials", className: "space-y-6" }, /* @__PURE__ */ import_react9.default.createElement("header", { className: "bg-card border border-line rounded-md p-6" }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4" }, /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement("p", { className: "font-mono uppercase text-eyebrow text-mute mb-1" }, "Reference"), /* @__PURE__ */ import_react9.default.createElement("h2", { className: "font-serif text-section text-ink flex items-center gap-3" }, "Clinical Trials"), /* @__PURE__ */ import_react9.default.createElement("p", { className: "font-sans text-body text-ink-2 mt-1 text-pretty" }, trialsView === "eligibility" ? "public-reference eligibility tables \u2014 copy-paste-ready reference for intranet pages" : "Bedside screener \u2014 auto-evaluates trial eligibility from current encounter parameters")))), /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex flex-wrap items-center gap-3 -mt-2" }, /* @__PURE__ */ import_react9.default.createElement(
       SubTabs,
       {
         ariaLabel: "Trials sub-view",
@@ -63223,6 +63610,7 @@ ${result.prophylaxisNote}`, "Enoxaparin Dose"),
     }, className: "flex items-center justify-between px-3 py-2 bg-slate-50 border border-line rounded-lg hover:bg-cobalt-50 hover:border-cobalt-200 focus:ring-2 focus:ring-cobalt-500 text-left" }, /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement("div", { className: "font-medium text-sm text-slate-900" }, c.label), /* @__PURE__ */ import_react9.default.createElement("div", { className: "text-xs text-slate-500" }, c.desc)), /* @__PURE__ */ import_react9.default.createElement("i", { "aria-hidden": "true", "data-lucide": "chevron-right", className: "w-3.5 h-3.5 text-slate-500" }))))), /* @__PURE__ */ import_react9.default.createElement("div", { className: "text-center text-xs text-slate-500 py-2 border-t border-slate-200" }, "Press Esc to close"))), confirmConfig && /* @__PURE__ */ import_react9.default.createElement(ConfirmModal, { config: confirmConfig, onClose: handleConfirmClose }), /* @__PURE__ */ import_react9.default.createElement(ToastContainer, { toasts, removeToast }), /* @__PURE__ */ import_react9.default.createElement("nav", { className: "fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-[0_-1px_3px_rgba(0,0,0,0.08)] sm:hidden", style: { paddingBottom: "max(8px, env(safe-area-inset-bottom))" }, role: "tablist", "aria-label": "Mobile navigation" }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex items-stretch justify-around" }, [
       { id: "encounter", name: "Encounter", icon: "activity" },
       { id: "protocols", name: "Management", icon: "library" },
+      { id: "research", name: "Research", icon: "book-open" },
       { id: "trials", name: "Trials", icon: "flask-conical" }
     ].map((tab) => {
       const isActive = activeTab === tab.id;
