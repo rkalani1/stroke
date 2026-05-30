@@ -4,7 +4,7 @@
 
 // DOAC initiation timing protocols for AF-related ischemic stroke.
 // 'elan-optimas' (default): supported by ELAN (Fischer NEJM 2023;388:2411-21, PMID 37222476) and
-//   OPTIMAS (Werring Lancet 2024, PMID 39426394) and the CATALYST IPD meta-analysis
+//   OPTIMAS (Werring Lancet 2024, PMID 39491870) and the CATALYST IPD meta-analysis
 //   (Werring et al., Lancet Neurol 2025, doi: 10.1016/S1474-4422(25)00057-5; n=5441 pooling
 //   ELAN, OPTIMAS, TIMING, START). Early start ≤4 d for minor/moderate; days 6-7 for major.
 //   Symptomatic ICH 0.2% in both arms.
@@ -18,7 +18,7 @@ export const DOAC_PROTOCOLS = {
   'elan-optimas': {
     label: 'ELAN/OPTIMAS — early start (default)',
     days: { minor: 1, moderate: 3, severe: 6, verySevere: 7 },
-    source: 'Fischer NEJM 2023 (ELAN, PMID 37222476); Werring Lancet 2024 (OPTIMAS, PMID 39426394); Werring Lancet Neurol 2025 (CATALYST IPDMA, doi: 10.1016/S1474-4422(25)00057-5)'
+    source: 'Fischer NEJM 2023 (ELAN, PMID 37222476); Werring Lancet 2024 (OPTIMAS, PMID 39491870); Werring Lancet Neurol 2025 (CATALYST IPDMA, doi: 10.1016/S1474-4422(25)00057-5)'
   },
   // Legacy alias retained for backwards-compatibility with persisted localStorage values.
   // Points to the same protocol as 'expert-consensus'.

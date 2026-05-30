@@ -431,7 +431,7 @@ export function PupillometrySimulator() {
           </div>
 
           <button type="button" onClick={simulateReflex} disabled={isAnimating}
-            className="w-full px-3 h-9 min-h-[44px] sm:min-h-[40px] rounded-md text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500">
+            className="w-full px-3 h-9 min-h-[44px] sm:min-h-[40px] rounded-md text-sm font-semibold bg-teal-700 text-white hover:bg-teal-700 disabled:opacity-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500">
             {isAnimating ? 'Light reflex in progress…' : 'Simulate Light Reflex'}
           </button>
 
@@ -563,7 +563,7 @@ export function PupillometrySimulator() {
                 <h5 className={cx('text-xs font-bold', ev.caveat ? 'text-crit-800 dark:text-crit-300' : 'text-slate-800 dark:text-ink')}>{ev.study}</h5>
                 {ev.caveat && <span className="text-2xs font-bold uppercase tracking-wide text-crit-700 shrink-0 dark:text-crit-300">Limitation</span>}
               </div>
-              <p className="text-2xs uppercase tracking-wide font-semibold text-slate-500 mt-0.5 dark:text-mute">{ev.cohort}</p>
+              <p className="text-2xs uppercase tracking-wide font-semibold text-slate-600 mt-0.5 dark:text-mute">{ev.cohort}</p>
               <p className="text-xs text-slate-700 mt-1 leading-relaxed dark:text-ink-2">{ev.finding}</p>
             </div>
           ))}

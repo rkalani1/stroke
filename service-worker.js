@@ -11,11 +11,11 @@
    - When a client messages {type:'CLAIM_AND_RELOAD'}, the SW calls
      clients.claim() and asks the client to soft-reload.
 
-   Cache-name bumped to stroke-cache-v6-8-1. Old caches are cleared on activate.
+   Cache-name bumped to stroke-cache-v6-8-2. Old caches are cleared on activate.
 */
 
-const APP_VERSION = '6.8.1';
-const CACHE_NAME  = 'stroke-cache-v6-8-1';
+const APP_VERSION = '6.8.2';
+const CACHE_NAME  = 'stroke-cache-v6-8-2';
 
 const CORE_ASSETS = [
   './',

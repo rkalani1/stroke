@@ -48,8 +48,8 @@
          render unblocked on first paint. Fallback inside <noscript> for non-JS environments. -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap"></noscript>
-    <link rel="preload" as="script" href="app.js?v=6.8.1">
-    <link rel="stylesheet" href="tailwind.css?v=6.8.1">
+    <link rel="preload" as="script" href="app.js?v=6.8.2">
+    <link rel="stylesheet" href="tailwind.css?v=6.8.2">
     <style>
         :root {
             color-scheme: light;
@@ -742,7 +742,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = '6.8.1'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
+            const APP_VERSION = '6.8.2'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
             const STORAGE_PREFIX = 'strokeApp:';
             const APP_DATA_KEY = 'stroke.appData.v2';
             const IS_PUBLIC_PAGES = /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -961,7 +961,7 @@
         document.currentScript.parentNode.insertBefore(s, document.currentScript);
       })();
     </script>
-    <script src="app.js?v=6.8.1" defer></script>
+    <script src="app.js?v=6.8.2" defer></script>
     <footer style="margin-top: 40px; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb;">
       <p>This is a synthetic public demo site for educational and reference purposes only. Not for clinical decision-making or real patient care.</p>
     </footer>

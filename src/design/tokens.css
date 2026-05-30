@@ -228,6 +228,14 @@ html.dark {
   --gold-wash:  rgb(var(--warn-50));
   --okc:        rgb(var(--ok-600));
   --ok-wash:    rgb(var(--ok-50));
+  /* Tag/chip LABEL text — AA-safe on the soft washes above (the bright
+     --teal/coral/gold/okc accents are decorative-only and fail AA as small
+     chip text). Light: -700 step on -50 wash ≥4.5:1; dark steps flip below
+     to -200 on the deep -900/-950 washes. Used by .v7-tag/.v7-stype/.v7-cert. */
+  --tag-teal:   rgb(var(--cobalt-700)); /* 7.79:1 on cobalt-50 */
+  --tag-coral:  rgb(var(--crit-700));   /* 6.41:1 on crit-50 */
+  --tag-gold:   rgb(var(--warn-700));   /* 5.59:1 on warn-50 */
+  --tag-ok:     rgb(var(--ok-700));     /* 7.50:1 on ok-50 */
   --panel:      rgb(var(--slate-0));
   --panel-2:    rgb(var(--slate-100));
   --ink-soft:   rgb(var(--slate-600));
@@ -269,4 +277,10 @@ html.dark {
   --coral-wash:rgb(var(--crit-950));
   --gold-wash: rgb(var(--warn-950));
   --ok-wash:   rgb(var(--ok-950));
+  /* Chip-label text flips to light -200 steps on the deep dark washes:
+     cobalt-200/cobalt-900=9.00, crit-200/crit-950=9.21, warn-200/warn-950=10.12, ok-200/ok-950=9.65 — all AA. */
+  --tag-teal:  rgb(var(--cobalt-200));
+  --tag-coral: rgb(var(--crit-200));
+  --tag-gold:  rgb(var(--warn-200));
+  --tag-ok:    rgb(var(--ok-200));
 }
