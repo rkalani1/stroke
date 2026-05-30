@@ -365,9 +365,9 @@ export const citations = [
     title: 'Tenecteplase for Stroke at 4.5 to 24 Hours with Perfusion-Imaging Selection (TIMELESS)',
     journal: 'N Engl J Med',
     year: 2024,
-    pmid: '38324483',
+    pmid: '38329148',
     doi: '10.1056/NEJMoa2310392',
-    url: 'https://pubmed.ncbi.nlm.nih.gov/38324483/',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/38329148/',
     verificationStatus: 'verified-pubmed'
   }),
   makeCitation({
@@ -376,9 +376,9 @@ export const citations = [
     title: 'Tenecteplase for Ischemic Stroke at 4.5 to 24 Hours without Thrombectomy (TRACE-III)',
     journal: 'N Engl J Med',
     year: 2024,
-    pmid: '38884332',
+    pmid: '38884324',
     doi: '10.1056/NEJMoa2402980',
-    url: 'https://pubmed.ncbi.nlm.nih.gov/38884332/',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/38884324/',
     verificationStatus: 'verified-pubmed'
   }),
   makeCitation({
