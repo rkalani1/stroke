@@ -34662,7 +34662,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <div id="ref-guidelines" className="bg-white border border-cobalt-200 rounded-lg p-4 dark:bg-card dark:border-cobalt-700">
                       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <div>
-                          <h3 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Guideline Library</h3>
+                          <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Guideline Library</h2>
                           <p className="text-xs text-slate-600 dark:text-ink-2">Full COR/LOE recommendations with direct publisher PDF links.</p>
                         </div>
                         <span className="text-xs text-cobalt-700 font-medium dark:text-cobalt-300">{guidelineLibraryResultsCount} recommendations</span>

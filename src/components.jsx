@@ -235,7 +235,7 @@ export const LateWindowEVTCalculator = ({ defaults = {} }) => {
   const defuse3 = evaluateDEFUSE3(inputs);
   return (
     <div className="p-3 rounded border border-slate-200 bg-white dark:border-line dark:bg-card">
-      <h4 className="font-semibold text-slate-900 mb-2 dark:text-ink">Late-Window EVT Eligibility (DAWN · DEFUSE-3)</h4>
+      <h2 className="font-semibold text-slate-900 mb-2 dark:text-ink">Late-Window EVT Eligibility (DAWN · DEFUSE-3)</h2>
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">
         {[
           { k: 'age', label: 'Age' },
@@ -300,7 +300,7 @@ export const DAPTDurationCalculator = ({ defaults = {} }) => {
   const result = recommendAcuteDAPT(inputs);
   return (
     <div className="p-3 rounded border border-slate-200 bg-white dark:border-line dark:bg-card">
-      <h4 className="font-semibold text-slate-900 mb-2 dark:text-ink">Acute DAPT Duration (CHANCE / POINT / THALES)</h4>
+      <h3 className="font-semibold text-slate-900 mb-2 dark:text-ink">Acute DAPT Duration (CHANCE / POINT / THALES)</h3>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
         <label>
           <span className="block text-slate-600 mb-0.5 dark:text-ink-2">Presentation</span>

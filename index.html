@@ -379,6 +379,14 @@
             box-sizing: border-box;
         }
 
+        /* Reserve the full viewport for the app mount point BEFORE React paints,
+           so the static footer parses below the fold and the first contentful
+           paint does not shift the page in from an empty #root (CLS guard). */
+        #root {
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+
         /* Ensure all content respects viewport width */
         .main-container {
             max-width: 100%;
