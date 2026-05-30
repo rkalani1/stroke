@@ -27836,7 +27836,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </button>
                             </div>
                             {railNotePreview ? (
-                              <pre tabIndex={0} aria-label="Live clinical note preview" className="text-2xs leading-snug text-ink-2 whitespace-pre-wrap break-words font-mono max-h-48 overflow-y-auto bg-paper-2 border border-line rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-cobalt-500">{railNotePreview.length > 1400 ? railNotePreview.slice(0, 1400) + '\n…' : railNotePreview}</pre>
+                              <pre tabIndex={0} role="region" aria-label="Live clinical note preview" className="text-2xs leading-snug text-ink-2 whitespace-pre-wrap break-words font-mono max-h-48 overflow-y-auto bg-paper-2 border border-line rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-cobalt-500">{railNotePreview.length > 1400 ? railNotePreview.slice(0, 1400) + '\n…' : railNotePreview}</pre>
                             ) : (
                               <p className="text-xs text-mute italic">Fill the encounter to build a live note.</p>
                             )}
@@ -28089,14 +28089,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       };
                       const btnColorMap = {
                         red: 'bg-crit-600 hover:bg-crit-700',
-                        orange: 'bg-orange-600 hover:bg-orange-700',
+                        orange: 'bg-orange-700 hover:bg-orange-800',
                         teal: 'bg-cobalt-600 hover:bg-cobalt-700',
                         blue: 'bg-cobalt-600 hover:bg-cobalt-700',
                         purple: 'bg-cobalt-600 hover:bg-cobalt-700',
                         pink: 'bg-pink-600 hover:bg-pink-700',
                         indigo: 'bg-cobalt-600 hover:bg-cobalt-700',
                         amber: 'bg-warn-600 hover:bg-warn-700',
-                        yellow: 'bg-yellow-600 hover:bg-yellow-700'
+                        yellow: 'bg-yellow-700 hover:bg-yellow-800'
                       };
                       return (
                         <div className="bg-white border-2 border-ok-300 rounded-md dark:bg-card dark:border-ok-800 ">
