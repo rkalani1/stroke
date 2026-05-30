@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#14171D; --ink-2:#3A414C; --ink-soft:#5B6470; --faint:#8A93A0;
+  --ink:#14171D; --ink-2:#3A414C; --ink-soft:#545E6B; --faint:#6C7480;
   --paper:#FBFAF6; --panel:#FFFFFF; --panel-2:#F4F2EB;
   --line:#E7E2D6; --line-2:#D8D2C2;
   --teal:#0C7C8C; --teal-d:#0A6571; --teal-wash:#E2F0F1;
@@ -43,9 +43,9 @@ body{
   margin:0;font-family:var(--sans);color:var(--ink);background:var(--paper);
   font-size:clamp(15px,.92rem+.18vw,17px);line-height:1.6;-webkit-font-smoothing:antialiased;
   background-image:
-    linear-gradient(var(--line) 1px,transparent 1px),
-    linear-gradient(90deg,var(--line) 1px,transparent 1px);
-  background-size:30px 30px;background-position:-1px -1px;
+    linear-gradient(color-mix(in srgb,var(--line) 42%,transparent) 1px,transparent 1px),
+    linear-gradient(90deg,color-mix(in srgb,var(--line) 42%,transparent) 1px,transparent 1px);
+  background-size:42px 42px;background-position:-1px -1px;
 }
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
   background:radial-gradient(120% 80% at 100% 0%, color-mix(in srgb,var(--teal) 8%,transparent), transparent 60%);}
@@ -140,7 +140,7 @@ h1{font-family:var(--display);font-weight:760;font-size:clamp(2rem,1.3rem+3vw,3.
 .study-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;margin-bottom:.3rem}
 .study-head .l{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
 .study .acro{font-family:var(--display);font-weight:740;font-size:1.16rem;letter-spacing:-.01em;line-height:1}
-.stype{font-family:var(--mono);font-size:.55rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:5px;padding:.16rem .42rem;color:var(--ink-soft)}
+.stype{font-family:var(--mono);font-size:.63rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:5px;padding:.18rem .45rem;color:var(--ink-soft)}
 .stype.rct{color:var(--teal);border-color:color-mix(in srgb,var(--teal) 40%,var(--line-2));background:var(--teal-wash)}
 .stype.meta{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 42%,var(--line-2));background:var(--gold-wash)}
 .stype.obs{color:var(--ink-2);background:var(--panel-2)}
@@ -150,8 +150,8 @@ h1{font-family:var(--display);font-weight:760;font-size:clamp(2rem,1.3rem+3vw,3.
 .study-meta{font-family:var(--mono);font-size:.64rem;color:var(--faint);display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:.65rem}
 .study-body{display:grid;gap:.42rem;border-top:1px solid var(--line);padding-top:.7rem;margin:0}
 .srow{display:grid;grid-template-columns:6.4rem 1fr;gap:.7rem;align-items:baseline}
-.srow dt{font-family:var(--mono);font-size:.57rem;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);margin:0;padding-top:.12rem}
-.srow dd{margin:0;font-size:.9rem;line-height:1.45}
+.srow dt{font-family:var(--mono);font-size:.63rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:0;padding-top:.1rem}
+.srow dd{margin:0;font-size:.93rem;line-height:1.5}
 .srow .effect{font-family:var(--mono);font-weight:600;color:var(--teal)}
 .srow.neg .effect{color:var(--coral)}
 .srow .ci{font-family:var(--mono);font-size:.78rem;color:var(--ink-soft)}
@@ -213,6 +213,8 @@ footer .mono{font-family:var(--mono);font-size:.68rem}
       <span class="nav-div" aria-hidden="true"></span>
       <button class="nav-item active">Research &amp; Guidelines<span class="badge">NEW</span></button>
       <button class="nav-item">Protocols &amp; Algorithms<span class="badge">NEW</span></button>
+      <span class="nav-div" aria-hidden="true"></span>
+      <button class="nav-item">Resources ↗</button>
     </nav>
     <div class="spacer"></div>
     <div class="modechips"><span class="chip"><span class="dot"></span>Patient</span><span class="chip">Teach</span></div>
@@ -238,7 +240,7 @@ footer .mono{font-family:var(--mono);font-size:.68rem}
     <div class="feed">
       <div class="feed-head reveal" style="animation-delay:.14s">
         <h2>What's new</h2>
-        <span class="count">Past 30 days · 10 verified · practice-changing &amp; informing</span>
+        <span class="count">Past 30 days · 13 verified · trials · meta-analyses · observational</span>
       </div>
 
       <article class="study t-prevent reveal" style="animation-delay:.16s">
@@ -336,6 +338,45 @@ footer .mono{font-family:var(--mono);font-size:.68rem}
         </dl>
         <div class="study-foot"><span class="cert moderate">Certainty · Moderate</span><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/41770549/" target="_blank" rel="noopener">PubMed ↗</a><button class="more">Full appraisal →</button></div>
       </article>
+
+      <article class="study t-prevent reveal" style="animation-delay:.4s">
+        <div class="study-head"><div class="l"><span class="acro">Suicide after stroke</span><span class="stype obs">Observational · cohort</span><span class="fresh"><span class="pulse"></span>verified</span></div><div class="when"><b>2026</b>added 05-30</div></div>
+        <div class="study-title">Increased risk of suicide after stroke — population-based matched cohort</div>
+        <div class="study-meta"><span>Int J Stroke 2026</span><span class="tag topic">Psychosocial outcomes</span></div>
+        <dl class="study-body">
+          <div class="srow"><dt>Design</dt><dd>64,719 stroke patients matched 1:1 to population controls; Ontario administrative data, 2008–2017</dd></div>
+          <div class="srow"><dt>Result</dt><dd>Suicide 11.1 vs 3.2 / 10,000 PY · <span class="effect">adj HR 2.87</span> <span class="ci">(2.35–3.51)</span> · higher in younger (HR 4.34) &amp; low-income · 67% of events after year 1</dd></div>
+          <div class="srow impl"><dt>What it informs</dt><dd>Supports <b>long-term (beyond 1 yr) suicidality screening</b> in survivors — especially younger, lower-income patients.</dd></div>
+          <div class="srow"><dt>Caveat</dt><dd style="color:var(--ink-soft);font-size:.86rem">Observational — association, not causation; residual confounding; administrative-data ascertainment.</dd></div>
+        </dl>
+        <div class="study-foot"><span class="cert moderate">Certainty · Moderate</span><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/40913243/" target="_blank" rel="noopener">PubMed ↗</a><button class="more">Full appraisal →</button></div>
+      </article>
+
+      <article class="study t-ich reveal" style="animation-delay:.43s">
+        <div class="study-head"><div class="l"><span class="acro">Hyponatremia &amp; ICH</span><span class="stype obs">Observational · RWE</span><span class="fresh"><span class="pulse"></span>verified</span></div><div class="when"><b>May 2026</b>added 05-30</div></div>
+        <div class="study-title">Severity-stratified hyponatremia and mortality in nontraumatic intracerebral hemorrhage</div>
+        <div class="study-meta"><span>J Clin Med 2026</span><span class="tag topic">ICH · prognosis</span></div>
+        <dl class="study-body">
+          <div class="srow"><dt>Design</dt><dd>Nontraumatic ICH; serum Na ≤7 d; propensity-matched (moderate hypoNa n=17,547/arm; severe n=5,010/arm); TriNetX federated EHR</dd></div>
+          <div class="srow"><dt>Result</dt><dd>30-d mortality — moderate <span class="effect">HR 1.32</span> <span class="ci">(1.26–1.40)</span>; severe <span class="effect">HR 1.47</span> <span class="ci">(1.33–1.63)</span> · more seizures, edema, hydrocephalus</dd></div>
+          <div class="srow impl"><dt>What it informs</dt><dd>Serum sodium is a <b>readily-available risk-stratification marker</b> in acute ICH; supports vigilant Na monitoring.</dd></div>
+          <div class="srow"><dt>Caveat</dt><dd style="color:var(--ink-soft);font-size:.86rem">RWE — coding granularity, illness-severity confounding; whether correcting Na changes outcome is unproven.</dd></div>
+        </dl>
+        <div class="study-foot"><span class="cert moderate">Certainty · Low–moderate</span><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/42194925/" target="_blank" rel="noopener">PubMed ↗</a><button class="more">Full appraisal →</button></div>
+      </article>
+
+      <article class="study t-acute reveal" style="animation-delay:.46s">
+        <div class="study-head"><div class="l"><span class="acro">TNK vs alteplase · RWE</span><span class="stype obs">Observational · PSM</span><span class="fresh"><span class="pulse"></span>verified</span></div><div class="when"><b>May 2026</b>added 05-30</div></div>
+        <div class="study-title">Real-world tenecteplase vs alteplase in acute ischaemic stroke — propensity-matched</div>
+        <div class="study-meta"><span>Front Neurol 2026</span><span class="tag acute">Acute · thrombolysis</span></div>
+        <dl class="study-body">
+          <div class="srow"><dt>Design</dt><dd>371 thrombolysed AIS (68 [18%] TNK); single-center retrospective; propensity-matched; primary mRS 0–2 at 90 d</dd></div>
+          <div class="srow"><dt>Result</dt><dd>Comparable 90-d functional independence (NS) · door-to-needle similar · sICH numerically higher with TNK but not significant</dd></div>
+          <div class="srow impl"><dt>What it informs</dt><dd>Adds <b>real-world support for tenecteplase</b> as a practical alteplase alternative — consistent with trial-level non-inferiority.</dd></div>
+          <div class="srow"><dt>Caveat</dt><dd style="color:var(--ink-soft);font-size:.86rem">Small single-center; no point estimate / CI reported; underpowered for sICH; selection bias.</dd></div>
+        </dl>
+        <div class="study-foot"><span class="cert moderate" style="color:var(--faint)">Certainty · Low</span><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/42206304/" target="_blank" rel="noopener">PubMed ↗</a><button class="more">Full appraisal →</button></div>
+      </article>
     </div>
 
     <div class="section-label">Evidence Atlas · expanded view</div>
@@ -419,6 +460,28 @@ footer .mono{font-family:var(--mono);font-size:.68rem}
     </div>
     <p class="lede" style="font-size:.95rem;margin-top:1.6rem;color:var(--ink-soft)">Same trials as the Research section — but here framed as <b>"what we do,"</b> there as <b>"what the literature shows."</b> One click apart, never mixed.</p>
   </div>
+
+  <div class="wrap view" data-view="resources" hidden>
+    <span class="kicker">Resources · external tools &amp; links</span>
+    <h1>One tab, not a buried dropdown.</h1>
+    <p class="lede">Your external tools and links, promoted out of the hidden menu into the main bar. These <b>open in a new tab (↗)</b> — distinct from the in-app sections. (Your reference <em>content</em> lives in Research &amp; Guidelines and Protocols &amp; Algorithms.)</p>
+
+    <div class="section-label">Evidence &amp; AI tools</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem">
+      <a class="entry" style="display:block;grid-template-columns:1fr;text-decoration:none" href="#"><div class="acro" style="font-size:1.05rem">UpToDate <span style="color:var(--teal)">↗</span></div><p class="titleline" style="margin:.3rem 0 0">Clinical reference — new tab.</p></a>
+      <a class="entry" style="display:block;grid-template-columns:1fr;text-decoration:none" href="#"><div class="acro" style="font-size:1.05rem">OpenEvidence <span style="color:var(--teal)">↗</span></div><p class="titleline" style="margin:.3rem 0 0">AI evidence search — new tab.</p></a>
+      <a class="entry" style="display:block;grid-template-columns:1fr;text-decoration:none" href="#"><div class="acro" style="font-size:1.05rem">Asta (Ai2) <span style="color:var(--teal)">↗</span></div><p class="titleline" style="margin:.3rem 0 0">AI assistant — new tab.</p></a>
+    </div>
+
+    <div class="section-label">Stroke tools</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem">
+      <a class="entry" style="display:block;grid-template-columns:1fr;text-decoration:none" href="#"><div class="acro" style="font-size:1.05rem">Clinic pre-visit questionnaire <span style="color:var(--teal)">↗</span></div><p class="titleline" style="margin:.3rem 0 0">Patient intake form — new tab.</p></a>
+      <a class="entry" style="display:block;grid-template-columns:1fr;text-decoration:none" href="#"><div class="acro" style="font-size:1.05rem">Regional facilities map <span style="color:var(--teal)">↗</span></div><p class="titleline" style="margin:.3rem 0 0">Telestroke center map — new tab.</p></a>
+    </div>
+
+    <div class="section-label" style="color:var(--gold)">Your institution links 🔒</div>
+    <a class="entry" style="display:block;grid-template-columns:1fr;text-decoration:none;border-left:3px solid var(--gold)" href="#"><div class="acro" style="font-size:1.05rem">Intranet protocol &amp; custom links <span style="color:var(--gold)">↗</span></div><p class="titleline" style="margin:.3rem 0 0">Configurable, private/local — never published. Add your own in settings.</p></a>
+  </div>
 </main>
 
 <footer>
@@ -439,6 +502,7 @@ footer .mono{font-family:var(--mono);font-size:.68rem}
       var t=b.textContent.replace('NEW','').trim();
       if(/Research/.test(t)){show('research');note.hidden=true;}
       else if(/Protocols/.test(t)){show('protocols');note.hidden=true;}
+      else if(/Resources/.test(t)){show('resources');note.hidden=true;}
       else {views.forEach(function(s){s.hidden=true;}); note.innerHTML='<b>'+t+'</b> — existing section, preserved &amp; improved (full version is ported into the live app during the build).'; note.hidden=false;}
       window.scrollTo({top:0,behavior:'smooth'});
     });
