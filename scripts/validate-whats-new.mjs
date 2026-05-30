@@ -1,15 +1,19 @@
 // scripts/validate-whats-new.mjs
 //
-// Validates whats-new.json against the Evidence Atlas.
+// Offline build gate for whats-new.json (clinical-intelligence pipeline).
+//
+// Validates whats-new.json against the committed verification cache
+// (data/clinical-intelligence/verified-pmids.json). No atlas dependency.
 //
 // For each item the validator asserts:
-//   1. id resolves to a completedTrials record with verificationStatus==='verified-pubmed'
-//   2. item.pmid matches the record's primary citation pmid
-//   3. Required display fields are present and non-empty:
-//        shortName, evidenceType, result.effect, practiceImpact, certainty,
-//        pmid, pubmedUrl
+//   1. Required display fields are present and non-empty:
+//        shortName, fullName, pmid, pubmedUrl, practiceImpact
+//   2. result.effect is present and non-empty
+//   3. appraisal.bottomLine is present and non-empty
+//   4. item.pmid matches a verified-pmids.json entry with status==='verified'
+//   5. pubmedUrl is the canonical https://pubmed.ncbi.nlm.nih.gov/<pmid>/ form
 //
-// Output style mirrors evidence-validate.mjs:
+// Output style mirrors the other validators:
 //   - Errors:   "whats-new/<id>: <message>"
 //   - Exit 0 on clean; exit 1 on any error.
 //
@@ -20,11 +24,10 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import { pathToFileURL } from 'node:url';
 
 const repoRoot = process.cwd();
-const evidenceIndex = path.join(repoRoot, 'src/evidence/index.js');
 const outFile = path.join(repoRoot, 'whats-new.json');
+const cacheFile = path.join(repoRoot, 'data/clinical-intelligence/verified-pmids.json');
 
 const rawArgs = new Set(process.argv.slice(2));
 const quiet = rawArgs.has('--quiet');
@@ -38,40 +41,37 @@ function fmtList(label, items) {
   return `\n${label} (${items.length}):\n  - ${items.join('\n  - ')}`;
 }
 
-const REQUIRED_FIELDS = ['shortName', 'evidenceType', 'practiceImpact', 'certainty', 'pmid', 'pubmedUrl'];
-const REQUIRED_RESULT_FIELDS = ['effect'];
+const REQUIRED_FIELDS = ['shortName', 'fullName', 'pmid', 'pubmedUrl', 'practiceImpact'];
 
 async function main() {
-  // Load whats-new.json
   let feed;
   try {
-    const raw = await fs.readFile(outFile, 'utf8');
-    feed = JSON.parse(raw);
+    feed = JSON.parse(await fs.readFile(outFile, 'utf8'));
   } catch (err) {
     console.error(`validate-whats-new: failed to read whats-new.json: ${err?.message || err}`);
     process.exit(1);
     return;
   }
 
-  // Load atlas
-  let atlas;
+  let cache;
   try {
-    const url = pathToFileURL(evidenceIndex).href;
-    atlas = await import(url);
+    cache = JSON.parse(await fs.readFile(cacheFile, 'utf8'));
   } catch (err) {
-    console.error(`validate-whats-new: failed to load src/evidence/index.js: ${err?.message || err}`);
+    console.error(`validate-whats-new: failed to read verified-pmids.json: ${err?.message || err}`);
     process.exit(1);
     return;
   }
 
-  const { completedTrials, resolveCitations } = atlas;
-
-  // Build lookup maps
-  const trialById = new Map(completedTrials.map((t) => [t.id, t]));
+  const byId = cache.byId || {};
+  // PMID -> verified status lookup (only status==='verified' entries count).
+  const verifiedPmids = new Set(
+    Object.values(byId)
+      .filter((e) => e && e.status === 'verified' && e.pmid)
+      .map((e) => String(e.pmid))
+  );
 
   const errors = [];
 
-  // Top-level structure checks
   if (!Array.isArray(feed.items)) {
     errors.push('whats-new.json: missing or non-array "items" field');
     console.error(`validate-whats-new: FAILED${fmtList('errors', errors)}`);
@@ -79,19 +79,20 @@ async function main() {
     return;
   }
 
-  if (typeof feed.count !== 'number') {
-    errors.push('whats-new.json: missing "count" field');
-  } else if (feed.count !== feed.items.length) {
+  if (feed.generatedFrom !== 'clinical-intelligence-briefing') {
     errors.push(
-      `whats-new.json: count=${feed.count} does not match items.length=${feed.items.length}`
+      `whats-new.json: unexpected generatedFrom='${feed.generatedFrom}' (expected 'clinical-intelligence-briefing')`
     );
   }
-
-  if (feed.generatedFrom !== 'evidence-atlas') {
-    errors.push(`whats-new.json: unexpected generatedFrom='${feed.generatedFrom}' (expected 'evidence-atlas')`);
+  if (feed.sourceDoc !== 'briefing-latest.md') {
+    errors.push(`whats-new.json: unexpected sourceDoc='${feed.sourceDoc}' (expected 'briefing-latest.md')`);
+  }
+  if (typeof feed.count !== 'number') {
+    errors.push('whats-new.json: missing numeric "count" field');
+  } else if (feed.count !== feed.items.length) {
+    errors.push(`whats-new.json: count=${feed.count} does not match items.length=${feed.items.length}`);
   }
 
-  // Per-item checks
   for (const item of feed.items) {
     const prefix = `whats-new/${item.id || '<missing-id>'}`;
 
@@ -100,28 +101,6 @@ async function main() {
       continue;
     }
 
-    // 1. id must resolve to a verified-pubmed completedTrial
-    const trial = trialById.get(item.id);
-    if (!trial) {
-      errors.push(`${prefix}: id '${item.id}' not found in completedTrials`);
-      continue;
-    }
-    if (trial.verificationStatus !== 'verified-pubmed') {
-      errors.push(
-        `${prefix}: trial verificationStatus='${trial.verificationStatus}' (expected 'verified-pubmed')`
-      );
-    }
-
-    // 2. pmid must match the trial's primary citation
-    const cits = resolveCitations(trial.citationIds || []);
-    const expectedPmid = cits[0] ? (cits[0].pmid || '') : '';
-    if (item.pmid !== expectedPmid) {
-      errors.push(
-        `${prefix}: pmid='${item.pmid}' does not match atlas citation pmid='${expectedPmid}'`
-      );
-    }
-
-    // 3. Required display fields present and non-empty
     for (const field of REQUIRED_FIELDS) {
       const val = item[field];
       if (val == null || val === '') {
@@ -129,16 +108,32 @@ async function main() {
       }
     }
 
-    // 3b. result sub-fields
+    // result.effect
     if (!item.result || typeof item.result !== 'object') {
       errors.push(`${prefix}: missing 'result' object`);
-    } else {
-      for (const field of REQUIRED_RESULT_FIELDS) {
-        const val = item.result[field];
-        if (val == null || val === '') {
-          errors.push(`${prefix}: required field 'result.${field}' is missing or empty`);
-        }
-      }
+    } else if (item.result.effect == null || item.result.effect === '') {
+      errors.push(`${prefix}: required field 'result.effect' is missing or empty`);
+    }
+
+    // appraisal.bottomLine
+    if (!item.appraisal || typeof item.appraisal !== 'object') {
+      errors.push(`${prefix}: missing 'appraisal' object`);
+    } else if (item.appraisal.bottomLine == null || item.appraisal.bottomLine === '') {
+      errors.push(`${prefix}: required field 'appraisal.bottomLine' is missing or empty`);
+    }
+
+    // pmid must be a verified PMID in the cache (clinical-safety gate).
+    if (item.pmid && !verifiedPmids.has(String(item.pmid))) {
+      errors.push(
+        `${prefix}: pmid='${item.pmid}' is not present as status='verified' in verified-pmids.json`
+      );
+    }
+
+    // pubmedUrl canonical form.
+    if (item.pmid && item.pubmedUrl !== `https://pubmed.ncbi.nlm.nih.gov/${item.pmid}/`) {
+      errors.push(
+        `${prefix}: pubmedUrl='${item.pubmedUrl}' does not match canonical https://pubmed.ncbi.nlm.nih.gov/${item.pmid}/`
+      );
     }
   }
 
@@ -149,7 +144,7 @@ async function main() {
     console.error(fmtList('errors', errors));
     process.exit(1);
   } else {
-    log(`✓ validate:whats-new — ${feed.items.length} items verified`);
+    log(`✓ validate:whats-new — ${feed.items.length} verified items`);
     process.exit(0);
   }
 }

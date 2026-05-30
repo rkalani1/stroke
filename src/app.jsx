@@ -34701,16 +34701,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                                     {/* result definition list */}
                                     <dl className="space-y-2 text-sm">
-                                      <div>
-                                        <dt className="font-mono uppercase text-[10px] text-mute tracking-wider">Design</dt>
-                                        <dd className="text-ink-2">
-                                          {[
-                                            item.design?.n ? `n=${item.design.n.toLocaleString?.() || item.design.n}` : null,
-                                            item.design?.population || null,
-                                            item.design?.comparator ? `vs ${item.design.comparator}` : null
-                                          ].filter(Boolean).join(' · ')}
-                                        </dd>
-                                      </div>
+                                      {(() => {
+                                        const designLine = [
+                                          item.design?.n ? `n=${item.design.n.toLocaleString?.() || item.design.n}` : null,
+                                          item.design?.population || null,
+                                          item.design?.comparator ? `vs ${item.design.comparator}` : null
+                                        ].filter(Boolean).join(' · ');
+                                        return designLine ? (
+                                          <div>
+                                            <dt className="font-mono uppercase text-[10px] text-mute tracking-wider">Design</dt>
+                                            <dd className="text-ink-2">{designLine}</dd>
+                                          </div>
+                                        ) : null;
+                                      })()}
                                       <div>
                                         <dt className="font-mono uppercase text-[10px] text-mute tracking-wider">Result</dt>
                                         <dd>
@@ -34732,6 +34735,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         </div>
                                       ) : null}
                                     </dl>
+
+                                    {/* expandable critical appraisal (PICO · methodology · results) */}
+                                    {item.appraisal && (item.appraisal.picoQuestion || item.appraisal.methodology || item.appraisal.results) ? (
+                                      <details className="mt-3 group">
+                                        <summary className="font-mono uppercase text-[10px] text-mute tracking-wider cursor-pointer select-none hover:text-ink-2">
+                                          Critical appraisal
+                                        </summary>
+                                        <div className="mt-2 space-y-2 text-xs text-ink-2 text-pretty">
+                                          {item.appraisal.picoQuestion ? <p><span className="font-semibold text-ink">PICO.</span> {item.appraisal.picoQuestion}</p> : null}
+                                          {item.appraisal.methodology ? <p><span className="font-semibold text-ink">Methodology.</span> {item.appraisal.methodology}</p> : null}
+                                          {item.appraisal.results ? <p><span className="font-semibold text-ink">Results.</span> {item.appraisal.results}</p> : null}
+                                        </div>
+                                      </details>
+                                    ) : null}
 
                                     {/* footer: certainty + PubMed verify link */}
                                     <div className="flex items-center justify-between gap-2 mt-4 pt-3 border-t border-line flex-wrap">
