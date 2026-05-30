@@ -292,4 +292,40 @@ html.dark {
   line-height: 1.4;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Phase 5 — Teaching mode (clinician-facing trainee view).
+   data-mode="teach" is light-touch: it does NOT scale type like
+   patient mode. It only adds a subtle teal "teaching" accent and a
+   `.teach-only` reveal helper for predict-then-reveal affordances on
+   rounds. Cobalt is the v7 single accent (re-valued to teal), so all
+   colors reuse existing tokens — no raw hues. Composes with
+   data-theme="dark" via the same tokens.
+   ───────────────────────────────────────────────────────────── */
+
+/* `.teach-only` blocks render ONLY in teach mode. They are authored
+   inline but gated here so clinician/patient DOM stays untouched. */
+.teach-only { display: none; }
+[data-mode="teach"] .teach-only { display: block; }
+
+/* Subtle teal teaching accent (reuses the cobalt/teal accent token). */
+[data-mode="teach"] .teach-accent { color: var(--accent); }
+
+/* Predict-then-reveal prompt card: a quiet teal-tinted panel that reads
+   as a "teaching" affordance without competing with the clinical card. */
+[data-mode="teach"] .teach-prompt {
+  border: 1px solid rgb(var(--cobalt-200));
+  border-left: 3px solid var(--accent);
+  background: rgb(var(--cobalt-50) / 0.45);
+  border-radius: var(--radius-md, .5rem);
+  padding: .75rem .875rem;
+}
+
+/* Selected predict choice — filled teal, matches the SegmentedControl
+   active state for visual consistency. */
+[data-mode="teach"] .teach-predict-active {
+  background: rgb(var(--cobalt-600));
+  border-color: rgb(var(--cobalt-600));
+  color: #fff;
+}
+
 /* Reduced-motion users still get instant mode flips (no transitions added). */

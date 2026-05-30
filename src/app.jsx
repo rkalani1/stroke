@@ -2131,9 +2131,12 @@ Clinician Name`;
           // Focus mode
           const [focusMode, setFocusMode] = useState(false);
 
-          // Patient / Explain mode (Phase 4). String value so Phase 5 can add 'teach'.
-          // 'clinician' (default) → full UI; 'patient' → plain-language + big-type view,
-          // clinician-only surfaces CSS-gated. Mirrors the data-theme mechanism
+          // View mode (Phase 4/5): 'clinician' | 'patient' | 'teach'.
+          // 'clinician' (default) → full UI; 'patient' → plain-language + big-type
+          // view, clinician-only surfaces CSS-gated + clinician-only tabs hidden;
+          // 'teach' → clinician-facing trainee mode (Phase 5): shows everything
+          // clinician mode shows PLUS predict-then-reveal affordances on the
+          // Research What's-New cards. Mirrors the data-theme mechanism
           // (theme.js applyTheme): owns the data-mode attribute on <html>.
           const VIEW_MODE_KEY = 'stroke.v7.viewMode';
           const [viewMode, setViewMode] = useState(() => {
@@ -2151,6 +2154,18 @@ Clinician Name`;
               }
               localStorage.setItem(VIEW_MODE_KEY, viewMode);
             } catch (e) { /* ignore storage errors */ }
+          }, [viewMode]);
+
+          // Teaching mode (Phase 5) — predict-then-reveal state.
+          // Keyed by What's-New item.id → { revealed: bool, prediction: string|null }.
+          // Default hidden in teach mode (each study starts as a prompt). Reset
+          // whenever we LEAVE teach mode so every teaching session starts fresh.
+          // Additive only: clinician/patient rendering of these cards is unchanged.
+          const [teachReveals, setTeachReveals] = useState({});
+          useEffect(() => {
+            if (viewMode !== 'teach') {
+              setTeachReveals((prev) => (Object.keys(prev).length ? {} : prev));
+            }
           }, [viewMode]);
 
           // Patient mode hides clinician-only tabs (Research & Guidelines,
@@ -16306,20 +16321,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </div>
 
                     <div className="flex w-full flex-wrap items-center justify-center gap-2 lg:w-auto lg:justify-end">
-                      {/* Phase 4: View mode toggle (Clinician / Patient).
+                      {/* Phase 4/5: View mode toggle (Clinician / Patient / Teach).
                           Mono uppercase chips consistent with prototype .modechips.
                           Flips document <html data-mode>; CSS gates clinician-only
-                          surfaces + scales type for patient readability. */}
+                          surfaces + scales type for patient readability. Teach is
+                          clinician-facing (trainees on rounds): it shows everything
+                          clinician mode shows, plus predict-then-reveal affordances.
+                          Only PATIENT mode hides clinician-only tabs. */}
                       <div className="view-mode-toggle inline-flex shrink-0" data-no-print="true">
                         <V7SegmentedControl
                           ariaLabel="View mode"
                           className="w-auto"
                           items={[
                             { id: 'clinician', label: 'Clinician' },
-                            { id: 'patient',   label: 'Patient' }
+                            { id: 'patient',   label: 'Patient' },
+                            { id: 'teach',     label: 'Teach' }
                           ]}
-                          value={viewMode === 'patient' ? 'patient' : 'clinician'}
-                          onChange={(id) => setViewMode(id === 'patient' ? 'patient' : 'clinician')}
+                          value={viewMode === 'patient' || viewMode === 'teach' ? viewMode : 'clinician'}
+                          onChange={(id) => setViewMode(id === 'patient' || id === 'teach' ? id : 'clinician')}
                         />
                       </div>
                       <details className="relative">
@@ -28441,6 +28460,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </div>
                                   ) : null}
 
+                                  {/* Teaching mode (Phase 5): "trial behind the decision".
+                                      Only on cards whose evidence resolves to the existing
+                                      Atlas drawer (no duplication). A teach-only nudge asks
+                                      the trainee to predict the supporting trial(s) before
+                                      opening the existing "Why this recommendation?" drawer
+                                      below — the reveal IS that drawer. Cards that only have
+                                      a PubMed fallback get no forced predict (unverifiable). */}
+                                  {viewMode === 'teach' && hasEvidenceDrawer ? (
+                                    <div className="teach-only teach-prompt" data-no-print="true">
+                                      <p className="font-mono uppercase text-[10px] tracking-wider teach-accent mb-1">Trial behind the decision</p>
+                                      <p className="text-xs text-slate-700">Before opening the drawer: which trial(s) underpin this COR {card.classOfRecommendation} / LOE {card.levelOfEvidence} call? Predict, then expand <span className="font-semibold">Why this recommendation?</span> to check yourself.</p>
+                                    </div>
+                                  ) : null}
+
                                   {/* Evidence link: atlas drawer if resolvable, else PubMed fallback */}
                                   {hasEvidenceDrawer ? (
                                     <details className="border border-cobalt-200 bg-white rounded">
@@ -35121,6 +35154,43 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 const fam = topicFamily(item.topic);
                                 const dir = item.result?.direction;
                                 const isVerified = item.verificationStatus === 'verified';
+
+                                // ── Teaching mode (Phase 5): predict-then-reveal ──
+                                // Only offer the predict interaction when (a) we're in
+                                // teach mode, (b) the study is PubMed-verified, and (c)
+                                // it carries a known result.direction — i.e. the answer
+                                // is verifiable. UNVERIFIED / direction-less items skip
+                                // the predict UI and render their result honestly (the
+                                // normal clinician card), so we never force a guess on
+                                // unverifiable data.
+                                const teachAnswerable = viewMode === 'teach' && isVerified && !!dir;
+                                const teachState = teachReveals[item.id] || {};
+                                const teachRevealed = !!teachState.revealed;
+                                const teachPrediction = teachState.prediction || null;
+                                // Offer "Non-inferior" only where the study frames itself
+                                // that way (keeps the option set honest per-study).
+                                const teachHasNI = teachAnswerable && /non-?inferior/i.test(
+                                  [item.result?.effect, item.practiceImpact, item.fullName,
+                                   item.appraisal?.results, item.appraisal?.methodology]
+                                    .filter(Boolean).join(' ')
+                                );
+                                // Predict choices → the result.direction they map to.
+                                const TEACH_CHOICES = [
+                                  { id: 'benefit',     label: 'Benefit',               maps: 'benefit' },
+                                  { id: 'no-benefit',  label: 'No benefit / Neutral',  maps: 'no-benefit' },
+                                  ...(teachHasNI ? [{ id: 'non-inferior', label: 'Non-inferior', maps: 'non-inferior' }] : []),
+                                  { id: 'harm',        label: 'Harm',                  maps: 'harm' }
+                                ];
+                                const predictMatches = teachPrediction
+                                  ? (TEACH_CHOICES.find((c) => c.id === teachPrediction)?.maps === dir
+                                     || (teachPrediction === 'no-benefit' && (dir === 'neutral' || dir === 'no-benefit')))
+                                  : null;
+                                const setTeach = (patch) => setTeachReveals((prev) => ({
+                                  ...prev, [item.id]: { ...(prev[item.id] || {}), ...patch }
+                                }));
+                                // Hide the result block until the trainee predicts or reveals.
+                                const teachHideResult = teachAnswerable && !teachRevealed && !teachPrediction;
+
                                 return (
                                   <article key={item.id} className={`v7-study v7-fresh ${fam}`}>
                                     {/* header row: acronym + type badge + verification marker */}
@@ -35150,10 +35220,60 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     {/* study title */}
                                     <h3 className="font-sans text-body text-ink font-medium leading-snug text-pretty mb-3">{item.fullName}</h3>
 
+                                    {/* ── Teaching mode prompt (Phase 5): predict-then-reveal ──
+                                        Clinician-facing trainee surface. Shows the PICO
+                                        question as the prompt, hides the result behind
+                                        predict buttons + a reveal, then surfaces a
+                                        non-judgmental ✓/✗ match. Only renders for verified,
+                                        direction-bearing studies in teach mode; otherwise
+                                        the normal clinician card shows below unchanged. */}
+                                    {teachAnswerable && item.appraisal?.picoQuestion ? (
+                                      <div className="teach-only teach-prompt mb-3" data-no-print="true">
+                                        <p className="font-mono uppercase text-[10px] tracking-wider teach-accent mb-1">Predict the result</p>
+                                        <p className="font-sans text-sm text-ink text-pretty mb-3">{item.appraisal.picoQuestion}</p>
+                                        <div className="flex flex-wrap gap-2" role="group" aria-label={`Predict the result of ${item.shortName}`}>
+                                          {TEACH_CHOICES.map((c) => {
+                                            const picked = teachPrediction === c.id;
+                                            return (
+                                              <button
+                                                key={c.id}
+                                                type="button"
+                                                aria-pressed={picked}
+                                                disabled={teachRevealed && !picked}
+                                                onClick={() => setTeach({ prediction: c.id, revealed: true })}
+                                                className={`teach-predict-btn font-mono text-[11px] px-2.5 py-1.5 rounded-md border transition-colors ${picked ? 'teach-predict-active' : 'border-line text-ink-2 hover:border-cobalt-300 hover:text-ink'}`}
+                                              >
+                                                {c.label}
+                                              </button>
+                                            );
+                                          })}
+                                          {!teachRevealed ? (
+                                            <button
+                                              type="button"
+                                              onClick={() => setTeach({ revealed: true })}
+                                              className="teach-reveal-btn font-mono text-[11px] px-2.5 py-1.5 rounded-md border border-cobalt-300 text-cobalt-700 hover:bg-cobalt-50 transition-colors"
+                                            >
+                                              Reveal result
+                                            </button>
+                                          ) : null}
+                                        </div>
+                                        {teachRevealed && teachPrediction ? (
+                                          <p className={`font-mono text-[11px] mt-2 ${predictMatches ? 'text-ok-700' : 'text-ink-2'}`}>
+                                            {predictMatches
+                                              ? <span aria-label="prediction matched">✓ Your prediction matched the result.</span>
+                                              : <span aria-label="prediction did not match">✗ Different from your prediction — see the evidence below.</span>}
+                                          </p>
+                                        ) : null}
+                                      </div>
+                                    ) : null}
+
                                     {/* result definition list — clinician-only.
                                         Research never renders in patient mode (tab hidden +
                                         activeTab guard), so this exposes clinical detail
-                                        (drug names, doses, CI/p, jargon) safely. */}
+                                        (drug names, doses, CI/p, jargon) safely. In teach
+                                        mode the result stays hidden until the trainee
+                                        predicts or reveals. */}
+                                    {!teachHideResult ? (
                                     <dl className="space-y-2 text-sm">
                                       {(() => {
                                         const designLine = [
@@ -35189,10 +35309,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         </div>
                                       ) : null}
                                     </dl>
+                                    ) : null}
 
                                     {/* expandable critical appraisal (PICO · methodology · results)
-                                        — clinician-only jargon; Research is clinician-only. */}
-                                    {item.appraisal && (item.appraisal.picoQuestion || item.appraisal.methodology || item.appraisal.results) ? (
+                                        — clinician-only jargon; Research is clinician-only.
+                                        Hidden while the teach result is hidden, since the
+                                        appraisal `results` would leak the answer before the
+                                        trainee predicts/reveals. */}
+                                    {!teachHideResult && item.appraisal && (item.appraisal.picoQuestion || item.appraisal.methodology || item.appraisal.results) ? (
                                       <details className="mt-3 group">
                                         <summary className="font-mono uppercase text-[10px] text-mute tracking-wider cursor-pointer select-none hover:text-ink-2">
                                           Critical appraisal
