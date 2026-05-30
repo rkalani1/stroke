@@ -21,6 +21,7 @@ export const topics = [
   makeTopic({ id: 'evt-late-window', label: 'EVT in late window (6-24h)', parentId: 'acute-ischemic-stroke' }),
   makeTopic({ id: 'bp-post-evt', label: 'Blood pressure target after EVT', parentId: 'acute-ischemic-stroke' }),
   makeTopic({ id: 'evt-mevo', label: 'EVT for medium / distal vessel occlusion', parentId: 'acute-ischemic-stroke' }),
+  makeTopic({ id: 'evt-basilar', label: 'EVT for basilar-artery occlusion', parentId: 'acute-ischemic-stroke' }),
   makeTopic({ id: 'ia-adjunct-after-evt', label: 'IA adjunctive thrombolysis after EVT', parentId: 'acute-ischemic-stroke' }),
   makeTopic({ id: 'crao-thrombolysis', label: 'CRAO thrombolysis', parentId: 'acute-ischemic-stroke' }),
   makeTopic({ id: 'tandem-lesions', label: 'Tandem lesions', parentId: 'acute-ischemic-stroke' }),

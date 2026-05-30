@@ -115,6 +115,32 @@ export const citations = [
     url: 'https://pubmed.ncbi.nlm.nih.gov/37837989/',
     verificationStatus: 'verified-pubmed'
   }),
+  makeCitation({
+    id: 'cit-attention-2022',
+    authors: 'Tao C et al.',
+    title: 'Trial of Endovascular Treatment of Acute Basilar-Artery Occlusion (ATTENTION)',
+    journal: 'N Engl J Med',
+    year: 2022,
+    volume: '387',
+    pages: '1361-1372',
+    pmid: '36239644',
+    doi: '10.1056/NEJMoa2206317',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/36239644/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-baoche-2022',
+    authors: 'Jovin TG et al.',
+    title: 'Trial of Thrombectomy 6 to 24 Hours after Stroke Due to Basilar-Artery Occlusion (BAOCHE)',
+    journal: 'N Engl J Med',
+    year: 2022,
+    volume: '387',
+    pages: '1373-1384',
+    pmid: '36239645',
+    doi: '10.1056/NEJMoa2207576',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/36239645/',
+    verificationStatus: 'verified-pubmed'
+  }),
 
   // 3) ICH
   makeCitation({
