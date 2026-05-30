@@ -19,6 +19,7 @@ module.exports = {
     './src/primitives.jsx',
     './src/pocket-cards.jsx',
     './src/teaching.jsx',
+    './src/education.jsx',
     './src/design/primitives.jsx',
     './src/design/patient-strip.jsx',
     './src/simulators/EvdIcpSimulator.jsx'
