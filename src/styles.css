@@ -199,8 +199,11 @@
   }
   .v6-btn-primary   { @apply bg-ink text-white border border-ink hover:bg-ink-2; }
   .v6-btn-secondary { @apply bg-transparent text-ink border border-line hover:bg-paper-2; }
-  .v6-btn-critical  { @apply bg-critical text-white border border-critical hover:opacity-90; }
-  .v6-btn-confirm   { @apply bg-confirm text-white border border-confirm hover:opacity-90; }
+  /* Cycle4 M4-1: --critical/--confirm are lightened in dark for text/border use,
+     so a solid fill under white text fails WCAG 1.4.3 (3.0:1 / 2.5:1). Pin the
+     dark fill to the un-lightened ramp step (crit-700 / ok-700) → white ≥7.6:1. */
+  .v6-btn-critical  { @apply bg-critical text-white border border-critical hover:opacity-90 dark:bg-crit-700; }
+  .v6-btn-confirm   { @apply bg-confirm text-white border border-confirm hover:opacity-90 dark:bg-ok-700; }
   .v6-btn-ghost     { @apply bg-transparent text-ink-2 border border-transparent hover:bg-paper-2; }
   .v6-btn-sm        { @apply h-9 px-3 text-[13px]; }
   .v6-btn-lg        { @apply h-12 px-5 text-[15px]; }

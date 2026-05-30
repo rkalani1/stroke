@@ -27,8 +27,11 @@ const cx = (...parts) => parts.filter(Boolean).join(' ');
 const BUTTON_VARIANTS = {
   primary:   'bg-ink text-white border border-ink hover:bg-ink-2 active:bg-ink',
   secondary: 'bg-transparent text-ink border border-line hover:bg-paper-2',
-  critical:  'bg-critical text-white border border-critical hover:opacity-90',
-  confirm:   'bg-confirm text-white border border-confirm hover:opacity-90',
+  // Cycle4 M4-1: --critical/--confirm lighten in dark for text/border use; as a
+  // solid button fill under white text they fail WCAG 1.4.3 (3.0:1 / 2.5:1). Pin
+  // the dark fill to the un-lightened ramp step (crit-700 / ok-700) → white ≥7.6:1.
+  critical:  'bg-critical text-white border border-critical hover:opacity-90 dark:bg-crit-700',
+  confirm:   'bg-confirm text-white border border-confirm hover:opacity-90 dark:bg-ok-700',
   ghost:     'bg-transparent text-ink-2 border border-transparent hover:bg-paper-2'
 };
 
