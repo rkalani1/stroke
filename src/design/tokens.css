@@ -11,10 +11,11 @@
 :root {
   color-scheme: light;
 
-  /* Neutral ramp (Slate) — AA-verified on white & slate-950 */
+  /* Neutral ramp (Slate) — re-valued v7: warm paper surfaces + near-black ink.
+     200–800 carry AAA-verified text/border contrast; left unchanged. */
   --slate-0:    255 255 255;
-  --slate-50:   248 250 252;
-  --slate-100:  241 245 249;
+  --slate-50:   251 250 246;
+  --slate-100:  244 242 235;
   --slate-200:  226 232 240;
   --slate-300:  203 213 225;
   --slate-400:  148 163 184; /* UI only — fails AA on white */
@@ -22,68 +23,68 @@
   --slate-600:  71 85 105;
   --slate-700:  51 65 85;
   --slate-800:  30 41 59;
-  --slate-900:  15 23 42;
-  --slate-950:  2 6 23;
+  --slate-900:  20 23 29;
+  --slate-950:  14 17 21;
 
-  /* Cobalt — single accent, replaces indigo/purple/violet in non-link contexts */
-  --cobalt-50:  238 244 255;
-  --cobalt-100: 221 231 255;
-  --cobalt-200: 185 204 255;
-  --cobalt-300: 138 168 255;
-  --cobalt-400: 92 130 247;
-  --cobalt-500: 61 99 229;
-  --cobalt-600: 42 77 204;
-  --cobalt-700: 31 60 168;
-  --cobalt-800: 23 46 128;
-  --cobalt-900: 15 31 88;
+  /* Cobalt — single accent (re-valued v7 → deep teal); name frozen */
+  --cobalt-50:  226 240 241;
+  --cobalt-100: 204 230 232;
+  --cobalt-200: 168 213 217;
+  --cobalt-300: 122 190 197;
+  --cobalt-400: 64 160 172;
+  --cobalt-500: 12 124 140;
+  --cobalt-600: 10 101 113;
+  --cobalt-700: 8 80 90;
+  --cobalt-800: 7 62 70;
+  --cobalt-900: 6 47 53;
 
-  /* Link blue — for <a href> only, never buttons (binding amendment #1) */
-  --link-50:    239 246 255;
-  --link-100:   219 234 254;
-  --link-200:   191 219 254;
-  --link-400:   96 165 250;
-  --link-600:   37 99 235;
-  --link-700:   29 78 216;
-  --link-900:   30 58 138;
+  /* Link — for <a href> only, never buttons (re-valued v7 → teal); name frozen */
+  --link-50:    226 240 241;
+  --link-100:   204 230 232;
+  --link-200:   168 213 217;
+  --link-400:   64 160 172;
+  --link-600:   10 101 113;
+  --link-700:   8 80 90;
+  --link-900:   6 47 53;
 
   /* Semantic — meaning locked. Spec §3.2 locks 50/200/500/700/900;
      intermediate steps 100/300/400/600 mirror Tailwind defaults so the
      v7 codemod can do straight 1:1 swaps of amber-N → warn-N etc. */
-  --crit-50:    254 242 242;
-  --crit-100:   254 226 226;
-  --crit-200:   254 202 202;
-  --crit-300:   252 165 165;
-  --crit-400:   248 113 113;
-  --crit-500:   239 68 68;
-  --crit-600:   220 38 38;
-  --crit-700:   185 28 28;
-  --crit-800:   153 27 27;
-  --crit-900:   127 29 29;
-  --crit-950:   63 29 29;
+  --crit-50:    251 231 229;
+  --crit-100:   248 213 210;
+  --crit-200:   244 180 175;
+  --crit-300:   237 140 134;
+  --crit-400:   228 95 89;
+  --crit-500:   220 63 58;
+  --crit-600:   190 48 44;
+  --crit-700:   158 38 35;
+  --crit-800:   124 31 29;
+  --crit-900:   96 26 24;
+  --crit-950:   60 20 19;
 
-  --warn-50:    255 251 235;
-  --warn-100:   254 243 199;
-  --warn-200:   253 230 138;
-  --warn-300:   252 211 77;
-  --warn-400:   251 191 36;
-  --warn-500:   245 158 11;
-  --warn-600:   217 119 6;
-  --warn-700:   180 83 9;
-  --warn-800:   146 64 14;
-  --warn-900:   120 53 15;
-  --warn-950:   58 42 11;
+  --warn-50:    246 236 214;
+  --warn-100:   241 226 192;
+  --warn-200:   230 206 150;
+  --warn-300:   214 178 102;
+  --warn-400:   196 150 60;
+  --warn-500:   176 125 36;
+  --warn-600:   150 105 28;
+  --warn-700:   124 86 22;
+  --warn-800:   99 68 18;
+  --warn-900:   76 52 15;
+  --warn-950:   48 33 10;
 
-  --ok-50:      236 253 245;
-  --ok-100:     209 250 229;
-  --ok-200:     167 243 208;
-  --ok-300:     110 231 183;
-  --ok-400:     52 211 153;
-  --ok-500:     16 185 129;
-  --ok-600:     5 150 105;
-  --ok-700:     4 120 87;
-  --ok-800:     6 95 70;
-  --ok-900:     6 78 59;
-  --ok-950:     12 42 34;
+  --ok-50:      226 240 232;
+  --ok-100:     200 228 211;
+  --ok-200:     158 208 178;
+  --ok-300:     110 182 142;
+  --ok-400:     68 150 108;
+  --ok-500:     44 122 82;
+  --ok-600:     36 102 68;
+  --ok-700:     30 84 56;
+  --ok-800:     24 66 44;
+  --ok-900:     18 50 34;
+  --ok-950:     12 34 22;
 
   --info-50:    239 246 255;
   --info-100:   219 234 254;
@@ -135,6 +136,17 @@
   --text-muted:       var(--slate-300);
   --text-faint:       var(--slate-400);
   --focus-ring:       var(--cobalt-300);
+
+  /* keep these accent overrides in sync with the html.dark block below */
+  /* Accent steps brightened for dark focus/text/labels (prototype dark values) */
+  --cobalt-300: 63 182 196;
+  --cobalt-500: 20 158 176;   /* brightened teal for dark-mode text/links — ~4.7:1 on slate-950 */
+  --link-400:   63 182 196;
+  --crit-300:   240 107 98;
+  --crit-400:   244 120 112;
+  --warn-300:   214 162 78;
+  --warn-400:   214 162 78;
+  --ok-300:     95 180 137;
 }
 
 /* Class-based dark fallback for projects already using darkMode:'class' */
@@ -150,6 +162,17 @@ html.dark {
   --text-muted:       var(--slate-300);
   --text-faint:       var(--slate-400);
   --focus-ring:       var(--cobalt-300);
+
+  /* keep in sync with the [data-theme="dark"] block above */
+  /* Accent steps brightened for dark focus/text/labels (prototype dark values) */
+  --cobalt-300: 63 182 196;
+  --cobalt-500: 20 158 176;   /* brightened teal for dark-mode text/links — ~4.7:1 on slate-950 */
+  --link-400:   63 182 196;
+  --crit-300:   240 107 98;
+  --crit-400:   244 120 112;
+  --warn-300:   214 162 78;
+  --warn-400:   214 162 78;
+  --ok-300:     95 180 137;
 }
 
 /* Reduced-motion: zero out --motion-scale; all timing reads from it */
@@ -167,6 +190,9 @@ html.dark {
   --ink-2:            rgb(var(--text-muted));
   --mute:             rgb(var(--text-faint));
   --line:             rgb(var(--border-line));
+  /* NOTE: this unlayered :root wins over styles.css @layer base, so that file's
+     warm #FBFAF6 --paper override is inert. App warmth comes from the bg-slate-50
+     utility (slate-50 = 251 250 246), not from --paper. Don't "fix" paper there. */
   --paper:            rgb(var(--bg-canvas));
   --paper-2:          rgb(var(--bg-subdued));
   --card:             rgb(var(--bg-card));
@@ -185,4 +211,33 @@ html.dark {
   --surface:          rgb(var(--bg-card));
   --surface-2:        rgb(var(--bg-subdued));
   --surface-3:        rgb(var(--bg-canvas));
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Prototype semantic aliases — bridge for component CSS (Task 4).
+   Named to avoid collision with ramp utilities (success → --okc,
+   never --ok). Values track the re-valued teal/coral/gold ramps.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --teal:       rgb(var(--cobalt-500));
+  --teal-d:     rgb(var(--cobalt-600));
+  --teal-wash:  rgb(var(--cobalt-50));
+  --coral:      rgb(var(--crit-500)); /* large-text / accent — 4.36:1 on white, borderline for body text; use --critical (crit-700) for small text */
+  --coral-wash: rgb(var(--crit-50));
+  --gold:       rgb(var(--warn-500)); /* decorative / large-text / icon only — 3.62:1 on white, NOT body-text safe; use --caution (warn-700) for text */
+  --gold-wash:  rgb(var(--warn-50));
+  --okc:        rgb(var(--ok-600));
+  --ok-wash:    rgb(var(--ok-50));
+  --panel:      rgb(var(--slate-0));
+  --panel-2:    rgb(var(--slate-100));
+  --ink-soft:   rgb(var(--slate-600));
+  --faint:      rgb(var(--slate-500));
+  --line-2:     rgb(var(--slate-300));
+  --display-font: "Bricolage Grotesque", Georgia, serif;
+  --sans-font:    "Public Sans", -apple-system, sans-serif;
+  --mono-font:    "IBM Plex Mono", ui-monospace, monospace;
+  --ease:         cubic-bezier(.2,.7,.2,1);
+  --radius-card:  14px;
+  --radius-s:     9px;
+  --maxw:         1180px;
 }

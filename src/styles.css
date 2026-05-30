@@ -37,28 +37,28 @@
   :root {
     color-scheme: light;
 
-    /* Neutrals — do 90% of the work. */
-    --ink:     #0c1116;
-    --ink-2:   #2a3340;
-    --mute:    #5b6473;
-    --line:    #e6e2dc;
-    --paper:   #f6f3ee;
-    --paper-2: #efeae2;
-    --card:    #ffffff;
+    /* Neutrals — do 90% of the work. (v7 teal/coral/gold re-skin) */
+    --ink:     #14171D;
+    --ink-2:   #3A414C;
+    --mute:    #545E6B;
+    --line:    #E7E2D6;
+    --paper:   #FBFAF6;
+    --paper-2: #F4F2EB;
+    --card:    #FFFFFF;
 
     /* Semantic — used sparingly, never decoratively.
-       --critical: contraindications, time breaches.
-       --confirm:  eligible, target met.
-       --caution:  approaching breach, soft warnings.
-       --reference: informational notes, citation links. */
-    --critical:       #b3361f;
-    --critical-soft:  #f7e6e2;
-    --confirm:        #2f6b4a;
-    --confirm-soft:   #e6efe8;
-    --caution:        #a6741b;
-    --caution-soft:   #f3ead4;
-    --reference:      #23527a;
-    --reference-soft: #e3ecf3;
+       --critical: contraindications, time breaches (coral).
+       --confirm:  eligible, target met (green).
+       --caution:  approaching breach, soft warnings (gold).
+       --reference: informational notes, citation links (teal). */
+    --critical:       #9E2623;
+    --critical-soft:  #FBE7E5;
+    --confirm:        #1E5438;
+    --confirm-soft:   #E2F0E8;
+    --caution:        #7C5616;
+    --caution-soft:   #F6ECD6;
+    --reference:      #0A6571;
+    --reference-soft: #E2F0F1;
 
     --radius-sm: 6px;
     --radius-md: 12px;
@@ -78,22 +78,22 @@
   html.dark {
     color-scheme: dark;
 
-    --ink:     #f0ece5;
-    --ink-2:   #c8c2b8;
-    --mute:    #8c8579;
-    --line:    #2a2e34;
-    --paper:   #14171b;
-    --paper-2: #1c2026;
-    --card:    #181c22;
+    --ink:     #ECEAE2;
+    --ink-2:   #C3C0B6;
+    --mute:    #A39F94;
+    --line:    #272D35;
+    --paper:   #101317;
+    --paper-2: #1E232B;
+    --card:    #171B21;
 
-    --critical:       #e07a64;
-    --critical-soft:  #3a1c16;
-    --confirm:        #7fb591;
-    --confirm-soft:   #18261d;
-    --caution:        #d2a55a;
-    --caution-soft:   #2a1f10;
-    --reference:      #6ea3c9;
-    --reference-soft: #16242f;
+    --critical:       #F06B62;
+    --critical-soft:  #2A1715;
+    --confirm:        #5FB489;
+    --confirm-soft:   #13241B;
+    --caution:        #D6A24E;
+    --caution-soft:   #2A2113;
+    --reference:      #3FB6C4;
+    --reference-soft: #11272B;
   }
 
   body {
