@@ -1012,6 +1012,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         };
 
         const VALID_TABS = [
+          'home',
           'encounter',
           'protocols',
           'research',
@@ -1021,10 +1022,10 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         ];
 
         const parseHashRoute = (hash) => {
-          if (!hash) return { tab: 'encounter' };
+          if (!hash) return { tab: 'home' };
           const cleaned = hash.replace(/^#\/?/, '').trim();
           if (!cleaned) {
-            return { tab: 'encounter' };
+            return { tab: 'home' };
           }
           const parts = cleaned.split('/').filter(Boolean);
           const root = parts[0];
@@ -1033,7 +1034,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           switch (root) {
             case 'dashboard':
             case 'home':
-              return { tab: 'encounter' };
+              return { tab: 'home' };
             case 'encounter':
               return { tab: 'encounter' };
             case 'protocols':
@@ -1058,6 +1059,8 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
 
         const buildHashRoute = (tab, sub) => {
           switch (tab) {
+            case 'home':
+              return '#/home';
             case 'encounter':
               return '#/encounter';
             case 'protocols':
@@ -1913,8 +1916,12 @@ Clinician Name`;
           };
 
           const initialActiveTab = (() => {
-            const storedTab = appData.uiState.lastActiveTab || 'encounter';
-            if (storedTab === 'dashboard' || storedTab === 'settings') return 'encounter';
+            // Home (Command Center) is the default landing. A returning user with a
+            // saved lastActiveTab keeps their last surface; first-load / no-saved-tab
+            // lands on Home.
+            const storedTab = appData.uiState.lastActiveTab || 'home';
+            if (storedTab === 'dashboard') return 'home';
+            if (storedTab === 'settings') return 'encounter';
             if (LEGACY_MANAGEMENT_TABS[storedTab]) return 'protocols';
             if (storedTab === 'management' || storedTab === 'library') return 'protocols';
             return storedTab;
@@ -2011,6 +2018,15 @@ Clinician Name`;
           const [searchOpen, setSearchOpen] = useState(false);
           const [searchContext, setSearchContext] = useState('header');
           const [searchActiveIndex, setSearchActiveIndex] = useState(-1);
+
+          // Command palette (first-class, app-wide navigation jump-list).
+          // Distinct from the free-text header search above: this is a focus-
+          // trapped modal opened by Cmd/Ctrl+K and "/" that lists every
+          // destination (tabs, protocol sub-tabs, simulators, trials views,
+          // major calculators, research, and external tools).
+          const [paletteOpen, setPaletteOpen] = useState(false);
+          const [paletteQuery, setPaletteQuery] = useState('');
+          const [paletteActiveIndex, setPaletteActiveIndex] = useState(0);
           const [evidenceFilter, setEvidenceFilter] = useState('');
           const [guidelineLibraryQuery, setGuidelineLibraryQuery] = useState('');
           const [guidelineLibraryGuideline, setGuidelineLibraryGuideline] = useState('');
@@ -7484,6 +7500,7 @@ Clinician Name`;
 
               // Escape — close one layer at a time
               if (key === 'Escape') {
+                if (paletteOpen) { setPaletteOpen(false); return; }
                 if (settingsMenuOpen) { setSettingsMenuOpen(false); return; }
                 if (searchOpen) { setSearchOpen(false); return; }
                 if (confirmConfig) { handleConfirmClose(null); return; }
@@ -7493,25 +7510,19 @@ Clinician Name`;
                 return;
               }
 
-              // Cmd/Ctrl + K — open global search
+              // Cmd/Ctrl + K — open the command palette (app-wide jump-list)
               if (primary && !e.shiftKey && !e.altKey && lowerKey === 'k') {
                 e.preventDefault();
-                setSearchOpen(true);
-                setSearchContext('header');
-                requestAnimationFrame(() => {
-                  document.querySelector('input[placeholder*="Search"]')?.focus();
-                });
+                setSearchOpen(false);
+                openCommandPalette();
                 return;
               }
 
-              // "/" — focus search when not typing
+              // "/" — open the command palette when not typing in a field
               if (!primary && !e.altKey && key === '/' && !targetIsInput) {
                 e.preventDefault();
-                setSearchOpen(true);
-                setSearchContext('header');
-                requestAnimationFrame(() => {
-                  document.querySelector('input[placeholder*="Search"]')?.focus();
-                });
+                setSearchOpen(false);
+                openCommandPalette();
                 return;
               }
 
@@ -7551,9 +7562,10 @@ Clinician Name`;
                 return;
               }
 
-              // Ctrl/Cmd + 1/2/3/4 — tab navigation
+              // Ctrl/Cmd + 0..4 — tab navigation (0 = Command Center home)
               if (primary && !e.shiftKey && !e.altKey) {
                 const tabMap = {
+                  '0': { tab: 'home' },
                   '1': { tab: 'encounter' },
                   '2': { tab: 'protocols' },
                   '3': { tab: 'research' },
@@ -7593,7 +7605,7 @@ Clinician Name`;
             };
             document.addEventListener('keydown', handleKeyDown);
             return () => document.removeEventListener('keydown', handleKeyDown);
-          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode, settingsMenuOpen, searchOpen, telestrokeNote.age, telestrokeNote.sex, telestrokeNote.nihss, telestrokeNote.ctResults, telestrokeNote.diagnosis, telestrokeNote.disposition, lkwTime, nihssScore]);
+          }, [activeTab, calcDrawerOpen, protocolModal, confirmConfig, focusMode, settingsMenuOpen, searchOpen, paletteOpen, telestrokeNote.age, telestrokeNote.sex, telestrokeNote.nihss, telestrokeNote.ctResults, telestrokeNote.diagnosis, telestrokeNote.disposition, lkwTime, nihssScore]);
 
 
           // Restore focus to settings trigger when menu closes
@@ -7738,6 +7750,87 @@ Clinician Name`;
             }
           };
           navigateToRef.current = navigateTo;
+
+          // ============================================
+          // COMMAND PALETTE — destination index + helpers
+          // ============================================
+          // Navigate to a Protocols & Algorithms sub-tab (optionally deep-link to
+          // an anchor inside it, e.g. a calculator or simulator card).
+          const gotoProtocolsSub = (subTab, anchorId, calcFilter) => {
+            navigateTo('protocols', { clearSearch: true, subTab });
+            if (typeof setCalculatorFilter === 'function') {
+              setCalculatorFilter(calcFilter || '');
+            }
+            requestAnimationFrame(() => {
+              window.setTimeout(() => {
+                if (anchorId) {
+                  const el = document.getElementById(anchorId);
+                  if (el) {
+                    if (el.tagName === 'DETAILS' && !el.open) el.open = true;
+                    scrollToSection(anchorId);
+                  }
+                }
+              }, 260);
+            });
+          };
+          const gotoTrialsView = (view) => {
+            updateTrialsView(view);
+            navigateTo('trials', { clearSearch: true });
+          };
+          const openExternal = (url) => {
+            window.open(url, '_blank', 'noopener,noreferrer');
+          };
+
+          // The canonical, static destination list. `group` drives the visual
+          // sectioning; `keywords` widen fuzzy matching; `external` marks
+          // open-in-new-tab tools. Order = display order within a group.
+          const paletteCommands = React.useMemo(() => [
+            // ---- Top-level sections ----
+            { id: 'go-home', group: 'Go to', label: 'Command Center (Home)', hint: 'Cockpit home', icon: 'grid-3x3', keywords: ['home', 'command center', 'cockpit', 'dashboard', 'start'], run: () => navigateTo('home', { clearSearch: true }) },
+            { id: 'go-encounter', group: 'Go to', label: 'Acute Encounter', hint: 'Active stroke workup', icon: 'activity', keywords: ['encounter', 'acute', 'consult', 'telestroke', 'patient', 'workup'], run: () => navigateTo('encounter', { clearSearch: true }) },
+            { id: 'go-protocols', group: 'Go to', label: 'Institutional Protocols & Algorithms', hint: 'Pathways & step-cards', icon: 'library', keywords: ['protocols', 'algorithms', 'pathways', 'management', 'library'], run: () => navigateTo('protocols', { clearSearch: true }) },
+            { id: 'go-research', group: 'Go to', label: 'Research & Guidelines', hint: 'Guidelines & What’s New', icon: 'book-open', keywords: ['research', 'guidelines', 'whats new', "what's new", 'evidence', 'updates'], run: () => navigateTo('research', { clearSearch: true }) },
+            { id: 'go-trials', group: 'Go to', label: 'Trials & Evidence', hint: 'Screener, tables, atlas', icon: 'flask-conical', keywords: ['trials', 'evidence', 'atlas', 'eligibility', 'screener'], run: () => navigateTo('trials', { clearSearch: true }) },
+            // ---- Protocols sub-tabs ----
+            { id: 'sub-ich', group: 'Protocols', label: 'ICH Management', hint: 'Hemorrhage protocols', icon: 'droplets', keywords: ['ich', 'intracerebral', 'hemorrhage', 'reversal'], run: () => gotoProtocolsSub('ich') },
+            { id: 'sub-ischemic', group: 'Protocols', label: 'Ischemic Stroke', hint: 'Reperfusion & DAPT', icon: 'zap', keywords: ['ischemic', 'tnk', 'thrombolysis', 'evt', 'thrombectomy', 'dapt'], run: () => gotoProtocolsSub('ischemic') },
+            { id: 'sub-sah', group: 'Protocols', label: 'SAH', hint: 'Subarachnoid hemorrhage', icon: 'alert-triangle', keywords: ['sah', 'subarachnoid', 'aneurysm', 'vasospasm'], run: () => gotoProtocolsSub('sah') },
+            { id: 'sub-tia', group: 'Protocols', label: 'TIA', hint: 'Transient ischemic attack', icon: 'clock', keywords: ['tia', 'transient'], run: () => gotoProtocolsSub('tia') },
+            { id: 'sub-cvt', group: 'Protocols', label: 'CVT', hint: 'Cerebral venous thrombosis', icon: 'git-branch', keywords: ['cvt', 'venous', 'sinus thrombosis'], run: () => gotoProtocolsSub('cvt') },
+            { id: 'sub-references', group: 'Protocols', label: 'References', hint: 'Reference docs & TOAST', icon: 'clipboard-list', keywords: ['references', 'docs', 'toast', 'classification', 'guidelines'], run: () => gotoProtocolsSub('references') },
+            // ---- Simulators (each card lives in the Simulators sub-tab) ----
+            { id: 'sim-all', group: 'Bedside Simulators', label: 'Bedside Simulators', hint: 'All teaching simulators', icon: 'test-tubes', keywords: ['simulators', 'simulation', 'teaching', 'bedside'], run: () => gotoProtocolsSub('simulators') },
+            { id: 'sim-evd', group: 'Bedside Simulators', label: 'EVD & ICP Simulator', hint: 'Drain & pressure trace', icon: 'activity', keywords: ['evd', 'icp', 'drain', 'intracranial pressure', 'ventriculostomy'], run: () => gotoProtocolsSub('simulators', 'sim-evd-icp') },
+            { id: 'sim-hints', group: 'Bedside Simulators', label: 'HINTS+ Eye-Movement Simulator', hint: 'Vestibular exam', icon: 'eye', keywords: ['hints', 'eye movement', 'vestibular', 'nystagmus', 'vertigo', 'dizziness'], run: () => gotoProtocolsSub('simulators', 'sim-hints') },
+            { id: 'sim-pupil', group: 'Bedside Simulators', label: 'Pupillometry / NPi Simulator', hint: 'Pupil reactivity', icon: 'circle', keywords: ['pupillometry', 'npi', 'pupil', 'reactivity'], run: () => gotoProtocolsSub('simulators', 'sim-pupillometry') },
+            { id: 'sim-neuroexam', group: 'Bedside Simulators', label: 'Neuro-Exams (Aphasia / Delirium / Coma)', hint: 'Bedside exam tools', icon: 'brain', keywords: ['neuro exam', 'aphasia', 'delirium', 'coma', 'exam', 'classifier'], run: () => gotoProtocolsSub('simulators', 'sim-neuro-exams') },
+            // ---- Calculators ----
+            { id: 'calc-all', group: 'Calculators', label: 'All Calculators', hint: 'Scores & dosing', icon: 'table', keywords: ['calculators', 'scores', 'calc'], run: () => gotoProtocolsSub('calculators') },
+            { id: 'calc-nihss', group: 'Calculators', label: 'NIHSS', hint: 'Stroke severity scale', icon: 'table', keywords: ['nihss', 'severity', 'stroke scale'], run: () => gotoProtocolsSub('calculators', 'calc-nihss', 'nihss') },
+            { id: 'calc-aspects', group: 'Calculators', label: 'ASPECTS', hint: 'Early ischemic change', icon: 'table', keywords: ['aspects', 'ct', 'early ischemic'], run: () => gotoProtocolsSub('calculators', 'calc-aspects', 'aspects') },
+            { id: 'calc-ich', group: 'Calculators', label: 'ICH Score', hint: '30-day mortality', icon: 'table', keywords: ['ich score', 'hemorrhage', 'mortality'], run: () => gotoProtocolsSub('calculators', 'calc-ich-score', 'ich score') },
+            { id: 'calc-abcd2', group: 'Calculators', label: 'ABCD2', hint: 'TIA stroke risk', icon: 'table', keywords: ['abcd2', 'tia', 'risk'], run: () => gotoProtocolsSub('calculators', 'calc-abcd2', 'abcd2') },
+            { id: 'calc-phases', group: 'Calculators', label: 'PHASES', hint: 'Aneurysm rupture risk', icon: 'table', keywords: ['phases', 'aneurysm', 'rupture'], run: () => gotoProtocolsSub('calculators', 'calc-phases', 'phases') },
+            { id: 'calc-toast', group: 'Calculators', label: 'TOAST Classification', hint: 'Ischemic stroke etiology', icon: 'clipboard-list', keywords: ['toast', 'classification', 'etiology', 'subtype'], run: () => gotoProtocolsSub('references', null, '') },
+            // ---- External / legacy tools ----
+            { id: 'ext-nepi', group: 'External Tools', label: 'Statistical & Research Methods (n-epi)', hint: 'Biostats / appraisal — new tab', icon: 'external-link', external: true, keywords: ['n-epi', 'nepi', 'statistics', 'biostats', 'meta-analysis', 'appraisal', 'methods', 'research'], run: () => openExternal('https://rkalani1.github.io/n-epi/') },
+            { id: 'ext-proteomics', group: 'External Tools', label: 'Proteomics Power Calculator', hint: 'PWAS power — new tab', icon: 'external-link', external: true, keywords: ['proteomics', 'power', 'sample size', 'pwas'], run: () => openExternal('https://rkalani1.github.io/proteomics-power-calc/') },
+            { id: 'ext-ccc', group: 'External Tools', label: 'CCC — Clerkship Coaching', hint: 'Trainee WBA — new tab', icon: 'external-link', external: true, keywords: ['ccc', 'clerkship', 'coaching', 'wba', 'entrustment', 'teaching'], run: () => openExternal('https://rkalani1.github.io/ccc/') },
+            { id: 'ext-telestroke-map', group: 'External Tools', label: 'Telestroke Network Map', hint: 'Service planning — new tab', icon: 'external-link', external: true, keywords: ['telestroke', 'network', 'map', 'expansion', 'coverage', 'service planning', 'admin'], run: () => openExternal('https://rkalani1.github.io/telestroke-expansion-map/') }
+          ], []);
+
+          const openCommandPalette = () => {
+            setPaletteQuery('');
+            setPaletteActiveIndex(0);
+            setPaletteOpen(true);
+          };
+          const runPaletteCommand = (cmd) => {
+            if (!cmd) return;
+            setPaletteOpen(false);
+            setPaletteQuery('');
+            // Defer navigation so the modal unmounts and focus restoration is clean.
+            requestAnimationFrame(() => { try { cmd.run(); } catch (_) {} });
+          };
 
           const setSearchHighlight = (id) => {
             updateAppData((prev) => ({
@@ -15631,7 +15724,7 @@ Clinician Name`;
                   return;
                 }
               }
-              setActiveTab('encounter');
+              setActiveTab('home');
             };
 
             resolveRoute();
@@ -15668,7 +15761,7 @@ Clinician Name`;
 
           // Lock body scroll + focus trap when full-screen modals are open
           useEffect(() => {
-            const anyModalOpen = !!protocolModal || calcDrawerOpen || !!confirmConfig;
+            const anyModalOpen = !!protocolModal || calcDrawerOpen || !!confirmConfig || paletteOpen;
             if (anyModalOpen) {
               const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
               document.body.style.overflow = 'hidden';
@@ -15710,14 +15803,14 @@ Clinician Name`;
                 if (previouslyFocused && previouslyFocused.isConnected && typeof previouslyFocused.focus === 'function') previouslyFocused.focus();
               };
             }
-          }, [protocolModal, calcDrawerOpen, confirmConfig]);
+          }, [protocolModal, calcDrawerOpen, confirmConfig, paletteOpen]);
 
           // Reinitialize icons when tab/layout/modal content changes
           useEffect(() => {
             if (isMounted) {
               requestAnimationFrame(() => createIcons({ icons }));
             }
-          }, [activeTab, isMounted, managementSubTab, encounterPhase, settingsMenuOpen, searchOpen, calcDrawerOpen, protocolModal, confirmConfig]);
+          }, [activeTab, isMounted, managementSubTab, encounterPhase, settingsMenuOpen, searchOpen, calcDrawerOpen, protocolModal, confirmConfig, paletteOpen, paletteQuery, paletteActiveIndex]);
 
           useEffect(() => {
             const activeTabEl = document.getElementById(`tab-${activeTab}`);
@@ -15824,9 +15917,13 @@ ${callCriteria}
 NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : 'q4h x 24h, then daily'}`;
           };
 
-          const topLinks = [
-            { label: 'Regional Facilities', url: ' /telestroke-expansion-map/', note: 'Regional telestroke center coverage map' }
-          ];
+          // The Telestroke Network Map is an external service-planning tool, not a
+          // clinical decision tool. It was removed from the clinical Resources
+          // dropdown (and its leading-space URL bug fixed) and now lives only in
+          // Home → Legacy / External Tools → Admin / Service Planning, opened in a
+          // new tab. Genuine clinical resources (UpToDate / OpenEvidence / ChatGPT /
+          // Asta) remain in encounterQuickLinks below.
+          const topLinks = [];
           const encounterQuickLinks = [
             { label: 'ChatGPT', url: 'https://chatgpt.com/' },
             { label: 'OpenEvidence', url: 'https://www.openevidence.com' },
@@ -16277,6 +16374,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </div>
 
                     <div className="flex w-full flex-wrap items-center justify-center gap-2 lg:w-auto lg:justify-end">
+                      <button
+                        type="button"
+                        onClick={openCommandPalette}
+                        className="flex items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+                        aria-label="Open command palette"
+                        title="Open command palette (⌘K or /)"
+                      >
+                        <i aria-hidden="true" data-lucide="search" className="w-4 h-4"></i>
+                        <span className="hidden sm:inline">Search</span>
+                        <kbd aria-hidden="true" className="hidden sm:inline-flex items-center px-1 py-0.5 text-2xs font-mono text-slate-500 bg-slate-100 border border-slate-300 rounded">⌘K</kbd>
+                      </button>
                       <details className="relative">
                         <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700">
                           <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
@@ -16554,7 +16662,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               {/* Primary Navigation */}
               <div className="hidden sm:block mb-4 sm:mb-6 sticky top-0 z-30 app-nav" role="navigation" aria-label="Main navigation">
                 <nav className="flex flex-nowrap items-stretch gap-0 bg-white border border-line rounded-md p-1 overflow-x-auto no-scrollbar" role="tablist" aria-label="Main sections" onKeyDown={(e) => {
-                  const tabs = ['encounter', 'protocols', 'research', 'trials'];
+                  const tabs = ['home', 'encounter', 'protocols', 'research', 'trials'];
                   const currentIndex = tabs.indexOf(activeTab);
                   let nextIndex;
                   if (e.key === 'ArrowRight') { e.preventDefault(); nextIndex = (currentIndex + 1) % tabs.length; }
@@ -16565,6 +16673,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 }}>
                   {[
                     // v6.0-04: top tabs — labels only, no decorative icons. Icons signal state, not category.
+                    { id: 'home', name: 'Command Center' },
                     { id: 'encounter', name: 'Encounter' },
                     { id: 'protocols', name: 'Institutional Protocols & Algorithms' },
                     { id: 'research', name: 'Research & Guidelines' },
@@ -16593,6 +16702,159 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
               {/* Content — v7 semantic landmark (main) replaces div role=region */}
               <main id="main" className="space-y-6 pb-24 sm:space-y-8 sm:pb-0" aria-label="Main content area">
+
+                {/* ============================================================ */}
+                {/* COMMAND CENTER — Home (default landing). Dense attending     */}
+                {/* cockpit: status strip, fast-route tiles, external launcher. */}
+                {/* Quiet, exact, v7 tokens, warm paper. NOT a marketing page.  */}
+                {/* ============================================================ */}
+                {activeTab === 'home' && (
+                  <ErrorBoundary>
+                  <div key="home-tab" id="tabpanel-home" role="tabpanel" aria-labelledby="tab-home" className="space-y-5">
+                    {(() => {
+                      const appVer = (window.strokeAppStorage && window.strokeAppStorage.appVersion) || '';
+                      const wnItems = (whatsNewData && Array.isArray(whatsNewData.items)) ? whatsNewData.items : [];
+                      const latestYear = wnItems.reduce((max, i) => {
+                        const y = parseInt(i && i.year, 10);
+                        return Number.isFinite(y) && y > max ? y : max;
+                      }, 0);
+                      const freshness = latestYear ? `evidence as of ${latestYear}` : 'see Research';
+                      const tiles = [
+                        { id: 'acute-encounter', label: 'Acute Encounter', purpose: 'Active stroke workup, decisions & note', icon: 'activity', run: () => navigateTo('encounter', { clearSearch: true }) },
+                        { id: 'protocols-algorithms', label: 'Protocols & Algorithms', purpose: 'Institutional pathways & step-cards', icon: 'library', run: () => navigateTo('protocols', { clearSearch: true }) },
+                        { id: 'trials-evidence', label: 'Trials & Evidence', purpose: 'Bedside screener, eligibility, atlas', icon: 'flask-conical', run: () => navigateTo('trials', { clearSearch: true }) },
+                        { id: 'bedside-simulators', label: 'Bedside Simulators', purpose: 'EVD/ICP, HINTS+, pupillometry, exams', icon: 'test-tubes', run: () => gotoProtocolsSub('simulators') },
+                        { id: 'research-whats-new', label: 'Research & What’s New', purpose: 'Guidelines + verified evidence feed', icon: 'book-open', run: () => navigateTo('research', { clearSearch: true }) },
+                        { id: 'calculators', label: 'Calculators', purpose: 'NIHSS, ASPECTS, ICH, ABCD2, PHASES…', icon: 'table', run: () => gotoProtocolsSub('calculators') }
+                      ];
+                      const externalTools = [
+                        { id: 'home-ext-nepi', label: 'Statistical & Research Methods (n-epi)', reason: 'study design, biostats, meta-analysis, critical appraisal — research/teaching, not bedside', url: 'https://rkalani1.github.io/n-epi/' },
+                        { id: 'home-ext-proteomics', label: 'Proteomics Power Calculator', reason: 'PWAS sample-size / power for research study design', url: 'https://rkalani1.github.io/proteomics-power-calc/' },
+                        { id: 'home-ext-ccc', label: 'CCC — Clerkship Coaching', reason: 'trainee WBA tracking / entrustment trends / CCC committee export (teaching)', url: 'https://rkalani1.github.io/ccc/' }
+                      ];
+                      const adminTools = [
+                        { id: 'home-ext-telestroke', label: 'Telestroke Network Map', reason: 'regional telestroke coverage / expansion map — service planning, NOT a clinical decision tool', url: 'https://rkalani1.github.io/telestroke-expansion-map/' }
+                      ];
+                      return (
+                        <>
+                          {/* ---- Top status strip ---- */}
+                          <section aria-label="Application status" className="bg-card border border-line rounded-md">
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-3 border-b border-line">
+                              <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-cobalt-200 bg-cobalt-50 text-cobalt-700" aria-hidden="true">
+                                <i data-lucide="activity" className="w-4 h-4"></i>
+                              </span>
+                              <div className="min-w-0">
+                                <p className="font-mono uppercase text-eyebrow text-mute leading-none">Command Center</p>
+                                <h2 className="font-serif text-section text-ink leading-tight">Stroke clinical cockpit</h2>
+                              </div>
+                              <div className="ml-auto flex flex-wrap items-center gap-1.5">
+                                {appVer && (
+                                  <span className="inline-flex items-center gap-1 rounded-md border border-line bg-paper-2 px-2 py-1 text-2xs font-mono text-ink-2">
+                                    v{appVer}
+                                  </span>
+                                )}
+                                <span className="inline-flex items-center gap-1 rounded-md border border-ok-200 bg-ok-50 px-2 py-1 text-2xs font-medium text-ok-800">
+                                  <i aria-hidden="true" data-lucide="shield" className="w-3 h-3"></i>
+                                  Offline-ready
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => navigateTo('research', { clearSearch: true })}
+                                  className="inline-flex items-center gap-1 rounded-md border border-cobalt-200 bg-cobalt-50 px-2 py-1 text-2xs font-medium text-cobalt-800 hover:bg-cobalt-100 transition-colors focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+                                  title="Open Research & What’s New"
+                                >
+                                  <i aria-hidden="true" data-lucide="book-open" className="w-3 h-3"></i>
+                                  What’s New — {freshness}
+                                </button>
+                              </div>
+                            </div>
+                            <p className="px-4 py-2.5 text-2xs sm:text-xs text-warn-900 bg-warn-50 rounded-b-md flex items-start gap-2">
+                              <i aria-hidden="true" data-lucide="alert-triangle" className="w-3.5 h-3.5 mt-0.5 shrink-0 text-warn-600"></i>
+                              <span>Synthetic public demo — not medical advice, not an official system, no PHI. Verify against your institution’s protocols.</span>
+                            </p>
+                          </section>
+
+                          {/* ---- Fast route tiles ---- */}
+                          <section aria-label="Fast navigation">
+                            <p className="font-mono uppercase text-eyebrow text-mute mb-2 px-0.5">Jump to</p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                              {tiles.map((tile) => (
+                                <button
+                                  key={tile.id}
+                                  type="button"
+                                  onClick={tile.run}
+                                  className="group flex items-start gap-3 text-left bg-card border border-line rounded-md p-3.5 min-h-[44px] hover:border-cobalt-300 hover:bg-cobalt-50/40 transition-colors focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+                                >
+                                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-cobalt-200 bg-cobalt-50 text-cobalt-700 group-hover:bg-cobalt-100" aria-hidden="true">
+                                    <i data-lucide={tile.icon} className="w-4 h-4"></i>
+                                  </span>
+                                  <span className="min-w-0">
+                                    <span className="block font-semibold text-ink leading-tight">{tile.label}</span>
+                                    <span className="block text-xs text-ink-2 mt-0.5 text-pretty">{tile.purpose}</span>
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
+                          </section>
+
+                          {/* ---- Legacy / External Tools ---- */}
+                          <section aria-label="Legacy and external tools" className="bg-paper-2 border border-line rounded-md p-4">
+                            <div className="flex items-start gap-2 mb-3">
+                              <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4 mt-0.5 shrink-0 text-mute"></i>
+                              <div className="min-w-0">
+                                <p className="font-mono uppercase text-eyebrow text-mute leading-none">Legacy / External Tools</p>
+                                <p className="text-xs text-ink-2 mt-1">External standalone tools — open in new tab; not part of the offline clinical core.</p>
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                              {externalTools.map((tool) => (
+                                <a
+                                  key={tool.id}
+                                  href={tool.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-start gap-2.5 bg-card border border-line rounded-md p-3 min-h-[44px] hover:border-cobalt-300 transition-colors focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+                                >
+                                  <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4 mt-0.5 shrink-0 text-cobalt-600"></i>
+                                  <span className="min-w-0">
+                                    <span className="block text-sm font-semibold text-ink leading-tight">{tool.label}</span>
+                                    <span className="block text-xs text-ink-2 mt-0.5 text-pretty">{tool.reason}</span>
+                                  </span>
+                                </a>
+                              ))}
+                            </div>
+                            <p className="font-mono uppercase text-eyebrow text-mute mt-4 mb-2">Admin / Service Planning</p>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                              {adminTools.map((tool) => (
+                                <a
+                                  key={tool.id}
+                                  href={tool.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-start gap-2.5 bg-card border border-line rounded-md p-3 min-h-[44px] hover:border-cobalt-300 transition-colors focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+                                >
+                                  <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4 mt-0.5 shrink-0 text-cobalt-600"></i>
+                                  <span className="min-w-0">
+                                    <span className="block text-sm font-semibold text-ink leading-tight">{tool.label}</span>
+                                    <span className="block text-xs text-ink-2 mt-0.5 text-pretty">{tool.reason}</span>
+                                  </span>
+                                </a>
+                              ))}
+                            </div>
+                          </section>
+
+                          {/* ---- Palette hint ---- */}
+                          <p className="text-2xs text-mute text-center">
+                            Press <kbd className="px-1.5 py-0.5 mx-0.5 text-2xs font-mono text-ink-2 bg-paper-2 border border-line rounded">⌘K</kbd>
+                            or <kbd className="px-1.5 py-0.5 mx-0.5 text-2xs font-mono text-ink-2 bg-paper-2 border border-line rounded">/</kbd>
+                            to open the command palette and jump anywhere.
+                          </p>
+                        </>
+                      );
+                    })()}
+                  </div>
+                  </ErrorBoundary>
+                )}
 
                 {/* CONSOLIDATED ENCOUNTER TAB */}
                 {activeTab === 'encounter' && (
@@ -35024,7 +35286,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </p>
                       </div>
 
-                      <details className="bg-white border border-line rounded-lg" open>
+                      <details id="sim-evd-icp" className="bg-white border border-line rounded-lg" open>
                         <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
                           <span className="flex items-center gap-2">
                             <i aria-hidden="true" data-lucide="activity" className="w-4 h-4 text-cobalt-600"></i>
@@ -35039,7 +35301,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
                       </details>
 
-                      <details className="bg-white border border-line rounded-lg">
+                      <details id="sim-hints" className="bg-white border border-line rounded-lg">
                         <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
                           <span className="flex items-center gap-2">
                             <i aria-hidden="true" data-lucide="eye" className="w-4 h-4 text-teal-600"></i>
@@ -35054,7 +35316,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
                       </details>
 
-                      <details className="bg-white border border-line rounded-lg">
+                      <details id="sim-pupillometry" className="bg-white border border-line rounded-lg">
                         <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
                           <span className="flex items-center gap-2">
                             <i aria-hidden="true" data-lucide="circle-dot" className="w-4 h-4 text-teal-600"></i>
@@ -35069,7 +35331,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
                       </details>
 
-                      <details className="bg-white border border-line rounded-lg">
+                      <details id="sim-neuro-exams" className="bg-white border border-line rounded-lg">
                         <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
                           <span className="flex items-center gap-2">
                             <i aria-hidden="true" data-lucide="brain" className="w-4 h-4 text-teal-600"></i>
@@ -35562,10 +35824,139 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             {/* ===== TOAST CONTAINER ===== */}
             <ToastContainer toasts={toasts} removeToast={removeToast} />
 
+            {/* ===== COMMAND PALETTE (Cmd/Ctrl+K · "/") ===== */}
+            {paletteOpen && (() => {
+              const q = paletteQuery.trim().toLowerCase();
+              const matches = !q
+                ? paletteCommands
+                : paletteCommands.filter((c) => {
+                    const hay = `${c.label} ${c.hint || ''} ${(c.keywords || []).join(' ')}`.toLowerCase();
+                    return q.split(/\s+/).every((tok) => hay.includes(tok));
+                  });
+              const safeIndex = matches.length ? Math.min(paletteActiveIndex, matches.length - 1) : 0;
+              const activeCmd = matches[safeIndex];
+              // Group for display while keeping a flat index for arrow nav.
+              const groups = [];
+              matches.forEach((cmd, flatIdx) => {
+                let g = groups.find((x) => x.name === cmd.group);
+                if (!g) { g = { name: cmd.group, items: [] }; groups.push(g); }
+                g.items.push({ cmd, flatIdx });
+              });
+              return (
+                <>
+                  <div
+                    className="fixed inset-0 z-[120] bg-black/40"
+                    role="presentation"
+                    aria-hidden="true"
+                    onClick={() => setPaletteOpen(false)}
+                  ></div>
+                  <div
+                    className="fixed inset-x-0 top-0 sm:top-[8vh] z-[121] mx-auto w-full sm:max-w-xl px-0 sm:px-4"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Command palette"
+                  >
+                    <div className="bg-white sm:rounded-md rounded-b-2xl border border-line shadow-2xl overflow-hidden flex flex-col max-h-[85vh] sm:max-h-[70vh]">
+                      {/* Search input */}
+                      <div className="flex items-center gap-2 px-3 py-2.5 border-b border-line bg-paper-2 pwa-safe-top">
+                        <i aria-hidden="true" data-lucide="search" className="w-4 h-4 text-mute shrink-0"></i>
+                        <input
+                          type="text"
+                          autoFocus
+                          value={paletteQuery}
+                          placeholder="Jump to a section, calculator, simulator, or tool…"
+                          aria-label="Search destinations"
+                          aria-controls="command-palette-listbox"
+                          aria-expanded="true"
+                          aria-activedescendant={activeCmd ? `cmd-opt-${activeCmd.id}` : undefined}
+                          role="combobox"
+                          autoComplete="off"
+                          autoCorrect="off"
+                          spellCheck="false"
+                          className="flex-1 min-w-0 bg-transparent text-sm text-ink placeholder:text-slate-500 focus:outline-none py-1.5"
+                          onChange={(e) => { setPaletteQuery(e.target.value); setPaletteActiveIndex(0); }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Escape') { e.preventDefault(); setPaletteOpen(false); return; }
+                            if (e.key === 'ArrowDown') { e.preventDefault(); setPaletteActiveIndex((i) => matches.length ? (i + 1) % matches.length : 0); return; }
+                            if (e.key === 'ArrowUp') { e.preventDefault(); setPaletteActiveIndex((i) => matches.length ? (i <= 0 ? matches.length - 1 : i - 1) : 0); return; }
+                            if (e.key === 'Home') { e.preventDefault(); setPaletteActiveIndex(0); return; }
+                            if (e.key === 'End') { e.preventDefault(); setPaletteActiveIndex(Math.max(0, matches.length - 1)); return; }
+                            if (e.key === 'Enter') { e.preventDefault(); runPaletteCommand(matches[safeIndex]); return; }
+                          }}
+                        />
+                        <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-2xs font-mono text-mute bg-white border border-line rounded">esc</kbd>
+                        <button
+                          id="command-palette-close"
+                          type="button"
+                          onClick={() => setPaletteOpen(false)}
+                          className="p-1.5 rounded-md hover:bg-slate-100 min-h-[36px] min-w-[36px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+                          aria-label="Close command palette"
+                        >
+                          <i aria-hidden="true" data-lucide="x-circle" className="w-4 h-4 text-mute"></i>
+                        </button>
+                      </div>
+                      {/* Results */}
+                      <div
+                        id="command-palette-listbox"
+                        role="listbox"
+                        aria-label="Destinations"
+                        className="flex-1 overflow-y-auto overscroll-contain py-1"
+                      >
+                        {matches.length === 0 && (
+                          <p className="px-4 py-6 text-center text-sm text-ink-2">No destinations match “{paletteQuery}”.</p>
+                        )}
+                        {groups.map((g) => (
+                          <div key={g.name} className="py-1">
+                            <p className="px-3 pt-1 pb-0.5 font-mono uppercase text-eyebrow text-mute">{g.name}</p>
+                            {g.items.map(({ cmd, flatIdx }) => {
+                              const isActive = flatIdx === safeIndex;
+                              return (
+                                <button
+                                  key={cmd.id}
+                                  id={`cmd-opt-${cmd.id}`}
+                                  role="option"
+                                  aria-selected={isActive}
+                                  type="button"
+                                  tabIndex={-1}
+                                  onMouseEnter={() => setPaletteActiveIndex(flatIdx)}
+                                  onClick={() => runPaletteCommand(cmd)}
+                                  className={`w-full flex items-center gap-3 text-left px-3 py-2 min-h-[44px] transition-colors ${isActive ? 'bg-cobalt-50' : 'hover:bg-slate-50'}`}
+                                >
+                                  <span className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border ${isActive ? 'border-cobalt-300 bg-white text-cobalt-700' : 'border-line bg-paper-2 text-mute'}`} aria-hidden="true">
+                                    <i data-lucide={cmd.icon} className="w-3.5 h-3.5"></i>
+                                  </span>
+                                  <span className="min-w-0 flex-1">
+                                    <span className="block text-sm font-medium text-ink leading-tight truncate">{cmd.label}</span>
+                                    {cmd.hint && <span className="block text-xs text-ink-2 truncate">{cmd.hint}</span>}
+                                  </span>
+                                  {cmd.external && (
+                                    <span className="shrink-0 inline-flex items-center gap-1 text-2xs font-mono text-mute">
+                                      <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
+                                      new tab
+                                    </span>
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="hidden sm:flex items-center gap-3 px-3 py-1.5 border-t border-line bg-paper-2 text-2xs text-mute">
+                        <span><kbd className="font-mono">↑↓</kbd> navigate</span>
+                        <span><kbd className="font-mono">⏎</kbd> open</span>
+                        <span><kbd className="font-mono">esc</kbd> close</span>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
+
             {/* Mobile bottom nav */}
             <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-[0_-1px_3px_rgba(0,0,0,0.08)] sm:hidden" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }} role="tablist" aria-label="Mobile navigation">
               <div className="flex items-stretch justify-around">
                 {[
+                  { id: 'home', name: 'Home', icon: 'grid-3x3' },
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },
                   { id: 'protocols', name: 'Protocols', icon: 'library' },
                   { id: 'research', name: 'Research', icon: 'book-open' },
