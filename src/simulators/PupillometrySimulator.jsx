@@ -163,10 +163,10 @@ export function interpretPupillometry({ npi, cv, change, diff }) {
 /* Tone → Tailwind class fragments. `gold` maps onto warn-tinted surfaces with
    the v7 gold accent applied inline where needed. */
 const TONE = {
-  ok:   { chip: 'bg-ok-50 text-ok-800 border-ok-200',     dot: 'bg-ok-500',   bar: C.green },
-  warn: { chip: 'bg-warn-50 text-warn-800 border-warn-200', dot: 'bg-warn-500', bar: C.gold },
-  gold: { chip: 'bg-warn-50 text-warn-800 border-warn-300', dot: 'bg-warn-600', bar: C.gold },
-  crit: { chip: 'bg-crit-50 text-crit-800 border-crit-200', dot: 'bg-crit-500', bar: C.coral }
+  ok:   { chip: 'bg-ok-50 text-ok-800 border-ok-200 dark:bg-ok-950 dark:text-ok-300 dark:border-ok-800',     dot: 'bg-ok-500',   bar: C.green },
+  warn: { chip: 'bg-warn-50 text-warn-800 border-warn-200 dark:bg-warn-950 dark:text-warn-300 dark:border-warn-800', dot: 'bg-warn-500', bar: C.gold },
+  gold: { chip: 'bg-warn-50 text-warn-800 border-warn-300 dark:bg-warn-950 dark:text-warn-300 dark:border-warn-800', dot: 'bg-warn-600', bar: C.gold },
+  crit: { chip: 'bg-crit-50 text-crit-800 border-crit-200 dark:bg-crit-950 dark:text-crit-300 dark:border-crit-800', dot: 'bg-crit-500', bar: C.coral }
 };
 
 /* ── Escalation reference cards (NPi action thresholds) ────────────────── */
@@ -392,7 +392,7 @@ export function PupillometrySimulator() {
         }
       `}</style>
 
-      <p className="text-sm text-slate-600">
+      <p className="text-sm text-slate-600 dark:text-ink-2">
         Quantitative infrared pupillometry reports the <strong>Neurological Pupil Index (NPi, 0.0–5.0)</strong>, a
         standardized composite of pupillary-light-reflex kinetics benchmarked against &gt; 24,000 healthy pupils. It is a
         bedside surrogate for the integrity of the superficial parasympathetic fibers on the oculomotor nerve (CN III) and
@@ -402,10 +402,10 @@ export function PupillometrySimulator() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* ── Widget 1 · Pupil light-reflex stage + controls ── */}
-        <section className="bg-white border border-line rounded-lg p-3 space-y-3">
+        <section className="bg-white border border-line rounded-lg p-3 space-y-3 dark:bg-card">
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-semibold text-slate-800">Pupil Light-Reflex Simulator</h4>
-            <span className="font-mono text-2xs text-slate-500">bedside teaching tool</span>
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Pupil Light-Reflex Simulator</h4>
+            <span className="font-mono text-2xs text-slate-500 dark:text-mute">bedside teaching tool</span>
           </div>
 
           <div className="npi-stage" role="img"
@@ -454,9 +454,9 @@ export function PupillometrySimulator() {
         </section>
 
         {/* ── Widget 2 · Clinical interpreter ── */}
-        <section className="bg-white border border-line rounded-lg p-3 space-y-3">
+        <section className="bg-white border border-line rounded-lg p-3 space-y-3 dark:bg-card">
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-semibold text-slate-800">Clinical Interpretation</h4>
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Clinical Interpretation</h4>
             <span className={cx('inline-flex items-center gap-1.5 text-2xs font-bold px-2 py-0.5 rounded-pill border', tone.chip)}>
               <span className={cx('inline-block w-2 h-2 rounded-full', tone.dot)} aria-hidden="true" />
               {result.status}
@@ -465,12 +465,12 @@ export function PupillometrySimulator() {
 
           {/* Risk meter */}
           <div>
-            <div className="h-2.5 w-full rounded-pill bg-slate-100 overflow-hidden" role="img"
+            <div className="h-2.5 w-full rounded-pill bg-slate-100 overflow-hidden dark:bg-paper-2" role="img"
               aria-label={`Risk level ${result.riskPercent} percent — ${result.status}`}>
               <div className="h-full rounded-pill transition-all duration-300"
                 style={{ width: `${result.riskPercent}%`, background: tone.bar }} />
             </div>
-            <div className="flex justify-between text-2xs text-slate-500 mt-1">
+            <div className="flex justify-between text-2xs text-slate-500 mt-1 dark:text-mute">
               <span>Normal</span><span>Early</span><span>Severe</span><span>Herniation</span>
             </div>
           </div>
@@ -480,10 +480,10 @@ export function PupillometrySimulator() {
           </div>
 
           <div>
-            <p className="text-2xs uppercase tracking-wide font-semibold text-slate-500 mb-1">Actionable next steps</p>
+            <p className="text-2xs uppercase tracking-wide font-semibold text-slate-500 mb-1 dark:text-mute">Actionable next steps</p>
             <ul className="space-y-1">
               {result.steps.map((s, i) => (
-                <li key={i} className="flex items-start gap-2 text-xs text-slate-700">
+                <li key={i} className="flex items-start gap-2 text-xs text-slate-700 dark:text-ink-2">
                   <span className={cx('mt-0.5 inline-block w-1.5 h-1.5 rounded-full shrink-0', tone.dot)} aria-hidden="true" />
                   <span>{s}</span>
                 </li>
@@ -492,17 +492,17 @@ export function PupillometrySimulator() {
           </div>
 
           {/* Midline-shift estimate */}
-          <div className={cx('rounded-md border p-3', shift.highProbability ? TONE.gold.chip : 'bg-slate-50 border-line text-slate-700')}>
+          <div className={cx('rounded-md border p-3', shift.highProbability ? TONE.gold.chip : 'bg-slate-50 border-line text-slate-700 dark:bg-paper-2 dark:text-ink-2')}>
             <p className="text-2xs uppercase tracking-wide font-semibold mb-1.5">
               Radiographic midline-shift estimate (from NPi diff {diff.toFixed(1)})
             </p>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <p className="text-2xs text-slate-500">ICH · septum pellucidum</p>
+                <p className="text-2xs text-slate-500 dark:text-mute">ICH · septum pellucidum</p>
                 <p className="font-mono tabular-nums text-sm font-bold">{shift.ichShift.toFixed(1)} mm</p>
               </div>
               <div>
-                <p className="text-2xs text-slate-500">Ischemic · pineal gland</p>
+                <p className="text-2xs text-slate-500 dark:text-mute">Ischemic · pineal gland</p>
                 <p className="font-mono tabular-nums text-sm font-bold">{shift.strokeShift.toFixed(1)} mm</p>
               </div>
             </div>
@@ -517,13 +517,13 @@ export function PupillometrySimulator() {
 
       {/* ── Escalation reference cards ── */}
       <section className="space-y-2">
-        <h4 className="text-sm font-semibold text-slate-800">Escalation reference — NPi action thresholds</h4>
+        <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Escalation reference — NPi action thresholds</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           {ESCALATION.map((e, i) => {
             const t = TONE[e.tone] || TONE.warn;
             return (
               <div key={i} className={cx('rounded-lg border p-3 flex items-start gap-3', t.chip)}>
-                <span className="font-mono font-bold text-xs shrink-0 mt-0.5 px-1.5 py-0.5 rounded bg-white border border-line">
+                <span className="font-mono font-bold text-xs shrink-0 mt-0.5 px-1.5 py-0.5 rounded bg-white border border-line dark:bg-card">
                   {e.badge}
                 </span>
                 <div>
@@ -537,12 +537,12 @@ export function PupillometrySimulator() {
       </section>
 
       {/* ── Petrosino 2025 caveat (prominent) ── */}
-      <section className="rounded-lg border-2 border-crit-300 bg-crit-50 p-3">
+      <section className="rounded-lg border-2 border-crit-300 bg-crit-50 p-3 dark:border-crit-800 dark:bg-crit-950">
         <div className="flex items-center gap-2">
           <span className="inline-block w-2.5 h-2.5 rounded-full bg-crit-500" aria-hidden="true" />
-          <h4 className="text-sm font-bold text-crit-800">Key caveat — Petrosino 2025 (JAMA Neurol)</h4>
+          <h4 className="text-sm font-bold text-crit-800 dark:text-crit-300">Key caveat — Petrosino 2025 (JAMA Neurol)</h4>
         </div>
-        <p className="text-xs text-slate-800 leading-relaxed mt-1.5">
+        <p className="text-xs text-slate-800 leading-relaxed mt-1.5 dark:text-ink">
           A secondary analysis of the ORANGE study (<strong>n = 318 with invasive ICP monitoring</strong>) found
           <strong> NO significant association between NPi and ICP</strong>. A <strong>normal NPi does NOT safely exclude
           elevated ICP</strong>, and <strong>pupillometry cannot replace invasive ICP monitoring</strong>. The CV / %-change
@@ -554,21 +554,21 @@ export function PupillometrySimulator() {
 
       {/* ── Evidence base ── */}
       <section className="space-y-2">
-        <h4 className="text-sm font-semibold text-slate-800">Evidence base — pupillometry / NPi</h4>
+        <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Evidence base — pupillometry / NPi</h4>
         <div className="space-y-2">
           {EVIDENCE.map((ev, i) => (
             <div key={i}
-              className={cx('rounded-lg border p-3', ev.caveat ? 'border-crit-200 bg-crit-50' : 'border-line bg-white')}>
+              className={cx('rounded-lg border p-3', ev.caveat ? 'border-crit-200 bg-crit-50 dark:border-crit-800 dark:bg-crit-950' : 'border-line bg-white dark:bg-card')}>
               <div className="flex items-center justify-between gap-2">
-                <h5 className={cx('text-xs font-bold', ev.caveat ? 'text-crit-800' : 'text-slate-800')}>{ev.study}</h5>
-                {ev.caveat && <span className="text-2xs font-bold uppercase tracking-wide text-crit-700 shrink-0">Limitation</span>}
+                <h5 className={cx('text-xs font-bold', ev.caveat ? 'text-crit-800 dark:text-crit-300' : 'text-slate-800 dark:text-ink')}>{ev.study}</h5>
+                {ev.caveat && <span className="text-2xs font-bold uppercase tracking-wide text-crit-700 shrink-0 dark:text-crit-300">Limitation</span>}
               </div>
-              <p className="text-2xs uppercase tracking-wide font-semibold text-slate-500 mt-0.5">{ev.cohort}</p>
-              <p className="text-xs text-slate-700 mt-1 leading-relaxed">{ev.finding}</p>
+              <p className="text-2xs uppercase tracking-wide font-semibold text-slate-500 mt-0.5 dark:text-mute">{ev.cohort}</p>
+              <p className="text-xs text-slate-700 mt-1 leading-relaxed dark:text-ink-2">{ev.finding}</p>
             </div>
           ))}
         </div>
-        <p className="text-2xs text-slate-500">
+        <p className="text-2xs text-slate-500 dark:text-mute">
           Educational teaching tool — not a substitute for invasive monitoring or clinical judgment.
         </p>
       </section>
@@ -580,9 +580,9 @@ export function PupillometrySimulator() {
 function Slider({ label, value, min, max, step, display, onChange, scale }) {
   return (
     <label className="block">
-      <span className="flex items-center justify-between text-xs font-semibold text-slate-700 mb-1">
+      <span className="flex items-center justify-between text-xs font-semibold text-slate-700 mb-1 dark:text-ink-2">
         <span>{label}</span>
-        <span className="font-mono text-slate-600">{display}</span>
+        <span className="font-mono text-slate-600 dark:text-ink-2">{display}</span>
       </span>
       <input
         type="range" min={min} max={max} step={step} value={value}
@@ -591,7 +591,7 @@ function Slider({ label, value, min, max, step, display, onChange, scale }) {
         aria-label={label}
       />
       {scale && (
-        <span className="flex justify-between text-2xs text-slate-500 mt-0.5">
+        <span className="flex justify-between text-2xs text-slate-500 mt-0.5 dark:text-mute">
           {scale.map((s, i) => <span key={i}>{s}</span>)}
         </span>
       )}

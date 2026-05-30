@@ -22,7 +22,10 @@ module.exports = {
     './src/education.jsx',
     './src/design/primitives.jsx',
     './src/design/patient-strip.jsx',
-    './src/simulators/EvdIcpSimulator.jsx'
+    './src/simulators/EvdIcpSimulator.jsx',
+    './src/simulators/HintsSimulator.jsx',
+    './src/simulators/NeuroExamsTool.jsx',
+    './src/simulators/PupillometrySimulator.jsx'
   ],
 
   safelist: [
@@ -81,6 +84,11 @@ module.exports = {
         'ink-2':          'var(--ink-2)',
         mute:             'var(--mute)',
         line:             'var(--line)',
+        /* strong = heavier hairline; overlay = elevated surface (slate-800
+           in dark). Added for the Cycle1 dark-contrast remap so border-strong
+           / bg-overlay resolve to real utilities. */
+        strong:           'rgb(var(--border-strong) / <alpha-value>)',
+        overlay:          'rgb(var(--bg-overlay) / <alpha-value>)',
         paper:            'var(--paper)',
         'paper-2':        'var(--paper-2)',
         card:             'var(--card)',

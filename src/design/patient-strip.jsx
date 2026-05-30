@@ -55,7 +55,7 @@ const CompletionChip = ({ c, onJump }) => (
 
 export const PatientStripMobile = ({ patient, completion, onJump, className }) => (
   <div className={cx(
-    'sticky top-0 z-40 bg-white/95 dark:bg-slate-950/95 backdrop-blur',
+    'sticky top-0 z-40 bg-white/95 dark:bg-card/95 dark:bg-slate-950/95 backdrop-blur',
     'border-b border-slate-200 dark:border-slate-800',
     className
   )}>
@@ -149,7 +149,7 @@ const WindowSparkline = ({ elapsedMin }) => {
       <div className="absolute inset-y-0 left-0 bg-cobalt-100 dark:bg-cobalt-900/40" style={{ width: `${tnkEdgePct}%` }}/>
       <div className="absolute inset-y-0 bg-cobalt-50 dark:bg-cobalt-950/60" style={{ left: `${tnkEdgePct}%`, right: 0 }}/>
       <div className="absolute inset-y-0 bg-slate-900 dark:bg-slate-50" style={{ left: `${pct}%`, width: 1 }} aria-hidden="true"/>
-      <div className="absolute inset-x-0 bottom-0.5 flex justify-between px-1 font-mono tabular-nums text-2xs text-slate-500">
+      <div className="absolute inset-x-0 bottom-0.5 flex justify-between px-1 font-mono tabular-nums text-2xs text-slate-500 dark:text-mute">
         <span>0h</span><span>4.5h</span><span>24h</span>
       </div>
     </div>

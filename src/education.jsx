@@ -217,7 +217,7 @@ const EDUCATION_MODULES = [
 // Helper to render confirmation/review labels
 const ReviewStatusBadge = ({ status }) => {
   const isOk = status === "Clinical Reference" || status === "Recruiting / Active";
-  const color = isOk ? "bg-ok-100 text-ok-900 border-ok-300" : "bg-caution-soft text-caution border-caution";
+  const color = isOk ? "bg-ok-100 text-ok-900 border-ok-300 dark:bg-ok-950 dark:text-ok-300 dark:border-ok-800" : "bg-caution-soft text-caution border-caution";
   return (
     <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded border ${color}`}>
       {status}
@@ -285,7 +285,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
         <div id="tabpanel-education" role="tabpanel" aria-labelledby="tab-education" className="space-y-6 max-w-4xl mx-auto v7-reveal">
           <button
             onClick={() => onNavigate(null)}
-            className="no-print inline-flex items-center gap-2 text-sm text-cobalt-700 hover:text-cobalt-900 font-semibold mb-2 min-h-[44px]"
+            className="no-print inline-flex items-center gap-2 text-sm text-cobalt-700 hover:text-cobalt-900 font-semibold mb-2 min-h-[44px] dark:text-cobalt-300"
             aria-label="Back to Education Hub dashboard"
           >
             <i aria-hidden="true" data-lucide="arrow-right" className="w-4 h-4 rotate-180"></i>
@@ -305,14 +305,14 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
             </header>
 
             {/* Quality/Policy Disclaimer Banner */}
-            <div className="v7-guardrail p-3 border border-line rounded bg-slate-50">
+            <div className="v7-guardrail p-3 border border-line rounded bg-slate-50 dark:bg-paper-2">
               <i data-lucide="shield-alert" aria-hidden="true" className="w-5 h-5 text-caution shrink-0"></i>
               <p className="text-xs text-ink-2">
                 <b>Disclaimer:</b> {EDUCATION_BANNER_TEXT}
               </p>
               <button
                 onClick={(e) => handlePrint(e, activeModule.id)}
-                className="no-print ml-auto px-2.5 py-1 text-xs bg-cobalt-100 hover:bg-cobalt-200 text-cobalt-900 rounded font-semibold min-h-[36px]"
+                className="no-print ml-auto px-2.5 py-1 text-xs bg-cobalt-100 hover:bg-cobalt-200 text-cobalt-900 rounded font-semibold min-h-[36px] dark:bg-cobalt-900 dark:hover:bg-cobalt-800 dark:text-cobalt-300"
               >
                 Print Card 🖨
               </button>
@@ -389,7 +389,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
               <button
                 key={c.key}
                 onClick={() => setSelectedCategory(c.key)}
-                className={`v7-chip ${selectedCategory === c.key ? 'bg-cobalt-700 text-white border-cobalt-700' : 'bg-transparent text-slate-700 border-line hover:border-slate-400'}`}
+                className={`v7-chip ${selectedCategory === c.key ? 'bg-cobalt-700 text-white border-cobalt-700' : 'bg-transparent text-slate-700 border-line hover:border-slate-400 dark:text-ink-2'}`}
               >
                 {c.label}
               </button>
@@ -416,10 +416,10 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
             </div>
 
             <div className="pt-4 border-t border-line flex items-center justify-between mt-4">
-              <span className="text-xs font-semibold text-cobalt-700">Open Card →</span>
+              <span className="text-xs font-semibold text-cobalt-700 dark:text-cobalt-300">Open Card →</span>
               <button
                 onClick={(e) => handlePrint(e, m.id)}
-                className="p-1 px-2.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-mono flex items-center gap-1.5"
+                className="p-1 px-2.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-mono flex items-center gap-1.5 dark:bg-paper-2 dark:hover:bg-overlay dark:text-ink-2"
                 title="Print this card"
               >
                 <span>Print</span>
@@ -537,15 +537,15 @@ function renderSubModuleContent(moduleId, onNavigate) {
               </p>
               <div className="border border-line rounded p-3 bg-card flex justify-around text-center text-xs">
                 <div>
-                  <span className="block font-bold text-cobalt-700">P1 (Systolic)</span>
+                  <span className="block font-bold text-cobalt-700 dark:text-cobalt-300">P1 (Systolic)</span>
                   <span className="text-[10px] text-mute">Arterial pulse wave</span>
                 </div>
                 <div>
-                  <span className="block font-bold text-cobalt-700">P2 (Compliance)</span>
+                  <span className="block font-bold text-cobalt-700 dark:text-cobalt-300">P2 (Compliance)</span>
                   <span className="text-[10px] text-mute">Brain tissue recoil</span>
                 </div>
                 <div>
-                  <span className="block font-bold text-cobalt-700">P3 (Dicrotic)</span>
+                  <span className="block font-bold text-cobalt-700 dark:text-cobalt-300">P3 (Dicrotic)</span>
                   <span className="text-[10px] text-mute">Aortic valve closure</span>
                 </div>
               </div>
@@ -711,7 +711,7 @@ function renderSubModuleContent(moduleId, onNavigate) {
             <p className="text-xs">
               Every stroke note template must contain structured sections covering the following metrics:
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-2xs font-semibold text-slate-700">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-2xs font-semibold text-slate-700 dark:text-ink-2">
               <div className="p-2 border border-line bg-card rounded">Stroke Timeline</div>
               <div className="p-2 border border-line bg-card rounded">NIHSS/Severity</div>
               <div className="p-2 border border-line bg-card rounded">Imaging Summary</div>
@@ -744,7 +744,7 @@ function renderSubModuleContent(moduleId, onNavigate) {
               </p>
               <p className="text-xs">
                 <b>Mismatch:</b> The volume of salvageable tissue, calculated as: <br />
-                <span className="font-mono font-bold text-cobalt-700">Mismatch Volume = Penumbra Vol - Core Vol</span>
+                <span className="font-mono font-bold text-cobalt-700 dark:text-cobalt-300">Mismatch Volume = Penumbra Vol - Core Vol</span>
               </p>
             </div>
 
@@ -752,7 +752,7 @@ function renderSubModuleContent(moduleId, onNavigate) {
               <h3 className="font-bold text-sm text-ink">⏱ Late-Window Tissue Criteria (6-24 hours)</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                 <div className="p-3 border border-line bg-card rounded">
-                  <h4 className="font-bold text-cobalt-800 mb-1">DEFUSE-3 (6-16h)</h4>
+                  <h4 className="font-bold text-cobalt-800 mb-1 dark:text-cobalt-300">DEFUSE-3 (6-16h)</h4>
                   <ul className="list-disc list-inside space-y-1">
                     <li>Ischemic core volume <b>&lt; 70 mL</b></li>
                     <li>Mismatch ratio <b>&gt;= 1.8</b></li>
@@ -760,7 +760,7 @@ function renderSubModuleContent(moduleId, onNavigate) {
                   </ul>
                 </div>
                 <div className="p-3 border border-line bg-card rounded">
-                  <h4 className="font-bold text-cobalt-800 mb-1">DAWN (6-24h)</h4>
+                  <h4 className="font-bold text-cobalt-800 mb-1 dark:text-cobalt-300">DAWN (6-24h)</h4>
                   <p className="mb-1 text-[11px] leading-tight">Clinical-core mismatch tiers based on age and NIHSS:</p>
                   <ul className="list-disc list-inside space-y-1 text-[11px]">
                     <li>Age &gt;= 80: NIHSS &gt;= 10 and core &lt; 21 mL</li>
@@ -803,7 +803,7 @@ function renderSubModuleContent(moduleId, onNavigate) {
             <div className="p-4 border border-line rounded bg-paper space-y-2">
               <h3 className="font-bold text-sm text-ink flex items-center justify-between">
                 <span>1. SELECT2 &amp; ANGEL-ASPECT (Large Core EVT)</span>
-                <span className="text-[10px] bg-ok-100 text-ok-900 border border-ok-300 rounded px-1.5 py-0.5">Completed (2023)</span>
+                <span className="text-[10px] bg-ok-100 text-ok-900 border border-ok-300 rounded px-1.5 py-0.5 dark:bg-ok-900 dark:text-ok-300 dark:border-ok-800">Completed (2023)</span>
               </h3>
               <p className="text-xs text-ink-2">
                 <b>Population:</b> Acute Ischemic Stroke with large core (ASPECTS 3-5 or core volume &gt;= 50 mL on CTP). <br />
@@ -814,7 +814,7 @@ function renderSubModuleContent(moduleId, onNavigate) {
             <div className="p-4 border border-line rounded bg-paper space-y-2">
               <h3 className="font-bold text-sm text-ink flex items-center justify-between">
                 <span>2. ELAN &amp; OPTIMAS (Early DOAC Start)</span>
-                <span className="text-[10px] bg-ok-100 text-ok-900 border border-ok-300 rounded px-1.5 py-0.5">Completed (2023-2024)</span>
+                <span className="text-[10px] bg-ok-100 text-ok-900 border border-ok-300 rounded px-1.5 py-0.5 dark:bg-ok-900 dark:text-ok-300 dark:border-ok-800">Completed (2023-2024)</span>
               </h3>
               <p className="text-xs text-ink-2">
                 <b>Population:</b> Non-valvular atrial fibrillation presenting with acute ischemic stroke. <br />
@@ -825,7 +825,7 @@ function renderSubModuleContent(moduleId, onNavigate) {
             <div className="p-4 border border-line rounded bg-paper space-y-2">
               <h3 className="font-bold text-sm text-ink flex items-center justify-between">
                 <span>3. ENRICH &amp; SWITCH (ICH Minimally Invasive Surgery)</span>
-                <span className="text-[10px] bg-ok-100 text-ok-900 border border-ok-300 rounded px-1.5 py-0.5">Completed (2024)</span>
+                <span className="text-[10px] bg-ok-100 text-ok-900 border border-ok-300 rounded px-1.5 py-0.5 dark:bg-ok-900 dark:text-ok-300 dark:border-ok-800">Completed (2024)</span>
               </h3>
               <p className="text-xs text-ink-2">
                 <b>Population:</b> Spontaneous Intracerebral Hemorrhage (lobar 30-80 mL for ENRICH; deep/basal ganglia for SWITCH). <br />
@@ -913,7 +913,7 @@ function renderSubModuleContent(moduleId, onNavigate) {
                 <li><b>M5:</b> Lateral MCA territory (superior to M2)</li>
                 <li><b>M6:</b> Posterior MCA territory (superior to M3)</li>
               </ul>
-              <p className="text-xs font-semibold text-cobalt-800">
+              <p className="text-xs font-semibold text-cobalt-800 dark:text-cobalt-300">
                 AHA/ASA Guideline: ASPECTS &gt;= 6 is class 1A indication for EVT in the 0-6h window.
               </p>
             </div>
@@ -930,7 +930,7 @@ function renderSubModuleContent(moduleId, onNavigate) {
                 <li><b>Left Cerebellar:</b> 1 point</li>
                 <li><b>Right Cerebellar:</b> 1 point</li>
               </ul>
-              <p className="text-xs font-semibold text-cobalt-800">
+              <p className="text-xs font-semibold text-cobalt-800 dark:text-cobalt-300">
                 Basilar EVT indications (ATTENTION/BAOCHE) target PC-ASPECTS &gt;= 6.
               </p>
             </div>
@@ -1030,7 +1030,7 @@ function renderSubModuleContent(moduleId, onNavigate) {
               </p>
               <div className="grid grid-cols-3 gap-2 text-center text-xs">
                 <div className="p-2 border border-line bg-card rounded">
-                  <span className="block font-bold text-ok-900">3.0 - 5.0</span>
+                  <span className="block font-bold text-ok-900 dark:text-ok-300">3.0 - 5.0</span>
                   <span className="text-[10px]">Normal reactivity</span>
                 </div>
                 <div className="p-2 border border-line bg-card rounded bg-caution-soft text-caution">
@@ -1082,7 +1082,7 @@ function renderSubModuleContent(moduleId, onNavigate) {
               </li>
               <li>
                 <strong>Read-Aloud Checklist:</strong>
-                <ul className="list-disc list-inside ml-4 mt-1 space-y-1 text-slate-700">
+                <ul className="list-disc list-inside ml-4 mt-1 space-y-1 text-slate-700 dark:text-ink-2">
                   <li>Confirm Patient Identity (2 identifiers).</li>
                   <li>Confirm Symptom Onset / LKW time is within 4.5 hours.</li>
                   <li>Confirm CT scan shows no Intracranial Hemorrhage.</li>
@@ -1105,24 +1105,24 @@ function renderSubModuleContent(moduleId, onNavigate) {
             <h3 className="font-bold text-sm text-ink">📅 Day-by-Day Senior Resident Timeline</h3>
             <div className="space-y-4 text-xs">
               <div>
-                <h4 className="font-bold text-cobalt-800">Day 0: Admission &amp; Stabilization</h4>
-                <ul className="list-disc list-inside space-y-1 text-slate-700">
+                <h4 className="font-bold text-cobalt-800 dark:text-cobalt-300">Day 0: Admission &amp; Stabilization</h4>
+                <ul className="list-disc list-inside space-y-1 text-slate-700 dark:text-ink-2">
                   <li>Confirm ICU or telemetry level of care orders.</li>
                   <li>Establish blood pressure parameters (e.g. SBP &lt; 180 post-lytics/EVT; &lt; 220 if no lytic).</li>
                   <li>Perform and document dysphagia screening; keep NPO if screen failed.</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-bold text-cobalt-800">Day 1: Secondary Prevention Workup</h4>
-                <ul className="list-disc list-inside space-y-1 text-slate-700">
+                <h4 className="font-bold text-cobalt-800 dark:text-cobalt-300">Day 1: Secondary Prevention Workup</h4>
+                <ul className="list-disc list-inside space-y-1 text-slate-700 dark:text-ink-2">
                   <li>Start antithrombotics (e.g. DAPT for minor stroke/TIA, single antiplatelet for others).</li>
                   <li>Order MRI Brain, CTA Head/Neck (if not done), Echocardiogram, and lipids panel.</li>
                   <li>Verify physical therapy (PT) and occupational therapy (OT) evaluations are placed.</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-bold text-cobalt-800">Day 2-3: Etiology &amp; Discharge Planning</h4>
-                <ul className="list-disc list-inside space-y-1 text-slate-700">
+                <h4 className="font-bold text-cobalt-800 dark:text-cobalt-300">Day 2-3: Etiology &amp; Discharge Planning</h4>
+                <ul className="list-disc list-inside space-y-1 text-slate-700 dark:text-ink-2">
                   <li>Review telemetry for paroxysmal atrial fibrillation (AF).</li>
                   <li>Optimize medical regimen (add statin, adjust anti-hypertensives).</li>
                   <li>Begin discharge coordination: verify rehabilitation bed or outpatient home health setup.</li>

@@ -250,4 +250,23 @@ html.dark {
 html.dark {
   --shadow:    0 1px 2px rgba(0,0,0,.4),0 12px 30px -18px rgba(0,0,0,.7);
   --shadow-lg: 0 2px 8px rgba(0,0,0,.5),0 28px 60px -26px rgba(0,0,0,.8);
+
+  /* ── Cycle1 dark-contrast fix ──────────────────────────────────────
+     The prototype surface/text/border aliases above were hardcoded to
+     fixed light slate steps (slate-0/100/300/500/600) that DON'T remap.
+     They back the CSS-class surfaces in styles.css (.v7-card, .v7-study,
+     .v7-nav-item, .v7-stype, etc.) and the --teal/coral/gold/ok washes —
+     so in dark every card stayed white and its text failed contrast.
+     Remap them onto the dark surface tokens (which DO invert). Light is
+     untouched: these overrides only apply under [data-theme="dark"]/.dark.
+     The 50-step washes flip to deep 950 steps so chip text stays legible. */
+  --panel:     rgb(var(--bg-card));     /* card/nav surface → slate-900 */
+  --panel-2:   rgb(var(--bg-overlay));  /* subdued chip surface → slate-800 */
+  --ink-soft:  rgb(var(--text-muted));  /* muted body → slate-300 */
+  --faint:     rgb(var(--text-faint));  /* faint label → slate-400 */
+  --line-2:    rgb(var(--border-strong)); /* strong hairline → slate-700 */
+  --teal-wash: rgb(var(--cobalt-900));
+  --coral-wash:rgb(var(--crit-950));
+  --gold-wash: rgb(var(--warn-950));
+  --ok-wash:   rgb(var(--ok-950));
 }
