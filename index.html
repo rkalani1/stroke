@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     <meta name="description" content="Comprehensive clinical decision support tool for stroke management including NIHSS, ASPECTS, and treatment protocols">
-    <meta name="theme-color" content="#3B82F6">
+    <meta name="theme-color" content="#0A6571">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -46,26 +46,26 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Google-Fonts CSS loaded non-blocking via media-trick + font-display:swap to keep
          render unblocked on first paint. Fallback inside <noscript> for non-JS environments. -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
-    <link rel="preload" as="script" href="app.js?v=6.0.4">
-    <link rel="stylesheet" href="tailwind.css?v=6.0.2">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap"></noscript>
+    <link rel="preload" as="script" href="app.js?v=6.2.0">
+    <link rel="stylesheet" href="tailwind.css?v=6.2.0">
     <style>
         :root {
             color-scheme: light;
 
-            /* Brand — confident blue/teal */
-            --accent:        #0a6cff;
-            --accent-2:      #0aa6c0;
-            --accent-soft:   #e6efff;
-            --accent-ink:    #0a3a8a;
+            /* Brand — v7 deep teal */
+            --accent:        #0C7C8C;
+            --accent-2:      #0A6571;
+            --accent-soft:   #E2F0F1;
+            --accent-ink:    #0A3A4D;
 
-            /* Surfaces */
-            --app-bg:        #f5f7fb;
-            --app-bg-accent: #eaf0fa;
-            --surface:       #ffffff;
-            --surface-2:     #f9fbff;
-            --surface-3:     #eef3fb;
+            /* Surfaces — v7 warm paper */
+            --app-bg:        #FBFAF6;
+            --app-bg-accent: #F2EFE6;
+            --surface:       #FFFFFF;
+            --surface-2:     #FBFAF6;
+            --surface-3:     #F2EFE6;
 
             /* Shell / panels (legacy aliases — re-pointed to token surfaces) */
             --shell-bg:      rgba(255, 255, 255, 0.96);
@@ -76,8 +76,8 @@
             --card-shadow:   0 1px 0 rgba(15, 23, 42, .04), 0 6px 16px -10px rgba(15, 23, 42, .18);
 
             /* Type colors — kept tone names for compatibility */
-            --text-strong:   #0b1220;
-            --text-muted:    #5b6a83;
+            --text-strong:   #14171D;
+            --text-muted:    #5b6577;
 
             /* Geometry / elevation */
             --radius:        14px;
@@ -89,16 +89,16 @@
         html.dark {
             color-scheme: dark;
 
-            --accent:        #4d8dff;
-            --accent-2:      #2cc0d9;
-            --accent-soft:   #0e2547;
-            --accent-ink:    #9ec3ff;
+            --accent:        #3FB6C4;
+            --accent-2:      #2C99A6;
+            --accent-soft:   #11272B;
+            --accent-ink:    #8FD9E2;
 
-            --app-bg:        #07101f;
-            --app-bg-accent: #0e1a30;
-            --surface:       #0c1626;
-            --surface-2:     #0a1322;
-            --surface-3:     #111c30;
+            --app-bg:        #101317;
+            --app-bg-accent: #171B21;
+            --surface:       #171B21;
+            --surface-2:     #14171D;
+            --surface-3:     #1E232B;
 
             --shell-bg:      rgba(12, 22, 38, 0.94);
             --shell-border:  rgba(148, 163, 184, 0.12);
@@ -107,14 +107,14 @@
             --panel-border:  rgba(148, 163, 184, 0.12);
             --card-shadow:   0 1px 0 rgba(255, 255, 255, .02), 0 10px 30px -16px rgba(0, 0, 0, .7);
 
-            --text-strong:   #e7ecf5;
-            --text-muted:    #93a3b8;
+            --text-strong:   #ECEAE2;
+            --text-muted:    #A39E92;
 
             --shadow-pop:    0 24px 60px -20px rgba(0, 0, 0, .8), 0 4px 12px rgba(0, 0, 0, .4);
         }
         html.dark body {
             background: radial-gradient(900px circle at 10% -10%, var(--app-bg-accent), transparent 60%),
-                        linear-gradient(180deg, var(--app-bg) 0%, #0b1220 100%);
+                        linear-gradient(180deg, var(--app-bg) 0%, #0B0D10 100%);
             color: var(--text-strong);
         }
         /* Dark-theme tweaks for common Tailwind surface classes used throughout the app.
@@ -153,7 +153,7 @@
         html.dark ::placeholder { color: #64748b; }
 
         body {
-            font-family: "Manrope", "Segoe UI", sans-serif;
+            font-family: "Public Sans", "Segoe UI", sans-serif;
             background:
                 radial-gradient(900px circle at 12% -10%, var(--app-bg-accent), transparent 60%),
                 linear-gradient(180deg, var(--app-bg) 0%, var(--surface-3) 100%);
@@ -164,11 +164,11 @@
         html.dark body {
             background:
                 radial-gradient(900px circle at 12% -10%, var(--app-bg-accent), transparent 60%),
-                linear-gradient(180deg, var(--app-bg) 0%, #050b16 100%);
+                linear-gradient(180deg, var(--app-bg) 0%, #08090B 100%);
         }
 
         h1, h2, h3, h4, h5 {
-            font-family: "Newsreader", "Times New Roman", serif;
+            font-family: "Bricolage Grotesque", "Times New Roman", serif;
             letter-spacing: -0.01em;
         }
 
@@ -188,9 +188,9 @@
             border-radius: calc(var(--radius-lg) - 6px) calc(var(--radius-lg) - 6px) 0 0;
         }
         /* v5.31: brand mark — re-skin the existing icon-wrap (h-9 w-9 rounded-xl
-           border-blue-200 bg-blue-50 text-blue-700) inside .app-header to use
+           border-cobalt-200 bg-cobalt-50 text-cobalt-700) inside .app-header to use
            the accent gradient. CSS-only; no JSX edit. */
-        .app-header .border-blue-200.bg-blue-50.text-blue-700 {
+        .app-header .border-cobalt-200.bg-cobalt-50.text-cobalt-700 {
             background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 110%) !important;
             border-color: transparent !important;
             color: #fff !important;
@@ -323,11 +323,11 @@
             border-radius: 10px;
             margin: 6px 4px;
         }
-        nav[aria-label="Mobile navigation"] button.text-blue-600 {
+        nav[aria-label="Mobile navigation"] button.text-cobalt-600 {
             color: var(--accent-ink) !important;
             background: var(--accent-soft);
         }
-        nav[aria-label="Mobile navigation"] button.text-blue-600 i {
+        nav[aria-label="Mobile navigation"] button.text-cobalt-600 i {
             color: var(--accent) !important;
         }
 
@@ -543,7 +543,7 @@
         /* Loading spinner */
         .spinner {
             border: 3px solid #f3f4f6;
-            border-top: 3px solid #3B82F6;
+            border-top: 3px solid #0C7C8C;
             border-radius: 50%;
             width: 20px;
             height: 20px;
@@ -620,7 +620,7 @@
             }
 
             /* Ensure good contrast */
-            .bg-gray-50, .bg-blue-50, .bg-green-50, .bg-yellow-50, .bg-red-50 {
+            .bg-gray-50, .bg-cobalt-50, .bg-green-50, .bg-yellow-50, .bg-red-50 {
                 background: white !important;
                 border: 1px solid #ddd !important;
             }
@@ -664,7 +664,7 @@
         /* Better mobile touch feedback */
         @media (max-width: 640px) {
             button, a {
-                -webkit-tap-highlight-color: rgba(59, 130, 246, 0.2);
+                -webkit-tap-highlight-color: rgba(10, 101, 113, 0.2);
             }
 
             /* Larger touch targets for mobile */
@@ -893,7 +893,21 @@
             return false;
         };
     </script>
-    <script src="app.js?v=6.0.4" defer></script>
+    <!-- Private institutional layer (local-only, gitignored).
+         When private/institutional.js exists on disk it sets
+         window.__INSTITUTIONAL_LOCAL__ before app.js loads.
+         A 404 here is intentional and harmless — the public build
+         has no such file. Do NOT commit private/institutional.js. -->
+    <script>
+      (function () {
+        var s = document.createElement('script');
+        s.src = 'private/institutional.js';
+        s.onerror = function () { /* 404 expected on public build — no-op */ };
+        // Insert synchronously before app.js so the global is set in time.
+        document.currentScript.parentNode.insertBefore(s, document.currentScript);
+      })();
+    </script>
+    <script src="app.js?v=6.2.0" defer></script>
     <footer style="margin-top: 40px; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb;">
       <p>This is a synthetic public demo site for educational and reference purposes only. Not for clinical decision-making or real patient care.</p>
     </footer>

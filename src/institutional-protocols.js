@@ -469,6 +469,54 @@ export const GENERALIZABILITY_LIMITATIONS = [
 ];
 
 // =====================================================================
+// =====================================================================
+// Private institutional layer — local-only override hook
+// =====================================================================
+// The public build exports null here. When the local gitignored file
+//   private/institutional.js
+// is present on disk and served (via the optional <script> tag in
+// index.html), it sets window.__INSTITUTIONAL_LOCAL__ to a structured
+// object before app.js loads. This function reads that global.
+//
+// Consumers: src/app.jsx reads this once at render to surface a
+// clearly-labelled "Institutional (local — not public)" section in the
+// Protocols & Algorithms tab. The section is completely absent in the
+// public/deployed build where no local file exists.
+//
+// Shape expected from window.__INSTITUTIONAL_LOCAL__:
+//   {
+//     institutionName: string,      // e.g. "Example General Hospital"
+//     sections: [
+//       {
+//         id: string,               // e.g. "bp-management"
+//         title: string,            // e.g. "BP Management Protocol"
+//         subsections: [
+//           {
+//             heading: string,
+//             items: string[],       // bullet-point text lines
+//           }
+//         ]
+//       }
+//     ],
+//     contacts: [                   // optional on-call / paging contacts
+//       { role: string, contact: string }
+//     ],
+//     lastUpdated: string,          // ISO date string or free text
+//     disclaimer: string            // optional disclaimer / caveat
+//   }
+//
+// Returns null when not present (public build / default).
+export const getLocalInstitutionalContent = () => {
+  if (typeof window === 'undefined') return null;
+  const local = window.__INSTITUTIONAL_LOCAL__;
+  if (!local || typeof local !== 'object') return null;
+  // Minimal shape validation — must have institutionName and sections array.
+  if (typeof local.institutionName !== 'string') return null;
+  if (!Array.isArray(local.sections)) return null;
+  return local;
+};
+
+// =====================================================================
 // Backwards-compat aliases (legacy imports)
 // =====================================================================
 export const LEGACY_BP_PROTOCOLS = INSTITUTIONAL_BP_PROTOCOLS;

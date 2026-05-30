@@ -76,9 +76,9 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
   const colorByEligible = (e) => e === true ? 'border-ok-400 bg-ok-50' : e === 'consider' ? 'border-yellow-400 bg-yellow-50' : e === false ? 'border-rose-400 bg-rose-50' : 'border-slate-300 bg-slate-50';
 
   return (
-    <div className="p-3 rounded-lg border border-blue-300 bg-white">
-      <h4 className="font-bold text-blue-900 mb-2 flex items-center gap-2">
-        <span className="inline-block px-2 py-0.5 bg-blue-900 text-white text-xs rounded">EX</span>
+    <div className="p-3 rounded-lg border border-cobalt-300 bg-white">
+      <h4 className="font-bold text-cobalt-900 mb-2 flex items-center gap-2">
+        <span className="inline-block px-2 py-0.5 bg-cobalt-900 text-white text-xs rounded">EX</span>
         IVT Eligibility Decision Algorithm
       </h4>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs mb-3">
@@ -108,10 +108,10 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
         <div className="flex items-center flex-wrap gap-2 mb-1">
           <strong className="text-sm">{result.recommendation || 'Awaiting input'}</strong>
           <CorChip cor={result.cor} /><LoeChip loe={result.loe} />
-          {result.dose && <span className="inline-block text-xs font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-900 border border-blue-300">TNK {result.dose} mg</span>}
+          {result.dose && <span className="inline-block text-xs font-bold px-2 py-0.5 rounded bg-cobalt-100 text-cobalt-900 border border-cobalt-300">TNK {result.dose} mg</span>}
         </div>
         {result.reason && <p className="text-xs text-slate-700">{result.reason}</p>}
-        {result.nextStep && <p className="text-xs text-blue-800 mt-1"><strong>Next:</strong> {result.nextStep}</p>}
+        {result.nextStep && <p className="text-xs text-cobalt-800 mt-1"><strong>Next:</strong> {result.nextStep}</p>}
         {result.alternativeAgent && <p className="text-xs text-slate-600 mt-1">{result.alternativeAgent}</p>}
         {result.imagingGuidance && <p className="text-xs text-cobalt-800 mt-1">{result.imagingGuidance}</p>}
         {Array.isArray(result.warnings) && result.warnings.length > 0 && (
@@ -122,9 +122,9 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
       </div>
       {parseFloat(state.hoursFromLKW) > 4.5 && result.eligible === 'consider' && (
         <details className="mt-2">
-          <summary className="cursor-pointer text-xs font-semibold text-blue-900">Read-aloud patient discussion script (extended-window IVT)</summary>
-          <div className="mt-1 p-2 rounded border border-blue-200 bg-blue-50 text-xs whitespace-pre-wrap">{EXTENDED_WINDOW_IVT_DISCUSSION}</div>
-          <button type="button" onClick={() => { try { navigator.clipboard.writeText(EXTENDED_WINDOW_IVT_DISCUSSION); } catch (_) {} }} className="mt-1 px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-900 text-xs rounded">Copy</button>
+          <summary className="cursor-pointer text-xs font-semibold text-cobalt-900">Read-aloud patient discussion script (extended-window IVT)</summary>
+          <div className="mt-1 p-2 rounded border border-cobalt-200 bg-cobalt-50 text-xs whitespace-pre-wrap">{EXTENDED_WINDOW_IVT_DISCUSSION}</div>
+          <button type="button" onClick={() => { try { navigator.clipboard.writeText(EXTENDED_WINDOW_IVT_DISCUSSION); } catch (_) {} }} className="mt-1 px-2 py-1 bg-cobalt-100 hover:bg-cobalt-200 text-cobalt-900 text-xs rounded">Copy</button>
         </details>
       )}
     </div>
@@ -177,7 +177,7 @@ const DOACIVTCard = ({ defaults = {} }) => {
         <label className="flex items-center gap-1"><input type="checkbox" checked={state.disablingDeficit} onChange={(e) => set('disablingDeficit', e.target.checked)} />Disabling stroke deficits</label>
         <label className="flex items-center gap-1"><input type="checkbox" checked={state.endovascularCandidate} onChange={(e) => set('endovascularCandidate', e.target.checked)} />EVT candidate (bypass IVT)</label>
       </div>
-      <div className={`p-2 rounded border-2 ${r.eligible === true ? 'border-ok-400 bg-ok-50' : r.eligible === 'consider' ? 'border-yellow-400 bg-yellow-50' : r.eligible === 'preferred-other' ? 'border-blue-400 bg-blue-50' : r.eligible === false ? 'border-rose-400 bg-rose-50' : 'border-slate-200'}`}>
+      <div className={`p-2 rounded border-2 ${r.eligible === true ? 'border-ok-400 bg-ok-50' : r.eligible === 'consider' ? 'border-yellow-400 bg-yellow-50' : r.eligible === 'preferred-other' ? 'border-cobalt-400 bg-cobalt-50' : r.eligible === false ? 'border-rose-400 bg-rose-50' : 'border-slate-200'}`}>
         <div className="flex items-center flex-wrap gap-2">
           <strong className="text-sm">{r.pathway ? r.pathway.toUpperCase() : 'Pathway'}</strong>
           <CorChip cor={r.cor} /><LoeChip loe={r.loe} />
@@ -190,7 +190,7 @@ const DOACIVTCard = ({ defaults = {} }) => {
         {Array.isArray(r.missing) && r.missing.length > 0 && (
           <p className="text-xs text-rose-800 mt-1"><strong>Missing:</strong> {r.missing.join('; ')}</p>
         )}
-        {r.requirement && <p className="text-xs text-blue-900 mt-1"><strong>Requirement:</strong> {r.requirement}</p>}
+        {r.requirement && <p className="text-xs text-cobalt-900 mt-1"><strong>Requirement:</strong> {r.requirement}</p>}
         {r.documentation && <p className="text-xs text-slate-600 mt-1"><strong>Documentation:</strong> {r.documentation}</p>}
       </div>
     </div>
@@ -464,7 +464,7 @@ const CorLoeKeyCard = () => (
 export const PocketCards = ({ defaults = {} }) => {
   return (
     <div className="flex flex-col gap-3" role="region" aria-label="Protocol cards">
-      <div className="px-3 py-2 bg-gradient-to-r from-blue-900 to-cobalt-800 text-white rounded-lg flex items-center justify-between">
+      <div className="px-3 py-2 bg-gradient-to-r from-cobalt-900 to-cobalt-800 text-white rounded-lg flex items-center justify-between">
         <div>
           <h3 className="font-bold text-sm">Protocol Cards — Example Institutional Patterns</h3>
           <p className="text-xs opacity-90">Illustrative decision-support cards based on current published evidence. Not endorsed by any named institution.</p>

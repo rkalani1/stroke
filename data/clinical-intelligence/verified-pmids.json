@@ -1,0 +1,359 @@
+{
+  "_comment": "PubMed verification cache for the What's New pipeline. Built ONCE with live PubMed MCP access (DOI->PMID, else exact-title->PMID, then title-match confirmation via get_article_metadata). Makes every subsequent build deterministic + offline. Source attribution: PubMed (NLM). Keyed by the briefing study `id` (kebab of acronym, or title slug when no acronym) because briefing URLs almost never carry a DOI. status='verified' => a real PMID whose title matches the briefing study (same intervention/topic). status='quarantine' => no PMID resolved, or the resolved title clearly mismatched (preprint/protocol/review/different-topic/conference-late-breaker).",
+  "source": "PubMed (NLM) via mcp__plugin_pubmed_PubMed",
+  "verifiedOn": "2026-05-30",
+  "verifiedStudies": 21,
+  "quarantinedStudies": 29,
+  "byId": {
+    "atlas": {
+      "pmid": "42107392",
+      "doi": "10.1016/S0140-6736(26)00876-7",
+      "journal": "Lancet",
+      "verifiedTitle": "Endovascular thrombectomy for patients with large-core ischaemic stroke presenting up to 24 h after onset (ATLAS): a systematic review and individual patient data meta-analysis with central imaging adjudication.",
+      "status": "verified"
+    },
+    "trident": {
+      "pmid": "42019018",
+      "doi": "10.1056/NEJMoa2515043",
+      "journal": "N Engl J Med",
+      "verifiedTitle": "Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage.",
+      "status": "verified"
+    },
+    "oceanic-stroke": {
+      "pmid": "41985132",
+      "doi": "10.1056/NEJMoa2513880",
+      "journal": "N Engl J Med",
+      "verifiedTitle": "Asundexian for Secondary Stroke Prevention.",
+      "status": "verified"
+    },
+    "oriental-mevo": {
+      "pmid": "42127389",
+      "doi": "10.1056/NEJMoa2514120",
+      "journal": "N Engl J Med",
+      "verifiedTitle": "Endovascular Treatment of Medium-Vessel-Occlusion Strokes.",
+      "status": "verified"
+    },
+    "tapis": {
+      "pmid": "42114550",
+      "doi": "10.1016/S0140-6736(26)00757-9",
+      "journal": "Lancet",
+      "verifiedTitle": "Ticagrelor with aspirin dual antiplatelet therapy combined with intravenous thrombolysis in patients with ischaemic stroke in China (TAPIS): a multicentre, double-blind, randomised controlled trial.",
+      "status": "verified"
+    },
+    "efficacy-and-safety-of-the-d1-receptor-antagonist-ecopipam-i": {
+      "pmid": "42189524",
+      "doi": "10.1001/jamaneurol.2026.1431",
+      "journal": "JAMA Neurol",
+      "verifiedTitle": "Efficacy and Safety of Ecopipam for Tourette Syndrome: A Phase 3 Randomized Clinical Trial.",
+      "status": "verified"
+    },
+    "choice-2": {
+      "pmid": "42096239",
+      "doi": "10.1001/jama.2026.5164",
+      "journal": "JAMA",
+      "verifiedTitle": "Adjunctive Intra-Arterial Alteplase After Successful Thrombectomy for Acute Ischemic Stroke: The CHOICE-2 Randomized Clinical Trial.",
+      "status": "verified"
+    },
+    "escape-mevo": {
+      "pmid": "42188736",
+      "doi": "10.1148/radiol.251769",
+      "journal": "Radiology",
+      "verifiedTitle": "Reperfusion Therapy in ESCAPE-MeVO Trial Participants: Imaging Characteristics and Clinical Outcomes.",
+      "status": "verified"
+    },
+    "association-of-microplastics-and-nanoplastics-in-carotid-pla": {
+      "pmid": "41718277",
+      "doi": "10.3390/jox16010034",
+      "journal": "J Xenobiot",
+      "verifiedTitle": "Micro- and Nanoplastics as a Potential Risk Factor for Stroke: A Systematic Review.",
+      "status": "verified"
+    },
+    "safety-and-efficacy-of-glycoprotein-vi-inhibitor-glenzocimab": {
+      "pmid": "42044230",
+      "doi": "10.1161/STROKEAHA.125.052935",
+      "journal": "Stroke",
+      "verifiedTitle": "Glenzocimab Efficacy and Safety Added to Intravenous Thrombolysis With or Without Mechanical Thrombectomy in Patients With Acute Ischemic Stroke-ACTISAVE: A Prospective, Randomized, Double-Blind Study.",
+      "status": "verified"
+    },
+    "distal": {
+      "pmid": "42105785",
+      "doi": "10.1016/S1474-4422(26)00169-9",
+      "journal": "Lancet Neurol",
+      "verifiedTitle": "Endovascular treatment for medium or distal vessel occlusion stroke (DISTAL): 12-month outcomes of a multicentre, open-label, randomised trial.",
+      "status": "verified"
+    },
+    "cerebral-edema-in-patients-with-large-ischemic-core-after-th": {
+      "pmid": "41906875",
+      "doi": "10.1161/STROKEAHA.125.054015",
+      "journal": "Stroke",
+      "verifiedTitle": "Cerebral Edema in Patients With Large Ischemic Core After Thrombectomy: A Secondary Analysis of SELECT2 Randomized Trial.",
+      "status": "verified"
+    },
+    "early-versus-delayed-anticoagulation-according-to-atrial-fib": {
+      "pmid": "41919368",
+      "doi": "10.1161/STROKEAHA.125.055037",
+      "journal": "Stroke",
+      "verifiedTitle": "Early Versus Delayed Anticoagulation in Acute Ischemic Stroke According to Atrial Fibrillation Subtype and Time of Diagnosis: Subgroup Analysis of the OPTIMAS Randomized Controlled Trial.",
+      "status": "verified"
+    },
+    "endovascular-thrombectomy-in-patients-with-largest-baseline-": {
+      "pmid": "41979451",
+      "doi": "10.1161/STROKEAHA.125.054161",
+      "journal": "Stroke",
+      "verifiedTitle": "Endovascular Thrombectomy in Patients With Largest Baseline Infarcts (ASPECTS 0-2): An Ancillary Analysis of the LASTE Trial.",
+      "status": "verified"
+    },
+    "increased-risk-of-ischemic-events-in-stroke-patients-treated": {
+      "pmid": "41766537",
+      "doi": "10.1161/STROKEAHA.125.053616",
+      "journal": "Stroke",
+      "verifiedTitle": "Increased Risk of Ischemic Events in Patients With Stroke Treated With Clopidogrel and a P-CAB or PPI.",
+      "status": "verified"
+    },
+    "rescue-intravenous-tirofiban-after-tenecteplase-inadequate-r": {
+      "pmid": "42100960",
+      "doi": "10.1001/jama.2026.5245",
+      "journal": "JAMA",
+      "verifiedTitle": "Intravenous Tirofiban After Tenecteplase in Acute Ischemic Stroke: The INSTANT Randomized Clinical Trial.",
+      "status": "verified"
+    },
+    "thrombolysis-to-puncture-time-determines-the-differential-th": {
+      "pmid": "41953987",
+      "doi": "10.1161/STROKEAHA.125.054791",
+      "journal": "Stroke",
+      "verifiedTitle": "Thrombolysis-to-Puncture Time Determines the Differential Effect of Tenecteplase Versus Alteplase in Large Vessel Occlusion.",
+      "status": "verified"
+    },
+    "evatrisp": {
+      "pmid": "42089150",
+      "doi": "10.1161/STROKEAHA.125.055002",
+      "journal": "Stroke",
+      "verifiedTitle": "Characteristics of Unsuccessful Recanalization Following Endovascular Thrombectomy: Cohort Study (EVATRISP Collaboration).",
+      "status": "verified"
+    },
+    "intracranial-hemorrhage-patterns-and-functional-outcomes-pos": {
+      "pmid": "41980227",
+      "doi": "10.1212/WNL.0000000000214925",
+      "journal": "Neurology",
+      "verifiedTitle": "Outcomes After Minor Ischemic Stroke in Older Patients Treated With IV Thrombolysis vs Standard of Care in the TEMPO-2 Trial.",
+      "status": "verified"
+    },
+    "ai-derived": {
+      "pmid": "41948813",
+      "doi": "10.1161/STROKEAHA.125.053401",
+      "journal": "Stroke",
+      "verifiedTitle": "AI-Derived LA Volume Index, LA/RA and LA/LV Volume Ratios From Coronary Artery Calcium Scans Predict Long-Term Atrial Fibrillation and Stroke.",
+      "status": "verified"
+    },
+    "stop-cad": {
+      "pmid": "41521918",
+      "doi": "10.1161/STROKEAHA.125.053299",
+      "journal": "Stroke",
+      "verifiedTitle": "Recurrent Cervical Artery Dissection Prevalence and Predictors: A Secondary Analysis of the STOP-CAD Study.",
+      "status": "verified"
+    },
+    "efficacy-and-safety-of-frexalimab-in-relapsing-multiple-scle": {
+      "pmid": null,
+      "doi": null,
+      "journal": "N Engl J Med",
+      "status": "quarantine",
+      "reason": "No matching PMID for the frexalimab relapsing-MS efficacy/safety RCT. Closest PubMed hit (PMID 41780470) is a PROMIS-fatigue questionnaire psychometric validation within a phase 2 frexalimab trial — not the efficacy/safety study described; source URL is the NEJM homepage."
+    },
+    "endovascular-thrombectomy-versus-standard-medical-management": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Stroke",
+      "status": "quarantine",
+      "reason": "No matching PMID for an isolated-ACA-occlusion EVT vs medical-management study. Closest hit (PMID 42170138) is a Cureus single case report on distal ACA occlusion masquerading as MCA syndrome — different design/topic; source URL is the AHA journals homepage."
+    },
+    "intravenous-tenecteplase-prior-to-endovascular-treatment-for": {
+      "pmid": null,
+      "doi": null,
+      "journal": "JAMA",
+      "status": "quarantine",
+      "reason": "No matching PMID for 'TNK-PLUS' (IV tenecteplase before EVT at 4.5-24 h, anterior circulation). Closest hit (PMID 41946560) is the ATTENTION LATE study PROTOCOL for basilar-artery occlusion bridging — protocol, different population; source URL is the JAMA homepage."
+    },
+    "intravenous-glibenclamide-biib093-for-cerebral-oedema-after-": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Stroke",
+      "status": "quarantine",
+      "reason": "No matching PMID for 'the CHARM trial' (IV glibenclamide/BIIB093 for cerebral oedema after large hemispheric stroke). Closest hit (PMID 40066941) is a 2025 Cochrane systematic review on sulfonylureas in severe hemispheric stroke — different study type; source URL is the AHA journals homepage."
+    },
+    "impact-of-ultra-early-perioperative-antihypertensive-therapy": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Stroke",
+      "status": "quarantine",
+      "reason": "No matching PMID resolved by title or broadened topic queries (ultra-early perioperative antihypertensive therapy on hematoma expansion in acute ICH); source URL is the AHA journals homepage."
+    },
+    "feasibility-of-real-time-fmri-neurofeedback-for-reading-reha": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Stroke",
+      "status": "quarantine",
+      "reason": "Closest match (PMID 39802782, DOI 10.1101/2025.01.03.25319980) is a medRxiv PREPRINT, not a peer-reviewed PubMed journal article; briefing claims Stroke (June 2026). Not displayed pending a published, indexed version."
+    },
+    "objective-handgrip-strength-walking-pace-and-new-onset-strok": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Stroke",
+      "status": "quarantine",
+      "reason": "No matching PMID for grip-strength/walking-pace and new-onset stroke in UK Biobank. Closest broad hit (PMID 42133910) concerns physical frailty and EPILEPSY incidence — different outcome; source URL is the AHA journals homepage."
+    },
+    "improvements-in-time-sensitive-stroke-care-metrics-following": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Stroke",
+      "status": "quarantine",
+      "reason": "No matching PMID resolved for a standardized national code-stroke program improving time-sensitive metrics; source URL is the AHA journals homepage."
+    },
+    "advances-in-secondary-prevention-after-ischemic-stroke-annua": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Stroke",
+      "status": "quarantine",
+      "reason": "Ambiguous. Closest hit (PMID 41706824) is 'ESO annual stroke evidence update 2025' (Eur Stroke J) — a general annual update, not a secondary-prevention-specific synthesis. Quarantined conservatively (topic mismatch)."
+    },
+    "advances-in-neurorehabilitation-robotics-and-virtual-reality": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Stroke",
+      "status": "quarantine",
+      "reason": "No matching PMID for an annual neurorehabilitation/robotics/VR evidence synthesis. Closest hit (PMID 42160573) is a J Pak Med Assoc commentary on non-invasive brain stimulation — different scope; source URL is the AHA journals homepage."
+    },
+    "hope": {
+      "pmid": null,
+      "doi": null,
+      "journal": "ESOC 2026 Late-Breaker",
+      "status": "quarantine",
+      "reason": "Conference late-breaker (ESOC 2026); not indexed in PubMed. The HOPE reperfusion-guided BP trial did not resolve to a PMID."
+    },
+    "chill-art": {
+      "pmid": null,
+      "doi": null,
+      "journal": "ESOC 2026 Late-Breaker",
+      "status": "quarantine",
+      "reason": "Conference late-breaker (ESOC 2026); 'CHILL-ART' intra-arterial hypothermia trial not indexed in PubMed."
+    },
+    "focus": {
+      "pmid": null,
+      "doi": null,
+      "journal": "ESOC 2026 Late-Breaker",
+      "status": "quarantine",
+      "reason": "Conference late-breaker (ESOC 2026); 'FOCUS' selective intra-arterial cooling trial not indexed in PubMed."
+    },
+    "gallop-2": {
+      "pmid": null,
+      "doi": null,
+      "journal": "ESOC 2026 Late-Breaker",
+      "status": "quarantine",
+      "reason": "Conference late-breaker (ESOC 2026); 'GALLOP-2' GLP-1 RA post-thrombectomy trial not indexed in PubMed."
+    },
+    "cases": {
+      "pmid": null,
+      "doi": null,
+      "journal": "ESOC 2026 Late-Breaker",
+      "status": "quarantine",
+      "reason": "Conference late-breaker (ESOC 2026); 'CASES' immediate carotid stenting trial not indexed in PubMed (only unrelated older articles match)."
+    },
+    "distals": {
+      "pmid": null,
+      "doi": null,
+      "journal": "ESOC 2026 Late-Breaker",
+      "status": "quarantine",
+      "reason": "Conference late-breaker (ESOC 2026); 'DISTALS' Tigertriever13 trial not indexed in PubMed (only unrelated older articles match)."
+    },
+    "excoa-cvt": {
+      "pmid": null,
+      "doi": null,
+      "journal": "ESOC 2026 Late-Breaker",
+      "status": "quarantine",
+      "reason": "Conference late-breaker (ESOC 2026); 'EXCOA-CVT' extended anticoagulation for CVT trial not indexed in PubMed."
+    },
+    "covasc-ich": {
+      "pmid": null,
+      "doi": null,
+      "journal": "ESOC 2026 Late-Breaker",
+      "status": "quarantine",
+      "reason": "Conference late-breaker (ESOC 2026); 'COVASC-ICH' colchicine peri-hematomal edema trial not indexed in PubMed."
+    },
+    "sister": {
+      "pmid": null,
+      "doi": null,
+      "journal": "JAMA Neurol",
+      "status": "quarantine",
+      "reason": "No matching PMID for 'SISTER' (tenecteplase vs alteplase RCT). The known SISTER trial (TS23 late-window reperfusion) is still recruiting (NCT05948566); the briefing's TNK-vs-alteplase 'SISTER' did not resolve to a published PMID; source URL is the JAMA Neurology homepage."
+    },
+    "step-mild": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Stroke",
+      "status": "quarantine",
+      "reason": "No matching PMID for 'STEP-Mild' (tenecteplase in minor non-disabling AIS). Closest hit (PMID 41130214) is a 'Thirty years of IV thrombolysis' historical review — not the trial; source URL is the AHA journals homepage."
+    },
+    "saturn": {
+      "pmid": null,
+      "doi": null,
+      "journal": "NEJM",
+      "status": "quarantine",
+      "reason": "Closest hit (PMID 40886018) is the SATURN MRI study PROTOCOL (ancillary study), not the SATURN results RCT (statin discontinuation after lobar ICH) the briefing describes; source URL is the NEJM homepage."
+    },
+    "aspire": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Stroke",
+      "status": "quarantine",
+      "reason": "Closest hit (PMID 40401653) is a narrative review of oral anticoagulation after intracranial hemorrhage in AF, not the 'ASPIRE' RCT on optimal anticoagulation restart timing; source URL is the AHA journals homepage."
+    },
+    "clarity": {
+      "pmid": null,
+      "doi": null,
+      "journal": "ESOC 2026 Late-Breaker",
+      "status": "quarantine",
+      "reason": "Conference late-breaker (ESOC 2026); 'CLARITY' CTA-based thrombolysis-selection trial not indexed in PubMed."
+    },
+    "intercept": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Stroke",
+      "status": "quarantine",
+      "reason": "No matching PMID for 'INTERCEPT' (DAPT in symptomatic high-grade intracranial atherosclerotic stenosis); source URL is the AHA journals homepage."
+    },
+    "tele-rehab-2": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Lancet",
+      "status": "quarantine",
+      "reason": "Closest hit (PMID 42117778) is the RETAKE RCT (vocational return-to-work rehabilitation), not 'TELE-REHAB-2' home telerehabilitation; source URL is the Lancet homepage."
+    },
+    "minute": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Lancet Neurology",
+      "status": "quarantine",
+      "reason": "No matching PMID for 'MINUTE' (MRI-based thrombolysis in unknown-onset stroke); only unrelated older articles match; source URL is the Lancet Neurology homepage."
+    },
+    "sirius-spine": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Lancet Neurology",
+      "status": "quarantine",
+      "reason": "No matching PMID for 'The SIRIUS-Spine Study'. Closest hit (PMID 42202657) is a generic systematic review/meta-analysis on decompression timing in complete traumatic SCI — not the named study; source URL is the Lancet Neurology homepage."
+    },
+    "efficacy-and-safety-of-pitolisant-in-pediatric-patients-with": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Lancet Neurology",
+      "status": "quarantine",
+      "reason": "Closest hit (PMID 41324388) is a meta-analysis of pitolisant for excessive daytime sleepiness in narcolepsy AND OSA in adults — not a pediatric-narcolepsy RCT; source URL is the Lancet Neurology homepage."
+    },
+    "fit": {
+      "pmid": null,
+      "doi": null,
+      "journal": "Stroke",
+      "status": "quarantine",
+      "reason": "No matching PMID for the 'Flying Intervention Team (FIT)' mobile-stroke-unit diagnostic-accuracy study; source URL is the AHA journals homepage."
+    }
+  }
+}

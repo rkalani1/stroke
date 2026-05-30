@@ -44,14 +44,14 @@ export const LandmarkTrialsCard = () => {
   }, [cat, filter]);
 
   return (
-    <div className="p-3 rounded-lg border border-blue-300 bg-white">
+    <div className="p-3 rounded-lg border border-cobalt-300 bg-white">
       <div className="flex flex-wrap gap-1 mb-2">
         {TRIAL_CATEGORIES.map((c) => (
           <button
             key={c.key}
             type="button"
             onClick={() => setCat(c.key)}
-            className={`px-2.5 py-1 text-xs rounded ${cat === c.key ? 'bg-blue-700 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
+            className={`px-2.5 py-1 text-xs rounded ${cat === c.key ? 'bg-cobalt-700 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
           >
             {c.label} ({(LANDMARK_TRIALS[c.key] || []).length})
           </button>
@@ -74,12 +74,12 @@ export const LandmarkTrialsCard = () => {
               <button
                 type="button"
                 onClick={() => setExpanded({ ...expanded, [key]: !open })}
-                className="w-full text-left p-2 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+                className="w-full text-left p-2 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-cobalt-500 rounded"
                 aria-expanded={open}
               >
                 <div className="flex items-center justify-between gap-2">
                   <div>
-                    <strong className="text-blue-900">{t.name}</strong>
+                    <strong className="text-cobalt-900">{t.name}</strong>
                     <span className="text-xs text-slate-500 ml-2">({t.year})</span>
                     <span className="text-[10px] text-slate-500 ml-2">{t.citation}</span>
                   </div>
@@ -144,7 +144,7 @@ const StrokeSyndromesCard = () => {
               {open && (
                 <div className="p-2 pt-0 text-xs text-slate-700 space-y-1.5 border-t border-slate-200">
                   <p><strong>Deficits:</strong> {s.deficits}</p>
-                  <p className="p-1.5 rounded bg-blue-50 border border-blue-200"><strong>Pearls:</strong> {s.pearls}</p>
+                  <p className="p-1.5 rounded bg-cobalt-50 border border-cobalt-200"><strong>Pearls:</strong> {s.pearls}</p>
                   {s.pimpingQ && (
                     <details className="p-1.5 rounded bg-cobalt-50 border border-cobalt-200">
                       <summary className="cursor-pointer font-semibold text-cobalt-900">❓ Pimp Q: {s.pimpingQ}</summary>
