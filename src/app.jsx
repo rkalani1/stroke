@@ -62,6 +62,7 @@ import { HeroReadout as V7HeroReadout } from './design/hero-readout.jsx';
 import { DeviceFrame as V7DeviceFrame } from './design/device-frame.jsx';
 import { DrugChip as V7DrugChip } from './design/drug-chip.jsx';
 import { PatientStripMobile as V7PatientStripMobile, PatientStripRail as V7PatientStripRail } from './design/patient-strip.jsx';
+import { EvdIcpSimulator } from './simulators/EvdIcpSimulator.jsx';
 import {
   evaluateDAWN,
   evaluateDEFUSE3,
@@ -984,7 +985,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           : DEFAULT_TTL_HOURS;
         const INITIAL_STORAGE_EXPIRED = applyStorageExpiration(initialTtlHours);
 
-        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators', 'references'];
+        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'simulators', 'calculators', 'references'];
 
         const LEGACY_MANAGEMENT_TABS = {
           ich: 'ich',
@@ -27291,7 +27292,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {(() => {
                       const subTabLabels = {
                         ich: 'ICH', ischemic: 'Ischemic', sah: 'SAH', tia: 'TIA', cvt: 'CVT',
-                        calculators: 'Calculators', references: 'References'
+                        simulators: 'Simulators', calculators: 'Calculators', references: 'References'
                       };
                       const activeLabel = subTabLabels[managementSubTab] || managementSubTab;
                       return (
@@ -27306,7 +27307,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       );
                     })()}
                     <div className="bg-white border border-line rounded-md rounded-t-none p-2 flex flex-wrap gap-2 sticky top-9 z-30 " role="tablist" aria-label="Protocols & Algorithms sub-sections" onKeyDown={(e) => {
-                      const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators', 'references'];
+                      const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'simulators', 'calculators', 'references'];
                       const ci = subTabs.indexOf(managementSubTab);
                       let ni;
                       if (e.key === 'ArrowRight') { e.preventDefault(); ni = (ci + 1) % subTabs.length; }
@@ -27338,6 +27339,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'sah', label: 'SAH' },
                         { id: 'tia', label: 'TIA' },
                         { id: 'cvt', label: 'CVT' },
+                        { id: 'simulators', label: 'Simulators' },
                         { id: 'calculators', label: 'Calculators' },
                         { id: 'references', label: 'References' }
                       ].map((tab) => {
@@ -34958,6 +34960,34 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   </div>
                 )}
                 {/* End of References/Evidence Content */}
+
+                    {/* Bedside Simulators Content */}
+                    {managementSubTab === 'simulators' && (
+                    <div id="mgmt-tabpanel-simulators" role="tabpanel" aria-labelledby="mgmt-tab-simulators" className="space-y-4">
+                      <div className="bg-white border border-line rounded-lg p-4">
+                        <h2 className="text-xl font-semibold text-slate-900">Bedside Simulators</h2>
+                        <p className="text-sm text-slate-600 mt-1">
+                          Interactive teaching tools that model neurocritical-care bedside skills. Adjust the controls, run scenarios, and read the live trace to build pattern recognition. More simulators (ventilator, hemodynamics, neuro-exam) are planned for this section.
+                        </p>
+                      </div>
+
+                      <details className="bg-white border border-line rounded-lg" open>
+                        <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between">
+                          <span className="flex items-center gap-2">
+                            <i aria-hidden="true" data-lucide="activity" className="w-4 h-4 text-cobalt-600"></i>
+                            EVD &amp; ICP Simulator
+                          </span>
+                          <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
+                        </summary>
+                        <div className="p-4 pt-0">
+                          <ErrorBoundary>
+                            <EvdIcpSimulator />
+                          </ErrorBoundary>
+                        </div>
+                      </details>
+                    </div>
+                    )}
+                    {/* End of Bedside Simulators Content */}
 
                   </div>
                 </ErrorBoundary>
