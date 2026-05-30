@@ -1,17 +1,44 @@
 # StrokeOps Perfection Campaign — Final Report (2026-05-30)
 
-> **STATUS: all known findings resolved & deployed (v6.8.5).** Formal two-consecutive-clean certification is
-> the one outstanding step: Cycle 8's audit returned only **3 small a11y/visual items (zero P0/clinical/
-> public-safety)**, which are now fixed, deployed, and live-verified. Re-running two more *full* audit cycles
-> to certify the "two consecutive clean" stop criterion exceeded the requested time box, so that certification
-> is **honestly deferred** — but the live site carries **zero known remaining P0/P1/P2 safe+material+source-
-> verifiable findings** as of this report.
+> **STATUS: all known findings through Cycle 10 resolved & deployed (v6.8.7); campaign closed at user request.**
+> Three additional full audit cycles (8, 9, 10) were run after the initial checkpoint, each surfacing only a
+> small number of increasingly deep-state stragglers — all fixed and live-verified (v6.8.5 → v6.8.6 → v6.8.7).
+> The formal "two consecutive fully-clean cycles" stop criterion was **not mechanically certified**: every
+> cycle through #10 still found 1–5 small items (no P0, no clinical-safety, no public-safety — those have been
+> CLEAN for 4–9 consecutive cycles). The honest characterization: **a converging loop with a long tail of
+> deep-state P1/P2 edge cases; all KNOWN findings are resolved and live; perf/PWA and public-safety are
+> certified CLEAN across consecutive cycles.** The user directed the campaign to finish at v6.8.7.
+>
+> **Cycles 8–10 added (after the checkpoint above):**
+> - **v6.8.5 (Cycle 8):** copy-button contrast (yellow/orange-600→700), note-preview `<pre>` role=region, CorChip wrap.
+> - **v6.8.6 (Cycle 9):** mobile bottom-nav inactive-label contrast (slate-500→600, light-only); EXIVT *IVT*-card
+>   grid phone-collapse; **post-EVT BP citation years corrected** (ENCHANTED2/MT Lancet 2022, OPTIMAL-BP JAMA
+>   2023, BEST-II JAMA 2023 — PubMed-verified, clinical direction unchanged); WCAG 2.5.3 Label-in-Name on
+>   Search/More/kg/lbs.
+> - **v6.8.7 (Cycle 10):** EXIVT *EVT*-card grids phone-collapse (the siblings missed in v6.8.6 — same class,
+>   sister lines `pocket-cards.jsx:233/258/291`); GCS×2 + mRS scale-radio Label-in-Name (aria-hidden the visible
+>   score badge / aria-label superset; Hunt-Hess/WFNS already supersets); TWIST journal Lancet→**Lancet Neurol**
+>   2023 (PMID 36549308). Cycle-10 perf/PWA + public-safety returned CLEAN.
+>
+> **Convergence trajectory (findings per cycle):** C1 massive → C2 ~15 → C3 ~8 → C4 1+41-node tail → C5 8+14+18
+> → C6 4 → C7 5 → C8 3 → C9 5 → C10 3. Public-safety CLEAN since C2; perf/PWA CLEAN since C3; evidence
+> rendered-surfaces CLEAN most cycles (C10 found 1 journal-name typo). The residual tail is a11y/visual
+> deep-state edge cases (phone-only / dark-only / populated-state / experimental-rule).
 
 ## Live URL & version verified
-- **https://rkalani1.github.io/stroke/** — asset version **v6.8.5** (SW `APP_VERSION='6.8.5'`,
-  `stroke-cache-v6-8-5`, `app.js?v=6.8.5`, `tailwind.css?v=6.8.5`, `package.json` 6.8.5 — all coherent;
-  **curl-verified on the live host**, institutional grep 0, all 3 Cycle-8 fixes present in the live bundle).
-- Branch `feat/stroke-cockpit-2026`. **33 release/fix commits** since the v6.5.0 campaign baseline.
+- **https://rkalani1.github.io/stroke/** — asset version **v6.8.7** (SW `APP_VERSION='6.8.7'`,
+  `stroke-cache-v6-8-7`, `app.js?v=6.8.7`, `tailwind.css?v=6.8.7`, `package.json` 6.8.7 — all coherent;
+  **curl-verified on the live host**, institutional grep 0, all Cycle-8/9/10 fixes present in the live bundle).
+- Branch `feat/stroke-cockpit-2026`. **~38 release/fix commits** since the v6.5.0 campaign baseline (19 PRs merged).
+
+## Known residuals (documented, not yet actioned — campaign closed at user request)
+- **app.jsx:25067** has a `grid grid-cols-2 md:grid-cols-5` (a sibling of the EXIVT-grid class). The exhaustive
+  Cycle-10 phone sweep did **not** flag it as clipping (it fits / is not a wide-input matrix), but per the
+  "close-the-whole-class" discipline it is the one remaining un-responsive `grid-cols-2` of that family and is
+  worth a precautionary `grid-cols-1 sm:grid-cols-2 md:grid-cols-5` in a future pass.
+- **Formal two-consecutive-clean certification** remains the outstanding step (see status box). Re-running
+  Cycle 11 against v6.8.7 would test whether the v6.8.7 fixes finally produce a clean cycle; if clean, one more
+  clean cycle certifies convergence.
 
 ## Iterations completed
 - **8 full audit/improve/verify cycles deployed** (v6.6.0 → v6.6.1 → v6.7.0 → v6.8.0 → v6.8.1 → v6.8.2 →
