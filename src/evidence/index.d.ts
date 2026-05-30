@@ -116,6 +116,8 @@ export interface CompletedTrial {
   relatedActiveTrialIds: string[];
   practiceImpact: string;
   lastReviewed: string;
+  /** ISO date the trial was promoted into the Atlas; defaults to lastReviewed. */
+  promotedDate: string;
   verificationStatus: VerificationStatus;
   verificationNotes: string;
 }

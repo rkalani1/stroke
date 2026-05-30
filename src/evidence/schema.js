@@ -109,6 +109,10 @@ export function makeCompletedTrial(input = {}) {
     relatedActiveTrialIds: arrOr(input.relatedActiveTrialIds),
     practiceImpact: strOr(input.practiceImpact),
     lastReviewed: strOr(input.lastReviewed),
+    // ISO date the record was promoted into the Atlas (e.g. surfaced in the
+    // "What's New" feed). Optional and backward-compatible: when omitted it
+    // defaults to lastReviewed so existing records keep a stable value.
+    promotedDate: strOr(input.promotedDate, strOr(input.lastReviewed)),
     verificationStatus: VERIFICATION_VALUES.includes(input.verificationStatus)
       ? input.verificationStatus
       : 'todo-verify',
@@ -288,6 +292,11 @@ export function validateCompletedTrial(t, ctx = {}) {
     errors.push(`${where}: lastReviewed must be ISO date YYYY-MM-DD`);
   } else if (!within24Months(t.lastReviewed)) {
     warnings.push(`${where}: stale-evidence (lastReviewed ${t.lastReviewed} > 24 months ago)`);
+  }
+
+  // promotedDate is optional; when present it must be a valid ISO date.
+  if (t.promotedDate && !ISO_DATE.test(t.promotedDate)) {
+    errors.push(`${where}: promotedDate must be ISO date YYYY-MM-DD`);
   }
 
   if (ctx.knownCitationIds) {

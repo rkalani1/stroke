@@ -696,6 +696,153 @@ export const citations = [
     doi: '10.1056/NEJMoa0912321',
     url: 'https://pubmed.ncbi.nlm.nih.gov/20505173/',
     verificationStatus: 'verified-pubmed'
+  }),
+
+  // 11) "What's New" promotion 2026-05-30 — recent practice-changing studies
+  //     (all PubMed-verified: PMID resolves, title matches intervention,
+  //     abstract supports reported effect direction + magnitude).
+  makeCitation({
+    id: 'cit-oceanic-stroke-2026',
+    authors: 'Sharma M et al.',
+    title: 'Asundexian for Secondary Stroke Prevention (OCEANIC-STROKE)',
+    journal: 'N Engl J Med',
+    year: 2026,
+    volume: '394',
+    pages: '1467-1479',
+    pmid: '41985132',
+    doi: '10.1056/NEJMoa2513880',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/41985132/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-trident-2026',
+    authors: 'Anderson CS et al.',
+    title: 'Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage (TRIDENT)',
+    journal: 'N Engl J Med',
+    year: 2026,
+    volume: '394',
+    pages: '1571-1582',
+    pmid: '42019018',
+    doi: '10.1056/NEJMoa2515043',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/42019018/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-atlas-2026',
+    authors: 'Sarraj A et al.',
+    title: 'Endovascular thrombectomy for patients with large-core ischaemic stroke presenting up to 24 h after onset (ATLAS): a systematic review and individual patient data meta-analysis with central imaging adjudication',
+    journal: 'Lancet',
+    year: 2026,
+    volume: '407',
+    pages: '2015-2026',
+    pmid: '42107392',
+    doi: '10.1016/S0140-6736(26)00876-7',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/42107392/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-tapis-2026',
+    authors: 'Wang A et al.',
+    title: 'Ticagrelor with aspirin dual antiplatelet therapy combined with intravenous thrombolysis in patients with ischaemic stroke in China (TAPIS): a multicentre, double-blind, randomised controlled trial',
+    journal: 'Lancet',
+    year: 2026,
+    volume: '407',
+    pages: '1919-1928',
+    pmid: '42114550',
+    doi: '10.1016/S0140-6736(26)00757-9',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/42114550/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-choice-2-2026',
+    authors: 'Renú A et al.',
+    title: 'Adjunctive Intra-Arterial Alteplase After Successful Thrombectomy for Acute Ischemic Stroke: The CHOICE-2 Randomized Clinical Trial',
+    journal: 'JAMA',
+    year: 2026,
+    pmid: '42096239',
+    doi: '10.1001/jama.2026.5164',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/42096239/',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Volume/pages not present in PubMed structured citation field at time of verification; intentionally omitted rather than asserted.'
+  }),
+  makeCitation({
+    id: 'cit-distal-2026',
+    authors: 'Fischer U et al.',
+    title: 'Endovascular treatment for medium or distal vessel occlusion stroke (DISTAL): 12-month outcomes of a multicentre, open-label, randomised trial',
+    journal: 'Lancet Neurol',
+    year: 2026,
+    volume: '25',
+    pages: '571-580',
+    pmid: '42105785',
+    doi: '10.1016/S1474-4422(26)00169-9',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/42105785/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-direct-angio-2026',
+    authors: 'Gory B et al.',
+    title: 'Safety and efficacy of direct versus conventional transfer to angiography suite in patients with severe acute stroke treated with thrombectomy (DIRECT ANGIO) in France: a multicentre, open-label, blinded-endpoint, randomised controlled trial',
+    journal: 'Lancet Neurol',
+    year: 2026,
+    volume: '25',
+    pages: '346-356',
+    pmid: '41864232',
+    doi: '10.1016/S1474-4422(26)00056-6',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/41864232/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-stabled-2026',
+    authors: 'Kimura K et al.',
+    title: 'Catheter Ablation and Oral Anticoagulation for Secondary Stroke Prevention in Atrial Fibrillation: The STABLED Randomized Clinical Trial',
+    journal: 'JAMA Neurol',
+    year: 2026,
+    volume: '83',
+    pages: '329-338',
+    pmid: '41770549',
+    doi: '10.1001/jamaneurol.2026.0155',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/41770549/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-suicide-after-stroke-2025',
+    authors: 'Vyas MV et al.',
+    title: 'Increased risk of suicide after stroke: A population-based matched cohort study',
+    journal: 'Int J Stroke',
+    year: 2025,
+    volume: '21',
+    pages: '485-494',
+    pmid: '40913243',
+    doi: '10.1177/17474930251379165',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/40913243/',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Prototype labelled "2026"; PubMed publication year is 2025 (vol 21, issue 4). Used PubMed-confirmed year.'
+  }),
+  makeCitation({
+    id: 'cit-hyponatremia-ich-2026',
+    authors: 'Amasa S et al.',
+    title: 'Severity-Stratified Hyponatremia Is Associated with Increased Mortality and Complications in Nontraumatic Intracerebral Hemorrhage',
+    journal: 'J Clin Med',
+    year: 2026,
+    volume: '15',
+    pmid: '42194925',
+    doi: '10.3390/jcm15103964',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/42194925/',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'J Clin Med 2026;15(10):3964 (article number); page range not in PubMed structured citation field.'
+  }),
+  makeCitation({
+    id: 'cit-tnk-vs-alteplase-rwe-2026',
+    authors: 'Zhang P et al.',
+    title: 'Real-world efficacy and safety of Tenecteplase versus Alteplase in acute ischemic stroke: a propensity score-matched analysis',
+    journal: 'Front Neurol',
+    year: 2026,
+    volume: '17',
+    pmid: '42206304',
+    doi: '10.3389/fneur.2026.1826373',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/42206304/',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Front Neurol is online-only; 1826373 is the article number, not a page range.'
   })
 ];
 
