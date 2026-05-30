@@ -651,10 +651,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         const getWindowStatusFromTime = (timeFromLKW) => {
           if (!timeFromLKW) return null;
           if (timeFromLKW.total <= 4.5) {
-            if (timeFromLKW.total < 3) {
-              return { color: 'green', message: 'Within TNK window (<3h)', urgent: false, eligible: 'tnk' };
-            }
-            return { color: 'yellow', message: 'Extended TNK window (3-4.5h)', urgent: false, eligible: 'tnk' };
+            return { color: 'green', message: 'Within IV thrombolysis window (≤4.5h)', urgent: false, eligible: 'tnk' };
           }
           if (timeFromLKW.total < 6) {
             return { color: 'orange', message: 'TNK window closed - EVT window (4.5-6h)', urgent: true, eligible: 'evt-early' };
@@ -1290,6 +1287,7 @@ Clinician Name`;
               activeInternalBleeding: false,
               recentIntracranialSurgery: false,
               recentStroke: false,
+              acuteSevereTBI: false,
               recentHeadTrauma: false,
               extensiveHypoattenuation: false,
               intracranialTumor: false,
@@ -11278,6 +11276,7 @@ Clinician Name`;
                 'giMalignancy',
                 'sahPresentation',
                 'infectiveEndocarditis',
+                'acuteSevereTBI',
                 'severeUncontrolledHTN',
                 'lowPlatelets',
                 'warfarinElevatedINR',
@@ -16640,8 +16639,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 const elM = Math.floor((elapsedSeconds % 3600) / 60);
                 const elS = elapsedSeconds % 60;
                 // v6.0-03: solid semantic bg keyed by treatment-window threshold.
-                // <3h IV window → confirm; 3–4h closing → caution; 4–4.5h critical edge → caution; >4.5h closed → critical.
-                const timerBg = totalHours < 3 ? 'bg-confirm' : totalHours < 4 ? 'bg-caution' : totalHours < 4.5 ? 'bg-caution' : 'bg-critical';
+                // ≤4.5h IV thrombolysis window (uniform COR I) → confirm; >4.5h closed → critical.
+                const timerBg = totalHours <= 4.5 ? 'bg-confirm' : 'bg-critical';
                 return (
                   <div className={`mb-3 ${timerBg} rounded-md px-4 py-2 text-white flex flex-wrap items-center justify-between gap-2 ${alertFlashing ? 'alert-flash' : ''}`} role="timer" aria-live="polite" aria-label="Stroke treatment window timer">
                     <div className="flex items-center gap-3">
@@ -20799,6 +20798,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   { id: 'giMalignancy', label: 'GI malignancy', note: null },
                                   { id: 'sahPresentation', label: 'Clinical presentation suggestive of SAH', note: 'even if CT normal' },
                                   { id: 'infectiveEndocarditis', label: 'Presentation consistent with infective endocarditis', note: null },
+                                  { id: 'acuteSevereTBI', label: 'Moderate-severe TBI within 14 days', note: 'GCS <13 OR intracranial hemorrhage / contusion / skull fracture (AHA/ASA 2026)' },
                                   { id: 'severeUncontrolledHTN', label: 'SBP >185 or DBP >110 mmHg', note: 'unresponsive to treatment' },
                                   { id: 'lowPlatelets', label: 'Platelet count <100,000', note: null },
                                   { id: 'warfarinElevatedINR', label: 'Warfarin use with PT >15s, INR >1.7, or aPTT >40s', note: null },
@@ -26964,17 +26964,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           const elapsedSecs = elapsedSeconds % 60;
 
                           // v6.0-03: returns a solid semantic bg utility keyed by treatment-window threshold.
-                          // <3h confirm · 3–4.5h caution · ≥4.5h critical. Token-driven so dark mode works.
+                          // ≤4.5h confirm (uniform COR I IV thrombolysis window) · >4.5h critical. Token-driven so dark mode works.
                           const getElapsedColor = () => {
-                            if (totalHours < 3) return 'bg-confirm';
-                            if (totalHours < 4.5) return 'bg-caution';
+                            if (totalHours <= 4.5) return 'bg-confirm';
                             return 'bg-critical';
                           };
 
                           const getTextColor = () => {
-                            if (totalHours < 3) return 'text-ok-100';
-                            if (totalHours < 4) return 'text-warn-100';
-                            if (totalHours < 4.5) return 'text-orange-100';
+                            if (totalHours <= 4.5) return 'text-ok-100';
                             return 'text-crit-100';
                           };
 
