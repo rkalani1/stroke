@@ -16551,7 +16551,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   {[
                     // v6.0-04: top tabs — labels only, no decorative icons. Icons signal state, not category.
                     { id: 'encounter', name: 'Encounter' },
-                    { id: 'protocols', name: 'Management' },
+                    { id: 'protocols', name: 'Institutional Protocols & Algorithms' },
                     { id: 'research', name: 'Research & Guidelines' },
                     { id: 'trials', name: 'Trials' }
                   ].map(tab => {
@@ -22943,7 +22943,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </div>
                                   </div>
                                   <div className="mt-2 bg-white border border-cobalt-200 rounded p-2 text-xs text-slate-700">
-                                    <p><strong>Caution flags:</strong> Repeat imaging before starting if any hemorrhagic transformation, large territorial infarct, or uncontrolled hypertension. DOAC preferred over warfarin (Class I, LOE A). See CATALYST calculator in Ischemic Management &gt; AF/DOAC Timing for onset-based date computation.</p>
+                                    <p><strong>Caution flags:</strong> Repeat imaging before starting if any hemorrhagic transformation, large territorial infarct, or uncontrolled hypertension. DOAC preferred over warfarin (Class I, LOE A). See CATALYST calculator in Ischemic Protocols &gt; AF/DOAC Timing for onset-based date computation.</p>
                                   </div>
                                   <p className="text-xs text-slate-500 mt-1 italic">Fischer U et al. Lancet Neurol 2025 (CATALYST). ELAN: Fischer U et al. NEJM 2023;388:2411-2421. PMID: 37222476.</p>
                                 </div>
@@ -27202,15 +27202,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       return (
                         <nav
                           className="bg-paper-2 border border-line border-b-0 rounded-md rounded-b-none px-3 py-2 sticky top-0 z-40"
-                          aria-label="Management breadcrumb"
+                          aria-label="Protocols & Algorithms breadcrumb"
                         >
                           <p className="font-mono uppercase text-eyebrow text-mute">
-                            Management <span aria-hidden="true">›</span> <span className="text-ink">{activeLabel}</span>
+                            Protocols & Algorithms <span aria-hidden="true">›</span> <span className="text-ink">{activeLabel}</span>
                           </p>
                         </nav>
                       );
                     })()}
-                    <div className="bg-white border border-line rounded-md rounded-t-none p-2 flex flex-wrap gap-2 sticky top-9 z-30 " role="tablist" aria-label="Management sub-sections" onKeyDown={(e) => {
+                    <div className="bg-white border border-line rounded-md rounded-t-none p-2 flex flex-wrap gap-2 sticky top-9 z-30 " role="tablist" aria-label="Protocols & Algorithms sub-sections" onKeyDown={(e) => {
                       const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators', 'references'];
                       const ci = subTabs.indexOf(managementSubTab);
                       let ni;
@@ -27270,7 +27270,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             role="tab"
                             aria-selected={isActive}
                             aria-controls={`mgmt-tabpanel-${tab.id}`}
-                            aria-label={`${tab.label} management tab`}
+                            aria-label={`${tab.label} protocol tab`}
                             tabIndex={isActive ? 0 : -1}
                           >
                             <span>{tab.label}</span>
@@ -34810,7 +34810,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <p className="font-mono uppercase text-eyebrow text-mute mb-1">Reference</p>
                         <h2 id="research-guidelines-heading" className="font-serif text-section text-ink">Guidelines</h2>
                         <p className="font-sans text-body text-ink-2 mt-1 text-pretty">
-                          AHA/ASA &amp; society statements indexed in the Atlas. Open the full searchable library under Management → References.
+                          AHA/ASA &amp; society statements indexed in the Atlas. Open the full searchable library under Protocols & Algorithms → References.
                         </p>
                       </header>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -35106,7 +35106,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               <div className="flex items-stretch justify-around">
                 {[
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },
-                  { id: 'protocols', name: 'Management', icon: 'library' },
+                  { id: 'protocols', name: 'Protocols', icon: 'library' },
                   { id: 'research', name: 'Research', icon: 'book-open' },
                   { id: 'trials', name: 'Trials', icon: 'flask-conical' }
                 ].map(tab => {
