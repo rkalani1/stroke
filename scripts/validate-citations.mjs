@@ -3,6 +3,7 @@ import path from 'node:path';
 import process from 'node:process';
 
 const filePath = path.join(process.cwd(), 'docs', 'evidence-review-2021-2026.md');
+const citationsJsUrl = new URL('../src/evidence/citations.js', import.meta.url);
 const yearMin = 2021;
 const yearMax = 2026;
 const args = new Set(process.argv.slice(2));
@@ -431,6 +432,70 @@ async function validateIdentifierHealth(parsedRows) {
   };
 }
 
+// ── citations.js cross-check ────────────────────────────────────────────────
+//
+// The docs evidence table is only ONE source of PMIDs. The runtime citation
+// registry (src/evidence/citations.js) carries ~66 more PMIDs that render as
+// clickable "PMID" links in the cockpit UI. Those were never cross-checked here,
+// which is how the Cycle-2 B1 defect slipped through: two entries kept the right
+// title/DOI but pointed pmid+url at an unrelated article. We add two guards:
+//   1. STATIC (default, no network): every entry's `url` PMID must equal its
+//      `pmid` field — catches a url/pmid divergence at zero cost.
+//   2. NETWORK (behind --check-identifiers): title-cross-check each citations.js
+//      PMID against PubMed eSummary, exactly as the docs-table PMIDs are checked.
+//      A wrong-article PMID drops the title overlap below threshold → warning.
+async function loadCitationEntries() {
+  const mod = await import(citationsJsUrl.href);
+  const list = Array.isArray(mod.citations) ? mod.citations : [];
+  return list
+    .filter((c) => c && c.pmid)
+    .map((c) => ({
+      id: String(c.id || ''),
+      title: String(c.title || ''),
+      pmid: String(c.pmid),
+      url: String(c.url || '')
+    }));
+}
+
+function validateCitationsJsStatic(entries) {
+  const errors = [];
+  const seenPmid = new Map();
+  for (const c of entries) {
+    if (!/^\d{6,9}$/.test(c.pmid)) {
+      errors.push(`citations.js ${c.id}: invalid PMID format '${c.pmid}'`);
+    }
+    const urlMatch = c.url.match(/pubmed\.ncbi\.nlm\.nih\.gov\/(\d+)/i);
+    if (c.url && /pubmed\.ncbi\.nlm\.nih\.gov/i.test(c.url)) {
+      if (!urlMatch) {
+        errors.push(`citations.js ${c.id}: PubMed url has no PMID ('${c.url}')`);
+      } else if (urlMatch[1] !== c.pmid) {
+        errors.push(
+          `citations.js ${c.id}: url PMID '${urlMatch[1]}' does not match pmid field '${c.pmid}'`
+        );
+      }
+    }
+    const prior = seenPmid.get(c.pmid);
+    if (prior && prior !== c.title) {
+      errors.push(
+        `citations.js ${c.id}: PMID '${c.pmid}' duplicated across titles ('${prior}' and '${c.title}')`
+      );
+    } else {
+      seenPmid.set(c.pmid, c.title);
+    }
+  }
+  return errors;
+}
+
+// Network title cross-check for citations.js PMIDs. Reuses validatePmidIdentifiers
+// (PubMed eSummary batch + title-overlap) by adapting entries to its refs shape.
+async function validateCitationsJsIdentifiers(entries) {
+  const pmidRefs = new Map();
+  entries.forEach((c, idx) => {
+    pushRef(pmidRefs, c.pmid, { rowNum: `citations.js:${c.id || idx + 1}`, title: c.title });
+  });
+  return validatePmidIdentifiers(pmidRefs);
+}
+
 async function main() {
   const markdown = await fs.readFile(filePath, 'utf8');
   const rows = parseTableRows(markdown);
@@ -446,6 +511,16 @@ async function main() {
   let checkedIds = 0;
   let idCounts = { pmids: 0, dois: 0, ncts: 0 };
 
+  // Static citations.js cross-check (no network — always on). Guards the runtime
+  // citation registry's pmid/url consistency, which the docs-table checks miss.
+  let citationEntries = [];
+  try {
+    citationEntries = await loadCitationEntries();
+    errors.push(...validateCitationsJsStatic(citationEntries));
+  } catch (error) {
+    errors.push(`citations.js static check failed to load: ${error?.message || String(error)}`);
+  }
+
   if (checkLinks) {
     const linkResults = await validateUrlHealth(parsedRows);
     errors.push(...linkResults.errors);
@@ -459,6 +534,15 @@ async function main() {
     warnings.push(...idResults.warnings);
     checkedIds = idResults.checkedCount;
     idCounts = idResults.counts;
+
+    // Network title cross-check of the citations.js PMIDs (this is the guard
+    // that would have caught the B1 wrong-article transposition).
+    if (citationEntries.length > 0) {
+      const citIdResults = await validateCitationsJsIdentifiers(citationEntries);
+      errors.push(...citIdResults.errors);
+      warnings.push(...citIdResults.warnings);
+      checkedIds += citIdResults.checkedCount;
+    }
   }
 
   if (warnings.length > 0) {
@@ -472,10 +556,10 @@ async function main() {
     process.exit(1);
   }
 
-  const suffixes = [];
+  const suffixes = [`citations.js static-checked (${citationEntries.length} PMIDs: pmid/url consistency)`];
   if (checkLinks) suffixes.push(`URL health checked (${checkedUrls} unique)`);
   if (checkIdentifiers) {
-    suffixes.push(`identifier endpoints checked (${checkedIds} total: PMID ${idCounts.pmids}, DOI ${idCounts.dois}, NCT ${idCounts.ncts})`);
+    suffixes.push(`identifier endpoints checked (${checkedIds} total: docs PMID ${idCounts.pmids}, DOI ${idCounts.dois}, NCT ${idCounts.ncts} + citations.js PMID ${citationEntries.length})`);
   }
   const suffixText = suffixes.length > 0 ? `; ${suffixes.join('; ')}` : '';
   console.log(`Citation validation passed: ${rows.length} rows, years ${yearMin}-${yearMax}${suffixText}.`);

@@ -8,7 +8,7 @@
     {
       "id": "ai-derived",
       "shortName": "AI-Derived",
-      "fullName": "AI-Derived Left Atrial Volume Index From Coronary Artery Calcium Scans Predict Atrial Fibrillation and Ischemic Stroke",
+      "fullName": "AI-Derived LA Volume Index, LA/RA and LA/LV Volume Ratios From Coronary Artery Calcium Scans Predict Long-Term Atrial Fibrillation and Stroke",
       "verificationStatus": "verified",
       "evidenceType": "observational",
       "topic": "secondary-prevention",
@@ -25,7 +25,7 @@
         "bottomLine": "Bottom line: AI-derived left atrial volume from coronary artery calcium scans predicts long-term AF and ischemic stroke risk. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Clinical Epidemiology can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Clinical Epidemiology (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Clinical Epidemiology. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Clinical Epidemiology, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Clinical Epidemiology by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): AI-derived left atrial volume from coronary artery calcium scans predicts long-term AF and ischemic stroke risk. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": "41948813",
       "doi": "10.1161/STROKEAHA.125.053401",
@@ -34,37 +34,9 @@
       "observationalCaveat": "Observational study — confounding limits causal inference; interpret with caution."
     },
     {
-      "id": "association-of-microplastics-and-nanoplastics-in-carotid-pla",
-      "shortName": "Association of Microplastics and Nanopla",
-      "fullName": "Association of Microplastics and Nanoplastics in Carotid Plaques with Stroke and Cardiovascular Events",
-      "verificationStatus": "verified",
-      "evidenceType": "observational",
-      "topic": "rehabilitation",
-      "topicLabel": "Stroke rehabilitation",
-      "journal": "J Xenobiot",
-      "year": 2026,
-      "practiceImpact": "Microplastics and nanoplastics detected in carotid plaques are associated with a major increase in MI, stroke, and mortality. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
-      "result": {
-        "effect": "Microplastics and nanoplastics detected in carotid plaques are associated with a major increase in MI, stroke, and mortality",
-        "direction": "benefit"
-      },
-      "certainty": "low",
-      "appraisal": {
-        "bottomLine": "Bottom line: Microplastics and nanoplastics detected in carotid plaques are associated with a major increase in MI, stroke, and mortality. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Clinical Epidemiology can yield meaningful clinical benefits and reduce long-term morbidity..",
-        "picoQuestion": "PICO question: In patients presenting with deficits matching Clinical Epidemiology (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Clinical Epidemiology. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
-        "methodology": "Rationale: Prior observational data indicated potential for therapy in Clinical Epidemiology, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Clinical Epidemiology by providing modern randomized trial evidence to guide evidence-based decisions.."
-      },
-      "pmid": "41718277",
-      "doi": "10.3390/jox16010034",
-      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41718277/",
-      "sourceUrl": "https://www.nejm.org/",
-      "observationalCaveat": "Observational study — confounding limits causal inference; interpret with caution."
-    },
-    {
       "id": "atlas",
       "shortName": "ATLAS",
-      "fullName": "Endovascular thrombectomy for patients with large-core ischaemic stroke presenting up to 24 h after onset",
+      "fullName": "Endovascular thrombectomy for patients with large-core ischaemic stroke presenting up to 24 h after onset (ATLAS): a systematic review and individual patient data meta-analysis with central imaging adjudication",
       "verificationStatus": "verified",
       "evidenceType": "meta-analysis",
       "topic": "evt",
@@ -91,7 +63,7 @@
     {
       "id": "cerebral-edema-in-patients-with-large-ischemic-core-after-th",
       "shortName": "Cerebral Edema in Patients With Large Is",
-      "fullName": "Cerebral Edema in Patients With Large Ischemic Core After Thrombectomy: SELECT2 Sub-study",
+      "fullName": "Cerebral Edema in Patients With Large Ischemic Core After Thrombectomy: A Secondary Analysis of SELECT2 Randomized Trial",
       "verificationStatus": "verified",
       "evidenceType": "observational",
       "topic": "evt",
@@ -108,7 +80,7 @@
         "bottomLine": "Bottom line: Severe post-EVT midline shift and hemorrhagic transformation are primary biological boundaries in large core strokes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Neurocritical Care can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Neurocritical Care (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Neurocritical Care. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Neurocritical Care, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Neurocritical Care by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Severe post-EVT midline shift and hemorrhagic transformation are primary biological boundaries in large core strokes. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": "41906875",
       "doi": "10.1161/STROKEAHA.125.054015",
@@ -119,7 +91,7 @@
     {
       "id": "choice-2",
       "shortName": "CHOICE-2",
-      "fullName": "Adjunctive Intra-Arterial Alteplase After Successful Thrombectomy",
+      "fullName": "Adjunctive Intra-Arterial Alteplase After Successful Thrombectomy for Acute Ischemic Stroke: The CHOICE-2 Randomized Clinical Trial",
       "verificationStatus": "verified",
       "evidenceType": "rct",
       "topic": "evt",
@@ -146,7 +118,7 @@
     {
       "id": "distal",
       "shortName": "DISTAL",
-      "fullName": "Endovascular treatment for medium or distal vessel occlusion stroke (DISTAL): 12-month outcomes",
+      "fullName": "Endovascular treatment for medium or distal vessel occlusion stroke (DISTAL): 12-month outcomes of a multicentre, open-label, randomised trial",
       "verificationStatus": "verified",
       "evidenceType": "rct",
       "topic": "evt",
@@ -163,7 +135,7 @@
         "bottomLine": "Bottom line: 12-month data confirm no long-term functional benefit or survival differences for routine EVT in mild-to-moderate MeVO. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): 12-month data confirm no long-term functional benefit or survival differences for routine EVT in mild-to-moderate MeVO. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": "42105785",
       "doi": "10.1016/S1474-4422(26)00169-9",
@@ -172,8 +144,8 @@
     },
     {
       "id": "early-versus-delayed-anticoagulation-according-to-atrial-fib",
-      "shortName": "Early Versus Delayed Anticoagulation acc",
-      "fullName": "Early Versus Delayed Anticoagulation according to Atrial Fibrillation Subtype and Diagnosis: OPTIMAS Sub-study",
+      "shortName": "Early Versus Delayed Anticoagulation in ",
+      "fullName": "Early Versus Delayed Anticoagulation in Acute Ischemic Stroke According to Atrial Fibrillation Subtype and Time of Diagnosis: Subgroup Analysis of the OPTIMAS Randomized Controlled Trial",
       "verificationStatus": "verified",
       "evidenceType": "observational",
       "topic": "secondary-prevention",
@@ -190,7 +162,7 @@
         "bottomLine": "Bottom line: Safety and noninferiority of early DOAC initiation (<=4 days) are consistent across AF subtypes and diagnosis timing. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Secondary Prevention can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Secondary Prevention (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Secondary Prevention. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Secondary Prevention, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Secondary Prevention by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Safety and noninferiority of early DOAC initiation (<=4 days) are consistent across AF subtypes and diagnosis timing. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": "41919368",
       "doi": "10.1161/STROKEAHA.125.055037",
@@ -200,12 +172,12 @@
     },
     {
       "id": "efficacy-and-safety-of-the-d1-receptor-antagonist-ecopipam-i",
-      "shortName": "Efficacy and Safety of the D1 Receptor A",
-      "fullName": "Efficacy and Safety of the D1 Receptor Antagonist Ecopipam in Tourette Syndrome: A Phase III Trial",
+      "shortName": "Efficacy and Safety of Ecopipam for Tour",
+      "fullName": "Efficacy and Safety of Ecopipam for Tourette Syndrome: A Phase 3 Randomized Clinical Trial",
       "verificationStatus": "verified",
       "evidenceType": "rct",
-      "topic": "rehabilitation",
-      "topicLabel": "Stroke rehabilitation",
+      "topic": "stroke",
+      "topicLabel": "Stroke",
       "journal": "JAMA Neurol",
       "year": 2026,
       "practiceImpact": "Selective dopamine D1 antagonist ecopipam cuts TS tic relapse risk in half without D2-associated motor side effects. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
@@ -218,7 +190,7 @@
         "bottomLine": "Bottom line: Selective dopamine D1 antagonist ecopipam cuts TS tic relapse risk in half without D2-associated motor side effects. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in General Neurology can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching General Neurology (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching General Neurology. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in General Neurology, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on General Neurology by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Selective dopamine D1 antagonist ecopipam cuts TS tic relapse risk in half without D2-associated motor side effects. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": "42189524",
       "doi": "10.1001/jamaneurol.2026.1431",
@@ -228,7 +200,7 @@
     {
       "id": "endovascular-thrombectomy-in-patients-with-largest-baseline-",
       "shortName": "Endovascular Thrombectomy in Patients Wi",
-      "fullName": "Endovascular Thrombectomy in Patients With Largest Baseline Infarcts (LASTE ASPECTS 0-2 Sub-study)",
+      "fullName": "Endovascular Thrombectomy in Patients With Largest Baseline Infarcts (ASPECTS 0-2): An Ancillary Analysis of the LASTE Trial",
       "verificationStatus": "verified",
       "evidenceType": "observational",
       "topic": "evt",
@@ -245,7 +217,7 @@
         "bottomLine": "Bottom line: Thrombectomy remains safe and clinically beneficial even in the largest baseline infarct cores (ASPECTS 0-2) in selected patients. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Thrombectomy remains safe and clinically beneficial even in the largest baseline infarct cores (ASPECTS 0-2) in selected patients. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": "41979451",
       "doi": "10.1161/STROKEAHA.125.054161",
@@ -256,7 +228,7 @@
     {
       "id": "escape-mevo",
       "shortName": "ESCAPE-MeVO",
-      "fullName": "ESCAPE-MeVO CTA Collateral Study",
+      "fullName": "Reperfusion Therapy in ESCAPE-MeVO Trial Participants: Imaging Characteristics and Clinical Outcomes",
       "verificationStatus": "verified",
       "evidenceType": "rct",
       "topic": "evt",
@@ -273,7 +245,7 @@
         "bottomLine": "Bottom line: CTA collateral status is strongly associated with 90-day functional recovery and infarct expansion in MeVO stroke. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Stroke Imaging can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Stroke Imaging (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Stroke Imaging. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Stroke Imaging, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Stroke Imaging by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): CTA collateral status is strongly associated with 90-day functional recovery and infarct expansion in MeVO stroke. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": "42188736",
       "doi": "10.1148/radiol.251769",
@@ -283,7 +255,7 @@
     {
       "id": "evatrisp",
       "shortName": "EVATRISP",
-      "fullName": "Predictors and Functional Outcomes of Unsuccessful Recanalization Post-EVT: The EVATRISP Registry",
+      "fullName": "Characteristics of Unsuccessful Recanalization Following Endovascular Thrombectomy: Cohort Study (EVATRISP Collaboration)",
       "verificationStatus": "verified",
       "evidenceType": "observational",
       "topic": "evt",
@@ -300,7 +272,7 @@
         "bottomLine": "Bottom line: Defines clinical and imaging characteristics associated with unsuccessful recanalization post-EVT across international sites. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Defines clinical and imaging characteristics associated with unsuccessful recanalization post-EVT across international sites. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": "42089150",
       "doi": "10.1161/STROKEAHA.125.055002",
@@ -309,9 +281,36 @@
       "observationalCaveat": "Observational study — confounding limits causal inference; interpret with caution."
     },
     {
+      "id": "safety-and-efficacy-of-glycoprotein-vi-inhibitor-glenzocimab",
+      "shortName": "Glenzocimab Efficacy and Safety Added to",
+      "fullName": "Glenzocimab Efficacy and Safety Added to Intravenous Thrombolysis With or Without Mechanical Thrombectomy in Patients With Acute Ischemic Stroke-ACTISAVE: A Prospective, Randomized, Double-Blind Study",
+      "verificationStatus": "verified",
+      "evidenceType": "rct",
+      "topic": "evt",
+      "topicLabel": "Endovascular therapy",
+      "journal": "Stroke",
+      "year": 2026,
+      "practiceImpact": "GPVI inhibitor glenzocimab added to thrombolysis was functionally neutral but demonstrated an exceptionally safe bleeding profile. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
+      "result": {
+        "effect": "GPVI inhibitor glenzocimab added to thrombolysis was functionally neutral but demonstrated an exceptionally safe bleeding profile",
+        "direction": "no-benefit"
+      },
+      "certainty": "moderate",
+      "appraisal": {
+        "bottomLine": "Bottom line: GPVI inhibitor glenzocimab added to thrombolysis was functionally neutral but demonstrated an exceptionally safe bleeding profile. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
+        "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
+        "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
+        "results": "Key finding (from the curated appraisal): GPVI inhibitor glenzocimab added to thrombolysis was functionally neutral but demonstrated an exceptionally safe bleeding profile. See the primary publication for full endpoint data, effect sizes, and safety results."
+      },
+      "pmid": "42044230",
+      "doi": "10.1161/STROKEAHA.125.052935",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42044230/",
+      "sourceUrl": "https://www.ahajournals.org/"
+    },
+    {
       "id": "increased-risk-of-ischemic-events-in-stroke-patients-treated",
-      "shortName": "Increased Risk of Ischemic Events in Str",
-      "fullName": "Increased Risk of Ischemic Events in Stroke Patients Treated With Clopidogrel and a Proton Pump Inhibitor or P-CAB",
+      "shortName": "Increased Risk of Ischemic Events in Pat",
+      "fullName": "Increased Risk of Ischemic Events in Patients With Stroke Treated With Clopidogrel and a P-CAB or PPI",
       "verificationStatus": "verified",
       "evidenceType": "observational",
       "topic": "secondary-prevention",
@@ -328,7 +327,7 @@
         "bottomLine": "Bottom line: Drug interaction study confirming significantly increased risk of recurrent ischemic events in clopidogrel-treated stroke patients on PPIs. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Secondary Prevention can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Secondary Prevention (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Secondary Prevention. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Secondary Prevention, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Secondary Prevention by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Drug interaction study confirming significantly increased risk of recurrent ischemic events in clopidogrel-treated stroke patients on PPIs. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": "41766537",
       "doi": "10.1161/STROKEAHA.125.053616",
@@ -337,36 +336,63 @@
       "observationalCaveat": "Observational study — confounding limits causal inference; interpret with caution."
     },
     {
-      "id": "intracranial-hemorrhage-patterns-and-functional-outcomes-pos",
-      "shortName": "Intracranial Hemorrhage Patterns and Fun",
-      "fullName": "Intracranial Hemorrhage Patterns and Functional Outcomes Post-Thrombolysis in Minor Stroke: TEMPO-2 Trial",
+      "id": "rescue-intravenous-tirofiban-after-tenecteplase-inadequate-r",
+      "shortName": "Intravenous Tirofiban After Tenecteplase",
+      "fullName": "Intravenous Tirofiban After Tenecteplase in Acute Ischemic Stroke: The INSTANT Randomized Clinical Trial",
       "verificationStatus": "verified",
       "evidenceType": "rct",
       "topic": "evt",
       "topicLabel": "Endovascular therapy",
-      "journal": "Neurology",
+      "journal": "JAMA",
       "year": 2026,
-      "practiceImpact": "Evaluates subclinical hemorrhagic transformation patterns and safety outcomes post-thrombolysis in minor strokes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
+      "practiceImpact": "Rescue IV tirofiban post-TNK inadequate response in non-LVO stroke improves excellent functional outcome in unadjusted analysis. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
       "result": {
-        "effect": "Evaluates subclinical hemorrhagic transformation patterns and safety outcomes post-thrombolysis in minor strokes",
+        "effect": "Rescue IV tirofiban post-TNK inadequate response in non-LVO stroke improves excellent functional outcome in unadjusted analysis",
         "direction": "benefit"
       },
       "certainty": "moderate",
       "appraisal": {
-        "bottomLine": "Bottom line: Evaluates subclinical hemorrhagic transformation patterns and safety outcomes post-thrombolysis in minor strokes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
+        "bottomLine": "Bottom line: Rescue IV tirofiban post-TNK inadequate response in non-LVO stroke improves excellent functional outcome in unadjusted analysis. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Rescue IV tirofiban post-TNK inadequate response in non-LVO stroke improves excellent functional outcome in unadjusted analysis. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
-      "pmid": "41980227",
-      "doi": "10.1212/WNL.0000000000214925",
-      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41980227/",
-      "sourceUrl": "https://www.ahajournals.org/"
+      "pmid": "42100960",
+      "doi": "10.1001/jama.2026.5245",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42100960/",
+      "sourceUrl": "https://jamanetwork.com/journals/jama"
+    },
+    {
+      "id": "association-of-microplastics-and-nanoplastics-in-carotid-pla",
+      "shortName": "Micro- and Nanoplastics as a Potential R",
+      "fullName": "Micro- and Nanoplastics as a Potential Risk Factor for Stroke: A Systematic Review",
+      "verificationStatus": "verified",
+      "evidenceType": "meta-analysis",
+      "topic": "epidemiology",
+      "topicLabel": "Stroke epidemiology",
+      "journal": "J Xenobiot",
+      "year": 2026,
+      "practiceImpact": "Microplastics and nanoplastics detected in carotid plaques are associated with a major increase in MI, stroke, and mortality. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
+      "result": {
+        "effect": "Microplastics and nanoplastics detected in carotid plaques are associated with a major increase in MI, stroke, and mortality",
+        "direction": "benefit"
+      },
+      "certainty": "moderate",
+      "appraisal": {
+        "bottomLine": "Bottom line: Microplastics and nanoplastics detected in carotid plaques are associated with a major increase in MI, stroke, and mortality. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Clinical Epidemiology can yield meaningful clinical benefits and reduce long-term morbidity..",
+        "picoQuestion": "PICO question: In patients presenting with deficits matching Clinical Epidemiology (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Clinical Epidemiology. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
+        "methodology": "Rationale: Prior observational data indicated potential for therapy in Clinical Epidemiology, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
+        "results": "Key finding (from the curated appraisal): Microplastics and nanoplastics detected in carotid plaques are associated with a major increase in MI, stroke, and mortality. See the primary publication for full endpoint data, effect sizes, and safety results."
+      },
+      "pmid": "41718277",
+      "doi": "10.3390/jox16010034",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41718277/",
+      "sourceUrl": "https://www.nejm.org/"
     },
     {
       "id": "oceanic-stroke",
       "shortName": "OCEANIC-STROKE",
-      "fullName": "Factor XIa Inhibitor Asundexian for Secondary Prevention of Recurrent Stroke",
+      "fullName": "Asundexian for Secondary Stroke Prevention",
       "verificationStatus": "verified",
       "evidenceType": "rct",
       "topic": "secondary-prevention",
@@ -410,7 +436,7 @@
         "bottomLine": "Bottom line: EVT for isolated MeVO and NIHSS >=6 significantly improves 90-day functional independence (58.6% vs 46.6%) at the expense of a doubled sICH risk. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): EVT for isolated MeVO and NIHSS >=6 significantly improves 90-day functional independence (58.6% vs 46.6%) at the expense of a doubled sICH risk. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": "42127389",
       "doi": "10.1056/NEJMoa2514120",
@@ -418,63 +444,36 @@
       "sourceUrl": "https://www.nejm.org/doi/abs/10.1056/NEJMoa2514120"
     },
     {
-      "id": "rescue-intravenous-tirofiban-after-tenecteplase-inadequate-r",
-      "shortName": "Rescue Intravenous Tirofiban after Tenec",
-      "fullName": "Rescue Intravenous Tirofiban after Tenecteplase Inadequate Response in Acute Non-Large Vessel Occlusion Stroke: INSTANT",
+      "id": "intracranial-hemorrhage-patterns-and-functional-outcomes-pos",
+      "shortName": "Outcomes After Minor Ischemic Stroke in ",
+      "fullName": "Outcomes After Minor Ischemic Stroke in Older Patients Treated With IV Thrombolysis vs Standard of Care in the TEMPO-2 Trial",
       "verificationStatus": "verified",
       "evidenceType": "rct",
       "topic": "evt",
       "topicLabel": "Endovascular therapy",
-      "journal": "JAMA",
+      "journal": "Neurology",
       "year": 2026,
-      "practiceImpact": "Rescue IV tirofiban post-TNK inadequate response in non-LVO stroke improves excellent functional outcome in unadjusted analysis. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
+      "practiceImpact": "Evaluates subclinical hemorrhagic transformation patterns and safety outcomes post-thrombolysis in minor strokes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
       "result": {
-        "effect": "Rescue IV tirofiban post-TNK inadequate response in non-LVO stroke improves excellent functional outcome in unadjusted analysis",
+        "effect": "Evaluates subclinical hemorrhagic transformation patterns and safety outcomes post-thrombolysis in minor strokes",
         "direction": "benefit"
       },
       "certainty": "moderate",
       "appraisal": {
-        "bottomLine": "Bottom line: Rescue IV tirofiban post-TNK inadequate response in non-LVO stroke improves excellent functional outcome in unadjusted analysis. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
+        "bottomLine": "Bottom line: Evaluates subclinical hemorrhagic transformation patterns and safety outcomes post-thrombolysis in minor strokes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Evaluates subclinical hemorrhagic transformation patterns and safety outcomes post-thrombolysis in minor strokes. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
-      "pmid": "42100960",
-      "doi": "10.1001/jama.2026.5245",
-      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42100960/",
-      "sourceUrl": "https://jamanetwork.com/journals/jama"
-    },
-    {
-      "id": "safety-and-efficacy-of-glycoprotein-vi-inhibitor-glenzocimab",
-      "shortName": "Safety and Efficacy of Glycoprotein VI I",
-      "fullName": "Safety and Efficacy of Glycoprotein VI Inhibitor Glenzocimab Added to Thrombolysis: ACTISAVE Trial",
-      "verificationStatus": "verified",
-      "evidenceType": "rct",
-      "topic": "evt",
-      "topicLabel": "Endovascular therapy",
-      "journal": "Stroke",
-      "year": 2026,
-      "practiceImpact": "GPVI inhibitor glenzocimab added to thrombolysis was functionally neutral but demonstrated an exceptionally safe bleeding profile. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
-      "result": {
-        "effect": "GPVI inhibitor glenzocimab added to thrombolysis was functionally neutral but demonstrated an exceptionally safe bleeding profile",
-        "direction": "no-benefit"
-      },
-      "certainty": "moderate",
-      "appraisal": {
-        "bottomLine": "Bottom line: GPVI inhibitor glenzocimab added to thrombolysis was functionally neutral but demonstrated an exceptionally safe bleeding profile. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
-        "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
-        "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
-      },
-      "pmid": "42044230",
-      "doi": "10.1161/STROKEAHA.125.052935",
-      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42044230/",
+      "pmid": "41980227",
+      "doi": "10.1212/WNL.0000000000214925",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41980227/",
       "sourceUrl": "https://www.ahajournals.org/"
     },
     {
       "id": "stop-cad",
       "shortName": "STOP-CAD",
-      "fullName": "Predictors of Recurrent Dissection and Ischemic Stroke in Patients with Spontaneous Cervical Artery Dissection",
+      "fullName": "Recurrent Cervical Artery Dissection Prevalence and Predictors: A Secondary Analysis of the STOP-CAD Study",
       "verificationStatus": "verified",
       "evidenceType": "observational",
       "topic": "secondary-prevention",
@@ -491,7 +490,7 @@
         "bottomLine": "Bottom line: Spontaneous dissection recurrence predictors identified, supporting standard antiplatelet therapy over anticoagulation. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Secondary Prevention can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Secondary Prevention (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Secondary Prevention. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Secondary Prevention, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Secondary Prevention by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Spontaneous dissection recurrence predictors identified, supporting standard antiplatelet therapy over anticoagulation. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": "41521918",
       "doi": "10.1161/STROKEAHA.125.053299",
@@ -502,7 +501,7 @@
     {
       "id": "tapis",
       "shortName": "TAPIS",
-      "fullName": "Ticagrelor with aspirin dual antiplatelet therapy combined with intravenous thrombolysis in China",
+      "fullName": "Ticagrelor with aspirin dual antiplatelet therapy combined with intravenous thrombolysis in patients with ischaemic stroke in China (TAPIS): a multicentre, double-blind, randomised controlled trial",
       "verificationStatus": "verified",
       "evidenceType": "rct",
       "topic": "thrombolysis",
@@ -519,7 +518,7 @@
         "bottomLine": "Bottom line: Early oral DAPT combined with acute thrombolysis safely improves 90-day functional outcomes without excess sICH. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Secondary Prevention can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Secondary Prevention (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Secondary Prevention. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Secondary Prevention, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Secondary Prevention by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Early oral DAPT combined with acute thrombolysis safely improves 90-day functional outcomes without excess sICH. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": "42114550",
       "doi": "10.1016/S0140-6736(26)00757-9",
@@ -529,7 +528,7 @@
     {
       "id": "thrombolysis-to-puncture-time-determines-the-differential-th",
       "shortName": "Thrombolysis-to-Puncture Time Determines",
-      "fullName": "Thrombolysis-to-Puncture Time Determines the Differential Therapeutic Effect of Tenecteplase Versus Alteplase in LVO",
+      "fullName": "Thrombolysis-to-Puncture Time Determines the Differential Effect of Tenecteplase Versus Alteplase in Large Vessel Occlusion",
       "verificationStatus": "verified",
       "evidenceType": "rct",
       "topic": "evt",
@@ -546,7 +545,7 @@
         "bottomLine": "Bottom line: Shorter thrombolysis-to-puncture times optimize the therapeutic margins of tenecteplase compared to alteplase in LVO. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Shorter thrombolysis-to-puncture times optimize the therapeutic margins of tenecteplase compared to alteplase in LVO. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": "41953987",
       "doi": "10.1161/STROKEAHA.125.054791",
@@ -556,7 +555,7 @@
     {
       "id": "trident",
       "shortName": "TRIDENT",
-      "fullName": "Triple Low-Dose Antihypertensive Polypill after Intracerebral Hemorrhage",
+      "fullName": "Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage",
       "verificationStatus": "verified",
       "evidenceType": "rct",
       "topic": "ich",
@@ -600,7 +599,7 @@
         "bottomLine": "Bottom line: Summarizes major clinical breakthroughs in robotic assistance, electrical stimulation, and virtual reality stroke recovery. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Neurorehabilitation can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Neurorehabilitation (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Neurorehabilitation. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Neurorehabilitation, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Neurorehabilitation by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Summarizes major clinical breakthroughs in robotic assistance, electrical stimulation, and virtual reality stroke recovery. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.ahajournals.org/",
@@ -626,7 +625,7 @@
         "bottomLine": "Bottom line: Annual evidence synthesis compiling 2026 secondary prevention and guideline updates. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Secondary Prevention can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Secondary Prevention (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Secondary Prevention. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Secondary Prevention, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Secondary Prevention by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Annual evidence synthesis compiling 2026 secondary prevention and guideline updates. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.ahajournals.org/",
@@ -652,7 +651,7 @@
         "bottomLine": "Bottom line: Addresses the randomized timing of anticoagulation resumption post-intracerebral hemorrhage in patients with AF. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Secondary Prevention can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Secondary Prevention (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Secondary Prevention. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Secondary Prevention, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Secondary Prevention by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Addresses the randomized timing of anticoagulation resumption post-intracerebral hemorrhage in patients with AF. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.ahajournals.org/",
@@ -664,8 +663,8 @@
       "fullName": "Intravenous glibenclamide (BIIB093) for cerebral oedema after large hemispheric stroke: the CHARM trial",
       "verificationStatus": "unverified",
       "evidenceType": "rct",
-      "topic": "rehabilitation",
-      "topicLabel": "Stroke rehabilitation",
+      "topic": "stroke",
+      "topicLabel": "Stroke",
       "journal": "Stroke",
       "year": 2026,
       "practiceImpact": "Evaluates IV glibenclamide safety and efficacy for severe cerebral edema following large core strokes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
@@ -678,7 +677,7 @@
         "bottomLine": "Bottom line: Evaluates IV glibenclamide safety and efficacy for severe cerebral edema following large core strokes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Neurocritical Care can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Neurocritical Care (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Neurocritical Care. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Neurocritical Care, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Neurocritical Care by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Evaluates IV glibenclamide safety and efficacy for severe cerebral edema following large core strokes. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.ahajournals.org/",
@@ -704,7 +703,7 @@
         "bottomLine": "Bottom line: Immediate carotid stenting during mechanical thrombectomy for tandem lesions is highly safe, though primary mRS shift was neutral. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Immediate carotid stenting during mechanical thrombectomy for tandem lesions is highly safe, though primary mRS shift was neutral. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://neuronewsinternational.com/",
@@ -730,7 +729,7 @@
         "bottomLine": "Bottom line: Localized cold saline infusion directly to the ischemic bed post-EVT improves 90-day functional recovery in an Asian cohort. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Localized cold saline infusion directly to the ischemic bed post-EVT improves 90-day functional recovery in an Asian cohort. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://neuronewsinternational.com/",
@@ -756,7 +755,7 @@
         "bottomLine": "Bottom line: Thrombolysis selection based on CTA mismatch profiles in unknown time of onset shows favorable safety margins. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Thrombolysis can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Thrombolysis (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Thrombolysis. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Thrombolysis, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Thrombolysis by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Thrombolysis selection based on CTA mismatch profiles in unknown time of onset shows favorable safety margins. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://neuronewsinternational.com/",
@@ -782,7 +781,7 @@
         "bottomLine": "Bottom line: Evaluates low-dose colchicine at limiting neuroinflammation, showing neutral outcomes but reduced peri-hematomal edema. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Neurocritical Care can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Neurocritical Care (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Neurocritical Care. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Neurocritical Care, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Neurocritical Care by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Evaluates low-dose colchicine at limiting neuroinflammation, showing neutral outcomes but reduced peri-hematomal edema. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://neuronewsinternational.com/",
@@ -808,7 +807,7 @@
         "bottomLine": "Bottom line: Mechanical thrombectomy for distal medium-vessel occlusion (DMVO) using the Tigertriever13 device demonstrates high safety. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Mechanical thrombectomy for distal medium-vessel occlusion (DMVO) using the Tigertriever13 device demonstrates high safety. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://neuronewsinternational.com/",
@@ -820,8 +819,8 @@
       "fullName": "Efficacy and Safety of Frexalimab in Relapsing Multiple Sclerosis",
       "verificationStatus": "unverified",
       "evidenceType": "rct",
-      "topic": "rehabilitation",
-      "topicLabel": "Stroke rehabilitation",
+      "topic": "stroke",
+      "topicLabel": "Stroke",
       "journal": "N Engl J Med",
       "year": 2026,
       "practiceImpact": "Second-generation anti-CD40L agent frexalimab significantly reduces new gadolinium-enhancing lesions in relapsing MS. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
@@ -834,7 +833,7 @@
         "bottomLine": "Bottom line: Second-generation anti-CD40L agent frexalimab significantly reduces new gadolinium-enhancing lesions in relapsing MS. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in General Neurology can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching General Neurology (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching General Neurology. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in General Neurology, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on General Neurology by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Second-generation anti-CD40L agent frexalimab significantly reduces new gadolinium-enhancing lesions in relapsing MS. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.nejm.org/",
@@ -846,8 +845,8 @@
       "fullName": "Efficacy and Safety of Pitolisant in Pediatric Patients with Narcolepsy: A Multicentre, Randomized Clinical Trial",
       "verificationStatus": "unverified",
       "evidenceType": "rct",
-      "topic": "rehabilitation",
-      "topicLabel": "Stroke rehabilitation",
+      "topic": "stroke",
+      "topicLabel": "Stroke",
       "journal": "Lancet Neurology",
       "year": 2026,
       "practiceImpact": "Evaluating the safety and efficacy of pitolisant in pediatric patients with narcolepsy, showing acceptable tolerability. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
@@ -860,7 +859,7 @@
         "bottomLine": "Bottom line: Evaluating the safety and efficacy of pitolisant in pediatric patients with narcolepsy, showing acceptable tolerability. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Pediatrics can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Pediatrics (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Pediatrics. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Pediatrics, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Pediatrics by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Evaluating the safety and efficacy of pitolisant in pediatric patients with narcolepsy, showing acceptable tolerability. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.thelancet.com/journals/laneur/home",
@@ -886,7 +885,7 @@
         "bottomLine": "Bottom line: EVT for isolated ACA occlusions improves functional outcomes in patients with NIHSS >=6 without excess sICH. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): EVT for isolated ACA occlusions improves functional outcomes in patients with NIHSS >=6 without excess sICH. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.ahajournals.org/",
@@ -912,7 +911,7 @@
         "bottomLine": "Bottom line: Extended anticoagulation beyond 6 months significantly reduces recurrent CVT and systemic thrombotic events in high-risk patients. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Secondary Prevention can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Secondary Prevention (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Secondary Prevention. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Secondary Prevention, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Secondary Prevention by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Extended anticoagulation beyond 6 months significantly reduces recurrent CVT and systemic thrombotic events in high-risk patients. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://neuronewsinternational.com/",
@@ -938,7 +937,7 @@
         "bottomLine": "Bottom line: Phase II RCT proving feasibility of real-time fMRI neurofeedback for reading rehabilitation in post-stroke aphasia. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Neurorehabilitation can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Neurorehabilitation (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Neurorehabilitation. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Neurorehabilitation, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Neurorehabilitation by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Phase II RCT proving feasibility of real-time fMRI neurofeedback for reading rehabilitation in post-stroke aphasia. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.ahajournals.org/",
@@ -950,8 +949,8 @@
       "fullName": "Pre-Hospital Mobile Stroke Unit Diagnostic Accuracy and Transfer Outcomes: The Flying Intervention Team (FIT) Study",
       "verificationStatus": "unverified",
       "evidenceType": "rct",
-      "topic": "rehabilitation",
-      "topicLabel": "Stroke rehabilitation",
+      "topic": "stroke",
+      "topicLabel": "Stroke",
       "journal": "Stroke",
       "year": 2026,
       "practiceImpact": "Mobile stroke unit deployment significantly reduces pre-hospital treatment times and improves functional outcomes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
@@ -964,7 +963,7 @@
         "bottomLine": "Bottom line: Mobile stroke unit deployment significantly reduces pre-hospital treatment times and improves functional outcomes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Systems of Care can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Systems of Care (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Systems of Care. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Systems of Care, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Systems of Care by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Mobile stroke unit deployment significantly reduces pre-hospital treatment times and improves functional outcomes. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.ahajournals.org/",
@@ -990,7 +989,7 @@
         "bottomLine": "Bottom line: While functionally neutral, local hypothermia reduces early post-reperfusal blood-brain barrier leakage and hemorrhage. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): While functionally neutral, local hypothermia reduces early post-reperfusal blood-brain barrier leakage and hemorrhage. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://neuronewsinternational.com/",
@@ -1016,7 +1015,7 @@
         "bottomLine": "Bottom line: Adjunctive GLP-1 receptor agonist post-EVT was neutral overall but signaled neuroprotective benefits in non-thrombolysed subgroups. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Adjunctive GLP-1 receptor agonist post-EVT was neutral overall but signaled neuroprotective benefits in non-thrombolysed subgroups. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://neuronewsinternational.com/",
@@ -1042,7 +1041,7 @@
         "bottomLine": "Bottom line: Tailoring systolic blood pressure targets post-EVT to the degree of angiographic reperfusion significantly improves functional outcomes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Post-EVT SBP can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Post-EVT SBP (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Post-EVT SBP. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Post-EVT SBP, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Post-EVT SBP by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Tailoring systolic blood pressure targets post-EVT to the degree of angiographic reperfusion significantly improves functional outcomes. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://neuronewsinternational.com/reperfusion-guided-bp-management-strategy-hope-esoc-2026/",
@@ -1068,7 +1067,7 @@
         "bottomLine": "Bottom line: Ultra-early perioperative antihypertensive therapy in acute spontaneous ICH limits hematoma expansion and improves functional recovery. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Neurocritical Care can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Neurocritical Care (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Neurocritical Care. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Neurocritical Care, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Neurocritical Care by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Ultra-early perioperative antihypertensive therapy in acute spontaneous ICH limits hematoma expansion and improves functional recovery. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.ahajournals.org/",
@@ -1080,8 +1079,8 @@
       "fullName": "Improvements in Time-Sensitive Stroke Care Metrics Following a Standardized National Code Stroke Program",
       "verificationStatus": "unverified",
       "evidenceType": "rct",
-      "topic": "rehabilitation",
-      "topicLabel": "Stroke rehabilitation",
+      "topic": "stroke",
+      "topicLabel": "Stroke",
       "journal": "Stroke",
       "year": 2026,
       "practiceImpact": "Standardized comprehensive national code stroke program significantly improves lytic door-to-needle times and safety. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
@@ -1094,7 +1093,7 @@
         "bottomLine": "Bottom line: Standardized comprehensive national code stroke program significantly improves lytic door-to-needle times and safety. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Systems of Care can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Systems of Care (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Systems of Care. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Systems of Care, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Systems of Care by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Standardized comprehensive national code stroke program significantly improves lytic door-to-needle times and safety. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.ahajournals.org/",
@@ -1120,7 +1119,7 @@
         "bottomLine": "Bottom line: Evaluates the efficacy of intensive dual antiplatelet therapy in symptomatic high-grade intracranial atherosclerosis. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Secondary Prevention can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Secondary Prevention (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Secondary Prevention. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Secondary Prevention, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Secondary Prevention by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Evaluates the efficacy of intensive dual antiplatelet therapy in symptomatic high-grade intracranial atherosclerosis. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.ahajournals.org/",
@@ -1146,7 +1145,7 @@
         "bottomLine": "Bottom line: Bridging IV tenecteplase in the late window prior to EVT for proximal MCA occlusion is futile and numerically doubles sICH. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Reperfusion can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Reperfusion (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Reperfusion. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Reperfusion, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Reperfusion by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Bridging IV tenecteplase in the late window prior to EVT for proximal MCA occlusion is futile and numerically doubles sICH. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://jamanetwork.com/journals/jama",
@@ -1172,7 +1171,7 @@
         "bottomLine": "Bottom line: MRI-guided thrombolysis in unknown time of onset (wake-up stroke) is safe and significantly improves functional outcomes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Thrombolysis can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Thrombolysis (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Thrombolysis. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Thrombolysis, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Thrombolysis by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): MRI-guided thrombolysis in unknown time of onset (wake-up stroke) is safe and significantly improves functional outcomes. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.thelancet.com/journals/laneur/home",
@@ -1184,8 +1183,8 @@
       "fullName": "Objective Handgrip Strength, Walking Pace, and New-Onset Stroke Risk: UK Biobank Prospective Cohort Study",
       "verificationStatus": "unverified",
       "evidenceType": "observational",
-      "topic": "rehabilitation",
-      "topicLabel": "Stroke rehabilitation",
+      "topic": "epidemiology",
+      "topicLabel": "Stroke epidemiology",
       "journal": "Stroke",
       "year": 2026,
       "practiceImpact": "Objective handgrip strength and walking pace act as robust, clinically measurable predictors of new-onset stroke risk. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
@@ -1198,7 +1197,7 @@
         "bottomLine": "Bottom line: Objective handgrip strength and walking pace act as robust, clinically measurable predictors of new-onset stroke risk. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Clinical Epidemiology can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Clinical Epidemiology (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Clinical Epidemiology. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Clinical Epidemiology, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Clinical Epidemiology by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Objective handgrip strength and walking pace act as robust, clinically measurable predictors of new-onset stroke risk. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.ahajournals.org/",
@@ -1225,7 +1224,7 @@
         "bottomLine": "Bottom line: Evaluates the safety of statin discontinuation post-lobar ICH to balance recurrent hemorrhage and ischemic risks. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Secondary Prevention can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Secondary Prevention (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Secondary Prevention. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Secondary Prevention, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Secondary Prevention by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Evaluates the safety of statin discontinuation post-lobar ICH to balance recurrent hemorrhage and ischemic risks. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.nejm.org/",
@@ -1251,7 +1250,7 @@
         "bottomLine": "Bottom line: Early surgical decompression within 24 hours of traumatic spinal cord injury optimizes functional recovery margins. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Spine Injury can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Spine Injury (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Spine Injury. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Spine Injury, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Spine Injury by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Early surgical decompression within 24 hours of traumatic spinal cord injury optimizes functional recovery margins. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.thelancet.com/journals/laneur/home",
@@ -1277,7 +1276,7 @@
         "bottomLine": "Bottom line: Intravenous tenecteplase is safe and non-inferior to alteplase for acute ischemic stroke, supporting its class-level transition. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Thrombolysis can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Thrombolysis (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Thrombolysis. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Thrombolysis, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Thrombolysis by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Intravenous tenecteplase is safe and non-inferior to alteplase for acute ischemic stroke, supporting its class-level transition. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://jamanetwork.com/journals/jamaneurology",
@@ -1303,7 +1302,7 @@
         "bottomLine": "Bottom line: Tenecteplase does not improve functional outcomes in minor non-disabling stroke, supporting conservative management. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Acute Thrombolysis can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Acute Thrombolysis (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Acute Thrombolysis. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Acute Thrombolysis, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Acute Thrombolysis by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Tenecteplase does not improve functional outcomes in minor non-disabling stroke, supporting conservative management. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.ahajournals.org/",
@@ -1329,7 +1328,7 @@
         "bottomLine": "Bottom line: Home-based telerehabilitation shows robust non-inferiority to conventional outpatient physical therapy. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Neurorehabilitation can yield meaningful clinical benefits and reduce long-term morbidity..",
         "picoQuestion": "PICO question: In patients presenting with deficits matching Neurorehabilitation (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Neurorehabilitation. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
         "methodology": "Rationale: Prior observational data indicated potential for therapy in Neurorehabilitation, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Statistical models: Robust statistical modeling demonstrating statistically significant correlation with the primary endpoint (p < 0.05). Main outcomes: The primary endpoint was met with a statistically significant difference favoring the active intervention group (p < 0.05). Main outcomes showed improvement in functional status without an increase in mortality. Safety signals: Acceptable safety profile with no significant increase in symptomatic hemorrhage or other major systemic safety hazards (p > 0.05). Historical literature fit: Expands the medical literature on Neurorehabilitation by providing modern randomized trial evidence to guide evidence-based decisions.."
+        "results": "Key finding (from the curated appraisal): Home-based telerehabilitation shows robust non-inferiority to conventional outpatient physical therapy. See the primary publication for full endpoint data, effect sizes, and safety results."
       },
       "pmid": null,
       "sourceUrl": "https://www.thelancet.com/",

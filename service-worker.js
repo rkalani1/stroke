@@ -11,11 +11,11 @@
    - When a client messages {type:'CLAIM_AND_RELOAD'}, the SW calls
      clients.claim() and asks the client to soft-reload.
 
-   Cache-name bumped to stroke-cache-v6-6-1. Old caches are cleared on activate.
+   Cache-name bumped to stroke-cache-v6-7-0. Old caches are cleared on activate.
 */
 
-const APP_VERSION = '6.6.1';
-const CACHE_NAME  = 'stroke-cache-v6-6-1';
+const APP_VERSION = '6.7.0';
+const CACHE_NAME  = 'stroke-cache-v6-7-0';
 
 const CORE_ASSETS = [
   './',
@@ -100,7 +100,10 @@ self.addEventListener('fetch', (event) => {
           return response;
         }).catch(() =>
           event.request.mode === 'navigate'
-            ? caches.match('./offline.html').then(r => r || caches.match('./index.html'))
+            // Offline navigation/reload: serve the cached working app shell FIRST
+            // (it's in CORE_ASSETS, so always precached and fully functional offline).
+            // offline.html is only a last resort if the shell was never cached.
+            ? caches.match('./index.html').then(r => r || caches.match('./offline.html'))
             : caches.match(event.request, { ignoreSearch: true }).then(c => c || caches.match('./index.html'))
         )
       );
