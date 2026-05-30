@@ -100,6 +100,7 @@ import {
   afDetectionStrategy,
   evaluateBostonCAA20
 } from './calculators-extended.js';
+import { getLocalInstitutionalContent } from './institutional-protocols.js';
 // Patient-store is consumed by components.jsx, no direct imports needed here.
 import ais2026 from './guidelines/ais-2026.json';
 import cancerStroke2026 from './guidelines/cancer-stroke-2026.json';
@@ -27337,6 +27338,76 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {activeTab === 'protocols' && viewMode !== 'patient' && (
                   <ErrorBoundary>
                   <div id="tabpanel-protocols" role="tabpanel" aria-labelledby="tab-protocols" className="space-y-6">
+                    {/* ===== PRIVATE INSTITUTIONAL LAYER (local-only, never public) =====
+                        Rendered only when private/institutional.js is present on disk.
+                        window.__INSTITUTIONAL_LOCAL__ is set by that gitignored script
+                        before app.js loads. Zero output on the public/deployed build. */}
+                    {(() => {
+                      const localInst = getLocalInstitutionalContent();
+                      if (!localInst) return null;
+                      return (
+                        <div className="border-2 border-warn-400 rounded-lg overflow-hidden" aria-label="Institutional protocols — local only">
+                          {/* Header badge */}
+                          <div className="bg-warn-400 px-4 py-2 flex items-center gap-2">
+                            <i aria-hidden="true" data-lucide="lock" className="w-4 h-4 text-warn-900 flex-shrink-0"></i>
+                            <span className="font-semibold text-warn-900 text-sm">
+                              Institutional (local — not public)
+                            </span>
+                            <span className="ml-2 text-warn-800 text-xs font-mono bg-warn-200 rounded px-1.5 py-0.5">
+                              {localInst.institutionName}
+                            </span>
+                            {localInst.lastUpdated && (
+                              <span className="ml-auto text-warn-700 text-xs">
+                                Updated: {localInst.lastUpdated}
+                              </span>
+                            )}
+                          </div>
+                          {/* Sections */}
+                          <div className="bg-warn-50 divide-y divide-warn-200">
+                            {localInst.sections.map((section) => (
+                              <div key={section.id} className="px-4 py-3">
+                                <h3 className="font-semibold text-warn-900 text-sm mb-2">{section.title}</h3>
+                                {section.subsections && section.subsections.map((sub, si) => (
+                                  <div key={si} className="mb-2 last:mb-0">
+                                    {sub.heading && (
+                                      <p className="text-xs font-semibold text-warn-800 uppercase tracking-wide mb-1">{sub.heading}</p>
+                                    )}
+                                    <ul className="space-y-0.5">
+                                      {sub.items && sub.items.map((item, ii) => (
+                                        <li key={ii} className="text-sm text-warn-900 flex gap-2">
+                                          <span className="text-warn-500 flex-shrink-0 mt-0.5" aria-hidden="true">•</span>
+                                          <span>{item}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                ))}
+                              </div>
+                            ))}
+                            {/* Contacts */}
+                            {Array.isArray(localInst.contacts) && localInst.contacts.length > 0 && (
+                              <div className="px-4 py-3">
+                                <h3 className="font-semibold text-warn-900 text-sm mb-2">On-Call Contacts</h3>
+                                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1">
+                                  {localInst.contacts.map((c, ci) => (
+                                    <div key={ci} className="flex gap-2 text-sm">
+                                      <dt className="text-warn-700 font-medium flex-shrink-0">{c.role}:</dt>
+                                      <dd className="text-warn-900">{c.contact}</dd>
+                                    </div>
+                                  ))}
+                                </dl>
+                              </div>
+                            )}
+                            {/* Disclaimer */}
+                            {localInst.disclaimer && (
+                              <div className="px-4 py-2 bg-warn-100">
+                                <p className="text-xs text-warn-700 italic">{localInst.disclaimer}</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })()}
                     {/* ===== QUICK PATIENT SUMMARY CARD ===== */}
                     {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) && (
                       <div className="bg-paper-2 border border-line rounded-md px-4 py-3">

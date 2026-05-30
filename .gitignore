@@ -1,5 +1,12 @@
 config.local.json
 node_modules/
+
+# ── Private institutional layer ─────────────────────────────────────────────
+# Real HMC/UW/Harborview protocols go here. NEVER committed or deployed.
+# Copy src/institutional-protocols.local.example.js → private/institutional.js
+# and fill in your real institutional content.
+private/
+src/institutional-protocols.local.js
 .pw-audit.mjs
 .pw-audit-report.json
 .DS_Store

@@ -893,6 +893,20 @@
             return false;
         };
     </script>
+    <!-- Private institutional layer (local-only, gitignored).
+         When private/institutional.js exists on disk it sets
+         window.__INSTITUTIONAL_LOCAL__ before app.js loads.
+         A 404 here is intentional and harmless — the public build
+         has no such file. Do NOT commit private/institutional.js. -->
+    <script>
+      (function () {
+        var s = document.createElement('script');
+        s.src = 'private/institutional.js';
+        s.onerror = function () { /* 404 expected on public build — no-op */ };
+        // Insert synchronously before app.js so the global is set in time.
+        document.currentScript.parentNode.insertBefore(s, document.currentScript);
+      })();
+    </script>
     <script src="app.js?v=6.2.0" defer></script>
     <footer style="margin-top: 40px; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb;">
       <p>This is a synthetic public demo site for educational and reference purposes only. Not for clinical decision-making or real patient care.</p>
