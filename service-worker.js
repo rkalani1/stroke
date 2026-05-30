@@ -14,8 +14,8 @@
    Cache-name bumped to stroke-cache-v6-4-0. Old caches are cleared on activate.
 */
 
-const APP_VERSION = '6.4.1';
-const CACHE_NAME  = 'stroke-cache-v6-4-1';
+const APP_VERSION = '6.5.0';
+const CACHE_NAME  = 'stroke-cache-v6-5-0';
 
 const CORE_ASSETS = [
   './',
