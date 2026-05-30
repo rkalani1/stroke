@@ -81,9 +81,9 @@ export const claims = [
   }),
   makeClaim({
     id: 'cl-af-early-anticoag',
-    statement: 'Early DOAC initiation (within 4 days for minor and 6-7 days for major stroke per ELAN) is non-inferior or favorable vs delayed initiation for the composite of recurrent stroke / systemic embolism / major bleeding (ELAN, TIMING).',
+    statement: 'Early DOAC initiation within ~4 days is non-inferior to delayed start across infarct sizes (OPTIMAS) and was superior to delayed start at 30 days in pooled individual-patient data (CATALYST IPDMA: OR 0.70, 95% CI 0.50-0.98, p=0.039) with no excess of symptomatic intracranial hemorrhage; earlier ELAN/TIMING trials showed non-inferiority for the composite of recurrent stroke / systemic embolism / major bleeding.',
     topic: 'af-anticoag-timing',
-    citationIds: ['cit-elan-2023', 'cit-timing-2022'],
+    citationIds: ['cit-optimas-2024', 'cit-catalyst-2025', 'cit-elan-2023', 'cit-timing-2022'],
     certainty: 'high',
     lastReviewed: lr
   }),

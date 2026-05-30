@@ -474,7 +474,7 @@ const ETIOLOGY_CHECKLISTS = {
     label: 'Cardioembolism (TOAST 2)',
     items: [
       'DOAC preferred over warfarin (apixaban, rivaroxaban, edoxaban, dabigatran) — Class 1',
-      'Timing of initiation (NIHSS-stratified expert-consensus heuristic, broadly supported by CATALYST IPDMA — Werring Lancet Neurol 2025): minor stroke (NIHSS <8) day 1-3, moderate (8-15) day 3-6, severe (≥16) day 6-12',
+      'Timing of initiation: early DOAC ≤4 days across stroke severities (OPTIMAS non-inferior across infarct sizes; CATALYST IPDMA superior at 30 d, OR 0.70, 95% CI 0.50-0.98), barring very severe stroke or large hemorrhagic transformation — reserve longer delay for those highest-risk presentations',
       'CHA₂DS₂-VA score (2024 ESC dropped sex) for risk stratification',
       'LAA occlusion (Watchman) for AF + contraindication to long-term AC',
       'Echocardiogram with bubble study to exclude PFO / intracardiac thrombus'
