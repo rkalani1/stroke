@@ -185,9 +185,9 @@ const HINTS_TABLE = [
 
 /* Tone → Tailwind class fragments (v7 semantic tokens). */
 const TONE = {
-  ok:   { chip: 'bg-ok-50 text-ok-800 border-ok-200',     dot: 'bg-ok-500',   text: 'text-ok-700' },
-  warn: { chip: 'bg-warn-50 text-warn-800 border-warn-200', dot: 'bg-warn-500', text: 'text-warn-700' },
-  crit: { chip: 'bg-crit-50 text-crit-800 border-crit-200', dot: 'bg-crit-500', text: 'text-crit-700' }
+  ok:   { chip: 'bg-ok-50 text-ok-800 border-ok-200 dark:bg-ok-950 dark:text-ok-300 dark:border-ok-800',     dot: 'bg-ok-500',   text: 'text-ok-700 dark:text-ok-300' },
+  warn: { chip: 'bg-warn-50 text-warn-800 border-warn-200 dark:bg-warn-950 dark:text-warn-300 dark:border-warn-800', dot: 'bg-warn-500', text: 'text-warn-700 dark:text-warn-300' },
+  crit: { chip: 'bg-crit-50 text-crit-800 border-crit-200 dark:bg-crit-950 dark:text-crit-300 dark:border-crit-800', dot: 'bg-crit-500', text: 'text-crit-700 dark:text-crit-300' }
 };
 
 /* ── Component ────────────────────────────────────────────────────────── */
@@ -419,7 +419,7 @@ export function HintsSimulator() {
         }
       `}</style>
 
-      <p className="text-sm text-slate-600">
+      <p className="text-sm text-slate-600 dark:text-ink-2">
         The 3-step HINTS exam (plus bedside hearing → HINTS+) differentiates a CENTRAL
         posterior-circulation stroke from a PERIPHERAL vestibular neuritis in patients with the
         Acute Vestibular Syndrome (continuous vertigo, nystagmus, head-motion intolerance). In this
@@ -429,10 +429,10 @@ export function HintsSimulator() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* ── Widget 1 · Eye Simulator stage ── */}
-        <section className="bg-white border border-line rounded-lg p-3 space-y-3">
+        <section className="bg-white border border-line rounded-lg p-3 space-y-3 dark:bg-card">
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-semibold text-slate-800">Interactive Eye Simulator</h4>
-            <span className="font-mono text-2xs text-slate-500">bedside teaching tool</span>
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Interactive Eye Simulator</h4>
+            <span className="font-mono text-2xs text-slate-500 dark:text-mute">bedside teaching tool</span>
           </div>
 
           <div className="hint-stage" role="img"
@@ -452,13 +452,13 @@ export function HintsSimulator() {
           </div>
 
           <div className={cx('rounded-md border px-3 py-2 text-xs leading-relaxed min-h-[64px]',
-            scenario ? TONE[scenario.tone].chip : 'bg-slate-50 text-slate-600 border-line')}>
+            scenario ? TONE[scenario.tone].chip : 'bg-slate-50 text-slate-600 border-line dark:bg-paper-2 dark:text-ink-2')}>
             {scenario ? scenario.text : 'Select a HINTS test scenario below to animate the eye movement and read its interpretation.'}
           </div>
 
           {GROUPS.map((g, gi) => (
             <div key={g.name} className="space-y-1.5">
-              <p className="text-2xs uppercase tracking-wide font-semibold text-slate-500">
+              <p className="text-2xs uppercase tracking-wide font-semibold text-slate-500 dark:text-mute">
                 {gi + 1}. {g.name}
               </p>
               <div className="flex flex-wrap gap-2">
@@ -470,7 +470,7 @@ export function HintsSimulator() {
                       className={cx('px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500',
                         active
                           ? (sc.tone === 'crit' ? 'bg-crit-600 text-white' : 'bg-teal-600 text-white')
-                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200')}>
+                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-paper-2 dark:text-ink-2 dark:hover:bg-overlay')}>
                       {sc.label}
                     </button>
                   );
@@ -481,12 +481,12 @@ export function HintsSimulator() {
         </section>
 
         {/* ── Widget 2 · Diagnostic Assistant ── */}
-        <section className="bg-white border border-line rounded-lg p-3 space-y-3">
+        <section className="bg-white border border-line rounded-lg p-3 space-y-3 dark:bg-card">
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-semibold text-slate-800">Bedside Diagnostic Assistant</h4>
-            <span className="font-mono text-2xs text-slate-500">HINTS+ classifier</span>
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Bedside Diagnostic Assistant</h4>
+            <span className="font-mono text-2xs text-slate-500 dark:text-mute">HINTS+ classifier</span>
           </div>
-          <p className="text-xs text-slate-600">
+          <p className="text-xs text-slate-600 dark:text-ink-2">
             Enter your four exam findings. ANY single central finding flips the result to a stroke
             (INFARCT) profile.
           </p>
@@ -533,20 +533,20 @@ export function HintsSimulator() {
           </div>
 
           <button type="button" onClick={() => setFindings(DEFAULT_FINDINGS)}
-            className="px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-xs font-semibold bg-slate-200 text-slate-800 hover:bg-slate-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500">
+            className="px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-xs font-semibold bg-slate-200 text-slate-800 hover:bg-slate-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 dark:bg-overlay dark:text-ink dark:hover:bg-overlay">
             Reset to peripheral defaults
           </button>
         </section>
       </div>
 
       {/* ── INFARCT mnemonic ── */}
-      <section className="rounded-lg border border-crit-200 bg-crit-50 p-3">
-        <h4 className="text-sm font-bold text-crit-800">INFARCT — any single central finding = treat as stroke</h4>
-        <p className="text-2xs uppercase tracking-wide font-semibold text-crit-700 mt-0.5">HINTS+ central-sign mnemonic</p>
+      <section className="rounded-lg border border-crit-200 bg-crit-50 p-3 dark:border-crit-800 dark:bg-crit-950">
+        <h4 className="text-sm font-bold text-crit-800 dark:text-crit-300">INFARCT — any single central finding = treat as stroke</h4>
+        <p className="text-2xs uppercase tracking-wide font-semibold text-crit-700 mt-0.5 dark:text-crit-300">HINTS+ central-sign mnemonic</p>
         <ul className="mt-2 space-y-1.5">
           {INFARCT.map((row) => (
-            <li key={row.label} className="flex items-start gap-2 text-xs text-slate-800">
-              <span className="font-mono font-bold text-crit-700 shrink-0 w-12">{row.letter}</span>
+            <li key={row.label} className="flex items-start gap-2 text-xs text-slate-800 dark:text-ink">
+              <span className="font-mono font-bold text-crit-700 shrink-0 w-12 dark:text-crit-300">{row.letter}</span>
               <span><strong>{row.label}</strong> — {row.detail}</span>
             </li>
           ))}
@@ -555,28 +555,28 @@ export function HintsSimulator() {
 
       {/* ── HINTS interpretation reference table ── */}
       <section className="space-y-2">
-        <h4 className="text-sm font-semibold text-slate-800">HINTS interpretation reference</h4>
+        <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">HINTS interpretation reference</h4>
         <div className="overflow-x-auto">
           <table className="w-full text-xs border-collapse">
             <thead>
               <tr>
-                <th className="border border-line bg-slate-50 px-2.5 py-2 text-left font-semibold text-slate-700">Test phase</th>
-                <th className="border border-line bg-ok-50 px-2.5 py-2 text-left font-semibold text-ok-800">Peripheral (benign)</th>
-                <th className="border border-line bg-crit-50 px-2.5 py-2 text-left font-semibold text-crit-800">Central (stroke)</th>
+                <th className="border border-line bg-slate-50 px-2.5 py-2 text-left font-semibold text-slate-700 dark:bg-paper-2 dark:text-ink-2">Test phase</th>
+                <th className="border border-line bg-ok-50 px-2.5 py-2 text-left font-semibold text-ok-800 dark:bg-ok-950 dark:text-ok-300">Peripheral (benign)</th>
+                <th className="border border-line bg-crit-50 px-2.5 py-2 text-left font-semibold text-crit-800 dark:bg-crit-950 dark:text-crit-300">Central (stroke)</th>
               </tr>
             </thead>
             <tbody>
               {HINTS_TABLE.map((row) => (
                 <tr key={row.phase}>
-                  <td className="border border-line px-2.5 py-2 font-semibold text-slate-800">{row.phase}</td>
-                  <td className="border border-line px-2.5 py-2 text-slate-700">{row.peripheral}</td>
-                  <td className="border border-line px-2.5 py-2 text-slate-700">{row.central}</td>
+                  <td className="border border-line px-2.5 py-2 font-semibold text-slate-800 dark:text-ink">{row.phase}</td>
+                  <td className="border border-line px-2.5 py-2 text-slate-700 dark:text-ink-2">{row.peripheral}</td>
+                  <td className="border border-line px-2.5 py-2 text-slate-700 dark:text-ink-2">{row.central}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="text-2xs text-slate-500">
+        <p className="text-2xs text-slate-500 dark:text-mute">
           Apply HINTS+ only in the Acute Vestibular Syndrome with active nystagmus. In this setting it
           is more sensitive than early MRI-DWI for posterior-circulation stroke.
         </p>
@@ -589,7 +589,7 @@ export function HintsSimulator() {
 function FindingToggle({ label, value, onChange, options }) {
   return (
     <div>
-      <p className="text-xs font-semibold text-slate-700 mb-1">{label}</p>
+      <p className="text-xs font-semibold text-slate-700 mb-1 dark:text-ink-2">{label}</p>
       <div className="flex flex-wrap gap-2" role="group" aria-label={label}>
         {options.map((opt) => {
           const active = value === opt.value;
@@ -599,7 +599,7 @@ function FindingToggle({ label, value, onChange, options }) {
               className={cx('px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500',
                 active
                   ? (opt.central ? 'bg-crit-600 text-white' : 'bg-ok-600 text-white')
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200')}>
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-paper-2 dark:text-ink-2 dark:hover:bg-overlay')}>
               {opt.label}
             </button>
           );

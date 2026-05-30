@@ -44,14 +44,14 @@ export const LandmarkTrialsCard = () => {
   }, [cat, filter]);
 
   return (
-    <div className="p-3 rounded-lg border border-cobalt-300 bg-white">
+    <div className="p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
       <div className="flex flex-wrap gap-1 mb-2">
         {TRIAL_CATEGORIES.map((c) => (
           <button
             key={c.key}
             type="button"
             onClick={() => setCat(c.key)}
-            className={`px-2.5 py-1 text-xs rounded ${cat === c.key ? 'bg-cobalt-700 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
+            className={`px-2.5 py-1 text-xs rounded ${cat === c.key ? 'bg-cobalt-700 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-paper-2 dark:text-ink-2 dark:hover:bg-overlay'}`}
           >
             {c.label} ({(LANDMARK_TRIALS[c.key] || []).length})
           </button>
@@ -70,36 +70,36 @@ export const LandmarkTrialsCard = () => {
           const key = `${cat}-${i}`;
           const open = !!expanded[key];
           return (
-            <li key={key} className="border border-slate-200 rounded bg-slate-50">
+            <li key={key} className="border border-slate-200 rounded bg-slate-50 dark:border-line dark:bg-paper-2">
               <button
                 type="button"
                 onClick={() => setExpanded({ ...expanded, [key]: !open })}
-                className="w-full text-left p-2 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-cobalt-500 rounded"
+                className="w-full text-left p-2 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-cobalt-500 rounded dark:hover:bg-paper-2"
                 aria-expanded={open}
               >
                 <div className="flex items-center justify-between gap-2">
                   <div>
-                    <strong className="text-cobalt-900">{t.name}</strong>
-                    <span className="text-xs text-slate-500 ml-2">({t.year})</span>
-                    <span className="text-[10px] text-slate-500 ml-2">{t.citation}</span>
+                    <strong className="text-cobalt-900 dark:text-cobalt-300">{t.name}</strong>
+                    <span className="text-xs text-slate-500 ml-2 dark:text-mute">({t.year})</span>
+                    <span className="text-[10px] text-slate-500 ml-2 dark:text-mute">{t.citation}</span>
                   </div>
-                  <span className="text-slate-500 text-xs">{open ? '▼' : '▶'}</span>
+                  <span className="text-slate-500 text-xs dark:text-mute">{open ? '▼' : '▶'}</span>
                 </div>
-                <p className="text-xs text-slate-700 mt-0.5"><strong>Bottom line:</strong> {t.bottomLine}</p>
+                <p className="text-xs text-slate-700 mt-0.5 dark:text-ink-2"><strong>Bottom line:</strong> {t.bottomLine}</p>
               </button>
               {open && (
-                <div className="p-2 pt-0 text-xs text-slate-700 space-y-1 border-t border-slate-200">
+                <div className="p-2 pt-0 text-xs text-slate-700 space-y-1 border-t border-slate-200 dark:text-ink-2 dark:border-line">
                   <p><strong>Question:</strong> {t.question}</p>
                   <p><strong>Design:</strong> {t.design}</p>
                   <p><strong>Outcomes:</strong> {t.outcomes}</p>
                   {t.nnt && <p><strong>NNT:</strong> {t.nnt}</p>}
-                  <p className="p-1.5 rounded bg-warn-50 border border-warn-200"><strong>📌 Teaching point:</strong> {t.teachingPoint}</p>
+                  <p className="p-1.5 rounded bg-warn-50 border border-warn-200 dark:bg-warn-950 dark:border-warn-800"><strong>📌 Teaching point:</strong> {t.teachingPoint}</p>
                 </div>
               )}
             </li>
           );
         })}
-        {trials.length === 0 && <li className="text-xs text-slate-500 italic">No trials match filter.</li>}
+        {trials.length === 0 && <li className="text-xs text-slate-500 italic dark:text-mute">No trials match filter.</li>}
       </ul>
     </div>
   );
@@ -110,15 +110,15 @@ const StrokeSyndromesCard = () => {
   const [expanded, setExpanded] = useState({});
   const syndromes = STROKE_SYNDROMES[cat] || [];
   return (
-    <div className="p-3 rounded-lg border border-cobalt-300 bg-white">
-      <h3 className="font-bold text-cobalt-900 mb-2">🧠 Stroke Syndromes — Pattern Library</h3>
+    <div className="p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
+      <h3 className="font-bold text-cobalt-900 mb-2 dark:text-cobalt-300">🧠 Stroke Syndromes — Pattern Library</h3>
       <div className="flex flex-wrap gap-1 mb-2">
         {SYNDROME_CATEGORIES.map((c) => (
           <button
             key={c.key}
             type="button"
             onClick={() => setCat(c.key)}
-            className={`px-2.5 py-1 text-xs rounded ${cat === c.key ? 'bg-cobalt-700 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
+            className={`px-2.5 py-1 text-xs rounded ${cat === c.key ? 'bg-cobalt-700 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-paper-2 dark:text-ink-2 dark:hover:bg-overlay'}`}
           >
             {c.label} ({(STROKE_SYNDROMES[c.key] || []).length})
           </button>
@@ -128,27 +128,27 @@ const StrokeSyndromesCard = () => {
         {syndromes.map((s, i) => {
           const open = !!expanded[i];
           return (
-            <li key={i} className="border border-slate-200 rounded bg-slate-50">
+            <li key={i} className="border border-slate-200 rounded bg-slate-50 dark:border-line dark:bg-paper-2">
               <button
                 type="button"
                 onClick={() => setExpanded({ ...expanded, [i]: !open })}
-                className="w-full text-left p-2 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-cobalt-500 rounded"
+                className="w-full text-left p-2 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-cobalt-500 rounded dark:hover:bg-paper-2"
                 aria-expanded={open}
               >
                 <div className="flex items-center justify-between">
-                  <strong className="text-cobalt-900">{s.name}</strong>
-                  <span className="text-slate-500 text-xs">{open ? '▼' : '▶'}</span>
+                  <strong className="text-cobalt-900 dark:text-cobalt-300">{s.name}</strong>
+                  <span className="text-slate-500 text-xs dark:text-mute">{open ? '▼' : '▶'}</span>
                 </div>
-                <p className="text-[11px] text-slate-500 mt-0.5 italic">{s.territory}</p>
+                <p className="text-[11px] text-slate-500 mt-0.5 italic dark:text-mute">{s.territory}</p>
               </button>
               {open && (
-                <div className="p-2 pt-0 text-xs text-slate-700 space-y-1.5 border-t border-slate-200">
+                <div className="p-2 pt-0 text-xs text-slate-700 space-y-1.5 border-t border-slate-200 dark:text-ink-2 dark:border-line">
                   <p><strong>Deficits:</strong> {s.deficits}</p>
-                  <p className="p-1.5 rounded bg-cobalt-50 border border-cobalt-200"><strong>Pearls:</strong> {s.pearls}</p>
+                  <p className="p-1.5 rounded bg-cobalt-50 border border-cobalt-200 dark:bg-cobalt-900 dark:border-cobalt-700"><strong>Pearls:</strong> {s.pearls}</p>
                   {s.pimpingQ && (
-                    <details className="p-1.5 rounded bg-cobalt-50 border border-cobalt-200">
-                      <summary className="cursor-pointer font-semibold text-cobalt-900">❓ Pimp Q: {s.pimpingQ}</summary>
-                      <p className="mt-1 text-cobalt-900"><strong>Answer:</strong> {s.answer}</p>
+                    <details className="p-1.5 rounded bg-cobalt-50 border border-cobalt-200 dark:bg-cobalt-900 dark:border-cobalt-700">
+                      <summary className="cursor-pointer font-semibold text-cobalt-900 dark:text-cobalt-300">❓ Pimp Q: {s.pimpingQ}</summary>
+                      <p className="mt-1 text-cobalt-900 dark:text-cobalt-300"><strong>Answer:</strong> {s.answer}</p>
                     </details>
                   )}
                 </div>
@@ -164,16 +164,16 @@ const StrokeSyndromesCard = () => {
 const NeuroanatomyCard = () => {
   const [tab, setTab] = useState('cn');
   return (
-    <div className="p-3 rounded-lg border border-ok-300 bg-white">
-      <h3 className="font-bold text-ok-900 mb-2">🗺 Neuroanatomy Quick Reference</h3>
+    <div className="p-3 rounded-lg border border-ok-300 bg-white dark:border-ok-800 dark:bg-card">
+      <h3 className="font-bold text-ok-900 mb-2 dark:text-ok-300">🗺 Neuroanatomy Quick Reference</h3>
       <div className="flex gap-1 mb-2">
-        <button type="button" onClick={() => setTab('cn')} className={`px-2.5 py-1 text-xs rounded ${tab === 'cn' ? 'bg-ok-700 text-white' : 'bg-slate-100'}`}>Cranial Nerves</button>
-        <button type="button" onClick={() => setTab('vasc')} className={`px-2.5 py-1 text-xs rounded ${tab === 'vasc' ? 'bg-ok-700 text-white' : 'bg-slate-100'}`}>Vascular Territories</button>
+        <button type="button" onClick={() => setTab('cn')} className={`px-2.5 py-1 text-xs rounded ${tab === 'cn' ? 'bg-ok-700 text-white' : 'bg-slate-100 dark:bg-paper-2'}`}>Cranial Nerves</button>
+        <button type="button" onClick={() => setTab('vasc')} className={`px-2.5 py-1 text-xs rounded ${tab === 'vasc' ? 'bg-ok-700 text-white' : 'bg-slate-100 dark:bg-paper-2'}`}>Vascular Territories</button>
       </div>
       {tab === 'cn' && (
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
-            <thead className="bg-ok-50"><tr>
+            <thead className="bg-ok-50 dark:bg-ok-950"><tr>
               <th className="px-2 py-1 text-left">CN</th>
               <th className="px-2 py-1 text-left">Name</th>
               <th className="px-2 py-1 text-left">How to test</th>
@@ -184,8 +184,8 @@ const NeuroanatomyCard = () => {
                 <tr key={n.cn} className="border-b">
                   <td className="px-2 py-1 font-bold">{n.cn}</td>
                   <td className="px-2 py-1 font-semibold">{n.name}</td>
-                  <td className="px-2 py-1 text-slate-700">{n.testing}</td>
-                  <td className="px-2 py-1 text-slate-700">{n.lesionEffect}</td>
+                  <td className="px-2 py-1 text-slate-700 dark:text-ink-2">{n.testing}</td>
+                  <td className="px-2 py-1 text-slate-700 dark:text-ink-2">{n.lesionEffect}</td>
                 </tr>
               ))}
             </tbody>
@@ -195,7 +195,7 @@ const NeuroanatomyCard = () => {
       {tab === 'vasc' && (
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
-            <thead className="bg-ok-50"><tr>
+            <thead className="bg-ok-50 dark:bg-ok-950"><tr>
               <th className="px-2 py-1 text-left">Artery</th>
               <th className="px-2 py-1 text-left">Supply</th>
             </tr></thead>
@@ -203,7 +203,7 @@ const NeuroanatomyCard = () => {
               {NEUROANATOMY.vascularTerritories.map((v) => (
                 <tr key={v.artery} className="border-b">
                   <td className="px-2 py-1 font-bold">{v.artery}</td>
-                  <td className="px-2 py-1 text-slate-700">{v.supply}</td>
+                  <td className="px-2 py-1 text-slate-700 dark:text-ink-2">{v.supply}</td>
                 </tr>
               ))}
             </tbody>
@@ -229,15 +229,15 @@ const TeachingPearlsCard = () => {
   }, [category, filter]);
 
   return (
-    <div className="p-3 rounded-lg border border-cobalt-300 bg-white">
-      <h3 className="font-bold text-cobalt-900 mb-2">💬 Teaching Pearls — Common Pimp Questions</h3>
+    <div className="p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
+      <h3 className="font-bold text-cobalt-900 mb-2 dark:text-cobalt-300">💬 Teaching Pearls — Common Pimp Questions</h3>
       <div className="flex flex-wrap gap-1 mb-2">
         {categories.map((c) => (
           <button
             key={c}
             type="button"
             onClick={() => setCategory(c)}
-            className={`px-2 py-0.5 text-xs rounded ${category === c ? 'bg-cobalt-700 text-white' : 'bg-slate-100 text-slate-700'}`}
+            className={`px-2 py-0.5 text-xs rounded ${category === c ? 'bg-cobalt-700 text-white' : 'bg-slate-100 text-slate-700 dark:bg-paper-2 dark:text-ink-2'}`}
           >
             {c}
           </button>
@@ -252,13 +252,13 @@ const TeachingPearlsCard = () => {
       />
       <ul className="space-y-1.5">
         {pearls.map((p, i) => (
-          <li key={i} className="border border-slate-200 rounded">
+          <li key={i} className="border border-slate-200 rounded dark:border-line">
             <details>
-              <summary className="cursor-pointer p-2 hover:bg-slate-50">
-                <span className="text-xs font-semibold text-cobalt-700">[{p.category}]</span>{' '}
+              <summary className="cursor-pointer p-2 hover:bg-slate-50 dark:hover:bg-paper-2">
+                <span className="text-xs font-semibold text-cobalt-700 dark:text-cobalt-300">[{p.category}]</span>{' '}
                 <span className="text-sm font-semibold">{p.q}</span>
               </summary>
-              <div className="p-2 pt-0 text-xs text-slate-700 border-t border-slate-200 bg-slate-50">{p.a}</div>
+              <div className="p-2 pt-0 text-xs text-slate-700 border-t border-slate-200 bg-slate-50 dark:text-ink-2 dark:border-line dark:bg-paper-2">{p.a}</div>
             </details>
           </li>
         ))}
@@ -268,14 +268,14 @@ const TeachingPearlsCard = () => {
 };
 
 const KeyboardShortcutsCard = () => (
-  <div className="p-3 rounded-lg border border-slate-300 bg-white">
-    <h3 className="font-bold text-slate-900 mb-2">⌨️ Keyboard Shortcuts</h3>
+  <div className="p-3 rounded-lg border border-slate-300 bg-white dark:border-strong dark:bg-card">
+    <h3 className="font-bold text-slate-900 mb-2 dark:text-ink">⌨️ Keyboard Shortcuts</h3>
     <table className="w-full text-xs">
       <tbody>
         {KEYBOARD_SHORTCUTS.map((s, i) => (
           <tr key={i} className="border-b">
-            <td className="px-2 py-1 font-mono font-bold text-slate-900 whitespace-nowrap">{s.keys}</td>
-            <td className="px-2 py-1 text-slate-700">{s.action}</td>
+            <td className="px-2 py-1 font-mono font-bold text-slate-900 whitespace-nowrap dark:text-ink">{s.keys}</td>
+            <td className="px-2 py-1 text-slate-700 dark:text-ink-2">{s.action}</td>
           </tr>
         ))}
       </tbody>
@@ -301,9 +301,9 @@ export const TeachingModule = () => {
         <h3 className="font-bold text-sm">Teaching Module — Stroke &amp; Neurology Training</h3>
         <p className="text-xs opacity-90">Landmark trials, stroke syndromes, neuroanatomy, common pimping questions, and productivity tips. For residents, fellows, and attending review.</p>
       </div>
-      <details className="rounded border border-slate-300 bg-slate-50">
-        <summary className="cursor-pointer p-2 text-xs font-semibold text-slate-700">📋 Evidence audit notes — when was this content last reviewed?</summary>
-        <div className="p-2 pt-0 text-xs text-slate-600 space-y-1">
+      <details className="rounded border border-slate-300 bg-slate-50 dark:border-strong dark:bg-paper-2">
+        <summary className="cursor-pointer p-2 text-xs font-semibold text-slate-700 dark:text-ink-2">📋 Evidence audit notes — when was this content last reviewed?</summary>
+        <div className="p-2 pt-0 text-xs text-slate-600 space-y-1 dark:text-ink-2">
           <p><strong>Last comprehensive review:</strong> 2026-04-23 against current AHA/ASA guidelines and primary trial publications.</p>
           <p><strong>Guidelines referenced:</strong> AHA/ASA AIS 2019 (Powers) + 2019 focused update, AHA/ASA ICH 2022 (Greenberg), AHA/ASA aSAH 2023, AHA/ASA CVT 2024, AHA/ASA Secondary Prevention 2021 (Kleindorfer), ESC AF 2024 (van Gelder).</p>
           <p><strong>Trial count:</strong> 45 landmark trials across 8 categories with primary-source citations.</p>
@@ -312,13 +312,13 @@ export const TeachingModule = () => {
           <p><strong>Rigor note:</strong> Content is for educational/decision-support use only; always cross-check against current primary literature before clinical action.</p>
         </div>
       </details>
-      <div className="flex flex-wrap gap-1 bg-white border border-slate-200 rounded p-1">
+      <div className="flex flex-wrap gap-1 bg-white border border-slate-200 rounded p-1 dark:bg-card dark:border-line">
         {sections.map((s) => (
           <button
             key={s.key}
             type="button"
             onClick={() => setSection(s.key)}
-            className={`px-3 py-1.5 text-sm rounded ${section === s.key ? 'bg-cobalt-600 text-white' : 'bg-slate-50 text-slate-700 hover:bg-slate-100'}`}
+            className={`px-3 py-1.5 text-sm rounded ${section === s.key ? 'bg-cobalt-600 text-white' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 dark:bg-paper-2 dark:text-ink-2 dark:hover:bg-paper-2'}`}
           >
             <span className="mr-1" aria-hidden>{s.icon}</span>
             {s.label}

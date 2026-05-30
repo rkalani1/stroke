@@ -154,7 +154,7 @@ export const Field = ({ label, hint, error, required, id, children, className })
     <div className={cx('flex flex-col gap-1', className)}>
       {label && (
         <label htmlFor={inputId} className="text-xs font-medium text-slate-600 dark:text-slate-300">
-          {label}{required && <span className="text-crit-700 ml-1" aria-label="required">*</span>}
+          {label}{required && <span className="text-crit-700 ml-1 dark:text-crit-300" aria-label="required">*</span>}
         </label>
       )}
       {/* Inject id into single child input so htmlFor + id line up automatically */}
@@ -247,7 +247,7 @@ export const Toggle = ({ on, onChange, label, id, ariaLabel }) => {
   return (
     <label htmlFor={tId} className="inline-flex items-center gap-3 cursor-pointer min-h-11 py-2.5">
       <span aria-hidden="true" className={cx('relative inline-flex w-9 h-5 rounded-full transition-colors', on ? 'bg-cobalt-600' : 'bg-slate-300 dark:bg-slate-700')}>
-        <span className={cx('absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform', on && 'translate-x-4')}/>
+        <span className={cx('absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform dark:bg-card', on && 'translate-x-4')}/>
       </span>
       <input id={tId} type="checkbox" checked={!!on}
              onChange={e => onChange?.(e.target.checked)} aria-label={ariaLabel} className="sr-only"/>

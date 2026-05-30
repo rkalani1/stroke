@@ -165,8 +165,8 @@ export function NeuroExamsTool() {
       className={cx(
         'px-3 h-8 rounded-full text-xs font-semibold border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500',
         activeTab === id
-          ? 'bg-teal-50 text-teal-800 border-teal-300'
-          : 'bg-white text-slate-500 border-slate-200 hover:text-slate-800 hover:border-slate-300'
+          ? 'bg-teal-50 text-teal-800 border-teal-300 dark:bg-teal-950 dark:text-teal-300 dark:border-teal-800'
+          : 'bg-white text-slate-500 border-slate-200 hover:text-slate-800 hover:border-slate-300 dark:bg-card dark:text-mute dark:border-line dark:hover:text-ink'
       )}
     >
       {label}
@@ -175,7 +175,7 @@ export function NeuroExamsTool() {
 
   return (
     <div className="neuro-exams-tool space-y-4">
-      <p className="text-sm text-slate-600">
+      <p className="text-sm text-slate-600 dark:text-ink-2">
         Three bedside tools for diagnosing language deficits and disorders of consciousness:
         an aphasia localization engine (fluency / comprehension / repetition → 8-way classifier),
         a delirium-versus-aphasia differential matrix, and a structured coma exam checklist
@@ -184,18 +184,18 @@ export function NeuroExamsTool() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* ── Section 1 · Aphasia Classifier ── */}
-        <section className="bg-white border border-line rounded-lg p-3 space-y-3">
+        <section className="bg-white border border-line rounded-lg p-3 space-y-3 dark:bg-card">
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-semibold text-slate-800">Aphasia Classifier</h4>
-            <span className="font-mono text-2xs text-slate-500">linguistic engine</span>
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Aphasia Classifier</h4>
+            <span className="font-mono text-2xs text-slate-500 dark:text-mute">linguistic engine</span>
           </div>
 
           {/* Result card */}
-          <div className="rounded-md bg-teal-50 border border-teal-200 px-3 py-2.5 space-y-1">
-            <p className="text-base font-bold text-teal-800">{aphasia.name}</p>
-            <p className="text-xs font-semibold text-teal-700">{aphasia.localization}</p>
+          <div className="rounded-md bg-teal-50 border border-teal-200 px-3 py-2.5 space-y-1 dark:bg-teal-950 dark:border-teal-800">
+            <p className="text-base font-bold text-teal-800 dark:text-teal-300">{aphasia.name}</p>
+            <p className="text-xs font-semibold text-teal-700 dark:text-teal-300">{aphasia.localization}</p>
           </div>
-          <p className="text-xs text-slate-700 leading-relaxed">{aphasia.desc}</p>
+          <p className="text-xs text-slate-700 leading-relaxed dark:text-ink-2">{aphasia.desc}</p>
 
           {/* Selects */}
           <div className="space-y-2">
@@ -230,18 +230,18 @@ export function NeuroExamsTool() {
 
           {/* Reference table */}
           <details className="pt-1">
-            <summary className="cursor-pointer text-2xs font-semibold text-slate-500 uppercase tracking-wide hover:text-slate-700">
+            <summary className="cursor-pointer text-2xs font-semibold text-slate-500 uppercase tracking-wide hover:text-slate-700 dark:text-mute dark:hover:text-ink">
               Aphasia reference table (all 8 types)
             </summary>
             <div className="overflow-x-auto mt-2">
               <table className="w-full text-2xs border-collapse">
                 <thead>
                   <tr>
-                    <th className="border border-line bg-slate-50 px-2 py-1.5 text-left font-semibold text-slate-700">Type</th>
-                    <th className="border border-line bg-slate-50 px-2 py-1.5 text-center font-semibold text-slate-700">Fluency</th>
-                    <th className="border border-line bg-slate-50 px-2 py-1.5 text-center font-semibold text-slate-700">Comprehension</th>
-                    <th className="border border-line bg-slate-50 px-2 py-1.5 text-center font-semibold text-slate-700">Repetition</th>
-                    <th className="border border-line bg-slate-50 px-2 py-1.5 text-left font-semibold text-slate-700">Localization</th>
+                    <th className="border border-line bg-slate-50 px-2 py-1.5 text-left font-semibold text-slate-700 dark:bg-paper-2 dark:text-ink-2">Type</th>
+                    <th className="border border-line bg-slate-50 px-2 py-1.5 text-center font-semibold text-slate-700 dark:bg-paper-2 dark:text-ink-2">Fluency</th>
+                    <th className="border border-line bg-slate-50 px-2 py-1.5 text-center font-semibold text-slate-700 dark:bg-paper-2 dark:text-ink-2">Comprehension</th>
+                    <th className="border border-line bg-slate-50 px-2 py-1.5 text-center font-semibold text-slate-700 dark:bg-paper-2 dark:text-ink-2">Repetition</th>
+                    <th className="border border-line bg-slate-50 px-2 py-1.5 text-left font-semibold text-slate-700 dark:bg-paper-2 dark:text-ink-2">Localization</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -249,12 +249,12 @@ export function NeuroExamsTool() {
                     const [f, c, r] = key.split('-');
                     const isActive = key === `${fluency}-${comprehension}-${repetition}`;
                     return (
-                      <tr key={key} className={isActive ? 'bg-teal-50' : ''}>
-                        <td className={cx('border border-line px-2 py-1.5 font-semibold', isActive ? 'text-teal-800' : 'text-slate-800')}>{a.name}</td>
-                        <td className="border border-line px-2 py-1.5 text-center text-slate-700 capitalize">{f}</td>
-                        <td className="border border-line px-2 py-1.5 text-center text-slate-700 capitalize">{c}</td>
-                        <td className="border border-line px-2 py-1.5 text-center text-slate-700 capitalize">{r}</td>
-                        <td className="border border-line px-2 py-1.5 text-slate-700">{a.localization}</td>
+                      <tr key={key} className={isActive ? 'bg-teal-50 dark:bg-teal-950' : ''}>
+                        <td className={cx('border border-line px-2 py-1.5 font-semibold', isActive ? 'text-teal-800 dark:text-teal-300' : 'text-slate-800 dark:text-ink')}>{a.name}</td>
+                        <td className="border border-line px-2 py-1.5 text-center text-slate-700 capitalize dark:text-ink-2">{f}</td>
+                        <td className="border border-line px-2 py-1.5 text-center text-slate-700 capitalize dark:text-ink-2">{c}</td>
+                        <td className="border border-line px-2 py-1.5 text-center text-slate-700 capitalize dark:text-ink-2">{r}</td>
+                        <td className="border border-line px-2 py-1.5 text-slate-700 dark:text-ink-2">{a.localization}</td>
                       </tr>
                     );
                   })}
@@ -265,7 +265,7 @@ export function NeuroExamsTool() {
         </section>
 
         {/* ── Right panel · Delirium matrix + Coma exam ── */}
-        <section className="bg-white border border-line rounded-lg p-3 space-y-3">
+        <section className="bg-white border border-line rounded-lg p-3 space-y-3 dark:bg-card">
           {/* Tab bar */}
           <div className="flex flex-wrap gap-2 pb-2 border-b border-line">
             {tabBtn('delirium', 'Delirium vs. Aphasia')}
@@ -275,33 +275,33 @@ export function NeuroExamsTool() {
           {/* Tab 1 · Delirium vs Aphasia */}
           {activeTab === 'delirium' && (
             <div className="space-y-2">
-              <h4 className="text-sm font-semibold text-slate-800">Differentiating Delirium from Aphasia</h4>
+              <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Differentiating Delirium from Aphasia</h4>
               <div className="overflow-x-auto">
                 <table className="w-full text-xs border-collapse">
                   <thead>
                     <tr>
-                      <th className="border border-line bg-slate-50 px-2.5 py-2 text-left font-semibold text-slate-700 w-1/5">Feature</th>
-                      <th className="border border-line bg-warn-50 px-2.5 py-2 text-left font-semibold text-warn-800 w-2/5">Delirium (Acute Confusion)</th>
-                      <th className="border border-line bg-ok-50 px-2.5 py-2 text-left font-semibold text-ok-800 w-2/5">Aphasia</th>
+                      <th className="border border-line bg-slate-50 px-2.5 py-2 text-left font-semibold text-slate-700 w-1/5 dark:bg-paper-2 dark:text-ink-2">Feature</th>
+                      <th className="border border-line bg-warn-50 px-2.5 py-2 text-left font-semibold text-warn-800 w-2/5 dark:bg-warn-950 dark:text-warn-300">Delirium (Acute Confusion)</th>
+                      <th className="border border-line bg-ok-50 px-2.5 py-2 text-left font-semibold text-ok-800 w-2/5 dark:bg-ok-950 dark:text-ok-300">Aphasia</th>
                     </tr>
                   </thead>
                   <tbody>
                     {DELIRIUM_ROWS.map((row) => (
                       <tr key={row.feature}>
-                        <td className="border border-line px-2.5 py-2 font-semibold text-slate-800">{row.feature}</td>
+                        <td className="border border-line px-2.5 py-2 font-semibold text-slate-800 dark:text-ink">{row.feature}</td>
                         <td className={cx(
                           'border border-line px-2.5 py-2',
-                          row.deliriumAlert ? 'font-bold text-crit-700' : 'text-slate-700'
+                          row.deliriumAlert ? 'font-bold text-crit-700 dark:text-crit-300' : 'text-slate-700 dark:text-ink-2'
                         )}>
                           {row.delirium}
                         </td>
-                        <td className="border border-line px-2.5 py-2 text-slate-700">{row.aphasia}</td>
+                        <td className="border border-line px-2.5 py-2 text-slate-700 dark:text-ink-2">{row.aphasia}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <p className="text-2xs text-slate-500">
+              <p className="text-2xs text-slate-500 dark:text-mute">
                 Key distinguisher: attention is severely impaired in delirium (cannot focus, sustain, or
                 shift); aphasia patients typically maintain attention and fix on the examiner.
               </p>
@@ -311,11 +311,11 @@ export function NeuroExamsTool() {
           {/* Tab 2 · Bedside Coma Exam */}
           {activeTab === 'coma' && (
             <div className="space-y-3">
-              <h4 className="text-sm font-semibold text-slate-800">Bedside Coma Exam Protocol</h4>
+              <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Bedside Coma Exam Protocol</h4>
 
               <ComaGroup
                 title="1. Level of Consciousness & Motor Responses"
-                titleColor="text-slate-800"
+                titleColor="text-slate-800 dark:text-ink"
                 items={COMA_LOC}
                 checked={locChecked}
                 onToggle={toggleLoc}
@@ -323,14 +323,14 @@ export function NeuroExamsTool() {
 
               <ComaGroup
                 title="2. Brainstem Reflexes & Breathing Patterns"
-                titleColor="text-teal-800"
+                titleColor="text-teal-800 dark:text-teal-300"
                 items={COMA_BRAINSTEM}
                 checked={bsChecked}
                 onToggle={toggleBs}
               />
 
               <div className="flex items-center justify-between pt-1">
-                <p className="text-2xs text-slate-500">
+                <p className="text-2xs text-slate-500 dark:text-mute">
                   Check items off as you complete the exam. State resets on component unmount.
                 </p>
                 <button
@@ -339,7 +339,7 @@ export function NeuroExamsTool() {
                     setLocChecked(COMA_LOC.map(() => false));
                     setBsChecked(COMA_BRAINSTEM.map(() => false));
                   }}
-                  className="px-2.5 h-7 rounded-md text-2xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+                  className="px-2.5 h-7 rounded-md text-2xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 dark:bg-paper-2 dark:text-ink-2 dark:hover:bg-overlay"
                 >
                   Reset checklist
                 </button>
@@ -349,7 +349,7 @@ export function NeuroExamsTool() {
         </section>
       </div>
 
-      <p className="text-2xs text-slate-500">
+      <p className="text-2xs text-slate-500 dark:text-mute">
         Educational bedside reference — not a substitute for clinical judgment. Sources: Mesulam MM,
         Principles of Behavioral and Cognitive Neurology; Plum and Posner's Diagnosis of Stupor and Coma.
       </p>
@@ -361,11 +361,11 @@ export function NeuroExamsTool() {
 function SelectRow({ label, value, onChange, options }) {
   return (
     <div className="grid gap-2 items-center" style={{ gridTemplateColumns: '1.15fr 1.85fr' }}>
-      <label className="text-xs font-semibold text-slate-700">{label}</label>
+      <label className="text-xs font-semibold text-slate-700 dark:text-ink-2">{label}</label>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full border border-line rounded-md px-2 py-1.5 text-xs bg-white text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+        className="w-full border border-line rounded-md px-2 py-1.5 text-xs bg-white text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 dark:bg-card dark:text-ink"
         aria-label={label}
       >
         {options.map((o) => (
@@ -379,7 +379,7 @@ function SelectRow({ label, value, onChange, options }) {
 /* ── ComaGroup sub-component ─────────────────────────────────────────── */
 function ComaGroup({ title, titleColor, items, checked, onToggle }) {
   return (
-    <div className="rounded-md border border-line bg-slate-50 p-3 space-y-1.5">
+    <div className="rounded-md border border-line bg-slate-50 p-3 space-y-1.5 dark:bg-paper-2">
       <h5 className={cx('text-xs font-bold mb-2', titleColor)}>{title}</h5>
       {items.map((item, i) => (
         <label
@@ -395,7 +395,7 @@ function ComaGroup({ title, titleColor, items, checked, onToggle }) {
           />
           <span className={cx(
             'text-xs leading-relaxed transition-colors',
-            checked[i] ? 'line-through text-slate-500' : 'text-slate-700 group-hover:text-slate-900'
+            checked[i] ? 'line-through text-slate-500' : 'text-slate-700 group-hover:text-slate-900 dark:text-ink-2'
           )}>
             {item}
           </span>
