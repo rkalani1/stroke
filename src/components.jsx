@@ -51,7 +51,7 @@ export const PHIBanner = () => {
       <div className="flex-1">
         <strong>Educational synthetic demo only - not medical advice and not an official system.</strong> Do not enter real patient identifiers, PHI, confidential any organization data, or operational handoff content. Public GitHub Pages use is for synthetic examples only; real clinical use requires an approved any organization deployment, approved storage, access control, and local governance.
       </div>
-      <button type="button" onClick={handleDismiss} className="px-2 py-0.5 rounded bg-warn-200 hover:bg-warn-300 text-warn-900 text-xs font-semibold flex-shrink-0 dark:text-warn-300" aria-label="Dismiss disclaimer">
+      <button type="button" onClick={handleDismiss} className="px-2 py-0.5 rounded bg-warn-200 hover:bg-warn-300 text-warn-900 text-xs font-semibold flex-shrink-0 dark:bg-warn-950 dark:hover:bg-warn-900 dark:text-warn-300" aria-label="Dismiss disclaimer">
         Dismiss
       </button>
     </div>
@@ -729,17 +729,17 @@ export const PHQ9Screen = () => {
       <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">Over the past 2 weeks, how often have you been bothered by:</p>
       <table className="w-full text-xs">
         <thead className="bg-slate-100 dark:bg-paper-2">
-          <tr><th className="text-left px-2 py-1">Question</th>{['Not at all (0)', 'Several days (1)', 'More than half (2)', 'Nearly every day (3)'].map((l, i) => (
-            <th key={i} className="px-1 py-1 text-center">{l}</th>
+          <tr><th scope="col" className="text-left px-2 py-1">Question</th>{['Not at all (0)', 'Several days (1)', 'More than half (2)', 'Nearly every day (3)'].map((l, i) => (
+            <th key={i} scope="col" id={`phq-col-${i}`} className="px-1 py-1 text-center">{l}</th>
           ))}</tr>
         </thead>
         <tbody>
           {PHQ9_QUESTIONS.map((q, i) => (
             <tr key={i} className="border-b">
-              <td className="px-2 py-1">{q}</td>
-              {[0, 1, 2, 3].map((v) => (
+              <th scope="row" id={`phq-row-${i}`} className="text-left font-normal px-2 py-1">{q}</th>
+              {[0, 1, 2, 3].map((v, ci) => (
                 <td key={v} className="px-1 py-1 text-center">
-                  <input type="radio" name={`phq${i}`} value={v} checked={parseInt(answers[i], 10) === v} onChange={() => setAnswers(answers.map((x, j) => j === i ? String(v) : x))} />
+                  <input type="radio" name={`phq${i}`} value={v} aria-label={`${q} — ${['Not at all (0)', 'Several days (1)', 'More than half (2)', 'Nearly every day (3)'][ci]}`} checked={parseInt(answers[i], 10) === v} onChange={() => setAnswers(answers.map((x, j) => j === i ? String(v) : x))} />
                 </td>
               ))}
             </tr>
@@ -751,7 +751,7 @@ export const PHQ9Screen = () => {
           <div className="flex items-center gap-2">
             <strong>Total: {score}</strong>
             <span className="px-1.5 py-0.5 bg-slate-200 rounded text-xs dark:bg-overlay">{interp.severity}</span>
-            {suicidality && <span className="px-1.5 py-0.5 bg-crit-200 text-crit-900 rounded text-xs font-bold dark:text-crit-300">⚠ Suicidality endorsed — direct assessment required</span>}
+            {suicidality && <span className="px-1.5 py-0.5 bg-crit-200 text-crit-900 rounded text-xs font-bold dark:bg-crit-950 dark:text-crit-300">⚠ Suicidality endorsed — direct assessment required</span>}
           </div>
           <p className="text-xs mt-1">{interp.action}</p>
           <p className="text-[10px] text-slate-600 mt-0.5 dark:text-mute">{interp.source}</p>
