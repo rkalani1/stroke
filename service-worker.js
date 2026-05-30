@@ -101,7 +101,7 @@ self.addEventListener('fetch', (event) => {
         }).catch(() =>
           event.request.mode === 'navigate'
             ? caches.match('./offline.html').then(r => r || caches.match('./index.html'))
-            : caches.match(event.request).then(c => c || caches.match('./index.html'))
+            : caches.match(event.request, { ignoreSearch: true }).then(c => c || caches.match('./index.html'))
         )
       );
       return;
