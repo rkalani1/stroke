@@ -17468,7 +17468,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <p className="text-slate-600 dark:text-ink-2">Ischemic core &le;70 mL + mismatch ratio &ge;1.2 in 4.5-9h or wake-up window (EXTEND trial, NEJM 2019)</p>
                                   </div>
                                 </div>
-                                <p className="text-xs text-crit-600 mt-2 italic dark:text-crit-300">TWIST (Lancet 2023): No benefit for unselected wake-up thrombolysis without advanced imaging. Imaging-guided selection remains mandatory.</p>
+                                <p className="text-xs text-crit-600 mt-2 italic dark:text-crit-300">TWIST (Lancet Neurol 2023): No benefit for unselected wake-up thrombolysis without advanced imaging. Imaging-guided selection remains mandatory.</p>
                               </div>
                             </div>
                           </div>
@@ -31873,7 +31873,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${gcsItems.eye === o.v ? 'bg-slate-700 text-white border-slate-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100 dark:bg-card dark:border-line dark:hover:bg-paper-2 dark:active:bg-paper-2'}`}
                               onClick={() => setGcsItems(prev => ({...prev, eye: o.v}))} onKeyDown={handleRadioKeyDown}
                             >
-                              <span className="font-mono mr-1">{o.v}</span> {o.l}
+                              <span aria-hidden="true" className="font-mono mr-1">{o.v}</span> {o.l}
                             </button>
                           ))}
                         </div>
@@ -31884,7 +31884,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${gcsItems.verbal === o.v ? 'bg-slate-700 text-white border-slate-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100 dark:bg-card dark:border-line dark:hover:bg-paper-2 dark:active:bg-paper-2'}`}
                               onClick={() => setGcsItems(prev => ({...prev, verbal: o.v}))} onKeyDown={handleRadioKeyDown}
                             >
-                              <span className="font-mono mr-1">{o.v}</span> {o.l}
+                              <span aria-hidden="true" className="font-mono mr-1">{o.v}</span> {o.l}
                             </button>
                           ))}
                         </div>
@@ -31895,7 +31895,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${gcsItems.motor === o.v ? 'bg-slate-700 text-white border-slate-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100 dark:bg-card dark:border-line dark:hover:bg-paper-2 dark:active:bg-paper-2'}`}
                               onClick={() => setGcsItems(prev => ({...prev, motor: o.v}))} onKeyDown={handleRadioKeyDown}
                             >
-                              <span className="font-mono mr-1">{o.v}</span> {o.l}
+                              <span aria-hidden="true" className="font-mono mr-1">{o.v}</span> {o.l}
                             </button>
                           ))}
                         </div>
@@ -32316,7 +32316,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {v:'5',title:'5 - Severe disability',desc:'Bedridden, incontinent, and requires constant nursing care and attention'},
                           {v:'6',title:'6 - Dead',desc:''}
                         ].map(o => (
-                          <button key={o.v} type="button" role="radio" aria-checked={mrsScore === o.v} aria-label={`Modified Rankin Scale: ${o.title}`}
+                          <button key={o.v} type="button" role="radio" aria-checked={mrsScore === o.v} aria-label={`Modified Rankin Scale: ${o.title}${o.desc ? ', ' + o.desc : ''}`}
                             className={`w-full text-left p-3 rounded-lg border transition-colors ${mrsScore === o.v ? 'bg-cobalt-600 text-white border-cobalt-600' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100 dark:bg-card dark:border-line dark:hover:bg-paper-2 dark:active:bg-paper-2'}`}
                             onClick={() => setMrsScore(o.v)} onKeyDown={handleRadioKeyDown}
                           >
@@ -36203,7 +36203,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {[{v:'4',l:'Spontaneous'},{v:'3',l:'Sound'},{v:'2',l:'Pain'},{v:'1',l:'None'}].map(o => (
                           <button key={o.v} role="radio" aria-checked={gcsItems.eye === o.v} aria-label={`Eye ${o.l} (${o.v} points)`} onClick={() => setGcsItems(prev => ({...prev, eye: o.v}))} onKeyDown={handleRadioKeyDown}
                             className={`w-full text-left px-2 py-2.5 rounded mb-0.5 min-h-[36px] transition-colors ${gcsItems.eye === o.v ? 'bg-cobalt-600 text-white font-medium' : 'hover:bg-slate-200 text-slate-700 dark:hover:bg-overlay dark:text-ink-2'}`}>
-                            {o.v} - {o.l}
+                            <span aria-hidden="true">{o.v} - </span>{o.l}
                           </button>
                         ))}
                         </div>
@@ -36214,7 +36214,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {[{v:'5',l:'Oriented'},{v:'4',l:'Confused'},{v:'3',l:'Words'},{v:'2',l:'Sounds'},{v:'1',l:'None'}].map(o => (
                           <button key={o.v} role="radio" aria-checked={gcsItems.verbal === o.v} aria-label={`Verbal ${o.l} (${o.v} points)`} onClick={() => setGcsItems(prev => ({...prev, verbal: o.v}))} onKeyDown={handleRadioKeyDown}
                             className={`w-full text-left px-2 py-2.5 rounded mb-0.5 min-h-[36px] transition-colors ${gcsItems.verbal === o.v ? 'bg-cobalt-600 text-white font-medium' : 'hover:bg-slate-200 text-slate-700 dark:hover:bg-overlay dark:text-ink-2'}`}>
-                            {o.v} - {o.l}
+                            <span aria-hidden="true">{o.v} - </span>{o.l}
                           </button>
                         ))}
                         </div>
@@ -36225,7 +36225,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {[{v:'6',l:'Obeys'},{v:'5',l:'Localizes'},{v:'4',l:'Withdraws'},{v:'3',l:'Flexion'},{v:'2',l:'Extension'},{v:'1',l:'None'}].map(o => (
                           <button key={o.v} role="radio" aria-checked={gcsItems.motor === o.v} aria-label={`Motor ${o.l} (${o.v} points)`} onClick={() => setGcsItems(prev => ({...prev, motor: o.v}))} onKeyDown={handleRadioKeyDown}
                             className={`w-full text-left px-2 py-2.5 rounded mb-0.5 min-h-[36px] transition-colors ${gcsItems.motor === o.v ? 'bg-cobalt-600 text-white font-medium' : 'hover:bg-slate-200 text-slate-700 dark:hover:bg-overlay dark:text-ink-2'}`}>
-                            {o.v} - {o.l}
+                            <span aria-hidden="true">{o.v} - </span>{o.l}
                           </button>
                         ))}
                         </div>
