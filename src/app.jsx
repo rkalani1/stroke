@@ -16917,7 +16917,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* CONSOLIDATED ENCOUNTER TAB */}
                 {activeTab === 'encounter' && (
                   <ErrorBoundary>
-                  <div key="encounter-tab" id="tabpanel-encounter" role="tabpanel" aria-labelledby="tab-encounter" className="space-y-4">
+                  {/* U5 — Two-pane cockpit on ≥1024px (lg): form-left + sticky live-summary rail.
+                      Below lg this collapses to the original single column (display:block) and
+                      the rail (hidden lg:block) is suppressed, so phone/tablet are unchanged. */}
+                  <div key="encounter-tab" id="tabpanel-encounter" role="tabpanel" aria-labelledby="tab-encounter" className="lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-6 lg:items-start">
+                  {/* LEFT PANE — the existing Encounter form, untouched (keeps space-y-4 rhythm). */}
+                  <div className="space-y-4 min-w-0">
 
                     {/* ===== v7 PATIENT STRIP (mobile) — sticky chip row above v6 strip during transition.
                          Phase 5 IA overhaul will remove the v6 strip below and promote Incomplete /
@@ -27471,6 +27476,128 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* ===== END CLINICIAN WORKBENCH ===== */}
 
+                  </div>
+                  {/* ===== RIGHT RAIL — LIVE COCKPIT READOUT (≥1024px only) =====
+                      Mirrors the live derived state the app already computes — NO new clinical
+                      logic. Same `windowStatus`, `timeFromLKW`, missing/safetyGaps arrays (same
+                      shape as the inline Missing-Fields banner), and `generateTelestrokeNote()` /
+                      `buildHandoffSummary()` preview. Sticky below the (md:sticky) header via
+                      --app-header-h. Hidden < lg, where the inline banners/strip remain in place. */}
+                  {(() => {
+                    const railMissing = [
+                      !telestrokeNote.age && 'Age',
+                      !lkwTime && !telestrokeNote.lkwUnknown && 'LKW',
+                      !(telestrokeNote.nihss || nihssScore) && 'NIHSS',
+                      !telestrokeNote.diagnosisCategory && 'Diagnosis',
+                      !telestrokeNote.ctResults && 'CT Results',
+                      !telestrokeNote.ctaResults && 'CTA Results',
+                      !telestrokeNote.disposition && 'Disposition'
+                    ].filter(Boolean);
+                    const railSafetyGaps = [
+                      !telestrokeNote.presentingBP && 'BP',
+                      !telestrokeNote.glucose && 'Glucose',
+                      telestrokeNote.tnkRecommended && !telestrokeNote.weight && 'Weight (TNK dosing)',
+                      telestrokeNote.tnkRecommended && !telestrokeNote.tnkConsentDiscussed && 'TNK Consent',
+                      !telestrokeNote.plateletCount && 'Platelets'
+                    ].filter(Boolean);
+                    const railLkwIso = (() => {
+                      const d = telestrokeNote.lkwDate, t = telestrokeNote.lkwTime;
+                      if (!d || !t) return null;
+                      try { return new Date(`${d}T${t}:00`).toISOString(); } catch (_) { return null; }
+                    })();
+                    let railNotePreview = '';
+                    try { railNotePreview = (generateTelestrokeNote() || '').trim(); } catch (_) { railNotePreview = ''; }
+                    const railHasPatient = telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis;
+                    return (
+                      <aside
+                        aria-label="Live encounter summary"
+                        className="hidden lg:block lg:sticky self-start max-h-[calc(100vh-var(--app-header-h,3.5rem)-1.5rem)] overflow-y-auto"
+                        style={{ top: 'calc(var(--app-header-h, 3.5rem) + 0.75rem)' }}
+                      >
+                        <div className="bg-card border border-line rounded-md divide-y divide-line">
+                          {/* Eyebrow header */}
+                          <div className="px-4 py-3">
+                            <p className="font-mono uppercase text-eyebrow text-mute">Live readout</p>
+                            <h3 className="font-serif text-section text-ink leading-tight">Encounter cockpit</h3>
+                          </div>
+
+                          {/* Patient one-liner */}
+                          {railHasPatient && (
+                            <div className="px-4 py-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                              {telestrokeNote.age && (
+                                <span className="font-semibold text-ink tabular-nums">{telestrokeNote.age}{telestrokeNote.sex || ''}</span>
+                              )}
+                              {(nihssScore > 0 || telestrokeNote.nihss) && (
+                                <span className="font-semibold text-ink">NIHSS {telestrokeNote.nihss || nihssScore}</span>
+                              )}
+                              {telestrokeNote.diagnosis && (
+                                <span className="text-ink-2">{telestrokeNote.diagnosis}</span>
+                              )}
+                            </div>
+                          )}
+
+                          {/* LKW / treatment-window + timer status */}
+                          <div className="px-4 py-3">
+                            <p className="font-mono uppercase text-eyebrow text-mute mb-2">Window</p>
+                            <div className="flex flex-wrap items-center gap-2">
+                              {lkwElapsed && (
+                                <span className="font-mono tabular-nums text-data-lg font-semibold text-ink">{onsetLabel}: {lkwElapsed}</span>
+                              )}
+                              {windowStatus && windowStatus.color !== 'gray' ? (
+                                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${windowToneClass}`}>{windowStatus.message}</span>
+                              ) : (
+                                <span className="text-xs font-medium px-2 py-0.5 rounded-full border bg-slate-100 text-slate-600 border-slate-200">{windowStatus ? windowStatus.message : 'Set LKW time'}</span>
+                              )}
+                            </div>
+                            {railLkwIso && <LKWCountdown lkwIso={railLkwIso} className="mt-2" />}
+                          </div>
+
+                          {/* Safety-critical + Incomplete (mirror of inline Missing-Fields banner) */}
+                          <div className="px-4 py-3 space-y-2">
+                            <p className="font-mono uppercase text-eyebrow text-mute">Readiness</p>
+                            {railSafetyGaps.length > 0 ? (
+                              <div className="bg-crit-50 border border-crit-200 rounded-lg px-3 py-2 flex items-start gap-2">
+                                <i aria-hidden="true" data-lucide="shield-alert" className="w-4 h-4 text-crit-500 mt-0.5 flex-shrink-0"></i>
+                                <span className="text-xs text-crit-700"><span className="font-semibold">Safety-critical:</span> {railSafetyGaps.join(', ')}</span>
+                              </div>
+                            ) : null}
+                            {railMissing.length > 0 ? (
+                              <div className="bg-warn-50 border border-warn-300 rounded-lg px-3 py-2 flex items-start gap-2">
+                                <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-warn-600 mt-0.5 flex-shrink-0"></i>
+                                <span className="text-xs text-warn-800"><span className="font-semibold">Incomplete:</span> {railMissing.join(', ')}</span>
+                              </div>
+                            ) : null}
+                            {railSafetyGaps.length === 0 && railMissing.length === 0 ? (
+                              <div className="bg-ok-50 border border-ok-200 rounded-lg px-3 py-2 flex items-start gap-2">
+                                <i aria-hidden="true" data-lucide="check-circle" className="w-4 h-4 text-ok-600 mt-0.5 flex-shrink-0"></i>
+                                <span className="text-xs text-ok-800 font-medium">All core fields captured.</span>
+                              </div>
+                            ) : null}
+                          </div>
+
+                          {/* Live note / handoff preview (compact, scrollable) */}
+                          <div className="px-4 py-3">
+                            <div className="flex items-center justify-between mb-2">
+                              <p className="font-mono uppercase text-eyebrow text-mute">Note preview</p>
+                              <button
+                                type="button"
+                                onClick={() => { copyToClipboard(generateTelestrokeNote(), 'encounter-note'); }}
+                                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors min-h-[32px] ${copiedText === 'encounter-note' ? 'bg-ok-600 text-white' : 'bg-cobalt-600 text-white hover:bg-cobalt-700'}`}
+                              >
+                                <i aria-hidden="true" data-lucide={copiedText === 'encounter-note' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                                {copiedText === 'encounter-note' ? 'Copied' : 'Copy'}
+                              </button>
+                            </div>
+                            {railNotePreview ? (
+                              <pre className="text-2xs leading-snug text-ink-2 whitespace-pre-wrap break-words font-mono max-h-48 overflow-y-auto bg-paper-2 border border-line rounded-md p-2">{railNotePreview.length > 1400 ? railNotePreview.slice(0, 1400) + '\n…' : railNotePreview}</pre>
+                            ) : (
+                              <p className="text-xs text-mute italic">Fill the encounter to build a live note.</p>
+                            )}
+                          </div>
+                        </div>
+                      </aside>
+                    );
+                  })()}
                   </div>
                   </ErrorBoundary>
                 )}
