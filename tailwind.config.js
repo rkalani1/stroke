@@ -20,7 +20,8 @@ module.exports = {
     './src/pocket-cards.jsx',
     './src/teaching.jsx',
     './src/design/primitives.jsx',
-    './src/design/patient-strip.jsx'
+    './src/design/patient-strip.jsx',
+    './src/simulators/EvdIcpSimulator.jsx'
   ],
 
   safelist: [
