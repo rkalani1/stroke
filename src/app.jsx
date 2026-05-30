@@ -3490,7 +3490,7 @@ Clinician Name`;
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
-              caveats: 'Based on ENCHANTED2/MT (2023) and OPTIMAL-BP (2024). Applies to successful reperfusion (mTICI 2b-3).',
+              caveats: 'Based on ENCHANTED2/MT (Lancet 2022) and OPTIMAL-BP (JAMA 2023). Applies to successful reperfusion (mTICI 2b-3).',
               conditions: (data) => {
                 return !!data.telestrokeNote?.evtRecommended;
               }
@@ -5296,11 +5296,11 @@ Clinician Name`;
               category: 'Blood Pressure',
               title: 'Post-EVT BP drip titration protocol',
               recommendation: 'For post-EVT BP management, use nicardipine 5-15 mg/hr or clevidipine 1-2 mg/hr. Maintain SBP <180/105; avoid targeting SBP <140 (Class III: Harm).',
-              detail: 'Nicardipine: start 5 mg/hr, titrate by 2.5 mg/hr every 5-15 min (max 15 mg/hr). Clevidipine: start 1-2 mg/hr, double every 90 seconds initially (max 32 mg/hr). For successfully recanalized (mTICI 2b-3): maintain SBP <180, avoid SBP <140. For non-recanalized: SBP <180. ENCHANTED2/MT: SBP <120 was harmful. OPTIMAL-BP (JAMA 2024): intensive <140 showed no benefit. BP-TARGET: intensive 100-129 showed no benefit. BEST-II (Stroke 2024): SBP 100-129 vs 130-159 post-EVT — lower targets trended toward worse outcomes; maintain SBP floor ~130 post-EVT. Meta-analysis of 4 RCTs: intensive targets reduced functional independence by 23%.',
+              detail: 'Nicardipine: start 5 mg/hr, titrate by 2.5 mg/hr every 5-15 min (max 15 mg/hr). Clevidipine: start 1-2 mg/hr, double every 90 seconds initially (max 32 mg/hr). For successfully recanalized (mTICI 2b-3): maintain SBP <180, avoid SBP <140. For non-recanalized: SBP <180. ENCHANTED2/MT: SBP <120 was harmful. OPTIMAL-BP (JAMA 2023): intensive <140 showed no benefit. BP-TARGET: intensive 100-129 showed no benefit. BEST-II (JAMA 2023): SBP 100-129 vs 130-159 post-EVT — lower targets trended toward worse outcomes; maintain SBP floor ~130 post-EVT. Meta-analysis of 4 RCTs: intensive targets reduced functional independence by 23%.',
               classOfRec: 'I',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'ENCHANTED2/MT: Lancet 2022. OPTIMAL-BP: JAMA 2024. BP-TARGET: Lancet Neurol 2021.',
+              reference: 'ENCHANTED2/MT: Lancet 2022. OPTIMAL-BP: JAMA 2023. BP-TARGET: Lancet Neurol 2021.',
               medications: ['Nicardipine 5 mg/hr IV (titrate q5-15min, max 15)', 'Clevidipine 1-2 mg/hr IV'],
               conditions: (data) => {
                 return !!data.telestrokeNote?.evtRecommended;
@@ -12951,7 +12951,7 @@ Clinician Name`;
               const bpMatch = n.bpPostEVT.match(/(\d+)/);
               const sbp = bpMatch ? parseInt(bpMatch[1], 10) : NaN;
               if (!isNaN(sbp) && sbp < 140) {
-                warnings.push({ id: 'post-evt-bp-too-low', severity: 'error', msg: `Post-EVT SBP ${sbp} mmHg — SBP <140 after successful reperfusion is Class III: Harm (ENCHANTED2/MT, BEST-II 2024). SBP <130 associated with worse outcomes. Target SBP 140-180/105.` });
+                warnings.push({ id: 'post-evt-bp-too-low', severity: 'error', msg: `Post-EVT SBP ${sbp} mmHg — SBP <140 after successful reperfusion is Class III: Harm (ENCHANTED2/MT, BEST-II JAMA 2023). SBP <130 associated with worse outcomes. Target SBP 140-180/105.` });
               }
             }
 
@@ -16562,7 +16562,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         type="button"
                         onClick={openCommandPalette}
                         className="flex items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong dark:hover:bg-paper-2 dark:text-ink-2"
-                        aria-label="Open command palette"
+                        aria-label="Search — open command palette"
                         title="Open command palette (⌘K or /)"
                       >
                         <i aria-hidden="true" data-lucide="search" className="w-4 h-4"></i>
@@ -16616,7 +16616,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           aria-expanded={settingsMenuOpen}
                           aria-haspopup="true"
                           aria-controls={settingsMenuOpen ? 'settings-menu' : undefined}
-                          aria-label="Settings menu"
+                          aria-label="More — settings menu"
                         >
                           <i aria-hidden="true" data-lucide="settings" className="w-4 h-4"></i>
                           <span className="hidden sm:inline">More</span>
@@ -18011,9 +18011,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="flex items-center justify-between mb-1">
                                 <label htmlFor="input-weight" className="block text-xs font-medium text-slate-600 dark:text-ink-2">Weight</label>
                                 <div className="flex bg-slate-100 rounded-md p-0.5 dark:bg-paper-2">
-                                  <button type="button" onClick={() => setWeightUnit('kg')} aria-pressed={weightUnit === 'kg'} aria-label="Weight in kilograms"
+                                  <button type="button" onClick={() => setWeightUnit('kg')} aria-pressed={weightUnit === 'kg'} aria-label="kg — weight in kilograms"
                                     className={'px-2.5 py-1 text-sm rounded ' + (weightUnit === 'kg' ? 'bg-white  font-semibold text-slate-900 dark:bg-card dark:text-ink' : 'text-slate-600 dark:text-ink-2')}>kg</button>
-                                  <button type="button" onClick={() => setWeightUnit('lbs')} aria-pressed={weightUnit === 'lbs'} aria-label="Weight in pounds"
+                                  <button type="button" onClick={() => setWeightUnit('lbs')} aria-pressed={weightUnit === 'lbs'} aria-label="lbs — weight in pounds"
                                     className={'px-2.5 py-1 text-sm rounded ' + (weightUnit === 'lbs' ? 'bg-white  font-semibold text-slate-900 dark:bg-card dark:text-ink' : 'text-slate-600 dark:text-ink-2')}>lbs</button>
                                 </div>
                               </div>
@@ -36440,7 +36440,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <button
                       key={tab.id}
                       onClick={() => navigateTo(tab.id)}
-                      className={`flex-1 flex flex-col items-center justify-center gap-1 py-2 px-1 min-h-[56px] text-[11px] font-medium transition-colors ${isActive ? 'text-cobalt-600 dark:text-cobalt-300' : 'text-slate-500 active:text-slate-700 dark:text-mute'}`}
+                      className={`flex-1 flex flex-col items-center justify-center gap-1 py-2 px-1 min-h-[56px] text-[11px] font-medium transition-colors ${isActive ? 'text-cobalt-600 dark:text-cobalt-300' : 'text-slate-600 active:text-slate-700 dark:text-mute'}`}
                       role="tab"
                       aria-selected={isActive}
                       aria-controls={`tabpanel-${tab.id}`}
