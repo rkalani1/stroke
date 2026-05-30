@@ -2182,6 +2182,8 @@ Clinician Name`;
           const treatmentDecisionRef = useRef(null);
           const backupImportRef = useRef(null);
           const searchContainerRef = useRef(null);
+          const resourcesDetailsRef = useRef(null);
+          const headerBannerRef = useRef(null);
           const generateNoteRef = useRef(null);
           const copyToClipboardRef = useRef(null);
           const navigateToRef = useRef(null);
@@ -15748,6 +15750,37 @@ Clinician Name`;
             }
           }, [activeTab, routeReady, managementSubTab]);
 
+          // U3 — the header Resources menu is a native <details>; React re-renders
+          // don't clear its `open` attribute, so it would otherwise stay pinned
+          // open across tab/route changes. Force it closed whenever the route
+          // (tab or management sub-tab) changes.
+          useEffect(() => {
+            const node = resourcesDetailsRef.current;
+            if (node && node.open) node.open = false;
+          }, [activeTab, managementSubTab]);
+
+          // U4 — the header is sticky at ≥768px; publish its rendered height to
+          // --app-header-h so the (also-sticky) nav row can pin directly beneath
+          // it instead of overlapping. ResizeObserver keeps it correct as the
+          // header wraps/reflows across breakpoints and content changes.
+          useEffect(() => {
+            const node = headerBannerRef.current;
+            if (!node || typeof ResizeObserver === 'undefined') return;
+            const root = document.documentElement;
+            const apply = () => {
+              root.style.setProperty('--app-header-h', `${Math.round(node.getBoundingClientRect().height)}px`);
+            };
+            apply();
+            const ro = new ResizeObserver(apply);
+            ro.observe(node);
+            window.addEventListener('resize', apply);
+            return () => {
+              ro.disconnect();
+              window.removeEventListener('resize', apply);
+              root.style.removeProperty('--app-header-h');
+            };
+          }, [activeTab, isMounted]);
+
           useEffect(() => {
             if (activeTab !== 'protocols') return;
             updateAppData((prev) => ({
@@ -16082,7 +16115,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           return (
             <div className="relative v7-skin">
               {/* v7: skip-link → semantic <main id="main">; cobalt accent, no link-* override */}
-              <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-cobalt-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">Skip to main content</a>
+              <a href="#main" data-skip-tap className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-cobalt-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">Skip to main content</a>
               {PUBLIC_DEMO_MODE && (
                 <div className="bg-warn-50 border-b border-warn-300 text-warn-950 px-4 py-3 text-sm" role="note">
                   <strong>Educational synthetic demo only - not medical advice and not an official system.</strong>
@@ -16126,7 +16159,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   </div>
                 </div>
               )}
-              <div className="app-shell v7-content max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-hidden" role="main">
+              {/* overflow-x-hidden is kept on phone to tame wide content, but it
+                  establishes a scroll container that breaks position:sticky for
+                  descendants. Drop it at ≥768px (md) so the sticky header (U4)
+                  can pin to the viewport; html/body already clip horizontal
+                  overflow at the page level. */}
+              <div className="app-shell v7-content max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-hidden md:overflow-x-visible" role="main">
 
               {/* Offline Indicator */}
               {!isOnline && (
@@ -16175,15 +16213,29 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 </div>
               )}
 
-              {/* Header — Simplified */}
-              <div className="mb-4 sm:mb-6 app-header pwa-safe-top pwa-safe-x" role="banner">
+              {/* Header — Simplified.
+                  U4: sticky on ≥768px (tablet/laptop) so the search / ⌘K /
+                  Resources / New Case controls stay reachable while the
+                  clinician scrolls deep into the Encounter form. Stays static
+                  on phone (<768px) where the bottom nav owns persistent access
+                  and vertical space is precious. z below modals (z-50+) and the
+                  Command Center palette (z-120). The nav row sticks just below
+                  via --app-header-h (measured by an effect). */}
+              <div
+                ref={headerBannerRef}
+                className="mb-4 sm:mb-6 app-header pwa-safe-top pwa-safe-x md:sticky md:top-0 md:z-40"
+                role="banner"
+              >
                 <div className="flex flex-col lg:flex-row justify-between items-start gap-3">
                   <div className="flex-1 min-w-0 w-full lg:w-auto">
                     <div className="flex items-center gap-3 justify-center sm:justify-start">
                       <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-cobalt-200 bg-cobalt-50 text-cobalt-700" aria-hidden="true">
                         <i data-lucide="activity" className="w-5 h-5"></i>
                       </span>
-                      <h1 className="font-serif text-4xl sm:text-[2.25rem] leading-none text-ink">
+                      {/* U12 — phone wordmark trimmed from 36px → 24px so it
+                          stops eating ~15-30% of the above-the-fold viewport.
+                          Desktop (≥640px) keeps the 36px serif mark. */}
+                      <h1 className="font-serif text-[1.5rem] sm:text-[2.25rem] leading-none text-ink">
                         Stroke
                       </h1>
                       {/* v6.0-07: encounter auto-save indicator. Mono tabular,
@@ -16385,13 +16437,18 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <span className="hidden sm:inline">Search</span>
                         <kbd aria-hidden="true" className="hidden sm:inline-flex items-center px-1 py-0.5 text-2xs font-mono text-slate-500 bg-slate-100 border border-slate-300 rounded">⌘K</kbd>
                       </button>
-                      <details className="relative">
+                      <details ref={resourcesDetailsRef} className="relative">
                         <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700">
                           <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
                           <span>Resources</span>
                           <i aria-hidden="true" data-lucide="chevron-down" className="w-3.5 h-3.5 text-slate-500"></i>
                         </summary>
-                        <div className="absolute right-0 top-12 z-50 w-72 max-w-[calc(100vw-2rem)] overflow-hidden rounded-md border border-line bg-white shadow-lg">
+                        {/* U2 — on phone the button sits far enough right that an
+                            absolute right-0 dropdown overflowed off the LEFT edge
+                            (clipped to ~-60px at 375px). Pin to the viewport with
+                            fixed left-2/right-2 on phone; revert to the button-
+                            anchored absolute right-0 menu at ≥640px where it fits. */}
+                        <div className="fixed inset-x-2 top-[var(--app-header-h,3.5rem)] sm:absolute sm:inset-x-auto sm:right-0 sm:top-12 z-50 w-auto sm:w-72 max-w-[calc(100vw-1rem)] max-h-[70vh] overflow-y-auto rounded-md border border-line bg-white shadow-lg">
                           {headerResourceLinks.map((link) => (
                             <a
                               key={link.url}
@@ -16659,8 +16716,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 </div>
               )}
 
-              {/* Primary Navigation */}
-              <div className="hidden sm:block mb-4 sm:mb-6 sticky top-0 z-30 app-nav" role="navigation" aria-label="Main navigation">
+              {/* Primary Navigation — sticks just below the sticky header on
+                  ≥768px via --app-header-h (U4). z-30 keeps it under the header
+                  (z-40) so the two stack cleanly instead of overlapping. */}
+              <div className="hidden sm:block mb-4 sm:mb-6 sticky top-0 md:top-[var(--app-header-h,0px)] z-30 app-nav" role="navigation" aria-label="Main navigation">
                 <nav className="flex flex-nowrap items-stretch gap-0 bg-white border border-line rounded-md p-1 overflow-x-auto no-scrollbar" role="tablist" aria-label="Main sections" onKeyDown={(e) => {
                   const tabs = ['home', 'encounter', 'protocols', 'research', 'trials'];
                   const currentIndex = tabs.indexOf(activeTab);

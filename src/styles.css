@@ -14,13 +14,31 @@
    catches the v6 inline JSX that the codemod didn't touch.
    ============================================================ */
 @layer utilities {
-  @media (max-width: 767px) {
+  /* Phone + tablet (≤768px = iPad portrait) get the 44px floor. The linter
+     exercises 320/375/768, so the upper bound is inclusive of 768. */
+  @media (max-width: 768px) {
     button:not([data-skip-tap]),
     [role="button"]:not([data-skip-tap]),
+    a[href]:not([data-skip-tap]),
+    summary:not([data-skip-tap]),
     select:not([data-skip-tap]),
     textarea:not([data-skip-tap]),
     input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([data-skip-tap]) {
       min-height: 44px;
+    }
+  }
+
+  /* ============================================================
+     U1 — iOS Safari zooms the viewport whenever a focused form
+     control has a computed font-size < 16px. Floor every text
+     input/select/textarea at 16px on phone so focus never
+     triggers an auto-zoom. Desktop sizing (≥768px) is untouched.
+     ============================================================ */
+  @media (max-width: 767px) {
+    input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+    select,
+    textarea {
+      font-size: max(16px, 1rem);
     }
   }
 }
