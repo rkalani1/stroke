@@ -100,7 +100,10 @@ self.addEventListener('fetch', (event) => {
           return response;
         }).catch(() =>
           event.request.mode === 'navigate'
-            ? caches.match('./offline.html').then(r => r || caches.match('./index.html'))
+            // Offline navigation/reload: serve the cached working app shell FIRST
+            // (it's in CORE_ASSETS, so always precached and fully functional offline).
+            // offline.html is only a last resort if the shell was never cached.
+            ? caches.match('./index.html').then(r => r || caches.match('./offline.html'))
             : caches.match(event.request, { ignoreSearch: true }).then(c => c || caches.match('./index.html'))
         )
       );

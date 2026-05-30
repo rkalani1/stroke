@@ -934,13 +934,21 @@
     <!-- Private institutional layer (local-only, gitignored).
          When private/institutional.js exists on disk it sets
          window.__INSTITUTIONAL_LOCAL__ before app.js loads.
-         A 404 here is intentional and harmless — the public build
-         has no such file. Do NOT commit private/institutional.js. -->
+         The public Pages build has no such file, so the loader is
+         gated off public hosts to avoid a 404 / console error
+         (mirrors the IS_PUBLIC_PAGES check above). On local/private
+         build hosts the script is injected and loaded as before.
+         Do NOT commit private/institutional.js. -->
     <script>
       (function () {
+        // Same github.io detection as IS_PUBLIC_PAGES (declared in the
+        // version-management IIFE above, out of scope here). Skip the
+        // fetch entirely on public Pages — nothing to load and no 404.
+        var isPublicPages = /(^|\.)github\.io$/i.test(window.location.hostname || '');
+        if (isPublicPages) return;
         var s = document.createElement('script');
         s.src = 'private/institutional.js';
-        s.onerror = function () { /* 404 expected on public build — no-op */ };
+        s.onerror = function () { /* absent on non-public builds — no-op safety net */ };
         // Insert synchronously before app.js so the global is set in time.
         document.currentScript.parentNode.insertBefore(s, document.currentScript);
       })();
