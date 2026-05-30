@@ -5,17 +5,17 @@
    - On install: self.skipWaiting() so the new SW reaches the 'waiting' state
      immediately (no manual SKIP_WAITING postMessage like v5).
    - On activate: do NOT call self.clients.claim() immediately. Instead,
-     broadcast {type:'sw-update-ready', version:'6.0.2'} to every controlled
+     broadcast {type:'sw-update-ready', version:'6.1.0'} to every controlled
      client. The app shows a non-blocking toast — clinicians mid-consult are
      never auto-interrupted.
    - When a client messages {type:'CLAIM_AND_RELOAD'}, the SW calls
      clients.claim() and asks the client to soft-reload.
 
-   Cache-name bumped to stroke-cache-v6-0-2. Old caches are cleared on activate.
+   Cache-name bumped to stroke-cache-v6-1-0. Old caches are cleared on activate.
 */
 
-const APP_VERSION = '6.0.2';
-const CACHE_NAME  = 'stroke-cache-v6-0-2';
+const APP_VERSION = '6.2.0';
+const CACHE_NAME  = 'stroke-cache-v6-2-0';
 
 const CORE_ASSETS = [
   './',

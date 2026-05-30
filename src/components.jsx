@@ -74,7 +74,7 @@ export const LKWCountdown = ({ lkwIso, className = '' }) => {
     ? 'bg-crit-100 text-crit-900 border-crit-300'
     : (cd.toLyticMs < 30 * 60 * 1000)
       ? 'bg-warn-100 text-warn-900 border-warn-400'
-      : 'bg-blue-100 text-blue-900 border-blue-300';
+      : 'bg-cobalt-100 text-cobalt-900 border-cobalt-300';
   const evtColor = cd.toLateEvtClosed
     ? 'bg-crit-100 text-crit-900 border-crit-300'
     : (cd.toLateEvtMs < 2 * 3600 * 1000)
@@ -341,10 +341,10 @@ export const DAPTDurationCalculator = ({ defaults = {} }) => {
           </select>
         </label>
       </div>
-      <div className="mt-3 p-2 border border-blue-300 bg-blue-50 rounded text-sm">
+      <div className="mt-3 p-2 border border-cobalt-300 bg-cobalt-50 rounded text-sm">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-blue-900">{result.regimen}</span>
-          {result.duration && <span className="px-1.5 py-0.5 bg-blue-200 text-blue-900 rounded text-xs font-semibold">{result.duration}</span>}
+          <span className="font-semibold text-cobalt-900">{result.regimen}</span>
+          {result.duration && <span className="px-1.5 py-0.5 bg-cobalt-200 text-cobalt-900 rounded text-xs font-semibold">{result.duration}</span>}
           {result.class && <span className="px-1.5 py-0.5 bg-ok-200 text-ok-900 rounded text-xs">{result.class}</span>}
         </div>
         {result.dosing && <div className="text-xs text-slate-700 mt-1"><strong>Dosing:</strong> {result.dosing}</div>}
@@ -360,7 +360,7 @@ export const DAPTDurationCalculator = ({ defaults = {} }) => {
 // =========================================================================
 export const PatientCensus = ({ activePatientId, onSelect, onNew, onChange }) => {
   return (
-    <div className="p-3 rounded border border-amber-300 bg-amber-50 text-amber-950" role="region" aria-label="Patient census disabled">
+    <div className="p-3 rounded border border-warn-300 bg-warn-50 text-warn-950" role="region" aria-label="Patient census disabled">
       <h3 className="font-semibold text-sm">Ward Census Disabled in Public Demo</h3>
       <p className="text-xs mt-1">
         Patient lists, MRN fragments, encounter snapshots, imports, and exports are disabled on the public GitHub Pages build.
@@ -420,7 +420,7 @@ export const PatientCensus = ({ activePatientId, onSelect, onNew, onChange }) =>
       <div className="flex items-center justify-between mb-2">
         <h3 className="font-semibold text-slate-900 text-sm">Ward Census ({patients.length})</h3>
         <div className="flex gap-1">
-          <button type="button" onClick={handleNew} className="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded font-semibold" aria-label="Add new patient">+ New</button>
+          <button type="button" onClick={handleNew} className="px-2 py-1 bg-cobalt-600 hover:bg-cobalt-700 text-white text-xs rounded font-semibold" aria-label="Add new patient">+ New</button>
           <button type="button" onClick={handleExport} className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs rounded" aria-label="Export patient list">Export</button>
           <button type="button" onClick={() => setShowImport((s) => !s)} className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs rounded" aria-label="Import patient list">Import</button>
         </div>
@@ -436,8 +436,8 @@ export const PatientCensus = ({ activePatientId, onSelect, onNew, onChange }) =>
       ) : (
         <ul className="space-y-1">
           {patients.map((p) => (
-            <li key={p.id} className={`flex items-center justify-between gap-2 p-1.5 rounded border ${activePatientId === p.id ? 'bg-blue-50 border-blue-300' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
-              <button type="button" onClick={() => onSelect && onSelect(p)} className="flex-1 text-left text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 rounded" aria-label={`Select patient ${p.initials}`}>
+            <li key={p.id} className={`flex items-center justify-between gap-2 p-1.5 rounded border ${activePatientId === p.id ? 'bg-cobalt-50 border-cobalt-300' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
+              <button type="button" onClick={() => onSelect && onSelect(p)} className="flex-1 text-left text-xs focus:outline-none focus:ring-2 focus:ring-cobalt-500 rounded" aria-label={`Select patient ${p.initials}`}>
                 <div className="flex items-center gap-2">
                   <span className="font-semibold">{p.initials || '—'}</span>
                   {p.mrnLast4 && <span className="text-slate-500">···{p.mrnLast4}</span>}
@@ -579,7 +579,7 @@ Sincerely,
       <ul className="list-disc list-inside text-xs space-y-0.5 text-slate-700 mb-3">
         {checklist.items.map((i, idx) => <li key={idx}>{i}</li>)}
       </ul>
-      <button type="button" onClick={generateLetter} className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded font-semibold">
+      <button type="button" onClick={generateLetter} className="px-3 py-1.5 bg-cobalt-600 hover:bg-cobalt-700 text-white text-sm rounded font-semibold">
         Generate PCP Letter
       </button>
       {pcpLetter && (
@@ -698,7 +698,7 @@ ${pending.length ? pending.map((x) => `  ☐ ${x}`).join('\n') : '  (all items c
           </label>
         ))}
       </div>
-      <button type="button" onClick={handleGenerate} className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded font-semibold">Generate Progress Note</button>
+      <button type="button" onClick={handleGenerate} className="px-3 py-1.5 bg-cobalt-600 hover:bg-cobalt-700 text-white text-sm rounded font-semibold">Generate Progress Note</button>
     </div>
   );
 };
