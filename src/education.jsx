@@ -370,7 +370,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
       {/* Filter and Search controls */}
       <section className="bg-card border border-line rounded-lg p-4 space-y-4 no-print">
         <div className="flex flex-col md:flex-row gap-3">
-          <div className="relative flex-1">
+          <div className="relative flex-1 min-w-[240px] self-start">
             <input
               type="search"
               placeholder="Search cards by topic, clinical keyword, or guidelines..."
