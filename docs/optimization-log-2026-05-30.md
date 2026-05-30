@@ -80,3 +80,18 @@ clinical currency (C1 ≤4.5h window, C6 absolute TBI CI).
 
 ### Cycle 3 close — version 6.7.0 → **6.8.0** (SW cache `v6-8-0`), full gate battery, deploy, live verify.
 ### Noted (re-evaluate Cycle 4): `docs/evidence-review-2021-2026.md` PROSE (not the validated table, not deployed) still repeats the old wrong PMIDs — docs-only, immaterial to the live site; the inline-citation guard can't distinguish a same-journal/same-year acronym swap without a hand-maintained anchor table (deliberately avoided); other wash-mounted `slate-500` captions only reachable in populated Encounter/expanded state — Cycle-4 a11y audit to scan those states explicitly.
+
+---
+
+## Cycle 4  (v6.8.0 → **6.8.1**)
+
+### Audit — 5 parallel READ-ONLY agents (deep on evidence/a11y/visual; regression-confirm on perf/PWA + public-safety). **4 of 5 dims CLEAN:** evidence CLEAN (Cycle-3 held; fresh clinical slice — NIHSS/ICH-score/ABCD²/PHASES/RCVS²/dosing-tables/HINTS+pupillometry sim logic — all source-accurate; only wrong-PMIDs left are in NON-rendered `window.strokeP0` console-QA strings → COSMETIC), visual/UX CLEAN, **perf/PWA CLEAN** (Lighthouse 100/100/100 live, LCP <190ms, CLS 0, offline holds, leak-free), **public-safety CLEAN** (3rd consecutive — exhaustive sweep, zero leaks). a11y found **one** real finding.
+
+### Methodology fix carried forward: the a11y agent was instructed to bootstrap dark CORRECTLY (`localStorage stroke.v7.theme=dark`+reload → asserts BOTH `data-theme=dark` AND `.dark`), eliminating Cycle-3's phantom-dark artifact. Proof a finding is real, not phantom: it fails in dark while the SAME DOM passes in light.
+
+### Fixes (2 commits)
+**M4-1 dark chip contrast — `09766b3`:** in **populated Encounter + dark**, the LKW treatment-window timer rendered white text on `--confirm` (#5FB489 — a semantic token LIGHTENED in dark for *text* use) consumed as a solid *background* → 2.1–2.5:1 (1.4.3 fail). Class-level fix: every semantic-token solid-fill chip with light text (`bg-confirm`/`bg-caution`/`bg-critical`: LKW timer, TNK dose header + MAX-DOSE, sidebar elapsed panel, `.v6-btn-*`, `Button` variants) pinned to `dark:bg-{ok,warn,crit}-700` → dark == light (#1E5438, 8.82:1). Negative-control reproduced+cleared.
+**Contrast tail closed — `f417b30`:** driving into **opened+populated calculator states** (which NO route/tab-level scan reaches) surfaced **41 more AA violations** → all fixed to 0: MAX DOSE pill (`bg-white/20 dark:bg-card/20` — the dark override silently DIDN'T COMPILE, arbitrary opacity on a CSS-var alias → `bg-warn-900` 11.63:1); 7 `text-orange-600`+2 `-500` body captions → -700/-800; a Quick-Dosing **drug-name dark-on-dark bug** (`classes.split` dropped the `dark:text-*-300` variant → restructured colorMap, 7 nodes); 20 `slate-500` calculator captions on tints → slate-600; 6 `white/70` radio/timer secondary labels; Hunt-Hess/WFNS/VTE/PHASES singletons. Final axe `color-contrast` = **0 in every reachable state, both themes** (40-state sweep + exhaustive calculators/protocols).
+
+### Cycle 4 close — version 6.8.0 → **6.8.1** (SW cache `v6-8-1`), full gate battery, deploy, live verify. (4/5 dims already converged; this closes the a11y contrast tail.)
+### Lesson: convergence-by-axe is only as complete as the states you render — a silently-dead Tailwind override (`dark:bg-card/20`) + 41 nodes hiding in opened-calculator states proved a tab-level scan ≠ a full scan. Future audits must drive deep states (open every accordion, populate every calculator).
