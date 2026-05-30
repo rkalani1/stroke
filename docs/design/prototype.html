@@ -131,6 +131,39 @@ h1{font-family:var(--display);font-weight:760;font-size:clamp(2rem,1.3rem+3vw,3.
 .fresh{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--mono);font-size:.62rem;font-weight:600;color:var(--ok)}
 .fresh .pulse{width:6px;height:6px}
 
+/* ---- detailed study card (What's New) ---- */
+.study{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:1.2rem 1.35rem;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  transition:transform .18s var(--ease),box-shadow .18s var(--ease),border-color .18s var(--ease)}
+.study:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--line-2)}
+.study::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--teal)}
+.study.t-acute::before{background:var(--coral)} .study.t-prevent::before{background:var(--teal)} .study.t-ich::before{background:var(--gold)} .study.t-workflow::before{background:var(--ink-2)}
+.study-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;margin-bottom:.3rem}
+.study-head .l{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.study .acro{font-family:var(--display);font-weight:740;font-size:1.16rem;letter-spacing:-.01em;line-height:1}
+.stype{font-family:var(--mono);font-size:.55rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:5px;padding:.16rem .42rem;color:var(--ink-soft)}
+.stype.rct{color:var(--teal);border-color:color-mix(in srgb,var(--teal) 40%,var(--line-2));background:var(--teal-wash)}
+.stype.meta{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 42%,var(--line-2));background:var(--gold-wash)}
+.stype.obs{color:var(--ink-2);background:var(--panel-2)}
+.study .when{font-family:var(--mono);font-size:.63rem;color:var(--faint);text-align:right;white-space:nowrap;line-height:1.5}
+.study .when b{display:block;color:var(--ink)}
+.study-title{font-weight:600;font-size:1rem;line-height:1.32;margin:.18rem 0 .5rem;max-width:64ch}
+.study-meta{font-family:var(--mono);font-size:.64rem;color:var(--faint);display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:.65rem}
+.study-body{display:grid;gap:.42rem;border-top:1px solid var(--line);padding-top:.7rem;margin:0}
+.srow{display:grid;grid-template-columns:6.4rem 1fr;gap:.7rem;align-items:baseline}
+.srow dt{font-family:var(--mono);font-size:.57rem;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);margin:0;padding-top:.12rem}
+.srow dd{margin:0;font-size:.9rem;line-height:1.45}
+.srow .effect{font-family:var(--mono);font-weight:600;color:var(--teal)}
+.srow.neg .effect{color:var(--coral)}
+.srow .ci{font-family:var(--mono);font-size:.78rem;color:var(--ink-soft)}
+.srow.impl dd{color:var(--ink)}
+.study-foot{display:flex;align-items:center;gap:.55rem;margin-top:.8rem;flex-wrap:wrap}
+.cert{font-family:var(--mono);font-size:.59rem;font-weight:600;border-radius:999px;padding:.22rem .6rem;border:1px solid var(--line-2);color:var(--ink-soft)}
+.cert.high{color:var(--ok);background:var(--ok-wash);border-color:color-mix(in srgb,var(--ok) 30%,var(--line-2))}
+.cert.moderate{color:var(--gold);background:var(--gold-wash);border-color:color-mix(in srgb,var(--gold) 30%,var(--line-2))}
+.more{font-family:var(--mono);font-size:.61rem;font-weight:600;border:1px solid var(--line-2);background:transparent;color:var(--ink-soft);border-radius:999px;padding:.28rem .65rem;cursor:pointer;margin-left:auto}
+.more:hover{border-color:var(--teal);color:var(--ink)}
+@media(max-width:560px){.srow{grid-template-columns:1fr;gap:.05rem}.study .when{display:none}}
+
 /* atlas card */
 .section-label{font-family:var(--mono);font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:2.6rem 0 .9rem;display:flex;align-items:center;gap:.7rem}
 .section-label::after{content:"";flex:1;height:1px;background:var(--line)}
@@ -205,71 +238,103 @@ footer .mono{font-family:var(--mono);font-size:.68rem}
     <div class="feed">
       <div class="feed-head reveal" style="animation-delay:.14s">
         <h2>What's new</h2>
-        <span class="count">15 added this cycle · sorted by recency</span>
+        <span class="count">Past 30 days · 10 verified · practice-changing &amp; informing</span>
       </div>
 
-      <article class="entry topic-prevent reveal" style="animation-delay:.16s">
-        <div class="when"><b>2026</b>added 05-29</div>
-        <div>
-          <div class="acro">CATALYST</div>
-          <div class="titleline">IPD meta-analysis — anticoagulation timing after ischaemic stroke with AF</div>
-          <div class="metarow">
-            <span class="tag topic">AF anticoag timing</span>
-            <span class="tag">Lancet 2025</span>
-            <span class="tag new">New to Atlas</span>
-            <span class="fresh"><span class="pulse"></span>verified</span>
-          </div>
-          <p class="takeaway"><b>Early DOAC (≤4 d) cut the 30-day composite</b> — OR 0.70 (95% CI 0.50–0.98). Pooled 5,441 patients across 4 RCTs. Supports not delaying.</p>
-        </div>
-        <div style="display:grid;gap:.5rem;justify-items:end"><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/40570866/" target="_blank" rel="noopener">PubMed ↗</a></div>
+      <article class="study t-prevent reveal" style="animation-delay:.16s">
+        <div class="study-head"><div class="l"><span class="acro">OCEANIC-STROKE</span><span class="stype rct">RCT · phase 3</span><span class="fresh"><span class="pulse"></span>verified</span></div><div class="when"><b>Apr 2026</b>added 05-30</div></div>
+        <div class="study-title">Asundexian for secondary stroke prevention</div>
+        <div class="study-meta"><span>N Engl J Med 2026</span><span class="tag topic">2° prevention · factor XIa</span></div>
+        <dl class="study-body">
+          <div class="srow"><dt>Design</dt><dd>n=12,327; noncardioembolic stroke / high-risk TIA with atherosclerosis ≤72 h; asundexian 50 mg + antiplatelet vs placebo + antiplatelet</dd></div>
+          <div class="srow"><dt>Result</dt><dd>Ischemic stroke <span class="effect">6.2% vs 8.4%</span> <span class="ci">(HR 0.74, 95% CI 0.65–0.84; p&lt;0.001)</span> · major bleeding 1.9% vs 1.7% (NS)</dd></div>
+          <div class="srow impl"><dt>What it changes</dt><dd><b>First positive phase-3 factor XIa inhibitor</b> for 2° prevention — ~26% relative ischemic-stroke reduction on top of antiplatelets, without more major bleeding. Could reshape noncardioembolic prevention.</dd></div>
+        </dl>
+        <div class="study-foot"><span class="cert high">Certainty · High</span><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/41985132/" target="_blank" rel="noopener">PubMed ↗</a><button class="more">Full appraisal →</button></div>
       </article>
 
-      <article class="entry topic-acute reveal" style="animation-delay:.2s">
-        <div class="when"><b>2024</b>added 05-29</div>
-        <div>
-          <div class="acro">LASTE</div>
-          <div class="titleline">Thrombectomy for stroke with a large infarct of unrestricted size</div>
-          <div class="metarow">
-            <span class="tag acute">Acute · large core</span>
-            <span class="tag">NEJM 2024</span>
-            <span class="tag new">New to Atlas</span>
-            <span class="fresh"><span class="pulse"></span>verified</span>
-          </div>
-          <p class="takeaway"><b>EVT benefits even very large infarcts (ASPECTS ≤5)</b> — generalized OR 1.63 (1.29–2.06); mortality 36% vs 56% — at the cost of more sICH.</p>
-        </div>
-        <div style="display:grid;gap:.5rem;justify-items:end"><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/38718358/" target="_blank" rel="noopener">PubMed ↗</a></div>
+      <article class="study t-ich reveal" style="animation-delay:.19s">
+        <div class="study-head"><div class="l"><span class="acro">TRIDENT</span><span class="stype rct">RCT</span><span class="fresh"><span class="pulse"></span>verified</span></div><div class="when"><b>Apr 2026</b>added 05-30</div></div>
+        <div class="study-title">Three low-dose antihypertensives in a single pill after intracerebral hemorrhage</div>
+        <div class="study-meta"><span>N Engl J Med 2026</span><span class="tag topic">ICH · 2° prevention</span></div>
+        <dl class="study-body">
+          <div class="srow"><dt>Design</dt><dd>n=1,670; prior ICH, SBP 130–160; triple pill (telmisartan/amlodipine/indapamide, low-dose) vs placebo + standard care</dd></div>
+          <div class="srow"><dt>Result</dt><dd>Recurrent stroke <span class="effect">4.6% vs 7.4%</span> <span class="ci">(HR 0.61, 95% CI 0.41–0.92; p=0.02)</span> · SBP 127 vs 138 · major CV events 6.6% vs 9.8%</dd></div>
+          <div class="srow impl"><dt>What it changes</dt><dd>A simplified low-dose <b>triple pill after ICH</b> lowers recurrent stroke and CV events — supports intensive, simplified BP-lowering (watch ~14% discontinuation, mainly creatinine rise).</dd></div>
+        </dl>
+        <div class="study-foot"><span class="cert high">Certainty · High</span><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/42019018/" target="_blank" rel="noopener">PubMed ↗</a><button class="more">Full appraisal →</button></div>
       </article>
 
-      <article class="entry topic-prevent reveal" style="animation-delay:.24s">
-        <div class="when"><b>2024</b>added 05-29</div>
-        <div>
-          <div class="acro">ARCADIA</div>
-          <div class="titleline">Apixaban vs aspirin in cryptogenic stroke with atrial cardiopathy</div>
-          <div class="metarow">
-            <span class="tag topic">ESUS</span>
-            <span class="tag">JAMA 2024</span>
-            <span class="tag new">New to Atlas</span>
-            <span class="fresh"><span class="pulse"></span>verified</span>
-          </div>
-          <p class="takeaway"><b>No benefit</b> — HR 1.00 (0.64–1.55), stopped for futility. Atrial cardiopathy alone does not justify anticoagulation.</p>
-        </div>
-        <div style="display:grid;gap:.5rem;justify-items:end"><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/38324415/" target="_blank" rel="noopener">PubMed ↗</a></div>
+      <article class="study t-acute reveal" style="animation-delay:.22s">
+        <div class="study-head"><div class="l"><span class="acro">ATLAS</span><span class="stype meta">IPD meta-analysis</span><span class="fresh"><span class="pulse"></span>verified</span></div><div class="when"><b>May 2026</b>added 05-30</div></div>
+        <div class="study-title">Thrombectomy for large-core stroke up to 24 h — central-imaging IPD meta-analysis</div>
+        <div class="study-meta"><span>Lancet 2026</span><span class="tag acute">Acute · large core</span></div>
+        <dl class="study-body">
+          <div class="srow"><dt>Design</dt><dd>6 trials, n=1,886; ASPECTS ≤5 or core ≥50 mL within 24 h; EVT vs medical management</dd></div>
+          <div class="srow"><dt>Result</dt><dd>90-d mRS shift <span class="effect">aGenOR 1.63</span> <span class="ci">(95% CI 1.42–1.88; p&lt;0.0001)</span> · mortality 31.1% vs 37.3% (aRR 0.82) · sICH 1.1% vs 1.0%</dd></div>
+          <div class="srow impl"><dt>What it informs</dt><dd>Consolidates <b>EVT benefit across large-core strata to 24 h</b>; benefit sustained except very extensive cores (≥150 mL) beyond 6 h, where evidence remains limited.</dd></div>
+        </dl>
+        <div class="study-foot"><span class="cert high">Certainty · High</span><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/42107392/" target="_blank" rel="noopener">PubMed ↗</a><button class="more">Full appraisal →</button></div>
       </article>
 
-      <article class="entry topic-acute reveal" style="animation-delay:.28s">
-        <div class="when"><b>2022</b>added 05-29</div>
-        <div>
-          <div class="acro">ATTENTION · BAOCHE</div>
-          <div class="titleline">Endovascular treatment of acute basilar-artery occlusion</div>
-          <div class="metarow">
-            <span class="tag acute">Acute · basilar EVT</span>
-            <span class="tag">NEJM 2022</span>
-            <span class="tag new">New topic</span>
-            <span class="fresh"><span class="pulse"></span>verified</span>
-          </div>
-          <p class="takeaway"><b>EVT benefits basilar occlusion</b> — good outcome 46% vs ~23% (≤12 h) and 46% vs 24% (6–24 h). Establishes posterior-circulation thrombectomy.</p>
-        </div>
-        <div style="display:grid;gap:.5rem;justify-items:end"><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/36239644/" target="_blank" rel="noopener">PubMed ↗</a></div>
+      <article class="study t-acute reveal" style="animation-delay:.25s">
+        <div class="study-head"><div class="l"><span class="acro">TAPIS</span><span class="stype rct">RCT</span><span class="fresh"><span class="pulse"></span>verified</span></div><div class="when"><b>May 2026</b>added 05-30</div></div>
+        <div class="study-title">Ticagrelor + aspirin DAPT with IV thrombolysis in ischaemic stroke</div>
+        <div class="study-meta"><span>Lancet 2026</span><span class="tag acute">Acute · reperfusion adjunct</span></div>
+        <dl class="study-body">
+          <div class="srow"><dt>Design</dt><dd>n=1,382; thrombolysis-treated AIS, NIHSS 4–10; aspirin + ticagrelor within 6 h vs placebo (DAPT days 2–7)</dd></div>
+          <div class="srow"><dt>Result</dt><dd>mRS 0–1 at 90 d <span class="effect">68.7% vs 62.0%</span> <span class="ci">(RR 1.11, 95% CI 1.03–1.20; p=0.009)</span> · sICH 0.9% vs 0.7%</dd></div>
+          <div class="srow impl"><dt>What it informs</dt><dd>Early oral DAPT within 6 h <b>as an adjunct to thrombolysis</b> improved excellent outcomes in moderate stroke — a strategy long considered contraindicated; small sICH risk not excluded.</dd></div>
+        </dl>
+        <div class="study-foot"><span class="cert moderate">Certainty · Moderate</span><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/42114550/" target="_blank" rel="noopener">PubMed ↗</a><button class="more">Full appraisal →</button></div>
+      </article>
+
+      <article class="study t-acute reveal" style="animation-delay:.28s">
+        <div class="study-head"><div class="l"><span class="acro">CHOICE-2</span><span class="stype rct">RCT</span><span class="fresh"><span class="pulse"></span>verified</span></div><div class="when"><b>May 2026</b>added 05-30</div></div>
+        <div class="study-title">Adjunctive intra-arterial alteplase after successful thrombectomy</div>
+        <div class="study-meta"><span>JAMA 2026</span><span class="tag acute">Acute · EVT adjunct</span></div>
+        <dl class="study-body">
+          <div class="srow"><dt>Design</dt><dd>n=433; LVO with eTICI 2b50–3 after EVT; IA alteplase 0.225 mg/kg vs EVT alone</dd></div>
+          <div class="srow neg"><dt>Result</dt><dd>mRS 0–1 at 90 d <span class="effect">57.5% vs 42.5%</span> <span class="ci">(adj diff 15.0%, 95% CI 5.7–24.3; p=0.002)</span> · but mortality 12.1% vs 6.4% (p=0.03)</dd></div>
+          <div class="srow impl"><dt>What it informs</dt><dd>IA alteplase after successful EVT improved excellent outcomes and reperfusion — <b>but a higher mortality signal warrants caution</b> before adoption.</dd></div>
+        </dl>
+        <div class="study-foot"><span class="cert moderate">Certainty · Moderate</span><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/42096239/" target="_blank" rel="noopener">PubMed ↗</a><button class="more">Full appraisal →</button></div>
+      </article>
+
+      <article class="study t-acute reveal" style="animation-delay:.31s">
+        <div class="study-head"><div class="l"><span class="acro">DISTAL</span><span class="stype rct">RCT · 12-mo</span><span class="fresh"><span class="pulse"></span>verified</span></div><div class="when"><b>May 2026</b>added 05-30</div></div>
+        <div class="study-title">Thrombectomy for medium / distal vessel occlusion — 12-month outcomes</div>
+        <div class="study-meta"><span>Lancet Neurol 2026</span><span class="tag acute">Acute · MeVO</span></div>
+        <dl class="study-body">
+          <div class="srow"><dt>Design</dt><dd>n=543; M2/M3-4, A1-3, P1-3 occlusion, median NIHSS 6; EVT + BMT vs BMT alone</dd></div>
+          <div class="srow neg"><dt>Result</dt><dd>12-mo mRS <span class="effect">adj cOR 0.81</span> <span class="ci">(95% CI 0.59–1.12; p=0.20)</span> · survival HR 1.46 (NS) — no benefit</dd></div>
+          <div class="srow impl"><dt>What it changes</dt><dd><b>No long-term benefit of EVT</b> in mild–moderate medium/distal vessel occlusion — supports NOT routinely offering thrombectomy in this population.</dd></div>
+        </dl>
+        <div class="study-foot"><span class="cert high">Certainty · High</span><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/42105785/" target="_blank" rel="noopener">PubMed ↗</a><button class="more">Full appraisal →</button></div>
+      </article>
+
+      <article class="study t-workflow reveal" style="animation-delay:.34s">
+        <div class="study-head"><div class="l"><span class="acro">DIRECT ANGIO</span><span class="stype rct">RCT · halted</span><span class="fresh"><span class="pulse"></span>verified</span></div><div class="when"><b>Apr 2026</b>added 05-30</div></div>
+        <div class="study-title">Direct-to-angio vs imaging-first transfer in severe stroke</div>
+        <div class="study-meta"><span>Lancet Neurol 2026</span><span class="tag">Workflow · triage</span></div>
+        <dl class="study-body">
+          <div class="srow"><dt>Design</dt><dd>n=115 (stopped early for safety); suspected LVO ≤85 y within 5 h; direct-to-angio vs imaging-first</dd></div>
+          <div class="srow neg"><dt>Result</dt><dd>sICH <span class="effect">15% vs 0%</span> <span class="ci">(adj OR 11.0)</span> · functional independence 36% vs 42% (NS) — harm, no benefit</dd></div>
+          <div class="srow impl"><dt>What it informs</dt><dd>Bypassing pre-EVT imaging <b>increased sICH without benefit</b> and was halted early — cautions against direct-to-angio in suspected LVO (small n limits precision).</dd></div>
+        </dl>
+        <div class="study-foot"><span class="cert moderate">Certainty · Moderate</span><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/41864232/" target="_blank" rel="noopener">PubMed ↗</a><button class="more">Full appraisal →</button></div>
+      </article>
+
+      <article class="study t-prevent reveal" style="animation-delay:.37s">
+        <div class="study-head"><div class="l"><span class="acro">STABLED</span><span class="stype rct">RCT</span><span class="fresh"><span class="pulse"></span>verified</span></div><div class="when"><b>Apr 2026</b>added 05-30</div></div>
+        <div class="study-title">Catheter ablation + anticoagulation for secondary stroke prevention in AF</div>
+        <div class="study-meta"><span>JAMA Neurol 2026</span><span class="tag topic">2° prevention · AF</span></div>
+        <dl class="study-body">
+          <div class="srow"><dt>Design</dt><dd>n=249; nonvalvular AF + prior ischemic stroke on edoxaban; standard therapy + ablation vs standard therapy</dd></div>
+          <div class="srow neg"><dt>Result</dt><dd>Composite <span class="effect">5.6% vs 4.9%/yr</span> <span class="ci">(HR 1.11, 95% CI 0.62–2.01)</span> — no reduction; 2 ablation-related SAEs</dd></div>
+          <div class="srow impl"><dt>What it informs</dt><dd>Adding ablation to anticoagulation <b>did not reduce recurrent events</b> in post-stroke AF (underpowered, low event rate) — does not support routine ablation for 2° prevention.</dd></div>
+        </dl>
+        <div class="study-foot"><span class="cert moderate">Certainty · Moderate</span><a class="verify" href="https://pubmed.ncbi.nlm.nih.gov/41770549/" target="_blank" rel="noopener">PubMed ↗</a><button class="more">Full appraisal →</button></div>
       </article>
     </div>
 
