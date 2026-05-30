@@ -513,3 +513,37 @@
   .v7-nav-item.active { color: var(--ink); background: var(--panel-2); box-shadow: inset 0 0 0 1px var(--line); }
   .v7-nav-item.active::before { content: "▸ "; color: var(--teal); }
 }
+
+/* ============================================================
+   Phase 4 — View mode toggle (Clinician / Patient).
+   Compact mono-uppercase chip styling layered over the shared
+   V7SegmentedControl primitive, consistent with the prototype
+   .modechips. Keeps the segmented control's built-in radiogroup
+   a11y; only restyles size/typography for the header chip slot.
+   ============================================================ */
+.view-mode-toggle [role="radiogroup"] {
+  width: auto;
+  border-radius: 999px;
+}
+.view-mode-toggle [role="radio"] {
+  height: auto;
+  min-height: 40px;
+  padding: 0.45rem 0.85rem;
+  font-family: var(--mono-font);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-radius: 999px;
+}
+
+/* The toggle itself must never be scaled-away or enlarged oddly in
+   patient mode — it is the only way back to clinician mode. */
+[data-mode="patient"] .view-mode-toggle [role="radio"] {
+  font-size: 0.7rem;
+}
+
+/* Print: never show the screen-only mode toggle. */
+@media print {
+  .view-mode-toggle { display: none !important; }
+}

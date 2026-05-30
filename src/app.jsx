@@ -2130,6 +2130,40 @@ Clinician Name`;
 
           // Focus mode
           const [focusMode, setFocusMode] = useState(false);
+
+          // Patient / Explain mode (Phase 4). String value so Phase 5 can add 'teach'.
+          // 'clinician' (default) → full UI; 'patient' → plain-language + big-type view,
+          // clinician-only surfaces CSS-gated. Mirrors the data-theme mechanism
+          // (theme.js applyTheme): owns the data-mode attribute on <html>.
+          const VIEW_MODE_KEY = 'stroke.v7.viewMode';
+          const [viewMode, setViewMode] = useState(() => {
+            try {
+              const saved = localStorage.getItem(VIEW_MODE_KEY);
+              return saved === 'patient' || saved === 'teach' ? saved : 'clinician';
+            } catch { return 'clinician'; }
+          });
+          useEffect(() => {
+            try {
+              if (viewMode === 'clinician') {
+                document.documentElement.removeAttribute('data-mode');
+              } else {
+                document.documentElement.setAttribute('data-mode', viewMode);
+              }
+              localStorage.setItem(VIEW_MODE_KEY, viewMode);
+            } catch (e) { /* ignore storage errors */ }
+          }, [viewMode]);
+
+          // Patient mode hides clinician-only tabs (Protocols & Algorithms, Trials).
+          // If a saved/active tab is clinician-only when entering patient mode,
+          // redirect to the encounter tab so a patient can't land on dosing /
+          // eligibility content. Clinician mode is unaffected.
+          const CLINICIAN_ONLY_TABS = ['protocols', 'trials'];
+          useEffect(() => {
+            if (viewMode === 'patient' && CLINICIAN_ONLY_TABS.includes(activeTab)) {
+              setActiveTab('encounter');
+            }
+          }, [viewMode, activeTab]);
+
           const [weightUnit, setWeightUnit] = useState(loadFromStorage('weightUnit', 'kg')); // 'kg' or 'lbs' — stored value is always kg
 
           // Online/offline status
@@ -15986,7 +16020,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 </div>
               )}
               {protocolModal && (
-                <div className="fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="protocol-modal-title" onClick={() => setProtocolModal(null)}>
+                <div className="clinician-only fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="protocol-modal-title" onClick={() => setProtocolModal(null)}>
                   <div className="w-full max-w-lg bg-white rounded-md shadow-xl border border-line" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200">
                       <div>
@@ -16270,6 +16304,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </div>
 
                     <div className="flex w-full flex-wrap items-center justify-center gap-2 lg:w-auto lg:justify-end">
+                      {/* Phase 4: View mode toggle (Clinician / Patient).
+                          Mono uppercase chips consistent with prototype .modechips.
+                          Flips document <html data-mode>; CSS gates clinician-only
+                          surfaces + scales type for patient readability. */}
+                      <div className="view-mode-toggle inline-flex shrink-0" data-no-print="true">
+                        <V7SegmentedControl
+                          ariaLabel="View mode"
+                          className="w-auto"
+                          items={[
+                            { id: 'clinician', label: 'Clinician' },
+                            { id: 'patient',   label: 'Patient' }
+                          ]}
+                          value={viewMode === 'patient' ? 'patient' : 'clinician'}
+                          onChange={(id) => setViewMode(id === 'patient' ? 'patient' : 'clinician')}
+                        />
+                      </div>
                       <details className="relative">
                         <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700">
                           <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
@@ -16558,10 +16608,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 }}>
                   {[
                     // v6.0-04: top tabs — labels only, no decorative icons. Icons signal state, not category.
+                    // clinicianOnly: hidden in patient mode (dosing / eligibility content).
                     { id: 'encounter', name: 'Encounter' },
-                    { id: 'protocols', name: 'Institutional Protocols & Algorithms' },
+                    { id: 'protocols', name: 'Institutional Protocols & Algorithms', clinicianOnly: true },
                     { id: 'research', name: 'Research & Guidelines' },
-                    { id: 'trials', name: 'Trials' }
+                    { id: 'trials', name: 'Trials', clinicianOnly: true }
                   ].map(tab => {
                     const isActive = activeTab === tab.id;
                     return (
@@ -16571,7 +16622,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         onClick={() => {
                           navigateTo(tab.id);
                         }}
-                        className={`tab-pill flex-none sm:flex-1 min-w-[92px] sm:min-w-0 py-2 sm:py-2 px-1.5 sm:px-4 text-[12px] sm:text-sm flex items-center justify-center transition-all min-h-[44px] sm:min-h-0 ${isActive ? 'active' : 'inactive'}`}
+                        className={`tab-pill flex-none sm:flex-1 min-w-[92px] sm:min-w-0 py-2 sm:py-2 px-1.5 sm:px-4 text-[12px] sm:text-sm flex items-center justify-center transition-all min-h-[44px] sm:min-h-0 ${tab.clinicianOnly ? 'clinician-only ' : ''}${isActive ? 'active' : 'inactive'}`}
                         role="tab"
                         aria-selected={isActive}
                         aria-controls={`tabpanel-${tab.id}`}
@@ -16591,6 +16642,113 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {activeTab === 'encounter' && (
                   <ErrorBoundary>
                   <div key="encounter-tab" id="tabpanel-encounter" role="tabpanel" aria-labelledby="tab-encounter" className="space-y-4">
+
+                    {/* ===== PATIENT PLAIN-LANGUAGE SUMMARY (Phase 4) =====
+                         Rendered ONLY in patient mode, at the top of the encounter
+                         panel. Translates existing encounter state into plain,
+                         non-alarming language using ONLY existing fields — no
+                         invented clinical facts, no treatment advice, no drug
+                         names/doses. Includes the educational disclaimer. */}
+                    {viewMode === 'patient' && (() => {
+                      const cat = telestrokeNote.diagnosisCategory || '';
+                      const dxRaw = telestrokeNote.diagnosis || '';
+                      const hasEncounter = !!(telestrokeNote.age || nihssScore > 0 || dxRaw || cat);
+
+                      // Diagnosis category → lay phrasing. Conservative & non-alarming.
+                      const dxPlain = (() => {
+                        if (cat === 'ischemic') return 'a possible stroke caused by a blocked blood vessel in the brain';
+                        if (cat === 'ich' || cat === 'sah') return 'a possible bleed in or around the brain';
+                        if (cat === 'tia') return 'stroke-like symptoms that may have been temporary (a "mini-stroke")';
+                        if (cat === 'cvt') return 'a possible blood clot in a vein in the brain';
+                        if (cat === 'mimic') return 'symptoms that may be caused by something other than a stroke';
+                        if (dxRaw) return 'a possible stroke or stroke-like condition';
+                        return null;
+                      })();
+
+                      // NIHSS band → words (avoid leading with the raw number).
+                      const nihssNum = (() => {
+                        const fromNote = parseInt(telestrokeNote.nihss, 10);
+                        if (Number.isFinite(fromNote)) return fromNote;
+                        if (Number.isFinite(nihssScore) && nihssScore > 0) return nihssScore;
+                        return null;
+                      })();
+                      const severityPlain = (() => {
+                        if (nihssNum === null) return null;
+                        if (nihssNum === 0) return 'no measurable symptoms on the standard exam right now';
+                        if (nihssNum <= 4) return 'mild symptoms on the standard stroke exam';
+                        if (nihssNum <= 15) return 'moderate symptoms on the standard stroke exam';
+                        if (nihssNum <= 20) return 'moderate-to-severe symptoms on the standard stroke exam';
+                        return 'severe symptoms on the standard stroke exam';
+                      })();
+
+                      // Treatment-window status → plain terms (no advice, no drug names).
+                      const windowPlain = (() => {
+                        const c = windowStatus?.color;
+                        if (c === 'green') return 'Based on the timing of your symptoms, your care team may still have time-sensitive treatment options to consider.';
+                        if (c === 'yellow' || c === 'orange') return 'The timing of your symptoms is being checked carefully, as some treatments depend on how much time has passed.';
+                        if (c === 'red') return 'Your care team is reviewing the timing of your symptoms closely.';
+                        return null;
+                      })();
+
+                      // Disposition / plan → lay terms.
+                      const dispPlain = (() => {
+                        const d = telestrokeNote.disposition || '';
+                        if (/Neuro ICU/i.test(d)) return 'The current plan is to care for you in an intensive care unit so you can be watched closely.';
+                        if (/Stroke Unit/i.test(d)) return 'The current plan is to admit you to a specialized stroke care unit.';
+                        if (/Floor/i.test(d)) return 'The current plan is to admit you to the hospital for ongoing care.';
+                        if (/Transfer/i.test(d)) return 'The current plan may involve transferring you to another hospital that specializes in this kind of care.';
+                        if (/Observation/i.test(d)) return 'The current plan is to keep you for observation while your care team continues to evaluate you.';
+                        if (/Discharge/i.test(d)) return 'Your care team is discussing next steps, which may include going home with a follow-up plan.';
+                        return null;
+                      })();
+
+                      return (
+                        <section
+                          aria-labelledby="patient-summary-heading"
+                          className="patient-summary bg-cobalt-50 border border-cobalt-200 rounded-lg p-5 sm:p-6 space-y-3"
+                        >
+                          <p className="font-mono uppercase tracking-wide text-cobalt-700 text-xs">For you &amp; your family</p>
+                          <h2 id="patient-summary-heading" className="font-serif text-ink leading-snug">
+                            What's happening right now
+                          </h2>
+
+                          {hasEncounter ? (
+                            <div className="space-y-2.5 text-ink-2 leading-relaxed">
+                              <p>
+                                You're being evaluated{dxPlain ? <> for <strong className="text-ink">{dxPlain}</strong></> : ' by a stroke care team'}.
+                                Your care team is checking your symptoms and tests to decide on the safest next steps.
+                              </p>
+                              {severityPlain && (
+                                <p>
+                                  Right now, the exam shows <strong className="text-ink">{severityPlain}</strong>.
+                                  This can change over time, and your team will keep checking.
+                                </p>
+                              )}
+                              {windowPlain && <p>{windowPlain}</p>}
+                              {dispPlain && <p>{dispPlain}</p>}
+                              <p>
+                                It's normal to have questions. Please ask your nurse or doctor anything you'd like
+                                explained — they're here to help you understand what's going on.
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="text-ink-2 leading-relaxed space-y-2">
+                              <p>
+                                There isn't an active evaluation entered yet. When your care team starts working
+                                through your case, a plain-language summary will appear here.
+                              </p>
+                              <p>You can always ask your nurse or doctor to walk you through what's happening.</p>
+                            </div>
+                          )}
+
+                          <p className="patient-disclaimer text-cobalt-800 text-sm border-t border-cobalt-200 pt-3 mt-1">
+                            <strong>This is an educational summary, not medical advice.</strong>{' '}
+                            It is a simplified view of information your care team is using. Always talk to your
+                            care team about your diagnosis, treatment, and any decisions about your care.
+                          </p>
+                        </section>
+                      );
+                    })()}
 
                     {/* ===== v7 PATIENT STRIP (mobile) — sticky chip row above v6 strip during transition.
                          Phase 5 IA overhaul will remove the v6 strip below and promote Incomplete /
@@ -17604,6 +17762,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           </div>
 
+                          {/* Medications + Anticoagulation Status — clinician-only (Phase 4).
+                              Home antithrombotics, anticoagulant type, last-dose timing, and
+                              DOAC clearance/reversal computation; hidden from patient mode. */}
+                          <div className="clinician-only">
                           {/* Medications */}
                           <div className="mb-3">
                             <label htmlFor="input-medications" className="block text-xs font-medium text-slate-600 mb-1">Medications</label>
@@ -17743,6 +17905,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 TNK auto-disabled: {telestrokeNote.tnkAutoBlockReason || 'Contraindication detected'}. Override only with documented justification.
                               </div>
                             )}
+                          </div>
                           </div>
                         </div>
 
@@ -18176,8 +18339,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* ===== DECISION SECTION ===== */}
                         <div id="phase-decision"></div>
 
-                        {/* Section 6: Treatment Decision */}
-                        <div id="treatment-decision" ref={treatmentDecisionRef} className="bg-white border border-line rounded-md p-4 ">
+                        {/* Section 6: Treatment Decision — clinician-only (Phase 4).
+                            Contains TNK/alteplase dosing, anticoagulation reversal,
+                            and disposition controls; hidden from patient mode. */}
+                        <div id="treatment-decision" ref={treatmentDecisionRef} className="clinician-only bg-white border border-line rounded-md p-4 ">
                           <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
                                                         Diagnosis & Treatment Decision
                           </h4>
@@ -18791,8 +18956,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         </div>
 
-                        {/* Section 6b: Recommendations */}
-                        <div className="bg-white border border-cobalt-200 rounded-md p-4 ">
+                        {/* Section 6b: Recommendations — clinician-only (Phase 4).
+                            Auto-generated clinician note / recommendations free-text. */}
+                        <div className="clinician-only bg-white border border-cobalt-200 rounded-md p-4 ">
                           <div className="flex items-center justify-between mb-3">
                             <h4 className="text-md font-bold text-cobalt-900 flex items-center gap-2">
                                                             <label htmlFor="input-recommendations">Recommendations</label>
@@ -18859,8 +19025,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           );
                         })()}
 
-                        {/* Section 7: Compact Note Output */}
-                        <div className="bg-slate-50 border border-line rounded-lg p-3  space-y-2">
+                        {/* Section 7: Compact Note Output — clinician-only (Phase 4).
+                            Note-template generator (consult/transfer/discharge/etc.);
+                            hidden from patient mode. */}
+                        <div className="clinician-only bg-slate-50 border border-line rounded-lg p-3  space-y-2">
                           {/* Primary row: template + copy note */}
                           <div className="flex items-center gap-2">
                             <select value={noteTemplate} onChange={(e) => setNoteTemplate(e.target.value)}
@@ -19104,8 +19272,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         </div>
 
-                        {/* Section 2: History & Medications */}
-                        <div className="bg-white border border-cobalt-200 rounded-md p-4  hover: transition-shadow">
+                        {/* Section 2: History & Medications — clinician-only (Phase 4).
+                            Includes home meds + anticoagulation status entry. */}
+                        <div className="clinician-only bg-white border border-cobalt-200 rounded-md p-4  hover: transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-cobalt-900">2. History & Medications</h3>
                                                       </div>
@@ -25759,7 +25928,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         {/* Section 7: Recommendations */}
-                        <div id="recommendations-section" className="bg-white border border-cobalt-200 rounded-md p-4  hover: transition-shadow">
+                        <div id="recommendations-section" className="clinician-only bg-white border border-cobalt-200 rounded-md p-4  hover: transition-shadow">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-lg font-bold text-cobalt-900">7. Recommendations</h3>
                                                       </div>
@@ -26968,7 +27137,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </>
                     )}
                     {(
-                    <div id="handoff-section" className="bg-white border-2 border-slate-200 rounded-lg p-4 ">
+                    <div id="handoff-section" className="clinician-only bg-white border-2 border-slate-200 rounded-lg p-4 ">
                       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
                         <div>
                           <p className="text-xs uppercase tracking-wide text-slate-500 font-semibold">Handoff Summary</p>
@@ -27059,7 +27228,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Eligibility Tables sub-views in the Trials    */}
                     {/* tab. Patient context auto-flows via URL hash. */}
                     {/* ============================================ */}
-                    <section aria-labelledby="trial-screening-tools-heading" className="bg-card border border-line rounded-md p-6">
+                    <section aria-labelledby="trial-screening-tools-heading" className="clinician-only bg-card border border-line rounded-md p-6">
                       <div className="flex flex-col gap-4">
                         <div>
                           <p className="font-mono uppercase text-eyebrow text-mute mb-1">Trial screening</p>
@@ -27138,7 +27307,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
 
                 {/* Protocols Tab (Ischemic, ICH, Calculators, References) */}
-                {activeTab === 'protocols' && (
+                {activeTab === 'protocols' && viewMode !== 'patient' && (
                   <ErrorBoundary>
                   <div id="tabpanel-protocols" role="tabpanel" aria-labelledby="tab-protocols" className="space-y-6">
                     {/* ===== QUICK PATIENT SUMMARY CARD ===== */}
@@ -34909,6 +35078,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       const effectClass = (dir) => dir === 'benefit'
                         ? 'text-cobalt-700'
                         : (dir === 'harm' || dir === 'no-benefit') ? 'text-crit-700' : 'text-ink';
+
+                      // Phase 4: derive a plain-language line for patient mode from
+                      // EXISTING text only (practiceImpact + result.effect). No fabrication:
+                      // strips the clinician "Practice impact: …" jargon tail and falls
+                      // back to the result effect, then the practiceImpact as-is.
+                      const plainLanguageFor = (item) => {
+                        const raw = (item.practiceImpact || '').trim();
+                        // Remove the trailing clinician-facing "Practice impact: …" sentence(s).
+                        const trimmed = raw.split(/\bPractice impact:/i)[0].trim();
+                        const effect = (item.result?.effect || '').trim();
+                        // Prefer the cleaned practiceImpact lead; else the result effect; else raw.
+                        const base = trimmed || effect || raw;
+                        return base || null;
+                      };
                       return (
                         <section aria-labelledby="research-whatsnew-heading" className="space-y-4">
                           <header>
@@ -34965,7 +35148,26 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     {/* study title */}
                                     <h3 className="font-sans text-body text-ink font-medium leading-snug text-pretty mb-3">{item.fullName}</h3>
 
-                                    {/* result definition list */}
+                                    {/* result definition list — clinical (clinician mode)
+                                        vs plain-language summary (patient mode, Phase 4) */}
+                                    {viewMode === 'patient' ? (() => {
+                                      const plain = plainLanguageFor(item);
+                                      return (
+                                        <div className="space-y-2 text-sm">
+                                          <p className="font-mono uppercase text-[10px] text-mute tracking-wider">What this means for patients</p>
+                                          <p className="text-ink-2 text-pretty leading-relaxed">
+                                            {plain || 'A plain-language summary isn’t available for this study yet.'}
+                                          </p>
+                                          <p className="text-mute text-xs text-pretty">
+                                            {isVerified
+                                              ? 'This study has been confirmed in the PubMed medical research database.'
+                                              : 'This is an early report that has not yet been confirmed in the PubMed medical research database.'}
+                                            {' '}It informs how doctors think about care; it does not replace a conversation
+                                            with your own care team about your situation.
+                                          </p>
+                                        </div>
+                                      );
+                                    })() : (
                                     <dl className="space-y-2 text-sm">
                                       {(() => {
                                         const designLine = [
@@ -35001,9 +35203,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         </div>
                                       ) : null}
                                     </dl>
+                                    )}
 
-                                    {/* expandable critical appraisal (PICO · methodology · results) */}
-                                    {item.appraisal && (item.appraisal.picoQuestion || item.appraisal.methodology || item.appraisal.results) ? (
+                                    {/* expandable critical appraisal (PICO · methodology · results)
+                                        — clinician-only jargon; hidden in patient mode (Phase 4) */}
+                                    {viewMode !== 'patient' && item.appraisal && (item.appraisal.picoQuestion || item.appraisal.methodology || item.appraisal.results) ? (
                                       <details className="mt-3 group">
                                         <summary className="font-mono uppercase text-[10px] text-mute tracking-wider cursor-pointer select-none hover:text-ink-2">
                                           Critical appraisal
@@ -35108,7 +35312,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* CLINICAL TRIALS TAB                          */}
                 {/* Uses trialsData object and TrialCard component */}
                 {/* ============================================ */}
-                {activeTab === 'trials' && (
+                {activeTab === 'trials' && viewMode !== 'patient' && (
                   <ErrorBoundary>
                   <div id="tabpanel-trials" role="tabpanel" aria-labelledby="tab-trials" className="space-y-6">
                     {/* Header Section with Patient Summary —
@@ -35354,16 +35558,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               <div className="flex items-stretch justify-around">
                 {[
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },
-                  { id: 'protocols', name: 'Protocols', icon: 'library' },
+                  { id: 'protocols', name: 'Protocols', icon: 'library', clinicianOnly: true },
                   { id: 'research', name: 'Research', icon: 'book-open' },
-                  { id: 'trials', name: 'Trials', icon: 'flask-conical' }
+                  { id: 'trials', name: 'Trials', icon: 'flask-conical', clinicianOnly: true }
                 ].map(tab => {
                   const isActive = activeTab === tab.id;
                   return (
                     <button
                       key={tab.id}
                       onClick={() => navigateTo(tab.id)}
-                      className={`flex-1 flex flex-col items-center justify-center gap-1 py-2 px-1 min-h-[56px] text-[11px] font-medium transition-colors ${isActive ? 'text-cobalt-600' : 'text-slate-500 active:text-slate-700'}`}
+                      className={`${tab.clinicianOnly ? 'clinician-only ' : ''}flex-1 flex flex-col items-center justify-center gap-1 py-2 px-1 min-h-[56px] text-[11px] font-medium transition-colors ${isActive ? 'text-cobalt-600' : 'text-slate-500 active:text-slate-700'}`}
                       role="tab"
                       aria-selected={isActive}
                       aria-controls={`tabpanel-${tab.id}`}
