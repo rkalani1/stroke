@@ -196,8 +196,9 @@ footer .mono{font-family:var(--mono);font-size:.68rem}
 </div>
 
 <main>
-  <div class="wrap">
-    <span class="kicker reveal">Medical Research &amp; Guidelines</span>
+  <div id="vnote" class="navnote" hidden style="margin:1rem auto 0"></div>
+  <div class="wrap view" data-view="research">
+    <span class="kicker reveal">Medical Research &amp; Guidelines · the literature (teach from this)</span>
     <h1 class="reveal" style="animation-delay:.05s">The evidence, kept current — and provably accurate.</h1>
     <p class="lede reveal" style="animation-delay:.1s">Every trial verified against its primary source. Updated weekly, autonomously, with hard guardrails: nothing reaches the bedside unless its PMID/DOI checks out.</p>
 
@@ -304,6 +305,55 @@ footer .mono{font-family:var(--mono);font-size:.68rem}
       <div class="entry" style="grid-template-columns:1fr;display:block"><div class="acro" style="font-size:1.05rem">Protocols &amp; Algorithms</div><p class="titleline" style="margin:.3rem 0 0">Evidence-based protocol patterns — generic, unbranded, public-safe.</p></div>
     </div>
   </div>
+
+  <div class="wrap view" data-view="protocols" hidden>
+    <span class="kicker" style="color:var(--gold)">Protocols &amp; Algorithms · your approach (reference on call)</span>
+    <h1>The institutional approach — kept separate from the evidence.</h1>
+    <p class="lede">Quick-reference protocols and algorithms for when you're on call — deliberately distinct from the medical-literature section, so you always know which is which. Each one shows the evidence it's built on.</p>
+
+    <div class="guardrail" style="margin-top:1.6rem;border-color:color-mix(in srgb,var(--gold) 38%,var(--line));background:var(--gold-wash)">
+      <span style="font-size:.85rem">🔒</span>
+      <span><b>Private layer.</b> Your real institutional protocols stay on your device — never published. The public site shows only generic, evidence-based protocol <em>patterns</em>.</span>
+    </div>
+
+    <div class="section-label" style="color:var(--gold)">On-call quick reference</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem">
+
+      <article class="entry" style="grid-template-columns:1fr;display:block;border-left:3px solid var(--gold)">
+        <div class="metarow" style="margin-bottom:.5rem"><span class="tag" style="color:var(--gold);border-color:color-mix(in srgb,var(--gold) 40%,var(--line-2));background:var(--gold-wash)">INSTITUTIONAL</span><span class="tag">Algorithm</span></div>
+        <div class="acro" style="font-size:1.12rem">Acute blood-pressure targets</div>
+        <p class="takeaway" style="margin-top:.4rem"><b>Pre-lytic &lt;185/110</b> · post-reperfusion &lt;180/105 ×24h · avoid intensive lowering after EVT.</p>
+        <div style="font-family:var(--mono);font-size:.63rem;color:var(--ink-soft);margin-top:.6rem">Built on → <a href="#">INTERACT2 · ATACH-2 · OPTIMAL-BP</a></div>
+        <div style="font-family:var(--mono);font-size:.59rem;color:var(--faint);margin-top:.4rem">Verify against current local policy.</div>
+      </article>
+
+      <article class="entry" style="grid-template-columns:1fr;display:block;border-left:3px solid var(--gold)">
+        <div class="metarow" style="margin-bottom:.5rem"><span class="tag" style="color:var(--gold);border-color:color-mix(in srgb,var(--gold) 40%,var(--line-2));background:var(--gold-wash)">INSTITUTIONAL</span><span class="tag">Reversal</span></div>
+        <div class="acro" style="font-size:1.12rem">Anticoagulation reversal (ICH)</div>
+        <p class="takeaway" style="margin-top:.4rem"><b>Factor-Xa inhibitor →</b> andexanet vs 4F-PCC · <b>warfarin →</b> 4F-PCC + IV vitamin K.</p>
+        <div style="font-family:var(--mono);font-size:.63rem;color:var(--ink-soft);margin-top:.6rem">Built on → <a href="#">ANNEXA-I · ANNEXA-4 · INTERACT3</a></div>
+        <div style="font-family:var(--mono);font-size:.59rem;color:var(--faint);margin-top:.4rem">Verify against current local policy.</div>
+      </article>
+
+      <article class="entry" style="grid-template-columns:1fr;display:block;border-left:3px solid var(--gold)">
+        <div class="metarow" style="margin-bottom:.5rem"><span class="tag" style="color:var(--gold);border-color:color-mix(in srgb,var(--gold) 40%,var(--line-2));background:var(--gold-wash)">INSTITUTIONAL</span><span class="tag">Workflow</span></div>
+        <div class="acro" style="font-size:1.12rem">Code-stroke activation</div>
+        <p class="takeaway" style="margin-top:.4rem"><b>LKW → glucose → NCCT (blood?) → CTA (LVO?) → CTP/MRI.</b> Imaging + team run in parallel.</p>
+        <div style="font-family:var(--mono);font-size:.63rem;color:var(--ink-soft);margin-top:.6rem">Built on → <a href="#">AIS 2026 guideline · HERMES</a></div>
+        <div style="font-family:var(--mono);font-size:.59rem;color:var(--faint);margin-top:.4rem">Verify against current local policy.</div>
+      </article>
+
+      <article class="entry" style="grid-template-columns:1fr;display:block;border-left:3px solid var(--gold)">
+        <div class="metarow" style="margin-bottom:.5rem"><span class="tag" style="color:var(--gold);border-color:color-mix(in srgb,var(--gold) 40%,var(--line-2));background:var(--gold-wash)">INSTITUTIONAL</span><span class="tag">Selection</span></div>
+        <div class="acro" style="font-size:1.12rem">Extended-window EVT selection</div>
+        <p class="takeaway" style="margin-top:.4rem"><b>6–24h:</b> imaging-selected mismatch · <b>large core:</b> ASPECTS ≤5 still benefits · <b>basilar:</b> ≤24h.</p>
+        <div style="font-family:var(--mono);font-size:.63rem;color:var(--ink-soft);margin-top:.6rem">Built on → <a href="#">DAWN · DEFUSE-3 · LASTE · ATTENTION · BAOCHE</a></div>
+        <div style="font-family:var(--mono);font-size:.59rem;color:var(--faint);margin-top:.4rem">Verify against current local policy.</div>
+      </article>
+
+    </div>
+    <p class="lede" style="font-size:.95rem;margin-top:1.6rem;color:var(--ink-soft)">Same trials as the Research section — but here framed as <b>"what we do,"</b> there as <b>"what the literature shows."</b> One click apart, never mixed.</p>
+  </div>
 </main>
 
 <footer>
@@ -312,5 +362,23 @@ footer .mono{font-family:var(--mono);font-size:.68rem}
     <div class="mono">Design prototype — "clinical precision instrument" · Bricolage Grotesque · Public Sans · IBM Plex Mono</div>
   </div>
 </footer>
+<script>
+(function(){
+  var views=[].slice.call(document.querySelectorAll('.view'));
+  var nav=[].slice.call(document.querySelectorAll('nav.primary .nav-item'));
+  var note=document.getElementById('vnote');
+  function show(v){views.forEach(function(s){s.hidden=s.getAttribute('data-view')!==v;});}
+  nav.forEach(function(b){
+    b.addEventListener('click',function(){
+      nav.forEach(function(x){x.classList.remove('active');}); b.classList.add('active');
+      var t=b.textContent.replace('NEW','').trim();
+      if(/Research/.test(t)){show('research');note.hidden=true;}
+      else if(/Protocols/.test(t)){show('protocols');note.hidden=true;}
+      else {views.forEach(function(s){s.hidden=true;}); note.innerHTML='<b>'+t+'</b> — existing section, preserved &amp; improved (full version is ported into the live app during the build).'; note.hidden=false;}
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+})();
+</script>
 </body>
 </html>
