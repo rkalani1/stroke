@@ -81,7 +81,7 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
         <span className="inline-block px-2 py-0.5 bg-cobalt-900 text-white text-xs rounded">EX</span>
         IVT Eligibility Decision Algorithm
       </h4>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs mb-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs mb-3">
         <label className="flex items-center gap-1"><input type="checkbox" checked={state.ichOnCT} onChange={(e) => set('ichOnCT', e.target.checked)} />ICH on CT</label>
         <label className="flex items-center gap-1"><input type="checkbox" checked={state.disablingDeficit} onChange={(e) => set('disablingDeficit', e.target.checked)} />Disabling deficit</label>
         <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={state.hoursFromLKW} onChange={(e) => set('hoursFromLKW', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
@@ -93,7 +93,7 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
       {state.hoursFromLKW && parseFloat(state.hoursFromLKW) > 4.5 && (
         <div className="mb-3 p-2 rounded border border-cobalt-200 bg-cobalt-50 text-xs dark:border-cobalt-700 dark:bg-cobalt-900">
           <p className="font-semibold text-cobalt-900 mb-1 dark:text-cobalt-300">Extended-window imaging selection (prefer MRI if small vessel, posterior, or contrast allergy):</p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
             <label className="flex items-center gap-1"><input type="checkbox" checked={state.mismatchPresent} onChange={(e) => set('mismatchPresent', e.target.checked)} />MRI DWI-FLAIR mismatch</label>
             <label><span className="block text-slate-600 dark:text-ink-2">CTP core (mL)</span><input type="number" value={state.ctpCoreMl} onChange={(e) => set('ctpCoreMl', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">CTP ratio</span><input type="number" step="0.1" value={state.ctpRatio} onChange={(e) => set('ctpRatio', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
