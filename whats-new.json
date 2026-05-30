@@ -1,0 +1,326 @@
+{
+  "generatedFrom": "evidence-atlas",
+  "count": 12,
+  "window": {
+    "days": 180,
+    "referenceDate": "2026-05-30",
+    "cutoff": "2025-12-01"
+  },
+  "items": [
+    {
+      "id": "atlas",
+      "shortName": "ATLAS",
+      "fullName": "Endovascular Thrombectomy for Large-Core Ischaemic Stroke up to 24 h — Systematic Review and IPD Meta-analysis with Central Imaging Adjudication",
+      "evidenceType": "meta-analysis",
+      "topic": "evt-large-core",
+      "topicLabel": "EVT for large-core infarct",
+      "journal": "Lancet",
+      "year": 2026,
+      "design": {
+        "n": 1886,
+        "population": "≤24 h",
+        "comparator": "Medical management"
+      },
+      "result": {
+        "effect": "Favored EVT (median mRS 4 vs 5)",
+        "ci": "95% CI 1.42 to 1.88",
+        "p": "p<0.0001",
+        "direction": "benefit"
+      },
+      "practiceImpact": "Consolidates EVT benefit across large-core strata to 24 h, except very extensive cores (≥150 mL) beyond 6 h where evidence remains limited.",
+      "certainty": "high",
+      "pmid": "42107392",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42107392/",
+      "promotedDate": "2026-05-30"
+    },
+    {
+      "id": "choice-2",
+      "shortName": "CHOICE-2",
+      "fullName": "Adjunctive Intra-Arterial Alteplase After Successful Thrombectomy for Acute Ischemic Stroke",
+      "evidenceType": "rct",
+      "topic": "ia-adjunct-after-evt",
+      "topicLabel": "IA adjunctive thrombolysis after EVT",
+      "journal": "JAMA",
+      "year": 2026,
+      "design": {
+        "n": 433,
+        "population": "Median 76; ≤24 h",
+        "comparator": "Thrombectomy alone"
+      },
+      "result": {
+        "effect": "Higher with IA alteplase: 57.5% vs 42.5%",
+        "ci": "95% CI 5.7% to 24.3%",
+        "p": "p=0.002",
+        "direction": "harm"
+      },
+      "practiceImpact": "IA alteplase after successful EVT improved excellent outcomes and reperfusion — but a higher mortality signal warrants caution before adoption.",
+      "certainty": "moderate",
+      "pmid": "42096239",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42096239/",
+      "promotedDate": "2026-05-30"
+    },
+    {
+      "id": "direct-angio",
+      "shortName": "DIRECT ANGIO",
+      "fullName": "Direct versus Conventional Transfer to Angiography Suite in Patients with Severe Acute Stroke Treated with Thrombectomy (France)",
+      "evidenceType": "rct",
+      "topic": "acute-ischemic-stroke",
+      "topicLabel": "Acute ischemic stroke",
+      "journal": "Lancet Neurol",
+      "year": 2026,
+      "design": {
+        "n": 115,
+        "population": "≤85; ≤5 h of onset",
+        "comparator": "Conventional imaging-first pathway"
+      },
+      "result": {
+        "effect": "No benefit: 36% vs 42%",
+        "ci": "95% CI 0.32 to 1.69",
+        "p": "",
+        "direction": "no-benefit"
+      },
+      "practiceImpact": "Bypassing pre-EVT imaging increased sICH without benefit and was halted early — cautions against direct-to-angio in suspected LVO.",
+      "certainty": "moderate",
+      "pmid": "41864232",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41864232/",
+      "promotedDate": "2026-05-30"
+    },
+    {
+      "id": "distal",
+      "shortName": "DISTAL",
+      "fullName": "Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke — 12-Month Outcomes",
+      "evidenceType": "rct",
+      "topic": "evt-mevo",
+      "topicLabel": "EVT for medium / distal vessel occlusion",
+      "journal": "Lancet Neurol",
+      "year": 2026,
+      "design": {
+        "n": 543,
+        "population": "Median 77; Median 6; ≤6 h, or 6-24 h with salvageable tissue",
+        "comparator": "Best medical treatment alone"
+      },
+      "result": {
+        "effect": "No difference (median mRS 2 vs 2)",
+        "ci": "95% CI 0.59 to 1.12",
+        "p": "p=0.20",
+        "direction": "no-benefit"
+      },
+      "practiceImpact": "No long-term benefit of EVT in mild-to-moderate medium/distal vessel occlusion — routine thrombectomy not supported in this population.",
+      "certainty": "high",
+      "pmid": "42105785",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42105785/",
+      "promotedDate": "2026-05-30"
+    },
+    {
+      "id": "hyponatremia-ich",
+      "shortName": "Hyponatremia & ICH",
+      "fullName": "Severity-Stratified Hyponatremia Is Associated with Increased Mortality and Complications in Nontraumatic Intracerebral Hemorrhage",
+      "evidenceType": "observational",
+      "topic": "ich",
+      "topicLabel": "Intracerebral hemorrhage",
+      "journal": "J Clin Med",
+      "year": 2026,
+      "design": {
+        "n": 45114,
+        "population": "Serum Na ≤7 d of diagnosis",
+        "comparator": "Propensity-matched normonatraemia"
+      },
+      "result": {
+        "effect": "Moderate 17.5% vs 13.3%; severe 18.7% vs 12.9%",
+        "ci": "Moderate 95% CI 1.255-1.398; severe 1.332-1.628",
+        "p": "p<0.001",
+        "direction": "neutral"
+      },
+      "practiceImpact": "Serum sodium is a readily-available risk-stratification marker in acute ICH; supports vigilant Na monitoring (causality not established).",
+      "certainty": "low",
+      "pmid": "42194925",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42194925/",
+      "promotedDate": "2026-05-30",
+      "observationalCaveat": "Observational study — confounding limits causal inference; interpret with caution."
+    },
+    {
+      "id": "oceanic-stroke",
+      "shortName": "OCEANIC-STROKE",
+      "fullName": "Asundexian for Secondary Stroke Prevention",
+      "evidenceType": "rct",
+      "topic": "secondary-prevention",
+      "topicLabel": "Secondary stroke prevention",
+      "journal": "N Engl J Med",
+      "year": 2026,
+      "design": {
+        "n": 12327,
+        "population": "≥18; ≤72 h",
+        "comparator": "Placebo + antiplatelet therapy"
+      },
+      "result": {
+        "effect": "Lower with asundexian: 6.2% vs 8.4%",
+        "ci": "95% CI 0.65 to 0.84",
+        "p": "p<0.001",
+        "direction": "benefit"
+      },
+      "practiceImpact": "Asundexian on top of antiplatelets cut ischaemic stroke ~26% without more major bleeding — could reshape noncardioembolic prevention.",
+      "certainty": "high",
+      "pmid": "41985132",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41985132/",
+      "promotedDate": "2026-05-30"
+    },
+    {
+      "id": "stabled",
+      "shortName": "STABLED",
+      "fullName": "Catheter Ablation and Oral Anticoagulation for Secondary Stroke Prevention in Atrial Fibrillation",
+      "evidenceType": "rct",
+      "topic": "af-anticoag-timing",
+      "topicLabel": "AF anticoagulation timing after stroke",
+      "journal": "JAMA Neurol",
+      "year": 2026,
+      "design": {
+        "n": 249,
+        "population": "20-85 (mean 71.7); Ablation 1-6 mo after index stroke",
+        "comparator": "Standard therapy (edoxaban) alone"
+      },
+      "result": {
+        "effect": "No reduction: 5.6% vs 4.9% per person-year",
+        "ci": "95% CI 0.62 to 2.01",
+        "p": "",
+        "direction": "benefit"
+      },
+      "practiceImpact": "Adding ablation to anticoagulation did not reduce recurrent events in post-stroke AF (underpowered) — does not support routine ablation for secondary prevention.",
+      "certainty": "moderate",
+      "pmid": "41770549",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41770549/",
+      "promotedDate": "2026-05-30"
+    },
+    {
+      "id": "suicide-after-stroke",
+      "shortName": "Suicide after stroke",
+      "fullName": "Increased Risk of Suicide after Stroke: A Population-Based Matched Cohort Study",
+      "evidenceType": "observational",
+      "topic": "special-populations",
+      "topicLabel": "Special populations (pregnancy, cancer, pediatrics)",
+      "journal": "Int J Stroke",
+      "year": 2025,
+      "design": {
+        "n": 129438,
+        "population": "Mean 71.4; 2008-2017",
+        "comparator": "Matched general-population controls"
+      },
+      "result": {
+        "effect": "Higher in stroke survivors: 11.1 vs 3.2 per 10,000 person-years",
+        "ci": "95% CI 2.35 to 3.51",
+        "p": "",
+        "direction": "benefit"
+      },
+      "practiceImpact": "Supports long-term (beyond 1 year) suicidality screening in survivors — especially younger and lower-income patients.",
+      "certainty": "moderate",
+      "pmid": "40913243",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/40913243/",
+      "promotedDate": "2026-05-30",
+      "observationalCaveat": "Observational study — confounding limits causal inference; interpret with caution."
+    },
+    {
+      "id": "tapis",
+      "shortName": "TAPIS",
+      "fullName": "Ticagrelor with Aspirin Dual Antiplatelet Therapy combined with Intravenous Thrombolysis in Patients with Ischaemic Stroke in China",
+      "evidenceType": "rct",
+      "topic": "dapt-minor-stroke",
+      "topicLabel": "DAPT for minor stroke / high-risk TIA",
+      "journal": "Lancet",
+      "year": 2026,
+      "design": {
+        "n": 1382,
+        "population": "Median 65.6; 4-10; ≤6 h of onset",
+        "comparator": "Placebo (open-label aspirin days 2-90)"
+      },
+      "result": {
+        "effect": "Higher with early DAPT: 68.7% vs 62.0%",
+        "ci": "95% CI 1.03 to 1.20",
+        "p": "p=0.0089",
+        "direction": "benefit"
+      },
+      "practiceImpact": "Early oral DAPT within 6 h as an adjunct to thrombolysis improved excellent outcomes in moderate stroke — a strategy long considered contraindicated; small sICH risk not excluded.",
+      "certainty": "moderate",
+      "pmid": "42114550",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42114550/",
+      "promotedDate": "2026-05-30"
+    },
+    {
+      "id": "tnk-vs-alteplase-rwe",
+      "shortName": "TNK vs alteplase · RWE",
+      "fullName": "Real-World Efficacy and Safety of Tenecteplase versus Alteplase in Acute Ischemic Stroke: A Propensity Score-Matched Analysis",
+      "evidenceType": "observational",
+      "topic": "tnk-vs-alteplase",
+      "topicLabel": "Tenecteplase vs alteplase",
+      "journal": "Front Neurol",
+      "year": 2026,
+      "design": {
+        "n": 371,
+        "population": "",
+        "comparator": "Alteplase"
+      },
+      "result": {
+        "effect": "Comparable (p>0.05)",
+        "ci": "",
+        "p": "p>0.05 (NS)",
+        "direction": "neutral"
+      },
+      "practiceImpact": "Adds real-world support for tenecteplase as a practical alteplase alternative — consistent with trial-level non-inferiority.",
+      "certainty": "low",
+      "pmid": "42206304",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42206304/",
+      "promotedDate": "2026-05-30",
+      "observationalCaveat": "Observational study — confounding limits causal inference; interpret with caution."
+    },
+    {
+      "id": "trident",
+      "shortName": "TRIDENT",
+      "fullName": "Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage",
+      "evidenceType": "rct",
+      "topic": "ich-secondary-prevention",
+      "topicLabel": "Secondary prevention after ICH (AF, statin)",
+      "journal": "N Engl J Med",
+      "year": 2026,
+      "design": {
+        "n": 1670,
+        "population": "Mean 58",
+        "comparator": "Placebo + standard care"
+      },
+      "result": {
+        "effect": "Lower with triple pill: 4.6% vs 7.4%",
+        "ci": "95% CI 0.41 to 0.92",
+        "p": "p=0.02",
+        "direction": "benefit"
+      },
+      "practiceImpact": "A simplified low-dose triple pill after ICH lowers recurrent stroke and CV events — supports intensive, simplified BP-lowering.",
+      "certainty": "high",
+      "pmid": "42019018",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42019018/",
+      "promotedDate": "2026-05-30"
+    },
+    {
+      "id": "catalyst",
+      "shortName": "CATALYST",
+      "fullName": "IPD Meta-analysis of Anticoagulation Timing after Ischaemic Stroke with AF",
+      "evidenceType": "meta-analysis",
+      "topic": "af-anticoag-timing",
+      "topicLabel": "AF anticoagulation timing after stroke",
+      "journal": "Lancet",
+      "year": 2025,
+      "design": {
+        "n": 5441,
+        "population": "Early ≤4 d vs later ≥5 d",
+        "comparator": "Later DOAC (≥5 d)"
+      },
+      "result": {
+        "effect": "Favored early: 2.1% vs 3.0%",
+        "ci": "95% CI 0.50 to 0.98",
+        "p": "p=0.039",
+        "direction": "benefit"
+      },
+      "practiceImpact": "Pooled IPD shows early DOAC (≤4 d) reduces 30-d composite — supports early initiation.",
+      "certainty": "high",
+      "pmid": "40570866",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/40570866/",
+      "promotedDate": "2026-05-29"
+    }
+  ]
+}
