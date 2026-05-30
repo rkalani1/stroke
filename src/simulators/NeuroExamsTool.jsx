@@ -276,7 +276,7 @@ export function NeuroExamsTool() {
           {activeTab === 'delirium' && (
             <div className="space-y-2">
               <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Differentiating Delirium from Aphasia</h4>
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: delirium versus aphasia differentiation">
                 <table className="w-full text-xs border-collapse">
                   <thead>
                     <tr>
