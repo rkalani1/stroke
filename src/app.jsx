@@ -2153,11 +2153,13 @@ Clinician Name`;
             } catch (e) { /* ignore storage errors */ }
           }, [viewMode]);
 
-          // Patient mode hides clinician-only tabs (Protocols & Algorithms, Trials).
+          // Patient mode hides clinician-only tabs (Research & Guidelines,
+          // Protocols & Algorithms, Trials). Patient view is encounter-summary-only.
           // If a saved/active tab is clinician-only when entering patient mode,
           // redirect to the encounter tab so a patient can't land on dosing /
-          // eligibility content. Clinician mode is unaffected.
-          const CLINICIAN_ONLY_TABS = ['protocols', 'trials'];
+          // eligibility content or the Research What's-New feed (which carries
+          // drug names, doses, and clinician jargon). Clinician mode is unaffected.
+          const CLINICIAN_ONLY_TABS = ['research', 'protocols', 'trials'];
           useEffect(() => {
             if (viewMode === 'patient' && CLINICIAN_ONLY_TABS.includes(activeTab)) {
               setActiveTab('encounter');
@@ -16611,7 +16613,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     // clinicianOnly: hidden in patient mode (dosing / eligibility content).
                     { id: 'encounter', name: 'Encounter' },
                     { id: 'protocols', name: 'Institutional Protocols & Algorithms', clinicianOnly: true },
-                    { id: 'research', name: 'Research & Guidelines' },
+                    { id: 'research', name: 'Research & Guidelines', clinicianOnly: true },
                     { id: 'trials', name: 'Trials', clinicianOnly: true }
                   ].map(tab => {
                     const isActive = activeTab === tab.id;
@@ -16685,7 +16687,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       const windowPlain = (() => {
                         const c = windowStatus?.color;
                         if (c === 'green') return 'Based on the timing of your symptoms, your care team may still have time-sensitive treatment options to consider.';
-                        if (c === 'yellow' || c === 'orange') return 'The timing of your symptoms is being checked carefully, as some treatments depend on how much time has passed.';
+                        if (c === 'yellow' || c === 'orange' || c === 'amber') return 'The timing of your symptoms is being checked carefully, as some treatments depend on how much time has passed.';
                         if (c === 'red') return 'Your care team is reviewing the timing of your symptoms closely.';
                         return null;
                       })();
@@ -35057,7 +35059,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* What's New feed (verified PubMed) + compact   */}
                 {/* guideline list + Evidence Atlas entry.        */}
                 {/* ============================================ */}
-                {activeTab === 'research' && (
+                {activeTab === 'research' && viewMode !== 'patient' && (
                   <ErrorBoundary>
                   <div id="tabpanel-research" role="tabpanel" aria-labelledby="tab-research" className="space-y-8">
 
@@ -35085,19 +35087,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ? 'text-cobalt-700'
                         : (dir === 'harm' || dir === 'no-benefit') ? 'text-crit-700' : 'text-ink';
 
-                      // Phase 4: derive a plain-language line for patient mode from
-                      // EXISTING text only (practiceImpact + result.effect). No fabrication:
-                      // strips the clinician "Practice impact: …" jargon tail and falls
-                      // back to the result effect, then the practiceImpact as-is.
-                      const plainLanguageFor = (item) => {
-                        const raw = (item.practiceImpact || '').trim();
-                        // Remove the trailing clinician-facing "Practice impact: …" sentence(s).
-                        const trimmed = raw.split(/\bPractice impact:/i)[0].trim();
-                        const effect = (item.result?.effect || '').trim();
-                        // Prefer the cleaned practiceImpact lead; else the result effect; else raw.
-                        const base = trimmed || effect || raw;
-                        return base || null;
-                      };
+                      // Research is clinician-only and never renders in patient mode
+                      // (the tab is hidden + the activeTab==='research' guard requires
+                      // viewMode!=='patient'). The What's-New feed carries drug names,
+                      // doses, and clinician jargon (sICH, mRS, LVO, EVT) in
+                      // practiceImpact/result.effect, so there is intentionally NO
+                      // patient-facing rendering path here. Do not reintroduce one
+                      // without an authored, jargon-free patient field in whats-new.json.
                       return (
                         <section aria-labelledby="research-whatsnew-heading" className="space-y-4">
                           <header>
@@ -35154,26 +35150,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     {/* study title */}
                                     <h3 className="font-sans text-body text-ink font-medium leading-snug text-pretty mb-3">{item.fullName}</h3>
 
-                                    {/* result definition list — clinical (clinician mode)
-                                        vs plain-language summary (patient mode, Phase 4) */}
-                                    {viewMode === 'patient' ? (() => {
-                                      const plain = plainLanguageFor(item);
-                                      return (
-                                        <div className="space-y-2 text-sm">
-                                          <p className="font-mono uppercase text-[10px] text-mute tracking-wider">What this means for patients</p>
-                                          <p className="text-ink-2 text-pretty leading-relaxed">
-                                            {plain || 'A plain-language summary isn’t available for this study yet.'}
-                                          </p>
-                                          <p className="text-mute text-xs text-pretty">
-                                            {isVerified
-                                              ? 'This study has been confirmed in the PubMed medical research database.'
-                                              : 'This is an early report that has not yet been confirmed in the PubMed medical research database.'}
-                                            {' '}It informs how doctors think about care; it does not replace a conversation
-                                            with your own care team about your situation.
-                                          </p>
-                                        </div>
-                                      );
-                                    })() : (
+                                    {/* result definition list — clinician-only.
+                                        Research never renders in patient mode (tab hidden +
+                                        activeTab guard), so this exposes clinical detail
+                                        (drug names, doses, CI/p, jargon) safely. */}
                                     <dl className="space-y-2 text-sm">
                                       {(() => {
                                         const designLine = [
@@ -35209,11 +35189,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         </div>
                                       ) : null}
                                     </dl>
-                                    )}
 
                                     {/* expandable critical appraisal (PICO · methodology · results)
-                                        — clinician-only jargon; hidden in patient mode (Phase 4) */}
-                                    {viewMode !== 'patient' && item.appraisal && (item.appraisal.picoQuestion || item.appraisal.methodology || item.appraisal.results) ? (
+                                        — clinician-only jargon; Research is clinician-only. */}
+                                    {item.appraisal && (item.appraisal.picoQuestion || item.appraisal.methodology || item.appraisal.results) ? (
                                       <details className="mt-3 group">
                                         <summary className="font-mono uppercase text-[10px] text-mute tracking-wider cursor-pointer select-none hover:text-ink-2">
                                           Critical appraisal
@@ -35565,7 +35544,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {[
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },
                   { id: 'protocols', name: 'Protocols', icon: 'library', clinicianOnly: true },
-                  { id: 'research', name: 'Research', icon: 'book-open' },
+                  { id: 'research', name: 'Research', icon: 'book-open', clinicianOnly: true },
                   { id: 'trials', name: 'Trials', icon: 'flask-conical', clinicianOnly: true }
                 ].map(tab => {
                   const isActive = activeTab === tab.id;
