@@ -72,11 +72,12 @@
     --text-muted: #475569;
     --text-subtle: #94a3b8;
     --border: rgba(15, 23, 42, .08);
-    --focus-ring: 0 0 0 3px rgba(37, 99, 235, .35);
+    --focus-ring: 0 0 0 3px rgba(12, 124, 140, .35);
   }
 
   html.dark {
     color-scheme: dark;
+    --focus-ring: 0 0 0 3px rgba(63, 182, 196, .45);
 
     --ink:     #ECEAE2;
     --ink-2:   #C3C0B6;
