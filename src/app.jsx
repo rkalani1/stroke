@@ -18135,8 +18135,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className={`mb-3 border rounded-lg p-2 text-sm ${colorClass}`} role="status" aria-live="polite">
                                 <div className="flex items-center justify-between">
                                   <span className="font-medium">CrCl (Cockcroft-Gault): <span className="font-bold">{crcl.value} mL/min</span> — {crcl.label}</span>
-                                  {crcl.isLow && <span className="text-xs font-semibold px-2 py-0.5 bg-crit-200 rounded-full">Renal dose adjustment required</span>}
-                                  {crcl.isBorderline && <span className="text-xs font-semibold px-2 py-0.5 bg-warn-200 rounded-full">Check DOAC dosing</span>}
+                                  {crcl.isLow && <span className="text-xs font-semibold px-2 py-0.5 bg-crit-200 rounded-full dark:bg-crit-950 dark:text-crit-300">Renal dose adjustment required</span>}
+                                  {crcl.isBorderline && <span className="text-xs font-semibold px-2 py-0.5 bg-warn-200 rounded-full dark:bg-warn-950 dark:text-warn-300">Check DOAC dosing</span>}
                                 </div>
                                 {crcl.obesityWarning && <p className="text-xs mt-1 font-medium text-warn-800 dark:text-warn-300">{crcl.obesityWarning}</p>}
                               </div>
@@ -19102,7 +19102,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </select>
                                   </div>
                                   {((telestrokeNote.ichSurgicalCriteria || {}).cerebellarGt15mL || (telestrokeNote.ichSurgicalCriteria || {}).clinicalDeterioration) && !(telestrokeNote.ichSurgicalCriteria || {}).surgeryDiscussed && (
-                                    <div className="mt-2 bg-crit-200 border border-crit-500 rounded p-2 text-xs text-crit-900 font-bold dark:text-crit-300">
+                                    <div className="mt-2 bg-crit-200 border border-crit-500 rounded p-2 text-xs text-crit-900 font-bold dark:bg-crit-950 dark:text-crit-300">
                                       URGENT: Surgical criteria met — neurosurgery must be contacted immediately.
                                     </div>
                                   )}
@@ -19772,7 +19772,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <span className="font-bold text-orange-800 dark:text-orange-300">
                                       {ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].name}
                                     </span>
-                                    <span className="text-xs bg-orange-200 text-orange-800 px-2 py-0.5 rounded-full dark:text-orange-300">
+                                    <span className="text-xs bg-orange-200 text-orange-800 px-2 py-0.5 rounded-full dark:bg-orange-950 dark:text-orange-300">
                                       {ANTICOAGULANT_INFO[telestrokeNote.lastDOACType].class}
                                     </span>
                                   </div>
@@ -24874,12 +24874,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                                             {/* Safety Alerts */}
                                             {isDangerous && (
-                                              <div className="mt-2 p-2 bg-crit-200 rounded text-sm text-crit-900 font-bold text-center animate-pulse dark:text-crit-300">
+                                              <div className="mt-2 p-2 bg-crit-200 rounded text-sm text-crit-900 font-bold text-center animate-pulse dark:bg-crit-950 dark:text-crit-300">
                                                 &#9888; ODS/CPM RISK: Projected correction &gt;12 mEq/L/24h — SLOW or STOP infusion. Consider DDAVP 2 mcg IV q8h to re-lower Na+.
                                               </div>
                                             )}
                                             {isRapid && !isDangerous && (
-                                              <div className="mt-2 p-2 bg-warn-200 rounded text-sm text-warn-900 font-semibold text-center dark:text-warn-300">
+                                              <div className="mt-2 p-2 bg-warn-200 rounded text-sm text-warn-900 font-semibold text-center dark:bg-warn-950 dark:text-warn-300">
                                                 &#9888; Approaching ODS threshold (&gt;10 mEq/L/24h). Reduce HTS rate. Recheck Na+ in 2h. Max safe: 8 mEq/L/24h preferred.
                                               </div>
                                             )}
@@ -27870,7 +27870,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <span className="font-semibold text-warn-900 text-sm dark:text-warn-300">
                               Institutional (local — not public)
                             </span>
-                            <span className="ml-2 text-warn-800 text-xs font-mono bg-warn-200 rounded px-1.5 py-0.5 dark:text-warn-300">
+                            <span className="ml-2 text-warn-800 text-xs font-mono bg-warn-200 rounded px-1.5 py-0.5 dark:bg-warn-950 dark:text-warn-300">
                               {localInst.institutionName}
                             </span>
                             {localInst.lastUpdated && (
