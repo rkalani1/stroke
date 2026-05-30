@@ -2193,6 +2193,9 @@ Clinician Name`;
           const copyToClipboardRef = useRef(null);
           const navigateToRef = useRef(null);
           const exportToPDFRef = useRef(null);
+          // Element to restore focus to when the command palette closes without
+          // navigating (WCAG 2.4.3 Focus Order). Captured at open time.
+          const paletteReturnFocusRef = useRef(null);
           // mermaidInitializedRef removed — no more mermaid diagrams
           const decisionStateRef = useRef({
             tnkRecommended: false,
@@ -3295,7 +3298,7 @@ Clinician Name`;
             'CREST-2': 'https://doi.org/10.1056/NEJMoa2408498',
             'ECST-2': 'https://doi.org/10.1016/S1474-4422(25)00049-6',
             'SELECT': 'https://doi.org/10.1056/NEJMoa2305049',
-            'CHANCE-2': 'https://doi.org/10.1056/NEJMoa2104816',
+            'CHANCE-2': 'https://doi.org/10.1056/NEJMoa2111749',
             'CONVINCE': 'https://doi.org/10.1016/S0140-6736(24)00663-8',
             'ESCAPE-MeVO': 'https://doi.org/10.1056/NEJMoa2411668',
             'SVIN Large-Core EVT 2025': 'https://www.ahajournals.org/doi/10.1161/SVIN.124.001581',
@@ -3342,7 +3345,7 @@ Clinician Name`;
           const GUIDELINE_CLASS_COLORS = {
             I: 'bg-ok-600 text-white',
             IIa: 'bg-cobalt-500 text-white',
-            IIb: 'bg-warn-500 text-white',
+            IIb: 'bg-warn-700 text-white',
             III: 'bg-crit-600 text-white',
             Statement: 'bg-slate-500 text-white'
           };
@@ -7507,7 +7510,7 @@ Clinician Name`;
 
               // Escape — close one layer at a time
               if (key === 'Escape') {
-                if (paletteOpen) { setPaletteOpen(false); return; }
+                if (paletteOpen) { closeCommandPalette(); return; }
                 if (settingsMenuOpen) { setSettingsMenuOpen(false); return; }
                 if (searchOpen) { setSearchOpen(false); return; }
                 if (confirmConfig) { handleConfirmClose(null); return; }
@@ -7835,12 +7838,33 @@ Clinician Name`;
           ], []);
 
           const openCommandPalette = () => {
+            // Capture the trigger (e.g. the ⌘K button) so focus can be
+            // restored on dismiss-without-navigating (WCAG 2.4.3).
+            paletteReturnFocusRef.current =
+              (document.activeElement && document.activeElement !== document.body)
+                ? document.activeElement
+                : null;
             setPaletteQuery('');
             setPaletteActiveIndex(0);
             setPaletteOpen(true);
           };
+          // Close the palette WITHOUT running a command — restore focus to the
+          // element that opened it (Esc, backdrop click, close button).
+          const closeCommandPalette = () => {
+            setPaletteOpen(false);
+            setPaletteQuery('');
+            const el = paletteReturnFocusRef.current;
+            paletteReturnFocusRef.current = null;
+            if (el && typeof el.focus === 'function' && document.contains(el)) {
+              // Defer so the modal unmounts before we move focus back.
+              requestAnimationFrame(() => { try { el.focus(); } catch (_) {} });
+            }
+          };
           const runPaletteCommand = (cmd) => {
             if (!cmd) return;
+            // Navigating away — focus moves to the destination, so don't
+            // restore focus to the trigger. Just clear the captured element.
+            paletteReturnFocusRef.current = null;
             setPaletteOpen(false);
             setPaletteQuery('');
             // Defer navigation so the modal unmounts and focus restoration is clean.
@@ -8891,7 +8915,7 @@ Clinician Name`;
           };
 
           // Generate telestroke documentation note
-          const generateTelestrokeNote = () => {
+          const generateTelestrokeNoteBody = () => {
             try {
             // Convert Date to local ISO string for datetime-local inputs (avoids UTC offset bug)
             const toLocalISO = (d) => {
@@ -11836,6 +11860,17 @@ Clinician Name`;
               console.error('Error generating note:', err);
               return `[Error generating note: ${err.message}. Please try again or report this issue.]`;
             }
+          };
+          // D3 — on the public github.io demo, the COPIED note must carry a
+          // synthetic-demo disclaimer (matching TrialScreener/EligibilityTables).
+          // Local/institutional builds emit the clinical note unchanged.
+          const DEMO_NOTE_DISCLAIMER = 'SYNTHETIC EDUCATIONAL DEMO — NOT A REAL CLINICAL NOTE. NO PHI.';
+          const generateTelestrokeNote = () => {
+            const note = generateTelestrokeNoteBody();
+            if (PUBLIC_DEMO_MODE && note && !note.startsWith(DEMO_NOTE_DISCLAIMER)) {
+              return `${DEMO_NOTE_DISCLAIMER}\n${note}`;
+            }
+            return note;
           };
           generateNoteRef.current = generateTelestrokeNote;
           copyToClipboardRef.current = copyToClipboard;
@@ -16323,7 +16358,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       {!searchQuery && (
                         <kbd
                           aria-hidden="true"
-                          className="hidden sm:inline-flex items-center absolute right-2 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[11px] font-mono text-slate-500 bg-slate-100 border border-slate-300 rounded"
+                          className="hidden sm:inline-flex items-center absolute right-2 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[11px] font-mono text-slate-600 bg-slate-100 border border-slate-300 rounded"
                         >
                           ⌘K
                         </kbd>
@@ -16456,7 +16491,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       >
                         <i aria-hidden="true" data-lucide="search" className="w-4 h-4"></i>
                         <span className="hidden sm:inline">Search</span>
-                        <kbd aria-hidden="true" className="hidden sm:inline-flex items-center px-1 py-0.5 text-2xs font-mono text-slate-500 bg-slate-100 border border-slate-300 rounded">⌘K</kbd>
+                        <kbd aria-hidden="true" className="hidden sm:inline-flex items-center px-1 py-0.5 text-2xs font-mono text-slate-600 bg-slate-100 border border-slate-300 rounded">⌘K</kbd>
                       </button>
                       <details ref={resourcesDetailsRef} className="relative">
                         <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700">
@@ -16501,7 +16536,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <button
                           id="settings-menu-trigger"
                           onClick={() => setSettingsMenuOpen((prev) => !prev)}
-                          className="flex items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-600"
+                          className="flex items-center gap-1.5 px-3 py-2.5 border border-line rounded-lg hover:bg-paper-2 transition-colors text-sm font-medium text-ink-2"
                           aria-expanded={settingsMenuOpen}
                           aria-haspopup="true"
                           aria-controls={settingsMenuOpen ? 'settings-menu' : undefined}
@@ -16513,14 +16548,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {settingsMenuOpen && (
                           <>
                             <div className="fixed inset-0 z-50" onClick={() => setSettingsMenuOpen(false)} role="presentation" aria-hidden="true"></div>
-                            <div id="settings-menu" role="menu" aria-labelledby="settings-menu-trigger" className="absolute right-0 top-12 w-56 max-w-[calc(100vw-2rem)] bg-white border border-line rounded-md  z-50 py-1 overflow-hidden">
+                            <div id="settings-menu" role="menu" aria-labelledby="settings-menu-trigger" className="absolute right-0 top-12 w-56 max-w-[calc(100vw-2rem)] bg-card border border-line rounded-md shadow-pop z-50 py-1 overflow-hidden">
                               {showDocumentActions && (
                                 <button
                                   role="menuitem"
                                   onClick={() => { exportToPDF(); setSettingsMenuOpen(false); }}
-                                  className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
+                                  className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-paper-2 text-sm text-ink transition-colors"
                                 >
-                                  <i aria-hidden="true" data-lucide="download" className="w-4 h-4 text-slate-500"></i>
+                                  <i aria-hidden="true" data-lucide="download" className="w-4 h-4 text-mute"></i>
                                   Export to PDF
                                 </button>
                               )}
@@ -16528,7 +16563,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <button
                                   role="menuitem"
                                   onClick={() => { exportEncounterJSON(); setSettingsMenuOpen(false); }}
-                                  className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
+                                  className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-paper-2 text-sm text-ink transition-colors"
                                 >
                                                                     Export as JSON
                                 </button>
@@ -16537,39 +16572,39 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <button
                                   role="menuitem"
                                   onClick={() => { handleShare(); setSettingsMenuOpen(false); }}
-                                  className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
+                                  className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-paper-2 text-sm text-ink transition-colors"
                                 >
                                                                     Share
                                 </button>
                               )}
-                              <div className="border-t border-slate-100 my-1"></div>
+                              <div className="border-t border-line my-1"></div>
                               {encounterHistory.length > 0 && (
                                 <button
                                   role="menuitem"
                                   onClick={() => { setSettingsMenuOpen(false); scrollToSection('encounter-history-section'); }}
-                                  className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
+                                  className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-paper-2 text-sm text-ink transition-colors"
                                 >
                                                                     Recent Encounters ({encounterHistory.length})
                                 </button>
                               )}
-                              <div className="border-t border-slate-100 my-1" role="separator"></div>
+                              <div className="border-t border-line my-1" role="separator"></div>
                               <button
                                 role="menuitemcheckbox"
                                 aria-checked={darkMode}
                                 onClick={() => { setDarkMode(prev => !prev); }}
-                                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-sm text-slate-700 transition-colors"
+                                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-paper-2 text-sm text-ink transition-colors"
                               >
-                                <i aria-hidden="true" data-lucide={darkMode ? 'sun' : 'moon'} className="w-4 h-4 text-slate-500"></i>
+                                <i aria-hidden="true" data-lucide={darkMode ? 'sun' : 'moon'} className="w-4 h-4 text-mute"></i>
                                 <span className="flex-1 text-left">{darkMode ? 'Light mode' : 'Dark mode'}</span>
                                 <span className={`ml-auto inline-flex h-5 w-9 items-center rounded-full transition-colors ${darkMode ? 'bg-cobalt-600' : 'bg-slate-300'}`}>
                                   <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${darkMode ? 'translate-x-4' : 'translate-x-0.5'}`}></span>
                                 </span>
                               </button>
-                              <div className="border-t border-slate-100 my-1" role="separator"></div>
+                              <div className="border-t border-line my-1" role="separator"></div>
                               <button
                                 role="menuitem"
                                 onClick={() => { handleClearLocalData(); setSettingsMenuOpen(false); }}
-                                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-crit-50 text-sm text-crit-600 transition-colors"
+                                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-crit-50 dark:hover:bg-crit-950 text-sm text-crit-600 dark:text-crit-400 transition-colors"
                               >
                                 <i aria-hidden="true" data-lucide="trash-2" className="w-4 h-4"></i>
                                 Clear all data
@@ -17796,9 +17831,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label htmlFor="input-weight" className="block text-xs font-medium text-slate-600">Weight</label>
                                 <div className="flex bg-slate-100 rounded-md p-0.5">
                                   <button type="button" onClick={() => setWeightUnit('kg')} aria-pressed={weightUnit === 'kg'} aria-label="Weight in kilograms"
-                                    className={'px-2.5 py-1 text-sm rounded ' + (weightUnit === 'kg' ? 'bg-white  font-semibold text-slate-900' : 'text-slate-500')}>kg</button>
+                                    className={'px-2.5 py-1 text-sm rounded ' + (weightUnit === 'kg' ? 'bg-white  font-semibold text-slate-900' : 'text-slate-600')}>kg</button>
                                   <button type="button" onClick={() => setWeightUnit('lbs')} aria-pressed={weightUnit === 'lbs'} aria-label="Weight in pounds"
-                                    className={'px-2.5 py-1 text-sm rounded ' + (weightUnit === 'lbs' ? 'bg-white  font-semibold text-slate-900' : 'text-slate-500')}>lbs</button>
+                                    className={'px-2.5 py-1 text-sm rounded ' + (weightUnit === 'lbs' ? 'bg-white  font-semibold text-slate-900' : 'text-slate-600')}>lbs</button>
                                 </div>
                               </div>
                               <input
@@ -27614,7 +27649,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </button>
                             </div>
                             {railNotePreview ? (
-                              <pre className="text-2xs leading-snug text-ink-2 whitespace-pre-wrap break-words font-mono max-h-48 overflow-y-auto bg-paper-2 border border-line rounded-md p-2">{railNotePreview.length > 1400 ? railNotePreview.slice(0, 1400) + '\n…' : railNotePreview}</pre>
+                              <pre tabIndex={0} aria-label="Live clinical note preview" className="text-2xs leading-snug text-ink-2 whitespace-pre-wrap break-words font-mono max-h-48 overflow-y-auto bg-paper-2 border border-line rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-cobalt-500">{railNotePreview.length > 1400 ? railNotePreview.slice(0, 1400) + '\n…' : railNotePreview}</pre>
                             ) : (
                               <p className="text-xs text-mute italic">Fill the encounter to build a live note.</p>
                             )}
@@ -29073,7 +29108,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             </div>
 
-                            <div className="flex flex-wrap gap-2 text-xs text-slate-500">
+                            <div className="flex flex-wrap gap-2 text-xs text-slate-600">
                               <span><span className="inline-block w-3 h-3 rounded-full bg-ok-600 align-middle mr-1"></span>Recommended</span>
                               <span><span className="inline-block w-3 h-3 rounded-full bg-ok-100 border border-ok-300 align-middle mr-1"></span>Reasonable</span>
                               <span><span className="inline-block w-3 h-3 rounded-full bg-warn-100 border border-warn-300 align-middle mr-1"></span>May be considered / Uncertain</span>
@@ -29108,8 +29143,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h4 className="text-sm font-semibold text-cobalt-800">Post-EVT BP Guardrail</h4>
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-2 text-sm">
                               <div>
-                                <label className="block text-xs text-slate-500 mb-1">Reperfusion status</label>
+                                <label htmlFor="postevt-reperfusion-status" className="block text-xs text-slate-500 mb-1">Reperfusion status</label>
                                 <select
+                                  id="postevt-reperfusion-status"
                                   value={(telestrokeNote.postEvtBP || {}).reperfusionStatus || ''}
                                   onChange={(e) => {
                                     const v = e.target.value;
@@ -29123,8 +29159,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </select>
                               </div>
                               <div>
-                                <label className="block text-xs text-slate-500 mb-1">Current BP</label>
+                                <label htmlFor="postevt-current-bp" className="block text-xs text-slate-500 mb-1">Current BP</label>
                                 <input
+                                  id="postevt-current-bp"
                                   type="text"
                                   value={telestrokeNote.bpPostEVT || ''}
                                   onChange={(e) => {
@@ -29136,8 +29173,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 />
                               </div>
                               <div>
-                                <label className="block text-xs text-slate-500 mb-1">Infusion agent</label>
+                                <label htmlFor="postevt-infusion-agent" className="block text-xs text-slate-500 mb-1">Infusion agent</label>
                                 <select
+                                  id="postevt-infusion-agent"
                                   value={(telestrokeNote.postEvtBP || {}).infusionAgent || ''}
                                   onChange={(e) => {
                                     const v = e.target.value;
@@ -29153,8 +29191,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </select>
                               </div>
                               <div>
-                                <label className="block text-xs text-slate-500 mb-1">Target strategy</label>
+                                <label htmlFor="postevt-target-strategy" className="block text-xs text-slate-500 mb-1">Target strategy</label>
                                 <select
+                                  id="postevt-target-strategy"
                                   value={(telestrokeNote.postEvtBP || {}).targetStrategy || ''}
                                   onChange={(e) => {
                                     const v = e.target.value;
@@ -29202,8 +29241,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
                             <div>
-                              <label className="block text-xs text-slate-500 mb-1">Occlusion</label>
+                              <label htmlFor="evt-occlusion" className="block text-xs text-slate-500 mb-1">Occlusion</label>
                               <select
+                                id="evt-occlusion"
                                 value={evtDecisionInputs.occlusion}
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, occlusion: e.target.value }))}
                                 className="w-full px-2 py-2 border border-line rounded-lg"
@@ -29215,8 +29255,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </select>
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-500 mb-1">Time window</label>
+                              <label htmlFor="evt-time-window" className="block text-xs text-slate-500 mb-1">Time window</label>
                               <select
+                                id="evt-time-window"
                                 value={evtDecisionInputs.timeWindow}
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, timeWindow: e.target.value }))}
                                 className="w-full px-2 py-2 border border-line rounded-lg"
@@ -29228,8 +29269,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </select>
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-500 mb-1">ASPECTS</label>
+                              <label htmlFor="evt-aspects" className="block text-xs text-slate-500 mb-1">ASPECTS</label>
                               <select
+                                id="evt-aspects"
                                 value={evtDecisionInputs.aspects}
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, aspects: e.target.value }))}
                                 className="w-full px-2 py-2 border border-line rounded-lg"
@@ -29240,8 +29282,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </select>
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-500 mb-1">Pre-stroke mRS</label>
+                              <label htmlFor="evt-prestroke-mrs" className="block text-xs text-slate-500 mb-1">Pre-stroke mRS</label>
                               <select
+                                id="evt-prestroke-mrs"
                                 value={evtDecisionInputs.mrs}
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, mrs: e.target.value }))}
                                 className="w-full px-2 py-2 border border-line rounded-lg"
@@ -29253,8 +29296,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </select>
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-500 mb-1">NIHSS (Basilar)</label>
+                              <label htmlFor="evt-nihss-basilar" className="block text-xs text-slate-500 mb-1">NIHSS (Basilar)</label>
                               <input
+                                id="evt-nihss-basilar"
                                 type="number"
                                 value={evtDecisionInputs.nihss}
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, nihss: e.target.value }))}
@@ -29263,8 +29307,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-500 mb-1">PC-ASPECTS (Basilar)</label>
+                              <label htmlFor="evt-pc-aspects-basilar" className="block text-xs text-slate-500 mb-1">PC-ASPECTS (Basilar)</label>
                               <select
+                                id="evt-pc-aspects-basilar"
                                 value={evtDecisionInputs.pcAspects}
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, pcAspects: e.target.value }))}
                                 className="w-full px-2 py-2 border border-line rounded-lg"
@@ -29274,8 +29319,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </select>
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-500 mb-1">CTP Core (mL)</label>
+                              <label htmlFor="evt-ctp-core" className="block text-xs text-slate-500 mb-1">CTP Core (mL)</label>
                               <input
+                                id="evt-ctp-core"
                                 type="number"
                                 min="0"
                                 max="500"
@@ -29286,8 +29332,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-500 mb-1">Mismatch ratio</label>
+                              <label htmlFor="evt-mismatch-ratio" className="block text-xs text-slate-500 mb-1">Mismatch ratio</label>
                               <input
+                                id="evt-mismatch-ratio"
                                 type="number"
                                 min="0"
                                 step="0.1"
@@ -29299,8 +29346,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-500 mb-1">Mismatch volume (mL)</label>
+                              <label htmlFor="evt-mismatch-volume" className="block text-xs text-slate-500 mb-1">Mismatch volume (mL)</label>
                               <input
+                                id="evt-mismatch-volume"
                                 type="number"
                                 min="-200"
                                 max="500"
@@ -29403,8 +29451,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-500 mb-1">Onset (LKW)</label>
+                              <label htmlFor="af-onset-lkw" className="block text-xs text-slate-500 mb-1">Onset (LKW)</label>
                               <input
+                                id="af-onset-lkw"
                                 type="text"
                                 value={`${lkwDateForWindow || ''} ${lkwTimeForWindow || ''}`.trim()}
                                 readOnly
@@ -29412,8 +29461,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div>
-                              <label className="block text-xs text-slate-500 mb-1">Protocol</label>
+                              <label htmlFor="af-doac-protocol" className="block text-xs text-slate-500 mb-1">Protocol</label>
                               <select
+                                id="af-doac-protocol"
                                 value={doacProtocol}
                                 onChange={(e) => setDoacProtocol(e.target.value)}
                                 className="w-full px-2 py-2 border border-line rounded-lg"
@@ -29449,17 +29499,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3 text-xs">
                                 <div className="bg-ok-50 p-2 rounded border border-ok-200 text-center">
                                   <p className="font-bold text-ok-700 uppercase">Minor</p>
-                                  <p className="text-slate-500">NIHSS &lt;8</p>
+                                  <p className="text-slate-600">NIHSS &lt;8</p>
                                   <p className="text-sm font-bold text-ok-800 mt-1">Within 48h</p>
                                 </div>
                                 <div className="bg-warn-50 p-2 rounded border border-warn-200 text-center">
                                   <p className="font-bold text-warn-700 uppercase">Moderate</p>
-                                  <p className="text-slate-500">NIHSS 8-15</p>
+                                  <p className="text-slate-600">NIHSS 8-15</p>
                                   <p className="text-sm font-bold text-warn-800 mt-1">Day 3-5</p>
                                 </div>
                                 <div className="bg-crit-50 p-2 rounded border border-crit-200 text-center">
                                   <p className="font-bold text-crit-700 uppercase">Severe</p>
-                                  <p className="text-slate-500">NIHSS &gt;15</p>
+                                  <p className="text-slate-600">NIHSS &gt;15</p>
                                   <p className="text-sm font-bold text-crit-800 mt-1">Day 6-14</p>
                                 </div>
                               </div>
@@ -29625,7 +29675,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <li>• Max: <strong>32 mg/hr</strong> (max 1000 mL/24h due to lipid load)</li>
                                   <li>• Onset: 2-4 min | Duration: 5-15 min after stopping</li>
                                 </ul>
-                                <p className="text-xs text-slate-500 mt-1">Advantage: ultra-short acting, no renal/hepatic adjustment needed. Contains soy/egg lecithin — check allergies.</p>
+                                <p className="text-xs text-slate-600 mt-1">Advantage: ultra-short acting, no renal/hepatic adjustment needed. Contains soy/egg lecithin — check allergies.</p>
                               </div>
 
                               <div className="bg-slate-50 border border-line rounded-lg p-3">
@@ -29670,8 +29720,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
                             <div>
-                              <label className="block text-xs text-slate-500 mb-1">Groin puncture time</label>
+                              <label htmlFor="evt-groin-puncture-time" className="block text-xs text-slate-500 mb-1">Groin puncture time</label>
                               <input
+                                id="evt-groin-puncture-time"
                                 type="time"
                                 value={telestrokeNote.punctureTime || ''}
                                 onChange={(e) => setTelestrokeNote(prev => ({ ...prev, punctureTime: e.target.value }))}
@@ -30195,7 +30246,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <li><strong className="text-crit-700">Fluctuating/waxing-waning deficits</strong> = basilar artery stenosis with flow-dependent ischemia — high risk of complete occlusion</li>
                                 </ul>
                               </div>
-                              <p className="text-xs text-slate-500 mt-2 italic">NIHSS underscores posterior circulation strokes. A "low NIHSS" does NOT exclude significant posterior fossa pathology.</p>
+                              <p className="text-xs text-slate-600 mt-2 italic">NIHSS underscores posterior circulation strokes. A "low NIHSS" does NOT exclude significant posterior fossa pathology.</p>
                             </div>
                           </div>
                         </div>
@@ -36069,7 +36120,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     className="fixed inset-0 z-[120] bg-black/40"
                     role="presentation"
                     aria-hidden="true"
-                    onClick={() => setPaletteOpen(false)}
+                    onClick={() => closeCommandPalette()}
                   ></div>
                   <div
                     className="fixed inset-x-0 top-0 sm:top-[8vh] z-[121] mx-auto w-full sm:max-w-xl px-0 sm:px-4"
@@ -36097,7 +36148,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           className="flex-1 min-w-0 bg-transparent text-sm text-ink placeholder:text-slate-500 focus:outline-none py-1.5"
                           onChange={(e) => { setPaletteQuery(e.target.value); setPaletteActiveIndex(0); }}
                           onKeyDown={(e) => {
-                            if (e.key === 'Escape') { e.preventDefault(); setPaletteOpen(false); return; }
+                            if (e.key === 'Escape') { e.preventDefault(); closeCommandPalette(); return; }
                             if (e.key === 'ArrowDown') { e.preventDefault(); setPaletteActiveIndex((i) => matches.length ? (i + 1) % matches.length : 0); return; }
                             if (e.key === 'ArrowUp') { e.preventDefault(); setPaletteActiveIndex((i) => matches.length ? (i <= 0 ? matches.length - 1 : i - 1) : 0); return; }
                             if (e.key === 'Home') { e.preventDefault(); setPaletteActiveIndex(0); return; }
@@ -36109,7 +36160,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <button
                           id="command-palette-close"
                           type="button"
-                          onClick={() => setPaletteOpen(false)}
+                          onClick={() => closeCommandPalette()}
                           className="p-1.5 rounded-md hover:bg-slate-100 min-h-[36px] min-w-[36px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-cobalt-500"
                           aria-label="Close command palette"
                         >

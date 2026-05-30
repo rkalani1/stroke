@@ -416,7 +416,7 @@ const SafePauseCard = ({ defaults = {} }) => {
         </label>
         <label><span className="block text-slate-600">BP at attestation</span><input type="text" value={st.bp} onChange={(e) => setSt({ ...st, bp: e.target.value })} placeholder="e.g. 178/96" className="w-full px-2 py-1 border rounded text-sm" /></label>
       </div>
-      <textarea readOnly value={text} rows={7} className="w-full px-2 py-1 border rounded text-[11px] font-mono bg-slate-50" />
+      <textarea readOnly aria-label="Safe Pause attestation text (read-only, copyable)" value={text} rows={7} className="w-full px-2 py-1 border rounded text-[11px] font-mono bg-slate-50" />
       <div className="flex gap-2 mt-1">
         <button type="button" onClick={() => { try { navigator.clipboard.writeText(text); } catch (_) {} }} className="px-2 py-1 bg-ok-600 hover:bg-ok-700 text-white text-xs rounded">Copy for Pulsara</button>
         <span className="text-[10px] text-slate-500 self-center">Attestation tag: <strong>{SAFE_PAUSE_ATTESTATION}</strong></span>
