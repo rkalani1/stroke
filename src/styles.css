@@ -337,7 +337,179 @@
     box-shadow: none !important;
   }
 
+  .v7-skin { background-image: none !important; }
+  .v7-skin::before { display: none !important; }
+
   @page {
     margin: 1.5cm;
   }
+}
+
+/* =====================================================================
+   v7 signature — "clinical precision instrument" SIGNATURE VISUALS
+   Faithful port of docs/design/prototype.html (Task 4). ADDITIVE only:
+   every rule is v7-prefixed (tailwind safelist /^v7-/) so nothing here
+   touches existing markup until a class is applied. Token names are
+   bridged via src/design/tokens.css (prototype --ok→--okc, --mono→
+   --mono-font, --display→--display-font, --sans→--sans-font,
+   --radius→--radius-card). All motion is gated behind
+   prefers-reduced-motion:no-preference; the repo also zeroes
+   --motion-scale + animation durations under reduce, so the static
+   fallbacks below are what render with reduced motion.
+   ===================================================================== */
+@layer components {
+  /* ---- body atmospherics (opt-in via .v7-skin on a root wrapper) ----
+     42px graph-paper grid + fixed teal corner glow. The wrapper is
+     positioned so real content (z-index:1) sits above the fixed glow. */
+  .v7-skin {
+    position: relative;
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--line) 42%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--line) 42%, transparent) 1px, transparent 1px);
+    background-size: 42px 42px;
+    background-position: -1px -1px;
+  }
+  .v7-skin::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background: radial-gradient(120% 80% at 100% 0%, color-mix(in srgb, var(--teal) 8%, transparent), transparent 60%);
+  }
+  /* position:relative (no z-index) keeps normal-flow content above z-index:-1 pseudo
+     without creating a new stacking context that would cap modal/toast z-indexes */
+  .v7-content { position: relative; }
+
+  /* ---- freshness pulse ---- */
+  .v7-pulse {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--okc);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--okc) 60%, transparent);
+  }
+  .v7-fresh .v7-pulse { width: 6px; height: 6px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .v7-pulse { animation: v7pulse 2.4s var(--ease) infinite; }
+    @keyframes v7pulse {
+      0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--okc) 55%, transparent); }
+      70%  { box-shadow: 0 0 0 9px transparent; }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+  }
+
+  /* ---- reveal (fade-up) ---- */
+  @media (prefers-reduced-motion: no-preference) {
+    .v7-reveal { opacity: 0; transform: translateY(12px); animation: v7rise .6s var(--ease) forwards; }
+    @keyframes v7rise { to { opacity: 1; transform: none; } }
+  }
+
+  /* ---- cards: entry/study left-stripe + hover lift ---- */
+  .v7-card, .v7-study {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    padding: 1.2rem 1.35rem;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .v7-card::before, .v7-study::before {
+    content: "";
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--teal);
+  }
+  /* entry default stripe is hover-revealed; study stripe is always on */
+  .v7-card::before { opacity: 0; }
+  .v7-card.t-acute::before, .v7-card.topic-acute::before,
+  .v7-study.t-acute::before, .v7-study.topic-acute::before { background: var(--coral); }
+  .v7-card.t-prevent::before, .v7-card.topic-prevent::before,
+  .v7-study.t-prevent::before, .v7-study.topic-prevent::before { background: var(--teal); }
+  .v7-card.t-ich::before, .v7-card.topic-ich::before,
+  .v7-study.t-ich::before, .v7-study.topic-ich::before { background: var(--gold); }
+  .v7-card.t-workflow::before, .v7-study.t-workflow::before { background: var(--ink-2); }
+  @media (prefers-reduced-motion: no-preference) {
+    .v7-card, .v7-study {
+      transition: transform .18s var(--ease), box-shadow .18s var(--ease), border-color .18s var(--ease);
+    }
+    .v7-card::before { transition: opacity .18s; }
+    .v7-card:hover, .v7-study:hover {
+      transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--line-2);
+    }
+    .v7-card:hover::before { opacity: 1; }
+  }
+
+  /* ---- chips / tags / badges ---- */
+  .v7-chip {
+    font-family: var(--mono-font); font-size: .66rem; font-weight: 600;
+    letter-spacing: .03em; text-transform: uppercase;
+    border: 1px solid var(--line-2); background: var(--panel); color: var(--ink-soft);
+    border-radius: 999px; padding: .32rem .7rem; cursor: pointer;
+    display: inline-flex; gap: .35rem; align-items: center;
+  }
+  .v7-chip:hover { border-color: var(--teal); color: var(--ink); }
+  .v7-chip .v7-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); }
+
+  .v7-tag {
+    font-family: var(--mono-font); font-size: .62rem; font-weight: 600;
+    letter-spacing: .04em; text-transform: uppercase;
+    border-radius: 999px; padding: .18rem .55rem;
+    border: 1px solid var(--line-2); color: var(--ink-soft);
+  }
+  .v7-tag.topic { color: var(--teal); border-color: color-mix(in srgb, var(--teal) 40%, var(--line-2)); background: var(--teal-wash); }
+  .v7-tag.acute { color: var(--coral); border-color: color-mix(in srgb, var(--coral) 35%, var(--line-2)); background: var(--coral-wash); }
+  .v7-tag.new   { color: var(--okc); border-color: color-mix(in srgb, var(--okc) 35%, var(--line-2)); background: var(--ok-wash); }
+
+  .v7-stype {
+    font-family: var(--mono-font); font-size: .63rem; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    border: 1px solid var(--line-2); border-radius: 5px; padding: .18rem .45rem; color: var(--ink-soft);
+  }
+  .v7-stype.rct  { color: var(--teal); border-color: color-mix(in srgb, var(--teal) 40%, var(--line-2)); background: var(--teal-wash); }
+  .v7-stype.meta { color: var(--gold); border-color: color-mix(in srgb, var(--gold) 42%, var(--line-2)); background: var(--gold-wash); }
+  .v7-stype.obs  { color: var(--ink-2); background: var(--panel-2); }
+
+  .v7-cert {
+    font-family: var(--mono-font); font-size: .59rem; font-weight: 600;
+    border-radius: 999px; padding: .22rem .6rem;
+    border: 1px solid var(--line-2); color: var(--ink-soft);
+  }
+  .v7-cert.high     { color: var(--okc); background: var(--ok-wash); border-color: color-mix(in srgb, var(--okc) 30%, var(--line-2)); }
+  .v7-cert.moderate { color: var(--gold); background: var(--gold-wash); border-color: color-mix(in srgb, var(--gold) 30%, var(--line-2)); }
+
+  .v7-verify {
+    font-family: var(--mono-font); font-size: .64rem; font-weight: 600;
+    letter-spacing: .03em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: .3rem;
+    color: var(--teal); border: 1px solid var(--line-2); border-radius: 999px;
+    padding: .3rem .6rem; white-space: nowrap;
+  }
+  .v7-verify:hover { background: var(--teal-wash); }
+
+  /* ---- guardrail strip ---- */
+  .v7-guardrail {
+    display: flex; align-items: center; gap: .8rem; flex-wrap: wrap;
+    font-family: var(--mono-font); font-size: .7rem; color: var(--ink-soft);
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 11px; padding: .6rem .9rem; box-shadow: var(--shadow);
+  }
+  .v7-guardrail b { color: var(--ink); }
+  .v7-guardrail .v7-sep { color: var(--line-2); }
+
+  /* ---- masthead / nav (frosted sticky bar + mono nav items) ---- */
+  .v7-app {
+    position: sticky; top: 0; z-index: 30;
+    backdrop-filter: saturate(160%) blur(10px);
+    -webkit-backdrop-filter: saturate(160%) blur(10px);
+    background: color-mix(in srgb, var(--paper) 84%, transparent);
+    border-bottom: 1px solid var(--line);
+  }
+  .v7-nav-item {
+    font-family: var(--mono-font); font-size: .72rem; font-weight: 600;
+    letter-spacing: .005em; color: var(--ink-soft);
+    padding: .5rem .68rem; border-radius: 8px; cursor: pointer;
+    white-space: nowrap; border: 0; background: transparent;
+  }
+  .v7-nav-item:hover { background: var(--panel-2); color: var(--ink); }
+  .v7-nav-item.active { color: var(--ink); background: var(--panel-2); box-shadow: inset 0 0 0 1px var(--line); }
+  .v7-nav-item.active::before { content: "▸ "; color: var(--teal); }
 }
