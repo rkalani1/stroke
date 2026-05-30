@@ -6176,7 +6176,7 @@ Clinician Name`;
                             <span className="text-slate-700 dark:text-ink-2">{c.title}</span>
                             <span className="text-slate-500 dark:text-mute"> — {c.journal}{c.year ? ` ${c.year}` : ''}</span>
                             {citationLink(c) && (
-                              <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-cobalt-700 hover:underline dark:text-cobalt-300">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
+                              <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-cobalt-700 underline hover:underline dark:text-cobalt-300">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
                             )}
                           </li>
                         ))}
@@ -16665,13 +16665,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               )}
                               <div className="border-t border-line my-1" role="separator"></div>
                               {/* Theme: single 3-way control driven entirely by theme.js
-                                  (System / Light / Dark). Radiogroup semantics; the
-                                  selected segment uses bg-cobalt-600/text-white (6.75:1,
-                                  AA in both modes). theme.js owns DOM + storage. */}
+                                  (System / Light / Dark). Rendered as menuitemradio items
+                                  inside a role="group" so the control is a valid child of the
+                                  parent role="menu" (a radiogroup is NOT). The selected
+                                  segment uses bg-cobalt-600/text-white (6.75:1, AA in both
+                                  modes). theme.js owns DOM + storage. */}
                               <div className="px-4 py-2.5">
                                 <span id="theme-control-label" className="block text-xs font-medium text-mute mb-1.5">Theme</span>
                                 <div
-                                  role="radiogroup"
+                                  role="group"
+                                  aria-label="Theme"
                                   aria-labelledby="theme-control-label"
                                   className="inline-flex w-full rounded-md border border-line p-0.5 bg-card"
                                 >
@@ -16685,7 +16688,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <button
                                         key={opt.id}
                                         type="button"
-                                        role="radio"
+                                        role="menuitemradio"
                                         aria-checked={selected}
                                         onClick={() => { applyThemeChoice(opt.id); }}
                                         className={`flex-1 inline-flex items-center justify-center gap-1.5 min-h-[44px] px-2 text-sm font-semibold rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${selected ? 'bg-cobalt-600 text-white' : 'text-ink hover:bg-paper-2'}`}
@@ -16924,7 +16927,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 (specificity 0,1,3) otherwise overrides plain lg:hidden/
                                 lg:inline and renders BOTH spans. */}
                             <span className="whitespace-nowrap leading-none truncate lg:!hidden" aria-hidden="true">{tab.short}</span>
-                            <span className="whitespace-nowrap leading-none truncate hidden lg:!inline-flex" aria-hidden="true">{tab.name}</span>
+                            {/* V2 — at lg+ the nav is a 248px vertical sidebar. The long
+                                canonical name ("Institutional Protocols & Algorithms",
+                                ~265px) clipped under truncate; allow it to wrap to 2 lines
+                                instead of dropping "Institutional". The `!` display wins
+                                over index.html's `.app-shell > .app-nav .tab-pill span
+                                { display:inline-flex }` (0,1,3, non-important); whitespace-
+                                normal + 2-line clamp + snug leading keeps the row tidy. */}
+                            <span className="leading-snug whitespace-normal break-words [-webkit-line-clamp:2] [-webkit-box-orient:vertical] overflow-hidden hidden lg:![display:-webkit-box]" aria-hidden="true">{tab.name}</span>
                           </>
                         ) : (
                           <span className="whitespace-nowrap leading-none truncate" aria-hidden="true">{tab.name}</span>
@@ -18909,7 +18919,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </ul>
                                   </div>
                                 </div>
-                                <p className="text-xs text-ok-600 mt-2 italic dark:text-ok-300">AcT (Lancet 2022, PMID: 35779579). TRACE-2 (NEJM 2023, PMID: 37043691). ORIGINAL (JAMA 2024, PMID: 38710025). ESO 2023 TNK Recommendation.</p>
+                                <p className="text-xs text-ok-600 mt-2 italic dark:text-ok-300">AcT (Lancet 2022, PMID: 35779553). TRACE-2 (Lancet 2023, PMID: 36774935). ORIGINAL (JAMA 2024, PMID: 39264623). ESO 2023 TNK Recommendation.</p>
                               </div>
                             )}
 
@@ -22004,7 +22014,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                 {rec.caveats && (
                                                   <p className="text-xs text-warn-700 mt-1 italic dark:text-warn-300">{rec.caveats}</p>
                                                 )}
-                                                <p className="text-xs text-slate-500 mt-1 dark:text-mute">
+                                                {/* C3-3 — guideline caption on the cobalt-50/50 (teal) wash rec card;
+                                                    slate-500 on that wash is 4.42:1 (fails AA). slate-600 clears 4.5:1
+                                                    on the wash and still passes on white. */}
+                                                <p className="text-xs text-slate-600 mt-1 dark:text-mute">
                                                   {rec.guideline}
                                                   {(() => {
                                                     const url = rec.sourceUrl || getGuidelineUrl(rec.guideline);
@@ -22060,7 +22073,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                                   <li key={c.id}>
                                                                     {c.title} ({c.journal}{c.year ? ` ${c.year}` : ''})
                                                                     {citationLink(c) && (
-                                                                      <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-cobalt-700 hover:underline dark:text-cobalt-300">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
+                                                                      <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-cobalt-700 underline hover:underline dark:text-cobalt-300">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
                                                                     )}
                                                                   </li>
                                                                 ))}
@@ -22149,9 +22162,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         <div className="flex items-center gap-2 min-w-0">
                                           <span className={'px-2 py-0.5 rounded text-xs font-bold whitespace-nowrap ' + statusBadge}>{statusLabel}</span>
                                           <span className="font-semibold truncate">{config.name}</span>
-                                          <span className="text-xs text-slate-500 hidden sm:inline dark:text-mute">({config.nct})</span>
+                                          <span className="text-xs text-slate-600 hidden sm:inline dark:text-mute">({config.nct})</span>
                                         </div>
-                                        <span className="text-xs text-slate-500 whitespace-nowrap ml-2 dark:text-mute">{metCriteria.length}/{trial.criteria.length} met</span>
+                                        <span className="text-xs text-slate-600 whitespace-nowrap ml-2 dark:text-mute">{metCriteria.length}/{trial.criteria.length} met</span>
                                       </summary>
                                       <div className="px-3 pb-3 space-y-2">
                                         <p className="text-xs text-slate-700 italic dark:text-ink-2">{config.quickDescription}</p>
@@ -24031,7 +24044,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </ul>
                                   </div>
                                 </div>
-                                <p className="text-xs text-slate-500 mt-2 italic dark:text-mute">CLOSE (NEJM 2017, PMID: 28902580). RESPECT (NEJM 2017, PMID: 28902590). REDUCE (JACC 2017, PMID: 28917503). AHA/ASA 2021 Secondary Prevention (PMID: 34024117). Class I, LOE A.</p>
+                                <p className="text-xs text-slate-500 mt-2 italic dark:text-mute">CLOSE (NEJM 2017, PMID: 28902593). RESPECT (NEJM 2017, PMID: 28902590). REDUCE (NEJM 2017, PMID: 28902580). AHA/ASA 2021 Secondary Prevention (PMID: 34024117). Class I, LOE A.</p>
                                 <p className="text-xs text-cobalt-600 mt-1 dark:text-cobalt-300">Record PFO findings &amp; PASCAL grade in Cardiac Workup &gt; PFO Evaluation above.</p>
                               </div>
 
@@ -29047,7 +29060,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                   <li key={c.id}>
                                                     {c.title} ({c.journal}{c.year ? ` ${c.year}` : ''})
                                                     {citationLink(c) ? (
-                                                      <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-cobalt-700 hover:underline dark:text-cobalt-300">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
+                                                      <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-cobalt-700 underline hover:underline dark:text-cobalt-300">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
                                                     ) : null}
                                                   </li>
                                                 ))}
@@ -30189,7 +30202,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </tr>
                                 </tbody>
                               </table>
-                              <p className="text-xs text-slate-500 mt-1 italic dark:text-mute">NNT values calculated from published primary/key-secondary outcomes; primary endpoints differed by trial (shift vs. dichotomized mRS). Large-core NNTs for mRS 0-2 are larger (less favorable) than standard-core NNTs — ~5-16 vs ~2.8-3.6 — but absolute benefit remains clinically meaningful. RESCUE-Japan LIMIT&apos;s primary endpoint was mRS 0-3 (NNT 5.5); its mRS 0-2 NNT of ~16 reflects the heavier-deficit population enrolled.</p>
+                              {/* C3-3 — this caption sits inside the cobalt-50/50 (teal) wash
+                                  table region; slate-500 on that wash is 4.07:1 (fails AA).
+                                  slate-600 clears 4.5:1 on the wash and still passes on white. */}
+                              <p className="text-xs text-slate-600 mt-1 italic dark:text-mute">NNT values calculated from published primary/key-secondary outcomes; primary endpoints differed by trial (shift vs. dichotomized mRS). Large-core NNTs for mRS 0-2 are larger (less favorable) than standard-core NNTs — ~5-16 vs ~2.8-3.6 — but absolute benefit remains clinically meaningful. RESCUE-Japan LIMIT&apos;s primary endpoint was mRS 0-3 (NNT 5.5); its mRS 0-2 NNT of ~16 reflects the heavier-deficit population enrolled.</p>
                               <div className="bg-warn-50 border border-warn-200 rounded p-2 mt-2 dark:bg-warn-950 dark:border-warn-800">
                                 <p className="text-xs text-warn-800 dark:text-warn-300"><strong>Goals-of-care counseling framing (evidence-based):</strong> &ldquo;For large-core stroke patients meeting trial criteria, EVT roughly doubles the chance of independent recovery (mRS 0-2) compared with medical management alone, but most patients still have moderate-to-severe disability or death regardless of treatment. Symptomatic hemorrhage risk is modestly higher with EVT in most trials (LASTE notably had ~10% sICH). Pre-stroke independence (mRS 0-1) is required by all trial protocols and is critical to replicated benefit.&rdquo;</p>
                               </div>
@@ -31253,7 +31269,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             </div>
                           </div>
-                          <p className="text-xs text-slate-500 mt-2 italic dark:text-mute">Saposnik G et al. Stroke 2024. AHA/ASA CVT Scientific Statement. ACTION-CVT: Yaghi S et al. JAMA Neurol 2022;79:1260-1269. PMID: 36315105.</p>
+                          <p className="text-xs text-slate-500 mt-2 italic dark:text-mute">Saposnik G et al. Stroke 2024. AHA/ASA CVT Scientific Statement. ACTION-CVT: Yaghi S et al. Stroke 2022;53:728-738. PMID: 35143325.</p>
                         </div>
 
                         {/* CVT Risk Factors */}
@@ -33873,7 +33889,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                 <li key={c.id}>
                                                   {c.title} ({c.journal}{c.year ? ` ${c.year}` : ''})
                                                   {citationLink(c) && (
-                                                    <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-cobalt-700 hover:underline dark:text-cobalt-300">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
+                                                    <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-cobalt-700 underline hover:underline dark:text-cobalt-300">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
                                                   )}
                                                 </li>
                                               ))}

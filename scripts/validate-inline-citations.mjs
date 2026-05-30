@@ -8,6 +8,14 @@
 //      TESLA + ARCADIA sharing 38319331). Reported as WARNING — guideline PMIDs
 //      legitimately appear in multiple discussion contexts, so the operator
 //      reviews flags rather than fail-closing CI.
+//   3) [opt-in: --check-identifiers] CONTENT cross-check: fetch each inline PMID's
+//      title from PubMed eSummary and warn when the footnote's stored trial
+//      label/acronym has no reasonable overlap with the real article title. This
+//      is the inline-prose analogue of validate-citations.mjs --check-identifiers
+//      (which guards citations.js). It catches a wrong-number transposition where
+//      a footnote points "AcT" at an unrelated liver-failure paper, etc. — the
+//      Cycle-3 inline-footnote defect class. WARNING only (never fail-closes the
+//      offline path); escalate with --strict if desired.
 //
 // Use sibling `validate-citations.mjs` for the markdown-table source-of-truth check
 // (formal PMID/DOI/NCT format + duplicate detection across rows). This script is the
@@ -15,7 +23,8 @@
 //
 // Output:
 //   - Hard errors (malformed PMIDs) → exit 1.
-//   - Warnings (suspected duplicates) → printed; exit 0.
+//   - Warnings (suspected duplicates, --check-identifiers title mismatches) →
+//     printed; exit 0. The DEFAULT (no-flag) invocation stays OFFLINE.
 // CI can run with `--strict` to escalate warnings to errors after triage.
 
 import fs from 'node:fs/promises';
@@ -25,6 +34,7 @@ import process from 'node:process';
 const repoRoot = process.cwd();
 const args = new Set(process.argv.slice(2));
 const strict = args.has('--strict');
+const checkIdentifiers = args.has('--check-identifiers');
 
 const FILE_PATTERNS = ['src', 'scripts', 'docs', 'tests'];
 const FILE_EXTENSIONS = new Set(['.js', '.jsx', '.mjs', '.ts', '.tsx', '.md']);
@@ -98,6 +108,274 @@ function extractBoundAcronyms(text, pmidIdx) {
   return [...acronyms];
 }
 
+// ── content cross-check (opt-in, --check-identifiers) ───────────────────────
+//
+// SCOPE: src/app.jsx only — the rendered cockpit evidence store, where footnotes
+// follow a consistent `ACRONYM (Journal Year, PMID: N)` / `Trial: Author et al.
+// Journal Year. PMID: N` shape. Other swept files (calculators*.js, docs/*.md)
+// use looser, multi-trial-per-clause prose that this lightweight extractor can't
+// disambiguate without false positives; they remain covered by the offline
+// malformed-PMID + duplicate-acronym checks, and the docs evidence table has its
+// own network guard in validate-citations.mjs --check-identifiers.
+//
+// Inline footnotes do NOT store the full article title; they store an
+// identifying TRIAL LABEL — a trial acronym (AcT, TRACE-2, ACTION-CVT) and/or an
+// author surname (Yaghi, Mas, Søndergaard). We cross-check each footnote PMID by
+// fetching the real PubMed title AND author list and warning when NONE of the
+// stored label tokens appears in either. A transposed PMID points at an unrelated
+// article whose title+authors share neither the trial acronym nor its authors —
+// exactly the Cycle-3 defect (AcT→liver-failure, ACTION-CVT→physics, etc.).
+// Legitimate trials whose acronym is absent from the title (e.g. SPARCL) still
+// match on the author surname, so this stays low-noise.
+
+const INLINE_ID_CHECK_FILE = `src${path.sep}app.jsx`;
+const NETWORK_TIMEOUT_MS = 15000;
+const NETWORK_RETRIES = 2;
+
+// Tokens that look like trial acronyms / author surnames but are journal or
+// boilerplate noise we must NOT treat as identifying content.
+const LABEL_STOPWORDS = new Set([
+  'NEJM', 'JAMA', 'LANCET', 'JACC', 'BMJ', 'STROKE', 'NEUROLOGY', 'CIRCULATION',
+  'AHA', 'ASA', 'ESO', 'ESC', 'AHA/ASA', 'PMID', 'DOI', 'NCT', 'LOE', 'COR',
+  'CLASS', 'ET', 'AL', 'VS', 'SCIENTIFIC', 'STATEMENT', 'GUIDELINE', 'SECONDARY',
+  'PREVENTION', 'RECOMMENDATION', 'STUDY', 'TRIAL', 'NEUROL'
+]);
+
+// Isolate the clause that OWNS a PMID, so we read this footnote's own trial
+// label without borrowing a neighbour's. Citations end at ")." or at the trial
+// separator ". " — but a bare "Vol;pp. PMID" tail must NOT be treated as a clause
+// boundary (that would strip the label), so we only cut on ". " when the text
+// after it is NOT just the "PMID" tail and the char before "." is not a digit
+// (i.e. not a volume/page/year boundary inside the same citation).
+function inlineFootnoteClause(text, pmidIdx, span = 180) {
+  let before = text.slice(Math.max(0, pmidIdx - span), pmidIdx);
+  // Drop any preceding "PMID: NNNN" belonging to an EARLIER citation in the same <p>.
+  before = before.split(/\s+PMID\s*[:.]?\s*\d{4,}/i).pop();
+  // Drop everything up to the JSX tag open (start of this <p>) if present.
+  const tagIdx = before.lastIndexOf('">');
+  if (tagIdx !== -1) before = before.slice(tagIdx + 2);
+  // Cut at the last trial-separating sentence boundary: a period preceded by a
+  // lowercase letter or ")" and followed by " " + capital. We must NOT split on
+  // citation-internal abbreviations — "et al." (author byline) and "vs." — which
+  // sit mid-citation between the trial label and its PMID, so exclude them via a
+  // negative lookbehind. "Vol;pp. PMID" is excluded because the char before "." is
+  // a digit (the lookbehind requires [a-z)]). This keeps the trial acronym/author
+  // attached while still cutting "...Scientific Statement. ACTION-CVT:".
+  const parts = before.split(/(?<![ .]al|[ .]vs)(?<=[a-z)])\.\s+(?=[A-Z])/);
+  before = parts.pop();
+  before = before.split(/\n\n/).pop().split(/\|/).pop();
+  return before;
+}
+
+function extractTrialLabelTokens(text, pmidIdx) {
+  const before = inlineFootnoteClause(text, pmidIdx);
+  const tokens = new Set();
+  // 1) Trial acronyms (ALL-CAPS, hyphen/digit-tolerant) reusing the shared filter.
+  let m;
+  const reAcr = new RegExp(ACRONYM_REGEX.source, 'g');
+  while ((m = reAcr.exec(before)) !== null) {
+    const tok = m[1];
+    if (LABEL_STOPWORDS.has(tok)) continue;
+    if (isCitationTargetAcronym(tok)) tokens.add(tok.toLowerCase());
+  }
+  // 2) Mixed-case trial acronyms like "AcT" that the all-caps regex misses, when
+  //    they immediately precede a parenthesised journal/year or a "(... PMID".
+  const reMixed = /\b([A-Z][A-Za-z0-9]*(?:-[A-Za-z0-9]+)*)\s*\(/g;
+  while ((m = reMixed.exec(before)) !== null) {
+    const tok = m[1];
+    if (LABEL_STOPWORDS.has(tok.toUpperCase())) continue;
+    if (tok.length >= 3 && /[A-Z]/.test(tok)) tokens.add(tok.toLowerCase());
+  }
+  // 3) Author surnames in "Surname X et al." / "Surname X." byline form.
+  const reAuthor = /\b([A-Z][a-zØøÅåÄäÖö'’-]{3,})\s+[A-Z](?:[A-Z]?)?\s+et\s+al\.?/g;
+  while ((m = reAuthor.exec(before)) !== null) {
+    if (!LABEL_STOPWORDS.has(m[1].toUpperCase())) tokens.add(m[1].toLowerCase());
+  }
+  return [...tokens];
+}
+
+// Map a footnote journal shorthand → canonical key so "NEJM" matches the
+// eSummary `source` "N Engl J Med", "JAMA Neurol" matches "JAMA Neurol", etc.
+// Returns null when no journal hint is present in the window.
+const JOURNAL_ALIASES = [
+  { key: 'nejm', re: /\bnejm\b|new england journal/ , src: /n engl j med|new england journal/ },
+  { key: 'lancet neurol', re: /\blancet neurol/, src: /lancet neurol/ },
+  { key: 'lancet', re: /\blancet\b/, src: /^lancet| lancet/ },
+  { key: 'jama neurol', re: /\bjama neurol/, src: /jama neurol/ },
+  { key: 'jama', re: /\bjama\b/, src: /^jama$|^jama / },
+  { key: 'jacc', re: /\bjacc\b/, src: /j am coll cardiol|jacc/ },
+  { key: 'stroke', re: /\bstroke\b/, src: /^stroke$/ },
+  { key: 'circulation', re: /\bcirculation\b/, src: /circulation/ },
+  { key: 'neurology', re: /\bneurology\b/, src: /^neurology$/ },
+  { key: 'bmj', re: /\bbmj\b/, src: /bmj|br med j/ }
+];
+
+function extractFootnoteJournal(text, pmidIdx) {
+  const clause = inlineFootnoteClause(text, pmidIdx).toLowerCase();
+  for (const j of JOURNAL_ALIASES) {
+    if (j.re.test(clause)) return j;
+  }
+  return null;
+}
+
+function journalMatches(journalHint, recordSource) {
+  if (!journalHint || !recordSource) return false;
+  return journalHint.src.test(recordSource);
+}
+
+// Normalize a PubMed title to a searchable lowercased string (keep hyphens so
+// "ACTION-CVT" survives; collapse the rest of the punctuation to spaces).
+function normalizeTitleForMatch(title) {
+  return ` ${String(title || '').toLowerCase().replace(/[^a-z0-9-]+/g, ' ').replace(/\s+/g, ' ').trim()} `;
+}
+
+function labelTokenInTitle(token, normalizedTitle) {
+  // Exact word match, or hyphen-insensitive (ACTION-CVT vs "action cvt").
+  if (normalizedTitle.includes(` ${token} `)) return true;
+  const collapsed = token.replace(/-/g, ' ');
+  if (collapsed !== token && normalizedTitle.includes(` ${collapsed} `)) return true;
+  const joined = token.replace(/-/g, '');
+  if (joined !== token && normalizedTitle.replace(/-/g, '').includes(joined)) return true;
+  return false;
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isHealthyStatus(status) {
+  return (status >= 200 && status < 400) || status === 401 || status === 403;
+}
+
+// Batch-fetch PubMed eSummary records (title + author surnames) for a set of
+// PMIDs (NCBI allows comma-joined ids). Returns a Map pmid -> { title, authors }.
+async function fetchPubmedRecords(pmids) {
+  if (pmids.length === 0) return { records: new Map(), error: null };
+  const url = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${pmids.join(',')}&retmode=json`;
+  let payload = null;
+  let lastFailure = null;
+  for (let attempt = 0; attempt <= NETWORK_RETRIES; attempt += 1) {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), NETWORK_TIMEOUT_MS);
+      let response;
+      try {
+        response = await fetch(url, {
+          method: 'GET',
+          redirect: 'follow',
+          headers: { 'user-agent': 'stroke-inline-citation-validator/1.0' },
+          signal: controller.signal
+        });
+      } finally {
+        clearTimeout(timer);
+      }
+      if (response.status === 429) {
+        lastFailure = `HTTP 429`;
+        await sleep(600 * (attempt + 1));
+        continue;
+      }
+      if (!isHealthyStatus(response.status)) {
+        lastFailure = `HTTP ${response.status}`;
+        break;
+      }
+      payload = await response.json();
+      break;
+    } catch (error) {
+      lastFailure = error?.message || String(error);
+      if (attempt < NETWORK_RETRIES) {
+        await sleep(600 * (attempt + 1));
+        continue;
+      }
+    }
+  }
+  if (!payload) return { records: new Map(), error: lastFailure || 'unknown error' };
+  const records = new Map();
+  for (const pmid of pmids) {
+    const item = payload?.result?.[pmid];
+    if (item && item.title) {
+      const authors = Array.isArray(item.authors)
+        ? item.authors.map((a) => String(a?.name || '').toLowerCase())
+        : [];
+      records.set(pmid, {
+        title: item.title,
+        authors,
+        source: String(item.source || item.fulljournalname || '').toLowerCase(),
+        year: String(item.pubdate || '').match(/\d{4}/)?.[0] || ''
+      });
+    }
+  }
+  return { records, error: null };
+}
+
+function truncate(text, max = 90) {
+  const value = String(text || '').trim();
+  return value.length <= max ? value : `${value.slice(0, max - 1)}…`;
+}
+
+function labelTokenInAuthors(token, authors) {
+  // Author surname match (token is lowercased). Authors come as "Surname IN".
+  return authors.some((a) => {
+    const surname = a.split(/\s+/)[0] || '';
+    return surname === token || surname.replace(/[^a-zø-ÿ]/g, '') === token;
+  });
+}
+
+// Content cross-check of the in-scope inline-PMID occurrences (src/app.jsx).
+// For each labelled occurrence, warn when NONE of the footnote's trial-label
+// tokens (acronym + author surname) appears in the PubMed title OR author list.
+// WARNING-only for mismatches; an unreachable endpoint or an unresolvable PMID is
+// an ERROR (a swept evidence PMID that PubMed cannot confirm is itself a defect).
+async function checkInlineIdentifiers(occurrences) {
+  const errors = [];
+  const warnings = [];
+  // Restrict to the rendered cockpit evidence store; only fetch those PMIDs.
+  const scoped = new Map();
+  for (const [pmid, occs] of occurrences) {
+    const inScope = occs.filter((o) => o.file === INLINE_ID_CHECK_FILE && (o.labels || []).length > 0);
+    if (inScope.length > 0) scoped.set(pmid, inScope);
+  }
+  const pmids = [...scoped.keys()];
+  if (pmids.length === 0) return { errors, warnings, checkedCount: 0 };
+
+  const { records, error } = await fetchPubmedRecords(pmids);
+  if (error) {
+    errors.push(`inline PMID eSummary batch fetch failed (${error})`);
+    return { errors, warnings, checkedCount: 0 };
+  }
+  let checkedCount = 0;
+  for (const pmid of pmids) {
+    const rec = records.get(pmid);
+    if (!rec) {
+      errors.push(`inline PMID ${pmid}: missing eSummary record (cannot verify)`);
+      continue;
+    }
+    const normTitle = normalizeTitleForMatch(rec.title);
+    for (const occ of scoped.get(pmid)) {
+      const labels = occ.labels;
+      checkedCount += 1;
+      // A footnote is corroborated if its trial acronym / author surname appears
+      // in the article's title or author list, OR the footnote's stated journal
+      // matches the article's journal. Trials whose acronym is absent from the
+      // title (e.g. REDUCE → "Patent Foramen Ovale Closure...") still pass via the
+      // journal cross-check; a transposed PMID matches on NONE of these.
+      const labelMatched = labels.some(
+        (t) => labelTokenInTitle(t, normTitle) || labelTokenInAuthors(t, rec.authors)
+      );
+      const journalMatched = journalMatches(occ.journalHint, rec.source);
+      if (!labelMatched && !journalMatched) {
+        warnings.push(
+          `inline PMID ${pmid} (${occ.file}:${occ.line}) content mismatch: ` +
+          `footnote label [${labels.join(', ')}]` +
+          `${occ.journalHint ? ` / journal '${occ.journalHint.key}'` : ''} matches neither ` +
+          `the PubMed title '${truncate(rec.title)}', its authors ` +
+          `[${rec.authors.slice(0, 3).join(', ')}], nor its journal '${rec.source}'`
+        );
+      }
+    }
+  }
+  return { errors, warnings, checkedCount };
+}
+
 async function main() {
   const errors = [];
   const warnings = [];
@@ -125,11 +403,15 @@ async function main() {
         const before = text.slice(0, m.index);
         const line = before.split('\n').length;
         const acronyms = extractBoundAcronyms(text, m.index);
+        const labels = checkIdentifiers ? extractTrialLabelTokens(text, m.index) : [];
+        const journalHint = checkIdentifiers ? extractFootnoteJournal(text, m.index) : null;
         if (!occurrences.has(pmid)) occurrences.set(pmid, []);
         occurrences.get(pmid).push({
           file: path.relative(repoRoot, file),
           line,
-          acronyms
+          acronyms,
+          labels,
+          journalHint
         });
       }
     }
@@ -155,6 +437,17 @@ async function main() {
     }
   }
 
+  // Opt-in network content cross-check (mirrors validate-citations.mjs
+  // --check-identifiers). Title mismatches are WARNINGS; an unreachable endpoint
+  // or a PMID PubMed cannot resolve is an ERROR (the swept PMID is unverifiable).
+  let inlineChecked = 0;
+  if (checkIdentifiers) {
+    const idResults = await checkInlineIdentifiers(occurrences);
+    errors.push(...idResults.errors);
+    warnings.push(...idResults.warnings);
+    inlineChecked = idResults.checkedCount;
+  }
+
   if (warnings.length > 0) {
     console.warn(`Inline citation drift warnings (${warnings.length}):`);
     warnings.forEach((w) => console.warn(`- ${w}`));
@@ -173,7 +466,10 @@ async function main() {
 
   const totalPmids = occurrences.size;
   const totalOccurrences = [...occurrences.values()].reduce((s, v) => s + v.length, 0);
-  console.log(`Inline citation validation passed: ${totalPmids} unique PMIDs across ${totalOccurrences} inline references; ${warnings.length} review warnings.`);
+  const idSuffix = checkIdentifiers
+    ? ` PubMed title cross-checked ${inlineChecked} labelled occurrence(s);`
+    : '';
+  console.log(`Inline citation validation passed: ${totalPmids} unique PMIDs across ${totalOccurrences} inline references;${idSuffix} ${warnings.length} review warnings.`);
 }
 
 main().catch((err) => {

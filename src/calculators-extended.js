@@ -116,6 +116,20 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
     return { regimen: 'single-antiplatelet', rationale: 'High hemorrhagic risk — DAPT not recommended.', duration: null, source: null };
   }
 
+  // V3 — empty/invalid input guard. With no usable severity input (NIHSS for
+  // ischemic stroke, or ABCD² for a TIA), the recommendation is undefined; do
+  // NOT assert a conclusion ("DAPT not indicated") from non-existent input.
+  // Show a neutral prompt instead. Once a valid NIHSS (or ABCD² for TIA) is
+  // entered, the branches below compute normally.
+  if (!Number.isFinite(n) && !Number.isFinite(ab)) {
+    return {
+      regimen: '—',
+      rationale: 'Enter NIHSS (or ABCD² for a TIA) to assess DAPT eligibility.',
+      duration: null,
+      source: null
+    };
+  }
+
   // THALES: ticagrelor+ASA for moderate stroke w/ atherosclerotic etiology OR very-high-risk TIA, within 24h.
   if (((isUpToModerate && isAtherosclerotic) || veryHighRisk) && inLegacyWindow) {
     return {
