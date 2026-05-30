@@ -360,7 +360,7 @@ export const DAPTDurationCalculator = ({ defaults = {} }) => {
 // =========================================================================
 export const PatientCensus = ({ activePatientId, onSelect, onNew, onChange }) => {
   return (
-    <div className="p-3 rounded border border-amber-300 bg-amber-50 text-amber-950" role="region" aria-label="Patient census disabled">
+    <div className="p-3 rounded border border-warn-300 bg-warn-50 text-warn-950" role="region" aria-label="Patient census disabled">
       <h3 className="font-semibold text-sm">Ward Census Disabled in Public Demo</h3>
       <p className="text-xs mt-1">
         Patient lists, MRN fragments, encounter snapshots, imports, and exports are disabled on the public GitHub Pages build.
