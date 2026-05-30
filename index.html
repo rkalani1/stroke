@@ -48,8 +48,8 @@
          render unblocked on first paint. Fallback inside <noscript> for non-JS environments. -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap"></noscript>
-    <link rel="preload" as="script" href="app.js?v=6.6.1">
-    <link rel="stylesheet" href="tailwind.css?v=6.6.1">
+    <link rel="preload" as="script" href="app.js?v=6.7.0">
+    <link rel="stylesheet" href="tailwind.css?v=6.7.0">
     <style>
         :root {
             color-scheme: light;
@@ -377,6 +377,14 @@
 
         * {
             box-sizing: border-box;
+        }
+
+        /* Reserve the full viewport for the app mount point BEFORE React paints,
+           so the static footer parses below the fold and the first contentful
+           paint does not shift the page in from an empty #root (CLS guard). */
+        #root {
+            min-height: 100vh;
+            min-height: 100dvh;
         }
 
         /* Ensure all content respects viewport width */
@@ -734,7 +742,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = '6.6.1'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
+            const APP_VERSION = '6.7.0'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
             const STORAGE_PREFIX = 'strokeApp:';
             const APP_DATA_KEY = 'stroke.appData.v2';
             const IS_PUBLIC_PAGES = /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -934,18 +942,26 @@
     <!-- Private institutional layer (local-only, gitignored).
          When private/institutional.js exists on disk it sets
          window.__INSTITUTIONAL_LOCAL__ before app.js loads.
-         A 404 here is intentional and harmless — the public build
-         has no such file. Do NOT commit private/institutional.js. -->
+         The public Pages build has no such file, so the loader is
+         gated off public hosts to avoid a 404 / console error
+         (mirrors the IS_PUBLIC_PAGES check above). On local/private
+         build hosts the script is injected and loaded as before.
+         Do NOT commit private/institutional.js. -->
     <script>
       (function () {
+        // Same github.io detection as IS_PUBLIC_PAGES (declared in the
+        // version-management IIFE above, out of scope here). Skip the
+        // fetch entirely on public Pages — nothing to load and no 404.
+        var isPublicPages = /(^|\.)github\.io$/i.test(window.location.hostname || '');
+        if (isPublicPages) return;
         var s = document.createElement('script');
         s.src = 'private/institutional.js';
-        s.onerror = function () { /* 404 expected on public build — no-op */ };
+        s.onerror = function () { /* absent on non-public builds — no-op safety net */ };
         // Insert synchronously before app.js so the global is set in time.
         document.currentScript.parentNode.insertBefore(s, document.currentScript);
       })();
     </script>
-    <script src="app.js?v=6.6.1" defer></script>
+    <script src="app.js?v=6.7.0" defer></script>
     <footer style="margin-top: 40px; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb;">
       <p>This is a synthetic public demo site for educational and reference purposes only. Not for clinical decision-making or real patient care.</p>
     </footer>

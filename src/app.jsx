@@ -16251,7 +16251,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               {PUBLIC_DEMO_MODE && (
                 <div className="bg-warn-50 border-b border-warn-300 text-warn-950 px-4 py-3 text-sm dark:bg-warn-950 dark:border-warn-800" role="note">
                   <strong>Educational synthetic demo only - not medical advice and not an official system.</strong>
-                  {' '}Do not enter PHI, patient identifiers, MRN fragments, real encounter details, confidential any organization data, ward census, or handoff content. Ward census, imports, exports, persistence, and patient-context URL handoff are disabled on public GitHub Pages.
+                  {' '}Do not enter PHI, patient identifiers, MRN fragments, real encounter details, any confidential organizational data, ward census, or handoff content. Ward census, imports, exports, persistence, and patient-context URL handoff are disabled on public GitHub Pages.
                 </div>
               )}
               {protocolModal && (
@@ -16296,7 +16296,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   descendants. Drop it at ≥768px (md) so the sticky header (U4)
                   can pin to the viewport; html/body already clip horizontal
                   overflow at the page level. */}
-              <div className="app-shell v7-content max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-hidden md:overflow-x-visible" role="main">
+              <div className="app-shell v7-content max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-hidden md:overflow-x-visible">
 
               {/* Offline Indicator */}
               {!isOnline && (
@@ -16885,14 +16885,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 }}>
                   {[
                     // v6.0-04: top tabs — labels only, no decorative icons. Icons signal state, not category.
-                    { id: 'home', name: 'Command Center' },
-                    { id: 'encounter', name: 'Encounter' },
-                    { id: 'protocols', name: 'Institutional Protocols & Algorithms' },
-                    { id: 'research', name: 'Research & Guidelines' },
-                    { id: 'trials', name: 'Trials' },
-                    { id: 'education', name: 'Education' }
+                    // `short` = compact pill label shown below lg where equal-width
+                    // flex-1 pills can't hold the canonical name without overprinting
+                    // (Cycle2 U2). Full canonical name stays as title/aria-label and
+                    // is shown at lg+; the section H1/title is unchanged elsewhere.
+                    { id: 'home', name: 'Command Center', short: 'Command' },
+                    { id: 'encounter', name: 'Encounter', short: 'Encounter' },
+                    { id: 'protocols', name: 'Institutional Protocols & Algorithms', short: 'Protocols' },
+                    { id: 'research', name: 'Research & Guidelines', short: 'Research' },
+                    { id: 'trials', name: 'Trials', short: 'Trials' },
+                    { id: 'education', name: 'Education', short: 'Education' }
                   ].map(tab => {
                     const isActive = activeTab === tab.id;
+                    const hasShort = tab.short && tab.short !== tab.name;
                     return (
                       <button
                         key={tab.id}
@@ -16900,13 +16905,30 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         onClick={() => {
                           navigateTo(tab.id);
                         }}
-                        className={`tab-pill flex-none sm:flex-1 min-w-[92px] sm:min-w-0 py-2 sm:py-2 px-1.5 sm:px-4 text-[12px] sm:text-sm flex items-center justify-center transition-all min-h-[44px] sm:min-h-0 ${isActive ? 'active' : 'inactive'}`}
+                        className={`tab-pill flex-none sm:flex-1 min-w-[92px] sm:min-w-0 py-2 sm:py-2 px-1.5 sm:px-4 text-[12px] sm:text-sm flex items-center justify-center transition-all min-h-[44px] sm:min-h-0 overflow-hidden ${isActive ? 'active' : 'inactive'}`}
                         role="tab"
                         aria-selected={isActive}
                         aria-controls={`tabpanel-${tab.id}`}
                         tabIndex={isActive ? 0 : -1}
+                        title={tab.name}
+                        aria-label={tab.name}
                       >
-                        <span className="whitespace-nowrap leading-none">{tab.name}</span>
+                        {hasShort ? (
+                          <>
+                            {/* Below lg: short label (horizontal equal-width pills can't
+                                hold the canonical name without overprint, Cycle2 U2). At
+                                lg+ the nav becomes a 248px vertical sidebar where the full
+                                name fits — show it there. The `!` important display
+                                variants are required because index.html's
+                                `.app-shell > .app-nav .tab-pill span { display:inline-flex }`
+                                (specificity 0,1,3) otherwise overrides plain lg:hidden/
+                                lg:inline and renders BOTH spans. */}
+                            <span className="whitespace-nowrap leading-none truncate lg:!hidden" aria-hidden="true">{tab.short}</span>
+                            <span className="whitespace-nowrap leading-none truncate hidden lg:!inline-flex" aria-hidden="true">{tab.name}</span>
+                          </>
+                        ) : (
+                          <span className="whitespace-nowrap leading-none truncate" aria-hidden="true">{tab.name}</span>
+                        )}
                       </button>
                     );
                   })}
@@ -17074,10 +17096,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* CONSOLIDATED ENCOUNTER TAB */}
                 {activeTab === 'encounter' && (
                   <ErrorBoundary>
-                  {/* U5 — Two-pane cockpit on ≥1024px (lg): form-left + sticky live-summary rail.
-                      Below lg this collapses to the original single column (display:block) and
-                      the rail (hidden lg:block) is suppressed, so phone/tablet are unchanged. */}
-                  <div key="encounter-tab" id="tabpanel-encounter" role="tabpanel" aria-labelledby="tab-encounter" className="lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-6 lg:items-start">
+                  {/* U5 — Two-pane cockpit on ≥1280px (xl): form-left + sticky live-summary rail.
+                      Cycle2 U3: gated to xl (was lg) so the 1024–1279 band — where the
+                      global sidebar grid also turns on — renders sidebar + a FULL-WIDTH
+                      Encounter form instead of a 3-column squeeze that starved the form to
+                      ~298px (clipped wizard tabs/date, wrapped "Phone Consult"). Below xl
+                      this collapses to the original single column (display:block) and the
+                      rail (hidden xl:block) is suppressed, so phone/tablet/laptop are unchanged. */}
+                  <div key="encounter-tab" id="tabpanel-encounter" role="tabpanel" aria-labelledby="tab-encounter" className="xl:grid xl:grid-cols-[minmax(0,1fr)_360px] xl:gap-6 xl:items-start">
                   {/* LEFT PANE — the existing Encounter form, untouched (keeps space-y-4 rhythm). */}
                   <div className="space-y-4 min-w-0">
 
@@ -17674,7 +17700,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                             <div className="min-w-0">
                               <p className="font-mono uppercase text-eyebrow text-mute mb-1">Step 01 · Capture</p>
-                              <h3 className="font-serif text-section text-ink">Telephone Consult</h3>
+                              <h2 className="font-serif text-section text-ink">Telephone Consult</h2>
                               {telestrokeNote.consultStartTime && (
                                 <p className="font-mono text-caption text-mute mt-1">Started <span className="tabular-nums">{telestrokeNote.consultStartTime}</span></p>
                               )}
@@ -17928,10 +17954,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Section 2: Patient Info + History */}
                         <div id="patient-info-section" className="bg-white border border-cobalt-200 rounded-md p-4 dark:bg-card dark:border-cobalt-700 ">
-                          <h4 className="text-md font-bold text-cobalt-900 mb-3 flex items-center gap-2 dark:text-cobalt-300">
+                          <h3 className="text-md font-bold text-cobalt-900 mb-3 flex items-center gap-2 dark:text-cobalt-300">
                             <i aria-hidden="true" data-lucide="user" className="w-4 h-4"></i>
                             Patient Info & History
-                          </h4>
+                          </h3>
 
                           {/* Demographics Row */}
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
@@ -18289,9 +18315,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Section 3: NIHSS */}
                         <div id="nihss-section" className="bg-white border border-crit-200 rounded-md p-4 dark:bg-card dark:border-crit-800 ">
                           <div className="flex items-center justify-between mb-3">
-                            <h4 className="text-md font-bold text-crit-900 flex items-center gap-2 dark:text-crit-300">
+                            <h3 className="text-md font-bold text-crit-900 flex items-center gap-2 dark:text-crit-300">
                                                             NIHSS Examination
-                            </h4>
+                            </h3>
                             <span className="text-2xl font-bold text-crit-600 dark:text-crit-300">Score: {nihssScore}</span>
                           </div>
 
@@ -18348,9 +18374,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Section 4: Vitals & Labs */}
                         <div id="vitals-section" className="bg-white border border-ok-200 rounded-md p-4 dark:bg-card dark:border-ok-800 ">
-                          <h4 className="text-md font-bold text-ok-900 mb-3 flex items-center gap-2 dark:text-ok-300">
+                          <h3 className="text-md font-bold text-ok-900 mb-3 flex items-center gap-2 dark:text-ok-300">
                                                         Vitals & Labs
-                          </h4>
+                          </h3>
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                             <div>
                               <label htmlFor="input-bp" className="block text-xs text-slate-600 mb-1 dark:text-ink-2">BP</label>
@@ -18500,10 +18526,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Section 5: Imaging */}
                         <div id="imaging-section" className="bg-white border border-cobalt-200 rounded-md p-4 dark:bg-card dark:border-cobalt-700 ">
-                          <h4 className="text-md font-bold text-cobalt-900 mb-3 flex items-center gap-2 dark:text-cobalt-300">
+                          <h3 className="text-md font-bold text-cobalt-900 mb-3 flex items-center gap-2 dark:text-cobalt-300">
                             <i aria-hidden="true" data-lucide="scan" className="w-4 h-4"></i>
                             Imaging Review
-                          </h4>
+                          </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div>
                               <label htmlFor="input-ct-results" className="block text-xs text-slate-600 mb-1 dark:text-ink-2">CT Head</label>
@@ -18720,9 +18746,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             Contains TNK/alteplase dosing, anticoagulation reversal,
                             and disposition controls; hidden from patient mode. */}
                         <div id="treatment-decision" ref={treatmentDecisionRef} className="clinician-only bg-white border border-line rounded-md p-4 dark:bg-card ">
-                          <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2 dark:text-ink">
+                          <h3 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2 dark:text-ink">
                                                         Diagnosis & Treatment Decision
-                          </h4>
+                          </h3>
                           <div className="space-y-3">
                             <div>
                               <label htmlFor="input-diagnosis" className="block text-sm font-medium text-slate-700 mb-1 dark:text-ink-2">Suspected Diagnosis</label>
@@ -18960,7 +18986,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* ICH Quick Management */}
                             {telestrokeNote.diagnosisCategory === 'ich' && (
                               <div className="bg-crit-50 border-2 border-crit-300 rounded-lg p-3 space-y-2 dark:bg-crit-950 dark:border-crit-800">
-                                <h5 className="text-sm font-bold text-crit-800 dark:text-crit-300">ICH Management</h5>
+                                <h4 className="text-sm font-bold text-crit-800 dark:text-crit-300">ICH Management</h4>
                                 <div className="grid grid-cols-2 gap-2">
                                   <label className="flex items-center gap-2 cursor-pointer text-sm">
                                     <input type="checkbox" checked={!!telestrokeNote.ichBPManaged}
@@ -19073,7 +19099,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* Stroke Mimic Decision Support */}
                             {telestrokeNote.diagnosis === 'Stroke Mimic' && (
                               <div className="bg-cobalt-50 border-2 border-cobalt-300 rounded-lg p-3 space-y-2 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h5 className="text-sm font-bold text-cobalt-800 dark:text-cobalt-300">Stroke Mimic — Differential Diagnosis</h5>
+                                <h4 className="text-sm font-bold text-cobalt-800 dark:text-cobalt-300">Stroke Mimic — Differential Diagnosis</h4>
                                 <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-slate-700 dark:text-ink-2">
                                   <div className="flex items-start gap-1"><span className="text-cobalt-500 font-bold">1.</span> Seizure / Todd's paralysis</div>
                                   <div className="flex items-start gap-1"><span className="text-cobalt-500 font-bold">2.</span> Hypoglycemia</div>
@@ -19170,7 +19196,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* Transfer Checklist */}
                             {(telestrokeNote.disposition === 'Transfer to CSC' || telestrokeNote.disposition === 'Transfer to PSC') && (
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 space-y-2 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h5 className="text-sm font-semibold text-cobalt-800 dark:text-cobalt-300">Transfer Checklist</h5>
+                                <h4 className="text-sm font-semibold text-cobalt-800 dark:text-cobalt-300">Transfer Checklist</h4>
                                 <div>
                                   <label htmlFor="input-transfer-facility" className="block text-xs text-slate-600 mb-0.5 dark:text-ink-2">Receiving Facility</label>
                                   <input id="input-transfer-facility" type="text" value={telestrokeNote.transferReceivingFacility || ''}
@@ -19221,7 +19247,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* TOAST Quick-Select */}
                             {telestrokeNote.diagnosisCategory === 'ischemic' && (
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h5 className="text-sm font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Stroke Etiology (TOAST)</h5>
+                                <h4 className="text-sm font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Stroke Etiology (TOAST)</h4>
                                 <div className="flex flex-wrap gap-1.5">
                                   {[
                                     { value: 'large-artery', label: 'Large Artery' },
@@ -19337,9 +19363,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             Auto-generated clinician note / recommendations free-text. */}
                         <div className="clinician-only bg-white border border-cobalt-200 rounded-md p-4 dark:bg-card dark:border-cobalt-700 ">
                           <div className="flex items-center justify-between mb-3">
-                            <h4 className="text-md font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
+                            <h3 className="text-md font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
                                                             <label htmlFor="input-recommendations">Recommendations</label>
-                            </h4>
+                            </h3>
                             <button
                               type="button"
                               onClick={() => {
@@ -19536,7 +19562,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Section 1: Patient Info */}
                         <div id="phone-patient-info-section" className="bg-white border border-cobalt-200 rounded-md p-4  hover: transition-shadow dark:bg-card dark:border-cobalt-700">
                           <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-lg font-bold text-cobalt-900 dark:text-cobalt-300">1. Patient Info</h3>
+                            <h2 className="text-lg font-bold text-cobalt-900 dark:text-cobalt-300">1. Patient Info</h2>
                             <i aria-hidden="true" data-lucide="user" className="w-5 h-5 text-cobalt-600 dark:text-cobalt-300"></i>
                           </div>
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -19653,7 +19679,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             Includes home meds + anticoagulation status entry. */}
                         <div className="clinician-only bg-white border border-cobalt-200 rounded-md p-4  hover: transition-shadow dark:bg-card dark:border-cobalt-700">
                           <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-lg font-bold text-cobalt-900 dark:text-cobalt-300">2. History & Medications</h3>
+                            <h2 className="text-lg font-bold text-cobalt-900 dark:text-cobalt-300">2. History & Medications</h2>
                                                       </div>
                           <div className="space-y-3">
                             <div>
@@ -19816,7 +19842,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Section 3: NIHSS Examination */}
                         <div id="nihss-section" className="bg-white border border-crit-200 rounded-md p-4  hover: transition-shadow dark:bg-card dark:border-crit-800">
                           <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-lg font-bold text-crit-900 dark:text-crit-300">3. NIHSS Examination</h3>
+                            <h2 className="text-lg font-bold text-crit-900 dark:text-crit-300">3. NIHSS Examination</h2>
                             <div className="flex items-center gap-2">
                               <span className="text-2xl font-bold text-crit-600 dark:text-crit-300">Score: {nihssScore}</span>
                                                           </div>
@@ -19922,7 +19948,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     }
                                   }}
                                 >
-                                  <h4 className="font-semibold text-sm mb-2">{item.name} {patientData[item.id] && <span className="text-ok-600 font-normal ml-1 dark:text-ok-300">({patientData[item.id].match(/\((\d+)\)/)?.[1] || '?'})</span>}</h4>
+                                  <h3 className="font-semibold text-sm mb-2">{item.name} {patientData[item.id] && <span className="text-ok-600 font-normal ml-1 dark:text-ok-300">({patientData[item.id].match(/\((\d+)\)/)?.[1] || '?'})</span>}</h3>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
                                     {item.options.map((option, optionIndex) => (
                                       <button key={optionIndex} type="button"
@@ -19956,7 +19982,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Section 4: Vitals & Labs */}
                         <div className="bg-white border border-ok-200 rounded-md p-4  hover: transition-shadow dark:bg-card dark:border-ok-800">
                           <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-lg font-bold text-ok-900 dark:text-ok-300">4. Vitals & Labs</h3>
+                            <h2 className="text-lg font-bold text-ok-900 dark:text-ok-300">4. Vitals & Labs</h2>
                                                       </div>
                           <div className="space-y-3">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -20190,7 +20216,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Section 5: Imaging Review */}
                         <div id="imaging-section" className="bg-white border-2 border-cobalt-300 rounded-lg p-4  hover: transition-shadow dark:bg-card dark:border-cobalt-700">
                           <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-lg font-bold text-cobalt-900 dark:text-cobalt-300">5. Imaging Review</h3>
+                            <h2 className="text-lg font-bold text-cobalt-900 dark:text-cobalt-300">5. Imaging Review</h2>
                             <i aria-hidden="true" data-lucide="image" className="w-5 h-5 text-cobalt-600 dark:text-cobalt-300"></i>
                           </div>
                           <div className="mb-3 rounded-lg border border-cobalt-200 bg-cobalt-50 px-3 py-2 text-xs text-cobalt-800 dark:border-cobalt-700 dark:bg-cobalt-900 dark:text-cobalt-300">
@@ -20200,7 +20226,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="space-y-3">
                             {/* Non-contrast Head CT */}
                             <div className="bg-slate-50 p-3 rounded border dark:bg-paper-2">
-                              <h4 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">Non-contrast Head CT</h4>
+                              <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">Non-contrast Head CT</h3>
                               <div className="grid grid-cols-2 gap-2 mb-2">
                                 <input
                                   type="date"
@@ -20348,7 +20374,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                             {/* CTA Head & Neck */}
                             <div className="bg-slate-50 p-3 rounded border dark:bg-paper-2">
-                              <h4 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">CTA Head & Neck</h4>
+                              <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">CTA Head & Neck</h3>
                               <div className="grid grid-cols-2 gap-2 mb-2">
                                 <input
                                   type="date"
@@ -20419,7 +20445,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                             {/* CT Perfusion */}
                             <div className="bg-slate-50 p-3 rounded border dark:bg-paper-2">
-                              <h4 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">CT Perfusion</h4>
+                              <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">CT Perfusion</h3>
                               <textarea
                                 aria-label="CT Perfusion results"
                                 value={telestrokeNote.ctpResults}
@@ -20431,7 +20457,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                             {/* Telemetry / EKG */}
                             <div className="bg-slate-50 p-3 rounded border dark:bg-paper-2">
-                              <h4 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">Telemetry / EKG</h4>
+                              <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">Telemetry / EKG</h3>
                               <input
                                 type="text"
                                 aria-label="Telemetry / EKG results"
@@ -20447,7 +20473,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Section 6: Treatment Decision */}
                         <div id="treatment-decision" ref={treatmentDecisionRef} className="bg-white border border-orange-200 rounded-md p-4  hover: transition-shadow dark:bg-card dark:border-orange-800">
                           <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-lg font-bold text-orange-900 dark:text-orange-300">6. Treatment Decision</h3>
+                            <h2 className="text-lg font-bold text-orange-900 dark:text-orange-300">6. Treatment Decision</h2>
                                                       </div>
 
                           {/* Auto Treatment Recommendation */}
@@ -20638,7 +20664,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                           <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
                             <div className="flex items-center justify-between mb-2">
-                              <h4 className="text-sm font-semibold text-slate-700 dark:text-ink-2">Decision Log</h4>
+                              <h3 className="text-sm font-semibold text-slate-700 dark:text-ink-2">Decision Log</h3>
                               <button
                                 type="button"
                                 onClick={async () => {
@@ -20914,7 +20940,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* ICH Pathway Checkboxes */}
                             {telestrokeNote.diagnosisCategory === 'ich' && (
                               <div className="bg-crit-50 border border-crit-300 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                <h4 className="text-sm font-bold text-crit-800 mb-2 uppercase tracking-wide dark:text-crit-300">ICH Pathway Checklist</h4>
+                                <h3 className="text-sm font-bold text-crit-800 mb-2 uppercase tracking-wide dark:text-crit-300">ICH Pathway Checklist</h3>
                                 <div className="space-y-2">
                                   {[
                                     { field: 'ichBPManaged', label: 'BP managed (SBP <140 target)', detail: 'Class IIa, INTERACT2; avoid <130' },
@@ -20946,7 +20972,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </summary>
                               <div className="p-4 space-y-3 text-sm">
                                 <div>
-                                  <h4 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Standard Window (&le;4.5h) — TNK 0.25 mg/kg IV bolus (max 25 mg):</h4>
+                                  <h3 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Standard Window (&le;4.5h) — TNK 0.25 mg/kg IV bolus (max 25 mg):</h3>
                                   <ul className="space-y-1 ml-4">
                                     <li>• Diagnosis of ischemic stroke causing measurable neurologic deficit</li>
                                     <li>• Age ≥18 years</li>
@@ -20968,7 +20994,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </label>
                                 </div>
                                 <div>
-                                  <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Extended Window (4.5-9h or wake-up) — mismatch imaging:</h4>
+                                  <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Extended Window (4.5-9h or wake-up) — mismatch imaging:</h3>
                                   <ul className="space-y-1 ml-4">
                                     <li>• IVT (TNK or alteplase) may be considered in 4.5-9h or wake-up stroke with mismatch imaging</li>
                                     <li>• Acceptable imaging: CT perfusion, MR perfusion, or DWI/FLAIR mismatch</li>
@@ -20978,7 +21004,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </ul>
                                 </div>
                                 <div>
-                                  <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">WAKE-UP Stroke:</h4>
+                                  <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">WAKE-UP Stroke:</h3>
                                   <ul className="space-y-1 ml-4">
                                     <li>• LKW unclear + NO LVO</li>
                                     <li>• MRI with DWI-FLAIR mismatch (DWI+, FLAIR-)</li>
@@ -21233,10 +21259,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       </button>
                                     </div>
                                     <div className="bg-crit-100 border border-crit-300 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                      <h4 className="font-bold text-crit-800 mb-3 flex items-center gap-2 dark:text-crit-300">
+                                      <h3 className="font-bold text-crit-800 mb-3 flex items-center gap-2 dark:text-crit-300">
                                         <span className="bg-crit-600 text-white px-2 py-0.5 rounded text-xs">ABSOLUTE</span>
                                         Contraindications - TNK is contraindicated if ANY checked
-                                      </h4>
+                                      </h3>
                                       <div className="space-y-2">
                                         {absoluteContraindications.map(item => {
                                           const isAutoDetected = autoDetected[item.id];
@@ -21255,10 +21281,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       </div>
                                     </div>
                                     <div className="bg-warn-50 border border-warn-300 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
-                                      <h4 className="font-bold text-warn-800 mb-3 flex items-center gap-2 dark:text-warn-300">
+                                      <h3 className="font-bold text-warn-800 mb-3 flex items-center gap-2 dark:text-warn-300">
                                         <span className="bg-warn-500 text-white px-2 py-0.5 rounded text-xs">RELATIVE</span>
                                         Weigh risks and benefits carefully
-                                      </h4>
+                                      </h3>
                                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                         {relativeContraindications.map(item => {
                                           const isAutoDetected = autoDetected[item.id];
@@ -21277,10 +21303,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       </div>
                                     </div>
                                     <div className="bg-cobalt-50 border border-cobalt-300 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                      <h4 className="font-bold text-cobalt-800 mb-3 flex items-center gap-2 dark:text-cobalt-300">
+                                      <h3 className="font-bold text-cobalt-800 mb-3 flex items-center gap-2 dark:text-cobalt-300">
                                         <span className="bg-cobalt-500 text-white px-2 py-0.5 rounded text-xs dark:bg-cobalt-700">CAUTIONARY</span>
                                         IVT benefit generally outweighs increased risk
-                                      </h4>
+                                      </h3>
                                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                         {cautionaryConditions.map(item => {
                                           const isAutoDetected = autoDetected[item.id];
@@ -21500,10 +21526,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* ========== EVT CONSENT COMMUNICATION KIT ========== */}
                             {telestrokeNote.evtRecommended && (
                               <div className="bg-orange-50 border border-orange-200 rounded-md p-4 space-y-3 dark:bg-orange-950 dark:border-orange-800">
-                                <h4 className="font-bold text-orange-900 flex items-center gap-2 dark:text-orange-300">
+                                <h3 className="font-bold text-orange-900 flex items-center gap-2 dark:text-orange-300">
                                   <i aria-hidden="true" data-lucide="message-circle" className="w-4 h-4"></i>
                                   EVT Consent Communication Kit
-                                </h4>
+                                </h3>
                                 <div className="bg-white border border-orange-200 rounded-lg p-3 text-sm text-slate-700 space-y-2 dark:bg-card dark:text-ink-2 dark:border-orange-800">
                                   <p>We recommend a procedure called <strong>mechanical thrombectomy</strong> (clot retrieval). A catheter is threaded from the groin artery up to the blocked blood vessel in the brain to physically remove the clot. This has been shown in multiple clinical trials to significantly improve outcomes — roughly <strong>1 in 3-4 patients</strong> treated with thrombectomy achieve functional independence who would not have otherwise.</p>
                                   <p>The main risks include bleeding in the brain (~5-6%), vessel perforation or dissection, and complications from anesthesia. In rare cases, the clot can move to a new location. Despite these risks, the potential benefit significantly outweighs the risks when thrombectomy is indicated.</p>
@@ -21573,10 +21599,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* ========== TRANSFER CONSENT COMMUNICATION KIT ========== */}
                             {telestrokeNote.transferAccepted && (
                               <div className="bg-sky-50 border-2 border-sky-300 rounded-lg p-4 space-y-3 dark:bg-sky-950 dark:border-sky-800">
-                                <h4 className="font-bold text-sky-900 flex items-center gap-2 dark:text-sky-300">
+                                <h3 className="font-bold text-sky-900 flex items-center gap-2 dark:text-sky-300">
                                   <i aria-hidden="true" data-lucide="ambulance" className="w-4 h-4"></i>
                                   Transfer Communication Kit
-                                </h4>
+                                </h3>
                                 <div className="bg-white border border-sky-200 rounded-lg p-3 text-sm text-slate-700 space-y-2 dark:bg-card dark:text-ink-2 dark:border-sky-800">
                                   <p>We recommend <strong>transferring to a comprehensive stroke center</strong> for a higher level of care. This facility can provide specialized treatments — such as clot-retrieval procedures (thrombectomy), neurosurgical intervention, or neurointensive care — that are not available here.</p>
                                   <p>Transfer is time-sensitive. The sooner the patient arrives at the receiving facility, the better the chances for a good outcome. During transport, the patient will be monitored and any treatments already started will continue.</p>
@@ -21613,9 +21639,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* ===== POST-THROMBOLYSIS MONITORING ===== */}
                             {telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime && (
                               <div className="bg-rose-50 border-2 border-rose-300 rounded-md p-4 space-y-3 dark:bg-rose-950 dark:border-rose-800">
-                                <h4 className="font-bold text-rose-900 flex items-center gap-2 dark:text-rose-300">
+                                <h3 className="font-bold text-rose-900 flex items-center gap-2 dark:text-rose-300">
                                                                     Post-Thrombolysis Monitoring
-                                </h4>
+                                </h3>
                                 <p className="text-xs text-rose-700 dark:text-rose-300">Monitor for complications. Neuro checks + BP q15min x 2h, then q30min x 6h, then q1h x 16h. Avoid anticoagulants/antiplatelets x 24h. Repeat CT at 24h or if clinical deterioration.</p>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                   {[
@@ -21674,9 +21700,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* ===== POST-EVT MONITORING ===== */}
                             {telestrokeNote.evtRecommended && (
                               <div className="bg-orange-50 border-2 border-orange-300 rounded-md p-4 space-y-3 dark:bg-orange-950 dark:border-orange-800">
-                                <h4 className="font-bold text-orange-900 flex items-center gap-2 dark:text-orange-300">
+                                <h3 className="font-bold text-orange-900 flex items-center gap-2 dark:text-orange-300">
                                                                     Post-EVT Monitoring & Orders
-                                </h4>
+                                </h3>
                                 <p className="text-xs text-orange-700 dark:text-orange-300">Post-thrombectomy monitoring checklist. BP target: SBP &lt;180/105, avoid SBP &lt;140 (Class III: Harm per BEST-II/ENCHANTED2). Neuro checks q15min x 2h, q30min x 6h, q1h thereafter.</p>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                   {[
@@ -21733,7 +21759,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <p className="text-xs text-cobalt-700 font-medium dark:text-cobalt-300">Prerequisite: Repeat NCHCT at 24h shows NO hemorrhagic transformation.</p>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                       <div className="bg-ok-50 border border-ok-200 rounded-lg p-2 dark:bg-ok-950 dark:border-ok-800">
-                                        <h4 className="font-bold text-ok-800 text-xs mb-1 dark:text-ok-300">No Stent Placed</h4>
+                                        <h3 className="font-bold text-ok-800 text-xs mb-1 dark:text-ok-300">No Stent Placed</h3>
                                         <ul className="space-y-0.5">
                                           <li>&#x2022; Day 1 (24h): ASA 325 mg</li>
                                           <li>&#x2022; Ongoing: ASA 81 mg daily</li>
@@ -21741,7 +21767,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         </ul>
                                       </div>
                                       <div className="bg-warn-50 border border-warn-200 rounded-lg p-2 dark:bg-warn-950 dark:border-warn-800">
-                                        <h4 className="font-bold text-warn-800 text-xs mb-1 dark:text-warn-300">Stent Placed</h4>
+                                        <h3 className="font-bold text-warn-800 text-xs mb-1 dark:text-warn-300">Stent Placed</h3>
                                         <ul className="space-y-0.5">
                                           <li>&#x2022; Day 1 (24h): ASA 325 mg + P2Y12i load</li>
                                           <li>&#x2022; Clopidogrel 600 mg or ticagrelor 180 mg</li>
@@ -21752,7 +21778,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                       <div className="bg-crit-50 border border-crit-200 rounded-lg p-2 dark:bg-crit-950 dark:border-crit-800">
-                                        <h4 className="font-bold text-crit-800 text-xs mb-1 dark:text-crit-300">If sICH on Repeat CT</h4>
+                                        <h3 className="font-bold text-crit-800 text-xs mb-1 dark:text-crit-300">If sICH on Repeat CT</h3>
                                         <ul className="space-y-0.5">
                                           <li>&#x2022; Hold ALL antithrombotics &ge;24-48h</li>
                                           <li>&#x2022; PH-1: delay restart 7-14 days</li>
@@ -21760,7 +21786,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         </ul>
                                       </div>
                                       <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-2 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                        <h4 className="font-bold text-cobalt-800 text-xs mb-1 dark:text-cobalt-300">TICI 0-2a (Failed/Partial)</h4>
+                                        <h3 className="font-bold text-cobalt-800 text-xs mb-1 dark:text-cobalt-300">TICI 0-2a (Failed/Partial)</h3>
                                         <ul className="space-y-0.5">
                                           <li>&#x2022; ASA 325 mg at 24h (standard)</li>
                                           <li>&#x2022; Consider IV heparin bridge if partial recanalization + re-occlusion risk</li>
@@ -21778,7 +21804,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                             {(telestrokeNote.diagnosisCategory === 'ischemic' || telestrokeNote.diagnosisCategory === 'tia') && (
                               <div className="bg-cobalt-50 border border-cobalt-300 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h4 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">2026 AIS Guideline Delta - Rapid Review</h4>
+                                <h3 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">2026 AIS Guideline Delta - Rapid Review</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-slate-700 dark:text-ink-2">
                                   <div className="bg-white border border-cobalt-200 rounded p-2 dark:bg-card dark:border-cobalt-700">
                                     <p><strong>Thrombolysis:</strong> TNK 0.25 mg/kg remains preferred thrombolytic strategy when eligible.</p>
@@ -21813,7 +21839,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </summary>
                               <div className="p-4 space-y-3 text-sm">
                                 <div>
-                                  <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Basilar Artery Occlusion:</h4>
+                                  <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Basilar Artery Occlusion:</h3>
                                   <ul className="space-y-1 ml-4">
                                     <li>• Last known well ≤24 hours</li>
                                     <li>• NIHSS score ≥10</li>
@@ -21821,7 +21847,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </ul>
                                 </div>
                                 <div>
-                                  <h4 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Anterior Circulation Large Vessel Occlusion:</h4>
+                                  <h3 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Anterior Circulation Large Vessel Occlusion:</h3>
                                   <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">AHA/ASA + SVIN 2025 large-core guidance (baseline mRS 0-1, age 18-80).</p>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
                                     <div className="bg-white p-2 rounded border dark:bg-card">
@@ -21842,7 +21868,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </div>
                                 </div>
                                 <div>
-                                  <h4 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">Medium Vessel Occlusion:</h4>
+                                  <h3 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">Medium Vessel Occlusion:</h3>
                                   <ul className="space-y-1 ml-4">
                                     <li>• Consider in select cases of proximal or dominant M2 segment MCA occlusion within ≤1cm of bifurcation in horizontal segment when there is evidence of salvageable tissue + last known well is ≤24 hours</li>
                                     <li>• Not recommended for M2-M4 MCA, ACA, and PCA occlusions</li>
@@ -21957,7 +21983,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="p-4 pt-0 space-y-4">
                                   {Object.entries(grouped).map(([category, catRecs]) => (
                                     <div key={category}>
-                                      <h4 className="text-sm font-bold text-cobalt-800 uppercase tracking-wide mb-2 border-b border-cobalt-100 pb-1 dark:text-cobalt-300">{category}</h4>
+                                      <h3 className="text-sm font-bold text-cobalt-800 uppercase tracking-wide mb-2 border-b border-cobalt-100 pb-1 dark:text-cobalt-300">{category}</h3>
                                       <div className="space-y-2">
                                         {catRecs.map(rec => (
                                           <div key={rec.id} className="bg-cobalt-50/50 dark:bg-cobalt-900/50 border border-cobalt-100 rounded-lg p-3">
@@ -22267,9 +22293,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {(telestrokeNote.diagnosisCategory === 'sah' || (telestrokeNote.diagnosis || '').toLowerCase().includes('sah') || (telestrokeNote.diagnosis || '').toLowerCase().includes('subarachnoid')) && (
                           <div id="sah-management-section" className="bg-white border border-cobalt-200 rounded-md p-4 dark:bg-card dark:border-cobalt-700 ">
                             <div className="flex items-center justify-between mb-3">
-                              <h3 className="text-lg font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
+                              <h2 className="text-lg font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
                                                                 SAH Management (2023 AHA/ASA)
-                              </h3>
+                              </h2>
                             </div>
 
                             <div className="space-y-3">
@@ -22640,9 +22666,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {(telestrokeNote.diagnosisCategory === 'cvt' || (telestrokeNote.diagnosis || '').toLowerCase().includes('cvt') || (telestrokeNote.diagnosis || '').toLowerCase().includes('venous thrombosis') || (telestrokeNote.diagnosis || '').toLowerCase().includes('cerebral venous')) && (
                           <div id="cvt-management-section" className="bg-white border-2 border-cobalt-300 rounded-lg p-4 dark:bg-card dark:border-cobalt-700 ">
                             <div className="flex items-center justify-between mb-3">
-                              <h3 className="text-lg font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
+                              <h2 className="text-lg font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
                                                                 CVT Management (2024 AHA)
-                              </h3>
+                              </h2>
                             </div>
 
                             <div className="space-y-3">
@@ -22765,9 +22791,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia' && (
                           <div className="bg-white border border-orange-200 rounded-md p-4 dark:bg-card dark:border-orange-800 ">
                             <div className="flex items-center justify-between mb-3">
-                              <h3 className="text-lg font-bold text-orange-900 flex items-center gap-2 dark:text-orange-300">
+                              <h2 className="text-lg font-bold text-orange-900 flex items-center gap-2 dark:text-orange-300">
                                                                 TIA Rapid Workup Checklist
-                              </h3>
+                              </h2>
                               <div className="flex items-center gap-2">
                                 <span className="text-xs text-orange-600 font-medium dark:text-orange-300">
                                   {Object.values(telestrokeNote.tiaWorkup || {}).filter(Boolean).length}/{Object.keys(telestrokeNote.tiaWorkup || {}).length} complete
@@ -22817,10 +22843,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {(getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' || getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia') && (
                           <div className="bg-white border-2 border-cobalt-300 rounded-lg p-4 dark:bg-card dark:border-cobalt-700 ">
                             <div className="flex items-center justify-between mb-3">
-                              <h3 className="text-lg font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
+                              <h2 className="text-lg font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
                                 <i aria-hidden="true" data-lucide="layers" className="w-5 h-5"></i>
                                 TOAST Etiologic Classification
-                              </h3>
+                              </h2>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                               {[
@@ -22846,10 +22872,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {(getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' || getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia' || telestrokeNote.toastClassification === 'cardioembolism' || telestrokeNote.toastClassification === 'cryptogenic') && telestrokeNote.diagnosis && (
                           <div className="bg-white border-2 border-pink-300 rounded-lg p-4 dark:bg-card dark:border-pink-800 ">
                             <div className="flex items-center justify-between mb-3">
-                              <h3 className="text-lg font-bold text-pink-900 flex items-center gap-2 dark:text-pink-300">
+                              <h2 className="text-lg font-bold text-pink-900 flex items-center gap-2 dark:text-pink-300">
                                 <i aria-hidden="true" data-lucide="heart" className="w-5 h-5"></i>
                                 Cardiac Workup
-                              </h3>
+                              </h2>
                             </div>
                             <div className="space-y-3">
                               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -22904,7 +22930,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                               {(telestrokeNote.cardiacWorkup || {}).pfoEvaluation === 'pfo-closure-candidate' && (
                                 <div className="bg-pink-50 border border-pink-200 rounded-lg p-3 dark:bg-pink-950 dark:border-pink-800">
-                                  <h4 className="font-semibold text-pink-800 mb-2 dark:text-pink-300">PASCAL Classification for PFO Closure</h4>
+                                  <h3 className="font-semibold text-pink-800 mb-2 dark:text-pink-300">PASCAL Classification for PFO Closure</h3>
                                   <select
                                     value={(telestrokeNote.cardiacWorkup || {}).pascalClassification || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, cardiacWorkup: {...(prev.cardiacWorkup || {}), pascalClassification: v}})); }}
@@ -22940,7 +22966,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               )}
                               {telestrokeNote.toastClassification === 'large-artery' && (
                                 <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 text-sm dark:bg-cobalt-900 dark:border-cobalt-700">
-                                  <h4 className="font-semibold text-cobalt-800 mb-1 dark:text-cobalt-300">sICAS Management (AAN 2022)</h4>
+                                  <h3 className="font-semibold text-cobalt-800 mb-1 dark:text-cobalt-300">sICAS Management (AAN 2022)</h3>
                                   <ul className="space-y-1 ml-4 text-cobalt-700 dark:text-cobalt-300">
                                     <li>• Severe symptomatic intracranial stenosis (70-99%): DAPT x 90 days, then ASA 325 mg</li>
                                     <li>• High-intensity statin with LDL target &lt;70 mg/dL</li>
@@ -22957,9 +22983,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {telestrokeNote.toastClassification && (getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' || getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'tia') && (
                           <div className="bg-white border border-cobalt-200 rounded-md p-4 dark:bg-card dark:border-cobalt-700 ">
                             <div className="flex items-center justify-between mb-3">
-                              <h3 className="text-lg font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
+                              <h2 className="text-lg font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
                                                                 Etiology Workup Planner
-                              </h3>
+                              </h2>
                               <span className="text-xs bg-cobalt-100 text-cobalt-800 px-2 py-1 rounded-full font-medium dark:bg-cobalt-900 dark:text-cobalt-300">
                                 Based on: {TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}
                               </span>
@@ -23055,9 +23081,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'dissection' && (
                           <div className="bg-white border border-crit-200 rounded-md p-4 dark:bg-card dark:border-crit-800 ">
                             <div className="flex items-center justify-between mb-3">
-                              <h3 className="text-lg font-bold text-crit-900 flex items-center gap-2 dark:text-crit-300">
+                              <h2 className="text-lg font-bold text-crit-900 flex items-center gap-2 dark:text-crit-300">
                                                                 Cervical Artery Dissection Pathway
-                              </h3>
+                              </h2>
                             </div>
                             <div className="space-y-3">
                               <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 text-sm text-crit-800 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300">
@@ -23092,7 +23118,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-xs text-slate-500 mt-1 dark:text-mute">Most dissections heal in 3-6 months. If recanalized, consider switching anticoagulation to antiplatelet. Persistent pseudoaneurysm may warrant continued treatment.</p>
                               </div>
                               <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 text-sm dark:bg-warn-950 dark:border-warn-800">
-                                <h4 className="font-semibold text-warn-800 mb-1 dark:text-warn-300">Dissection Counseling Points</h4>
+                                <h3 className="font-semibold text-warn-800 mb-1 dark:text-warn-300">Dissection Counseling Points</h3>
                                 <ul className="space-y-1 ml-4 text-warn-700 dark:text-warn-300">
                                   <li>• Avoid cervical manipulation (chiropractic) during healing</li>
                                   <li>• Avoid heavy lifting/straining for 4-6 weeks</li>
@@ -23117,7 +23143,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="p-4 pt-0 space-y-4">
                               {/* PHQ-2 Depression Screening */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h4 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">PHQ-2 Depression Screening</h4>
+                                <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">PHQ-2 Depression Screening</h3>
                                 <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">Over the past 2 weeks, how often has the patient been bothered by:</p>
                                 <div className="space-y-2">
                                   <div>
@@ -23157,7 +23183,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 )}
                                 {(telestrokeNote.screeningTools || {}).phq2Positive && (
                                   <div className="mt-3 bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                    <h5 className="font-semibold text-crit-800 text-sm mb-2 dark:text-crit-300">Post-Stroke Depression Care Plan</h5>
+                                    <h4 className="font-semibold text-crit-800 text-sm mb-2 dark:text-crit-300">Post-Stroke Depression Care Plan</h4>
                                     <div className="text-xs text-slate-700 space-y-1 dark:text-ink-2">
                                       <p><strong>1. Full PHQ-9:</strong> Complete 9-item questionnaire to quantify severity (5-9 mild, 10-14 moderate, 15-19 moderately severe, 20-27 severe).</p>
                                       <p><strong>2. First-line therapy:</strong> Psychotherapy (CBT, behavioral activation) and structured exercise program. Class I evidence for mild-moderate PSD.</p>
@@ -23172,7 +23198,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* MoCA Reference */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h4 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">MoCA Cognitive Screening</h4>
+                                <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">MoCA Cognitive Screening</h3>
                                 <div className="flex items-center gap-3">
                                   <div className="flex-1">
                                     <label className="text-sm text-slate-700 dark:text-ink-2">MoCA Score (0-30):</label>
@@ -23209,7 +23235,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* STOP-BANG OSA Screening */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h4 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">STOP-BANG OSA Screening</h4>
+                                <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">STOP-BANG OSA Screening</h3>
                                 <div className="grid grid-cols-2 gap-1">
                                   {[
                                     { key: 'sb_snoring', label: 'Snoring (loud)' },
@@ -23249,7 +23275,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Post-Stroke Seizure Risk */}
                               <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
-                                <h4 className="font-semibold text-warn-800 mb-2 dark:text-warn-300">Post-Stroke Seizure Management</h4>
+                                <h3 className="font-semibold text-warn-800 mb-2 dark:text-warn-300">Post-Stroke Seizure Management</h3>
                                 <select
                                   value={(telestrokeNote.screeningTools || {}).seizureRisk || ''}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, screeningTools: {...(prev.screeningTools || {}), seizureRisk: v}})); }}
@@ -23284,7 +23310,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="p-4 pt-0 space-y-4">
                               {/* BP Management */}
                               <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                <h4 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">Blood Pressure Target</h4>
+                                <h3 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">Blood Pressure Target</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                   <div>
                                     <label htmlFor="input-bp-meds-mgmt" className="text-xs text-slate-600 dark:text-ink-2">Current BP Meds</label>
@@ -23315,7 +23341,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* LDL Ladder */}
                               <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
-                                <h4 className="font-semibold text-warn-800 mb-2 dark:text-warn-300">LDL Target: &lt;55 mg/dL optimal, &lt;70 minimum (TST, SPARCL)</h4>
+                                <h3 className="font-semibold text-warn-800 mb-2 dark:text-warn-300">LDL Target: &lt;55 mg/dL optimal, &lt;70 minimum (TST, SPARCL)</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                   <div>
                                     <label className="text-xs text-slate-600 dark:text-ink-2">Current LDL</label>
@@ -23358,7 +23384,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Antiplatelet Selection */}
                               <div className="bg-ok-50 border border-ok-200 rounded-lg p-3 dark:bg-ok-950 dark:border-ok-800">
-                                <h4 className="font-semibold text-ok-800 mb-2 dark:text-ok-300">Antiplatelet / Antithrombotic Selection</h4>
+                                <h3 className="font-semibold text-ok-800 mb-2 dark:text-ok-300">Antiplatelet / Antithrombotic Selection</h3>
                                 <select value={(telestrokeNote.secondaryPrevention || {}).antiplateletRegimen || ''}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), antiplateletRegimen: v}})); }}
                                   aria-label="Antiplatelet regimen"
@@ -23476,10 +23502,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* AF Anticoag Timing Quick Reference */}
                               {((telestrokeNote.secondaryPrevention || {}).antiplateletRegimen === 'doac-af' || (telestrokeNote.secondaryPrevention || {}).antiplateletRegimen === 'anticoag-other') && (
                                 <div className="bg-cobalt-50 border border-cobalt-300 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                  <h4 className="font-semibold text-cobalt-800 mb-2 text-sm flex items-center gap-2 dark:text-cobalt-300">
+                                  <h3 className="font-semibold text-cobalt-800 mb-2 text-sm flex items-center gap-2 dark:text-cobalt-300">
                                     <i aria-hidden="true" data-lucide="timer" className="w-4 h-4"></i>
                                     AF Anticoag Timing (ELAN / TIMING / CATALYST)
-                                  </h4>
+                                  </h3>
                                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
                                     <div className="bg-ok-50 border border-ok-200 p-2 rounded text-center dark:bg-ok-950 dark:border-ok-800">
                                       <p className="font-bold text-ok-700 uppercase dark:text-ok-300">Minor Stroke</p>
@@ -23507,7 +23533,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* Diabetes, Smoking, Exercise, Diet */}
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 dark:bg-orange-950 dark:border-orange-800">
-                                  <h4 className="font-semibold text-orange-800 mb-2 text-sm dark:text-orange-300">Diabetes</h4>
+                                  <h3 className="font-semibold text-orange-800 mb-2 text-sm dark:text-orange-300">Diabetes</h3>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).diabetesManagement || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), diabetesManagement: v}})); }}
                                     aria-label="Diabetes management"
@@ -23520,7 +23546,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </select>
                                 </div>
                                 <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                  <h4 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">Smoking</h4>
+                                  <h3 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">Smoking</h3>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).smokingStatus || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), smokingStatus: v}})); }}
                                     aria-label="Smoking status"
@@ -23533,7 +23559,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </select>
                                 </div>
                                 <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                  <h4 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">Exercise</h4>
+                                  <h3 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">Exercise</h3>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).exercisePlan || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), exercisePlan: v}})); }}
                                     aria-label="Exercise plan"
@@ -23551,7 +23577,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </div>
                                 </div>
                                 <div className="bg-lime-50 border border-lime-200 rounded-lg p-3 dark:bg-lime-950">
-                                  <h4 className="font-semibold text-lime-800 mb-2 text-sm dark:text-lime-300">Diet</h4>
+                                  <h3 className="font-semibold text-lime-800 mb-2 text-sm dark:text-lime-300">Diet</h3>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).dietPlan || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), dietPlan: v}})); }}
                                     aria-label="Diet plan"
@@ -23577,7 +23603,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* GLP-1 RA, SGLT2i, Colchicine, CYP2C19 */}
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                  <h4 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">GLP-1 Receptor Agonist</h4>
+                                  <h3 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">GLP-1 Receptor Agonist</h3>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).glp1ra || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), glp1ra: v}})); }}
                                     aria-label="GLP-1 receptor agonist"
@@ -23601,7 +23627,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <p className="text-xs text-slate-500 mt-1 dark:text-mute">SELECT: semaglutide 2.4mg reduced MACE 20% in overweight/obese patients with ASCVD (HR 0.80). SOUL: stroke reduction with oral semaglutide in T2DM.</p>
                                 </div>
                                 <div className="bg-sky-50 border border-sky-200 rounded-lg p-3 dark:bg-sky-950 dark:border-sky-800">
-                                  <h4 className="font-semibold text-sky-800 mb-2 text-sm dark:text-sky-300">SGLT2 Inhibitor</h4>
+                                  <h3 className="font-semibold text-sky-800 mb-2 text-sm dark:text-sky-300">SGLT2 Inhibitor</h3>
                                   <select value={(telestrokeNote.secondaryPrevention || {}).sglt2i || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), sglt2i: v}})); }}
                                     aria-label="SGLT2 inhibitor"
@@ -23625,7 +23651,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <p className="text-xs text-slate-500 mt-1 dark:text-mute">SGLT2i primarily for cardiorenal protection; not direct stroke prevention. Sotagliflozin exception: reduced stroke in DM + HF.</p>
                                 </div>
                                 <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                  <h4 className="font-semibold text-crit-800 mb-2 text-sm dark:text-crit-300">Colchicine</h4>
+                                  <h3 className="font-semibold text-crit-800 mb-2 text-sm dark:text-crit-300">Colchicine</h3>
                                   <label className="flex items-center gap-2 mb-1">
                                     <input type="checkbox" checked={!!(telestrokeNote.secondaryPrevention || {}).colchicineConsidered}
                                       onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), colchicineConsidered: c}})); }} />
@@ -23643,7 +23669,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <p className="text-xs text-slate-500 mt-1 dark:text-mute">CONVINCE: reduced recurrent vascular events post-stroke. CHANCE-3: colchicine + DAPT for minor stroke/TIA. Avoid if eGFR &lt;30.</p>
                                 </div>
                                 <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
-                                  <h4 className="font-semibold text-warn-800 mb-2 text-sm dark:text-warn-300">CYP2C19 Pharmacogenomics</h4>
+                                  <h3 className="font-semibold text-warn-800 mb-2 text-sm dark:text-warn-300">CYP2C19 Pharmacogenomics</h3>
                                   <label className="flex items-center gap-2 mb-1">
                                     <input type="checkbox" checked={!!(telestrokeNote.secondaryPrevention || {}).cyp2c19Tested}
                                       onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), cyp2c19Tested: c}})); }} />
@@ -23677,11 +23703,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Drug Interaction Alerts */}
                               <div className="bg-crit-50 border border-crit-300 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                <h4 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">Drug Interaction Safety Panel</h4>
+                                <h3 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">Drug Interaction Safety Panel</h3>
                                 <div className="space-y-3">
                                   {/* AED-DOAC Interaction */}
                                   <div className="bg-white border border-crit-200 rounded p-2 dark:bg-card dark:border-crit-800">
-                                    <h5 className="text-xs font-semibold text-crit-700 mb-1 dark:text-crit-300">AED–DOAC Interaction Check</h5>
+                                    <h4 className="text-xs font-semibold text-crit-700 mb-1 dark:text-crit-300">AED–DOAC Interaction Check</h4>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                       <div>
                                         <label className="text-xs text-slate-600 dark:text-ink-2">Antiepileptic Drug</label>
@@ -23715,7 +23741,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                                   {/* Statin Interaction */}
                                   <div className="bg-white border border-warn-200 rounded p-2 dark:bg-card dark:border-warn-800">
-                                    <h5 className="text-xs font-semibold text-warn-700 mb-1 dark:text-warn-300">Statin Interaction Check</h5>
+                                    <h4 className="text-xs font-semibold text-warn-700 mb-1 dark:text-warn-300">Statin Interaction Check</h4>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                       <div>
                                         <label className="text-xs text-slate-600 dark:text-ink-2">Interacting Drug</label>
@@ -23754,7 +23780,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                                     return (
                                       <div className="bg-white border border-cobalt-200 rounded p-2 dark:bg-card dark:border-cobalt-700">
-                                        <h5 className="text-xs font-semibold text-cobalt-700 mb-1 dark:text-cobalt-300">DOAC Dose Reduction Checker {crclVal !== null && <span className="font-normal text-slate-500 dark:text-mute">(Patient CrCl: {crclVal} mL/min)</span>}</h5>
+                                        <h4 className="text-xs font-semibold text-cobalt-700 mb-1 dark:text-cobalt-300">DOAC Dose Reduction Checker {crclVal !== null && <span className="font-normal text-slate-500 dark:text-mute">(Patient CrCl: {crclVal} mL/min)</span>}</h4>
                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                                           <div>
                                             <label className="text-xs text-slate-600 dark:text-ink-2">DOAC Agent</label>
@@ -23840,7 +23866,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* DAPT Duration Guidance */}
                               <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 dark:bg-orange-950 dark:border-orange-800">
-                                <h4 className="font-semibold text-orange-800 mb-2 text-sm dark:text-orange-300">DAPT Duration</h4>
+                                <h3 className="font-semibold text-orange-800 mb-2 text-sm dark:text-orange-300">DAPT Duration</h3>
                                 <div className="bg-white border border-orange-200 rounded-lg p-2 mb-2 dark:bg-card dark:border-orange-800">
                                   <p className="text-xs font-semibold text-orange-800 mb-1 dark:text-orange-300">Phenotype Quick Matrix (conservative)</p>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-slate-700 dark:text-ink-2">
@@ -23872,7 +23898,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
 
                               <div className="bg-white border border-line rounded-lg p-3 dark:bg-card">
-                                <h4 className="font-semibold text-slate-800 mb-2 text-sm dark:text-ink">DAPT Duration Trial-Matching Figure</h4>
+                                <h3 className="font-semibold text-slate-800 mb-2 text-sm dark:text-ink">DAPT Duration Trial-Matching Figure</h3>
                                 <img
                                   src="documents/antiplatelet/DAPT%20After%20Ischemic%20Stroke-TIA.jpeg"
                                   alt="DAPT duration after ischemic stroke/TIA trial-matching summary"
@@ -23883,7 +23909,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Anticoagulant Bridging - PAUSE Protocol */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h4 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">Anticoagulant Bridging (PAUSE Protocol)</h4>
+                                <h3 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">Anticoagulant Bridging (PAUSE Protocol)</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                   <div>
                                     <label className="text-xs text-slate-600 dark:text-ink-2">DOAC Type</label>
@@ -23936,7 +23962,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Statin After ICH & Pioglitazone */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h4 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">Additional Considerations</h4>
+                                <h3 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">Additional Considerations</h3>
                                 <div className="text-xs text-slate-700 space-y-2 dark:text-ink-2">
                                   <div className="p-2 bg-white border border-cobalt-100 rounded dark:bg-card">
                                     <strong>Statin After ICH:</strong> AHA 2022 ICH guidelines — statins may be continued or started for patients with compelling cardiovascular indication (Class IIb, LOE B-NR). Avoid in lobar ICH with probable CAA unless strong ASCVD indication.
@@ -23949,7 +23975,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Follow-Up Timeline */}
                               <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
-                                <h4 className="font-semibold text-slate-800 mb-2 dark:text-ink">Follow-Up Timeline</h4>
+                                <h3 className="font-semibold text-slate-800 mb-2 dark:text-ink">Follow-Up Timeline</h3>
                                 <select value={(telestrokeNote.secondaryPrevention || {}).followUpTimeline || ''}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), followUpTimeline: v}})); }}
                                   aria-label="Follow-up timeline"
@@ -23969,10 +23995,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* PFO Closure Decision Card */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h4 className="font-semibold text-cobalt-800 mb-2 text-sm flex items-center gap-2 dark:text-cobalt-300">
+                                <h3 className="font-semibold text-cobalt-800 mb-2 text-sm flex items-center gap-2 dark:text-cobalt-300">
                                   <i aria-hidden="true" data-lucide="heart" className="w-4 h-4"></i>
                                   PFO Closure Eligibility (Cryptogenic Stroke)
-                                </h4>
+                                </h3>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
                                   <div className="bg-white border border-cobalt-200 rounded p-2 dark:bg-card dark:border-cobalt-700">
                                     <p className="font-bold text-cobalt-700 uppercase mb-1 dark:text-cobalt-300">Consider Closure If:</p>
@@ -24011,10 +24037,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Carotid Revascularization Decision Card */}
                               <div className="bg-teal-50 border border-teal-200 rounded-lg p-3 dark:bg-teal-950 dark:border-teal-800">
-                                <h4 className="font-semibold text-teal-800 mb-2 text-sm flex items-center gap-2 dark:text-teal-300">
+                                <h3 className="font-semibold text-teal-800 mb-2 text-sm flex items-center gap-2 dark:text-teal-300">
                                   <i aria-hidden="true" data-lucide="scissors" className="w-4 h-4"></i>
                                   Carotid Revascularization Decision Guide
-                                </h4>
+                                </h3>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
                                   <div className="bg-white border border-teal-200 rounded p-2 dark:bg-card dark:border-teal-800">
                                     <p className="font-bold text-teal-700 uppercase mb-1 dark:text-teal-300">Symptomatic 70-99%</p>
@@ -24070,7 +24096,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* Hemorrhagic Transformation */}
                               {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' && (
                                 <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                  <h4 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">Hemorrhagic Transformation (HT) Monitoring</h4>
+                                  <h3 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">Hemorrhagic Transformation (HT) Monitoring</h3>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <div>
                                       <label className="flex items-center gap-2 mb-2">
@@ -24140,12 +24166,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' && (telestrokeNote.tnkRecommended || telestrokeNote.tnkAdminTime) && (
                                 <div className={'border rounded-lg p-3 ' + ((telestrokeNote.angioedema || {}).detected ? 'bg-crit-50 border-crit-300 dark:bg-crit-950 dark:border-crit-800' : 'bg-orange-50 border-orange-200 dark:bg-orange-950 dark:border-orange-800')}>
                                   <div className="flex items-center justify-between mb-2">
-                                    <h4 className="font-semibold text-orange-800 flex items-center gap-2 dark:text-orange-300">
+                                    <h3 className="font-semibold text-orange-800 flex items-center gap-2 dark:text-orange-300">
                                       Post-TNK Angioedema Protocol
                                       {(telestrokeNote.medications || '').toLowerCase().match(/lisinopril|enalapril|ramipril|captopril|benazepril|fosinopril|perindopril|quinapril|trandolapril|ace.?i/) && (
                                         <span className="px-2 py-0.5 bg-crit-100 text-crit-700 rounded-full text-xs font-bold dark:bg-crit-950 dark:text-crit-300">ACEi detected — 5x risk</span>
                                       )}
-                                    </h4>
+                                    </h3>
                                     <span className="text-xs text-slate-500 dark:text-mute">Incidence: 1-5% post-thrombolysis</span>
                                   </div>
 
@@ -24236,7 +24262,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Dysphagia Screening */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h4 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Dysphagia Screening Protocol</h4>
+                                <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Dysphagia Screening Protocol</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                   <div className="space-y-2">
                                     <label className="flex items-center gap-2">
@@ -24281,7 +24307,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Early Mobilization */}
                               <div className="bg-ok-50 border border-ok-200 rounded-lg p-3 dark:bg-ok-950 dark:border-ok-800">
-                                <h4 className="font-semibold text-ok-800 mb-2 dark:text-ok-300">Early Mobilization (AVERT-Informed)</h4>
+                                <h3 className="font-semibold text-ok-800 mb-2 dark:text-ok-300">Early Mobilization (AVERT-Informed)</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                   <div>
                                     <select value={(telestrokeNote.earlyMobilization || {}).timingDecision || ''}
@@ -24314,7 +24340,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Hyperglycemia Management */}
                               <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
-                                <h4 className="font-semibold text-warn-800 mb-2 dark:text-warn-300">Acute Hyperglycemia Management</h4>
+                                <h3 className="font-semibold text-warn-800 mb-2 dark:text-warn-300">Acute Hyperglycemia Management</h3>
                                 <div className="text-sm text-slate-700 space-y-1 dark:text-ink-2">
                                   <p><strong>Target glucose: 140-180 mg/dL</strong> (Class I, LOE A)</p>
                                   <p className="text-crit-700 font-semibold dark:text-crit-300">Intensive glucose control (80-130 mg/dL) is CLASS III: HARM</p>
@@ -24328,7 +24354,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* DOAC Timing Algorithm (Interactive) */}
                               {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' && (
                                 <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                  <h4 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">DOAC Timing Algorithm (AF-Stroke)</h4>
+                                  <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">DOAC Timing Algorithm (AF-Stroke)</h3>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <div className="space-y-2">
                                       <select value={(telestrokeNote.doacTiming || {}).strokeSeverity || ''}
@@ -24408,7 +24434,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* Carotid Management */}
                               {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' && (
                                 <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                  <h4 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Carotid Stenosis Management</h4>
+                                  <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Carotid Stenosis Management</h3>
                                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                     <div>
                                       <label className="text-xs text-slate-600 dark:text-ink-2">Side</label>
@@ -24470,7 +24496,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* ESUS / Cryptogenic Workup */}
                               {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' && (
                                 <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                  <h4 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">ESUS / Cryptogenic Stroke Workup</h4>
+                                  <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">ESUS / Cryptogenic Stroke Workup</h3>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <div className="space-y-2">
                                       <select value={(telestrokeNote.esusWorkup || {}).cardiacMonitoringType || ''}
@@ -24520,7 +24546,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* ICH Anticoagulation Resumption */}
                               {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ich' && (
                                 <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                  <h4 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">ICH: Anticoagulation Resumption Decision</h4>
+                                  <h3 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">ICH: Anticoagulation Resumption Decision</h3>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <div className="space-y-2">
                                       <select aria-label="ICH location for anticoag resumption decision" value={(telestrokeNote.ichAnticoagResumption || {}).ichLocation || ''}
@@ -24583,7 +24609,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               )}
                               {/* VTE Prophylaxis */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h4 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">VTE Prophylaxis Protocol</h4>
+                                <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">VTE Prophylaxis Protocol</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                   <div className="space-y-2">
                                     <label className="flex items-center gap-2">
@@ -24621,7 +24647,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Fever Management */}
                               <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 dark:bg-orange-950 dark:border-orange-800">
-                                <h4 className="font-semibold text-orange-800 mb-2 dark:text-orange-300">Fever Management Protocol (FeSS Bundle)</h4>
+                                <h3 className="font-semibold text-orange-800 mb-2 dark:text-orange-300">Fever Management Protocol (FeSS Bundle)</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                   <div className="space-y-2">
                                     <label className="flex items-center gap-2">
@@ -24675,7 +24701,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Osmotic Therapy + Na Correction Rate Safety Calculator */}
                               <div className="bg-slate-50 border border-line rounded-lg p-3 space-y-3 dark:bg-paper-2">
-                                <h4 className="font-semibold text-slate-800 mb-2 dark:text-ink">Osmotic Therapy &amp; Sodium Correction Safety</h4>
+                                <h3 className="font-semibold text-slate-800 mb-2 dark:text-ink">Osmotic Therapy &amp; Sodium Correction Safety</h3>
 
                                 {/* Agent & Indication Row */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -24941,7 +24967,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Nutritional Support */}
                               <div className="bg-lime-50 border border-lime-200 rounded-lg p-3 dark:bg-lime-950">
-                                <h4 className="font-semibold text-lime-800 mb-2 dark:text-lime-300">Nutritional Support Pathway</h4>
+                                <h3 className="font-semibold text-lime-800 mb-2 dark:text-lime-300">Nutritional Support Pathway</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                   <div className="space-y-2">
                                     <select value={(telestrokeNote.nutritionalSupport || {}).feedingRoute || ''}
@@ -24972,7 +24998,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Palliative Care / Goals of Care */}
                               <div className="bg-slate-50 border border-slate-300 rounded-lg p-3 dark:bg-paper-2 dark:border-strong">
-                                <h4 className="font-semibold text-slate-800 mb-2 dark:text-ink">Palliative Care &amp; Goals of Care</h4>
+                                <h3 className="font-semibold text-slate-800 mb-2 dark:text-ink">Palliative Care &amp; Goals of Care</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                   <div className="space-y-2">
                                     <label className="flex items-center gap-2">
@@ -25020,7 +25046,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="p-4 pt-0 space-y-4">
                               {/* Structured mRS */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h4 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Modified Rankin Scale (mRS) Tracking</h4>
+                                <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Modified Rankin Scale (mRS) Tracking</h3>
                                 <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
                                   {[
                                     { key: 'discharge', label: 'Discharge' },
@@ -25050,7 +25076,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Driving Restrictions */}
                               <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
-                                <h4 className="font-semibold text-warn-800 mb-2 dark:text-warn-300">Driving Restrictions</h4>
+                                <h3 className="font-semibold text-warn-800 mb-2 dark:text-warn-300">Driving Restrictions</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                   <div className="space-y-2">
                                     <label className="flex items-center gap-2">
@@ -25090,7 +25116,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Return to Work */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h4 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Return to Work</h4>
+                                <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Return to Work</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                   <div className="space-y-2">
                                     <label className="flex items-center gap-2">
@@ -25133,7 +25159,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* Spasticity, Pain, Fatigue */}
                               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                 <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                  <h4 className="font-semibold text-crit-800 mb-2 text-sm dark:text-crit-300">Spasticity</h4>
+                                  <h3 className="font-semibold text-crit-800 mb-2 text-sm dark:text-crit-300">Spasticity</h3>
                                   <label className="flex items-center gap-2 mb-1">
                                     <input type="checkbox" checked={!!(telestrokeNote.spasticity || {}).screenPerformed}
                                       onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, spasticity: {...(prev.spasticity || {}), screenPerformed: c}})); }} />
@@ -25151,7 +25177,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </select>
                                 </div>
                                 <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                  <h4 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">Central Pain (CPSP)</h4>
+                                  <h3 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">Central Pain (CPSP)</h3>
                                   <label className="flex items-center gap-2 mb-1">
                                     <input type="checkbox" checked={!!(telestrokeNote.centralPain || {}).painPresent}
                                       onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, centralPain: {...(prev.centralPain || {}), painPresent: c}})); }} />
@@ -25169,7 +25195,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <p className="text-xs text-crit-600 mt-1 dark:text-crit-300">No opioids for CPSP</p>
                                 </div>
                                 <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                  <h4 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">Post-Stroke Fatigue</h4>
+                                  <h3 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">Post-Stroke Fatigue</h3>
                                   <label className="flex items-center gap-2 mb-1">
                                     <input type="checkbox" checked={!!(telestrokeNote.fatigue || {}).fatiguePresent}
                                       onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, fatigue: {...(prev.fatigue || {}), fatiguePresent: c}})); }} />
@@ -25190,7 +25216,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* Alcohol, Substance, Hormonal, Sexual Health, Air Travel */}
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 dark:bg-orange-950 dark:border-orange-800">
-                                  <h4 className="font-semibold text-orange-800 mb-2 text-sm dark:text-orange-300">Alcohol &amp; Substance Screening</h4>
+                                  <h3 className="font-semibold text-orange-800 mb-2 text-sm dark:text-orange-300">Alcohol &amp; Substance Screening</h3>
                                   <div className="space-y-1">
                                     <div className="flex items-center gap-2">
                                       <label className="text-xs text-slate-600 dark:text-ink-2">AUDIT-C:</label>
@@ -25209,7 +25235,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </div>
                                 </div>
                                 <div className="bg-pink-50 border border-pink-200 rounded-lg p-3 dark:bg-pink-950 dark:border-pink-800">
-                                  <h4 className="font-semibold text-pink-800 mb-2 text-sm dark:text-pink-300">Hormonal Risk Assessment</h4>
+                                  <h3 className="font-semibold text-pink-800 mb-2 text-sm dark:text-pink-300">Hormonal Risk Assessment</h3>
                                   <div className="space-y-1">
                                     <label className="flex items-center gap-2">
                                       <input type="checkbox" checked={!!(telestrokeNote.hormonalRisk || {}).combinedOCPUse}
@@ -25230,7 +25256,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </div>
                                 </div>
                                 <div className="bg-ok-50 border border-ok-200 rounded-lg p-3 dark:bg-ok-950 dark:border-ok-800">
-                                  <h4 className="font-semibold text-ok-800 mb-2 text-sm dark:text-ok-300">Sexual Activity Counseling</h4>
+                                  <h3 className="font-semibold text-ok-800 mb-2 text-sm dark:text-ok-300">Sexual Activity Counseling</h3>
                                   <label className="flex items-center gap-2 mb-1">
                                     <input type="checkbox" checked={!!(telestrokeNote.sexualHealthCounseling || {}).discussed}
                                       onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, sexualHealthCounseling: {...(prev.sexualHealthCounseling || {}), discussed: c}})); }} />
@@ -25239,7 +25265,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <p className="text-xs text-slate-600 dark:text-ink-2">Safe when BP controlled + tolerates moderate activity (climb 1-2 flights stairs). Typically 2-4 weeks post minor stroke. Review meds causing dysfunction (beta-blockers, SSRIs, thiazides).</p>
                                 </div>
                                 <div className="bg-sky-50 border border-sky-200 rounded-lg p-3 dark:bg-sky-950 dark:border-sky-800">
-                                  <h4 className="font-semibold text-sky-800 mb-2 text-sm dark:text-sky-300">Air Travel Restrictions</h4>
+                                  <h3 className="font-semibold text-sky-800 mb-2 text-sm dark:text-sky-300">Air Travel Restrictions</h3>
                                   <select value={(telestrokeNote.airTravelRestrictions || {}).restrictionDuration || ''}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, airTravelRestrictions: {...(prev.airTravelRestrictions || {}), restrictionDuration: v}})); }}
                                     className="w-full px-2 py-1 border border-slate-300 rounded text-xs dark:border-strong">
@@ -25256,7 +25282,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Falls Risk */}
                               <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
-                                <h4 className="font-semibold text-warn-800 mb-2 text-sm dark:text-warn-300">Falls Risk</h4>
+                                <h3 className="font-semibold text-warn-800 mb-2 text-sm dark:text-warn-300">Falls Risk</h3>
                                 <div className="flex flex-wrap gap-3">
                                   <label className="flex items-center gap-2">
                                     <input type="checkbox" checked={!!(telestrokeNote.fallsRisk || {}).screenPerformed}
@@ -25284,7 +25310,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* Young Adult Workup */}
                               {parseInt(telestrokeNote.age, 10) > 0 && parseInt(telestrokeNote.age, 10) <= 50 && (
                                 <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                  <h4 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Young Adult Stroke Workup (Age &le;50)</h4>
+                                  <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Young Adult Stroke Workup (Age &le;50)</h3>
                                   <div className="space-y-3">
                                     <div>
                                       <p className="text-xs font-semibold text-cobalt-700 mb-1 dark:text-cobalt-300">Tier 1 — All patients:</p>
@@ -25370,7 +25396,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 const pedSummary = getPediatricStrokeSummary(telestrokeNote);
                                 return (
                                   <div className="bg-sky-50 border border-sky-200 rounded-lg p-3 dark:bg-sky-950 dark:border-sky-800">
-                                    <h4 className="font-semibold text-sky-900 mb-2 dark:text-sky-300">Pediatric Stroke Rapid Pathway (AIS 2026)</h4>
+                                    <h3 className="font-semibold text-sky-900 mb-2 dark:text-sky-300">Pediatric Stroke Rapid Pathway (AIS 2026)</h3>
                                     <label className="flex items-center gap-2 mb-1">
                                       <input
                                         type="checkbox"
@@ -25436,7 +25462,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Stroke in Pregnancy */}
                               <div className="bg-pink-50 border border-pink-200 rounded-lg p-3 dark:bg-pink-950 dark:border-pink-800">
-                                <h4 className="font-semibold text-pink-800 mb-2 dark:text-pink-300">Stroke in Pregnancy (AHA 2026)</h4>
+                                <h3 className="font-semibold text-pink-800 mb-2 dark:text-pink-300">Stroke in Pregnancy (AHA 2026)</h3>
                                 <label className="flex items-center gap-2 mb-2">
                                   <input type="checkbox" checked={!!telestrokeNote.pregnancyStroke}
                                     onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, pregnancyStroke: c})); }}
@@ -25609,7 +25635,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Cancer-Associated Stroke */}
                               <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
-                                <h4 className="font-semibold text-warn-800 mb-2 dark:text-warn-300">Cancer-Associated Stroke</h4>
+                                <h3 className="font-semibold text-warn-800 mb-2 dark:text-warn-300">Cancer-Associated Stroke</h3>
                                 <label className="flex items-center gap-2 mb-2">
                                   <input type="checkbox" checked={!!telestrokeNote.activeCancer}
                                     onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, activeCancer: c})); }}
@@ -25781,7 +25807,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Sickle Cell Disease */}
                               <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                <h4 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">Sickle Cell Disease Stroke</h4>
+                                <h3 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">Sickle Cell Disease Stroke</h3>
                                 <label className="flex items-center gap-2 mb-2">
                                   <input type="checkbox" checked={!!telestrokeNote.sickleCellDisease}
                                     onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, sickleCellDisease: c})); }}
@@ -25802,7 +25828,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Infective Endocarditis */}
                               <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 dark:bg-orange-950 dark:border-orange-800">
-                                <h4 className="font-semibold text-orange-800 mb-2 dark:text-orange-300">Infective Endocarditis</h4>
+                                <h3 className="font-semibold text-orange-800 mb-2 dark:text-orange-300">Infective Endocarditis</h3>
                                 <label className="flex items-center gap-2 mb-2">
                                   <input type="checkbox" checked={!!telestrokeNote.infectiveEndocarditis}
                                     onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, infectiveEndocarditis: c})); }}
@@ -25824,7 +25850,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Decompressive Craniectomy */}
                               <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                <h4 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">Decompressive Craniectomy Decision Support</h4>
+                                <h3 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">Decompressive Craniectomy Decision Support</h3>
                                 <label className="flex items-center gap-2 mb-2">
                                   <input type="checkbox" checked={!!(telestrokeNote.decompressiveCraniectomy || {}).considered}
                                     onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, decompressiveCraniectomy: {...(prev.decompressiveCraniectomy || {}), considered: c}})); }}
@@ -25867,7 +25893,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* Decompressive Craniectomy — DESTINY II Consent Data */}
                               {(telestrokeNote.decompressiveCraniectomy || {}).considered && (
                                 <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
-                                  <h4 className="font-semibold text-slate-800 mb-2 text-sm dark:text-ink">DESTINY II Outcomes Data (Age &gt;60) — For Shared Decision-Making</h4>
+                                  <h3 className="font-semibold text-slate-800 mb-2 text-sm dark:text-ink">DESTINY II Outcomes Data (Age &gt;60) — For Shared Decision-Making</h3>
                                   <div className="text-xs text-slate-700 space-y-1 dark:text-ink-2">
                                     <div className="grid grid-cols-2 gap-2">
                                       <div className="bg-white p-2 rounded border dark:bg-card">
@@ -25893,7 +25919,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* CVT Anticoagulation Phases */}
                               {(getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'cvt' || telestrokeNote.diagnosis === 'cvt') && (
                                 <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                  <h4 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">CVT Anticoagulation Phases (CSBP 2024)</h4>
+                                  <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">CVT Anticoagulation Phases (CSBP 2024)</h3>
                                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                     <div>
                                       <label className="text-xs text-slate-600 dark:text-ink-2">Acute Phase (0-14 days)</label>
@@ -25949,7 +25975,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Rehabilitation Intensity Prescription */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h4 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Rehabilitation Intensity Prescription (ESO/CSBP 2024)</h4>
+                                <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Rehabilitation Intensity Prescription (ESO/CSBP 2024)</h3>
                                 <div className="text-xs text-slate-700 space-y-1 dark:text-ink-2">
                                   <p><strong>Recommended intensity:</strong> Minimum 3 hours/day, 5 days/week of active task-specific therapy (Class I, LOE A — AVERT, CSBP 2024).</p>
                                   <p><strong>Early mobilization:</strong> Begin within 24-48h post-stroke. Avoid very early high-dose mobilization within 24h (AVERT — increased odds of poor outcome at 3 months).</p>
@@ -25973,7 +25999,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* VCI / Cognitive Screening */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <h4 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">Vascular Cognitive Impairment (VCI) Screening</h4>
+                                <h3 className="font-semibold text-cobalt-800 mb-2 text-sm dark:text-cobalt-300">Vascular Cognitive Impairment (VCI) Screening</h3>
                                 <div className="text-xs text-slate-700 space-y-1 mb-2 dark:text-ink-2">
                                   <p><strong>Screen at:</strong> Pre-discharge, 3 months, and 12 months (AHA/ASA 2021 VCI Scientific Statement).</p>
                                   <p><strong>Tools:</strong> MoCA (primary — sensitive for executive/attention), NINDS-CSN 5-min protocol, or Addenbrooke's Cognitive Exam (ACE-III).</p>
@@ -26003,7 +26029,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Caregiver Training Checklist */}
                               <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
-                                <h4 className="font-semibold text-warn-800 mb-2 text-sm dark:text-warn-300">Caregiver Training Checklist</h4>
+                                <h3 className="font-semibold text-warn-800 mb-2 text-sm dark:text-warn-300">Caregiver Training Checklist</h3>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                   {[
                                     { key: 'strokeSigns', label: 'Stroke warning signs (BE-FAST)' },
@@ -26026,7 +26052,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Rehab Referral Checklist */}
                               <div className="bg-ok-50 border border-ok-200 rounded-lg p-3 dark:bg-ok-950 dark:border-ok-800">
-                                <h4 className="font-semibold text-ok-800 mb-2 dark:text-ok-300">Rehabilitation Referral Checklist</h4>
+                                <h3 className="font-semibold text-ok-800 mb-2 dark:text-ok-300">Rehabilitation Referral Checklist</h3>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                   {[
                                     { key: 'pt', label: 'Physical Therapy (PT)' },
@@ -26057,9 +26083,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {telestrokeNote.diagnosis && (
                           <div id="discharge-checklist-section" className="bg-white border border-ok-200 rounded-md p-4 dark:bg-card dark:border-ok-800 ">
                             <div className="flex items-center justify-between mb-3">
-                              <h3 className="text-lg font-bold text-ok-900 flex items-center gap-2 dark:text-ok-300">
+                              <h2 className="text-lg font-bold text-ok-900 flex items-center gap-2 dark:text-ok-300">
                                                                 Discharge Checklist
-                              </h3>
+                              </h2>
                               <div className="flex items-center gap-2">
                                 {(() => {
                                   const dc = telestrokeNote.dischargeChecklist || {};
@@ -26123,7 +26149,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 ]}
                               ].map(group => (
                                 <div key={group.heading}>
-                                  <h5 className="text-xs font-semibold text-ok-700 uppercase tracking-wide mb-1 dark:text-ok-300">{group.heading}</h5>
+                                  <h3 className="text-xs font-semibold text-ok-700 uppercase tracking-wide mb-1 dark:text-ok-300">{group.heading}</h3>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1">
                                     {group.items.map(item => (
                                       <div key={item.key}>
@@ -26171,7 +26197,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="p-3 space-y-2 text-xs text-slate-700 dark:text-ink-2">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                   <div className="bg-white border border-cobalt-200 rounded p-2 dark:bg-card dark:border-cobalt-700">
-                                    <h5 className="font-bold text-cobalt-800 mb-1 dark:text-cobalt-300">Duplicate Therapy</h5>
+                                    <h3 className="font-bold text-cobalt-800 mb-1 dark:text-cobalt-300">Duplicate Therapy</h3>
                                     <ul className="space-y-0.5">
                                       <li>&#x2022; No duplicate antiplatelets (home + new)</li>
                                       <li>&#x2022; No antiplatelet + anticoagulant overlap unless indicated (stent + AF)</li>
@@ -26179,14 +26205,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </ul>
                                   </div>
                                   <div className="bg-white border border-cobalt-200 rounded p-2 dark:bg-card dark:border-cobalt-700">
-                                    <h5 className="font-bold text-cobalt-800 mb-1 dark:text-cobalt-300">Statin Intensity</h5>
+                                    <h3 className="font-bold text-cobalt-800 mb-1 dark:text-cobalt-300">Statin Intensity</h3>
                                     <ul className="space-y-0.5">
                                       <li>&#x2022; High-intensity confirmed (atorvastatin &ge;40 mg or rosuvastatin &ge;20 mg)</li>
                                       <li>&#x2022; If intolerant: document alternative + LDL target &lt;70</li>
                                     </ul>
                                   </div>
                                   <div className="bg-white border border-cobalt-200 rounded p-2 dark:bg-card dark:border-cobalt-700">
-                                    <h5 className="font-bold text-cobalt-800 mb-1 dark:text-cobalt-300">Drug Interactions</h5>
+                                    <h3 className="font-bold text-cobalt-800 mb-1 dark:text-cobalt-300">Drug Interactions</h3>
                                     <ul className="space-y-0.5">
                                       <li>&#x2022; P2Y12i + omeprazole: use pantoprazole instead</li>
                                       <li>&#x2022; Warfarin + antibiotics/antifungals: INR check scheduled</li>
@@ -26194,7 +26220,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </ul>
                                   </div>
                                   <div className="bg-white border border-cobalt-200 rounded p-2 dark:bg-card dark:border-cobalt-700">
-                                    <h5 className="font-bold text-cobalt-800 mb-1 dark:text-cobalt-300">Patient/Caregiver</h5>
+                                    <h3 className="font-bold text-cobalt-800 mb-1 dark:text-cobalt-300">Patient/Caregiver</h3>
                                     <ul className="space-y-0.5">
                                       <li>&#x2022; Printed med list provided</li>
                                       <li>&#x2022; Adherence importance explained (antithrombotic, statin)</li>
@@ -26215,9 +26241,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Post-TNK Monitoring Protocol */}
                         {telestrokeNote.tnkRecommended && telestrokeNote.diagnosisCategory === 'ischemic' && (
                           <div className="bg-white border-2 border-ok-300 rounded-md p-4 dark:bg-card dark:border-ok-800 ">
-                            <h3 className="text-md font-bold text-ok-900 mb-2 flex items-center gap-2 dark:text-ok-300">
+                            <h2 className="text-md font-bold text-ok-900 mb-2 flex items-center gap-2 dark:text-ok-300">
                                                             Post-Thrombolytic Monitoring Protocol
-                            </h3>
+                            </h2>
                             <div className="space-y-2">
                               {[
                                 { key: 'neuroChecksQ15min', label: 'Neuro checks q15min x 2h, then q30min x 6h, then q1h x 16h', detail: 'Document NIHSS at 2h and 24h post-TNK' },
@@ -26263,10 +26289,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Family / Caregiver Communication Log */}
                         <div className="bg-white border border-line rounded-md p-4  hover: transition-shadow dark:bg-card">
-                          <h3 className="text-md font-bold text-slate-800 mb-2 flex items-center gap-2 dark:text-ink">
+                          <h2 className="text-md font-bold text-slate-800 mb-2 flex items-center gap-2 dark:text-ink">
                             <i aria-hidden="true" data-lucide="users" className="w-4 h-4"></i>
                             Family Communication
-                          </h3>
+                          </h2>
                           <div className="space-y-2">
                             <label className="flex items-center gap-2 cursor-pointer">
                               <input type="checkbox"
@@ -26308,7 +26334,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Section 7: Recommendations */}
                         <div id="recommendations-section" className="clinician-only bg-white border border-cobalt-200 rounded-md p-4  hover: transition-shadow dark:bg-card dark:border-cobalt-700">
                           <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-lg font-bold text-cobalt-900 dark:text-cobalt-300">7. Recommendations</h3>
+                            <h2 className="text-lg font-bold text-cobalt-900 dark:text-cobalt-300">7. Recommendations</h2>
                                                       </div>
 
                           {/* Auto-Note Generation Button */}
@@ -26833,12 +26859,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Telestroke Section */}
                         <div className="bg-slate-50 border border-slate-300 rounded-lg p-4 mt-4 dark:bg-paper-2 dark:border-strong">
-                          <h3 className="text-lg font-semibold text-slate-800 mb-4 dark:text-ink">Telestroke</h3>
+                          <h2 className="text-lg font-semibold text-slate-800 mb-4 dark:text-ink">Telestroke</h2>
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             {/* OSH Transfer */}
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">Transfer</h4>
+                              <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">Transfer</h3>
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
                                   <label htmlFor="input-transport-mode" className="block text-xs font-medium text-slate-600 mb-1 dark:text-ink-2">Transport mode</label>
@@ -26936,7 +26962,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                             {/* TNK risk/benefit discussion documentation */}
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">TNK risk/benefit discussion documentation:</h4>
+                              <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">TNK risk/benefit discussion documentation:</h3>
                               <p className="text-sm">After ensuring that there were no evident contraindications, TNK administration was recommended. Potential benefits, potential risks (including a potential risk of sx ICH of up to 4%), and alternatives to treatment were discussed with the OSH provider and patient/family prior to initiating treatment.</p>
                             </div>
                           </div>
@@ -26944,7 +26970,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {/* Post-IV TNK/tPA recommendations */}
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">Post-IV TNK/tPA recommendations:</h4>
+                              <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">Post-IV TNK/tPA recommendations:</h3>
                               <ul className="text-sm space-y-1">
                                 <li>• Admit to ICU</li>
                                 <li>• Neuro checks + BP q15min x 2h, then q30min x 6h, then q1h x 16h</li>
@@ -26963,7 +26989,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                             {/* MT risk/benefit discussion */}
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">MT risk/benefit discussion:</h4>
+                              <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">MT risk/benefit discussion:</h3>
                               <p className="text-sm">Given the presence of a large vascular occlusion, disabling neurological symptoms, and no evident contraindications - the patient will be transferred to the hub for mechanical thrombectomy consideration. Potential benefits, potential risks, and alternatives to treatment were discussed with the OSH provider and patient/family; the neuro-IR team at the hub will obtain informed consent from the patient/family.</p>
                             </div>
                           </div>
@@ -27139,7 +27165,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                           return (
                             <div className="bg-white border border-line rounded-lg p-3 dark:bg-card">
-                              <h4 className="text-sm font-semibold text-slate-900 mb-2 dark:text-ink">Clinical Assistant</h4>
+                              <h3 className="text-sm font-semibold text-slate-900 mb-2 dark:text-ink">Clinical Assistant</h3>
                               <div className="space-y-2">
                                 {cues.slice(0, 3).map((cue, idx) => (
                                   <div key={`${cue.title}-${idx}`} className={`rounded-lg border px-2.5 py-2 text-xs ${palette[cue.tone] || palette.info}`}>
@@ -27607,9 +27633,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="flex flex-col gap-4">
                         <div>
                           <p className="font-mono uppercase text-eyebrow text-mute mb-1">Trial screening</p>
-                          <h3 id="trial-screening-tools-heading" className="font-serif text-section text-ink">
+                          <h2 id="trial-screening-tools-heading" className="font-serif text-section text-ink">
                             Active stroke trials
-                          </h3>
+                          </h2>
                           <p className="font-sans text-body text-ink-2 mt-1 text-pretty">
                             Live trial-eligibility screening and reference tables — patient context from this encounter flows automatically into the Bedside Screener.
                           </p>
@@ -27712,7 +27738,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     return (
                       <aside
                         aria-label="Live encounter summary"
-                        className="hidden lg:block lg:sticky self-start max-h-[calc(100vh-var(--app-header-h,3.5rem)-1.5rem)] overflow-y-auto"
+                        className="hidden xl:block xl:sticky self-start max-h-[calc(100vh-var(--app-header-h,3.5rem)-1.5rem)] overflow-y-auto"
                         style={{ top: 'calc(var(--app-header-h, 3.5rem) + 0.75rem)' }}
                       >
                         <div className="bg-card border border-line rounded-md divide-y divide-line">
@@ -28443,7 +28469,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </details>
                           <div className="bg-white border border-crit-200 rounded-md p-4 dark:bg-card dark:border-crit-800 ">
                             <div className="flex items-center justify-between mb-3">
-                              <h4 className="text-sm font-semibold text-crit-700 dark:text-crit-300">ABC/2 ICH Volume Calculator</h4>
+                              <h3 className="text-sm font-semibold text-crit-700 dark:text-crit-300">ABC/2 ICH Volume Calculator</h3>
                               {ichVolumeEstimate && (
                                 <span className={`text-xs font-semibold px-2 py-1 rounded-full ${ichVolumeEstimate.exceeds30 ? 'bg-crit-100 text-crit-700 dark:bg-crit-950 dark:text-crit-300' : 'bg-ok-100 text-ok-700 dark:bg-ok-900 dark:text-ok-300'}`}>
                                   {ichVolumeEstimate.display} mL
@@ -28497,7 +28523,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </p>
                           </div>
                           <div className="bg-white border border-crit-200 rounded-md p-4 dark:bg-card dark:border-crit-800">
-                              <h4 className="text-sm font-semibold text-crit-700 mb-2 dark:text-crit-300">Telestroke rapid actions (phone or video)</h4>
+                              <h3 className="text-sm font-semibold text-crit-700 mb-2 dark:text-crit-300">Telestroke rapid actions (phone or video)</h3>
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
                                 <li>Confirm anticoagulant/antiplatelet use and initiate reversal.</li>
                                 <li>Target SBP &lt;140 (Class IIa, INTERACT2; avoid &lt;130 per ATACH-2). Use IV nicardipine or clevidipine for smooth control.</li>
@@ -28511,7 +28537,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </p>
                             </div>
                             <div className="bg-white border border-crit-200 rounded-md p-4 dark:bg-card dark:border-crit-800">
-                              <h4 className="text-sm font-semibold text-crit-700 mb-2 dark:text-crit-300">Inpatient priorities</h4>
+                              <h3 className="text-sm font-semibold text-crit-700 mb-2 dark:text-crit-300">Inpatient priorities</h3>
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
                                 <li>Continue anticoagulant reversal, monitor for hematoma expansion, and maintain SBP &lt;140.</li>
                                 <li>Evaluate IVH/hydrocephalus for EVD and monitor for neurologic decline.</li>
@@ -28877,7 +28903,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
                             <div>
                               <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-cobalt-600 dark:text-cobalt-300">Acute ischemic stroke</p>
-                              <h3 id="ais-command-center-heading" className="text-lg font-semibold text-slate-900 dark:text-ink">AIS Command Center</h3>
+                              <h2 id="ais-command-center-heading" className="text-lg font-semibold text-slate-900 dark:text-ink">AIS Command Center</h2>
                               <p className="text-xs text-slate-600 mt-0.5 dark:text-ink-2">Six evidence-bound decisions for the fastest reperfusion workflow. Each card is COR/LOE-graded against the 2026 AHA/ASA AIS guideline.</p>
                             </div>
                           </div>
@@ -28899,7 +28925,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-cobalt-600 dark:text-cobalt-300">{card.urgency}</p>
                                     <div className="flex flex-wrap items-start justify-between gap-2">
                                       <div className="min-w-0">
-                                        <h4 className="text-base font-semibold text-slate-900 leading-tight dark:text-ink">{card.title}</h4>
+                                        <h3 className="text-base font-semibold text-slate-900 leading-tight dark:text-ink">{card.title}</h3>
                                         <p className="text-xs text-slate-500 dark:text-mute">{card.shortLabel}</p>
                                       </div>
                                       <div className="flex items-center gap-1 shrink-0">
@@ -28937,7 +28963,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   {card.pathway && card.pathway.length > 0 ? (
                                     <div>
                                       <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 mb-1 dark:text-mute">Decision pathway</p>
-                                      <div className="overflow-x-auto -mx-1">
+                                      <div className="overflow-x-auto -mx-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: decision pathway">
                                         <table className="w-full text-xs border-collapse">
                                           <thead>
                                             <tr className="text-left text-[10px] uppercase tracking-wide text-slate-500 dark:text-mute">
@@ -29105,7 +29131,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
                         <div id="isch-evt" className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-4 dark:bg-cobalt-900 dark:border-cobalt-700">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
-                            <h3 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">EVT Eligibility — Quick Reference</h3>
+                            <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">EVT Eligibility — Quick Reference</h2>
                           </div>
 
                           {/* Adult EVT Flowchart */}
@@ -29259,7 +29285,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         </div>
                           <div className="bg-white border border-cobalt-200 rounded-md p-4 dark:bg-card dark:border-cobalt-700">
-                            <h4 className="text-sm font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Telestroke rapid decision stack (phone or video)</h4>
+                            <h3 className="text-sm font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Telestroke rapid decision stack (phone or video)</h3>
                             <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
                               <li>Confirm LKW and thrombolysis window; screen for contraindications and disabling deficit.</li>
                               <li>Use the EVT Eligibility Builder and activate transfer for LVO or large core candidates.</li>
@@ -29273,7 +29299,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </p>
                           </div>
                           <div className="bg-white border border-cobalt-200 rounded-md p-4 dark:bg-card dark:border-cobalt-700">
-                            <h4 className="text-sm font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Inpatient priorities</h4>
+                            <h3 className="text-sm font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Inpatient priorities</h3>
                             <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
                               <li>Post-lytic and post-EVT monitoring with phase-appropriate BP targets.</li>
                               <li>Manage complications (sICH, angioedema) and ensure nursing flowsheet compliance.</li>
@@ -29281,7 +29307,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </ul>
                           </div>
                           <div className="bg-white border border-cobalt-200 rounded-md p-4 space-y-2 dark:bg-card dark:border-cobalt-700">
-                            <h4 className="text-sm font-semibold text-cobalt-800 dark:text-cobalt-300">Post-EVT BP Guardrail</h4>
+                            <h3 className="text-sm font-semibold text-cobalt-800 dark:text-cobalt-300">Post-EVT BP Guardrail</h3>
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-2 text-sm">
                               <div>
                                 <label htmlFor="postevt-reperfusion-status" className="block text-xs text-slate-500 mb-1 dark:text-mute">Reperfusion status</label>
@@ -29373,7 +29399,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-white border border-cobalt-200 rounded-lg p-4 dark:bg-card dark:border-cobalt-700">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
                             <div>
-                              <h3 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">EVT Eligibility Builder</h3>
+                              <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">EVT Eligibility Builder</h2>
                               <p className="text-xs text-slate-500 dark:text-mute">Guideline-aligned decision support (adult algorithm). Pediatric criteria kept separate.</p>
                             </div>
                             <span className="text-xs text-slate-500 dark:text-mute">
@@ -29559,12 +29585,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div className="bg-white border border-cobalt-200 rounded-lg p-4 dark:bg-card dark:border-cobalt-700">
-                          <h3 className="text-lg font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Mobile Stroke Units (MSU)</h3>
+                          <h2 className="text-lg font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Mobile Stroke Units (MSU)</h2>
                           <p className="text-sm text-slate-700 dark:text-ink-2">Use MSUs where available for rapid stroke identification and IV thrombolysis delivery. MSUs reduce onset-to-treatment time and improve outcomes (Class I, LOE A).</p>
                         </div>
 
                         <div className="bg-white border border-cobalt-200 rounded-lg p-4 dark:bg-card dark:border-cobalt-700">
-                          <h3 className="text-lg font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Pediatric Reperfusion (28 days–18 years)</h3>
+                          <h2 className="text-lg font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Pediatric Reperfusion (28 days–18 years)</h2>
                           <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
                             <li>• MRI is preferred for diagnostic imaging when feasible.</li>
                             <li>• IV thrombolysis may be considered within 4.5h in select children at experienced centers (Class IIb).</li>
@@ -29576,7 +29602,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div id="isch-af" className="bg-white border border-cobalt-200 rounded-lg p-4 dark:bg-card dark:border-cobalt-700">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
                             <div>
-                              <h3 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">AF Anticoagulation Timing (CATALYST)</h3>
+                              <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">AF Anticoagulation Timing (CATALYST)</h2>
                               <p className="text-xs text-slate-500 dark:text-mute">Computes earliest start date based on NIHSS severity and protocol selection.</p>
                             </div>
                           </div>
@@ -29656,7 +29682,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             </div>
                             <div className="bg-slate-50 p-3 rounded border dark:bg-paper-2">
-                              <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Preferred DOACs</h4>
+                              <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Preferred DOACs</h3>
                               <ul className="text-sm space-y-1">
                                 <li>• <strong>Apixaban</strong> 5 mg BID (2.5 mg if age ≥80, weight ≤60 kg, or Cr ≥1.5)</li>
                                 <li>• <strong>Rivaroxaban</strong> 20 mg daily (15 mg if CrCl 15-50)</li>
@@ -29669,12 +29695,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div id="isch-bp" className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-4 dark:bg-cobalt-900 dark:border-cobalt-700">
-                          <h3 className="text-lg font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">Blood Pressure Management <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></h3>
+                          <h2 className="text-lg font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">Blood Pressure Management <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></h2>
 
                           <div className="bg-white border border-cobalt-200 rounded-lg p-3 mb-4 dark:bg-card dark:border-cobalt-700">
                             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                               <div>
-                                <h4 className="text-sm font-semibold text-cobalt-800 dark:text-cobalt-300">Phase-aware BP target</h4>
+                                <h3 className="text-sm font-semibold text-cobalt-800 dark:text-cobalt-300">Phase-aware BP target</h3>
                                 <p className="text-xs text-slate-500 dark:text-mute">Toggles update the target and highlight current BP status.</p>
                               </div>
                               <div className="flex flex-wrap gap-2">
@@ -29726,7 +29752,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">BP Goals</h4>
+                              <h3 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">BP Goals</h3>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Ischemic stroke:</strong> SBP &lt;220, DBP &lt;120</li>
                                 <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
@@ -29736,7 +29762,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Quick Reference</h4>
+                              <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Quick Reference</h3>
                               <ul className="text-sm space-y-1">
                                 <li><strong>First-line:</strong> Labetalol IV push OR Nicardipine drip</li>
                                 <li><strong>Second-line:</strong> Clevidipine or Hydralazine</li>
@@ -29752,8 +29778,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </summary>
                             <div className="px-3 pb-3 space-y-3">
                               <div className="bg-cobalt-50 border border-cobalt-100 rounded-lg p-3 dark:bg-cobalt-900">
-                                <h5 className="font-bold text-cobalt-800 mb-2 dark:text-cobalt-300">Labetalol IV Push Protocol</h5>
-                                <div className="overflow-x-auto">
+                                <h4 className="font-bold text-cobalt-800 mb-2 dark:text-cobalt-300">Labetalol IV Push Protocol</h4>
+                                <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: Labetalol IV push protocol">
                                   <table className="w-full text-sm border-collapse">
                                     <thead>
                                       <tr className="bg-cobalt-100 dark:bg-cobalt-900">
@@ -29781,8 +29807,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
 
                               <div className="bg-cobalt-50 border border-cobalt-100 rounded-lg p-3 dark:bg-cobalt-900">
-                                <h5 className="font-bold text-cobalt-800 mb-2 dark:text-cobalt-300">Nicardipine IV Drip Protocol</h5>
-                                <div className="overflow-x-auto">
+                                <h4 className="font-bold text-cobalt-800 mb-2 dark:text-cobalt-300">Nicardipine IV Drip Protocol</h4>
+                                <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: Nicardipine IV drip protocol">
                                   <table className="w-full text-sm border-collapse">
                                     <thead>
                                       <tr className="bg-cobalt-100 dark:bg-cobalt-900">
@@ -29808,7 +29834,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
 
                               <div className="bg-warn-50 border border-warn-100 rounded-lg p-3 dark:bg-warn-950">
-                                <h5 className="font-bold text-warn-800 mb-2 dark:text-warn-300">Clevidipine IV Drip Protocol</h5>
+                                <h4 className="font-bold text-warn-800 mb-2 dark:text-warn-300">Clevidipine IV Drip Protocol</h4>
                                 <ul className="text-sm space-y-1">
                                   <li>• Start: <strong>1-2 mg/hr</strong></li>
                                   <li>• Titrate: <strong>Double the rate q90 seconds</strong> until near goal</li>
@@ -29820,7 +29846,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
 
                               <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
-                                <h5 className="font-bold text-slate-700 mb-2 dark:text-ink-2">Hydralazine (Rescue)</h5>
+                                <h4 className="font-bold text-slate-700 mb-2 dark:text-ink-2">Hydralazine (Rescue)</h4>
                                 <ul className="text-sm space-y-1">
                                   <li>• <strong>10-20 mg IV q20-30 min PRN</strong> (max 40 mg/dose)</li>
                                   <li>• Onset: 10-20 min | Duration: 1-4 hours</li>
@@ -29833,7 +29859,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div id="isch-nbo" className="bg-sky-50 border border-sky-200 rounded-lg p-4 dark:bg-sky-950 dark:border-sky-800">
-                          <h3 className="text-lg font-semibold text-sky-800 mb-2 dark:text-sky-300">Normobaric Oxygen (NBO) Before EVT <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></h3>
+                          <h2 className="text-lg font-semibold text-sky-800 mb-2 dark:text-sky-300">Normobaric Oxygen (NBO) Before EVT <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></h2>
                           <p className="text-sm text-slate-700 mb-2 dark:text-ink-2">
                             In AIS within 6h with anterior LVO, NIHSS 10-20, and ASPECTS ≥6, NBO is reasonable before EVT.
                           </p>
@@ -29848,7 +29874,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-white border border-cobalt-200 rounded-lg p-4 dark:bg-card dark:border-cobalt-700">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
                             <div>
-                              <h3 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Nursing Flowsheet Generator</h3>
+                              <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Nursing Flowsheet Generator</h2>
                               <p className="text-xs text-slate-500 dark:text-mute">Auto-generates q15m ×4, then q30m ×4 checks from groin puncture.</p>
                             </div>
                             <button
@@ -29909,11 +29935,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div id="isch-postlytic" className="bg-crit-50 border border-crit-200 rounded-lg p-4 dark:bg-crit-950 dark:border-crit-800">
-                          <h3 className="text-lg font-semibold text-crit-800 mb-3 dark:text-crit-300">Post-Lytic ICH Protocol</h3>
+                          <h2 className="text-lg font-semibold text-crit-800 mb-3 dark:text-crit-300">Post-Lytic ICH Protocol</h2>
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold mb-2">Immediate Actions</h4>
+                              <h3 className="font-semibold mb-2">Immediate Actions</h3>
                               <ol className="text-sm space-y-1 list-decimal list-inside">
                                 <li>Stop thrombolytic if still running</li>
                                 <li>STAT non-contrast CT head + STAT blood draw (PT/INR, platelets, fibrinogen, PTT, TT, D-dimers, CBC, Type &amp; Cross)</li>
@@ -29922,7 +29948,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </ol>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold mb-2">Reversal (if blood on CT)</h4>
+                              <h3 className="font-semibold mb-2">Reversal (if blood on CT)</h3>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Cryoprecipitate:</strong> 2 pools IV over 10-30 min (empirically if CT delayed &gt;30 min and fibrinogen &lt;200)</li>
                                 <li><strong>TXA:</strong> 1 g IV over 10 min (or aminocaproic acid 4-5 g IV if TXA unavailable)</li>
@@ -29941,22 +29967,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <p className="text-xs text-slate-600 dark:text-ink-2">ECASS classification determines severity and guides anticoagulation restart decisions. Obtain CT 24h post-TNK or if neurological decline.</p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                               <div className="bg-ok-50 border border-ok-200 rounded-lg p-3 dark:bg-ok-950 dark:border-ok-800">
-                                <h4 className="font-bold text-ok-800 text-sm mb-1 dark:text-ok-300">HI-1 (Hemorrhagic Infarction Type 1)</h4>
+                                <h3 className="font-bold text-ok-800 text-sm mb-1 dark:text-ok-300">HI-1 (Hemorrhagic Infarction Type 1)</h3>
                                 <p className="text-xs text-slate-700 dark:text-ink-2">Small petechiae along the margins of the infarct</p>
                                 <p className="text-xs text-ok-700 mt-1 font-medium dark:text-ok-300">Clinical impact: Benign. No change in management. May restart anticoagulation per schedule.</p>
                               </div>
                               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 dark:bg-yellow-950 dark:border-yellow-800">
-                                <h4 className="font-bold text-yellow-800 text-sm mb-1 dark:text-yellow-300">HI-2 (Hemorrhagic Infarction Type 2)</h4>
+                                <h3 className="font-bold text-yellow-800 text-sm mb-1 dark:text-yellow-300">HI-2 (Hemorrhagic Infarction Type 2)</h3>
                                 <p className="text-xs text-slate-700 dark:text-ink-2">Confluent petechiae within the infarcted area, no mass effect</p>
                                 <p className="text-xs text-yellow-700 mt-1 font-medium dark:text-yellow-300">Clinical impact: Usually benign. Monitor closely. May delay anticoagulation restart by a few days.</p>
                               </div>
                               <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 dark:bg-orange-950 dark:border-orange-800">
-                                <h4 className="font-bold text-orange-800 text-sm mb-1 dark:text-orange-300">PH-1 (Parenchymal Hematoma Type 1)</h4>
+                                <h3 className="font-bold text-orange-800 text-sm mb-1 dark:text-orange-300">PH-1 (Parenchymal Hematoma Type 1)</h3>
                                 <p className="text-xs text-slate-700 dark:text-ink-2">Blood clot ≤30% of infarcted area, with mild mass effect</p>
                                 <p className="text-xs text-orange-700 mt-1 font-medium dark:text-orange-300">Clinical impact: Moderate. Hold anticoagulation/antiplatelets. Repeat imaging in 24-48h. Consider cautious restart after 1-2 weeks if stable.</p>
                               </div>
                               <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                <h4 className="font-bold text-crit-800 text-sm mb-1 dark:text-crit-300">PH-2 (Parenchymal Hematoma Type 2)</h4>
+                                <h3 className="font-bold text-crit-800 text-sm mb-1 dark:text-crit-300">PH-2 (Parenchymal Hematoma Type 2)</h3>
                                 <p className="text-xs text-slate-700 dark:text-ink-2">Blood clot &gt;30% of infarcted area, with significant mass effect (or remote hemorrhage)</p>
                                 <p className="text-xs text-crit-700 mt-1 font-medium dark:text-crit-300">Clinical impact: SEVERE. Symptomatic sICH. Associated with neurological deterioration and increased mortality. Hold all antithrombotics. Neurosurgery consult. Delay anticoagulation ≥4 weeks.</p>
                               </div>
@@ -29971,10 +29997,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </details>
 
                         <div id="isch-angioedema" className="bg-warn-50 border border-warn-300 rounded-lg p-4 dark:bg-warn-950 dark:border-warn-800">
-                          <h3 className="text-lg font-semibold text-warn-800 mb-3 dark:text-warn-300">Orolingual Angioedema Protocol</h3>
+                          <h2 className="text-lg font-semibold text-warn-800 mb-3 dark:text-warn-300">Orolingual Angioedema Protocol</h2>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Risk Factors</h4>
+                              <h3 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Risk Factors</h3>
                               <ul className="text-sm space-y-1">
                                 <li>• ACE inhibitor use</li>
                                 <li>• Insular cortex involvement</li>
@@ -29982,7 +30008,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Treatment</h4>
+                              <h3 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Treatment</h3>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Maintain airway</strong> — fiberoptic intubation if needed</li>
                                 <li><strong>Discontinue IV alteplase</strong> and hold ACE inhibitors</li>
@@ -29998,10 +30024,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div id="isch-antiplatelet" className="bg-ok-50 border border-ok-200 rounded-lg p-4 dark:bg-ok-950 dark:border-ok-800">
-                          <h3 className="text-lg font-semibold text-ok-800 mb-3 dark:text-ok-300">Antiplatelet Loading Protocol <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></h3>
+                          <h2 className="text-lg font-semibold text-ok-800 mb-3 dark:text-ok-300">Antiplatelet Loading Protocol <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></h2>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Minor Stroke / High-Risk TIA</h4>
+                              <h3 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Minor Stroke / High-Risk TIA</h3>
                               <ul className="text-sm space-y-1">
                                 <li><strong>DAPT x 21 days:</strong></li>
                                 <li>• ASA 325 mg load → 81 mg daily</li>
@@ -30011,7 +30037,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">NIHSS 4-5 or 24-72h Window</h4>
+                              <h3 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">NIHSS 4-5 or 24-72h Window</h3>
                               <ul className="text-sm space-y-1">
                                 <li><strong>DAPT is reasonable:</strong></li>
                                 <li>• Start within 24-72h if NIHSS 4-5 or delayed presentation</li>
@@ -30019,7 +30045,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Moderate-Severe Stroke (no lysis)</h4>
+                              <h3 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Moderate-Severe Stroke (no lysis)</h3>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Single antiplatelet:</strong></li>
                                 <li>• ASA 325 mg load within 24-48h of onset, then 81 mg daily</li>
@@ -30031,10 +30057,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div id="isch-statin" className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-4 dark:bg-cobalt-900 dark:border-cobalt-700">
-                          <h3 className="text-lg font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">Statin Initiation <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></h3>
+                          <h2 className="text-lg font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">Statin Initiation <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></h2>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">High-Intensity Statin (LDL &lt;70)</h4>
+                              <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">High-Intensity Statin (LDL &lt;70)</h3>
                               <ul className="text-sm space-y-1">
                                 <li>• <strong>Atorvastatin 80 mg</strong> daily (preferred)</li>
                                 <li>• <strong>Rosuvastatin 20-40 mg</strong> daily</li>
@@ -30044,7 +30070,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Special Considerations</h4>
+                              <h3 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Special Considerations</h3>
                               <ul className="text-sm space-y-1">
                                 <li>• sICAS (70-99%): high-intensity statin + LDL &lt;70</li>
                                 <li>• Check LFTs at baseline, recheck 4-12 weeks</li>
@@ -30055,7 +30081,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div id="isch-largecore" className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-4 dark:bg-cobalt-900 dark:border-cobalt-700">
-                          <h3 className="text-lg font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">Large Core EVT Selection</h3>
+                          <h2 className="text-lg font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">Large Core EVT Selection</h2>
                           <div className="bg-white border border-cobalt-300 rounded-lg p-3 mb-3 dark:bg-card dark:border-cobalt-700">
                             <p className="text-sm font-semibold text-cobalt-900 mb-1 dark:text-cobalt-300">Evidence Highlight (Conservative Interpretation)</p>
                             <p className="text-sm text-slate-700 dark:text-ink-2">Large core should not be an automatic exclusion. SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, and SVIN 2025 support EVT in many ASPECTS 3-5 patients when clinical and imaging context is favorable.</p>
@@ -30063,7 +30089,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Early Window (0-6h)</h4>
+                              <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Early Window (0-6h)</h3>
                               <ul className="text-sm space-y-1">
                                 <li>• ASPECTS 3-5: EVT recommended</li>
                                 <li>• ASPECTS 0-2: EVT reasonable in select patients without mass effect (age &lt;80)</li>
@@ -30072,7 +30098,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Late Window (6-24h)</h4>
+                              <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Late Window (6-24h)</h3>
                               <ul className="text-sm space-y-1">
                                 <li>• ASPECTS 3-5: EVT recommended</li>
                                 <li>• ASPECTS 0-2: Benefit uncertain</li>
@@ -30084,7 +30110,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {/* Large-core trial outcome matrix for goals-of-care counseling */}
                           <details className="mt-3">
                             <summary className="cursor-pointer text-sm font-semibold text-cobalt-800 hover:text-cobalt-600 dark:text-cobalt-300 dark:hover:text-cobalt-300">Trial Outcome Data for Goals-of-Care Counseling</summary>
-                            <div className="mt-2 overflow-x-auto">
+                            <div className="mt-2 overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: large-core trial outcome data">
                               <table className="w-full text-xs border-collapse">
                                 <thead>
                                   <tr className="bg-cobalt-100 dark:bg-cobalt-900">
@@ -30172,9 +30198,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div id="isch-postevt" className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-4 dark:bg-cobalt-900 dark:border-cobalt-700">
-                          <h3 className="text-lg font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">Post-EVT Management <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></h3>
+                          <h2 className="text-lg font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">Post-EVT Management <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></h2>
                           <div className="bg-white p-3 rounded border dark:bg-card">
-                            <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Post-Procedure Care</h4>
+                            <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Post-Procedure Care</h3>
                             <ul className="text-sm space-y-1">
                               <li>• Groin check q15 min x 4, q30 min x 4, then q1h</li>
                               <li>• Bed rest per protocol (typically 2-6h)</li>
@@ -30191,7 +30217,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="p-3 pt-0 space-y-2">
                               <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
                                 <div className="bg-crit-50 p-2 rounded border border-crit-100 dark:bg-crit-950">
-                                  <h5 className="font-semibold text-crit-800 mb-1 dark:text-crit-300">Expanding Hematoma</h5>
+                                  <h4 className="font-semibold text-crit-800 mb-1 dark:text-crit-300">Expanding Hematoma</h4>
                                   <ul className="text-slate-700 space-y-0.5 dark:text-ink-2">
                                     <li>- Firm, expanding groin mass</li>
                                     <li>- Pain disproportionate to exam</li>
@@ -30200,7 +30226,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </ul>
                                 </div>
                                 <div className="bg-warn-50 p-2 rounded border border-warn-100 dark:bg-warn-950">
-                                  <h5 className="font-semibold text-warn-800 mb-1 dark:text-warn-300">Pseudoaneurysm</h5>
+                                  <h4 className="font-semibold text-warn-800 mb-1 dark:text-warn-300">Pseudoaneurysm</h4>
                                   <ul className="text-slate-700 space-y-0.5 dark:text-ink-2">
                                     <li>- Pulsatile mass + bruit</li>
                                     <li>- Confirm with duplex US</li>
@@ -30209,7 +30235,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </ul>
                                 </div>
                                 <div className="bg-cobalt-50 p-2 rounded border border-cobalt-100 dark:bg-cobalt-900">
-                                  <h5 className="font-semibold text-cobalt-800 mb-1 dark:text-cobalt-300">Retroperitoneal Bleed</h5>
+                                  <h4 className="font-semibold text-cobalt-800 mb-1 dark:text-cobalt-300">Retroperitoneal Bleed</h4>
                                   <ul className="text-slate-700 space-y-0.5 dark:text-ink-2">
                                     <li>- Back/flank/abdominal pain</li>
                                     <li>- Unexplained tachycardia/hypotension</li>
@@ -30225,7 +30251,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div id="isch-mevo" className="bg-slate-50 border border-slate-300 rounded-lg p-4 dark:bg-paper-2 dark:border-strong">
-                          <h3 className="text-lg font-semibold text-slate-800 mb-3 dark:text-ink">Medium Vessel Occlusion (MeVO) EVT</h3>
+                          <h2 className="text-lg font-semibold text-slate-800 mb-3 dark:text-ink">Medium Vessel Occlusion (MeVO) EVT</h2>
                           <div className="bg-white p-3 rounded border dark:bg-card">
                             <p className="text-sm text-crit-700 font-semibold mb-2 dark:text-crit-300">Routine EVT for isolated MeVO (M2/M3/distal) is not supported by current RCT evidence</p>
                             <ul className="text-sm space-y-1">
@@ -30240,7 +30266,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div id="isch-contrast" className="bg-teal-50 border border-teal-200 rounded-lg p-4 dark:bg-teal-950 dark:border-teal-800">
-                          <h3 className="text-lg font-semibold text-teal-800 mb-3 dark:text-teal-300">Contrast Allergy + Suspected LVO Protocol</h3>
+                          <h2 className="text-lg font-semibold text-teal-800 mb-3 dark:text-teal-300">Contrast Allergy + Suspected LVO Protocol</h2>
                           {/* Renal Safety Prompt for Contrast */}
                           {(() => {
                             const cr = parseFloat(telestrokeNote.creatinine);
@@ -30289,10 +30315,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div id="isch-icad" className="bg-orange-50 border border-orange-200 rounded-lg p-4 dark:bg-orange-950 dark:border-orange-800">
-                          <h3 className="text-lg font-semibold text-orange-800 mb-3 dark:text-orange-300">Intracranial Atherosclerotic Disease (ICAD)</h3>
+                          <h2 className="text-lg font-semibold text-orange-800 mb-3 dark:text-orange-300">Intracranial Atherosclerotic Disease (ICAD)</h2>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">Symptomatic ICAD (70-99% stenosis)</h4>
+                              <h3 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">Symptomatic ICAD (70-99% stenosis)</h3>
                               <ul className="text-sm space-y-1">
                                 <li>• DAPT x 90 days (ASA + clopidogrel)</li>
                                 <li>• High-intensity statin (LDL &lt;70)</li>
@@ -30302,7 +30328,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">Moderate ICAD (50-69%)</h4>
+                              <h3 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">Moderate ICAD (50-69%)</h3>
                               <ul className="text-sm space-y-1">
                                 <li>• Single antiplatelet preferred</li>
                                 <li>• Aggressive risk factor management</li>
@@ -30314,11 +30340,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div id="isch-posterior" className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-4 dark:bg-cobalt-900 dark:border-cobalt-700">
-                          <h3 className="text-lg font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">Posterior Circulation Stroke</h3>
+                          <h2 className="text-lg font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">Posterior Circulation Stroke</h2>
                           <div className="space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h4 className="font-semibold text-crit-700 mb-2 dark:text-crit-300">Basilar Artery Occlusion (BAO)</h4>
+                                <h3 className="font-semibold text-crit-700 mb-2 dark:text-crit-300">Basilar Artery Occlusion (BAO)</h3>
                                 <ul className="text-sm space-y-1">
                                   <li><strong>Clinical presentation:</strong> Coma, quadriplegia, locked-in syndrome, bilateral cranial nerve palsies, vertigo, dysarthria, ataxia</li>
                                   <li><strong>EVT evidence (0-24h):</strong></li>
@@ -30330,7 +30356,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </ul>
                               </div>
                               <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">PC-ASPECTS Scoring</h4>
+                                <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">PC-ASPECTS Scoring</h3>
                                 <ul className="text-sm space-y-1">
                                   <li><strong>10 points</strong> (normal), subtract points for each affected region:</li>
                                   <li className="ml-3">Left/Right thalamus (1 each)</li>
@@ -30346,7 +30372,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Cerebellar Stroke</h4>
+                                <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Cerebellar Stroke</h3>
                                 <ul className="text-sm space-y-1">
                                   <li><strong>Key danger:</strong> Posterior fossa edema → brainstem compression → rapid deterioration</li>
                                   <li><strong>Monitor:</strong> Neuro checks q1h, repeat CT if any decline</li>
@@ -30357,7 +30383,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </ul>
                               </div>
                               <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Wallenberg Syndrome (Lateral Medullary)</h4>
+                                <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Wallenberg Syndrome (Lateral Medullary)</h3>
                                 <ul className="text-sm space-y-1">
                                   <li><strong>Vessel:</strong> PICA or vertebral artery</li>
                                   <li><strong>Classic findings:</strong></li>
@@ -30371,7 +30397,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                             {/* Cannot-Miss Posterior Circulation Patterns */}
                             <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 mt-4 dark:bg-crit-950 dark:border-crit-800">
-                              <h4 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">Cannot-Miss Posterior Circulation Patterns</h4>
+                              <h3 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">Cannot-Miss Posterior Circulation Patterns</h3>
                               <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">High-yield pattern recognition for ED triage. If any pattern is present, obtain emergent CTA head/neck and consult stroke neurology.</p>
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <ul className="text-sm space-y-1.5">
@@ -30393,11 +30419,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div id="isch-cad" className="bg-pink-50 border border-pink-200 rounded-lg p-4 dark:bg-pink-950 dark:border-pink-800">
-                          <h3 className="text-lg font-semibold text-pink-800 mb-3 dark:text-pink-300">Cervical Artery Dissection (CAD)</h3>
+                          <h2 className="text-lg font-semibold text-pink-800 mb-3 dark:text-pink-300">Cervical Artery Dissection (CAD)</h2>
                           <div className="space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h4 className="font-semibold text-pink-700 mb-2 dark:text-pink-300">Diagnosis</h4>
+                                <h3 className="font-semibold text-pink-700 mb-2 dark:text-pink-300">Diagnosis</h3>
                                 <ul className="text-sm space-y-1">
                                   <li><strong>Classic triad (carotid):</strong> ipsilateral neck pain/headache, partial Horner syndrome, cerebral ischemia</li>
                                   <li><strong>Vertebral:</strong> occipital/posterior neck pain, lateral medullary or cerebellar infarct</li>
@@ -30409,7 +30435,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </ul>
                               </div>
                               <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h4 className="font-semibold text-pink-700 mb-2 dark:text-pink-300">Antithrombotic Management</h4>
+                                <h3 className="font-semibold text-pink-700 mb-2 dark:text-pink-300">Antithrombotic Management</h3>
                                 <ul className="text-sm space-y-1">
                                   <li><strong>CADISS trial:</strong> Antiplatelet vs anticoagulation — NO significant difference in stroke recurrence or death</li>
                                   <li><strong>Either approach acceptable</strong> (Class IIa, LOE B-R)</li>
@@ -30427,7 +30453,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h4 className="font-semibold text-pink-700 mb-2 dark:text-pink-300">Follow-Up Imaging</h4>
+                                <h3 className="font-semibold text-pink-700 mb-2 dark:text-pink-300">Follow-Up Imaging</h3>
                                 <ul className="text-sm space-y-1">
                                   <li>• CTA or MRA neck at 3-6 months to assess healing</li>
                                   <li>• Most dissections heal within 3-6 months</li>
@@ -30437,7 +30463,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </ul>
                               </div>
                               <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h4 className="font-semibold text-pink-700 mb-2 dark:text-pink-300">Special Populations</h4>
+                                <h3 className="font-semibold text-pink-700 mb-2 dark:text-pink-300">Special Populations</h3>
                                 <ul className="text-sm space-y-1">
                                   <li><strong>Fibromuscular dysplasia (FMD):</strong> Screen all cervical/cerebral vessels (multivessel disease common). Screen renal arteries.</li>
                                   <li><strong>Connective tissue disorders:</strong> Genetic testing if recurrent dissection, family history, or phenotypic features. Vascular EDS (type IV) = high mortality risk.</li>
@@ -30447,7 +30473,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             </div>
                             <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 mt-3 dark:bg-crit-950 dark:border-crit-800">
-                              <h4 className="font-semibold text-crit-800 text-sm mb-2 dark:text-crit-300">Intracranial vs Extracranial Vertebral Artery Dissection</h4>
+                              <h3 className="font-semibold text-crit-800 text-sm mb-2 dark:text-crit-300">Intracranial vs Extracranial Vertebral Artery Dissection</h3>
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div className="text-xs space-y-1">
                                   <p className="font-semibold text-slate-700 dark:text-ink-2">Extracranial VA dissection:</p>
@@ -30475,10 +30501,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div id="isch-seizure" className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 dark:bg-yellow-950 dark:border-yellow-800">
-                          <h3 className="text-lg font-semibold text-yellow-800 mb-3 dark:text-yellow-300">Seizure Prophylaxis in Ischemic Stroke</h3>
+                          <h2 className="text-lg font-semibold text-yellow-800 mb-3 dark:text-yellow-300">Seizure Prophylaxis in Ischemic Stroke</h2>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-yellow-700 mb-2 dark:text-yellow-300">AHA/ASA Recommendations</h4>
+                              <h3 className="font-semibold text-yellow-700 mb-2 dark:text-yellow-300">AHA/ASA Recommendations</h3>
                               <ul className="text-sm space-y-1">
                                 <li>• Routine prophylactic AEDs are <strong>NOT recommended</strong> (Class III: No Benefit, LOE A)</li>
                                 <li>• Treat acute symptomatic seizures with standard AEDs</li>
@@ -30487,7 +30513,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h4 className="font-semibold text-yellow-700 mb-2 dark:text-yellow-300">When to Treat</h4>
+                              <h3 className="font-semibold text-yellow-700 mb-2 dark:text-yellow-300">When to Treat</h3>
                               <ul className="text-sm space-y-1">
                                 <li>• Witnessed clinical seizure or confirmed EEG seizure activity</li>
                                 <li>• First-line: <strong>Levetiracetam</strong> 1000-1500 mg IV load, then 500-1000 mg BID</li>
@@ -30529,7 +30555,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div id="mgmt-tabpanel-sah" role="tabpanel" aria-labelledby="mgmt-tab-sah" className="space-y-4">
                         {/* SAH Quick Summary */}
                         <div className="bg-white border-l-4 border-l-purple-600 border border-line rounded-lg p-4 dark:bg-card">
-                          <h3 className="text-lg font-bold text-cobalt-900 mb-1 dark:text-cobalt-300">Subarachnoid Hemorrhage Management</h3>
+                          <h2 className="text-lg font-bold text-cobalt-900 mb-1 dark:text-cobalt-300">Subarachnoid Hemorrhage Management</h2>
                           <p className="text-sm text-slate-600 dark:text-ink-2">2023 AHA/ASA Guidelines for Management of Aneurysmal SAH</p>
                         </div>
 
@@ -30545,10 +30571,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Acute SAH Protocol */}
                         <div className="bg-white border border-line rounded-lg p-4 dark:bg-card">
-                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
+                          <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
                             <span className="w-6 h-6 rounded-full bg-cobalt-600 text-white text-xs flex items-center justify-center font-bold">1</span>
                             Immediate Actions (First 6 Hours)
-                          </h4>
+                          </h3>
                           <div className="space-y-2">
                             {[
                               { step: 'Secure airway', detail: 'Intubate if GCS ≤8; elevate HOB 30°', urgent: true },
@@ -30573,10 +30599,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Fisher Grade & Vasospasm Risk */}
                         <div className="bg-white border border-line rounded-lg p-4 dark:bg-card">
-                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
+                          <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
                             <span className="w-6 h-6 rounded-full bg-cobalt-600 text-white text-xs flex items-center justify-center font-bold">2</span>
                             Fisher Grade — Vasospasm Risk Prediction
-                          </h4>
+                          </h3>
                           <div className="space-y-2">
                             {[
                               { grade: '1', ct: 'No blood detected', risk: '~0%', active: 'bg-ok-600 text-white border-ok-600', badge: 'text-ok-700 bg-ok-50 dark:text-ok-300 dark:bg-ok-950' },
@@ -30638,13 +30664,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Vasospasm Monitoring & DCI */}
                         <div className="bg-white border border-line rounded-lg p-4 dark:bg-card">
-                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
+                          <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
                             <span className="w-6 h-6 rounded-full bg-cobalt-600 text-white text-xs flex items-center justify-center font-bold">3</span>
                             Vasospasm Monitoring & DCI Management
-                          </h4>
+                          </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-cobalt-50 rounded-lg p-3 dark:bg-cobalt-900">
-                              <h5 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Monitoring Protocol</h5>
+                              <h4 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Monitoring Protocol</h4>
                               <ul className="space-y-1.5 text-sm text-slate-700 dark:text-ink-2">
                                 <li className="flex items-start gap-2"><span className="text-cobalt-600 font-bold dark:text-cobalt-300">&#x2022;</span> Daily TCD: Days 3-14 (peak vasospasm window)</li>
                                 <li className="flex items-start gap-2"><span className="text-cobalt-600 font-bold dark:text-cobalt-300">&#x2022;</span> MCA velocity &gt;120 cm/s = mild spasm</li>
@@ -30654,7 +30680,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </ul>
                             </div>
                             <div className="bg-crit-50 rounded-lg p-3 dark:bg-crit-950">
-                              <h5 className="font-semibold text-crit-800 text-sm mb-2 dark:text-crit-300">DCI Treatment Escalation</h5>
+                              <h4 className="font-semibold text-crit-800 text-sm mb-2 dark:text-crit-300">DCI Treatment Escalation</h4>
                               <div className="space-y-2 text-sm text-slate-700 dark:text-ink-2">
                                 <div className="flex items-start gap-2">
                                   <span className="bg-crit-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0">1</span>
@@ -30675,11 +30701,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Electrolyte Management */}
                         <div className="bg-white border border-line rounded-lg p-4 dark:bg-card">
-                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
+                          <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
                             <span className="w-6 h-6 rounded-full bg-cobalt-600 text-white text-xs flex items-center justify-center font-bold">4</span>
                             Electrolyte Monitoring — CSW vs SIADH
-                          </h4>
-                          <div className="overflow-x-auto">
+                          </h3>
+                          <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: cerebral salt wasting versus SIADH differential">
                             <table className="w-full text-sm border-collapse">
                               <thead>
                                 <tr className="bg-slate-100 dark:bg-paper-2">
@@ -30713,13 +30739,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Rebleeding Risk */}
                         <div className="bg-white border border-line rounded-lg p-4 dark:bg-card">
-                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
+                          <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
                             <span className="w-6 h-6 rounded-full bg-cobalt-600 text-white text-xs flex items-center justify-center font-bold">5</span>
                             Rebleeding Risk & Aneurysm Securing
-                          </h4>
+                          </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-crit-50 rounded-lg p-3 dark:bg-crit-950">
-                              <h5 className="font-semibold text-crit-800 text-sm mb-2 dark:text-crit-300">Rebleeding Risk Timeline</h5>
+                              <h4 className="font-semibold text-crit-800 text-sm mb-2 dark:text-crit-300">Rebleeding Risk Timeline</h4>
                               <div className="space-y-1 text-sm">
                                 <div className="flex justify-between"><span>First 6 hours</span><span className="font-bold text-crit-700 dark:text-crit-300">~15% (peak risk)</span></div>
                                 <div className="w-full bg-crit-200 rounded-full h-3"><div className="bg-crit-600 h-3 rounded-full" style={{width: '100%'}}></div></div>
@@ -30733,7 +30759,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                             <div className="space-y-3">
                               <div className="bg-cobalt-50 rounded-lg p-3 dark:bg-cobalt-900">
-                                <h5 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Securing Strategy</h5>
+                                <h4 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Securing Strategy</h4>
                                 <ul className="space-y-1 text-sm text-slate-700 dark:text-ink-2">
                                   <li><strong>Coiling (endovascular):</strong> Preferred for posterior circulation, elderly, poor-grade, basilar tip. Class I.</li>
                                   <li><strong>Clipping (surgical):</strong> Consider for MCA, large/wide-necked aneurysms, concurrent hematoma needing evacuation.</li>
@@ -30741,7 +30767,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </ul>
                               </div>
                               <div className="bg-warn-50 rounded-lg p-3 dark:bg-warn-950">
-                                <h5 className="font-semibold text-warn-800 text-sm mb-2 dark:text-warn-300">Risk Factors for Rebleeding</h5>
+                                <h4 className="font-semibold text-warn-800 text-sm mb-2 dark:text-warn-300">Risk Factors for Rebleeding</h4>
                                 <ul className="space-y-1 text-sm text-slate-700 dark:text-ink-2">
                                   <li>&#x2022; Unsecured aneurysm (most important)</li>
                                   <li>&#x2022; Poor clinical grade (H&H 4-5)</li>
@@ -30756,10 +30782,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Post-Securing BP Targets */}
                         <div className="bg-white border border-line rounded-lg p-4 dark:bg-card">
-                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
+                          <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
                             <span className="w-6 h-6 rounded-full bg-cobalt-600 text-white text-xs flex items-center justify-center font-bold">6</span>
                             BP Targets by Phase
-                          </h4>
+                          </h3>
                           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             {[
                               { phase: 'Pre-Securing', target: 'SBP <160', detail: 'Until aneurysm clipped/coiled', bg: 'bg-crit-50 border-crit-200 dark:bg-crit-950 dark:border-crit-800', text: 'text-crit-700 dark:text-crit-300' },
@@ -30791,7 +30817,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 { cat: 'Positioning', items: ['HOB 30°', 'Quiet, low-stimulation environment', 'Stool softeners (avoid Valsalva)', 'Activity restrictions until aneurysm secured'] }
                               ].map(section => (
                                 <div key={section.cat} className="bg-slate-50 rounded-lg p-3 dark:bg-paper-2">
-                                  <h5 className="font-semibold text-slate-800 text-sm mb-1 dark:text-ink">{section.cat}</h5>
+                                  <h4 className="font-semibold text-slate-800 text-sm mb-1 dark:text-ink">{section.cat}</h4>
                                   <ul className="space-y-0.5">
                                     {section.items.map((item, i) => (
                                       <li key={i} className="text-xs text-slate-600 flex items-start gap-1 dark:text-ink-2">
@@ -30813,7 +30839,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div id="mgmt-tabpanel-tia" role="tabpanel" aria-labelledby="mgmt-tab-tia" className="space-y-4">
                         {/* TIA Header */}
                         <div className="bg-white border-l-4 border-l-orange-500 border border-line rounded-lg p-4 dark:bg-card">
-                          <h3 className="text-lg font-bold text-orange-900 mb-1 dark:text-orange-300">TIA Management & Secondary Prevention</h3>
+                          <h2 className="text-lg font-bold text-orange-900 mb-1 dark:text-orange-300">TIA Management & Secondary Prevention</h2>
                           <p className="text-sm text-slate-600 dark:text-ink-2">Urgent evaluation and risk reduction for transient ischemic attack</p>
                         </div>
 
@@ -30823,7 +30849,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
 
                         <div className="bg-white border border-orange-200 rounded-lg p-4 space-y-3 dark:bg-card dark:border-orange-800">
-                          <h4 className="font-bold text-orange-900 dark:text-orange-300">TIA Disposition Engine</h4>
+                          <h3 className="font-bold text-orange-900 dark:text-orange-300">TIA Disposition Engine</h3>
                           <p className="text-xs text-slate-600 dark:text-ink-2">ABCD2 + imaging/etiology reliability overlay (AHA TIA ED 2023 aligned). This card is used to drive disposition decisions, not ABCD2 alone.</p>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
                             {[
@@ -30880,11 +30906,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* ABCD2 Risk Stratification */}
                         <div className="bg-white border border-line rounded-lg p-4 dark:bg-card">
-                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
+                          <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
                             <span className="w-6 h-6 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center font-bold">1</span>
                             Risk Stratification (ABCD2)
-                          </h4>
-                          <div className="overflow-x-auto">
+                          </h3>
+                          <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: ABCD2 stroke risk score">
                             <table className="w-full text-sm border-collapse">
                               <thead>
                                 <tr className="bg-slate-100 dark:bg-paper-2">
@@ -30929,13 +30955,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Urgent Imaging Protocol */}
                         <div className="bg-white border border-line rounded-lg p-4 dark:bg-card">
-                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
+                          <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
                             <span className="w-6 h-6 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center font-bold">2</span>
                             Urgent Imaging Protocol
-                          </h4>
+                          </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-cobalt-50 rounded-lg p-3 dark:bg-cobalt-900">
-                              <h5 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Brain Imaging</h5>
+                              <h4 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Brain Imaging</h4>
                               <ul className="space-y-1.5 text-sm text-slate-700 dark:text-ink-2">
                                 <li className="flex items-start gap-2"><span className="text-cobalt-600 font-bold dark:text-cobalt-300">1.</span> <strong>MRI DWI</strong> (preferred) — 80% sensitivity for acute ischemia. Obtain within 24h.</li>
                                 <li className="flex items-start gap-2"><span className="text-cobalt-600 font-bold dark:text-cobalt-300">2.</span> <strong>CT Head</strong> — if MRI unavailable. Low sensitivity for TIA but rules out hemorrhage.</li>
@@ -30943,7 +30969,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </ul>
                             </div>
                             <div className="bg-warn-50 rounded-lg p-3 dark:bg-warn-950">
-                              <h5 className="font-semibold text-warn-800 text-sm mb-2 dark:text-warn-300">Vascular Imaging</h5>
+                              <h4 className="font-semibold text-warn-800 text-sm mb-2 dark:text-warn-300">Vascular Imaging</h4>
                               <ul className="space-y-1.5 text-sm text-slate-700 dark:text-ink-2">
                                 <li className="flex items-start gap-2"><span className="text-warn-700 font-bold dark:text-warn-300">1.</span> <strong>CTA Head & Neck</strong> (preferred) or MRA — Obtain STAT</li>
                                 <li className="flex items-start gap-2"><span className="text-warn-700 font-bold dark:text-warn-300">2.</span> <strong>Carotid duplex</strong> — if anterior circulation TIA + CTA not done</li>
@@ -30955,13 +30981,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* DAPT Initiation */}
                         <div className="bg-white border border-line rounded-lg p-4 dark:bg-card">
-                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
+                          <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
                             <span className="w-6 h-6 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center font-bold">3</span>
                             Antiplatelet Therapy — DAPT Protocol
-                          </h4>
+                          </h3>
                           <div className="space-y-3">
                             <div className="bg-ok-50 border border-ok-200 rounded-lg p-3 dark:bg-ok-950 dark:border-ok-800">
-                              <h5 className="font-semibold text-ok-800 text-sm mb-2 dark:text-ok-300">High-Risk TIA or Minor Stroke (NIHSS ≤3) — CHANCE/POINT Protocol</h5>
+                              <h4 className="font-semibold text-ok-800 text-sm mb-2 dark:text-ok-300">High-Risk TIA or Minor Stroke (NIHSS ≤3) — CHANCE/POINT Protocol</h4>
                               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
                                 <div className="bg-white rounded p-2 border border-ok-100 dark:bg-card">
                                   <div className="font-semibold text-slate-800 dark:text-ink">Day 1 (Loading)</div>
@@ -30984,8 +31010,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <strong>If AF identified:</strong> Switch from DAPT to anticoagulation (DOAC preferred). Do NOT combine long-term DAPT + anticoagulation.
                             </div>
                             <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                              <h5 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Phenotype-Based DAPT Quick Matrix</h5>
-                              <div className="overflow-x-auto">
+                              <h4 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Phenotype-Based DAPT Quick Matrix</h4>
+                              <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: phenotype-based DAPT quick matrix">
                                 <table className="w-full text-xs border-collapse">
                                   <thead>
                                     <tr className="bg-white dark:bg-card">
@@ -31036,10 +31062,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Etiologic Workup */}
                         <div className="bg-white border border-line rounded-lg p-4 dark:bg-card">
-                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
+                          <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
                             <span className="w-6 h-6 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center font-bold">4</span>
                             Etiologic Workup Checklist
-                          </h4>
+                          </h3>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                             {[
                               { cat: 'Cardiac', items: ['12-Lead ECG', 'Continuous telemetry (≥24h)', 'TTE with bubble study', 'Extended cardiac monitoring (14-30 day) if no AF on telemetry'], bg: 'bg-crit-50 dark:bg-crit-950', heading: 'text-crit-800 dark:text-crit-300', bullet: 'text-crit-400' },
@@ -31047,7 +31073,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               { cat: 'Laboratory', items: ['CBC, BMP, HbA1c', 'Fasting lipid panel', 'TSH', 'ESR/CRP if vasculitis suspected', 'Hypercoagulable panel if age <50 or cryptogenic'], bg: 'bg-ok-50 dark:bg-ok-950', heading: 'text-ok-800 dark:text-ok-300', bullet: 'text-ok-400' }
                             ].map(section => (
                               <div key={section.cat} className={`${section.bg} rounded-lg p-3`}>
-                                <h5 className={`font-semibold ${section.heading} text-sm mb-2`}>{section.cat}</h5>
+                                <h4 className={`font-semibold ${section.heading} text-sm mb-2`}>{section.cat}</h4>
                                 <ul className="space-y-1">
                                   {section.items.map((item, i) => (
                                     <li key={i} className="text-xs text-slate-700 flex items-start gap-1 dark:text-ink-2">
@@ -31062,10 +31088,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Carotid Stenosis Decision Tree */}
                         <div className="bg-white border border-line rounded-lg p-4 dark:bg-card">
-                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
+                          <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2 dark:text-ink">
                             <span className="w-6 h-6 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center font-bold">5</span>
                             Carotid Stenosis Management
-                          </h4>
+                          </h3>
                           <div className="space-y-2">
                             {[
                               { stenosis: '70-99% Symptomatic', action: 'CEA within 2 weeks (Class I, LOE A)', detail: 'CAS reasonable alternative if high surgical risk. Best outcomes if revascularization within 14 days.', rowBg: 'bg-crit-50 border-crit-200 dark:bg-crit-950 dark:border-crit-800', badge: 'text-crit-700 bg-crit-100 dark:text-crit-300 dark:bg-crit-950' },
@@ -31098,7 +31124,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 { cat: 'Diabetes & Lifestyle', items: ['HbA1c target <7%', 'GLP-1 RA (semaglutide/liraglutide) — CV benefit', 'Smoking cessation (varenicline/NRT)', 'Mediterranean diet', 'Exercise: 150 min/week moderate intensity'] }
                               ].map(section => (
                                 <div key={section.cat} className="bg-slate-50 rounded-lg p-3 dark:bg-paper-2">
-                                  <h5 className="font-semibold text-slate-800 text-sm mb-1 dark:text-ink">{section.cat}</h5>
+                                  <h4 className="font-semibold text-slate-800 text-sm mb-1 dark:text-ink">{section.cat}</h4>
                                   <ul className="space-y-0.5">
                                     {section.items.map((item, i) => (
                                       <li key={i} className="text-xs text-slate-600 dark:text-ink-2">&#x2022; {item}</li>
@@ -31299,7 +31325,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Long-term Management */}
                         <div className="bg-white border border-cobalt-200 rounded-lg p-4 dark:bg-card dark:border-cobalt-700">
                           <h3 className="text-base font-bold text-cobalt-800 mb-3 dark:text-cobalt-300">Long-term Anticoagulation</h3>
-                          <div className="overflow-x-auto">
+                          <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: long-term anticoagulation scenarios">
                             <table className="w-full text-sm border-collapse">
                               <thead>
                                 <tr className="bg-cobalt-50 dark:bg-cobalt-900">
@@ -31912,7 +31938,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               Standard vs comfort-care-excluded cohort — teaching comparison
                             </summary>
                             <div className="px-3 pb-3">
-                              <div className="overflow-x-auto">
+                              <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: standard versus comfort-care-excluded cohort comparison">
                                 <table className="w-full border-collapse text-xs">
                                   <thead>
                                     <tr className="text-left text-slate-600 border-b border-line dark:text-ink-2">
@@ -34636,7 +34662,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <div id="ref-guidelines" className="bg-white border border-cobalt-200 rounded-lg p-4 dark:bg-card dark:border-cobalt-700">
                       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <div>
-                          <h3 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Guideline Library</h3>
+                          <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Guideline Library</h2>
                           <p className="text-xs text-slate-600 dark:text-ink-2">Full COR/LOE recommendations with direct publisher PDF links.</p>
                         </div>
                         <span className="text-xs text-cobalt-700 font-medium dark:text-cobalt-300">{guidelineLibraryResultsCount} recommendations</span>

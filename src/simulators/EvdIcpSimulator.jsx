@@ -444,7 +444,7 @@ export function EvdIcpSimulator() {
         {/* Waveform panel */}
         <section className="bg-white border border-line rounded-lg p-3 dark:bg-card">
           <div className="flex items-center justify-between mb-2">
-            <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">ICP Waveform</h4>
+            <h3 className="text-sm font-semibold text-slate-800 dark:text-ink">ICP Waveform</h3>
             <span className="font-mono text-2xs text-slate-500 dark:text-mute">P1 percussion · P2 tidal · P3 dicrotic</span>
           </div>
           <canvas ref={canvasRef} width={520} height={180} className="evd-canvas" role="img"

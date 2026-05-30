@@ -230,9 +230,12 @@ function inferEvidenceType(study) {
   return 'rct';
 }
 
-// Best-effort topic family from study content.
+// Best-effort topic family from study content. Use ONLY the curated title +
+// bottom line: the briefing's `picoQuestion` is generic boilerplate ("...improve
+// functional recovery (O)?") that would otherwise false-match the rehabilitation
+// family (the word "recovery") for every study.
 function inferTopic(study) {
-  const text = `${study.title} ${study.bottomLine} ${study.picoQuestion}`.toLowerCase();
+  const text = `${study.title} ${study.bottomLine}`.toLowerCase();
   if (/intracerebral h(a)?emorrhage|\bich\b|hematoma|lobar/.test(text)) return 'ich';
   if (/thrombectomy|endovascular|evt|large-core|medium.?vessel|mevo|reperfusion|recanaliz/.test(text)) return 'evt';
   if (/thrombolysis|tenecteplase|alteplase|tnk|glenzocimab|tirofiban/.test(text)) return 'thrombolysis';
@@ -310,6 +313,62 @@ function inferDirection(study) {
   return 'neutral';
 }
 
+// ── CLINICAL-SAFETY INVARIANT: appraisal.results must be TRUTHFUL-OR-NEUTRAL ──
+//
+// The upstream briefing agent stamps a generic, ALWAYS-POSITIVE "Primary Results"
+// block onto most studies, e.g.:
+//   "Statistical models: Robust statistical modeling demonstrating statistically
+//    significant correlation with the primary endpoint (p < 0.05). Main outcomes:
+//    The primary endpoint was met with a statistically significant difference
+//    favoring the active intervention group (p < 0.05). Main outcomes showed
+//    improvement in functional status without an increase in mortality. ..."
+//
+// This is FALSE for negative/neutral/harm trials (e.g. ESCAPE-MeVO, DISTAL,
+// STEP-Mild, FOCUS) and self-contradicts the card's own truthful bottom line.
+// We must NEVER render a fabricated "endpoint was met / favoring the active
+// intervention / p<0.05 / no mortality increase" assertion that isn't true for
+// that specific trial — the same no-fabrication principle the PMID invariant
+// enforces, applied to appraisal text.
+//
+// Detector: recognise the templated boilerplate by its signature phrases.
+function isFabricatedResults(results) {
+  const s = String(results || '').toLowerCase();
+  return (
+    /robust statistical modeling demonstrating statistically significant correlation/.test(s) ||
+    /favoring the active intervention group/.test(s) ||
+    /improvement in functional status without an increase in mortality/.test(s)
+  );
+}
+
+// Build a TRUTHFUL-OR-NEUTRAL results string for items whose briefing "results"
+// block is the fabricated positive boilerplate. We do NOT invent statistics:
+//   • If the curated bottom line states a real result, restate THAT verified
+//     fact (the same human-written sentence the card already shows).
+//   • Otherwise emit a neutral, non-asserting pointer to the primary publication.
+// The field stays present and non-empty so the existing app.jsx "Results."
+// renderer always has content — no UI change required.
+function truthfulOrNeutralResults(study) {
+  const bl = (study.bottomLine || '')
+    .replace(/^Bottom line:\s*/i, '')
+    .replace(/\s*Clinical implications:.*$/i, '')
+    .replace(/\s*Practice impact:.*$/i, '')
+    .replace(/\s+/g, ' ')
+    .replace(/\.\.+$/, '.')
+    .trim();
+  if (bl) {
+    return `Key finding (from the curated appraisal): ${bl} See the primary publication for full endpoint data, effect sizes, and safety results.`;
+  }
+  return 'See the primary publication for endpoint results, effect sizes, and safety data.';
+}
+
+// Final, safe value for the rendered appraisal.results field: pass real,
+// study-specific results through unchanged; replace fabricated positive
+// boilerplate with a truthful-or-neutral line.
+function safeResults(study) {
+  if (isFabricatedResults(study.results)) return truthfulOrNeutralResults(study);
+  return study.results || 'See the primary publication for endpoint results.';
+}
+
 // The "What it changes" card line: keep the curated Bottom line + Practice
 // impact, but drop the generic "Clinical implications: Suggests that targeted
 // intervention in <Family> ..." boilerplate tail that several lower-tier study
@@ -371,9 +430,20 @@ function main() {
   const items = [];
   const sourceGaps = [];
 
-  for (const study of studies) {
-    const entry = byId[study.id];
+  for (const rawStudy of studies) {
+    const entry = byId[rawStudy.id];
     const isVerified = !!(entry && entry.status === 'verified' && entry.pmid);
+
+    // Prefer the PubMed-CONFIRMED title (from the verification cache) over the
+    // briefing's title when verified — the briefing title is occasionally wrong
+    // (e.g. the microplastics systematic review was mislabeled with an NEJM
+    // trial-style title). The verified title also feeds evidence-type/topic
+    // inference so a "Systematic Review" is not misclassified as an RCT.
+    const verifiedTitle =
+      isVerified && entry.verifiedTitle
+        ? String(entry.verifiedTitle).replace(/\.\s*$/, '').trim()
+        : '';
+    const study = verifiedTitle ? { ...rawStudy, title: verifiedTitle } : rawStudy;
 
     const evidenceType = inferEvidenceType(study);
     const topic = inferTopic(study);
@@ -399,7 +469,9 @@ function main() {
         bottomLine: study.bottomLine,
         picoQuestion: study.picoQuestion,
         methodology: study.methodology,
-        results: study.results
+        // Clinical-safety invariant: never emit the fabricated always-positive
+        // "Results." boilerplate for negative/neutral trials. See safeResults().
+        results: safeResults(study)
       }
     };
 
