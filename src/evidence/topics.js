@@ -42,6 +42,7 @@ export const topics = [
   makeTopic({ id: 'af-after-ich', label: 'Anticoagulation in AF after ICH', parentId: 'secondary-prevention' }),
   makeTopic({ id: 'pfo-closure', label: 'PFO closure', parentId: 'secondary-prevention' }),
   makeTopic({ id: 'carotid-revasc', label: 'Carotid revascularization', parentId: 'secondary-prevention' }),
+  makeTopic({ id: 'esus', label: 'Embolic stroke of undetermined source (ESUS)', parentId: 'secondary-prevention' }),
 
   makeTopic({ id: 'rehabilitation', label: 'Stroke rehabilitation' }),
   makeTopic({ id: 'cognitive-trajectories', label: 'Post-stroke cognitive trajectories' }),
