@@ -729,17 +729,17 @@ export const PHQ9Screen = () => {
       <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">Over the past 2 weeks, how often have you been bothered by:</p>
       <table className="w-full text-xs">
         <thead className="bg-slate-100 dark:bg-paper-2">
-          <tr><th className="text-left px-2 py-1">Question</th>{['Not at all (0)', 'Several days (1)', 'More than half (2)', 'Nearly every day (3)'].map((l, i) => (
-            <th key={i} className="px-1 py-1 text-center">{l}</th>
+          <tr><th scope="col" className="text-left px-2 py-1">Question</th>{['Not at all (0)', 'Several days (1)', 'More than half (2)', 'Nearly every day (3)'].map((l, i) => (
+            <th key={i} scope="col" id={`phq-col-${i}`} className="px-1 py-1 text-center">{l}</th>
           ))}</tr>
         </thead>
         <tbody>
           {PHQ9_QUESTIONS.map((q, i) => (
             <tr key={i} className="border-b">
-              <td className="px-2 py-1">{q}</td>
-              {[0, 1, 2, 3].map((v) => (
+              <th scope="row" id={`phq-row-${i}`} className="text-left font-normal px-2 py-1">{q}</th>
+              {[0, 1, 2, 3].map((v, ci) => (
                 <td key={v} className="px-1 py-1 text-center">
-                  <input type="radio" name={`phq${i}`} value={v} checked={parseInt(answers[i], 10) === v} onChange={() => setAnswers(answers.map((x, j) => j === i ? String(v) : x))} />
+                  <input type="radio" name={`phq${i}`} value={v} aria-label={`${q} — ${['Not at all (0)', 'Several days (1)', 'More than half (2)', 'Nearly every day (3)'][ci]}`} checked={parseInt(answers[i], 10) === v} onChange={() => setAnswers(answers.map((x, j) => j === i ? String(v) : x))} />
                 </td>
               ))}
             </tr>

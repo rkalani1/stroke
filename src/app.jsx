@@ -31190,7 +31190,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </label>
                             {telestrokeNote.cvtAnticoagStarted && (
                               <div className="ml-8 mb-2">
-                                <select value={telestrokeNote.cvtAnticoagType || ''}
+                                <select aria-label="Anticoagulation agent" value={telestrokeNote.cvtAnticoagType || ''}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, cvtAnticoagType: v})); }}
                                   className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm dark:border-strong">
                                   <option value="">-- Select agent --</option>
@@ -33013,8 +33013,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Predicts 5-year absolute risk of rupture for unruptured intracranial aneurysms. Useful for counseling in stroke prevention clinic.</p>
                         <div className="space-y-3">
                           <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1 dark:text-ink-2">Population</label>
-                            <select value={phasesItems.population}
+                            <label htmlFor="select-phases-population" className="block text-sm font-medium text-slate-700 mb-1 dark:text-ink-2">Population</label>
+                            <select id="select-phases-population" value={phasesItems.population}
                               onChange={(e) => setPhasesItems(prev => ({...prev, population: e.target.value}))}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong">
                               <option value="north_american">North American / European (0 pts)</option>
@@ -33143,8 +33143,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="p-4">
                         <div className="grid grid-cols-2 gap-3 mb-3">
                           <div>
-                            <label className="text-xs text-slate-600 dark:text-ink-2">DOAC Type</label>
-                            <select value={(telestrokeNote.andexanetCalc || {}).doacType || ''}
+                            <label htmlFor="select-andexanet-doac" className="text-xs text-slate-600 dark:text-ink-2">DOAC Type</label>
+                            <select id="select-andexanet-doac" value={(telestrokeNote.andexanetCalc || {}).doacType || ''}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, andexanetCalc: {...(prev.andexanetCalc || {}), doacType: v}})); }}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong">
                               <option value="">Select DOAC</option>
@@ -33219,8 +33219,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" placeholder="kg" />
                           </div>
                           <div>
-                            <label className="text-xs text-slate-600 dark:text-ink-2">Sex</label>
-                            <select value={(telestrokeNote.crclCalc || {}).sex || telestrokeNote.sex || ''}
+                            <label htmlFor="select-crcl-sex" className="text-xs text-slate-600 dark:text-ink-2">Sex</label>
+                            <select id="select-crcl-sex" value={(telestrokeNote.crclCalc || {}).sex || telestrokeNote.sex || ''}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, crclCalc: {...(prev.crclCalc || {}), sex: v}})); }}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong">
                               <option value="">Select</option>
@@ -34785,7 +34785,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                 </span>
                                                 <div className="flex-1 min-w-0">
                                                   <p className="text-sm text-slate-800 dark:text-ink">{rec.text}</p>
-                                                  <p className="text-xs text-slate-500 mt-1 dark:text-mute">
+                                                  <p className="text-xs text-slate-600 mt-1 dark:text-mute">
                                                     {guideline.title}
                                                     {rec.page ? ` · p. ${rec.page}` : ''}
                                                   </p>
@@ -34846,7 +34846,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Unruptured Cerebral Aneurysms</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -34854,7 +34854,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/aneurysms/Unruptured Cerebral Aneurysms.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -34862,14 +34862,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/aneurysms/Unruptured Cerebral Aneurysms.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('Unruptured Cerebral Aneurysms', 'documents/aneurysms/Unruptured Cerebral Aneurysms.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -34894,7 +34894,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">DAPT Minor Stroke-TIA Trials</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -34902,7 +34902,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -34910,14 +34910,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('DAPT Minor Stroke-TIA Trials', 'documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -34931,7 +34931,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <i aria-hidden="true" data-lucide="image" className="w-6 h-6 text-ok-600 dark:text-ok-300"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">DAPT After Ischemic Stroke-TIA</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">Infographic - Match Patient to Trial</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">Infographic - Match Patient to Trial</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -34939,7 +34939,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -34947,14 +34947,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('DAPT After Ischemic Stroke-TIA', 'documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -34967,7 +34967,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Other Antithrombotics</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document — Cilostazol &amp; Factor XIa Inhibition Trials</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document — Cilostazol &amp; Factor XIa Inhibition Trials</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -34975,7 +34975,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -34983,14 +34983,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('Other Antithrombotics', 'documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35015,7 +35015,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Lacunar Stroke</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -35023,7 +35023,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/csvd/Lacunar Stroke 7.13.22.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -35031,14 +35031,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/csvd/Lacunar Stroke 7.13.22.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('Lacunar Stroke', 'documents/csvd/Lacunar Stroke 7.13.22.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35063,7 +35063,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Interpretation of Clinical Trials</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -35071,7 +35071,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/ebm/Interpretation of Clinical Trials.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -35079,14 +35079,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/ebm/Interpretation of Clinical Trials.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('Interpretation of Clinical Trials', 'documents/ebm/Interpretation of Clinical Trials.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35100,7 +35100,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-cobalt-600 dark:text-cobalt-300"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">CEBM Oxford Resources</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">Centre for Evidence-Based Medicine - University of Oxford</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">Centre for Evidence-Based Medicine - University of Oxford</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -35108,7 +35108,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="https://www.cebm.ox.ac.uk/resources"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
                               Visit
@@ -35132,7 +35132,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Large Core Anterior Circulation LVO EVT Trials</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -35140,7 +35140,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -35148,14 +35148,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('Large Core Anterior Circulation LVO EVT Trials', 'documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35169,7 +35169,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Basilar Artery Occlusion EVT Trials</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -35177,7 +35177,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/evt/Basilar Artery Occlusion EVT Trials.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -35185,14 +35185,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/evt/Basilar Artery Occlusion EVT Trials.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('Basilar Artery Occlusion EVT Trials', 'documents/evt/Basilar Artery Occlusion EVT Trials.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35206,7 +35206,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">MeVO & Distal Vessel Occlusion EVT Trials</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -35214,7 +35214,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -35222,14 +35222,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('MeVO & Distal Vessel Occlusion EVT Trials', 'documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35259,7 +35259,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="flex items-center gap-3 flex-1">
                                                                 <div className="flex-1">
                                   <h5 className="text-sm font-medium text-slate-900 dark:text-ink">Timing of Anticoagulation after AF-Related Stroke</h5>
-                                  <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                                  <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                                 </div>
                               </div>
                               <div className="flex flex-wrap gap-2">
@@ -35267,7 +35267,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   href="documents/afib/AC timing after AF-related Stroke.pdf"
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                                 >
                                   <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                                   View
@@ -35275,14 +35275,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <a
                                   href="documents/afib/AC timing after AF-related Stroke.pdf"
                                   download
-                                  className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                                  className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                                 >
                                   <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                                   Download
                                 </a>
                                 <button
                                   onClick={() => emailDocument('AC timing after AF-related Stroke', 'documents/afib/AC timing after AF-related Stroke.pdf')}
-                                  className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                                  className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                                   title="Email this document"
                                 >
                                   <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35296,7 +35296,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="flex items-center gap-3 flex-1">
                                                                 <div className="flex-1">
                                   <h5 className="text-sm font-medium text-slate-900 dark:text-ink">Atrial Fibrillation & Secondary Stroke Prevention</h5>
-                                  <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                                  <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                                 </div>
                               </div>
                               <div className="flex flex-wrap gap-2">
@@ -35304,7 +35304,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   href="documents/afib/AF & secondary stroke prevention July 2024.pdf"
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                                 >
                                   <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                                   View
@@ -35312,14 +35312,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <a
                                   href="documents/afib/AF & secondary stroke prevention July 2024.pdf"
                                   download
-                                  className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                                  className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                                 >
                                   <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                                   Download
                                 </a>
                                 <button
                                   onClick={() => emailDocument('AF & secondary stroke prevention July 2024', 'documents/afib/AF & secondary stroke prevention July 2024.pdf')}
-                                  className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                                  className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                                   title="Email this document"
                                 >
                                   <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35334,7 +35334,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-cobalt-600 dark:text-cobalt-300"></i>
                                 <div className="flex-1">
                                   <h5 className="text-sm font-medium text-slate-900 dark:text-ink">2023 AHA AFib Guidelines</h5>
-                                  <p className="text-xs text-slate-500 dark:text-mute">External Link - AHA Journals</p>
+                                  <p className="text-xs text-slate-600 dark:text-mute">External Link - AHA Journals</p>
                                 </div>
                               </div>
                               <div className="flex flex-wrap gap-2">
@@ -35356,7 +35356,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-cobalt-600 dark:text-cobalt-300"></i>
                                 <div className="flex-1">
                                   <h5 className="text-sm font-medium text-slate-900 dark:text-ink">2024 ESC AFib Guidelines</h5>
-                                  <p className="text-xs text-slate-500 dark:text-mute">External Link - European Heart Journal</p>
+                                  <p className="text-xs text-slate-600 dark:text-mute">External Link - European Heart Journal</p>
                                 </div>
                               </div>
                               <div className="flex flex-wrap gap-2">
@@ -35377,7 +35377,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="flex items-center gap-3 flex-1">
                                                                 <div className="flex-1">
                                   <h5 className="text-sm font-medium text-slate-900 dark:text-ink">AFib Stroke EPI519</h5>
-                                  <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                                  <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                                 </div>
                               </div>
                               <div className="flex flex-wrap gap-2">
@@ -35385,7 +35385,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   href="documents/afib/AFib Stroke EPI519.pdf"
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                                 >
                                   <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                                   View
@@ -35393,14 +35393,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <a
                                   href="documents/afib/AFib Stroke EPI519.pdf"
                                   download
-                                  className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                                  className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                                 >
                                   <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                                   Download
                                 </a>
                                 <button
                                   onClick={() => emailDocument('AFib Stroke EPI519', 'documents/afib/AFib Stroke EPI519.pdf')}
-                                  className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                                  className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                                   title="Email this document"
                                 >
                                   <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35416,7 +35416,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Diabetes and stroke</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -35424,7 +35424,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/epidemiology/Diabetes and stroke.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -35432,14 +35432,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/epidemiology/Diabetes and stroke.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('Diabetes and stroke', 'documents/epidemiology/Diabetes and stroke.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35453,7 +35453,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Lipids and Cerebrovascular Disease</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -35461,7 +35461,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/epidemiology/Lipids and Cerebrovascular Disease.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -35469,14 +35469,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/epidemiology/Lipids and Cerebrovascular Disease.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('Lipids and Cerebrovascular Disease', 'documents/epidemiology/Lipids and Cerebrovascular Disease.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35501,7 +35501,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Thrombolytic Therapy AIS 4.5-24h RCTs</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -35509,7 +35509,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -35517,14 +35517,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('Thrombolytic Therapy AIS 4.5-24h RCTs', 'documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35539,7 +35539,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-cobalt-600 dark:text-cobalt-300"></i>
                             <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">WAKE-UP Trial</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">External Link - New England Journal of Medicine</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">External Link - New England Journal of Medicine</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -35547,7 +35547,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="https://www.nejm.org/doi/full/10.1056/NEJMoa1804355"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
                               Open Link
@@ -35571,7 +35571,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Differentiating Acute Confusional State (Delirium) from Aphasia</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -35579,7 +35579,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -35587,14 +35587,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('Differentiating Acute Confusional State (Delirium) from Aphasia', 'documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35608,7 +35608,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Coma Exam</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -35616,7 +35616,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/exam/coma exam.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -35624,14 +35624,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/exam/coma exam.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('coma exam', 'documents/exam/coma exam.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35656,7 +35656,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Symptomatic Cervical Carotid Artery Stenosis</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -35664,7 +35664,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -35672,14 +35672,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('Symptomatic Cervical Carotid Artery Stenosis', 'documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -35692,7 +35692,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
                               <h4 className="text-sm font-medium text-slate-900 dark:text-ink">CREST-2 Trial (December 2025)</h4>
-                              <p className="text-xs text-slate-500 dark:text-mute">PDF Document</p>
+                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -35700,7 +35700,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               href="documents/lad/CREST-2 Trial - Dec 2025.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                               View
@@ -35708,14 +35708,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <a
                               href="documents/lad/CREST-2 Trial - Dec 2025.pdf"
                               download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1 text-link-600 dark:text-link-400 hover:underline"
+                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                             >
                               <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                               Download
                             </a>
                             <button
                               onClick={() => emailDocument('CREST-2 Trial (December 2025)', 'documents/lad/CREST-2 Trial - Dec 2025.pdf')}
-                              className="px-3 py-2 bg-orange-600 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                               title="Email this document"
                             >
                               <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>

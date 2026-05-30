@@ -233,7 +233,7 @@ export function NeuroExamsTool() {
             <summary className="cursor-pointer text-2xs font-semibold text-slate-500 uppercase tracking-wide hover:text-slate-700 dark:text-mute dark:hover:text-ink">
               Aphasia reference table (all 8 types)
             </summary>
-            <div className="overflow-x-auto mt-2">
+            <div className="overflow-x-auto mt-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: aphasia classification by fluency, comprehension, and repetition">
               <table className="w-full text-2xs border-collapse">
                 <thead>
                   <tr>
