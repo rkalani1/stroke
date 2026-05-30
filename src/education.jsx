@@ -289,7 +289,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
             aria-label="Back to Education Hub dashboard"
           >
             <i aria-hidden="true" data-lucide="arrow-right" className="w-4 h-4 rotate-180"></i>
-            Back to Resident Education Hub
+            Back to Stroke Education Hub
           </button>
 
           <div className="bg-card border border-line rounded-lg shadow-sm overflow-hidden p-6 space-y-6">
@@ -353,7 +353,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
     <div id="tabpanel-education" role="tabpanel" aria-labelledby="tab-education" className="space-y-6 max-w-6xl mx-auto v7-reveal">
       <header className="bg-card border border-line rounded-lg p-6 space-y-2">
         <p className="font-mono uppercase text-eyebrow text-mute mb-1">Rotation Artifacts</p>
-        <h1 className="font-serif text-2xl text-ink font-bold">Resident Stroke Education Hub</h1>
+        <h1 className="font-serif text-2xl text-ink font-bold">Stroke Education Hub</h1>
         <p className="text-sm text-ink-2 leading-relaxed">
           Bedside guides, quality documentation checklists, interactive note-routing helpers, and trials references compiled for stroke neurology rotations.
         </p>
