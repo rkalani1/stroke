@@ -22162,9 +22162,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         <div className="flex items-center gap-2 min-w-0">
                                           <span className={'px-2 py-0.5 rounded text-xs font-bold whitespace-nowrap ' + statusBadge}>{statusLabel}</span>
                                           <span className="font-semibold truncate">{config.name}</span>
-                                          <span className="text-xs text-slate-500 hidden sm:inline dark:text-mute">({config.nct})</span>
+                                          <span className="text-xs text-slate-600 hidden sm:inline dark:text-mute">({config.nct})</span>
                                         </div>
-                                        <span className="text-xs text-slate-500 whitespace-nowrap ml-2 dark:text-mute">{metCriteria.length}/{trial.criteria.length} met</span>
+                                        <span className="text-xs text-slate-600 whitespace-nowrap ml-2 dark:text-mute">{metCriteria.length}/{trial.criteria.length} met</span>
                                       </summary>
                                       <div className="px-3 pb-3 space-y-2">
                                         <p className="text-xs text-slate-700 italic dark:text-ink-2">{config.quickDescription}</p>
