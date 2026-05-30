@@ -28983,7 +28983,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   {card.pathway && card.pathway.length > 0 ? (
                                     <div>
                                       <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 mb-1 dark:text-mute">Decision pathway</p>
-                                      <div className="overflow-x-auto -mx-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: decision pathway">
+                                      <div className="overflow-x-auto -mx-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label={`Scrollable table: ${card.shortLabel || card.title}`}>
                                         <table className="w-full text-xs border-collapse">
                                           <thead>
                                             <tr className="text-left text-[10px] uppercase tracking-wide text-slate-500 dark:text-mute">
@@ -33938,19 +33938,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <p className="text-xs text-slate-600 dark:text-ink-2">For acute continuous vertigo with nystagmus, head-motion intolerance, nausea/vomiting, gait unsteadiness lasting &gt;24h. Sensitivity 96.8%, specificity 98.5% for central cause (Kattah et al., 2009).</p>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                           <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                            <h4 className="font-bold text-cobalt-900 text-sm mb-1 dark:text-cobalt-300">H — Head Impulse</h4>
+                            <h2 className="font-bold text-cobalt-900 text-sm mb-1 dark:text-cobalt-300">H — Head Impulse</h2>
                             <p className="text-xs text-slate-700 dark:text-ink-2">Rapid passive head rotation → observe for corrective saccade.</p>
                             <p className="text-xs text-cobalt-700 mt-1 font-medium dark:text-cobalt-300">Normal (no saccade) = DANGEROUS → suggests central lesion</p>
                             <p className="text-xs text-ok-700 dark:text-ok-300">Abnormal (catch-up saccade) = peripheral (vestibular neuritis)</p>
                           </div>
                           <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                            <h4 className="font-bold text-cobalt-900 text-sm mb-1 dark:text-cobalt-300">N — Nystagmus</h4>
+                            <h3 className="font-bold text-cobalt-900 text-sm mb-1 dark:text-cobalt-300">N — Nystagmus</h3>
                             <p className="text-xs text-slate-700 dark:text-ink-2">Observe nystagmus direction in primary gaze and with gaze changes.</p>
                             <p className="text-xs text-cobalt-700 mt-1 font-medium dark:text-cobalt-300">Direction-changing or vertical = DANGEROUS → central</p>
                             <p className="text-xs text-ok-700 dark:text-ok-300">Unidirectional horizontal = peripheral</p>
                           </div>
                           <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                            <h4 className="font-bold text-cobalt-900 text-sm mb-1 dark:text-cobalt-300">TS — Test of Skew</h4>
+                            <h3 className="font-bold text-cobalt-900 text-sm mb-1 dark:text-cobalt-300">TS — Test of Skew</h3>
                             <p className="text-xs text-slate-700 dark:text-ink-2">Alternating cover test — observe for vertical eye correction.</p>
                             <p className="text-xs text-cobalt-700 mt-1 font-medium dark:text-cobalt-300">Skew deviation present = DANGEROUS → central</p>
                             <p className="text-xs text-ok-700 dark:text-ok-300">No skew = peripheral</p>
@@ -34845,7 +34845,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
                           <div className="flex items-center gap-3 flex-1">
                                                         <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Unruptured Cerebral Aneurysms</h4>
+                              <h3 className="text-sm font-medium text-slate-900 dark:text-ink">Unruptured Cerebral Aneurysms</h3>
                               <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
                             </div>
                           </div>
@@ -35884,7 +35884,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           verified
                                         </span>
                                       ) : (
-                                        <span className="v7-tag whitespace-nowrap" title={item.unverifiedReason || 'Not yet PubMed-indexed'}>
+                                        <span className="v7-tag inline-block max-w-full min-w-0 whitespace-normal break-words text-right leading-snug [overflow-wrap:anywhere]" title={item.unverifiedReason || 'Not yet PubMed-indexed'}>
                                           {item.unverifiedReason || 'Not yet PubMed-indexed'}
                                         </span>
                                       )}
