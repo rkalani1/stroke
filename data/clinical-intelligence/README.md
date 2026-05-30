@@ -1,8 +1,8 @@
 # Clinical Intelligence — What's New source
 
-`briefing-latest.md` is the committed copy of Dr. Kalani's **Stroke & Clinical
+`briefing-latest.md` is the committed copy of the **Stroke & Clinical
 Neurology Surveillance Report** ("Clinical Intelligence Morning Briefing"),
-generated weekly by a Gemini agent and stored in Google Drive
+generated weekly and stored in Google Drive
 (`Stroke_and_Neurology_Daily_Compact_Briefing.docx`). It contains ~50 high-impact
 publications from the past month, each with journal/date, a DOI link, a clinical
 bottom line, PICO, methodology, and primary results.
@@ -39,7 +39,7 @@ bottom line, PICO, methodology, and primary results.
 - `../../whats-new-source-gaps.md` — the unverified studies grouped by reason,
   with the fix each needs to auto-verify next week (embed the article DOI).
 
-Source of truth for clinical content: this briefing (Dr. Kalani's curated intelligence).
+Source of truth for clinical content: this briefing (curated clinical intelligence).
 Verification layer: PubMed PMID/DOI resolution (working source links + clinical safety).
 Cache key: the briefing study `id` (kebab of acronym, else a title slug), because
 briefing URLs almost never carry a DOI.

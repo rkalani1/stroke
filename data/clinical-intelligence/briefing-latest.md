@@ -2,7 +2,7 @@ STROKE & CLINICAL NEUROLOGY SURVEILLANCE REPORT
 
 50 Unabridged 15-Point Critical Appraisals • Master Compact Reference Standard
 
-Dear Dr. Kalani, Below is the definitive, expert-level clinical intelligence briefing containing exactly fifty distinct, high-impact clinical publications issued, printed, or indexed in the past month across vascular neurology, neurohospitalist medicine, and clinical epidemiology. In accordance with your permanent design specifications, the formatting has been tightly compacted to maximize textual detail and density (0.5-inch margins, 9.5 pt Segoe UI font, 1.05 line spacing, 2 pt paragraph spacing, and inline bold prefix keys) to eliminate unnecessary vertical space and deliver a streamlined print layout. Each study has been appraised across fifteen critical dimensions, synthesized into a highly scannable, dense 4-Block summary layout.
+This expert-level clinical intelligence briefing is a containing exactly fifty distinct, high-impact clinical publications issued, printed, or indexed in the past month across vascular neurology, neurohospitalist medicine, and clinical epidemiology. The formatting has been tightly compacted to maximize textual detail and density (0.5-inch margins, 9.5 pt Segoe UI font, 1.05 line spacing, 2 pt paragraph spacing, and inline bold prefix keys) to eliminate unnecessary vertical space and deliver a streamlined print layout. Each study has been appraised across fifteen critical dimensions, synthesized into a highly scannable, dense 4-Block summary layout.
 
 [Endovascular thrombectomy for patients with large-core ischaemic stroke presenting up to 24 h after onset (ATLAS)](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736\(26\)00876-7/fulltext)
 
