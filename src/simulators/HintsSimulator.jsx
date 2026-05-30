@@ -556,7 +556,7 @@ export function HintsSimulator() {
       {/* ── HINTS interpretation reference table ── */}
       <section className="space-y-2">
         <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">HINTS interpretation reference</h4>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: HINTS exam interpretation reference">
           <table className="w-full text-xs border-collapse">
             <thead>
               <tr>

@@ -17880,10 +17880,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </button>
                               </div>
                               <div className="grid grid-cols-2 gap-2">
-                                <input id="phone-discovery-date" type="date" value={telestrokeNote.discoveryDate}
+                                <input id="phone-discovery-date" type="date" aria-label="Discovery date" value={telestrokeNote.discoveryDate}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, discoveryDate: v})); }}
                                   className="w-full px-2 py-1.5 border border-cobalt-300 rounded-lg focus:ring-2 focus:ring-cobalt-500 text-sm dark:border-cobalt-700" />
-                                <input id="phone-discovery-time" type="time" value={telestrokeNote.discoveryTime}
+                                <input id="phone-discovery-time" type="time" aria-label="Discovery time" value={telestrokeNote.discoveryTime}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, discoveryTime: v})); }}
                                   className="w-full px-2 py-1.5 border border-cobalt-300 rounded-lg focus:ring-2 focus:ring-cobalt-500 text-sm dark:border-cobalt-700" />
                               </div>
@@ -36420,9 +36420,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               );
             })()}
 
-            {/* Mobile bottom nav */}
-            <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-[0_-1px_3px_rgba(0,0,0,0.08)] sm:hidden dark:bg-card dark:border-line" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }} role="tablist" aria-label="Mobile navigation">
-              <div className="flex items-stretch justify-around">
+            {/* Mobile bottom nav — wrap the tablist in a navigation landmark so the
+                tab buttons sit inside a landmark (axe `region`). The <nav> element's
+                explicit role="tablist" overrides its implicit navigation landmark, so
+                we mirror the desktop pattern (~app.jsx:16882): an outer
+                role="navigation" wrapper holds the tablist. */}
+            <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-[0_-1px_3px_rgba(0,0,0,0.08)] sm:hidden dark:bg-card dark:border-line" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }} role="navigation" aria-label="Mobile navigation">
+              <div className="flex items-stretch justify-around" role="tablist" aria-label="Mobile sections">
                 {[
                   { id: 'home', name: 'Home', icon: 'grid-3x3' },
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },

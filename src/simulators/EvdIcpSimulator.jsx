@@ -511,12 +511,19 @@ export function EvdIcpSimulator() {
               <line x1="150" y1="175" x2="220" y2={tragusY} stroke={C.teal} strokeWidth="2" />
               <rect x="216" y={tragusY - 9} width="34" height="18" rx="3" fill="#fff" stroke={C.tealDk} strokeWidth="2" />
               <text x="233" y={tragusY + 4} fontSize="8" fill={C.tealDk} textAnchor="middle" fontFamily="ui-monospace, monospace">XDCR</text>
-              {transducerOffset !== 0 && (
-                <text x="233" y={tragusY + 20} fontSize="9" fill={C.coral} textAnchor="middle" fontWeight="700">
-                  {levelingError > 0 ? '+' : ''}{levelingError} mmHg error
-                </text>
-              )}
             </g>
+            {/* "±X mmHg error" annotation — pinned at a FIXED bottom-right position
+                OUTSIDE the transducer translate group. Previously it lived inside the
+                group at y=tragusY+20, so at negative (bed-raised) offsets it climbed UP
+                into the stationary TRAGUS label (same coral) and overprinted. Fixed
+                screen-y (226, in-bounds for the 240-tall viewBox) sits clear of the
+                TRAGUS label (y~137) and the stopcock label (y=206, x=150) at EVERY
+                offset across the full −15..+15 slider range. */}
+            {transducerOffset !== 0 && (
+              <text x="312" y="226" fontSize="9" fill={C.coral} textAnchor="end" fontWeight="700">
+                {levelingError > 0 ? '+' : ''}{levelingError} mmHg error
+              </text>
+            )}
           </svg>
           <p className="mt-1 text-xs text-slate-600 dark:text-ink-2">
             {transducerOffset === 0

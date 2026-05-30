@@ -727,6 +727,7 @@ export const PHQ9Screen = () => {
     <div className="p-3 rounded border border-slate-200 bg-white dark:border-line dark:bg-card">
       <h4 className="font-semibold text-slate-900 mb-2 dark:text-ink">PHQ-9 Depression Screen</h4>
       <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">Over the past 2 weeks, how often have you been bothered by:</p>
+      <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: PHQ-9 depression screen questions and responses">
       <table className="w-full text-xs">
         <thead className="bg-slate-100 dark:bg-paper-2">
           <tr><th scope="col" className="text-left px-2 py-1">Question</th>{['Not at all (0)', 'Several days (1)', 'More than half (2)', 'Nearly every day (3)'].map((l, i) => (
@@ -746,6 +747,7 @@ export const PHQ9Screen = () => {
           ))}
         </tbody>
       </table>
+      </div>
       {interp && (
         <div className={`mt-2 p-2 rounded border text-sm ${interp.severity === 'severe' || suicidality ? 'border-crit-300 bg-crit-50 dark:border-crit-800 dark:bg-crit-950' : interp.severity === 'moderate' || interp.severity === 'moderately-severe' ? 'border-warn-300 bg-warn-50 dark:border-warn-800 dark:bg-warn-950' : 'border-slate-200 bg-slate-50 dark:border-line dark:bg-paper-2'}`}>
           <div className="flex items-center gap-2">

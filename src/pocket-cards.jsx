@@ -331,7 +331,7 @@ const BPProtocolCard = () => (
       <span className="inline-block px-2 py-0.5 bg-rose-700 text-white text-xs rounded">EX</span>
       Blood Pressure Management
     </h4>
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: blood pressure management targets">
       <table className="w-full text-xs">
         <thead className="bg-rose-50 dark:bg-rose-950">
           <tr><th className="px-2 py-1 text-left">Scenario</th><th className="px-2 py-1 text-left">Target</th><th className="px-2 py-1 text-left">COR / LOE</th><th className="px-2 py-1 text-left">Example protocol</th></tr>
@@ -434,6 +434,7 @@ const CorLoeKeyCard = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
       <section>
         <h5 className="font-semibold text-slate-800 mb-1 dark:text-ink">Class of Recommendation</h5>
+        <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: Class of Recommendation key">
         <table className="w-full">
           <tbody>
             <tr className="bg-ok-50 dark:bg-ok-950"><td className="px-2 py-1 font-bold">Class 1 (Strong)</td><td className="px-2 py-1">Benefit &gt;&gt;&gt; Risk</td><td className="px-2 py-1">Is recommended</td></tr>
@@ -443,9 +444,11 @@ const CorLoeKeyCard = () => (
             <tr className="bg-crit-100 dark:bg-crit-950"><td className="px-2 py-1 font-bold">Class 3: Harm</td><td className="px-2 py-1">Risk &gt; Benefit</td><td className="px-2 py-1">Avoid (harmful)</td></tr>
           </tbody>
         </table>
+        </div>
       </section>
       <section>
         <h5 className="font-semibold text-slate-800 mb-1 dark:text-ink">Level of Evidence</h5>
+        <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: Level of Evidence key">
         <table className="w-full">
           <tbody>
             {Object.entries(COR_LOE_KEY.loe).map(([k, v]) => (
@@ -453,6 +456,7 @@ const CorLoeKeyCard = () => (
             ))}
           </tbody>
         </table>
+        </div>
       </section>
     </div>
   </div>

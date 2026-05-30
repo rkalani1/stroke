@@ -611,7 +611,7 @@ function renderSubModuleContent(moduleId, onNavigate) {
             Use the logic table below to route admission, progress, and consult notes to the appropriate attending physician on service.
           </p>
 
-          <div className="overflow-x-auto border border-line rounded">
+          <div className="overflow-x-auto border border-line rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: note co-signature and attending routing logic">
             <table className="w-full text-xs text-left bg-card">
               <thead className="bg-paper border-b border-line text-ink font-semibold">
                 <tr>
@@ -983,7 +983,7 @@ function renderSubModuleContent(moduleId, onNavigate) {
             Review the standardized timeline for post-stroke Venous Thromboembolism (VTE) prophylaxis.
           </p>
 
-          <div className="overflow-x-auto border border-line rounded">
+          <div className="overflow-x-auto border border-line rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: VTE prophylaxis timeline by stroke type">
             <table className="w-full text-xs text-left bg-card">
               <thead className="bg-paper border-b border-line text-ink font-semibold">
                 <tr>
