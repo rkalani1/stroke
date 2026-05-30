@@ -18909,7 +18909,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </ul>
                                   </div>
                                 </div>
-                                <p className="text-xs text-ok-600 mt-2 italic dark:text-ok-300">AcT (Lancet 2022, PMID: 35779579). TRACE-2 (NEJM 2023, PMID: 37043691). ORIGINAL (JAMA 2024, PMID: 38710025). ESO 2023 TNK Recommendation.</p>
+                                <p className="text-xs text-ok-600 mt-2 italic dark:text-ok-300">AcT (Lancet 2022, PMID: 35779553). TRACE-2 (Lancet 2023, PMID: 36774935). ORIGINAL (JAMA 2024, PMID: 39264623). ESO 2023 TNK Recommendation.</p>
                               </div>
                             )}
 
@@ -24031,7 +24031,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </ul>
                                   </div>
                                 </div>
-                                <p className="text-xs text-slate-500 mt-2 italic dark:text-mute">CLOSE (NEJM 2017, PMID: 28902580). RESPECT (NEJM 2017, PMID: 28902590). REDUCE (JACC 2017, PMID: 28917503). AHA/ASA 2021 Secondary Prevention (PMID: 34024117). Class I, LOE A.</p>
+                                <p className="text-xs text-slate-500 mt-2 italic dark:text-mute">CLOSE (NEJM 2017, PMID: 28902593). RESPECT (NEJM 2017, PMID: 28902590). REDUCE (NEJM 2017, PMID: 28902580). AHA/ASA 2021 Secondary Prevention (PMID: 34024117). Class I, LOE A.</p>
                                 <p className="text-xs text-cobalt-600 mt-1 dark:text-cobalt-300">Record PFO findings &amp; PASCAL grade in Cardiac Workup &gt; PFO Evaluation above.</p>
                               </div>
 
@@ -31253,7 +31253,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             </div>
                           </div>
-                          <p className="text-xs text-slate-500 mt-2 italic dark:text-mute">Saposnik G et al. Stroke 2024. AHA/ASA CVT Scientific Statement. ACTION-CVT: Yaghi S et al. JAMA Neurol 2022;79:1260-1269. PMID: 36315105.</p>
+                          <p className="text-xs text-slate-500 mt-2 italic dark:text-mute">Saposnik G et al. Stroke 2024. AHA/ASA CVT Scientific Statement. ACTION-CVT: Yaghi S et al. Stroke 2022;53:728-738. PMID: 35143325.</p>
                         </div>
 
                         {/* CVT Risk Factors */}
