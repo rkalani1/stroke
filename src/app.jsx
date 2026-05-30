@@ -16753,7 +16753,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* ===== v7 PATIENT STRIP (mobile) — sticky chip row above v6 strip during transition.
                          Phase 5 IA overhaul will remove the v6 strip below and promote Incomplete /
                          Safety-critical banners into PatientStrip as chip-links. ============== */}
-                    {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) ? (() => {
+                    {viewMode !== 'patient' && (telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) ? (() => {
                       const lkwIsoForStrip = (() => {
                         const d = telestrokeNote.lkwDate, t = telestrokeNote.lkwTime;
                         if (!d || !t) return null;
@@ -16790,7 +16790,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* ===== PATIENT SUMMARY STRIP (with inline mode toggle) ===== */}
                     {/* v6 inline strip — kept during transition; Phase 5 removes it. */}
-                    {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) ? (
+                    {viewMode !== 'patient' && (telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) ? (
                       <div className="sticky top-14 z-20 bg-white/95 backdrop-blur-sm border border-line rounded-md  px-4 py-2.5">
                         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
                           {telestrokeNote.age && (
@@ -16839,6 +16839,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         })()}
                       </div>
                     ) : null}
+
+                    {/* ===== CLINICIAN WORKBENCH — hidden in patient mode (exam-entry forms) ===== */}
+                    {viewMode !== 'patient' && (<>
 
                     {/* Consult type sub-tabs */}
                     <nav className="flex items-stretch gap-0 bg-white border border-line rounded-md p-1" role="tablist" aria-label="Consult type">
@@ -27299,6 +27302,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </V7Button>
                       </div>
                     </div>
+
+                    {/* ===== END CLINICIAN WORKBENCH ===== */}
+                    </>)}
 
                   </div>
                   </ErrorBoundary>
