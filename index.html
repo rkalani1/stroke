@@ -48,8 +48,8 @@
          render unblocked on first paint. Fallback inside <noscript> for non-JS environments. -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap"></noscript>
-    <link rel="preload" as="script" href="app.js?v=6.4.0">
-    <link rel="stylesheet" href="tailwind.css?v=6.4.0">
+    <link rel="preload" as="script" href="app.js?v=6.4.1">
+    <link rel="stylesheet" href="tailwind.css?v=6.4.1">
     <style>
         :root {
             color-scheme: light;
@@ -269,9 +269,12 @@
                 grid-column: 1;
                 align-self: start;
                 position: sticky;
-                top: 0;
+                /* U4 — offset the sidebar below the now-sticky header so it
+                   doesn't tuck behind it; --app-header-h is published by an
+                   effect, falls back to 0 before first paint. */
+                top: var(--app-header-h, 0px);
                 margin-bottom: 0 !important;
-                max-height: calc(100vh - 1rem);
+                max-height: calc(100vh - var(--app-header-h, 0px) - 1rem);
                 overflow-y: auto;
                 padding: 0.75rem 0.5rem !important;
             }
@@ -349,17 +352,25 @@
                 border: none;
                 box-shadow: none;
             }
+            /* U12 — tighten phone header so more clinical content sits above the
+               fold. The serif wordmark is already trimmed to 24px in JSX. */
             .app-header {
-                padding: 1rem;
+                padding: 0.625rem 1rem;
             }
             .app-nav {
                 padding: 0.25rem;
             }
         }
 
-        /* Mobile overflow fix - prevent horizontal scroll */
+        /* Mobile overflow fix - prevent horizontal scroll.
+           Use overflow-x: clip (not hidden): clip suppresses horizontal scroll
+           WITHOUT establishing a scroll container, so the sticky header (U4) can
+           still pin to the viewport. overflow:hidden here would make body a
+           scrollport and silently break position:sticky on descendants.
+           Falls back to hidden on the rare engine without clip support. */
         html, body {
             overflow-x: hidden;
+            overflow-x: clip;
             max-width: 100vw;
             -webkit-overflow-scrolling: touch;
         }
@@ -440,6 +451,19 @@
                 font-size: 16px !important; /* Prevents zoom on iOS */
                 padding-left: 8px !important;
                 padding-right: 8px !important;
+            }
+        }
+
+        /* U1 — iOS Safari auto-zooms on focus of any form control whose computed
+           font-size is < 16px. Several inputs carry .text-sm / .text-xs (and the
+           ≤375px block above shrinks .text-sm to 12px with !important), so a
+           plain utility floor can't win. Force the 16px no-zoom floor here with
+           !important, on phone only — desktop sizing is untouched. */
+        @media (max-width: 767px) {
+            input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+            select:not([data-skip-zoom-floor]),
+            textarea:not([data-skip-zoom-floor]) {
+                font-size: 16px !important;
             }
         }
 
@@ -710,7 +734,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = '6.4.0'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
+            const APP_VERSION = '6.4.1'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
             const STORAGE_PREFIX = 'strokeApp:';
             const APP_DATA_KEY = 'stroke.appData.v2';
             const IS_PUBLIC_PAGES = /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -907,7 +931,7 @@
         document.currentScript.parentNode.insertBefore(s, document.currentScript);
       })();
     </script>
-    <script src="app.js?v=6.4.0" defer></script>
+    <script src="app.js?v=6.4.1" defer></script>
     <footer style="margin-top: 40px; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb;">
       <p>This is a synthetic public demo site for educational and reference purposes only. Not for clinical decision-making or real patient care.</p>
     </footer>
