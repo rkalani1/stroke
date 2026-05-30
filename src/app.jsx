@@ -16797,7 +16797,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 const elS = elapsedSeconds % 60;
                 // v6.0-03: solid semantic bg keyed by treatment-window threshold.
                 // ≤4.5h IV thrombolysis window (uniform COR I) → confirm; >4.5h closed → critical.
-                const timerBg = totalHours <= 4.5 ? 'bg-confirm' : 'bg-critical';
+                // Cycle4 M4-1: --confirm/--critical are LIGHTENED in dark for text/border use,
+                // so as a SOLID fill under white text they fail WCAG 1.4.3 (confirm 2.5:1, critical
+                // 3.0:1 — small captions need 4.5:1). Pin the dark fill to the un-lightened ramp
+                // step the light token already uses (ok-700 / crit-700) → white reads 8.8:1 / 7.6:1.
+                const timerBg = totalHours <= 4.5 ? 'bg-confirm dark:bg-ok-700' : 'bg-critical dark:bg-crit-700';
                 return (
                   <div className={`mb-3 ${timerBg} rounded-md px-4 py-2 text-white flex flex-wrap items-center justify-between gap-2 ${alertFlashing ? 'alert-flash' : ''}`} role="timer" aria-live="polite" aria-label="Stroke treatment window timer">
                     <div className="flex items-center gap-3">
@@ -21406,7 +21410,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     return (
                                       <div className={`rounded-md  overflow-hidden ${doseCalc.isMaxDose ? 'ring-2 ring-warn-400' : 'ring-2 ring-green-400'}`}>
                                         {/* Header */}
-                                        <div className={`px-4 py-2 ${doseCalc.isMaxDose ? 'bg-caution' : 'bg-confirm'}`}>
+                                        <div className={`px-4 py-2 ${doseCalc.isMaxDose ? 'bg-caution dark:bg-warn-700' : 'bg-confirm dark:bg-ok-700'}`}>
                                           <div className="flex items-center justify-between">
                                             <span className="text-white font-bold text-lg flex items-center gap-2">
                                                                                             TNK DOSING
@@ -27209,10 +27213,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           const elapsedSecs = elapsedSeconds % 60;
 
                           // v6.0-03: returns a solid semantic bg utility keyed by treatment-window threshold.
-                          // ≤4.5h confirm (uniform COR I IV thrombolysis window) · >4.5h critical. Token-driven so dark mode works.
+                          // ≤4.5h confirm (uniform COR I IV thrombolysis window) · >4.5h critical.
+                          // Cycle4 M4-1: --confirm/--critical lighten in dark for text use; as a SOLID
+                          // fill under text-white / text-ok-100 they fail AA. Pin the dark fill to the
+                          // un-lightened ramp step (ok-700 / crit-700) → ≥5.6:1 even for the captions.
                           const getElapsedColor = () => {
-                            if (totalHours <= 4.5) return 'bg-confirm';
-                            return 'bg-critical';
+                            if (totalHours <= 4.5) return 'bg-confirm dark:bg-ok-700';
+                            return 'bg-critical dark:bg-crit-700';
                           };
 
                           const getTextColor = () => {
