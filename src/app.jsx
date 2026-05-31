@@ -993,7 +993,9 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           : DEFAULT_TTL_HOURS;
         const INITIAL_STORAGE_EXPIRED = applyStorageExpiration(initialTtlHours);
 
-        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators', 'references'];
+        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
+
+        const RESEARCH_SUBTABS = ['whatsnew', 'guidelines', 'references'];
 
         const LEGACY_MANAGEMENT_TABS = {
           ich: 'ich',
@@ -1013,6 +1015,14 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           const normalized = String(value).toLowerCase();
           if (MANAGEMENT_SUBTABS.includes(normalized)) return normalized;
           if (LEGACY_MANAGEMENT_TABS[normalized]) return LEGACY_MANAGEMENT_TABS[normalized];
+          return null;
+        };
+
+        const normalizeResearchSubTab = (value) => {
+          if (!value) return null;
+          const normalized = String(value).toLowerCase();
+          if (RESEARCH_SUBTABS.includes(normalized)) return normalized;
+          if (normalized === 'whats-new' || normalized === "what's-new" || normalized === 'whatsnew') return 'whatsnew';
           return null;
         };
 
@@ -1047,7 +1057,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
                 return { tab: 'education', sub: 'simulators' };
               }
               if (sub === 'references') {
-                return { tab: 'protocols', sub: 'references' };
+                return { tab: 'research', sub: 'references' };
               }
               return { tab: 'protocols', sub: normalizeManagementSubTab(sub) };
             case 'library':
@@ -1056,18 +1066,20 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
                 return { tab: 'education', sub: 'simulators' };
               }
               if (sub === 'references') {
-                return { tab: 'protocols', sub: 'references' };
+                return { tab: 'research', sub: 'references' };
               }
               return { tab: 'protocols', sub: normalizeManagementSubTab(sub) };
             case 'settings':
               return { tab: 'encounter' };
             case 'ich':
             case 'calculators':
+              return { tab: 'protocols', sub: LEGACY_MANAGEMENT_TABS[root] };
             case 'evidence':
             case 'teaching':
-              return { tab: 'protocols', sub: LEGACY_MANAGEMENT_TABS[root] };
+            case 'references':
+              return { tab: 'research', sub: 'references' };
             case 'research':
-              return { tab: 'research' };
+              return { tab: 'research', sub: normalizeResearchSubTab(sub) };
             case 'trials':
               return { tab: 'trials' };
             case 'education':
@@ -1090,7 +1102,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               return managementSub ? `#/protocols/${managementSub}` : '#/protocols';
             }
             case 'research':
-              return '#/research';
+              return sub ? `#/research/${sub}` : '#/research';
             case 'trials':
               return '#/trials';
             case 'education':
