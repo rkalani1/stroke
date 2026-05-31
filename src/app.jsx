@@ -6091,6 +6091,8 @@ Clinician Name`;
             const verifMeta = (VERIFICATION_STATUS_LABELS && VERIFICATION_STATUS_LABELS[trial.verificationStatus]) || { label: trial.verificationStatus, tone: 'slate' };
             const cits = resolveCitations(trial.citationIds || []);
             const relatedActive = showRelatedActive ? (trial.relatedActiveTrialIds || []).map((id) => evidenceActiveTrials.find((a) => a.id === id)).filter(Boolean) : [];
+            const primaryCit = cits[0];
+            const journalAndYear = primaryCit ? `${primaryCit.journal}${primaryCit.year ? ` ${primaryCit.year}` : ''}` : '';
             return (
               <details
                 key={`${keyPrefix}-${trial.id}`}
@@ -6101,24 +6103,34 @@ Clinician Name`;
                 <summary className="cursor-pointer p-4 hover:bg-slate-50 select-none dark:hover:bg-paper-2">
                   <div className="flex items-start gap-3">
                     <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                        <span className="text-base font-semibold text-slate-900 dark:text-ink">{trial.shortName}</span>
-                        <span className="text-xs text-slate-500 truncate dark:text-mute">{trial.fullName}</span>
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+                        <span className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold uppercase tracking-wider border ${atlasToneClass(evTypeMeta.tone)}`}>
+                          {evTypeMeta.label}
+                        </span>
+                        {journalAndYear && (
+                          <span className="font-semibold text-slate-600 dark:text-mute">
+                            {journalAndYear}
+                          </span>
+                        )}
                       </div>
-                      <div className="mt-1 flex flex-wrap gap-1.5">
-                        {atlasPill(topicLabel(trial.topic) || trial.topic, 'slate')}
-                        {atlasPill(evTypeMeta.label, evTypeMeta.tone)}
-                        {atlasPill(certaintyMeta.label, certaintyMeta.tone)}
-                        {atlasPill(verifMeta.label, verifMeta.tone)}
-                        {trial.lastReviewed && atlasPill(`Reviewed ${trial.lastReviewed}`, 'slate')}
-                      </div>
-                      <p className="mt-2 text-xs text-slate-700 dark:text-ink-2">
-                        <span className="font-semibold">Primary endpoint:</span> {trial.primaryEndpoint?.result || '—'}
-                      </p>
+                      <h3 className="text-sm sm:text-base font-serif font-bold text-slate-900 dark:text-ink leading-snug mt-1.5 text-pretty">
+                        {trial.fullName}
+                      </h3>
                     </div>
                   </div>
                 </summary>
                 <div className="px-4 pb-4 pt-1 border-t border-slate-100 text-sm text-slate-700 space-y-3 dark:text-ink-2">
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {trial.shortName && (
+                      <span className="inline-flex items-center rounded bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-2xs font-mono font-bold text-ink-2">
+                        Acronym: {trial.shortName}
+                      </span>
+                    )}
+                    {atlasPill(topicLabel(trial.topic) || trial.topic, 'slate')}
+                    {atlasPill(certaintyMeta.label, certaintyMeta.tone)}
+                    {atlasPill(verifMeta.label, verifMeta.tone)}
+                    {trial.lastReviewed && atlasPill(`Reviewed ${trial.lastReviewed}`, 'slate')}
+                  </div>
                   <div>
                     <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide dark:text-mute">Population</div>
                     <p>n={trial.population.n || '—'} · {trial.population.ageRange || 'age n/a'} · NIHSS {trial.population.nihssRange || 'n/a'} · {trial.population.timeWindow || 'window n/a'}</p>
@@ -6172,15 +6184,20 @@ Clinician Name`;
                     <div>
                       <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide dark:text-mute">Citations</div>
                       <ul className="list-disc list-inside space-y-0.5">
-                        {cits.map((c) => (
-                          <li key={c.id} className="text-xs">
-                            <span className="text-slate-700 dark:text-ink-2">{c.title}</span>
-                            <span className="text-slate-500 dark:text-mute"> — {c.journal}{c.year ? ` ${c.year}` : ''}</span>
-                            {citationLink(c) && (
-                              <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-cobalt-700 underline hover:underline dark:text-cobalt-300">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
-                            )}
-                          </li>
-                        ))}
+                        {cits.map((c) => {
+                          const showTitle = c.title.toLowerCase().trim() !== trial.fullName.toLowerCase().trim();
+                          return (
+                            <li key={c.id} className="text-xs">
+                              {showTitle && <span className="text-slate-700 dark:text-ink-2">{c.title} </span>}
+                              <span className="text-slate-500 dark:text-mute">
+                                {showTitle ? '— ' : ''}{c.authors ? `${c.authors} ` : ''}{c.journal}{c.year ? ` ${c.year}` : ''}
+                              </span>
+                              {citationLink(c) && (
+                                <> · <a href={citationLink(c)} target="_blank" rel="noopener noreferrer" className="text-cobalt-700 underline hover:underline dark:text-cobalt-300">{c.pmid ? `PMID ${c.pmid}` : (c.doi ? `DOI ${c.doi}` : 'link')}</a></>
+                              )}
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
                   )}
@@ -7910,7 +7927,6 @@ Clinician Name`;
             // ---- External / legacy tools ----
             { id: 'ext-nepi', group: 'External Tools', label: 'Statistical & Research Methods (n-epi)', hint: 'Biostats / appraisal — new tab', icon: 'external-link', external: true, keywords: ['n-epi', 'nepi', 'statistics', 'biostats', 'meta-analysis', 'appraisal', 'methods', 'research'], run: () => openExternal('https://rkalani1.github.io/n-epi/') },
             { id: 'ext-proteomics', group: 'External Tools', label: 'Proteomics Power Calculator', hint: 'PWAS power — new tab', icon: 'external-link', external: true, keywords: ['proteomics', 'power', 'sample size', 'pwas'], run: () => openExternal('https://rkalani1.github.io/proteomics-power-calc/') },
-            { id: 'ext-ccc', group: 'External Tools', label: 'CCC — Clerkship Coaching', hint: 'Trainee WBA — new tab', icon: 'external-link', external: true, keywords: ['ccc', 'clerkship', 'coaching', 'wba', 'entrustment', 'teaching'], run: () => openExternal('https://rkalani1.github.io/ccc/') },
             { id: 'ext-telestroke-map', group: 'External Tools', label: 'Telestroke Network Map', hint: 'Service planning — new tab', icon: 'external-link', external: true, keywords: ['telestroke', 'network', 'map', 'expansion', 'coverage', 'service planning', 'admin'], run: () => openExternal('https://rkalani1.github.io/telestroke-expansion-map/') }
           ], []);
 
@@ -16979,12 +16995,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'education-tab', label: 'Education & Curricula', purpose: 'Onboarding, ICU, & nursing curricula', icon: 'brain', run: () => navigateTo('education', { clearSearch: true }) },
                         { id: 'pocket-cards-tab', label: 'Pocket Cards', purpose: 'Bedside references & pocket cards', icon: 'badge-check', run: () => { navigateTo('education'); setEducationSubTab('pocket-cards'); } }
                       ];
-                      const externalTools = [
+                      const externalLinks = [
                         { id: 'home-ext-nepi', label: 'Statistical & Research Methods (n-epi)', reason: 'study design, biostats, meta-analysis, critical appraisal — research/teaching, not bedside', url: 'https://rkalani1.github.io/n-epi/' },
                         { id: 'home-ext-proteomics', label: 'Proteomics Power Calculator', reason: 'PWAS sample-size / power for research study design', url: 'https://rkalani1.github.io/proteomics-power-calc/' },
-                        { id: 'home-ext-ccc', label: 'CCC — Clerkship Coaching', reason: 'trainee WBA tracking / entrustment trends / CCC committee export (teaching)', url: 'https://rkalani1.github.io/ccc/' }
-                      ];
-                      const adminTools = [
                         { id: 'home-ext-telestroke', label: 'Telestroke Network Map', reason: 'regional telestroke coverage / expansion map — service planning, NOT a clinical decision tool', url: 'https://rkalani1.github.io/telestroke-expansion-map/' }
                       ];
                       return (
@@ -17105,45 +17118,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           </section>
 
-                          {/* ---- Legacy / External Tools ---- */}
-                          <section aria-label="Legacy and external tools" className="bg-paper-2 border border-line rounded-md p-4">
-                            <div className="flex items-start gap-2 mb-3">
-                              <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4 mt-0.5 shrink-0 text-mute"></i>
-                              <div className="min-w-0">
-                                <p className="font-mono uppercase text-eyebrow text-mute leading-none">Legacy / External Tools</p>
-                                <p className="text-xs text-ink-2 mt-1">External standalone tools — open in new tab; not part of the offline clinical core.</p>
-                              </div>
-                            </div>
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-                              {externalTools.map((tool) => (
+                          {/* ---- Supplemental external links ---- */}
+                          <section aria-label="Supplemental external links">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                              {externalLinks.map((tool) => (
                                 <a
                                   key={tool.id}
                                   href={tool.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex items-start gap-2.5 bg-card border border-line rounded-md p-3 min-h-[44px] hover:border-cobalt-300 transition-colors focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+                                  className="group flex items-start gap-3 bg-card border border-line rounded-md p-3.5 min-h-[44px] hover:border-cobalt-300 hover:bg-cobalt-50/40 transition-colors focus:outline-none focus:ring-2 focus:ring-cobalt-500"
                                 >
-                                  <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4 mt-0.5 shrink-0 text-cobalt-600 dark:text-cobalt-300"></i>
-                                  <span className="min-w-0">
-                                    <span className="block text-sm font-semibold text-ink leading-tight">{tool.label}</span>
-                                    <span className="block text-xs text-ink-2 mt-0.5 text-pretty">{tool.reason}</span>
+                                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-600 group-hover:bg-slate-100 dark:border-strong dark:bg-paper-2 dark:text-mute" aria-hidden="true">
+                                    <i data-lucide="external-link" className="w-4 h-4"></i>
                                   </span>
-                                </a>
-                              ))}
-                            </div>
-                            <p className="font-mono uppercase text-eyebrow text-mute mt-4 mb-2">Admin / Service Planning</p>
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-                              {adminTools.map((tool) => (
-                                <a
-                                  key={tool.id}
-                                  href={tool.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-start gap-2.5 bg-card border border-line rounded-md p-3 min-h-[44px] hover:border-cobalt-300 transition-colors focus:outline-none focus:ring-2 focus:ring-cobalt-500"
-                                >
-                                  <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4 mt-0.5 shrink-0 text-cobalt-600 dark:text-cobalt-300"></i>
                                   <span className="min-w-0">
-                                    <span className="block text-sm font-semibold text-ink leading-tight">{tool.label}</span>
+                                    <span className="block font-semibold text-ink leading-tight">{tool.label}</span>
                                     <span className="block text-xs text-ink-2 mt-0.5 text-pretty">{tool.reason}</span>
                                   </span>
                                 </a>
