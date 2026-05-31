@@ -1,4 +1,33 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { EvdIcpSimulator } from './simulators/EvdIcpSimulator.jsx';
+import { HintsSimulator } from './simulators/HintsSimulator.jsx';
+import { PupillometrySimulator } from './simulators/PupillometrySimulator.jsx';
+import { NeuroExamsTool } from './simulators/NeuroExamsTool.jsx';
+
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, info) {
+    console.error("Simulator ErrorBoundary caught:", error, info);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-4 border border-red-300 bg-red-50 text-red-900 rounded-lg dark:bg-red-950 dark:text-red-300 dark:border-red-800">
+          <h3 className="font-bold text-sm">Failed to load simulator</h3>
+          <p className="text-xs mt-1">An error occurred while rendering this interactive tool.</p>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 
 // =====================================================================
 // PLACEHOLDER & CITATION SCHEMAS
@@ -74,7 +103,7 @@ const EDUCATION_MODULES = [
     title: "EVD / ICP & Herniation Bedside Guide",
     purpose: "Understand EVD leveling, zeroing, ICP monitoring, waveform interpretation, and acute rescue steps for intracranial hypertension.",
     actions: "Assess airway, head position (30° straight), stop provoking stimuli, open EVD as ordered, and notify attending/seniors/neurosurgery for ICP spikes or herniation signs.",
-    categories: ["pocket-card", "icu", "printable"],
+    categories: ["pocket-card", "icu", "printable", "simulators"],
     lastReviewed: "2026-05-15",
     status: "Needs Specialist Review",
     citations: "Neurocritical Care Society Consensus Guidelines; Brain Trauma Foundation Guidelines.",
@@ -173,7 +202,7 @@ const EDUCATION_MODULES = [
     title: "Clinical Pupillometry & NPi Bedside Guide",
     purpose: "Bedside primer on the use and interpretation of the Neurological Pupil Index (NPi) for monitoring patients at risk of herniation.",
     actions: "Perform pupillometry Q1h-Q4h in severe stroke/TBI. Report NPi < 3 or drop > 0.5 as an early indicator of brainstem compression.",
-    categories: ["icu", "printable"],
+    categories: ["icu", "printable", "simulators"],
     lastReviewed: "2026-05-11",
     status: "Needs ICU Review",
     citations: "Neurocritical Care Society Recommendations on Pupillometry; Oddo et al., Intensive Care Med 2018.",
@@ -211,6 +240,28 @@ const EDUCATION_MODULES = [
     status: "Needs Admin Review",
     citations: "Example telestroke operations manual (your network).",
     placeholders: ["CONFIRM_TELESTROKE_PATHWAY_SOURCE", "CONFIRM_PUBLIC_SAFE_ROUTING_TEXT"]
+  },
+  {
+    id: "hints-simulator",
+    title: "HINTS+ Eye-Movement Simulator & Guide",
+    purpose: "Vestibular exam training tool to differentiate central stroke from peripheral acute vestibular syndrome using Head Impulse, Nystagmus, Test of Skew, plus hearing assessment.",
+    actions: "Perform the three-step HINTS+ exam on patients with acute onset continuous vertigo and nystagmus. A single central sign indicates stroke.",
+    categories: ["pocket-card", "printable", "simulators"],
+    lastReviewed: "2026-05-25",
+    status: "Clinical Reference",
+    citations: "Kattah et al., Stroke 2009 (HINTS); Newman-Toker et al., Acad Emerg Med 2013 (HINTS+).",
+    placeholders: []
+  },
+  {
+    id: "neuro-exams-simulator",
+    title: "Bedside Neuro-Exams & Diagnostic Tools",
+    purpose: "Interactive bedside classifiers for differentiating acute confusional states (delirium) from fluent/non-fluent aphasia, alongside structured coma examination protocols.",
+    actions: "Select and run the appropriate diagnostic matrix for patients presenting with altered speech, confusion, or coma to optimize care pathways.",
+    categories: ["pocket-card", "icu", "simulators"],
+    lastReviewed: "2026-05-25",
+    status: "Clinical Reference",
+    citations: "CAM-ICU / GCS / NIHSS exam specifications.",
+    placeholders: []
   }
 ];
 
@@ -234,8 +285,26 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
+  useEffect(() => {
+    if (activeSubTab) {
+      const mapping = {
+        'pocket-cards': 'pocket-card',
+        'icu': 'icu',
+        'simulators': 'simulators',
+        'nursing': 'quality',
+        'onboarding': 'all'
+      };
+      const targetKey = mapping[activeSubTab];
+      if (targetKey) {
+        setSelectedCategory(targetKey);
+        onNavigate(null);
+      }
+    }
+  }, [activeSubTab, onNavigate]);
+
   const categories = [
     { key: "all", label: "All Modules" },
+    { key: "simulators", label: "Interactive Simulators" },
     { key: "pocket-card", label: "Pocket Cards" },
     { key: "printable", label: "Printable / Infographics" },
     { key: "icu", label: "Neuro ICU / NCC" },
@@ -552,15 +621,6 @@ function renderSubModuleContent(moduleId, onNavigate) {
               <p className="text-xs text-critical font-semibold">
                 ⚠️ Low Compliance Pattern: When P2 is elevated and exceeds P1 (P2 &gt; P1), the brain is highly non-compliant, and small volume changes will cause severe ICP spikes.
               </p>
-              <div className="flex gap-2">
-                <a
-                  href="#/protocols/simulators"
-                  onClick={() => onNavigate(null)}
-                  className="px-3 py-1.5 text-xs bg-cobalt-700 hover:bg-cobalt-800 text-white rounded font-medium inline-block"
-                >
-                  Go to Interactive EVD Simulator →
-                </a>
-              </div>
             </div>
 
             <div className="border border-line rounded p-4 bg-paper space-y-3">
@@ -601,6 +661,21 @@ function renderSubModuleContent(moduleId, onNavigate) {
               </ul>
             </div>
           </div>
+
+          <details className="bg-white border border-line rounded-lg dark:bg-card mt-6" open>
+            <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between dark:text-ink dark:hover:bg-paper-2">
+              <span className="flex items-center gap-2">
+                <i aria-hidden="true" data-lucide="activity" className="w-4 h-4 text-cobalt-600 dark:text-cobalt-300"></i>
+                Interactive EVD &amp; ICP Simulator
+              </span>
+              <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
+            </summary>
+            <div className="p-4 pt-0">
+              <ErrorBoundary>
+                <EvdIcpSimulator />
+              </ErrorBoundary>
+            </div>
+          </details>
         </div>
       );
 
@@ -1045,15 +1120,6 @@ function renderSubModuleContent(moduleId, onNavigate) {
               <p className="text-xs font-semibold text-critical">
                 ⚠️ Early Indicator: A significant drop in NPi (&gt; 0.5 points) from baseline, even if still above 3.0, is a strong warning sign of impending brainstem compression or herniation.
               </p>
-              <div className="flex gap-2">
-                <a
-                  href="#/protocols/simulators"
-                  onClick={() => onNavigate(null)}
-                  className="px-3 py-1.5 text-xs bg-cobalt-700 hover:bg-cobalt-800 text-white rounded font-medium inline-block"
-                >
-                  Go to Interactive Pupillometry Simulator →
-                </a>
-              </div>
             </div>
 
             <div className="border border-line rounded p-4 bg-paper space-y-2">
@@ -1065,6 +1131,21 @@ function renderSubModuleContent(moduleId, onNavigate) {
               </ul>
             </div>
           </div>
+
+          <details className="bg-white border border-line rounded-lg dark:bg-card mt-6" open>
+            <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between dark:text-ink dark:hover:bg-paper-2">
+              <span className="flex items-center gap-2">
+                <i aria-hidden="true" data-lucide="circle-dot" className="w-4 h-4 text-teal-600 dark:text-teal-300"></i>
+                Interactive Pupillometry / NPi Simulator
+              </span>
+              <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
+            </summary>
+            <div className="p-4 pt-0">
+              <ErrorBoundary>
+                <PupillometrySimulator />
+              </ErrorBoundary>
+            </div>
+          </details>
         </div>
       );
 
@@ -1147,6 +1228,78 @@ function renderSubModuleContent(moduleId, onNavigate) {
               All telestroke consults performed at spoke sites must use the designated tele-health templates. Route notes to the on-call attending under the role-based alias.
             </p>
           </div>
+        </div>
+      );
+
+    case "hints-simulator":
+      return (
+        <div className="space-y-6">
+          <div className="v6-callout v6-callout-confirm p-3">
+            <h3 className="font-bold text-xs uppercase mb-1">🎯 HINTS+ Bedside Diagnostic Guide</h3>
+            <p className="text-xs">HINTS+ is a four-step bedside exam for patients with acute vestibular syndrome (continuous vertigo, nystagmus, nausea, head motion intolerance) to rule out posterior circulation stroke.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="border border-line rounded p-4 bg-paper space-y-2">
+              <h3 className="font-bold text-sm text-ink">🔍 HINTS+ Components</h3>
+              <ul className="list-disc list-inside space-y-2 text-xs">
+                <li><b>Head Impulse (HI):</b> Normal/corrective saccade absent indicates central etiology. Corrective saccade present indicates peripheral.</li>
+                <li><b>Nystagmus (N):</b> Direction-changing horizontal nystagmus indicates central. Direction-fixed indicates peripheral.</li>
+                <li><b>Test of Skew (TS):</b> Vertical ocular misalignment on cover-uncover test indicates central.</li>
+                <li><b>Hearing (+):</b> New unilateral hearing loss indicates central (AICA territory infarction).</li>
+              </ul>
+            </div>
+            <div className="border border-line rounded p-4 bg-paper space-y-2 text-xs">
+              <h3 className="font-bold text-sm text-ink text-critical">⚠️ Central (Stroke) Sign Summary</h3>
+              <p>Any <b>ONE</b> of the following is a central sign indicating a stroke (Infarkt):</p>
+              <ul className="list-disc list-inside space-y-1.5 font-bold text-critical">
+                <li>Normal/Negative Head Impulse test (no corrective saccade)</li>
+                <li>Direction-changing Nystagmus (on lateral gaze)</li>
+                <li>Skew deviation present (vertical shift)</li>
+                <li>New unilateral hearing loss</li>
+              </ul>
+            </div>
+          </div>
+
+          <details className="bg-white border border-line rounded-lg dark:bg-card mt-6" open>
+            <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between dark:text-ink dark:hover:bg-paper-2">
+              <span className="flex items-center gap-2">
+                <i aria-hidden="true" data-lucide="eye" className="w-4 h-4 text-teal-600 dark:text-teal-300"></i>
+                HINTS+ Eye-Movement Simulator
+              </span>
+              <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
+            </summary>
+            <div className="p-4 pt-0">
+              <ErrorBoundary>
+                <HintsSimulator />
+              </ErrorBoundary>
+            </div>
+          </details>
+        </div>
+      );
+
+    case "neuro-exams-simulator":
+      return (
+        <div className="space-y-6">
+          <div className="v6-callout v6-callout-confirm p-3">
+            <h3 className="font-bold text-xs uppercase mb-1">🧠 Bedside Neurological Exam Classifiers</h3>
+            <p className="text-xs">Interactive tools for differential diagnosis of aphasia subtypes, delirium screening using CAM-ICU guidelines, and structured coma examination protocols.</p>
+          </div>
+
+          <details className="bg-white border border-line rounded-lg dark:bg-card mt-6" open>
+            <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between dark:text-ink dark:hover:bg-paper-2">
+              <span className="flex items-center gap-2">
+                <i aria-hidden="true" data-lucide="brain" className="w-4 h-4 text-teal-600 dark:text-teal-300"></i>
+                Neuro-Exams (Aphasia Classifier + Delirium Matrix + Coma Exam)
+              </span>
+              <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
+            </summary>
+            <div className="p-4 pt-0">
+              <ErrorBoundary>
+                <NeuroExamsTool />
+              </ErrorBoundary>
+            </div>
+          </details>
         </div>
       );
 
