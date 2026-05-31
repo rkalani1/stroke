@@ -36,3 +36,7 @@ android/app/src/main/assets/public/
 
 # v7 codemod backups (reproducible via re-running codemod-v7.mjs; idempotent)
 *.codemod-backup.txt
+
+# Claude / Antigravity subagent worktrees
+.claude/
+
