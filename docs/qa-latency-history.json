@@ -1312,5 +1312,35 @@
         "durationMs": 39031
       }
     ]
+  },
+  {
+    "finishedAt": "2026-05-31T04:12:49.818Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 18326,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 39029
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 1,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 8647
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 7301
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 39029
+      }
+    ]
   }
 ]
