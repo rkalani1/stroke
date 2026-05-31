@@ -28,8 +28,6 @@ import {
   AutoSaveIndicator,
   SavedAgo,
   NeurocheckTimer,
-  LateWindowEVTCalculator,
-  DAPTDurationCalculator,
   PatientCensus,
   ClinicWorkflow,
   WardsWorkflow,
@@ -31089,10 +31087,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {managementSubTab === 'calculators' && (
                   <GlobalPatientContext.Provider value={patientContextValue}>
                   <div id="mgmt-tabpanel-calculators" role="tabpanel" aria-labelledby="mgmt-tab-calculators" className="flex flex-col gap-4">
-                    {/* P1 expansion: DAWN / DEFUSE-3 named calculator */}
-                    <LateWindowEVTCalculator defaults={{ age: telestrokeNote.age, nihss: telestrokeNote.nihss }} />
-                    {/* P1 expansion: CHANCE / POINT / THALES DAPT duration */}
-                    <DAPTDurationCalculator defaults={{ nihss: telestrokeNote.nihss, strokeType: telestrokeNote.diagnosisCategory === 'tia' ? 'tia' : 'ischemic' }} />
+
                     {/* Post-tPA neurocheck timer — shows only if TNK time recorded */}
                     {(telestrokeNote.tnkAdminTime && telestrokeNote.lkwDate) && (
                       <NeurocheckTimer tpaGivenIso={(() => {
