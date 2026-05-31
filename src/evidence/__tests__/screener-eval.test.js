@@ -23,8 +23,8 @@ describe('screenerTrials — data integrity & compliance', () => {
   // (stroke-trials-screener/index.html) contains exactly 15 — every acronym
   // the brief enumerated (10 net-new + 5 overlap) is present and ported
   // verbatim. We assert the real source count.
-  it('ports all 15 source trials', () => {
-    expect(screenerTrials.length).toBe(15);
+  it('ports all 14 source trials', () => {
+    expect(screenerTrials.length).toBe(14);
   });
 
   it('includes the net-new and overlap acronyms', () => {
@@ -32,7 +32,7 @@ describe('screenerTrials — data integrity & compliance', () => {
     [
       'SISTER', 'STEP', 'TESTED', 'VERIFY', 'ASPIRE', // overlap
       'MINUTE', 'CLARITY', 'INTERCEPT', 'ESUS', 'MOCHA',
-      'SATURN', 'CAPPRICORN-1', 'SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2' // net-new
+      'CAPPRICORN-1', 'SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2' // net-new
     ].forEach((acr) => expect(acronyms).toContain(acr));
   });
 

@@ -40,14 +40,12 @@ export const EXCLUSION_ITEMS = [
   { id: 'exStroke90d', label: 'Known stroke in prior 90 days', classifications: ['ischemic'], trials: ['SISTER'] },
   { id: 'exMultipleTerritories', label: 'Acute occlusions in multiple vascular territories', classifications: ['ischemic'], trials: ['STEP'] },
   { id: 'exTandem', label: 'Tandem occlusions (cervical + intracranial)', classifications: ['ischemic'], trials: ['STEP'] },
-  { id: 'exTerminalIllness', label: 'Terminal illness or life expectancy < 2y', classifications: ['ischemic', 'ich'], trials: ['TESTED', 'SATURN'] },
-  { id: 'exSecondaryIch', label: 'Suspected secondary cause for ICH (AVM, aneurysm, tumor, SAH)', classifications: ['ich'], trials: ['MINUTE', 'ASPIRE', 'SATURN'] },
+  { id: 'exTerminalIllness', label: 'Terminal illness or life expectancy < 2y', classifications: ['ischemic', 'ich'], trials: ['TESTED'] },
+  { id: 'exSecondaryIch', label: 'Suspected secondary cause for ICH (AVM, aneurysm, tumor, SAH)', classifications: ['ich'], trials: ['MINUTE', 'ASPIRE'] },
   { id: 'exMidbrain', label: 'Midbrain extension or infratentorial/thalamic location', classifications: ['ich'], trials: ['MINUTE'] },
   { id: 'exPriorIch12m', label: 'Prior ICH in past 12 months', classifications: ['ich'], trials: ['ASPIRE'] },
   { id: 'exClearAnticoagulationIndication', label: 'Clear baseline indication for anticoagulation', classifications: ['ich'], trials: ['ASPIRE'] },
   { id: 'exClearAntiplateletIndication', label: 'Clear baseline indication for antiplatelet therapy', classifications: ['ich'], trials: ['ASPIRE'] },
-  { id: 'exIchScore3', label: 'Clinical ICH Score > 3', classifications: ['ich'], trials: ['SATURN'] },
-  { id: 'exRecentMi3m', label: 'Myocardial Infarction within past 3 months', classifications: ['ich'], trials: ['SATURN'] },
   { id: 'exEgfr35', label: 'eGFR < 35 ml/min/1.73m²', classifications: ['ischemic'], trials: ['ESUS', 'MOCHA'] },
   { id: 'exMriContraindication', label: 'Contraindication to MRI or gadolinium contrast', classifications: ['ischemic'], trials: ['ESUS', 'MOCHA'] },
   { id: 'exRecentSurgery30d', label: 'Surgery within 30 days prior to stroke onset', classifications: ['ischemic'], trials: ['ESUS'] },
@@ -263,18 +261,12 @@ export function evaluateTrialEligibility(trial, p) {
     if (trial.acronym === 'ESUS' || trial.acronym === 'MOCHA') optP.etiology = 'esus';
     else optP.etiology = 'other';
   }
-  if (optP.ichLocation === 'unselected') {
-    if (trial.acronym === 'SATURN') optP.ichLocation = 'lobar';
-    else optP.ichLocation = 'bg';
-  }
+  if (optP.ichLocation === 'unselected') optP.ichLocation = 'bg';
   if (optP.volume === 'unselected') {
     if (trial.acronym === 'MINUTE') optP.volume = 'bg_large';
     else optP.volume = 'small';
   }
-  if (optP.statin === 'unselected') {
-    if (trial.acronym === 'SATURN') optP.statin = true;
-    else optP.statin = false;
-  }
+  if (optP.statin === 'unselected') optP.statin = false;
   if (optP.afibHistory === 'unselected') {
     if (trial.acronym === 'INTERCEPT' || trial.acronym === 'ASPIRE') optP.afibHistory = true;
     else optP.afibHistory = false;
