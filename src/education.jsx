@@ -377,48 +377,11 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
     }
   }
 
-  // Render main dashboard grid list
   return (
     <div id="tabpanel-education" role="tabpanel" aria-labelledby="tab-education" className="space-y-6 max-w-6xl mx-auto v7-reveal">
       <header className="bg-card border border-line rounded-lg p-6 space-y-2">
-        <p className="font-mono uppercase text-eyebrow text-mute mb-1">Rotation Artifacts</p>
         <h1 className="font-serif text-2xl text-ink font-bold">Educational Resources</h1>
-        <p className="text-sm text-ink-2 leading-relaxed">
-          Interactive clinical simulators, decision tools, note-routing wizards, and visual infographics compiled for neurology bedside education.
-        </p>
-
       </header>
-
-      {/* Filter and Search controls */}
-      <section className="bg-card border border-line rounded-lg p-4 space-y-4 no-print">
-        <div className="flex flex-col md:flex-row gap-3">
-          <div className="relative flex-1 min-w-[240px] self-start">
-            <input
-              type="search"
-              placeholder="Search cards by topic, clinical keyword, or guidelines..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="v6-input pl-10"
-              aria-label="Search education cards"
-            />
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-mute pointer-events-none">
-              <i data-lucide="search" className="w-4 h-4" aria-hidden="true"></i>
-            </span>
-          </div>
-          <div className="flex gap-2 flex-wrap items-center">
-            <span className="text-xs text-mute font-mono uppercase">Filter:</span>
-            {categories.map(c => (
-              <button
-                key={c.key}
-                onClick={() => setSelectedCategory(c.key)}
-                className={`v7-chip ${selectedCategory === c.key ? 'bg-cobalt-700 text-white border-cobalt-700' : 'bg-transparent text-slate-700 border-line hover:border-slate-400 dark:text-ink-2'}`}
-              >
-                {c.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Modules Dashboard Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

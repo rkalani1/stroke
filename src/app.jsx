@@ -63,6 +63,7 @@ import { HeroReadout as V7HeroReadout } from './design/hero-readout.jsx';
 import { DrugChip as V7DrugChip } from './design/drug-chip.jsx';
 import { PatientStripMobile as V7PatientStripMobile, PatientStripRail as V7PatientStripRail } from './design/patient-strip.jsx';
 import { TimeWindowRing } from './design/time-window-ring.jsx';
+import { DeviceFrame as V7DeviceFrame } from './design/device-frame.jsx';
 import { TrialScreener } from './components/TrialScreener.jsx';
 import { EligibilityTables } from './components/EligibilityTables.jsx';
 import {
@@ -33568,20 +33569,37 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </span>
                     </div>
 
-                    {/* Sub-view: Bedside Screener (NATIVE) */}
+                    {/* Sub-view: Bedside Screener (iframe embed) */}
                     {trialsView === 'screener' && (
-                      <div id="trials-screener-panel">
-                        <TrialScreener copyToClipboard={copyToClipboard} addToast={addToast} />
+                      <div id="trials-screener-panel" className="space-y-3">
+                        <p className="font-mono uppercase text-2xs tracking-[0.06em] text-slate-500 dark:text-slate-400">
+                          Public demo opens without patient context. Enter synthetic screener parameters only.
+                        </p>
+                        <V7DeviceFrame
+                          src="https://rkalani1.github.io/stroke-trials-screener/"
+                          title="Stroke Bedside Trial Screener"
+                          breadcrumb="Trials Screener - synthetic demo - no patient context"
+                          poweredBy="stroke-trials-screener"
+                          openHref="https://rkalani1.github.io/stroke-trials-screener/"
+                          sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms"
+                        />
                       </div>
                     )}
 
-                    {/* Sub-view: Eligibility Tables (NATIVE) */}
+                    {/* Sub-view: Eligibility Tables (iframe embed) */}
                     {trialsView === 'eligibility' && (
                       <div id="trials-eligibility-panel" className="space-y-3">
                         <p className="font-mono uppercase text-2xs tracking-[0.06em] text-slate-500 dark:text-slate-400">
                           public-reference reference tables · ischemic &amp; ICH pathways · copy-paste-ready HTML &amp; Markdown for intranet
                         </p>
-                        <EligibilityTables copyToClipboard={copyToClipboard} addToast={addToast} />
+                        <V7DeviceFrame
+                          src="https://rkalani1.github.io/stroke-eligibility-tables-embed/"
+                          title="Stroke Trial Eligibility Tables"
+                          breadcrumb="Trials Screener · Eligibility Tables"
+                          poweredBy="stroke-eligibility-tables-embed"
+                          openHref="https://rkalani1.github.io/stroke-eligibility-tables-embed/"
+                          sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms"
+                        />
                       </div>
                     )}
                   </div>
