@@ -463,16 +463,6 @@ const EDUCATION_MODULES = [
   }
 ];
 
-// Helper to render confirmation/review labels
-const ReviewStatusBadge = ({ status }) => {
-  const isOk = status === "Clinical Reference" || status === "Recruiting / Active";
-  const color = isOk ? "bg-ok-100 text-ok-900 border-ok-300 dark:bg-ok-950 dark:text-ok-300 dark:border-ok-800" : "bg-caution-soft text-caution border-caution";
-  return (
-    <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded border ${color}`}>
-      {status}
-    </span>
-  );
-};
 
 // =====================================================================
 // MAIN EDUCATION MODULE EXPORT
@@ -559,8 +549,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
                 <p className="font-mono text-xs uppercase text-mute tracking-wider mb-1">Clinical Cards 2026</p>
                 <h1 className="font-serif text-2xl text-ink font-bold">{activeModule.title}</h1>
               </div>
-              <div className="flex flex-col items-end gap-1 text-right">
-                <ReviewStatusBadge status={activeModule.status} />
+              <div className="flex flex-col items-end justify-center text-right">
                 <span className="font-mono text-[10px] text-mute">Last Reviewed: {activeModule.lastReviewed}</span>
               </div>
             </header>
@@ -688,8 +677,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
             className="v7-card cursor-pointer flex flex-col justify-between hover:scale-[1.01] transition-all bg-card min-h-[220px]"
           >
             <div className="space-y-3">
-              <div className="flex justify-between items-start gap-2">
-                <ReviewStatusBadge status={m.status} />
+              <div className="flex justify-end items-start gap-2">
                 <span className="text-[10px] font-mono text-mute">{m.lastReviewed}</span>
               </div>
               <h2 className="font-serif font-bold text-base text-ink">{m.title}</h2>
