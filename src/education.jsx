@@ -360,9 +360,6 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
                 <p className="font-mono text-xs uppercase text-mute tracking-wider mb-1">Clinical Cards 2026</p>
                 <h1 className="font-serif text-2xl text-ink font-bold">{activeModule.title}</h1>
               </div>
-              <div className="flex flex-col items-end justify-center text-right">
-                <span className="font-mono text-[10px] text-mute">Last Reviewed: {activeModule.lastReviewed}</span>
-              </div>
             </header>
 
             {/* Custom Content for each SubModule */}
@@ -396,15 +393,12 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
             className="v7-card cursor-pointer flex flex-col justify-between hover:scale-[1.01] transition-all bg-card min-h-[220px]"
           >
             <div className="space-y-3">
-              <div className="flex justify-end items-start gap-2">
-                <span className="text-[10px] font-mono text-mute">{m.lastReviewed}</span>
-              </div>
               <h2 className="font-serif font-bold text-base text-ink">{m.title}</h2>
               <p className="text-xs text-ink-2 line-clamp-3 leading-relaxed">{m.purpose}</p>
             </div>
 
             <div className="pt-4 border-t border-line flex items-center justify-between mt-4">
-              <span className="text-xs font-semibold text-cobalt-700 dark:text-cobalt-300">Open Resource →</span>
+              <span className="text-xs font-semibold text-cobalt-700 dark:text-cobalt-300">Open →</span>
             </div>
           </article>
         ))}
