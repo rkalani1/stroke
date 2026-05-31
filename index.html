@@ -43,8 +43,8 @@
           media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
     <title>Stroke</title>
 
-    <link rel="preload" as="script" href="app.js?v=6.9.13">
-    <link rel="stylesheet" href="tailwind.css?v=6.9.13">
+    <link rel="preload" as="script" href="app.js?v=6.9.14">
+    <link rel="stylesheet" href="tailwind.css?v=6.9.14">
     <style>
         /* CSS variables consolidated in tokens.css */
         html.dark body {
@@ -677,7 +677,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = '6.9.13'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
+            const APP_VERSION = '6.9.14'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
             const STORAGE_PREFIX = 'strokeApp:';
             const APP_DATA_KEY = 'stroke.appData.v2';
             const IS_PUBLIC_PAGES = /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -896,6 +896,6 @@
         document.currentScript.parentNode.insertBefore(s, document.currentScript);
       })();
     </script>
-    <script src="app.js?v=6.9.13" defer></script>
+    <script src="app.js?v=6.9.14" defer></script>
 </body>
 </html>
