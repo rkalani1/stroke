@@ -382,13 +382,6 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
               </button>
             </div>
 
-            {/* Quality/Policy Disclaimer Banner */}
-            <div className="v7-guardrail p-3 border border-line rounded bg-slate-50 dark:bg-paper-2 flex items-center gap-3">
-              <i data-lucide="shield-alert" aria-hidden="true" className="w-5 h-5 text-caution shrink-0"></i>
-              <p className="text-xs text-ink-2">
-                <b>Disclaimer:</b> {EDUCATION_BANNER_TEXT}
-              </p>
-            </div>
 
             {/* Custom Content for each SubModule based on view mode */}
             <main id="resource-view-content" className="space-y-6 text-sm text-ink-2">
@@ -417,13 +410,6 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
           Interactive clinical simulators, decision tools, note-routing wizards, and visual infographics compiled for neurology bedside education.
         </p>
 
-        {/* Education disclaimer bar */}
-        <div className="v6-callout v6-callout-caution flex items-center gap-3 mt-4">
-          <i data-lucide="alert-triangle" aria-hidden="true" className="w-5 h-5 text-caution shrink-0"></i>
-          <p className="text-xs text-caution font-medium leading-normal">
-            <b>Safety Notice:</b> {EDUCATION_BANNER_TEXT}
-          </p>
-        </div>
       </header>
 
       {/* Filter and Search controls */}
