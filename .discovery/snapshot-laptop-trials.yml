@@ -1,0 +1,34 @@
+- generic [ref=e3]:
+  - link "Skip to main content" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e5]:
+    - banner [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e9]:
+          - img [ref=e3010]
+          - heading "Stroke" [level=1] [ref=e13]
+        - generic [ref=e16]:
+          - generic [ref=e17]
+          - generic [ref=e23]
+    - navigation "Main navigation" [ref=e41]:
+      - tablist "Main sections" [ref=e42]:
+        - tab "Encounter" [ref=e43] [cursor=pointer]:
+          - generic [ref=e44]: Encounter
+        - tab "Management" [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]: Management
+        - tab "Trials" [active] [selected] [ref=e47] [cursor=pointer]:
+          - generic [ref=e48]: Trials
+    - region "Main content area" [ref=e49]:
+      - tabpanel "Trials" [ref=e3024]:
+        - generic [ref=e3027]:
+          - paragraph [ref=e3028]: Reference
+          - heading "Clinical Trials" [level=2] [ref=e3029]
+          - paragraph [ref=e3030]: Reference for active clinical trials
+        - generic [ref=e3031]:
+          - generic [ref=e3032]
+          - generic [ref=e3037]
+        - generic [ref=e3049]:
+          - heading "Ischemic Stroke Studies" [level=2] [ref=e3050]
+          - generic [ref=e3051]
+          - generic [ref=e3104]
+          - generic [ref=e3178]

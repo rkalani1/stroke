@@ -1,0 +1,131 @@
+- generic [ref=e3]:
+  - link "Skip to main content" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e5]:
+    - banner [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e9]:
+          - img [ref=e1594]
+          - heading "Stroke" [level=1] [ref=e13]
+        - generic [ref=e16]:
+          - generic [ref=e17]:
+            - combobox "Search trials, management tools, and references" [ref=e18]
+            - img [ref=e1596]
+            - generic [ref=e22]: ⌘K
+          - generic [ref=e23]:
+            - group [ref=e24]
+            - button "Start new case" [ref=e33] [cursor=pointer]
+            - button "Settings menu" [ref=e36] [cursor=pointer]
+    - navigation "Main navigation" [ref=e41]:
+      - tablist "Main sections" [ref=e42]:
+        - tab "Encounter" [ref=e43] [cursor=pointer]:
+          - generic [ref=e44]: Encounter
+        - tab "Management" [selected] [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]: Management
+        - tab "Trials" [ref=e47] [cursor=pointer]:
+          - generic [ref=e48]: Trials
+    - region "Main content area" [ref=e49]:
+      - tabpanel "Management" [ref=e411]:
+        - generic [ref=e412]:
+          - generic [ref=e413]:
+            - img [ref=e1608]
+            - generic [ref=e416]
+          - button "Set diagnosis" [ref=e418] [cursor=pointer]
+        - navigation "Management breadcrumb" [ref=e419]:
+          - paragraph [ref=e420]: Management › Calculators
+        - tablist "Management sub-sections" [ref=e421]:
+          - tab "ICH management tab" [ref=e422] [cursor=pointer]: ICH
+          - tab "Ischemic management tab" [ref=e423] [cursor=pointer]: Ischemic
+          - tab "SAH management tab" [ref=e424] [cursor=pointer]: SAH
+          - tab "TIA management tab" [ref=e425] [cursor=pointer]: TIA
+          - tab "CVT management tab" [ref=e426] [cursor=pointer]: CVT
+          - tab "Calculators management tab" [active] [selected] [ref=e427] [cursor=pointer]: Calculators
+          - tab "References management tab" [ref=e428] [cursor=pointer]: References
+        - tabpanel "Calculators management tab" [ref=e1610]:
+          - generic [ref=e1611]:
+            - heading "Late-Window EVT Eligibility (DAWN · DEFUSE-3)" [level=4] [ref=e1612]
+            - generic [ref=e1613]
+          - generic [ref=e1629]:
+            - heading "Acute DAPT Duration (CHANCE / POINT / THALES)" [level=4] [ref=e1630]
+            - generic [ref=e1631]
+            - generic [ref=e1650]
+          - group [ref=e1659]:
+            - generic "PHQ-9 Depression Screen (post-stroke)" [ref=e1660] [cursor=pointer]
+          - group [ref=e1661]:
+            - generic "Quick Dosing Reference" [ref=e1662] [cursor=pointer]
+          - generic [ref=e1783]:
+            - generic [ref=e1784]: Patient snapshot
+            - generic [ref=e1785]: "Age: --"
+            - generic [ref=e1786]: "Sex: --"
+            - generic [ref=e1787]: "Cr: --"
+            - generic [ref=e1788]: "Dx: --"
+          - generic [ref=e1669]:
+            - generic [ref=e1670]
+            - generic [ref=e1672]: Updates score tools plus CrCl/DOAC calculator inputs from age, sex, weight, and creatinine.
+          - generic [ref=e1673]:
+            - generic [ref=e1674]: Filter calculators
+            - generic [ref=e1676]
+            - generic [ref=e1681]
+          - group [ref=e1688]:
+            - 'generic "NIHSS Score Score: 0" [ref=e1689] [cursor=pointer]'
+          - group [ref=e1693]:
+            - generic "COR/LOE Reference Legend" [ref=e1694] [cursor=pointer]
+          - group [ref=e1695]:
+            - generic "Modified Fisher Scale Vasospasm Risk" [ref=e1696] [cursor=pointer]
+          - group [ref=e1699]:
+            - 'generic "Glasgow Coma Scale (GCS) Score: 0" [ref=e1700] [cursor=pointer]'
+          - group [ref=e1703]:
+            - 'generic "ICH Score Score: 0" [ref=e1704] [cursor=pointer]'
+          - group [ref=e1707]:
+            - generic "FUNC Score (ICH Functional Outcome) Prognosis" [ref=e1708] [cursor=pointer]
+          - group [ref=e1711]:
+            - 'generic "Modified Rankin Scale (mRS) Score: Not Selected" [ref=e1712] [cursor=pointer]'
+          - group [ref=e1715]:
+            - 'generic "ABCD² Score Score: 0" [ref=e1716] [cursor=pointer]'
+          - group [ref=e1719]:
+            - 'generic "CHA₂DS₂-VASc Score Score: 0" [ref=e1720] [cursor=pointer]'
+          - group [ref=e1723]:
+            - 'generic "HAS-BLED Score Score: 0" [ref=e1724] [cursor=pointer]'
+          - group [ref=e1727]:
+            - 'generic "ROPE Score and PASCAL Classification Score: 0" [ref=e1728] [cursor=pointer]'
+          - group [ref=e1731]:
+            - 'generic "RCVS² Score Score: 0" [ref=e1732] [cursor=pointer]'
+          - group [ref=e1735]:
+            - 'generic "Hunt and Hess / WFNS Scale (SAH Grading) H&H: Not Selected | WFNS: Not Selected" [ref=e1736] [cursor=pointer]'
+          - group [ref=e1739]:
+            - generic "PREVENT 10-year ASCVD Risk Estimate" [ref=e1740] [cursor=pointer]
+          - group [ref=e1741]:
+            - 'generic "PHASES Score (Aneurysm Rupture Risk) Score: 0 — 0.4% 5-yr risk" [ref=e1742] [cursor=pointer]'
+            - option "North American / European (0 pts)" [selected]
+            - option "Japanese (+3 pts)"
+            - option "Finnish (+5 pts)"
+            - option "ICA (0 pts)" [selected]
+            - option "MCA (+2 pts)"
+            - option "ACA / Pcomm / Posterior circulation (+4 pts)"
+          - group [ref=e1745]:
+            - generic "ICH Volume Calculator (ABC/2 Method)" [ref=e1746] [cursor=pointer]
+          - group [ref=e1748]:
+            - generic "Andexanet Alfa (Andexxa) Dosing" [ref=e1749] [cursor=pointer]
+            - option "Select DOAC" [selected]
+            - option "Apixaban (Eliquis)"
+            - option "Rivaroxaban (Xarelto)"
+            - option "Other (not indicated for andexanet)"
+          - group [ref=e1751]:
+            - generic "Creatinine Clearance (Cockcroft-Gault)" [ref=e1752] [cursor=pointer]
+            - option "Select" [selected]
+            - option "Male"
+            - option "Female"
+          - group [ref=e1754]:
+            - generic "Enoxaparin Weight-Based Dosing" [ref=e1755] [cursor=pointer]
+          - group [ref=e1757]:
+            - 'generic "ASPECTS Score (Interactive) Score: 10/10" [ref=e1758] [cursor=pointer]'
+          - group [ref=e1761]:
+            - 'generic "PC-ASPECTS (Posterior Circulation) Score: 10/10" [ref=e1762] [cursor=pointer]'
+          - group [ref=e1765]:
+            - generic "Alteplase (tPA) Dosing Calculator 0.9 mg/kg, max 90 mg" [ref=e1766] [cursor=pointer]
+          - group [ref=e1769]:
+            - generic "Thrombolysis Risk Scores (SPAN-100, DRAGON, SEDAN) sICH Risk Assessment" [ref=e1770] [cursor=pointer]
+          - group [ref=e1773]:
+            - generic "mTICI Reperfusion Score (Post-EVT)" [ref=e1774] [cursor=pointer]
+          - group [ref=e1778]:
+            - generic "DRAGON Score (IVT Outcome Prediction)" [ref=e1779] [cursor=pointer]

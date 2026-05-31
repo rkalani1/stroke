@@ -1,0 +1,489 @@
+- generic [ref=e3]:
+  - link "Skip to main content" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e5]:
+    - banner [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e9]:
+          - img [ref=e3912]
+          - heading "Stroke" [level=1] [ref=e13]
+        - generic [ref=e16]:
+          - generic [ref=e17]:
+            - combobox "Search trials, management tools, and references" [ref=e18]
+            - img [ref=e3914]
+            - generic [ref=e22]: ⌘K
+          - generic [ref=e23]:
+            - group [ref=e24]:
+              - generic "Resources" [ref=e25] [cursor=pointer]:
+                - img [ref=e3917]
+                - generic [ref=e30]: Resources
+                - img [ref=e3921]
+              - generic [ref=e3440]:
+                - link "ChatGPT" [ref=e3441] [cursor=pointer]:
+                  - /url: https://chatgpt.com/
+                - link "OpenEvidence" [ref=e3448] [cursor=pointer]:
+                  - /url: https://www.openevidence.com
+                - link "UpToDate" [ref=e3455] [cursor=pointer]:
+                  - /url: https://www.uptodate.com
+                - link "Asta (Ai2)" [ref=e3462] [cursor=pointer]:
+                  - /url: https://asta.allen.ai/chat
+                - link "Regional Hospitals Regional telestroke center coverage map" [ref=e3469] [cursor=pointer]:
+                  - /url: https://rkalani1.github.io/telestroke-expansion-map/
+            - button "Start new case" [ref=e33] [cursor=pointer]:
+              - generic [ref=e34]: New Case
+            - generic [ref=e35]:
+              - button "Settings menu" [expanded] [active] [ref=e36] [cursor=pointer]:
+                - img [ref=e3943]
+                - generic [ref=e40]: More
+              - menu "Settings menu" [ref=e3947]:
+                - menuitem "Export to PDF" [ref=e3948] [cursor=pointer]
+                - menuitem "Export as JSON" [ref=e3952] [cursor=pointer]
+                - menuitem "Share" [ref=e3953] [cursor=pointer]
+                - separator [ref=e3955]
+                - menuitemcheckbox "Dark mode" [ref=e3956] [cursor=pointer]
+                - separator [ref=e3962]
+                - menuitem "Clear all data" [ref=e3963] [cursor=pointer]
+    - navigation "Main navigation" [ref=e41]:
+      - tablist "Main sections" [ref=e42]:
+        - tab "Encounter" [ref=e43] [cursor=pointer]:
+          - generic [ref=e44]: Encounter
+        - tab "Management" [selected] [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]: Management
+        - tab "Trials" [ref=e47] [cursor=pointer]:
+          - generic [ref=e48]: Trials
+    - region "Main content area" [ref=e49]:
+      - tabpanel "Management" [ref=e3636]:
+        - generic [ref=e3637]:
+          - generic [ref=e3638]:
+            - img [ref=e3967]
+            - generic [ref=e3640]:
+              - strong [ref=e3641]: No diagnosis set.
+              - text: Set a working diagnosis on the Encounter tab to activate pathway-specific management recommendations and auto-populate relevant protocols.
+          - button "Set diagnosis" [ref=e3642] [cursor=pointer]
+        - navigation "Management breadcrumb" [ref=e3643]:
+          - paragraph [ref=e3644]: Management › References
+        - tablist "Management sub-sections" [ref=e3645]:
+          - tab "ICH management tab" [ref=e3646] [cursor=pointer]: ICH
+          - tab "Ischemic management tab" [ref=e3647] [cursor=pointer]: Ischemic
+          - tab "SAH management tab" [ref=e3648] [cursor=pointer]: SAH
+          - tab "TIA management tab" [ref=e3649] [cursor=pointer]: TIA
+          - tab "CVT management tab" [ref=e3650] [cursor=pointer]: CVT
+          - tab "Calculators management tab" [ref=e3651] [cursor=pointer]: Calculators
+          - tab "References management tab" [selected] [ref=e3652] [cursor=pointer]: References
+        - tabpanel "References management tab" [ref=e3653]:
+          - generic [ref=e3655]:
+            - textbox "Filter evidence documents" [ref=e3656]:
+              - /placeholder: Filter evidence documents...
+            - img [ref=e3969]
+          - generic [ref=e3658]:
+            - button "Major Stroke Trials" [ref=e3659] [cursor=pointer]
+            - button "Guideline Recommendations" [ref=e3660] [cursor=pointer]
+            - button "HINTS Exam" [ref=e3661] [cursor=pointer]
+            - button "CVT" [ref=e3662] [cursor=pointer]
+            - button "Prognosis" [ref=e3663] [cursor=pointer]
+            - button "Imaging F/U" [ref=e3664] [cursor=pointer]
+            - button "Mimics DDx" [ref=e3665] [cursor=pointer]
+            - button "Chameleons" [ref=e3666] [cursor=pointer]
+            - button "Spinal Cord" [ref=e3667] [cursor=pointer]
+            - button "CTP Guide" [ref=e3668] [cursor=pointer]
+            - button "Admission Orders" [ref=e3669] [cursor=pointer]
+            - button "Guidelines" [ref=e3670] [cursor=pointer]
+          - group [ref=e3671]:
+            - generic "Major Stroke Trials" [ref=e3672] [cursor=pointer]:
+              - img [ref=e3972]
+              - text: Major Stroke Trials
+            - option "All topics" [selected]
+            - option "Acute ischemic stroke"
+            - option "Extended-window IV thrombolysis"
+            - option "Wake-up / unknown-onset stroke"
+            - option "Tenecteplase vs alteplase"
+            - option "EVT for large-core infarct"
+            - option "EVT in late window (6-24h)"
+            - option "EVT for medium / distal vessel occlusion"
+            - option "IA adjunctive thrombolysis after EVT"
+            - option "CRAO thrombolysis"
+            - option "IV thrombolysis in DOAC-treated patients"
+            - option "Tandem lesions"
+            - option "Intracranial atherosclerotic disease — secondary prevention"
+            - option "Intracerebral hemorrhage"
+            - option "ICH blood pressure management"
+            - option "Anticoagulant-associated ICH reversal"
+            - option "ICH surgical evacuation"
+            - option "Secondary prevention after ICH (AF, statin)"
+            - option "Aneurysmal subarachnoid hemorrhage"
+            - option "Cerebral venous thrombosis"
+            - option "Secondary stroke prevention"
+            - option "DAPT for minor stroke / high-risk TIA"
+            - option "AF anticoagulation timing after stroke"
+            - option "Anticoagulation in AF after ICH"
+            - option "PFO closure"
+            - option "Carotid revascularization"
+            - option "Stroke rehabilitation"
+            - option "CADASIL and monogenic small-vessel disease"
+            - option "Post-stroke cognitive trajectories"
+            - option "Special populations (pregnancy, cancer, pediatrics)"
+            - option "Imaging selection for reperfusion"
+            - option "Any certainty" [selected]
+            - option "High"
+            - option "Moderate"
+            - option "Low"
+            - option "Very low"
+            - option "Any evidence type" [selected]
+            - option "RCT"
+            - option "Meta-analysis"
+            - option "Observational"
+            - option "Guideline"
+            - option "Consensus"
+          - group [ref=e3674]:
+            - generic "Guideline Recommendations (9) Why this recommendation? — claim chain to primary sources" [ref=e3675] [cursor=pointer]:
+              - img [ref=e3974]
+              - text: Guideline Recommendations (9)
+              - generic [ref=e3677]: Why this recommendation? — claim chain to primary sources
+          - group [ref=e3678]:
+            - generic "HINTS Exam — Acute Vestibular Syndrome" [ref=e3679] [cursor=pointer]:
+              - img [ref=e3977]
+              - text: HINTS Exam — Acute Vestibular Syndrome
+          - group [ref=e3681]:
+            - generic "CVT Monitoring Parameters" [ref=e3682] [cursor=pointer]
+          - group [ref=e3683]:
+            - generic "Neuroprognostication & Goals of Care" [ref=e3684] [cursor=pointer]
+          - group [ref=e3685]:
+            - generic "Imaging Follow-Up Protocols by Diagnosis" [ref=e3686] [cursor=pointer]:
+              - img [ref=e3980]
+              - text: Imaging Follow-Up Protocols by Diagnosis
+          - group [ref=e3688]:
+            - generic "Code Stroke Activation Criteria" [ref=e3689] [cursor=pointer]:
+              - img [ref=e3985]
+              - text: Code Stroke Activation Criteria
+          - group [ref=e3691]:
+            - generic "Stroke Mimic Differential Diagnosis" [ref=e3692] [cursor=pointer]:
+              - img [ref=e3990]
+              - text: Stroke Mimic Differential Diagnosis
+          - group [ref=e3694]:
+            - generic "Spinal Cord Stroke" [ref=e3695] [cursor=pointer]
+          - group [ref=e3696]:
+            - generic "CT Perfusion (CTP) Interpretation Guide" [ref=e3697] [cursor=pointer]:
+              - img [ref=e3992]
+              - text: CT Perfusion (CTP) Interpretation Guide
+          - group [ref=e3699]:
+            - generic "Stroke Chameleons — Missed Stroke Presentations" [ref=e3700] [cursor=pointer]:
+              - img [ref=e3997]
+              - text: Stroke Chameleons — Missed Stroke Presentations
+          - group [ref=e3702]:
+            - generic "Admission Order Checklists" [ref=e3703] [cursor=pointer]
+          - generic [ref=e3704]:
+            - generic [ref=e3705]:
+              - generic [ref=e3706]:
+                - heading "Guideline Library" [level=3] [ref=e3707]
+                - paragraph [ref=e3708]: Full COR/LOE recommendations with direct publisher PDF links.
+              - generic [ref=e3709]: 771 recommendations
+            - generic [ref=e3710]:
+              - generic [ref=e3711]:
+                - textbox "Search guideline recommendations" [ref=e3712]:
+                  - /placeholder: Search recommendations...
+                - img [ref=e4002]
+              - combobox "Filter by guideline" [ref=e3714]:
+                - option "All guidelines" [selected]
+                - option "AIS 2026"
+                - option "ICH 2022"
+                - option "aSAH 2023"
+                - option "CVT Statement 2024"
+                - option "Maternal Stroke 2026"
+                - option "Primary Prevention 2024"
+                - option "Secondary Prevention 2021"
+                - option "SVIN Large-Core EVT 2025"
+                - option "Cancer-Associated Stroke 2026"
+                - option "Premorbid Disability 2022"
+                - option "TIA ED 2023"
+                - option "Systemic Complications 2024"
+                - option "Poststroke Cognition 2023"
+                - option "Poststroke Spasticity 2026"
+                - option "Poststroke Primary Care 2021"
+                - option "Perioperative Stroke 2021"
+                - option "Heart-Brain Health 2024"
+              - combobox "Filter by section" [ref=e3715]:
+                - option "All sections" [selected]
+                - option "AF"
+                - option "Abnormal Voluntary Control"
+                - option "Acute BP Lowering"
+                - option "Acute Reperfusion"
+                - option "Acute Treatment"
+                - option "Airway, Breathing, and Oxygenation"
+                - option "Anesthetic Management of Surgical and Endovascular Procedures"
+                - option "Anticoagulant-Related Hemorrhage"
+                - option "Anticoagulants"
+                - option "Anticoagulation (Acute)"
+                - option "Anticoagulation (Long-Term)"
+                - option "Antiphospholipid Syndrome"
+                - option "Antiplatelet Treatment"
+                - option "Antiplatelet Use for Primary Prevention"
+                - option "Antiplatelet-Related Hemorrhage"
+                - option "Antithrombotic Medications"
+                - option "Aortic Arch Atherosclerosis"
+                - option "Assessment"
+                - option "Assessment and Diagnosis"
+                - option "Asymptomatic Carotid Artery Stenosis"
+                - option "Asymptomatic Cerebral SVD, Including"
+                - option "Atrial Fibrillation"
+                - option "Autoimmune Vasculitis"
+                - option "BP Management"
+                - option "Background"
+                - option "Behavior Change Interventions"
+                - option "Biological Pathways"
+                - option "Bleeding Risk"
+                - option "Blood Glucose Management"
+                - option "Blood Pressure"
+                - option "Blood Pressure Management"
+                - option "Blood Sugar"
+                - option "Brain Swelling (General Recommendations)"
+                - option "Brain Swelling (Medical Management)"
+                - option "Bridging Therapy"
+                - option "Cardiac Complications"
+                - option "Cardiac Tumors"
+                - option "Cardioembolism"
+                - option "Cardiomyopathy"
+                - option "Carotid Web"
+                - option "Cerebellar Infarction (Surgical Management)"
+                - option "Choice of Thrombolytic Agent"
+                - option "Classification"
+                - option "Clinical Manifestations and Diagnosis of aSAH"
+                - option "Clinical Presentation"
+                - option "Concomitant With IVT"
+                - option "Congenital Heart Disease"
+                - option "Coronary Heart Disease"
+                - option "Craniectomy for ICH"
+                - option "Craniotomy for Posterior Fossa Hemorrhage"
+                - option "Craniotomy for Supratentorial Hemorrhage"
+                - option "Decision-Making"
+                - option "Decisions to Limit Life-Sustaining Treatment"
+                - option "Deep Vein Thrombosis Prophylaxis"
+                - option "Depression"
+                - option "Diagnosis"
+                - option "Diagnostic Assessment for ICH Pathogenesis"
+                - option "Diagnostic Evaluation"
+                - option "Diagnostics"
+                - option "Diet Quality"
+                - option "Disposition"
+                - option "Dissection"
+                - option "Dolichoectasia"
+                - option "Dysphagia"
+                - option "EMS Destination Management"
+                - option "EMS Systems"
+                - option "ESUS"
+                - option "EVT within 0-6 hours"
+                - option "EVT within 6-24 hours"
+                - option "Early Recognition"
+                - option "Emergency Evaluation of Patients With"
+                - option "Endometriosis"
+                - option "Endovascular Techniques"
+                - option "Endovascular Therapy"
+                - option "Endovascular Thrombectomy for Adult"
+                - option "Endovascular Thrombectomy in Pediatric"
+                - option "Epidemiology and Primary Prevention"
+                - option "Evidence Summary"
+                - option "Extended Time Windows for Intravenous"
+                - option "Extracranial Carotid Stenosis"
+                - option "Extracranial Vertebral Artery Stenosis"
+                - option "Fever and Infection"
+                - option "Fibromuscular Dysplasia"
+                - option "General Hemostatic Treatments"
+                - option "Genetic Stroke Syndromes"
+                - option "Glucose"
+                - option "Glucose Management"
+                - option "Goals of Care"
+                - option "Guideline Context"
+                - option "Head Positioning"
+                - option "Health Equity"
+                - option "Health Systems-Based Interventions"
+                - option "Heart Failure"
+                - option "Heart-Brain Axis"
+                - option "Hematologic Traits"
+                - option "Hormonal Contraception"
+                - option "Hospital Characteristics and Systems of Care"
+                - option "Hyperhomocysteinemia"
+                - option "Hypertension"
+                - option "Hypertriglyceridemia"
+                - option "Imaging"
+                - option "Infection"
+                - option "Infectious Vasculitis"
+                - option "Inflammation in Atherosclerosis"
+                - option "Initial, Vascular, and Multimodal Imaging"
+                - option "Inpatient Care Setting"
+                - option "Intracranial Large Artery Atherosclerosis"
+                - option "Intraoperative Hemodynamics"
+                - option "Introduction"
+                - option "Involuntary Muscle Activation"
+                - option "LV Thrombus"
+                - option "Large-Artery Atherosclerosis"
+                - option "Lifestyle Modifications/Patient and Caregiver"
+                - option "Lipids"
+                - option "MIS Evacuation of ICH"
+                - option "MIS Evacuation of IVH"
+                - option "Malignancy"
+                - option "Management"
+                - option "Management of Antithrombotic Agents"
+                - option "Management of Cerebral Vasospasm and DCI"
+                - option "Management of Hydrocephalus Associated with aSAH"
+                - option "Management of Medical Complications"
+                - option "Management of Other Medications"
+                - option "Management of Seizures Associated with aSAH"
+                - option "Medical Measures to Prevent Rebleeding"
+                - option "Menopause"
+                - option "Migraine"
+                - option "Monitoring and Detection of Cerebral Vasospasm and DCI"
+                - option "Moyamoya Disease"
+                - option "Natural History and Outcome of aSAH"
+                - option "Neurobehavioral Complications"
+                - option "Neuroimaging for ICH Diagnosis and Acute"
+                - option "Neuroinvasive Monitoring, ICP, and Edema"
+                - option "Nursing Care"
+                - option "Nursing Interventions and Activities"
+                - option "Nutrition"
+                - option "Obesity"
+                - option "Obstructive Sleep Apnea"
+                - option "Organization and Integration of Components"
+                - option "Organization of Prehospital and Initial Systems"
+                - option "Other Diagnostic Tests"
+                - option "Other Genetic Disorders"
+                - option "Other IV Fibrinolytics and Sonothrombolysis"
+                - option "Other In-Hospital Management Considerations"
+                - option "Other Specific Circumstances"
+                - option "Outcome Prediction"
+                - option "PFO"
+                - option "Passive Tissue Changes"
+                - option "Patient Assessment"
+                - option "Patient Behavior"
+                - option "Physical Activity"
+                - option "Physical Examination and Laboratory Assessment"
+                - option "Posterior Circulation Stroke"
+                - option "Pregnancy and Long-Term Stroke Risk"
+                - option "Prehospital Assessment and Management"
+                - option "Preop Thromboembolic Risk"
+                - option "Prevention"
+                - option "Prevention and Management of Acute Medical"
+                - option "Prevention of Pregnancy-Associated Stroke"
+                - option "Primary ICH Prevention in Individuals With High-"
+                - option "Prognostication of Future ICH Risk"
+                - option "Recurrent Risk"
+                - option "Rehabilitation"
+                - option "Rehabilitation and Recovery"
+                - option "Risk Factors, Prevention, and Subsequent Management"
+                - option "Risk Reduction"
+                - option "Risk Stratification"
+                - option "Risk and Predictors"
+                - option "Role of Mobile Stroke Units"
+                - option "Screening"
+                - option "Secondary Prevention"
+                - option "Seizures"
+                - option "Seizures and Antiseizure Drugs"
+                - option "Sickle Cell Disease"
+                - option "Sleep"
+                - option "Small Vessel Stroke"
+                - option "Smoking Cessation"
+                - option "Stroke Awareness (Population Level)"
+                - option "Stroke Mechanisms"
+                - option "Stroke Recognition"
+                - option "Stroke Registries, Quality Improvement, and"
+                - option "Stroke-Associated Pneumonia"
+                - option "Substance Use"
+                - option "Substance Use and Substance Disorders"
+                - option "Supratentorial Infarction (Surgical Management)"
+                - option "Surgical Decompression"
+                - option "Surgical and Endovascular Methods for Treatment of Ruptured Cerebral Aneurysms"
+                - option "Systems of Care"
+                - option "Telemedicine"
+                - option "Temperature Management"
+                - option "Testosterone Use"
+                - option "Therapies"
+                - option "Thrombolysis Decision-Making"
+                - option "Thromboprophylaxis and Treatment of Thrombosis"
+                - option "Timing of Surgery"
+                - option "Tobacco Use"
+                - option "Transfusion"
+                - option "Transgender Health"
+                - option "Treating and Monitoring Hyperlipidemia"
+                - option "Valvular Disease"
+                - option "Vascular Risk Factor Management"
+                - option "Ventilation"
+                - option "Vessel Imaging"
+                - option "Weight and Obesity"
+                - option "aSAH Acute Recovery"
+                - option "aSAH Long-Term Recovery"
+              - combobox "Filter by class of recommendation" [ref=e3716]:
+                - option "All classes" [selected]
+                - option "I"
+                - option "IIa"
+                - option "IIb"
+                - option "III"
+                - option "Statement"
+            - generic [ref=e3717]:
+              - group [ref=e3718]:
+                - generic "AIS 2026 195 recs" [ref=e3719] [cursor=pointer]
+              - group [ref=e3722]:
+                - generic "ICH 2022 124 recs" [ref=e3723] [cursor=pointer]
+              - group [ref=e3726]:
+                - generic "aSAH 2023 81 recs" [ref=e3727] [cursor=pointer]
+              - group [ref=e3730]:
+                - generic "CVT Statement 2024 5 recs" [ref=e3731] [cursor=pointer]
+              - group [ref=e3734]:
+                - generic "Maternal Stroke 2026 3 recs" [ref=e3735] [cursor=pointer]
+              - group [ref=e3738]:
+                - generic "Primary Prevention 2024 80 recs" [ref=e3739] [cursor=pointer]
+              - group [ref=e3742]:
+                - generic "Secondary Prevention 2021 162 recs" [ref=e3743] [cursor=pointer]
+              - group [ref=e3746]:
+                - generic "SVIN Large-Core EVT 2025 4 recs" [ref=e3747] [cursor=pointer]
+              - group [ref=e3750]:
+                - generic "Cancer-Associated Stroke 2026 18 recs" [ref=e3751] [cursor=pointer]
+              - group [ref=e3754]:
+                - generic "Premorbid Disability 2022 5 recs" [ref=e3755] [cursor=pointer]
+              - group [ref=e3758]:
+                - generic "TIA ED 2023 12 recs" [ref=e3759] [cursor=pointer]
+              - group [ref=e3762]:
+                - generic "Systemic Complications 2024 3 recs" [ref=e3763] [cursor=pointer]
+              - group [ref=e3766]:
+                - generic "Poststroke Cognition 2023 10 recs" [ref=e3767] [cursor=pointer]
+              - group [ref=e3770]:
+                - generic "Poststroke Spasticity 2026 30 recs" [ref=e3771] [cursor=pointer]
+              - group [ref=e3774]:
+                - generic "Poststroke Primary Care 2021 20 recs" [ref=e3775] [cursor=pointer]
+              - group [ref=e3778]:
+                - generic "Perioperative Stroke 2021 10 recs" [ref=e3779] [cursor=pointer]
+              - group [ref=e3782]:
+                - generic "Heart-Brain Health 2024 9 recs" [ref=e3783] [cursor=pointer]
+          - group [ref=e3786]:
+            - generic "Aneurysms & Vascular Malformations" [ref=e3787] [cursor=pointer]:
+              - generic [ref=e3788]: Aneurysms & Vascular Malformations
+              - img [ref=e4005]
+          - group [ref=e3790]:
+            - generic "Antiplatelet Therapy" [ref=e3791] [cursor=pointer]:
+              - generic [ref=e3792]: Antiplatelet Therapy
+              - img [ref=e4007]
+          - group [ref=e3794]:
+            - generic "Cerebral Small Vessel Disease" [ref=e3795] [cursor=pointer]:
+              - generic [ref=e3796]: Cerebral Small Vessel Disease
+              - img [ref=e4009]
+          - group [ref=e3798]:
+            - generic "Critical Appraisal" [ref=e3799] [cursor=pointer]:
+              - generic [ref=e3800]: Critical Appraisal
+              - img [ref=e4011]
+          - group [ref=e3802]:
+            - generic "Endovascular Therapy" [ref=e3803] [cursor=pointer]:
+              - generic [ref=e3804]: Endovascular Therapy
+              - img [ref=e4013]
+          - group [ref=e3806]:
+            - generic "Risk Factors" [ref=e3807] [cursor=pointer]:
+              - generic [ref=e3808]: Risk Factors
+              - img [ref=e4015]
+          - group [ref=e3810]:
+            - generic "Thrombolytic Therapy" [ref=e3811] [cursor=pointer]:
+              - generic [ref=e3812]: Thrombolytic Therapy
+              - img [ref=e4017]
+          - group [ref=e3814]:
+            - generic "Exam" [ref=e3815] [cursor=pointer]:
+              - generic [ref=e3816]: Exam
+              - img [ref=e4019]
+          - group [ref=e3818]:
+            - generic "Large Artery Disease" [ref=e3819] [cursor=pointer]:
+              - generic [ref=e3820]: Large Artery Disease
+              - img [ref=e4021]

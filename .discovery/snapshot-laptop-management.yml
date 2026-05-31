@@ -1,0 +1,44 @@
+- generic [ref=e3]:
+  - link "Skip to main content" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e5]:
+    - banner [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e9]:
+          - img [ref=e397]
+          - heading "Stroke" [level=1] [ref=e13]
+        - generic [ref=e16]:
+          - generic [ref=e17]
+          - generic [ref=e23]
+    - navigation "Main navigation" [ref=e41]:
+      - tablist "Main sections" [ref=e42]:
+        - tab "Encounter" [ref=e43] [cursor=pointer]:
+          - generic [ref=e44]: Encounter
+        - tab "Management" [active] [selected] [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]: Management
+        - tab "Trials" [ref=e47] [cursor=pointer]:
+          - generic [ref=e48]: Trials
+    - region "Main content area" [ref=e49]:
+      - tabpanel "Management" [ref=e411]:
+        - generic [ref=e412]:
+          - generic [ref=e413]
+          - button "Set diagnosis" [ref=e418] [cursor=pointer]
+        - navigation "Management breadcrumb" [ref=e419]:
+          - paragraph [ref=e420]: Management › Ischemic
+        - tablist "Management sub-sections" [ref=e421]:
+          - tab "ICH management tab" [ref=e422] [cursor=pointer]: ICH
+          - tab "Ischemic management tab" [selected] [ref=e423] [cursor=pointer]: Ischemic
+          - tab "SAH management tab" [ref=e424] [cursor=pointer]: SAH
+          - tab "TIA management tab" [ref=e425] [cursor=pointer]: TIA
+          - tab "CVT management tab" [ref=e426] [cursor=pointer]: CVT
+          - tab "Calculators management tab" [ref=e427] [cursor=pointer]: Calculators
+          - tab "References management tab" [ref=e428] [cursor=pointer]: References
+        - tabpanel "Ischemic management tab" [ref=e429]:
+          - generic [ref=e430]
+          - generic [ref=e450]
+          - generic [ref=e459]
+          - generic [ref=e566]
+          - generic [ref=e574]
+          - generic [ref=e580]
+          - group [ref=e598]
+          - region "Protocol cards" [ref=e1277]

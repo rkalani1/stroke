@@ -1,0 +1,21 @@
+- banner [ref=e6]:
+  - generic [ref=e7]:
+    - generic [ref=e9]:
+      - img [ref=e3391]
+      - heading "Stroke" [level=1] [ref=e13]
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - combobox "Search trials, management tools, and references" [active] [ref=e18]
+        - img [ref=e3393]
+        - generic [ref=e22]: ⌘K
+      - generic [ref=e23]:
+        - group [ref=e24]:
+          - generic "Resources" [ref=e25] [cursor=pointer]:
+            - img [ref=e3396]
+            - generic [ref=e30]: Resources
+            - img [ref=e3400]
+        - button "Start new case" [ref=e33] [cursor=pointer]:
+          - generic [ref=e34]: New Case
+        - button "Settings menu" [ref=e36] [cursor=pointer]:
+          - img [ref=e3402]
+          - generic [ref=e40]: More
