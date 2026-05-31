@@ -365,71 +365,10 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
               </div>
             </header>
 
-            {/* View Mode Switcher */}
-            <div className="flex border-b border-line" role="tablist" aria-label="Resource view modes">
-              <button
-                onClick={() => setViewMode('dashboard')}
-                className={`flex-1 sm:flex-none px-6 py-2.5 text-sm font-semibold border-b-2 transition-all min-h-[44px] ${viewMode === 'dashboard' ? 'border-cobalt-600 text-cobalt-600 dark:border-cobalt-400 dark:text-cobalt-400 font-bold' : 'border-transparent text-mute hover:text-ink'}`}
-                role="tab"
-                aria-selected={viewMode === 'dashboard'}
-                aria-controls="resource-view-content"
-                id="tab-view-dashboard"
-              >
-                Interactive Platform
-              </button>
-              <button
-                onClick={() => setViewMode('infographic')}
-                className={`flex-1 sm:flex-none px-6 py-2.5 text-sm font-semibold border-b-2 transition-all min-h-[44px] ${viewMode === 'infographic' ? 'border-cobalt-600 text-cobalt-600 dark:border-cobalt-400 dark:text-cobalt-400 font-bold' : 'border-transparent text-mute hover:text-ink'}`}
-                role="tab"
-                aria-selected={viewMode === 'infographic'}
-                aria-controls="resource-view-content"
-                id="tab-view-infographic"
-              >
-                Visual Infographic
-              </button>
-            </div>
-
-
-            {/* Custom Content for each SubModule based on view mode */}
+            {/* Custom Content for each SubModule */}
             <main id="resource-view-content" className="space-y-6 text-sm text-ink-2">
               {renderSubModuleContent(activeModule.id, viewMode, onNavigate, copyToClipboard, addToast)}
             </main>
-
-            <footer className="border-t border-line pt-4 text-xs space-y-3">
-              <div>
-                <span className="font-bold text-ink uppercase tracking-wider text-[10px] block mb-1.5">Evidence &amp; Reference Guidelines</span>
-                {activeModule.references && activeModule.references.length > 0 ? (
-                  <ul className="list-disc pl-4 space-y-1.5 text-ink-2">
-                    {activeModule.references.map((ref, idx) => (
-                      <li key={idx} className="leading-relaxed">
-                        <strong className="text-ink font-semibold">{ref.label}:</strong> {ref.citation}{' '}
-                        {ref.pmid ? (
-                          <a
-                            href={`https://pubmed.ncbi.nlm.nih.gov/${ref.pmid}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-cobalt-700 hover:text-cobalt-900 font-semibold underline dark:text-cobalt-300"
-                          >
-                            PMID: {ref.pmid}
-                          </a>
-                        ) : ref.url ? (
-                          <a
-                            href={ref.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-cobalt-700 hover:text-cobalt-900 font-semibold underline dark:text-cobalt-300"
-                          >
-                            Link
-                          </a>
-                        ) : null}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="italic text-mute">{activeModule.citations}</p>
-                )}
-              </div>
-            </footer>
           </div>
         </div>
       );
@@ -480,6 +419,56 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
 }
 
 // =====================================================================
+// SCALED CARD WRAPPER FOR RESPONSIVE DISPLAY (NO SCROLLING)
+// =====================================================================
+function ScaledCardWrapper({ children, isLandscape }) {
+  const containerRef = React.useRef(null);
+  const [scale, setScale] = useState(1);
+  const origWidth = isLandscape ? 1275 : 825;
+  const origHeight = isLandscape ? 825 : 1275;
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (containerRef.current) {
+        const parentWidth = containerRef.current.parentElement.getBoundingClientRect().width;
+        const availableWidth = Math.max(280, parentWidth - 32);
+        const s = availableWidth / origWidth;
+        setScale(Math.min(1, s));
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [origWidth]);
+
+  return (
+    <div 
+      ref={containerRef} 
+      style={{ 
+        width: '100%', 
+        height: `${origHeight * scale}px`, 
+        overflow: 'hidden',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+      }}
+    >
+      <div 
+        style={{ 
+          transform: `scale(${scale})`, 
+          transformOrigin: 'top center',
+          width: `${origWidth}px`,
+          height: `${origHeight}px`,
+          flexShrink: 0
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
 // RENDER HELPERS FOR DETAILED MODULE VIEWS
 // =====================================================================
 function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard, addToast) {
@@ -505,38 +494,38 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       );
     case 'toast-classification':
       return (
-        <div className="card-wrapper-scroll">
+        <ScaledCardWrapper isLandscape={false}>
           <BedsidePocketCardsStyles />
           <ToastClassificationCard />
-        </div>
+        </ScaledCardWrapper>
       );
     case 'dapt-regimens':
       return (
-        <div className="card-wrapper-scroll">
+        <ScaledCardWrapper isLandscape={true}>
           <BedsidePocketCardsStyles />
           <DaptRegimensCard />
-        </div>
+        </ScaledCardWrapper>
       );
     case 'malignant-infarction':
       return (
-        <div className="card-wrapper-scroll">
+        <ScaledCardWrapper isLandscape={false}>
           <BedsidePocketCardsStyles />
           <MalignantInfarctionCard />
-        </div>
+        </ScaledCardWrapper>
       );
     case 'afib-anticoag-timing':
       return (
-        <div className="card-wrapper-scroll">
+        <ScaledCardWrapper isLandscape={true}>
           <BedsidePocketCardsStyles />
           <AfibAnticoagTimingCard />
-        </div>
+        </ScaledCardWrapper>
       );
     case 'herniation-icp':
       return (
-        <div className="card-wrapper-scroll">
+        <ScaledCardWrapper isLandscape={false}>
           <BedsidePocketCardsStyles />
           <HerniationIcpCard />
-        </div>
+        </ScaledCardWrapper>
       );
     default:
       return <p className="text-xs">Module content not found.</p>;
