@@ -399,20 +399,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
               <p>
                 <b>Verified Evidence Source:</b> <span className="italic">{activeModule.citations}</span>
               </p>
-              {activeModule.placeholders.length > 0 && (
-                <div className="bg-caution-soft/40 border border-caution/20 rounded p-3 mt-3">
-                  <p className="font-semibold text-caution mb-2">⚠️ Institutional Placeholders Requiring Call-Chain Verification:</p>
-                  <ul className="list-disc list-inside space-y-1.5 font-mono text-[11px]">
-                    {activeModule.placeholders.map(p => (
-                      <li key={p}>
-                        <span className="text-ink font-bold">{p}</span>
-                        <span className="text-mute"> → Defaults to: </span>
-                        <span className="bg-caution-soft px-1 rounded text-caution font-semibold">{PLACEHOLDERS[p]}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+
             </footer>
           </div>
         </div>
