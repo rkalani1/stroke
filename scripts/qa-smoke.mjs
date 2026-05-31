@@ -354,6 +354,8 @@ async function auditView(browser, target, viewport) {
   page.on('requestfailed', (req) => {
     const url = req.url();
     if (url.includes('institutional.js')) return;
+    // Skip external requests (like github.io or CDNs) that might fail or be blocked locally/offline
+    if (!url.startsWith(target.url) && !url.includes('127.0.0.1') && !url.includes('localhost')) return;
     addIssue(issues, 'requestfailed', {
       url,
       message: req.failure()?.errorText || 'unknown'

@@ -16114,7 +16114,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           // Asta) remain in encounterQuickLinks below.
           const topLinks = [];
           const encounterQuickLinks = [
-            { label: 'ChatGPT', url: 'https://chatgpt.com/' },
+            { label: 'Telestroke Map', url: 'https://rkalani1.github.io/telestroke-expansion-map/' },
             { label: 'OpenEvidence', url: 'https://www.openevidence.com' },
             { label: 'UpToDate', url: 'https://www.uptodate.com' },
             { label: 'Asta (Ai2)', url: 'https://asta.allen.ai/chat' }

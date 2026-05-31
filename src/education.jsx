@@ -203,18 +203,7 @@ const PLACEHOLDERS = {
   CONFIRM_PUBLIC_SAFE_ROUTING_TEXT: "Tele-consult routing logic (your network)",
 };
 
-const EDUCATION_MODULES = [
-  {
-    id: 'telestroke-map',
-    title: 'Telestroke Network Map',
-    purpose: 'Regional telestroke coverage and expansion map for service planning. NOT a clinical decision tool.',
-    actions: 'Open map in new tab',
-    lastReviewed: '2026-05-30',
-    categories: ['printable', 'pocket-card'],
-    external: true,
-    url: 'https://rkalani1.github.io/telestroke-expansion-map/'
-  }
-];
+const EDUCATION_MODULES = [];
 
 // =====================================================================
 // MAIN EDUCATION MODULE EXPORT
@@ -412,7 +401,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
         ))}
         {filteredModules.length === 0 && (
           <div className="col-span-full bg-card border border-line rounded-lg p-10 text-center">
-            <p className="text-sm text-mute">No cards match the search query or filter tags.</p>
+            <p className="text-sm text-mute">Bedside teaching cards and curricula will appear here.</p>
           </div>
         )}
       </section>
