@@ -7926,7 +7926,7 @@ Clinician Name`;
             // ---- Top-level sections ----
             { id: 'go-encounter', group: 'Go to', label: 'Acute Encounter', hint: 'Active stroke workup', icon: 'activity', keywords: ['encounter', 'acute', 'consult', 'telestroke', 'patient', 'workup'], run: () => navigateTo('encounter', { clearSearch: true }) },
             { id: 'go-protocols', group: 'Go to', label: 'Institutional Protocols & Algorithms', hint: 'Pathways & step-cards', icon: 'library', keywords: ['protocols', 'algorithms', 'pathways', 'management', 'library'], run: () => navigateTo('protocols', { clearSearch: true }) },
-            { id: 'go-research', group: 'Go to', label: 'Research & Guidelines', hint: 'Guidelines & What’s New', icon: 'book-open', keywords: ['research', 'guidelines', 'whats new', "what's new", 'evidence', 'updates'], run: () => navigateTo('research', { clearSearch: true }) },
+            { id: 'go-research', group: 'Go to', label: 'References & Guidelines', hint: 'Guidelines & What’s New', icon: 'book-open', keywords: ['research', 'references', 'guidelines', 'whats new', "what's new", 'evidence', 'updates'], run: () => navigateTo('research', { clearSearch: true }) },
             { id: 'go-trials', group: 'Go to', label: 'Trials & Evidence', hint: 'Screener, tables, atlas', icon: 'flask-conical', keywords: ['trials', 'evidence', 'atlas', 'eligibility', 'screener'], run: () => navigateTo('trials', { clearSearch: true }) },
             { id: 'go-education', group: 'Go to', label: 'Education', hint: 'Curricula & pocket cards', icon: 'brain', keywords: ['education', 'curricula', 'onboarding', 'icu', 'resident', 'nurse', 'pocket cards', 'teaching'], run: () => navigateTo('education', { clearSearch: true }) },
             // ---- Protocols sub-tabs ----
@@ -16924,7 +16924,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     // is shown at lg+; the section H1/title is unchanged elsewhere.
                     { id: 'encounter', name: 'Encounter', short: 'Encounter' },
                     { id: 'protocols', name: 'Institutional Protocols & Algorithms', short: 'Protocols' },
-                    { id: 'research', name: 'Research & Guidelines', short: 'Research' },
+                    { id: 'research', name: 'References & Guidelines', short: 'References' },
                     { id: 'trials', name: 'Trials', short: 'Trials' },
                     { id: 'education', name: 'Educational Resources', short: 'Educational Resources' }
                   ].map(tab => {
@@ -33314,7 +33314,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   <ErrorBoundary>
                   <div id="tabpanel-research" role="tabpanel" aria-labelledby="tab-research" className="space-y-8">
                     {/* Research sub-tabs navigation */}
-                    <div className="bg-white border border-line rounded-md p-2 flex flex-wrap gap-2 sticky top-0 z-30 dark:bg-card" role="tablist" aria-label="Research & Guidelines sub-sections">
+                    <div className="bg-white border border-line rounded-md p-2 flex flex-wrap gap-2 sticky top-0 z-30 dark:bg-card" role="tablist" aria-label="References & Guidelines sub-sections">
                       {[
                         { id: 'whatsnew', name: "What's New" },
                         { id: 'guidelines', name: "Guidelines" },
@@ -35588,7 +35588,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   </div>
                 </ErrorBoundary>
               )}
-                {/* End of Research & Guidelines Tab */}
+                {/* End of References & Guidelines Tab */}
 
                 {/* ============================================ */}
                 {/* CLINICAL TRIALS TAB                          */}
@@ -35965,7 +35965,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {[
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },
                   { id: 'protocols', name: 'Protocols', icon: 'library' },
-                  { id: 'research', name: 'Research', icon: 'book-open' },
+                  { id: 'research', name: 'References', icon: 'book-open' },
                   { id: 'trials', name: 'Trials', icon: 'flask-conical' },
                   { id: 'education', name: 'Educational Resources', icon: 'brain' }
                 ].map(tab => {
