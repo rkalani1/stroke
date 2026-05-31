@@ -535,3 +535,75 @@
   .v7-nav-item.active { color: var(--ink); background: var(--panel-2); box-shadow: inset 0 0 0 1px var(--line); }
   .v7-nav-item.active::before { content: "▸ "; color: var(--teal); }
 }
+
+/* ============================================================
+   v7.1 visual refinement — CSS-only, additive, token-based.
+   Authored in the CSS lane (styles.css → tailwind.css) so it
+   ships WITHOUT re-bundling app.jsx (which a concurrent session
+   is editing). Restraint over spectacle: this is a clinical
+   instrument, so depth + a single calm load reveal, not chrome.
+   All motion is gated to prefers-reduced-motion.
+   ============================================================ */
+
+/* — Canvas atmosphere —
+   Two very-low-alpha radial washes (teal top-right, warm gold
+   bottom-left) composite over the existing warm-paper bg-color so
+   the surface has depth instead of a flat fill. Fixed attachment
+   keeps it stable while content scrolls. Alphas are low enough to
+   leave AA text contrast untouched. Dark theme uses cooler, deeper
+   teal stops. background-color is owned by the bg-slate-50 utility;
+   we only add background-image, so there is no conflict. */
+body {
+  background-image:
+    radial-gradient(58rem 58rem at 88% -12%, rgb(var(--cobalt-500) / 0.05), transparent 60%),
+    radial-gradient(46rem 46rem at -12% 112%, rgb(var(--warn-500) / 0.035), transparent 55%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+[data-theme="dark"] body,
+html.dark body {
+  background-image:
+    radial-gradient(58rem 58rem at 88% -12%, rgb(var(--cobalt-500) / 0.11), transparent 60%),
+    radial-gradient(46rem 46rem at -12% 112%, rgb(var(--cobalt-700) / 0.14), transparent 55%);
+}
+
+/* — Card elevation —
+   The home fast-route tiles render as button.group with the card
+   surface; `group` is a real DOM class (Tailwind), a stable hook.
+   Give them a smooth transition and, on real hover (not touch), a
+   subtle lift + stronger shadow + teal edge. The lift distance is
+   multiplied by --motion-scale, so reduced-motion users get the
+   color/shadow change with zero transform. */
+#main button.group {
+  transition:
+    box-shadow .18s var(--ease, ease),
+    transform .18s var(--ease, ease),
+    border-color .18s var(--ease, ease);
+}
+@media (hover: hover) {
+  #main button.group:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(calc(-2px * var(--motion-scale)));
+    border-color: var(--teal);
+  }
+}
+
+/* — One orchestrated load reveal on the Home landing —
+   Subtle fade-up, staggered across the landing sections. Scoped to
+   #tabpanel-home so it fires on the entry surface, not on every tab
+   switch. Entirely inside a no-preference media query, so
+   prefers-reduced-motion users never see it. */
+@keyframes v71-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  #tabpanel-home > section,
+  #tabpanel-home > * {
+    animation: v71-rise .42s var(--ease, ease) both;
+  }
+  #tabpanel-home > *:nth-child(2) { animation-delay: .06s; }
+  #tabpanel-home > *:nth-child(3) { animation-delay: .12s; }
+  #tabpanel-home > *:nth-child(4) { animation-delay: .18s; }
+  #tabpanel-home > *:nth-child(5) { animation-delay: .24s; }
+}
