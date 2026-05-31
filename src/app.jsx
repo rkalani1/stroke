@@ -16921,7 +16921,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     { id: 'protocols', name: 'Institutional Protocols & Algorithms', short: 'Protocols' },
                     { id: 'research', name: 'Research & Guidelines', short: 'Research' },
                     { id: 'trials', name: 'Trials', short: 'Trials' },
-                    { id: 'education', name: 'Education', short: 'Education' }
+                    { id: 'education', name: 'Educational Resources', short: 'Educational Resources' }
                   ].map(tab => {
                     const isActive = activeTab === tab.id;
                     const hasShort = tab.short && tab.short !== tab.name;
@@ -16995,7 +16995,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'bedside-simulators', label: 'Bedside Simulators', purpose: 'EVD/ICP, HINTS+, pupillometry, exams', icon: 'test-tubes', run: () => { navigateTo('education'); setEducationSubTab('simulators'); } },
                         { id: 'research-whats-new', label: 'Research & What’s New', purpose: 'Guidelines + verified evidence feed', icon: 'book-open', run: () => navigateTo('research', { clearSearch: true }) },
                         { id: 'calculators', label: 'Calculators', purpose: 'NIHSS, ASPECTS, ICH, ABCD2, PHASES…', icon: 'table', run: () => gotoProtocolsSub('calculators') },
-                        { id: 'education-tab', label: 'Education & Curricula', purpose: 'Onboarding, ICU, & nursing curricula', icon: 'brain', run: () => navigateTo('education', { clearSearch: true }) },
+                        { id: 'education-tab', label: 'Educational Resources', purpose: 'Onboarding, ICU, nursing curricula & interactive simulators', icon: 'brain', run: () => navigateTo('education', { clearSearch: true }) },
                         { id: 'pocket-cards-tab', label: 'Pocket Cards', purpose: 'Bedside references & pocket cards', icon: 'badge-check', run: () => { navigateTo('education'); setEducationSubTab('pocket-cards'); } }
                       ];
                       const externalLinks = [
@@ -36430,7 +36430,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   { id: 'protocols', name: 'Protocols', icon: 'library' },
                   { id: 'research', name: 'Research', icon: 'book-open' },
                   { id: 'trials', name: 'Trials', icon: 'flask-conical' },
-                  { id: 'education', name: 'Education', icon: 'brain' }
+                  { id: 'education', name: 'Educational Resources', icon: 'brain' }
                 ].map(tab => {
                   const isActive = activeTab === tab.id;
                   return (
