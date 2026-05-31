@@ -236,7 +236,7 @@ export const LateWindowEVTCalculator = ({ defaults = {} }) => {
   return (
     <div className="p-3 rounded border border-slate-200 bg-white dark:border-line dark:bg-card">
       <h2 className="font-semibold text-slate-900 mb-2 dark:text-ink">Late-Window EVT Eligibility (DAWN · DEFUSE-3)</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs">
         {[
           { k: 'age', label: 'Age' },
           { k: 'nihss', label: 'NIHSS' },
@@ -301,7 +301,7 @@ export const DAPTDurationCalculator = ({ defaults = {} }) => {
   return (
     <div className="p-3 rounded border border-slate-200 bg-white dark:border-line dark:bg-card">
       <h3 className="font-semibold text-slate-900 mb-2 dark:text-ink">Acute DAPT Duration (CHANCE / POINT / THALES)</h3>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs">
         <label>
           <span className="block text-slate-600 mb-0.5 dark:text-ink-2">Presentation</span>
           <select value={inputs.strokeType} onChange={(e) => set('strokeType', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
