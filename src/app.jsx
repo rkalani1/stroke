@@ -35931,11 +35931,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                                 return (
                                   <article key={item.id} className={`v7-study v7-fresh ${fam}`}>
-                                    {/* header row: acronym + type badge + verification marker */}
-                                    <div className="flex items-start justify-between gap-3 mb-2">
-                                      <div className="flex items-center gap-2 flex-wrap">
-                                        <strong className="acro font-mono text-ink text-[15px] font-bold tracking-tight">{item.shortName}</strong>
+                                    {/* header row: study design + journal · year + verification marker */}
+                                    <div className="flex items-start justify-between gap-3 mb-2 flex-wrap">
+                                      <div className="flex items-center gap-2 flex-wrap text-xs">
                                         <span className={`v7-stype ${stypeClass(item.evidenceType)}`}>{stypeLabel(item.evidenceType)}</span>
+                                        <span className="font-mono text-[11px] text-mute uppercase tracking-wide">{item.journal} · {item.year}</span>
                                       </div>
                                       {isVerified ? (
                                         <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-ok-700 whitespace-nowrap dark:text-ok-300" title="PubMed-verified">
@@ -35949,18 +35949,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       )}
                                     </div>
 
-                                    {/* journal · year + topic tag */}
-                                    <div className="flex items-center justify-between gap-2 mb-2 flex-wrap">
-                                      <span className="font-mono text-[11px] text-mute uppercase tracking-wide">{item.journal} · {item.year}</span>
-                                      {item.topicLabel ? <span className="v7-tag topic">{item.topicLabel}</span> : null}
-                                    </div>
-
                                     {/* study title */}
-                                    <h3 className="font-sans text-body text-ink font-medium leading-snug text-pretty mb-3">{item.fullName}</h3>
+                                    <h3 className="font-serif text-md text-ink font-bold leading-snug text-pretty mb-3">{item.fullName}</h3>
 
                                     {/* result definition list — exposes clinical detail
                                         (drug names, doses, CI/p, jargon). */}
                                     <dl className="space-y-2 text-sm">
+                                      {item.shortName && (
+                                        <div>
+                                          <dt className="font-mono uppercase text-[10px] text-mute tracking-wider">Study Acronym</dt>
+                                          <dd className="text-ink-2 font-mono font-semibold">{item.shortName}</dd>
+                                        </div>
+                                      )}
+                                      {item.topicLabel && (
+                                        <div>
+                                          <dt className="font-mono uppercase text-[10px] text-mute tracking-wider">Topic</dt>
+                                          <dd className="text-ink-2">{item.topicLabel}</dd>
+                                        </div>
+                                      )}
                                       {(() => {
                                         const designLine = [
                                           item.design?.n ? `n=${item.design.n.toLocaleString?.() || item.design.n}` : null,
