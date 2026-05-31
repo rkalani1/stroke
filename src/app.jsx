@@ -27604,7 +27604,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {(() => {
                       const subTabLabels = {
                         ich: 'ICH', ischemic: 'Ischemic', sah: 'SAH', tia: 'TIA', cvt: 'CVT',
-                        calculators: 'Calculators'
+                        calculators: 'Calculators', references: 'References'
                       };
                       const activeLabel = subTabLabels[managementSubTab] || managementSubTab;
                       return (
@@ -27619,7 +27619,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       );
                     })()}
                     <div className="bg-white border border-line rounded-md rounded-t-none p-2 flex flex-wrap gap-2 sticky top-9 z-30 dark:bg-card " role="tablist" aria-label="Protocols & Algorithms sub-sections" onKeyDown={(e) => {
-                      const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
+                      const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators', 'references'];
                       const ci = subTabs.indexOf(managementSubTab);
                       let ni;
                       if (e.key === 'ArrowRight') { e.preventDefault(); ni = (ci + 1) % subTabs.length; }
@@ -27651,6 +27651,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'sah', label: 'SAH' },
                         { id: 'tia', label: 'TIA' },
                         { id: 'cvt', label: 'CVT' },
+                        { id: 'references', label: 'References' },
 
                         { id: 'calculators', label: 'Calculators' }
                       ].map((tab) => {
