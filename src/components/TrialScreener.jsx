@@ -97,12 +97,12 @@ function YesNoField({ label, value, onChange, yesLabel = 'Yes', noLabel = 'No', 
 
 function StatusBadge({ status }) {
   const map = {
-    pending: { cls: 'bg-warn-50 text-warn-800 border-warn-200', text: 'Possible · Pending' },
-    soon: { cls: 'bg-warn-50 text-warn-800 border-warn-200', text: 'Enrolling Soon' },
-    excluded: { cls: 'bg-slate-100 text-slate-600 border-slate-200', text: 'Excluded' },
-    closed: { cls: 'bg-slate-100 text-slate-600 border-slate-200', text: 'Closed' },
-    placeholder: { cls: 'bg-crit-50 text-crit-800 border-crit-200', text: 'Unverified' },
-    enrolling: { cls: 'bg-ok-50 text-ok-800 border-ok-200', text: 'Enrolling' }
+    pending: { cls: 'bg-warn-50 text-warn-800 border-warn-200 dark:bg-warn-950 dark:text-warn-200 dark:border-warn-800', text: 'Possible · Pending' },
+    soon: { cls: 'bg-warn-50 text-warn-800 border-warn-200 dark:bg-warn-950 dark:text-warn-200 dark:border-warn-800', text: 'Enrolling Soon' },
+    excluded: { cls: 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-paper-2 dark:text-ink-2 dark:border-line', text: 'Excluded' },
+    closed: { cls: 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-paper-2 dark:text-ink-2 dark:border-line', text: 'Closed' },
+    placeholder: { cls: 'bg-crit-50 text-crit-800 border-crit-200 dark:bg-crit-950 dark:text-crit-200 dark:border-crit-800', text: 'Unverified' },
+    enrolling: { cls: 'bg-ok-50 text-ok-800 border-ok-200 dark:bg-ok-950 dark:text-ok-200 dark:border-ok-800', text: 'Enrolling' }
   };
   const m = map[status] || map.excluded;
   return (
@@ -209,9 +209,9 @@ function TrialDetailsModal({ trial, onClose }) {
           </div>
 
           {trial.sourceGaps && trial.sourceGaps.length > 0 && (
-            <div className="rounded-md border-l-4 border-crit-600 bg-crit-50 px-3 py-2">
-              <p className="text-xs font-semibold text-crit-800">Registry / Protocol Verification Notes</p>
-              <ul className="list-disc pl-4 mt-1 space-y-1 text-xs text-crit-800">
+            <div className="rounded-md border-l-4 border-crit-600 bg-crit-50 px-3 py-2 dark:border-crit-500 dark:bg-crit-950">
+              <p className="text-xs font-semibold text-crit-800 dark:text-crit-200">Registry / Protocol Verification Notes</p>
+              <ul className="list-disc pl-4 mt-1 space-y-1 text-xs text-crit-800 dark:text-crit-200">
                 {trial.sourceGaps.map((g, i) => (
                   <li key={i}>{g}</li>
                 ))}
@@ -258,7 +258,7 @@ function ResultCard({ item, onOpenDetails }) {
             ⏱ Onset Window: {trial.enrollmentWindowText}
           </span>
           {isHyperacute && (
-            <span className="inline-flex items-center rounded bg-warn-50 px-2 py-0.5 text-2xs font-semibold text-warn-800">
+            <span className="inline-flex items-center rounded bg-warn-50 px-2 py-0.5 text-2xs font-semibold text-warn-800 dark:bg-warn-950 dark:text-warn-200">
               ⚡ Time-Sensitive
             </span>
           )}
@@ -268,9 +268,9 @@ function ResultCard({ item, onOpenDetails }) {
       <p className="mt-2 text-sm text-slate-700">{trial.conciseBedsideSummary}</p>
 
       {exclusionReasons && exclusionReasons.length > 0 ? (
-        <div className="mt-3 rounded-md border-l-4 border-slate-300 bg-slate-50 px-3 py-2">
-          <p className="text-xs font-semibold text-slate-700">Exclusion Reasons</p>
-          <ul className="list-disc pl-4 mt-1 space-y-0.5 text-xs text-slate-600">
+        <div className="mt-3 rounded-md border-l-4 border-slate-300 bg-slate-50 px-3 py-2 dark:border-line dark:bg-paper-2">
+          <p className="text-xs font-semibold text-slate-700 dark:text-ink">Exclusion Reasons</p>
+          <ul className="list-disc pl-4 mt-1 space-y-0.5 text-xs text-slate-600 dark:text-ink-2">
             {exclusionReasons.map((e, i) => (
               <li key={i}>{e}</li>
             ))}
@@ -279,9 +279,9 @@ function ResultCard({ item, onOpenDetails }) {
       ) : (
         <>
           {pendingFields && pendingFields.length > 0 && (
-            <div className="mt-3 rounded-md border-l-4 border-warn-600 bg-warn-50 px-3 py-2">
-              <p className="text-xs font-semibold text-warn-800">Pending Bedside Inputs</p>
-              <p className="text-xs text-warn-800 mt-0.5">{pendingFields.join(', ')}</p>
+            <div className="mt-3 rounded-md border-l-4 border-warn-600 bg-warn-50 px-3 py-2 dark:border-warn-500 dark:bg-warn-950">
+              <p className="text-xs font-semibold text-warn-800 dark:text-warn-200">Pending Bedside Inputs</p>
+              <p className="text-xs text-warn-800 mt-0.5 dark:text-warn-200">{pendingFields.join(', ')}</p>
             </div>
           )}
           {matchedCriteria && matchedCriteria.length > 0 && (
@@ -491,8 +491,8 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
   return (
     <div className="space-y-4">
       {/* Compliance banner */}
-      <div className="rounded-md border-l-4 border-crit-600 bg-crit-50 px-4 py-3">
-        <p className="text-xs text-crit-800">
+      <div className="rounded-md border-l-4 border-crit-600 bg-crit-50 px-4 py-3 dark:border-crit-500 dark:bg-crit-950">
+        <p className="text-xs text-crit-800 dark:text-crit-200">
           <span className="font-bold">Synthetic public demo — not for clinical decision-making.</span>{' '}
           {COMPLIANCE_BANNER.replace('Synthetic public demo — not for clinical decision-making. ', '')}
         </p>
