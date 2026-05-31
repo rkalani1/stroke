@@ -25,8 +25,29 @@
 > rendered-surfaces CLEAN most cycles (C10 found 1 journal-name typo). The residual tail is a11y/visual
 > deep-state edge cases (phone-only / dark-only / populated-state / experimental-rule).
 
+## Campaign closed at v6.8.9 (user instruction: "push to production after this cycle, then STOP")
+**Cycles 8–11 ran after the initial checkpoint** (v6.8.5 → 6.8.6 → 6.8.7 → 6.8.8 → **6.8.9**), each finding and
+fixing a small batch of increasingly deep-state stragglers. The `/goal` was cleared and the campaign stopped at
+**v6.8.9** by user direction. The formal two-consecutive-clean criterion was **not** mechanically certified —
+every cycle still found 1–8 items — but all KNOWN findings through Cycle 11 are resolved and live; perf/PWA and
+public-safety were CLEAN for the final ~6–9 consecutive cycles.
+- **v6.8.8 (Cycle 10 close + proactive):** closed the fixed-width-grid phone-clip class (13 grids + the
+  PocketCards `flex` `min-width:auto` shell-clip root cause) and the Label-in-Name class exhaustively.
+- **v6.8.9 (Cycle 11 close):** TrialScreener dark-mode variants (status pills + 5 banners no longer render as
+  light boxes on `#/trials` in dark); header-search `aria-activedescendant` gated on listbox visibility (no
+  stale reference after type→arrow→blur). **Important:** the Cycle-11 audit also reported 3 findings that were
+  **phantoms of a transiently stale committed `app.js`** (source already correct): the 2026 AIS guideline was
+  already attributed to **Prabhakaran S** (not Powers WJ), `dark:bg-card/NN` was absent, and the note-preview
+  already had `role=region` — the v6.8.9 rebuild re-synced the deployed bundle to source. Remaining Cycle-11
+  items (Video-Telestroke note-builder labels/badges A11Y-3/4/5) could not be reproduced in current source and
+  are flagged for a clean-bundle re-audit of that sub-view.
+
 ## Live URL & version verified
-- **https://rkalani1.github.io/stroke/** — asset version **v6.8.7** (SW `APP_VERSION='6.8.7'`,
+- **https://rkalani1.github.io/stroke/** — asset version **v6.8.9** (SW `APP_VERSION='6.8.9'`,
+  `stroke-cache-v6-8-9`, `app.js?v=6.8.9`, `tailwind.css?v=6.8.9`, `package.json` 6.8.9 — all coherent;
+  **curl-verified live**: institutional grep 0, guideline author Prabhakaran S [correct], TrialScreener dark
+  variants present). [prior detail below reflects v6.8.7 — superseded by v6.8.9.]
+- **(superseded)** — asset version **v6.8.7** (SW `APP_VERSION='6.8.7'`,
   `stroke-cache-v6-8-7`, `app.js?v=6.8.7`, `tailwind.css?v=6.8.7`, `package.json` 6.8.7 — all coherent;
   **curl-verified on the live host**, institutional grep 0, all Cycle-8/9/10 fixes present in the live bundle).
 - Branch `feat/stroke-cockpit-2026`. **~38 release/fix commits** since the v6.5.0 campaign baseline (19 PRs merged).
