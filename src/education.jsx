@@ -1022,11 +1022,11 @@ export function ToastClassificationCard() {
           <h3>4. Other Determined Etiology (ODE)</h3>
           <ul className="toast-card-list">
             <li><strong>Clinical/Imaging:</strong> Infarction of any size with diagnostic proof of a rare/specific underlying mechanism:</li>
-            <li>• Arterial dissection (e.g. carotid or vertebral dissection)</li>
-            <li>• CNS vasculitis or systemic vasculopathy</li>
-            <li>• RCVS (Reversible Cerebral Vasoconstriction Syndrome)</li>
-            <li>• Moya-Moya disease, CADASIL, or Fibromuscular Dysplasia</li>
-            <li>• Prothrombotic/hypercoagulable state (APLS, cancer, DIC)</li>
+            <li>Arterial dissection (e.g. carotid or vertebral dissection)</li>
+            <li>CNS vasculitis or systemic vasculopathy</li>
+            <li>RCVS (Reversible Cerebral Vasoconstriction Syndrome)</li>
+            <li>Moya-Moya disease, CADASIL, or Fibromuscular Dysplasia</li>
+            <li>Prothrombotic/hypercoagulable state (APLS, cancer, DIC)</li>
           </ul>
         </div>
       </div>
@@ -1062,9 +1062,9 @@ export function ToastClassificationCard() {
         <div className="toast-card alert-orange">
           <h3>5. Undetermined Etiology</h3>
           <ul className="toast-card-list">
-            <li>• <strong>Due to competing risks:</strong> ≥ 2 potential etiologies found (e.g., active AFib AND ≥50% ipsilateral carotid stenosis).</li>
-            <li>• <strong>Negative evaluation:</strong> Complete diagnostic workup identifies no clear source (Cryptogenic stroke).</li>
-            <li>• <strong>Incomplete evaluation:</strong> Workup is unfinished (e.g., patient discharged/AMA before Echo or vascular imaging).</li>
+            <li><strong>Due to competing risks:</strong> ≥ 2 potential etiologies found (e.g., active AFib AND ≥50% ipsilateral carotid stenosis).</li>
+            <li><strong>Negative evaluation:</strong> Complete diagnostic workup identifies no clear source (Cryptogenic stroke).</li>
+            <li><strong>Incomplete evaluation:</strong> Workup is unfinished (e.g., patient discharged/AMA before Echo or vascular imaging).</li>
           </ul>
           <div style={{marginTop: '4px', borderTop: '1px dashed rgba(217,134,11,0.3)', paddingTop: '3px', fontSize: '8.8pt', lineHeight: '1.45', color: 'var(--ink-soft)'}}>
             <strong style={{color: 'var(--amber-deep)'}}>ESUS Criteria (Negative evaluation subset):</strong> non-lacunar stroke, no relevant &gt;50% stenosis, no high-risk cardioembolic source, negative ECG/telemetry ≥24 hours.
