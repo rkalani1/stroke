@@ -631,75 +631,7 @@ export const screenerTrials = [
       ].filter(Boolean);
     }
   },
-  {
-    acronym: 'SATURN',
-    exactFullStudyName: 'Statins Use in Intracerebral Hemorrhage Patients',
-    sourceHypothesisText:
-      'To determine the effects of continuation vs. discontinuation of statins on the risk of ICH recurrence during 24 months of follow-up in patients presenting with a spontaneous lobar lCH while taking a statin drug.',
-    status: 'enrolling',
-    sourceCompletenessStatus: 'first_pass',
-    sourceGaps: [
-      CTGOV_FIRST_PASS_NOTE,
-      'CT.gov includes statin-prescriber consultation/randomization agreement, PCSK9/familial hypercholesterolemia, severe dementia, statin safety, and withdrawal-of-care exclusions not fully encoded here.'
-    ],
-    timeCategory: 'acute_subacute',
-    enrollmentWindowText: '≤ 7 days',
-    externalMetadata: {
-      nct: 'NCT03936361',
-      registryUrl: 'https://clinicaltrials.gov/study/NCT03936361',
-      verificationDate: '2026-05-28'
-    },
-    conciseBedsideSummary:
-      'Statin continuation vs discontinuation after spontaneous lobar ICH (within 7 days) in patients taking a statin at onset.',
-    pathway: 'Consult Stroke Research Coordinator / Stroke Neurology Service',
-    noContactInfo: true,
-    exactInclusionCriteria: [
-      'Spontaneous lobar ICH confirmed by CT or MRI',
-      'can be randomized within 7 days of stroke onset',
-      'age ≥50',
-      'taking a statin drug at onset',
-      'patient or LAR agrees to randomization after consultation with the statin prescriber'
-    ],
-    exactExclusionCriteria: [
-      'Suspected secondary cause for the ICH',
-      'ICH score > 3',
-      'MI within past 3 months',
-      'pre stroke mRS >3',
-      'life expectancy < 2 years'
-    ],
-    check: (p) => {
-      const errors = [];
-      if (p.classification !== 'ich') errors.push('Requires ICH');
-      if (p.ichLocation !== 'lobar') errors.push('Requires Lobar ICH');
-      if (p.onsetDays > 7) errors.push('LKW-to-randomization > 7 days');
-      if (p.age < 50) errors.push('Age < 50');
-      if (!p.statin) errors.push('Requires patient to be taking a statin at onset');
-      if (p.preMrs > 3) errors.push('Pre-stroke mRS > 3');
-      if (p.exSecondaryIch) errors.push('Excludes suspected secondary cause');
-      if (p.exIchScore3) errors.push('Excludes ICH score > 3');
-      if (p.exRecentMi3m) errors.push('Excludes MI within past 3 months');
-      if (p.exLifeExpectancy2y) errors.push('Excludes life expectancy < 2 years');
-      return errors;
-    },
-    matchedCriteriaText: (p) => {
-      return [
-        'ICH classification selected',
-        p.ichLocation === 'lobar' ? 'Lobar ICH location confirmed' : '',
-        p.onsetDays <= 7 ? 'Onset within 7 days window' : '',
-        p.age >= 50 ? 'Age is ' + p.age + ' (meets ≥ 50)' : '',
-        p.statin === true ? 'Taking statin drug at onset' : '',
-        p.preMrs <= 3 ? 'Pre-stroke mRS is ' + p.preMrs + ' (meets ≤ 3)' : ''
-      ].filter(Boolean);
-    },
-    pendingCriteriaText: (p) => {
-      return [
-        !p.exSecondaryIch ? 'Confirm no secondary cause (AVM, aneurysm, tumor, SAH)' : '',
-        !p.exIchScore3 ? 'Confirm clinical ICH score is ≤ 3' : '',
-        !p.exRecentMi3m ? 'Confirm no Myocardial Infarction in the past 3 months' : '',
-        !p.exLifeExpectancy2y ? 'Confirm life expectancy is ≥ 2 years' : ''
-      ].filter(Boolean);
-    }
-  },
+
   {
     acronym: 'CAPPRICORN-1',
     exactFullStudyName: 'A Study to Investigate the Efficacy, Safety, and Tolerability of ALN-APP in Patients with CAA',
